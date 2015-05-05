@@ -1,0 +1,33 @@
+<!-- 
+使用方法:
+<ui:include src="#{tplVars.componentsPath}/newUsers.xhtml">
+   <ui:param name="title" value="新注册用户"></ui:param>
+   <ui:param name="maxResults" value="1"></ui:param>
+</ui:include>
+    title（可选） : 显示标题
+    maxResults（可选） : 显示新注册的用户数,默认为5
+    #{tplVars.componentsPath} : 等同于 /site/components
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div id="block-user-new" class="block block-user ">
+		<h2>
+			<h:outputText value="#{empty title ? userMsg.newRegisterUserLabel : title}"></h:outputText>
+		</h2>
+		<div class="content">
+			<div class="item-list">
+				<ul>
+					<ui:repeat var="user" value="#{userList.getNewUsers(empty maxResults ? 5:maxResults)}" varStatus="status">
+					   <li class="#{status.first?'first':''} #{status.last?'last':''}">
+	                        <span class="username">#{user.username}</span>
+	                    </li>
+					</ui:repeat>
+				</ul>
+			</div>
+		</div>
+	</div>
+</f:view>

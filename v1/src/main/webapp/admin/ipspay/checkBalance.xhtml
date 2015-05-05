@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configTypeHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		
+	<div style="margin-left:180px;margin-top:50px;font-size:17px;font-family:微软雅黑;">
+		
+		<h:form>
+			会员编号：<h:inputText value="#{ipsCheckHome.userId}" required="true" label="会员编号"/>&#160;&#160;
+			<p:commandButton action="#{ipsCheckHome.chekBalance}" value=" 查&#160;询 " update=":table"/>
+		</h:form>
+		
+		<br />
+		<h:panelGroup id="table">
+		可用余额：#{ipsCheckHome.cbr.pBalance} <br />
+		冻结余额：#{ipsCheckHome.cbr.pLock} <br />
+		未结算余额：#{ipsCheckHome.cbr.pNeedstl} <br /><br />
+		查询结果：&#160;&#160;&#160;&#160;&#160;&#160;#{ipsCheckHome.cbr.pErrMsg} <br />
+		</h:panelGroup>
+		
+	</div>
+	<!-- 
+	<div style="margin-left:180px;margin-top:10px;font-size:17px;">
+				<h:form>
+					交易号：<h:inputText value="#{yeePayQueryHome.orderId}" />&#160;&#160;
+					交易类型：
+					<h:selectOneMenu style="width:125px;" styleClass="area text text3" value="#{yeePayQueryHome.orderType}" >
+						<f:selectItem itemLabel="投资放款" itemValue="PAYMENT_RECORD"/>
+						<f:selectItem itemLabel="还款" itemValue="REPAYMENT_RECORD"/>
+						<f:selectItem itemLabel="提现" itemValue="WITHDRAW_RECORD"/>
+						<f:selectItem itemLabel="充值" itemValue="RECHARGE_RECORD"/>
+					</h:selectOneMenu>
+					<h:commandButton action="#{yeePayQueryHome.query}" value=" 查&#160;询 " />
+				</h:form>
+				<br/>
+				查询结果：<br/>
+				#{result}
+			</div> -->
+	</ui:define>
+</ui:composition>
+
+</html>

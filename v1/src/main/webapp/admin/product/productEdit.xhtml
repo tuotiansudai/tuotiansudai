@@ -1,0 +1,103 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{productHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+		<p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel} #{productMsg.productManagerLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button value="#{productMsg.productManagerLabel}" outcome="/admin/product/productList"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:spacer></p:spacer> 
+		<h:form id="form">
+
+			<h:panelGrid columns="2" columnClasses="col1,col2">
+				<ui:include src="/admin/components/nodeEdit.xhtml">
+					<ui:param name="instance" value="#{productHome.instance}"></ui:param>
+				</ui:include>
+
+				<!--		产品有关的		-->
+				<h:outputLabel value="#{productMsg.paramLabel}"></h:outputLabel>
+				<h:inputTextarea id="characteristics"
+					value="#{productHome.instance.characteristics}"></h:inputTextarea>
+				<ui:fragment>
+					<p:commandButton id="uploadPicBtn" type="button"
+						onclick="uploadDialog.show()" process="@none" value="#{commonMsg.uploadLabel}"></p:commandButton>
+					<h:outputLabel value="#{product.allImgLabel}"></h:outputLabel>
+				</ui:fragment>
+				<ui:fragment>
+					<f:event type="preRenderView"
+						listener="#{productPictureHome.initProductPictures(productHome.instance.productPictures)}" />
+					<p:panel id="product_picture">
+						<ui:repeat var="img" value="#{productPictureHome.productPictures}">
+							<p:commandLink update=":form:imageDialog" process="@this"
+								oncomplete="imageDialog.show()" title="#{commonMsg.detail}">
+								<img alt="#{commonMsg.detail}" src="#{appInfo.contextPath}/#{img.picture}"
+									width="60" height="60"></img>
+								<f:setPropertyActionListener value="#{img}"
+									target="#{productPictureHome.selectedPicture}" />
+							</p:commandLink>
+						</ui:repeat>
+					</p:panel>
+				</ui:fragment>
+
+				<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+				<p:panel style="position: fixed; right:15px;top:200px; z-index:1000">
+                    <p:commandButton id="saveBtn" action="#{productHome.save}"
+                        ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
+                    <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+            </p:panel>
+
+			</h:panelGrid>
+			<p:dialog id="uploadDialog" header="#{commonMsg.uploadLabel}" widgetVar="uploadDialog"
+				modal="true" width="800" height="650">
+				<p:fileUpload cancelLabel="#{commonMsg.cancelLabel}" dragDropSupport="true"
+					invalidFileMessage="#{commonMsg.invalidFileMessage}" invalidSizeMessage="#{commonMsg.invalidSizeMessage}"
+					uploadLabel="#{commonMsg.uploadLabel}" label="#{commonMsg.choiceLabel}"
+					fileUploadListener="#{productPictureHome.handleProductPicturesUpload}"
+					multiple="true" mode="advanced" update=":form:product_picture"
+					sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+			</p:dialog>
+			<p:dialog id="imageDialog" widgetVar="imageDialog" modal="true"
+				height="600" showHeader="true">
+				<f:facet name="header">
+					<p:commandButton value="deleteLabel" update=":form:product_picture"
+						actionListener="#{productPictureHome.deleteSelectedPicture}"
+						process="@this" oncomplete="imageDialog.hide()" />
+					<p:commandButton value="#{commonMsg.oldOneLabel}" update="imageOri"
+						actionListener="#{productPictureHome.previousPicture}"
+						process="@this" />
+					<p:commandButton value="#{commonMsg.newOneLabel}" update="imageOri"
+						actionListener="#{productPictureHome.nextPicture}" process="@this" />
+				</f:facet>
+				<p:panel id="imageOri">
+					<img
+						src="#{appInfo.contextPath}/#{productPictureHome.selectedPicture.picture}"></img>
+				</p:panel>
+			</p:dialog>
+			<script type="text/javascript">
+	var ue2 = new UE.ui.Editor({
+
+	});
+	ue2.render('form:characteristics');
+</script>
+		</h:form>
+	</div>
+	</ui:define>
+</ui:composition>
+

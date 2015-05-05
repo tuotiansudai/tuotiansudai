@@ -1,0 +1,84 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{withdrawHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 提现审核"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="提现列表" outcome="/admin/withdraw/withdrawList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+
+			<h:form id="form">
+				<h:inputHidden value="#{withdrawHome.id}"></h:inputHidden>
+				<ui:param name="withdraw" value="#{withdrawHome.instance}"></ui:param>
+				<h:panelGrid id="panel" columns="2" columnClasses="col1,col2">
+					<h:outputLabel value="时间" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.time}">
+						<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" />
+					</h:outputText>
+
+					<h:outputLabel value="用户名" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.user.username}"></h:outputText>
+					
+					<h:outputLabel value="真实姓名" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.user.realname}"></h:outputText>
+
+					<h:outputLabel value="提现金额" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.money}"></h:outputText>
+
+					<h:outputLabel value="手续费" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.fee}"></h:outputText>
+
+					<h:outputLabel value="银行卡" styleClass="form-input-label"></h:outputLabel>
+					<h:outputText value="#{withdraw.bankCard.name}#{withdraw.bankCard.bank}#{withdraw.bankCard.bankArea}#{withdraw.bankCard.cardNo}"></h:outputText>
+
+					<h:outputLabel value="初审状态"></h:outputLabel>
+<!-- 					<h:outputText value="通过" rendered="#{not empty withdraw.recheckTime or widthdraw.status eq WithdrawStatus.RECHECK}"></h:outputText> -->
+					<h:outputText value="不通过" rendered="#{empty withdraw.recheckTime and withdraw.status eq WithdrawStatus.VERIFY_FAIL}"></h:outputText>
+					
+					<h:outputLabel value="初审时间"></h:outputLabel>
+					<h:outputText value="#{withdraw.verifyTime}">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+					</h:outputText>
+					
+					<h:outputLabel value="初审信息"></h:outputLabel>
+					<h:outputText value="#{withdrawHome.instance.verifyMessage}"></h:outputText>
+					
+					<h:outputLabel value="复核状态"></h:outputLabel>
+					<h:outputText value="通过" rendered="#{not empty withdraw.recheckTime and withdraw.status eq WithdrawStatus.SUCCESS}"></h:outputText>
+					<h:outputText value="不通过" rendered="#{not empty withdraw.recheckTime and withdraw.status eq WithdrawStatus.VERIFY_FAIL}"></h:outputText>
+					<h:outputText value="" rendered="#{empty withdraw.recheckTime}"></h:outputText>
+					
+					<h:outputLabel value="复核时间"></h:outputLabel>
+					<h:outputText value="#{withdraw.recheckTime}">
+						<f:convertDateTime timeZone="GMT+8" pattern="yyyy-MM-dd HH:mm:ss"/>
+					</h:outputText>
+					
+					<h:outputLabel value="复核信息"></h:outputLabel>
+					<h:outputText value="#{withdrawHome.instance.recheckMessage}"></h:outputText>
+					
+					<h:outputLabel value=" "></h:outputLabel>
+					<p:button value="返回提现列表" outcome="/admin/withdraw/withdrawList.htm?withdrawStatus=success"></p:button>
+					
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

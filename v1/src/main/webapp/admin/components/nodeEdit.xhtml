@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+	<h:inputText value="#{instance.id}" label="#{commonMsg.IDLabel}"
+		required="true" maxlength="32" readonly="#{not empty instance.id}"></h:inputText>
+
+	<h:outputLabel value="#{nodeMsg.titleLabel}"></h:outputLabel>
+	<h:inputText required="true" label="#{nodeMsg.titleLabel}"
+		value="#{instance.title}" styleClass="form-input-long">
+		<f:validateLength minimum="2" maximum="100"></f:validateLength>
+	</h:inputText>
+
+	<h:outputLabel value="#{nodeMsg.subtitleLabel}"></h:outputLabel>
+	<h:inputText label="#{nodeMsg.subtitleLabel}"
+		value="#{instance.subtitle}" styleClass="form-input-long">
+		<f:validateLength minimum="0" maximum="100"></f:validateLength>
+	</h:inputText>
+
+	<h:outputLabel value="#{nodeMsg.nodeTypeLabel}"></h:outputLabel>
+	<h:selectOneMenu value="#{instance.nodeType.id}">
+		<f:selectItems value="#{nodeTypeList.allResultList}" var="type"
+			itemValue="#{type.id}" itemLabel="#{type.name}" />
+	</h:selectOneMenu>
+
+	<h:outputLabel value="#{languageMsg.chooseLanguage}"
+		styleClass="form-input-label"></h:outputLabel>
+	<h:selectOneMenu value="#{instance.language}">
+		<f:selectItem itemValue="*" itemLabel="#{languageMsg.allLanguage}" />
+		<f:selectItems value="#{languageList.languages}" var="language"
+			itemValue="#{language.id}" itemLabel="#{language.country}" />
+	</h:selectOneMenu>
+
+	<h:outputLabel value="#{nodeMsg.statusLabel}"></h:outputLabel>
+	<h:selectOneMenu value="#{instance.status}">
+		<f:selectItem itemValue="1" itemLabel="#{nodeMsg.nodeTypePublicLabel}" />
+		<f:selectItem itemValue="0"
+			itemLabel="#{nodeMsg.nodeTypePrivateLabel}" />
+	</h:selectOneMenu>
+
+	<h:outputLabel value="#{nodeMsg.categoryTermsLabel}"></h:outputLabel>
+	<ui:fragment>
+		<p:selectCheckboxMenu id="terms" label="#{nodeMsg.categoryTermsLabel}" filter="true" filterMatchMode="contains"
+			collectionType="java.util.ArrayList"
+			value="#{instance.categoryTerms}" converter="archer.EntityConverter">
+			<p:ajax event="change" update="termSelects" />
+			<f:selectItems value="#{categoryTermList.allResultList}" var="term"
+				itemValue="#{term}" itemLabel="#{term.name}" />
+		</p:selectCheckboxMenu>
+		<p:panel id="termSelects">
+			<h:outputText value="#{nodeMsg.categoryTermsLabel}:"></h:outputText>
+			<ui:repeat var="term" value="#{instance.categoryTerms}"
+				varStatus="status">
+				<h:outputText
+					value="[#{categoryTermHome.getTermById(term.id).name}]  "></h:outputText>
+			</ui:repeat>
+		</p:panel>
+	</ui:fragment>
+
+	<h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+	<h:inputTextarea id="description" value="#{instance.description}"
+		style="width:600px;height:60px;"></h:inputTextarea>
+
+	<h:outputLabel value="#{nodeMsg.nodeBodyLabel}"></h:outputLabel>
+	<ui:fragment>
+		<h:inputHidden value="#{instance.nodeBody.id}"></h:inputHidden>
+		<h:inputTextarea id="content" value="#{instance.nodeBody.body}"></h:inputTextarea>
+		<script type="text/javascript">
+			var ue = new UE.ui.Editor({
+
+			});
+			ue.render('form:content');
+		</script>
+	</ui:fragment>
+	<h:outputLabel value="#{nodeMsg.keywords}">
+	</h:outputLabel>
+	<ui:fragment>
+		<h:inputText id="keywords" value="#{instance.keywords}"
+			styleClass="form-input-long"></h:inputText>
+		<h:outputText value="#{nodeMsg.keywordsInfo}"></h:outputText>
+	</ui:fragment>
+
+	<h:outputLabel value="#{nodeMsg.thumbLabel}">
+	</h:outputLabel>
+	<ui:include src="#{tplVars.componentsPath}/onePictureUpload.xhtml">
+		<ui:param name="thumb" value="#{instance.thumb}"></ui:param>
+	</ui:include>
+
+	<h:outputLabel value="#{commonMsg.seqNumLabel}"
+		styleClass="form-input-label"></h:outputLabel>
+	<ui:fragment>
+		<h:inputText value="#{nodeHome.instance.seqNum}" id="seqNum"></h:inputText>
+		<p:slider minValue="-50" maxValue="50" for="seqNum"
+			style="width:500px"></p:slider>
+	</ui:fragment>
+
+	<h:outputLabel value="#{nodeMsg.nodeAttrsLabel}"></h:outputLabel>
+	<h:selectManyCheckbox value="#{instance.nodeAttrs}"
+		collectionType="java.util.ArrayList" label="#{nodeMsg.nodeAttrsLabel}"
+		converter="archer.EntityConverter">
+		<f:selectItems value="#{nodeAttrList.allResultList}" var="nodeAttr"
+			itemValue="#{nodeAttr}" itemLabel="#{nodeAttr.name}" />
+	</h:selectManyCheckbox>
+
+
+</ui:composition>
+

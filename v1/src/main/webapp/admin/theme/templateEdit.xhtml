@@ -1,0 +1,62 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <f:metadata>
+        <f:viewParam name="id" value="#{templateHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+		  <div class="entry">
+		  <p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel} #{themeMsg.editTemplateLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button value="#{themeMsg.editTemplateLabel}"></p:button>
+            </p:toolbarGroup>
+       	 </p:toolbar>
+        <p:spacer></p:spacer> 
+			<h:form>
+				<i>#{themeMsg.editTemplateLabel}</i>
+                <h:panelGrid columns="2"  columnClasses="col1,col2">
+                    <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                    <h:inputText value="#{templateHome.instance.id}"
+                        required="true" label="#{commonMsg.IDLabel}"></h:inputText>
+                    
+                    <h:outputLabel value="#{commonMsg.nameLabel}"></h:outputLabel>
+                    <h:inputText required="true" label="#{commonMsg.nameLabel}"
+                        value="#{templateHome.instance.name}">
+                        <f:validateLength minimum="2"></f:validateLength>
+                    </h:inputText>
+                    
+                    <h:outputLabel value="#{themeMsg.themeLabel}"></h:outputLabel>
+                    <h:selectOneMenu required="true" 
+                        value="#{templateHome.instance.theme.id}">
+                        <f:selectItems value="#{themeList.allThemes}" var="theme"
+                            itemValue="#{theme.id}" itemLabel="#{theme.name}"/>
+                    </h:selectOneMenu>
+                    
+                    <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                    <h:inputTextarea value="#{templateHome.instance.description}" style="width:600px;height:60px;"></h:inputTextarea>
+                   
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{templateHome.save}" update="@form" 
+                            value="#{commonMsg.saveLabel}"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                    </ui:fragment>
+                    
+                </h:panelGrid>
+
+			</h:form>
+			</div>
+		</ui:define>
+</ui:composition>
+

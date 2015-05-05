@@ -1,0 +1,79 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	overflow-x:hidden;
+}
+.tipper{ width:100%; height:98px; box-shadow:0px 0px 5px #b19273; position:relative; z-index:2;}
+.tip{ width:1180px; margin:0 auto;}
+.tip img{ margin-top:12px;}
+.zh,.dl{ display:inline-block; margin-top:66px;}
+.lg-main{ width:100%;background:#f4d0ac;}
+.zh{ color:#383838;}
+.dl{ color:#ec6517}
+.zh:hover,.dl:hover{ text-decoration:underline}
+.lg-main-con{ width:1180px; height:610px;  margin:0 auto; background:url(../../images/raise/lg.png) no-repeat left center; position:relative;}
+.login-div{ width:411px; height:344px; background:url(../../images/raise/dl.png) no-repeat; position:absolute; right:0px; top:130px;}
+.login-dl dt,.reg-dl dt{ line-height:68px; font-size:26px; color:#fff; font-weight:bold; border-bottom:1px solid #f8e3cd; margin:0px 12px 0px 3px; padding-left:20px;}
+.un,.psd, .yzm{ width:297px; height:40px; position:relative; margin-left:52px;}
+.un{ background:url(../../images/raise/un.png) no-repeat; margin-top:20px;}
+.psd{ background:url(../../images/raise/psd.png) no-repeat; margin-top:15px; margin-bottom:0;}
+.yzm .text{background:url("../../images/raise/psd.png")no-repeat;border:medium none;height:37px;padding-left:40px;width:159px;}
+.login-btn-dd{margin-top:20px;}
+.yzm a {
+  position: relative;
+  top: 7px;
+}
+.un input,.psd input{ width:254px; height:25px; position:absolute; top:7px; right:5px; border:none;}
+.lg-btn{ padding:10px 118px;background:#55acef; color:#fff; font-size:16px; margin-left:48px;border:none;cursor: pointer;}
+.lg-btn:hover{ background:#489fe2}
+.sina,.tencent{ color:#5e5e5e; display: inline-block; margin-top:30px;}
+.sina:hover,.tencent:hover{ text-decoration:underline;}
+.sina{ background:url(../../images/raise/wb.png) no-repeat 0px 0px; margin-left:70px; padding-left:20px; margin-right:20px;}
+.tencent{ background:url(../../images/raise/wb.png) no-repeat 0px -22px;padding-left:20px;}
+.lg-footer{ line-height:170px; margin:0 auto}
+.lg-footer p{ text-align:center;}
+.reg-div{width:411px; height:498px; background:url(../../images/raise/reg.png) no-repeat; position:absolute; right:0px; top:60px;}
+.reg-dl input[type=text],.reg-dl input[type=password]{ width:240px; height:40px; border:1px solid #dbbb9a; text-indent:10px;}
+.reg-dl input.code{ width:107px;}
+.reg-dl dd{ margin:10px 0px;}
+.reg-dl dd span{ font-size:16px; color:#fff; width:120px; text-align:right; display:inline-block}
+.huoqu{ padding:8px 20px; background:#55acef; border:1px solid #dbbb9a; color:#fff; margin-left:6px;}
+.reg-dl dd.xieyi{padding-left:122px; margin-top:20px; margin-bottom:25px;}
+.xieyi a{color:#01b5f0;}
+div[id*=captcha_message]{left:20px;}
+
+/**实名认证页面*/
+.permission-lg-main{
+	background: url(../../images/raise/permission-bg.jpg) no-repeat center center #4c8dcd;
+}
+.permission-lg-main-con {
+  height: 610px;
+  margin: 0 auto;
+  position: relative;
+  width: 1180px;
+}
+.reg-div-bg {
+  background-color: #fff;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+  filter: alpha(opacity = 20); 
+   -moz-opacity: 0.2; 
+   -khtml-opacity: 0.2;
+   opacity: 0.2;
+}
+.reg-dl{
+	z-index:2;
+}
+.sex-select{
+	width:60px;
+	height:40px;
+	margin-bottom:20px;
+}
+.permission-reg-div{
+	background: none;
+  	position:raletive;
+	height: 400px;
+	top: 128px;
+}

@@ -1,0 +1,120 @@
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<!-- 身份证扫描件 -->
+	<h:panelGroup id="idCardScanpanelGroup" binding="#{loanerAuthenticationUploadHome.idCardScanpanelGroup}">
+		<h:inputText id="idCardScan" value="#{idCardScanvalue}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="idCardScandialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltipidCardScan" for="idCardScan">
+			<p:graphicImage id="thumbImageidCardScan"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{idCardScanvalue}" rendered="#{not empty idCardScanvalue}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="idCardScandialog"
+		widgetVar="idCardScandialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="idCardScanpanelGroup,idCardScandialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{loanerAuthenticationUploadHome.handleidCardScanUpload}"
+			mode="advanced" oncomplete="idCardScandialog.hide()" auto="false"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/">
+	    </p:fileUpload>
+	</p:dialog>
+	<!-- 身份证  -->
+	<h:panelGroup id="idCardPhotopanelGroup" binding="#{loanerAuthenticationUploadHome.idCardPhotopanelGroup}">
+		<h:inputText id="idCardPhoto" value="#{idCardPhotovalue}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="idCardPhotodialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltipidCardPhoto" for="idCardPhoto">
+			<p:graphicImage id="thumbImageidCardPhoto"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{idCardPhotovalue}" rendered="#{not empty idCardPhotovalue}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="idCardPhotodialog"
+		widgetVar="idCardPhotodialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="idCardPhotopanelGroup,idCardPhotodialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{loanerAuthenticationUploadHome.handleidCardPhotoUpload}"
+			mode="advanced" oncomplete="idCardPhotodialog.hide()" auto="false"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/">
+	    </p:fileUpload>
+	</p:dialog>
+	
+	<!-- 银行征信报告 -->
+	<h:panelGroup id="bankCreditReportpanelGroup" binding="#{loanerAuthenticationUploadHome.bankCreditReportpanelGroup}">
+		<h:inputText id="bankCreditReport" value="#{bankCreditReportvalue}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="bankCreditReportdialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltipbankCreditReport" for="bankCreditReport">
+			<p:graphicImage id="thumbImagebankCreditReport"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{bankCreditReportvalue}" rendered="#{not empty bankCreditReportvalue}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="bankCreditReportdialog"
+		widgetVar="bankCreditReportdialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="bankCreditReportpanelGroup,bankCreditReportdialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{loanerAuthenticationUploadHome.handlebankCreditReportUpload}"
+			mode="advanced" oncomplete="bankCreditReportdialog.hide()" auto="false"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/">
+	    </p:fileUpload>
+	</p:dialog>
+	
+	<!-- 户口卡  -->
+	<h:panelGroup id="huKouScanpanelGroup" binding="#{loanerAuthenticationUploadHome.huKouScanpanelGroup}">
+		<h:inputText id="huKouScan" value="#{huKouScanvalue}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="huKouScandialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltiphuKouScan" for="huKouScan">
+			<p:graphicImage id="thumbImagehuKouScan"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{huKouScanvalue}" rendered="#{not empty huKouScanvalue}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="huKouScandialog"
+		widgetVar="huKouScandialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="huKouScanpanelGroup,huKouScandialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{loanerAuthenticationUploadHome.handlehuKouScanUpload}"
+			mode="advanced" oncomplete="huKouScandialog.hide()" auto="false"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/">
+	    </p:fileUpload>
+	</p:dialog>
+	
+	<!-- 手持户口卡照片  -->
+	<h:panelGroup id="huKouPhotopanelGroup" binding="#{loanerAuthenticationUploadHome.huKouPhotopanelGroup}">
+		<h:inputText id="huKouPhoto" value="#{huKouPhotovalue}"
+			style="#{uploadInputTextStyle}" styleClass="form-input-long"
+			onclick="huKouPhotodialog.show();"></h:inputText>
+		<p:tooltip id="thumbTooltiphuKouPhoto" for="huKouScan">
+			<p:graphicImage id="thumbImagehuKouPhoto"
+				style="max-width:400px;width:auto;-width: expression(width>400?'400px':true);height:auto;"
+				value="#{huKouPhotovalue}" rendered="#{not empty huKouPhotovalue}" />
+		</p:tooltip>
+	</h:panelGroup>
+	<p:dialog header="#{nodeMsg.uploadThumbLabel}" modal="false" id="huKouPhotodialog"
+		widgetVar="huKouPhotodialog" width="700" height="150">
+		<p:fileUpload dragDropSupport="true" update="huKouPhotopanelGroup,huKouPhotodialog"
+			invalidFileMessage="#{commonMsg.invalidFileMessage}"
+			invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+			label="#{commonMsg.choiceLabel}"
+			fileUploadListener="#{loanerAuthenticationUploadHome.handlehuKouPhotoUpload}"
+			mode="advanced" oncomplete="huKouPhotodialog.hide()" auto="false"
+			sizeLimit="500000" allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/">
+	    </p:fileUpload>
+	</p:dialog>
+	
+</f:subview>

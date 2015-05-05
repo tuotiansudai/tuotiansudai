@@ -1,0 +1,8 @@
+**/.idea/**
+**/out/**
+**/build/**/*
+**/*.iml
+**/.gradle/**
+**/.DS_Store
+**/*.crt
+**/*.key.p8

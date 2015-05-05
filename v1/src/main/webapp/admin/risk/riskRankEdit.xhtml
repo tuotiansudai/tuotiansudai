@@ -1,0 +1,65 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{riskRankHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 风险等级编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/risk/riskRankList" value="风险等级管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+					<h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+					<h:inputText value="#{riskRankHome.instance.id}"
+						readonly="#{not empty riskRankHome.id}" required="true"
+						label="#{commonMsg.IDLabel}"></h:inputText>
+
+					<h:outputLabel value="风险等级"></h:outputLabel>
+					<h:inputText id="name" required="true"
+						label="#{commonMsg.nameLabel}"
+						value="#{riskRankHome.instance.rank}">
+					</h:inputText>
+
+					<h:outputLabel value="风险系数"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText required="true" label="风险系数"
+							value="#{riskRankHome.instance.score}">
+						</h:inputText> (&#160;备注:越小，风险等级越低，越没有风险)
+                     </ui:fragment>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+					<h:inputTextarea value="#{riskRankHome.instance.description}"
+						style="width:600px;height:60px;"></h:inputTextarea>
+
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton action="#{riskRankHome.save}"
+							value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

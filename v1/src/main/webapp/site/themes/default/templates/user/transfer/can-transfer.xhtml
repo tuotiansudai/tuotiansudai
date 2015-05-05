@@ -1,0 +1,254 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<!-- 可转出的债权 -->
+	<ui:param name="activeCenterMenuUrl" value="/user/transfer/purchased"></ui:param>
+	<ui:param name="pnrpayEnable" value="#{configHome.getConfigValue('pnrpay_enable') eq '1'}"></ui:param>
+	<ui:define name="center_right">
+		<link href="#{tplVars.themeStylePath}/transfer.css" type="text/css"
+			rel="stylesheet" />
+		<script>
+		var applyDialog;
+			/** 显示申请债权转让dialog*/
+			function showApplyDialog() {
+				applyDialog = $.artDialog({
+					content : document.getElementById('applyDialog'),
+					id : 'applyDialog',
+					fixed : true,
+					lock : true,
+					padding : '0px 0px',
+					zIndex:2
+				});
+			}
+			
+		</script>
+
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+<!-- 				<ui:include src="top_include1.xhtml"></ui:include> -->
+			</div>
+			<ui:include src="top_include2.xhtml"></ui:include>
+
+			<h:form id="form">
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1"><a href="#{path}/user/transfer/purchased">已转入的债权</a></li>
+							<li class="hover" id="four2"><a
+								href="#{path}/user/transfer/can-transfer">可转出的债权</a></li>
+							<li id="four3"><a href="#{path}/user/transfer/transfering">转让中的债权</a></li>
+							<li id="four4" class="last"><a
+								href="#{path}/user/transfer/turned-out">已转出的债权</a></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">投资编号</td>
+									<td class="tab01">投资时间</td>
+									<td class="tab01">投资金额</td>
+									<td class="tab01">剩余时间</td>
+									<td class="tab01">债权价值</td>
+									<td class="tab01">待收本息</td>
+								</tr>
+
+								<f:event type="preRenderComponent"
+									listener="#{investList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{investList.addOrder('time','desc')}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{investList.setPageSize(7)}"></f:event>
+								<f:event type="preRenderComponent"
+									listener="#{investList.example.setStatus(InvestStatus.REPAYING)}"></f:event>
+								<ui:repeat var="invest" value="#{investList.lazyModelData}"
+									varStatus="status">
+									<ui:fragment
+										rendered="#{transferApplyHome.canTransfer(invest.id)}">
+										<tr class="#{status.index%2==0?'tab02':''} bg">
+											<td class="tab02 tab04 tab06" style="width: 200px;"><a
+												target="_blank" href="#{path}/loan/#{invest.loan.id}"
+												title="#{invest.loan.name}(#{invest.id})">#{stringHome.ellipsis(invest.loan.name,10)}</a><br />
+												利率： <h:outputText value="#{invest.rate}">
+													<f:convertNumber type="percent" minFractionDigits="2" />
+												</h:outputText> 期数：<h:outputText
+													value="#{invest.loan.deadline/invest.loan.type.repayTimePeriod}">
+													<f:convertNumber maxFractionDigits="0" />
+												</h:outputText></td>
+											<td class="tab02 tab06"><h:outputText
+													value="#{invest.time}">
+													<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+														timeZone="GMT+8" locale="cn" />
+												</h:outputText></td>
+											<td class="tab02"><h:outputText value="#{invest.money}">
+													<f:convertNumber />
+												</h:outputText></td>
+											<td class="tab02">#{invest.repayRoadmap.unPaidPeriod*invest.loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',invest.loan.type.repayTimeUnit)})</td>
+											<td class="tab02"><h:outputText
+										value="#{transferService.calculateWorth(invest.id, invest.money)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText></td>
+											<td class="tab02"><h:outputText
+										value="#{invest.repayRoadmap.unPaidMoney}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText></td>
+											<td class="tab02"><h:commandLink value="转让">
+													<p:ajax
+														listener="#{transferApplyHome.instance.setInvest(invest)}"
+														update=":applyTransferDialog" process="@this"
+														oncomplete="showApplyDialog()"></p:ajax>
+												</h:commandLink></td>
+										</tr>
+									</ui:fragment>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+				</h:panelGroup>
+				</h:form>
+				<div id="applyDialog" class="zqzr-dialog" style="display: none;">
+					<h:form id="applyTransferDialog">
+					<h:panelGroup rendered="#{not empty transferApplyHome.instance.invest}">
+						<!-- 					申请转让页面 -->
+						<ui:param name="invest"
+							value="#{transferApplyHome.instance.invest}"></ui:param>
+						<div class="zqzr_title">
+							<p>
+								债权转出<span>#{invest.id}</span>
+							</p>
+						</div>
+						<table width="750" border="0" cellspacing="0" cellpadding="0"
+							class="zqzrsq_tab">
+							<tr>
+								<td class="right20px" align="right">原始投资额：</td>
+								<td colspan="3"><h:outputText value="#{invest.investMoney}">
+										<f:convertNumber maxFractionDigits="0" />
+									</h:outputText>元</td>
+							</tr>
+							<tr>
+								<td class="right20px" align="right">已收利息：</td>
+								<td><h:outputText
+										value="#{invest.repayRoadmap.paidInterest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+								<td align="right" style="width: 126px;">利率：</td>
+								<td><h:outputText value="#{invest.rate}">
+										<f:convertNumber type="percent" minFractionDigits="2" />
+									</h:outputText></td>
+							</tr>
+							<!-- 汇付天下资金托管且不冻结金额时，只支持全额转让 -->
+							<ui:fragment rendered="#{pnrpayEnable and configHome.getConfigValue('freeze_money') eq '0'}">
+							<f:event type="preRenderComponent" listener="#{transferApplyHome.instance.setCorpus(invest.money)}"></f:event>
+							<tr>
+								<td class="right20px" align="right">转让投资额：</td>
+								<td><h:outputText value="#{invest.money}">
+										<f:convertNumber maxFractionDigits="0" />
+									</h:outputText>元</td>
+								<td align="right">剩余期数：</td>
+								<td><h:outputText
+										value="#{invest.repayRoadmap.unPaidPeriod}">
+										<f:convertNumber maxFractionDigits="0" />
+									</h:outputText>期</td>
+							</tr>
+							</ui:fragment>
+							<ui:fragment rendered="#{!(pnrpayEnable and configHome.getConfigValue('freeze_money') eq '0')}">
+							<tr>
+								<td class="right20px" align="right">可转让投资额：</td>
+								<td><h:outputText value="#{invest.money}">
+										<f:convertNumber maxFractionDigits="0" />
+									</h:outputText>元</td>
+								<td align="right">剩余期数：</td>
+								<td><h:outputText
+										value="#{invest.repayRoadmap.unPaidPeriod}">
+										<f:convertNumber maxFractionDigits="0" />
+									</h:outputText>期</td>
+							</tr>
+							<tr>
+								<td class="right20px" align="right">转让投资金额：</td>
+								<h:inputHidden value="#{invest.loan.minInvestMoney}"></h:inputHidden>
+								<td colspan="3"><h:inputText styleClass="zqzrsq_tab_txt" label="转让投资金额"
+										value="#{transferApplyHome.instance.corpus}">
+										<f:ajax event="blur" render="worth fee price allIncome"></f:ajax>
+										<o:validator validatorId="javax.faces.DoubleRange" 
+											minimum="#{invest.loan.minInvestMoney}" 
+											maximum="#{invest.money}"></o:validator> 
+										<o:validator 
+											validatorId="com.esoft.core.validator.NumberValidator" 
+											cardinalNumber="#{invest.loan.cardinalNumber}"></o:validator> 
+									</h:inputText></td>
+							</tr>
+							</ui:fragment>
+							<tr>
+								<td class="right20px" rowspan="2" align="right">债权价格：</td>
+								<td class="noline line-height30px"><h:outputText id="worth"
+										value="#{transferService.calculateWorth(transferApplyHome.instance.invest.id, transferApplyHome.instance.corpus)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+								<td class="noline line-height30px" align="right">待收本息：</td>
+								<td class="noline line-height30px"><h:outputText
+										value="#{invest.repayRoadmap.unPaidMoney}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+							</tr>
+							<tr>
+								<td class="line-height30px gray" colspan="3">一般为转让时的待回收本金与应计利息之和。<a
+									href="#{path}/node/spage/zhaiquanjiage"> 查看详细</a></td>
+							</tr>
+							<tr>
+								<td class="right20px" align="right">折让金：</td>
+								<td colspan="3">
+								<h:inputText styleClass="zqzrsq_tab_txt" label="折让金"
+										value="#{transferApplyHome.instance.premium}">
+										<f:ajax event="blur" render="price allIncome"></f:ajax>
+										<o:validator validatorId="javax.faces.DoubleRange" 
+											maximum="#{invest.repayRoadmap.unPaidCorpus-transferService.calculateFee(transferApplyHome.instance)}" 
+											minimum="#{-invest.repayRoadmap.unPaidInterest+invest.repayRoadmap.unPaidFee}"></o:validator> 
+										<o:validator 
+											validatorId="com.esoft.core.validator.NumberValidator" 
+											precision="0"></o:validator> 
+									</h:inputText>
+								</td>
+							</tr>
+							<tr>
+								<td class="right20px" align="right">转让总价格：</td>
+								<td><h:outputText id="price"
+										value="#{transferService.calculateWorth(transferApplyHome.instance.invest.id, transferApplyHome.instance.corpus)-transferApplyHome.instance.premium}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+								<td class="noline line-height30px" align="right">转让费用：</td>
+								<td><h:outputText id="fee"
+										value="#{transferService.calculateFee(transferApplyHome.instance)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+							</tr>
+							<tr>
+								<td class="right20px" rowspan="2" align="right">预计收入金额：</td>
+								<td class="noline line-height30px" colspan="3"><h:outputText id="allIncome"
+										value="#{transferService.calculateWorth(transferApplyHome.instance.invest.id, transferApplyHome.instance.corpus)-transferApplyHome.instance.premium-transferService.calculateFee(transferApplyHome.instance)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText>元</td>
+							</tr>
+							<tr>
+								<td class="line-height30px gray" colspan="3">由于债权价值会发生变动，最终收入金额可能发生变动。
+									<a href="#{path}/node/spage/zhaiquanjiazhi">查看详细</a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="4" class="noline"><p:commandLink value="转让" action="#{transferApplyHome.applyInvestTransfer}"
+									style="margin-left: 255px;" styleClass="txczje02_btn list_btn_03"></p:commandLink><a
+									href="javascript:void(0)" onclick="applyDialog.close();" class="txczje02_btn list_btn_03 list_btn_04">取消</a></td>
+							</tr>
+						</table>
+</h:panelGroup>
+					</h:form>
+				</div>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

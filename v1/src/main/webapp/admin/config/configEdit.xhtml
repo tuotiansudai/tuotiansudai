@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configHome.id}"></f:viewParam>
+</f:metadata>
+<f:metadata>
+	<f:viewParam name="typeId" value="#{configHome.instance.configType.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} #{configMsg.config} : #{configHome.instance.name}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{configMsg.configList}"
+						outcome="/admin/config/configList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form>
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+					<h:outputLabel value="#{commonMsg.IDLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{configHome.instance.id}"
+						label="#{commonMsg.IDLabel}" id="configId" required="true"
+						readonly="#{not empty configHome.instance.id}"></h:inputText>
+
+					<h:outputLabel value="#{configMsg.configTypeLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{configHome.instance.name}"></h:inputText>
+
+					<h:outputLabel value="#{configMsg.configValue}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{configHome.instance.value}"></h:inputText>
+
+					<h:outputLabel value="#{configMsg.configType}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{configHome.instance.configType}" converter="archer.EntityConverter">
+						<f:selectItem itemLabel="请选择"  itemValue="" noSelectionOption="true"/>
+						<f:selectItems value="#{configTypeList.allResultList}" var="type"
+							itemValue="#{type}" itemLabel="#{type.name}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputTextarea cols="80"
+						value="#{configHome.instance.description}"></h:inputTextarea>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton value="#{commonMsg.saveLabel}"
+							action="#{configHome.save}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+					</ui:fragment>
+					<p:blockUI block="panel" trigger="saveBtn" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,264 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:o="http://omnifaces.org/ui"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<f:metadata>
+		<f:viewParam name="id" value="#{raiseLoanHome.id}"></f:viewParam>
+	</f:metadata>
+	
+    <ui:define name="content">
+    <o:importConstants type="com.esoft.jdraise.constants.RaiseLoanStatus" />
+	<ui:param name="raiseLoan" value="#{raiseLoanHome.instance}"></ui:param>    
+	<f:event type="preRenderComponent" listener="#{raisePaybackHome.setRaiseLoan(raiseLoan)}"></f:event>
+	<link type="text/css" rel="stylesheet" href="#{path}/include/css/fileupload.less.css" />
+	<script type="text/javascript" src="#{path}/include/js/fileupload.less.js"></script>
+	<style>
+		.common-href {
+		  border: 1px solid #bbb;
+		  border-radius: 5px;
+		  color: black;
+		  margin-right: 10px;
+		  padding: 3px 5px;
+		  text-decoration: none !important;
+		}
+	</style>
+	<script>
+		function showDialog(xhr, status, args){
+			if(!args.validationFailed){
+				dlg1.show();
+			}
+		}
+		function hideDialog(xhr, status, args){
+			if(!args.validationFailed){
+				dlg1.hide();
+			}
+		}
+	</script>
+    <div class="entry">
+    	<p:toolbar styleClass="admin-nav-toolbar">
+			<p:toolbarGroup>
+				<h:outputLabel value="#{commonMsg.currentPositionLabel} 众筹编辑/审核"></h:outputLabel>
+			</p:toolbarGroup>
+			<p:toolbarGroup align="right">
+				<p:separator />
+				<p:button outcome="/admin/raise/raiseLoanList" value="众筹管理"></p:button>
+			</p:toolbarGroup>
+		</p:toolbar>
+        
+        <h:form id="form">
+			<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+				<h:outputText value="项目名称"></h:outputText>
+				<h:inputText value="#{raiseLoan.title}" id="title" maxlength="10"  required="true" label="项目名称"/>
+				
+				<h:outputText value="项目类型"></h:outputText>
+				<h:selectOneMenu value="#{raiseLoan.type}">
+					<f:selectItems  value="#{dictUtil.getDictByParentKey('raise_type')}" var="type" itemLabel="#{type.value}" itemValue="#{type.key}"/>
+				</h:selectOneMenu>
+				
+				<h:outputText value="项目图片"></h:outputText>
+				<ui:include src="#{tplVars.componentsPath}/onePictureUpload.xhtml">
+					<ui:param name="thumb" value="#{raiseLoan.photo}"></ui:param>
+				</ui:include>
+				
+				<h:outputText value="发起城市"></h:outputText>
+				<h:panelGroup>
+					<f:event listener="#{areaHome.initByCity(raiseLoan.area)}" type="preRenderComponent" />
+					<h:selectOneMenu  styleClass="cm-border" value="#{areaHome.selectedProvince}" converter="archer.EntityConverter">
+						<f:selectItems value="#{areaHome.allProvinces}" var="area" itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+						<f:ajax listener="#{areaHome.findAllCities}" render="jobareaSelect"></f:ajax>
+					</h:selectOneMenu>
+					<h:panelGroup id="jobareaSelect" >
+						<h:selectOneMenu  value="#{raiseLoan.area}" 
+							converter="archer.EntityConverter" styleClass="cm-border"
+							rendered="#{not empty areaHome.allCities}">
+							<f:selectItems value="#{areaHome.allCities}" var="area" itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+						</h:selectOneMenu>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:outputText value="项目视频"></h:outputText>
+				<h:inputText value="#{raiseLoan.video}" id="video" label="项目视频"/>
+				
+				<h:outputText value="筹款天数"></h:outputText>
+				<h:inputText value="#{raiseLoan.deadline}" required="true" label="筹款天数">
+					<o:validator validatorId="javax.faces.DoubleRange" minimum="10" maximum="90"></o:validator>
+               	</h:inputText>
+               	
+               	<h:outputText value="目标金额"></h:outputText>
+               	<h:inputText value="#{raiseLoan.money}" required="true" label="目标金额">
+					<o:validator validatorId="javax.faces.DoubleRange" minimum="1000" maximum="10000000000"></o:validator>
+               	</h:inputText>
+               	
+               	<h:outputText value="项目概述"></h:outputText>
+               	<h:inputTextarea value="#{raiseLoan.info}" id="info" required="true" label="项目概述"></h:inputTextarea>
+               	
+               	<h:outputText value="项目描述"></h:outputText>
+               	<ui:fragment>
+	               	<h:inputTextarea styleClass="cm-border" value="#{raiseLoan.description}" id="description"></h:inputTextarea>
+	               	<script type="text/javascript">
+						var ue = new UE.ui.Editor({});
+						ue.render('form:description');
+					</script>
+				</ui:fragment>
+				
+				<h:outputText value="回报列表"></h:outputText>
+				<p:fragment id="paybacks">
+					<h:commandLink value="增加回报" styleClass="zcol">
+            			<p:ajax listener="#{raisePaybackHome.clear()}" update=":basicDialog" oncomplete="showDialog(xhr, status, args)"></p:ajax>
+            		</h:commandLink>
+					<f:event type="preRenderComponent" listener="#{raisePaybackList.example.loan.setId(raiseLoan.id)}"></f:event>
+					<p:dataTable lazy="true" id="dataTable" value="#{raisePaybackList.lazyModel}" var="payback" 
+		                paginator="false" paginatorPosition="bottom" rows="1000" currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+		                sortBy="rp.seqNum"  emptyMessage="#{commonMsg.noResultMsg}">
+		                <p:column sortBy="rp.seqNum" width="50" >
+		                	<f:facet name="header" >
+		                		<h:outputText value="#{commonMsg.IDLabel}"></h:outputText>
+		                	</f:facet>
+		                    <h:outputText value="#{payback.seqNum}"></h:outputText>
+		                </p:column>
+		                <p:column headerText="支持金额">
+		                    <h:outputText value="#{payback.money}"></h:outputText>
+		                </p:column>
+		                <p:column headerText="名额">
+		                    <ui:fragment rendered="#{not empty payback.limit}">#{payback.limit}位</ui:fragment>
+				            <ui:fragment rendered="#{empty payback.limit}">不限</ui:fragment>
+		                </p:column>
+		                <p:column headerText="回报内容">
+		                    <h:outputText value="#{payback.title}" title="#{payback.description}"></h:outputText>
+		                </p:column>
+		                <p:column headerText="回报时间">
+		                    <h:outputText value="#{payback.payTime}"></h:outputText>
+		                </p:column>
+		                <p:column headerText="回报类型">
+		                    <h:outputText value="#{payback.logistics eq LogisticsType.type0? '其他':'实物'}"></h:outputText>
+		                </p:column>
+		                <p:column headerText="操作">
+		                    <ui:fragment rendered="#{(raiseLoan.status eq RaiseLoanStatus.WAITING_VERIFY or empty raiseLoan.status) and payback.money gt 0}">
+			            		<h:commandLink value="删除" styleClass="zcol" onclick="return confirm('确认删除？')">
+			            			<p:ajax listener="#{raisePaybackHome.delete(payback.id)}" update=":form:paybacks" ></p:ajax>
+			            		</h:commandLink>
+			            		<label class="zcol">/</label>
+			            		<h:commandLink value="编辑" styleClass="zcol">
+			            			<p:ajax listener="#{raisePaybackHome.clearAndsetId(payback.id)}" update=":basicDialog" oncomplete="showDialog(xhr, status, args)"></p:ajax>
+			            		</h:commandLink>
+		            		</ui:fragment>
+		                </p:column>
+		            </p:dataTable>
+				</p:fragment>
+				<h:outputText value="审核信息"></h:outputText>
+				<h:panelGroup>
+				<h:inputText value="#{raiseLoanHome.instance.verifyMessage}" style="min-width:700px;"></h:inputText>
+				当审核不通过时，可为发起人提供失败信息
+				</h:panelGroup>
+				
+				<h:outputText value="操作"></h:outputText>
+				<h:panelGroup>
+					<h:commandLink value="保存" styleClass="common-href">
+						<f:ajax execute="@form" listener="#{raiseLoanHome.save}"></f:ajax>
+					</h:commandLink>
+					<h:commandLink value="保存并预览" target="_blank" action="#{raiseLoanHome.save}" styleClass="common-href">
+						<f:setPropertyActionListener value="pretty:raiseLoanDetail" target="#{raiseLoanHome.saveView}" />
+					</h:commandLink>
+					<h:commandLink value="审核通过" action="#{raiseLoanHome.verify(RaiseLoanStatus.RAISING)}" styleClass="common-href" onclick="return confirm('确定审核通过？')">
+					</h:commandLink>
+					<h:commandLink value="审核不通过" action="#{raiseLoanHome.verify(RaiseLoanStatus.VERIFY_FAIL)}" styleClass="common-href" onclick="return confirm('确定审核不通过？')">
+					</h:commandLink>
+				</h:panelGroup>
+			</h:panelGrid>
+        </h:form>
+      </div>
+     <p:dialog id="basicDialog" header="增加/编辑回报" widgetVar="dlg1">
+     	<h:form id="paybackForm">
+	    <h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+	    	<h:outputText value="金额"></h:outputText>
+	    	<h:inputText value="#{raisePaybackHome.instance.money}" required="true" label="金额">
+				<o:validator validatorId="javax.faces.DoubleRange" minimum="1"></o:validator>
+            </h:inputText>
+            
+	    	<h:outputText value="回报名称"></h:outputText>
+	    	<h:inputText value="#{raisePaybackHome.instance.title}" id="title" maxlength="10"  required="true" label="回报名称"/>
+	    	
+	    	<h:outputText value="项目概述"></h:outputText>
+	    	 <h:inputTextarea value="#{raisePaybackHome.instance.description}" id="info" required="true" label="项目概述"></h:inputTextarea>
+	    	 
+	    	<h:outputText value="回报数量"></h:outputText>
+	    	<h:panelGroup>
+	    		<h:selectOneRadio value="#{raisePaybackHome.paybackLimit}">
+               		<f:selectItem itemLabel="不限" itemValue="-1"/>
+               		<f:selectItem itemLabel="限制" itemValue="0"/>
+               		<f:ajax execute="@this" render="limit"></f:ajax>
+               	</h:selectOneRadio>
+               	<h:panelGroup id="limit">
+                	<h:inputText value="#{raisePaybackHome.instance.limit}" styleClass="fo-inp input-p-sum cm-border" required="true" label="金额"
+                		rendered="#{raisePaybackHome.paybackLimit==0}" >
+						<f:validateLongRange minimum="1"></f:validateLongRange>
+                	</h:inputText>
+               	</h:panelGroup>
+	    	</h:panelGroup>
+	    	
+	    	<h:outputText value="个人限购"></h:outputText>
+	    	<h:panelGroup>
+	    		<h:selectOneRadio value="#{raisePaybackHome.perPersonLimit}">
+               		<f:selectItem itemLabel="不限" itemValue="-1"/>
+               		<f:selectItem itemLabel="限制" itemValue="0"/>
+               		<f:ajax execute="@this" render="perUserLimit"></f:ajax>
+               	</h:selectOneRadio>
+               	<h:panelGroup id="perUserLimit">
+                	<h:inputText value="#{raisePaybackHome.instance.perUserLimit}" styleClass="fo-inp input-p-sum cm-border" required="true" label="金额"
+                		rendered="#{raisePaybackHome.perPersonLimit==0}" >
+						<f:validateLongRange minimum="1"></f:validateLongRange>
+                	</h:inputText>
+               	</h:panelGroup>
+	    	</h:panelGroup>
+	    	
+	    	<h:outputText value="回报图片"></h:outputText>
+	    	<h:panelGroup>
+	    		<p:graphicImage id="idCardPhotoImage" value="#{raisePaybackHome.instance.photo}" rendered="#{not empty raisePaybackHome.instance.photo}" style="width:150px;height:105px;float: left;" title="身份证正面图"/>
+				<p:fileUpload dragDropSupport="true" update="idCardPhotoImage" id="upload" styleClass="upload-btn"
+					invalidFileMessage="#{commonMsg.invalidFileMessage}" required="true"
+					invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+					label="上传" fileLimit="1"
+					fileUploadListener="#{raisePaybackHome.uploadPhoto}" mode="advanced"
+					auto="true" sizeLimit="500000"
+					allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/" />
+	    	</h:panelGroup>
+
+			<h:outputText value="物流方式"></h:outputText>
+			 <h:selectOneRadio value="#{raisePaybackHome.instance.logistics}" required="true" label="物流方式">
+              	<f:selectItems value="#{dictUtil.getDictByParentKey('logistics')}" var="dict" itemLabel="#{dict.value}" itemValue="#{dict.key}"/>
+              </h:selectOneRadio>
+              
+              <h:outputText value="回报时间"></h:outputText>
+              <h:panelGroup>
+              	<label>项目预计成功后</label>&#160;&#160;
+	                 <h:inputText value="#{raisePaybackHome.instance.payTime}" required="true" label="回报时间">
+						<f:validateLongRange minimum="1"></f:validateLongRange>
+                	</h:inputText>
+                   &#160;&#160;<label>天后发放回报</label>
+              </h:panelGroup>
+              
+              <h:outputText value="排序号"></h:outputText>
+               <h:inputText value="#{raisePaybackHome.instance.seqNum}" required="true" label="排序号">
+					<f:validateLongRange minimum="0"></f:validateLongRange>
+              	</h:inputText>
+              	
+              	<h:outputText value="操作"></h:outputText>
+              	<h:panelGroup>
+              		<h:commandButton value="保存" styleClass="save-btn mar300 font18 add-b-h">
+						<p:ajax listener="#{raisePaybackHome.save}" process="@form" update=":form:paybacks" oncomplete="hideDialog(xhr, status, args)"></p:ajax>
+					</h:commandButton>
+	            	<input type="button" onclick="dlg1.hide()" value="取消"></input>
+              	</h:panelGroup>
+	    </h:panelGrid>
+	    </h:form>
+	  </p:dialog>
+    </ui:define>
+</ui:composition>

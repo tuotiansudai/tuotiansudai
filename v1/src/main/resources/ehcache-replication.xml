@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<cacheManagerPeerProviderFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+		properties="
+    socketTimeoutMillis=2000,
+    peerDiscovery=manual,
+    rmiUrls=//192.168.0.202:9000/org.hibernate.cache.UpdateTimestampsCache|
+    //192.168.0.202:9000/org.hibernate.cache.StandardQueryCache|
+    //192.168.0.202:9000/entityCache|
+    //192.168.0.202:9000/default_cache|
+    //192.168.0.202:9000/SimplePageCachingFilter" />
+	<cacheManagerPeerListenerFactory
+		class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+		properties="hostName=localhost, port=10000,
+socketTimeoutMillis=2000" />
+
+<!-- 如果用的话，需要把所有不被缓存的实体缓存了，不然跟这个实体相关的query，会有问题。因为不在同一个池子里。 -->
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache maxElementsInMemory="10000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="1800" timeToLiveSeconds="1800"
+		diskPersistent="false" diskExpiryThreadIntervalSeconds="120">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</defaultCache>
+
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		maxElementsInMemory="5000" eternal="true" timeToIdleSeconds="0"
+		timeToLiveSeconds="0" overflowToDisk="false">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</cache>
+
+	<cache name="org.hibernate.cache.StandardQueryCache"
+		maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="18000"
+		timeToLiveSeconds="0" overflowToDisk="true">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</cache>
+
+	<cache name="entityCache" maxElementsInMemory="10000" eternal="true"
+		timeToIdleSeconds="0" timeToLiveSeconds="0" overflowToDisk="false">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</cache>
+
+	<cache name="default_cache" maxElementsInMemory="5" eternal="false"
+		timeToIdleSeconds="1000" diskPersistent="false" timeToLiveSeconds="2880"
+		overflowToDisk="true">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</cache>
+	
+	<cache name="SimplePageCachingFilter" maxElementsInMemory="10000"
+		eternal="false" overflowToDisk="false" timeToIdleSeconds="300"
+		timeToLiveSeconds="600" memoryStoreEvictionPolicy="FIFO">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateAsynchronously=true, 
+	replicatePuts=true, 
+	replicateUpdates=true,
+        replicateUpdatesViaCopy=false, 
+	replicateRemovals=true " />
+	<bootstrapCacheLoaderFactory 
+                class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>  
+	</cache>
+</ehcache>

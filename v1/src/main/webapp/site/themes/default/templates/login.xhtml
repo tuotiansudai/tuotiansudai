@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<f:view>
+    
+    <h:head>
+    
+    </h:head>    
+    <h:body>
+        <p:growl widgetVar="growl" autoUpdate="true" showDetail="true" showSummary="false" severity="info,error"></p:growl>
+        <ui:include src="/site/components/login.xhtml"></ui:include>
+    </h:body>    
+
+</f:view>
+</html>

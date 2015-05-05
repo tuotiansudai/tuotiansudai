@@ -1,0 +1,47 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/managemyInfo"></ui:param>
+	<ui:define name="center_right">
+
+		<f:event type="preRenderView"
+			listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+		<div class="layout_r_down">
+			<div class="tit_bg aq">认证信息设置</div>
+			<div class="anquan">
+				<p class="aq-0 aq-1">
+					<em> <ui:fragment
+							rendered="#{empty userHome.instance.realname}">
+							<a href="#{path}/user/get_investor_permission">去认证</a>
+						</ui:fragment>
+					</em><span class="nc">实名认证</span>
+					<h:outputText value="未认证"
+						rendered="#{empty userHome.instance.realname}"></h:outputText>
+					<h:outputText value="已认证"
+						rendered="#{not empty userHome.instance.realname}"></h:outputText>
+				</p>
+				<p class="aq-0 aq-2">
+					<em><a href="#{path}/user/loanerPersonInfo">修改</a> </em><span
+						class="nc">借款人一般信息</span> <span>#{borrowerInfoHome.instance.borrowerPersonalInfo.verified}</span>
+				</p>
+				<p class="aq-0 aq-3">
+					<em><a href="#{path}/user/loanerAdditionInfo">修改</a> </em><span
+						class="nc">工作财务信息</span> <span>#{borrowerInfoHome.instance.borrowerAdditionalInfo.verified}</span>
+				</p>
+				<p class="aq-0 aq-4">
+					<em><a href="#{path}/user/loanerAuthentication">修改</a> </em><span
+						class="nc">上传资料认证</span> <span>#{borrowerInfoHome.instance.borrowerAuthentication.verified}</span>
+				</p>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

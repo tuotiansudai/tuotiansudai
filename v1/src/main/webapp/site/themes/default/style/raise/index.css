@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+
+/**banner**/
+.slideBox{ width:100%; height:573px; overflow:hidden; position:relative;}
+.slideBox .hd{ overflow:hidden; position:absolute; left:50%; bottom:0px; z-index:1; }
+.slideBox .hd ul{ overflow:hidden; zoom:1;}
+.slideBox .hd ul li{ float:left; margin-right:5px; width:23px; height:25px;margin-top:25px; transition:.5s ease-in-out 0s;background:#fff; font-size:0px; cursor:pointer; }
+.slideBox .hd ul li.on{ background:#55acef; height:50px; margin-top:0px; transition:.5s ease-in 0s;}
+.slideBox .bd{ position:relative; width:1920px; height:100%; z-index:0; left:50%; margin-left:-960px;}
+.slideBox .bd li{ zoom:1; vertical-align:middle; }
+.slideBox .bd img{ width:1920px; height:573px; display:block;  }
+/**fixed navigation**/
+.sc-tip{width:100%; height:88px; background:#fff; border-bottom:1px solid #d8d8d8; box-shadow:0px 0px 3px #d8d8d8;}
+.sc-t-con{ width:1180px; margin:0 auto;}
+.sc-t-con ul li{ float:left; line-height:88px;}
+.sc-t-con ul li a{ font-size:14px;padding:15px 25px 32px;}
+.sc-t-con ul li a:hover{ color:#55acef !important; border-bottom:3px solid #55acef;}
+.sc-t-con ul li a.sc-t-con-hover-font{color:#55acef !important;border-bottom:3px solid #55acef;}
+/**pro-list**/
+.wrapper-pro,.wrapper-true-pro{ min-height:500px; background:#e9e9e9; overflow:hidden; padding-bottom:40px;}
+.pro-title{ width:1180px; height:45px; margin:0px auto 24px; padding-top:32px; border-bottom:2px solid #000;}
+.title-font{ width:364px; height:30px; background:url(../../images/raise/d-font.png) no-repeat;}
+.ck-more{ width:72px; height:20px; background:url(../../images/raise/m-font.png) no-repeat; margin-top:10px;}
+.wrapper-pro ul{ width:1180px; margin:0 auto;margin-bottom:30px;}
+.list-ul li{ float:left; width:222px; height:284px; border:1px solid #d7d7d7; background:#fff; margin-right:15px;margin-bottom:10px;cursor:pointer;}
+.p-pic{ position:relative;}
+.p-pic img{ width:222px; height:155px;} 
+.ckz-bg{ position:absolute; bottom:0px; width:222px; height:28px; text-align:center; line-height:28px; color:#fff; font-size:14px; background:url(../../images/raise/tip-bg.png)}
+.p-disc{font-size:14px; color:#323232; padding:12px 10px; line-height:24px;min-height:48px;}
+.progress-bar{display:block; width:222px; height:3px; background:#e1e1e1;}
+.progress-bar b{display:block;height:3px; background:#55acef;}
+.p-num-01 span,.p-num-02 span{ display:inline-block; text-align:center;}
+.p-num-01 span{ font-size:12px;padding-bottom: 4px;padding-top: 8px;}
+.p-num-02 span{ font-size:13px; color:#9e9e9e;}
+.p-num-01 span.num01,.p-num-01 span.num03,.p-num-02 span.num01,.p-num-02 span.num03{ width:30%;}
+.p-num-01 span.num02,.p-num-02 span.num02{ width:36%;}
+/**pic-bg**/
+.pic-bg{ height:366px; width:100%; background:#0f52b2 url(../../images/raise/zc-bg.png) no-repeat center center;}
+/*truelist*/
+.wrapper-true-pro{min-height:300px;}
+.title-font02{width:410px; height:35px; background:url(../../images/raise/d-font-2.png) no-repeat;}
+.true-list{ width:1180px; margin:0 auto;}
+.true-list li{ width:284px; height:340px; border:1px solid #d7d7d7; background:#fff; position:relative;}
+.t-pic{ position:relative;}
+.t-pic img{ width:282px; height:184px; margin:1px;}
+.opac-bg{ position:absolute; bottom:0px; width:282px; margin:1px; height:78px; background:url(../../images/raise/tip-bg.png);}
+.opac-bg span{ display:block; color:#fff; padding:10px 15px;min-height:34px;}
+.t-ck-more{ color:#fa7f23; display:block; text-align:center;}
+.true-list li{ float:left; margin-right:12px;}
+.true-list li p{ padding-left:20px; padding-top:18px;}
+.true-list li p span{ font-size:13px; color:#9e9e9e; display: inline-block; width:48%;}
+.true-list li p label{ color:#fa7f23}
+.t-list-bt{ width:282px; background:url(../../images/raise/t-list-bt.png) repeat; height:60px; position:absolute; bottom:0px;}
+.t-list-bt dl{margin-top:12px;}
+.t-list-bt dl dt{ float:left;}
+.t-list-bt dl dt img{ width:36px; height:36px; border-radius:50%; margin-left:10px;}
+.t-list-bt dl dd a{color:#999; }
+.t-list-bt dl dd a:hover{color:#fa7f23}
+.t-list-bt dl dd{ color:#999; font-size:14px; margin-left:60px;}
+/**info***/
+.info{ width:1180px; height:180px; background:url(../../images/raise/num-layer.png) no-repeat; margin:0 auto; margin-top:40px; margin-bottom:30px;}
+.info-num01,.info-num02,.info-num03{ width:216px; padding-top:65px;}
+.info-num01 p,.info-num02 p,.info-num03 p{ text-align:center;}
+.info-num02{ margin-left:262px;}
+.info-num01-font{font-size:26px; font-weight:bold; margin-bottom:12px;}

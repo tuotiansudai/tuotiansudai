@@ -1,0 +1,155 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/myCashFlow"></ui:param>
+	<ui:define name="center_right">
+		<script>
+			//给超链接添加选中样式
+			function setCheckedLinkStyle(obj) {
+				$("div[class='rq leixing'] a").each(function() {
+					if ($(this).hasClass("hover")) {
+						$(this).removeClass("hover");
+					}
+				});
+				$(obj).addClass("hover");
+			}
+		</script>
+		<div class="layout_r_down">
+			<div class="tit_bg aq">等级历史</div>
+			<div class="zhaiquan">
+				<h:form id="form">
+					<div class="jiaoyi">
+						<div class="rq">
+							<span>起止日期</span>
+							<h:inputText value="#{userBillList.startTime}" label="起止日期"
+								styleClass="rq-text datepicker" id="startDate">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+									locale="zh_CN" />
+							</h:inputText>
+							<p:watermark value="开始日期" for="startDate"></p:watermark>
+							<em>-</em>
+							<h:inputText value="#{userBillList.endTime}" label="结束日期"
+								styleClass="rq-text datepicker" id="endDate">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+									locale="zh_CN" />
+							</h:inputText>
+							<p:watermark value="结束日期" for="endDate"></p:watermark>
+							<p>
+								<h:commandLink styleClass="hover" value="查询">
+									<p:ajax process="startDate endDate" update="dataTable"></p:ajax>
+								</h:commandLink>
+							<div id="loading"
+								style="display:inline;margin-left:20px;float:left;"></div>
+							</p>
+						</div>
+						<div class="rq leixing">
+							<p>交易类型</p>
+							<p>
+								<h:commandLink title="全部" value="全部"
+									onclick="setCheckedLinkStyle(this);" styleClass="hover">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('')}"></p:ajax>
+								</h:commandLink>
+							</p>
+							<p>
+								<h:commandLink value="转入到余额"
+									onclick="setCheckedLinkStyle(this);">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('ti_balance')}"></p:ajax>
+								</h:commandLink>
+							</p>
+							<p>
+								<h:commandLink title="从余额转出" value="从余额转出"
+									onclick="setCheckedLinkStyle(this);">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('to_balance')}"></p:ajax>
+								</h:commandLink>
+							</p>
+							<p>
+								<h:commandLink title="从冻结金额中转出" value="从冻结金额中转出"
+									onclick="setCheckedLinkStyle(this);">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('to_frozen')}"></p:ajax>
+								</h:commandLink>
+							</p>
+							<p>
+								<h:commandLink title="冻结" value="冻结"
+									onclick="setCheckedLinkStyle(this);">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('freeze')}"></p:ajax>
+								</h:commandLink>
+							</p>
+							<p>
+								<h:commandLink title="解冻" value="解冻"
+									onclick="setCheckedLinkStyle(this);">
+									<p:ajax update="dataTable"
+										listener="#{userBillList.example.setType('unfreeze')}"></p:ajax>
+								</h:commandLink>
+							</p>
+						</div>
+
+					</div>
+					<h:panelGroup id="dataTable">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0"
+							class="sz">
+							<tr class="sz-01">
+								<td width="100" align="center">交易时间</td>
+								<td width="81" align="center">交易类型</td>
+								<td width="88" align="center">交易金额</td>
+								<td width="91" align="center">交易明细</td>
+							</tr>
+							<f:event type="preRenderComponent"
+								listener="#{userBillList.setPageSize(10)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{userBillList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+							<ui:repeat var="ib" value="#{userBillList.lazyModelData}">
+								<tr class="sz-02">
+									<td align="center"><h:outputText value="#{ib.time}"
+											label="结束日期">
+											<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+												timeZone="GMT+8" locale="zh_CN" />
+										</h:outputText></td>
+									<td align="center"><ui:fragment
+											rendered="#{ib.type=='ti_balance'}">转入到余额</ui:fragment> <ui:fragment
+											rendered="#{ib.type=='to_balance'}">从余额转出</ui:fragment> <ui:fragment
+											rendered="#{ib.type=='freeze'}">冻结</ui:fragment> <ui:fragment
+											rendered="#{ib.type=='unfreeze'}">解冻</ui:fragment> <ui:fragment
+											rendered="#{ib.type=='to_frozen'}">从冻结金额中转出</ui:fragment></td>
+									<td align="center"><h:outputText
+											value="#{empty ib.money ? '' : ib.money}">
+											<f:convertNumber minIntegerDigits="1" currencySymbol="￥"
+												type="currency" minFractionDigits="2" />
+										</h:outputText></td>
+									<td align="center"><h:outputText value="#{ib.typeInfo}"></h:outputText>
+									</td>
+								</tr>
+							</ui:repeat>
+							<ui:fragment rendered="#{empty userBillList.lazyModelData}">
+								<tr class="sz-03">
+									<td align="center"></td>
+									<td align="center"></td>
+									<td align="center">没有记录</td>
+									<td align="center"></td>
+								</tr>
+							</ui:fragment>
+						</table>
+						<ui:fragment rendered="#{userBillList.lazyModelData.size() gt 0}">
+							<div class="fy">
+								<ui:include
+									src="#{tplVars.componentsPath}/userBillListPaging.xhtml"></ui:include>
+							</div>
+						</ui:fragment>
+					</h:panelGroup>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+
+</ui:composition>

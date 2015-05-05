@@ -1,0 +1,101 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+
+	<ui:param name="activeCenterMenuUrl"
+		value="/user/apply_invest_transfer_list"></ui:param>
+	<ui:define name="center_right">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/account.css" />
+		<div class="layout_r_down">
+			<div class="tit_bg aq">债权管理</div>
+			<div class="jiekuan">
+				<h:form id="form">
+					<div class="jiaoyi">
+						<ui:include src="myCreditorSuccessTime.xhtml"></ui:include>
+					</div>
+					<div class="jiekuan02">
+						<div class="menu">
+							<ul>
+								<li><a href="#{path}/user/apply_invest_transfer_list">可转让的债权</a></li>
+								<li><a href="#{path}/user/apply_transfer_creditor">转让中的债权</a></li>
+								<li><a class="tabactive tab_a"
+									href="#{path}/user/apply_transferred_creditor">已转让的债权</a></li>
+								<li><a href="#{path}/user/apply_purchased_creditor">已购买的债权</a></li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+						<!--Start Tabcontent 1 -->
+						<h:panelGroup id="dataTable">
+							<div class="con02">
+								<div class="tabcontent1">
+									<!--已转让的债权-->
+									<table width="100%" border="0" cellspacing="0" cellpadding="0"
+										class="jk">
+										<tr class="jk-1">
+											<td>项目名称</td>
+											<td>投资金额</td>
+											<td>年利率</td>
+											<td>转让价格</td>
+											<td>转让时间</td>
+											<td>购买人</td>
+										</tr>
+										<f:event type="preRenderComponent"
+											listener="#{investTransferList.example.invest.user.setId(loginUserInfo.loginUserId)}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{investTransferList.addOrder('applyTime','desc')}"></f:event>
+										<f:event type="preRenderComponent"
+											listener="#{investTransferList.setPageSize(7)}"></f:event>
+										<ui:param name="restriction"
+											value="#{'(status=\''}#{InvestTransferStatus.TRANSFED}#{'\')'}"></ui:param>
+										<f:event type="preRenderComponent"
+											listener="#{investTransferList.addRestriction(restriction)}"></f:event>
+										<ui:repeat var="tf"
+											value="#{investTransferList.lazyModelData}">
+											<tr class="jk-2">
+												<td><a href="#{path}/loan/#{tf.invest.loan.id}">#{tf.invest.loan.name}</a></td>
+												<td><h:outputText value="#{tf.invest.money}">
+														<f:convertNumber type="currency" currencySymbol="￥"
+															minFractionDigits="2" />
+													</h:outputText>元</td>
+												<td><h:outputText value="#{tf.invest.loan.ratePercent}">
+														<f:convertNumber minFractionDigits="2" />
+													</h:outputText>%</td>
+												<td><h:outputText value="#{tf.transferMoney}">
+														<f:convertNumber type="currency" currencySymbol="￥"
+															minFractionDigits="2" />
+													</h:outputText>元</td>
+												<td><h:outputText value="#{tf.time}">
+														<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+															locale="cn" timeZone="GMT+8" />
+													</h:outputText></td>
+												<td>#{tf.user.username}</td>
+											</tr>
+										</ui:repeat>
+									</table>
+									<ui:fragment
+										rendered="#{investTransferList.lazyModelData.size() gt 0}">
+										<div class="fy">
+											<ui:include
+												src="#{tplVars.componentsPath}/userCenterTransferPaging.xhtml"></ui:include>
+										</div>
+									</ui:fragment>
+								</div>
+							</div>
+							<!--已转让的债权-->
+						</h:panelGroup>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

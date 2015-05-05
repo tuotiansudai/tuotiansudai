@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+.ui-fileupload.ui-widget {
+	width: 28px;
+	height: 18px;
+	margin-left: 44px;
+	float: left;
+}
+
+.ui-fileupload .ui-fileupload-buttonbar span {
+	display: inline;
+	width: 28px;
+	height: 18px;
+	padding: 0;
+}
+
+span.clear-upload-photos {
+	color: grey;
+}
+
+.ui-fileupload .ui-fileupload-buttonbar .ui-button-text {
+	color: #2dbff1;
+	font-family: "微软雅黑";
+	font-size: 14px;
+}
+
+.ui-fileupload .ui-fileupload-buttonbar .ui-icon-plusthick {
+	display: none;
+}
+
+.ui-fileupload-buttonbar .ui-fileupload-choose input {
+	left: 0;
+	right: 0;
+	width: 28px;
+	height: 18px;
+}
+
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+	{
+	background: none;
+	border: none;
+	box-shadow: none;
+}
+
+.clear-upload-photos {
+	margin-right: 22px;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+	width: 28px;
+	height: 18px;
+}

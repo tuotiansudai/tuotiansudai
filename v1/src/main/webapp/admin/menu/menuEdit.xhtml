@@ -1,0 +1,280 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{menuHome.id}"></f:viewParam>
+	</f:metadata>
+	<f:metadata>
+		<f:viewParam name="typeId" value="#{menuHome.instance.menuType.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<script>
+		 //<![CDATA[
+		            var path = '#{path}';
+			$(function() {
+				$("#form\\:dataTable1").hide();
+				init();
+			});
+			
+			function init(){
+				var termEditBtn = $("#termEditBtn");
+				var termNodeManagementBtn = $("#termNodeManagementBtn");
+				var termNodeAddBtn = $("#termNodeAddBtn");
+				var nodeEditBtn = $("#nodeEditBtn");
+				
+				termEditBtn.removeAttr('href');
+				termNodeManagementBtn.removeAttr('href');
+				termNodeAddBtn.removeAttr('href');
+				nodeEditBtn.removeAttr('href');
+				
+				var url = $("#form\\:url").val();
+				var urlS = url.split('/');
+				if (urlS.length == 4 && url.indexOf('/node/') === 0) {
+					nodeEditBtn.attr('href',path+'/admin/node/nodeEdit.htm?id='+urlS[3]);
+				} else if (urlS.length == 3 && url.indexOf('/term/') === 0) {
+					termEditBtn.attr('href',path+'/admin/term/categoryTermEdit.htm?id='+urlS[2]);
+					termNodeManagementBtn.attr('href',path+'/admin/node/nodeList.htm?termId='+urlS[2]);
+					termNodeAddBtn.attr('href',path+'/admin/node/nodeEdit.htm?termId='+urlS[2]);
+				}
+			}
+			
+			function selectNode(termId, nodeId) {
+				$('#form\\:url').val('/node/' + termId + '/' + nodeId);
+				init();
+				nodeSelectDialog.hide();
+			}
+			function selectTerm(termId) {
+				$('#form\\:url').val('/term/' + termId);
+				init();
+				termSelectDialog.hide();
+			}
+			
+			function checkTermSelection(){
+				if(!$('#form\\:selectedTerm').val()){
+					alert("请先选择分类！");
+					return false;
+				}
+				return true;
+			}
+			 //]]> 
+		</script>
+
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} #{menuMsg.editMenuLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{menuMsg.menuManageLabel}"
+						outcome="/admin/menu/menuList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:inputHidden value="#{menuHome.id}"></h:inputHidden>
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+					<h:outputLabel value="#{commonMsg.IDLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{menuHome.instance.id}"
+						readonly="#{not empty menuHome.instance.id}"
+						label="#{commonMsg.IDLabel}" id="menuId" required="true"
+						requiredMessage="#{commonMsg.IdRequired}"></h:inputText>
+
+					<h:outputLabel value="#{menuMsg.nameLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{menuHome.instance.label}" required="true"
+						label="#{menuMsg.nameLabel}"
+						requiredMessage="#{commonMsg.NameRequired}"></h:inputText>
+
+					<h:outputLabel value="#{menuMsg.urlLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText size="60" id="url" value="#{menuHome.instance.url}" onkeyup="init()"
+							styleClass="form-input-long"></h:inputText>
+							<p:separator style="background:none;border:none;"></p:separator>
+						[分类：<a href="###" id="termSelectBtn" onclick="termSelectDialog.show();">选择</a>
+						 |  <a id="termEditBtn" target="_blank">编辑</a>
+						 |  <a id="termAddBtn" href="#{path}/admin/term/categoryTermEdit.htm" target="_blank">新增</a>
+						 |  <a id="termNodeManagementBtn" target="_blank">管理文章</a>
+						 |  <a id="termNodeAddBtn" target="_blank">添加文章</a>
+						 ]
+						[文章：<a href="###" id="nodeSelectBtn" onclick="nodeSelectDialog.show();">选择</a>
+						 |  <a id="nodeEditBtn" target="_blank">编辑</a>
+						 |  <a id="nodeAddBtn" href="#{path}/admin/node/nodeEdit.htm" target="_blank">新增</a>
+						 ]
+					</ui:fragment>
+					
+					<p:dialog widgetVar="termSelectDialog" header="分类选择" modal="true">
+					<p:dataTable lazy="true" id="dataTable"
+						value="#{categoryTermList.lazyModel}" var="term" paginator="true"
+						paginatorPosition="bottom" rows="15"
+						emptyMessage="#{commonMsg.noResultMsg}"
+						currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+						paginatorTemplate="#{commonMsg.paginatorTemplate}">
+						<p:column headerText="#{commonMsg.IDLabel }" sortBy="id">
+							<h:outputText value="#{term.id}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{commonMsg.nameLabel }" sortBy="name">
+							<h:outputText value="#{term.name}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{termMsg.categoryTermTypeLabel }"
+							sortBy="categoryTermType.name">
+							<h:outputText value="#{term.categoryTermType.name}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{commonMsg.descriptionLabel}">
+							<h:outputText value="#{term.description}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{commonMsg.actionLabel}">
+							<input type="button" value="选择"
+								onclick="selectTerm('#{term.id}')" />
+						</p:column>
+					</p:dataTable>
+				</p:dialog>
+
+				<p:dialog widgetVar="nodeSelectDialog" header="文章选择" modal="true">
+					<p:panel id="filters">
+						<h:inputText id="searchId" value="#{nodeList.example.id}"></h:inputText>
+						<h:inputText id="searchTitle" value="#{nodeList.example.title}"></h:inputText>
+						<h:selectOneMenu id="selectedTerm" value="#{nodeList.example.categoryTerms[0].id}">
+							<f:selectItem itemValue=""
+								itemLabel=" -- #{termMsg.chooseCategoryTerm} -- " />
+							<f:selectItems value="#{categoryTermList.allResultList}"
+								var="term" itemLabel="#{term.name}" itemValue="#{term.id}" />
+						</h:selectOneMenu>
+						<p:commandButton update="dataTable1" process="filters" onstart="return checkTermSelection()"
+							value="#{commonMsg.searchLabel}"></p:commandButton>
+					</p:panel>
+					<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+					<p:watermark for="searchTitle" value="#{nodeMsg.titleLabel}"></p:watermark>
+
+					<p:spacer></p:spacer>
+
+					<p:dataTable id="dataTable1" value="#{nodeList.lazyModel}"
+						var="node" lazy="true" paginator="true" paginatorPosition="bottom"
+						rows="15"
+						currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+						paginatorTemplate="#{commonMsg.paginatorTemplate}"
+						emptyMessage="#{commonMsg.noResultMsg}">
+
+						<p:column headerText="#{commonMsg.IDLabel }" sortBy="node.id">
+							<h:outputText value="#{node.id}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{nodeMsg.titleLabel}" sortBy="node.title">
+							<h:outputText value="#{node.title}"></h:outputText>
+						</p:column>
+
+						<p:column headerText="#{commonMsg.descriptionLabel}">
+							<h:outputText value="#{fn:substring(node.description,0,15)}..."
+								title="#{node.description}"></h:outputText>
+						</p:column>
+						<p:column headerText="#{commonMsg.actionLabel}">
+							<input type="button" value="选择"
+								onclick="selectNode('#{nodeList.example.categoryTerms[0].id}', '#{node.id}')" />
+
+						</p:column>
+					</p:dataTable>
+				</p:dialog>
+
+					<h:outputLabel value="#{menuMsg.openPattern}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{menuHome.instance.target}">
+						<f:selectItem itemValue="_self" itemLabel="#{menuMsg.self}" />
+						<f:selectItem itemValue="_blank" itemLabel="#{menuMsg.blank}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputTextarea cols="80" value="#{menuHome.instance.description}"></h:inputTextarea>
+
+					<h:outputLabel value="#{commonMsg.enableLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{menuHome.instance.enable}">
+						<f:selectItem itemValue="1"
+							itemLabel="#{commonMsg.enableSelectLabel}" />
+						<f:selectItem itemValue="0"
+							itemLabel="#{commonMsg.disableSelectLabel}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{menuMsg.iconLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<ui:include src="/site/components/onePictureUpload.xhtml">
+						<ui:param name="thumb" value="#{menuHome.instance.icon}"></ui:param>
+					</ui:include>
+
+					<h:outputLabel value="#{menuMsg.expandedLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{menuHome.instance.expanded}">
+						<f:selectItem itemValue="1"
+							itemLabel="#{commonMsg.enableSelectLabel}" />
+						<f:selectItem itemValue="0"
+							itemLabel="#{commonMsg.disableSelectLabel}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{languageMsg.chooseLanguage}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{menuHome.instance.language}">
+						<f:selectItem itemValue="*" itemLabel="#{languageMsg.allLanguage}" />
+						<f:selectItems value="#{languageList.languages}" var="language"
+							itemValue="#{language.id}" itemLabel="#{language.country}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{menuMsg.menuTypeLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{menuHome.instance.menuType.id}"
+						required="true" requiredMessage="#{menuMsg.menuTypeRequired}">
+						<f:selectItems value="#{menuTypeList.allResultList}" var="type"
+							itemValue="#{type.id}" itemLabel="#{type.name}" />
+						<p:ajax update="menuTree" listener="#{menuList.handleMenuChange}"></p:ajax>
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{menuMsg.parentLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu id="menuTree"
+						value="#{menuHome.instance.parent.id}"
+						label="#{menuMsg.parentLabel}">
+						<f:selectItem itemValue="" itemLabel="#{menuMsg.hasNot}" />
+						<f:selectItems value="#{menuList.getMenuTree()}" var="m"
+							itemValue="#{m.id}" itemLabel="#{m.label}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{menuMsg.permissionLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectManyCheckbox value="#{menuHome.instance.permissions}"
+						converter="archer.EntityConverter"
+						collectionType="java.util.ArrayList">
+						<f:selectItems value="#{permissionList.allResultList}" var="p"
+							itemValue="#{p}" itemLabel="#{p.name}" />
+					</h:selectManyCheckbox>
+
+					<h:outputLabel value="#{commonMsg.seqNumLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{menuHome.instance.seqNum}" id="menuSeqNum"></h:inputText>
+						<p:slider minValue="-50" maxValue="50" for="menuSeqNum"
+							style="width:500px"></p:slider>
+					</ui:fragment>
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton value="#{commonMsg.saveLabel}"
+							action="#{menuHome.save}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+					</ui:fragment>
+					<p:blockUI block="panel" trigger="saveBtn" />
+				</h:panelGrid>
+
+				
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

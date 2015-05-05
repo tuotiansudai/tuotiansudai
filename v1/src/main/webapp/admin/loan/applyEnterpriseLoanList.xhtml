@@ -1,0 +1,87 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel}企业借款申请列表"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+<!-- 					<p:button value="发起企业借款项目" outcome="/admin/loan/enterpriseLoanEdit"></p:button> -->
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:dataTable lazy="true" id="dataTable"
+					value="#{applyEnterpriseLoanList.lazyModel}" var="ael" sortBy="applyTime" sortOrder="descending"
+					paginator="true" paginatorPosition="bottom" rows="15"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+					<p:column headerText="企业名称">
+						<h:outputText value="#{ael.company}"></h:outputText>
+					</p:column>
+					<p:column headerText="联系人">
+						<h:outputText value="#{ael.contact}"></h:outputText>
+					</p:column>
+					<p:column headerText="手机号码">
+						<h:outputText value="#{ael.contactMobile}"></h:outputText>
+					</p:column>
+					<p:column headerText="意向融资金额">
+						<h:outputText value="#{ael.money}">
+							<f:convertNumber type="number" pattern="#,###" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="所在区域">
+						<h:outputText value="#{ael.area.name}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="预期融资期限">
+						<h:outputText value="#{ael.deadline}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="还款来源">
+						<h:outputText value="#{ael.paymentFrom}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="备注说明">
+						<h:outputText value="#{ael.description}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="状态">
+						<h:outputText value="#{dictUtil.getValue('apply_enterprise_loan_status',ael.status)}">
+						</h:outputText>
+					</p:column>
+					<p:column headerText="申请时间" sortBy="applyTime">
+						<h:outputText value="#{ael.applyTime}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="操作">
+						<ui:fragment rendered="#{ael.status eq 'waiting_verify'}">
+							<h:commandLink value="审核" onclick="return confirm('您确认审核通过吗？');">
+								<f:ajax listener="#{applyEnterpriseLoanHome.verify(ael)}"
+									execute="@this" render="@form"></f:ajax>
+							</h:commandLink> | 
+						</ui:fragment>
+						<p:commandLink value="#{commonMsg.deleteLabel}" update="dataTable"
+							onstart="return confirm('您确认删除该借款申请？此操作不可恢复！');"
+							action="#{applyEnterpriseLoanHome.delete(ael.id)}"></p:commandLink>
+					</p:column>
+				</p:dataTable>
+				
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

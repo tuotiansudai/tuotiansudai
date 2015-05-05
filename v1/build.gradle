@@ -1,0 +1,53 @@
+apply plugin: 'war'
+apply plugin: 'com.bmuschko.cargo'
+apply plugin: 'org.akhikhl.gretty'
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.resources.srcDir 'src/main/java'
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile fileTree(dir: 'libs', include: '**/*.jar')
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.2.2', 'com.bmuschko:gradle-cargo-plugin:2.1'
+    }
+}
+
+cargoRunLocal.dependsOn assemble
+
+gretty {
+    // supported values:
+    // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
+    servletContainer = 'jetty8'
+    contextPath = ''
+    port = 9090
+}
+
+cargo {
+    containerId = 'tomcat6x'
+    port = 8080
+
+    deployable {
+        context = 'ttsd'
+    }
+
+    local {
+        homeDir = file('/usr/share/apache-tomcat-6.0.43')
+        outputFile = file('build/output.log')
+        timeout = 180000
+    }
+}

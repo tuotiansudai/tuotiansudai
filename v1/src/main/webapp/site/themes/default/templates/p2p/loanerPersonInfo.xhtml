@@ -1,0 +1,229 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{borrowerPersonalInfoHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+	<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 	已实名认证 -->
+		<sec:ifAllGranted roles="INVESTOR">
+			<f:event type="preRenderView"
+				listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+			<script src="#{tplVars.themeJSPath}/datepicker.js"></script>
+			<link href="#{tplVars.themeStylePath}/form.css" type="text/css"
+				rel="stylesheet" />
+			<div class="form-top">
+				<p>
+					<a class="color9a9393 fontsize18">我要借款</a>&gt;<a
+						class="color57 fontsize14">提交表单申请</a>
+				</p>
+				<div class="jd-bar">
+					<span class="buzhou1 bz-now"><label
+						class="blueround blueround01">1</label>填写借款申请</span><span
+						class="buzhou2 bz-now"><label class="blueround blueround02">2</label>填写借款信息</span><span
+						class="buzhou3">审核</span><span class="buzhou4">筹集借款</span><span
+						class="buzhou5">获得借款</span>
+				</div>
+			</div>
+			<div class="info-content">
+				<div class="form-left fl">
+<!-- 					<p class="pfont"> -->
+<!-- 						信息完整度<span class="bg2">87%</span> -->
+<!-- 					</p> -->
+<!-- 					<p class="pfont"> -->
+<!-- 						<em><b></b></em> -->
+<!-- 					</p> -->
+					<ul class="info-list">
+						<li class="bg-li"><a class="first-li"
+							href="#{path}/user/loanerPersonInfo">个人信息<i></i></a></li>
+						<li><a href="#{path}/user/loanerAdditionInfo">工作财务信息</a></li>
+						<li><a class="last-li"
+							href="#{path}/user/loanerAuthentication">认证资料</a></li>
+					</ul>
+				</div>
+				<div class="form-right fr">
+				<h:form>
+				
+					<h3>个人信息</h3>
+					<p class="warmp">
+						<i></i>温馨提示：我们将在您的必要认证资料上传齐全后为您提交审核。
+					</p>
+					<p>
+						<span class="stxt">真实姓名</span><span class="sinput"><h:inputText
+								value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.realname}"
+								type="text" styleClass="text" disabled="true" /></span>
+					</p>
+					<p>
+						<span class="stxt">身份证号</span><span class="sinput"><h:inputText
+								value="#{fn:substring(borrowerPersonalInfoHome.instance.borrowerInfo.user.idCard,0,6)}**************"
+								type="text" styleClass="text" disabled="true" /></span>
+					</p>
+					<p>
+						<span class="stxt">手机号码</span><span class="sinput"><h:inputText
+								value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.mobileNumber}"
+								type="text" styleClass="text" disabled="true" /></span>
+					</p>
+					<p class="heightp">
+						<span class="stxt">性&#160;&#160;&#160;&#160;&#160;&#160;别</span><span class="sinput"> <h:inputText
+								value="#{dictUtil.getValue('user_sex',borrowerPersonalInfoHome.instance.borrowerInfo.user.sex)}"
+								type="text" styleClass="text" disabled="true" />
+						</span>
+					</p>
+					<p>
+						<span class="stxt">出生日期</span><span class="sinput"><h:inputText
+								value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.birthday}"
+								disabled="true">
+								<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+									locale="zh_CN" />
+							</h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt">居住地址</span><span class="sinput"><f:event
+								listener="#{areaHome.initByCity(borrowerPersonalInfoHome.instance.borrowerInfo.user.area)}"
+								type="preRenderComponent" /> <h:selectOneMenu
+								style="width:125px;" value="#{areaHome.selectedProvince}"
+								styleClass="area text" converter="archer.EntityConverter">
+								<f:selectItems value="#{areaHome.allProvinces}" var="area"
+									itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+								<f:ajax listener="#{areaHome.findAllCities}" render="areaSelect"></f:ajax>
+							</h:selectOneMenu> <h:panelGroup id="areaSelect" style="float:none;display:inline;">
+								<h:selectOneMenu style="width:125px;margin-left:8px;"
+									value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.area}"
+									converter="archer.EntityConverter" styleClass="area text"
+									rendered="#{not empty areaHome.allCities}">
+									<f:selectItems value="#{areaHome.allCities}" var="area"
+										itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+								</h:selectOneMenu>
+							</h:panelGroup></span>
+					</p>
+					<p>
+						<span class="stxt">户口所在地</span><span class="sinput"> <h:inputText
+								styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.currentAddress}"></h:inputText>
+						</span> 
+					</p>
+					<p>
+						<span class="stxt">籍&#160;&#160;&#160;&#160;&#160;&#160;贯</span><span class="sinput"><h:inputText
+								styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.borrowerInfo.user.homeAddress}"></h:inputText> </span>
+					</p>
+					<p class="house">
+						<span>最高学历</span><span > <h:selectOneMenu
+								styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.degree}">
+								<f:selectItem itemValue="高中或以下" itemLabel="高中或以下" />
+								<f:selectItem itemValue="大专" itemLabel="大专" />
+								<f:selectItem itemValue="本科" itemLabel="本科" />
+								<f:selectItem itemValue="研究生或以上" itemLabel="研究生或以上" />
+							</h:selectOneMenu>
+						</span> <span class="hktxt2">入学年份</span><span><h:inputText
+								styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.schoolYear}"></h:inputText></span>
+					</p>
+					<p class="house">
+						<span>是否有房</span><span><h:selectOneMenu styleClass="text" 
+								value="#{borrowerPersonalInfoHome.instance.hasHouse}">
+								<f:selectItem itemValue="无" itemLabel="无" />
+								<f:selectItem itemValue="有" itemLabel="有" />
+							</h:selectOneMenu>
+						</span><span class="hktxt2">有无房贷</span> <span> <h:selectOneMenu styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.hasHousingLoan}">
+								<f:selectItem itemValue="无" itemLabel="无" />
+								<f:selectItem itemValue="有" itemLabel="有" />
+							</h:selectOneMenu>
+						</span>
+					</p>
+					<p class="car">
+						<span>是否有车</span> <span> <h:selectOneMenu styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.hasCar}">
+								<f:selectItem itemValue="无" itemLabel="无" />
+								<f:selectItem itemValue="有" itemLabel="有" />
+							</h:selectOneMenu>
+						</span> <span class="hktxt2">有无车贷</span> <span> <h:selectOneMenu styleClass="text"
+								value="#{borrowerPersonalInfoHome.instance.hasCarLoan}">
+								<f:selectItem itemValue="无" itemLabel="无" />
+								<f:selectItem itemValue="有" itemLabel="有" />
+							</h:selectOneMenu>
+						</span>
+					</p>
+					<p class="car">
+					<span>婚姻状况</span>
+					<span>	<h:selectOneMenu styleClass="text"
+							value="#{borrowerPersonalInfoHome.instance.marriageInfo}">
+							<f:selectItem itemValue="已婚" itemLabel="已婚" />
+							<f:selectItem itemValue="未婚" itemLabel="未婚" />
+							<f:selectItem itemValue="离异" itemLabel="离异" />
+							<f:selectItem itemValue="丧偶" itemLabel="丧偶" />
+						</h:selectOneMenu>
+						</span>
+						<span class="hktxt2">有无子女</span>
+						<span>
+						<h:selectOneMenu styleClass="text"
+							value="#{borrowerPersonalInfoHome.instance.childrenInfo}">
+							<f:selectItem itemValue="有" itemLabel="有" />
+							<f:selectItem itemValue="无" itemLabel="无" />
+						</h:selectOneMenu>
+						</span>
+					</p>
+					<p class="pline"></p>
+					<p class="pdleft50">直系亲属</p>
+					<p>
+						<span class="stxt">姓名</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="10"
+								value="#{borrowerPersonalInfoHome.instance.direct}"></h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt">关系</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="200"
+								value="#{borrowerPersonalInfoHome.instance.directRelative}"></h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt">联系方式</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="100"
+								value="#{borrowerPersonalInfoHome.instance.directRelativePhone}"></h:inputText></span>
+					</p>
+					<p class="pdleft50">其他联系人</p>
+					<p>
+						<span class="stxt">姓名</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="10"
+								value="#{borrowerPersonalInfoHome.instance.other}"></h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt">关系</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="200"
+								value="#{borrowerPersonalInfoHome.instance.otherContact}"></h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt">联系方式</span><span class="sinput"><h:inputText
+								styleClass="text" maxlength="100"
+								value="#{borrowerPersonalInfoHome.instance.otherContactPhone}"></h:inputText></span>
+					</p>
+					<p>
+						<span class="stxt"></span><span><h:commandLink value="保存并继续" styleClass="save-btn"
+									action="#{borrowerPersonalInfoHome.save}"></h:commandLink></span>
+					</p>
+					</h:form>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</sec:ifAllGranted>
+	</ui:define>
+</ui:composition>

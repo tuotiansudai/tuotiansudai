@@ -1,0 +1,367 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions">
+
+	<ui:define name="content">
+
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/index.css" />
+
+		<!-- banner start -->
+		<div id="banner">
+			<ui:include src="banner.xhtml"></ui:include>
+		</div>
+		<!-- banner end -->
+
+		<div class="data-con clearfix">
+			<span class="fl wid330">
+				累计购买订单：
+				<strong id="aaa"></strong>单
+			</span>
+			<span class="fl">
+				累计还款期数：
+				<strong id="bbb"></strong>期
+			</span>
+			<span class="fr">
+				累计创造收益：
+				<strong id="ccc"></strong>元
+			</span>
+		</div>
+		<!--data end-->
+
+		<div class="icon-div">
+			<div class="icon clearfix">
+				<div class="fl">
+					<a href="#{path}/node/spage/pingtaizhinan"><img src="#{tplVars.themeImagePath}/index/ic01.png" /></a>
+					<p><a href="#{path}/node/spage/pingtaizhinan">新手指南</a></p>
+					<p><a href="#{path}/node/spage/pingtaizhinan" style="font-size: 15px; margin: 3px 0;">简单四步<br />拓天速贷帮您开启财富之路</a></p>
+				</div>
+				<div class="fl margl">
+					<a href="#{path}/node/spage/anquanbaozhang"><img src="#{tplVars.themeImagePath}/index/ic02.png" /></a>
+					<p><a href="#{path}/node/spage/anquanbaozhang">安全保障</a></p>
+					<p><a href="#{path}/node/spage/anquanbaozhang" style="font-size: 15px; margin: 3px 0;">想您所想<br />360度全方位为您保驾护航</a></p>
+				</div>
+				<div class="fl margl">
+					<a href="#{path}/node/spage/guanyuwomen"><img src="#{tplVars.themeImagePath}/index/ic03.png" /></a>
+					<p><a href="#{path}/node/spage/guanyuwomen">关于我们</a></p>
+					<p><a href="#{path}/node/spage/guanyuwomen" style="font-size: 15px; margin: 3px 0;">拓天速贷<br />中国投资理财首选P2P平台</a></p>
+				</div>
+				<div class="fr">
+					<a href="#{path}/node/spage/changjianwenti"><img src="#{tplVars.themeImagePath}/index/ic04.png" /></a>
+					<p><a href="#{path}/node/spage/changjianwenti">常见问题</a></p>
+					<p><a href="#{path}/node/spage/changjianwenti" style="font-size: 15px; margin: 3px 0;">轻松一点<br />让您的财富之路无疑点</a></p>
+				</div>
+			</div>
+		</div>
+		<!--icon end-->
+		<div class="layout">
+			<div class="newbie">
+				<div class="tip clearfix">
+					<span class="fl">新手标<i>新手福利，福利多多，奖励多多</i></span>
+					<a href="#{path}/p2p_loan-list_xsb" class="fr more">更多</a>
+				</div>
+
+				<ui:param name="restriction"
+					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.addRestriction(restriction)}"></f:event>
+
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.setPageSize(4)}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.addOrder('loan.seqNum','desc')}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.example.setBusinessType('个人借款')}"></f:event>
+
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.addRestriction('loan.loanActivityType=\'xs\'')}"></f:event>
+
+				<ui:param name="orderColumn"
+					value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.addOrder(orderColumn, 'asc')}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList2.addOrder('loan.commitTime','asc')}"></f:event>
+
+				<div class="list-div clearfix">
+					<ui:repeat var="loan" value="#{loanList2.lazyModelData}">
+						<div class="list-box">
+							<div class="list">
+								<h3><i><img src="#{tplVars.themeImagePath}/index/qiche.png" /></i>
+									<a href="#{path}/p2p_loan_xsb/#{loan.id}">
+									#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</h3>
+								<p class="color1">
+									<strong class="color2 font26">
+										<ui:fragment rendered="#{loan.hdRatePercent != null}">
+											#{loan.jkRatePercent}%+#{loan.hdRatePercent}%
+										</ui:fragment>
+										<ui:fragment rendered="#{loan.hdRatePercent == null}">
+											#{loan.jkRatePercent}%
+										</ui:fragment>
+									</strong><br />
+									年化收益
+								</p>
+								<p class="color1">
+									剩余可投金额：
+									<ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+									<h:outputText value="#{moneyNeedRaised}">
+										<f:convertNumber currencySymbol="￥" type="currency" minFractionDigits="" />
+									</h:outputText>
+								</p>
+								<p class="line"></p>
+								<p class="color2">
+									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+							        	投标进行中
+							        </ui:fragment>
+							        <ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+							        	#{dictUtil.getValue('LOAN',loan.status)}
+									</ui:fragment>
+								</p>
+								<p>
+									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+									<em class="progress-bar"><b style="width:#{cr}%"></b></em><i class="precent-i">#{cr}%</i>
+								</p>
+								<p class="line"></p>
+								<p class="clearfix">
+									<span  class="fl">
+										金额：
+										<h:outputText value="#{loan.loanMoney}">
+											<f:convertNumber type="number" />
+										</h:outputText>元
+									</span>
+								</p>
+								<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								<p class="time">
+									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+									<ui:fragment rendered="#{cr == 100}">
+										<i></i>#{loanCalculator.calculateRemainTime(loan.id)}
+									</ui:fragment>
+								</p>
+								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+									<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">#{dictUtil.getValue('LOAN',loan.status)}</a>
+								</ui:fragment>
+							</div>
+						</div>
+					</ui:repeat>
+				</div>
+
+			</div>
+			<!--新手标结束-->
+
+			<div class="personal">
+				<div class="tip clearfix">
+					<span class="fl">个人借款<i>安心理财，安全收益</i></span>
+					<a href="#{path}/p2p_loan-list" class="fr more">更多</a>
+				</div>
+				
+				<ui:param name="restriction"
+					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
+				<f:event type="preRenderComponent"
+					listener="#{loanList.addRestriction(restriction)}"></f:event>
+
+				<f:event type="preRenderComponent"
+					listener="#{loanList.setPageSize(4)}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList.example.setBusinessType('个人借款')}"></f:event>
+
+				<f:event type="preRenderComponent"
+					listener="#{loanList.addRestriction('loan.loanActivityType=\'pt\'')}"></f:event>
+				<f:event type="preRenderComponent"
+						listener="#{loanList.addRestriction('attr.id=\'index\'')}"></f:event>
+
+				<ui:param name="orderColumn"
+					value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
+				<f:event type="preRenderComponent"
+					listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
+				<f:event type="preRenderComponent"
+					listener="#{loanList.addOrder('loan.commitTime','asc')}"></f:event>
+
+				<div class="list-div clearfix">
+					<ui:repeat var="loan" value="#{loanList.lazyModelData}">
+						<div class="list-box">
+							<div class="list">
+								<h3><i><img src="#{tplVars.themeImagePath}/index/qiche.png" /></i>
+									<a href="#{path}/p2p_loan/#{loan.id}">
+									#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</h3>
+								<p class="color1">
+									<strong class="color2 font26">
+										<h:outputText value="#{loan.ratePercent}">
+											<f:convertNumber type="number" />
+										</h:outputText>%</strong>年化收益
+								</p>
+								<p class="color1">
+									剩余可投金额：
+									<ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+									<h:outputText value="#{moneyNeedRaised}">
+										<f:convertNumber currencySymbol="￥" type="currency" minFractionDigits="" />
+									</h:outputText>
+								</p>
+								<p class="line"></p>
+								<p class="color2">
+									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+							        	投标进行中
+							        </ui:fragment>
+							        <ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+							        	#{dictUtil.getValue('LOAN',loan.status)}
+									</ui:fragment>
+								</p>
+								<p>
+									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+									<em class="progress-bar"><b style="width:#{cr}%"></b></em><i class="precent-i">#{cr}%</i>
+								</p>
+								<p class="line"></p>
+								<p class="clearfix">
+									<span  class="fl">
+										金额：
+										<h:outputText value="#{loan.loanMoney}">
+											<f:convertNumber type="number" />
+										</h:outputText>元
+									</span>
+								</p>
+								<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								<p class="time">
+									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+									<ui:fragment rendered="#{cr == 100}">
+										<i></i>#{loanCalculator.calculateRemainTime(loan.id)}
+									</ui:fragment>
+								</p>
+								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+									<a href="#{path}/loan/#{loan.id}" class="tz-btn" >立即投标</a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+									<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">#{dictUtil.getValue('LOAN',loan.status)}</a>
+								</ui:fragment>
+							</div>
+						</div>
+					</ui:repeat>
+				</div>
+			</div>
+
+			<!--个人理财结束-->
+			<div class="media">
+			    <div class="tabs">
+			        <a id="tab1" class="thover" onclick="show(1)">#{categoryTermHome.getTermById('meitibaodao').name}</a>
+			        <a id="tab2" onclick="show(2)">#{categoryTermHome.getTermById('wangzhangonggao').name}</a>
+			        <a class="fr gengduo" href="#{path}/term/meitibaodao">更多></a>
+			    </div>
+			    <div class="tab1-cons clearfix" id="tab11" style=" display:block;">
+			    	<ui:param name="pageModel" value="#{nodeList.getNodes('meitibaodao',3)}"></ui:param>
+                   	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
+                   		<div class="tab1-con1">
+				            <span><a href="#{path}/node/meitibaodao/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <p>#{node.description}</p>
+				        </div>
+                   	</ui:repeat>
+			    </div>
+			    <div class="tab2-cons clearfix" id="tab22" style=" display:none;">
+			        <ui:param name="pageModel" value="#{nodeList.getNodes('wangzhangonggao',3)}"></ui:param>
+                   	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
+                   		<div class="tab1-con1">
+				            <span><a href="#{path}/node/wangzhangonggao/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <p>#{node.description}</p>
+				        </div>
+                   	</ui:repeat>
+			    </div>
+
+				<!-- 扑克牌数据处理 -->
+				<script type="text/javascript">
+					//<![CDATA[
+
+						/* alert("1");
+						function sptData(var xx, var yy) {
+							var num = xx.split('.');
+							num = num[0];
+							var i1 = '<i>';
+							var i2 = '</i>';
+							var html = '';
+							for(var i = 0 ; i < num.length ; i ++){
+								html += i1 + num[i] + i2;
+							}
+						}
+						sptData('#{investStatistics.getAllSuccessInvestsNum()}', $("#aaa"));
+						$("#aaa").html(html);
+						alert("3"); */
+
+						var $aaa = $("#aaa");
+						var aaa = '#{investStatistics.getAllSuccessInvestsNum()}';
+						var numa = aaa.split('.');
+						numa = numa[0];
+						var i1 = '<i>';
+						var i2 = '</i>';
+						var html = '';
+						for(var i = 0 ; i < numa.length ; i ++){
+							html += i1 + numa[i] + i2;
+						}
+						$aaa.html(html);
+
+						var $bbb = $("#bbb");
+						var bbb = '#{investStatistics.getAllInvestsMoney()}';
+						var numb = bbb.split('.');
+						numb = numb[0];
+						var i1 = '<i>';
+						var i2 = '</i>';
+						var html = '';
+						for(var i = 0 ; i < numb.length ; i ++){
+							html += i1 + numb[i] + i2;
+						}
+						$bbb.html(html);
+
+						var $ccc=$("#ccc");
+						var ccc = '#{investStatistics.getAllInvestsInterest()}';
+						var numc = ccc.split('.');
+						numc = numc[0];
+						var i1 = '<i>';
+						var i2 = '</i>';
+						var html = '';
+						for(var i = 0 ; i < numc.length ; i ++){
+							html += i1 + numc[i] + i2;
+						}
+						$ccc.html(html);
+
+					//]]>
+				</script>
+				
+			    <script type="text/javascript">
+					//<![CDATA[
+						function show(ls_i){
+							for(var i = 1 ; i < 3 ; i++){
+								if(i == ls_i){
+									$("#tab"+i+i).css("display", "block");
+									$("#tab"+i).addClass("thover");
+								}else{
+									$("#tab"+i+i).css("display", "none");
+									$("#tab"+i).removeClass("thover");
+								}
+							}
+						}
+					//]]>
+				</script>
+			    
+			</div>
+			<!--media-end-->
+		</div>
+		<!--layout end-->
+		<!-- WPA Button Begin -->
+			<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzgwMDAzNjQ0Nl8yNjEyNDRfODAwMDM2NDQ2Xw"></script>
+		<!-- WPA Button End -->
+		
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,718 @@
+<ui:composition template="/admin/layout/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="main">
+        <style>
+            .column-left{
+                width:25%;vertical-align:top;
+            }
+        </style>
+        <script type="text/javascript">  
+        //<![CDATA[ 
+		    var start=0;   
+		    var end=0;   
+		    var scriptSrc = "";
+		    var finalStr = "";
+		    var totalContent = "";
+		    function savePos(txtBox){   
+		        //如果是Firefox(1.5)的话，方法很简单   
+		        if(typeof(txtBox.selectionStart) == "number"){   
+		            start = txtBox.selectionStart;   
+		            end = txtBox.selectionEnd;   
+		        }   
+		        //下面是IE(6.0)的方法，麻烦得很，还要计算上'\n'   
+		        else if(document.selection){   
+		            var range = document.selection.createRange();   
+		            if(range.parentElement().id == txtBox.id){   
+		                // create a selection of the whole textarea   
+		                var range_all = document.body.createTextRange();   
+		                range_all.moveToElementText(txtBox);   
+		                //两个range，一个是已经选择的text(range)，一个是整个textarea(range_all)   
+		                //range_all.compareEndPoints()比较两个端点，如果range_all比range更往左(further to the left)，则                //返回小于0的值，则range_all往右移一点，直到两个range的start相同。   
+		                // calculate selection start point by moving beginning of range_all to beginning of range   
+		                for (start=0; range_all.compareEndPoints("StartToStart", range) < 0; start++)   
+		                    range_all.moveStart('character', 1);   
+		                // get number of line breaks from textarea start to selection start and add them to start   
+		                // 计算一下\n   
+		                for (var i = 0; i <= start; i ++){   
+		                    if (txtBox.value.charAt(i) == '\n')   
+		                        start++;   
+		                }   
+		                // create a selection of the whole textarea   
+		                 var range_all = document.body.createTextRange();   
+		                 range_all.moveToElementText(txtBox);   
+		                 // calculate selection end point by moving beginning of range_all to end of range   
+		                 for (end = 0; range_all.compareEndPoints('StartToEnd', range) < 0; end ++)   
+		                     range_all.moveStart('character', 1);   
+		                     // get number of line breaks from textarea start to selection end and add them to end   
+		                 for (var i = 0; i <= end; i ++){   
+		                     if (txtBox.value.charAt(i) == '\n')   
+		                         end ++;   
+		                 }   
+		            }   
+		        }   
+		        //以上代码获得光标的位置
+		        //document.getElementById("start").value = start;   
+		        //document.getElementById("end").value = end;
+		        var textBox = document.getElementById("form:tplContent").value;
+		        totalContent = textBox;
+		        var textBoxLength = textBox.length;
+		        var preText = textBox.substring(0,start);
+		        var postText = textBox.substring(end,textBoxLength);
+		        //alert(postText);
+		        var finalStart = 0;
+		        var finalEnd = 0;
+		        var startTime = 0;
+		        var endTime = 0;
+		        for(var i=start-1;i>0;i--){//该循环获得离光标位置最近的<ui:include>标签位置
+		            var nowText = textBox.substring(i-1,i);
+		            //alert('nowText:'+nowText+" "+i);
+		            if(nowText == "<"){
+		                var uStr = textBox.substring(i,i+1);
+		                //alert('uStr:'+i);
+		                if(uStr == "u"){
+		                    var iStr = textBox.substring(i+1,i+2);
+		                    //alert('iStr:'+i);
+		                    if(iStr == "i"){
+		                        var pointStr = textBox.substring(i+2,i+3);
+		                        //alert('pointStr:'+i);
+		                        if(pointStr == ":"){
+		                            var iiStr = textBox.substring(i+3,i+4);
+		                            if(iiStr == "i"){
+		                                var nStr = textBox.substring(i+4,i+5);
+		                                if(nStr == "n"){
+		                                    var cStr = textBox.substring(i+5,i+6);
+		                                    if(cStr == "c"){
+		                                        var lStr = textBox.substring(i+6,i+7);
+		                                        if(lStr == "l"){
+		                                            var uuStr = textBox.substring(i+7,i+8);
+		                                            if(uuStr == "u"){
+		                                                var dStr = textBox.substring(i+8,i+9);
+		                                                if(dStr == "d"){
+		                                                    var eStr = textBox.substring(i+9,i+10);
+		                                                    if(eStr == "e"){
+		                                                        finalStart = i;
+		                                                        break;
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }
+		                        }
+		                    }
+		                }   
+		            }
+		        }
+		        var startOk = 0;
+		        while(startOk == 0){//该循环判断离光标位置最近的<ui:include>标签位置是否含有</ui:include>标签，若有，则说明有标签嵌套的现象存在，需继续确定<ui:include>的正确位置
+		            for(var i=finalStart;i<start;i++){
+		                var nowText = textBox.substring(i-1,i);
+		                //alert('nowText:'+nowText+" "+i);
+		                    if(nowText == "<"){
+		                    var sStr = textBox.substring(i,i+1);
+		                    //alert('uStr:'+sStr);
+		                    if(sStr == "/"){
+		                        var uStr = textBox.substring(i+1,i+2);
+		                        //alert('iStr:'+uStr);
+		                        if(uStr == "u"){
+		                            var iStr = textBox.substring(i+2,i+3);
+		                            //alert('iStr:'+iStr);
+		                            if(iStr == "i"){
+		                                var pointStr = textBox.substring(i+3,i+4);
+		                                //alert('pointStr:'+pointStr);
+		                                if(pointStr == ":"){
+		                                    var iiStr = textBox.substring(i+4,i+5);
+		                                    if(iiStr == "i"){
+		                                        var nStr = textBox.substring(i+5,i+6);
+		                                        if(nStr == "n"){
+		                                            var cStr = textBox.substring(i+6,i+7);
+		                                            if(cStr == "c"){
+		                                                var lStr = textBox.substring(i+7,i+8);
+		                                                if(lStr == "l"){
+		                                                    var uuStr = textBox.substring(i+8,i+9);
+		                                                    if(uuStr == "u"){
+		                                                        var dStr = textBox.substring(i+9,i+10);
+		                                                        if(dStr == "d"){
+		                                                            var eStr = textBox.substring(i+10,i+11);
+		                                                            if(eStr == "e"){
+		                                                                startOk = 2;
+		                                                                break;
+		                                                            }
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }
+		                        }
+		                    }   
+		                }
+		            }
+		            if(startOk == 0){
+		                startOk = 1;
+		            }
+		            if(startOk == 2){
+		                var newFinalStart = 0;
+		                for(var i=finalStart-1;i>0;i--){
+		                    var nowText = textBox.substring(i-1,i);
+		                    //alert('nowText:'+nowText+" "+i);
+		                    if(nowText == "<"){
+		                        var uStr = textBox.substring(i,i+1);
+		                        //alert('uStr:'+i);
+		                        if(uStr == "u"){
+		                            var iStr = textBox.substring(i+1,i+2);
+		                            //alert('iStr:'+i);
+		                            if(iStr == "i"){
+		                                var pointStr = textBox.substring(i+2,i+3);
+		                                //alert('pointStr:'+i);
+		                                if(pointStr == ":"){
+		                                    var iiStr = textBox.substring(i+3,i+4);
+		                                    if(iiStr == "i"){
+		                                        var nStr = textBox.substring(i+4,i+5);
+		                                        if(nStr == "n"){
+		                                            var cStr = textBox.substring(i+5,i+6);
+		                                            if(cStr == "c"){
+		                                                var lStr = textBox.substring(i+6,i+7);
+		                                                if(lStr == "l"){
+		                                                    var uuStr = textBox.substring(i+7,i+8);
+		                                                    if(uuStr == "u"){
+		                                                        var dStr = textBox.substring(i+8,i+9);
+		                                                        if(dStr == "d"){
+		                                                            var eStr = textBox.substring(i+9,i+10);
+		                                                            if(eStr == "e"){
+		                                                                newFinalStart = i;
+		                                                                break;
+		                                                            }
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }
+		                        }   
+		                    }
+		                }
+		                finalStart = newFinalStart;
+		            }
+		        }
+		        for(var i=1;i<start;i++){
+                     var nowText = textBox.substring(i-1,i);
+                     //alert('nowText:'+nowText+" "+i);
+                     if(nowText == "<"){
+                         var uStr = textBox.substring(i,i+1);
+                         //alert('uStr:'+i);
+                         if(uStr == "u"){
+                             var iStr = textBox.substring(i+1,i+2);
+                             //alert('iStr:'+i);
+                             if(iStr == "i"){
+                                 var pointStr = textBox.substring(i+2,i+3);
+                                 //alert('pointStr:'+i);
+                                 if(pointStr == ":"){
+                                     var iiStr = textBox.substring(i+3,i+4);
+                                     if(iiStr == "i"){
+                                         var nStr = textBox.substring(i+4,i+5);
+                                         if(nStr == "n"){
+                                             var cStr = textBox.substring(i+5,i+6);
+                                             if(cStr == "c"){
+                                                 var lStr = textBox.substring(i+6,i+7);
+                                                 if(lStr == "l"){
+                                                     var uuStr = textBox.substring(i+7,i+8);
+                                                     if(uuStr == "u"){
+                                                         var dStr = textBox.substring(i+8,i+9);
+                                                         if(dStr == "d"){
+                                                             var eStr = textBox.substring(i+9,i+10);
+                                                             if(eStr == "e"){
+                                                                 startTime = startTime + 1;
+                                                             }
+                                                         }
+                                                     }
+                                                 }
+                                             }
+                                         }
+                                     }
+                                 }
+                             }
+                         }   
+                     }
+                 }
+                 for(var i=1;i<start;i++){
+                        var nowText = textBox.substring(i-1,i);
+                        //alert('nowText:'+nowText+" "+i);
+                            if(nowText == "<"){
+                            var sStr = textBox.substring(i,i+1);
+                            //alert('uStr:'+sStr);
+                            if(sStr == "/"){
+                                var uStr = textBox.substring(i+1,i+2);
+                                //alert('iStr:'+uStr);
+                                if(uStr == "u"){
+                                    var iStr = textBox.substring(i+2,i+3);
+                                    //alert('iStr:'+iStr);
+                                    if(iStr == "i"){
+                                        var pointStr = textBox.substring(i+3,i+4);
+                                        //alert('pointStr:'+pointStr);
+                                        if(pointStr == ":"){
+                                            var iiStr = textBox.substring(i+4,i+5);
+                                            if(iiStr == "i"){
+                                                var nStr = textBox.substring(i+5,i+6);
+                                                if(nStr == "n"){
+                                                    var cStr = textBox.substring(i+6,i+7);
+                                                    if(cStr == "c"){
+                                                        var lStr = textBox.substring(i+7,i+8);
+                                                        if(lStr == "l"){
+                                                            var uuStr = textBox.substring(i+8,i+9);
+                                                            if(uuStr == "u"){
+                                                                var dStr = textBox.substring(i+9,i+10);
+                                                                if(dStr == "d"){
+                                                                    var eStr = textBox.substring(i+10,i+11);
+                                                                    if(eStr == "e"){
+                                                                        endTime = endTime + 1;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }   
+                        }
+                    }
+		        //alert('以上都正确:finalStart='+finalStart);
+		        for(var i=end-11;i<end;i++){//向前判断</ui:include>标签位置(此时光标停留在</ui:include>标签中)
+		            var nowText = textBox.substring(i-1,i);
+		            //alert('nowText:'+nowText+" "+i);
+		                if(nowText == "<"){
+		                var sStr = textBox.substring(i,i+1);
+		                //alert('uStr:'+sStr);
+		                if(sStr == "/"){
+		                    var uStr = textBox.substring(i+1,i+2);
+		                    //alert('iStr:'+uStr);
+		                    if(uStr == "u"){
+		                        var iStr = textBox.substring(i+2,i+3);
+		                        //alert('iStr:'+iStr);
+		                        if(iStr == "i"){
+		                            var pointStr = textBox.substring(i+3,i+4);
+		                            //alert('pointStr:'+pointStr);
+		                            if(pointStr == ":"){
+		                                var iiStr = textBox.substring(i+4,i+5);
+		                                if(iiStr == "i"){
+		                                    var nStr = textBox.substring(i+5,i+6);
+		                                    if(nStr == "n"){
+		                                        var cStr = textBox.substring(i+6,i+7);
+		                                        if(cStr == "c"){
+		                                            var lStr = textBox.substring(i+7,i+8);
+		                                            if(lStr == "l"){
+		                                                var uuStr = textBox.substring(i+8,i+9);
+		                                                if(uuStr == "u"){
+		                                                    var dStr = textBox.substring(i+9,i+10);
+		                                                    if(dStr == "d"){
+		                                                        var eStr = textBox.substring(i+10,i+11);
+		                                                        if(eStr == "e"){
+		                                                            var endStr = textBox.substring(i+11,i+12);
+		                                                            //alert('endStr-start:'+endStr);
+		                                                            var j = i+11;
+		                                                            //alert("j:"+j);
+		                                                            while(endStr != ">"){
+		                                                                j=j+1;
+		                                                                endStr = textBox.substring(j,j+1);
+		                                                                //alert('endStr:'+endStr+": "+j);
+		                                                            }
+		                                                            finalEnd = j;
+		                                                            //alert('finalEnd:'+finalEnd);
+		                                                            //alert(i);
+		                                                            break;
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }
+		                        }
+		                    }
+		                }   
+		            }
+		        }
+		        if(finalEnd <= finalStart){
+		            finalEnd = 0;
+		        }
+		        if(finalEnd == 0){//向前判断</ui:include>标签位置(此时光标停留在</ui:include>标外)
+		            for(var i=end;i<textBoxLength;i++){
+		                var nowText = textBox.substring(i-1,i);
+		                //alert('nowText:'+nowText+" "+i);
+		                    if(nowText == "<"){
+		                    var sStr = textBox.substring(i,i+1);
+		                    //alert('uStr:'+sStr);
+		                    if(sStr == "/"){
+		                        var uStr = textBox.substring(i+1,i+2);
+		                        //alert('iStr:'+uStr);
+		                        if(uStr == "u"){
+		                            var iStr = textBox.substring(i+2,i+3);
+		                            //alert('iStr:'+iStr);
+		                            if(iStr == "i"){
+		                                var pointStr = textBox.substring(i+3,i+4);
+		                                //alert('pointStr:'+pointStr);
+		                                if(pointStr == ":"){
+		                                    var iiStr = textBox.substring(i+4,i+5);
+		                                    if(iiStr == "i"){
+		                                        var nStr = textBox.substring(i+5,i+6);
+		                                        if(nStr == "n"){
+		                                            var cStr = textBox.substring(i+6,i+7);
+		                                            if(cStr == "c"){
+		                                                var lStr = textBox.substring(i+7,i+8);
+		                                                if(lStr == "l"){
+		                                                    var uuStr = textBox.substring(i+8,i+9);
+		                                                    if(uuStr == "u"){
+		                                                        var dStr = textBox.substring(i+9,i+10);
+		                                                        if(dStr == "d"){
+		                                                            var eStr = textBox.substring(i+10,i+11);
+		                                                            if(eStr == "e"){
+		                                                                var endStr = textBox.substring(i+11,i+12);
+		                                                                //alert('endStr-start:'+endStr);
+		                                                                var j = i+11;
+		                                                                //alert("j:"+j);
+		                                                                while(endStr != ">"){
+		                                                                    j=j+1;
+		                                                                    endStr = textBox.substring(j,j+1);
+		                                                                    //alert('endStr:'+endStr+": "+j);
+		                                                                }
+		                                                                finalEnd = j;
+		                                                                //alert('finalEnd:'+finalEnd);
+		                                                                //alert(i);
+		                                                                break;
+		                                                            }
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }       
+		                                }
+		                            }
+		                        }
+		                    }   
+		                }
+		            }
+		            var endOk = 0;
+		            while(endOk == 0){//判断截取的位置之间是否存在<ui:include>标签，若存在,说明有<ui:include>标签的嵌套使用，需重新寻找正确的结束点
+		                for(var i=finalEnd;i>finalStart+4;i--){
+		                    var nowText = textBox.substring(i-1,i);
+		                    //alert('nowText:'+nowText+" "+i);
+		                    if(nowText == "<"){
+		                        var uStr = textBox.substring(i,i+1);
+		                        //alert('uStr:'+i);
+		                        if(uStr == "u"){
+		                            var iStr = textBox.substring(i+1,i+2);
+		                            //alert('iStr:'+i);
+		                            if(iStr == "i"){
+		                                var pointStr = textBox.substring(i+2,i+3);
+		                                //alert('pointStr:'+i);
+		                                if(pointStr == ":"){
+		                                    var iiStr = textBox.substring(i+3,i+4);
+		                                    if(iiStr == "i"){
+		                                        var nStr = textBox.substring(i+4,i+5);
+		                                        if(nStr == "n"){
+		                                            var cStr = textBox.substring(i+5,i+6);
+		                                            if(cStr == "c"){
+		                                                var lStr = textBox.substring(i+6,i+7);
+		                                                if(lStr == "l"){
+		                                                    var uuStr = textBox.substring(i+7,i+8);
+		                                                    if(uuStr == "u"){
+		                                                        var dStr = textBox.substring(i+8,i+9);
+		                                                        if(dStr == "d"){
+		                                                            var eStr = textBox.substring(i+9,i+10);
+		                                                            if(eStr == "e"){
+		                                                                endOk = 2;
+		                                                                //alert(i);
+		                                                                break;
+		                                                            }
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }
+		                        }   
+		                    }
+		                }
+		                if(endOk == 0){
+		                    endOk = 1;
+		                }
+		                if(endOk == 2){
+		                    for(var i=finalEnd;i<textBoxLength;i++){
+		                        var nowText = textBox.substring(i-1,i);
+		                        //alert('nowText:'+nowText+" "+i);
+		                            if(nowText == "<"){
+		                            var sStr = textBox.substring(i,i+1);
+		                            //alert('uStr:'+sStr);
+		                            if(sStr == "/"){
+		                                var uStr = textBox.substring(i+1,i+2);
+		                                //alert('iStr:'+uStr);
+		                                if(uStr == "u"){
+		                                    var iStr = textBox.substring(i+2,i+3);
+		                                    //alert('iStr:'+iStr);
+		                                    if(iStr == "i"){
+		                                        var pointStr = textBox.substring(i+3,i+4);
+		                                        //alert('pointStr:'+pointStr);
+		                                        if(pointStr == ":"){
+		                                            var iiStr = textBox.substring(i+4,i+5);
+		                                            if(iiStr == "i"){
+		                                                var nStr = textBox.substring(i+5,i+6);
+		                                                if(nStr == "n"){
+		                                                    var cStr = textBox.substring(i+6,i+7);
+		                                                    if(cStr == "c"){
+		                                                        var lStr = textBox.substring(i+7,i+8);
+		                                                        if(lStr == "l"){
+		                                                            var uuStr = textBox.substring(i+8,i+9);
+		                                                            if(uuStr == "u"){
+		                                                                var dStr = textBox.substring(i+9,i+10);
+		                                                                if(dStr == "d"){
+		                                                                    var eStr = textBox.substring(i+10,i+11);
+		                                                                    if(eStr == "e"){
+		                                                                        var endStr = textBox.substring(i+11,i+12);
+		                                                                        //alert('endStr-start:'+endStr);
+		                                                                        var j = i+11;
+		                                                                        //alert("j:"+j);
+		                                                                        while(endStr != ">"){
+		                                                                            j=j+1;
+		                                                                            endStr = textBox.substring(j,j+1);
+		                                                                            //alert('endStr:'+endStr+": "+j);
+		                                                                        }
+		                                                                        finalEnd = j;
+		                                                                        //alert('finalEnd:'+finalEnd);
+		                                                                        //alert(i);
+		                                                                        break;
+		                                                                    }
+		                                                                }
+		                                                            }
+		                                                        }
+		                                                    }
+		                                                }
+		                                            }
+		                                        }
+		                                    }
+		                                }
+		                            }   
+		                        }
+		                    }
+		                }
+		            }
+		        }
+                
+                if(finalStart == 0){
+                    finalEnd = 0;
+                }
+                if(finalEnd == 0){
+                    finalStart = 0;
+                }
+                if(startTime ==endTime){
+                    finalStart = 0;
+                    finalEnd = 0;
+                }
+                var selectBox = textBox.substring(finalStart-1,finalEnd+1);
+                finalStr = selectBox;
+                
+                var xmlHttp=null;
+                var isIe = (document.all) ? true : false;
+                
+                if ( typeof txtBox.createTextRange != 'undefined' ){ // IE
+                    var range1 = txtBox.createTextRange();
+                    //var htmlText = range1.htmlText;
+                    //range1.pasteHTML(range1.htmlText);
+                    range1.text = selectBox;
+                    // 先把相对起点移动到0处
+                     
+                }
+                else if ( typeof txtBox.setSelectionRange != 'undefined' ){ 
+                    if(finalStart != 0 && finalEnd != 0){//firefox、chrome浏览器中选中位置高亮显示
+                        txtBox.setSelectionRange(finalStart-1, finalEnd+1); 
+                      txtBox.focus();
+                      var alterBtn = document.getElementById("form:alterBtn");
+                      var deleteBtn = document.getElementById("form:deleteBtn");
+                      var insertBtn = document.getElementById("form:insertBtn");
+                      alterBtn.style.display = "inline";
+                      deleteBtn.style.display = "inline";
+                      insertBtn.style.display = "none";
+                      for(var i = 0; i<selectBox.length;i++){
+			             var nowText = selectBox.substring(i,i+1);
+			             if(nowText == "s"){
+			                var rStr = selectBox.substring(i+1,i+2);
+			                if(rStr == "r"){
+			                   var cStr = selectBox.substring(i+2,i+3);
+			                   if(cStr == "c"){
+			                      equalStr = selectBox.substring(i+3,i+4);
+			                      if(equalStr == "="){
+			                         pointStr = selectBox.substring(i+4,i+5);
+			                         if(pointStr == "\""){
+			                           var str = selectBox.substring(i+5,i+6);
+                                       var j = i+6;
+                                       scriptSrc = "";
+                                       while(str != "\""){
+                                           scriptSrc = scriptSrc+str;
+                                           str = selectBox.substring(j,j+1);
+                                           j = j+1;
+                                       }
+                                       break;
+			                         }
+			                      }
+			                   }
+			                }
+			             }
+			           }
+			           document.getElementById("form:scriptSrc").value = scriptSrc;
+                     }else{
+                        var alterBtn = document.getElementById("form:alterBtn");
+                        var deleteBtn = document.getElementById("form:deleteBtn");
+                        var insertBtn = document.getElementById("form:insertBtn");
+                        alterBtn.style.display = "none";
+                        deleteBtn.style.display = "none";
+                        insertBtn.style.display = "inline";
+                     }
+		           }
+		        }
+		        function addContent(){
+		          var content = document.getElementById("form:insertContent").value;
+		          var textBox = document.getElementById("form:tplContent").value;
+                  var textBoxLength = totalContent.length;
+		          var preText = totalContent.substring(0,start);
+                  var postText = totalContent.substring(end,textBoxLength);
+		          var newContent = preText + content + postText;
+		          document.getElementById("form:tplContent").value = newContent;
+		        }   
+		        function editContent(){
+		          var content = document.getElementById("form:editContent").value;
+		          var textBox = document.getElementById("form:tplContent").value;
+		          var newContent = totalContent.replace(finalStr,content);
+		          document.getElementById("form:tplContent").value = newContent;
+		        }
+		        function deleteContent(){
+		          var textBox = document.getElementById("form:tplContent").value;
+                  var newContent = totalContent.replace(finalStr,"");
+                  document.getElementById("form:tplContent").value = newContent;
+		        }
+		//]]>
+        </script>
+        <h:form id="form" >
+           <i><h:outputText value="#{themeMsg.templateManageLabel}"/> </i>
+            <h:inputHidden id="scriptSrc" value="#{templatesMgr.templateSrc}"></h:inputHidden>
+           <h:panelGrid columns="2" style="width:100%;" columnClasses="column-left,column-right">
+                <p:dataTable id="files" value="#{templatesMgr.templates}" var="tpl">
+                    <p:column headerText="File" >
+                        <p:commandLink value="#{tpl}" update="@form" action="#{templatesMgr.setSelectTpl(tpl)}"
+                            style="#{templatesMgr.selectTpl == tpl ? 'color:red;' : ''}">
+                        </p:commandLink>
+                        
+                    </p:column>
+                </p:dataTable>
+                <h:panelGrid style="width:100%;" columnClasses="column-left,column-right">
+                <ui:fragment>
+                     <p:commandButton id="alterBtn" value="#{themeMsg.alterBtn}" style="display:none;" action="#{templatesMgr.findTemplate}" oncomplete="dlgAlter.show();" update="form:dlgAlter">
+                     </p:commandButton>
+                     <p:commandButton id="deleteBtn" value="#{themeMsg.deleteBtn}" style="display:none;" onclick="dlgDelete.show();"></p:commandButton>
+                     <p:commandButton id="insertBtn" value="#{themeMsg.insertBtn}" style="display:none;" onclick="dlgInsert.show();"></p:commandButton>
+                </ui:fragment>
+                <ui:fragment>
+                    <p:inputTextarea id="tplContent" style="width:100%;height:500px;" autoResize="false" 
+                        value="#{templatesMgr.content}" onmouseup="savePos(this)"></p:inputTextarea>
+                    <p:commandButton action="#{templatesMgr.saveTpl}" update="@form" 
+                                value="#{commonMsg.saveLabel}"></p:commandButton>
+                    <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                </ui:fragment>
+                </h:panelGrid>        
+           </h:panelGrid>
+        <p:dialog header="#{themeMsg.editComponent}" id="dlgAlter" widgetVar="dlgAlter" modal="true" width="500">
+            <div style="display:#{ empty templatesMgr.component.id ? 'none' : ''}">
+                <p:panelGrid columns="1" columnClasses="column-left,column-right" >
+	              <ui:fragment>
+	                <h:outputText value="#{templatesMgr.component.name}"></h:outputText><p:spacer height="20" width="20"></p:spacer>
+	                <h:outputText value="#{templatesMgr.component.scriptUrl}"></h:outputText>
+	              </ui:fragment>
+	              <ui:fragment>
+	                <h:outputText value="#{commonMsg.description}"></h:outputText><p:spacer height="20" width="20"></p:spacer>
+	                <h:outputText value="#{templatesMgr.component.description}"></h:outputText>
+	              </ui:fragment>
+	              <p:dataTable value="#{templatesMgr.componentParametersEdit}" var="c" rows="15" 
+	                id="dataTableEdit" emptyMessage="#{themeMsg.theCompanentHasNoParam}" >
+	                <p:column headerText="#{themeMsg.paramName}">
+	                    <h:outputText value="#{c.name}"></h:outputText>
+	                </p:column>
+	                <p:column headerText="#{themeMsg.paramValue}">
+	                    <h:inputText value="#{c.value}"></h:inputText>
+	                </p:column>
+	                <p:column headerText="#{commonMsg.description}">
+	                    <h:outputText value="#{c.description}"></h:outputText>
+	                </p:column>
+	              </p:dataTable>
+	            </p:panelGrid>
+	            <h:inputHidden value="#{templatesMgr.component.id}" id="componentAlterId"></h:inputHidden>
+	            <h:inputHidden value="#{templatesMgr.editContent}" id="editContent"></h:inputHidden>
+	            <p:commandButton value="#{commonMsg.saveLabel}" action="#{templatesMgr.editContent}" oncomplete="editContent();dlgAlter.hide();" update="form:editContent,form:tplContent"></p:commandButton>
+                <p:commandButton value="#{commonMsg.cancelLabel}" onclick="dlgAlter.hide();"></p:commandButton>
+            </div>
+            <div style="display:#{ not empty templatesMgr.component.id ? 'none' : ''}">#{themeMsg.componentError}
+                <p:commandButton value="#{commonMsg.cancelLabel}" onclick="dlgAlter.hide();"></p:commandButton>
+            </div>
+        </p:dialog>
+        <p:dialog header="#{themeMsg.insertComponent}" id="dlgInsert" widgetVar="dlgInsert" modal="true" width="500">
+            <ui:fragment>
+	           <h:outputText value="#{themeMsg.chooseComponent}"></h:outputText><p:spacer height="20" width="20"></p:spacer>
+	           <h:selectOneMenu value="#{templatesMgr.component.id}">
+	               <f:selectItem itemValue="" itemLabel="#{themeMsg.chooseComponent}"/>
+	               <f:selectItems value="#{templatesMgr.components}" var="c"
+	                   itemValue="#{c.id}" itemLabel="#{c.name}" />
+	               <p:ajax update="newComponent" listener="#{templatesMgr.handleComponentChange}"></p:ajax>
+	           </h:selectOneMenu>
+            </ui:fragment>
+            <h:outputText></h:outputText>
+            <p:panelGrid columns="1" columnClasses="column-left,column-right" id="newComponent">
+              <ui:fragment>
+                <h:outputText value="#{templatesMgr.component.name}"></h:outputText><p:spacer height="20" width="20"></p:spacer>
+                <h:outputText value="#{templatesMgr.component.scriptUrl}"></h:outputText>
+              </ui:fragment>
+              <ui:fragment>
+                <h:outputText value="#{commonMsg.description}"></h:outputText><p:spacer height="20" width="20"></p:spacer>
+                <h:outputText value="#{templatesMgr.component.description}"></h:outputText>
+              </ui:fragment>
+              <p:dataTable value="#{templatesMgr.componentParametersInsert}" var="c"
+                id="dataTableInsert" emptyMessage="#{themeMsg.theCompanentHasNoParam}" >
+                <p:column headerText="#{themeMsg.paramName}">
+                        <h:outputText value="#{c.name}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="#{themeMsg.paramValue}">
+                        <h:inputText value="#{c.value}"></h:inputText>
+                    </p:column>
+                    <p:column headerText="#{commonMsg.description}">
+                        <h:outputText value="#{c.description}"></h:outputText>
+                    </p:column>
+              </p:dataTable>
+            </p:panelGrid>
+            <h:inputHidden value="#{templatesMgr.insertContent}" id="insertContent"></h:inputHidden>
+            <p:commandButton value="#{commonMsg.saveLabel}" action="#{templatesMgr.editInsertContent}" oncomplete="addContent();dlgInsert.hide();" update="form:insertContent,form:tplContent"></p:commandButton>
+            <p:commandButton value="#{commonMsg.cancelLabel}" onclick="dlgInsert.hide();"></p:commandButton>
+        </p:dialog>
+        <p:dialog header="#{themeMsg.deleteComponent}" id="dlgDelete" widgetVar="dlgDelete" modal="true">
+            <h:outputText value="#{themeMsg.confirmForDeleteComponent}"></h:outputText>
+            <p:commandButton value="#{commonMsg.confirmLabel}" onclick="deleteContent();dlgDelete.hide();" ></p:commandButton>
+            <p:commandButton value="#{commonMsg.cancelLabel}" onclick="dlgDelete.hide();"></p:commandButton>
+        </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

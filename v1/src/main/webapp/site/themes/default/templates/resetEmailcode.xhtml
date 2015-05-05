@@ -1,0 +1,58 @@
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+    <title>重置邮箱</title>
+        <style>
+        body{
+            background-color: #F7F7F7;
+            font-size:12px;
+        }
+        .loginPanel{
+            width: 500px;
+            margin:0 auto;
+            margin-top: 180px;
+        }
+        
+        #verifyCode{
+            vertical-align: middle;
+        }
+    </style>
+        <script src="#{tplVars.themeJSPath}/jquery-1.8.3.js" type="text/javascript"></script>
+        <script src="#{tplVars.themeJSPath}/resetmailpone.js" type="text/javascript"></script>
+    <script>
+    </script>
+    </h:head>
+    <f:event type="preRenderView" listener="#{userHome.setId(loginUserInfo.username)}"></f:event>
+   <h:body>
+      <h:form id="resetemail">
+                                                 已验证邮箱:<h:outputText id="email" label="邮箱"
+				  value="#{fn:substring(userHome.instance.email,0,1)}*********#{fn:substring(userHome.instance.email,fn:indexOf(userHome.instance.email,'@'),fn:length(userHome.instance.email))}"/>
+				 <br/><br/>
+				  收到验证码：<h:inputText id="emailcode" value="#{userValidationCodeHome.instance.code}" onfocus="clearmsg('error')"></h:inputText>
+				  &#160;
+				   <h:commandButton id="confirm" value="确定">
+                                        <f:ajax render="@form" execute="emailcode"
+                                         listener="#{userValidationCodeHome.checkRandcode}"/>
+                   </h:commandButton>
+                                   <h:messages class="error" style="color:red" id="message"></h:messages>
+				  <br/><br/>
+				 <h:commandButton type="button" id="validateCode" value="发送验证码" onclick="sendEmailCode()">
+				     <h:inputHidden id="resendemail" value="#{userValidationCodeHome.resendemail}"></h:inputHidden>
+				     <f:ajax execute="resendemail" listener="#{userValidationCodeHome.save}"></f:ajax>
+				 </h:commandButton>
+				 <ui:fragment rendered="#{userValidationCodeHome.showResetPassword}">
+					 <script>
+					      window.location.href = '#{request.contextPath}/user/resetnewEmail';
+					 </script>
+				 </ui:fragment>
+				
+      </h:form>     
+   </h:body>
+
+</f:view>

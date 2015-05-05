@@ -1,0 +1,71 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{dictHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 数据字典编辑/添加"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/system/dictList" value="数据字典管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+
+					<h:outputLabel value="父节点编码"></h:outputLabel>
+					<h:selectOneMenu value="#{dictHome.instance.parent}" converter="archer.EntityConverter">
+						<f:selectItem itemValue="" itemLabel="请选择"/>
+						<f:selectItems var="p" value="#{dictList.allResultList}"
+							itemLabel="#{p.key}-#{p.value}" itemValue="#{p}"/>
+					</h:selectOneMenu>
+						
+					<h:outputLabel value="英文编码"></h:outputLabel>
+					<h:inputText label="英文编码" required="true" readonly="#{not empty dictHome.instance.key}"
+						value="#{dictHome.instance.key}"></h:inputText>
+
+					<h:outputLabel value="显示名称"></h:outputLabel>
+					<h:inputText label="显示名称" required="true"
+						value="#{dictHome.instance.value}" maxlength="100">
+					</h:inputText>
+					
+					<h:outputLabel value="描述"></h:outputLabel>
+					<h:inputTextarea label="描述" value="#{dictHome.instance.description}" cols="80" rows="3">
+						<f:validateLength maximum="500"></f:validateLength>
+					</h:inputTextarea>
+					
+					<h:outputLabel value="#{commonMsg.seqNumLabel}"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{dictHome.instance.seqNum}" id="seqNum"></h:inputText>
+						<p:slider minValue="-50" maxValue="50" for="seqNum"
+							style="width:500px"></p:slider>
+					</ui:fragment>
+					
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<h:inputHidden value="#{dictHome.instance.id}"></h:inputHidden>
+						<p:commandButton id="saveBtn" action="#{dictHome.save}"
+							ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn" />
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

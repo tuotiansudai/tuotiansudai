@@ -1,0 +1,29 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <div id="block-node-new" class="block block-node ">
+        
+        <h2>
+            <h:outputText value="#{empty title ? nodeMsg.newUpdateNodesLabel : title}"></h:outputText>
+        </h2>
+        <div class="content">
+            <ui:param name="maxResults" value="#{empty maxResults ? 10 : maxResults}"></ui:param>
+            
+            <ui:param name="pageModel" 
+                value="#{empty termId ? nodeList.getNodes('',maxResults) : nodeList.getNodes(termId,maxResults)}"/>
+            <div class="item-list">
+                <ul>
+                    <ui:repeat var="node" value="#{pageModel.data}" varStatus="status">
+                       <li class="#{status.first?'first':''} #{status.last?'last':''}">
+                            <a href="#{request.contextPath}/node/#{node.id}">#{node.title}</a>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </div>
+        </div>
+    </div>
+</f:view>
