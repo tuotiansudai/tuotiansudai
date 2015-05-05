@@ -4,5 +4,4 @@
 **/*.iml
 **/.gradle/**
 **/.DS_Store
-**/*.crt
-**/*.key.p8
+**/7001088_tuotianweiye.key.p8
