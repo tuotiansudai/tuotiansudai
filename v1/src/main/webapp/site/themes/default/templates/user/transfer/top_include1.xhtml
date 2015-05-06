@@ -1,0 +1,23 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	
+	<o:importConstants type="com.esoft.jdp2p.invest.InvestConstants.TransferStatus" />
+
+	<ul class="grzx_ul grzx_ul03">
+		<li>转出中的金额：<span><h:outputText value="#{transferStatistics.getAllMoneyByTypeUser(TransferStatus.TRANSFERING, loginUserInfo.loginUserId)}">
+			<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+		</h:outputText>元</span></li>
+		<li>转出中的数量：<span><h:outputText value="#{transferStatistics.getCountByTypeUser(TransferStatus.TRANSFERING, loginUserInfo.loginUserId)}">
+			<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+		</h:outputText>个</span></li>
+	</ul>
+
+</ui:component>

@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configTypeHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry"> 
+		  <p:toolbar>
+                <p:toolbarGroup>
+                    <h:outputLabel  value="#{commonMsg.currentPositionLabel} 标的状态查询"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+		<h:form>
+			
+			标的编号：
+				<h:inputText class="ui-panel-content ui-widget-content" value="#{umPayQueryHome.orderId}" required="true" label="标的编号"/>&#160;&#160;
+				<p:commandButton action="#{umPayQueryHome.queryLoanStatus}" value=" 查&#160;询" update=":table"/>
+		</h:form>
+		<br />
+			<h:panelGroup id="table">
+			<p:panel id="filters">
+				状态码：#{ret_code} <br /><br />
+				信息：#{ret_msg} <br /><br />
+				商户端标的号：#{project_id} <br /><br />
+				第三方标的号：#{project_account_id} <br /><br />
+				标的账户状态：#{project_account_state} <br /><br />
+				标的状态：#{project_state} <br /><br />
+				金额：#{balance} 元<br /><br />
+				查询信息：#{result} <br />
+			</p:panel> 
+		</h:panelGroup>
+	</div>
+	</ui:define>
+</ui:composition>
+
+</html>

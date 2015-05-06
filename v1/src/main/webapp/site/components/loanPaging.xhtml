@@ -1,0 +1,140 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:fragment rendered="#{loanList.currentPage > 1}">
+		<h:commandLink title="到上一个页面" styleClass="prev-page">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment rendered="#{loanList.currentPage-5 > 0}">
+		<h:commandLink title="到第 #{loanList.currentPage-5} 页"
+			value="#{loanList.currentPage-5}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-5)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment rendered="#{loanList.currentPage-4 > 0}">
+		<h:commandLink title="到第 #{loanList.currentPage-4} 页"
+			value="#{loanList.currentPage-4}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-4)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment rendered="#{loanList.currentPage-3 > 0}">
+		<h:commandLink title="到第 #{loanList.currentPage-3} 页"
+			value="#{loanList.currentPage-3}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-3)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment rendered="#{loanList.currentPage-2 > 0}">
+		<h:commandLink title="到第 #{loanList.currentPage-2} 页"
+			value="#{loanList.currentPage-2}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-2)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment rendered="#{loanList.currentPage-1 > 0}">
+		<h:commandLink title="到第 #{loanList.currentPage-1} 页"
+			value="#{loanList.currentPage-1}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage-1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<a class="on" style="color:red;">#{loanList.currentPage}</a>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > (loanList.currentPage)}">
+		<h:commandLink title="到第 #{loanList.currentPage+1} 页"
+			value="#{loanList.currentPage+1}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > (loanList.currentPage+1)}">
+		<h:commandLink title="到第 #{loanList.currentPage+2} 页"
+			value="#{loanList.currentPage+2}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+2)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > (loanList.currentPage+2)}">
+		<h:commandLink title="到第 #{loanList.currentPage+3} 页"
+			value="#{loanList.currentPage+3}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+3)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > (loanList.currentPage+3)}">
+		<h:commandLink title="到第 #{loanList.currentPage+4} 页"
+			value="#{loanList.currentPage+4}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+4)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > (loanList.currentPage+4)}">
+		<h:commandLink title="到第 #{loanList.currentPage+5} 页"
+			value="#{loanList.currentPage+5}" styleClass="fy_02">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+5)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount>loanList.pageSize*loanList.currentPage}">
+		<h:commandLink title="去下一个页面" styleClass="next-page">
+			<f:ajax listener="#{loanList.setCurrentPage(loanList.currentPage+1)}"
+				render="dataTable"></f:ajax>
+		</h:commandLink>
+	</ui:fragment>
+
+	&#160;&#160;
+	<ui:fragment
+		rendered="#{loanList.lazyModel.rowCount/loanList.pageSize > 0}">
+		跳转至&#160;
+		<input style="text-align: center;" type="text" id="toPageInput"></input>
+		<h:inputHidden value="#{loanList.currentPage}" id="currentPageInput"
+			styleClass="toPageHidden"></h:inputHidden>&#160;
+		<h:commandLink title="电梯直达" value="GO" styleClass="fy_01 fy_03 fy_end">
+			<f:ajax render="dataTable" execute="currentPageInput"></f:ajax>
+		</h:commandLink>
+		<script>
+			var maxPage = '#{loanList.lazyModel.rowCount/loanList.pageSize}';
+			var myMaxPage = Math.ceil(maxPage);
+			$("#toPageInput").keyup(function() {
+				if (parseInt($(this).val()) > parseInt(myMaxPage)) {
+					$(this).val(myMaxPage);
+				}
+				$(this).next().val($(this).val());
+			});
+		</script>
+		<!-- 总记录数:#{loanList.pageSize*(loanList.lazyModel.rowCount/loanList.pageSize)-1}&#160;|
+		共分#{loanList.lazyModel.rowCount/loanList.pageSize}页&#160;|
+		显示数:#{loanList.pageSize}&#160;|
+		当前页:#{loanList.currentPage}&#160;|
+		正确的页码:#{loanList.currentPage > loanList.pageSize?loanList.pageSize:loanList.currentPage}&#160;|
+		
+		判断条件1:#{(loanList.lazyModel.rowCount/loanList.pageSize+1)>loanList.currentPage}&#160;|
+		判断条件2:#{(loanList.lazyModel.rowCount/loanList.pageSize+1)>loanList.currentPage==true} -->
+	</ui:fragment>
+
+</f:view>

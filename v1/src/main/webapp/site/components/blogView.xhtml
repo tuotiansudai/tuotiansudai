@@ -1,0 +1,72 @@
+<!-- 
+    debug : 
+        pageSize:#{pageSize}
+        page:#{page}
+        termId:#{termId}
+        count:#{pageModel.count}
+        current count : #{pageModel.data.size()}
+ -->
+
+<f:subview xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+	<div class="node-section section">
+            
+            <ui:param name="pageSize" value="#{empty pageSize ? 15 : pageSize}"></ui:param>
+            <ui:param name="page" value="#{param.page}"></ui:param>
+            
+            <ui:param name="pageModel" value="#{nodeList.getNodes(termId,(page-1)*pageSize ,pageSize)}"></ui:param>
+            
+            <ui:repeat var="node" value="#{pageModel.data}">
+                <div id="node-#{node.id}"
+                    class="node node-article node-promoted node-teaser contextual-links-region clearfix">
+
+                    <h2>
+                        <a href="#{request.contextPath}/node/#{node.id}">#{node.title}</a>
+                    </h2>
+
+                    <div class="meta submitted">
+                        <span> <span
+                            class="username">#{node.userByCreator.username}</span>于
+						<h:outputText value="#{node.createTime}">
+						<f:convertDateTime pattern="yyyy年MM月dd日  HH:mm:ss" timeZone="GMT+8"/>
+						</h:outputText>
+						发布</span>
+                    </div>
+
+                    <div class="content clearfix">
+                        <div
+                            class="field field-name-body field-type-text-with-summary field-label-hidden">
+                            <div class="field-items">
+                                <div class="field-item even">
+                                    <p>
+                                        #{node.description}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="link-wrapper">
+                        <ul class="links inline">
+                            <li class="node-readmore first">
+                                <a href="#{request.contextPath}/node/#{node.id}" title="#{node.title}">查看更多 </a>
+                            </li>
+                            <li class="statistics_counter last"><span>浏览#{watchdogList.getViewCount(node.id)} 次</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </ui:repeat>
+            <ui:include src="#{tplVars.componentsPath}/paging.xhtml">
+                 <ui:param name="count" value="#{pageModel.count}"></ui:param>
+            </ui:include>
+            
+            <ui:include src="#{tplVars.componentsPath}/rss.xhtml">
+            </ui:include>
+            
+        </div>
+
+</f:subview>

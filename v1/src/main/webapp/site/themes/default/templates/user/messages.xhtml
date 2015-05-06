@@ -1,0 +1,107 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/message"></ui:param>
+	<ui:define name="center_right">
+
+		<div class="center_right">
+			<div class="zhcz_h3">站内信息</div>
+			<h:form id="form">
+				<!-- 				清除筛选对分页的影响 -->
+				<p:remoteCommand process="@this" immediate="true" name="clearPage"
+						actionListener="#{inBoxList.setCurrentPage(1)}"></p:remoteCommand>
+				<div class="zt">
+					<p>状态</p>
+					<div class="zt01">
+						<h:commandLink styleClass="hover" title="全部" value="全部">
+							<f:ajax render="dataTable "
+								listener="#{inBoxList.example.setStatus('')}"></f:ajax>
+						</h:commandLink>
+						<h:commandLink title="未读" value="未读">
+							<f:ajax render="dataTable"
+								listener="#{inBoxList.example.setStatus(InBoxConstants.NOREAD)}"></f:ajax>
+						</h:commandLink>
+						<h:commandLink title="已读" value="已读">
+							<f:ajax render="dataTable"
+								listener="#{inBoxList.example.setStatus(InBoxConstants.ISREAD)}"></f:ajax>
+						</h:commandLink>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<h:panelGroup id="dataTable">
+					<ul class="znx">
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.setPageSize(5)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.example.recevier.setId(loginUserInfo.loginUserId)}"></f:event>
+						<f:event type="preRenderComponent"
+							listener="#{inBoxList.addOrder('ib.receiveTime', 'desc')}"></f:event>
+						<ui:repeat var="inBox" value="#{inBoxList.lazyModelData}">
+							<li>
+								<h3>
+									#{inBox.title}
+									<ui:fragment rendered="#{inBox.status ==InBoxConstants.NOREAD}">
+										<img src="#{tplVars.themeImagePath}/img47.png" />
+									</ui:fragment>
+								</h3>
+								<p>
+									<h:outputText escape="false" value="#{inBox.content}">
+									</h:outputText>
+									<br /> <span><ui:fragment
+											rendered="#{inBox.sender.username == 'admin'}">
+											<h:outputText value="系统消息" />
+										</ui:fragment> <ui:fragment rendered="#{inBox.sender.username != 'admin'}">
+											<h:outputText value="#{inBox.sender.username}" />
+										</ui:fragment> <h:outputText value="#{inBox.receiveTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+												timeZone="GMT+8" />
+										</h:outputText> <ui:fragment
+											rendered="#{inBox.status ==InBoxConstants.NOREAD}">
+											<h:commandLink value="阅读">
+												<p:ajax update=":form:dataTable"
+													listener="#{inBoxHome.setLetterReaded(inBox.id)}"></p:ajax>
+											</h:commandLink> | </ui:fragment> <h:commandLink onclick="return confirm('您确定要删除吗？');"
+											value="删除">
+											<p:ajax update=":form:dataTable"
+												listener="#{inBoxHome.delete(inBox.id)}"></p:ajax>
+										</h:commandLink></span>
+								</p>
+								<div class="clear"></div>
+							</li>
+						</ui:repeat>
+					</ul>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="#{tplVars.componentsPath}/messagePaging.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+		<script type="text/javascript">
+			$(
+					function() {
+						$(".zt01 a").click(
+								function() {
+									$(this).closest(".zt01").find(".hover")
+											.removeClass("hover");
+									$(this).addClass("hover");
+									//清除筛选对分页的影响
+									clearPage();
+								});
+					})
+		</script>
+	</ui:define>
+</ui:composition>
+
+

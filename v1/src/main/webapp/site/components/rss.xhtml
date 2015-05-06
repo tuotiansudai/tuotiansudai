@@ -1,0 +1,15 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:param name="rssPath" value="#{empty termId ? 'mainPage' : termId}"></ui:param>
+    <ui:param name="title" value="#{empty title ? componentMsg.feedLabel : title}"></ui:param>
+	<a href="#{request.contextPath}/rss/#{rssPath}.rss"
+		class="feed-icon" title="#{title}"><img
+			src="#{tplVars.themeImagePath}/feed.png" width="16" height="16"
+			alt="#{title}" /> 
+	</a>
+</f:view>

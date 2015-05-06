@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{configTypeHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<!-- <div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} 账户查询"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer />
+			<h:form id="form">
+				<h:panelGroup id="panel">
+					<table>
+						<tr>
+							<td class="col1"><h:outputLabel value="用户ID" /></td>
+							<td class="col2">
+								<h:inputText value="#{testQuery.platformUserNo}}" />&#160;&#160;
+							</td>
+						</tr> 
+						
+						<tr>
+							<td class="col1"><h:outputLabel value="操作" /></td>
+							<td class="col2">
+								<p:commandButton id="saveBtn" value="查询" action="#{testQuery.test}" />
+								<p:commandButton type="reset" value="#{commonMsg.resetLabel}" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col1"><h:outputLabel value="操作" /></td>
+							<td class="col2">
+								<p:commandButton id="saveBtn" value="查询" action="#{testQuery.test}" />
+								<p:commandButton type="reset" value="#{commonMsg.resetLabel}" />
+							</td>
+						</tr>
+					</table>
+				</h:panelGroup>
+			</h:form>
+		</div> -->
+		
+	<div style="margin-left:180px;margin-top:50px;font-size:17px;font-family:微软雅黑;">
+		
+		<h:form>
+			会员编号：<h:inputText value="#{yeePayQueryHome.platformUserNo}" />&#160;&#160;
+			<h:commandButton action="#{yeePayQueryHome.queryAccountInfo}" value=" 查&#160;询 " />
+		</h:form>
+		
+		<br />
+		
+		账户余额：#{balance} <br />
+		可用金额：#{availableAmount} <br />
+		冻结金额：#{freezeAmount} <br /><br />
+		银行卡号：#{cardNo} <br />
+		开户银行：#{bank} <br />
+		银行卡审核状态：#{cardStatus}<br/>
+		描述：&#160;&#160;&#160;&#160;&#160;&#160;#{description} <br />
+		
+	</div>
+	
+	<div style="margin-left:180px;margin-top:10px;font-size:17px;">
+				<h:form>
+					交易号：<h:inputText value="#{yeePayQueryHome.orderId}" />&#160;&#160;
+					交易类型：
+					<h:selectOneMenu style="width:125px;" styleClass="area text text3" value="#{yeePayQueryHome.orderType}" >
+						<f:selectItem itemLabel="投资放款" itemValue="PAYMENT_RECORD"/>
+						<f:selectItem itemLabel="还款" itemValue="REPAYMENT_RECORD"/>
+						<f:selectItem itemLabel="提现" itemValue="WITHDRAW_RECORD"/>
+						<f:selectItem itemLabel="充值" itemValue="RECHARGE_RECORD"/>
+					</h:selectOneMenu>
+					<h:commandButton action="#{yeePayQueryHome.query}" value=" 查&#160;询 " />
+				</h:form>
+				<br/>
+				查询结果：<br/>
+				#{result}
+			</div>
+	</ui:define>
+</ui:composition>
+
+</html>

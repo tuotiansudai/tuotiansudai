@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<ui:param name="servletPath"
+	value="#{requestScope['javax.servlet.forward.servlet_path']}"></ui:param>
+<ui:param name="path" value="#{request.contextPath}"></ui:param>
+<ui:param name="menuParentId"
+	value="#{menuList.getParentIdByChildUrl(servletPath)}"></ui:param>
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>#{siteVars.siteName}</title>
+			<meta name="keywords" content="#{keywords}" />
+			<meta name="description" content="#{description}" />
+			<h:outputScript library="primefaces" name="jquery/jquery.js"
+				target="head" />
+		</f:facet>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/style.css" />
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/testBefore.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/test.js"></script>
+		
+		<style>
+			.ui-widget-header {
+			    background: none;
+			    border: none;
+			    color: none;
+			    font-weight: bold;
+			    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+			}
+		</style>
+	</h:head>
+
+	<h:body styleClass="#{tplVars.front ? 'home' : ''}">
+		<ui:include src="header.xhtml"></ui:include>
+		<!-- header -->
+
+		<p:growl autoUpdate="true" showDetail="false" severity="info,error"></p:growl>
+
+		<script src="#{tplVars.themeJSPath}/applyloaner.js"></script>
+		<script>
+			$(function() {
+				$.fn.sethighlight = function() {
+					return this.addClass("click").siblings().removeClass(
+							"click");
+				}
+				$("#leftauthenication").sethighlight();
+				initUpload("form\\:idCardScan");
+				initUpload("form\\:idCardPhoto");
+				initUpload("form\\:bankCreditReport");
+				initUpload("form\\:huKouScan");
+				initUpload("form\\:huKouPhoto");
+				initUpload("form\\:diplomaScan");
+				initUpload("form\\:proofEarnings");
+				initUpload("form\\:accountFlow");
+				initUpload("form\\:workCertificate");
+				initUpload("form\\:studentId");
+				initUpload("form\\:positionalTitles");
+				initUpload("form\\:houseInfo");
+				initUpload("form\\:carInfo");
+				initUpload("form\\:marriageCertificate");
+				initUpload("form\\:otherEstate");
+				initUpload("form\\:otherDomicile");
+				initUpload("form\\:otherIdCertificate");
+				initUpload("form\\:otherIncomeInfo");
+				initUpload("form\\:businessLicense");
+				initUpload("form\\:businessAccountFlow");
+				initUpload("form\\:microblogInfo");
+			})
+			function hideUploadInfoDiv(divId) {
+				$("#" + divId + " .ui-fileupload-content").hide();
+			}
+			function uploadComplete(divId) {
+				// 				alert($("#" + divId + " .ui-messages-error ul:has(li)").length);
+			}
+			function showUploadInfoDiv(divId) {
+				$("#" + divId + " .ui-fileupload-content").show();
+			}
+			function initUpload(divId) {
+				$("#" + divId).on('click', ".ui-icon-close", function() {
+					$("#" + divId + " .ui-fileupload-content").hide();
+				});
+				hideUploadInfoDiv(divId);
+				// 				$("#" + divId).bind('DOMSubtreeModified', ".ui-messages",
+				// 					function() {
+				// 						$("#" + divId + " .ui-fileupload-content").show();
+				// 					}
+				// 				);
+				// 				$("#" + divId + " .ui-messages").trigger('contentchanged');
+			}
+		</script>
+		<div class="X-right">
+			<h2>
+				<span><strong>上传资料</strong></span>
+			</h2>
+			<h3>
+				<span>*</span>请您按照上传样例上传资料。上传真实资料越详细，获得的贷款额度将会越大，获得低利率贷款的可能性越高
+			</h3>
+			<h:form style="font-size: 12px;" id="form">
+				<div class="C-left">
+					<!-- 	身份证扫描件 -->
+					<h:panelGroup id="idCardScan">
+						<h:inputHidden id="idCardScanText"
+							value="#{loanerAuthenticationHome.instance.idCardScan}"></h:inputHidden>
+						<dl>
+							<dt>
+								<p:graphicImage id="idCardScanImage"
+									value="#{loanerAuthenticationHome.instance.idCardScan}"
+									style="max-width:138px;width:auto;-width: expression(width>138?'138px':true);max-height:117px;height:auto;-height: expression(height>117?'117px':true);"
+									rendered="#{not empty loanerAuthenticationHome.instance.idCardScan}" />
+								<p:graphicImage
+									value="/site/themes/default/images/idCardScan.jpg"
+									rendered="#{empty loanerAuthenticationHome.instance.idCardScan}" />
+							</dt>
+							<dd>
+								<h4>身份证扫描件</h4>
+								<ui:fragment
+									rendered="#{not empty loanerAuthenticationHome.instance.idCardScan}">
+									<span>已上传</span>
+								</ui:fragment>
+								<p:fileUpload dragDropSupport="true" update="idCardScan"
+									onstart="showUploadInfoDiv('form\\:idCardScan')"
+									oncomplete="hideUploadInfoDiv('form\\:idCardScan')"
+									invalidFileMessage="#{commonMsg.invalidFileMessage}"
+									invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+									label="#{commonMsg.choiceLabel}" fileLimit="1"
+									fileUploadListener="#{loanerAuthenticationHome.idCardScanUpload}"
+									mode="advanced" auto="true" sizeLimit="500000"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|JPG|JPEG|GIF)$/" />
+							</dd>
+						</dl>
+					</h:panelGroup>
+					<script>
+// 						alert(111);
+					</script>
+				</div>
+			</h:form>
+		</div>
+	</h:body>
+</f:view>
+</html>

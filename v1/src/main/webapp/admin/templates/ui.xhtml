@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+<f:view contentType="text/html">
+	<ui:param name="servletPath"
+		value="#{requestScope['javax.servlet.forward.servlet_path']}"></ui:param>
+	<ui:param name="path" value="#{request.contextPath}"></ui:param>
+
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>管理平台 -#{empty title?siteVars.siteName:title}</title>
+		</f:facet>
+
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/include/css/default.css" />
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/include/css/admin.css" />
+		<script type="text/javascript" charset="utf-8">
+			window.CONTEXT_PATH = "#{request.contextPath}";
+		</script>
+		<script type="text/javascript" charset="utf-8"
+			src="#{appInfo.contextPath}/include/js/ueditor1_3_6-utf8-jsp/ueditor.config.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="#{appInfo.contextPath}/include/js/ueditor1_3_6-utf8-jsp/ueditor.all.min.js"></script>
+		<script
+			src="#{appInfo.contextPath}/include/js/datepicker-primefaces.js"></script>
+		<script type="text/javascript" charset="utf-8"
+			src="#{appInfo.contextPath}/include/js/fileupload.ori.js"></script>
+		<link rel="stylesheet" type="text/css"
+			href="#{appInfo.contextPath}/include/css/fileupload.ori.css" />
+
+		<script type="text/javascript" charset="utf-8"
+			src="#{appInfo.contextPath}/include/js/jquery.artDialog.js?skin=blue"></script>
+
+		<o:importConstants
+			type="com.esoft.jdp2p.loan.LoanConstants.LoanStatus" />
+		<o:importConstants
+			type="com.esoft.jdp2p.loan.LoanConstants.RepayStatus" />
+		<o:importConstants
+			type="com.esoft.jdp2p.invest.InvestConstants.InvestType" />
+		<o:importConstants
+			type="com.esoft.archer.user.UserConstants.WithdrawStatus" />
+
+		<ui:insert name="head"></ui:insert>
+
+		<script type="text/javascript">
+			$(function() {
+
+				var currentUrl = window.location.pathname
+						+ window.location.search;
+				$("#sidebar li a[href='" + currentUrl + "']").addClass(
+						"ui-state-highlight");
+				//.addClass("ui-state-highlight"); li a [href=/jdp2p4/admin/loan/loanList.htm?loanStatus=WAITING_VERIFY]
+				//alert($("#sidebar li a[href='"+currentUrl+"']").size());
+				// 增加表格行鼠标经过样式
+				$(".ui-datatable-data tr").mouseover(function() {
+					$(this).addClass("ui-state-hover");
+				});
+				$(".ui-datatable-data tr").mouseout(function() {
+					$(this).removeClass("ui-state-hover");
+				});
+				//ui-state-hover  border-left: solid 5px #c0c0c0;
+			});
+		</script>
+		<style>
+#sidebar li {
+	height: 20px;
+	font-weight: bold;
+	border-bottom: solid 1px #c0c0c0;
+	color: #878787;
+	font-family: "微软雅黑";
+}
+
+.ui-panelmenu .ui-menuitem {
+	width: 99%;
+}
+</style>
+	</h:head>
+
+	<h:body>
+		<p:growl autoUpdate="true" showDetail="true" showSummary="false"
+			severity="info,error"></p:growl>
+		<div id="header" class="ui-widget ui-widget-header">
+			<div id="logo">
+				<img src="#{request.contextPath}/include/images/admin/logo.png"
+					style="cursor: pointer;height: 40px;"
+					onclick="window.location.href='#{request.contextPath}/admin/';" />
+			</div>
+			<div id="menu" class="ui-widget">
+				<ul id="main">
+					<li class="system-home"><a
+						href="#{request.contextPath}/admin/">系统主页</a></li>
+
+					<sec:ifAnyGranted roles="NODE_EDIT">
+						<li class="node-list"><a
+							href="#{request.contextPath}/admin/node/nodeList.htm">内容维护</a></li>
+						<li class="add-node"><a
+							href="#{request.contextPath}/admin/node/nodeEdit.htm">添加内容</a></li>
+					</sec:ifAnyGranted>
+
+					<li class="my-key"><a
+						href="#{request.contextPath}/admin/user/modifyPassword.htm">密码修改</a>
+					</li>
+					<li class="site-home"><a href="#{request.contextPath}/"
+						target="_blank">网站首页</a></li>
+					<li class="logout"><a
+						href="#{request.contextPath}/user/logout">注销[#{loginUserInfo.loginUserId}]</a>
+					</li>
+				</ul>
+			</div>
+			<div id="globalthemeswitcher">
+				<h:form>
+					<p:themeSwitcher style="width:175px;" value="#{adminTheme.theme}">
+						<f:selectItems value="#{adminTheme.themes}" />
+						<p:ajax listener="#{adminTheme.saveTheme}" />
+					</p:themeSwitcher>
+				</h:form>
+			</div>
+		</div>
+
+		<h:form>
+
+			<c:forEach var="menu" items="#{menuList.getManagementMenus()}"
+				varStatus="status">
+				<c:if test="#{status.first}">
+					<c:set var="menuPid" value="#{menu.id}"></c:set>
+					<!-- 默认为选中第一个菜单 -->
+				</c:if>
+				<c:if test="#{menu.id == loginUserInfo.selectMenuId}">
+					<c:set var="menuPid" value="#{menu.id}"></c:set>
+					<c:set var="activeIndex" value="#{status.index}"></c:set>
+				</c:if>
+			</c:forEach>
+			<p:tabMenu widgetVar="tabMenu" activeIndex="#{activeIndex}">
+				<c:forEach var="menu" items="#{menuList.getManagementMenus()}"
+					varStatus="status">
+					<sec:ifAnyGranted roles="#{menu.permissionsCommaStr}">
+						<p:menuitem value="#{menu.label}"
+							actionListener="#{loginUserInfo.selectMenu(menu.id)}"></p:menuitem>
+					</sec:ifAnyGranted>
+				</c:forEach>
+			</p:tabMenu>
+		</h:form>
+
+		<div id="page" class="ui-widget">
+			<div id="sidebar"
+				class="ui-widget-content ui-corner-bottom ui-helper-clearfix ui-shadow">
+				<p:accordionPanel style="min-height:500px;"
+					activeIndex="0,1,2,3,4,5" multiple="true">
+					<p:ajax event="tabChange"
+						listener="#{managementMenuBean.onTabChange}" />
+
+					<c:forEach var="menu"
+						items="#{menuList.getMenusByParentId(menuPid)}">
+						<sec:ifAnyGranted roles="#{menu.permissionsCommaStr}">
+							<p:tab title="#{menu.label}" rendered="#{menu.enable == '1'}">
+								<ul>
+									<c:forEach var="m2" items="#{menu.children}">
+										<c:if test="#{m2.enable == '1'}">
+											<c:set var="roles" value="#{m2.permissionsCommaStr}"></c:set>
+											<sec:ifAnyGranted roles="#{roles}">
+												<li><a href="#{request.contextPath}#{m2.url}">#{m2.label}</a>
+												</li>
+											</sec:ifAnyGranted>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</p:tab>
+						</sec:ifAnyGranted>
+					</c:forEach>
+
+				</p:accordionPanel>
+			</div>
+
+			<div id="content">
+				<div class="post">
+					<ui:insert name="content">...</ui:insert>
+				</div>
+			</div>
+
+			<div style="clear: both;"></div>
+		</div>
+
+		<div id="footer" class="ui-widget ui-widget-header ui-corner-all">
+			<p class="copyright">
+				Running JDP2P-CORE-4.0 on Java6<br /> (c) Copyright JDP2P
+				Development team. 2010-2015. All rights reserved.
+
+			</p>
+		</div>
+
+		<ui:insert name="status">
+			<p:ajaxStatus
+				style="width:64px;height:64px;position:fixed;right:5px;bottom:5px">
+				<f:facet name="start">
+					<p:graphicImage value="/include/images/loading.gif" />
+				</f:facet>
+
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+		</ui:insert>
+		<h:form>
+			<p:poll interval="10" oncomplete="initNoticeDialog()"
+				rendered="#{configHome.getConfigValue('admin_notice') eq '1'}"
+				update=":notice" global="false" />
+		</h:form>
+		<h:panelGroup id="notice">
+			<ui:repeat var="n" value="#{noticeHome.noticePool.list}">
+				<h:outputText value="#{n.message}"></h:outputText>
+				<br />
+			</ui:repeat>
+		</h:panelGroup>
+		<script>
+			//<![CDATA[
+			function initNoticeDialog() {
+				if ($('#notice').html()) {
+					art.dialog({
+						id : 'msg',
+						content : document.getElementById('notice'),
+						width : 320,
+						height : 240,
+						left : '100%',
+						top : '100%',
+						fixed : true,
+						drag : false,
+						resize : false,
+						init : function() {
+							var that = this, i = 5;
+							var fn = function() {
+								that.title('通知(' + i + ')');
+								!i && that.close();
+								i--;
+							};
+							timer = setInterval(fn, 1000);
+							fn();
+						},
+						close : function() {
+							clearInterval(timer);
+						}
+					})
+				}
+			}
+
+			initNoticeDialog();
+			//]]>
+		</script>
+	</h:body>
+
+</f:view>
+</html>

@@ -1,0 +1,81 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="id" value="#{feeConfigHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 费率编辑"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button outcome="/admin/risk/feeConfigList" value="费率管理"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+			<h:form id="form">
+				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
+					<h:outputLabel value="节点"></h:outputLabel>
+					<h:outputText value="#{feeConfigHome.instance.feePoint}"></h:outputText>
+
+					<h:outputLabel value="费用类型"></h:outputLabel>
+					<h:outputText value="#{feeConfigHome.instance.feeType}"></h:outputText>
+
+					<h:outputLabel value="影响因子"></h:outputLabel>
+					<h:outputText value="#{feeConfigHome.instance.factor}"></h:outputText>
+
+					<h:outputLabel value="影响因子值"></h:outputLabel>
+					<h:outputText value="#{feeConfigHome.instance.factorValue}"></h:outputText>
+
+					<h:outputLabel value="费"></h:outputLabel>
+					<h:inputText id="fee" required="true" label="费率"
+						value="#{feeConfigHome.instance.fee}">
+						<f:convertNumber minIntegerDigits="1" maxFractionDigits="10"/>
+					</h:inputText>
+
+					<h:outputLabel value="费用上限"></h:outputLabel>
+					<h:inputText value="#{feeConfigHome.instance.feeUpperLimit}"></h:inputText>
+
+					<h:outputLabel value="区间上限（小于）"></h:outputLabel>
+					<h:inputText value="#{feeConfigHome.instance.intervalUpperLimit}">
+						<f:convertNumber minIntegerDigits="1" />
+					</h:inputText>
+
+					<h:outputLabel value="区间下限（大于等于）"></h:outputLabel>
+					<h:inputText value="#{feeConfigHome.instance.intervalLowerLimit}">
+						<f:convertNumber minIntegerDigits="1" />
+					</h:inputText>
+					<h:outputLabel value="收费类型"></h:outputLabel>
+					<h:inputText value="#{feeConfigHome.instance.operateMode}">
+					</h:inputText>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+					<h:inputTextarea value="#{feeConfigHome.instance.description}"
+						style="width:600px;height:60px;"></h:inputTextarea>
+
+
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton action="#{feeConfigHome.save}"
+							value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+					</ui:fragment>
+				</h:panelGrid>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+

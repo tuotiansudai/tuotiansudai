@@ -1,0 +1,73 @@
+<!-- 
+
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <div id="main-menu" class="navigation">
+        <ui:param name="requestURI" value="#{requestScope['javax.servlet.forward.request_uri']}"></ui:param>
+		<ul id="main-menu-links" class="links links-level-1 clearfix">
+			<ui:repeat var="mainMenu" value="#{menuList.mainMenus}" varStatus="status">
+            <ui:param name="menuUrl" value="#{appInfo.contextPath}#{mainMenu.url}"></ui:param>
+            <ui:param name="children" value="#{mainMenu.children}"></ui:param>
+            
+			<li class="menu-#{mainMenu.id} 
+                    #{status.first? 'first':''} #{status.last? 'last':''} #{not empty children ? 'parent' :''}
+                    #{requestURI == menuUrl ? 'active':''}
+                    ">
+                    <a href="#{appInfo.contextPath}#{mainMenu.url}">#{mainMenu.label}</a>
+                    <ui:fragment rendered="#{mainMenu.expanded == '1'}">
+                    <ul class="links links-level-2 clearfix">
+			            <ui:repeat var="child" value="#{children}" varStatus="status">
+			            <ui:param name="menuUrl" value="#{appInfo.contextPath}#{child.url}"></ui:param>
+			            <ui:param name="children" value="#{child.children}"></ui:param>
+			            
+			            <li class="menu-#{child.id} 
+			                    #{status.first? 'first':''} #{status.last? 'last':''} #{not empty children ? 'parent' :''}
+			                    #{requestURI == menuUrl ? 'active':''}
+			                    ">
+			                    <a href="#{appInfo.contextPath}#{child.url}">#{child.label}</a>
+                                <ui:fragment rendered="#{child.expanded == '1'}">			                    
+			                    <ul class="links links-level-3 clearfix">
+			                        <ui:repeat var="child" value="#{children}" varStatus="status">
+			                        <ui:param name="menuUrl" value="#{appInfo.contextPath}#{child.url}"></ui:param>
+			                        <ui:param name="children" value="#{child.children}"></ui:param>
+			                        
+			                        <li class="menu-#{child.id} 
+			                                #{status.first? 'first':''} #{status.last? 'last':''} #{not empty children ? 'parent' :''}
+			                                #{requestURI == menuUrl ? 'active':''}
+			                                ">
+			                                <a href="#{appInfo.contextPath}#{child.url}">#{child.label}</a>
+			                                <ui:fragment rendered="#{child.expanded == '1'}">
+			                                <ul class="links links-level-4 clearfix">
+			                                    <ui:repeat var="child" value="#{children}" varStatus="status">
+			                                    <ui:param name="menuUrl" value="#{appInfo.contextPath}#{child.url}"></ui:param>
+			                                    <ui:param name="children" value="#{child.children}"></ui:param>
+			                                    
+			                                    <li class="menu-#{child.id} 
+			                                            #{status.first? 'first':''} #{status.last? 'last':''} #{not empty children ? 'parent' :''}
+			                                            #{requestURI == menuUrl ? 'active':''}
+			                                            ">
+			                                            <a href="#{appInfo.contextPath}#{child.url}">#{child.label}</a>
+			                                    </li>
+			                                    </ui:repeat>
+			                                    
+			                                </ul><!-- end level4 -->
+			                                </ui:fragment>
+			                        </li>
+			                        </ui:repeat>
+			                    </ul><!-- end level3 -->
+			                    </ui:fragment>
+			            </li>
+			            </ui:repeat>
+			        </ul><!-- end level2 -->
+			        </ui:fragment>
+            </li>
+            </ui:repeat>
+		</ul>
+	</div>
+</f:view>

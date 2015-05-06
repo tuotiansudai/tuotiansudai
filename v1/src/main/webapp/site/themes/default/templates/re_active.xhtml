@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/member_register.css" />
+		<style>
+.re_active_link a {
+	color: #896724;
+	text-decoration: underline;
+	float: left;
+	font-size: 18px;
+	margin-top: 68px;
+}
+
+.re_active_link {
+	width: 160px;
+	margin-left: 40px;
+}
+</style>
+
+		<div class="Layout">
+			<div class="dl-left">
+				<img src="#{tplVars.themeImagePath}/login_bg.jpg" />
+			</div>
+			<f:event type="preRenderComponent"
+				listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+			<h:form>
+				<div class="dl-right">
+					<div class="re_active_link">
+						<p>
+							<a id="jihuo" href="#{emailUtil.getUrlByEmail(userHome.instance.email)}"
+								target="_blank">进入邮箱激活</a>
+						</p>
+
+						<p>
+							<h:commandLink styleClass="go_button"
+								action="#{userHome.sendActiveEmailAgain}" value="重新发送激活邮件">
+							</h:commandLink>
+						</p>
+						<p>
+							<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+								<a href="#{path}/usermember/logout">注销</a>
+							</ui:fragment>
+						</p>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

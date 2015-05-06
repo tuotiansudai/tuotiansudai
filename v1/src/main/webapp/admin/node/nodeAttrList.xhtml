@@ -1,0 +1,74 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} #{nodeMsg.nodeAttrManageLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{nodeMsg.addNodeAttrLabel}"
+						outcome="/admin/node/nodeAttrEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId" value="#{nodeAttrList.example.id}"></h:inputText>
+					<h:inputText id="searchName" value="#{nodeAttrList.example.name}"></h:inputText>
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+				<p:watermark for="searchName" value="#{commonMsg.nameLabel}"></p:watermark>
+
+				<p:spacer></p:spacer>
+				<p:dataTable id="dataTable" value="#{nodeAttrList.lazyModel}"
+					var="nodeAttr" paginator="true" paginatorPosition="bottom"
+					rows="15" emptyMessage="#{commonMsg.noResultMsg}" lazy="true"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}">
+					<p:column headerText="#{commonMsg.IDLabel }"
+						sortBy="nodeAttr.id">
+						<h:outputText value="#{nodeAttr.id}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{menuMsg.menuTypeLabel }"
+						sortBy="nodeAttr.name">
+						<h:outputText value="#{nodeAttr.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.descriptionLabel}">
+						<h:outputText value="#{nodeAttr.description}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.actionLabel}">
+						<h:link value="#{commonMsg.editLabel}"
+							outcome="/admin/node/nodeAttrEdit?id=#{nodeAttr.id}"></h:link> |
+                    <a href="javascript:void(0)"
+							onclick="$('#form\\:deleteId').val('#{nodeAttr.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a>
+					</p:column>
+				</p:dataTable>
+				<p:confirmDialog width="500" id="confirmDialog"
+					widgetVar="confirmDialog" severity="alert"
+					header="#{commonMsg.confirmDetele}"
+					message="#{nodeMsg.deleteNodeAttrInfo}">
+					<h:inputHidden value="#{nodeAttrHome.id}" id="deleteId"></h:inputHidden>
+					<p:commandButton id="confirm" value="#{commonMsg.confirmLabel}"
+						action="#{nodeAttrHome.delete}" ajax="false"
+						style="margin-left:180px;" />
+					<p:commandButton id="decline" value="#{commonMsg.cancelLabel}"
+						onclick="confirmDialog.hide()" type="button" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,90 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">
+		<!--Layout Start-->
+		<div id="Layout">
+			<ul class="G-nav W-nav">
+				<li><a href="#{path}/backList" title="黑名单">黑名单</a></li>
+				<li class="hover"><a href="#{path}/overdueList" title="逾期列表">逾期列表</a></li>
+			</ul>
+			<!--黑名单-->
+			<div class="black-list">
+				<div class="tishi y-list">
+					1. 逾期借款人属于暂时资金周转困难，但其具有如车辆或房产等抵押物抵押在汇丰担保公司，并且积极配合催收人员说明情况及努力筹措资金进行
+					还款。浙昌贷本着治病救人，帮助借款人解决资金困难的初衷，对于这类借款人不归入坏账黑名单。<br /> 2.
+					浙昌贷及汇丰担保将随时跟进逾期借款人的相关情况，以期其尽快还清款项。<br /> 3. 请注意，逾期数据不包含黑名单借款者数据。
+				</div>
+				<dl class="yq">
+					<dt>
+						<span><h:outputLabel value="#{overdueHome.badDebtratePercent()}">
+						     </h:outputLabel>%</span>坏账率：
+					</dt>
+					<dd>
+						<span><h:outputLabel value="#{overdueHome.totalBadDebts()}">
+						            <f:convertNumber minFractionDigits="2" pattern="##,###"/>
+						     </h:outputLabel></span>坏账总本息：
+					</dd>
+					<dd>
+						<span><h:outputLabel value="#{overdueHome.totalRepayMoney()}">
+						           <f:convertNumber minFractionDigits="2" pattern="##,###"/>
+						     </h:outputLabel></span>成交总金额：
+					</dd>
+				</dl>
+				<div class="clear"></div>
+				<div class="hmd y-hmd">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="top-title">
+							<td width="20%">用户名</td>
+							<td width="10%">逾期未还本息(￥)</td>
+							<td width="10%">逾期未还(期)</td>
+							<td width="10%">网站垫付(期)</td>
+							<td width="10%">逾期最大天数(天)</td>
+							<td width="40%">备注</td>
+						</tr>
+						<ui:repeat var="repay" value="#{overdueHome.allOverdueRepays()}" varStatus="i">
+						<tr class="top-img #{(i.index+1)%2==0 ? 'top-hover':''}">
+							<td height="25">#{repay.user.username}</td>
+							<td>
+								<p><h:outputLabel value="#{overdueHome.totalBadDebtsByUser(repay.user.id)}">
+						           <f:convertNumber minFractionDigits="2" pattern="##,###"/>
+						        </h:outputLabel></p>
+							</td>
+							<td>
+								<p>#{overdueHome.totalOverdueByUser(repay.user.id)}</p>
+							</td>
+							<td>
+								<p>0</p>
+							</td>
+							<td>
+								<p>#{overdueHome.maxOverdueDaysByUser(repay.user.id)}</p>
+							</td>
+							<td>
+								<p>
+									<a href="#">查看逾期借款</a>
+								</p>
+							</td>
+						</tr>
+						</ui:repeat>
+					</table>
+				</div>
+				<!--分页-->
+<!-- 				<div class="page"> -->
+<!-- 					<span>上一页</span> <span>1</span> <a href="#">2</a> <a href="#">3</a> -->
+<!-- 					<a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> -->
+<!-- 					<a href="#">8</a> <a href="#">下一页</a> -->
+<!-- 				</div> -->
+			</div>
+			<div class="clear"></div>
+		</div>
+		<!--Layout End-->
+	</ui:define>
+</ui:composition>

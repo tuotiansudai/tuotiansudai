@@ -1,0 +1,98 @@
+.circle_bot {
+	clear: both;
+	font: 12px/1.125 Arial;
+	/*width: 150px;*/
+	/*font-weight: bold;*/
+	text-align: center;
+	line-height: 20px;
+	white-space:nowrap;
+	z-index: 1000;
+}
+
+.circle_bot .s_b b,.circle_bot span.s_i i {
+	font-size: 1px;
+	line-height: 1px;
+	overflow: hidden;
+	display: block;
+	clear: both;
+}
+
+.circle_bot .s_b b,.circle_bot span.s_i i,.circle_bot .info {
+	/*background: #FCEBBD;*/
+	background: #fff;
+	border: #CCC solid;
+	word-wrap: break-word;
+	word-break: normal;
+	filter: alpha(opacity = 50);
+	opacity: 0.8;
+	-moz-opacity: 0.8;
+}
+
+.circle_bot b.b1 {
+	border-width: 1px 0 0 0;
+	margin: 0 2px;
+	height: 0px;
+}
+
+.circle_bot b.b2 {
+	border-width: 0 1px;
+	margin: 0 1px;
+	height: 1px;
+}
+
+.circle_bot span.s_i i {
+	height: 1px;
+	border-width: 0 1px;
+}
+
+.circle_bot .i1 {
+	width: 0px;
+	margin-left: 13px;
+}
+
+.circle_bot .i2 {
+	width: 2px;
+	margin-left: 12px;
+}
+
+.circle_bot .i3 {
+	width: 4px;
+	margin-left: 11px;
+}
+
+.circle_bot .i4 {
+	width: 6px;
+	margin-left: 10px;
+}
+
+.circle_bot .i5 {
+	width: 8px;
+	margin-left: 9px;
+}
+
+.circle_bot .i6 {
+	width: 10px;
+	margin-left: 8px;
+}
+
+.circle_bot .i7 {
+	width: 12px;
+	margin-left: 7px;
+}
+
+.circle_bot .i8 {
+	width: 14px;
+	margin-left: 6px;
+}
+
+.circle_bot .i9 {
+	width: 16px;
+	margin-left: 5px;
+	margin-top: -1px;
+}
+
+.circle_bot .info {
+	border-width: 0 1px;
+	color: #CC0F13;
+	padding: 4px;
+}

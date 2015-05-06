@@ -1,0 +1,31 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+    <ui:param name="displayType" value="#{displayType == 'select' ? 'select' : 'list'}"></ui:param>
+    <div class="language-select-div">
+        <ui:param name="languages" value="#{languageList.languages}"></ui:param>
+        <ui:param name="currentLocale" value="#{localeSelector.locale.language}_#{localeSelector.locale.country}"></ui:param>
+        <h:form >
+	        <ui:fragment rendered="#{displayType == 'select'}">
+	            <h:selectOneMenu id="language-select" valueChangeListener="#{localeSelector.changeLocale}" onchange="submit();">
+	                <f:selectItem itemLabel="" itemValue=""/>
+	                <f:selectItems value="#{languages}" var="lang" 
+	                    itemLabel="#{lang.name}" itemValue="#{lang.id}"/>
+	            </h:selectOneMenu>
+	            
+	        </ui:fragment>
+	        <ui:fragment rendered="#{displayType != 'select'}">
+	            <ul>
+	            <ui:repeat var="lang" value="#{languages}">
+	                <li class="#{lang.id == currentLocale ? 'active' :''}"><h:commandLink value="#{lang.name}" action="#{localeSelector.changeLocale(lang.id)}"></h:commandLink></li>
+	            </ui:repeat>
+	            </ul>
+	        </ui:fragment>
+        </h:form>
+        
+    </div>
+    
+</ui:fragment>

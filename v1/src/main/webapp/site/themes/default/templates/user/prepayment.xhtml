@@ -1,0 +1,55 @@
+<ui:composition template="center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="loanId" value="#{repaymentHome.prepaymentLoanId}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="right">
+		<style>
+.clo1 {
+	width: 80px;
+}
+
+.clo2 {
+	width: 240px;
+}
+</style>
+		<div class="right">
+			<ui:include src="userCenterTop.xhtml"></ui:include>
+			<h:form >
+				<div class="accou">
+					<h2>提前还款</h2>
+					<h:panelGrid columns="3" columnClasses="clo1,clo2">
+						<h:outputLabel value="借款ID"></h:outputLabel>
+						<h:outputLabel value="#{repaymentHome.prepaymentLoanId}">
+						</h:outputLabel>
+						<h:outputLabel></h:outputLabel>
+
+						<h:outputLabel value="还款金额"></h:outputLabel>
+						<h:inputText label="还款金额" styleClass="text" id="actualMoney"
+							required="true" value="#{repaymentHome.prepaymentMoney}">
+							<p:ajax event="blur" update="actualMoneyMsg"></p:ajax>
+							<archer:numberValidator precision="2" required="true"></archer:numberValidator>
+							<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+						</h:inputText>
+						<h:message id="actualMoneyMsg" for="actualMoney"
+							styleClass="error-msg"></h:message>
+
+						<h:outputLabel value=" "></h:outputLabel>
+						<h:commandButton value="还款" styleClass="button"
+							action="#{repaymentHome.prepayment}"></h:commandButton>
+					</h:panelGrid>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+
+</ui:composition>

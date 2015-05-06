@@ -1,0 +1,44 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	
+	<!--行业资讯-->
+	<div class="news">
+	  <h2>行业资讯 <span><a href="#{request.contextPath}/term/hangyezixun">更多>></a></span></h2>
+	  <ul>
+	    <ui:repeat var="item" value="#{nodeList.getNodes('hangyezixun',0,6).data}">
+	    	<li><a href="#{request.contextPath}/node/hangyezixun/#{item.id}" title="#{item.title}">#{item.title}</a></li>
+	    </ui:repeat>
+	  </ul>
+	 
+	</div>
+	<!--理财热点-->
+	<div class="news licai">
+	  <h2>理财热点 <span><a href="#{request.contextPath}/term/licairedian">更多>></a></span></h2>
+	  <ul>
+	    <ui:repeat var="item" value="#{nodeList.getNodes('licairedian',0,6).data}">
+	    	<li><a href="#{request.contextPath}/node/licairedian/#{item.id}" title="#{item.title}">#{item.title}</a></li>
+	    </ui:repeat>
+	  </ul>
+	 
+	</div>
+	<!--法律法规-->
+	<div class="news licai fagui">
+	  <h2>法律法规<span><a href="#{request.contextPath}/term/falvfagui">更多>></a></span> </h2>
+	
+	  <dl>
+	    <ui:repeat var="item" value="#{nodeList.getNodes('falvfagui',0,5).data}" varStatus="status">
+	    	<ui:fragment rendered="#{status.first}">
+	    		<dt><a href="#{request.contextPath}/node/falvfagui/#{item.id}">#{stringHome.ellipsis(item.description,52)}</a></dt>
+	    	</ui:fragment>
+	    	<ui:fragment rendered="#{!status.first}">
+	     	<dd><a href="#{request.contextPath}/node/falvfagui/#{item.id}" title="#{item.title}">#{item.title}</a></dd>
+	    	</ui:fragment>
+	    </ui:repeat>
+	  </dl>
+	</div>
+</ui:component>

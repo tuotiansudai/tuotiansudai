@@ -1,0 +1,162 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<!-- 投资计算器 -->
+	
+	<ui:define name="content">
+		<script type="text/javascript">
+			$(function(){
+				$('#form\\:money').val('#{param.money}');
+				$('#form\\:type').val('#{param.type}');
+				$('#form\\:rate').val('#{param.rate}');
+				$('#form\\:deadline').val('#{param.deadline}');
+			});
+			
+		</script>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/invest-calculator.css" />
+		<div class="bd" style="padding-bottom:70px;">
+			<div class="ui-title">
+				<h2>收益计算器</h2>
+			</div>
+			<div class="calculator-form clearfix">
+				<h:form id="form">
+					<ul class="fl">
+						<li>
+							<p class="calculator-form-item clearfix">
+								<label>投资金额：</label>
+								<h:inputText id="money" styleClass="ui-text ffA" label="投资金额"
+									required="true" value="#{loanHome.instance.loanMoney}">
+									<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+									<archer:validateNumber precision="0" cardinalNumber="100"></archer:validateNumber>
+									<f:ajax event="blur"></f:ajax>
+								</h:inputText>
+								<span>&#160;元</span>
+							</p>
+							<p class="error em" style="display:none"></p>
+						</li>
+						<li class="mrn">
+							<p class="calculator-form-item clearfix">
+								<label class="fl">标的类型：</label>
+								<h:selectOneMenu id="type" value="#{loanHome.instance.type}"
+									styleClass="ui-select fl" required="true"
+									converter="archer.EntityConverter" label="标的类型">
+									<f:selectItem itemLabel="请选择" noSelectionOption="true" />
+									<f:selectItems value="#{loanTypeList.allResultList}" var="type"
+										itemLabel="#{type.name}" itemValue="#{type}" />
+									<!-- 									<f:ajax render="typeDesc"></f:ajax> -->
+								</h:selectOneMenu>
+							</p>
+							<p class="error em" style="display:none"></p>
+						</li>
+						<li>
+							<p class="calculator-form-item clearfix">
+								<label>年化收益：</label>
+								<h:inputText id="rate" label="年化收益" required="true"
+									styleClass="ui-text ffA"
+									value="#{loanHome.instance.ratePercent}">
+									<archer:validateNumber precision="2"></archer:validateNumber>
+									<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
+									<f:ajax event="blur" render="@this"></f:ajax>
+								</h:inputText>
+								<span>&#160;%</span>
+							</p>
+							<p class="error em" style="display:none"></p>
+						</li>
+						<li class="mrn">
+							<div style="display:block" id="paymentMonth">
+								<p class="calculator-form-item clearfix">
+									<label>投资期限：</label>
+									<h:inputText id="deadline" value="#{loanHome.instance.deadline}" label="投资期限"
+										required="true" styleClass="ui-text ffA">
+										<f:ajax event="blur" render="@this"></f:ajax>
+										<f:validateLongRange minimum="1"></f:validateLongRange>
+									</h:inputText>
+									<span>&#160;期</span>
+								</p>
+								<p class="error em" style="display:none"></p>
+							</div>
+
+						</li>
+					</ul>
+					<div class="fr">
+						<input type="reset" class="ui-btn-1" value="重置" />
+						<h:commandButton styleClass="ui-btn" value="开始计算">
+							<f:setPropertyActionListener value="#{now}"
+								target="#{loanHome.instance.interestBeginTime}" />
+							<f:ajax render=":result" execute="@form"></f:ajax>
+						</h:commandButton>
+					</div>
+				</h:form>
+			</div>
+			<div class="ui-title bbn">
+				<h2>计算结果</h2>
+			</div>
+			<h:panelGroup id="result">
+				<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+				<table class="c-interest-list-1 bbn" border="1" cellpadding="2"
+					cellspacing="0">
+					<thead id="interest_list_1">
+						<tr>
+							<th class="fw-n brn tal">投资金额：<span class="ffA"><h:outputText
+										value="#{loanHome.instance.loanMoney}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="0" />
+									</h:outputText></span>元
+							</th>
+							<th class="fw-n">计息时长：<span class="ffA">#{loan.deadline*loan.type.repayTimePeriod}</span>#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
+							</th>
+							<th class="fw-n">投资到期可获得总收益：<em class="ffA strong"><h:outputText
+										value="#{loanCalculator.calculateAnticipatedInterest(loanHome.instance)}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2" />
+									</h:outputText> </em>元
+							</th>
+						</tr>
+					</thead>
+				</table>
+
+				<table class="c-interest-list-1" border="0" cellpadding="2"
+					cellspacing="0">
+					<tr>
+						<th class="bln">还款日期</th>
+						<th>应收本息(元)</th>
+						<th>应收利息(元)</th>
+						<th class="brn">应收本金(元)</th>
+						<!-- 						<th class="brn">剩余本金(元)</th> -->
+					</tr>
+					<tbody id="interest_list_2">
+						<ui:repeat var="ir"
+							value="#{loanCalculator.calculateAnticipatedRepays(loanHome.instance)}">
+							<tr>
+								<td class="bln">&#160;&#160;<h:outputText
+										value="#{ir.repayDay}">
+										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+									</h:outputText></td>
+								<td><h:outputText value="#{ir.corpus+ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td><h:outputText value="#{ir.interest}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+								<td class="brn"><h:outputText value="#{ir.corpus}">
+										<f:convertNumber minIntegerDigits="1" maxFractionDigits="2"
+											minFractionDigits="2" />
+									</h:outputText></td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+			</h:panelGroup>
+		</div>
+	</ui:define>
+</ui:composition>

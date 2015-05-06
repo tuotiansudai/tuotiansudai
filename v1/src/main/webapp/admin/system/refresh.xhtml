@@ -1,0 +1,38 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:panel header="系统刷新">
+				<h:form>
+					<p:commandButton action="#{cacheManager.clearCache}"
+						value="清除数据库缓存" />
+					<!-- 
+		            <p:commandButton action="#{luceneHome.rebuildIndex}" value="重建索引"/>
+                    <p:commandButton action="#{appInfo.refresh}" value="刷新系统(开发专用)"/>
+                    <p:commandButton action="#{testBean.test13}" ajax="true" value="测试">
+                    </p:commandButton>
+					<p:commandButton value="Click"
+						actionListener="#{testBean.increment}" />
+                     -->
+				</h:form>
+			</p:panel>
+		</div>
+<!-- 		<p:socket channel="/counter" > -->
+<!-- 					<h:outputText value="#{testBean.count}" styleClass="display" /> -->
+<!-- 		</p:socket> -->
+<!-- 		<script type="text/javascript"> -->
+<!-- 			function handleMessage(data) { -->
+<!-- 				alert(123); -->
+<!-- 				$('.display').html(data); -->
+<!-- 			} -->
+<!-- 		</script> -->
+	</ui:define>
+</ui:composition>

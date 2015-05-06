@@ -1,0 +1,97 @@
+<ui:composition template="../center.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/loan/repaying"></ui:param>
+	<ui:define name="center_right">
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="../userCenterTop.xhtml"></ui:include>
+				<ui:include src="top_include.xhtml"></ui:include>
+			</div>
+			<div class="h20"></div>
+			<h:form>
+				<h:panelGroup id="dataTable">
+					<div class="hd">
+						<ul class="slidings">
+							<li id="four1"><h:link outcome="pretty:user_loan_repaying"
+									value="还款中"></h:link></li>
+							<li id="four3"><h:link outcome="pretty:user_loan_raising"
+									value="募集中"></h:link></li>
+							<li id="four2"><h:link outcome="pretty:user_loan_finished"
+									value="已结清"></h:link></li>
+							<li id="four4" class="hover last"><h:link
+									outcome="pretty:user_loan_fail" value="流标"></h:link></li>
+						</ul>
+						<div id="con_four_1" class="slidnr">
+							<f:event type="preRenderComponent"
+								listener="#{loanList.example.setStatus(LoanStatus.CANCEL)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.setPageSize(7)}"></f:event>
+							<f:event type="preRenderComponent"
+								listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
+							<table width="786" border="0" cellspacing="0" cellpadding="0"
+								class="tab">
+								<tr>
+									<td class="tab01 tab04">借款标题</td>
+									<td class="tab01">借款类型</td>
+									<td class="tab01">借款金额</td>
+									<td class="tab01">流标时间</td>
+									<td class="tab01">状态</td>
+									<td class="tab01">备注</td>
+								</tr>
+								<ui:repeat var="loan" value="#{loanList.lazyModelData}"
+									varStatus="status">
+									<tr class="#{status.index%2==0?'tab02':''} bg">
+										<td class="tab02 tab04 tab06" style="width: 200px;"><a
+											href="#{path}/loan/#{loan.id}" target="_blank"
+											title="#{loan.name}(#{loan.id})">#{stringHome.ellipsis(loan.name,13)}</a>
+											<br />利率：<h:outputText value="#{loan.rate}">
+												<f:convertNumber type="percent" minFractionDigits="2" />
+											</h:outputText>
+											期限：#{loan.deadline*loan.type.repayTimePeriod}(#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)})
+										</td>
+
+										<td class="tab02 tab06"><LABEL title="#{loan.type.name}">#{stringHome.ellipsis(loan.type.name,10)}</LABEL>
+										</td>
+
+										<td class="tab02 tab06"><h:outputText
+												value="#{loan.loanMoney}">
+												<f:convertNumber maxFractionDigits="2" />
+											</h:outputText></td>
+
+										<td class="tab02 tab06"><h:outputText
+												value="#{loan.cancelTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText><br /> <h:outputText value="#{loan.cancelTime}">
+												<f:convertDateTime pattern="HH:mm:ss" timeZone="GMT+8"
+													locale="cn" />
+											</h:outputText></td>
+
+										<td class="tab02 tab06">#{dictUtil.getValue('loan',loan.status)}</td>
+										<td class="tab02 tab06">#{loan.verifyMessage}</td>
+									</tr>
+								</ui:repeat>
+							</table>
+						</div>
+					</div>
+					<div class="page_box">
+						<div class="page_r">
+							<ui:include src="paging_include.xhtml"></ui:include>
+						</div>
+					</div>
+				</h:panelGroup>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+	</ui:define>
+</ui:composition>

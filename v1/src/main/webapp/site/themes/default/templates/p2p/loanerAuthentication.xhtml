@@ -1,0 +1,419 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{borrowerAuthenticationHome.id}"></f:viewParam>
+	</f:metadata>
+
+	<ui:define name="content">
+		<sec:ifNotGranted roles="INVESTOR">
+			<script>
+				$.dialog
+						.alert(
+								'请先进行实名认证!',
+								function() {
+									window.location.href = "#{path}/user/get_investor_permission";
+								});
+			</script>
+		</sec:ifNotGranted>
+		<!-- 	已实名认证 -->
+		<sec:ifAllGranted roles="INVESTOR">
+			<f:event type="preRenderView"
+				listener="#{borrowerInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
+			<ui:fragment
+				rendered="#{empty borrowerInfoHome.instance.borrowerAdditionalInfo}">
+				<script>
+					$.dialog
+							.alert(
+									'请先保存上一步操作!',
+									function() {
+										window.location.href = "#{path}/user/loanerAdditionInfo";
+									});
+				</script>
+			</ui:fragment>
+
+			<link href="#{tplVars.themeStylePath}/form.css" type="text/css"
+				rel="stylesheet" />
+			<h:outputScript library="primefaces" name="jquery/jquery-plugins.js"
+				target="head" />
+			<h:outputStylesheet library="primefaces" name="primefaces.css"
+				target="head" />
+			<script type="text/javascript"
+				src="#{path}/include/js/fileupload.less.js"></script>
+			<link type="text/css" rel="stylesheet"
+				href="#{path}/include/css/fileupload.less.css" />
+			<link type="text/css" rel="stylesheet"
+				href="#{tplVars.themeStylePath}/loanerAuthentication.css" />
+
+			<h:form>
+				<div class="form-top">
+					<p>
+						<a class="color9a9393 fontsize18" href="#">我要借款</a>&gt;<a
+							class="color57 fontsize14">提交表单申请</a>
+					</p>
+					<div class="jd-bar">
+						<span class="buzhou1 bz-now"><label
+							class="blueround blueround01">1</label>填写借款申请</span><span
+							class="buzhou2 bz-now"><label
+							class="blueround blueround02">2</label>填写借款信息</span><span
+							class="buzhou3">审核</span><span class="buzhou4">筹集借款</span><span
+							class="buzhou5">获得借款</span>
+					</div>
+				</div>
+				<div class="info-content">
+					<div class="form-left fl">
+						<!--     	<p class="pfont">信息完整度<span class="bg2">87%</span></p> -->
+						<!--         <p class="pfont"><em><b></b></em></p> -->
+						<ul class="info-list">
+							<li class="bg-li"><a class="first-li"
+								href="#{path}/user/loanerPersonInfo">个人信息<i></i></a></li>
+							<li><a href="#{path}/user/loanerAdditionInfo">工作财务信息<i></i></a></li>
+							<li><a class="last-li"
+								href="#{path}/user/loanerAuthentication">认证资料<i></i></a></li>
+						</ul>
+					</div>
+					<div class="form-right fr">
+						<h3>认证资料</h3>
+						<p class="warmp">
+							<i></i>温馨提示：资料越全，审核通过几率越高。
+						</p>
+						<p class="pdleft50 fontsize16 color3e">必要上传资料</p>
+						<ul class="rzul01">
+							<li>
+								<!-- 	手持身份证照片 --> <h:panelGroup id="idCardPhoto">
+									<ui:param name="emptyIdCardPhoto"
+										value="#{empty borrowerAuthenticationHome.instance.idCardPhoto or empty borrowerAuthenticationHome.instance.idCardPhoto.pictures}"></ui:param>
+									<span class="fontsize14 color3e">手持身份证照片</span>
+									<span> <p:graphicImage id="idCardPhotoImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.idCardPhoto.pictures.get(borrowerAuthenticationHome.instance.idCardPhoto.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.idCardPhoto}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic1.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.idCardPhoto}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="idCardPhoto"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.idCardPhotoUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.idCardPhoto.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.idCardPhoto}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.idCardPhotoClean}"
+												render="idCardPhoto"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup>
+							</li>
+							<!-- 	银行征信报告 -->
+							<li><h:panelGroup id="bankCreditReport">
+									<ui:param name="emptyBankCreditReport"
+										value="#{empty borrowerAuthenticationHome.instance.bankCreditReport or empty borrowerAuthenticationHome.instance.bankCreditReport.pictures}"></ui:param>
+									<span class="fontsize14 color3e">银行征信报告</span>
+									<span> <p:graphicImage id="bankCreditReportImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.bankCreditReport.pictures.get(borrowerAuthenticationHome.instance.bankCreditReport.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.bankCreditReport}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic1.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.bankCreditReport}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="bankCreditReport"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.bankCreditReportUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.bankCreditReport.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.bankCreditReport}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.bankCreditReportClean}"
+												render="bankCreditReport"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+							<!-- 学历证书扫描件-->
+							<li><h:panelGroup id="diplomaScan">
+									<ui:param name="emptyDiplomaScan"
+										value="#{empty borrowerAuthenticationHome.instance.diplomaScan or empty borrowerAuthenticationHome.instance.diplomaScan.pictures}"></ui:param>
+									<span class="fontsize14 color3e">学历证书扫描件</span>
+									<span> <p:graphicImage id="diplomaScanImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.diplomaScan.pictures.get(borrowerAuthenticationHome.instance.diplomaScan.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.diplomaScan}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic3.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.diplomaScan}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="diplomaScan"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.diplomaScanUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.diplomaScan.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.diplomaScan}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.diplomaScanClean}"
+												render="diplomaScan"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	收入证明 -->
+							<li><h:panelGroup id="proofEarnings">
+									<ui:param name="emptyProofEarnings"
+										value="#{empty borrowerAuthenticationHome.instance.proofEarnings or empty borrowerAuthenticationHome.instance.proofEarnings.pictures}"></ui:param>
+									<span class="fontsize14 color3e">收入证明</span>
+									<span> <p:graphicImage id="proofEarningsImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.proofEarnings.pictures.get(borrowerAuthenticationHome.instance.proofEarnings.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.proofEarnings}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic4.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.proofEarnings}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="proofEarnings"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.proofEarningsUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.proofEarnings.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.proofEarnings}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.proofEarningsClean}"
+												render="proofEarnings"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+							
+						</ul>
+						<p class="pdleft50 fontsize16 color3e">可选上传资料</p>
+						<ul class="rzul01">
+							<!-- 	账户流水扫描件 -->
+							<li><h:panelGroup id="accountFlow">
+									<ui:param name="emptyAccountFlow"
+										value="#{empty borrowerAuthenticationHome.instance.accountFlow or empty borrowerAuthenticationHome.instance.accountFlow.pictures}"></ui:param>
+									<span class="fontsize14 color3e">账户流水扫描件</span>
+									<span> <p:graphicImage id="accountFlowImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.accountFlow.pictures.get(borrowerAuthenticationHome.instance.accountFlow.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.accountFlow}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic5.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.accountFlow}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="accountFlow"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.accountFlowUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.accountFlow.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.accountFlow}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.accountFlowClean}"
+												render="accountFlow"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	工作证件扫描件 -->
+							<li><h:panelGroup id="workCertificate">
+									<ui:param name="emptyWorkCertificate"
+										value="#{empty borrowerAuthenticationHome.instance.workCertificate or empty borrowerAuthenticationHome.instance.workCertificate.pictures}"></ui:param>
+									<span class="fontsize14 color3e">工作证件扫描件</span>
+									<span> <p:graphicImage id="workCertificateImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.workCertificate.pictures.get(borrowerAuthenticationHome.instance.workCertificate.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.workCertificate}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic6.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.workCertificate}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="workCertificate"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.workCertificateUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.workCertificate.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.workCertificate}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.workCertificateClean}"
+												render="workCertificate"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	房产证明 -->
+							<li><h:panelGroup id="houseInfo">
+									<ui:param name="emptyHouseInfo"
+										value="#{empty borrowerAuthenticationHome.instance.houseInfo or empty borrowerAuthenticationHome.instance.houseInfo.pictures}"></ui:param>
+									<span class="fontsize14 color3e">房产证明</span>
+									<span> <p:graphicImage id="houseInfoImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.houseInfo.pictures.get(borrowerAuthenticationHome.instance.houseInfo.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.houseInfo}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic7.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.houseInfo}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="houseInfo"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.houseInfoUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.houseInfo.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.houseInfo}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.houseInfoClean}"
+												render="houseInfo"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	车辆证明 -->
+							<li><h:panelGroup id="carInfo">
+									<ui:param name="emptyCarInfo"
+										value="#{empty borrowerAuthenticationHome.instance.carInfo or empty borrowerAuthenticationHome.instance.carInfo.pictures}"></ui:param>
+									<span class="fontsize14 color3e">车辆证明</span>
+									<span> <p:graphicImage id="carInfoImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.carInfo.pictures.get(borrowerAuthenticationHome.instance.carInfo.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.carInfo}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic8.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.carInfo}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="carInfo"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.carInfoUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.carInfo.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.carInfo}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.carInfoClean}"
+												render="carInfo"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	企业营业执照 -->
+							<li><h:panelGroup id="businessLicense">
+									<ui:param name="emptyBusinessLicense"
+										value="#{empty borrowerAuthenticationHome.instance.businessLicense or empty borrowerAuthenticationHome.instance.businessLicense.pictures}"></ui:param>
+									<span class="fontsize14 color3e">企业营业执照</span>
+									<span> <p:graphicImage id="businessLicenseImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.businessLicense.pictures.get(borrowerAuthenticationHome.instance.businessLicense.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.businessLicense}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic9.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.businessLicense}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="businessLicense"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.businessLicenseUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.businessLicense.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.businessLicense}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.businessLicenseClean}"
+												render="businessLicense"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								<!-- 	企业流水账户信息 -->
+							<li><h:panelGroup id="businessAccountFlow">
+									<ui:param name="emptyBusinessAccountFlow"
+										value="#{empty borrowerAuthenticationHome.instance.businessAccountFlow or empty borrowerAuthenticationHome.instance.businessAccountFlow.pictures}"></ui:param>
+									<span class="fontsize14 color3e">企业流水账户信息</span>
+									<span> <p:graphicImage id="businessAccountFlowImage"
+											styleClass="fixsize"
+											value="#{borrowerAuthenticationHome.instance.businessAccountFlow.pictures.get(borrowerAuthenticationHome.instance.businessAccountFlow.pictures.size()-1).picture}"
+											rendered="#{not empty borrowerAuthenticationHome.instance.businessAccountFlow}" />
+										<p:graphicImage value="/site/themes/default/images/rzpic1.png"
+											rendered="#{empty borrowerAuthenticationHome.instance.businessAccountFlow}" />
+									</span>
+
+									<span> <p:fileUpload dragDropSupport="true"
+											update="businessAccountFlow"
+											invalidFileMessage="#{commonMsg.invalidFileMessage}"
+											invalidSizeMessage="#{commonMsg['validator.SizeValidator.MAXIMUM500k']}"
+											label="添加" fileLimit="1"
+											fileUploadListener="#{borrowerAuthenticationHome.businessAccountFlowUpload}"
+											mode="advanced" auto="true" sizeLimit="500000"
+											allowTypes="/(\.)(gif|jpe?g|png|JPG|JPEG|GIF)$/" /> <h:commandLink
+											value="清除(#{borrowerAuthenticationHome.instance.businessAccountFlow.pictures.size()})"
+											styleClass="fontsize14 color2dbff1 clear-upload-photos"
+											disabled="#{empty borrowerAuthenticationHome.instance.businessAccountFlow}">
+											<f:ajax
+												listener="#{borrowerAuthenticationHome.businessAccountFlowClean}"
+												render="businessAccountFlow"></f:ajax>
+										</h:commandLink>
+									</span>
+
+								</h:panelGroup></li>
+								
+						</ul>
+						<p>
+							<span class="stxt marleft"></span><span>
+							<h:commandLink value="保存并继续" styleClass="save-btn"
+									action="#{borrowerAuthenticationHome.save}">
+								</h:commandLink>
+							</span>
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</h:form>
+		</sec:ifAllGranted>
+	</ui:define>
+</ui:composition>

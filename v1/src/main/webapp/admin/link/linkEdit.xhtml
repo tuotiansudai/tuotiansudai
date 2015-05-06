@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<f:metadata>
+	<f:viewParam name="id" value="#{linkHome.id}"></f:viewParam>
+</f:metadata>
+<ui:composition template="/admin/templates/ui.xhtml">
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar styleClass="admin-nav-toolbar">
+				<p:toolbarGroup>
+					<h:outputLabel
+						value="#{commonMsg.currentPositionLabel} #{linkMsg.editLabel}#{linkMsg.linkLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{commonMsg.manageLabel}#{linkMsg.linkLabel}"
+						outcome="/admin/link/linkList"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:spacer></p:spacer>
+
+			<h:form id="form">
+				<h:panelGrid id="panel" columns="2" columnClasses="col1,col2">
+					<h:outputLabel value="#{commonMsg.IDLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{linkHome.instance.id}"
+						label="#{commonMsg.IDLabel}" id="linkId" required="true"
+						readonly="#{not empty linkHome.instance.id}"></h:inputText>
+
+					<h:outputLabel value="#{commonMsg.nameLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{linkHome.instance.name}"></h:inputText>
+
+					<h:outputLabel value="#{linkMsg.linkTypeLabel}"></h:outputLabel>
+					<h:selectOneMenu value="#{linkHome.instance.type.id}">
+						<f:selectItems value="#{linkTypeHome.allLinkType}" var="type"
+							itemLabel="#{type.name}" itemValue="#{type.id}"></f:selectItems>
+					</h:selectOneMenu>
+
+					<h:outputLabel value="Logo"></h:outputLabel>
+					<ui:include src="/site/components/onePictureUpload.xhtml">
+					   <ui:param name="thumb" value="#{linkHome.instance.logo}"></ui:param>
+					</ui:include>
+
+					<h:outputLabel value="URL" styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{linkHome.instance.url}" required="true"
+						styleClass="form-input-long" label="URL"></h:inputText>
+
+					<h:outputLabel value="#{linkMsg.masterEmailLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:inputText value="#{linkHome.instance.masterEmail}"></h:inputText>
+
+					<h:outputLabel value="#{linkMsg.locationLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<h:selectOneMenu value="#{linkHome.instance.position}">
+						<f:selectItem itemLabel="#{linkMsg.mainPage}" itemValue="FRONT"></f:selectItem>
+						<f:selectItem itemLabel="#{linkMsg.subPage}" itemValue="INNER"></f:selectItem>
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{linkMsg.enableLabel}"></h:outputLabel>
+					<h:selectOneMenu value="#{linkHome.instance.status}">
+						<f:selectItem itemValue="1" itemLabel="#{linkMsg.enable}" />
+						<f:selectItem itemValue="0" itemLabel="#{linkMsg.disable}" />
+					</h:selectOneMenu>
+
+					<h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+					<h:inputTextarea value="#{linkHome.instance.description}"
+						style="width:600px;height:60px;"></h:inputTextarea>
+					<h:outputLabel value="#{commonMsg.seqNumLabel}"
+						styleClass="form-input-label"></h:outputLabel>
+					<ui:fragment>
+						<h:inputText value="#{linkHome.instance.seqNum}" id="seqNum"></h:inputText>
+						<p:slider minValue="-50" maxValue="50" for="seqNum"
+							style="width:500px"></p:slider>
+					</ui:fragment>
+					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+					<ui:fragment>
+						<p:commandButton id="saveBtn" value="#{commonMsg.saveLabel}"
+							action="#{linkHome.save}"></p:commandButton>
+						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+						<p:blockUI block="panel" trigger="saveBtn" />
+					</ui:fragment>
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
+
+</html>

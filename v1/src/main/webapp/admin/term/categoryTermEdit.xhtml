@@ -1,0 +1,87 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <f:metadata>
+        <f:viewParam name="id" value="#{categoryTermHome.id}"></f:viewParam>
+    </f:metadata>
+
+    <ui:define name="content">
+		<div class="entry">
+		<p:toolbar styleClass="admin-nav-toolbar">
+            <p:toolbarGroup>
+                <h:outputLabel value="#{commonMsg.currentPositionLabel} #{termMsg.categoryTermManageLabel}"></h:outputLabel>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:separator />
+                <p:button value="#{termMsg.categoryTermManageLabel}" outcome="/admin/term/categoryTermList"></p:button>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <p:spacer></p:spacer> 
+	    <ui:fragment rendered="#{not empty param.id and empty categoryTermHome.instance}">
+	      <h1>没有找到编号为#{param.id}的分类。</h1>
+	    </ui:fragment>
+        <h:form id="form" rendered="#{empty param.id or not empty categoryTermHome.instance}">
+            <h:inputHidden value="#{categoryTermHome.id}"></h:inputHidden>
+            <h:panelGrid columns="2" columnClasses="col1,col2">
+                <h:outputLabel value="#{commonMsg.IDLabel}"></h:outputLabel>
+                <h:inputText value="#{categoryTermHome.instance.id}" required="true"
+                    label="#{commonMsg.IDLabel}"
+                    readonly="#{not empty categoryTermHome.instance.id}"></h:inputText>
+
+                <h:outputLabel value="#{commonMsg.nameLabel}"></h:outputLabel>
+                <h:inputText required="true" label="#{commonMsg.nameLabel}"
+                    value="#{categoryTermHome.instance.name}">
+                    <f:validateLength minimum="2"></f:validateLength>
+                </h:inputText>
+                
+                <h:outputLabel value="#{termMsg.thumbLabel}"></h:outputLabel>
+                <ui:include src="#{tplVars.componentsPath}/onePictureUpload.xhtml">
+			        <ui:param name="thumb" value="#{categoryTermHome.instance.thumb}"></ui:param>
+			    </ui:include>
+                
+                <h:outputLabel value="#{termMsg.categoryTermTypeLabel}"></h:outputLabel>
+                <h:selectOneMenu required="true" converter="archer.EntityConverter"
+                    label="#{termMsg.categoryTermTypeLabel}"
+                    value="#{categoryTermHome.instance.categoryTermType}">
+                    <f:selectItems value="#{categoryTermTypeList.allResultList}"
+                        var="type" itemValue="#{type}" itemLabel="#{type.name}" />
+                    <p:ajax update="termTree" listener="#{categoryTermList.handleTypeChange}"></p:ajax>
+                </h:selectOneMenu>
+
+                <h:outputLabel value="#{termMsg.parentTerm}"></h:outputLabel>
+                <h:selectOneMenu id="termTree" value="#{categoryTermHome.instance.parent}" converter="archer.EntityConverter" >
+                    <f:selectItem itemLabel="#{commonMsg.selectLabel}" itemValue=""/>
+                    <f:selectItems value="#{categoryTermList.allResultList}" 
+                        var="t" itemValue="#{t}" itemLabel="#{t.name}" />
+                </h:selectOneMenu> 
+
+                <h:outputLabel value="#{commonMsg.descriptionLabel}"></h:outputLabel>
+                <h:inputTextarea value="#{categoryTermHome.instance.description}"
+                    style="width:600px;height:60px;"></h:inputTextarea>
+                
+                <h:outputLabel value="#{commonMsg.seqNumLabel}" styleClass="form-input-label"></h:outputLabel>
+                <ui:fragment>
+                    <h:inputText value="#{categoryTermHome.instance.seqNum}" id="menuSeqNum" ></h:inputText>
+                    <p:slider minValue="-50" maxValue="50" for="menuSeqNum" style="width:500px"></p:slider>
+                </ui:fragment>
+                
+                <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                <ui:fragment>
+                    <p:commandButton action="#{categoryTermHome.save}" update="@form"
+                        value="#{commonMsg.saveLabel}"></p:commandButton>
+                    <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                </ui:fragment>
+
+            </h:panelGrid>
+
+        </h:form>
+       </div>
+    </ui:define>
+</ui:composition>
+

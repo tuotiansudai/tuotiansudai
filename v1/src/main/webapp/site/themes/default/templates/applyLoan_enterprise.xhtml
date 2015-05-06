@@ -1,0 +1,184 @@
+<ui:composition template="page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2c.css" />
+		<div class="rongzi_sq">
+			<div class="box">
+				<div class="biaodan">
+					<div class="tit">
+						<span class="more">（*为必填选项）</span>
+						<h3>企业融资申请</h3>
+					</div>
+					<div class="cont">
+						<h:form>
+							<table cellpadding="0" cellspacing="0">
+								<tr>
+									<td class="ltd"><em>*</em>企业名称：</td>
+									<td><h:inputText styleClass="p2c_txt" label="企业名称"
+											required="true" maxlength="50"
+											value="#{applyEnterpriseLoanHome.instance.company}">
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>注册号：</td>
+									<td><h:inputText styleClass="p2c_txt" label="注册号"
+											required="true" maxlength="100"
+											value="#{applyEnterpriseLoanHome.instance.companyNo}">
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>法人/负责人：</td>
+									<td><h:inputText styleClass="p2c_txt" label="法人/负责人"
+											required="true" maxlength="10"
+											value="#{applyEnterpriseLoanHome.instance.contact}">
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>联系电话：</td>
+									<td><h:inputText styleClass="p2c_txt" label="联系电话"
+											required="true" maxlength="50"
+											value="#{applyEnterpriseLoanHome.instance.contactMobile}">
+											<archer:validateInputRule ruleId="input.phone"></archer:validateInputRule>
+											<archer:validateAlreadyExist/>
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText></td>
+								</tr>
+
+								<tr>
+									<td class="ltd"><em>*</em>所在省市：</td>
+									<td><h:selectOneMenu value="#{areaHome.selectedProvince}"
+											styleClass="ltd_select" converter="archer.EntityConverter">
+											<f:selectItems value="#{areaHome.allProvinces}" var="area"
+												itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+											<f:ajax listener="#{areaHome.findAllCities}"
+												render="areaSelect"></f:ajax>
+										</h:selectOneMenu> <h:panelGroup id="areaSelect"
+											style="float:none;display:inline;">
+											<h:selectOneMenu style="width:125px;margin-left:8px;"
+												value="#{applyEnterpriseLoanHome.instance.area}"
+												converter="archer.EntityConverter" styleClass="ltd_select"
+												rendered="#{not empty areaHome.allCities}">
+												<f:selectItems value="#{areaHome.allCities}" var="area"
+													itemLabel="#{area.name}" itemValue="#{area}"></f:selectItems>
+											</h:selectOneMenu>
+										</h:panelGroup></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>借款金额：</td>
+									<td><label> <h:inputText id="money" label="借款总金额"
+												requiredMessage="借款总金额必须为100的倍数" maxlength="15"
+												value="#{applyEnterpriseLoanHome.instance.money}"
+												styleClass="p2c_txt p2c_txt_02" required="true">
+												<archer:validateNumber precision="2" cardinalNumber="100"></archer:validateNumber>
+												<f:validateDoubleRange minimum="100"></f:validateDoubleRange>
+												<f:ajax event="blur" render="@this"></f:ajax>
+												<f:convertNumber type="number"/>
+											</h:inputText> 元
+									</label> <label><span class="zq"><em>*</em>期限：</span> <h:inputText
+												label="借款期限"
+												value="#{applyEnterpriseLoanHome.instance.deadline}"
+												styleClass="p2c_txt p2c_txt_02" required="true">
+												<f:ajax event="blur" render="@this"></f:ajax>
+											</h:inputText>月</label></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>借款用途：</td>
+									<td><h:inputTextarea label="借款用途" styleClass="textarea"
+											maxlength="1000" style="resize:none;"
+											value="#{applyEnterpriseLoanHome.instance.description}"
+											required="true"></h:inputTextarea></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>还款来源：</td>
+									<td><h:inputTextarea label="还款来源" styleClass="textarea"
+											maxlength="1000" style="resize:none;"
+											value="#{applyEnterpriseLoanHome.instance.paymentFrom}"
+											required="true"></h:inputTextarea></td>
+								</tr>
+								<tr>
+									<td class="ltd"><em>*</em>验证码：</td>
+									<td><h:inputText required="true" id="code" label="验证码"
+											maxlength="4" styleClass="p2c_txt p2c_txt_03">
+											<archer:validateCaptcha />
+											<f:ajax event="blur" render="@this"></f:ajax>
+										</h:inputText> <img alt="点击刷新" class="yzm verifyCode" id="verifyCode"
+										src="#{request.contextPath}/verifyCodeServlet"
+										onclick="this.src='#{request.contextPath}/verifyCodeServlet?rand='+new Date().getTime()" />
+										<a class="hyz" href="javascript:void(0);"
+										onclick="nextVerifyCode();">换一张</a></td>
+								</tr>
+								<tr>
+									<td class="ltd"></td>
+									<td><h:commandButton styleClass="btn_up"
+											action="#{applyEnterpriseLoanHome.save}" value="提 交 申 请"></h:commandButton>
+									</td>
+								</tr>
+							</table>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main">
+			<ul class="p2c_lc">
+				<li class="blue"><img
+					src="#{tplVars.themeImagePath}//p2c_img04.png" /><br />提交申请</li>
+				<li><img src="#{tplVars.themeImagePath}//p2c_img05.png" /><br />审核材料</li>
+				<li><img src="#{tplVars.themeImagePath}//p2c_img06.png" /><br />实地考察</li>
+				<li><img src="#{tplVars.themeImagePath}//p2c_img07.png" /><br />签署协议</li>
+				<li class="last"><img
+					src="#{tplVars.themeImagePath}//p2c_img08.png" /><br />融资成功</li>
+			</ul>
+			<ul class="p2c_ys">
+				<li>
+					<h3>
+						<p>我们的优势</p>
+					</h3>
+					<p class="p2c_ys_p p2c_ys_p01">
+						<span>1、权威的信用评级</span><br />组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化
+					</p>
+					<p class="p2c_ys_p">
+						<span>2、权威的信用评级</span><br />组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化组合投资，化解风险，产品期限多样化
+					</p>
+				</li>
+				<li>
+					<h3>
+						<p>申请条件</p>
+					</h3>
+					<p class="p2c_ys_p">
+						1、年检合格工商局登记企业；<br /> 2、正常经营一年以上；<br /> 3、企业及负责人银行征信记录良好；<br />
+						4、无现有诉讼记录；<br /> 5、企业流水额度覆盖贷款款。
+					</p>
+				</li>
+				<li class="last">
+					<h3>
+						<p>
+							申请材料<span>以下材料尽可能提供</span>
+						</p>
+					</h3>
+					<p class="p2c_ys_p">
+						1、年检合格工商局登记企业；<br /> 2、正常经营一年以上；<br /> 3、企业及负责人银行征信记录良好；<br />
+						4、无现有诉讼记录；<br /> 5、企业流水额度覆盖贷款款。
+					</p>
+				</li>
+				<div class="clear"></div>
+			</ul>
+		</div>
+	</ui:define>
+
+</ui:composition>

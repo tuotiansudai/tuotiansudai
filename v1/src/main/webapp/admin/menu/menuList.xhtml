@@ -1,0 +1,121 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<f:metadata>
+		<f:viewParam name="typeId" value="#{menuList.example.menuType.id}"></f:viewParam>
+	</f:metadata>
+
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;"
+						value="#{commonMsg.currentPositionLabel} #{menuMsg.menuManageLabel}"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="#{menuMsg.addMenuLabel}"
+						outcome="/admin/menu/menuEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<p:inputText id="searchId" value="#{menuList.example.id}"></p:inputText>
+
+					<p:inputText id="searchName" value="#{menuList.example.label}"></p:inputText>
+
+					<p:inputText id="searchUrl" value="#{menuList.example.url}"></p:inputText>
+
+					<h:selectOneMenu value="#{menuList.example.menuType.id}">
+						<f:selectItem itemValue="" itemLabel="--#{menuMsg.chooseMenuType}--" />
+						<f:selectItems value="#{menuTypeList.allResultList}" var="type"
+							itemLabel="#{type.name}" itemValue="#{type.id}" />
+					</h:selectOneMenu>
+
+					<p:commandButton process="filters" update="dataTable"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="#{commonMsg.IDLabel}" />
+				<p:watermark for="searchName" value="#{commonMsg.nameLabel}"></p:watermark>
+				<p:watermark for="searchUrl" value="URL"></p:watermark>
+
+				<p:spacer></p:spacer>
+
+				<p:treeTable value="#{menuList.root}" var="menu" id="dataTable">
+					<p:column>
+						<f:facet name="header">
+			             #{commonMsg.IDLabel}
+			         </f:facet>
+						<h:outputText value="#{menu.id}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+                         #{commonMsg.nameLabel}
+                     </f:facet>
+						<h:outputText value="#{menu.label}" title="#{menu.description}"></h:outputText>
+					</p:column>
+					<p:column width="100" headerText="#{menuMsg.urlLabel}">
+						<h:outputText value="#{menu.url}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+                         #{commonMsg.enableLabel}
+                     </f:facet>
+						<h:outputText value="#{commonMsg.enableSelectLabel}" 
+							rendered="#{menu.enable == '1'}"></h:outputText>	
+						<h:outputText value="#{commonMsg.disableSelectLabel}" 
+							style="color:red;"
+							rendered="#{menu.enable == '0'}"></h:outputText>	
+					</p:column>
+					<p:column headerText="#{menuMsg.menuTypeLabel}">
+						<h:outputText value="#{menu.menuType.name}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+                         #{commonMsg.permission}
+                     </f:facet>
+						<h:outputText value="#{menu.permissionsCommaStr}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+                         #{menuMsg.sequence}
+                     </f:facet>
+						<h:outputText value="#{menu.seqNum}"></h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+                        #{commonMsg.actionLabel}
+                    </f:facet>
+						<sec:ifAllGranted roles="MENU_EDIT">
+							<h:link
+								outcome="/admin/menu/menuEdit?id=#{menu.id}&amp;typeId=#{menu.menuType.id}">#{commonMsg.editLabel}</h:link> |
+		                    <h:link outcome="/admin/menu/menuEdit?parentId=#{menu.id}&amp;typeId=#{menu.menuType.id}">#{menuMsg.addSubLabel}</h:link> |
+		                    <a href="javascript:void(0)"
+								onclick="$('#form\\:deleteId').val('#{menu.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a>
+						</sec:ifAllGranted>
+					</p:column>
+				</p:treeTable>
+				<p:confirmDialog width="500" id="confirmDialog"
+					widgetVar="confirmDialog" severity="alert"
+					header="#{commonMsg.confirmDetele}"
+					message="#{menuMsg.deleteMenuInfo}">
+					<h:inputHidden value="#{menuHome.id}" id="deleteId"></h:inputHidden>
+					<p:commandButton id="confirm" value="#{commonMsg.confirmLabel}"
+						action="#{menuHome.delete}" ajax="false"
+						style="margin-left:180px;" />
+					<p:commandButton id="decline" value="#{commonMsg.cancelLabel}"
+						onclick="confirmDialog.hide()" type="button" />
+				</p:confirmDialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

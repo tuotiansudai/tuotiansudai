@@ -1,0 +1,67 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<link type="text/css" rel="stylesheet"
+		href="#{tplVars.themeStylePath}/footer.css" />
+
+	<div class="footer">
+		<div class="ft-con clearfix">
+			<ui:repeat var="menu" value="#{menuList.getNavigationMenus()}" varStatus="status">
+				<div class="ft-top">
+					<span><a href="#{path}#{menu.url}" style="font-size: 14px;">#{menu.label}</a></span>
+					<ul>
+						<ui:repeat var="m2" value="#{menu.children}">
+							<li><a href="#{path}#{m2.url}">#{m2.label}</a></li>
+						</ui:repeat></ul>
+				</div>
+			</ui:repeat>
+			<!-- <div class="ft-top">
+				<span>关于我们</span>
+				<ul>
+					<li><a href="">公司介绍</a></li>
+					<li><a href="">媒体报道</a></li>
+					<li><a href="">招贤纳士</a></li>
+					<li><a href="">联系我们</a></li>
+				</ul>
+			</div>
+			<div class="ft-top">
+				<span>投资安全</span>
+				<ul>
+					<li><a href="">业务体系</a></li>
+					<li><a href="">资金安全</a></li>
+					<li><a href="">法律保障</a></li>
+					<li><a href="">投资报告</a></li>
+				</ul>
+			</div>
+			<div class="ft-top">
+				<span>帮助中心</span>
+				<ul>
+					<li><a href="">新手指引</a></li>
+					<li><a href="">用户协议</a></li>
+					<li><a href="">合同样本</a></li>
+					<li><a href="">平台规则</a></li>
+				</ul>
+			</div> -->
+			<div class="ft-top contact">
+				<span>客服电话</span>
+				<ul>
+					<li class="tel">#{configHome.getConfigValue("site_phone")}</li>
+					<li>邮箱：#{configHome.getConfigValue("company_email")}</li>
+					<li>地址：#{configHome.getConfigValue("company_address")}</li>
+				</ul>
+			</div>
+			<div class="ft-top lastwem">
+				<p align="center">二维码</p>
+				<img class="ewm" src="#{tplVars.themeImagePath}/index/code.png" />
+			</div>
+	        <div class="clear"></div>
+	        <p class="copyright">© Sitename. All rights Reserved.</p>
+		</div>
+	</div>
+	<!--footer end-->
+
+</ui:component>

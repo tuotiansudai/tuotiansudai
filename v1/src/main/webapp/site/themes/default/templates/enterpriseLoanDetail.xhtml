@@ -1,0 +1,402 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	template="page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:archer="http://java.sun.com/jsf/archer"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<f:metadata>
+		<f:viewParam name="id" value="#{loanHome.id}"></f:viewParam>
+	</f:metadata>
+	<ui:define name="content">
+		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+		<script>
+			//如果登录用户没有投资权限，则提示，并跳转页面。
+			function getInvestorPer() {
+				$.dialog
+						.confirm(
+								'您尚未进行实名认证无法投资，是否要实名认证？',
+								function() {
+									window.location.href = "#{request.contextPath}/user/get_investor_permission";
+									$.dialog.tips('正在为您跳转到页面');
+								});
+				return false;
+			}
+		</script>
+		<link type="text/css" rel="stylesheet"
+			href="#{tplVars.themeStylePath}/p2c.css" />
+
+		<div class="main">
+			<div class="tag">
+				我要理财 > <span><a href="#{path}/loan-list">投资列表</a></span> > <span>项目详情</span>
+			</div>
+			<h3 class="loan-detail">#{loan.name}</h3>
+			<div class="loan-detail_box">
+				<div class="loan-detail_l">
+					<div class="img">
+						<img src="#{path}#{loan.customPicture}" />
+					</div>
+					<div class="loan-detail_01">
+						<p>
+							年化收益<br /> <span class="blue"><h:outputText
+									value="#{loan.ratePercent}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputText>%</span>
+						</p>
+						<p>
+							投资期限<br /> <span class="strong">#{loan.deadline*loan.type.repayTimePeriod}</span>(#{loan.type.repayTimeUnit})
+						</p>
+						<p>
+							项目规模<br /> <span class="strong"><h:outputText
+									value="#{loan.loanMoney}">
+									<f:convertNumber type="number" />
+								</h:outputText></span>元
+						</p>
+						<p class="line">
+							发布日期：
+							<h:outputText value="#{loan.commitTime}">
+								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn"
+									timeZone="GMT+8"></f:convertDateTime>
+							</h:outputText>
+							还款日期：显示什么值？
+						</p>
+						<p class="line">
+							担保机构：<a
+								href="#{path}/node/guaranteeCompany/#{guaranteeCompanyNode.id}">#{guaranteeCompanyNode.title}</a><br />还款方式：#{loan.type.repayType}
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img11.png" />#{loan.type.interestPoint}
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img12.png" />本息保障
+						</p>
+						<p class="gray">
+							<img src="#{tplVars.themeImagePath}/p2c_img13.png" />灵活转让
+						</p>
+					</div>
+				</div>
+				<div class="loan-detail_r">
+					<h:form>
+						<ul class="loan-detail_r_ul">
+							<li class="ul_li01">可投金额：<br /> <span class="blue"><h:outputText
+										value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}">
+										<f:convertNumber type="number" />
+									</h:outputText>元</span></li>
+							<li class="ul_li01">起点金额：<br /> <span class="blue"><h:outputText
+										value="#{loan.minInvestMoney}">
+										<f:convertNumber type="number" />
+									</h:outputText>元</span></li>
+							<li class="ul_li01">投资金额：<br /> <h:inputText label="投资金额"
+									disabled="#{loan.status !=LoanStatus.RAISING}"
+									value="#{investHome.instance.money}" styleClass="p2c_input"
+									required="true" requiredMessage="投资金额不能为空！">
+									<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
+									<o:validator validatorId="javax.faces.DoubleRange"
+										minimum="#{loan.minInvestMoney}"
+										maximum="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></o:validator>
+									<o:validator
+										validatorId="com.esoft.core.validator.NumberValidator"
+										cardinalNumber="#{loan.cardinalNumber}"></o:validator>
+								</h:inputText>
+							</li>
+
+						</ul>
+						<ul class="loan-detail_r_ul02">
+							<li class="ul_li02">账户余额：<br /> <span class="gray"><h:outputLabel
+										value="#{userBillHome.getBalanceByUserId(loginUserInfo.loginUserId)}">
+										<f:convertNumber />
+									</h:outputLabel>元</span></li>
+							<li class="ul_li02">递增金额：<br /> <span class="blue"><h:outputText
+										value="#{loan.cardinalNumber}">
+										<f:convertNumber type="number" />
+									</h:outputText>元</span></li>
+							<li class="ul_li02">预计收益：<br /> <span class="blue blue02">
+									<h:outputText
+										value="#{investCalculator.calculateAnticipatedInterest(investHome.instance.money, loan.id)}"
+										id="anticipatedInterest">
+										<f:convertNumber maxFractionDigits="2" />
+									</h:outputText>元
+							</span></li>
+						</ul>
+						<div class="clear"></div>
+
+						<div class="xq xq02">
+							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
+								<h:link outcome="pretty:memberLogin"
+									styleClass="txczje02_btn list_btn list_btn02 p2c_btn p2c_btn02">
+									<f:param name="spring-security-redirect"
+										value="/e_loan/#{loan.id}" />
+									<h:outputText value="立即投资"></h:outputText>
+								</h:link>
+							</ui:fragment>
+							<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
+								<!--正在筹款中的项目按钮可点击-->
+								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+									<sec:ifNotGranted roles="INVESTOR">
+										<a class="txczje02_btn list_btn list_btn02 p2c_btn p2c_btn02"
+											href="###" onclick="getInvestorPer();">立即投资</a>
+									</sec:ifNotGranted>
+
+									<sec:ifAllGranted roles="INVESTOR">
+										<h:commandLink
+											styleClass="txczje02_btn list_btn list_btn02 p2c_btn p2c_btn02"
+											action="#{investHome.save}" value="立即投资"
+											onclick="return confirm('您确定要投资吗？');">
+											<f:setPropertyActionListener
+												target="#{investHome.instance.loan}" value="#{loan}"></f:setPropertyActionListener>
+										</h:commandLink>
+									</sec:ifAllGranted>
+								</ui:fragment>
+								<!--未在筹款中的项目按钮不可点击-->
+								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+									<a class="txczje02_btn list_btn list_btn02 p2c_btn p2c_btn02">#{dictUtil.getValue('loan',loan.status)}</a>
+									<!-- 										<h:commandLink type="button" styleClass="qr loanStatus" -->
+									<!-- 											value="#{loan.status}" onclick="showInfo('#{loan.status}');"></h:commandLink> -->
+								</ui:fragment>
+							</ui:fragment>
+						</div>
+					</h:form>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<ul class="map">
+				<li class="hover"><a href="#">项目描述</a></li>
+				<li><a href="#">企业信息</a></li>
+				<li><a href="#">担保详情</a></li>
+				<li><a href="#">投资记录</a></li>
+				<li><a href="#">项目咨询</a></li>
+			</ul>
+			<div class="list_loan-detail">
+				<h3>项目描述</h3>
+				<div class="close">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>资金用途</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<p class="h3_02">企业信息</p>
+			<div class="list_loan-detail">
+				<h3>企业背景</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>营业范围</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>经营状况</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<p class="h3_02">担保详情</p>
+			<div class="list_loan-detail">
+				<h3>抵质押物信息</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>风险控制措施</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>涉诉信息</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="list_loan-detail">
+				<h3>担保机构意见</h3>
+				<div class="close">本项目融资资金主要用于借款企业增加配件库存，增加汽车维修设备使用。</div>
+				<div class="open" style="display:none;">借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。借款企业为"一汽汽车"特约维修服务中心，主营业务为汽车修理、汽车配件销售、维护保养；保险兼业务代理等。目前企业业务量增加，需要一
+					定的流动资金购买汽车配件及汽车维修设备，以提高客户服务水平。本项目融资金额为350万元。</div>
+				<div class="down" onclick="show()">
+					<a href="#"><img src="#{tplVars.themeImagePath}/p2c_open.png" /></a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<p class="h3_02 h3_03">
+				投资记录<span>（最新10条，投资用户可查看所有投资记录）</span>
+			</p>
+			<table width="1000" border="0" cellspacing="0" cellpadding="0"
+				class="p2c_tab">
+				<tr class="p2c_tab_tr">
+					<td width="140" align="center">投资记录</td>
+					<td width="380" align="center">投资金额</td>
+					<td width="378" align="center">投资时间</td>
+					<td width="102" align="center">状态</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+				<tr>
+					<td align="center">6458***</td>
+					<td align="center">100.00元</td>
+					<td align="center">2014-08-25 15:01:22</td>
+					<td align="center">成功</td>
+				</tr>
+			</table>
+			<div class="xmzx">
+				<p class="h3_02">项目咨询</p>
+				<div class="p1">
+					<a href="#">前往项目讨论区>></a>咨询项目相关信息
+				</div>
+				<div class="p1">
+					<a href="#">前往投资经验区>></a>查看xx用户分享的理财心得和投资技巧
+				</div>
+			</div>
+			<div class="qh">
+				<p>
+					<span>项目相关资料</span>
+				</p>
+				<div class="lj img-scroll">
+					<a class="prev"></a> <a class="next"></a>
+					<div class="img-list">
+						<ul>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+							<li><a href="proinfo.asp"><img class="img8"
+									src="#{tplVars.themeImagePath}/img69.png" alt="" /></a></li>
+						</ul>
+					</div>
+				</div>
+				<script type="text/javascript" src="js/footer.js"></script>
+			</div>
+			<div class="qh qh02">
+				<p>
+					<span>抵押相关资料</span>
+				</p>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>

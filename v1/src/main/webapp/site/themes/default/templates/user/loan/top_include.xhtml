@@ -1,0 +1,31 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	xmlns:pm="http://primefaces.org/mobile"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ul class="grzx_ul">
+		<li>逾期金额<br /> <span><h:outputText
+					value="#{loanStatistics.getWaitRepayMoney(loginUserInfo.loginUserId, now)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+		<li>待还金额<br /> <span><h:outputText
+					value="#{loanStatistics.getWaitRepayMoney(loginUserInfo.loginUserId)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+		<li>本月待还金额<br /> <span> <!-- 			下月第一天 --> <ui:param
+					name="ldm" value="#{of:addDays(dateUtil.getLastDayOfMonth(now),1)}"></ui:param>
+				<h:outputText
+					value="#{loanStatistics.getWaitRepayMoney(loginUserInfo.loginUserId, ldm)}">
+					<f:convertNumber type="currency" />
+				</h:outputText></span></li>
+		<li>本月待还笔数<br /> <span><h:outputText
+					value="#{loanStatistics.getWaitRepayCount(loginUserInfo.loginUserId, ldm)}">
+				</h:outputText></span></li>
+	</ul>
+
+</ui:component>

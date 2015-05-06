@@ -1,0 +1,63 @@
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+    <title>填写新邮箱</title>
+        <style>
+        body{
+            background-color: #F7F7F7;
+            font-size:12px;
+        }
+        .loginPanel{
+            width: 500px;
+            margin:0 auto;
+            margin-top: 180px;
+        }
+        
+        #verifyCode{
+            vertical-align: middle;
+        }
+    </style>
+        <script src="#{tplVars.themeJSPath}/jquery-1.8.3.js" type="text/javascript"></script>
+         <script src="#{tplVars.themeJSPath}/validate.js" type="text/javascript"></script>
+        <script src="#{tplVars.themeJSPath}/resetmailpone.js" type="text/javascript"></script>
+    <script>
+    </script>
+    </h:head>
+    <f:event type="preRenderView" listener="#{userHome.setId(loginUserInfo.username)}"></f:event>
+   <h:body>
+      <h:form id="resetemail">
+                                                 填写新邮箱:<h:inputText id="email" 
+				 class="email" value="#{userHome.newemail}"/>
+				 <br/><br/>
+				 <div class="setcheck" style="display: none">
+				  收到验证码：<h:inputText class="emailcode" id="emailcode" value="#{userValidationCodeHome.instance.code}" onfocus="clearmsg('error')"></h:inputText>
+				  &#160;
+				   <h:commandButton id="confirm" value="确定">
+                                        <f:ajax render="callback" execute="@form"
+                                         listener="#{userValidationCodeHome.checkRandcode}"/>
+                   </h:commandButton>
+                   <h:panelGroup id="callback">
+                       <h:messages class="error" style="color:red" id="message"></h:messages>
+                       <ui:fragment rendered="#{userValidationCodeHome.showResetPassword}">
+				          <script>alert('更换邮箱成功！');</script>
+				        </ui:fragment>
+                   </h:panelGroup>
+                   
+				  <br/><br/>
+				  </div>
+				 <h:commandButton type="button" id="validateCode" value="发送验证码" onclick="return sendnewEmailCode()">
+				     <h:inputHidden id="sendnewemail" value="#{userValidationCodeHome.sendnewemail}"></h:inputHidden>
+				     <f:ajax execute="sendnewemail" listener="#{userValidationCodeHome.save}"></f:ajax>
+				 </h:commandButton>
+				 
+				
+      </h:form>     
+   </h:body>
+
+</f:view>

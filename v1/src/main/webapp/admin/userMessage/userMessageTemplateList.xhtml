@@ -1,0 +1,85 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite/primefaces"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+
+	<ui:define name="content">
+		<div class="entry">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<h:outputLabel style="padding-left: 15px;" value="当前位置：用户消息发送模板"></h:outputLabel>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:separator />
+					<p:button value="添加模板"
+						outcome="/admin/userMessage/userMessageTemplateEdit"></p:button>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<h:form id="form">
+				<p:spacer></p:spacer>
+				<p:panel id="filters">
+					<h:inputText id="searchId"
+						value="#{userMessageTemplateList.example.userMessageNode.name}"></h:inputText>
+					<h:inputText id="searchTitle"
+						value="#{userMessageTemplateList.example.userMessageWay.name}"></h:inputText>
+					<h:inputText id="name"
+						value="#{userMessageTemplateList.example.name}"></h:inputText>
+<!-- 					<h:inputText id="content" -->
+<!-- 						value="#{userMessageTemplateList.example.template}"></h:inputText> -->
+					<h:inputText id="description"
+						value="#{userMessageTemplateList.example.description}"></h:inputText>
+					<p:commandButton update="dataTable" process="filters"
+						value="#{commonMsg.searchLabel}"></p:commandButton>
+				</p:panel>
+				<p:watermark for="searchId" value="节点名称" />
+				<p:watermark for="searchTitle" value="方式名称"></p:watermark>
+<!-- 				<p:watermark for="content" value="模板"></p:watermark> -->
+				<p:watermark for="name" value="名称"></p:watermark>
+				<p:watermark for="description" value="描述"></p:watermark>
+
+				<p:spacer></p:spacer>
+
+				<p:dataTable id="dataTable"
+					value="#{userMessageTemplateList.lazyModel}"
+					var="userMessageTemplate" paginator="true"
+					paginatorPosition="bottom" rows="15" lazy="true"
+					currentPageReportTemplate="#{commonMsg.pageReportTemplate}"
+					paginatorTemplate="#{commonMsg.paginatorTemplate}"
+					emptyMessage="#{commonMsg.noResultMsg}">
+					<p:column headerText="名称">
+						<h:outputText value="#{userMessageTemplate.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="状态">
+						<h:outputText value="#{userMessageTemplate.status}"></h:outputText>
+					</p:column>
+					<p:column headerText="节点名称">
+						<h:outputText value="#{userMessageTemplate.userMessageNode.name}"></h:outputText>
+					</p:column>
+					<p:column headerText="方式名称">
+						<h:outputText value="#{userMessageTemplate.userMessageWay.name}"></h:outputText>
+					</p:column>
+<!-- 					<p:column headerText="模板"> -->
+<!-- 						<h:outputText value="#{userMessageTemplate.template}"></h:outputText> -->
+<!-- 					</p:column> -->
+					<p:column headerText="#{commonMsg.descriptionLabel}">
+						<h:outputText value="#{userMessageTemplate.description}"></h:outputText>
+					</p:column>
+					<p:column headerText="#{commonMsg.actionLabel}">
+						<h:link value="#{commonMsg.editLabel}"
+								outcome="/admin/userMessage/userMessageTemplateEdit?id=#{userMessageTemplate.id}"></h:link>
+					 	 | 
+					 	<h:commandLink value="删除" action="#{userMessageTemplateHome.delete}" onclick="return confirm('您确定要删除？此操作不可恢复！')">
+					 		<f:setPropertyActionListener value="#{userMessageTemplate}" target="#{userMessageTemplateHome.instance}" />
+					 	</h:commandLink>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
