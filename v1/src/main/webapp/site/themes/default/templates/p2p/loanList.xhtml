@@ -190,17 +190,12 @@
 					<div class="list01 clearfix">
 						<div class="fl"><a href="#{path}/p2p_loan/#{loan.id}">
 							<!--modify by lance fix img-->
-
-
 							<ui:fragment rendered="#{loan.customPicture eq ''|| loan.customPicture==null}">
 								<img class="left-img" src="${tplVars.themeImagePath}/index/item.jpg" />
 							</ui:fragment>
 							<ui:fragment rendered="#{loan.customPicture ne ''}">
 								<img style="width: 135px;height: 135px;" src="${path}${loan.customPicture}" />
 							</ui:fragment>
-
-
-
 						</a></div>
 						<div class="fl list-con">
 							<p>
