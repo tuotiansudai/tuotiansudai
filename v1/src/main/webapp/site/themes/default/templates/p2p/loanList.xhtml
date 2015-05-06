@@ -26,7 +26,7 @@
 			<!-- 清除筛选对分页的影响 -->
 			<p:remoteCommand process="@this" immediate="true" name="clearPage" actionListener="#{loanList.setCurrentPage(1)}"></p:remoteCommand>
 			<div class="select-div fl">
-				<p class="font18c0">项目直投</p>
+				<p class="font18c0">项目直投111</p>
 				<p>
 					<label>项目状态:</label>
 					<span class="select-all">
@@ -188,7 +188,20 @@
 
 				<ui:repeat var="loan" value="#{loanList.lazyModelData}">
 					<div class="list01 clearfix">
-						<div class="fl"><a href="#{path}/p2p_loan/#{loan.id}"><img class="left-img" src="#{tplVars.themeImagePath}/index/item.jpg" /></a></div>
+						<div class="fl"><a href="#{path}/p2p_loan/#{loan.id}">
+							<!--modify by lance fix img-->
+
+
+							<ui:fragment rendered="#{loan.customPicture eq ''|| loan.customPicture==null}">
+								<img class="left-img" src="${tplVars.themeImagePath}/index/item.jpg" />
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.customPicture ne ''}">
+								<img style="width: 135px;height: 135px;" src="${path}${loan.customPicture}" />
+							</ui:fragment>
+
+
+
+						</a></div>
 						<div class="fl list-con">
 							<p>
 								<a href="#{path}/p2p_loan/#{loan.id}">
