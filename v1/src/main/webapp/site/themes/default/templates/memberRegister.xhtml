@@ -149,6 +149,8 @@
 						<div class="login_box_r">
 							<h:inputText id="referrer" maxlength="50" label="推荐人"
 								value="#{userHome.instance.referrer}" styleClass="login_txt">
+								<f:ajax event="blur"></f:ajax>
+								<archer:validateAlreadyExist isValidateNotExist="true"/>
 							</h:inputText>
 							<p:watermark value="请输入推荐人用户名" for="referrer"></p:watermark>
 						</div>

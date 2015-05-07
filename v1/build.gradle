@@ -35,6 +35,7 @@ gretty {
     servletContainer = 'jetty8'
     contextPath = ''
     port = 9090
+    jvmArgs = [ "-XX:MaxPermSize=512m" ]
 }
 
 cargo {
