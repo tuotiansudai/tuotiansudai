@@ -1,16 +1,21 @@
 package com.esoft.umpay.repay.service.impl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.model.UserBill;
+import com.esoft.jdp2p.invest.InvestConstants;
+import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -91,6 +96,56 @@ public class UmPayNormalRepayOperation extends
 			FacesContext facesContext) throws IOException {
 		lr.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(lr);
+		//找到该笔借款的投资明细
+		List<Invest> is = ht.find(
+				"from Invest i where i.loan.id=? and i.status!=?",
+				new String[] { lr.getLoan().getId(), InvestConstants.InvestStatus.CANCEL });
+		for (Invest invest : is) {
+			List<Object> object = ht.find("from Object t where t.user.id = ?",new String[]{invest.getUser().getId()});
+			for(Object ob : object){
+				double bonus = invest.getMoney();
+				//调用联动优势接口
+				try {
+					String orderId = invest.getId() + System.currentTimeMillis();
+					String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
+					String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_IN;
+					String particUserId = getTrusteeshipAccount(lr.getLoan().getUser().getId()).getId();
+					Date date = new Date();
+					umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
+					//插入数据库
+					InvestUserReferrer iur = new InvestUserReferrer();
+					iur.setId(orderId);
+					iur.setBonus(invest.getMoney());
+					iur.setInvest(invest);
+					iur.setTime(date);
+					ht.save(iur);
+					//插入交易流水
+					//获取当前余额
+					double balance = userBillBO.getBalance(invest.getUser().getId());
+					//获取当前冻结
+					double frozenMoney = userBillBO.getFrozenMoney(invest.getUser().getId());
+					UserBill ub = new UserBill();
+					ub.setBalance(ArithUtil.add(balance,bonus));
+					ub.setFrozenMoney(frozenMoney);
+					ub.setTime(date);
+					ub.setId(UUID.randomUUID().toString());
+					ub.setType("ti_balance");
+					ub.setTypeInfo("referrer_reward");
+					ub.setMoney(bonus);
+					ub.setSeqNum(userBillBO.getLastestBill(invest.getUser().getId()).getSeqNum()+1);
+                    ub.setUser(invest.getUser());
+					String detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
+					ub.setDetail(detail);
+					ht.save(ub);
+				}catch (ReqDataException e){
+					e.printStackTrace();
+				}catch (RetDataException e){
+					e.printStackTrace();
+				}
+
+			}
+		}
+		//ArithUtil.mul(corpus, 0.00, 2);
 		// 所有待还金额
 		Double allRepayMoney = ArithUtil.add(lr.getCorpus(),
 				lr.getDefaultInterest(), lr.getFee(), lr.getInterest());
