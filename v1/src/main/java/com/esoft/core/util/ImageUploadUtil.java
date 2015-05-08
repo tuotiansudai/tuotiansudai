@@ -3,11 +3,15 @@ package com.esoft.core.util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 import com.esoft.core.jsf.util.FacesUtil;
+import com.sun.org.apache.bcel.internal.generic.I2F;
+import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.aliyun.PropertiesUtils;
 
 public class ImageUploadUtil {
 
@@ -16,29 +20,41 @@ public class ImageUploadUtil {
 	
 	
 	public static String upload(InputStream is,String fileName){
+		final String path = UPLOAD_PATH + "/" + formater.format(new Date());
 		try {
-			final String path = UPLOAD_PATH + "/" + formater.format(new Date());
-			final String absPath = FacesUtil.getRealPath(path) ;
-			fileName = getName(fileName);
-			final String savefile = absPath +"/"+ fileName;
-		
-			mkdir(absPath);
-			
-			FileOutputStream out = new FileOutputStream(savefile);
-			byte[] buffer = new byte[2048];
-			int x = 0;
-			while ((x = is.read(buffer)) != -1) {
-				out.write(buffer, 0, x);
+
+			String isoss = PropertiesUtils.getPro("plat.is.start");
+			String sitePath = PropertiesUtils.getPro("plat.sitePath");
+			if(isoss.equals("oss")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+				String filepath = sitePath + path + "/"+sdf.format(new Date())+fileName.substring(fileName.lastIndexOf("."));
+				AliyunUtils.uploadFileInputStream(sdf.format(new Date()),fileName,is);
+				return filepath;
+			}else{
+				final String absPath = FacesUtil.getRealPath(path) ;
+				fileName = getName(fileName);
+				final String savefile = absPath +"/"+ fileName;
+				mkdir(absPath);
+				FileOutputStream out = new FileOutputStream(savefile);
+				byte[] buffer = new byte[2048];
+				int x = 0;
+				while ((x = is.read(buffer)) != -1) {
+					out.write(buffer, 0, x);
+				}
+				is.close();
+				out.close();
+				return path+"/"+fileName;
 			}
-			is.close();
-			out.close();
-			
-			return ( path +"/"+ fileName) ;
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null ;
 	}
+
+
+
 	
 	/**
 	 * 根据字符串创建本地目录 并按照日期建立子目录返回
