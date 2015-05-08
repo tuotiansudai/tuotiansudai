@@ -36,6 +36,7 @@ gretty {
     //servletContainer = 'tomcat7'
     contextPath = ''
     port = 9090
+    jvmArgs = [ "-XX:MaxPermSize=512m" ]
 }
 
 cargo {
@@ -52,3 +53,13 @@ cargo {
         timeout = 180000
     }
 }
+
+war {
+    archiveName "ttsd.war"
+    destinationDir = file("war")
+    from('/workspace/production_config/') {
+        include '*.*'
+        into 'WEB-INF/classes'
+    }
+}
+
