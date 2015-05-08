@@ -67,7 +67,7 @@ war {
 }
 
 flyway {
-    def productionFlywayConfig = '/workspace/flywaydb.properties'
+    def productionFlywayConfig = '/workspace/production_config/flywaydb.properties'
     locations = ['filesystem:db_migration']
     user = 'root'
     password = ''
