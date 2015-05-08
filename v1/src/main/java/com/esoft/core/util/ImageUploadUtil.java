@@ -26,9 +26,10 @@ public class ImageUploadUtil {
 			String isoss = PropertiesUtils.getPro("plat.is.start");
 			String sitePath = PropertiesUtils.getPro("plat.sitePath");
 			if(isoss.equals("oss")){
+				String suffix = fileName.substring(fileName.lastIndexOf("."));
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				String filepath = sitePath + path + "/"+sdf.format(new Date())+fileName.substring(fileName.lastIndexOf("."));
-				AliyunUtils.uploadFileInputStream(sdf.format(new Date()),fileName,is);
+				String filepath = sitePath + path + "/"+sdf.format(new Date())+suffix;
+				AliyunUtils.uploadFileInputStream(sdf.format(new Date())+suffix,fileName,is);
 				return filepath;
 			}else{
 				final String absPath = FacesUtil.getRealPath(path) ;

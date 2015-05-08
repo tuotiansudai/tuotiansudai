@@ -102,7 +102,7 @@ public class Uploader {
 			this.type = this.getFileExt(this.fileName);
 			this.title = fileName;
 			//add line mkdir
-			String filepath = mkdir(this.getPhysicalPath(this.url));
+			String filepath = mkdir(this.getPhysicalPath(this.url)+"upload");
 			String savefile = filepath +"/"+ this.fileName;
 			this.url = savePath  + "/" + this.fileName;
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
@@ -113,7 +113,7 @@ public class Uploader {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 				this.title = sdf.format(new Date());
 				this.url = sitePath + path + "/"+sdf.format(new Date())+getFileExt(fileName);
-				AliyunUtils.uploadFileInputStream(title,fileName, in);
+				AliyunUtils.uploadFileInputStream(title+getFileExt(fileName),fileName, in);
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
 				BufferedOutputStream output = new BufferedOutputStream(out);
