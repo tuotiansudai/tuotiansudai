@@ -261,8 +261,10 @@ public class FacesUtil {
 
 	// ~~ Path
 	public static String getRealPath(String path) {
-		return getExternalContext().getRealPath(path);
+		//modify by lance  fix getRealPath
+		return getExternalContext().getRealPath("")+path;
 	}
+
 
 	/**
 	 * 获取app硬盘绝对路径

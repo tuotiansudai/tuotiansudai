@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.google.common.base.Strings;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -740,6 +741,7 @@ public class UserServiceImpl implements UserService {
 
 	private void saveReferrerRelations(User user) {
 		String referrerId = user.getReferrer();
+		if (Strings.isNullOrEmpty(referrerId)) return;
 		String userId = user.getId();
 		ReferrerRelation referrerRelation = new ReferrerRelation();
 		referrerRelation.setUserId(userId);
