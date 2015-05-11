@@ -197,8 +197,8 @@ public class AliyunUtils {
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
         System.out.println("result etag : " + result.getETag());
-        System.out.println("downing ..... ");
-        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+//        System.out.println("downing ..... ");
+//        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
         return filepath;
     }
 
@@ -236,9 +236,9 @@ public class AliyunUtils {
 
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
-        System.out.println("result etag : " + result.getETag());
-        System.out.println("downing ..... ");
-        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+//        System.out.println("result etag : " + result.getETag());
+//        System.out.println("downing ..... ");
+//        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
         return filepath;
     }
 
