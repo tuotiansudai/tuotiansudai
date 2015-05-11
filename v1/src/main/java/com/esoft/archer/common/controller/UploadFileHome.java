@@ -41,7 +41,7 @@ public class UploadFileHome implements Serializable{
 
 	private List<MyUploadedFile> files;
 	private MyUploadedFile oneFile;
-	
+
 	/**
 	 * 处理多个上传
 	 * 

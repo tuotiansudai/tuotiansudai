@@ -111,7 +111,10 @@ public class Uploader {
 			String isoss = PropertiesUtils.getPro("plat.is.start");
 			if(isoss.equals("oss")){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				this.title =this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
+
+				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
+				this.title = url;
+				System.out.println("ueditor url "+url);
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
 				BufferedOutputStream output = new BufferedOutputStream(out);

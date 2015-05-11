@@ -234,7 +234,7 @@ public class AliyunUtils {
         System.out.println("upload key : " + filename );
         System.out.println("location :"+location);
 
-        String filepath = sitePath+ filename;
+        String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
 //        System.out.println("result etag : " + result.getETag());
 //        System.out.println("downing ..... ");
