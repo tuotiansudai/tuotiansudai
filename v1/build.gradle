@@ -1,6 +1,8 @@
 apply plugin: 'war'
 apply plugin: 'com.bmuschko.cargo'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'org.flywaydb.flyway'
+apply from: 'db_migration.gradle'
 
 repositories {
     mavenCentral()
@@ -11,6 +13,7 @@ sourceSets.main.resources.srcDir 'src/main/java'
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile fileTree(dir: 'libs', include: '**/*.jar')
+    providedCompile 'mysql:mysql-connector-java:5.1.35'
 }
 
 compileJava {
@@ -23,7 +26,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.akhikhl.gretty:gretty:1.2.2', 'com.bmuschko:gradle-cargo-plugin:2.1'
+        classpath 'org.akhikhl.gretty:gretty:1.2.2',
+                'com.bmuschko:gradle-cargo-plugin:2.1',
+                'org.flywaydb:flyway-gradle-plugin:3.2.1'
     }
 }
 
@@ -35,6 +40,7 @@ gretty {
     servletContainer = 'jetty8'
     contextPath = ''
     port = 9090
+    jvmArgs = [ "-XX:MaxPermSize=512m" ]
 }
 
 cargo {
@@ -51,3 +57,30 @@ cargo {
         timeout = 180000
     }
 }
+
+war {
+    archiveName "ttsd.war"
+    destinationDir = file("war")
+    from('/workspace/production_config/') {
+        include '*.*'
+        into 'WEB-INF/classes'
+    }
+}
+
+flyway {
+    def productionFlywayConfig = '/workspace/production_config/flywaydb.properties'
+    locations = ['filesystem:db_migration']
+    user = 'root'
+    password = ''
+    url = 'jdbc:mysql://192.168.33.10:3306/tuotiansudai?useUnicode=true&characterEncoding=utf8'
+    if (new File(productionFlywayConfig).exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(productionFlywayConfig))
+        user = properties.getProperty('user', user)
+        password = properties.getProperty('password', password)
+        url = properties.getProperty('url', url)
+    }
+}
+
+
+
