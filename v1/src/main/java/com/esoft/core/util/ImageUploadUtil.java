@@ -12,6 +12,7 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.sun.org.apache.bcel.internal.generic.I2F;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import org.apache.commons.io.FileUtils;
 
 public class ImageUploadUtil {
 
@@ -23,15 +24,7 @@ public class ImageUploadUtil {
 		final String path = UPLOAD_PATH + "/" + formater.format(new Date());
 		try {
 
-			String isoss = PropertiesUtils.getPro("plat.is.start");
-			String sitePath = PropertiesUtils.getPro("plat.sitePath");
-			if(isoss.equals("oss")){
-				String suffix = fileName.substring(fileName.lastIndexOf("."));
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				String filepath = sitePath + path + "/"+sdf.format(new Date())+suffix;
-				AliyunUtils.uploadFileInputStream(sdf.format(new Date())+suffix,fileName,is);
-				return filepath;
-			}else{
+
 				final String absPath = FacesUtil.getRealPath(path) ;
 				fileName = getName(fileName);
 				final String savefile = absPath +"/"+ fileName;
@@ -45,7 +38,6 @@ public class ImageUploadUtil {
 				is.close();
 				out.close();
 				return path+"/"+fileName;
-			}
 
 
 		} catch (Exception e) {
@@ -89,7 +81,7 @@ public class ImageUploadUtil {
 	 * 
 	 * @return string
 	 */
-	private static String getFileExt(String fileName) {
+	public static String getFileExt(String fileName) {
 		return fileName.substring(fileName.lastIndexOf("."));
 	}
 }

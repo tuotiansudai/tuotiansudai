@@ -1,14 +1,20 @@
 package com.esoft.archer.common.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlPanelGroup;
 
+import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.aliyun.PropertiesUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.tooltip.Tooltip;
@@ -97,13 +103,28 @@ public class UploadFileHome implements Serializable{
 	private MyUploadedFile handleUpload(FileUploadEvent event) {
 		UploadedFile uploadFile = event.getFile();
 		InputStream is = null;
+		String url;
 		try {
 			is = uploadFile.getInputstream();
-			String url = ImageUploadUtil.upload(is, uploadFile.getFileName());
+
+			String isoss = PropertiesUtils.getPro("plat.is.start");
+			String sitePath = PropertiesUtils.getPro("plat.sitePath");
+			if(isoss.equals("oss")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
+//				System.out.println(uploadFile.getSize());
+				url= AliyunUtils.uploadFileInputStream(uploadFile);
+				System.out.println("url :"+ url);
+				is.close();
+			}else {
+				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());
+			}
 			return new MyUploadedFile(url, uploadFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+
 		}
 	}
 

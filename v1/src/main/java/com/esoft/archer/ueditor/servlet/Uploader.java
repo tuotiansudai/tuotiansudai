@@ -62,7 +62,7 @@ public class Uploader {
 	private String[] allowFiles = { ".rar", ".doc", ".docx", ".zip", ".pdf",
 			".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
 	// 文件大小限制，单位KB
-	private int maxSize = 10000;
+	private int maxSize = 1024*10;
 
 	private HashMap<String, String> errorInfo = new HashMap<String, String>();
 
@@ -98,6 +98,7 @@ public class Uploader {
 				this.state = this.errorInfo.get("TYPE");
 				return;
 			}
+			System.out.println(dfi.getSize()+""+dfi.getStoreLocation());
 			this.fileName = this.getName(this.originalName);
 			this.type = this.getFileExt(this.fileName);
 			this.title = fileName;
@@ -108,12 +109,9 @@ public class Uploader {
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
 
 			String isoss = PropertiesUtils.getPro("plat.is.start");
-			String sitePath = PropertiesUtils.getPro("plat.sitePath");
 			if(isoss.equals("oss")){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				this.title = sdf.format(new Date());
-				this.url = sitePath + path + "/"+sdf.format(new Date())+getFileExt(fileName);
-				AliyunUtils.uploadFileInputStream(title+getFileExt(fileName),fileName, in);
+				this.title =this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
 				BufferedOutputStream output = new BufferedOutputStream(out);

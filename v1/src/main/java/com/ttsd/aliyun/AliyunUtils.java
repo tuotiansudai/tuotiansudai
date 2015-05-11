@@ -3,7 +3,12 @@ package com.ttsd.aliyun;
 import com.aliyun.oss.*;
 import com.aliyun.oss.model.*;
 import com.aliyun.oss.model.ObjectMetadata;
+import  java.io.*;
+
+import com.esoft.core.util.ImageUploadUtil;
 import com.sun.management.VMOption;
+import org.primefaces.model.UploadedFile;
+import sun.text.normalizer.UBiDiProps;
 
 import java.io.*;
 import java.net.URL;
@@ -57,9 +62,9 @@ public class AliyunUtils {
 
 
     public static void main(String[] args) {
-        String Objectkey = "testupdddload.jpg";
-        String uploadFilePath = "/Users/lance/Documents/workspace/oss/oss.png";
-        String downloadFilePath = "/Users/lance/Documents/workspace/oss/downoss.png";
+        String Objectkey = "20150508062132.png";
+        String uploadFilePath = "/Users/lance/Documents/workspace/oss/banner1.jpg";
+        String downloadFilePath = "/Users/lance/Documents/workspace/oss/downbanner1.png";
 
         // 使用默认的OSS服务器地址创建OSSClient对象,不叫OSS_ENDPOINT代表使用杭州节点，青岛节点要加上不然包异常
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
@@ -77,6 +82,7 @@ public class AliyunUtils {
 //
 //            System.out.println("正在上传...");
 //            uploadFile(Objectkey, uploadFilePath);
+//            uploadFileInputStream("banner1.jpg",filename,input);
 //
 //            System.out.println("正在下载...");
 //            downloadFile(client, BUCKET_NAME, Objectkey, downloadFilePath);
@@ -138,7 +144,7 @@ public class AliyunUtils {
         for(int i = 0; i < listDeletes.size(); i++){
             String objectName = listDeletes.get(i).getKey();
             //如果不为空，先删除bucket下的文件
-            System.out.println("deleting bucketname : " + bucketName + " [objectName] :" + objectName);
+            System.out.println(" bucketname : " + bucketName + " [objectName] :" + objectName);
 //            client.deleteObject(bucketName, objectName);
         }
 //        client.deleteBucket(bucketName);
@@ -170,39 +176,41 @@ public class AliyunUtils {
      * @throws ClientException
      * @throws FileNotFoundException
      */
-    public static void uploadFile(String Objectkey, String filename)
-            throws OSSException, ClientException, FileNotFoundException {
+    public static String uploadFile(String filename ,InputStream input )
+            throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
-        File file = new File(filename);
+//        File file = new File(filepath);
+//        InputStream input = new FileInputStream(f);
         ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(file.length());
-        //判断上传类型，多的可根据自己需求来判定
-        if (filename.endsWith("xml")) {
-            objectMeta.setContentType("text/xml");
-        }
-        else if (filename.endsWith("jpg")) {
-            objectMeta.setContentType("image/jpeg");
-        }
-        else if (filename.endsWith("png")) {
-            objectMeta.setContentType("image/png");
-        }
+        objectMeta.setContentLength(input.available());
 
-        InputStream input = new FileInputStream(file);
-        PutObjectResult result = client.putObject(BUCKET_NAME, Objectkey, input, objectMeta);
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+
+        filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
+
         String location = client.getBucketLocation(BUCKET_NAME);
-        System.out.println("location :" + location);
+        System.out.println("upload key : " + filename );
+        System.out.println("location :"+location);
+
+        String filepath = sitePath+ filename;
+        PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
         System.out.println("result etag : " + result.getETag());
+        System.out.println("downing ..... ");
+        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+        return filepath;
     }
 
 
 
 
-    public static String uploadFileInputStream(String objectkey, String filename ,InputStream input)
-            throws OSSException, ClientException, FileNotFoundException ,IOException{
+    public static String uploadFileInputStream(UploadedFile uploadedFile)
+            throws OSSException, ClientException ,IOException{
         OSSClient client = getOSSClient();
-
         ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(filename.length());
+        objectMeta.setContentLength(uploadedFile.getSize());
+        String filename = uploadedFile.getFileName();
         //判断上传类型，多的可根据自己需求来判定
         if (filename.endsWith("xml")) {
             objectMeta.setContentType("text/xml");
@@ -214,12 +222,24 @@ public class AliyunUtils {
             objectMeta.setContentType("image/png");
         }
 
-        PutObjectResult result = client.putObject(BUCKET_NAME, objectkey, input, objectMeta);
+//        InputStream input =  new FileInputStream(file);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhh");
+        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+
+        filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
+
         String location = client.getBucketLocation(BUCKET_NAME);
+        System.out.println("upload key : " + filename );
         System.out.println("location :"+location);
+
+        String filepath = sitePath+ filename;
+        PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
         System.out.println("result etag : " + result.getETag());
-        String path = "/"+filename;
-        return path;
+        System.out.println("downing ..... ");
+        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+        return filepath;
     }
 
     /**
