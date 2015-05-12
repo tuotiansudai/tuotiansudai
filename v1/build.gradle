@@ -81,6 +81,3 @@ flyway {
         url = properties.getProperty('url', url)
     }
 }
-
-
-
