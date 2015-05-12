@@ -98,7 +98,7 @@ public class Uploader {
 				this.state = this.errorInfo.get("TYPE");
 				return;
 			}
-			System.out.println(dfi.getSize()+""+dfi.getStoreLocation());
+//			System.out.println(dfi.getSize()+""+dfi.getStoreLocation());
 			this.fileName = this.getName(this.originalName);
 			this.type = this.getFileExt(this.fileName);
 			this.title = fileName;
@@ -114,7 +114,7 @@ public class Uploader {
 
 				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
 				this.title = url;
-				System.out.println("ueditor url "+url);
+//				System.out.println("ueditor url "+url);
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
 				BufferedOutputStream output = new BufferedOutputStream(out);

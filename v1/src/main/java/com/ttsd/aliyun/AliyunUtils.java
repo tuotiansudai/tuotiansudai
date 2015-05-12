@@ -19,7 +19,6 @@ import java.util.List;
 
 /**
  *
- *@ClassName: TestOSS
  *
  *@Description: 该示例代码展示了如果在OSS中创建和删除一个Bucket，以及如何上传和下载一个文件。
  *
@@ -42,23 +41,32 @@ import java.util.List;
 
  */
 public class AliyunUtils {
+
+
     /**
      * 阿里云ACCESS_KEYID
      */
-    private static String ACCESS_KEYID = "ivtvevKLeCfSZXHg";
+    private static String ACCESS_KEYID = getOssConfig("plat.oss.access_keyid");
     /**
      * 阿里云ACCESS_KEYSECRET
      */
-    private	 static String ACCESS_KEYSECRET = "EBvUQ60BoWh3t7Ut7OcI3bpbwF8S0U";
+    private	 static String ACCESS_KEYSECRET = getOssConfig("plat.oss.access_keysecret");
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
-    private static String OSS_ENDPOINT = "http://oss-cn-hangzhou.aliyuncs.com";
+    private static String OSS_ENDPOINT = getOssConfig("plat.oss.oss_endpoint");
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
-    private static String BUCKET_NAME = "ttsd-web-uploadfiles";
+    private static String BUCKET_NAME = getOssConfig("plat.oss.bucket_name");
+
+
+
+    public static String getOssConfig(String key){
+        return PropertiesUtils.getPro(key);
+    }
+
 
 
     public static void main(String[] args) {
@@ -122,7 +130,7 @@ public class AliyunUtils {
             BucketReferer br = new BucketReferer(true, refererList);
             client.createBucket(bucketName);
             client.setBucketReferer(bucketName, br);
-            System.out.println(bucketName +" is created!");
+//            System.out.println(bucketName +" is created!");
         }catch(ServiceException e){
             if(!OSSErrorCode.BUCKET_ALREADY_EXISTS.equals(e.getErrorCode())){
                 throw e;
@@ -144,11 +152,11 @@ public class AliyunUtils {
         for(int i = 0; i < listDeletes.size(); i++){
             String objectName = listDeletes.get(i).getKey();
             //如果不为空，先删除bucket下的文件
-            System.out.println(" bucketname : " + bucketName + " [objectName] :" + objectName);
+//            System.out.println(" bucketname : " + bucketName + " [objectName] :" + objectName);
 //            client.deleteObject(bucketName, objectName);
         }
 //        client.deleteBucket(bucketName);
-        System.out.println(bucketName + " is deleted!");
+//        System.out.println(bucketName + " is deleted!");
     }
 
     /**
@@ -191,12 +199,12 @@ public class AliyunUtils {
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
 
         String location = client.getBucketLocation(BUCKET_NAME);
-        System.out.println("upload key : " + filename );
-        System.out.println("location :"+location);
+//        System.out.println("upload key : " + filename );
+//        System.out.println("location :"+location);
 
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
-        System.out.println("result etag : " + result.getETag());
+//        System.out.println("result etag : " + result.getETag());
 //        System.out.println("downing ..... ");
 //        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
         return filepath;
@@ -231,8 +239,8 @@ public class AliyunUtils {
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
 
         String location = client.getBucketLocation(BUCKET_NAME);
-        System.out.println("upload key : " + filename );
-        System.out.println("location :"+location);
+//        System.out.println("upload key : " + filename );
+//        System.out.println("location :"+location);
 
         String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
@@ -264,7 +272,7 @@ public class AliyunUtils {
         List<Bucket> buckets = client.listBuckets();
         // 遍历Bucket
         for (Bucket bucket : buckets) {
-            System.out.println(bucket.getName());
+//            System.out.println(bucket.getName());
         }
     }
 
@@ -273,7 +281,7 @@ public class AliyunUtils {
         List<Bucket> buckets = client.listBuckets();
         // 遍历Bucket
         for (Bucket bucket : buckets) {
-            System.out.println("bucket_name : " +bucket.getName());
+//            System.out.println("bucket_name : " +bucket.getName());
             if(bucket.getName().equals("ttsd-uploadfiles")){
                 continue;
             }

@@ -114,7 +114,7 @@ public class UploadFileHome implements Serializable{
 				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
 //				System.out.println(uploadFile.getSize());
 				url= AliyunUtils.uploadFileInputStream(uploadFile);
-				System.out.println("url :"+ url);
+//				System.out.println("url :"+ url);
 				is.close();
 			}else {
 				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());
