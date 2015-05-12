@@ -2,18 +2,15 @@ package com.ttsd.aliyun;
 
 import com.aliyun.oss.*;
 import com.aliyun.oss.model.*;
-import com.aliyun.oss.model.ObjectMetadata;
-import  java.io.*;
-
 import com.esoft.core.util.ImageUploadUtil;
-import com.sun.management.VMOption;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
-import sun.text.normalizer.UBiDiProps;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
