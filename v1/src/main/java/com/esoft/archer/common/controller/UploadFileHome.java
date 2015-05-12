@@ -112,9 +112,7 @@ public class UploadFileHome implements Serializable{
 			if(isoss.equals("oss")){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
-//				System.out.println(uploadFile.getSize());
 				url= AliyunUtils.uploadFileInputStream(uploadFile);
-//				System.out.println("url :"+ url);
 				is.close();
 			}else {
 				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());

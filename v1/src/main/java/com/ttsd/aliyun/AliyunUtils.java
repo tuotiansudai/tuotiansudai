@@ -7,6 +7,8 @@ import  java.io.*;
 
 import com.esoft.core.util.ImageUploadUtil;
 import com.sun.management.VMOption;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
 import sun.text.normalizer.UBiDiProps;
 
@@ -43,6 +45,7 @@ import java.util.List;
 public class AliyunUtils {
 
 
+    static Log log = LogFactory.getLog(AliyunUtils.class);
     /**
      * 阿里云ACCESS_KEYID
      */
@@ -69,38 +72,7 @@ public class AliyunUtils {
 
 
 
-    public static void main(String[] args) {
-        String Objectkey = "20150508062132.png";
-        String uploadFilePath = "/Users/lance/Documents/workspace/oss/banner1.jpg";
-        String downloadFilePath = "/Users/lance/Documents/workspace/oss/downbanner1.png";
 
-        // 使用默认的OSS服务器地址创建OSSClient对象,不叫OSS_ENDPOINT代表使用杭州节点，青岛节点要加上不然包异常
-        OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
-
-        //如果你想配置OSSClient的一些细节的参数，可以在构造OSSClient的时候传入ClientConfiguration对象。
-        //ClientConfiguration是OSS服务的配置类，可以为客户端配置代理，最大连接数等参数。
-        //具体配置看http://aliyun_portal_storage.oss.aliyuncs.com/oss_api/oss_javahtml/OSSClient.html#id2
-        //ClientConfiguration conf = new ClientConfiguration();
-        //OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET, conf);
-
-
-        try {
-//            ensureBucket(client, BUCKET_NAME);
-//            setBucketPublicReadable(client, BUCKET_NAME);
-//
-//            System.out.println("正在上传...");
-//            uploadFile(Objectkey, uploadFilePath);
-//            uploadFileInputStream("banner1.jpg",filename,input);
-//
-//            System.out.println("正在下载...");
-//            downloadFile(client, BUCKET_NAME, Objectkey, downloadFilePath);
-        }catch(Exception e){
-            e.printStackTrace();
-        } finally {
-            deleteAllBuckets(client);
-//          deleteBucket(client, BUCKET_NAME);
-        }
-    }
 
 
     public static OSSClient getOSSClient(){
@@ -130,7 +102,6 @@ public class AliyunUtils {
             BucketReferer br = new BucketReferer(true, refererList);
             client.createBucket(bucketName);
             client.setBucketReferer(bucketName, br);
-//            System.out.println(bucketName +" is created!");
         }catch(ServiceException e){
             if(!OSSErrorCode.BUCKET_ALREADY_EXISTS.equals(e.getErrorCode())){
                 throw e;
@@ -152,11 +123,9 @@ public class AliyunUtils {
         for(int i = 0; i < listDeletes.size(); i++){
             String objectName = listDeletes.get(i).getKey();
             //如果不为空，先删除bucket下的文件
-//            System.out.println(" bucketname : " + bucketName + " [objectName] :" + objectName);
 //            client.deleteObject(bucketName, objectName);
         }
 //        client.deleteBucket(bucketName);
-//        System.out.println(bucketName + " is deleted!");
     }
 
     /**
@@ -170,7 +139,6 @@ public class AliyunUtils {
     private static void setBucketPublicReadable(OSSClient client, String bucketName)throws OSSException, ClientException{
         //创建bucket
         client.createBucket(bucketName);
-
         //设置bucket的访问权限， public-read-write权限
         client.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
     }
@@ -187,26 +155,16 @@ public class AliyunUtils {
     public static String uploadFile(String filename ,InputStream input )
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
-//        File file = new File(filepath);
-//        InputStream input = new FileInputStream(f);
         ObjectMetadata objectMeta = new ObjectMetadata();
         objectMeta.setContentLength(input.available());
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
-
-        String location = client.getBucketLocation(BUCKET_NAME);
-//        System.out.println("upload key : " + filename );
-//        System.out.println("location :"+location);
-
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
-//        System.out.println("result etag : " + result.getETag());
-//        System.out.println("downing ..... ");
-//        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+        log.debug("result etag :" +result.getETag()+ "filepath:"+filepath);
         return filepath;
     }
 
@@ -230,23 +188,14 @@ public class AliyunUtils {
             objectMeta.setContentType("image/png");
         }
 
-//        InputStream input =  new FileInputStream(file);
-
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhh");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
-
-        String location = client.getBucketLocation(BUCKET_NAME);
-//        System.out.println("upload key : " + filename );
-//        System.out.println("location :"+location);
-
         String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
-//        System.out.println("result etag : " + result.getETag());
-//        System.out.println("downing ..... ");
-//        downloadFile(getOSSClient(),BUCKET_NAME,filename,"/Users/lance/Documents/workspace/oss/"+filename);
+        log.debug("filepath : "+filepath +"etag:" +result.getETag());
+
         return filepath;
     }
 
@@ -281,19 +230,7 @@ public class AliyunUtils {
         List<Bucket> buckets = client.listBuckets();
         // 遍历Bucket
         for (Bucket bucket : buckets) {
-//            System.out.println("bucket_name : " +bucket.getName());
-            if(bucket.getName().equals("ttsd-uploadfiles")){
-                continue;
-            }
             deleteBucket(client, bucket.getName());
-
         }
     }
-
-
-
-
-
-
-
 }
