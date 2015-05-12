@@ -68,7 +68,7 @@ war {
 }
 
 flyway {
-    def productionFlywayConfig = '/workspace/production_config/flywaydb.properties'
+    def productionFlywayConfig = '/workspace/production_config/jdbc.properties'
     locations = ['filesystem:db_migration']
     user = 'root'
     password = ''
@@ -76,8 +76,8 @@ flyway {
     if (new File(productionFlywayConfig).exists()) {
         Properties properties = new Properties()
         properties.load(new FileInputStream(productionFlywayConfig))
-        user = properties.getProperty('user', user)
-        password = properties.getProperty('password', password)
-        url = properties.getProperty('url', url)
+        user = properties.getProperty('jdbc.username', user)
+        password = properties.getProperty('jdbc.password', password)
+        url = properties.getProperty('flyway.url', url)
     }
 }
