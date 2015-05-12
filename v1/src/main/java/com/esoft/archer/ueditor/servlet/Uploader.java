@@ -16,6 +16,8 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.aliyun.PropertiesUtils;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.InvalidContentTypeException;
@@ -52,7 +54,6 @@ public class Uploader {
 	private HttpServletRequest request = null;
 	private String title = "";
 
-	// private Log log = LogFactory.getLog(Uploader.class);
 
 	// 保存路径
 	private String savePath = "upload";
@@ -60,7 +61,7 @@ public class Uploader {
 	private String[] allowFiles = { ".rar", ".doc", ".docx", ".zip", ".pdf",
 			".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
 	// 文件大小限制，单位KB
-	private int maxSize = 10000;
+	private int maxSize = 1024*10;
 
 	private HashMap<String, String> errorInfo = new HashMap<String, String>();
 
@@ -80,32 +81,41 @@ public class Uploader {
 	}
 
 	public void upload() throws Exception {
-		boolean isMultipart = ServletFileUpload
-				.isMultipartContent(this.request);
+		SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
+		String path = "/upload/" + formater.format(new Date());
+		boolean isMultipart = ServletFileUpload.isMultipartContent(this.request);
 		if (!isMultipart) {
 			this.state = this.errorInfo.get("NOFILE");
 			return;
 		}
 		if (this.request instanceof MultipartRequest) {
-			DiskFileItem dfi = (DiskFileItem) ((MultipartRequest) this.request)
-					.getFileItem("upfile");
-			this.title = ((MultipartRequest) this.request)
-					.getParameter("pictitle");
-			this.originalName = dfi.getName().substring(
-					dfi.getName().lastIndexOf(
-							System.getProperty("file.separator")) + 1);
+
+			DiskFileItem dfi = (DiskFileItem) ((MultipartRequest) this.request).getFileItem("upfile");
+			this.title = ((MultipartRequest) this.request).getParameter("pictitle");
+			this.originalName = dfi.getName().substring(dfi.getName().lastIndexOf(System.getProperty("file.separator")) + 1);
 			if (!this.checkFileType(this.originalName)) {
 				this.state = this.errorInfo.get("TYPE");
 				return;
 			}
 			this.fileName = this.getName(this.originalName);
 			this.type = this.getFileExt(this.fileName);
-			this.url = savePath + "/" + this.fileName;
+			this.title = fileName;
+			//add line mkdir
+			String filepath = mkdir(this.getPhysicalPath(this.url)+"upload");
+			String savefile = filepath +"/"+ this.fileName;
+			this.url = savePath  + "/" + this.fileName;
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
-			FileOutputStream out = new FileOutputStream(new File(
-					this.getPhysicalPath(this.url)));
-			BufferedOutputStream output = new BufferedOutputStream(out);
-			Streams.copy(in, output, true);
+
+			String isoss = PropertiesUtils.getPro("plat.is.start");
+			if(isoss.equals("oss")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
+				this.title = url;
+			}else{
+				FileOutputStream out = new FileOutputStream(new File(savefile));
+				BufferedOutputStream output = new BufferedOutputStream(out);
+				Streams.copy(in, output, true);
+			}
 			this.state = this.errorInfo.get("SUCCESS");
 		} else {
 			DiskFileItemFactory dff = new DiskFileItemFactory();
@@ -261,6 +271,25 @@ public class Uploader {
 		return path;
 	}
 
+
+	/**
+	 * add method by lance
+	 * mkdir
+	 * @param path
+	 */
+	private String mkdir(final String path) {
+
+		File dir = new File(path);
+		if (!dir.exists()) {
+			try {
+				dir.mkdirs();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return path;
+	}
+
 	/**
 	 * 根据传入的虚拟路径获取物理路径
 	 * 
@@ -269,8 +298,8 @@ public class Uploader {
 	 */
 	private String getPhysicalPath(String path) {
 		String servletPath = this.request.getServletPath();
-		String realPath = this.request.getSession().getServletContext()
-				.getRealPath(servletPath);
+		//modify by lance fixbug jetty container realPath is null
+		String realPath = this.request.getSession().getServletContext().getRealPath("") + servletPath;
 		return new File(realPath).getParent() + "/" + path;
 	}
 
