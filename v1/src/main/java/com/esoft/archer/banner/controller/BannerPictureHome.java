@@ -2,12 +2,13 @@ package com.esoft.archer.banner.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.annotation.Resource;
+
+import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.aliyun.PropertiesUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -68,7 +69,17 @@ public class BannerPictureHome {
 			is = uploadFile.getInputstream();
 			BannerPicture pp = new BannerPicture();
 			pp.setId(IdGenerator.randomUUID());
-			pp.setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
+			String isoss = PropertiesUtils.getPro("plat.is.start");
+			String sitePath = PropertiesUtils.getPro("plat.sitePath");
+			if(isoss.equals("oss")){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
+				String url= AliyunUtils.uploadFileInputStream(uploadFile);
+				is.close();
+				pp.setPicture(url);
+			}else {
+				pp.setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
+			}
 			pp.setSeqNum(this.getBannerPictures().size() + 1);
 			this.getBannerPictures().add(pp);
 		} catch (IOException e) {
@@ -83,7 +94,17 @@ public class BannerPictureHome {
 		try {
 			is = uploadFile.getInputstream();
 			if (this.getNeedChangedPic() != null) {
-				this.getNeedChangedPic().setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
+				String isoss = PropertiesUtils.getPro("plat.is.start");
+				String sitePath = PropertiesUtils.getPro("plat.sitePath");
+				if(isoss.equals("oss")){
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+					String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
+					String url= AliyunUtils.uploadFileInputStream(uploadFile);
+					is.close();
+					this.getNeedChangedPic().setPicture(url);
+				}else{
+					this.getNeedChangedPic().setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
+				}
 			} else {
 				FacesUtil.addErrorMessage("被更改的banner为空。");
 			}
