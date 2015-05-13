@@ -122,9 +122,9 @@ public class UmPayNormalRepayOperation extends
 							msg = returnMsg.split("\\|")[1];
 						}
 					}catch (ReqDataException e){
-						e.printStackTrace();
+						throw new ReqDataException(e);
 					}catch (RetDataException e){
-						e.printStackTrace();
+						throw new RetDataException(e);
 					}
 				}
 
