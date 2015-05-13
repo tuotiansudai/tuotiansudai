@@ -27,145 +27,143 @@ import com.esoft.core.util.ImageUploadUtil;
 @Scope(ScopeType.VIEW)
 public class BannerPictureHome {
 
-	@Logger
-	static Log log;
+    @Logger
+    static Log log;
 
-	@Resource
-	private BannerService bannerService;
-	
-	
+    @Resource
+    private BannerService bannerService;
 
-	private List<BannerPicture> bannerPictures;
 
-	/**
-	 * 需要被修改图片的bannerPic
-	 */
-	private BannerPicture needChangedPic;
+    private List<BannerPicture> bannerPictures;
 
-	public void deletePicture(BannerPicture bp) {
-		if (bp != null) {
-			try{				
-				bannerService.deleteBannerPicture(bp);
-				this.bannerPictures.remove(bp);
-			} catch(Exception e){
-				FacesUtil.addInfoMessage("此图片已被使用，无法删除。");
-			}
-		}
-	}
+    /**
+     * 需要被修改图片的bannerPic
+     */
+    private BannerPicture needChangedPic;
 
-	public List<BannerPicture> getBannerPictures() {
-		return bannerPictures;
-	}
+    public void deletePicture(BannerPicture bp) {
+        if (bp != null) {
+            try {
+                bannerService.deleteBannerPicture(bp);
+                this.bannerPictures.remove(bp);
+            } catch (Exception e) {
+                FacesUtil.addInfoMessage("此图片已被使用，无法删除。");
+            }
+        }
+    }
 
-	/**
-	 * 处理图片上传
-	 * 
-	 * @param event
-	 */
-	public void handleBannerPicturesUpload(FileUploadEvent event) {
-		UploadedFile uploadFile = event.getFile();
-		InputStream is = null;
-		try {
-			is = uploadFile.getInputstream();
-			BannerPicture pp = new BannerPicture();
-			pp.setId(IdGenerator.randomUUID());
-			String isoss = PropertiesUtils.getPro("plat.is.start");
-			if(isoss.equals("oss")){
-				String url= AliyunUtils.uploadFileInputStream(uploadFile);
-				pp.setPicture(url);
-			}else {
-				pp.setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
-			}
-			pp.setSeqNum(this.getBannerPictures().size() + 1);
-			this.getBannerPictures().add(pp);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void changeBannerPic(FileUploadEvent event) {
-		UploadedFile uploadFile = event.getFile();
-		InputStream is = null;
-		try {
-			is = uploadFile.getInputstream();
-			if (this.getNeedChangedPic() != null) {
-				String isoss = PropertiesUtils.getPro("plat.is.start");
-				if(isoss.equals("oss")){
-					String url= AliyunUtils.uploadFileInputStream(uploadFile);
-					this.getNeedChangedPic().setPicture(url);
-				}else{
-					this.getNeedChangedPic().setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
-				}
-			} else {
-				FacesUtil.addErrorMessage("被更改的banner为空。");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    public List<BannerPicture> getBannerPictures() {
+        return bannerPictures;
+    }
 
-	public void initBannerPictures(List<BannerPicture> value) {
-		if (this.bannerPictures == null) {
-			this.bannerPictures = new ArrayList<BannerPicture>();			
-		}
-		//FIXME 如果value为null，则addAll方法抛异常
-		if(value != null){
-			this.bannerPictures.addAll(value);
-		}
-		this.bannerPictures = sortBySeqNum(bannerPictures);
-	}
+    /**
+     * 处理图片上传
+     *
+     * @param event
+     */
+    public void handleBannerPicturesUpload(FileUploadEvent event) {
+        UploadedFile uploadFile = event.getFile();
+        InputStream is = null;
+        try {
+            is = uploadFile.getInputstream();
+            BannerPicture picture = new BannerPicture();
+            picture.setId(IdGenerator.randomUUID());
+            ossUpload(uploadFile, is, picture);
+            picture.setSeqNum(this.getBannerPictures().size() + 1);
+            this.getBannerPictures().add(picture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	private List<BannerPicture> sortBySeqNum(List<BannerPicture> pics) {
-		Collections.sort(pics, new Comparator<BannerPicture>() {
-			public int compare(BannerPicture o1, BannerPicture o2) {
-				return o1.getSeqNum() - o2.getSeqNum();
-			}
-		});
-		return pics;
-	}
+    public void changeBannerPic(FileUploadEvent event) {
+        UploadedFile uploadFile = event.getFile();
+        InputStream is = null;
+        try {
+            is = uploadFile.getInputstream();
+            BannerPicture picture = this.getNeedChangedPic();
+            if (picture != null) {
+                ossUpload(uploadFile, is, picture);
+            } else {
+                FacesUtil.addErrorMessage("被更改的banner为空。");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	public void setBannerPictures(List<BannerPicture> productPictures) {
-		this.bannerPictures = productPictures;
-	}
+    private void ossUpload(UploadedFile uploadFile, InputStream is, BannerPicture picture) throws IOException {
+        String ossSwitch = PropertiesUtils.getPro("plat.is.start");
+        if (ossSwitch.equals("oss")) {
+            String url = AliyunUtils.uploadFileInputStream(uploadFile);
+            picture.setPicture(url);
+        } else {
+            picture.setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
+        }
+    }
 
-	public void moveUp(BannerPicture bp) {
-		int currentIndex = this.bannerPictures.indexOf(bp);
-		if (currentIndex == 0) {
-			return;
-		} else {
-			this.bannerPictures.remove(bp);
-			this.bannerPictures.add(currentIndex - 1, bp);
-		}
-	}
+    public void initBannerPictures(List<BannerPicture> value) {
+        if (this.bannerPictures == null) {
+            this.bannerPictures = new ArrayList<BannerPicture>();
+        }
+        //FIXME 如果value为null，则addAll方法抛异常
+        if (value != null) {
+            this.bannerPictures.addAll(value);
+        }
+        this.bannerPictures = sortBySeqNum(bannerPictures);
+    }
 
-	public void moveDown(BannerPicture bp) {
-		int currentIndex = this.bannerPictures.indexOf(bp);
-		if (currentIndex == this.bannerPictures.size() - 1) {
-			return;
-		} else {
-			this.bannerPictures.remove(bp);
-			this.bannerPictures.add(currentIndex + 1, bp);
-		}
-	}
+    private List<BannerPicture> sortBySeqNum(List<BannerPicture> pics) {
+        Collections.sort(pics, new Comparator<BannerPicture>() {
+            public int compare(BannerPicture o1, BannerPicture o2) {
+                return o1.getSeqNum() - o2.getSeqNum();
+            }
+        });
+        return pics;
+    }
 
-	public BannerPicture getNeedChangedPic() {
-		return needChangedPic;
-	}
+    public void setBannerPictures(List<BannerPicture> productPictures) {
+        this.bannerPictures = productPictures;
+    }
 
-	public void setNeedChangedPic(BannerPicture needChangedPic) {
-		this.needChangedPic = needChangedPic;
-	}
-	
+    public void moveUp(BannerPicture bp) {
+        int currentIndex = this.bannerPictures.indexOf(bp);
+        if (currentIndex == 0) {
+            return;
+        } else {
+            this.bannerPictures.remove(bp);
+            this.bannerPictures.add(currentIndex - 1, bp);
+        }
+    }
+
+    public void moveDown(BannerPicture bp) {
+        int currentIndex = this.bannerPictures.indexOf(bp);
+        if (currentIndex == this.bannerPictures.size() - 1) {
+            return;
+        } else {
+            this.bannerPictures.remove(bp);
+            this.bannerPictures.add(currentIndex + 1, bp);
+        }
+    }
+
+    public BannerPicture getNeedChangedPic() {
+        return needChangedPic;
+    }
+
+    public void setNeedChangedPic(BannerPicture needChangedPic) {
+        this.needChangedPic = needChangedPic;
+    }
+
 }
