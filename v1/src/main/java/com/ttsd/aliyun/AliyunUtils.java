@@ -6,14 +6,10 @@ import com.aliyun.oss.model.ObjectMetadata;
 import  java.io.*;
 
 import com.esoft.core.util.ImageUploadUtil;
-import com.sun.management.VMOption;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
-import sun.text.normalizer.UBiDiProps;
 
-import java.io.*;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,7 +142,7 @@ public class AliyunUtils {
     /**
      * 上传文件
      *
-     * @param Objectkey  上传到OSS起的名
+     * objectkey 上传到OSS起的名
      * @param filename  本地文件名
      * @throws OSSException
      * @throws ClientException
