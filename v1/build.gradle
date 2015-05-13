@@ -38,7 +38,6 @@ gretty {
     // supported values:
     // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
     servletContainer = 'jetty8'
-    //servletContainer = 'tomcat7'
     contextPath = ''
     port = 9090
     jvmArgs = [ "-XX:MaxPermSize=512m" ]
@@ -53,7 +52,7 @@ cargo {
     }
 
     local {
-        homeDir = file('/etc/apache-tomcat-6.0.29')
+        homeDir = file('/usr/share/apache-tomcat-6.0.43')
         outputFile = file('build/output.log')
         timeout = 180000
     }
