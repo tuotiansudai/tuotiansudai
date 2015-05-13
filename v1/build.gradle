@@ -59,7 +59,7 @@ cargo {
 }
 
 war {
-    archiveName "ttsd.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
     from('/workspace/production_config/') {
         include '*.*'
@@ -81,6 +81,3 @@ flyway {
         url = properties.getProperty('url', url)
     }
 }
-
-
-
