@@ -108,7 +108,6 @@ public class Uploader {
 
 			String isoss = PropertiesUtils.getPro("plat.is.start");
 			if(isoss.equals("oss")){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
 				this.title = url;
 			}else{

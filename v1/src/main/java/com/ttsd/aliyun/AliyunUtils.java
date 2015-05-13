@@ -6,7 +6,6 @@ import com.esoft.core.util.ImageUploadUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -143,7 +142,7 @@ public class AliyunUtils {
     /**
      * 上传文件
      *
-     * @param Objectkey  上传到OSS起的名
+     * objectkey 上传到OSS起的名
      * @param filename  本地文件名
      * @throws OSSException
      * @throws ClientException
