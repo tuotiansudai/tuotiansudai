@@ -15,7 +15,7 @@ def get_random_user_id():
 
 
 def build_common_params():
-    common_ret = {'mer_id': request.args.get('mer_id'),
+    common_ret = {'mer_id': request.values.get('mer_id'),
                   'sign_type': 'RSA',
                   'version': '1.0',
                   'sign': 'qCq9+6lxcCE06rPF679LT+qxfs5O91w3iQOy2bilph55iChxp2hEbxAgQ8S4ZQYV5GcWbbKpDd9eNW863rN4tG3uOAJA63aNd9J+bVO9EBob5mqxv9S4tqV/Pq8UE+7GoF/DCZXbojt3UDcDbUllQ+V+xGMe1RwKpFVH6AHY5p0='}
@@ -30,7 +30,7 @@ def build_register_params():
 
 def build_transfer_params():
     transfer_ret = {'mer_date': datetime.datetime.today().date().strftime('%Y%m%d'), 'ret_code': '0000',
-                    'order_id': request.args.get('order_id'), 'trade_no': get_random_user_id()}
+                    'order_id': request.values.get('order_id'), 'trade_no': get_random_user_id()}
     return transfer_ret
 
 
@@ -64,14 +64,33 @@ def mer_bind_card():
     :return:
         Navigate to UMP page
     """
-    user_id = request.args.get('user_id')
-    order_id = request.args.get('order_id')
-    mer_date = request.args.get('mer_date')
-    ret_url = request.args.get('ret_url')
-    notify_url = request.args.get('notify_url')
+    user_id = request.values.get('user_id')
+    order_id = request.values.get('order_id')
+    mer_date = request.values.get('mer_date')
+    mer_id = request.values.get('mer_id')
+    ret_url = request.values.get('ret_url')
+    notify_url = request.values.get('notify_url')
 
     store = Store(user_id)
-    params = "mer_bind_card::{0}::{1}::{2}".format(user_id, order_id, mer_date)
+    params = "mer_bind_card::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id)
+    store.set_frontend_notify("{0}::{1}".format(params, ret_url))
+    store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+
+def project_transfer():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?amount=12345&charset=UTF-8&mer_date=20150512&mer_id=7099088&notify_url=http%3A%2F%2Fbaidu1.com&order_id=173099&partic_acc_type=01&partic_type=01&partic_user_id=UB201504161125570000000003661793&project_account_id=4567889&project_id=123&res_format=HTML&ret_url=http%3A%2F%2Fbaidu.com&serv_type=03&service=project_transfer&sign_type=RSA&trans_action=02&version=1.0&sign=Uh9YaEXA4tqE2ZejQGuPzWGdMWXi%2Bb%2BjbS2TLwQdCxM3oHMCX48Q8MiB4zWMjIBvU2Yy2JVg0WIoQrfT4%2FJ3Df%2BY3Zi0OfEV6byMTmvDGCarHulbixIxpwLkhn4AscOom0kW8vTkmXt5NLcL3fNXrYpRzuIDxxwk%2BmwOqm8vHks%3D
+    :return:
+        Navigate to UMP page
+    """
+    order_id = request.values.get('order_id')
+    mer_date = request.values.get('mer_date')
+    mer_id = request.values.get('mer_id')
+    ret_url = request.values.get('ret_url')
+    notify_url = request.values.get('notify_url')
+
+    store = Store()
+    params = "project_transfer::{0}::{1}::{2}".format(order_id, mer_date, mer_id)
     store.set_frontend_notify("{0}::{1}".format(params, ret_url))
     store.set_backend_notify("{0}::{1}".format(params, notify_url))
 
@@ -96,9 +115,9 @@ def transfer():
     return result
 
 
-@app.route('/spay/pay/payservice.do')
+@app.route('/spay/pay/payservice.do', methods=['GET', 'POST'])
 def index():
-    service = globals().get(request.args.get('service'))
+    service = globals().get(request.values.get('service'))
     if not service:
         abort(404)
     result = service()
