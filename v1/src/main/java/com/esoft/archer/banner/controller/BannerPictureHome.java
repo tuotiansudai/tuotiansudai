@@ -70,12 +70,8 @@ public class BannerPictureHome {
 			BannerPicture pp = new BannerPicture();
 			pp.setId(IdGenerator.randomUUID());
 			String isoss = PropertiesUtils.getPro("plat.is.start");
-			String sitePath = PropertiesUtils.getPro("plat.sitePath");
 			if(isoss.equals("oss")){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
 				String url= AliyunUtils.uploadFileInputStream(uploadFile);
-				is.close();
 				pp.setPicture(url);
 			}else {
 				pp.setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
@@ -84,7 +80,12 @@ public class BannerPictureHome {
 			this.getBannerPictures().add(pp);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+		}finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -95,12 +96,8 @@ public class BannerPictureHome {
 			is = uploadFile.getInputstream();
 			if (this.getNeedChangedPic() != null) {
 				String isoss = PropertiesUtils.getPro("plat.is.start");
-				String sitePath = PropertiesUtils.getPro("plat.sitePath");
 				if(isoss.equals("oss")){
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-					String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
 					String url= AliyunUtils.uploadFileInputStream(uploadFile);
-					is.close();
 					this.getNeedChangedPic().setPicture(url);
 				}else{
 					this.getNeedChangedPic().setPicture(ImageUploadUtil.upload(is, uploadFile.getFileName()));
@@ -110,7 +107,12 @@ public class BannerPictureHome {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return;
+		}finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

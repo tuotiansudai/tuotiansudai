@@ -108,12 +108,8 @@ public class UploadFileHome implements Serializable{
 			is = uploadFile.getInputstream();
 
 			String isoss = PropertiesUtils.getPro("plat.is.start");
-			String sitePath = PropertiesUtils.getPro("plat.sitePath");
 			if(isoss.equals("oss")){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-				String filepath = sitePath+sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadFile.getFileName());
 				url= AliyunUtils.uploadFileInputStream(uploadFile);
-				is.close();
 			}else {
 				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());
 			}
@@ -122,7 +118,11 @@ public class UploadFileHome implements Serializable{
 			e.printStackTrace();
 			return null;
 		}finally {
-
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
