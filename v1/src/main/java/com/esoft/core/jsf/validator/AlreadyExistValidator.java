@@ -55,6 +55,10 @@ public class AlreadyExistValidator extends ValueChangeValidator implements
 							.substring(0, expr.lastIndexOf("."));
 					String filedExpr = expr.substring(
 							expr.lastIndexOf(".") + 1, expr.length());
+					// Hard Code For referrer to validate
+					if (filedExpr.equalsIgnoreCase("referrer")) {
+						filedExpr = "username";
+					}
 					Object entity = FacesUtil.getExpressionValue("#{"
 							+ entityExpr + "}");
 					Class clazz = entity.getClass();

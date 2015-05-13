@@ -1,5 +1,6 @@
 package com.esoft.archer.user.service.impl;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.user.model.ReferrerRelation;
+import com.google.common.base.Strings;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -732,7 +735,29 @@ public class UserServiceImpl implements UserService {
 			String referrer) throws NoMatchingObjectsException,
 			AuthInfoOutOfDateException, AuthInfoAlreadyActivedException {
 		registerByMobileNumber(user, authCode);
+		saveReferrerRelations(user);
 		saveReferrerInfo(user.getId(), referrer);
+	}
+
+	private void saveReferrerRelations(User user) {
+		String referrerId = user.getReferrer();
+		if (Strings.isNullOrEmpty(referrerId)) return;
+		String userId = user.getId();
+		ReferrerRelation referrerRelation = new ReferrerRelation();
+		referrerRelation.setUserId(userId);
+		referrerRelation.setReferrerId(referrerId);
+		referrerRelation.setLevel(1);
+		ht.save(referrerRelation);
+
+		String hqlTemplate = "from ReferrerRelation where userId=''{0}''";
+		List<ReferrerRelation> list = ht.find(MessageFormat.format(hqlTemplate, referrerId));
+		for (ReferrerRelation relation : list) {
+			ReferrerRelation upperRelation = new ReferrerRelation();
+			upperRelation.setUserId(userId);
+			upperRelation.setReferrerId(relation.getReferrerId());
+			upperRelation.setLevel(relation.getLevel() + 1);
+			ht.save(upperRelation);
+		}
 	}
 
 	/**

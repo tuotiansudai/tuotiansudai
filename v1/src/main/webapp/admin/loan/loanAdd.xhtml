@@ -32,6 +32,9 @@
 						<ui:param name="thumb" value="#{loanHome.instance.customPicture}"></ui:param>
 					</ui:include>
 
+					<h:outputLabel value="代理人"></h:outputLabel>
+					<h:inputText value="#{loanHome.instance.agent}" required="true" label="代理人" />
+
 					<h:outputLabel value="借款用户"></h:outputLabel>
 					<p:autoComplete value="#{loanHome.instance.user}"
 						title="输入用户名自动检索用户，请在检索结果中选择用户" emptyMessage="未搜索到用户"
