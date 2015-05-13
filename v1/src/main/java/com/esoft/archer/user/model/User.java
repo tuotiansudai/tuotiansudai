@@ -4,18 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.google.common.collect.Lists;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
@@ -79,6 +70,9 @@ public class User implements java.io.Serializable {
 
 	/** 推荐人 */
 	private String referrer;
+
+
+	private List<User> referrers;
 
 	// Constructors
 
@@ -374,5 +368,17 @@ public class User implements java.io.Serializable {
 
 	public void setReferrer(String referrer) {
 		this.referrer = referrer;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "referrer_relation",
+			joinColumns = { @JoinColumn(name = "user_id", nullable = false, updatable = false) },
+			inverseJoinColumns = { @JoinColumn(name = "referrer_id", nullable = false, updatable = false) })
+	public List<User> getReferrers() {
+		return referrers;
+	}
+
+	public void setReferrers(List<User> referrers) {
+		this.referrers = referrers;
 	}
 }
