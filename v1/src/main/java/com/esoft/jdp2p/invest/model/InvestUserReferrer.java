@@ -1,5 +1,6 @@
 package com.esoft.jdp2p.invest.model;
 
+import com.esoft.archer.user.model.ReferrerRelation;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,12 +19,32 @@ public class InvestUserReferrer implements java.io.Serializable{
     private Invest invest;
     private Date time;
     private Double bonus;
-    //private
+    private String referrerId;
+    private String status;
+    private String  roleName;
+
+    @Column(name = "role_name",nullable = false, length = 100)
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invest_id", nullable = false)
     public Invest getInvest() {
         return invest;
+    }
+
+    @Column(name = "referrer_id",length = 32)
+    public String getReferrerId() {
+        return referrerId;
+    }
+
+    public void setReferrerId(String referrerRelation) {
+        this.referrerId = referrerId;
     }
 
     public void setInvest(Invest invest) {
@@ -56,5 +77,14 @@ public class InvestUserReferrer implements java.io.Serializable{
 
     public void setBonus(Double bonus) {
         this.bonus = bonus;
+    }
+
+    @Column(name = "status", nullable = false, length = 19)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
