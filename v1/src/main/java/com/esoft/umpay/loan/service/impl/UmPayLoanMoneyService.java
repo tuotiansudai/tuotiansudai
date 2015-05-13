@@ -135,8 +135,8 @@ public class UmPayLoanMoneyService {
 		log.debug("普通转账免密(划账)-发送数据: " + reqData.toString());
 		TrusteeshipOperation to = createTrusteeshipOperation(orderId, reqData.getUrl(), "projectId:" + orderId, UmPayConstants.OperationType.TRANSFER, reqData.getPlain());
 		String responseBodyAsString = HttpClientUtil.getResponseBodyAsString(to.getRequestUrl());
-		Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
-		//Map<String, String> resData = umPayImitateSignService.getResData(responseBodyAsString);
+		//Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
+		Map<String, String> resData = umPayImitateSignService.getResData(responseBodyAsString);
 		log.debug("普通转账免密(划账)-接收数据: " + resData.toString());
 		String ret_code = resData.get("ret_code");
 		if ("0000".equals(ret_code)) { // 成功划账
