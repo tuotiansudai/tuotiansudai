@@ -27,16 +27,16 @@
 			<h:form id="form">
 				<h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
 					<h:outputLabel value="推荐人"></h:outputLabel>
-					<h:inputText value="#{referGradeUserHome.instance.referrerid}" readonly="#{not empty referGradeUserHome.instance.referrerid}"
+					<h:inputText value="#{referGradeUserHome.instance.referrerId}" readonly="#{not empty referGradeUserHome.instance.referrerId}"
 								 required="true" label="#{commonMsg.IDLabel}"></h:inputText>
 
-					<h:outputLabel value="推荐人层级"></h:outputLabel>
+					<h:outputLabel value="推荐层级"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
 								 value="#{referGradeUserHome.instance.grade}"></h:inputText>
 
 					<h:outputLabel value="收益比例"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeUserHome.instance.profitrate}"></h:inputText>
+								 value="#{referGradeUserHome.instance.profitRate}"></h:inputText>
 
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
 					<ui:fragment>

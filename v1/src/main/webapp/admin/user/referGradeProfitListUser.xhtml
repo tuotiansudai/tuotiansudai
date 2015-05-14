@@ -37,18 +37,18 @@
             <p:dataTable lazy="true" id="dataTable" value="#{referGradeProfitUserList.lazyModel}" var="referGradProfitUser"
                 paginator="true" paginatorPosition="bottom" rows="15">
                 <p:column headerText="推荐人">
-                    <h:outputText  value="#{referGradProfitUser.referrerid}"></h:outputText>
+                    <h:outputText  value="#{referGradProfitUser.referrerId}"></h:outputText>
                 </p:column>
                 <p:column headerText="推荐层级">
                     <h:outputText  value="#{referGradProfitUser.grade}"></h:outputText>
                 </p:column>
                 <p:column headerText="收益比例(%)">
-                    <h:outputText  value="#{referGradProfitUser.profitrate}"></h:outputText>
+                    <h:outputText  value="#{referGradProfitUser.profitRate}"></h:outputText>
                 </p:column>
 
                 <p:column headerText="#{commonMsg.actionLabel}">
                     <sec:ifAllGranted roles="USER_EDIT">
-                        <h:link value=" 编辑 | " outcome="/admin/user/referGradeProfitEdit?id=#{referGradProfitUser.id }"></h:link>
+                        <h:link value=" 编辑 | " outcome="/admin/user/referGradeProfitUserEdit?id=#{referGradProfitUser.id }"></h:link>
                         <a href="javascript:void(0)"
                            onclick="$('#form\\:deleteId').val('#{referGradProfitUser.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a>
                     </sec:ifAllGranted>

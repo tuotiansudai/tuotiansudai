@@ -30,7 +30,7 @@
 					<h:inputText style="width:190px;height:18px;" maxlength="50"
 
 						 label="#{userMsg.referrername}" required="true"
-						value="#{referGradeUserHome.instance.referrerid}">
+						value="#{referGradeUserHome.instance.referrerId}">
 
 					</h:inputText>
 
@@ -39,15 +39,12 @@
 					<h:inputText style="width:190px;height:18px;"
 								 value="#{referGradeUserHome.instance.grade}" maxlength="100"
 								 validatorMessage="#{userMsg.email}#{commonMsg.formatError}">
-						<!--
-						<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
-						<archer:validateAlreadyExist />
-						-->
+
 					</h:inputText>
 
 					<h:outputLabel value="#{userMsg.referrerProfitLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeUserHome.instance.profitrate}"></h:inputText>
+								 value="#{referGradeUserHome.instance.profitRate}"></h:inputText>
 
 
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>

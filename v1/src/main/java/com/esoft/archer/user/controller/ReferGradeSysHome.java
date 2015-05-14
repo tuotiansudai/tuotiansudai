@@ -41,8 +41,8 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
-		getInstance().setInputdate(new Date());
-		getInstance().setUpdatetime(new Date());
+		getInstance().setInputDate(new Date());
+		getInstance().setUpdateTime(new Date());
 		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSys"));
 		return super.save();
 	}
@@ -54,7 +54,7 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 	}
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
-		getInstance().setUpdatetime(new Date());
+		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListSys");
 	}

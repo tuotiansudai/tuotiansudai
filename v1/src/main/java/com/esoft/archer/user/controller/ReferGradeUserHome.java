@@ -28,11 +28,11 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 	@Transactional(readOnly = false)
 	public String save() {
 		// FIXME:放在service中
-		if(!StringUtils.isEmpty(getInstance().getReferrerid())){
+		if(!StringUtils.isEmpty(getInstance().getReferrerId())){
 			try {
-				referGradePtUserService.getUserById(getInstance().getReferrerid());
+				referGradePtUserService.getUserById(getInstance().getReferrerId());
 			} catch (UserNotFoundException e) {
-				FacesUtil.addErrorMessage("推荐人"+getInstance().getReferrerid()+"在系统中未进行维护,不能新增层级和收益比例!");
+				FacesUtil.addErrorMessage("推荐人"+getInstance().getReferrerId()+"在系统中未进行维护,不能新增层级和收益比例!");
 				return null;
 			}
 		}
@@ -40,11 +40,11 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
-		if(StringUtils.isEmpty(getInstance().getReferrername())){
-			getInstance().setReferrername(getInstance().getReferrerid());
+		if(StringUtils.isEmpty(getInstance().getReferrerName())){
+			getInstance().setReferrerName(getInstance().getReferrerId());
 		}
-		getInstance().setInputdate(new Date());
-		getInstance().setUpdatetime(new Date());
+		getInstance().setInputDate(new Date());
+		getInstance().setUpdateTime(new Date());
 		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListUser"));
 		return super.save();
 	}
@@ -56,7 +56,7 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 	}
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
-		getInstance().setUpdatetime(new Date());
+		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListUser");
 	}

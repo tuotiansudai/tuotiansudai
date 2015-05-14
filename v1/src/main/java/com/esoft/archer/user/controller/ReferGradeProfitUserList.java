@@ -33,8 +33,8 @@ public class ReferGradeProfitUserList extends EntityQuery<ReferGradeProfitUser> 
 		setCountHql(lazyModelCount);
 		setHql(lazyModel);
 		final String[] RESTRICTIONS = {
-				"referGradeProfitUser.referrerid=#{referGradeProfitUserList.referee}",
-				"1=1 order by referGradeProfitUser.referrerid" };
+				"referGradeProfitUser.referrerId=#{referGradeProfitUserList.referee}",
+				"1=1 order by referGradeProfitUser.referrerId" };
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
 

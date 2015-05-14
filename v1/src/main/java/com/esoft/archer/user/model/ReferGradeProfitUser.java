@@ -11,24 +11,24 @@ import javax.persistence.*;
  * ReferGradeProfitUser entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "ref_grade_pft_user")
+@Table(name = "user_refer_grade_profitrate")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
 public class ReferGradeProfitUser implements java.io.Serializable {
 
 	// Fields
 	private String id;
 
-	private String referrerid;
+	private String referrerId;
 
-	private String referrername;
+	private String referrerName;
 
 	private Integer grade;
 
-	private Double profitrate;
+	private Double profitRate;
 
-	private Date   inputdate ;
+	private Date   inputDate ;
 
-	private Date  updatetime;
+	private Date  updateTime;
 
 	private User user;
 
@@ -36,8 +36,8 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 	public ReferGradeProfitUser() {
 	}
 
-	public ReferGradeProfitUser(String referrerid) {
-		this.referrerid = referrerid;
+	public ReferGradeProfitUser(String referrer_Id) {
+		this.referrerId = referrer_Id;
 
 	}
 
@@ -52,20 +52,21 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 	}
 
 	@Column(name = "referrer_id" ,nullable = false)
-	public String getReferrerid() {
-		return referrerid;
+	public String getReferrerId() {
+		return referrerId;
 	}
 
-	public void setReferrerid(String referrerid) {
-		this.referrerid = referrerid;
+	public void setReferrerId(String referrerId) {
+		this.referrerId = referrerId;
 	}
 	@Column(name = "referrer_name",nullable = false)
-	public String getReferrername() {
-		return referrername;
+
+	public String getReferrerName() {
+		return referrerName;
 	}
 
-	public void setReferrername(String referrername) {
-		this.referrername = referrername;
+	public void setReferrerName(String referrerName) {
+		this.referrerName = referrerName;
 	}
 
 	@Column(name = "grade")
@@ -78,27 +79,27 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 	}
 
 	@Column(name = "profitrate", precision = 22, scale = 0)
-	public Double getProfitrate() {
-		return profitrate;
+	public Double getProfitRate() {
+		return profitRate;
 	}
 
-	public void setProfitrate(Double profitrate) {
-		this.profitrate = profitrate;
+	public void setProfitRate(Double profitRate) {
+		this.profitRate = profitRate;
 	}
 	@Column(name = "inputdate",length = 10)
-	public Date getInputdate() {
-		return inputdate;
+	public Date getInputDate() {
+		return inputDate;
 	}
 
-	public void setInputdate(Date inputdate) {
-		this.inputdate = inputdate;
+	public void setInputDate(Date inputDate) {
+		this.inputDate = inputDate;
 	}
 	@Column(name = "updatetime",length = 19)
-	public Date getUpdatetime() {
-		return updatetime;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 }
