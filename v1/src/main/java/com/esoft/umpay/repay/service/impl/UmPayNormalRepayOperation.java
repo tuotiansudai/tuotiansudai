@@ -1,16 +1,23 @@
 package com.esoft.umpay.repay.service.impl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.archer.user.model.Role;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.model.UserBill;
+import com.esoft.jdp2p.invest.InvestConstants;
+import com.esoft.jdp2p.invest.model.InvestUserReferrer;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -85,12 +92,101 @@ public class UmPayNormalRepayOperation extends
 	Log log;
 
 	@SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Exception.class)
+	public void recommendedIncome(LoanRepay lr) throws IOException,ReqDataException, RetDataException{
+		//找到该笔借款的投资明细
+		List<Invest> investList = ht.find(
+				"from Invest i where i.loan.id=? and i.status!=?",
+				new String[] { lr.getLoan().getId(), InvestConstants.InvestStatus.CANCEL });
+		for (Invest invest : investList) {
+			double bonus = ArithUtil.mul(invest.getMoney(),0.01,2);
+			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
+			for(ReferrerRelation referrerRelation : referrerRelationList){
+				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
+				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
+					@Override
+					public String apply(Role role) {
+						return role.getId();
+					}
+				});
+				String orderId = invest.getId() + System.currentTimeMillis();
+				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
+				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_IN;
+				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
+				Date nowdate = new Date();
+				String status = "fail";
+				String msg = "";
+				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!=""){
+					//调用联动优势接口
+					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
+					if(returnMsg.split("\\|")[0].equals("0000")){
+						status = "success";
+					}else{
+						msg = returnMsg.split("\\|")[1];
+					}
+				}
+				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
+				if(list.contains("ROLE_MERCHANDISER")){
+					continue;
+				}
+				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, msg);
+			}
+		}
+	}
+
+	private void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
+		//插入交易流水
+		//获取当前余额
+		double balance = userBillBO.getBalance(referrerRelation.getReferrerId());
+		//获取当前冻结
+		double frozenMoney = userBillBO.getFrozenMoney(referrerRelation.getReferrerId());
+		UserBill ub = new UserBill();
+		ub.setBalance(ArithUtil.add(balance, bonus));
+		ub.setFrozenMoney(frozenMoney);
+		ub.setTime(nowdate);
+		ub.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+		ub.setType("ti_balance");
+		ub.setTypeInfo("referrer_reward");
+		ub.setMoney(bonus);
+		ub.setSeqNum(userBillBO.getLastestBill(invest.getUser().getId()).getSeqNum()+1);
+		ub.setUser(referrerRelation.getReferrer());
+		String detail = "";
+		if(!particUserId.equals("") && status.equals("success")){
+            detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
+        }else if(particUserId.equals("")){
+            detail = "未在联动优势绑定借记卡,交易失败";
+        }else{
+            detail = msg;
+        }
+		ub.setDetail(detail);
+		ht.save(ub);
+	}
+
+	private void insertIntoInvestUserReferrer(Invest invest, double bonus, ReferrerRelation referrerRelation, List<String> list, String orderId, Date nowdate, String status) {
+		//插入数据库
+		InvestUserReferrer iur = new InvestUserReferrer();
+		iur.setId(orderId);
+		iur.setBonus(bonus);
+		iur.setInvest(invest);
+		iur.setTime(nowdate);
+		iur.setReferrerId(referrerRelation.getReferrerId());
+		iur.setStatus(status);
+		if(list.contains("ROLE_MERCHANDISER")){
+            iur.setRoleName("ROLE_MERCHANDISER");
+        }else{
+            iur.setRoleName("INVESTOR");
+        }
+		ht.save(iur);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay lr,
-			FacesContext facesContext) throws IOException {
+			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
 		lr.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(lr);
+		recommendedIncome(lr);
 		// 所有待还金额
 		Double allRepayMoney = ArithUtil.add(lr.getCorpus(),
 				lr.getDefaultInterest(), lr.getFee(), lr.getInterest());
@@ -467,5 +563,4 @@ public class UmPayNormalRepayOperation extends
 	 *                            to.setResponseTime(new Date()); ht.update(to);
 	 *                            }
 	 */
-
 }
