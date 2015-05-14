@@ -92,15 +92,11 @@ public class UmPayOverdueRepayOperation extends
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay loanRepay,
-			FacesContext facesContext) throws IOException {
+			FacesContext facesContext) throws Exception {
 		// FIXME:验证
 		loanRepay.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(loanRepay);
-		try {
-			umPayNormalRepayOperation.recommendedIncome(loanRepay);
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+		umPayNormalRepayOperation.recommendedIncome(loanRepay);
 		// 所有待还金额 = 所有本金 + 所有罚息(给投资人总和罚息+给系统的罚息) + 投资人给系统手续费 + 所有的利息
 		Double allRepayMoney = ArithUtil.add(loanRepay.getCorpus(),
 				loanRepay.getDefaultInterest(), loanRepay.getFee(),
