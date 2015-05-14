@@ -135,10 +135,10 @@ public class UmPayNormalRepayOperation extends
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrerId = ? and t.grade = ?",
                 new Object[]{referrerRelation.getReferrerId(),referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2);
+			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), 100, 2);
         }else {
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new int[]{referrerRelation.getLevel()});
-			return ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2);
+			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), 100, 2);
         }
 	}
 
