@@ -30,7 +30,7 @@ public interface TrusteeshipOperationService<T> {
 	 * @return TrusteeshipOperation的编号
 	 */
 	public TrusteeshipOperation createOperation(T t, FacesContext facesContext)
-			throws IOException;
+			throws Exception;
 
 	/**
 	 * 接收操作回调(POST方式)，例如开户回调、充值回调

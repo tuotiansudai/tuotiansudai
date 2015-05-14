@@ -250,11 +250,28 @@ public class Loan implements java.io.Serializable, Cloneable {
 	 */
 	private String riskInstruction;
 
+
+
+	//代理人
+	private String agent ;
+
+
+	@Column(name = "agent", length = 20)
+	public String getAgent() {
+		return agent;
+	}
+
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+
 	// Constructors
 
 	/** default constructor */
 	public Loan() {
 	}
+
+
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {

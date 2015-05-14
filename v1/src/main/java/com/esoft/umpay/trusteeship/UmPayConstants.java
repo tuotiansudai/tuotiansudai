@@ -85,6 +85,8 @@ public class UmPayConstants {
 		/** 标的转账(投资,转让等等) */
 		public static final String PROJECT_TRANSFER = "project_transfer";
 
+		public static final String TRANSFER = "transfer";
+
 		/** 用户查询 */
 		public static final String USER_SEARCH = "user_search";
 		/** 标的查询 */

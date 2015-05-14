@@ -1,3 +1,4 @@
+*.pyc
 **/.idea/**
 **/out/**
 **/build/**/*
@@ -6,3 +7,6 @@
 **/.DS_Store
 **/7001088_tuotianweiye.key.p8
 **/war/**
+**/gradle
+**/gradlew.bat
+**/gradle/**

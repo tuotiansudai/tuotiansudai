@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.esoft.umpay.repay.service.impl.UmPayImitateSign;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class UmPayLoanMoneyService {
 
 	@Resource
 	HibernateTemplate ht;
+
+	@Resource
+	UmPayImitateSign umPayImitateSignService;
 
 	@Logger
 	Log log;
@@ -115,10 +119,10 @@ public class UmPayLoanMoneyService {
 	 */
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public void giveMoney2ParticUserId(String orderId, Double money, String particAccType, String transAction, String particUserId) throws ReqDataException, RetDataException {
+	public String giveMoney2ParticUserId(String orderId, Double money, String particAccType, String transAction, String particUserId) throws ReqDataException, RetDataException {
 		DecimalFormat currentNumberFormat = new DecimalFormat("#");
 		// 平台划账接口
-		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.TRANSFER);
 		// 传入参数
 		sendMap.put("order_id", orderId);
 		sendMap.put("partic_acc_type", particAccType); // 转账方账户类型(实际收款方)
@@ -129,9 +133,10 @@ public class UmPayLoanMoneyService {
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
 		log.debug("普通转账免密(划账)-发送数据: " + reqData.toString());
-		TrusteeshipOperation to = createTrusteeshipOperation(orderId, reqData.getUrl(), "projectId:" + orderId, UmPayConstants.OperationType.PROJECT_TRANSFER, reqData.getPlain());
+		TrusteeshipOperation to = createTrusteeshipOperation(orderId, reqData.getUrl(), "projectId:" + orderId, UmPayConstants.OperationType.TRANSFER, reqData.getPlain());
 		String responseBodyAsString = HttpClientUtil.getResponseBodyAsString(to.getRequestUrl());
-		Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
+		//Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
+		Map<String, String> resData = umPayImitateSignService.getResData(responseBodyAsString);
 		log.debug("普通转账免密(划账)-接收数据: " + resData.toString());
 		String ret_code = resData.get("ret_code");
 		if ("0000".equals(ret_code)) { // 成功划账
@@ -144,6 +149,10 @@ public class UmPayLoanMoneyService {
 		to.setResponseData(resData.toString());
 		to.setResponseTime(new Date());
 		ht.update(to);
+		StringBuffer sb = new StringBuffer(ret_code);
+		sb.append("|");
+		sb.append(resData.get("ret_msg")!=null?resData.get("ret_msg"):"联动优势划账成功");
+		return sb.toString();
 	}
 
 	/**

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 import random
 from flask import Flask, request, abort
@@ -23,8 +24,14 @@ def build_common_params():
 
 def build_register_params():
     register_ret = {'reg_date': datetime.datetime.today().date().strftime('%Y%m%d'), 'user_id': get_random_user_id(),
-                    'account_id': get_random_user_id()}
+                    'ret_code': '0000', 'account_id': get_random_user_id()}
     return register_ret
+
+
+def build_transfer_params():
+    transfer_ret = {'mer_date': datetime.datetime.today().date().strftime('%Y%m%d'), 'ret_code': '0000',
+                    'order_id': request.args.get('order_id'), 'trade_no': get_random_user_id()}
+    return transfer_ret
 
 
 def format_result(params_dict):
@@ -69,10 +76,29 @@ def mer_bind_card():
     store.set_backend_notify("{0}::{1}".format(params, notify_url))
 
 
+def transfer():
+    """
+    4.4.10	普通转账（非标的转账）免密接口(商户→平台)
+    http://pay.soopay.net/spay/pay/payservice.do?amount=12345&charset=UTF-8&mer_date=20150511&mer_id=7099088&notify_url=http%3A%2F%2Fbaidu1.com&order_id=173099&partic_acc_type=01&partic_account_id=02000155741809&partic_user_id=UB201504161125570000000003661793&res_format=HTML&service=transfer&sign_type=RSA&trans_action=01&version=1.0&sign=hb8tZij3AwQ12amgSb01idpzhvsjpnK6YO9%2BnoRxz8ctN%2FbpkwAU3qOCE8w8jOyYJJhMjq13ovpUw8fI9v2PhCbxs0PuiMqVcnzD5i%2B%2BbBGmq%2FY8dh2qqDVfXB1YQbZqiZj0TtaDQNjgDQuSFgUXOpm3z8aPJ8hwjVIPwcrO7VU%3D
+    :return:
+        <html>
+          <head>
+            <META NAME="MobilePayPlatform" CONTENT="mer_id=7099088&ret_code=00060700&ret_msg=转账方向[trans_action]与账户类型[partic_acc_type]不匹配&sign_type=RSA&version=1.0&sign=IG1k6CLALmAZxc0+uL37gUm8ixel0MCFlj5fpR/ounQHhF28HxPdsk+AD0RqbONnyJ3O6BE2i1DItuPp9LvrHQBYLaBGGE0b28bTk0DRn+pYKE+tYB7HufEEHP196teolfgAvoAUkksjrn2FCQWgw9+R1Ok8HxcYMSWmbEg99Rw=">
+          </head>
+          <body>
+          </body>
+        </html>
+    """
+    common_params = build_common_params()
+    transfer_ret = build_transfer_params()
+    transfer_ret.update(common_params)
+    result = format_result(transfer_ret)
+    return result
+
+
 @app.route('/spay/pay/payservice.do')
 def index():
-    service = {'mer_register_person': mer_register_person,
-               'mer_bind_card': mer_bind_card}.get(request.args.get('service'))
+    service = globals().get(request.args.get('service'))
     if not service:
         abort(404)
     result = service()
