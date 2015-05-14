@@ -137,8 +137,12 @@ public class UmPayNormalRepayOperation extends
 		if (referGradeProfitUserList.size() > 0){
 			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), 100, 2);
         }else {
-            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new int[]{referrerRelation.getLevel()});
-			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), 100, 2);
+            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new Object[]{referrerRelation.getLevel()});
+			if (referGradeProfitSysList.size() > 0){
+				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), 100, 2);
+			}else {
+				return 0.00;
+			}
         }
 	}
 
@@ -156,7 +160,7 @@ public class UmPayNormalRepayOperation extends
 		ub.setType("ti_balance");
 		ub.setTypeInfo("referrer_reward");
 		ub.setMoney(bonus);
-		ub.setSeqNum(userBillBO.getLastestBill(invest.getUser().getId()).getSeqNum()+1);
+		ub.setSeqNum(userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum()+1);
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if(!particUserId.equals("") && status.equals("success")){
