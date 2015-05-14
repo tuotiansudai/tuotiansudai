@@ -52,7 +52,7 @@ cargo {
     }
 
     local {
-        homeDir = file('/usr/share/apache-tomcat-6.0.43')
+        homeDir = file('/usr/local/tomcat6')
         outputFile = file('build/output.log')
         timeout = 180000
     }
