@@ -92,7 +92,7 @@ public class UmPayOverdueRepayOperation extends
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay loanRepay,
-			FacesContext facesContext) throws Exception {
+			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
 		// FIXME:验证
 		loanRepay.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(loanRepay);

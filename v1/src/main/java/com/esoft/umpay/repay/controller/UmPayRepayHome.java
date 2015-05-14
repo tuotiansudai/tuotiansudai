@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
+import com.umpay.api.exception.ReqDataException;
+import com.umpay.api.exception.RetDataException;
 import org.apache.commons.logging.Log;
 
 import com.esoft.archer.system.controller.LoginUserInfo;
@@ -64,6 +66,10 @@ public class UmPayRepayHome extends RepayHome {
 			log.error(e);
 			throw new RuntimeException("unexpected invocation", e);
 		} catch (UmPayOperationException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
+		} catch (ReqDataException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
+		} catch (RetDataException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 	}
@@ -135,6 +141,10 @@ public class UmPayRepayHome extends RepayHome {
 				log.error(e);
 				throw new RuntimeException("unexpected invocation", e);
 			} catch (UmPayOperationException e) {
+				FacesUtil.addErrorMessage(e.getMessage());
+			} catch (ReqDataException e) {
+				FacesUtil.addErrorMessage(e.getMessage());
+			} catch (RetDataException e) {
 				FacesUtil.addErrorMessage(e.getMessage());
 			}
 		} else {

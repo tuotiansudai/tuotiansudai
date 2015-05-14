@@ -93,7 +93,7 @@ public class UmPayNormalRepayOperation extends
 
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public void recommendedIncome(LoanRepay lr) throws Exception{
+	public void recommendedIncome(LoanRepay lr) throws IOException,ReqDataException, RetDataException{
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
 				"from Invest i where i.loan.id=? and i.status!=?",
@@ -183,7 +183,7 @@ public class UmPayNormalRepayOperation extends
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay lr,
-			FacesContext facesContext) throws Exception {
+			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
 		lr.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(lr);
 		recommendedIncome(lr);
