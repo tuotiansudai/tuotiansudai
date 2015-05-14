@@ -1,14 +1,20 @@
 package com.esoft.archer.common.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlPanelGroup;
 
+import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.aliyun.PropertiesUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.tooltip.Tooltip;
@@ -35,7 +41,7 @@ public class UploadFileHome implements Serializable{
 
 	private List<MyUploadedFile> files;
 	private MyUploadedFile oneFile;
-	
+
 	/**
 	 * 处理多个上传
 	 * 
@@ -97,13 +103,26 @@ public class UploadFileHome implements Serializable{
 	private MyUploadedFile handleUpload(FileUploadEvent event) {
 		UploadedFile uploadFile = event.getFile();
 		InputStream is = null;
+		String url;
 		try {
 			is = uploadFile.getInputstream();
-			String url = ImageUploadUtil.upload(is, uploadFile.getFileName());
+
+			String isoss = PropertiesUtils.getPro("plat.is.start");
+			if(isoss.equals("oss")){
+				url= AliyunUtils.uploadFileInputStream(uploadFile);
+			}else {
+				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());
+			}
 			return new MyUploadedFile(url, uploadFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
+		}finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
