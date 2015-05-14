@@ -36,11 +36,6 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 	public ReferGradeProfitUser() {
 	}
 
-	public ReferGradeProfitUser(String referrer_Id) {
-		this.referrerId = referrer_Id;
-
-	}
-
 	@Id
 	@Column(name = "id", unique = true, nullable = false, length = 32)
 	public String getId() {

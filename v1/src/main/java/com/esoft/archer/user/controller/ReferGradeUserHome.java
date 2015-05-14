@@ -27,15 +27,14 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 	@Override
 	@Transactional(readOnly = false)
 	public String save() {
-		// FIXME:放在service中
-		if(!StringUtils.isEmpty(getInstance().getReferrerId())){
-			try {
-				referGradePtUserService.getUserById(getInstance().getReferrerId());
-			} catch (UserNotFoundException e) {
-				FacesUtil.addErrorMessage("推荐人"+getInstance().getReferrerId()+"在系统中未进行维护,不能新增层级和收益比例!");
-				return null;
-			}
+
+		boolean isExistUserFlag = false;
+		isExistUserFlag = referGradePtUserService.isExistUser(getInstance().getReferrerId());
+		if (!isExistUserFlag){
+			FacesUtil.addErrorMessage("推荐人"+getInstance().getReferrerId()+"在系统中未进行维护,不能新增层级和收益比例!");
+			return null;
 		}
+
 		if(StringUtils.isEmpty(getInstance().getId())){
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
@@ -48,12 +47,7 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListUser"));
 		return super.save();
 	}
-	@Transactional(readOnly = false)
-	public String delete() {
 
-		return super.delete();
-
-	}
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
 		getInstance().setUpdateTime(new Date());

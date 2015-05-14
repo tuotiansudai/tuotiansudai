@@ -22,16 +22,16 @@ public class ReferGradeProfitUserList extends EntityQuery<ReferGradeProfitUser> 
 		this.referee = referee;
 	}
 
-	private static final String lazyModel = "select referGradeProfitUser from ReferGradeProfitUser referGradeProfitUser ";
+	private static final String LAZY_MODEL = "select referGradeProfitUser from ReferGradeProfitUser referGradeProfitUser ";
 
-	private static final String lazyModelCount = " select count(referGradeProfitUser) from ReferGradeProfitUser referGradeProfitUser ";
+	private static final String LAZY_MODEL_COUNT = " select count(referGradeProfitUser) from ReferGradeProfitUser referGradeProfitUser ";
 
 
 
 	public ReferGradeProfitUserList(){
 
-		setCountHql(lazyModelCount);
-		setHql(lazyModel);
+		setCountHql(LAZY_MODEL_COUNT);
+		setHql(LAZY_MODEL);
 		final String[] RESTRICTIONS = {
 				"referGradeProfitUser.referrerId=#{referGradeProfitUserList.referee}",
 				"1=1 order by referGradeProfitUser.referrerId" };
