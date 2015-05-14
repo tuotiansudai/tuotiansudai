@@ -10,10 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import com.esoft.archer.user.model.ReferrerRelation;
-import com.esoft.archer.user.model.Role;
-import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.model.UserBill;
+import com.esoft.archer.user.model.*;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Function;
@@ -99,9 +96,9 @@ public class UmPayNormalRepayOperation extends
 				"from Invest i where i.loan.id=? and i.status!=?",
 				new String[] { lr.getLoan().getId(), InvestConstants.InvestStatus.CANCEL });
 		for (Invest invest : investList) {
-			double bonus = ArithUtil.mul(invest.getMoney(),0.01,2);
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
+				double bonus = calculateBonus(invest, referrerRelation);
 				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
 				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
 					@Override
@@ -114,13 +111,13 @@ public class UmPayNormalRepayOperation extends
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_IN;
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
-				String status = "fail";
+				String status = InvestUserReferrer.FAIL;
 				String msg = "";
 				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!=""){
 					//调用联动优势接口
 					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
 					if(returnMsg.split("\\|")[0].equals("0000")){
-						status = "success";
+						status = InvestUserReferrer.SUCCESS;
 					}else{
 						msg = returnMsg.split("\\|")[1];
 					}
@@ -132,6 +129,17 @@ public class UmPayNormalRepayOperation extends
 				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, msg);
 			}
 		}
+	}
+
+	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation) {
+		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrerId = ? and t.grade = ?",
+                new Object[]{referrerRelation.getReferrerId(),referrerRelation.getLevel()});
+		if (referGradeProfitUserList.size() > 0){
+			return ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2);
+        }else {
+            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new int[]{referrerRelation.getLevel()});
+			return ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2);
+        }
 	}
 
 	private void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
@@ -169,7 +177,7 @@ public class UmPayNormalRepayOperation extends
 		iur.setBonus(bonus);
 		iur.setInvest(invest);
 		iur.setTime(nowdate);
-		iur.setReferrerId(referrerRelation.getReferrerId());
+		iur.setReferrerId(referrerRelation.getReferrer());
 		iur.setStatus(status);
 		if(list.contains("ROLE_MERCHANDISER")){
             iur.setRoleName("ROLE_MERCHANDISER");
