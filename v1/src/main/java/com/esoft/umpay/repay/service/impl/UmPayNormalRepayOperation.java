@@ -1,7 +1,6 @@
 package com.esoft.umpay.repay.service.impl;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -181,7 +180,7 @@ public class UmPayNormalRepayOperation extends
 		iur.setBonus(bonus);
 		iur.setInvest(invest);
 		iur.setTime(nowdate);
-		iur.setReferrerId(referrerRelation.getReferrer());
+		iur.setReferrer(referrerRelation.getReferrer());
 		iur.setStatus(status);
 		if(list.contains("ROLE_MERCHANDISER")){
             iur.setRoleName("ROLE_MERCHANDISER");
