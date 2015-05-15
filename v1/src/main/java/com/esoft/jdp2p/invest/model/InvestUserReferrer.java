@@ -1,6 +1,7 @@
 package com.esoft.jdp2p.invest.model;
 
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.archer.user.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -15,11 +16,15 @@ import java.util.Date;
 // @Inheritance(strategy = InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
 public class InvestUserReferrer implements java.io.Serializable{
+
+    public static final String SUCCESS = "success";
+    public static final String FAIL = "fail";
+
     private String id;
     private Invest invest;
     private Date time;
     private Double bonus;
-    private String referrerId;
+    private User referrerId;
     private String status;
     private String  roleName;
 
@@ -38,12 +43,13 @@ public class InvestUserReferrer implements java.io.Serializable{
         return invest;
     }
 
-    @Column(name = "referrer_id",length = 32)
-    public String getReferrerId() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "referrer_id",nullable = false)
+    public User getReferrerId() {
         return referrerId;
     }
 
-    public void setReferrerId(String referrerRelation) {
+    public void setReferrerId(User referrerId) {
         this.referrerId = referrerId;
     }
 
