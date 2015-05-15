@@ -4,6 +4,7 @@ import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,7 +23,7 @@ import java.util.List;
 public class RefereeInvestList implements java.io.Serializable {
 
     public static final String QUERY_LEVEL = "select relation from ReferrerRelation relation where relation.referrerId=''{0}'' and relation.userId=''{1}''";
-    public static final String QUERY_REWARD = "select investUserReferrer from InvestUserReferrer investUserReferrer where investUserReferrer.invest=''{0}'' and investUserReferrer.userId=''{1}''";
+    public static final String QUERY_REWARD = "select investUserReferrer from InvestUserReferrer investUserReferrer where investUserReferrer.invest=''{0}'' and investUserReferrer.referrer=''{1}''";
 
     @Resource
     HibernateTemplate ht;
@@ -41,14 +42,14 @@ public class RefereeInvestList implements java.io.Serializable {
         for (Invest invest : invests) {
             List<User> referrers = invest.getUser().getReferrers();
             if (CollectionUtils.isEmpty(referrers) && Strings.isNullOrEmpty(condition.getReferrerId())) {
-                InvestItem investItem = createInvestItem(invest, null);
-                investItems.add(investItem);
+                List<InvestItem> newInvestItems = createInvestItems(invest, null);
+                investItems.addAll(newInvestItems);
             }
             for (User referrer : referrers) {
                 if (referrer.getId().equals(condition.getReferrerId())
                         || Strings.isNullOrEmpty(condition.getReferrerId())) {
-                    InvestItem investItem = createInvestItem(invest, referrer);
-                    investItems.add(investItem);
+                    List<InvestItem> newInvestItems = createInvestItems(invest, referrer);
+                    investItems.addAll(newInvestItems);
                 }
             }
         }
@@ -56,9 +57,27 @@ public class RefereeInvestList implements java.io.Serializable {
         return investItems;
     }
 
-    private InvestItem createInvestItem(Invest invest, User referrer) {
+    private List<InvestItem> createInvestItems(Invest invest, User referrer) {
+        List<InvestItem> items = Lists.newArrayList();
+        String referrerId = referrer == null ? null : referrer.getId();
+        String referrerName = referrer == null ? null : referrer.getRealname();
+        List<InvestUserReferrer> rewards = ht.find(MessageFormat.format(QUERY_REWARD, invest.getId(), referrerId));
+        if (referrerId == null || rewards.isEmpty()) {
+            InvestItem investItem = createInvestItem(invest, referrerId, referrerName, null);
+            items.add(investItem);
+        } else
+            for (InvestUserReferrer reward : rewards) {
+                InvestItem investItem = createInvestItem(invest, referrerId, referrerName, reward);
+                items.add(investItem);
+            }
+
+        return items;
+    }
+
+    private InvestItem createInvestItem(Invest invest, String referrerId, String referrerName, InvestUserReferrer reward) {
         InvestItem investItem = new InvestItem();
         investItem.setInvestorId(invest.getUser().getId());
+        investItem.setInvestorName(invest.getUser().getRealname());
         investItem.setInvestTime(invest.getTime());
         investItem.setIsAutoInvest(invest.getIsAutoInvest());
         investItem.setLoanId(invest.getLoan().getId());
@@ -66,12 +85,25 @@ public class RefereeInvestList implements java.io.Serializable {
         investItem.setLoadType(invest.getLoan().getType().getName());
         investItem.setMoney(invest.getMoney());
         investItem.setLoanName(invest.getLoan().getName());
-        if (referrer != null) {
-            investItem.setReferrerId(referrer.getId());
-            List<ReferrerRelation> relations = ht.find(MessageFormat.format(QUERY_LEVEL, investItem.getReferrerId(), investItem.getInvestorId()));
-            investItem.setRefereeLevel(relations.get(0).getLevel());
+        investItem.setReferrerId(referrerId);
+        investItem.setReferrerName(referrerName);
+        investItem.setRefereeLevel(queryReferrerLevel(referrerId, invest.getUser().getId()));
+        if (reward != null) {
+            investItem.setReward(reward.getBonus());
+            investItem.setRewardTime(reward.getTime());
         }
         return investItem;
+    }
+
+    private Integer queryReferrerLevel(String referrerId, String investorId) {
+        if (referrerId == null || investorId == null) {
+            return null;
+        }
+        List<ReferrerRelation> relations = ht.find(MessageFormat.format(QUERY_LEVEL, referrerId, investorId));
+        if (relations.isEmpty()) {
+            return null;
+        }
+        return relations.get(0).getLevel();
     }
 
     private String generateQueryHql() {

@@ -7,13 +7,32 @@ public class InvestItem implements java.io.Serializable {
     private String loanName;
     private String loadType;
     private String investorId;
+    private String investorName;
     private String referrerId;
+    private String referrerName;
+
+    public String getInvestorName() {
+        return investorName;
+    }
+
+    public void setInvestorName(String investorName) {
+        this.investorName = investorName;
+    }
+
+    public String getReferrerName() {
+        return referrerName;
+    }
+
+    public void setReferrerName(String referrerName) {
+        this.referrerName = referrerName;
+    }
+
     private Integer refereeLevel;
-    private double reward;
+    private Double reward;
     private Date rewardTime;
     private Date investTime;
     private boolean isAutoInvest;
-    private double money;
+    private Double money;
     private String loanStatus;
 
     public String getLoanId() {
@@ -56,7 +75,7 @@ public class InvestItem implements java.io.Serializable {
         this.referrerId = referrerId;
     }
 
-    public int getRefereeLevel() {
+    public Integer getRefereeLevel() {
         return refereeLevel;
     }
 
@@ -72,11 +91,11 @@ public class InvestItem implements java.io.Serializable {
         this.refereeLevel = refereeLevel;
     }
 
-    public double getReward() {
+    public Double getReward() {
         return reward;
     }
 
-    public void setReward(double reward) {
+    public void setReward(Double reward) {
         this.reward = reward;
     }
 
@@ -96,11 +115,11 @@ public class InvestItem implements java.io.Serializable {
         this.isAutoInvest = isAutoInvest;
     }
 
-    public double getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(Double money) {
         this.money = money;
     }
 
