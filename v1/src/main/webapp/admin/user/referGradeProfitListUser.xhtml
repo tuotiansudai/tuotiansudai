@@ -37,7 +37,7 @@
             <p:dataTable lazy="true" id="dataTable" value="#{referGradeProfitUserList.lazyModel}" var="referGradProfitUser"
                 paginator="true" paginatorPosition="bottom" rows="15">
                 <p:column headerText="推荐人">
-                    <h:outputText  value="#{referGradProfitUser.referrerId}"></h:outputText>
+                    <h:outputText  value="#{referGradProfitUser.referrer.id}"></h:outputText>
                 </p:column>
                 <p:column headerText="推荐层级">
                     <h:outputText  value="#{referGradProfitUser.grade}"></h:outputText>

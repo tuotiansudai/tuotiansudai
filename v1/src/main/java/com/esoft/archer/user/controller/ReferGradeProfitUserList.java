@@ -1,6 +1,7 @@
 package com.esoft.archer.user.controller;
 
 import com.esoft.archer.common.controller.EntityQuery;
+import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.ScopeType;
 import com.esoft.archer.user.model.ReferGradeProfitUser;
 import org.springframework.context.annotation.Scope;
@@ -33,9 +34,19 @@ public class ReferGradeProfitUserList extends EntityQuery<ReferGradeProfitUser> 
 		setCountHql(LAZY_MODEL_COUNT);
 		setHql(LAZY_MODEL);
 		final String[] RESTRICTIONS = {
-				"referGradeProfitUser.referrerId=#{referGradeProfitUserList.referee}",
-				"1=1 order by referGradeProfitUser.referrerId" };
+				"referGradeProfitUser.referrer.id=#{referGradeProfitUserList.referee}",
+				"1=1 order by referGradeProfitUser.referrer.id" };
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+
+
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+	}
+
+	@Override
+	protected void initExample() {
+		ReferGradeProfitUser example = new ReferGradeProfitUser();
+		example.setReferrer(new User());
+		setExample(example);
 	}
 
 

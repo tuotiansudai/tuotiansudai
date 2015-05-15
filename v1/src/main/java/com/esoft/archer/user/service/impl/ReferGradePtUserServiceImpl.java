@@ -27,4 +27,22 @@ public class ReferGradePtUserServiceImpl implements ReferGradePtUserService {
 		}
 		return isExistUserFlag;
 	}
+
+	@Override
+	public boolean isExistReferrerGrade(String referrer, Integer grade) {
+		boolean isExistReferrerGrade = false;
+		String hql  = " select count(referGradeProfitUser) from ReferGradeProfitUser referGradeProfitUser where referGradeProfitUser.referrer.id = ? and referGradeProfitUser.grade = ? ";
+		Object oj = ht.find(hql, referrer, grade).get(0);
+
+		Long countResult = 0L;
+		if (oj != null){
+			countResult = (Long)oj;
+		}
+
+		if (countResult > 0L){
+			isExistReferrerGrade = true;
+		}
+
+		return isExistReferrerGrade;
+	}
 }
