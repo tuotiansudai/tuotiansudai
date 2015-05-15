@@ -30,7 +30,7 @@
 
 					<h:outputLabel value="推荐层级"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeSysHome.instance.grade}"></h:inputText>
+								 value="#{referGradeSysHome.instance.grade}" readonly="#{not empty referGradeSysHome.instance.grade}">></h:inputText>
 
 					<h:outputLabel value="收益比例"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"

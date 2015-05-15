@@ -2,9 +2,11 @@ package com.esoft.archer.user.model;
 
 // default package
 
+import com.esoft.archer.user.service.ReferGradePtSysService;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.annotation.Resource;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -48,6 +50,7 @@ public class ReferGradeProfitSys implements java.io.Serializable {
 
 	@Column(name = "grade")
 	public Integer getGrade() {
+//
 		return grade;
 	}
 
