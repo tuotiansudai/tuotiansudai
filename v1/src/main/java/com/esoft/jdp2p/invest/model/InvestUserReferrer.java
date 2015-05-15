@@ -7,12 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by Administrator on 2015/5/7.
- */
 @Entity
 @Table(name = "invest_userReferrer")
-// @Inheritance(strategy = InheritanceType.JOINED)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
 public class InvestUserReferrer implements java.io.Serializable{
 
