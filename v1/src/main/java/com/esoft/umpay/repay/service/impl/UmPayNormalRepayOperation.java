@@ -145,7 +145,7 @@ public class UmPayNormalRepayOperation extends
         }
 	}
 
-	private void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
+	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
 		//插入交易流水
 		//获取当前余额
 		double balance = userBillBO.getBalance(referrerRelation.getReferrerId());
@@ -197,7 +197,6 @@ public class UmPayNormalRepayOperation extends
 			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
 		lr.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(lr);
-		recommendedIncome(lr);
 		// 所有待还金额
 		Double allRepayMoney = ArithUtil.add(lr.getCorpus(),
 				lr.getDefaultInterest(), lr.getFee(), lr.getInterest());
@@ -258,7 +257,7 @@ public class UmPayNormalRepayOperation extends
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void receiveOperationPostCallback(ServletRequest request)
-			throws TrusteeshipReturnException {
+			throws TrusteeshipReturnException,IOException {
 		try {
 			Map<String, String> paramMap = UmPaySignUtil
 					.getMapDataByRequest(request);
@@ -301,6 +300,7 @@ public class UmPayNormalRepayOperation extends
 										repay.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
+						recommendedIncome(repay);
 					}
 				}
 			} else {
