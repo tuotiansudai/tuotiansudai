@@ -18,7 +18,7 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 	// Fields
 	private String id;
 
-	private String referrerId;
+	private User referrer;
 
 	private String referrerName;
 
@@ -30,7 +30,7 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 
 	private Date  updateTime;
 
-	private User user;
+
 
 	/** default constructor */
 	public ReferGradeProfitUser() {
@@ -46,14 +46,7 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "referrer_id" ,nullable = false)
-	public String getReferrerId() {
-		return referrerId;
-	}
 
-	public void setReferrerId(String referrerId) {
-		this.referrerId = referrerId;
-	}
 	@Column(name = "referrer_name",nullable = false)
 
 	public String getReferrerName() {
@@ -96,5 +89,15 @@ public class ReferGradeProfitUser implements java.io.Serializable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "referrer_id", nullable = false)
+	public User getReferrer() {
+		return referrer;
+	}
+
+	public void setReferrer(User referrer) {
+		this.referrer = referrer;
 	}
 }

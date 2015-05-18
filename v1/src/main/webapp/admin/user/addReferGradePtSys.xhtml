@@ -28,7 +28,7 @@
 
 					<h:outputLabel value="#{userMsg.referrerGradeLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;"
-								 value="#{referGradeSysHome.instance.grade}" maxlength="3">
+								 value="#{referGradeSysHome.instance.grade}" maxlength="3" readonly="#{not empty referGradeSysHome.instance.grade}">
 
 					</h:inputText>
 

@@ -4,4 +4,6 @@ public interface ReferGradePtUserService {
 
 
 	public boolean isExistUser(String userId) ;
+
+	public boolean isExistReferrerGrade(String referrer,Integer grade);
 }

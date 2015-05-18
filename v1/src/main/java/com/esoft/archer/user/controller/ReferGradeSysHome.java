@@ -7,6 +7,7 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.core.jsf.util.FacesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 
 	/**
 	 * 后台保存用户
+
 	 */
 	@Override
 	@Transactional(readOnly = false)
@@ -51,6 +53,25 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListSys");
 	}
+	@Override
+	@Transactional(readOnly=false)
+	public String delete(){
+		Integer maxGradeDb = referGradePtSysService.getMaxGrade();//数据配置最大层级
+		initInstance();
+		Integer gradeFace = getInstance().getGrade();//页面删除层级
+		if (gradeFace.intValue() < maxGradeDb.intValue()){
+			FacesUtil.addErrorMessage("删除推荐层级应按照最高层级" + maxGradeDb + "往下依次删除!");
+			return null;
+		}
+		return super.delete();
 
-
+	}
+	@Override
+	protected void initInstance() {
+		super.initInstance();
+		ReferGradeProfitSys instance = getInstance();
+		if (this.instance.getGrade() == null) {
+			this.instance.setGrade(referGradePtSysService.getAddHighestGrade());
+		}
+	}
 }

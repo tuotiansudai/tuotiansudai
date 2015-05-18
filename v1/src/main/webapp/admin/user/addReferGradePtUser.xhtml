@@ -27,13 +27,15 @@
 				<h:panelGrid columns="2" columnClasses="col1,col2" id="panel">
 
 					<h:outputLabel value="#{userMsg.referrerName}"></h:outputLabel>
-					<h:inputText style="width:190px;height:18px;" maxlength="50"
+					<p:autoComplete value="#{referGradeUserHome.instance.referrer}"
+									title="输入推荐人自动检索用户，请在检索结果中选择推荐人" emptyMessage="未搜索到推荐人"
+									minQueryLength="2" required="true"  maxlength="50"
+									completeMethod="#{userList.queryUsersByUserName}"
+									forceSelection="true" var="u" itemLabel="#{u.username}"
+									itemValue="#{u}" converter="archer.EntityConverter" >
+						<p:ajax event="itemSelect" />
 
-						 label="#{userMsg.referrername}" required="true"
-						value="#{referGradeUserHome.instance.referrerId}">
-
-					</h:inputText>
-
+					</p:autoComplete>
 
 					<h:outputLabel value="#{userMsg.referrerGradeLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;"

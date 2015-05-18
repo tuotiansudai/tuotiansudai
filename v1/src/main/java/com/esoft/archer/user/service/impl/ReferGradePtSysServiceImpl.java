@@ -27,4 +27,36 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 		}
 		return  isExistGradeFlag;
 	}
+	/**
+	 *	获取新增系统最高层级
+	 */
+	@Override
+	public Integer getAddHighestGrade(){
+
+		Integer addHighestGrade = null;
+
+		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys  ";
+
+		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
+
+
+		return addHighestGrade;
+
+	}
+	/**
+	 *	获取系统已经存在的最高层级
+	 */
+	@Override
+	public Integer getMaxGrade(){
+		Integer maxGrade = null;
+
+		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys  ";
+
+		maxGrade = (Integer)ht.find(hql).get(0) ;
+
+		return maxGrade;
+	};
+
+
+
 }
