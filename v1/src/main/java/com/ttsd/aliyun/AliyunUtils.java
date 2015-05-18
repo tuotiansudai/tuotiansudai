@@ -2,14 +2,13 @@ package com.ttsd.aliyun;
 
 import com.aliyun.oss.*;
 import com.aliyun.oss.model.*;
+import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.ImageUploadUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,10 +66,6 @@ public class AliyunUtils {
     }
 
 
-
-
-
-
     public static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
@@ -97,7 +92,7 @@ public class AliyunUtils {
             // 允许referer字段为空，并设置Bucket Referer列表
             BucketReferer br = new BucketReferer(true, refererList);
             client.createBucket(bucketName);
-            client.setBucketReferer(bucketName, br);
+//            client.setBucketReferer(bucketName, br);
         }catch(ServiceException e){
             if(!OSSErrorCode.BUCKET_ALREADY_EXISTS.equals(e.getErrorCode())){
                 throw e;
@@ -118,6 +113,7 @@ public class AliyunUtils {
         List<OSSObjectSummary> listDeletes = ObjectListing.getObjectSummaries();
         for(int i = 0; i < listDeletes.size(); i++){
             String objectName = listDeletes.get(i).getKey();
+            System.out.println(objectName);
             //如果不为空，先删除bucket下的文件
 //            client.deleteObject(bucketName, objectName);
         }
@@ -140,7 +136,7 @@ public class AliyunUtils {
     }
 
     /**
-     * 上传文件
+     * UE上传文件
      *
      * objectkey 上传到OSS起的名
      * @param filename  本地文件名
@@ -148,19 +144,20 @@ public class AliyunUtils {
      * @throws ClientException
      * @throws FileNotFoundException
      */
-    public static String uploadFile(String filename ,InputStream input )
+    public static String uploadFile(String filename ,InputStream inputStream ,String rootpath)
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(input.available());
-
+        String waterPath = rootpath + "site/themes/default/images/watermark.png";
+        ByteArrayInputStream in = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath,inputStream,0,0).toByteArray());
+        objectMeta.setContentLength(in.available());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
         String filepath = sitePath+ filename;
-        PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
-        log.debug("result etag :" +result.getETag()+ "filepath:"+filepath);
+        PutObjectResult result = client.putObject(BUCKET_NAME, filename, in, objectMeta);
+        log.debug("result etag :" + result.getETag() + "filepath:" + filepath);
         return filepath;
     }
 
@@ -171,7 +168,6 @@ public class AliyunUtils {
             throws OSSException, ClientException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(uploadedFile.getSize());
         String filename = uploadedFile.getFileName();
         //判断上传类型，多的可根据自己需求来判定
         if (filename.endsWith("xml")) {
@@ -183,17 +179,17 @@ public class AliyunUtils {
         else if (filename.endsWith("png")) {
             objectMeta.setContentType("image/png");
         }
-
+        objectMeta.setContentLength(uploadedFile.getSize());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhh");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
         String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
-        log.debug("filepath : "+filepath +"etag:" +result.getETag());
-
+        log.debug("filepath : " + filepath + "etag:" + result.getETag());
         return filepath;
     }
+
 
     /**
      *  下载文件
@@ -226,7 +222,10 @@ public class AliyunUtils {
         List<Bucket> buckets = client.listBuckets();
         // 遍历Bucket
         for (Bucket bucket : buckets) {
-            deleteBucket(client, bucket.getName());
+            if(bucket.getName().equals("tttt-ttsd")){
+                deleteBucket(client, bucket.getName());
+            }
         }
     }
+
 }
