@@ -131,8 +131,8 @@ public class UmPayNormalRepayOperation extends
 	}
 
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation) {
-		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrerId = ? and t.grade = ?",
-                new Object[]{referrerRelation.getReferrerId(),referrerRelation.getLevel()});
+		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
+                new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
 			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), 100, 2);
         }else {
