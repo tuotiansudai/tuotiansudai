@@ -110,7 +110,6 @@ public class Uploader {
 			if(isoss.equals("oss")){
 				String rootpath = request.getSession().getServletContext().getRealPath("//");
 				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream(),rootpath);
-				System.out.println(request.getSession().getServletContext().getRealPath(""));
 				this.title = url;
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
