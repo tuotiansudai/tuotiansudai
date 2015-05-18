@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache>
+    <!--<cacheManagerPeerProviderFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"-->
+            <!--properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,-->
+<!--multicastGroupPort=4446, timeToLive=32"/>-->
+
+    <!--<cacheManagerPeerListenerFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"-->
+            <!--properties="port=40001, socketTimeoutMillis=2000"/>-->
+
     <cacheManagerPeerProviderFactory
             class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
-            properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
-multicastGroupPort=4446, timeToLive=32"/>
-
+            properties="
+    socketTimeoutMillis=2000,
+    peerDiscovery=manual,
+    rmiUrls=//localhost:40001/org.hibernate.cache.UpdateTimestampsCache|
+    //localhost:40001/org.hibernate.cache.StandardQueryCache|
+    //localhost:40001/entityCache|
+    //localhost:40001/default_cache|
+    //localhost:40001/SimplePageCachingFilter" />
     <cacheManagerPeerListenerFactory
             class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
-            properties="port=40001, socketTimeoutMillis=2000"/>
+            properties="hostName=localhost, port=40001,
+socketTimeoutMillis=2000" />
 
     <!-- 如果用的话，需要把所有不被缓存的实体缓存了，不然跟这个实体相关的query，会有问题。因为不在同一个池子里。 -->
     <diskStore path="java.io.tmpdir"/>
