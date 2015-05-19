@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import com.esoft.archer.user.model.*;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
+import com.esoft.jdp2p.loan.model.Loan;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
@@ -97,7 +98,7 @@ public class UmPayNormalRepayOperation extends
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
-				double bonus = calculateBonus(invest, referrerRelation);
+				double bonus = calculateBonus(invest, referrerRelation,lr.getLoan());
 				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
 				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
 					@Override
@@ -130,15 +131,22 @@ public class UmPayNormalRepayOperation extends
 		}
 	}
 
-	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation) {
+	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan) {
+		String repayTimeUnit = loan.getType().getRepayTimeUnit();
+		int a = 0;
+		if(repayTimeUnit.equals("month")){
+			a = 12;
+		}else if(repayTimeUnit.equals("day")){
+			a = 365;
+		}
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
                 new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), 100, 2);
+			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), a, 2), 100, 2);
         }else {
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new Object[]{referrerRelation.getLevel()});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), 100, 2);
+				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), a, 2), 100, 2);
 			}else {
 				return 0.00;
 			}
