@@ -89,7 +89,7 @@ public class Uploader {
 			return;
 		}
 		if (this.request instanceof MultipartRequest) {
-			Boolean switchBlur = request.getParameter("switchBlur")!=null? true :false;
+			Boolean switchBlur = request.getParameter("switchBlur")!=null;
 			DiskFileItem dfi = (DiskFileItem) ((MultipartRequest) this.request).getFileItem("upfile");
 			this.title = ((MultipartRequest) this.request).getParameter("pictitle");
 			this.originalName = dfi.getName().substring(dfi.getName().lastIndexOf(System.getProperty("file.separator")) + 1);
