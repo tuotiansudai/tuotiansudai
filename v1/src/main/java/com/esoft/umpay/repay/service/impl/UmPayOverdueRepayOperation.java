@@ -211,7 +211,11 @@ public class UmPayOverdueRepayOperation extends
 										lr.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
-						umPayNormalRepayOperation.recommendedIncome(lr);
+						try {
+							umPayNormalRepayOperation.recommendedIncome(lr);
+						}catch (Exception e) {
+							log.error(e.getStackTrace());
+						}
 					}
 				}
 			} else {

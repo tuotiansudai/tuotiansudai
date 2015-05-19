@@ -310,7 +310,11 @@ public class UmPayNormalRepayOperation extends
 										repay.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
-						recommendedIncome(repay);
+						try {
+							recommendedIncome(repay);
+						}catch (Exception e){
+							log.error(e.getStackTrace());
+						}
 					}
 				}
 			} else {
