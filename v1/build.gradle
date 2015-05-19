@@ -18,6 +18,9 @@ dependencies {
 
 compileJava {
     options.encoding = "UTF-8"
+    options.fork = true
+    options.forkOptions.executable = "javac" // assumes that javac is on PATH
+    options.compilerArgs << "-XDignore.symbol.file"
 }
 
 buildscript {

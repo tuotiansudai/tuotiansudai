@@ -106,9 +106,10 @@ public class Uploader {
 			this.url = savePath  + "/" + this.fileName;
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
 
-			String isoss = PropertiesUtils.getPro("plat.is.start");
-			if(isoss.equals("oss")){
-				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
+			String switchOss = PropertiesUtils.getPro("plat.is.start");
+			if(switchOss.equals("oss")){
+				String rootPath = request.getSession().getServletContext().getRealPath("//");
+				this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream(),rootPath);
 				this.title = url;
 			}else{
 				FileOutputStream out = new FileOutputStream(new File(savefile));
