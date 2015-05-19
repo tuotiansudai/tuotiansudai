@@ -35,10 +35,10 @@
 					<ui:include src="#{tplVars.componentsPath}/onePictureUpload.xhtml">
 						<ui:param name="thumb" value="#{loanHome.instance.customPicture}"></ui:param>
 					</ui:include>
-					<h:outputLabel value="代理人"></h:outputLabel>
-					<h:outputText value="#{loanHome.instance.agent}" label="代理人" />
-
 					<h:outputLabel value="借款用户"></h:outputLabel>
+					<h:outputText value="#{loanHome.instance.agent}" label="借款用户" />
+
+					<h:outputLabel value="代理用户"></h:outputLabel>
 					<h:outputText value="#{loanHome.instance.user.username}"></h:outputText>
 
 					<h:outputLabel value="标的类型"></h:outputLabel>

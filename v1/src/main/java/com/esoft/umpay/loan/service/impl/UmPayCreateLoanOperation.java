@@ -60,13 +60,13 @@ public class UmPayCreateLoanOperation extends UmPayOperationServiceAbs<Loan> {
 		try {
 		loanService.createLoanByAdmin(loan);
 		//将代码抽出来,但是这里需要优化
-		umPayLoanStatusService.createLoan(loan);
-		} catch (ReqDataException e) {
-			log.debug("发标创建请求数据失败!标号:"+loan.getId());
-			throw new UmPayOperationException("发标创建请求数据失败!标号:"+loan.getId());
-		} catch (RetDataException e) {
-			log.debug("发标解析请求回调数据失败!标号"+loan.getId());
-			throw new UmPayOperationException("发标解析请求回调数据失败!标号"+loan.getId());
+//		umPayLoanStatusService.createLoan(loan);
+//		} catch (ReqDataException e) {
+//			log.debug("发标创建请求数据失败!标号:"+loan.getId());
+//			throw new UmPayOperationException("发标创建请求数据失败!标号:"+loan.getId());
+//		} catch (RetDataException e) {
+//			log.debug("发标解析请求回调数据失败!标号"+loan.getId());
+//			throw new UmPayOperationException("发标解析请求回调数据失败!标号"+loan.getId());
 		} catch (InvalidExpectTimeException e1) {
 			throw new UmPayOperationException("余额不足，无法支付借款保证金");
 		} catch (InsufficientBalance e1) {

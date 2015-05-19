@@ -81,7 +81,7 @@ public class AliyunUtils {
      * @throws ClientException
      * @throws FileNotFoundException
      */
-    public static String uploadFile(String filename ,InputStream inputStream ,String rootPath)
+    public static String uploadFileBlur(String filename ,InputStream inputStream ,String rootPath)
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
@@ -95,6 +95,22 @@ public class AliyunUtils {
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, in, objectMeta);
         log.info("result etag :" + result.getETag() + "filepath:" + filepath);
+        return filepath;
+    }
+
+    public static String uploadFile(String filename ,InputStream input )
+            throws OSSException, ClientException, FileNotFoundException ,IOException{
+        OSSClient client = getOSSClient();
+        ObjectMetadata objectMeta = new ObjectMetadata();
+        objectMeta.setContentLength(input.available());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
+        String filepath = sitePath+ filename;
+        PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
+        log.debug("result etag :" + result.getETag() + "filepath:" + filepath);
         return filepath;
     }
 
