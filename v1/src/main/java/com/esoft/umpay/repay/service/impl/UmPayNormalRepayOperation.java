@@ -99,6 +99,9 @@ public class UmPayNormalRepayOperation extends
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
 				double bonus = calculateBonus(invest, referrerRelation,lr.getLoan());
+				if(bonus == -1){
+					continue;
+				}
 				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
 				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
 					@Override
@@ -150,7 +153,7 @@ public class UmPayNormalRepayOperation extends
 			if (referGradeProfitSysList.size() > 0){
 				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
 			}else {
-				return 0.00;
+				return -1;
 			}
         }
 	}
