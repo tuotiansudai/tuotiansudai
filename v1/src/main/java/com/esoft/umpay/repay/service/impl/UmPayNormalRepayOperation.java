@@ -133,20 +133,22 @@ public class UmPayNormalRepayOperation extends
 
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan) {
 		String repayTimeUnit = loan.getType().getRepayTimeUnit();
-		int a = 0;
+		int percentage = 100;
+		int maxDigital = 2;
+		int repayWay = 1;
 		if(repayTimeUnit.equals("month")){
-			a = 12;
+			repayWay = 12;
 		}else if(repayTimeUnit.equals("day")){
-			a = 365;
+			repayWay = 365;
 		}
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
                 new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), 2), a, 2), 100, 2);
+			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
         }else {
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ?", new Object[]{referrerRelation.getLevel()});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), 2), a, 2), 100, 2);
+				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
 			}else {
 				return 0.00;
 			}
