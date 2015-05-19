@@ -108,7 +108,7 @@ public class UmPayNormalRepayOperation extends
 				});
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
-				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_IN;
+				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
@@ -169,7 +169,7 @@ public class UmPayNormalRepayOperation extends
 		ub.setType("ti_balance");
 		ub.setTypeInfo("referrer_reward");
 		ub.setMoney(bonus);
-		ub.setSeqNum(userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum()+1);
+		ub.setSeqNum(userBillBO.getLastestBill(referrerRelation.getReferrerId())!=null?userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum():0 + 1);
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if(!particUserId.equals("") && status.equals("success")){
