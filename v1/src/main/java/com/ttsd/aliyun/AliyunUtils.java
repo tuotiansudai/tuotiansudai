@@ -66,7 +66,6 @@ public class AliyunUtils {
     public static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
-
     }
 
 
@@ -95,7 +94,7 @@ public class AliyunUtils {
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
         String filepath = sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, in, objectMeta);
-        log.debug("result etag :" + result.getETag() + "filepath:" + filepath);
+        log.info("result etag :" + result.getETag() + "filepath:" + filepath);
         return filepath;
     }
 
@@ -124,7 +123,7 @@ public class AliyunUtils {
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
         String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
-        log.debug("filepath : " + filepath + "etag:" + result.getETag());
+        log.info("filepath : " + filepath + "etag:" + result.getETag());
         return filepath;
     }
 

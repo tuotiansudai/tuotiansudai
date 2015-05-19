@@ -35,12 +35,12 @@ public final class WaterMarkUtils {
         try {
 
             //目标文件
-            Image src = ImageIO.read(inStream);
-            int width = src.getWidth(null);
-            int height = src.getHeight(null);
+            Image srcTarget = ImageIO.read(inStream);
+            int width = srcTarget.getWidth(null);
+            int height = srcTarget.getHeight(null);
             BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
             Graphics graphics = image.createGraphics();
-            graphics.drawImage(src, 0, 0, width, height, null);
+            graphics.drawImage(srcTarget, 0, 0, width, height, null);
             //水印文件
             File waterFile = new File(waterImg);
             Image waterImage = ImageIO.read(waterFile);
