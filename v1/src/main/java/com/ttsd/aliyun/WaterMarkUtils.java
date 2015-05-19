@@ -9,8 +9,13 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public final class WaterMarkUtils {
+
+    static Log log = LogFactory.getLog(AliyunUtils.class);
+
     public WaterMarkUtils() {
 
     }
@@ -39,28 +44,24 @@ public final class WaterMarkUtils {
             //水印文件
             File waterFile = new File(waterImg);
             Image waterImage = ImageIO.read(waterFile);
-            int water_width = waterImage.getWidth(null);
-            int water_height = waterImage.getHeight(null);
-            graphics.drawImage(waterImage, (width - water_width) / 2, (height - water_height) / 2, water_width, water_height, null);
+            int waterWidth = waterImage.getWidth(null);
+            int waterHeight = waterImage.getHeight(null);
+            graphics.drawImage(waterImage, (width - waterWidth) / 2, (height - waterHeight) / 2, waterWidth, waterHeight, null);
             //水印文件结束
             graphics.dispose();
 
-            byte[] buff = new byte[100]; //buff用于存放循环读取的临时数据
+            byte[] byteBuffer = new byte[100]; //buff用于存放循环读取的临时数据
             int rc = 0;
-            while ((rc = inStream.read(buff, 0, 100)) > 0) {
-                swapStream.write(buff, 0, rc);
+            while ((rc = inStream.read(byteBuffer, 0, 100)) > 0) {
+                swapStream.write(byteBuffer, 0, rc);
             }
             JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
             encoder.encode(image);
         } catch (Exception e) {
+            log.error("upload oss fail ");
             e.printStackTrace();
         }
             return swapStream;
     }
-
-
-
-
-
 
 }
