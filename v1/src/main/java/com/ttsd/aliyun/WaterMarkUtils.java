@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 public final class WaterMarkUtils {
 
-    static Log log = LogFactory.getLog(AliyunUtils.class);
+    static Log log = LogFactory.getLog(WaterMarkUtils.class);
 
     public WaterMarkUtils() {
 
