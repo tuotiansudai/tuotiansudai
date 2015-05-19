@@ -32,6 +32,8 @@ public class ReferGradeProfitSys implements java.io.Serializable {
 
 	private Date  updateTime;
 
+	private String gradeRole;
+
 	private User user;
 
 	/** default constructor */
@@ -74,6 +76,15 @@ public class ReferGradeProfitSys implements java.io.Serializable {
 	public void setInputDate(Date inputDate) {
 		this.inputDate = inputDate;
 	}
+	@Column(name = "grade_role",length = 2)
+	public String getGradeRole() {
+		return gradeRole;
+	}
+
+	public void setGradeRole(String gradeRole) {
+		this.gradeRole = gradeRole;
+	}
+
 	@Column(name = "updatetime",length = 19)
 	public Date getUpdateTime() {
 		return updateTime;
