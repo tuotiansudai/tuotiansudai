@@ -76,7 +76,7 @@ public class ReferGradeProfitSys implements java.io.Serializable {
 	public void setInputDate(Date inputDate) {
 		this.inputDate = inputDate;
 	}
-	@Column(name = "grade_role",length = 2)
+	@Column(name = "grade_role",length = 20)
 	public String getGradeRole() {
 		return gradeRole;
 	}
