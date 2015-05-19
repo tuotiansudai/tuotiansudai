@@ -89,7 +89,7 @@ public class Uploader {
 			return;
 		}
 		if (this.request instanceof MultipartRequest) {
-			String switchBlur = request.getParameter("switchBlur")!=null?request.getParameter("switchBlur") :"no";
+			Boolean switchBlur = request.getParameter("switchBlur")!=null? true :false;
 			DiskFileItem dfi = (DiskFileItem) ((MultipartRequest) this.request).getFileItem("upfile");
 			this.title = ((MultipartRequest) this.request).getParameter("pictitle");
 			this.originalName = dfi.getName().substring(dfi.getName().lastIndexOf(System.getProperty("file.separator")) + 1);
@@ -109,7 +109,7 @@ public class Uploader {
 			String switchOss = PropertiesUtils.getPro("plat.is.start");
 			if(switchOss.equals("oss")){
 				String rootPath = request.getSession().getServletContext().getRealPath("//");
-				if(switchBlur.equals("yes")){
+				if(switchBlur){
 					this.url = AliyunUtils.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
 				}else{
 					this.url = AliyunUtils.uploadFile(fileName, dfi.getInputStream());
