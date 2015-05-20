@@ -74,7 +74,7 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public String modifyForRefGd() {
+	public String modifyReferrerGrade() {
 		if (getInstance().getProfitRate() == null){
 			FacesUtil.addErrorMessage("请您输入收益比例!");
 			return null;

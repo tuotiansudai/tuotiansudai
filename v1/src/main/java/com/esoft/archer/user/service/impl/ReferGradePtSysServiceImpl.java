@@ -13,6 +13,8 @@ import java.util.List;
 
 @Service("referGradePtSysServiceImpl")
 public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
+	public static final String INVESTOR = "INVESTOR";
+	public static final String ROLE_MERCHANDISER = "ROLE_MERCHANDISER";
 	@Resource
 	private HibernateTemplate ht;
 	@Resource
@@ -89,14 +91,13 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 	@Override
 	public Integer getMaxGradeByRole(String referrerId){
 		Integer maxGrade = null;
-		boolean hasMerchandiser = userService.hasRole(referrerId, "ROLE_MERCHANDISER");//是否业务员
+		boolean hasMerchandiser = userService.hasRole(referrerId, ROLE_MERCHANDISER);//是否业务员
 		boolean hasInvest = false;//是否投资人
 
 		if (hasMerchandiser){
 			maxGrade = this.getMerchandiserMaxGrade();
-			return  maxGrade;
 		}else{
-			hasInvest = userService.hasRole(referrerId,"INVESTOR");
+			hasInvest = userService.hasRole(referrerId, INVESTOR);
 			if (hasInvest){
 				maxGrade = this.getInvestMaxGrade();
 			}
