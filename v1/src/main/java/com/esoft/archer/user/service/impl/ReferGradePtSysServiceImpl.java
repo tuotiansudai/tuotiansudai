@@ -2,6 +2,7 @@ package com.esoft.archer.user.service.impl;
 
 import com.esoft.archer.user.model.ReferGradeProfitSys;
 import com.esoft.archer.user.service.ReferGradePtSysService;
+import com.esoft.archer.user.service.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,13 @@ import java.util.List;
 
 @Service("referGradePtSysServiceImpl")
 public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
+	public static final String INVESTOR = "INVESTOR";
+	public static final String ROLE_MERCHANDISER = "ROLE_MERCHANDISER";
 	@Resource
 	private HibernateTemplate ht;
+	@Resource
+	private UserService userService;
+
 
 
 	/**
@@ -34,7 +40,7 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 	@Override
 	public boolean isExistMerchandiserGrade(Integer grade)  {
 		boolean isExistGradeFlag = false;
-		List<ReferGradeProfitSys>  users = ht.find(" from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.grade=? and referGradeProfitSys.gradeRole='MERCHANDISER' ",grade);
+		List<ReferGradeProfitSys>  users = ht.find(" from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.grade=? and referGradeProfitSys.gradeRole='ROLE_MERCHANDISER' ",grade);
 		if(CollectionUtils.isNotEmpty(users)){
 			isExistGradeFlag = true;
 		}
@@ -51,7 +57,7 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 
 		Integer addHighestGrade = null;
 
-		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='MERCHANDISER' ";
+		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='ROLE_MERCHANDISER' ";
 
 		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
 
@@ -75,20 +81,30 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 		return addHighestGrade;
 
 	}
+
 	/**
-	 *	获取系统已经存在的最高层级
+	 *	根据用户角色获取系统对应已经存在的最高层级
+	 *	如果推荐人角色为投资人，那么指定推荐人的最高层级不能超过系统配置的投资人角色最高层级
+	 *	如果推荐人角色为业务员，那么指定推荐人的最高层级不能超过系统配置的业务员角色最高层级
+	 *  如果推荐人是投资人和业务员,按照角色为业务员查找角色最高层级
 	 */
 	@Override
-	public Integer getMaxGrade(){
+	public Integer getMaxGradeByRole(String referrerId){
 		Integer maxGrade = null;
+		boolean hasMerchandiser = userService.hasRole(referrerId, ROLE_MERCHANDISER);//是否业务员
+		boolean hasInvest = false;//是否投资人
 
-		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys  ";
-
-		maxGrade = (Integer)ht.find(hql).get(0) ;
+		if (hasMerchandiser){
+			maxGrade = this.getMerchandiserMaxGrade();
+		}else{
+			hasInvest = userService.hasRole(referrerId, INVESTOR);
+			if (hasInvest){
+				maxGrade = this.getInvestMaxGrade();
+			}
+		}
 
 		return maxGrade;
 	};
-
 	/**
 	 *	获取系统已经存在的用户最高层级
 	 */
@@ -109,7 +125,7 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 	public Integer getMerchandiserMaxGrade(){
 		Integer maxGrade = null;
 
-		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='MERCHANDISER' ";
+		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='ROLE_MERCHANDISER' ";
 
 		maxGrade = (Integer)ht.find(hql).get(0) ;
 
