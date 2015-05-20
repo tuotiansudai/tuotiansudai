@@ -184,7 +184,11 @@ public class UmPayNormalRepayOperation extends
 		//获取当前冻结
 		double frozenMoney = userBillBO.getFrozenMoney(referrerRelation.getReferrerId());
 		UserBill ub = new UserBill();
-		ub.setBalance(ArithUtil.add(balance, bonus));
+		if (msg.equals("未在联动优势绑定借记卡,交易失败")) {
+			ub.setBalance(balance);
+		}else {
+			ub.setBalance(ArithUtil.add(balance, bonus));
+		}
 		ub.setFrozenMoney(frozenMoney);
 		ub.setTime(nowdate);
 		ub.setId(UUID.randomUUID().toString().replaceAll("-", ""));
