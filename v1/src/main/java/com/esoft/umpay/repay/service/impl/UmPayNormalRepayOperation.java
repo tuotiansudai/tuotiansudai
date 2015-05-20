@@ -133,6 +133,9 @@ public class UmPayNormalRepayOperation extends
 				if(bonus == -1){
 					continue;
 				}
+				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
+					msg = "未在联动优势绑定借记卡,交易失败";
+				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
 				if(list.contains("ROLE_MERCHANDISER")){
 					continue;
@@ -157,6 +160,14 @@ public class UmPayNormalRepayOperation extends
 		if (referGradeProfitUserList.size() > 0){
 			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
         }else {
+			if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
+				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
+				if (referGradeProfitSysListEx.size() > 0){
+					return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+				}else{
+					return -1;
+				}
+			}
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
 			if (referGradeProfitSysList.size() > 0){
 				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
@@ -183,7 +194,7 @@ public class UmPayNormalRepayOperation extends
 		ub.setSeqNum((userBillBO.getLastestBill(referrerRelation.getReferrerId())!=null?userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum():0) + 1);
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
-		if(!particUserId.equals("") && status.equals("success")){
+		if((!particUserId.equals("") && status.equals("success")) || bonus == 0.00){
             detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
         }else if(particUserId.equals("")){
             detail = "未在联动优势绑定借记卡,交易失败";
@@ -321,11 +332,11 @@ public class UmPayNormalRepayOperation extends
 										repay.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
-						try {
-							recommendedIncome(repay);
-						}catch (Exception e){
-							log.error(e.getStackTrace());
-						}
+					}
+					try {
+						recommendedIncome(repay);
+					}catch (Exception e){
+						log.error(e.getStackTrace());
 					}
 				}
 			} else {
