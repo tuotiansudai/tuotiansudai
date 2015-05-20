@@ -114,9 +114,6 @@ public class UmPayNormalRepayOperation extends
 					roleId = "MEMBER";
 				}
 				double bonus = calculateBonus(invest, referrerRelation,lr.getLoan(),roleId);
-				if(bonus == -1){
-					continue;
-				}
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
@@ -124,7 +121,7 @@ public class UmPayNormalRepayOperation extends
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
 				String msg = "";
-				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!=""){
+				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
 					//调用联动优势接口
 					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
 					if(returnMsg.split("\\|")[0].equals("0000")){
@@ -132,6 +129,9 @@ public class UmPayNormalRepayOperation extends
 					}else{
 						msg = returnMsg.split("\\|")[1];
 					}
+				}
+				if(bonus == -1){
+					continue;
 				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
 				if(list.contains("ROLE_MERCHANDISER")){
@@ -180,7 +180,7 @@ public class UmPayNormalRepayOperation extends
 		ub.setType("ti_balance");
 		ub.setTypeInfo("referrer_reward");
 		ub.setMoney(bonus);
-		ub.setSeqNum(userBillBO.getLastestBill(referrerRelation.getReferrerId())!=null?userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum():0 + 1);
+		ub.setSeqNum((userBillBO.getLastestBill(referrerRelation.getReferrerId())!=null?userBillBO.getLastestBill(referrerRelation.getReferrerId()).getSeqNum():0) + 1);
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if(!particUserId.equals("") && status.equals("success")){
