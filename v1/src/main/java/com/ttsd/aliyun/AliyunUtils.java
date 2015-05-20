@@ -76,12 +76,12 @@ public class AliyunUtils {
      * UE上传文件
      *
      * objectkey 上传到OSS起的名
-     * @param filename  本地文件名
+     * @param fileName  本地文件名
      * @throws OSSException
      * @throws ClientException
      * @throws FileNotFoundException
      */
-    public static String uploadFile(String filename ,InputStream inputStream ,String rootPath)
+    public static String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath)
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
@@ -91,11 +91,27 @@ public class AliyunUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-        filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
-        String filepath = sitePath+ filename;
-        PutObjectResult result = client.putObject(BUCKET_NAME, filename, in, objectMeta);
-        log.info("result etag :" + result.getETag() + "filepath:" + filepath);
-        return filepath;
+        fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
+        String filePath = sitePath+ fileName;
+        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+        log.info("result etag :" + result.getETag() + "filepath:" + filePath);
+        return filePath;
+    }
+
+    public static String uploadFile(String fileName ,InputStream input )
+            throws OSSException, ClientException, FileNotFoundException ,IOException{
+        OSSClient client = getOSSClient();
+        ObjectMetadata objectMeta = new ObjectMetadata();
+        objectMeta.setContentLength(input.available());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
+        String filePath = sitePath+ fileName;
+        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, input, objectMeta);
+        log.debug("result etag :" + result.getETag() + "filepath:" + filePath);
+        return filePath;
     }
 
 

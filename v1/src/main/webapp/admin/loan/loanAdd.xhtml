@@ -32,16 +32,24 @@
 						<ui:param name="thumb" value="#{loanHome.instance.customPicture}"></ui:param>
 					</ui:include>
 
-					<h:outputLabel value="代理人"></h:outputLabel>
-					<h:inputText value="#{loanHome.instance.agent}" required="true" label="代理人" />
+
+					<h:outputLabel value="代理用户"></h:outputLabel>
+					<p:autoComplete value="#{loanHome.instance.user}"
+									title="输入用户名自动检索用户，请在检索结果中选择用户" emptyMessage="未搜索到用户"
+									minQueryLength="2" required="true" label="代理用户"
+									completeMethod="#{userList.queryUsersByUserName}"
+									forceSelection="true" var="u" itemLabel="#{u.username}"
+									itemValue="#{u}" converter="archer.EntityConverter">
+						<p:ajax event="itemSelect" update="overmoney" />
+					</p:autoComplete>
 
 					<h:outputLabel value="借款用户"></h:outputLabel>
-					<p:autoComplete value="#{loanHome.instance.user}"
+					<p:autoComplete value="#{loanHome.instance.agent}"
 						title="输入用户名自动检索用户，请在检索结果中选择用户" emptyMessage="未搜索到用户"
 						minQueryLength="2" required="true" label="借款用户"
 						completeMethod="#{userList.queryUsersByUserName}"
 						forceSelection="true" var="u" itemLabel="#{u.username}"
-						itemValue="#{u}" converter="archer.EntityConverter">
+						itemValue="#{u.username}" >
 						<p:ajax event="itemSelect" update="overmoney" />
 					</p:autoComplete>
 
@@ -122,7 +130,7 @@
 							<f:validateLength maximum="60000" />
 						</h:inputTextarea>
 						<script type="text/javascript">
-							var ue = new UE.ui.Editor({});
+							var ue = new UE.ui.Editor({ switchBlur: 'yes'});
 							ue.render('form:guaranteeCompanyDescription');
 						</script>
 						<style>
