@@ -30,7 +30,7 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 
 		boolean isExistGradeFlag = false;
 
-		isExistGradeFlag = referGradePtSysService.isExistGrade(getInstance().getGrade());
+		isExistGradeFlag = referGradePtSysService.isExistInvestGrade(getInstance().getGrade());
 		if (isExistGradeFlag){
 			FacesUtil.addErrorMessage("推荐层级"+getInstance().getGrade()+"在系统中已经进行维护,不能新增该层级!");
 			return null;
@@ -40,9 +40,10 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
+		getInstance().setGradeRole("INVESTOR");
 		getInstance().setInputDate(new Date());
 		getInstance().setUpdateTime(new Date());
-		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSys"));
+		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSysInvest"));
 		return super.save();
 	}
 
@@ -50,12 +51,12 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 	public String modifyForRefGd() {
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
-		return FacesUtil.redirect("/admin/user/referGradeProfitListSys");
+		return FacesUtil.redirect("/admin/user/referGradeProfitListSysInvest");
 	}
 	@Override
 	@Transactional(readOnly=false)
 	public String delete(){
-		Integer maxGradeDb = referGradePtSysService.getMaxGrade();//数据配置最大层级
+		Integer maxGradeDb = referGradePtSysService.getInvestMaxGrade();//数据配置最大层级
 		initInstance();
 		Integer gradeFace = getInstance().getGrade();//页面删除层级
 		if (gradeFace.intValue() < maxGradeDb.intValue()){
@@ -70,7 +71,7 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 		super.initInstance();
 		ReferGradeProfitSys instance = getInstance();
 		if (this.instance.getGrade() == null) {
-			this.instance.setGrade(referGradePtSysService.getAddHighestGrade());
+			this.instance.setGrade(referGradePtSysService.getAddHighestInvestGrade());
 		}
 	}
 }

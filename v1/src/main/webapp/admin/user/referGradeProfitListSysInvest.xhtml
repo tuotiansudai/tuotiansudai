@@ -14,17 +14,17 @@
     <div class="entry">
     	<p:toolbar>
             <p:toolbarGroup>
-	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel} #{userMsg.referrerGradePtSysManLabel}"></h:outputLabel>
+	            <h:outputLabel style="padding-left: 15px;" value="#{commonMsg.currentPositionLabel} #{userMsg.referrerGradePtSysInvestLabel}"></h:outputLabel>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:separator />
-                <p:button value="#{userMsg.addReferrerSysLabel}" outcome="/admin/user/addReferGradePtSys"></p:button>
+                <p:button value="#{userMsg.addReferrerSysInvestLabel}" outcome="/admin/user/addReferGradePtSysInvest"></p:button>
             </p:toolbarGroup>
         </p:toolbar>
 
         <h:form id="form">
 
-            <p:dataTable lazy="true" id="dataTable" value="#{referGradeProfitSysList.lazyModel}" var="referGradeProfitSys"
+            <p:dataTable lazy="true" id="dataTable" value="#{referGradeProfitSysInvestList.lazyModel}" var="referGradeProfitSys"
                 paginator="true" paginatorPosition="bottom" rows="15">
 
                 <p:column headerText="推荐层级">
@@ -36,7 +36,7 @@
 
                 <p:column headerText="#{commonMsg.actionLabel}">
                     <sec:ifAllGranted roles="USER_EDIT">
-                        <h:link value=" 编辑 | " outcome="/admin/user/referGradeProfitSysEdit?id=#{referGradeProfitSys.id }"></h:link>
+                        <h:link value=" 编辑 | " outcome="/admin/user/referGradeProfitSysInvestEdit?id=#{referGradeProfitSys.id }"></h:link>
                         <a href="javascript:void(0)"
                            onclick="$('#form\\:deleteId').val('#{referGradeProfitSys.id}');confirmDialog.show()">#{commonMsg.deleteLabel}</a>
                     </sec:ifAllGranted>
@@ -46,9 +46,9 @@
                              widgetVar="confirmDialog" severity="alert"
                              header="#{commonMsg.confirmDetele}"
                              message="确认要删除该推荐层级吗?">
-                <h:inputHidden value="#{referGradeSysHome.id}" id="deleteId"></h:inputHidden>
+                <h:inputHidden value="#{referGradeSysInvestHome.id}" id="deleteId"></h:inputHidden>
                 <p:commandButton id="confirm" value="#{commonMsg.confirmLabel}"
-                                 action="#{referGradeSysHome.delete}" ajax="false"
+                                 action="#{referGradeSysInvestHome.delete}" ajax="false"
                                  style="margin-left:180px;" />
                 <p:commandButton id="decline" value="#{commonMsg.cancelLabel}"
                                  onclick="confirmDialog.hide()" type="button" />

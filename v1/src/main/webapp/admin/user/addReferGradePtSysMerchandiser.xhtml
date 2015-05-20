@@ -14,12 +14,12 @@
 			<p:toolbar styleClass="admin-nav-toolbar">
 				<p:toolbarGroup>
 					<h:outputLabel
-						value="#{commonMsg.currentPositionLabel} #{userMsg.addReferrerSysMerchadiserLabel}"></h:outputLabel>
+						value="#{commonMsg.currentPositionLabel} #{userMsg.addReferrerSysMerchandiserLabel}"></h:outputLabel>
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:separator />
-					<p:button outcome="/admin/user/referGradeProfitListSysMerchadiser"
-						value="#{userMsg.referrerGradePtSysMerchadiserLabel}"></p:button>
+					<p:button outcome="/admin/user/referGradeProfitListSysMerchandiser"
+						value="#{userMsg.referrerGradePtSysMerchandiserLabel}"></p:button>
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:spacer></p:spacer>
@@ -28,13 +28,13 @@
 
 					<h:outputLabel value="#{userMsg.referrerGradeLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;"
-								 value="#{referGradeSysMerchadiserHome.instance.grade}" maxlength="3" readonly="#{not empty referGradeSysMerchadiserHome.instance.grade}">
+								 value="#{referGradeSysMerchandiserHome.instance.grade}" maxlength="3" readonly="#{not empty referGradeSysMerchandiserHome.instance.grade}">
 
 					</h:inputText>
 
 					<h:outputLabel value="#{userMsg.referrerProfitLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeSysMerchadiserHome.instance.profitRate}"></h:inputText>
+								 value="#{referGradeSysMerchandiserHome.instance.profitRate}"></h:inputText>
 
 
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
@@ -42,7 +42,7 @@
 
 					<ui:fragment>
 
-						<p:commandButton id="saveBtn" action="#{referGradeSysMerchadiserHome.save}"
+						<p:commandButton id="saveBtn" action="#{referGradeSysMerchandiserHome.save}"
 							ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
 						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
 						<p:blockUI block="panel" trigger="saveBtn" />

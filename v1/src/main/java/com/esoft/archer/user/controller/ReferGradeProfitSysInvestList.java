@@ -13,9 +13,9 @@ import java.util.Arrays;
 public class ReferGradeProfitSysInvestList extends EntityQuery<ReferGradeProfitSys> {
 
 
-	private static final String LAZY_MODEL = "select referGradeProfitSys from ReferGradeProfitSys referGradeProfitSys ";
+	private static final String LAZY_MODEL = "select referGradeProfitSys from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='INVESTOR' ";
 
-	private static final String LAZY_MODEL_COUNT = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys ";
+	private static final String LAZY_MODEL_COUNT = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='INVESTOR' ";
 
 
 

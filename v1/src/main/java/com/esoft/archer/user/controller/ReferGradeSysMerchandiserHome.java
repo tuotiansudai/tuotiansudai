@@ -30,7 +30,7 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 
 		boolean isExistGradeFlag = false;
 
-		isExistGradeFlag = referGradePtSysService.isExistInvestGrade(getInstance().getGrade());
+		isExistGradeFlag = referGradePtSysService.isExistMerchandiserGrade(getInstance().getGrade());
 		if (isExistGradeFlag){
 			FacesUtil.addErrorMessage("推荐层级"+getInstance().getGrade()+"在系统中已经进行维护,不能新增该层级!");
 			return null;
@@ -40,10 +40,10 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
-		getInstance().setGradeRole("INVESTOR");
+		getInstance().setGradeRole("MERCHANDISER");
 		getInstance().setInputDate(new Date());
 		getInstance().setUpdateTime(new Date());
-		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchadiser"));
+		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchandiser"));
 		return super.save();
 	}
 
@@ -51,12 +51,12 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 	public String modifyForRefGd() {
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
-		return FacesUtil.redirect("/admin/user/referGradeProfitListSysInvest");
+		return FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchandiser");
 	}
 	@Override
 	@Transactional(readOnly=false)
 	public String delete(){
-		Integer maxGradeDb = referGradePtSysService.getInvestMaxGrade();//数据配置最大层级
+		Integer maxGradeDb = referGradePtSysService.getMerchandiserMaxGrade();//数据配置最大层级
 		initInstance();
 		Integer gradeFace = getInstance().getGrade();//页面删除层级
 		if (gradeFace.intValue() < maxGradeDb.intValue()){
@@ -71,7 +71,7 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 		super.initInstance();
 		ReferGradeProfitSys instance = getInstance();
 		if (this.instance.getGrade() == null) {
-			this.instance.setGrade(referGradePtSysService.getAddHighestInvestGrade());
+			this.instance.setGrade(referGradePtSysService.getAddHighestMerchandiserGrade());
 		}
 	}
 }
