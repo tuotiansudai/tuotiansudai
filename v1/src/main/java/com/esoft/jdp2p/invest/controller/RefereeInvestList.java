@@ -113,7 +113,7 @@ public class RefereeInvestList implements java.io.Serializable {
 
             List<Role> roleList = ht.find(MessageFormat.format(QUERY_ROLE, reward.getRoleName()));
             if (CollectionUtils.isNotEmpty(roleList)) {
-                investItem.setReferrerRole(roleList.get(0).getDescription());
+                investItem.setReferrerRole(roleList.get(0).getName());
             }
         }
         return investItem;
