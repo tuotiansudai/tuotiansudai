@@ -1,6 +1,7 @@
 package com.esoft.jdp2p.invest.controller;
 
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.archer.user.model.Role;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.model.Invest;
@@ -25,6 +26,7 @@ public class RefereeInvestList implements java.io.Serializable {
 
     public static final String QUERY_LEVEL = "select relation from ReferrerRelation relation where relation.referrerId=''{0}'' and relation.userId=''{1}''";
     public static final String QUERY_REWARD = "select investUserReferrer from InvestUserReferrer investUserReferrer where investUserReferrer.invest=''{0}'' and investUserReferrer.referrer=''{1}''";
+    public static final String QUERY_ROLE = "select role from Role role where role.id=''{0}''";
 
     @Resource
     HibernateTemplate ht;
@@ -99,6 +101,20 @@ public class RefereeInvestList implements java.io.Serializable {
         if (reward != null) {
             investItem.setReward(reward.getBonus());
             investItem.setRewardTime(reward.getTime());
+            if (reward.getStatus().equals(InvestUserReferrer.SUCCESS)) {
+                investItem.setRewardStatus("奖励已入账");
+            }
+            if (reward.getRoleName().equals("INVESTOR") && reward.getStatus().equals(InvestUserReferrer.FAIL)) {
+                investItem.setRewardStatus("奖励入账失败");
+            }
+            if (reward.getRoleName().equals("ROLE_MERCHANDISER") && reward.getStatus().equals(InvestUserReferrer.FAIL)) {
+                investItem.setRewardStatus("奖励已记录");
+            }
+
+            List<Role> roleList = ht.find(MessageFormat.format(QUERY_ROLE, reward.getRoleName()));
+            if (CollectionUtils.isNotEmpty(roleList)) {
+                investItem.setReferrerRole(roleList.get(0).getDescription());
+            }
         }
         return investItem;
     }

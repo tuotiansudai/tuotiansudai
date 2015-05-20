@@ -124,16 +124,23 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="投资推荐人"></h:outputText>
+                            <h:outputText value="推荐人"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{invest.referrerId}"></h:outputText>
                     </p:column>
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="投资推荐人姓名"></h:outputText>
+                            <h:outputText value="推荐人姓名"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{invest.referrerName}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="推荐人角色"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.referrerRole}"></h:outputText>
                     </p:column>
 
                     <p:column>
@@ -145,16 +152,25 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="推荐奖励（元）"></h:outputText>
+                            <h:outputText value="奖励（元）"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{invest.reward}"></h:outputText>
                     </p:column>
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="推荐奖励时间"></h:outputText>
+                            <h:outputText value="奖励状态"></h:outputText>
                         </f:facet>
-                        <h:outputText value="#{invest.rewardTime}"></h:outputText>
+                        <h:outputText value="#{invest.rewardStatus}"></h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="奖励时间"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.rewardTime}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column>

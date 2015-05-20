@@ -10,8 +10,10 @@ public class InvestItem implements java.io.Serializable {
     private String investorName;
     private String referrerId;
     private String referrerName;
+    private String referrerRole;
     private Integer refereeLevel;
     private Double reward;
+    private String rewardStatus;
     private Date rewardTime;
     private Date investTime;
     private boolean isAutoInvest;
@@ -128,5 +130,21 @@ public class InvestItem implements java.io.Serializable {
 
     public void setInvestStatus(String investStatus) {
         this.investStatus = investStatus;
+    }
+
+    public String getReferrerRole() {
+        return referrerRole;
+    }
+
+    public void setReferrerRole(String referrerRole) {
+        this.referrerRole = referrerRole;
+    }
+
+    public String getRewardStatus() {
+        return rewardStatus;
+    }
+
+    public void setRewardStatus(String rewardStatus) {
+        this.rewardStatus = rewardStatus;
     }
 }
