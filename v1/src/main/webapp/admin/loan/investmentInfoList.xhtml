@@ -13,7 +13,7 @@
         <f:viewParam name="loanId" value="#{refereeInvestList.condition.loanId}"></f:viewParam>
         <f:viewParam name="referee"
                      value="#{refereeInvestList.condition.referrerId}"></f:viewParam>
-        <f:viewParam name="investStatus" value="#{refereeInvestList.condition.loanStatus}"></f:viewParam>
+        <f:viewParam name="investStatus" value="#{refereeInvestList.condition.investStatus}"></f:viewParam>
     </f:metadata>
 
     <ui:define name="content">
@@ -37,7 +37,7 @@
                         <h:outputLabel value="项目编号: "></h:outputLabel>
                         <h:inputText value="#{refereeInvestList.condition.loanId}"></h:inputText>
 
-                        <h:outputLabel value="筛选用户: "/>
+                        <h:outputLabel value="投资人: "/>
                         <p:autoComplete value="#{refereeInvestList.condition.investorId}"
                                         minQueryLength="2"
                                         completeMethod="#{userList.queryUsersByUserName}"
@@ -58,7 +58,7 @@
 
                         <h:outputLabel value="投资状态"></h:outputLabel>
                         <ui:fragment>
-                            <h:selectOneMenu value="#{refereeInvestList.condition.loanStatus}">
+                            <h:selectOneMenu value="#{refereeInvestList.condition.investStatus}">
                                 <f:selectItem itemLabel="请选择 &#160;&#160;"
                                               noSelectionOption="true"/>
                                 <f:selectItems
@@ -157,7 +157,7 @@
                         <h:outputText value="#{invest.rewardTime}"></h:outputText>
                     </p:column>
 
-                    <p:column sortBy="invest.time">
+                    <p:column>
                         <f:facet name="header">
                             <h:outputText value="投资时间"></h:outputText>
                         </f:facet>
@@ -185,7 +185,7 @@
                             <h:outputText value="投标状态"></h:outputText>
                         </f:facet>
                         <h:outputText
-                                value="#{dictUtil.getValue('invest_status', invest.loanStatus)}"></h:outputText>
+                                value="#{dictUtil.getValue('invest_status', invest.investStatus)}"></h:outputText>
                     </p:column>
                     <f:facet name="footer">
                         <p:commandButton value="导出Excel" ajax="false">
