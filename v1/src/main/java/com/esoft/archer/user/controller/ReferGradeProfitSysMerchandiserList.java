@@ -10,16 +10,16 @@ import java.util.Arrays;
 
 @Component
 @Scope(ScopeType.REQUEST)
-public class ReferGradeProfitSysList extends EntityQuery<ReferGradeProfitSys> {
+public class ReferGradeProfitSysMerchandiserList extends EntityQuery<ReferGradeProfitSys> {
 
 
-	private static final String LAZY_MODEL = "select referGradeProfitSys from ReferGradeProfitSys referGradeProfitSys ";
+	private static final String LAZY_MODEL = "select referGradeProfitSys from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='MERCHANDISER' ";
 
-	private static final String LAZY_MODEL_COUNT = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys ";
+	private static final String LAZY_MODEL_COUNT = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='MERCHANDISER' ";
 
 
 
-	public ReferGradeProfitSysList(){
+	public ReferGradeProfitSysMerchandiserList(){
 
 		setCountHql(LAZY_MODEL_COUNT);
 		setHql(LAZY_MODEL);

@@ -57,7 +57,7 @@
 										class="#{bc.id.equals(withdrawHome.instance.bankCard.id)?'zhtx_li':''}"><p:commandLink
 											update=":form:bankCards :form:withdrawBtn" process="@this"
 											actionListener="#{withdrawHome.instance.setBankCard(bc)}">
-											<img src="#{tplVars.themeImagePath}/banklogo/#{bc.bankNo}.png" />
+											<img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.bankNo}.png" />
 											<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
 											<p>#{bc.cardNo.substring(0,4)} **** ****
 												#{bc.cardNo.substring(bcnL-4,bcnL)}</p>

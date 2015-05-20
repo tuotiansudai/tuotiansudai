@@ -43,7 +43,7 @@
 					<ui:repeat var="bankcard" value="#{bankCardList.getBankCardListbyLoginUser()}">
 						<li>
 							<div class="yhk">
-								<img src="#{tplVars.themeImagePath}/banklogo/#{bankcard.bankNo}.png" />
+								<img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bankcard.bankNo}.png" />
 								<br />
 								<ui:param name="bcnL" value="#{bankcard.cardNo.length()}"></ui:param>
 								<p> #{fn:substring(bankcard.cardNo,0,4)} **** **** #{fn:substring(bankcard.cardNo,bcnL-4,bcnL)}</p>
