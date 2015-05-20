@@ -14,12 +14,12 @@
 			<p:toolbar styleClass="admin-nav-toolbar">
 				<p:toolbarGroup>
 					<h:outputLabel
-						value="#{commonMsg.currentPositionLabel} #{userMsg.addReferrerSysLabel}"></h:outputLabel>
+						value="#{commonMsg.currentPositionLabel} #{userMsg.addReferrerSysInvestLabel}"></h:outputLabel>
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:separator />
-					<p:button outcome="/admin/user/referGradeProfitListSys"
-						value="#{userMsg.referrerGradePtSysManLabel}"></p:button>
+					<p:button outcome="/admin/user/referGradeProfitListSysInvest"
+						value="#{userMsg.referrerGradePtSysInvestLabel}"></p:button>
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:spacer></p:spacer>
@@ -28,13 +28,13 @@
 
 					<h:outputLabel value="#{userMsg.referrerGradeLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;"
-								 value="#{referGradeSysHome.instance.grade}" maxlength="3" readonly="#{not empty referGradeSysHome.instance.grade}">
+								 value="#{referGradeSysInvestHome.instance.grade}" maxlength="3" readonly="#{not empty referGradeSysInvestHome.instance.grade}">
 
 					</h:inputText>
 
 					<h:outputLabel value="#{userMsg.referrerProfitLabel}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeSysHome.instance.profitRate}"></h:inputText>
+								 value="#{referGradeSysInvestHome.instance.profitRate}"></h:inputText>
 
 
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
@@ -42,7 +42,7 @@
 
 					<ui:fragment>
 
-						<p:commandButton id="saveBtn" action="#{referGradeSysHome.save}"
+						<p:commandButton id="saveBtn" action="#{referGradeSysInvestHome.save}"
 							ajax="false" value="#{commonMsg.saveLabel}"></p:commandButton>
 						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
 						<p:blockUI block="panel" trigger="saveBtn" />

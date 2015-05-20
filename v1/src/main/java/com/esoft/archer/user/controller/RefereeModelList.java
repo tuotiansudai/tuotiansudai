@@ -6,6 +6,7 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.jdp2p.invest.InvestConstants.InvestStatus;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.Date;
 @Scope(ScopeType.REQUEST)
 public class RefereeModelList extends EntityQuery<RefereeModel> {
     private static final String lazyModelCount = "select "
-            + "count(referrers.id) "
+            + "count(distinct referrers.id) "
             + "from Invest invest right outer join invest.user user "
             + "inner join user.referrers referrers "
             + "where invest.status is null or "
@@ -45,11 +46,24 @@ public class RefereeModelList extends EntityQuery<RefereeModel> {
     public RefereeModelList() {
         setCountHql(lazyModelCount);
         setHql(lazyModel);
+        setOrderColumn(Lists.newArrayList("referrers.id"));
+        setOrderDirection(Lists.newArrayList("asc"));
 
         final String[] RESTRICTIONS = {
                 "invest.time >= #{refereeModelList.searchCommitMinTime}",
                 "invest.time <= #{refereeModelList.searchCommitMaxTime}"};
         setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+    }
+
+    @Override
+    protected String getRenderedCountHql() {
+        String countHql = getCountHql();
+        Object expressionValue = FacesUtil.getExpressionValue("#{refereeModelList.referee}");
+        if (expressionValue != null && !expressionValue.toString().equals("")) {
+            countHql += (" and referrers.id='" + expressionValue.toString()) + "'";
+        }
+
+        return countHql;
     }
 
     @Override
@@ -61,6 +75,7 @@ public class RefereeModelList extends EntityQuery<RefereeModel> {
         } else {
             sql += " group by referrers.id";
         }
+
         return sql;
     }
 

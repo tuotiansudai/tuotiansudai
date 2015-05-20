@@ -15,27 +15,59 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 	@Resource
 	private HibernateTemplate ht;
 
+
 	/**
-	 * 根据层级查找
+	 * 根据层级查找,判断新增用户层级是否存在
 	 */
 	@Override
-	public boolean isExistGrade(Integer grade)  {
+	public boolean isExistInvestGrade(Integer grade)  {
 		boolean isExistGradeFlag = false;
-		List<ReferGradeProfitSys>  users = ht.find(" from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.grade=? ",grade);
+		List<ReferGradeProfitSys>  users = ht.find(" from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.grade=? and referGradeProfitSys.gradeRole='INVESTOR' ",grade);
 		if(CollectionUtils.isNotEmpty(users)){
 			isExistGradeFlag = true;
 		}
 		return  isExistGradeFlag;
 	}
 	/**
-	 *	获取新增系统最高层级
+	 * 根据层级查找,判断新增业务员层级是否存在
 	 */
 	@Override
-	public Integer getAddHighestGrade(){
+	public boolean isExistMerchandiserGrade(Integer grade)  {
+		boolean isExistGradeFlag = false;
+		List<ReferGradeProfitSys>  users = ht.find(" from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.grade=? and referGradeProfitSys.gradeRole='MERCHANDISER' ",grade);
+		if(CollectionUtils.isNotEmpty(users)){
+			isExistGradeFlag = true;
+		}
+		return  isExistGradeFlag;
+	}
+
+
+
+	/**
+	 *	获取新业务员的系统最高层级
+	 */
+	@Override
+	public Integer getAddHighestMerchandiserGrade(){
 
 		Integer addHighestGrade = null;
 
-		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys  ";
+		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='MERCHANDISER' ";
+
+		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
+
+
+		return addHighestGrade;
+
+	}
+	/**
+	 *	获取新增用户的系统最高层级
+	 */
+	@Override
+	public Integer getAddHighestInvestGrade(){
+
+		Integer addHighestGrade = null;
+
+		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='INVESTOR' ";
 
 		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
 
@@ -51,6 +83,33 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 		Integer maxGrade = null;
 
 		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys  ";
+
+		maxGrade = (Integer)ht.find(hql).get(0) ;
+
+		return maxGrade;
+	};
+
+	/**
+	 *	获取系统已经存在的用户最高层级
+	 */
+	@Override
+	public Integer getInvestMaxGrade(){
+		Integer maxGrade = null;
+
+		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='INVESTOR' ";
+
+		maxGrade = (Integer)ht.find(hql).get(0) ;
+
+		return maxGrade;
+	};
+	/**
+	 *	获取系统已经存在的业务员最高层级
+	 */
+	@Override
+	public Integer getMerchandiserMaxGrade(){
+		Integer maxGrade = null;
+
+		String hql  = " select max(referGradeProfitSys.grade) from ReferGradeProfitSys referGradeProfitSys where referGradeProfitSys.gradeRole='MERCHANDISER' ";
 
 		maxGrade = (Integer)ht.find(hql).get(0) ;
 

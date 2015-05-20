@@ -9,18 +9,18 @@
 				xmlns:c="http://java.sun.com/jsp/jstl/core"
 				xmlns:sec="http://www.springframework.org/security/facelets/tags">
 	<f:metadata>
-		<f:viewParam name="id" value="#{referGradeSysHome.id}"></f:viewParam>
+		<f:viewParam name="id" value="#{referGradeSysInvestHome.id}"></f:viewParam>
 	</f:metadata>
 
 	<ui:define name="content">
 		<div class="entry">
 			<p:toolbar styleClass="admin-nav-toolbar">
 				<p:toolbarGroup>
-					<h:outputLabel value="#{commonMsg.currentPositionLabel} 推荐人层级/收益比例编辑"></h:outputLabel>
+					<h:outputLabel value="#{commonMsg.currentPositionLabel} 用户推荐层级/收益比例编辑"></h:outputLabel>
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:separator />
-					<p:button outcome="/admin/user/referGradeProfitListSys" value="#{userMsg.referrerGradePtSysManLabel}"></p:button>
+					<p:button outcome="/admin/user/referGradeProfitListSysInvest" value="#{userMsg.referrerGradePtSysInvestLabel}"></p:button>
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:spacer></p:spacer>
@@ -30,16 +30,17 @@
 
 					<h:outputLabel value="推荐层级"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeSysHome.instance.grade}" readonly="#{not empty referGradeSysHome.instance.grade}">></h:inputText>
+								 value="#{referGradeSysInvestHome.instance.grade}" readonly="#{not empty referGradeSysInvestHome.instance.grade}">></h:inputText>
 
 					<h:outputLabel value="收益比例"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="10"
-								 value="#{referGradeSysHome.instance.profitRate}"></h:inputText>
+								 value="#{referGradeSysInvestHome.instance.profitRate}"></h:inputText>
 
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
 					<ui:fragment>
-						<h:inputHidden value="#{referGradeSysHome.instance.id}"></h:inputHidden>
-						<p:commandButton action="#{referGradeSysHome.modifyForRefGd}"
+						<h:inputHidden value="#{referGradeSysInvestHome.instance.id}"></h:inputHidden>
+						<h:inputHidden value="#{referGradeSysInvestHome.instance.gradeRole}"></h:inputHidden>
+						<p:commandButton action="#{referGradeSysInvestHome.modifyForRefGd}"
 										 value="#{commonMsg.saveLabel}" id="saveBtn"></p:commandButton>
 						<p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
 						<p:blockUI block="panel" trigger="saveBtn"></p:blockUI>

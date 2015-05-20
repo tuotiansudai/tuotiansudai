@@ -10,6 +10,13 @@ public class InvestItem implements java.io.Serializable {
     private String investorName;
     private String referrerId;
     private String referrerName;
+    private Integer refereeLevel;
+    private Double reward;
+    private Date rewardTime;
+    private Date investTime;
+    private boolean isAutoInvest;
+    private Double money;
+    private String investStatus;
 
     public String getInvestorName() {
         return investorName;
@@ -26,14 +33,6 @@ public class InvestItem implements java.io.Serializable {
     public void setReferrerName(String referrerName) {
         this.referrerName = referrerName;
     }
-
-    private Integer refereeLevel;
-    private Double reward;
-    private Date rewardTime;
-    private Date investTime;
-    private boolean isAutoInvest;
-    private Double money;
-    private String loanStatus;
 
     public String getLoanId() {
         return loanId;
@@ -123,11 +122,11 @@ public class InvestItem implements java.io.Serializable {
         this.money = money;
     }
 
-    public String getLoanStatus() {
-        return loanStatus;
+    public String getInvestStatus() {
+        return investStatus;
     }
 
-    public void setLoanStatus(String loanStatus) {
-        this.loanStatus = loanStatus;
+    public void setInvestStatus(String investStatus) {
+        this.investStatus = investStatus;
     }
 }

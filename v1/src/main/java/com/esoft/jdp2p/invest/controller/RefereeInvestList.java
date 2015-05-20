@@ -7,6 +7,7 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -54,7 +55,14 @@ public class RefereeInvestList implements java.io.Serializable {
             }
         }
 
-        return investItems;
+        Ordering<InvestItem> ordering = new Ordering<InvestItem>() {
+            @Override
+            public int compare(InvestItem left, InvestItem right) {
+                return left.getInvestTime().compareTo(right.getInvestTime());
+            }
+        };
+
+        return ordering.reverse().sortedCopy(investItems);
     }
 
     private List<InvestItem> createInvestItems(Invest invest, User referrer) {
@@ -81,7 +89,7 @@ public class RefereeInvestList implements java.io.Serializable {
         investItem.setInvestTime(invest.getTime());
         investItem.setIsAutoInvest(invest.getIsAutoInvest());
         investItem.setLoanId(invest.getLoan().getId());
-        investItem.setLoanStatus(invest.getLoan().getStatus());
+        investItem.setInvestStatus(invest.getStatus());
         investItem.setLoadType(invest.getLoan().getType().getName());
         investItem.setMoney(invest.getMoney());
         investItem.setLoanName(invest.getLoan().getName());
@@ -116,11 +124,11 @@ public class RefereeInvestList implements java.io.Serializable {
             hql += "where 1=1 ";
         }
 
-        if (!Strings.isNullOrEmpty(condition.getLoanStatus())) {
+        if (!Strings.isNullOrEmpty(condition.getInvestStatus())) {
             String loanStatusConditionTemplate = "and invest.loan.status=''{0}'' ";
-            hql += MessageFormat.format(loanStatusConditionTemplate, condition.getLoanStatus());
+            hql += MessageFormat.format(loanStatusConditionTemplate, condition.getInvestStatus());
         } else {
-            hql += "and invest.loan.status in ('complete', 'wait_loaning_verify', 'cancel', 'bad_debt', 'wait_affirm', 'overdue', 'withdrawal', 'bid_success', 'repaying') ";
+            hql += "and invest.status in ('complete', 'bad_debt', 'overdue', 'bid_success', 'repaying') ";
         }
 
         if (!Strings.isNullOrEmpty(condition.getLoanId())) {
@@ -147,7 +155,12 @@ public class RefereeInvestList implements java.io.Serializable {
     }
 
     public Double getSumMoney() {
-        return 0d;
+        List<Invest> invests = ht.find(generateQueryHql());
+        double sumMoney = 0;
+        for (Invest invest : invests) {
+            sumMoney += invest.getMoney();
+        }
+        return sumMoney;
     }
 
     public void setLazyModel(List<InvestItem> lazyModel) {
