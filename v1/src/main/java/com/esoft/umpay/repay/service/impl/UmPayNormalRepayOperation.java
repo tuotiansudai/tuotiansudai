@@ -64,6 +64,7 @@ import com.umpay.api.paygate.v40.Plat2Mer_v40;
 public class UmPayNormalRepayOperation extends
 		UmPayOperationServiceAbs<LoanRepay> {
 
+	public static final String NOT_BIND_CARD = "未在联动优势绑定借记卡,交易失败";
 	@Resource
 	HibernateTemplate ht;
 
@@ -134,7 +135,7 @@ public class UmPayNormalRepayOperation extends
 					continue;
 				}
 				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
-					msg = "未在联动优势绑定借记卡,交易失败";
+					msg = NOT_BIND_CARD;
 				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
 				if(list.contains("ROLE_MERCHANDISER")){
@@ -184,7 +185,7 @@ public class UmPayNormalRepayOperation extends
 		//获取当前冻结
 		double frozenMoney = userBillBO.getFrozenMoney(referrerRelation.getReferrerId());
 		UserBill ub = new UserBill();
-		if (msg.equals("未在联动优势绑定借记卡,交易失败")) {
+		if (!status.equals("success")) {
 			ub.setBalance(balance);
 		}else {
 			ub.setBalance(ArithUtil.add(balance, bonus));
@@ -201,7 +202,7 @@ public class UmPayNormalRepayOperation extends
 		if((!particUserId.equals("") && status.equals("success")) || bonus == 0.00){
             detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
         }else if(particUserId.equals("")){
-            detail = "未在联动优势绑定借记卡,交易失败";
+            detail = NOT_BIND_CARD;
         }else{
             detail = msg;
         }
