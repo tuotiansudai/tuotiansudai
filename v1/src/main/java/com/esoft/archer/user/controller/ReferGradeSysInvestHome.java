@@ -27,6 +27,10 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 	@Override
 	@Transactional(readOnly = false)
 	public String save() {
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
 
 		boolean isExistGradeFlag = false;
 
@@ -49,6 +53,10 @@ public class ReferGradeSysInvestHome extends EntityHome<ReferGradeProfitSys> imp
 
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListSysInvest");

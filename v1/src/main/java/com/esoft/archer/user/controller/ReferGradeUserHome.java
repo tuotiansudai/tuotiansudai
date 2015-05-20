@@ -33,6 +33,11 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 	@Transactional(readOnly = false)
 	public String save() {
 
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
+
 		boolean isExistUserFlag = false;
 		isExistUserFlag = referGradePtUserService.isExistUser(getInstance().getReferrer().getId());
 		if (!isExistUserFlag){
@@ -40,7 +45,7 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 			return null;
 		}
 
-		Integer maxGradeSys = referGradePtSysService.getMaxGrade();//系统允许最大层级
+		Integer maxGradeSys = referGradePtSysService.getMaxGradeByRole(getInstance().getReferrer().getId());//系统允许最大层级
 		Integer faceGrade = getInstance().getGrade();//页面录入层级
 
 		if (maxGradeSys != null && faceGrade > maxGradeSys){
@@ -70,6 +75,10 @@ public class ReferGradeUserHome extends EntityHome<ReferGradeProfitUser> impleme
 
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListUser");

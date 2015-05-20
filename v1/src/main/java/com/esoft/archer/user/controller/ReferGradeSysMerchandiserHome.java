@@ -27,6 +27,10 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 	@Override
 	@Transactional(readOnly = false)
 	public String save() {
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
 
 		boolean isExistGradeFlag = false;
 
@@ -40,7 +44,7 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
-		getInstance().setGradeRole("MERCHANDISER");
+		getInstance().setGradeRole("ROLE_MERCHANDISER");
 		getInstance().setInputDate(new Date());
 		getInstance().setUpdateTime(new Date());
 		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchandiser"));
@@ -49,6 +53,10 @@ public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSy
 
 	@Transactional(rollbackFor = Exception.class)
 	public String modifyForRefGd() {
+		if (getInstance().getProfitRate() == null){
+			FacesUtil.addErrorMessage("请您输入收益比例!");
+			return null;
+		}
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
 		return FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchandiser");

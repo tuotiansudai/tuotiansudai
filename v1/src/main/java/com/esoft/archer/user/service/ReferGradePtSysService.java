@@ -11,7 +11,7 @@ public interface ReferGradePtSysService {
 
 	public Integer getAddHighestMerchandiserGrade();
 
-	public Integer getMaxGrade();
+	public Integer getMaxGradeByRole(String referrerId);
 
 	public Integer getInvestMaxGrade();
 
