@@ -7,7 +7,6 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.core.jsf.util.FacesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 @Component
 @Scope(ScopeType.VIEW)
-public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implements java.io.Serializable {
+public class ReferGradeSysMerchandiserHome extends EntityHome<ReferGradeProfitSys> implements java.io.Serializable {
 	@Resource
 	private ReferGradePtSysService referGradePtSysService;
 
@@ -31,7 +30,7 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 
 		boolean isExistGradeFlag = false;
 
-		isExistGradeFlag = referGradePtSysService.isExistGrade(getInstance().getGrade());
+		isExistGradeFlag = referGradePtSysService.isExistInvestGrade(getInstance().getGrade());
 		if (isExistGradeFlag){
 			FacesUtil.addErrorMessage("推荐层级"+getInstance().getGrade()+"在系统中已经进行维护,不能新增该层级!");
 			return null;
@@ -41,9 +40,10 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 			String uuid =UUID.randomUUID().toString().replaceAll("-","");
 			getInstance().setId(uuid);
 		}
+		getInstance().setGradeRole("INVESTOR");
 		getInstance().setInputDate(new Date());
 		getInstance().setUpdateTime(new Date());
-		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSys"));
+		setUpdateView(FacesUtil.redirect("/admin/user/referGradeProfitListSysMerchadiser"));
 		return super.save();
 	}
 
@@ -51,12 +51,12 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 	public String modifyForRefGd() {
 		getInstance().setUpdateTime(new Date());
 		getBaseService().merge(getInstance());
-		return FacesUtil.redirect("/admin/user/referGradeProfitListSys");
+		return FacesUtil.redirect("/admin/user/referGradeProfitListSysInvest");
 	}
 	@Override
 	@Transactional(readOnly=false)
 	public String delete(){
-		Integer maxGradeDb = referGradePtSysService.getMaxGrade();//数据配置最大层级
+		Integer maxGradeDb = referGradePtSysService.getInvestMaxGrade();//数据配置最大层级
 		initInstance();
 		Integer gradeFace = getInstance().getGrade();//页面删除层级
 		if (gradeFace.intValue() < maxGradeDb.intValue()){
@@ -71,7 +71,7 @@ public class ReferGradeSysHome extends EntityHome<ReferGradeProfitSys> implement
 		super.initInstance();
 		ReferGradeProfitSys instance = getInstance();
 		if (this.instance.getGrade() == null) {
-			this.instance.setGrade(referGradePtSysService.getAddHighestGrade());
+			this.instance.setGrade(referGradePtSysService.getAddHighestInvestGrade());
 		}
 	}
 }
