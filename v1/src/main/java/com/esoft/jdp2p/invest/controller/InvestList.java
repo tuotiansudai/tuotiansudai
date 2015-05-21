@@ -54,7 +54,6 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 				"invest.loan.name like #{investList.example.loan.name}",
 				"invest.loan.type like #{investList.example.loan.type}",
 				"invest.user.id = #{investList.example.user.id}",
-				"invest.user.referrer = #{investList.example.user.referrer}",
 				"invest.user.username = #{investList.example.user.username}",
 				"invest.time >= #{investList.searchcommitMinTime}",
 				"invest.status like #{investList.example.status}",
