@@ -9,6 +9,61 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 	<ui:define name="content">
+		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css" />
+		<div class="cost_banner"></div>
+		<div class="cost_content">
+			<h4>网站费用<span>Website Cost</span></h4>
 
+			<div></div>
+			<table width="903">
+				<thead style="color:#d84d09;">
+				<tr>
+					<td width="120" height="45" align="center" style="border-collapse:collapse;">费用类型</td>
+					<td width="123" height="45" align="center">收费对象</td>
+					<td width="402" height="45" align="center">收费标准</td>
+					<td width="158" height="45" align="center">收取形式</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td width="120" height="45" align="center">服务费</td>
+					<td width="123" height="45" align="center">投资人</td>
+					<td width="402" height="45" align="center">投资所得利息的10%</td>
+					<td width="158" height="45" align="center">项目回款后自动扣除</td>
+				</tr>
+				<tr>
+					<td width="120" height="45" align="center">充值费用</td>
+					<td width="123" height="45" align="center"> </td>
+					<td width="402" height="45" align="center">充值费用全部由平台承担</td>
+					<td width="158" height="45" align="center">充值时自动扣除</td>
+				</tr>
+				<tr>
+					<td width="120" height="45" align="center">提现费用</td>
+					<td width="123" height="45" align="center">投资人</td>
+					<td width="402" height="45" align="center">每笔提现手续费3元，费用由投资人承担</td>
+					<td width="158" height="45" align="center">提现时自动扣除</td>
+				</tr>
+				<tr>
+					<td width="120" height="45" align="center">推荐奖励</td>
+					<td width="123" height="45" align="center">推荐人</td>
+					<td width="402" height="45" align="center">平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年
+						化的0.2%，按照被标的周期，每期平均返现。</td>
+					<td width="158" height="45" align="center">标的回款时给予奖励</td>
+				</tr>
+				</tbody>
+			</table>
+			<img src="#{tplVars.themeImagePath}/website/cast_step.jpg" alt=""/>
+
+			<p>1、小明每次参加投资，小张就会得到投资金额年化的0.2%作为奖励。例如：小明投资10
+				万元一年期的标的，小张得到的总奖励金额为100000*0.2%=200元，分12个月平均发放。</p>
+
+			<p>2、小李每次参加投资，小张和小明分别得到投资金额年化的0.2%作为奖励。例如：小李
+				投资10万元半年期的标的，他们分别得到的总奖励金额为100000*(0.2%/12*6)=100元，
+				分6个月发放。</p>
+
+			<p>3、而小刘是小李推荐的，小刘每次参加投资，那么小明和小李会分别得到投资金额年化的
+				0.2%作为奖励，跟小张没有关系了。例如：小刘投资10万元半年期的标的，他们分别得到
+				的总奖励金额为100000*(0.2%/12x6)=100元，分6个月发放。</p>
+		</div>
 	</ui:define>
 </ui:composition>

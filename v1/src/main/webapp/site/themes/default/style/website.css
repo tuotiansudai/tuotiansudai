@@ -54,20 +54,35 @@ body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-fa
 
 
 .contact_banner{ width:100%; height: 280px; background: url("../images/website/contact_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}
-.contact_map,.introduction_content{width:945px; height: auto; overflow: hidden; margin: 0px auto; border: #e2e2e2 1px solid; border-radius:5px; margin-bottom: 30px; padding-bottom: 30px;}
+.contact_map,.introduction_content,.cost_content{width:945px; height: auto; overflow: hidden; margin: 0px auto; border: #e2e2e2 1px solid; border-radius:5px; margin-bottom: 30px; padding-bottom: 30px;}
+.contact_map{width:947px;}
 .contact_map h4{ font-weight: normal; font-size: 18px; color:#222222; margin: 10px 0px 26px 10px; width:800px;}
-.contact_map img{width: 938px;height: 542px;margin: 0px 0px 0px 4px}
+.contact_map img{width:947px; height: 542px; margin-left: 1px;}
 .contact_map p{padding-left: 12px; width:800px; line-height: 30px;}
 
 .introduction_banner{ width:100%; height: 271px; background: url("../images/website/introduction_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}
-.introduction_content{width:948px; margin-top: 6px; height: auto; overflow: hidden; font-family: 'STSong'; position: relative; z-index: 1;}
+.introduction_content{width:948px; margin-top: 6px; height: auto; overflow: hidden; position: relative; z-index: 1;}
 .introduction_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
 .introduction_content h4{ width:904px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
-.introduction_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 6px;}
+.introduction_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 12px;}
 .introduction_content p{width:904px;line-height: 30px; margin-left: 20px;color:#666; text-indent: 35px; margin-top: 20px; }
-.introduction_content img{width:427px; height: 284px; margin-top: 30px;float:left;}
+.introduction_content img{width:427px; height: 284px; margin-top: 30px; float:left;}
 .introduction_content img.m_22{ margin-left: 22px;}
 .introduction_content img.m_45{ margin-left: 45px;}
+
+.cost_banner{width:100%; height: 274px; background: url("../images/website/cast_banner.jpg") no-repeat center; background-size: cover; margin-bottom: 6px;}
+
+.cost_content{width:948px; position: relative;}
+.cost_content img{ margin-left: 20px;}
+.cost_content p{ padding: 0px 20px; width:900px; line-height: 30px; margin-top: 12px;}
+.cost_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 12px;}
+
+.cost_content h4{ width:904px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
+.cost_content table{ border-collapse:collapse; border:1px solid #d2d2d2; margin-left: 20px; color:#666;}
+.cost_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
+
+
+.cost_content td,th{ margin:0; padding:0; border:1px solid #ccc;}
 
 
 
