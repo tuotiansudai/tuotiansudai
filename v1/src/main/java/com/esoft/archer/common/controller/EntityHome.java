@@ -1,29 +1,20 @@
 package com.esoft.archer.common.controller;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.persistence.Id;
-
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.core.annotations.ConverterId;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.StringManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.proxy.HibernateProxy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.service.BaseService;
-import com.esoft.core.annotations.ConverterId;
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.StringManager;
+import javax.annotation.Resource;
+import javax.persistence.Id;
+import java.lang.reflect.*;
+import java.util.List;
 
 @Component
 public class EntityHome<E> {
@@ -52,7 +43,7 @@ public class EntityHome<E> {
 			updateFailMessageKey = "updateFailMessage",
 			deleteFailMessageKey = "deleteFailMessage";
 
-	private E instance;
+	protected E instance;
 
 	// @Resource(name="baseService")
 	// private BaseService<E> baseService;

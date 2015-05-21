@@ -23,6 +23,8 @@ import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.esoft.umpay.withdraw.service.impl.UmPayWithdrawOperation;
 
+import java.io.IOException;
+
 @Component
 @Scope(ScopeType.REQUEST)
 public class TrusteeshipHome {
@@ -186,6 +188,8 @@ public class TrusteeshipHome {
 			FacesUtil.addErrorMessage(e.getMessage());
 		} catch (UmPayOperationException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
+		} catch (IOException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
 		return "pretty:userCenter";
@@ -221,6 +225,8 @@ public class TrusteeshipHome {
 			log.debug(e);
 			e.printStackTrace();
 		} catch (UmPayOperationException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
+		} catch (IOException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		return "pretty:userCenter";

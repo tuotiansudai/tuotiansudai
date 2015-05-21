@@ -85,11 +85,14 @@ public class UmPayOverdueRepayOperation extends
 	@Resource
 	RepayService repayService;
 
+	@Resource
+	UmPayNormalRepayOperation umPayNormalRepayOperation;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay loanRepay,
-			FacesContext facesContext) throws IOException {
+			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
 		// FIXME:验证
 		loanRepay.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(loanRepay);
@@ -176,7 +179,7 @@ public class UmPayOverdueRepayOperation extends
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void receiveOperationPostCallback(ServletRequest request)
-			throws TrusteeshipReturnException {
+			throws TrusteeshipReturnException,IOException {
 		try {
 			Map<String, String> paramMap = UmPaySignUtil
 					.getMapDataByRequest(request);
@@ -208,6 +211,11 @@ public class UmPayOverdueRepayOperation extends
 										lr.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
+					}
+					try {
+						umPayNormalRepayOperation.recommendedIncome(lr);
+					}catch (Exception e) {
+						log.error(e.getStackTrace());
 					}
 				}
 			} else {
