@@ -106,3 +106,7 @@
 }
 
 .coloerRed{color:red;}
+
+.sum-investment-money, .sum-referrer-reward-money {
+    padding: 0 20px;
+}

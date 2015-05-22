@@ -179,6 +179,17 @@ public class RefereeInvestList implements java.io.Serializable {
         return sumMoney;
     }
 
+    public Double getSumReward() {
+        List<InvestItem> investItems = this.getLazyModel();
+        Double sumReward = 0D;
+        for (InvestItem investItem : investItems) {
+            if (investItem.getReward() != null) {
+                sumReward += investItem.getReward();
+            }
+        }
+        return sumReward;
+    }
+
     public void setLazyModel(List<InvestItem> lazyModel) {
         this.lazyModel = lazyModel;
     }
