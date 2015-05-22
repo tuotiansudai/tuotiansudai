@@ -1,0 +1,1 @@
+UPDATE `config` t SET t.`value` = '400-169-1188' WHERE t.`id` = 'site_phone';
