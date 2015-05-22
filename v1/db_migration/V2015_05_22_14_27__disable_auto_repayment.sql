@@ -1,0 +1,1 @@
+update config set `value`=0 where id='schedule.enable_auto_repayment';
