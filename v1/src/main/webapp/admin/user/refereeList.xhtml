@@ -79,10 +79,19 @@
 							 sortBy="invest.time" sortOrder="descending"
 							 emptyMessage="#{commonMsg.noResultMsg}">
 					<f:facet name="header">
-						合计投资金额：
-						<h:outputText value="#{refereeInvestList.getSumMoney()}">
-							<f:convertNumber/>
-						</h:outputText>
+                        <span class="sum-investment-money">
+                            合计投资金额：
+                            <h:outputText value="#{refereeInvestList.getSumMoney()}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </span>
+                        <span class="sum-referrer-reward-money">
+                            合计推荐奖励金额：
+                            <h:outputText value="#{refereeInvestList.getSumReward()}">
+                                <f:convertNumber/>
+                            </h:outputText>
+                        </span>
+
 					</f:facet>
 					<p:column>
 						<f:facet name="header">
