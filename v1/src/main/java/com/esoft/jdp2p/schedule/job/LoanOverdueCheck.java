@@ -21,8 +21,7 @@ public class LoanOverdueCheck implements Job{
 	private RepayService repayService;
 	
 	@Override
-	public void execute(JobExecutionContext context)
-			throws JobExecutionException {
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 		repayService.checkLoanOverdue();
 	}
 }
