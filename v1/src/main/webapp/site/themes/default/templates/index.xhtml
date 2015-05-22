@@ -264,7 +264,7 @@
 			    	<ui:param name="pageModel" value="#{nodeList.getNodes('mediareport',3)}"></ui:param>
                    	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
                    		<div class="tab1-con1">
-				            <span><a href="#{path}/node/mediareport/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <span><a title="#{node.title}" href="#{path}/node/mediareport/#{node.id}">#{node.title}</a></span>
 				            <p>#{node.description}</p>
 				        </div>
                    	</ui:repeat>
@@ -273,7 +273,7 @@
 			        <ui:param name="pageModel" value="#{nodeList.getNodes('announcement',3)}"></ui:param>
                    	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
                    		<div class="tab1-con1">
-				            <span><a href="#{path}/node/announcement/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <span><a title="#{node.title}" href="#{path}/node/announcement/#{node.id}">#{node.title}</a></span>
 				            <p>#{node.description}</p>
 				        </div>
                    	</ui:repeat>

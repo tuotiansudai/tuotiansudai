@@ -6,8 +6,9 @@
 	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 
 	<div class="guide-div">
-		<a class="color9a9393 fontsize18" href="#{path}/">首页</a>&gt;<a
-			class="color57 fontsize14">文章详情</a>
+		<a class="color9a9393 fontsize18" href="#{path}/">首页</a>&gt;
+		<a class="color57 fontsize14" href="#{path}/news/#{termId}">文章列表</a>&gt;
+		<a class="color57 fontsize14">文章详情</a>
 	</div>
 	<ui:param name="menus" value="#{menuList.getMenusByParentId(menuParentId)}"></ui:param>
 	<div class="content">
