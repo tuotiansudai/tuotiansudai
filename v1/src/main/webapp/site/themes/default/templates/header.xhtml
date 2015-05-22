@@ -16,7 +16,6 @@
 				<span>热线电话：#{configHome.getConfigValue("site_phone")}</span>
 			</div>
 			<div class="fr top-con-right">
-				<a href="#{path}/term/help">帮助中心</a>
 				<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
 					<a href="#{request.contextPath}/memberLoginPage">登录</a>
 					<a class="ahover" href="#{request.contextPath}/register">注册账号</a>
