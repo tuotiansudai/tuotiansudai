@@ -2,9 +2,14 @@ package com.esoft.jdp2p.invest.controller;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.text.NumberFormat;
+
+
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -12,7 +17,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.esoft.archer.user.model.User;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.springframework.context.annotation.Scope;
@@ -98,9 +105,9 @@ public class ContractHome {
 	 * @return
 	 */
 	public String dealLoanContractContent(String loanId) {
-		// FIXME： #{investTransferList}", "债权转让列表
+
 		Loan loan = ht.get(Loan.class, loanId);
-		// #{investList} 投资列表
+
 		Element table = Jsoup
 				.parseBodyFragment("<table border='1' style='margin: 0px auto; border-collapse: collapse; border: 1px solid rgb(0, 0, 0); width: 70%; '><tbody><tr class='firstRow'><td style='text-align:center;'>用户名</td><td style='text-align:center;'>投标来源</td><td style='text-align:center;'>借出金额</td><td style='text-align:center;'>借款期限</td><td style='text-align:center;'>应收利息</td></tr></tbody></table>");
 		Element tbody = table.getElementsByTag("tbody").first();
@@ -127,6 +134,7 @@ public class ContractHome {
 					+ "</td></tr>");
 			sumMoney += invest.getMoney();
 		}
+
 		tbody.append("<tr><td style='text-align:center;'>总计</td><td></td><td style='text-align:center;'>"
 				+ sumMoney
 				+ "</td><td></td><td style='text-align:center;'>"
@@ -160,6 +168,7 @@ public class ContractHome {
 					.replace("#{loanerIdCard}",
 							Strings.nullToEmpty(loan.getUser().getIdCard()))
 					.replace("#{loanerUsername}", loan.getUser().getUsername())
+
 					.replace("#{guaranteeCompanyName}",
 							Strings.nullToEmpty(loan.getGuaranteeCompanyName()))
 					.replace(
@@ -192,6 +201,161 @@ public class ContractHome {
 					.replace("#{investTransferList}", "债权转让列表");
 		}
 		return contractContent;
+	}
+	/**
+	 * 替换 借款合同正文中的信息
+	 *
+	 * @param loanId
+	 * @return
+	 */
+	public String dealLoanContractContentNew(String loanId,String loginUserId) {
+
+		Loan loan = ht.get(Loan.class, loanId);
+		// #{investList} 投资列表
+		Element table = Jsoup
+				.parseBodyFragment("<table border='1' style='margin: 0px auto; border-collapse: collapse; border: 1px solid rgb(0, 0, 0); width: 70%; '><tbody><tr class='firstRow'><td style='text-align:center;'>平台账号</td><td style='text-align:center;'>真实姓名</td><td style='text-align:center;'>身份证号</td><td style='text-align:center;'>出借金额</td><td style='text-align:center;'>借款期限</td><td style='text-align:center;'>投资确认日期</td></tr></tbody></table>");
+		Element tbody = table.getElementsByTag("tbody").first();
+
+		List<Invest> is = ht.find(
+				"from Invest i where i.loan.id=? and i.status!=?",
+				new String[] { loan.getId(), InvestStatus.CANCEL });
+		Double sumMoney = 0.0; // XXX:修改等额本息借款0.01差错
+		for (Invest invest : is) {
+			tbody.append("<tr><td style='text-align:center;'>"
+					+ encryString(invest.getUser().getId(),"platformAccount",invest.getUser().getId(),loginUserId)
+					+ "</td><td style='text-align:center;'>"
+					+ encryString(invest.getUser().getRealname(),"realName",invest.getUser().getId(),loginUserId)
+					+ "</td><td style='text-align:center;'>"
+					+ encryString(invest.getUser().getIdCard(),"IdCard",invest.getUser().getId(),loginUserId)
+					+ "</td><td style='text-align:center;'>"
+					+ invest.getMoney()
+					+ "</td><td style='text-align:center;'>"
+					+ loan.getDeadline()
+					* loan.getType().getRepayTimePeriod()
+					+ "("
+					+ dictUtil.getValue("repay_unit", loan.getType()
+					.getRepayTimeUnit()) + ")"
+					+ "</td><td style='text-align:center;'>"
+					+invest.getTime()
+					+ "</td></tr>");
+		}
+
+
+		//获取代理人
+		String agentId = loan.getAgent();//代理人平台账号
+		String agentRealName = "";
+		String agentIdCard = "";
+		if (StringUtils.isNotEmpty(agentId)){
+			User agent = ht.get(User.class, agentId);
+			if(agent != null){
+				agentRealName = agent.getRealname();
+				agentIdCard = agent.getIdCard();
+			}
+		}
+		//获取违约金收取比例
+		FeeConfig feeConfig = ht.get(FeeConfig.class, "overdue_repay_investor");
+
+		Node node = ht.get(Node.class, loan.getContractType());
+
+		if (contractContent == null) {
+			/** caijinmin 201412231623 判断还款单元是天还是月，计算借款到期日 add begin **/
+			Date endDate = null;
+			if (RepayConstants.RepayUnit.DAY.equals(loan.getType()
+					.getRepayTimeUnit())) {
+				endDate = DateUtil.addDay(loan.getInterestBeginTime(),
+						loan.getDeadline());
+			} else if (RepayConstants.RepayUnit.MONTH.equals(loan.getType()
+					.getRepayTimeUnit())) {
+				endDate = DateUtil.addMonth(loan.getInterestBeginTime(),
+						loan.getDeadline());
+			}
+			/** caijinmin 201412231623 add 判断还款单元是天还是月，计算借款到期日 end **/
+			contractContent = node.getNodeBody().getBody();
+			contractContent = contractContent
+					.replace("#{loanId}", Strings.nullToEmpty(loan.getId()))
+					.replace("#{actualMoney}", loan.getMoney().toString())
+					.replace("#{investList}", table.outerHtml())
+					.replace("#{loanerRealname}",
+							Strings.nullToEmpty(loan.getUser().getRealname()))
+					.replace("#{loanerId}",
+							Strings.nullToEmpty(loan.getUser().getId()))
+					.replace("#{loanerIdCard}",
+							Strings.nullToEmpty(loan.getUser().getIdCard()))
+					.replace("#{agentRealName}", Strings.nullToEmpty(agentRealName))
+					.replace("#{agentId}", Strings.nullToEmpty(agentId))
+					.replace("#{agentIdCard}", Strings.nullToEmpty(agentIdCard))
+					.replace("#{loanPurpose}", Strings.nullToEmpty(loan.getLoanPurpose()))
+					.replace("#{digit0}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 0))
+					.replace("#{digit1}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 1))
+					.replace("#{digit2}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 2))
+					.replace("#{digit3}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 3))
+					.replace("#{digit4}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 4))
+					.replace("#{digit5}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 5))
+					.replace("#{digit6}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 6))
+					.replace("#{digit7}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 7))
+					.replace("#{overdue_repay_investor}", String.format("%20.4f",feeConfig.getFee()))
+					.replace(
+							"#{deadline}",
+							String.valueOf(loan.getRepayRoadmap()
+									.getRepayPeriod()))
+					.replace(
+							"#{interestBeginTime}",
+							Strings.nullToEmpty(DateUtil.DateToString(
+									loan.getInterestBeginTime(),
+									DateStyle.YYYY_MM_DD_CN)))
+					.replace(
+							"#{interestEndTime}",
+							// FIXME:需要根据借款类型，来计算借款到期日
+							Strings.nullToEmpty(DateUtil.DateToString(endDate,
+									DateStyle.YYYY_MM_DD_CN)))
+							// FIXME:需要根据借款类型，来显示还款日
+					.replace(
+							"#{repayDay}",
+							String.valueOf(DateUtil.getDay(loan.getLoanRepays()
+									.get(0).getRepayDay())));
+		}
+		return contractContent;
+	}
+
+	public  String encryString(String sourceString,String type,String investId,String loginUserId){
+
+		String encryString = sourceString;
+
+		if (!investId.equals(loginUserId)){
+
+			if ("platformAccount".equals(type)){//平台账号
+
+				if (sourceString.length() >= 3){
+					encryString = sourceString.substring(0,3)+ "***";
+				}
+
+			}else if("realName".equals(type)){//真实姓名
+
+				if (sourceString.length() >= 1){
+					encryString = sourceString.substring(0,1)+ "*";
+				}
+
+			}else if("IdCard".equals(type)){//身份证
+
+				if (sourceString.length() >= 4){
+					encryString = sourceString.substring(0,4)+ "**************";
+				}
+			}
+
+		}
+
+		return encryString;
+
+	}
+
+	public String getDigitBySerialNo(double dou,int serialNo){
+		String digit = "";
+		java.text.DecimalFormat   df = new java.text.DecimalFormat("#.00");
+		char[] digits =new StringBuffer(df.format(dou).replace(".", "")).reverse().toString().toCharArray();
+		if(digits.length > serialNo){
+			digit = "" + digits[serialNo];
+		}
+		return  digit;
 	}
 
 	/**
