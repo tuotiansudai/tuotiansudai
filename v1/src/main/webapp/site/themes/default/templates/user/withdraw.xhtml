@@ -174,7 +174,7 @@
 							<div class="txczje_r">
 								<h:panelGroup id="withdrawBtn">
 									<h:commandLink action="#{withdrawHome.withdraw}" rendered="#{withdrawHome.instance.bankCard.id!=null and withdrawHome.instance.bankCard.status eq 'passed'}"
-										value="提现" styleClass="txczje02_btn txczje02_btn_02" target="_blank"></h:commandLink>
+										value="提现" styleClass="txczje02_btn txczje02_btn_02"></h:commandLink>
 									<ui:fragment rendered="#{withdrawHome.instance.bankCard.id==null}">
 										<a href="javascript:void(0)" onclick="$.dialog.tips('请先选择银行卡！')"
 											class="txczje02_btn txczje02_btn_02">提现</a>
