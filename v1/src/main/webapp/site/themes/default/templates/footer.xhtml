@@ -8,6 +8,17 @@
 	<link type="text/css" rel="stylesheet"
 		href="#{tplVars.themeStylePath}/footer.css" />
 
+	<link type="text/css" rel="stylesheet"
+		  href="#{tplVars.themeStylePath}/browserVersion.css" />
+
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/browserVersion.js"></script>
+
+	<div class="warning_mask"></div>
+	<div class="Warning">
+		<p>警告！</p>
+		<span>您的浏览器版本过低，请用IE9以上版本浏览器浏览本网站！</span>
+	</div>
+
 	<div class="footer">
 		<div class="ft-con clearfix">
 			<ui:repeat var="menu" value="#{menuList.getNavigationMenus()}" varStatus="status">
