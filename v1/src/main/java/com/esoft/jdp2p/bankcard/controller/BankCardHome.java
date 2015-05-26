@@ -1,16 +1,5 @@
 package com.esoft.jdp2p.bankcard.controller;
 
-import java.util.Date;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.common.controller.EntityHome;
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.model.User;
@@ -22,6 +11,15 @@ import com.esoft.jdp2p.bankcard.BankCardConstants;
 import com.esoft.jdp2p.bankcard.BankCardConstants.BankCardStatus;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.user.service.RechargeService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.springframework.context.annotation.Scope;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -37,6 +35,8 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 	
 	@Resource
 	private RechargeService rechargeService ;
+
+	private boolean isUpdateBankCard;
 
 	@Override
 	@Transactional(readOnly = false)
@@ -87,6 +87,24 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 			this.setInstance(null);
 		}
 		return "pretty:bankCardList";
+	}
+
+	public void updateBankCard(BankCard bankCard) {
+		super.setInstance(bankCard);
+		this.isUpdateBankCard = true;
+	}
+
+	public void resetBankCard() {
+		super.setInstance(null);
+		this.isUpdateBankCard = false;
+	}
+
+	public boolean getIsUpdateBankCard() {
+		return isUpdateBankCard;
+	}
+
+	public void setIsUpdateBankCard(boolean isUpdateBankCard) {
+		this.isUpdateBankCard = isUpdateBankCard;
 	}
 
 	/**
