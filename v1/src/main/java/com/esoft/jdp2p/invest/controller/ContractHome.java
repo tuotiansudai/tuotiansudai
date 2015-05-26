@@ -59,6 +59,7 @@ public class ContractHome {
 
 	public void contractPdfDownload(String fileName) {
 		String body = contractContent.replace("&nbsp;", "&#160;");
+
 		body = "<html><head></head><body style=\"font-family:'SimSun';\">"
 				+ body + "</body></html>";
 		StringReader contentReader = new StringReader(body);
@@ -219,25 +220,20 @@ public class ContractHome {
 		List<Invest> is = ht.find(
 				"from Invest i where i.loan.id=? and i.status!=?",
 				new String[] { loan.getId(), InvestStatus.CANCEL });
-		Double sumMoney = 0.0; // XXX:修改等额本息借款0.01差错
 		for (Invest invest : is) {
-			tbody.append("<tr><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getId(),"platformAccount",invest.getUser().getId(),loginUserId,contractType)
-					+ "</td><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getRealname(),"realName",invest.getUser().getId(),loginUserId,contractType)
-					+ "</td><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getIdCard(),"IdCard",invest.getUser().getId(),loginUserId,contractType)
-					+ "</td><td style='text-align:center;'>"
-					+ invest.getMoney()
-					+ "</td><td style='text-align:center;'>"
-					+ loan.getDeadline()
-					* loan.getType().getRepayTimePeriod()
-					+ "("
-					+ dictUtil.getValue("repay_unit", loan.getType()
-					.getRepayTimeUnit()) + ")"
-					+ "</td><td style='text-align:center;'>"
-					+format.format(invest.getTime())
-					+ "</td></tr>");
+			//生成模版
+			String rowsString = insertRow(6);
+			//替换值
+			String deadLine = loan.getDeadline() * loan.getType().getRepayTimePeriod()
+							+ "(" + dictUtil.getValue("repay_unit", loan.getType().getRepayTimeUnit()) + ")";
+			rowsString = rowsString.replace("#{0}",encryString(invest.getUser().getId(), "platformAccount", invest.getUser().getId(), loginUserId, contractType))
+			.replace("#{1}", encryString(invest.getUser().getRealname(), "realName", invest.getUser().getId(), loginUserId, contractType))
+			.replace("#{2}",encryString(invest.getUser().getIdCard(), "IdCard", invest.getUser().getId(), loginUserId, contractType))
+			.replace("#{3}", String.valueOf(invest.getMoney()))
+			.replace("#{4}",deadLine)
+			.replace("#{5}", format.format(invest.getTime()));
+
+			tbody.append(rowsString);
 		}
 
 
@@ -258,7 +254,7 @@ public class ContractHome {
 		Node node = ht.get(Node.class, loan.getContractType());
 
 		if (contractContent == null) {
-			/** caijinmin 201412231623 判断还款单元是天还是月，计算借款到期日 add begin **/
+
 			Date endDate = null;
 			if (RepayConstants.RepayUnit.DAY.equals(loan.getType()
 					.getRepayTimeUnit())) {
@@ -269,7 +265,6 @@ public class ContractHome {
 				endDate = DateUtil.addMonth(loan.getInterestBeginTime(),
 						loan.getDeadline());
 			}
-			/** caijinmin 201412231623 add 判断还款单元是天还是月，计算借款到期日 end **/
 			contractContent = node.getNodeBody().getBody();
 			contractContent = contractContent
 					.replace("#{loanId}", Strings.nullToEmpty(loan.getId()))
@@ -285,15 +280,15 @@ public class ContractHome {
 					.replace("#{agentId}", Strings.nullToEmpty(agentId))
 					.replace("#{agentIdCard}", Strings.nullToEmpty(agentIdCard))
 					.replace("#{loanPurpose}", Strings.nullToEmpty(loan.getLoanPurpose()))
-					.replace("#{digit0}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 0))
-					.replace("#{digit1}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 1))
-					.replace("#{digit2}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 2))
-					.replace("#{digit3}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 3))
-					.replace("#{digit4}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 4))
-					.replace("#{digit5}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 5))
-					.replace("#{digit6}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 6))
-					.replace("#{digit7}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 7))
-					.replace("#{overdue_repay_investor}", String.format("%20.4f",feeConfig.getFee()))
+					.replace("#{fen}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 0))
+					.replace("#{bugle}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 1))
+					.replace("#{yuan}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 2))
+					.replace("#{ten}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 3))
+					.replace("#{hundred}", this.getDigitBySerialNo(loan.getMoney().doubleValue(), 4))
+					.replace("#{thousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 5))
+					.replace("#{tenThousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 6))
+					.replace("#{hundredThousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 7))
+					.replace("#{overdue_repay_investor}", String.format("%20.4f", feeConfig.getFee()))
 					.replace(
 							"#{deadline}",
 							String.valueOf(loan.getRepayRoadmap()
@@ -315,6 +310,20 @@ public class ContractHome {
 									.get(0).getRepayDay())));
 		}
 		return contractContent;
+	}
+
+	public String insertRow(int tdNum){
+		String rowsString = "";
+		String rowsHead = "<tr style='text-align:center;'>";
+		String rowsFoot = "</tr>";
+		String rowsBody = "";
+		for(int i = 0 ; i < tdNum ;i++){
+			rowsBody += "<td>";
+			rowsBody += "#{" + i +"}";
+			rowsBody += "</td>";
+		}
+		rowsString = rowsHead + rowsBody + rowsFoot;
+		return rowsString;
 	}
 
 	public  String encryString(String sourceString,String type,String investId,String loginUserId,String contractType){
@@ -355,7 +364,7 @@ public class ContractHome {
 		java.text.DecimalFormat   df = new java.text.DecimalFormat("#.00");
 		char[] digits =new StringBuffer(df.format(dou).replace(".", "")).reverse().toString().toCharArray();
 		if(digits.length > serialNo){
-			digit = "" + digits[serialNo];
+			digit = String.valueOf(digits[serialNo]) ;
 		}
 		return  digit;
 	}
