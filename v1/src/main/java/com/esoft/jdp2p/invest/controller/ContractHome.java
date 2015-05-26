@@ -71,7 +71,7 @@ public class ContractHome {
 			org.w3c.dom.Document xhtmlContent = documentBuilder.parse(source);
 			ITextRenderer renderer = new ITextRenderer();
 			ITextFontResolver fontResolver = renderer.getFontResolver();
-			fontResolver.addFont(FacesUtil.getRealPath("SIMSUN.TTC"),
+			fontResolver.addFont(FacesUtil.getRealPath("/SIMSUN.TTC"),
 					BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			renderer.setDocument(xhtmlContent, "");
 			renderer.layout();
@@ -208,25 +208,25 @@ public class ContractHome {
 	 * @param loanId
 	 * @return
 	 */
-	public String dealLoanContractContentNew(String loanId,String loginUserId) {
+	public String dealLoanContractContentNew(String loanId,String loginUserId,String contractType) {
 
 		Loan loan = ht.get(Loan.class, loanId);
 		// #{investList} 投资列表
 		Element table = Jsoup
 				.parseBodyFragment("<table border='1' style='margin: 0px auto; border-collapse: collapse; border: 1px solid rgb(0, 0, 0); width: 70%; '><tbody><tr class='firstRow'><td style='text-align:center;'>平台账号</td><td style='text-align:center;'>真实姓名</td><td style='text-align:center;'>身份证号</td><td style='text-align:center;'>出借金额</td><td style='text-align:center;'>借款期限</td><td style='text-align:center;'>投资确认日期</td></tr></tbody></table>");
 		Element tbody = table.getElementsByTag("tbody").first();
-
+		SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Invest> is = ht.find(
 				"from Invest i where i.loan.id=? and i.status!=?",
 				new String[] { loan.getId(), InvestStatus.CANCEL });
 		Double sumMoney = 0.0; // XXX:修改等额本息借款0.01差错
 		for (Invest invest : is) {
 			tbody.append("<tr><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getId(),"platformAccount",invest.getUser().getId(),loginUserId)
+					+ encryString(invest.getUser().getId(),"platformAccount",invest.getUser().getId(),loginUserId,contractType)
 					+ "</td><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getRealname(),"realName",invest.getUser().getId(),loginUserId)
+					+ encryString(invest.getUser().getRealname(),"realName",invest.getUser().getId(),loginUserId,contractType)
 					+ "</td><td style='text-align:center;'>"
-					+ encryString(invest.getUser().getIdCard(),"IdCard",invest.getUser().getId(),loginUserId)
+					+ encryString(invest.getUser().getIdCard(),"IdCard",invest.getUser().getId(),loginUserId,contractType)
 					+ "</td><td style='text-align:center;'>"
 					+ invest.getMoney()
 					+ "</td><td style='text-align:center;'>"
@@ -236,7 +236,7 @@ public class ContractHome {
 					+ dictUtil.getValue("repay_unit", loan.getType()
 					.getRepayTimeUnit()) + ")"
 					+ "</td><td style='text-align:center;'>"
-					+invest.getTime()
+					+format.format(invest.getTime())
 					+ "</td></tr>");
 		}
 
@@ -317,31 +317,33 @@ public class ContractHome {
 		return contractContent;
 	}
 
-	public  String encryString(String sourceString,String type,String investId,String loginUserId){
+	public  String encryString(String sourceString,String type,String investId,String loginUserId,String contractType){
 
-		String encryString = sourceString;
+		 String encryString = sourceString;
 
-		if (!investId.equals(loginUserId)){
+		 if ("invest".equals(contractType)){
+			if (!investId.equals(loginUserId)){
 
-			if ("platformAccount".equals(type)){//平台账号
+				if ("platformAccount".equals(type)){//平台账号
 
-				if (sourceString.length() >= 3){
-					encryString = sourceString.substring(0,3)+ "***";
+					if (sourceString.length() >= 3){
+						encryString = sourceString.substring(0,3)+ "***";
+					}
+
+				}else if("realName".equals(type)){//真实姓名
+
+					if (sourceString.length() >= 1){
+						encryString = sourceString.substring(0,1)+ "*";
+					}
+
+				}else if("IdCard".equals(type)){//身份证
+
+					if (sourceString.length() >= 4){
+						encryString = sourceString.substring(0,4)+ "**************";
+					}
 				}
 
-			}else if("realName".equals(type)){//真实姓名
-
-				if (sourceString.length() >= 1){
-					encryString = sourceString.substring(0,1)+ "*";
-				}
-
-			}else if("IdCard".equals(type)){//身份证
-
-				if (sourceString.length() >= 4){
-					encryString = sourceString.substring(0,4)+ "**************";
-				}
 			}
-
 		}
 
 		return encryString;
