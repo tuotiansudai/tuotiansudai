@@ -251,6 +251,10 @@ public class ContractHome {
 		//获取违约金收取比例
 		FeeConfig feeConfig = ht.get(FeeConfig.class, "overdue_repay_investor");
 
+		NumberFormat nt = NumberFormat.getPercentInstance();
+
+		nt.setMinimumFractionDigits(2);
+
 		Node node = ht.get(Node.class, loan.getContractType());
 
 		if (contractContent == null) {
@@ -288,7 +292,7 @@ public class ContractHome {
 					.replace("#{thousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 5))
 					.replace("#{tenThousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 6))
 					.replace("#{hundredThousand}",this.getDigitBySerialNo(loan.getMoney().doubleValue(), 7))
-					.replace("#{overdue_repay_investor}", String.format("%20.4f", feeConfig.getFee()))
+					.replace("#{overdue_repay_investor}",  nt.format(feeConfig.getFee()))
 					.replace(
 							"#{deadline}",
 							String.valueOf(loan.getRepayRoadmap()
