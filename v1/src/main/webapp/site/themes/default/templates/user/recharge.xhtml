@@ -14,6 +14,9 @@
 	<ui:define name="center_right">
 		<script>
 			//<![CDATA[
+			var mask_clientH=$(window).height();
+			$('mask_modal').css('height',mask_clientH);
+
 			function checkRecharge() {
 				var flag = false;
 				var myselect = $(".zhcz_ul a.hover");
@@ -27,9 +30,25 @@
 				}
 				if ((myselect.length >= 1) && regx.test(money)) {
 					flag = true;
+					$('.mask_modal').css('display','block');
+                	$('.mask_main').css('display','block');
 				}
 				return flag;
 			}
+
+			$(function() {
+				$('.failure').on('click',function(){
+            		$('.mask_modal').css('display','none');
+                	$('.mask_main').css('display','none');
+                	$('.rechargeAmount').val('');
+           		 });
+
+			    $('.mask_close, .success, .mask_help').on('click',function(){
+                	$('.mask_modal').css('display','none');
+                	$('.mask_main').css('display','none');
+            	});
+			});
+
 			//]]>
 		</script>
 		<!-- 未实名认证 -->
@@ -83,7 +102,7 @@
 								<span>*</span>充值金额：
 							</div>
 							<div class="txczje_r">
-								<h:inputText label="充值金额" styleClass="txt02 money"
+								<h:inputText label="充值金额" styleClass="txt02 money rechargeAmount"
 									id="actualMoney" value="#{rechargeHome.instance.actualMoney}"
 									required="true">
 									<f:validateDoubleRange minimum="0"></f:validateDoubleRange>
@@ -127,6 +146,17 @@
 							<div class="clear"></div>
 						</div>
 					</div>
+
+					<div class="mask_modal"></div>
+					<div class="mask_main">
+						<h3>登录到联动优势支付平台充值</h3>
+						<em class="mask_close">关闭</em>
+						<span>请在新打开的联动优势页面充值完成后选择</span>
+						<p><i>充值成功：</i><a href="/user/center" class="success">确认成功</a> </p>
+						<p><i>充值失败：</i><a href="javascript:;" class="failure">重新充值</a>查看<b><a href="/website/helpCenter" class="mask_help"> 帮助中心</a></b> </p>
+						<h4>遇到问题请拨打我们的客服热线：#{configHome.getConfigValue("site_phone")} (9:00-21:00) 节假日无休</h4>
+					</div>
+
 				</h:form>
 				<p class="zhcz_p02">
 					温馨提示<br /> 1、为了您的账户安全，请在充值前进行身份认证、手机绑定以及提现密码设置。<br />

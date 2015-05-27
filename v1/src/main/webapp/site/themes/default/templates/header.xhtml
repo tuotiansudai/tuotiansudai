@@ -1,10 +1,11 @@
 <ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+			  xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+			  xmlns:f="http://java.sun.com/jsf/core"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:p="http://primefaces.org/ui"
+		>
+
 
 	<link type="text/css" rel="stylesheet"
 		href="#{tplVars.themeStylePath}/header.css" />
@@ -12,11 +13,9 @@
 	<div class="top">
 		<div class="top-con clearfix">
 			<div class="fl top-con-left">
-				<span><i></i>服务电话：#{configHome.getConfigValue("site_phone")}</span>
-				<a class="qq" href="#"></a><a class="wx" href="#"></a>
+				<span>热线电话：#{configHome.getConfigValue("site_phone")}</span>
 			</div>
 			<div class="fr top-con-right">
-				<a href="#{path}/term/help">帮助中心</a>
 				<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
 					<a href="#{request.contextPath}/memberLoginPage">登录</a>
 					<a class="ahover" href="#{request.contextPath}/register">注册账号</a>

@@ -30,7 +30,7 @@ public interface TrusteeshipOperationService<T> {
 	 * @return TrusteeshipOperation的编号
 	 */
 	public TrusteeshipOperation createOperation(T t, FacesContext facesContext)
-			throws IOException;
+			throws Exception;
 
 	/**
 	 * 接收操作回调(POST方式)，例如开户回调、充值回调
@@ -38,7 +38,7 @@ public interface TrusteeshipOperationService<T> {
 	 * @return 需要返回的相应页面
 	 */
 	public void receiveOperationPostCallback(ServletRequest request)
-			throws TrusteeshipReturnException;
+			throws TrusteeshipReturnException,IOException;
 
 	/**
 	 * 接收操作回调(server to server方式)，例如开户回调、充值回调

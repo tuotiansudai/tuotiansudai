@@ -50,14 +50,12 @@
 							</div>
 							<!-- 未审核 -->
 							<ui:fragment rendered="#{bankcard.status eq 'uncheck'}">
-								<p:commandLink value="修改" actionListener="#{bankCardHome.setInstance(bankcard)}" process="@this" update="@form" styleClass="yhkxx_l"></p:commandLink>
-								<p:commandLink value="删除" actionListener="#{bankCardHome.delete(bankcard.id)}" process="@this" onstart="return confirm('您确定要删除吗？');" update="@form" styleClass="yhkxx_r"></p:commandLink>
+								<p:commandLink value="修改" actionListener="#{bankCardHome.updateBankCard(bankcard)}" process="@this" update="@form" styleClass="yhkxx_l"></p:commandLink>
 								<h:commandLink value="去审核" action="#{bankCardHome.bindingCardTrusteeship(bankcard.id)}" target="_blank" styleClass="yhkxx_r"></h:commandLink>
 							</ui:fragment>
 							<!-- 已经审核 -->
 							<ui:fragment rendered="#{bankcard.status eq 'passed'}">
 								<a>已绑定</a>
-								<p:commandLink value="删除" actionListener="#{bankCardHome.delete(bankcard.id)}" process="@this" onstart="return confirm('您确定要删除吗？');" update="@form" styleClass="yhkxx_r"></p:commandLink>
 							</ui:fragment>
 							<div class="clear"></div>
 						</li>
@@ -65,11 +63,11 @@
 					<ui:fragment rendered="#{bankCardList.getBankCardListbyLoginUser().size() lt 1}">
 						<li>
 							<div class="yhk">
-								<p:commandLink actionListener="#{bankCardHome.setInstance(null)}" onclick="$('form\\:recardNo').val('')" process="@this" update="@form">
+								<p:commandLink actionListener="#{bankCardHome.resetBankCard}" onclick="$('form\\:recardNo').val('')" process="@this" update="@form">
 									<img class="jia" src="#{tplVars.themeImagePath}/img46.png" />
 								</p:commandLink>
 							</div>
-							<p:commandLink actionListener="#{bankCardHome.setInstance(null)}" rendered="#{not pnr_enable}" onclick="$('form\\:recardNo').val('')" process="@this" update="@form" styleClass="yhkxx_c" value="新增银行卡"></p:commandLink>
+							<p:commandLink actionListener="#{bankCardHome.resetBankCard}" rendered="#{not pnr_enable}" onclick="$('form\\:recardNo').val('')" process="@this" update="@form" styleClass="yhkxx_c" value="新增银行卡"></p:commandLink>
 							<p:commandLink actionListener="#{bankCardHome.save}" rendered="#{pnr_enable}" target="_blank" process="@this" ajax="false" styleClass="yhkxx_c" value="新增银行卡"></p:commandLink>
 							<div class="clear"></div>
 						</li>
@@ -78,7 +76,7 @@
 					</h:panelGroup>
 				</ul>
 
-				<ui:fragment rendered="#{bankCardList.getBankCardListbyLoginUser().size() lt 1}">
+				<ui:fragment rendered="#{bankCardList.getBankCardListbyLoginUser().size() lt 1 or bankCardHome.isUpdateBankCard}">
 					<ui:fragment rendered="#{not pnr_enable}">
 					<div class="zhcz_h3 zhcz_h302">
 						<ui:fragment rendered="#{not empty bankCardHome.instance.id}">
@@ -134,7 +132,7 @@
 							<div class="txczje_l"></div>
 							<div class="txczje_r">
 								<h:commandLink action="#{bankCardHome.save}" value="保存" styleClass="txczje02_btn hqyzm xz"></h:commandLink>
-								<p:commandLink actionListener="#{bankCardHome.setInstance(null)}" styleClass="txczje02_btn hqyzm qx" onclick="$('form\\:recardNo').val('')" value="取消" update="@form" process="@this"></p:commandLink>
+								<p:commandLink actionListener="#{bankCardHome.resetBankCard}" styleClass="txczje02_btn hqyzm qx" onclick="$('form\\:recardNo').val('')" value="取消" update="@form" process="@this"></p:commandLink>
 							</div>
 							<div class="clear"></div>
 						</div>

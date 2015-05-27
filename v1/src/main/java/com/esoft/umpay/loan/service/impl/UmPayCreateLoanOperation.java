@@ -59,7 +59,7 @@ public class UmPayCreateLoanOperation extends UmPayOperationServiceAbs<Loan> {
 			FacesContext facesContext) throws IOException {
 		try {
 		loanService.createLoanByAdmin(loan);
-		//将代码抽出来,但是这里需要优化
+		//将代码抽出来, 但是这里需要优化
 		umPayLoanStatusService.createLoan(loan);
 		} catch (ReqDataException e) {
 			log.debug("发标创建请求数据失败!标号:"+loan.getId());

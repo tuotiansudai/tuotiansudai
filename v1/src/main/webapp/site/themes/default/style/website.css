@@ -1,0 +1,111 @@
+body,html,div,ul,li,ol,dl,p,h3,img{margin:0px; padding:0px; list-style:none; font-family: 'microsoft yahei';}
+img{border:none; display: block;}
+a{color:#fff; text-decoration: none;}
+.newguide_banner{width:100%; height: 350px; background: url("../images/website/newguide3.jpg") no-repeat center; background-size: cover;}
+.content,.contentA p,.contentB,.contentC,.contentD{width:940px; margin: 0px auto;}
+.content h3{ font-size: 41px; color:#2f2f2f;font-weight: normal; width:100%;text-align: center; height: 42px; line-height: 42px; margin: 20px auto; }
+.content p{line-height: 28px; text-indent: 30px; margin-bottom: 20px;}
+.contentA img{display: block; margin: 0px; padding: 0px;}
+.contentC img{ float:left; margin-right: 15px;}
+.contentA{width:100%; overflow: hidden; height: 522px; background: #f1f1f1;}
+
+.step{width:940px; height: 844px; margin:0px auto; background: url("../images/website/newguide_45.jpg") no-repeat center 68px;  position: relative;}
+.step a.prev{ position: absolute;left:-2px;top:212px;  }
+.step a.next{ position: absolute; right:-4px; top:212px;}
+.step ol{width:940px; height: 48px; line-height: 48px;}
+.step ol li{width:226px; height: 48px; float:left; margin-right: 12px; background: url("../images/website/newguide11.jpg") no-repeat center;}
+.step ol li.m_0{ margin-right: 0px;}
+.step ol li.active{ background: url("../images/website/active.jpg") no-repeat;}
+.step ol li.active a{color:#fff;}
+.step ol li a{display: block; width:226px; height: 48px; line-height: 48px; text-align: center; color:#e04c54;}
+.step ul{width:762px; height:412px; margin: 5px auto 36px;  overflow: hidden; position: absolute; left: 35px; top:46px; position: relative; }
+.step ul li{width:695px; height: 412px; position: absolute; top:0px; left:0px;}
+.step ul li img{width:695px; height: 412px; float:left;}
+.step p{ width:940px; text-align: center; margin-top: 258px; font-size: 18px;}
+.step span{ display: block; width:284px; height: 70px; background: #f5f9fc; margin: 24px auto 0px; position: relative;}
+.step span a{ display: block;width:252px; height: 54px; text-align: center; line-height: 54px; background: #fc8936; border-radius:5px; position: absolute; left: 16px; top:8px;}
+
+
+body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-family: "microsoft yahei";}
+.safe{width:1005px; height: auto; overflow: hidden; margin: 0px auto; color:#353535; font-size: 16px;}
+.safe h3{width:1005px; height: 82px; line-height: 82px; text-align: center; background: url("../images/website/top_background.jpg") no-repeat; color:#fff; font-size: 22px; font-weight: normal;}
+.safe ul{width:100%; height: auto; background: url("../images/website/background_02.jpg") no-repeat;}
+
+.safe ul li{ width:965px; padding: 0px 20px; }
+.safe ul li.lia{ height: 248px;}
+.safe ul li.lib{ height: 392px;}
+.safe ul li.lic{ height: 388px;}
+.safe ul li.lid{ height: 256px;}
+
+.safe ul li em{ font-size: 20px; color:#ed4619; font-style: normal; width:965px; height:62px; line-height:62px; display: block;}
+.safe ul li.lia em{ text-align: center;width:730px;}
+.safe ul li.lib em{ padding-left: 500px; width:500px; text-align: left; height:62px; line-height:62px; }
+.safe ul li.lic em{ padding-left: 220px; width:740px;}
+.safe ul li.lid em{ padding-right: 170px; width:765px; text-align: right; margin-top: 14px;}
+
+.safe ul li p{ line-height: 25px;text-indent: 40px; display: block;letter-spacing: 2px;}
+.safe ul li.lia p{ width:590px; line-height: 25px; padding: 0px 300px 0px 40px; }
+.safe ul li.lib p{width:590px; padding:0px 50px 0px 280px ; }
+.safe ul li.lic p{ width:545px; line-height: 25px; padding: 0px 60px 0px 23px;}
+.safe ul li.lid p{ width:485px;padding-left: 420px; padding-right: 30px; line-height: 38px; }
+
+.safe ul li span{ display: block; height:22px; line-height: 22px; width:416px; margin-left: 22px; float: left; color:#e46008; font-size: 19px; margin: 20px 0px 0px 22px;}
+.safe ul li span.mleft_0{ margin-left: 0px;}
+
+
+.contact_banner{ width:100%; height: 280px; background: url("../images/website/contact_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}
+.contact_map,.introduction_content,.cost_content{width:945px; height: auto; overflow: hidden; margin: 0px auto; border: #e2e2e2 1px solid; border-radius:5px; margin-bottom: 30px; padding-bottom: 30px;}
+.contact_map{width:947px;}
+.contact_map h4{ font-weight: normal; font-size: 18px; color:#222222; margin: 10px 0px 26px 10px; width:800px;}
+.contact_map img{width:947px; height: 542px; margin-left: 1px;}
+.contact_map p{padding-left: 12px; width:800px; line-height: 30px;}
+
+.introduction_banner{ width:100%; height: 271px; background: url("../images/website/introduction_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}
+.introduction_content{width:948px; margin-top: 6px; height: auto; overflow: hidden; position: relative; z-index: 1;}
+.introduction_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
+.introduction_content h4{ width:904px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
+.introduction_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 12px;}
+.introduction_content p{width:904px;line-height: 30px; margin-left: 20px;color:#666; text-indent: 35px; margin-top: 20px; }
+.introduction_content img{width:427px; height: 284px; margin-top: 30px; float:left;}
+.introduction_content img.m_22{ margin-left: 22px;}
+.introduction_content img.m_45{ margin-left: 45px;}
+
+.cost_banner{width:100%; height: 274px; background: url("../images/website/cast_banner.jpg") no-repeat center; background-size: cover; margin-bottom: 6px;}
+
+.cost_content{width:948px; position: relative;}
+.cost_content img{ margin-left: 20px;}
+.cost_content p{ padding: 0px 20px; width:900px; line-height: 30px; margin-top: 12px;}
+.cost_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 12px;}
+
+.cost_content h4{ width:904px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
+.cost_content table{ border-collapse:collapse; border:1px solid #d2d2d2; margin-left: 20px; color:#666;}
+.cost_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
+
+
+.cost_content td,th{ margin:0; padding:0; border:1px solid #ccc;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

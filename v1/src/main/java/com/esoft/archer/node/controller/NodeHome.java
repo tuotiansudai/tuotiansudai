@@ -1,25 +1,5 @@
 package com.esoft.archer.node.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
-import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.common.controller.EntityHome;
 import com.esoft.archer.lucene.LuceneConstants;
@@ -38,6 +18,24 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.ImageUploadUtil;
 import com.esoft.core.util.StringManager;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+import org.springframework.context.annotation.Scope;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -92,6 +90,16 @@ public class NodeHome extends EntityHome<Node> implements Serializable {
 		node.setSeqNum(0);
 		// node.setCategoryTerms(new HashSet<CategoryTerm>());
 		return node;
+	}
+
+	public String getCategoryTerm(String termId) {
+		List<CategoryTerm> categoryTerms = this.instance.getCategoryTerms();
+		for (CategoryTerm categoryTerm : categoryTerms) {
+			if (categoryTerm.getId().equals(termId)) {
+				return categoryTerm.getName();
+			}
+		}
+		return categoryTerms.get(0).getName();
 	}
 
 	// FIXME: 这是一个死循环

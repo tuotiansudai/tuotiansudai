@@ -57,8 +57,7 @@ public class EntityQuery<E> {
 	 * @return
 	 */
 	public List<E> getLazyModelData() {
-		return this.getLazyModel().load(pageSize * (currentPage - 1), pageSize,
-				null, null, null);
+		return this.getLazyModel().load(pageSize * (currentPage - 1), pageSize, null, null, null);
 	}
 
 	private String hql;

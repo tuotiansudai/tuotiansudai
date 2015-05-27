@@ -21,8 +21,7 @@ public class AutoRepayment implements Job{
 	private RepayService repayService;
 	
 	@Override
-	public void execute(JobExecutionContext context)
-			throws JobExecutionException {
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 		repayService.autoRepay();
 	}
 }

@@ -18,6 +18,9 @@ dependencies {
 
 compileJava {
     options.encoding = "UTF-8"
+    options.fork = true
+    options.forkOptions.executable = "javac" // assumes that javac is on PATH
+    options.compilerArgs << "-XDignore.symbol.file"
 }
 
 buildscript {
@@ -54,7 +57,7 @@ cargo {
     local {
         homeDir = file('/usr/share/apache-tomcat-6.0.43')
         outputFile = file('build/output.log')
-        timeout = 180000
+        timeout = 180000   
     }
 }
 

@@ -8,6 +8,17 @@
 	<link type="text/css" rel="stylesheet"
 		href="#{tplVars.themeStylePath}/footer.css" />
 
+	<link type="text/css" rel="stylesheet"
+		  href="#{tplVars.themeStylePath}/browserVersion.css" />
+
+	<script type="text/javascript" src="#{tplVars.themeJSPath}/browserVersion.js"></script>
+
+	<div class="warning_mask"></div>
+	<div class="Warning">
+		<p>警告！</p>
+		<span>您的浏览器版本过低，请用IE9以上版本浏览器浏览本网站！</span>
+	</div>
+
 	<div class="footer">
 		<div class="ft-con clearfix">
 			<ui:repeat var="menu" value="#{menuList.getNavigationMenus()}" varStatus="status">
@@ -59,7 +70,12 @@
 				<!--<img class="ewm" src="#{tplVars.themeImagePath}/index/code.png" />-->
 			<!--</div>-->
 	        <div class="clear"></div>
-	        <p class="copyright">© Sitename. All rights Reserved.</p>
+			<div class="footer_zs">
+				<p class="copyright">拓天伟业（北京）金融信息服务有限公司 版权所有  京ICP备14008676号</p>
+				<h:outputLink value="https://seal.digicert.com/seals/popup/?tag=dv0vdS8q&amp;url=tuotiansudai.com&amp;lang=en_US" title="" target="_blank" >
+					<img src="#{tplVars.themeImagePath}/website/digicert.png" alt="" />
+				</h:outputLink>
+			</div>
 		</div>
 	</div>
 	<!--footer end-->

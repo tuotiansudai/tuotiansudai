@@ -52,12 +52,13 @@
 .tabs a{display:inline-block; padding-right:30px;text-align:center; cursor:pointer;font-size: 20px;color: #003d48;font-weight: bold;}
 .tabs a:hover{ color:#f33735;}
 .thover{color:#f33735 !important;}
-.tab1-con1 a,.tab1-con2 a,.tab1-con3 a{ display:block; width:320px; text-align:center;}
+.tab1-con1 a,.tab1-con2 a,.tab1-con3 a{ display:block; width:320px; color:#000;}
 .tab1-con2 a{height:112px;}
 .tab1-con1,.tab1-con2,.tab1-con3{ width:310px; float:left; padding-right:23px;}
-.tab1-con1 a{ height:100px; padding-top:12px;}
+.tab1-con a{ height: 30px;  padding-top: 12px;  font-size: 16px;  overflow: hidden;  line-height: 30px;  color: #000000;  text-align: left;  }
 .tab1-con3 a{height:80px; padding-top:32px;}
 .tab1-cons p,.tab2-cons p{ line-height:30px; font-size:14px;}
+.tab1-cons p,.tab2-cons p{line-height: 24px;  font-size: 12px;  color: #666; margin-top: 8px;}
 .tab1-cons>a,.tab2-cons>a{ display:block; width:90px; text-align:center; height:30px; margin:0 auto; line-height:30px; margin-top:30px; color:#000;}
 .tab1-cons>a:hover,.tab2-cons>a:hover{ color:#cd1014;}
 .tab1-cons,.tab2-cons{ padding-top:20px;}

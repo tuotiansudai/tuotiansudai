@@ -2,7 +2,7 @@
 /* CSS Document */
 
 .footer{background: #3f3f3f}
-.ft-con{width: 1000px;margin: 0 auto;padding-top: 60px;padding-bottom: 50px;}
+.ft-con{width: 1000px;margin: 0 auto;padding-top: 60px;}
 .ft-top{float: left;padding-right: 80px;}
 .ft-top,.ft-top a{color: #ffffff}
 .ewm{vertical-align: middle;width: 116px;height: 116px;}
@@ -14,4 +14,6 @@
 .lastwem{padding-right: 0px;float: right;}
 .ft-top ul li.tel{font-size: 20px;margin: 10px 0px}
 .clear{clear: both;}
-.copyright{font-size: 15px;text-align: center;color: #ffffff;padding-top: 40px;border-top: 1px solid #606060;margin-top: 20px;}
+.footer_zs{width:1000px; height: 70px; line-height:70px;border-top: 1px solid #606060; margin-top: 22px;}
+.footer_zs a{ display: block; float: right; width:100px; height:59px; margin-top: 5px;}
+.copyright{font-size: 15px;color: #ffffff; width:500px; float:left; }

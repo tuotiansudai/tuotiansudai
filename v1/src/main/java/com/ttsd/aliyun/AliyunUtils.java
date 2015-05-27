@@ -6,14 +6,10 @@ import com.esoft.core.util.ImageUploadUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.primefaces.model.UploadedFile;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -67,88 +63,42 @@ public class AliyunUtils {
     }
 
 
-
-
-
-
     public static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
-
     }
 
-    /**
-     * 创建Bucket 并设置白名单
-     *
-     * @param client  OSSClient对象
-     * @param bucketName  BUCKET名
-     * @throws OSSException
-     * @throws ClientException
-     */
-    public static void ensureBucket(OSSClient client, String bucketName)throws OSSException, ClientException {
-        try{
-            List<String> refererList = new ArrayList<String>();
-            // 添加referer项 设置白名单
-            refererList.add("localhost");
-            refererList.add("127.0.0.1");
-            refererList.add("http://www.aliyun.com");
-            refererList.add("http://www.tuotiansudai.com");
-            refererList.add("http://www.?.aliyuncs.com");
-            // 允许referer字段为空，并设置Bucket Referer列表
-            BucketReferer br = new BucketReferer(true, refererList);
-            client.createBucket(bucketName);
-            client.setBucketReferer(bucketName, br);
-        }catch(ServiceException e){
-            if(!OSSErrorCode.BUCKET_ALREADY_EXISTS.equals(e.getErrorCode())){
-                throw e;
-            }
-        }
-    }
+
+
+
 
     /**
-     * 删除一个Bucket和其中的Objects
-     *
-     * @param client  OSSClient对象
-     * @param bucketName  Bucket名
-     * @throws OSSException
-     * @throws ClientException
-     */
-    private static void deleteBucket(OSSClient client, String bucketName)throws OSSException, ClientException{
-        ObjectListing ObjectListing = client.listObjects(bucketName);
-        List<OSSObjectSummary> listDeletes = ObjectListing.getObjectSummaries();
-        for(int i = 0; i < listDeletes.size(); i++){
-            String objectName = listDeletes.get(i).getKey();
-            //如果不为空，先删除bucket下的文件
-//            client.deleteObject(bucketName, objectName);
-        }
-//        client.deleteBucket(bucketName);
-    }
-
-    /**
-     * 把Bucket设置成所有人可读
-     *
-     * @param client  OSSClient对象
-     * @param bucketName  Bucket名
-     * @throws OSSException
-     * @throws ClientException
-     */
-    private static void setBucketPublicReadable(OSSClient client, String bucketName)throws OSSException, ClientException{
-        //创建bucket
-        client.createBucket(bucketName);
-        //设置bucket的访问权限， public-read-write权限
-        client.setBucketAcl(bucketName, CannedAccessControlList.PublicRead);
-    }
-
-    /**
-     * 上传文件
+     * UE上传文件
      *
      * objectkey 上传到OSS起的名
-     * @param filename  本地文件名
+     * @param fileName  本地文件名
      * @throws OSSException
      * @throws ClientException
      * @throws FileNotFoundException
      */
-    public static String uploadFile(String filename ,InputStream input )
+    public static String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath)
+            throws OSSException, ClientException, FileNotFoundException ,IOException{
+        OSSClient client = getOSSClient();
+        ObjectMetadata objectMeta = new ObjectMetadata();
+        String waterPath = rootPath + "site/themes/default/images/watermark.png";
+        ByteArrayInputStream in = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath,inputStream,0,0).toByteArray());
+        objectMeta.setContentLength(in.available());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
+        String filePath = sitePath+ fileName;
+        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+        log.info("result etag :" + result.getETag() + "filepath:" + filePath);
+        return filePath;
+    }
+
+    public static String uploadFile(String fileName ,InputStream input )
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
@@ -157,11 +107,11 @@ public class AliyunUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
-        filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(filename);
-        String filepath = sitePath+ filename;
-        PutObjectResult result = client.putObject(BUCKET_NAME, filename, input, objectMeta);
-        log.debug("result etag :" +result.getETag()+ "filepath:"+filepath);
-        return filepath;
+        fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
+        String filePath = sitePath+ fileName;
+        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, input, objectMeta);
+        log.debug("result etag :" + result.getETag() + "filepath:" + filePath);
+        return filePath;
     }
 
 
@@ -171,7 +121,6 @@ public class AliyunUtils {
             throws OSSException, ClientException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(uploadedFile.getSize());
         String filename = uploadedFile.getFileName();
         //判断上传类型，多的可根据自己需求来判定
         if (filename.endsWith("xml")) {
@@ -183,50 +132,18 @@ public class AliyunUtils {
         else if (filename.endsWith("png")) {
             objectMeta.setContentType("image/png");
         }
-
+        objectMeta.setContentLength(uploadedFile.getSize());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhh");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         filename = sdf.format(new Date()) + ImageUploadUtil.getFileExt(uploadedFile.getFileName());
         String filepath = "/"+sitePath+ filename;
         PutObjectResult result = client.putObject(BUCKET_NAME, filename, uploadedFile.getInputstream(), objectMeta);
-        log.debug("filepath : "+filepath +"etag:" +result.getETag());
-
+        log.info("filepath : " + filepath + "etag:" + result.getETag());
         return filepath;
     }
 
-    /**
-     *  下载文件
-     *
-     * @param client  OSSClient对象
-     * @param bucketName  Bucket名
-     * @param Objectkey  上传到OSS起的名
-     * @param filename 文件下载到本地保存的路径
-     * @throws OSSException
-     * @throws ClientException
-     */
-    private static void downloadFile(OSSClient client, String bucketName, String Objectkey, String filename)
-            throws OSSException, ClientException {
-        ObjectMetadata objectMetadata = client.getObject(new GetObjectRequest(bucketName, Objectkey),new File(filename));
-
-    }
 
 
-    private static void queryAllBuckets(OSSClient client) {
-        // 获取用户的Bucket列表
-        List<Bucket> buckets = client.listBuckets();
-        // 遍历Bucket
-        for (Bucket bucket : buckets) {
-//            System.out.println(bucket.getName());
-        }
-    }
 
-    private static void deleteAllBuckets(OSSClient client) {
-        // 获取用户的Bucket列表
-        List<Bucket> buckets = client.listBuckets();
-        // 遍历Bucket
-        for (Bucket bucket : buckets) {
-            deleteBucket(client, bucket.getName());
-        }
-    }
 }

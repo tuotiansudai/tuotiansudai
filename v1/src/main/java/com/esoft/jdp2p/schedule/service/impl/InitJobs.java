@@ -92,15 +92,15 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 						log.debug("enable refresh trusteeship schdule job");
 					}
 					// 第三方资金托管，主动查询
-					CronTrigger trigger2 = (CronTrigger) scheduler
+					CronTrigger trigger = (CronTrigger) scheduler
 							.getTrigger(TriggerKey
 									.triggerKey(
 											ScheduleConstants.TriggerName.REFRESH_TRUSTEESHIP_OPERATION,
 											ScheduleConstants.TriggerGroup.REFRESH_TRUSTEESHIP_OPERATION));
-					if (trigger2 == null) {
+					if (trigger == null) {
 						initRefreshTrusteeshipJob();
 					} else {
-						scheduler.resumeTrigger(trigger2.getKey());
+						scheduler.resumeTrigger(trigger.getKey());
 					}
 				}
 
@@ -115,7 +115,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 											ScheduleConstants.TriggerName.AUTO_REPAYMENT,
 											ScheduleConstants.TriggerGroup.AUTO_REPAYMENT));
 					if (trigger == null) {
-						initAutoRepaymengJob();
+						initAutoRepaymentJob();
 					} else {
 						scheduler.resumeTrigger(trigger.getKey());
 					}
@@ -123,33 +123,33 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 				if (enableRepayAlert.equals("1")) {
 					// 还款提醒
-					CronTrigger trigger3 = (CronTrigger) scheduler
+					CronTrigger trigger = (CronTrigger) scheduler
 							.getTrigger(TriggerKey.triggerKey(
 									ScheduleConstants.TriggerName.REPAY_ALERT,
 									ScheduleConstants.TriggerGroup.REPAY_ALERT));
-					if (trigger3 == null) {
-						JobDetail jobDetail3 = JobBuilder
+					if (trigger == null) {
+						JobDetail jobDetail = JobBuilder
 								.newJob(RepayAlert.class)
 								.withIdentity(
 										ScheduleConstants.TriggerName.REPAY_ALERT,
 										ScheduleConstants.TriggerGroup.REPAY_ALERT)
 								.build();
 
-						trigger3 = TriggerBuilder
+						trigger = TriggerBuilder
 								.newTrigger()
 								.withIdentity(
 										ScheduleConstants.TriggerName.REPAY_ALERT,
 										ScheduleConstants.TriggerGroup.REPAY_ALERT)
-								.forJob(jobDetail3)
+								.forJob(jobDetail)
 								.withSchedule(
 								// 每天上午九点
 										CronScheduleBuilder
 												.cronSchedule("0 0 9 * * ? *"))
 								.build();
 
-						scheduler.scheduleJob(jobDetail3, trigger3);
+						scheduler.scheduleJob(jobDetail, trigger);
 					} else {
-						scheduler.rescheduleJob(trigger3.getKey(), trigger3);
+						scheduler.rescheduleJob(trigger.getKey(), trigger);
 					}
 				}
 
@@ -157,15 +157,15 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					log.debug("start loan overdue check schdule job");
 				}
 				// 借款逾期调度
-				CronTrigger trigger4 = (CronTrigger) scheduler
+				CronTrigger trigger = (CronTrigger) scheduler
 						.getTrigger(TriggerKey
 								.triggerKey(
 										ScheduleConstants.TriggerName.LOAN_OVERDUE_CHECK,
 										ScheduleConstants.TriggerGroup.LOAN_OVERDUE_CHECK));
-				if (trigger4 == null) {
+				if (trigger == null) {
 					initLoanOverdueCheckJob();
 				} else {
-					scheduler.resumeTrigger(trigger4.getKey());
+					scheduler.resumeTrigger(trigger.getKey());
 				}
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
@@ -202,7 +202,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	 * 
 	 * @throws SchedulerException
 	 */
-	private void initAutoRepaymengJob() throws SchedulerException {
+	private void initAutoRepaymentJob() throws SchedulerException {
 		JobDetail jobDetail = JobBuilder
 				.newJob(AutoRepayment.class)
 				.withIdentity(ScheduleConstants.JobName.AUTO_REPAYMENT,

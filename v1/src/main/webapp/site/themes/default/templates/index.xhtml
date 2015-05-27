@@ -257,24 +257,23 @@
 			<!--个人理财结束-->
 			<div class="media">
 			    <div class="tabs">
-			        <a id="tab1" class="thover" onclick="show(1)">#{categoryTermHome.getTermById('meitibaodao').name}</a>
-			        <a id="tab2" onclick="show(2)">#{categoryTermHome.getTermById('wangzhangonggao').name}</a>
-			        <a class="fr gengduo" href="#{path}/term/meitibaodao">更多></a>
+			        <a id="tab1" class="thover" onmouseover="show(1)" href="#{path}/news/mediareport">#{categoryTermHome.getTermById('mediareport').name}</a>
+			        <a id="tab2" onmouseover="show(2)" href="#{path}/news/announcement">#{categoryTermHome.getTermById('announcement').name}</a>
 			    </div>
 			    <div class="tab1-cons clearfix" id="tab11" style=" display:block;">
-			    	<ui:param name="pageModel" value="#{nodeList.getNodes('meitibaodao',3)}"></ui:param>
+			    	<ui:param name="pageModel" value="#{nodeList.getNodes('mediareport',3)}"></ui:param>
                    	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
                    		<div class="tab1-con1">
-				            <span><a href="#{path}/node/meitibaodao/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <span><a title="#{node.title}" href="#{path}/node/mediareport/#{node.id}">#{node.title}</a></span>
 				            <p>#{node.description}</p>
 				        </div>
                    	</ui:repeat>
 			    </div>
 			    <div class="tab2-cons clearfix" id="tab22" style=" display:none;">
-			        <ui:param name="pageModel" value="#{nodeList.getNodes('wangzhangonggao',3)}"></ui:param>
+			        <ui:param name="pageModel" value="#{nodeList.getNodes('announcement',3)}"></ui:param>
                    	<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
                    		<div class="tab1-con1">
-				            <span><a href="#{path}/node/wangzhangonggao/#{node.id}"><img src="#{path}#{node.thumb}" /></a></span>
+				            <span><a title="#{node.title}" href="#{path}/node/announcement/#{node.id}">#{node.title}</a></span>
 				            <p>#{node.description}</p>
 				        </div>
                    	</ui:repeat>

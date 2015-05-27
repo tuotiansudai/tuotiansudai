@@ -1,0 +1,24 @@
+<ui:composition template="../page.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:o="http://omnifaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+	<ui:define name="content">
+		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css" />
+		<div class="introduction_banner"></div>
+		<div class="introduction_content">
+			<h4>公司简介<span>Company   Profile</span></h4>
+			<div></div>
+			<p>拓天速贷是一家以P2P形式为依托，面向个人投资人的理财融资平台。平台主打优质理财，低门槛提供稳健型理财产品。所有投资产品均被融资担保机构实地调查认证。平台由拓天伟业（北京）资产管理有限公司旗下的拓天伟业（北京）金融信息服务有限公司运营。拓天伟业主要是利用了现有互联网信息技术，将有融资需求的借款人与有富余理财资金的投资人进行在线信息配对。帮助投资人寻找到低门槛、低风险、高收益的理财产品。拓天速贷秉承用心服务，诚信经营的经营理念，坚持以人为本，日事日毕，正道经营，共存共赢的管理理念，以安全、诚信、专业、创新、长远为核心价值观，坚持兴企安国的公司使命，拓天速贷将成为国内一流的线上金融服务平台。</p>
+			<img src="#{tplVars.themeImagePath}/website/introduction_a.jpg" alt="" class="m_22"/>
+			<img src="#{tplVars.themeImagePath}/website/introduction_b.jpg" alt="" class="m_45"/>
+			<img src="#{tplVars.themeImagePath}/website/introduction_c.jpg" alt="" class="m_22"/>
+			<img src="#{tplVars.themeImagePath}/website/introduction_d.jpg" alt="" class="m_45"/>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -90,9 +90,9 @@
 .yhkxx li .yhk{width:228px; padding-top:16px; height:75px; text-align:center; font-size:14px; color:#a3a3a3; border-bottom:1px solid #e1e1e1;}
 .yhkxx li .yhk p{ line-height:30px;}
 .yhkxx li a{color:#f33735; line-height:25px; }
-.yhkxx_l{ float:left; padding-left:53px;}
-.yhkxx_r{ padding-left:15px;}
-.yhkxx_c{ padding-left:80px; line-height:10px;}
+.yhkxx_l{ margin-left:53px;}
+.yhkxx_r{ margin-left:15px;}
+.yhkxx_c{ margin-left:80px; line-height:10px;}
 .yhkxx li img.jia{width:44px; height:44px; padding-top:10px;}
 .txczje_r span.xzyhk{font-size:14px; color:#ababab; padding-left:20px;}
 .date_select03{margin-top:5px; margin-left:0;}
