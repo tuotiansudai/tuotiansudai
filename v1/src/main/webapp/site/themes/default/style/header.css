@@ -24,8 +24,8 @@ strong,em,b,i,h1,h2,h3{font-style: normal;font-weight: normal;}
 .top-con-right a:hover{border: 1px solid #c2ae8b;border-radius: 4px;}
 .header{width: 1000px;margin:0 auto;}
 .logo{display: inline-block;margin-top: 22px;margin-bottom: 22px;}
-.nav li{float: left;position: relative;z-index:22;margin-top: 32px;width: 116px;height: 42px;line-height: 42px;text-align: center;}
-.nav li >a{display: inline-block; font-size: 18px;color: #3e3e3e;width: 116px;height: 42px;line-height: 42px;text-align: center;}
+.nav li{float: left;position: relative;z-index:22;margin-top: 32px;width: 110px;height: 42px;line-height: 42px;text-align: center;}
+.nav li >a{display: inline-block; font-size: 18px;color: #3e3e3e;width: 110px;height: 42px;line-height: 42px;text-align: center;}
 .nav li:hover >a{color: #fff;background: #f33735}
 .submenu{position: absolute;width: 114px;border: 1px solid #f0f0f0;background: #fff; left: 0px;top:41px;display: none;padding-bottom: 12px;padding-top: 8px;}
 .submenu dd{text-align: center;line-height: 32px;}
