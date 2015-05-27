@@ -180,7 +180,7 @@
 				<f:event type="preRenderComponent"
 					listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
 				<f:event type="preRenderComponent"
-					listener="#{loanList.addOrder('loan.commitTime','asc')}"></f:event>
+					listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
 
 				<ui:param name="orderColumn"
 					value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>

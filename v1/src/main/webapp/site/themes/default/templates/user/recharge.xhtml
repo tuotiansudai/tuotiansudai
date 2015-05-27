@@ -15,9 +15,10 @@
 		<script>
 			//<![CDATA[
 			var mask_clientH=$(window).height();
-			$('mask_modal').css('height',mask_clientH);
 
 			function checkRecharge() {
+				var mask_clientH=$(window).height();
+				$('mask_modal').css('height',mask_clientH);
 				var flag = false;
 				var myselect = $(".zhcz_ul a.hover");
 				var regx = /^[1-9]\d*$/;
@@ -30,6 +31,7 @@
 				}
 				if ((myselect.length >= 1) && regx.test(money)) {
 					flag = true;
+					$('.mask_modal').css('height',mask_clientH);
 					$('.mask_modal').css('display','block');
                 	$('.mask_main').css('display','block');
 				}

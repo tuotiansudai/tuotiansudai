@@ -1,0 +1,1 @@
+INSERT INTO `menu` VALUES ('guide','MainMenu','新手指引','/website/guide',NULL,'1','4','','1','*','_self','');

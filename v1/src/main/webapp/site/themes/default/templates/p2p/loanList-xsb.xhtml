@@ -181,7 +181,7 @@
 				<f:event type="preRenderComponent"
 					listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
 				<f:event type="preRenderComponent"
-					listener="#{loanList.addOrder('loan.commitTime','asc')}"></f:event>
+					listener="#{loanList.addOrder('loan.commitTime','desc')}"></f:event>
 
 				<ui:repeat var="loan" value="#{loanList.lazyModelData}">
 					<div class="list01 clearfix">
