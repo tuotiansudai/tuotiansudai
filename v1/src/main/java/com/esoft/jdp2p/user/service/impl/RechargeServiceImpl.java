@@ -95,7 +95,10 @@ public class RechargeServiceImpl implements RechargeService {
 		if (contractList.size() == 1) {
 			Recharge recharge = contractList.get(0);
 			ht.lock(recharge, LockMode.UPGRADE);
-			String temp = recharge.getId();
+			Session session = ht.getSessionFactory().openSession();
+			List<Recharge> rechargeList = session.createQuery(hql).setParameter(0, gid + "%").list();
+			session.close();
+			String temp = rechargeList.get(0).getId();
 			temp = temp.substring(temp.length() - 6);
 			itemp = Integer.valueOf(temp);
 		}

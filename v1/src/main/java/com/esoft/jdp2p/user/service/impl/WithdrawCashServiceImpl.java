@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -216,7 +217,10 @@ public class WithdrawCashServiceImpl implements WithdrawCashService {
 		if (contractList.size() == 1) {
 			WithdrawCash withdrawCash = contractList.get(0);
 			ht.lock(withdrawCash, LockMode.UPGRADE);
-			String temp = withdrawCash.getId();
+			Session session = ht.getSessionFactory().openSession();
+			List<WithdrawCash> withdrawCaseList = session.createQuery(hql).setParameter(0, gid + "%").list();
+			session.close();
+			String temp = withdrawCaseList.get(0).getId();
 			temp = temp.substring(temp.length() - 6);
 			itemp = Integer.valueOf(temp);
 		}
