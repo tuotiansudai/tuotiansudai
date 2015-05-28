@@ -78,7 +78,7 @@ public class UmPayBankCardHome extends BankCardHome {
 		if (StringUtils.isNotEmpty(super.getSaveView())) {
 			return super.getSaveView();
 		}
-		return "pretty:withdraw";
+		return "pretty:bankCardList";
 	}
 
 	/**

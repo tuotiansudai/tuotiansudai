@@ -124,7 +124,10 @@
 								<span>*</span>银行卡号
 							</div>
 							<div class="txczje_r">
-								<h:inputText value="#{bankCardHome.instance.cardNo}" styleClass="txt02 txt03"></h:inputText>
+								<h:inputText id="bankCardNumber" label="银行卡号" value="#{bankCardHome.instance.cardNo}" required="true" styleClass="txt02 txt03">
+									<f:validateLength minimum="16" maximum="19"/>
+								</h:inputText>
+								<p:watermark value="16至19位卡号" for="bankCardNumber"></p:watermark>
 							</div>
 							<div class="clear"></div>
 						</div>
