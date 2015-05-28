@@ -2,19 +2,12 @@ package com.esoft.jdp2p.loan.model;
 
 // default package
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import com.esoft.archer.user.model.User;
 import com.esoft.jdp2p.coupon.model.UserCoupon;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Recharge entity. @author MyEclipse Persistence Tools

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
+import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,9 +90,19 @@ public class InvestServiceImpl implements InvestService {
 		if (contractList.size() == 1) {
 			Invest im = contractList.get(0);
 			ht.lock(im, LockMode.UPGRADE);
-			String temp = im.getId();
-			temp = temp.substring(temp.length() - 6);
-			itemp = Integer.valueOf(temp);
+			Session session = null;
+			try {
+				session = ht.getSessionFactory().openSession();
+				List<Invest> investList = session.createQuery(hql).setParameter(0, gid + "%").list();
+				String temp = investList.get(0).getId();
+				temp = temp.substring(temp.length() - 6);
+				itemp = Integer.valueOf(temp);
+			} finally {
+				if (session != null) {
+					session.close();
+				}
+			}
+
 		}
 		itemp++;
 		gid += String.format("%06d", itemp);
