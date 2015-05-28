@@ -217,12 +217,18 @@ public class WithdrawCashServiceImpl implements WithdrawCashService {
 		if (contractList.size() == 1) {
 			WithdrawCash withdrawCash = contractList.get(0);
 			ht.lock(withdrawCash, LockMode.UPGRADE);
-			Session session = ht.getSessionFactory().openSession();
-			List<WithdrawCash> withdrawCaseList = session.createQuery(hql).setParameter(0, gid + "%").list();
-			session.close();
-			String temp = withdrawCaseList.get(0).getId();
-			temp = temp.substring(temp.length() - 6);
-			itemp = Integer.valueOf(temp);
+			Session session = null;
+			try {
+				session = ht.getSessionFactory().openSession();
+				List<WithdrawCash> withdrawCaseList = session.createQuery(hql).setParameter(0, gid + "%").list();
+				String temp = withdrawCaseList.get(0).getId();
+				temp = temp.substring(temp.length() - 6);
+				itemp = Integer.valueOf(temp);
+			} finally {
+				if (session != null) {
+					session.close();
+				}
+			}
 		}
 		itemp++;
 		gid += String.format("%08d", itemp);

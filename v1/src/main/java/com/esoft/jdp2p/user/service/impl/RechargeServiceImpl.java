@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
+import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,12 +96,18 @@ public class RechargeServiceImpl implements RechargeService {
 		if (contractList.size() == 1) {
 			Recharge recharge = contractList.get(0);
 			ht.lock(recharge, LockMode.UPGRADE);
-			Session session = ht.getSessionFactory().openSession();
-			List<Recharge> rechargeList = session.createQuery(hql).setParameter(0, gid + "%").list();
-			session.close();
-			String temp = rechargeList.get(0).getId();
-			temp = temp.substring(temp.length() - 6);
-			itemp = Integer.valueOf(temp);
+			Session session = null;
+			try {
+				session = ht.getSessionFactory().openSession();
+				List<Recharge> rechargeList = session.createQuery(hql).setParameter(0, gid + "%").list();
+				String temp = rechargeList.get(0).getId();
+				temp = temp.substring(temp.length() - 6);
+				itemp = Integer.valueOf(temp);
+			} finally {
+				if (session != null) {
+					session.close();
+				}
+			}
 		}
 		itemp++;
 		gid += String.format("%08d", itemp);
