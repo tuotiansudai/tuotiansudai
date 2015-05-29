@@ -232,7 +232,6 @@ public class UmPayNormalRepayOperation extends
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(LoanRepay lr,
 			FacesContext facesContext) throws IOException,ReqDataException, RetDataException {
-		lr.setStatus(RepayStatus.WAIT_REPAY_VERIFY);
 		ht.update(lr);
 		// 所有待还金额
 		Double allRepayMoney = ArithUtil.add(lr.getCorpus(),

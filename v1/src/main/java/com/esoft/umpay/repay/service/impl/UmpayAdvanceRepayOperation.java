@@ -145,8 +145,6 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 		// 待还总额 (给投资人总利息 + 给系统总额 + 剩余总本金 +还款手续费总和)
 		double sumPay = ArithUtil.add(feeToInvestor, feeToSystem, sumCorpus,
 				feeAll);
-		// 改项目状态。
-		loan.setStatus(LoanStatus.WAIT_REPAY_VERIFY);
 		ht.merge(loan);
 
 		try {
