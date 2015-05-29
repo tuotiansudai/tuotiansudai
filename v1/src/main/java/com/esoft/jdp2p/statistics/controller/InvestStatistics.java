@@ -204,7 +204,7 @@ public class InvestStatistics {
 	 */
 	@SuppressWarnings("unchecked")
 	public long getAllInvestsRepayNum() {
-		String hql = "Select count(repay) from InvestRepay repay where time is not null";
+		String hql = "Select count(repay) from LoanRepay repay where time is not null";
 		List<Object> oos = ht.find(hql);
 		Object o = oos.get(0);
 		if (o == null) {
