@@ -217,6 +217,9 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 					&& TrusteeshipConstants.Status.SENDED
 							.equals(to.getStatus())) {
 				to.setStatus(TrusteeshipConstants.Status.PASSED);
+				if (loan.getStatus().equals(LoanConstants.RepayStatus.REPAYING)) {
+					loan.setStatus(LoanConstants.RepayStatus.WAIT_REPAY_VERIFY);
+				}
 				if (loan.getStatus().equals(LoanStatus.WAIT_REPAY_VERIFY)) { // 如果是等待还款确认
 					// 调动标的转账执行分账操作
 					// 将钱转入投资人 + 将钱转入系统收费
