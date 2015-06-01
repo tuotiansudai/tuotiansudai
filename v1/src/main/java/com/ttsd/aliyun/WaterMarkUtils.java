@@ -11,6 +11,7 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import sun.awt.image.JPEGImageDecoder;
 
 public final class WaterMarkUtils {
 
@@ -46,7 +47,7 @@ public final class WaterMarkUtils {
             Image waterImage = ImageIO.read(waterFile);
             int waterWidth = waterImage.getWidth(null);
             int waterHeight = waterImage.getHeight(null);
-            graphics.drawImage(waterImage, (width - waterWidth) / 2, (height - waterHeight) / 2, waterWidth, waterHeight, null);
+            graphics.drawImage(waterImage, 0,0, width, height, null);
             //水印文件结束
             graphics.dispose();
 
