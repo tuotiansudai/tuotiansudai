@@ -47,8 +47,8 @@
 .tz-btn:hover{background: #C50907}
 .time{height: 30px;line-height: 30px;font-size: 12px;color: #aaacaf;text-align: center;}
 .time i{display: inline-block;width: 14px;height: 14px;background: url(../images/index/full.png);}
-.media{ width:1000px; min-height:338px; margin:0 auto 60px; overflow:hidden; border-bottom:1px solid #d2d2d2;padding-bottom: 30px}
-.tabs{ width:100%; margin-top:30px; padding-bottom:16px; border-bottom:1px solid #d2d2d2;}
+.media{ width:1000px;margin:0 auto; overflow:hidden; padding-bottom: 30px}
+.tabs{ width:100%; margin-top:20px; padding-bottom:16px; border-bottom:1px solid #d2d2d2;}
 .tabs a{display:inline-block; padding-right:30px;text-align:center; cursor:pointer;font-size: 20px;color: #003d48;font-weight: bold;}
 .tabs a:hover{ color:#f33735;}
 .thover{color:#f33735 !important;}

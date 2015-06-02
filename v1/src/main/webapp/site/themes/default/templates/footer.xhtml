@@ -60,7 +60,9 @@
 			<div class="ft-top contact">
 				<span>客服电话</span>
 				<ul>
-					<li class="tel">#{configHome.getConfigValue("site_phone")}</li>
+					<li class="tel">#{configHome.getConfigValue("site_phone")}
+						<span>#{configHome.getConfigValue("service_time")}</span>
+					</li>
 					<!--<li>邮箱：#{configHome.getConfigValue("company_email")}</li>-->
 					<li>地址：#{configHome.getConfigValue("company_address")}</li>
 				</ul>
