@@ -29,7 +29,7 @@ a{color:#fff; text-decoration: none;}
 body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-family: "microsoft yahei";}
 .safe{width:1005px; height: auto; overflow: hidden; margin: 0px auto; color:#353535; font-size: 16px;}
 .safe h3{width:1005px; height: 82px; line-height: 82px; text-align: center; background: url("../images/top_background.jpg") no-repeat; color:#fff; font-size: 22px; font-weight: normal;}
-.safe ul{width:100%; height: auto; background: url("../images/background_02.jpg") no-repeat;}
+.safe ul{width:100%; height: auto; background: url("../images/background.jpg") no-repeat;}
 
 .safe ul li{ width:965px; padding: 0px 20px; }
 .safe ul li.lia{ height: 248px;}
@@ -54,8 +54,8 @@ body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-fa
 
 .contact_map,.introduction_content,.cost_content{width:998px; height: auto; overflow: hidden; margin: 0px auto; border: #e2e2e2 1px solid; border-radius:5px; margin-bottom: 30px; padding-bottom: 30px;}
 .contact_map{width:997px;}
-.contact_map h4{ font-weight: normal; font-size: 18px; color:#222222; margin: 10px 0px 26px 10px; width:850px;}
-.contact_map img{width:997px; height: 542px;}
+.contact_map h4{ font-weight: normal; font-size: 18px; color:#222222; margin: 10px 0px 6px 10px; width:850px;}
+.contact_map img{width:997px; }
 .contact_map p{padding-left: 12px; width:850px; line-height: 30px;}
 
 .introduction_banner{ width:100%; height: 271px; background: url("../images/introduction_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}

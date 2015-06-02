@@ -1,4 +1,30 @@
-.online{width:70px; height: 66px; position: fixed; right:20px; bottom:190px; background: url("/site/themes/default/images/qq/qq.png") no-repeat 0 0;}
-.back-to-top{width:70px; height: 66px; position: fixed; right:20px; bottom:120px; background: url("/site/themes/default/images/qq/qq.png") no-repeat 0 -69px;}
-.online:hover{ background: url("/site/themes/default/images/qq/qq_hover.png") no-repeat 0 0;}
-.back-to-top:hover{background: url("/site/themes/default/images/qq/qq_hover.png") no-repeat 0 -69px; cursor: pointer;}
+
+.online,.back-to-top{
+    width: 70px;
+    height: 66px;
+    position: fixed;
+    right: 20px;
+    border-radius:5px;
+    -webkit-transition:.3s;
+    -moz-transition:.3s;
+    -ms-transition:.3s;
+    transition:.3s;
+}
+.online {
+    bottom: 90px;
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px 0px;
+}
+.back-to-top {
+    bottom: 20px;
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -69px;
+}
+
+.online:hover {
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -138px;
+    cursor: pointer;
+}
+
+.back-to-top:hover {
+    background: url("/site/themes/default/images/qq/backtotop.png") no-repeat 0px -207px;
+    cursor: pointer;
+}
