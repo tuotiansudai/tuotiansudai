@@ -17,4 +17,5 @@
 .clear{clear: both;}
 .footer_zs{width:1000px; height: 70px; line-height:70px;border-top: 1px solid #606060; margin-top: 22px;}
 .footer_zs a{  float: right;  margin-top: 5px;margin-left:5px;}
+.footer_zs span a{ display: block; float: left; margin-top: 25px; margin-left:-20px;}
 .copyright{font-size: 15px;color: #ffffff; width:500px; float:left; }
