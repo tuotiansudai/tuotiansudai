@@ -90,6 +90,9 @@ public class UmPayCancelLoanOperation extends UmPayOperationServiceAbs<Loan>{
 		try {
 			log.info("开始流标编号:"+loan.getId());
 			for (Invest inv :invests) {
+				if (!inv.getStatus().equalsIgnoreCase(InvestConstants.InvestStatus.BID_SUCCESS)) {
+					continue;
+				}
 				//查询这个这笔投资是否成功,成功则跳过
 				//String transferStatus = umPayQueryTransferOperation.handleSendedOperation("02"+inv.getId(),"03",inv.getTime());
 				//if(!"2".equals(transferStatus)){	//流标失败了
