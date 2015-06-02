@@ -35,7 +35,8 @@ public class LoanRepayList extends EntityQuery<LoanRepay> {
 				"loan.user.id = #{loanRepayList.example.loan.user.id}",
 				"repayDay >= #{loanRepayList.searchMinTime}",
 				"repayDay <= #{loanRepayList.searchMaxTime}",
-				"status like #{loanRepayList.example.status}" };
+				"status like #{loanRepayList.example.status}",
+				"status <> 'test'"};
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
 

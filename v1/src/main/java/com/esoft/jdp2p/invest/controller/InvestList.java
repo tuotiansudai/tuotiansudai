@@ -49,6 +49,7 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 		final String[] RESTRICTIONS = {
 				"invest.id like #{investList.example.id}",
 				"invest.status like #{investList.example.status}",
+				"invest.status <> 'test'",
 				"invest.loan.user.id like #{investList.example.loan.user.id}",
 				"invest.loan.id like #{investList.example.loan.id}",
 				"invest.loan.name like #{investList.example.loan.name}",
