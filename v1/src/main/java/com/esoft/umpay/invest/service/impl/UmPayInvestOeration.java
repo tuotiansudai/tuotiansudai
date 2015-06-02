@@ -264,7 +264,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest>{
 		if (invest.getMoney() > ubs.getBalance(invest.getUser().getId())) {
 			throw new InsufficientBalance();
 		}
-		invest.setStatus(InvestConstants.InvestStatus.CANCEL);
+		invest.setStatus(InvestConstants.InvestStatus.WAIT_AFFIRM);
 		invest.setRate(loan.getRate());
 		invest.setTime(new Date());
 		// 投资成功以后，判断项目是否有尚未认购的金额，如果没有，则更改项目状态。

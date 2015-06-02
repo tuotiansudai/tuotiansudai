@@ -11,6 +11,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.jdp2p.loan.service.LoanService;
+import com.esoft.umpay.loan.service.impl.UmPayLoanStatusService;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -86,6 +88,12 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 
 	@Resource
 	TransferService transferService;
+
+	@Resource
+	UmPayLoanStatusService umpayLoanStatusService;
+
+	@Resource
+	LoanService loanService;
 
 	@Logger
 	Log log;
@@ -226,6 +234,10 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 					loanMoney2Invest(loan);
 					/* 这个操作只能等待第三方分账 成功然后调用 */
 					repayService.advanceRepay(loan.getId());
+					if (loanService.isCompleted(loan.getId())) {
+						/* updateLoanStatus2Complete(repay.getLoan()); */
+						umpayLoanStatusService.updateLoanStatusOperation(loan, UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH, false);
+					}
 				}
 			} else {
 				if (loan.getStatus().equals(LoanStatus.WAIT_REPAY_VERIFY)) {
@@ -241,6 +253,10 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 			throw new UmPayOperationException("提前还款异常");
 		} catch (InsufficientBalance e) {
 			throw new UmPayOperationException("余额不足");
+		} catch (RetDataException e) {
+			e.printStackTrace();
+		} catch (ReqDataException e) {
+			e.printStackTrace();
 		}
 
 	}
