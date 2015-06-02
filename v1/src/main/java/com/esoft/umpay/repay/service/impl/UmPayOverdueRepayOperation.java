@@ -195,7 +195,7 @@ public class UmPayOverdueRepayOperation extends
 				LoanRepay lr = ht.get(LoanRepay.class, repayId,
 						LockMode.UPGRADE); // 锁定还款信息
 				to.setStatus(TrusteeshipConstants.Status.PASSED);
-				if (lr.getStatus().equals(LoanConstants.RepayStatus.REPAYING)) {
+				if (lr.getStatus().equals(RepayStatus.OVERDUE)) {
 					lr.setStatus(LoanConstants.RepayStatus.WAIT_REPAY_VERIFY);
 				}
 				if (lr.getStatus().equals(RepayStatus.WAIT_REPAY_VERIFY)) {
