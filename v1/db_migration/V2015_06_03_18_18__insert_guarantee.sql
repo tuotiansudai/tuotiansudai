@@ -56,7 +56,6 @@ INSERT INTO `user` VALUES ('ttdbzhaolei','ttdbzhaolei','1025693131@qq.com','4be3
 INSERT INTO `user` VALUES ('ttdbwangzijing','ttdbwangzijing','2228484780@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','王子敬','F','1991-02-24','河北省沧州市献县陌南镇四合一村105号',NULL,NULL,'18331910823',NULL,'北京市大兴区西红门欣宏北大街15号',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-03 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `user` VALUES ('ttdbshengyaru','ttdbshengyaru','1328885841@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','盛亚茹','F','1998-01-30','山东省兖州市谷村镇大洼村1排2号',NULL,NULL,'13520992296',NULL,'北京市丰台区刘家窑正邦嘉园16号院2号楼1409',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-03 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `user` VALUES ('ttdbguosong','ttdbguosong','1106077637@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','郭松','F','1992-11-10','辽宁省北镇市正安镇赵屯村43号',NULL,NULL,'15041643522',NULL,'北京市大兴区西红门欣宏北大街15号',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-03 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `user` VALUES ('ttdblixianyu','ttdblixianyu','547605422@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','李显玉','M','1989-04-23','',NULL,NULL,'15810962003',NULL,'北京市丰台区镇国寺北街春季星空小区3-1-402',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-03 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 INSERT INTO `user_role` VALUES ('ttdbzhangxiangyang','MEMBER');
 INSERT INTO `user_role` VALUES ('ttdbzhangliuyang','MEMBER');
@@ -115,7 +114,6 @@ INSERT INTO `user_role` VALUES ('ttdbzhaolei','MEMBER');
 INSERT INTO `user_role` VALUES ('ttdbwangzijing','MEMBER');
 INSERT INTO `user_role` VALUES ('ttdbshengyaru','MEMBER');
 INSERT INTO `user_role` VALUES ('ttdbguosong','MEMBER');
-INSERT INTO `user_role` VALUES ('ttdblixianyu','MEMBER');
 
 INSERT INTO `user_role` VALUES ('ttdbzhangxiangyang','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttdbzhangliuyang','ROLE_MERCHANDISER');
@@ -174,7 +172,6 @@ INSERT INTO `user_role` VALUES ('ttdbzhaolei','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttdbwangzijing','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttdbshengyaru','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttdbguosong','ROLE_MERCHANDISER');
-INSERT INTO `user_role` VALUES ('ttdblixianyu','ROLE_MERCHANDISER');
 COMMIT;
 
 
