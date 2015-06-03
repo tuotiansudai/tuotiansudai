@@ -19,6 +19,7 @@
 			href="#{tplVars.themeStylePath}/content.css" />
 
 		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
+		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
 				if (#{loanHome.instance.businessType eq '企业借款'}) {
