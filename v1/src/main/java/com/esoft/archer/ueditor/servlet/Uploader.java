@@ -1,12 +1,6 @@
 package com.esoft.archer.ueditor.servlet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.aliyun.WaterMarkUtils;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.InvalidContentTypeException;
@@ -107,8 +102,8 @@ public class Uploader {
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
 
 			String switchOss = PropertiesUtils.getPro("plat.is.start");
+			String rootPath = request.getSession().getServletContext().getRealPath("/");
 			if(switchOss.equals("oss")){
-				String rootPath = request.getSession().getServletContext().getRealPath("//");
 				if(switchBlur){
 					this.url = AliyunUtils.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
 				}else{
@@ -116,9 +111,11 @@ public class Uploader {
 				}
 				this.title = url;
 			}else{
+				String waterPath = rootPath + "/site/themes/default/images/watermark.png";
+				ByteArrayInputStream bin = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath, dfi.getInputStream(), 0, 0).toByteArray());
 				FileOutputStream out = new FileOutputStream(new File(savefile));
 				BufferedOutputStream output = new BufferedOutputStream(out);
-				Streams.copy(in, output, true);
+				Streams.copy(bin, output, true);
 			}
 			this.state = this.errorInfo.get("SUCCESS");
 		} else {

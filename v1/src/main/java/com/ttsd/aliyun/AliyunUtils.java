@@ -85,7 +85,7 @@ public class AliyunUtils {
             throws OSSException, ClientException, FileNotFoundException ,IOException{
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
-        String waterPath = rootPath + "site/themes/default/images/watermark.png";
+        String waterPath = rootPath + "/site/themes/default/images/watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath,inputStream,0,0).toByteArray());
         objectMeta.setContentLength(in.available());
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
