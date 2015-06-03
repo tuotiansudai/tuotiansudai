@@ -55,6 +55,22 @@ def stop():
     sh('pkill python')
 
 
+@task
+def deploy():
+    run_shell_under_v1('gradle clean')
+    run_shell_under_v1('gradle war')
+    run_shell_under_v1('sudo service tomcat6 stop')
+    run_shell_under_v1('sudo rm -rf /usr/share/tomcat6/webapps/ROOT')
+    run_shell_under_v1('sudo cp war/ROOT.war /usr/share/tomcat6/webapps/')
+    run_shell_under_v1('sudo service tomcat6 start')
+
+
+def run_shell_under_v1(command):
+    from paver.shell import sh
+
+    return sh(command, cwd='v1')
+
+
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
 
