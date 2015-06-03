@@ -249,4 +249,10 @@ public class UmPayLoanHome extends LoanHome {
 	 *           FacesUtil.redirect(loanListUrl); }
 	 */
 
+	public void redirectToHomeWhenLoanIsNotExist(Loan loan) throws IOException {
+		if (loan == null) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+		}
+	}
+
 }
