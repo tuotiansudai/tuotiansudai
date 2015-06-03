@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD UNIQUE INDEX `mobile_phone_UNIQUE` (`mobile_number` ASC);
