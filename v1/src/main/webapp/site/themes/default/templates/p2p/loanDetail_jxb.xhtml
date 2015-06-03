@@ -207,7 +207,7 @@
 					<div class="rengou"><span><h:outputText value="#{loan.guaranteeCompanyDescription}" escape="false"></h:outputText></span></div>
 				</div>
 				<div style="display:block">
-					<h:form>
+					<h:form id="dataTable">
 						<div class="rengou">
 							<span style="width: 210px; margin-left: 10px;">已有<strong class="colorea544a">#{loanCalculator.countSuccessInvest(loan.id)}</strong>人认购</span>
 							<span style="width: 210px;">平均每单投资<strong class="colorea544a">
@@ -233,7 +233,7 @@
 							<ui:repeat var="invest" value="#{investList.lazyModelData}">
 								<ui:fragment rendered="#{invest.status ne 'cancel'}">
 									<tr>
-										<td>#{invest.user.username.substring(0,3)}***</td>
+										<td width="175">#{invest.user.username.substring(0,3)}***</td>
 										<td>
 											<h:outputText value="#{invest.time}">
 												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" locale="cn" timeZone="GMT+8"></f:convertDateTime>
@@ -252,7 +252,7 @@
 
 						<!-- 分页组件 -->
 						<div class="page-bar">
-							<ui:include src="#{tplVars.componentsPath}/loanPaging.xhtml"></ui:include>
+							<ui:include src="#{tplVars.componentsPath}/investPaging.xhtml"></ui:include>
 						</div>
 					</h:form>
 				</div>
