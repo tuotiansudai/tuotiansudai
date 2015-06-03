@@ -13,7 +13,8 @@ strong,em,b,i,h1,h2,h3{font-style: normal;font-weight: normal;}
 
 .top{background-color: #f9f9f9;height: 42px;border-bottom: 1px solid #ededed;}
 .top-con{width: 1000px;margin:0 auto;color: #a5a5a5}
-.top-con-left span{margin-top: 10px;display: inline-block;}
+.top-con-left span{margin-top: 10px;display: inline-block;color:#666;}
+.top-con-left i{margin-left:8px; font-size:12px;}
 .top-con-left span i{display: inline-block;width: 30px;vertical-align: middle; height: 26px; background: url(../images/index/top.png) no-repeat;}
 .top-con-left a{display: inline-block;width: 30px;height: 27px;background: url(../images/index/top.png) no-repeat;vertical-align: middle;margin-left: 10px;}
 .top-con-left a.qq{background-position: 0px -26px}

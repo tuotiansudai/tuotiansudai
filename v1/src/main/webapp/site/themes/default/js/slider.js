@@ -1,5 +1,6 @@
 $(function(){
     var iNow = 0;
+    $('.step ul li').eq(0).css({opacity:1});
     function tab(){
         $('.step ol li').removeClass('active');
         $('.step ol li').eq(iNow).addClass('active');

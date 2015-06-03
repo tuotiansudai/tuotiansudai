@@ -197,6 +197,22 @@ public class InvestStatistics {
 		}
 		return (Double) o;
 	}
+	/**
+	 * 计算累计还款期数
+	 *
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public long getAllInvestsRepayNum() {
+		String hql = "Select count(repay) from LoanRepay repay where time is not null";
+		List<Object> oos = ht.find(hql);
+		Object o = oos.get(0);
+		if (o == null) {
+			return 0;
+		}
+		return (Long) oos.get(0);
+	}
+
 
 	/**
 	 * 获取所有成功的投资数量
@@ -207,18 +223,17 @@ public class InvestStatistics {
 	public long getAllSuccessInvestsNum() {
 		String hql = "select count(invest) from Invest invest "
 				+ "where invest.status not in (?,?)";
-		List<Object> oos = ht.find(hql, new String[] {
+		List<Object> oos = ht.find(hql, new String[]{
 				InvestConstants.InvestStatus.WAIT_AFFIRM,
-				InvestConstants.InvestStatus.CANCEL });
+				InvestConstants.InvestStatus.CANCEL});
 		if (oos.get(0) == null) {
 			return 0;
 		}
 		return (Long) oos.get(0);
 	}
-
 	/**
-	 * 获取所有成功的投资数量
-	 * 
+	 * 累计还款期数
+	 *
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

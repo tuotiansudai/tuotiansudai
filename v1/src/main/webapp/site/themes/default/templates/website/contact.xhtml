@@ -12,15 +12,15 @@
 		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/website.css" />
 		<div class="contact_map">
 			<h4>拓天伟业（北京）金融信息服务有限公司</h4>
-			<img src="#{tplVars.themeImagePath}/website/contact_map.png" alt=""/>
+			<img src="#{tplVars.themeImagePath}/contact_map.jpg" alt=""/>
 			<p>公司地址：</p>
-			<p>地址：北京市丰台区洋桥12号天路蓝图大厦8层</p>
+			<p>地址：#{configHome.getConfigValue("company_address")}</p>
 			<p>邮编：100068</p>
 			<p>交通：地铁十号线角门东站A口出向北500米，公交529路、501路、485路、<br/>
 				107路、603路、66路、72路、698路、102路等</p>
-			<p>电话：400-169-1188</p>
-			<p>客服热线：400-169-1188(9:00-22:00)</p>
-			<p>联系邮箱：kefu@tuotiansudai.com</p>
+			<p>电话：#{configHome.getConfigValue("site_phone")}</p>
+			<p>客服热线：#{configHome.getConfigValue("site_phone")}&#160;&#160;<span>#{configHome.getConfigValue("service_time")}</span></p>
+			<p>联系邮箱：#{configHome.getConfigValue("company_email")}</p>
 		</div>
 	</ui:define>
 </ui:composition>

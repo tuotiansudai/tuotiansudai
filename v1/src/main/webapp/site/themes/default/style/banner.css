@@ -12,7 +12,7 @@
 .layer{ width:275px;height: 268px;background: url(../images/index/layer-bg.png) repeat;position:absolute; right:0px; top:28px;border-radius: 5px;padding-top: 20px;padding-left: 16px;}
 .p1{font-size: 20px;}
 .p4,.p2{padding-top: 20px;}
-.p2,.p3{font-size: 15px;}
+.p2,.p3{font-size: 15px;text-align:center}
 .p2 strong{font-size: 45px;color: #f33735}
 .p3 strong{font-size: 25px;color: #f33735}
 .p4 a{width: 250px;height: 48px;text-align: center;line-height: 48px;color: #ffffff;background: #f33735;border-radius: 4px;display: inline-block;font-size: 20px;}

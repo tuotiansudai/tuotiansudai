@@ -67,6 +67,7 @@ public class LoanList extends EntityQuery<Loan> implements Serializable {
 		final String[] RESTRICTIONS = { "loan.id like #{loanList.example.id}",
 				"loan.repayType like #{loanList.example.repayType}",
 				"loan.status like #{loanList.example.status}",
+				"loan.status <> 'test'",
 				"loan.name like #{loanList.example.name}",
 				"loan.rate >=#{loanList.minRate}",
 				"loan.rate <=#{loanList.maxRate}",

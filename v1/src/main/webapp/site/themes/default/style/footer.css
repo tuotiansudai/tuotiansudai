@@ -10,10 +10,12 @@
 .ft-top a,.ft-top ul li{font-size: 12px;}
 .ft-top a:hover{text-decoration: underline;}
 .ft-top ul li{line-height: 28px;}
-.contact{width: 250px;padding-right: 40px;}
+.contact{padding-right: 40px;}
 .lastwem{padding-right: 0px;float: right;}
 .ft-top ul li.tel{font-size: 20px;margin: 10px 0px}
+.ft-top ul li.tel span{font-size: 12px; margin-left:10px; color:#ccc;}
 .clear{clear: both;}
 .footer_zs{width:1000px; height: 70px; line-height:70px;border-top: 1px solid #606060; margin-top: 22px;}
-.footer_zs a{ display: block; float: right; width:100px; height:59px; margin-top: 5px;}
+.footer_zs a{  float: right;  margin-top: 5px;margin-left:5px;}
+.footer_zs span a{ display: block; float: left; margin-top: 25px; margin-left:-20px;}
 .copyright{font-size: 15px;color: #ffffff; width:500px; float:left; }
