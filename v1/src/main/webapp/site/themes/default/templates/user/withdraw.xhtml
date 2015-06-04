@@ -61,23 +61,18 @@
 				<h:form id="form">
 					<div class="zhcz_h3">提现</div>
 					<ui:fragment rendered="#{bankCardHome.isBoundBankCard(loginUserInfo.loginUserId) eq true}">
+					<ui:param name="bc" value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId).get(0)}"></ui:param>
+					<f:event type="preRenderComponent" listener="#{withdrawHome.instance.setBankCard(bc)}"></f:event>
 					<div class="zhtx">
 						<ul class="zhtx_ul">
 							<h:panelGroup id="bankCards">
-								<ui:repeat var="bc"
-									value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId)}">
-									<li
-										class="#{bc.id.equals(withdrawHome.instance.bankCard.id)?'zhtx_li':''}"><p:commandLink
-											update=":form:bankCards :form:withdrawBtn" process="@this"
-											actionListener="#{withdrawHome.instance.setBankCard(bc)}">
-											<img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.bankNo}.png" />
-											<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
-											<p>#{bc.cardNo.substring(0,4)} **** ****
-												#{bc.cardNo.substring(bcnL-4,bcnL)}</p>
-										</p:commandLink><em></em></li>
-								</ui:repeat>
+								<li class="zhtx_li">
+									<img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.bankNo}.png" />
+									<ui:param name="bcnL" value="#{bc.cardNo.length()}"></ui:param>
+									<p>#{bc.cardNo.substring(0,4)} **** **** #{bc.cardNo.substring(bcnL-4,bcnL)}</p>
+									<em></em>
+								</li>
 							</h:panelGroup>
-							<div class="clear"></div>
 						</ul>
 						<div class="clear"></div>
 					</div>
