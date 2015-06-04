@@ -37,37 +37,34 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
             try {
                 ExceptionQueuedEvent event = it.next();
                 ExceptionQueuedEventContext eqec = event.getContext();
-                if (!(eqec.getException() instanceof ViewExpiredException)) {
-                    FacesContext context = eqec.getContext();
-                    //HttpSession session = (HttpSession)context.getCurrentInstance().getExternalContext().getSession(false);
-                    LoginUserInfo loginUserInfo = new LoginUserInfo();
-                    String userId = loginUserInfo.getLoginUserId();
-                    HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
-                    String RequestUrl = request.getRequestURL()+"?";
-                    if (request.getMethod().equals("GET")) {
-                        RequestUrl += request.getQueryString();
-                    } else {
-                        Map<String, String[]> params = request.getParameterMap();
-                        String queryString = "";
-                        for (String key : params.keySet()) {
-                            String[] values = params.get(key);
-                            for (int i = 0; i < values.length; i++) {
-                                String value = values[i];
-                                queryString += key + "=" + value + "&";
-                            }
+                FacesContext context = eqec.getContext();
+                LoginUserInfo loginUserInfo = new LoginUserInfo();
+                String userId = loginUserInfo.getLoginUserId();
+                HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
+                String RequestUrl = request.getRequestURL()+"?";
+                if (request.getMethod().equals("GET")) {
+                    RequestUrl += request.getQueryString();
+                } else {
+                    Map<String, String[]> params = request.getParameterMap();
+                    String queryString = "";
+                    for (String key : params.keySet()) {
+                        String[] values = params.get(key);
+                        for (int i = 0; i < values.length; i++) {
+                            String value = values[i];
+                            queryString += key + "=" + value + "&";
                         }
-                        queryString = queryString.substring(0, queryString.length() - 1);
-                        RequestUrl += queryString;
                     }
-                    StringBuffer sbException = new StringBuffer();
-                    StackTraceElement[] stackTraceElements =  eqec.getException().getStackTrace();
-                    for (StackTraceElement i: stackTraceElements){
-                        sbException.append(i.toString());
-                        sbException.append("\n");
-                    }
-                    MailService mailService = new MailServiceImpl();
-                    mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
+                    queryString = queryString.substring(0, queryString.length() - 1);
+                    RequestUrl += queryString;
                 }
+                StringBuffer sbException = new StringBuffer();
+                StackTraceElement[] stackTraceElements =  eqec.getException().getStackTrace();
+                for (StackTraceElement i: stackTraceElements){
+                    sbException.append(i.toString());
+                    sbException.append("\n");
+                }
+                MailService mailService = new MailServiceImpl();
+                mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
             } finally {
                 it.remove();
             }
