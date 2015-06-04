@@ -52,7 +52,7 @@ public class UserBO {
 		if (!user
 				.getUsername()
 				.matches(
-						"^([a-zA-Z0-9_]{5,10}|[a-zA-Z]{11}|(?=.*\\d)(?=.*[a-z])[a-zA-Z0-9_]{11}|[0|2-9][0-9]{10}|1[0][0-9]{9}|[a-zA-Z0-9_]{12,16})$")) {
+						"^[a-zA-Z0-9_]{5,25}$")) {
 			throw new IllegalArgumentException(
 					"user.username cannot be a mobile number and must contains by number or word!");
 		}
