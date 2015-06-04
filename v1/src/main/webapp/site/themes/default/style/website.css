@@ -75,7 +75,8 @@ body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-fa
 .cost_content p{ padding: 0px 20px; width:950px; line-height: 30px; margin-top: 12px;}
 .cost_content h4 span{ color:#999999 ; font-size: 15px; margin-left: 12px;}
 
-.cost_content h4{ width:934px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
+.cost_content h4{ width:934px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; position: relative; }
+.cost_content h4 i{position:absolute; width:260px; height: 1px; background:#e98185;left:0px; bottom:-1px;}
 .cost_content table{ border-collapse:collapse; border:1px solid #d2d2d2; margin-left: 20px; color:#666;}
 .cost_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
 
