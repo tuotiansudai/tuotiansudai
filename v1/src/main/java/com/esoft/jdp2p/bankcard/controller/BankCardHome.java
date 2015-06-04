@@ -10,6 +10,7 @@ import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.BankCardConstants;
 import com.esoft.jdp2p.bankcard.BankCardConstants.BankCardStatus;
 import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.user.service.RechargeService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -35,6 +37,9 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 	
 	@Resource
 	private RechargeService rechargeService ;
+
+	@Resource
+	private BankCardService bankCardService;
 
 	private boolean isUpdateBankCard;
 
@@ -114,6 +119,10 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 	 */
 	public String deleteTrusteeship() {
 		throw new RuntimeException("you must override this method!");
+	}
+
+	public boolean isBoundBankCard(String userId) {
+		return bankCardService.isBoundBankCard(userId);
 	}
 
 }

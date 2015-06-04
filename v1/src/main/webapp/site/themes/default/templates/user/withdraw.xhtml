@@ -31,6 +31,19 @@
 				}
 		//]]>           
 		</SCRIPT>
+
+		<!-- 	银行卡绑定校验 -->
+		<sec:bankCardValidator userId="#{loginUserInfo.loginUserId}">
+			<script>
+				$.dialog
+						.alert(
+						'为了您能正常提现，请先绑定提现银行卡!',
+						function() {
+							window.location.href = "#{path}/user/bankCardList";
+						});
+			</script>
+		</sec:bankCardValidator>
+
 		<!-- 	未实名认证 -->
 		<sec:ifNotGranted roles="INVESTOR,LOANER">
 			<script>
@@ -47,12 +60,12 @@
 			<div class="center_right">
 				<h:form id="form">
 					<div class="zhcz_h3">提现</div>
-					<ui:fragment rendered="#{configHome.getConfigValue('ipspay_enable') != '1'}">
+					<ui:fragment rendered="#{bankCardHome.isBoundBankCard(loginUserInfo.loginUserId) eq true}">
 					<div class="zhtx">
 						<ul class="zhtx_ul">
 							<h:panelGroup id="bankCards">
 								<ui:repeat var="bc"
-									value="#{bankCardList.bankCardListbyLoginUser}">
+									value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId)}">
 									<li
 										class="#{bc.id.equals(withdrawHome.instance.bankCard.id)?'zhtx_li':''}"><p:commandLink
 											update=":form:bankCards :form:withdrawBtn" process="@this"
@@ -66,9 +79,6 @@
 							</h:panelGroup>
 							<div class="clear"></div>
 						</ul>
-						<div class="tj">
-							<a href="#{path}/user/bankCardList">管理银行卡</a>
-						</div>
 						<div class="clear"></div>
 					</div>
 					</ui:fragment>

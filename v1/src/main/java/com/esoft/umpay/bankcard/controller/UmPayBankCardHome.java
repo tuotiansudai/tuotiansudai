@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
+import com.esoft.core.annotations.Logger;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,21 +35,37 @@ public class UmPayBankCardHome extends BankCardHome {
 	UmPayReplaceBankCardOperation umPayReplaceBankCardOperation;
 	@Resource
 	private RechargeService rechargeService;
+	@Logger
+	private static Log log;
 
 	/**
 	 * 绑定银行卡
 	 */
 	@Transactional(readOnly = false)
-	public void bindingCardTrusteeship(String bankCradId) {
-		BankCard bankCard = ht.get(BankCard.class, bankCradId);
+	public void bindingCardTrusteeship() {
+		User loginUser = getBaseService().get(User.class, loginUserInfo.getLoginUserId());
+		if (loginUser == null) {
+			FacesUtil.addErrorMessage("用户未登录");
+			return;
+		}
+		if (StringUtils.isEmpty(this.getInstance().getId())) {
+			getInstance().setId(IdGenerator.randomUUID());
+			getInstance().setUser(loginUser);
+			getInstance().setStatus("uncheck");
+			getInstance().setBank(rechargeService.getBankNameByNo(getInstance().getBankNo()));
+		} else {
+			this.setId(getInstance().getId());
+		}
+		getInstance().setTime(new Date());
+		super.save(false);
 		try {
-			umPayBindingBankCardOperation.createOperation(bankCard,
-					FacesContext.getCurrentInstance());
+			umPayBindingBankCardOperation.createOperation(getInstance(), FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			FacesUtil.addErrorMessage("绑定银行卡失败!");
-			e.printStackTrace();
+			log.error(e);
+		} finally {
+			this.setInstance(null);
 		}
-
 	}
 
 	/**

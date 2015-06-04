@@ -25,5 +25,7 @@ public interface BankCardService {
 	 * @param userId 用户id
 	 * @return
 	 */
-	public List<BankCard> getBankCardsByUserId(String userId);
+	List<BankCard> getBoundBankCardsByUserId(String userId);
+
+	boolean isBoundBankCard(String userId);
 }
