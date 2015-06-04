@@ -85,10 +85,10 @@
     </application>
     
     <!-- session超时以后，处理异常。 -->
-<!--      <factory>  -->
-<!--  		<exception-handler-factory>com.esoft.core.application.ArcherExceptionHandlerFactory</exception-handler-factory> -->
-<!--  	</factory>  -->
-    
+    <factory>
+  		<exception-handler-factory>com.esoft.core.application.ArcherExceptionHandlerFactory</exception-handler-factory>
+ 	</factory>
+
     <lifecycle>
         <phase-listener>
             com.esoft.core.jsf.MultiPageMessagesSupport
