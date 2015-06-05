@@ -39,8 +39,7 @@ public class UmPayWithdrawCashServiceImpl extends WithdrawCashServiceImpl {
 	public void applyWithdrawCash(WithdrawCash withdraw)
 			throws InsufficientBalance {
 		// FIXME:缺验证
-		if (withdraw.getMoney() <= userBillBO.getBalance(withdraw.getUser()
-				.getId())) {
+		if (withdraw.getMoney() + withdraw.getFee() <= userBillBO.getBalance(withdraw.getUser().getId())) {
 			withdraw.setFee(calculateFee(withdraw.getMoney()));
 			withdraw.setCashFine(0D);
 
