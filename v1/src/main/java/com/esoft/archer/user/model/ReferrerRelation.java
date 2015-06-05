@@ -65,5 +65,14 @@ public class ReferrerRelation implements java.io.Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public ReferrerRelation(){
+
+    }
+    public ReferrerRelation(String referrerId,String userId){
+        this.referrerId = referrerId;
+        this.userId = userId;
+    }
+
 }
 
