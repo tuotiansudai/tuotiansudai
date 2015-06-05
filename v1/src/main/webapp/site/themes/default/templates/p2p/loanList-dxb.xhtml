@@ -58,23 +58,23 @@
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="6个月" value="6个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(0,6)}"></f:ajax>
+						<h:commandLink title="1-3个月" value="1-3个月">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(0,3)}"></f:ajax>
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="12个月" value="12个月">
+						<h:commandLink title="4-6个月" value="4-6个月">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(3,6)}"></f:ajax>
+						</h:commandLink>
+					</span>
+					<span>
+						<h:commandLink title="7-12个月" value="7-12个月">
 							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(6,12)}"></f:ajax>
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="18个月" value="18个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(12,18)}"></f:ajax>
-						</h:commandLink>
-					</span>
-					<span>
-						<h:commandLink title="24个月" value="24个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(18, 1000)}"></f:ajax>
+						<h:commandLink title="12个月以上" value="24个月以上">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(12, 100)}"></f:ajax>
 						</h:commandLink>
 					</span>
 				</p>
