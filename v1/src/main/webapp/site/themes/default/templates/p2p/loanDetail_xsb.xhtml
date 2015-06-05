@@ -231,7 +231,7 @@
 							</tr>
 
 							<ui:repeat var="invest" value="#{investList.lazyModelData}">
-								<ui:fragment rendered="#{invest.status eq InvestStatus.COMPLETE}">
+								<ui:fragment rendered="#{invest.status eq InvestStatus.BID_SUCCESS}">
 									<tr>
 										<td width="175">#{invest.user.username.substring(0,3)}***</td>
 										<td>
