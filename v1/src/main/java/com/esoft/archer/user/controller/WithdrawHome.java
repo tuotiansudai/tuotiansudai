@@ -63,14 +63,13 @@ public class WithdrawHome extends EntityHome<WithdrawCash> {
 	 * 计算手续费和罚金
 	 */
 	public boolean calculateFee() {
+		this.getInstance().setFee(wcs.calculateFee(this.getInstance().getMoney()));
 		if (isNotEnoughMoney()) {
 			FacesUtil.addErrorMessage("余额不足！");
 			FacesUtil.getCurrentInstance().validationFailed();
 			this.getInstance().setMoney(0D);
 			return false;
 		} else {
-			this.getInstance().setFee(
-					wcs.calculateFee(this.getInstance().getMoney()));
 			return true;
 		}
 	}
