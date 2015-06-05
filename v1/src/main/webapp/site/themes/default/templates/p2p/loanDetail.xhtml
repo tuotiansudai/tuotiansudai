@@ -223,8 +223,10 @@
 								listener="#{investList.example.loan.setId(loan.id)}"></f:event>
 							<f:event type="preRenderComponent"
 								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
+							<ui:param name="restriction"
+									  value="#{'(invest.status!=\''}#{InvestStatus.WAIT_AFFIRM}#{'\' and invest.status!=\''}#{InvestStatus.CANCEL}#{''}')"></ui:param>
 							<f:event type="preRenderComponent"
-								listener="#{investList.example.loan.setStatus(InvestStatus.BID_SUCCESS)}"></f:event>
+									 listener="#{investList.addRestriction(restriction)}"></f:event>
 							<f:event type="preRenderComponent"
 								listener="#{loanList.setPageSize(10)}"></f:event>
 
