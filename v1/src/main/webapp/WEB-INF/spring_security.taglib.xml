@@ -83,4 +83,12 @@
         </component>
     </tag>
 
+    <tag>
+        <tag-name>bankCardValidator</tag-name>
+        <component>
+            <component-type>com.esoft.core.jsf.tag.BankCardBoundValidator</component-type>
+            <handler-class>com.esoft.core.jsf.tag.BankCardBoundValidator</handler-class>
+        </component>
+    </tag>
+
 </facelet-taglib>
