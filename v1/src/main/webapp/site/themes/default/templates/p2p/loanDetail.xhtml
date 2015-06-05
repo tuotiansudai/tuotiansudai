@@ -224,6 +224,8 @@
 							<f:event type="preRenderComponent"
 								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
 							<f:event type="preRenderComponent"
+								listener="#{investList.example.loan.setStatus(InvestStatus.BID_SUCCESS)}"></f:event>
+							<f:event type="preRenderComponent"
 								listener="#{loanList.setPageSize(10)}"></f:event>
 
 							<tr class="rg-tit">
