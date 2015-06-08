@@ -85,8 +85,8 @@ public class MailServiceImpl implements MailService {
 			// 主题
 			mailMessage.setSubject(title);
 			// 内容
-			// mailMessage.setText(content);
-			mailMessage.setContent(content, "text/html;charset=utf-8");
+			mailMessage.setText(content);
+			//mailMessage.setContent(content, "text/html;charset=utf-8");
 			// 发信时间
 			mailMessage.setSentDate(new Date());
 			// 存储信息

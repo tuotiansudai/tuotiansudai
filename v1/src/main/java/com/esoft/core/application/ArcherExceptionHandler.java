@@ -41,23 +41,26 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 LoginUserInfo loginUserInfo = new LoginUserInfo();
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
-                String RequestUrl = request.getRequestURL()+"?";
+                String RequestUrl = request.getRequestURL().toString();
+                StringBuffer sbException = new StringBuffer();
+                sbException.append("\n");
                 if (request.getMethod().equals("GET")) {
-                    RequestUrl += request.getQueryString();
+                    RequestUrl += "?"+request.getQueryString();
                 } else {
                     Map<String, String[]> params = request.getParameterMap();
-                    String queryString = "";
+                    sbException.append("请求参数为：");
+                    sbException.append("\n");
                     for (String key : params.keySet()) {
                         String[] values = params.get(key);
                         for (int i = 0; i < values.length; i++) {
                             String value = values[i];
-                            queryString += key + "=" + value + "&";
+                            sbException.append(key + "=" + value + ";");
+                            sbException.append("\n");
                         }
                     }
-                    queryString = queryString.substring(0, queryString.length() - 1);
-                    RequestUrl += queryString;
                 }
-                StringBuffer sbException = new StringBuffer();
+                sbException.append("******************************************************************************************************");
+                sbException.append("\n");
                 StackTraceElement[] stackTraceElements =  eqec.getException().getCause().getStackTrace();
                 sbException.append(eqec.getException().getCause().toString()+"\n");
                 for (StackTraceElement i: stackTraceElements){
@@ -65,6 +68,7 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     sbException.append("\n");
                 }
                 if (eqec.getException().getCause().getCause()!=null) {
+                    sbException.append("******************************************************************************************************");
                     sbException.append("\n");
                     sbException.append("Caused by:"+eqec.getException().getCause().getCause().toString()+"\n");
                     StackTraceElement[] stackTraceElementsCause = eqec.getException().getCause().getCause().getStackTrace();
@@ -74,6 +78,7 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     }
                 }
                 if (eqec.getException().getCause().getCause().getCause()!=null) {
+                    sbException.append("******************************************************************************************************");
                     sbException.append("\n");
                     sbException.append("Caused by:"+eqec.getException().getCause().getCause().getCause().toString()+"\n");
                     StackTraceElement[] stackTraceElementsCause = eqec.getException().getCause().getCause().getCause().getStackTrace();
@@ -83,7 +88,7 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     }
                 }
                 MailService mailService = new MailServiceImpl();
-                mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
+                mailService.sendMail("zourenzheng@tuotiansudai.com","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
                 throw new FacesException(sbException.toString());
             } finally {
                 it.remove();
