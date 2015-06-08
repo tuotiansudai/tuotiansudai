@@ -58,13 +58,33 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     RequestUrl += queryString;
                 }
                 StringBuffer sbException = new StringBuffer();
-                StackTraceElement[] stackTraceElements =  eqec.getException().getStackTrace();
+                StackTraceElement[] stackTraceElements =  eqec.getException().getCause().getStackTrace();
+                sbException.append(eqec.getException().getCause().toString()+"\n");
                 for (StackTraceElement i: stackTraceElements){
                     sbException.append(i.toString());
                     sbException.append("\n");
                 }
+                if (eqec.getException().getCause().getCause()!=null) {
+                    sbException.append("\n");
+                    sbException.append("Caused by:"+eqec.getException().getCause().getCause().toString()+"\n");
+                    StackTraceElement[] stackTraceElementsCause = eqec.getException().getCause().getCause().getStackTrace();
+                    for (StackTraceElement i: stackTraceElementsCause){
+                        sbException.append(i.toString());
+                        sbException.append("\n");
+                    }
+                }
+                if (eqec.getException().getCause().getCause().getCause()!=null) {
+                    sbException.append("\n");
+                    sbException.append("Caused by:"+eqec.getException().getCause().getCause().getCause().toString()+"\n");
+                    StackTraceElement[] stackTraceElementsCause = eqec.getException().getCause().getCause().getCause().getStackTrace();
+                    for (StackTraceElement i: stackTraceElementsCause){
+                        sbException.append(i.toString());
+                        sbException.append("\n");
+                    }
+                }
                 MailService mailService = new MailServiceImpl();
                 mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
+                throw new FacesException(sbException.toString());
             } finally {
                 it.remove();
             }
