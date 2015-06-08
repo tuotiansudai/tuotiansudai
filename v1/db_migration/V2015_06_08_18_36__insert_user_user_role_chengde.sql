@@ -17,7 +17,6 @@ INSERT INTO `user` VALUES ('ttcdlishumei','ttcdlishumei','3138936500@qq.com','4b
 INSERT INTO `user` VALUES ('ttcdguoxianglong','ttcdguoxianglong','1461472834@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','郭向龙','M','1994-02-10','河北省承德市隆化县章吉营乡共和村下铺75号',NULL,NULL,'18830438124',NULL,'河北省承德市隆化县章吉营乡共和村下铺75号',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-08 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `user` VALUES ('ttcdjiaomengli','ttcdjiaomengli','1244238443@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','焦盟立','F','1956-02-14','河北省承德市双桥区大佟沟街15号楼3单元506室',NULL,NULL,'13833425923',NULL,'河北省承德市双桥区大佟沟街15号楼3单元506室',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-08 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `user` VALUES ('ttcdgaofengmei','ttcdgaofengmei','1062047075@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','高凤梅','F','1969-12-14','承德市双滦区双塔山镇棋盘地44栋7号',NULL,NULL,'13722417765',NULL,'承德市双滦区双塔山镇棋盘地44栋7号',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-08 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `user` VALUES ('ttrqcaoguangli','ttrqcaoguangli','1952390861@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','曹广丽','F','1972-07-01','河北省任丘市华北石油运输小区34栋3单元502室',NULL,NULL,'13932704407',NULL,'',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-08 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `user` VALUES ('ttrqlangqingrong','ttrqlangqingrong','2554259932@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','郎庆荣','F','1973-10-21','青海省民和回族土族自治区镁厂家属区8#222室',NULL,NULL,'18631793390',NULL,'河北省任丘市金地花园小区',NULL,NULL,NULL,NULL,NULL,NULL,'2015-06-08 00:00:00',NULL,NULL,NULL,NULL,NULL,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 INSERT INTO `user_role` VALUES ('ttcdfuguichen','MEMBER');
@@ -38,7 +37,6 @@ INSERT INTO `user_role` VALUES ('ttcdlishumei','MEMBER');
 INSERT INTO `user_role` VALUES ('ttcdguoxianglong','MEMBER');
 INSERT INTO `user_role` VALUES ('ttcdjiaomengli','MEMBER');
 INSERT INTO `user_role` VALUES ('ttcdgaofengmei','MEMBER');
-INSERT INTO `user_role` VALUES ('ttrqcaoguangli','MEMBER');
 INSERT INTO `user_role` VALUES ('ttrqlangqingrong','MEMBER');
 
 INSERT INTO `user_role` VALUES ('ttcdfuguichen','ROLE_MERCHANDISER');
@@ -59,6 +57,5 @@ INSERT INTO `user_role` VALUES ('ttcdlishumei','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttcdguoxianglong','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttcdjiaomengli','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttcdgaofengmei','ROLE_MERCHANDISER');
-INSERT INTO `user_role` VALUES ('ttrqcaoguangli','ROLE_MERCHANDISER');
 INSERT INTO `user_role` VALUES ('ttrqlangqingrong','ROLE_MERCHANDISER');
 COMMIT;
