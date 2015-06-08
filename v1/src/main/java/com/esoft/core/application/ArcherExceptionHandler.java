@@ -43,7 +43,6 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
                 String RequestUrl = request.getRequestURL().toString();
                 StringBuffer sbException = new StringBuffer();
-                sbException.append("\n");
                 if (request.getMethod().equals("GET")) {
                     RequestUrl += "?"+request.getQueryString();
                 } else {
@@ -58,26 +57,24 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                             sbException.append("\n");
                         }
                     }
-                    sbException.append("******************************************************************************************************");
-                    sbException.append("\n");
                 }
-                StackTraceElement[] stackTraceElements =  eqec.getException().getCause().getStackTrace();
-                sbException.append(eqec.getException().getCause().toString()+"\n");
-                for (StackTraceElement i: stackTraceElements){
-                    sbException.append(i.toString());
-                    sbException.append("\n");
-                }
-                Throwable throwable = eqec.getException().getCause().getCause();
-                while (throwable!=null) {
-                    sbException.append("******************************************************************************************************");
-                    sbException.append("\n");
-                    sbException.append("Caused by:"+throwable.toString()+"\n");
+                sbException.append("\n");
+                Throwable throwable = eqec.getException().getCause();
+                int flag = 0;
+                while (throwable != null) {
+                    if (flag != 0) {
+                        sbException.append("Caused by:"+throwable.toString()+"\n");
+                    } else {
+                        sbException.append(throwable.toString()+"\n");
+                    }
                     StackTraceElement[] stackTraceElementsCause = throwable.getStackTrace();
                     for (StackTraceElement i: stackTraceElementsCause){
                         sbException.append(i.toString());
                         sbException.append("\n");
                     }
+                    sbException.append("\n");
                     throwable = throwable.getCause();
+                    flag += 1;
                 }
                 MailService mailService = new MailServiceImpl();
                 mailService.sendMail("zourenzheng@tuotiansudai.com","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
