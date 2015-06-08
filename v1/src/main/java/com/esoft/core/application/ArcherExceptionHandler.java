@@ -41,30 +41,47 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 LoginUserInfo loginUserInfo = new LoginUserInfo();
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
-                String RequestUrl = request.getRequestURL()+"?";
+                String RequestUrl = request.getRequestURL().toString();
+                StringBuffer sbException = new StringBuffer();
+                sbException.append("\n");
                 if (request.getMethod().equals("GET")) {
-                    RequestUrl += request.getQueryString();
+                    RequestUrl += "?"+request.getQueryString();
                 } else {
                     Map<String, String[]> params = request.getParameterMap();
-                    String queryString = "";
+                    sbException.append("请求参数为：");
+                    sbException.append("\n");
                     for (String key : params.keySet()) {
                         String[] values = params.get(key);
                         for (int i = 0; i < values.length; i++) {
                             String value = values[i];
-                            queryString += key + "=" + value + "&";
+                            sbException.append(key + "=" + value + ";");
+                            sbException.append("\n");
                         }
                     }
-                    queryString = queryString.substring(0, queryString.length() - 1);
-                    RequestUrl += queryString;
+                    sbException.append("******************************************************************************************************");
+                    sbException.append("\n");
                 }
-                StringBuffer sbException = new StringBuffer();
-                StackTraceElement[] stackTraceElements =  eqec.getException().getStackTrace();
+                StackTraceElement[] stackTraceElements =  eqec.getException().getCause().getStackTrace();
+                sbException.append(eqec.getException().getCause().toString()+"\n");
                 for (StackTraceElement i: stackTraceElements){
                     sbException.append(i.toString());
                     sbException.append("\n");
                 }
+                Throwable throwable = eqec.getException().getCause().getCause();
+                while (throwable!=null) {
+                    sbException.append("******************************************************************************************************");
+                    sbException.append("\n");
+                    sbException.append("Caused by:"+throwable.toString()+"\n");
+                    StackTraceElement[] stackTraceElementsCause = throwable.getStackTrace();
+                    for (StackTraceElement i: stackTraceElementsCause){
+                        sbException.append(i.toString());
+                        sbException.append("\n");
+                    }
+                    throwable = throwable.getCause();
+                }
                 MailService mailService = new MailServiceImpl();
-                mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
+                mailService.sendMail("zourenzheng@tuotiansudai.com","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
+                throw new FacesException(sbException.toString());
             } finally {
                 it.remove();
             }
