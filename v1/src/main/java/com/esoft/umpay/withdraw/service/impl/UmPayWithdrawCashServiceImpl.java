@@ -1,5 +1,6 @@
 package com.esoft.umpay.withdraw.service.impl;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -81,16 +82,11 @@ public class UmPayWithdrawCashServiceImpl extends WithdrawCashServiceImpl {
 			wdc.setRecheckUser(withdrawCash.getRecheckUser());
 			ht.merge(wdc);
 			try {
-				userBillBO.transferOutFromBalance(wdc.getUser().getId(),
-						wdc.getMoney(), OperatorInfo.WITHDRAW_SUCCESS,
-						"提现申请通过，取出金额, 提现ID:" + withdrawCash.getId());
-
-				// userBillBO.transferOutFromBalance(wdc.getUser().getId(),
-				// wdc.getFee(), OperatorInfo.WITHDRAW_SUCCESS,
-				// "提现申请通过，取出冻结手续费, 提现ID:" + withdrawCash.getId());
-				// sbs.transferInto(wdc.getFee(), OperatorInfo.WITHDRAW_SUCCESS,
-				// "提现申请通过, 扣除手续费。提现ID:" + withdrawCash.getId());
-
+				String operationDetailTemplate = "提现申请通过，提现金额{0}元（含{1}元手续费）， 提现ID:{2}";
+				userBillBO.transferOutFromBalanceForWithdraw(wdc.getUser().getId(),
+						wdc.getMoney() + wdc.getFee(),
+						OperatorInfo.WITHDRAW_SUCCESS,
+						MessageFormat.format(operationDetailTemplate, wdc.getMoney() + wdc.getFee(), wdc.getFee(), wdc.getId()));
 			} catch (InsufficientBalance e) {
 				throw new RuntimeException(e);
 			}
