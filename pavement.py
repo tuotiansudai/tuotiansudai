@@ -89,7 +89,6 @@ def devdeploy():
     """
 
 
-
 def run_shell_under_v1(command):
     from paver.shell import sh
 
