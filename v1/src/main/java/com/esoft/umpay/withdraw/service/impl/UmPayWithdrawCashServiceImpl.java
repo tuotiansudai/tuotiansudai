@@ -82,7 +82,7 @@ public class UmPayWithdrawCashServiceImpl extends WithdrawCashServiceImpl {
 			wdc.setRecheckUser(withdrawCash.getRecheckUser());
 			ht.merge(wdc);
 			try {
-				String operationDetailTemplate = "提现申请通过，提现金额{0}元（含{1}元手续费）， 提现ID:{2}";
+				String operationDetailTemplate = "提现申请通过，提现金额{0}元（含{1}元手续费）， 提现编号:{2}";
 				userBillBO.transferOutFromFrozenForWithdraw(wdc.getUser().getId(),
 						wdc.getMoney() + wdc.getFee(),
 						OperatorInfo.WITHDRAW_SUCCESS,
