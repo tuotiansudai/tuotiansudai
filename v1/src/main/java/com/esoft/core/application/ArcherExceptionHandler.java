@@ -41,30 +41,44 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 LoginUserInfo loginUserInfo = new LoginUserInfo();
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
-                String RequestUrl = request.getRequestURL()+"?";
+                String RequestUrl = request.getRequestURL().toString();
+                StringBuffer exceptionStringBuffer = new StringBuffer();
                 if (request.getMethod().equals("GET")) {
-                    RequestUrl += request.getQueryString();
+                    RequestUrl += "?"+request.getQueryString();
                 } else {
                     Map<String, String[]> params = request.getParameterMap();
-                    String queryString = "";
+                    exceptionStringBuffer.append("请求参数为：");
+                    exceptionStringBuffer.append("\n");
                     for (String key : params.keySet()) {
                         String[] values = params.get(key);
                         for (int i = 0; i < values.length; i++) {
                             String value = values[i];
-                            queryString += key + "=" + value + "&";
+                            exceptionStringBuffer.append(key + "=" + value + ";");
+                            exceptionStringBuffer.append("\n");
                         }
                     }
-                    queryString = queryString.substring(0, queryString.length() - 1);
-                    RequestUrl += queryString;
                 }
-                StringBuffer sbException = new StringBuffer();
-                StackTraceElement[] stackTraceElements =  eqec.getException().getStackTrace();
-                for (StackTraceElement i: stackTraceElements){
-                    sbException.append(i.toString());
-                    sbException.append("\n");
+                exceptionStringBuffer.append("\n");
+                Throwable throwable = eqec.getException().getCause();
+                int flag = 0;
+                while (throwable != null) {
+                    if (flag != 0) {
+                        exceptionStringBuffer.append("Caused by:"+throwable.toString()+"\n");
+                    } else {
+                        exceptionStringBuffer.append(throwable.toString()+"\n");
+                    }
+                    StackTraceElement[] stackTraceElementsCause = throwable.getStackTrace();
+                    for (StackTraceElement i: stackTraceElementsCause){
+                        exceptionStringBuffer.append(i.toString());
+                        exceptionStringBuffer.append("\n");
+                    }
+                    exceptionStringBuffer.append("\n");
+                    throwable = throwable.getCause();
+                    flag += 1;
                 }
                 MailService mailService = new MailServiceImpl();
-                mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";URL-"+RequestUrl,sbException.toString());
+                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,exceptionStringBuffer.toString());
+                throw new FacesException(exceptionStringBuffer.toString());
             } finally {
                 it.remove();
             }

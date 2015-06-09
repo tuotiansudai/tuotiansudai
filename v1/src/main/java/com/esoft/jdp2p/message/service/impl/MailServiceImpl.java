@@ -85,7 +85,7 @@ public class MailServiceImpl implements MailService {
 			// 主题
 			mailMessage.setSubject(title);
 			// 内容
-			// mailMessage.setText(content);
+			//mailMessage.setText(content);
 			mailMessage.setContent(content, "text/html;charset=utf-8");
 			// 发信时间
 			mailMessage.setSentDate(new Date());
@@ -98,6 +98,36 @@ public class MailServiceImpl implements MailService {
 
 		} catch (Exception e) {
 			log.info(e);
+			throw new MailSendErrorException(e);
+		}
+	}
+
+	public void sendMailException(String toAddress, String personal, String title,
+						 String content) throws MailSendErrorException {
+		final MimeMessage mailMessage;
+		final Transport trans;
+		Session mailSession = getMailSession();
+		// 建立消息对象
+		mailMessage = new MimeMessage(mailSession);
+		try {
+			// 发件人
+			mailMessage.setFrom(new InternetAddress(username, personal));
+			// 收件人
+			mailMessage.setRecipient(MimeMessage.RecipientType.TO,
+					new InternetAddress(toAddress));
+			// 主题
+			mailMessage.setSubject(title);
+			// 内容
+			mailMessage.setText(content);
+			// 发信时间
+			mailMessage.setSentDate(new Date());
+			// 存储信息
+			mailMessage.saveChanges();
+			trans = mailSession.getTransport("smtp");
+			// FIXME 需要修改为异步发送消息
+			trans.send(mailMessage);
+		} catch (Exception e) {
+			log.error(e);
 			throw new MailSendErrorException(e);
 		}
 	}
