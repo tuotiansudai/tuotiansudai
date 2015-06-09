@@ -196,6 +196,7 @@
 					listener="#{loanList.addOrder('loan.commitTime','asc')}"></f:event>
 
 				<div class="list-div clearfix">
+					<ui:param name="loanListSize" value="#{loanList.lazyModelData.size()}"></ui:param>
 					<ui:repeat var="loan" value="#{loanList.lazyModelData}">
 						<div class="list-box">
 							<div class="list">
@@ -257,6 +258,117 @@
 							</div>
 						</div>
 					</ui:repeat>
+					<ui:fragment rendered="#{loanListSize lt 4}">
+						<div class="list-box">
+							<div class="list">
+								<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
+									<a href="#">
+										超市经营资金周转</a>
+								</h3>
+								<p class="color1">
+									<strong class="color2 font26">14.5%</strong>年化收益
+								</p>
+								<p class="color1">
+									剩余可投金额：
+									￥0
+								</p>
+								<p class="line"></p>
+								<p class="color2">
+									等待复核
+
+								</p>
+								<p>
+									<em class="progress-bar"><b style="width:100.0%"></b></em><i class="precent-i">100%</i>
+								</p>
+								<p class="line"></p>
+								<p class="clearfix">
+									<span class="fl">
+										金额：
+										100,000元
+									</span>
+								</p>
+								<P class="clearfix"><span>期限：已到期</span></P>
+								<p class="time">
+								</p>
+								<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">等待复核</a>
+							</div>
+						</div>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{loanListSize lt 3}">
+					<div class="list-box">
+						<div class="list">
+							<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
+								<a href="#">
+									木材生意资金周转</a>
+							</h3>
+							<p class="color1">
+								<strong class="color2 font26">15.5%</strong>年化收益
+							</p>
+							<p class="color1">
+								剩余可投金额：
+								￥0
+							</p>
+							<p class="line"></p>
+							<p class="color2">
+								等待复核
+
+							</p>
+							<p>
+								<em class="progress-bar"><b style="width:100.0%"></b></em><i class="precent-i">100%</i>
+							</p>
+							<p class="line"></p>
+							<p class="clearfix">
+									<span class="fl">
+										金额：
+										150,000元
+									</span>
+							</p>
+							<P class="clearfix"><span>期限：已到期</span></P>
+							<p class="time">
+							</p>
+							<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">等待复核</a>
+						</div>
+					</div>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{loanListSize lt 2}">
+					<div class="list-box">
+						<div class="list">
+							<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
+								<a href="#">
+									鞋业加盟店资金周转</a>
+							</h3>
+							<p class="color1">
+								<strong class="color2 font26">12.5%</strong>年化收益
+							</p>
+							<p class="color1">
+								剩余可投金额：
+								￥0
+							</p>
+							<p class="line"></p>
+							<p class="color2">
+								等待复核
+
+							</p>
+							<p>
+								<em class="progress-bar"><b style="width:100.0%"></b></em><i class="precent-i">100%</i>
+							</p>
+							<p class="line"></p>
+							<p class="clearfix">
+									<span class="fl">
+										金额：
+										180,000元
+									</span>
+							</p>
+							<P class="clearfix"><span>期限：已到期</span></P>
+							<p class="time">
+							</p>
+							<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">等待复核</a>
+						</div>
+					</div>
+					</ui:fragment>
+
 				</div>
 			</div>
 
