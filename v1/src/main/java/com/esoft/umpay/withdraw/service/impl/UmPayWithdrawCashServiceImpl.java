@@ -83,7 +83,7 @@ public class UmPayWithdrawCashServiceImpl extends WithdrawCashServiceImpl {
 			ht.merge(wdc);
 			try {
 				String operationDetailTemplate = "提现申请通过，提现金额{0}元（含{1}元手续费）， 提现ID:{2}";
-				userBillBO.transferOutFromBalanceForWithdraw(wdc.getUser().getId(),
+				userBillBO.transferOutFromFrozenForWithdraw(wdc.getUser().getId(),
 						wdc.getMoney() + wdc.getFee(),
 						OperatorInfo.WITHDRAW_SUCCESS,
 						MessageFormat.format(operationDetailTemplate, wdc.getMoney() + wdc.getFee(), wdc.getFee(), wdc.getId()));

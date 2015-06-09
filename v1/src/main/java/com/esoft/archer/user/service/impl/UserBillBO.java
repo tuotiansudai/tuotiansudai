@@ -302,19 +302,18 @@ public class UserBillBO {
 	}
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public void transferOutFromBalanceForWithdraw(String userId,
-												  double money,
-												  String operatorInfo,
-												  String operatorDetail) throws InsufficientBalance {
+	public void transferOutFromFrozenForWithdraw(String userId,
+												 double money,
+												 String operatorInfo,
+												 String operatorDetail) throws InsufficientBalance {
 		if (money < 0) {
 			throw new RuntimeException("money cannot be less than zero!");
 		}
 		UserBill ibLatest = getLastestBill(userId);
 		UserBill ib = new UserBill();
-		double balance = ibLatest == null ? 0D : ibLatest.getBalance();
-		if (balance < money) {
-			throw new InsufficientBalance("transfer out money:" + money
-					+ ",balance:" + balance);
+		double frozenMoney = ibLatest == null ? 0D : ibLatest.getFrozenMoney();
+		if (frozenMoney < money) {
+			throw new InsufficientBalance("transfer out money:" + money + ", frozenMoney:" + frozenMoney);
 		} else {
 			ib.setId(IdGenerator.randomUUID());
 			ib.setMoney(money);
