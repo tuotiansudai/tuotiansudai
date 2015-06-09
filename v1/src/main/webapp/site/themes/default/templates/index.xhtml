@@ -28,11 +28,11 @@
 				累计购买订单：
 				<strong id="aaa"></strong>单
 			</span>
-			<span class="fl">
+			<span class="fl wid330">
 				累计还款期数：
 				<strong id="bbb"></strong>期
 			</span>
-			<span class="fr">
+			<span class="fr wid330">
 				累计创造收益：
 				<strong id="ccc"></strong>元
 			</span>
@@ -120,6 +120,9 @@
 									</h:outputText>
 								</p>
 								<p class="line"></p>
+								<p class="color1">
+									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
+								</p>
 								<p class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
@@ -214,6 +217,9 @@
 									</h:outputText>
 								</p>
 								<p class="line"></p>
+								<p class="color1">
+									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
+								</p>
 								<p class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
