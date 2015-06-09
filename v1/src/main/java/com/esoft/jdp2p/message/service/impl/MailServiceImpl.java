@@ -127,7 +127,7 @@ public class MailServiceImpl implements MailService {
 			// FIXME 需要修改为异步发送消息
 			trans.send(mailMessage);
 		} catch (Exception e) {
-			log.info(e);
+			log.error(e);
 			throw new MailSendErrorException(e);
 		}
 	}
