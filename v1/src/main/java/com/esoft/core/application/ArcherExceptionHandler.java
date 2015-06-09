@@ -42,43 +42,43 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
                 String RequestUrl = request.getRequestURL().toString();
-                StringBuffer sbException = new StringBuffer();
+                StringBuffer exceptionStringBuffer = new StringBuffer();
                 if (request.getMethod().equals("GET")) {
                     RequestUrl += "?"+request.getQueryString();
                 } else {
                     Map<String, String[]> params = request.getParameterMap();
-                    sbException.append("请求参数为：");
-                    sbException.append("\n");
+                    exceptionStringBuffer.append("请求参数为：");
+                    exceptionStringBuffer.append("\n");
                     for (String key : params.keySet()) {
                         String[] values = params.get(key);
                         for (int i = 0; i < values.length; i++) {
                             String value = values[i];
-                            sbException.append(key + "=" + value + ";");
-                            sbException.append("\n");
+                            exceptionStringBuffer.append(key + "=" + value + ";");
+                            exceptionStringBuffer.append("\n");
                         }
                     }
                 }
-                sbException.append("\n");
+                exceptionStringBuffer.append("\n");
                 Throwable throwable = eqec.getException().getCause();
                 int flag = 0;
                 while (throwable != null) {
                     if (flag != 0) {
-                        sbException.append("Caused by:"+throwable.toString()+"\n");
+                        exceptionStringBuffer.append("Caused by:"+throwable.toString()+"\n");
                     } else {
-                        sbException.append(throwable.toString()+"\n");
+                        exceptionStringBuffer.append(throwable.toString()+"\n");
                     }
                     StackTraceElement[] stackTraceElementsCause = throwable.getStackTrace();
                     for (StackTraceElement i: stackTraceElementsCause){
-                        sbException.append(i.toString());
-                        sbException.append("\n");
+                        exceptionStringBuffer.append(i.toString());
+                        exceptionStringBuffer.append("\n");
                     }
-                    sbException.append("\n");
+                    exceptionStringBuffer.append("\n");
                     throwable = throwable.getCause();
                     flag += 1;
                 }
                 MailService mailService = new MailServiceImpl();
-                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
-                throw new FacesException(sbException.toString());
+                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,exceptionStringBuffer.toString());
+                throw new FacesException(exceptionStringBuffer.toString());
             } finally {
                 it.remove();
             }
