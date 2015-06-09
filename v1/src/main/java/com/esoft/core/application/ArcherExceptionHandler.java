@@ -77,7 +77,7 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     flag += 1;
                 }
                 MailService mailService = new MailServiceImpl();
-                mailService.sendMail("all@tuotiansudai.com","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
+                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,sbException.toString());
                 throw new FacesException(sbException.toString());
             } finally {
                 it.remove();
