@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.core.util.ArithUtil;
 import org.apache.commons.logging.Log;
@@ -153,10 +154,12 @@ public class UmPayWithdrawOperation extends
 							wc.getMoney() + wc.getFee(),
 							OperatorInfo.APPLY_WITHDRAW,
 							operationDetail);
+					wc.setStatus(UserConstants.WithdrawStatus.RECHECK);
 				} else {
 					// withdrawCashService.refuseWithdrawCashApply(wc);
 					to.setStatus(TrusteeshipConstants.Status.REFUSED);
 					ht.merge(to);
+					wc.setStatus(UserConstants.WithdrawStatus.VERIFY_FAIL);
 					throw new UmPayOperationException("提现失败:" + ret_msg);
 				}
 			}
