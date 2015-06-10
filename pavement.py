@@ -56,13 +56,37 @@ def stop():
 
 
 @task
-def deploy():
-    run_shell_under_v1('gradle clean')
-    run_shell_under_v1('gradle war')
+def mkwar():
+    run_shell_under_v1('/opt/gradle/latest/bin/gradle clean')
+    run_shell_under_v1('/opt/gradle/latest/bin/gradle war')
+
+
+@task
+def deploy_tomcat():
     run_shell_under_v1('sudo service tomcat6 stop')
     run_shell_under_v1('sudo rm -rf /usr/share/tomcat6/webapps/ROOT')
     run_shell_under_v1('sudo cp war/ROOT.war /usr/share/tomcat6/webapps/')
     run_shell_under_v1('sudo service tomcat6 start')
+
+
+@task
+def migrate():
+    run_shell_under_v1('/opt/gradle/latest/bin/gradle flywayMigrate')
+
+
+@task
+@needs('mkwar', 'deploy_tomcat')
+def deploy():
+    """
+    Deploy to production environment
+    """
+
+@task
+@needs('migrate', 'deploy')
+def devdeploy():
+    """
+    Deploy to dev/test environment
+    """
 
 
 def run_shell_under_v1(command):
