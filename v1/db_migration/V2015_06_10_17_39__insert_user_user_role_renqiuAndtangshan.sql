@@ -1,5 +1,5 @@
-CREATE TABLE `user_temp` AS SELECT * FROM `user` WHERE 1=2;
-CREATE TABLE `user_role_temp` AS SELECT * FROM `user_role` WHERE 1=2;
+CREATE TABLE IF NOT EXISTS `user_temp` AS SELECT * FROM `user` WHERE 1=2;
+CREATE TABLE IF NOT EXISTS `user_role_temp` AS SELECT * FROM `user_role` WHERE 1=2;
 
 INSERT INTO `user_temp` VALUES ('tttsyanqiuju','tttsyanqiuju','281599211@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','闫秋菊','F','1984-09-22','河北省唐山市乐亭县闫各庄镇闫各庄村中心社区4条25号',null,null,'15030518192',null,'唐山市路南区仁泰里703-1-402',null,null,null,null,null,null,'2015-06-10 00:00:00',null,null,null,null,null,'0',null,null,null,null,null,null,null,null,null,null,null);
 INSERT INTO `user_temp` VALUES ('tttsluqingna','tttsluqingna','1032475110@qq.com','4be30d9814c6d4e9800e0d2ea9ec9fb00efa887b','1','卢庆娜','F','1988-04-11','河北省唐山市玉田县潮洛窝乡大赵官村兴官西七街38号',null,null,'15176707827',null,'唐山市新天地美域1404-1-1802',null,null,null,null,null,null,'2015-06-10 00:00:00',null,null,null,null,null,'0',null,null,null,null,null,null,null,null,null,null,null);
