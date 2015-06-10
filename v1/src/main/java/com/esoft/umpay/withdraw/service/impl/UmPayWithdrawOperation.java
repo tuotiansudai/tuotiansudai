@@ -139,6 +139,8 @@ public class UmPayWithdrawOperation extends
 			wc = ht.get(WithdrawCash.class, order_id, LockMode.UPGRADE);
 
 			if (TrusteeshipConstants.Status.SENDED.equals(to.getStatus())) {
+				wc.setVerifyTime(new Date());
+				wc.setVerifyMessage(ret_msg);
 				if ("0000".equals(ret_code)) {
 					// 提现订单编号
 					// withdrawCashService.passWithdrawCashRecheck(wc);
@@ -185,6 +187,7 @@ public class UmPayWithdrawOperation extends
 			receiveOperationPostCallback(request);
 			String order_id = paramMap.get("order_id");
 			wc = ht.get(WithdrawCash.class, order_id, LockMode.UPGRADE);
+			wc.setRecheckMessage(paramMap.containsKey("ret_msg") ? paramMap.get("ret_msg") : "");
 			if ("0000".equals(paramMap.get("ret_code"))) {
 				// 处理提现成功
 				withdrawCashService.passWithdrawCashRecheck(wc);
