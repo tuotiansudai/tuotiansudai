@@ -24,17 +24,21 @@
 		<!-- banner end -->
 
 		<div class="data-con clearfix">
-			<span class="fl wid330">
+			<span class="fl wid330 m_bottom_0">
 				累计购买订单：
 				<strong id="aaa"></strong>单
 			</span>
+			<span class="fr wid330 m_bottom_0 rightSide">
+				<strong id="ccc"></strong>
+			</span>
+		</div>
+		<div class="data-con clearfix">
 			<span class="fl wid330">
 				累计还款期数：
 				<strong id="bbb"></strong>期
 			</span>
-			<span class="fr wid330">
-				累计创造收益：
-				<strong id="ccc"></strong>元
+			<span class="fr wid330 rightSide">
+				<strong id="allRepayingAndCompleteLoanMoney"></strong>
 			</span>
 		</div>
 		<!--data end-->
@@ -334,12 +338,41 @@
 						numc = numc[0];
 						var i1 = '<i>';
 						var i2 = '</i>';
-						var html = '';
+						var html = '<b>累计创造收益：</b>';
 						for(var i = 0 ; i < numc.length ; i ++){
 							html += i1 + numc[i] + i2;
 						}
+						html += '<b>元</b>';
 						$ccc.html(html);
 
+					    var $allRepayingAndCompleteLoanMoney = $("#allRepayingAndCompleteLoanMoney");
+					    var allRepayingAndCompleteLoanMoney = '#{investStatistics.getAllRepayingAndCompleteLoanMoney()}';
+					    var numAllRepayingAndCompleteLoanMoney = allRepayingAndCompleteLoanMoney.split('.');
+					    numAllRepayingAndCompleteLoanMoney = numAllRepayingAndCompleteLoanMoney[0];
+					    var allRepayingAndCompleteLoanMoneyHtml = '<b>累计交易金额：</b>';
+					    for(var i = 0; i < numAllRepayingAndCompleteLoanMoney.length; i++){
+					    	allRepayingAndCompleteLoanMoneyHtml += i1 + numAllRepayingAndCompleteLoanMoney[i] + i2;
+					    }
+					    allRepayingAndCompleteLoanMoneyHtml += '<b>元</b>';
+					    $allRepayingAndCompleteLoanMoney.html(allRepayingAndCompleteLoanMoneyHtml);
+
+					    var cccLength = $("#ccc").children().length;
+					    var allRepayingAndCompleteLoanMoneyLength = $("#allRepayingAndCompleteLoanMoney").children().length;
+					    var placeholderLength = '';
+						if(cccLength > allRepayingAndCompleteLoanMoneyLength){
+							placeholderLength = cccLength - allRepayingAndCompleteLoanMoneyLength;
+							addElement(placeholderLength, $("#allRepayingAndCompleteLoanMoney"));
+						} else {
+							placeholderLength = allRepayingAndCompleteLoanMoneyLength - cccLength;
+							addElement(placeholderLength, $("#ccc"));
+						}
+
+						function addElement(placeholderLength, bElement){
+							for(var i=0; i<placeholderLength; i++){
+								$('<i class="opacityI">0</i>').insertBefore(bElement.find("i").get(0));
+							}
+							$(".opacityI").css("opacity","0");
+						}
 					//]]>
 				</script>
 				

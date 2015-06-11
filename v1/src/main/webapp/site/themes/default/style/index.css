@@ -5,9 +5,12 @@
 
 .data-con{width: 1000px;margin:0 auto;}
 .data-con span{color: #484848;display: inline-block;margin-top: 25px;font-size: 15px;margin-bottom: 25px;}
+.data-con span.m_bottom_0{ margin-bottom:0px;}
+.rightSide strong{float:right;}
 .data-con span strong{color: #929292;font-size: 26px;}
 .data-con span strong i{border-radius: 3px;border: 1px solid #f2d4d4;padding: 0px 4px;margin-right: 5px;}
-.wid330{width: 333px;}
+.data-con span strong b{font-size:15px; color:#484848;}
+.wid330{width: 500px;}
 /***data end***/
 
 .icon-div{background: #f0f5f8;}

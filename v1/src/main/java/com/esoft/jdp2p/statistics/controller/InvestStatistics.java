@@ -197,6 +197,17 @@ public class InvestStatistics {
 		}
 		return (Double) o;
 	}
+
+	public double getAllRepayingAndCompleteLoanMoney() {
+		String hql = "Select sum(money) from Loan t where t.status in ('repaying','complete')";
+		List<Object> oos = ht.find(hql);
+		Object o = oos.get(0);
+		if (o == null) {
+			return 0;
+		}
+		return (Double) o;
+	}
+
 	/**
 	 * 计算累计还款期数
 	 *
