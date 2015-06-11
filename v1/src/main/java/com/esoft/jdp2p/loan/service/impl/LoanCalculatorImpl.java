@@ -105,25 +105,10 @@ public class LoanCalculatorImpl implements LoanCalculator {
 
 		// 统计所有的此借款的投资信息，求和做减法，得出尚未募集到的金额。
 		// FIXME:记得，不用通过loan.invests取。为什么？
-		List<Object> investMoney;
-		String freezeMoney;
-		try{
-			freezeMoney = configService.getConfigValue("freeze_money");
-		}catch(ObjectNotFoundException e){
-			freezeMoney = "";
-		}
-		if("0".equals(freezeMoney)){
-			investMoney = ht
-					.find("select sum(invest.investMoney) from Invest invest where invest.loan.id=? and invest.status not in (?,?)",
-							new String[] { loanId,
-							InvestStatus.CANCEL, InvestStatus.WAIT_AFFIRM });
-		}else{
-			investMoney = ht
-					.find("select sum(invest.investMoney) from Invest invest where invest.loan.id=? and invest.status !=?",
-							new String[] { loanId,
-							InvestStatus.CANCEL });
-		}
-		
+		List investMoney = ht
+				.find("select sum(invest.investMoney) from Invest invest where invest.loan.id=? and invest.status not in (?,?)",
+						new String[]{loanId, InvestStatus.CANCEL, InvestStatus.WAIT_AFFIRM});
+
 		double sumMoney = investMoney.get(0) == null ? 0D
 				: (Double) investMoney.get(0);
 		double remain = ArithUtil.sub(loan.getLoanMoney(), sumMoney);

@@ -104,7 +104,7 @@
 							</h:inputText>
 							<h:inputText id="email2" label="邮箱" rendered="#{configHome.getConfigValue('ipspay_enable') != '1'}"
 								styleClass="login_txt login_txt05" maxlength="100"
-								value="#{userHome.instance.email}">
+								value="#{userHome.instance.email}" required="true" >
 								<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
 								<archer:validateAlreadyExist />
 								<f:ajax event="blur"></f:ajax>

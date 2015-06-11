@@ -2,6 +2,7 @@ package com.esoft.umpay.withdraw.service.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.model.UserBill;
+import com.esoft.core.util.ArithUtil;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -100,7 +103,7 @@ public class UmPayWithdrawOperation extends
 					GsonUtil.fromMap2Json(reqData.getField()));
 			sendOperation(to, facesContext);
 		} catch (ReqDataException e) {
-			log.equals(e);
+			log.error(e);
 			throw new UmPayOperationException("提现失败！");
 		}
 		return to;
@@ -141,12 +144,15 @@ public class UmPayWithdrawOperation extends
 					to.setStatus(TrusteeshipConstants.Status.PASSED);
 					ht.merge(to);
 					// 冻结提现金额和提现手续费
-					ub.freezeMoney(wc.getUser().getId(), wc.getMoney(),
-							OperatorInfo.APPLY_WITHDRAW, "申请提现，冻结提现金额, 提现编号:"
-									+ wc.getId());
-					ub.freezeMoney(wc.getUser().getId(), wc.getFee(),
-							OperatorInfo.APPLY_WITHDRAW, "申请提现，冻结提现手续费, 提现编号:"
-									+ wc.getId());
+					String operationDetailTemplate = "申请提现，冻结提现金额{0}元（含{1}元手续费），提现编号: {2}";
+					String operationDetail = MessageFormat.format(operationDetailTemplate,
+							wc.getMoney() + wc.getFee(),
+							wc.getFee(),
+							wc.getId());
+					ub.freezeMoney(wc.getUser().getId(),
+							wc.getMoney() + wc.getFee(),
+							OperatorInfo.APPLY_WITHDRAW,
+							operationDetail);
 				} else {
 					// withdrawCashService.refuseWithdrawCashApply(wc);
 					to.setStatus(TrusteeshipConstants.Status.REFUSED);
@@ -172,22 +178,19 @@ public class UmPayWithdrawOperation extends
 			ServletResponse response) {
 		WithdrawCash wc = null;
 		try {
-			Map<String, String> paramMap = UmPaySignUtil
-					.getMapDataByRequest(request);
+			Map<String, String> paramMap = UmPaySignUtil.getMapDataByRequest(request);
 			receiveOperationPostCallback(request);
 			String order_id = paramMap.get("order_id");
 			wc = ht.get(WithdrawCash.class, order_id, LockMode.UPGRADE);
-			// 解冻提现金额和提现手续费
-			ub.unfreezeMoney(wc.getUser().getId(), wc.getMoney(),
-					OperatorInfo.APPLY_WITHDRAW,
-					"提现申请通过，解冻提现金额, 提现编号:" + wc.getId());
-			ub.freezeMoney(wc.getUser().getId(), wc.getFee(),
-					OperatorInfo.APPLY_WITHDRAW,
-					"提现申请通过，解冻提现手续费, 提现编号:" + wc.getId());
 			if ("0000".equals(paramMap.get("ret_code"))) {
 				// 处理提现成功
 				withdrawCashService.passWithdrawCashRecheck(wc);
 			} else {
+				String operationDetailTemplate = "提现申请未通过，解冻提现金额{0}元（含{1}元手续费）， 提现编号:{2}";
+				ub.unfreezeMoney(wc.getUser().getId(),
+						wc.getMoney() + wc.getFee(),
+						OperatorInfo.APPLY_WITHDRAW,
+						MessageFormat.format(operationDetailTemplate, wc.getMoney(), wc.getFee(), wc.getId()));
 				// 处理提现失败
 				withdrawCashService.refuseWithdrawCashApply(wc);
 			}

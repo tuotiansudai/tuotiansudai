@@ -1,6 +1,7 @@
 package com.esoft.archer.user.service.impl;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -571,6 +572,8 @@ public class UserServiceImpl implements UserService {
 		String trimRN = user.getRealname().trim();
 		user.setRealname(trimRN);
 		user.setCashPassword(HashCrypt.getDigestHash(user.getCashPassword()));
+		String birthday = user.getIdCard().substring(6,10)+"-"+user.getIdCard().substring(10,12)+"-"+user.getIdCard().substring(12,14);
+		user.setBirthday(DateUtil.StringToDate(birthday));
 		userBO.update(user);
 		userBO.addRole(user, new Role("INVESTOR"));
 

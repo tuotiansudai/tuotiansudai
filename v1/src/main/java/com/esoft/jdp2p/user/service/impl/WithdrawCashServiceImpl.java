@@ -188,6 +188,7 @@ public class WithdrawCashServiceImpl implements WithdrawCashService {
 	public void applyWithdrawCash(WithdrawCash withdraw)
 			throws InsufficientBalance {
 		// FIXME:缺验证
+		validateUserBalance(withdraw);
 		withdraw.setFee(calculateFee(withdraw.getMoney()));
 		withdraw.setCashFine(0D);
 
@@ -202,6 +203,13 @@ public class WithdrawCashServiceImpl implements WithdrawCashService {
 		// 等待审核
 		withdraw.setStatus(UserConstants.WithdrawStatus.WAIT_VERIFY);
 		ht.save(withdraw);
+	}
+
+	private void validateUserBalance(WithdrawCash withdraw) throws InsufficientBalance {
+		double userBillBOBalance = userBillBO.getBalance(withdraw.getUser().getId());
+		if (userBillBOBalance < withdraw.getMoney() + withdraw.getFee()) {
+			throw new InsufficientBalance();
+		}
 	}
 
 	/**

@@ -21,17 +21,6 @@
 		<f:event type="preRenderView"
 			listener="#{userInfoHome.setId(loginUserInfo.loginUserId)}"></f:event>
 		<div class="center_right">
-			<script>
-			//<![CDATA[
-				$(function() {
-					$(".datepicker").datepicker({
-						changeMonth : true,
-						changeYear : true,
-						yearRange : "1920:2020"
-					});
-				});
-				//]]>
-			</script>
 
 			<div class="zhcz_h3">个人信息</div>
 			<h:form id="form">
@@ -140,14 +129,7 @@
 									</h:selectOneMenu>
 								</td>
 							</tr>
-							<tr>
-								<td align="right"><span>*</span>出生日期：</td>
-								<td>
-									<h:inputText value="#{userHome.instance.birthday}" required="true" label="出生日期" styleClass="bdsj_txt datepicker">
-										<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" locale="zh_CN" />
-									</h:inputText>
-								</td>
-							</tr>
+							
 							<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1' and empty userHome.instance.cashPassword}">
 								<o:validateEqual id="rePasswordValidator" components="pass repass" showMessageFor="repass" message="两次输入的交易密码不一致"></o:validateEqual>
 								<tr>

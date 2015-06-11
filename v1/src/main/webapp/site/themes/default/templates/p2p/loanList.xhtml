@@ -58,23 +58,23 @@
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="6个月" value="6个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(0,6)}"></f:ajax>
+						<h:commandLink title="0-3个月" value="0-3个月">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(0,3)}"></f:ajax>
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="12个月" value="12个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(6,12)}"></f:ajax>
+						<h:commandLink title="4-6个月" value="4-6个月">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(4,6)}"></f:ajax>
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="18个月" value="18个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(12,18)}"></f:ajax>
+						<h:commandLink title="7-12个月" value="7-12个月">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(7,12)}"></f:ajax>
 						</h:commandLink>
 					</span>
 					<span>
-						<h:commandLink title="24个月" value="24个月">
-							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(18, 1000)}"></f:ajax>
+						<h:commandLink title="12个月以上" value="12个月以上">
+							<f:ajax render="dataTable" listener="#{loanList.setMinAndMaxDeadline(13, 100)}"></f:ajax>
 						</h:commandLink>
 					</span>
 				</p>
@@ -206,8 +206,7 @@
 								</a>
 							</p>
 							<p class="p03">
-								<span class="span01">担保机构：#{guaranteeCompanyName.title}</span>
-								<span class="span02">还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
+								<span class="span01">还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 							</p>
 							<p class="p02">
 								<span>项目规格：

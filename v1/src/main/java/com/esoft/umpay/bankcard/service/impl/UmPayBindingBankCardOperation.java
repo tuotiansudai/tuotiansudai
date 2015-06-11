@@ -103,7 +103,7 @@ public class UmPayBindingBankCardOperation extends
 		// 开户行
 		/* map.put("card_branch_name",""); */
 		// 快捷协议标志
-		/* map.put("is_open_fastPayment",""); */
+		sendMap.put("is_open_fastPayment", "0");
 		TrusteeshipOperation to = null;
 		try {
 			// 加密参数

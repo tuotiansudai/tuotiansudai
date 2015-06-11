@@ -301,6 +301,42 @@ public class UserBillBO {
 		}
 	}
 
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public void transferOutFromFrozenForWithdraw(String userId,
+												 double money,
+												 String operatorInfo,
+												 String operatorDetail) throws InsufficientBalance {
+		if (money < 0) {
+			throw new RuntimeException("money cannot be less than zero!");
+		}
+		UserBill ibLatest = getLastestBill(userId);
+		UserBill ib = new UserBill();
+		double frozenMoney = ibLatest == null ? 0D : ibLatest.getFrozenMoney();
+		if (frozenMoney < money) {
+			throw new InsufficientBalance("transfer out money:" + money + ", frozenMoney:" + frozenMoney);
+		} else {
+			ib.setId(IdGenerator.randomUUID());
+			ib.setMoney(money);
+			ib.setTime(new Date());
+			ib.setDetail(operatorDetail);
+			ib.setType(UserBillConstants.Type.TO_BALANCE);
+			ib.setTypeInfo(operatorInfo);
+			ib.setUser(new User(userId));
+			if (ibLatest == null) {
+				ib.setSeqNum(1L);
+				// 余额=0
+				ib.setBalance(0D);
+				// 最新冻结金额=0
+				ib.setFrozenMoney(0D);
+			} else {
+				ib.setSeqNum(ibLatest.getSeqNum() + 1);
+				ib.setBalance(ibLatest.getBalance());
+				ib.setFrozenMoney(ArithUtil.sub(ibLatest.getFrozenMoney(), money));
+			}
+			ht.save(ib);
+		}
+	}
+
 	/**
 	 * 转入到余额
 	 * 
