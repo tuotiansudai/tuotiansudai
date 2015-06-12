@@ -150,78 +150,10 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
-	<servlet>
-		<servlet-name>Recharge</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet>
-		<servlet-name>Withdrawal</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet>
-		<servlet-name>Investment</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet>
-		<servlet-name>Certification</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet>
-		<servlet-name>Register</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet>
-		<servlet-name>Bind Card</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Recharge</servlet-name>
-		<url-pattern>/site/themes/default/templates/user/recharge.htm</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Withdrawal</servlet-name>
-		<url-pattern>/site/themes/default/templates/user/withdraw.htm</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Investment</servlet-name>
-		<url-pattern>/**/loanDetail.htm;/**/loanDetail_xsb.htm;/**/loanDetail_jxb.htm;/**/loanDetail_dxb.htm</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Certification</servlet-name>
-		<url-pattern>/site/themes/default/templates/user/get_investor_permission.xhtml</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Register</servlet-name>
-		<url-pattern>/site/themes/default/templates/memberRegister.xhtml</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Bind Card</servlet-name>
-		<url-pattern>/site/themes/default/templates/user/mybankcards.xhtml</url-pattern>
-	</servlet-mapping>
-
 	<context-param>
 		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
