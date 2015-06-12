@@ -1,11 +1,13 @@
 package com.esoft.umpay.loan.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
+import com.umpay.api.util.DataUtil;
 import org.apache.commons.logging.Log;
 
 import com.esoft.archer.notice.model.Notice;
@@ -32,6 +34,7 @@ import com.esoft.umpay.loan.service.impl.UmPayPassLoanApplyOperation;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Description :
@@ -175,19 +178,29 @@ public class UmPayLoanHome extends LoanHome {
 	 * 放款
 	 */
 	@Override
+	@Transactional
 	public String recheck() {
+		Date now = new Date();
+		long thirtyMinutes = 1000 * 60 * 30;
 		try {
 			Loan loan = getBaseService().get(Loan.class, getInstance().getId());
 			List<Invest> invests = loan.getInvests();
 			for (Invest invest : invests) {
-				if (invest.getStatus().equals(
-						InvestConstants.InvestStatus.WAIT_AFFIRM)) {
-					FacesUtil.addInfoMessage("放款失败，存在等待第三方资金托管确认的投资。");
-					return null;
+				if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+					Date investTime = invest.getTime();
+					if (now.getTime() - investTime.getTime() < thirtyMinutes) {
+						FacesUtil.addInfoMessage("放款失败，存在等待第三方资金托管确认的投资。");
+						return FacesUtil.redirect(loanListUrl);
+					}
 				}
 			}
-			umPayLoaingOperation.createOperation(loan,
-					FacesContext.getCurrentInstance());
+			for (Invest invest : invests) {
+				if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+					invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
+				}
+			}
+			getBaseService().save(loan);
+			umPayLoaingOperation.createOperation(loan, FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UmPayOperationException e) {
@@ -200,22 +213,39 @@ public class UmPayLoanHome extends LoanHome {
 	 * 流标
 	 */
 	@Override
+	@Transactional
 	public String failByManager() {
+		Date now = new Date();
+		long thirtyMinutes = 1000 * 60 * 30;
 		Loan loan = getBaseService().get(Loan.class, getInstance().getId());
+		List<Invest> invests = loan.getInvests();
+		for (Invest invest : invests) {
+			if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+				Date investTime = invest.getTime();
+				if (now.getTime() - investTime.getTime() < thirtyMinutes) {
+					FacesUtil.addInfoMessage("放款失败，存在等待第三方资金托管确认的投资。");
+					return null;
+				}
+
+			}
+		}
+		for (Invest invest : invests) {
+			if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+				invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
+			}
+		}
 		if (loan.getStatus().equals(LoanStatus.WAITING_VERIFY)) {
 			return super.failByManager();
 		}
 		try {
-			for (Invest invest : loan.getInvests()) {
+			for (Invest invest : invests) {
 				if (invest.getStatus().equals(
 						InvestConstants.InvestStatus.WAIT_AFFIRM)) {
 					// 流标时候，需要检查是否要等待确认的投资，如果有，则不让放款。
-					throw new ExistWaitAffirmInvests("investID:"
-							+ invest.getId());
+					throw new ExistWaitAffirmInvests("investID:" + invest.getId());
 				}
 			}
-			umPayCancelLoanOperation.createOperation(loan,
-					FacesContext.getCurrentInstance());
+			umPayCancelLoanOperation.createOperation(loan, FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			FacesUtil.addErrorMessage("流标失败");
 			return null;
