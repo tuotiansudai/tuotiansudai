@@ -178,18 +178,18 @@ public class UmPayLoanHome extends LoanHome {
 	 * 放款
 	 */
 	@Override
-	@Transactional
 	public String recheck() {
 		try {
 			loanService.changeInvestFromWaitAffirmToUnfinished(getInstance().getId());
 			Loan loan = getBaseService().get(Loan.class, getInstance().getId());
 			umPayLoaingOperation.createOperation(loan, FacesContext.getCurrentInstance());
+			FacesUtil.addInfoMessage("放款成功");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UmPayOperationException e) {
+			log.error(e.getStackTrace());
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
-		FacesUtil.addInfoMessage("放款成功");
 		return FacesUtil.redirect(loanListUrl);
 	}
 
