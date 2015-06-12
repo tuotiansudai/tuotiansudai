@@ -180,33 +180,16 @@ public class UmPayLoanHome extends LoanHome {
 	@Override
 	@Transactional
 	public String recheck() {
-		Date now = new Date();
-		long thirtyMinutes = 1000 * 60 * 30;
 		try {
+			loanService.changeInvestFromWaitAffirmToUnfinished(getInstance().getId());
 			Loan loan = getBaseService().get(Loan.class, getInstance().getId());
-			List<Invest> invests = loan.getInvests();
-			for (Invest invest : invests) {
-				if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
-					Date investTime = invest.getTime();
-					if (now.getTime() - investTime.getTime() < thirtyMinutes) {
-						FacesUtil.addInfoMessage("放款失败，存在等待第三方资金托管确认的投资。");
-						return FacesUtil.redirect(loanListUrl);
-					}
-				}
-			}
-			for (Invest invest : invests) {
-				if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
-					invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
-					getBaseService().save(invest);
-				}
-			}
-
 			umPayLoaingOperation.createOperation(loan, FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UmPayOperationException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
+		FacesUtil.addInfoMessage("放款成功");
 		return FacesUtil.redirect(loanListUrl);
 	}
 

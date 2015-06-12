@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.hibernate.collection.AbstractPersistentCollection;
@@ -258,11 +260,6 @@ public class LoanServiceImpl implements LoanService {
 		List<Invest> invests = loan.getInvests();
 
 		for (Invest invest : invests) {
-			if (invest.getStatus().equals(
-					InvestConstants.InvestStatus.WAIT_AFFIRM)) {
-				// 放款时候，需要检查是否要等待确认的投资，如果有，则不让放款。
-				throw new ExistWaitAffirmInvests("investID:" + invest.getId());
-			}
 			if (invest.getStatus().equals(
 					InvestConstants.InvestStatus.BID_SUCCESS)) {
 				// 放款时候，需要只更改BID_SUCCESS 的借款。
@@ -584,6 +581,29 @@ public class LoanServiceImpl implements LoanService {
 								InvestConstants.InvestStatus.COMPLETE,
 								InvestConstants.InvestStatus.BAD_DEBT,
 								InvestConstants.InvestStatus.REPAYING });
+	}
+
+	@Override
+	@Transactional
+	public void changeInvestFromWaitAffirmToUnfinished(String loanId) {
+		Date now = new Date();
+		long thirtyMinutes = 1000 * 60 * 30;
+		Loan loan = ht.load(Loan.class, loanId);
+		List<Invest> invests = loan.getInvests();
+		for (Invest invest : invests) {
+			if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+				Date investTime = invest.getTime();
+				if (now.getTime() - investTime.getTime() < thirtyMinutes) {
+					throw new UmPayOperationException("放款失败，存在等待第三方资金托管确认的投资。");
+				}
+			}
+		}
+		for (Invest invest : invests) {
+			if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+				invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
+			}
+		}
+		ht.save(loan);
 	}
 
 }

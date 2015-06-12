@@ -196,4 +196,5 @@ public interface LoanService {
 	 */
 	public List<Invest> getSuccessfulInvests(String loanId);
 
+	void changeInvestFromWaitAffirmToUnfinished(String loanId);
 }
