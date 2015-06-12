@@ -62,7 +62,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/ImageManager/**" filters="none" />
 		<intercept-url pattern="/GetMovie/**" filters="none" />
 		<intercept-url pattern="/verifyCodeServlet/**" filters="none" />
-		<intercept-url pattern="/activateAccount/**" filters="none" />
+		<intercept-url pattern="/activateAccount/**" access="hasRole('USER')" />
 		<intercept-url pattern="/verifyCodeServlet/**" filters="none" />
 		<intercept-url pattern="/sina_weibo_auth/**" filters="none" />
 		<intercept-url pattern="/qq_auth_return/**" filters="none" />
