@@ -147,8 +147,8 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			throws TrusteeshipReturnException {
 		Map<String, String> paramMap = null;
 		try {
-			log.info("recharge-web-data:" + paramMap);
 			paramMap = UmPaySignUtil.getMapDataByRequest(request);
+			log.info("recharge-web-data:" + paramMap);
 			// 状态码
 			String ret_code = paramMap.get("ret_code");
 			// 订单编号
@@ -194,8 +194,8 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			ServletResponse response) {
 		Map<String, String> paramMap = null;
 		try {
-			log.info("recharge-s2s-data:" + paramMap);
 			paramMap = UmPaySignUtil.getMapDataByRequest(request);
+			log.info("recharge-s2s-data:" + paramMap);
 			if (null != paramMap) {
 				// 状态码
 				String ret_code = paramMap.get("ret_code");
