@@ -13,7 +13,7 @@ function IEVersion() {
     var regStr_ie = /msie [\d.]+;/gi ;
     var browser = '';
     var versionInfo = '';
-    if(agent.indexOf("msie") > 0) {
+    if(agent.indexOf("msie") > 0 && agent.indexOf("firefox") == -1 && agent.indexOf("safari") == -1 && agent.indexOf("chrome") == -1) {
         browser = agent.match(regStr_ie) ;
         alert(browser);
         versionInfo = (browser+"").replace(/[^0-9.]/ig,"");
