@@ -46,12 +46,16 @@ public class ActivateAccountServlet extends HttpServlet {
 				userService.activateUserByEmailActiveCode(code);
 				response.sendRedirect(request.getContextPath() + "/regSuccess?showTitle=EMAIL_CHECK_TITILE");
 			} catch (AuthInfoOutOfDateException e) {
+				log.error(e.getStackTrace());
 				response.sendRedirect(request.getContextPath() + "/activefail?showTitle=outOfDate");
 			} catch (UserNotFoundException e) {
+				log.error(e.getStackTrace());
 				response.sendRedirect(request.getContextPath() + "/activefail?showTitle=userNotFound");
 			} catch (NoMatchingObjectsException e) {
+				log.error(e.getStackTrace());
 				response.sendRedirect(request.getContextPath() + "/activefail");
 			} catch (AuthInfoAlreadyActivedException e) {
+				log.error(e.getStackTrace());
 				response.sendRedirect(request.getContextPath() + "/activefail?showTitle=alreadyActived");
 			}
 		} else {

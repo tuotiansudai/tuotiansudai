@@ -862,16 +862,12 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 		boolean isActivatedFlag = false;
 		AuthInfo  activateUseByEmailAi = authInfoBO.get(source, target, activateUseByEmailAt);
 		if (activateUseByEmailAi != null){
-			if("activated".equals(activateUseByEmailAi.getStatus())){
-				isActivatedFlag = true;
-			}
+			isActivatedFlag = CommonConstants.AuthInfoStatus.ACTIVATED.equals(activateUseByEmailAi.getStatus());
 		}else{
 			String bingEmailAt = CommonConstants.AuthInfoType.BINDING_EMAIL;
 			AuthInfo bingEmailAi = authInfoBO.get(source, target, bingEmailAt);
 			if (bingEmailAi != null){
-				if("activated".equals(bingEmailAi.getStatus())){
-					isActivatedFlag = true;
-				}
+				isActivatedFlag = CommonConstants.AuthInfoStatus.ACTIVATED.equals(bingEmailAi.getStatus());
 			}
 		}
 		return isActivatedFlag;

@@ -541,12 +541,11 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public String changeBindingEmail() {
 		try {
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
-			String email = "";
-			if (newEmail == null){
+			String email = newEmail;
+			if (email == null){
 				email = getInstance().getEmail();
-			}else{
-				email = newEmail;
 			}
+
 			userService.bindingEmail(user.getId(), email, authCode);
 			FacesUtil.addInfoMessage("绑定新邮箱成功！");
 			return "pretty:userCenter";

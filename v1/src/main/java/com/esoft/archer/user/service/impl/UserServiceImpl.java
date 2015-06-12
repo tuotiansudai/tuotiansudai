@@ -12,9 +12,11 @@ import javax.annotation.Resource;
 
 import com.esoft.archer.common.model.AuthInfo;
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.coupon.exception.ExceedDeadlineException;
 import com.google.common.base.Strings;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.logging.Log;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -68,6 +70,8 @@ import com.esoft.archer.config.controller.ConfigHome;
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
+	@Logger
+	static Log log;
 	@Resource
 	private HibernateTemplate ht;
 
@@ -122,10 +126,10 @@ public class UserServiceImpl implements UserService {
 		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
 				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
 		Calendar cal = Calendar.getInstance();
-		int emailValidTime = 7;
+		int emailValidDay = 7;
 		Date today = new Date();
 		cal.setTime(today);
-		cal.add(Calendar.DATE, emailValidTime);
+		cal.add(Calendar.DATE, emailValidDay);
 		Date deadline = cal.getTime();
 		user.setRegisterTime(today);
 		// 用户密码通过sha加密
@@ -143,7 +147,7 @@ public class UserServiceImpl implements UserService {
 							CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
 							.getAuthCode());
 		}catch (Exception e){
-			e.printStackTrace();
+			log.error(e.getStackTrace());
 		}
 
 	}
@@ -529,10 +533,8 @@ public class UserServiceImpl implements UserService {
 		if (activateUserByEmailAi != null){
 			ht.delete(activateUserByEmailAi);
 		}
-		if (!oldEmail.equals(email)){
-			if(bingEmailAi != null){
+		if (!oldEmail.equals(email) && bingEmailAi != null){
 				ht.delete(bingEmailAi);
-			}
 		}
 		// 如果认证码输入正确，更改此认证码的状态为已激活
 		authInfoBO.activate(userId, email,
