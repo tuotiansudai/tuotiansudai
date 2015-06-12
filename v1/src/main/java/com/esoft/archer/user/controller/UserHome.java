@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.esoft.archer.common.service.impl.AuthInfoBO;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
 import org.apache.commons.lang.StringUtils;
@@ -76,6 +77,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
 	@Resource
 	private UserBO userBO;
+	@Resource
+	private AuthInfoBO authInfoBO;
 
 	/**
 	 * 推荐人
@@ -378,6 +381,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	 */
 	public String registerByMobileNumber() {
 		try {
+
 			userService.registerByMobileNumber(getInstance(), authCode,
 					referrer);
 			if (isLoginAfterRegister) {
@@ -846,6 +850,31 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 					SecurityContextHolder.getContext());
 			sessionRegistry.registerNewSession(session.getId(), userDetails);
 		}
+	}
+	/**
+	 * 获取邮箱验证状态
+	 *
+	 * @param source 用户名
+	 * @param target 邮箱
+	 */
+	public boolean isActivatedByEmail(String source, String target){
+		String activateUseByEmailAt = CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL;
+		boolean isActivatedFlag = false;
+		AuthInfo  activateUseByEmailAi = authInfoBO.get(source, target, activateUseByEmailAt);
+		if (activateUseByEmailAi != null){
+			if("activated".equals(activateUseByEmailAi.getStatus())){
+				isActivatedFlag = true;
+			}
+		}else{
+			String bingEmailAt = CommonConstants.AuthInfoType.BINDING_EMAIL;
+			AuthInfo bingEmailAi = authInfoBO.get(source, target, bingEmailAt);
+			if (bingEmailAi != null){
+				if("activated".equals(bingEmailAi.getStatus())){
+					isActivatedFlag = true;
+				}
+			}
+		}
+		return isActivatedFlag;
 	}
 
 	public boolean getIsLoginAfterRegister() {

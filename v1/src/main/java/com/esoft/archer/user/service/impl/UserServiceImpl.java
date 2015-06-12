@@ -6,10 +6,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.common.model.AuthInfo;
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.jdp2p.coupon.exception.ExceedDeadlineException;
 import com.google.common.base.Strings;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.dao.DuplicateKeyException;
@@ -43,6 +46,7 @@ import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import com.esoft.archer.config.controller.ConfigHome;
 
 /**
  * <p>
@@ -94,6 +98,7 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	private MessageService messageService;
 
+
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public User getCrruntUserInfo(String username) throws UserNotFoundException {
@@ -116,7 +121,13 @@ public class UserServiceImpl implements UserService {
 		// 验证手机认证码是否正确
 		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
 				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-		user.setRegisterTime(new Date());
+		Calendar cal = Calendar.getInstance();
+		int emailValidTime = 7;
+		Date today = new Date();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, emailValidTime);
+		Date deadline = cal.getTime();
+		user.setRegisterTime(today);
 		// 用户密码通过sha加密
 		user.setPassword(HashCrypt.getDigestHash(user.getPassword()));
 		user.setCashPassword(HashCrypt.getDigestHash(user.getCashPassword()));
@@ -125,6 +136,16 @@ public class UserServiceImpl implements UserService {
 		// 添加普通用户权限
 		Role role = new Role("MEMBER");
 		userBO.addRole(user, role);
+		try {
+			sendActiveEmail(
+					user,
+					authService.createAuthInfo(user.getId(), user.getEmail(), deadline,
+							CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
+							.getAuthCode());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
@@ -473,10 +494,10 @@ public class UserServiceImpl implements UserService {
 		params.put(
 				"authCode",
 				authService.createAuthInfo(userId, oriEmail, null,
-						CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL)
+						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
 		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.CHANGE_BINDING_EMAIL
+				MessageConstants.UserMessageNodeId.BINDING_EMAIL
 						+ "_email"), params, oriEmail);
 	}
 
@@ -502,6 +523,17 @@ public class UserServiceImpl implements UserService {
 		// 根据用户id，邮箱，认证码，认证码类型,验证认证码
 		authService.verifyAuthInfo(userId, email, authCode,
 				CommonConstants.AuthInfoType.BINDING_EMAIL);
+		String oldEmail = user.getEmail();
+		AuthInfo activateUserByEmailAi = authInfoBO.get(userId, oldEmail, CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL);
+		AuthInfo bingEmailAi = authInfoBO.get(userId,oldEmail,CommonConstants.AuthInfoType.BINDING_EMAIL);
+		if (activateUserByEmailAi != null){
+			ht.delete(activateUserByEmailAi);
+		}
+		if (!oldEmail.equals(email)){
+			if(bingEmailAi != null){
+				ht.delete(bingEmailAi);
+			}
+		}
 		// 如果认证码输入正确，更改此认证码的状态为已激活
 		authInfoBO.activate(userId, email,
 				CommonConstants.AuthInfoType.BINDING_EMAIL);

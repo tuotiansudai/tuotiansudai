@@ -481,8 +481,8 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public void checkCurrentEmail(){
 			try {
 				User user=userService.getUserById(loginUserInfo.getLoginUserId());
-				//验证认证码        CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL(类型) 修改绑定邮箱
-				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL);
+
+				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.BINDING_EMAIL);
 				this.step = 2;
 				this.authCode = null;
 			} catch (UserNotFoundException e) {
@@ -541,7 +541,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public String changeBindingEmail() {
 		try {
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
-			userService.bindingEmail(user.getId(), newEmail, authCode);
+			String email = "";
+			if (newEmail == null){
+				email = getInstance().getEmail();
+			}else{
+				email = newEmail;
+			}
+			userService.bindingEmail(user.getId(), email, authCode);
 			FacesUtil.addInfoMessage("绑定新邮箱成功！");
 			return "pretty:userCenter";
 		} catch (UserNotFoundException e) {
