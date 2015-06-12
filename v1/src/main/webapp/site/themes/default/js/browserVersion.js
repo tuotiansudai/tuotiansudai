@@ -9,12 +9,15 @@ if (IEVersion() < 9.0) {
 
 function IEVersion() {
     var agent = navigator.userAgent.toLowerCase() ;
+    alert(agent);
     var regStr_ie = /msie [\d.]+;/gi ;
     var browser = '';
     var versionInfo = '';
     if(agent.indexOf("msie") > 0) {
         browser = agent.match(regStr_ie) ;
+        alert(browser);
         versionInfo = (browser+"").replace(/[^0-9.]/ig,"");
+        alert(versionInfo);
         return parseFloat(versionInfo);
     } else {
         return 9.0;
