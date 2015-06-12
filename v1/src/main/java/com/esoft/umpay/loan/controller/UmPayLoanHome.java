@@ -197,9 +197,10 @@ public class UmPayLoanHome extends LoanHome {
 			for (Invest invest : invests) {
 				if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
 					invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
+					getBaseService().save(invest);
 				}
 			}
-			getBaseService().save(loan);
+
 			umPayLoaingOperation.createOperation(loan, FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			e.printStackTrace();
