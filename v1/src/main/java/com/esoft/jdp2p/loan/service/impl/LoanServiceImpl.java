@@ -609,7 +609,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void notifyInvestorsLoanOutSuccessfulBySMS(Loan loan) throws SmsSendErrorException{
-        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "sms";
+        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "_sms";
         UserMessageTemplate smsMessageTemplate = ht.get(UserMessageTemplate.class, smsTemplateId);
 
         UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
@@ -636,7 +636,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void notifyInvestorsLoanOutSuccessfulByEmail(Loan loan) {
-        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "email";
+        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "_email";
         UserMessageTemplate emailMessageTemplate = ht.get(UserMessageTemplate.class, smsTemplateId);
 
         UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
