@@ -225,7 +225,7 @@
 							<f:event type="preRenderComponent"
 								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
 							<ui:param name="restriction"
-									  value="#{'(invest.status!=\''}#{InvestStatus.WAIT_AFFIRM}#{'\' and invest.status!=\''}#{InvestStatus.CANCEL}#{''}')"></ui:param>
+									  value="#{'(invest.status not in (\''}#{InvestStatus.WAIT_AFFIRM}#{'\', \''}#{InvestStatus.CANCEL}#{'\', \''}#{InvestStatus.UNFINISHED}#{'\')'})"></ui:param>
 							<f:event type="preRenderComponent"
 									 listener="#{investList.addRestriction(restriction)}"></f:event>
 							<f:event type="preRenderComponent"
