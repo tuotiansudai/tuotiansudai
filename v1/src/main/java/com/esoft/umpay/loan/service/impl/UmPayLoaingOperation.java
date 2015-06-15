@@ -140,6 +140,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				umPayLoanMoneyService.loanMoney2Mer("02"+loan.getId(), loanGuranteeFee, loan.getId());
 				//更新标的状态为还款中,对于投标中的不能改变几个参数已经做了处理
 				umPayLoanStatusService.updateLoanStatusOperation(loan, UmPayConstants.UpdateProjectStatus.PROJECT_STATE_REPAYING, false);
+				this.addLoanOutSuccessfulNotificationJob(loan);
 			}else{
 				to.setStatus(TrusteeshipConstants.Status.REFUSED);
 				ht.update(to);
@@ -184,7 +185,6 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				Loan loan = ht.get(Loan.class, loanId);
 				ht.evict(loan);
 				loan = ht.get(Loan.class, loanId);
-				this.addLoanOutSuccessfulNotificationJob(loan);
 				if(LoanConstants.LoanStatus.RECHECK.equals(loan.getStatus())){
 					try {
 						loanService.giveMoneyToBorrower(loanId);
