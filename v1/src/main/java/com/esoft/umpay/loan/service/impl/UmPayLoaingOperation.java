@@ -11,7 +11,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.jdp2p.schedule.ScheduleConstants;
+import com.esoft.jdp2p.schedule.job.LoanOutSuccessfulNotificationJob;
 import org.apache.commons.logging.Log;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +76,9 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 
 	@Logger
 	Log log;
+
+	@Resource
+	StdScheduler scheduler;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -181,6 +188,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 					try {
 						loanService.giveMoneyToBorrower(loanId);
 						log.debug("标的"+loanId+"放款成功");
+						this.addLoanOutSuccessfulNotificationJob(loan);
 					} catch (BorrowedMoneyTooLittle e) {
 						log.debug("标的"+loanId+"放款失败");
 						log.debug(e.getMessage());
@@ -209,6 +217,30 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			throws TrusteeshipReturnException {
 
 	}
+
+	private void addLoanOutSuccessfulNotificationJob(Loan loan) {
+		Date now = new Date();
+		Date threeMinutesLater = DateUtil.addMinute(now, 3);
+		JobDetail jobDetail = JobBuilder
+				.newJob(LoanOutSuccessfulNotificationJob.class)
+				.withIdentity(loan.getId(), ScheduleConstants.JobGroup.LOAN_OUT_NOTIFICATION)
+				.build();
+		jobDetail.getJobDataMap().put(LoanOutSuccessfulNotificationJob.LOAN_ID, loan.getId());
+		SimpleTrigger trigger = TriggerBuilder
+				.newTrigger()
+				.withIdentity(loan.getId(), ScheduleConstants.TriggerGroup.LOAN_OUT_NOTIFICATION)
+				.forJob(jobDetail)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+				.startAt(threeMinutesLater).build();
+		try {
+			scheduler.scheduleJob(jobDetail, trigger);
+		} catch (SchedulerException e) {
+			log.error(e);
+		}
+		if (log.isDebugEnabled())
+			log.debug("添加[到期自动修改项目状态]调度成功，项目编号[" + loan.getId() + "]");
+	}
+	
 
 	/**
 	 * 平台收费

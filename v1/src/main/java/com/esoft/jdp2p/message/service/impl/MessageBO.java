@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -122,6 +123,17 @@ public class MessageBO {
 		String msg = replaceParams(umt, params);
 		//发送短信
 		smsService.send(msg, mobileNumber);
+	}
+
+	public void sendMultipleSMS(UserMessageTemplate template, Map<String, Map<String, String>> mobileParamMapping) {
+		Map<String, String> mobileContentMapping = Maps.newHashMap();
+		for (String mobileNumber : mobileParamMapping.keySet()) {
+			Map<String, String> parameters = mobileParamMapping.get(mobileNumber);
+			String message = replaceParams(template, parameters);
+			mobileContentMapping.put(mobileNumber, message);
+		}
+		smsService.sendMultiple(mobileContentMapping);
+
 	}
 
 	public void sendStationMsg(UserMessageTemplate umt,

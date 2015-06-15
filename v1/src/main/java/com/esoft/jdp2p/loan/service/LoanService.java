@@ -11,6 +11,7 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.loan.exception.InvalidExpectTimeException;
 import com.esoft.jdp2p.loan.model.ApplyEnterpriseLoan;
 import com.esoft.jdp2p.loan.model.Loan;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Filename: LoanService.java Description: 借款serviceCopyright: Copyright (c)2013
@@ -196,4 +197,6 @@ public interface LoanService {
 	 */
 	public List<Invest> getSuccessfulInvests(String loanId);
 
+	@Transactional
+	void notifyInvestorsLoanOutSuccessful(String loanId);
 }
