@@ -615,7 +615,7 @@ public class LoanServiceImpl implements LoanService {
         UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
             @Override
             public boolean apply(Invest invest) {
-                return invest.getStatus().equalsIgnoreCase(InvestStatus.BID_SUCCESS);
+                return invest.getStatus().equalsIgnoreCase(InvestStatus.REPAYING);
             }
         });
 
@@ -642,7 +642,7 @@ public class LoanServiceImpl implements LoanService {
         UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
             @Override
             public boolean apply(Invest invest) {
-                return invest.getStatus().equalsIgnoreCase(InvestStatus.BID_SUCCESS);
+                return invest.getStatus().equalsIgnoreCase(InvestStatus.REPAYING);
             }
         });
         log.debug(MessageFormat.format("标的: {0} 放款邮件通知", loan.getId()));
