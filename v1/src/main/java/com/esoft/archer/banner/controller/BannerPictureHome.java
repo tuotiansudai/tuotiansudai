@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -105,7 +106,7 @@ public class BannerPictureHome {
     }
 
     private void ossUpload(UploadedFile uploadFile, InputStream is, BannerPicture picture) throws IOException {
-        if (!PropertiesUtils.isDevEnvironment("environment")) {
+        if (!CommonUtils.isDevEnvironment("environment")) {
             String url = AliyunUtils.uploadFileInputStream(uploadFile);
             picture.setPicture(url);
         } else {

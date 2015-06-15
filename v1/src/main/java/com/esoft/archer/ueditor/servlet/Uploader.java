@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.aliyun.WaterMarkUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase.InvalidContentTypeException;
@@ -102,7 +103,7 @@ public class Uploader {
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
 
 			String rootPath = request.getSession().getServletContext().getRealPath("/");
-			if(!PropertiesUtils.isDevEnvironment("environment")){
+			if(!CommonUtils.isDevEnvironment("environment")){
 				if(switchBlur){
 					this.url = AliyunUtils.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
 				}else{

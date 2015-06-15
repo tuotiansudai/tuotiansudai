@@ -14,6 +14,7 @@ import javax.faces.component.html.HtmlPanelGroup;
 
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.component.graphicimage.GraphicImage;
@@ -107,7 +108,7 @@ public class UploadFileHome implements Serializable{
 		try {
 			is = uploadFile.getInputstream();
 
-			if(!PropertiesUtils.isDevEnvironment("environment")){
+			if(!CommonUtils.isDevEnvironment("environment")){
 				url= AliyunUtils.uploadFileInputStream(uploadFile);
 			}else {
 				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());

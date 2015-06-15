@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
@@ -697,7 +698,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 		UploadedFile file = event.getFile();
 		try {
 			boolean isUpload = false;
-			if (!PropertiesUtils.isDevEnvironment("environment")) {
+			if (!CommonUtils.isDevEnvironment("environment")) {
 				isUpload = true;
 			}
 			InputStream is = file.getInputstream();
