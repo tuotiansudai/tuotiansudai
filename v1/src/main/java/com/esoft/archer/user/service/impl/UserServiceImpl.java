@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.google.common.base.Strings;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -451,7 +452,7 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
 		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.BINDING_EMAIL + "_email"),
+						MessageConstants.UserMessageNodeId.BINDING_EMAIL + "_email"),
 				params, email);
 	}
 
@@ -618,9 +619,12 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(null, mobileNumber, null,
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
-		messageBO.sendSMS(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
-						+ "_sms"), params, mobileNumber);
+		if(!CommonUtils.isDevEnvironment("environment")){
+			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
+					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
+							+ "_sms"), params, mobileNumber);
+
+		}
 	}
 
 	@Override
@@ -646,9 +650,12 @@ public class UserServiceImpl implements UserService {
 								null,
 								CommonConstants.AuthInfoType.CHANGE_BINDING_MOBILE_NUMBER)
 						.getAuthCode());
-		messageBO.sendSMS(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.CHANGE_BINDING_MOBILE_NUMBER
-						+ "_sms"), params, oriMobileNumber);
+		if(!CommonUtils.isDevEnvironment("environment")){
+
+			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
+					MessageConstants.UserMessageNodeId.CHANGE_BINDING_MOBILE_NUMBER
+							+ "_sms"), params, oriMobileNumber);
+		}
 	}
 
 	/**
