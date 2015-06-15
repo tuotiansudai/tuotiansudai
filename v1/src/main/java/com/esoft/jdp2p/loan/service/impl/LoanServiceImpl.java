@@ -628,7 +628,7 @@ public class LoanServiceImpl implements LoanService {
             mobileParamMapping.put(invest.getUser().getMobileNumber(), smsParameters);
 
         }
-
+        log.debug(MessageFormat.format("标的: {0} 放款短信通知", loan.getId()));
         messageBO.sendMultipleSMS(smsMessageTemplate, mobileParamMapping);
     }
 
@@ -642,6 +642,7 @@ public class LoanServiceImpl implements LoanService {
                 return invest.getStatus().equalsIgnoreCase(InvestStatus.BID_SUCCESS);
             }
         });
+        log.debug(MessageFormat.format("标的: {0} 放款邮件通知", loan.getId()));
         while (successInvests.hasNext()) {
             Invest invest = successInvests.next();
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()

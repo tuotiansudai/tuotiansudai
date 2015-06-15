@@ -183,12 +183,12 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				String loanId = to.getOperator();
 				Loan loan = ht.get(Loan.class, loanId);
 				ht.evict(loan);
-				loan = ht.get(Loan.class, loanId);	
+				loan = ht.get(Loan.class, loanId);
+				this.addLoanOutSuccessfulNotificationJob(loan);
 				if(LoanConstants.LoanStatus.RECHECK.equals(loan.getStatus())){
 					try {
 						loanService.giveMoneyToBorrower(loanId);
 						log.debug("标的"+loanId+"放款成功");
-						this.addLoanOutSuccessfulNotificationJob(loan);
 					} catch (BorrowedMoneyTooLittle e) {
 						log.debug("标的"+loanId+"放款失败");
 						log.debug(e.getMessage());
@@ -238,7 +238,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			log.error(e);
 		}
 		if (log.isDebugEnabled())
-			log.debug("添加[到期自动修改项目状态]调度成功，项目编号[" + loan.getId() + "]");
+			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");
 	}
 	
 
