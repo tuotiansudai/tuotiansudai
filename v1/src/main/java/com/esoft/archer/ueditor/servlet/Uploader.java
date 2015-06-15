@@ -101,9 +101,9 @@ public class Uploader {
 			this.url = savePath  + "/" + this.fileName;
 			BufferedInputStream in = new BufferedInputStream(dfi.getInputStream());
 
-			String switchOss = PropertiesUtils.getPro("plat.is.start");
+			String switchDev = PropertiesUtils.getPro("plat.is.start");
 			String rootPath = request.getSession().getServletContext().getRealPath("/");
-			if(switchOss.equals("oss")){
+			if(switchDev.equals("production") || switchDev.equals("staging")){
 				if(switchBlur){
 					this.url = AliyunUtils.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
 				}else{
