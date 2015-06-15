@@ -63,7 +63,7 @@ public class SmsServiceImpl extends SmsService {
 	}
 
 	@Override
-	public void sendMultiple(Map<String, String> mobileContentMapping) {
+	public void sendMultiple(Map<String, String> mobileContentMapping) throws SmsSendErrorException{
 		String sn = props.getProperty("sn");
 		String pwd = props.getProperty("password");
 		if (sn == null || pwd == null) {
@@ -72,6 +72,7 @@ public class SmsServiceImpl extends SmsService {
 
 		List<String> mobileNumberList = Lists.newArrayList();
 		List<String> contentList = Lists.newArrayList();
+		String result_mt = "";
 		try {
 			for (String mobileNumber : mobileContentMapping.keySet()) {
 				try {
@@ -82,15 +83,16 @@ public class SmsServiceImpl extends SmsService {
 				}
 			}
 			ZucpWebServiceClient client = new ZucpWebServiceClient(sn, pwd);
-			String result_mt = client.gxmt(Joiner.on(",").join(mobileNumberList),
+			result_mt = client.gxmt(Joiner.on(",").join(mobileNumberList),
 					Joiner.on(",").join(contentList), "", "", "");
-			if (result_mt.startsWith("-") || result_mt.equals(""))// 发送短信，如果是以负号开头就是发送失败。
-			{
-				throw new SmsSendErrorException("短信发送失败，错误代码：" + result_mt);
-			}
 		} catch (UnsupportedEncodingException e) {
-			throw new SmsSendErrorException(null, e);
+			log.error(e);
 		}
+		if (result_mt.startsWith("-") || result_mt.equals(""))// 发送短信，如果是以负号开头就是发送失败。
+		{
+			throw new SmsSendErrorException("短信发送失败，错误代码：" + result_mt);
+		}
+
 	}
 	
 //	public static void main(String[] args) {

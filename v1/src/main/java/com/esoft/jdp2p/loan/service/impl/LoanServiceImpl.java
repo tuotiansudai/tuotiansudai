@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.exception.SmsSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Predicate;
@@ -606,7 +608,7 @@ public class LoanServiceImpl implements LoanService {
         this.notifyInvestorsLoanOutSuccessfulByEmail(loan);
     }
 
-    private void notifyInvestorsLoanOutSuccessfulBySMS(Loan loan) {
+    private void notifyInvestorsLoanOutSuccessfulBySMS(Loan loan) throws SmsSendErrorException{
         String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "sms";
         UserMessageTemplate smsMessageTemplate = ht.get(UserMessageTemplate.class, smsTemplateId);
 
@@ -617,19 +619,20 @@ public class LoanServiceImpl implements LoanService {
             }
         });
 
-        Map<String, Map<String, String>> mobileParamMapping = Maps.newHashMap();
-
+        log.debug(MessageFormat.format("标的: {0} 放款短信通知", loan.getId()));
         while (successInvests.hasNext()) {
             Invest invest = successInvests.next();
             Map<String, String> smsParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                     .put("loanName", loan.getName())
                     .put("money", String.valueOf(invest.getInvestMoney()))
                     .build());
-            mobileParamMapping.put(invest.getUser().getMobileNumber(), smsParameters);
+            try {
+                messageBO.sendSMS(smsMessageTemplate, smsParameters, invest.getUser().getMobileNumber());
+            } catch (Exception e) {
+                log.error(e);
+            }
 
         }
-        log.debug(MessageFormat.format("标的: {0} 放款短信通知", loan.getId()));
-        messageBO.sendMultipleSMS(smsMessageTemplate, mobileParamMapping);
     }
 
     private void notifyInvestorsLoanOutSuccessfulByEmail(Loan loan) {
@@ -651,7 +654,11 @@ public class LoanServiceImpl implements LoanService {
                     .build());
             String email = invest.getUser().getEmail();
             if (!Strings.isNullOrEmpty(email)) {
-                messageBO.sendEmail(emailMessageTemplate, emailParameters, email);
+                try {
+                    messageBO.sendEmail(emailMessageTemplate, emailParameters, email);
+                } catch (MailSendErrorException e) {
+                    log.error(e);
+                }
             }
         }
     }

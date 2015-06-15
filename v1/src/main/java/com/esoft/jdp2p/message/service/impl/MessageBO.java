@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.exception.SmsSendErrorException;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -110,8 +112,7 @@ public class MessageBO {
 	 * @param params  这些参数将替换模板中的参数 如username将替换模板中的#{username}
 	 * @param email  邮箱 
 	 */
-	public void sendEmail(UserMessageTemplate umt, Map<String, String> params,
-			String email) {
+	public void sendEmail(UserMessageTemplate umt, Map<String, String> params, String email) throws MailSendErrorException {
 		//替换模板中的参数
 		String msg = replaceParams(umt, params);
 		//发送邮件
@@ -125,7 +126,7 @@ public class MessageBO {
 		smsService.send(msg, mobileNumber);
 	}
 
-	public void sendMultipleSMS(UserMessageTemplate template, Map<String, Map<String, String>> mobileParamMapping) {
+	public void sendMultipleSMS(UserMessageTemplate template, Map<String, Map<String, String>> mobileParamMapping) throws SmsSendErrorException{
 		Map<String, String> mobileContentMapping = Maps.newHashMap();
 		for (String mobileNumber : mobileParamMapping.keySet()) {
 			Map<String, String> parameters = mobileParamMapping.get(mobileNumber);
