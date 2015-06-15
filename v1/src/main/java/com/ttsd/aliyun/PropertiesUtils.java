@@ -49,6 +49,9 @@ import java.util.Properties;
             return b;
         }
 
+        public static boolean isDevEnvironment(String environment){
+            return getPro(environment).equals("dev");
+        }
         public static String getPro(String pro) {
             InputStream in = null;
 

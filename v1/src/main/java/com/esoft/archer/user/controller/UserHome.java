@@ -696,9 +696,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	public void uploadPhoto(FileUploadEvent event) {
 		UploadedFile file = event.getFile();
 		try {
-			String switchDev = PropertiesUtils.getPro("plat.is.start");
 			boolean isUpload = false;
-			if (switchDev.equals("production") || switchDev.equals("staging")) {
+			if (!PropertiesUtils.isDevEnvironment("environment")) {
 				isUpload = true;
 			}
 			InputStream is = file.getInputstream();

@@ -33,7 +33,6 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
 
     @Override
     public void handle() throws FacesException {
-        String devSwitch = PropertiesUtils.getPro("plat.is.start");
         Iterable<ExceptionQueuedEvent> events = this.wrapped.getUnhandledExceptionQueuedEvents();
         for(Iterator<ExceptionQueuedEvent> it = events.iterator(); it.hasNext();) {
             try {
@@ -78,7 +77,7 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     throwable = throwable.getCause();
                     flag += 1;
                 }
-                if (devSwitch.equals("production") || devSwitch.equals("staging")) {
+                if (!PropertiesUtils.isDevEnvironment("environment")) {
                     MailService mailService = new MailServiceImpl();
                     mailService.sendMailException("all@tuotiansudai.com", "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
                 }

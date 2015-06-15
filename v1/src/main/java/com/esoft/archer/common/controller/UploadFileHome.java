@@ -107,8 +107,7 @@ public class UploadFileHome implements Serializable{
 		try {
 			is = uploadFile.getInputstream();
 
-			String isDev = PropertiesUtils.getPro("plat.is.start");
-			if(isDev.equals("production") || isDev.equals("staging")){
+			if(!PropertiesUtils.isDevEnvironment("environment")){
 				url= AliyunUtils.uploadFileInputStream(uploadFile);
 			}else {
 				 url = ImageUploadUtil.upload(is, uploadFile.getFileName());

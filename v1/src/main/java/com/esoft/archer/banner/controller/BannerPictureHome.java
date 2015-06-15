@@ -105,8 +105,7 @@ public class BannerPictureHome {
     }
 
     private void ossUpload(UploadedFile uploadFile, InputStream is, BannerPicture picture) throws IOException {
-        String devSwitch = PropertiesUtils.getPro("plat.is.start");
-        if (devSwitch.equals("production") || devSwitch.equals("staging")) {
+        if (!PropertiesUtils.isDevEnvironment("environment")) {
             String url = AliyunUtils.uploadFileInputStream(uploadFile);
             picture.setPicture(url);
         } else {
