@@ -1,44 +1,9 @@
 package com.esoft.jdp2p.loan.service.impl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.esoft.jdp2p.message.MessageConstants;
-import com.esoft.jdp2p.message.exception.MailSendErrorException;
-import com.esoft.jdp2p.message.exception.SmsSendErrorException;
-import com.esoft.jdp2p.message.model.UserMessageTemplate;
-import com.esoft.jdp2p.message.service.impl.MessageBO;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.*;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.hibernate.collection.AbstractPersistentCollection;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
-import org.quartz.impl.StdScheduler;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.banner.model.BannerPicture;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
-import com.esoft.archer.user.UserBillConstants.Type;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBillBO;
 import com.esoft.core.annotations.Logger;
@@ -58,10 +23,36 @@ import com.esoft.jdp2p.loan.model.ApplyEnterpriseLoan;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.esoft.jdp2p.loan.service.LoanService;
+import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.exception.SmsSendErrorException;
+import com.esoft.jdp2p.message.model.UserMessageTemplate;
+import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.esoft.jdp2p.repay.service.RepayService;
 import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.CheckLoanOverExpectTime;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Maps;
+import com.google.common.collect.UnmodifiableIterator;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.hibernate.collection.AbstractPersistentCollection;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Company: jdp2p <br/>
@@ -272,13 +263,7 @@ public class LoanServiceImpl implements LoanService {
         List<Invest> invests = loan.getInvests();
 
         for (Invest invest : invests) {
-            if (invest.getStatus().equals(
-                    InvestConstants.InvestStatus.WAIT_AFFIRM)) {
-                // 放款时候，需要检查是否要等待确认的投资，如果有，则不让放款。
-                throw new ExistWaitAffirmInvests("investID:" + invest.getId());
-            }
-            if (invest.getStatus().equals(
-                    InvestConstants.InvestStatus.BID_SUCCESS)) {
+            if (invest.getStatus().equals(InvestConstants.InvestStatus.BID_SUCCESS)) {
                 // 放款时候，需要只更改BID_SUCCESS 的借款。
                 try {
                     // investMoney-代金券金额
@@ -661,6 +646,27 @@ public class LoanServiceImpl implements LoanService {
                 }
             }
         }
+    }
+    
+    public void changeInvestFromWaitAffirmToUnfinished(String loanId) {
+        Date now = new Date();
+        long thirtyMinutes = 1000 * 60 * 30;
+        Loan loan = ht.load(Loan.class, loanId);
+        List<Invest> invests = loan.getInvests();
+        for (Invest invest : invests) {
+            if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+                Date investTime = invest.getTime();
+                if (now.getTime() - investTime.getTime() < thirtyMinutes) {
+                    throw new UmPayOperationException("放款失败，存在等待第三方资金托管确认的投资。");
+                }
+            }
+        }
+        for (Invest invest : invests) {
+            if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
+                invest.setStatus(InvestConstants.InvestStatus.UNFINISHED);
+            }
+        }
+        ht.save(loan);
     }
 
 }

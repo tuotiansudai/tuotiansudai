@@ -224,7 +224,7 @@
 							<f:event type="preRenderComponent"
 								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
 							<ui:param name="restriction"
-									  value="#{'(invest.status!=\''}#{InvestStatus.WAIT_AFFIRM}#{'\' and invest.status!=\''}#{InvestStatus.CANCEL}#{''}')"></ui:param>
+									  value="#{'(invest.status not in (\''}#{InvestStatus.WAIT_AFFIRM}#{'\', \''}#{InvestStatus.CANCEL}#{'\', \''}#{InvestStatus.UNFINISHED}#{'\')'})"></ui:param>
 							<f:event type="preRenderComponent"
 									 listener="#{investList.addRestriction(restriction)}"></f:event>
 							<f:event type="preRenderComponent"
@@ -261,8 +261,7 @@
 					</h:form>
 				</div>
 			</div>
-			<script src="js/jquery1.42.min.js"></script>
-			<script>
+			<script type="text/javascript">
 			$(function(){
 				var $li=$(".tabs ul li");
 				$li.click(function(){

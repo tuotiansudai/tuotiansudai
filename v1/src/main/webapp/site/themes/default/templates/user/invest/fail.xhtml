@@ -42,7 +42,11 @@
 								</tr>
 								<f:event type="preRenderComponent"
 									listener="#{investList.example.user.setUsername(loginUserInfo.loginUserId)}"></f:event>
-								<f:event type="preRenderComponent" listener="#{investList.example.setStatus(InvestStatus.CANCEL)}"></f:event>
+
+								<ui:param name="restriction"
+										  value="#{'(invest.status=\''}#{InvestStatus.CANCEL}#{'\' or invest.status=\''}#{InvestStatus.UNFINISHED}#{''}')"></ui:param>
+								<f:event type="preRenderComponent"
+										 listener="#{investList.addRestriction(restriction)}"></f:event>
 
 								<f:event type="preRenderComponent"
 									listener="#{investList.setPageSize(7)}"></f:event>

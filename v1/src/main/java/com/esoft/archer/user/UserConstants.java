@@ -91,6 +91,11 @@ public class UserConstants {
 		 * 审核未通过
 		 */
 		public static final String VERIFY_FAIL = "verify_fail";
+
+		/**
+		 * 复审未通过
+		 */
+		public static final String RECHECK_FAIL = "recheck_fail";
 	}
 
 	/**
