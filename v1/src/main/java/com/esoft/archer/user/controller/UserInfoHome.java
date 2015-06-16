@@ -481,8 +481,8 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public void checkCurrentEmail(){
 			try {
 				User user=userService.getUserById(loginUserInfo.getLoginUserId());
-				//验证认证码        CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL(类型) 修改绑定邮箱
-				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL);
+
+				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.BINDING_EMAIL);
 				this.step = 2;
 				this.authCode = null;
 			} catch (UserNotFoundException e) {
@@ -524,7 +524,11 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			//根据当前登录用户的id,获得当前用户
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
 			//发送绑定新邮箱接口 、 新邮箱需要验证唯一性()    发邮件(认证码)给新邮箱
-			userService.sendBindingEmail(user.getId(), newEmail);
+			String email = newEmail;
+			if (email == null){
+				email = getInstance().getEmail();
+			}
+			userService.sendBindingEmail(user.getId(), email);
 			FacesUtil.addInfoMessage("验证码已经发送至新邮箱！");
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {
@@ -541,7 +545,12 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public String changeBindingEmail() {
 		try {
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
-			userService.bindingEmail(user.getId(), newEmail, authCode);
+			String email = newEmail;
+			if (email == null){
+				email = getInstance().getEmail();
+			}
+
+			userService.bindingEmail(user.getId(), email, authCode);
 			FacesUtil.addInfoMessage("绑定新邮箱成功！");
 			return "pretty:userCenter";
 		} catch (UserNotFoundException e) {
