@@ -136,7 +136,7 @@
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>元&#160;&#160;&#160;&#160;&#160;&#160;<a href="/loanAgreementSample" target="_Blank">借款协议样本</a>
+							</h:inputText>元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
 						</p>
 						<p>
 							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">

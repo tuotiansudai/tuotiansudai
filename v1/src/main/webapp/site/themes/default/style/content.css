@@ -74,6 +74,7 @@
 .gabby-right p span >span{width:auto;}
 .gabby-right p{line-height: 44px;}
 .gabby-right p a{color:#909090}
+.gabby-right p a.loanContract{padding-left: 10px;}
 /* .gabby-right p input{padding:10px 0px;width: 98px;padding-left: 10px;outline: none;margin-right: 10px;margin-bottom: 20px;} *//* 调整宽度 */
 .gabby-right p input{
 	margin-bottom: 20px;
