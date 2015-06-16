@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
+import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.umpay.api.util.DataUtil;
 import org.apache.commons.logging.Log;
 
@@ -34,6 +35,7 @@ import com.esoft.umpay.loan.service.impl.UmPayPassLoanApplyOperation;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -75,6 +77,9 @@ public class UmPayLoanHome extends LoanHome {
 	@Logger
 	Log log;
 
+	@Resource
+	HibernateTemplate ht;
+
 	/**
 	 * 管理员建立项目
 	 */
@@ -86,6 +91,13 @@ public class UmPayLoanHome extends LoanHome {
 			FacesUtil.addErrorMessage("用户：" + loan.getUser().getId()
 					+ "未实名认证，不能发起借款！");
 			return null;
+		}
+		String userId = loan.getUser().getId();
+		List<TrusteeshipAccount> taList = ht.find( "from TrusteeshipAccount t where t.user.id=? and status = 'passed' ",new String[]{userId});
+		if (taList == null || taList.size() <= 0){
+			FacesUtil.addErrorMessage("代理人：" + loan.getUser().getId()
+					+ "未实名认证，不能发起借款！");
+			return  null;
 		}
 		// 创建一个标的操作
 		try {
