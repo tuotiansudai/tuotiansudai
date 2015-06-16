@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -21,29 +22,52 @@ public class ReferrerRelationList extends EntityQuery<User> {
 	@Resource
 	private LoginUserInfo loginUserInfo;
 
-//	private static final String LAZY_MODEL = "select new com.esoft.archer.user.model.ReferrerRelation(referrerId,userId) from ReferrerRelation referrerRelation ";
+	private Date registerTimeStart;
+
+	private Date registerTimeEnd;
+
+	private String userName;
+
 	private static final String LAZY_MODEL = "select distinct user from User user inner join user.referrers referrer where referrer.id=''{0}'' ";
 
 	private static final String LAZY_MODEL_COUNT = "select count(distinct user) from User user inner join user.referrers referrer where referrer.id=''{0}'' ";
 
 	private static final String QUERY_LEVEL = "select relation.level from ReferrerRelation relation where relation.referrerId=''{0}'' and relation.userId=''{1}''";
 
-
-	public ReferrerRelationList(){
-//		setCountHql(MessageFormat.format(LAZY_MODEL_COUNT, loginUserInfo.getLoginUserId()));
-//		setHql(MessageFormat.format(LAZY_MODEL, loginUserInfo.getLoginUserId()));
-//		final String[] RESTRICTIONS = {
-//				"referrerRelation.referrerId = #{referrerRelation.example.referrer.id}",
-//				"1=1 order by referrerRelation.user.id " };
-//		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
-
+	public Date getRegisterTimeEnd() {
+		return registerTimeEnd;
 	}
 
+	public void setRegisterTimeEnd(Date registerTimeEnd) {
+		this.registerTimeEnd = registerTimeEnd;
+	}
+
+	public Date getRegisterTimeStart() {
+		return registerTimeStart;
+	}
+
+	public void setRegisterTimeStart(Date registerTimeStart) {
+		this.registerTimeStart = registerTimeStart;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	@Override
+
 	public List<User> getLazyModelData() {
 		setCountHql(MessageFormat.format(LAZY_MODEL_COUNT, loginUserInfo.getLoginUserId()));
 		setHql(MessageFormat.format(LAZY_MODEL, loginUserInfo.getLoginUserId()));
+		final String[] RESTRICTIONS = {"user.registerTime >= #{referrerRelationList.registerTimeStart}",
+				"user.registerTime <= #{referrerRelationList.registerTimeEnd}",
+				"user.username like #{referrerRelationList.userName}",
+				};
+		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 		return super.getLazyModelData();
 	}
 
