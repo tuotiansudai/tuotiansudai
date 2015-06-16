@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
     public class PropertiesUtils {
-        private static final String fileName = "oss.properties";
+        private static final String fileName = "common.properties";
         private static final String pro_url_pix = "plat.url";
         private static final String pro_url_wap_pix = "plat.wap.url";
 
@@ -20,9 +20,9 @@ import java.util.Properties;
 
             try {
                 Properties prop = new Properties();
-                in = ProFileUtil.class.getClassLoader().getResourceAsStream("oss.properties");
+                in = ProFileUtil.class.getClassLoader().getResourceAsStream("common.properties");
                 if(in == null) {
-                    throw new RuntimeException("没有找到配置文件oss.properties");
+                    throw new RuntimeException("没有找到配置文件common.properties");
                 }
 
                 prop.load(in);
@@ -55,9 +55,9 @@ import java.util.Properties;
             String var5;
             try {
                 Properties ex = new Properties();
-                in = ProFileUtil.class.getClassLoader().getResourceAsStream("oss.properties");
+                in = ProFileUtil.class.getClassLoader().getResourceAsStream("common.properties");
                 if(in == null) {
-                    throw new RuntimeException("没有找到配置文件oss.properties");
+                    throw new RuntimeException("没有找到配置文件common.properties");
                 }
 
                 ex.load(in);
