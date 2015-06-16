@@ -126,17 +126,6 @@ public class MessageBO {
 		smsService.send(msg, mobileNumber);
 	}
 
-	public void sendMultipleSMS(UserMessageTemplate template, Map<String, Map<String, String>> mobileParamMapping) throws SmsSendErrorException{
-		Map<String, String> mobileContentMapping = Maps.newHashMap();
-		for (String mobileNumber : mobileParamMapping.keySet()) {
-			Map<String, String> parameters = mobileParamMapping.get(mobileNumber);
-			String message = replaceParams(template, parameters);
-			mobileContentMapping.put(mobileNumber, message);
-		}
-		smsService.sendMultiple(mobileContentMapping);
-
-	}
-
 	public void sendStationMsg(UserMessageTemplate umt,
 			Map<String, String> params, User sender, User reveiver) {
 		String msg = replaceParams(umt, params);

@@ -62,40 +62,7 @@ public class SmsServiceImpl extends SmsService {
 		}
 	}
 
-	@Override
-	public void sendMultiple(Map<String, String> mobileContentMapping) throws SmsSendErrorException{
-		String sn = props.getProperty("sn");
-		String pwd = props.getProperty("password");
-		if (sn == null || pwd == null) {
-			throw new SmsSendErrorException("短信发送失败，sn或password未定义");
-		}
-
-		List<String> mobileNumberList = Lists.newArrayList();
-		List<String> contentList = Lists.newArrayList();
-		String result_mt = "";
-		try {
-			for (String mobileNumber : mobileContentMapping.keySet()) {
-				try {
-					contentList.add(URLEncoder.encode(mobileContentMapping.get(mobileNumber), "GB2312"));
-					mobileNumberList.add(mobileNumber);
-				} catch (UnsupportedEncodingException e) {
-					log.error(e);
-				}
-			}
-			ZucpWebServiceClient client = new ZucpWebServiceClient(sn, pwd);
-			result_mt = client.gxmt(Joiner.on(",").join(mobileNumberList),
-					Joiner.on(",").join(contentList), "", "", "");
-		} catch (UnsupportedEncodingException e) {
-			log.error(e);
-		}
-		if (result_mt.startsWith("-") || result_mt.equals(""))// 发送短信，如果是以负号开头就是发送失败。
-		{
-			throw new SmsSendErrorException("短信发送失败，错误代码：" + result_mt);
-		}
-
-	}
-	
-//	public static void main(String[] args) {
+	//	public static void main(String[] args) {
 //		new SmsServiceImpl().send("test【金鼎海汇】", "18600238751");
 //	}
 }

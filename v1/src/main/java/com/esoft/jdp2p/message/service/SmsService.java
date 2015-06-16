@@ -21,5 +21,4 @@ public abstract class SmsService {
 	 */
 	public abstract void send(String content, String mobileNumber) throws SmsSendErrorException;
 
-	public abstract void sendMultiple(Map<String, String> mobileContentMapping);
 }
