@@ -524,7 +524,11 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			//根据当前登录用户的id,获得当前用户
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
 			//发送绑定新邮箱接口 、 新邮箱需要验证唯一性()    发邮件(认证码)给新邮箱
-			userService.sendBindingEmail(user.getId(), newEmail);
+			String email = newEmail;
+			if (email == null){
+				email = getInstance().getEmail();
+			}
+			userService.sendBindingEmail(user.getId(), email);
 			FacesUtil.addInfoMessage("验证码已经发送至新邮箱！");
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {

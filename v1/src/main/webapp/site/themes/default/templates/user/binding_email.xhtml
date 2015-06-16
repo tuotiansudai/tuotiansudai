@@ -17,7 +17,7 @@
 		<div class="center_right">
 			<div class="zhcz_h3">安全信息</div>
 			<p class="bdsj_p">
-				<span><img src="#{tplVars.themeImagePath}/img73.png" />认证邮箱</span>
+				<span><img src="#{tplVars.themeImagePath}/img73.png" />邮箱</span>
 			</p>
 
 			<h:form id="form">
@@ -27,7 +27,7 @@
 					</div>
 					<div class="bdsj_r">
 						<h:inputText id="newEmail" styleClass="bdsj_txt bdsj_txt01"
-							required="true" label="邮箱" readonly="true"
+							required="true" label="邮箱"
 							value="#{userInfoHome.instance.email}">
 							<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
 							<archer:validateAlreadyExist
@@ -51,7 +51,7 @@
 							styleClass="send-btn bdsj_btn pointer"
 							onclick="$(this).attr('disabled','disabled')">
 							<f:ajax execute="newEmail" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
-								listener="#{userInfoHome.sendCurrentBindingEmail('timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+								listener="#{userInfoHome.sendNewBindingEmail('timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
 						</h:commandButton>
 					</div>
 					<div class="clear"></div>
