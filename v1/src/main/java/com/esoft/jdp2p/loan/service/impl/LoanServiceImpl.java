@@ -647,7 +647,8 @@ public class LoanServiceImpl implements LoanService {
             }
         }
     }
-    
+
+    @Transactional
     public void changeInvestFromWaitAffirmToUnfinished(String loanId) {
         Date now = new Date();
         long thirtyMinutes = 1000 * 60 * 30;
