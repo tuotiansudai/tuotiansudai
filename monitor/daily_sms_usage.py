@@ -17,7 +17,7 @@ def format_today():
 
 DB_NAME = "/workspace/monitor.db"
 PNG_FILE = "/tmp/{0}.png".format(format_today())
-RECIPIENT = 'lei@tuotiansudai.com'
+RECIPIENT = 'all@tuotiansudai.com'
 
 
 def get_sn_and_pwd():
