@@ -4,7 +4,9 @@ Archer.Messages = {
 
 	showMessages : function(messages, styleClass, doFocus, isShowGlobalMessages) {
 		messages = eval("(" + messages + ")");
-		var showTime = 0;
+		var durationTimeForCommon = 2;
+		var durationTimeForError = 12;
+
 		for ( var i = 0; i < messages.length; i++) {
 			var message = messages[i];
 
@@ -22,12 +24,9 @@ Archer.Messages = {
 						tipIcon = "fatal-primefaces";
 					}
 					if (tipIcon) {
-						showTime = 12;
-						$.dialog
-								.tips(message.message.summary, showTime, true, tipIcon);
+						$.dialog.tips(message.message.summary, durationTimeForError, true, tipIcon);
 					} else {
-						showTime = 2;
-						$.dialog.tips(message.message.summary, showTime, true);
+						$.dialog.tips(message.message.summary, durationTimeForCommon, true);
 					}
 				}
 				continue;
