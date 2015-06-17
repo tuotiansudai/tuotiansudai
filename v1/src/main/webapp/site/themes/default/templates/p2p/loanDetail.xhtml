@@ -107,6 +107,7 @@
 							元可投</span>
 						</p>
 						<p class="p-line"></p>
+
 						<p>
 							<span>起投金额
 								<strong class="colorea544a">
@@ -135,7 +136,7 @@
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>元
+							</h:inputText>元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
 						</p>
 						<p>
 							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
@@ -167,6 +168,7 @@
 						</p>
 						<p class="p-line"></p>
 						<p>投资人数：#{loanCalculator.countSuccessInvest(loan.id)}人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<p><a href="/loanAgreementSample" target="_Blank">借款协议样本</a></p>
 						<br />
 						<p>
 							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
