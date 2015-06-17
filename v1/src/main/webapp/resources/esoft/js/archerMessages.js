@@ -19,9 +19,10 @@ Archer.Messages = {
 					} else if (message.message.severity == '3') {
 						tipIcon = "fatal-primefaces";
 					}
+					alert(tipIcon);
 					if (tipIcon) {
 						$.dialog
-								.tips(message.message.summary, 2, true, tipIcon);
+								.tips(message.message.summary, 12, true, tipIcon);
 					} else {
 						$.dialog.tips(message.message.summary, 2, true);
 					}
