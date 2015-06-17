@@ -1,34 +1,9 @@
 package com.esoft.jdp2p.loan.service.impl;
 
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.hibernate.collection.AbstractPersistentCollection;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
-import org.quartz.impl.StdScheduler;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.banner.model.BannerPicture;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
-import com.esoft.archer.user.UserBillConstants.Type;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBillBO;
 import com.esoft.core.annotations.Logger;
@@ -48,10 +23,36 @@ import com.esoft.jdp2p.loan.model.ApplyEnterpriseLoan;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.esoft.jdp2p.loan.service.LoanService;
+import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.exception.SmsSendErrorException;
+import com.esoft.jdp2p.message.model.UserMessageTemplate;
+import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.esoft.jdp2p.repay.service.RepayService;
 import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.CheckLoanOverExpectTime;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.google.common.base.Predicate;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Maps;
+import com.google.common.collect.UnmodifiableIterator;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.hibernate.collection.AbstractPersistentCollection;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Company: jdp2p <br/>
@@ -96,6 +97,9 @@ public class LoanServiceImpl implements LoanService {
     @Resource
     LoanCalculator loanCalculator;
 
+    @Resource
+    MessageBO messageBO;
+
     /**
      * 申请借款
      *
@@ -122,7 +126,7 @@ public class LoanServiceImpl implements LoanService {
 
         // 冻结保证金
         /*
-		 * ubs.freezeMoney(loan.getUser().getId(), cashDepositMoney,
+         * ubs.freezeMoney(loan.getUser().getId(), cashDepositMoney,
 		 * OperatorInfo.APPLY_LOAN, "借款ID:" + loan.getId() + "申请，冻结保证金");
 		 */
     }
@@ -259,8 +263,7 @@ public class LoanServiceImpl implements LoanService {
         List<Invest> invests = loan.getInvests();
 
         for (Invest invest : invests) {
-            if (invest.getStatus().equals(
-                    InvestConstants.InvestStatus.BID_SUCCESS)) {
+            if (invest.getStatus().equals(InvestConstants.InvestStatus.BID_SUCCESS)) {
                 // 放款时候，需要只更改BID_SUCCESS 的借款。
                 try {
                     // investMoney-代金券金额
@@ -583,6 +586,68 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional
+    public void notifyInvestorsLoanOutSuccessful(String loanId) {
+        Loan loan = ht.load(Loan.class, loanId);
+        this.notifyInvestorsLoanOutSuccessfulBySMS(loan);
+        this.notifyInvestorsLoanOutSuccessfulByEmail(loan);
+    }
+
+    private void notifyInvestorsLoanOutSuccessfulBySMS(Loan loan) throws SmsSendErrorException{
+        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "_sms";
+        UserMessageTemplate smsMessageTemplate = ht.get(UserMessageTemplate.class, smsTemplateId);
+
+        UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
+            @Override
+            public boolean apply(Invest invest) {
+                return invest.getStatus().equalsIgnoreCase(InvestStatus.REPAYING);
+            }
+        });
+
+        log.debug(MessageFormat.format("标的: {0} 放款短信通知", loan.getId()));
+        while (successInvests.hasNext()) {
+            Invest invest = successInvests.next();
+            Map<String, String> smsParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                    .put("loanName", loan.getName())
+                    .put("money", String.valueOf(invest.getInvestMoney()))
+                    .build());
+            try {
+                messageBO.sendSMS(smsMessageTemplate, smsParameters, invest.getUser().getMobileNumber());
+            } catch (Exception e) {
+                log.error(e);
+            }
+
+        }
+    }
+
+    private void notifyInvestorsLoanOutSuccessfulByEmail(Loan loan) {
+        String smsTemplateId = MessageConstants.UserMessageNodeId.LOAN_OUT_SUCCESSFUL + "_email";
+        UserMessageTemplate emailMessageTemplate = ht.get(UserMessageTemplate.class, smsTemplateId);
+
+        UnmodifiableIterator<Invest> successInvests = Iterators.filter(loan.getInvests().iterator(), new Predicate<Invest>() {
+            @Override
+            public boolean apply(Invest invest) {
+                return invest.getStatus().equalsIgnoreCase(InvestStatus.REPAYING);
+            }
+        });
+        log.debug(MessageFormat.format("标的: {0} 放款邮件通知", loan.getId()));
+        while (successInvests.hasNext()) {
+            Invest invest = successInvests.next();
+            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                    .put("loanName", loan.getName())
+                    .put("money", String.valueOf(invest.getInvestMoney()))
+                    .build());
+            String email = invest.getUser().getEmail();
+            if (!Strings.isNullOrEmpty(email)) {
+                try {
+                    messageBO.sendEmail(emailMessageTemplate, emailParameters, email);
+                } catch (MailSendErrorException e) {
+                    log.error(e);
+                }
+            }
+        }
+    }
+
     @Transactional
     public void changeInvestFromWaitAffirmToUnfinished(String loanId) {
         Date now = new Date();

@@ -11,6 +11,7 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.loan.exception.InvalidExpectTimeException;
 import com.esoft.jdp2p.loan.model.ApplyEnterpriseLoan;
 import com.esoft.jdp2p.loan.model.Loan;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Filename: LoanService.java Description: 借款serviceCopyright: Copyright (c)2013
@@ -24,7 +25,6 @@ import com.esoft.jdp2p.loan.model.Loan;
  * 2014-1-4 wangzhi 1.0
  */
 public interface LoanService {
-
     /**
      * 流标
      *
@@ -172,4 +172,7 @@ public interface LoanService {
     public List<Invest> getSuccessfulInvests(String loanId);
 
     void changeInvestFromWaitAffirmToUnfinished(String loanId);
+
+    @Transactional
+    void notifyInvestorsLoanOutSuccessful(String loanId);
 }

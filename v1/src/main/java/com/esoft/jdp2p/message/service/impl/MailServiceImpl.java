@@ -97,7 +97,7 @@ public class MailServiceImpl implements MailService {
 			trans.send(mailMessage);
 
 		} catch (Exception e) {
-			log.info(e);
+			log.error(e);
 			throw new MailSendErrorException(e);
 		}
 	}
