@@ -1,0 +1,27 @@
+apply plugin: 'war'
+
+dependencies {
+    def springVersion = '4.1.6.RELEASE'
+    def springSecurityVersion = '4.0.1.RELEASE'
+    def freemarkerVersion = '2.3.22'
+    def jacksonVersion = '2.5.4'
+    def mybatisVersion = '3.3.0'
+    def mybatisSpringVersion = '1.2.3'
+    compile "org.springframework:spring-webmvc:$springVersion",
+            "org.springframework:spring-jdbc:$springVersion",
+            "org.springframework.security:spring-security-web:$springSecurityVersion",
+            "org.springframework.security:spring-security-config:$springSecurityVersion",
+            "org.springframework:spring-context-support:$springSecurityVersion",
+            "org.freemarker:freemarker:$freemarkerVersion",
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            "org.mybatis:mybatis:$mybatisVersion",
+            "org.mybatis:mybatis-spring:$mybatisSpringVersion",
+            'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+            'mysql:mysql-connector-java:5.1.35'
+
+    testCompile "javax.servlet:javax.servlet-api:3.1.0"
+
+    compile project(':ttsd-service')
+}
