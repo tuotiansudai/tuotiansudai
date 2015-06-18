@@ -47,13 +47,13 @@
 				<tr>
 					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img20.png" /></td>
 					<td class="font18">绑定邮箱</td>
-					<ui:fragment rendered="#{not empty userHome.instance.email}">
+					<ui:fragment rendered="#{userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
 						<td>#{fn:substring(userHome.instance.email,0,5)}***</td>
 						<td><a href="#{path}/user/change_binding_email">修改</a></td>
 					</ui:fragment>
-					<ui:fragment rendered="#{empty userHome.instance.email}">
-						<td></td>
-						<td><a href="#{path}/user/binding_email">绑定</a></td>
+					<ui:fragment rendered="#{!userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+						<td>#{fn:substring(userHome.instance.email,0,5)}***（未认证）</td>
+						<td><a href="#{path}/user/binding_email">去认证</a></td>
 					</ui:fragment>
 				</tr>
 				<tr>

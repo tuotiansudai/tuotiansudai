@@ -17,7 +17,7 @@
 		<div class="center_right">
 			<div class="zhcz_h3">安全信息</div>
 			<p class="bdsj_p">
-				<span><img src="#{tplVars.themeImagePath}/img73.png" />绑定邮箱</span>
+				<span><img src="#{tplVars.themeImagePath}/img73.png" />邮箱</span>
 			</p>
 
 			<h:form id="form">
@@ -28,7 +28,7 @@
 					<div class="bdsj_r">
 						<h:inputText id="newEmail" styleClass="bdsj_txt bdsj_txt01"
 							required="true" label="邮箱"
-							value="#{userInfoHome.newEmail}">
+							value="#{userInfoHome.instance.email}">
 							<archer:validateInputRule ruleId="input.email"></archer:validateInputRule>
 							<archer:validateAlreadyExist
 								entityClass="com.esoft.archer.user.model.User"
@@ -44,7 +44,7 @@
 					</div>
 					<div class="bdsj_r">
 						<h:inputText required="true" label="验证码"
-							value="#{userInfoHome.authCode}" styleClass="bdsj_txt bdsj_txt01">
+							value="#{userInfoHome.authCode}" styleClass="bdsj_txt bdsj_txt01" >
 							<f:ajax event="blur" render="@this"></f:ajax>
 						</h:inputText>
 						<h:commandButton value="获取验证码" id="sendAuthCodeBtn"

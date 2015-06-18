@@ -77,13 +77,13 @@
 				</a> <a href="#{path}/user/accountSafe" class="grzx_c_03" title="修改登录密码"> <img
 					src="#{tplVars.themeImagePath}/password-icon_hover.png" />
 				</a>
-				<ui:fragment rendered="#{not empty userHome.instance.email}">
-					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="修改绑定邮箱"> <img
+				<ui:fragment rendered="#{userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="修改认证邮箱"> <img
 						src="#{tplVars.themeImagePath}/email-icon_hover.png" />
 					</a>
 				</ui:fragment>
-				<ui:fragment rendered="#{empty userHome.instance.email}">
-					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="绑定邮箱"> <img
+				<ui:fragment rendered="#{!userHome.isActivatedByEmail(loginUserInfo.loginUserId,userHome.instance.email)}">
+					<a href="#{path}/user/accountSafe" class="grzx_c_04" title="认证邮箱"> <img
 						src="#{tplVars.themeImagePath}/email-icon.png" />
 					</a>
 				</ui:fragment>

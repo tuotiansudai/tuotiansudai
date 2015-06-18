@@ -72,8 +72,12 @@ public class MessageConstants {
 		 * 审核不通过
 		 */
 		public static final String REPAY_ALERT = "repay_alert";
-		
-		
+
+		/**
+		 * 放款成功通知
+		 */
+		public static final String LOAN_OUT_SUCCESSFUL = "loan_out_successful";
+
 	}
 	
 	

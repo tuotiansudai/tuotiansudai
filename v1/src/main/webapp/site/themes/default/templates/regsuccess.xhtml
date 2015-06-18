@@ -11,6 +11,8 @@
 	xmlns:sec="http://www.springframework.org/security/facelets/tags">
 
 <ui:param name="path" value="#{request.contextPath}"></ui:param>
+<ui:param name="showTitle" value="#{request.getParameter('showTitle')}"></ui:param>
+
 
 <f:view contentType="text/html">
 	<h:head>
@@ -42,13 +44,23 @@
 			<div class="login_line">
 				<img src="#{tplVars.themeImagePath}/line04.png" />
 			</div>
-			<p>注册成功</p>
+			<ui:fragment rendered="#{showTitle == 'EMAIL_CHECK_TITILE'}">
+				<p>邮箱验证</p>
+			</ui:fragment>
+			<ui:fragment rendered="#{showTitle !='EMAIL_CHECK_TITILE'}">
+				<p>注册成功</p>
+			</ui:fragment>
 		</div>
 		<div class="login">
 			<div class="email email01">
 				<img src="#{tplVars.themeImagePath}/img59.png" />
 				<p>
-					恭喜您，注册成功！<br />
+					<ui:fragment rendered="#{showTitle == 'EMAIL_CHECK_TITILE'}">
+						恭喜您，邮箱验证成功！<br />
+					</ui:fragment>
+					<ui:fragment rendered="#{showTitle != 'EMAIL_CHECK_TITILE'}">
+						恭喜您，注册成功！<br />
+					</ui:fragment>
 					<a class="cg" href="#{path}/user/center">个人中心</a>
 				</p>
 			</div>
