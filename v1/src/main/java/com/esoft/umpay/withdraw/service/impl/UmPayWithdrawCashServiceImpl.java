@@ -118,7 +118,7 @@ public class UmPayWithdrawCashServiceImpl extends WithdrawCashServiceImpl {
 				wdc.setVerifyUser(withdrawCash.getVerifyUser());
 				wdc.setVerifyTime(new Date());
 			}
-			wdc.setStatus(UserConstants.WithdrawStatus.VERIFY_FAIL);
+			wdc.setStatus(WithdrawStatus.RECHECK_FAIL);
 			ht.merge(wdc);
 
 			// try {

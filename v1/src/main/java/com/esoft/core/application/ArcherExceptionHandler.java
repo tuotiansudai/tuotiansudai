@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.jdp2p.message.service.MailService;
 import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 
 public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -76,8 +78,10 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     throwable = throwable.getCause();
                     flag += 1;
                 }
-                MailService mailService = new MailServiceImpl();
-                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,exceptionStringBuffer.toString());
+                if (!CommonUtils.isDevEnvironment("environment")) {
+                    MailService mailService = new MailServiceImpl();
+                    mailService.sendMailException("all@tuotiansudai.com", "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
+                }
                 throw new FacesException(exceptionStringBuffer.toString());
             } finally {
                 it.remove();

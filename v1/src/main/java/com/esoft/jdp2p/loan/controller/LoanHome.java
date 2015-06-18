@@ -211,8 +211,7 @@ public class LoanHome extends EntityHome<Loan> implements Serializable {
 	 */
 	public String failByManager() {
 		try {
-			loanService.fail(this.getInstance().getId(),
-					loginUser.getLoginUserId());
+			loanService.fail(this.getInstance().getId(), loginUser.getLoginUserId());
 		} catch (ExistWaitAffirmInvests e) {
 			FacesUtil.addInfoMessage("流标失败，存在等待第三方资金托管确认的投资。");
 			return null;

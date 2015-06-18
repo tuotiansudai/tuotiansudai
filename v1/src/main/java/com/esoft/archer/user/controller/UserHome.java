@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
@@ -696,11 +697,13 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	public void uploadPhoto(FileUploadEvent event) {
 		UploadedFile file = event.getFile();
 		try {
-			boolean isUploadByOSS = PropertiesUtils.getPro("plat.is.start").equals("oss");
-
+			boolean isUpload = false;
+			if (!CommonUtils.isDevEnvironment("environment")) {
+				isUpload = true;
+			}
 			InputStream is = file.getInputstream();
 			String fileName = file.getFileName();
-			String uploadPath = isUploadByOSS ? AliyunUtils.uploadFile(fileName, is) : ImageUploadUtil.upload(is, fileName);
+			String uploadPath = isUpload ? AliyunUtils.uploadFile(fileName, is) : ImageUploadUtil.upload(is, fileName);
 			this.getInstance().setPhoto(uploadPath);
 			getBaseService().merge(getInstance());
 			FacesUtil.addInfoMessage("上传成功！");
