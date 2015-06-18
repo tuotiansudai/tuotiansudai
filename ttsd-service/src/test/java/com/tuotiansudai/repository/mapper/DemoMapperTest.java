@@ -20,6 +20,7 @@ public class DemoMapperTest {
 
     @Test
     public void shouldGetDemoById() throws Exception {
+
         DemoModel demoModel = demoMapper.getDemoById("admin");
         assertNotNull(demoModel);
     }
