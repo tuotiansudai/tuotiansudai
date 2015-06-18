@@ -42,10 +42,7 @@
 					<p>
 						<ui:param name="referrerLink"
 							value="#{facesUtil.getCurrentAppUrl()}/register?referrer=#{loginUserInfo.loginUserId}"></ui:param>
-						推荐链接：<a class="link copy" data-clipboard-text="#{referrerLink}"
-							id="copyLink" href="javascript:void(0)">#{referrerLink}</a> <a
-							class="fz copy" id="copyBtn"
-							data-clipboard-text="#{referrerLink}" href="javascript:void(0)">复制</a>
+						 <span>推荐链接: <a class="link" target="_blank" href="#{referrerLink}">#{referrerLink}</a></span>
 						<!-- 							&#160;<a href="#" class="fx">分享</a> -->
 					</p>
 					<!-- span>我推荐的人数和这些人投资总额，获得的可用积分奖励</span> -->
