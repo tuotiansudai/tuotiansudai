@@ -14,31 +14,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExistEmail(String email) throws Exception {
-        boolean isExistEmailFlag = false;
-        UserModel userModel = userMapper.findUserByEmail(email);
-        if (userModel != null){
-            isExistEmailFlag = true;
-        }
-        return isExistEmailFlag;
+        return userMapper.findUserByEmail(email) != null;
     }
 
     @Override
     public boolean isExistMobileNumber(String mobileNumber) throws Exception {
-        boolean isExistMobileNumber = false;
-        UserModel userModel = userMapper.findUserByMobileNumber(mobileNumber);
-        if (userModel != null){
-            isExistMobileNumber = true;
-        }
-        return isExistMobileNumber;
+        return userMapper.findUserByMobileNumber(mobileNumber) != null;
     }
 
     @Override
     public boolean isExistReferrer(String referrer) throws Exception {
-        boolean isExistReferrer = false;
-        UserModel userModel = userMapper.findReferrerByLoginName(referrer);
-        if (userModel != null){
-            isExistReferrer = true;
-        }
-        return isExistReferrer;
+        return userMapper.findReferrerByLoginName(referrer) != null;
     }
 }
