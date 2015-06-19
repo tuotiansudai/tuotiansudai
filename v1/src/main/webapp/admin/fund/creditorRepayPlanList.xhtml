@@ -24,7 +24,7 @@
                     <p:calendar id="searchEndTime" value="#{creditorRepayPlanList.endTime}" pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
 
                     <h:selectOneMenu value="#{creditorRepayPlanList.status}" id="searchStatus">
-                        <f:selectItem itemValue="unComplete" itemLabel="未还款" />
+                        <f:selectItem itemValue="unComplete" itemLabel="未还款" noSelectionOption="true" />
                         <f:selectItem itemValue="complete" itemLabel="已还款" />
                         <f:selectItem itemValue="all" itemLabel="全部" />
                     </h:selectOneMenu>

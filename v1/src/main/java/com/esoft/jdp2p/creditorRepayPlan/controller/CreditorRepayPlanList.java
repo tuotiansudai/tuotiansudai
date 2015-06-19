@@ -29,10 +29,10 @@ public class CreditorRepayPlanList {
     private String status;
     private String repayTime;
 
+    public CreditorRepayPlanList(){
+        this.status = "unComplete";
+    }
     public List<CreditorRepayPlan> getSearchList() {
-        if (this.status == null) {
-            this.status = "unComplete";
-        }
         return creditorRepayPlanService.searchList(status,startTime,endTime);
     }
 
