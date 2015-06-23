@@ -10,6 +10,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -24,13 +25,6 @@ public class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
 
-    public UserMapper getUserMapper() {
-        return userMapper;
-    }
-
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @Test
     public void testFindByEmail() throws  Exception{
@@ -86,6 +80,7 @@ public class UserMapperTest {
         userModelTest.setAvatar("avatar");
         userModelTest.setStatus("right");
         userModelTest.setReferrer("100001");
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-",""));
         return userModelTest;
     }
 }
