@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.repository.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,4 +13,6 @@ public interface UserService {
     public boolean isExistMobileNumber(String mobileNumber) throws  Exception;
 
     public boolean isExistReferrer(String referrer) throws  Exception;
+
+    public void registerUser(UserModel userModel) throws Exception;
 }
