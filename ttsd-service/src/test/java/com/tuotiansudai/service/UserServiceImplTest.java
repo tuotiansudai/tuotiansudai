@@ -46,7 +46,7 @@ public class UserServiceImplTest {
     @Test
     public void testIsExistMobileNumber() throws Exception{
         UserModel userModel = new UserModel();
-        userModel.setMobile_Number("18610361804");
+        userModel.setMobileNumber("18610361804");
         when(userMapper.findUserByMobileNumber(anyString())).thenReturn(userModel);
         boolean isExistMobileNumber = userServiceImpl.isExistMobileNumber(anyString());
         boolean testResult = true;
@@ -56,8 +56,8 @@ public class UserServiceImplTest {
     @Test
     public void testIsExistReferrer() throws Exception{
         UserModel userModel = new UserModel();
-        userModel.setLogin_Name("hourglass");
-        when(userMapper.findReferrerByLoginName(anyString())).thenReturn(userModel);
+        userModel.setLoginName("hourglass");
+        when(userMapper.findUserByLoginName(anyString())).thenReturn(userModel);
         boolean isExistReferrer = userServiceImpl.isExistReferrer(anyString());
         boolean testResult = true;
         assertThat(isExistReferrer, is(testResult));

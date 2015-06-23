@@ -24,6 +24,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExistReferrer(String referrer) throws Exception {
-        return userMapper.findReferrerByLoginName(referrer) != null;
+        return userMapper.findUserByLoginName(referrer) != null;
     }
 }

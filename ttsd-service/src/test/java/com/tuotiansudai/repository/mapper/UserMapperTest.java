@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 import static junit.framework.Assert.assertNotNull;
 
@@ -15,24 +18,74 @@ import static junit.framework.Assert.assertNotNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@TransactionConfiguration(defaultRollback=false)
+@Transactional
+@TransactionConfiguration
 public class UserMapperTest {
     @Autowired
     private UserMapper userMapper;
 
+    public UserMapper getUserMapper() {
+        return userMapper;
+    }
+
+    public void setUserMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
     @Test
     public void testFindByEmail() throws  Exception{
-        UserModel userModel = userMapper.findUserByEmail("123@abc.com");
+        UserModel userModelTest = new UserModel();
+        userModelTest = this.getUserModelTest();
+        userMapper.insertUser(userModelTest);
+
+        UserModel userModel = userMapper.findUserByEmail("12345@abc.com");
         assertNotNull(userModel);
+
     }
     @Test
     public void testFindUserByMobileNumber() throws  Exception{
-        UserModel userModel = userMapper.findUserByMobileNumber("18610361804");
+        UserModel userModelTest = new UserModel();
+        userModelTest = this.getUserModelTest();
+        userMapper.insertUser(userModelTest);
+
+        UserModel userModel = userMapper.findUserByMobileNumber("13900000000");
         assertNotNull(userModel);
     }
     @Test
-    public void testFindReferrerByLoginName() throws Exception{
-        UserModel userModel = userMapper.findReferrerByLoginName("hourglass");
+    public void testFindUserByLoginName() throws Exception{
+        UserModel userModelTest = new UserModel();
+        userModelTest = this.getUserModelTest();
+        userMapper.insertUser(userModelTest);
+
+        UserModel userModel = userMapper.findUserByLoginName("helloworld");
         assertNotNull(userModel);
+    }
+    @Test
+    public void testInsertUser() throws Exception{
+        UserModel userModelTest = new UserModel();
+        userModelTest = this.getUserModelTest();
+        userMapper.insertUser(userModelTest);
+
+        UserModel userModel = userMapper.findUserByLoginName("helloworld");
+        assertNotNull(userModel);
+
+    }
+
+    public UserModel getUserModelTest(){
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("helloworld");
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setAddress("tuotiansudai");
+        userModelTest.setMobileNumber("13900000000");
+        userModelTest.setLastLoginTime(new Date());
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setLastModifiedTime(new Date());
+        userModelTest.setLastModifiedUser("nihao");
+        userModelTest.setForbiddenTime(new Date());
+        userModelTest.setAvatar("avatar");
+        userModelTest.setStatus("right");
+        userModelTest.setReferrer("100001");
+        return userModelTest;
     }
 }
