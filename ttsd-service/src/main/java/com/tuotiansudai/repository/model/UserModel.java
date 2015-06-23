@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
+
 import java.util.Date;
+import java.util.UUID;
 
 public class UserModel {
 
@@ -143,4 +145,5 @@ public class UserModel {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }
