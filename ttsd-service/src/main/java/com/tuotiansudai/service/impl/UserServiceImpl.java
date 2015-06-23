@@ -4,10 +4,12 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by hourglasskoala on 15/6/19.
  */
+@Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;

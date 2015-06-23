@@ -3,26 +3,25 @@ package com.tuotiansudai.web.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class UserInteractiveDto {
+    @JsonView(UserInteractiveJsonView.UserInteractive.class)
+    private String status;
+    @JsonView(UserInteractiveJsonView.UserInteractive.class)
+    private Data data;
 
-    @JsonView(UserJsonView.User.class)
-    private int id;
-
-    @JsonView(UserJsonView.User.class)
-    private String name;
-
-    public int getId() {
-        return id;
+    public String getStatus() {
+        return status;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Data getData() {
+        return data;
     }
 
-    public String getName() {
-        return name;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
 }
