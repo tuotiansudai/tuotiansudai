@@ -10,4 +10,6 @@
 **/war/**
 **/gradle
 **/gradlew.bat
+**/gradlew
 **/gradle/**
+**/classes/**
