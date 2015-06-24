@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.esoft.core.util.DateStyle;
@@ -44,7 +45,7 @@ public abstract class UmPayOperationServiceAbs<T> extends
 	 * @param content
 	 * @return
 	 */
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional(propagation = Propagation.REQUIRES_NEW ,rollbackFor = Exception.class)
 	public TrusteeshipOperation createTrusteeshipOperation(String markId,
 			String requestUrl, String operator, String type, String content) {
 		TrusteeshipOperation to = new TrusteeshipOperation();
