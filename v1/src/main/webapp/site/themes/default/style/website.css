@@ -58,7 +58,7 @@ body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-fa
 .contact_map img{width:997px; }
 .contact_map p{padding-left: 12px; width:850px; line-height: 30px;}
 
-.introduction_banner{ width:100%; height: 271px; background: url("../images/introduction_banner.jpg") no-repeat center; background-size:cover; margin-top: 1px;}
+.introduction_banner{ width:100%; height: 271px; background: url("../images/introduction_banner.png") no-repeat center; background-size:cover; margin-top: 1px;}
 .introduction_content{width:998px; margin-top: 6px; height: auto; overflow: hidden; position: relative; z-index: 1;}
 .introduction_content div{ width: 260px; height: 1px; position: absolute; left: 20px; top:49px; border-bottom: #e98185 1px solid; z-index: 3;}
 .introduction_content h4{ width:934px; height: 50px; line-height: 50px; margin-left: 20px; border-bottom:#e2e2e2 1px solid; font-size: 22px; color:#333; font-weight: normal; margin-bottom: 4px; }
