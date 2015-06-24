@@ -11,3 +11,4 @@
 **/gradle
 **/gradlew.bat
 **/gradle/**
+**/node_modules/**

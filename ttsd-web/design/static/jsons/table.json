@@ -1,0 +1,23 @@
+{
+    "status": "success",
+    "data": {
+        "rows": [
+            {"dealDate": "2015-06-01", "dealType": "充值成功1", "money": 100, "balance": 309.46, "comment": "充值编号:2015061100000064"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败2", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败3", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败4", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败5", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败6", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败7", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败8", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败9", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
+            {"dealDate": "2015-06-02", "dealType": "充值失败10", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"}
+        ],
+        "currentPage": 2,
+        "hasNextPage": true,
+        "hasPreviousPage": true,
+        "totalCount": 20,
+        "totalPages": 5
+
+    }
+}
