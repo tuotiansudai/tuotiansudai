@@ -45,7 +45,7 @@ public abstract class UmPayOperationServiceAbs<T> extends
 	 * @param content
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRES_NEW ,rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createTrusteeshipOperation(String markId,
 			String requestUrl, String operator, String type, String content) {
 		TrusteeshipOperation to = new TrusteeshipOperation();

@@ -123,12 +123,6 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
 			log.debug("放款-发送-数据: "+reqData);
 			TrusteeshipOperation to = createTrusteeshipOperation(order_id, reqData.getUrl(), loan.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER,reqData.getPlain());
-			try {
-				log.debug(MessageFormat.format("{0} sleep......", order_id));
-				Thread.sleep(1000*120);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			//创建一个get直连
 			String responseBodyAsString = HttpClientUtil.getResponseBodyAsString(to.getRequestUrl());
 			//获取返回参数
@@ -187,7 +181,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			log.debug(MessageFormat.format("放款S2S验签通过: ret_code={0}, order_id={1}", ret_code, order_id));
 			TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER, order_id, UmPayConstants.OperationType.UMPAY);
 			//获取操作记录
-			if("0000".equals(ret_code)){	//处理成功
+			if(to != null && "0000".equals(ret_code)){	//处理成功
 				to.setStatus(TrusteeshipConstants.Status.PASSED);
 				ht.update(to);
 				String loanId = to.getOperator();
