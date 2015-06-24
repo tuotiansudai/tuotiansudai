@@ -14,8 +14,7 @@ public interface UserService {
 
     public boolean userMobileNumberIsExisted(String mobileNumber) throws Exception;
 
-    public boolean isExistReferrer(String referrer) throws  Exception;
+    public boolean referrerIsExisted(String referrer) throws Exception;
 
     public void registerUser(UserModel userModel) throws Exception;
-    public boolean referrerIsExisted(String referrer) throws Exception;
 }
