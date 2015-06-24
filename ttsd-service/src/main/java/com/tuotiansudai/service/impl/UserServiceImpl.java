@@ -6,26 +6,23 @@ import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by hourglasskoala on 15/6/19.
- */
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
     @Override
-    public boolean isExistEmail(String email) throws Exception {
+    public boolean userEmailIsExisted(String email) throws Exception {
         return userMapper.findUserByEmail(email) != null;
     }
 
     @Override
-    public boolean isExistMobileNumber(String mobileNumber) throws Exception {
+    public boolean userMobileNumberIsExisted(String mobileNumber) throws Exception {
         return userMapper.findUserByMobileNumber(mobileNumber) != null;
     }
 
     @Override
-    public boolean isExistReferrer(String referrer) throws Exception {
+    public boolean referrerIsExisted(String referrer) throws Exception {
         return userMapper.findUserByLoginName(referrer) != null;
     }
 }
