@@ -42,7 +42,7 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
             "    ROUND(SUM(t.`fee`), 2) AS fee " +
             "  FROM" +
             "    `loan_repay` t " +
-            "  WHERE t.`status` != 'complete' ";
+            "  WHERE t.`status` NOT IN ('complete','test') ";
 
     private String detailSql = "SELECT " +
             "  DATE_FORMAT(IF(" +
