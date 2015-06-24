@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,7 @@ public class UserMapperTest {
         userModelTest.setLastModifiedUser("nihao");
         userModelTest.setForbiddenTime(new Date());
         userModelTest.setAvatar("avatar");
-        userModelTest.setStatus("right");
+        userModelTest.setStatus(UserServiceImpl.userStatus.active);
         userModelTest.setReferrer("100001");
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;

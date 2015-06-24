@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
 
+import com.tuotiansudai.service.impl.UserServiceImpl;
+
 import java.util.Date;
 
 public class UserModel {
@@ -31,7 +33,7 @@ public class UserModel {
 
     private String referrer;
 
-    private String status;
+    private UserServiceImpl.userStatus status;
 
     private String salt;
 
@@ -147,11 +149,11 @@ public class UserModel {
         this.referrer = referrer;
     }
 
-    public String getStatus() {
+    public UserServiceImpl.userStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(UserServiceImpl.userStatus status) {
         this.status = status;
     }
 

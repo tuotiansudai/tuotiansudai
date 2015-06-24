@@ -101,4 +101,14 @@ public class UserServiceImplTest {
 
         assertFalse(isExistedReferrer);
     }
+
+    @Test
+    public void testRegisterUser() throws Exception{
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("zourenzheng");
+        userModel.setEmail("zourenzheng@tuotiansudai.com");
+        userModel.setMobileNumber("13436964915");
+        userModel.setPassword("123abc");
+        userServiceImpl.registerUser(userModel);
+    }
 }

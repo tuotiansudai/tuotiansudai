@@ -17,7 +17,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
-    public static String SHA = "SHA";
+    public enum userStatus{
+        inactive,active;
+    }
 
     @Override
     public boolean userEmailIsExisted(String email) throws Exception {
@@ -38,10 +40,9 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void registerUser(UserModel userModel) throws Exception{
         String randomSalt = getRandomSalt();
-        String password = encodeSHA(encodeSHA(userModel.getPassword()) + randomSalt);
         userModel.setSalt(randomSalt);
         userModel.setRegisterTime(new Date());
-        userModel.setPassword(password);
+        userModel.setStatus(userStatus.active);
         this.userMapper.insertUser(userModel);
     }
 
@@ -49,9 +50,4 @@ public class UserServiceImpl implements UserService {
         return UUID.randomUUID().toString().replace("-","");
     }
 
-    private String encodeSHA(String data) throws Exception{
-        MessageDigest md = MessageDigest.getInstance(SHA);
-        byte[] digest = md.digest(data.getBytes());
-        return new HexBinaryAdapter().marshal(digest);
-    }
 }
