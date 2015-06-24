@@ -12,9 +12,6 @@ import java.security.MessageDigest;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * Created by hourglasskoala on 15/6/19.
- */
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -23,17 +20,17 @@ public class UserServiceImpl implements UserService {
     public static String SHA = "SHA";
 
     @Override
-    public boolean isExistEmail(String email) throws Exception {
+    public boolean userEmailIsExisted(String email) throws Exception {
         return userMapper.findUserByEmail(email) != null;
     }
 
     @Override
-    public boolean isExistMobileNumber(String mobileNumber) throws Exception {
+    public boolean userMobileNumberIsExisted(String mobileNumber) throws Exception {
         return userMapper.findUserByMobileNumber(mobileNumber) != null;
     }
 
     @Override
-    public boolean isExistReferrer(String referrer) throws Exception {
+    public boolean referrerIsExisted(String referrer) throws Exception {
         return userMapper.findUserByLoginName(referrer) != null;
     }
 

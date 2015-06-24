@@ -4,9 +4,6 @@ import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Insert;
 
 
-/**
- * Created by hourglasskoala on 15/6/18.
- */
 public interface UserMapper {
 
     public UserModel findUserByEmail(String email) throws Exception;
