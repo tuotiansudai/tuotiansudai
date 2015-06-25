@@ -13,7 +13,7 @@
             {"dealDate": "2015-06-02", "dealType": "充值失败9", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"},
             {"dealDate": "2015-06-02", "dealType": "充值失败10", "money": -100, "balance": 100.2, "comment":"充值编号:2015061100000065"}
         ],
-        "currentPage": 1,
+        "currentPage": 2,
         "hasNextPage": true,
         "hasPreviousPage": true,
         "totalCount": 20,
