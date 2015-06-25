@@ -9,6 +9,7 @@ env.roledefs = {
 }
 
 
+@roles('web')
 def pull():
     with cd('/workspace/tuotian'):
         run('git pull')
@@ -40,6 +41,7 @@ def deploy():
     """
         Usage: fab deploy -p password --show=debug
     """
+    execute(pull)
     execute(migrate)
     execute(build)
 
