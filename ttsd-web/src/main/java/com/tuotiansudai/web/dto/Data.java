@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class Data {
 
-    @JsonView(DataJsonView.Data.class)
     private boolean exist;
 
-    public boolean getExist() {
+    public boolean getIsExist() {
         return exist;
     }
 

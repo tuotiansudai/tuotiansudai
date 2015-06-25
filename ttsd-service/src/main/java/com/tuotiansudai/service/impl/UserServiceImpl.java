@@ -12,17 +12,17 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public boolean userEmailIsExisted(String email) throws Exception {
+    public boolean userEmailIsExisted(String email) {
         return userMapper.findUserByEmail(email) != null;
     }
 
     @Override
-    public boolean userMobileNumberIsExisted(String mobileNumber) throws Exception {
+    public boolean userMobileNumberIsExisted(String mobileNumber) {
         return userMapper.findUserByMobileNumber(mobileNumber) != null;
     }
 
     @Override
-    public boolean referrerIsExisted(String referrer) throws Exception {
+    public boolean referrerIsExisted(String referrer) {
         return userMapper.findUserByLoginName(referrer) != null;
     }
 }
