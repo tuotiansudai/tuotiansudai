@@ -178,7 +178,7 @@ body {
 #banner .ban_one {
   width: 100%;
   height: 368px;
-  background: url("../images/banner1.jpg") no-repeat center center;
+  background: url("../images/homepage/banner1.jpg") no-repeat center center;
   background-size: cover; }
 
 #banner .ban_one div {
@@ -188,7 +188,7 @@ body {
 
 #banner .ban_one div p {
   position: absolute;
-  background: url("../images/login.png") no-repeat;
+  background: url("../images/homepage/login.png") no-repeat;
   width: 260px;
   height: 252px;
   top: 12px;
@@ -332,7 +332,7 @@ body {
   width: 628px;
   background: #fff;
   border-radius: 3px;
-  background: url("../images/xinshou.jpg") no-repeat 0px 0px #fff;
+  background: url("../images/homepage/xinshou.jpg") no-repeat 0px 0px #fff;
   padding-left: 60px; }
 
 .contentA_left_l {
@@ -481,7 +481,7 @@ body {
   width: 294px;
   height: 135px;
   border: #dbd6ce 1px solid;
-  background: url("../images/more.jpg") no-repeat #c00;
+  background: url("../images/homepage/more.jpg") no-repeat #c00;
   border-radius: 3px;
   float: right;
   position: relative; }
@@ -532,7 +532,7 @@ body {
   width: 240px;
   height: 35px;
   line-height: 30px;
-  background: url("../images/title_bj.jpg") no-repeat center;
+  background: url("../images/homepage/title_bj.jpg") no-repeat center;
   color: #fff;
   text-align: center;
   font-size: 15px;
@@ -824,7 +824,7 @@ body {
 .usAdv {
   width: 100%;
   height: 138px;
-  background: url("../images/us-adv.png") no-repeat center;
+  background: url("../images/homepage/us-adv.png") no-repeat center;
   margin: 10px 0px 20px 0px;
   background-size: cover; }
 
@@ -1212,7 +1212,7 @@ body {
       width: 270px;
       height: 32px;
       line-height: 32px;
-      background: url("../images/close.jpg") no-repeat 0px center;
+      background: url("../images/cash/close.jpg") no-repeat 0px center;
       padding-left: 25px;
       display: none; }
     .content_cash div em {
@@ -1283,7 +1283,7 @@ body {
     width: 100%;
     line-height: 120px;
     text-align: center;
-    background: url("../images/tan.jpg") no-repeat 84px center #fff; }
+    background: url("../images/cash/tan.jpg") no-repeat 84px center #fff; }
   .bind_card a {
     width: 158px;
     height: 36px;
@@ -1484,22 +1484,22 @@ body {
       width: 330px;
       margin-left: 7px; }
       .registered ul li.reg_one a {
-        background: url("../images/reg_one.png") no-repeat; }
+        background: url("../images/register/reg_one.png") no-repeat; }
       .registered ul li.reg_one a:hover {
-        background: url("../images/reg_one_active.png") no-repeat;
+        background: url("../images/register/reg_one_active.png") no-repeat;
         color: #fff; }
     .registered ul li.reg_two {
       width: 324px; }
       .registered ul li.reg_two a {
-        background: url("../images/reg_two.png") no-repeat; }
+        background: url("../images/register/reg_two.png") no-repeat; }
       .registered ul li.reg_two a:hover {
-        background: url("../images/reg_two_active.png") no-repeat;
+        background: url("../images/register/reg_two_active.png") no-repeat;
         color: #fff; }
     .registered ul li.reg_three {
       width: 324px;
       margin-left: 6px; }
       .registered ul li.reg_three a {
-        background: url("../images/reg_three.png") no-repeat; }
+        background: url("../images/register/reg_three.png") no-repeat; }
 
 .step_one {
   width: 610px;
@@ -1524,13 +1524,13 @@ body {
         line-height: 40px;
         display: block;
         padding-left: 28px;
-        background: url("../images/registered.png") no-repeat 0px -81px;
+        background: url("../images/register/registered.png") no-repeat 0px -81px;
         opacity: 0; }
       .step_one ol li em {
         position: absolute;
         left: 330px;
         top: 8px;
-        background: url("../images/registered.png") no-repeat 0px -465px;
+        background: url("../images/register/registered.png") no-repeat 0px -465px;
         width: 22px;
         height: 22px;
         opacity: 0; }
@@ -1567,15 +1567,15 @@ body {
       text-align: center;
       cursor: pointer; }
     .step_one ol input.phone {
-      background: url("../images/registered.png") no-repeat 6px -362px; }
+      background: url("../images/register/registered.png") no-repeat 6px -362px; }
     .step_one ol input.vcode {
-      background: url("../images/registered.png") no-repeat 6px -548px; }
+      background: url("../images/register/registered.png") no-repeat 6px -548px; }
     .step_one ol input.email {
-      background: url("../images/registered.png") no-repeat 6px 9px; }
+      background: url("../images/register/registered.png") no-repeat 6px 9px; }
     .step_one ol input.password {
-      background: url("../images/registered.png") no-repeat 6px -173px; }
+      background: url("../images/register/registered.png") no-repeat 6px -173px; }
     .step_one ol input.user {
-      background: url("../images/registered.png") no-repeat 6px -268px; }
+      background: url("../images/register/registered.png") no-repeat 6px -268px; }
   .step_one a {
     width: 174px;
     height: 48px;
@@ -1683,7 +1683,7 @@ body {
       padding-left: 26px;
       height: 38px;
       line-height: 38px;
-      background: url("../images/registered.png") no-repeat 0px -82px;
+      background: url("../images/register/registered.png") no-repeat 0px -82px;
       display: block;
       float: left;
       display: none; }
@@ -1691,7 +1691,7 @@ body {
       position: absolute;
       left: 370px;
       top: 10px;
-      background: url("../images/registered.png") no-repeat 0px -465px;
+      background: url("../images/register/registered.png") no-repeat 0px -465px;
       width: 22px;
       height: 22px;
       display: none; }
@@ -1713,7 +1713,7 @@ body {
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../images/login_background.jpg") no-repeat left; }
+  background: url("../images/login/login_background.jpg") no-repeat left; }
   .login div {
     margin-left: 670px;
     width: 328px;
@@ -1784,7 +1784,7 @@ body {
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../images/login_lock.png") no-repeat 0px;
+      background: url("../images/login/login_lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal; }
 
@@ -1813,7 +1813,7 @@ body {
     font-size: 15px;
     color: #ffac2a;
     padding-top: 16px;
-    background: url("../images/pcenter.png") no-repeat 6px 12px; }
+    background: url("../images/pcenter/pcenter.png") no-repeat 6px 12px; }
   .content_pcenter ul {
     padding-left: 42px;
     width: 756px;
@@ -1840,7 +1840,7 @@ body {
       .content_pcenter ul li em {
         width: 68px;
         display: inline-block;
-        background: url("../images/pcenter.png") no-repeat 0px -45px;
+        background: url("../images/pcenter/pcenter.png") no-repeat 0px -45px;
         padding-left: 22px; }
       .content_pcenter ul li b {
         font-weight: normal;
@@ -1994,7 +1994,7 @@ body {
     .Level div em {
       position: absolute;
       left: 253px;
-      background: url("../images/pcenter.png") no-repeat 0px -128px;
+      background: url("../images/pcenter/pcenter.png") no-repeat 0px -128px;
       width: 8px;
       height: 52px;
       z-index: 890; }
@@ -2041,7 +2041,7 @@ body {
   border: #e1e1e1 1px solid;
   border-radius: 3px;
   margin: 11px 0px 0px 4px;
-  background: url("../images/record.png") no-repeat 340px 0px #fff; }
+  background: url("../images/record/record.png") no-repeat 340px 0px #fff; }
   .balance span {
     width: 400px;
     height: 16px;

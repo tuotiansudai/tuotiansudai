@@ -4,11 +4,13 @@
 require.config({
     baseUrl: "../js",//此处存放文件路径
     paths: {
-        "jquery": "jquery-1.10.1.min",//此处存放baseURL路径下要引入的JS文件
-        "mustache":"mustache.js"
+        "jquery": "libs/jquery-1.10.1.min",//此处存放baseURL路径下要引入的JS文件
+        "daterangepicker": "libs/jquery.daterangepicker",//此处存放baseURL路径下要引入的JS文件
+        "mustache": "libs/mustache",
+        'text': 'libs/text'
     }
 });
-require(['jquery'], function ($) {
+require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], function ($, Mustache, dealtableTpl) {
     var oDate = new Date();
     var oYear = oDate.getFullYear();
     var oMonth = oDate.getMonth();
@@ -16,152 +18,116 @@ require(['jquery'], function ($) {
     var month = oDate.setMonth(oDate.getMonth() - 6);
     var oWeek = new Date();
     var week = oWeek.setDate(oWeek.getDate() - 7);
-
-    $('.rec_today').on('click', function () {
-        $('.starttime').val(oYear + '-' + parseInt(oMonth + 1) + '-' + oToday);
-        $('.endtime').val(oYear + '-' + parseInt(oMonth + 1) + '-' + oToday);
-        $.ajax({
-            url: '/static/jsons/table.json',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: function () {
-                $('.query_type strong').css({'opacity':1});
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('.query_type strong').css({'opacity':0});
-                    $('.rec_tab tbody').append(Mustache.render(template,{data:rows}));
-                    if(response.data.hasNextPage ){
-                        $('.page_record').css({'display':'block'});
-                    }
-                }else{
-                    alert('2');
-                }
-            },
-            error: function () {
-                if(status==500){
-                    alert('服务器错误!');
-                }
-            }
-        })
-    });
-    $('.rec_month').on('click', function () {
-        $('.starttime').val(oYear + '-' + oMonth + '-' + oToday);
-        $('.endtime').val(oYear + '-' + parseInt(oMonth + 1) + '-' + oToday);
-        $.ajax({
-            url: '/static/jsons/mobile.json',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: function () {
-                $('.query_type strong').css({'opacity':1});
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('.query_type strong').css({'opacity':0});
-                }else{
-                    alert('2');
-                }
-            },
-            error: function () {
-                if(status==500){
-                    alert('服务器错误!');
-                }
-            }
-        })
-    });
+    $('#daterangepicker')
+        .dateRangePicker({separator: ' ~ '})
+        .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
+        .bind('datepicker-apply', filterChanged);
+    //六个月：
     $('.rec_sixmonth').on('click', function () {
-        $('.starttime').val(oDate.toLocaleDateString());
-        $('.endtime').val(oYear + '-' + parseInt(oMonth + 1) + '-' + oToday);
-        $.ajax({
-            url: '/static/jsons/table.json',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: function () {
-                $('.query_type strong').css({'opacity':1});
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('.query_type strong').css({'opacity':0});
-                }else{
-                    alert('2');
-                }
-            },
-            error: function () {
-                if(status==500){
-                    alert('服务器错误!');
-                }
-            }
-        })
+        $('#daterangepicker').val((oDate.toLocaleDateString()) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
     });
-    $('.rec_all').on('click', function () {
-        $('.starttime').val('');
-        $('.endtime').val('');
-        $.ajax({
-            url: '/static/jsons/mobile.json',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: function () {
-                $('.query_type strong').css({'opacity':1});
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('.query_type strong').css({'opacity':0});
-                }else{
-                    alert('2');
-                }
-            },
-            error: function () {
-                if(status==500){
-                    alert('服务器错误!');
-                }
-            }
-        })
+    //今天：
+    $('.rec_today').on('click', function () {
+        $('#daterangepicker').val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
     });
+    //一个月：
+    $('.rec_month').on('click', function () {
+        $('#daterangepicker').val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
+    });
+    //一周：
     $('.rec_week').on('click', function () {
-        $('.starttime').val(oWeek.toLocaleDateString());
-        $('.endtime').val(oYear + '/' + parseInt(oMonth + 1) + '/' + oToday);
-        $.ajax({
-            url: '/static/jsons/mobile.json',
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: function () {
-                $('.query_type strong').css({'opacity':1});
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    $('.query_type strong').css({'opacity':0});
-                }else{
-                    alert('2');
-                }
-            },
-            error: function () {
-                if(status==500){
-                    alert('服务器错误!');
-                }
-            }
-        })
-    })
-    $('.Wdate').on('focus', function () {
-        WdatePicker({maxDate: '%y/%M/%d'});
+        $('#daterangepicker').val((oWeek.toLocaleDateString()) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
     });
-    var active = $('.start_end span');
-    var rec_acative = $('.rec_type li');
-    var len = rec_acative.length;
-    for (var i = 0; i < active.length; i++) {
-        active[i].onclick = function () {
-            for (var i = 0; i < active.length; i++) {
-                active[i].className = '';
-            }
-            this.className = 'active';
-        }
-    }
-    for (var i = 0; i < len; i++) {
-        rec_acative[i].onclick = function () {
-            for (var i = 0; i < len; i++) {
-                rec_acative[i].className = '';
-            }
-            this.className = 'active';
-        }
+    //全部：
+    $('.rec_all').on('click', function () {
+        $('#daterangepicker').val('');
+    });
+    function filterChanged() {
+        var dates = $('#daterangepicker').val().split('~');
+        var startDay = dates[0];
+        var endDay = dates[1];
+        var selectedType = $('.rec_type').find(".active").attr('data-value');
+        var url = '/static/jsons/table.json?startday=' + startDay + '&endday=' + endDay + '&type=' + selectedType;
+        var arr = [startDay, endDay, selectedType];
+        return arr;
     }
 
+    filterChanged();
+    var getarr = filterChanged();
+    getAjax(getarr[0], getarr[1], 1, getarr[2]);
+
+    $(".start_end span").click(function () {
+        $(this).addClass("active").siblings("span").removeClass("active");
+        $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
+        getarr = filterChanged();
+        getAjax(getarr[0], getarr[1], 1, getarr[2]);
+    })
+    $(".rec_type li").click(function () {
+        $(this).addClass("active").siblings("li").removeClass("active");
+        getarr = filterChanged();
+        getAjax(getarr[0], getarr[1], 1, getarr[2]);
+
+    })
+    function getAjax(stime, etime, page, rec_type) {
+        $(".query_type strong").css("opacity", '1');
+        var rec_typestr = '';
+        if (rec_type != 0) {
+            rec_typestr = "&type=" + rec_type;
+        }
+        if (stime == '' || stime == 'undefined') {
+            var url = "/static/jsons/table.json?page=" + page + rec_typestr;
+        } else {
+            var url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + page + rec_typestr;
+        }
+        $.get(url, function (res) {
+
+            if (res.status === 'success') {
+                $(".query_type strong").css("display", 'none');
+                var ret = Mustache.render(dealtableTpl, res.data);
+                $('.result').html(ret);
+            }
+            $('.page_record').find('small').eq(2).html(res.data.currentPage--);
+            var prevtext = Number($(".page_record ").find('small').eq(2).text());
+            if (prevtext <= 1) {
+                $(".page_record ").find('small').eq(2).text(1);
+                alert('没有更多数据了!')
+            }
+            var maxtotalpage = Number(res.data.totalPages);
+            var nexttext = Number($(".page_record ").find('small').eq(2).text());
+            if (nexttext > maxtotalpage) {
+                $(".page_record ").find('small').eq(2).text(maxtotalpage);
+                alert('没有更多数据了!')
+            }
+            $('.nextbtn').click(function(){
+                if(res.data.totalPages<=res.data.currentPage){
+                    alert('没有更多数据了!');
+                    return false;
+                }
+                $('.page_record').find('small').eq(2).html(res.data.currentPage+1);
+                res.data.currentPage++;
+                var cPage=res.data.currentPage;
+                url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + cPage + rec_typestr;
+                $.get(url,function(res){
+                    return false;
+                });
+            });
+
+            $('.prevbtn').on('click', function () {
+                if(res.data.currentPage<=1){
+                    alert('没有更多数据了!');
+                    return false;
+                }
+                //在这里ajax请求
+                $('.page_record').find('small').eq(2).html(res.data.currentPage-1);
+                res.data.currentPage--;
+                var cPage=res.data.currentPage;
+                url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + cPage + rec_typestr;
+                $.get(url,function(res){
+                    return false;
+                });
+
+            });
+            ;
+        });
+    }
 })
