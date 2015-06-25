@@ -61,5 +61,5 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
     }
 
 
-    
+
 })
