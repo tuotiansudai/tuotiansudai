@@ -17,7 +17,6 @@ public class UserController extends BaseController{
 
     @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
     @RequestMapping(value = "/register/email/{email}/verify", method = RequestMethod.GET)
-    @ResponseBody
     public RegisterVerifyDto jsonEmailIsExisted(@PathVariable String email) {
         RegisterVerifyDto registerVerifyDto = new RegisterVerifyDto();
         Data data = new Data();
