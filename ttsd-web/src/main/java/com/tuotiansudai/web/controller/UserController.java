@@ -1,20 +1,17 @@
 package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.web.common.CommonConstants;
-import com.tuotiansudai.web.dto.Data;
-import com.tuotiansudai.web.dto.UserInteractiveDto;
-import com.tuotiansudai.web.dto.UserInteractiveJsonView;
+import com.tuotiansudai.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-public class UserController {
+public class UserController extends BaseController{
 
     @Autowired
     private UserService userService;
@@ -89,6 +86,21 @@ public class UserController {
         }
         return userInteractiveDto;
 
+    }
+
+    @RequestMapping(value = "/register/insertUser", method = RequestMethod.POST)
+    public @ResponseBody JsonDto jsonRegisterUser(@ModelAttribute("userModel") UserModel userModel){
+        JsonDto jsonDto = new JsonDto();
+        try {
+            this.userService.registerUser(userModel);
+            jsonDto.setStatus(RegisterVerificationStatus.SUCCESS.toString());
+        } catch (Exception e){
+            jsonDto.setStatus(RegisterVerificationStatus.FAIL.toString());
+            e.getStackTrace();
+            e.printStackTrace();
+        }
+        jsonDto.setModel(userModel);
+        return jsonDto;
     }
 
 }
