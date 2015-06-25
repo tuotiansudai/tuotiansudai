@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import java.security.MessageDigest;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,17 +20,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean userEmailIsExisted(String email) throws Exception {
+    public boolean userEmailIsExisted(String email) {
         return userMapper.findUserByEmail(email) != null;
     }
 
     @Override
-    public boolean userMobileNumberIsExisted(String mobileNumber) throws Exception {
+    public boolean userMobileNumberIsExisted(String mobileNumber) {
         return userMapper.findUserByMobileNumber(mobileNumber) != null;
     }
 
     @Override
-    public boolean referrerIsExisted(String referrer) throws Exception {
+    public boolean referrerIsExisted(String referrer) {
         return userMapper.findUserByLoginName(referrer) != null;
     }
 

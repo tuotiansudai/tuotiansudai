@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class RegisterVerifyDto {
     @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
-    private String status;
+    private RegisterVerificationStatus status;
     @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
     private Data data;
 
-    public String getStatus() {
-        return status;
-    }
 
     public Data getData() {
         return data;
@@ -20,7 +17,11 @@ public class RegisterVerifyDto {
         this.data = data;
     }
 
-    public void setStatus(String status) {
+    public RegisterVerificationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RegisterVerificationStatus status) {
         this.status = status;
     }
 
