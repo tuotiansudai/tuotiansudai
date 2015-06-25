@@ -11,45 +11,17 @@ require.config({
     }
 });
 require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], function ($, Mustache, dealtableTpl) {
-    var oDate = new Date();
-    var oYear = oDate.getFullYear();
-    var oMonth = oDate.getMonth();
-    var oToday = oDate.getDate();
-    var month = oDate.setMonth(oDate.getMonth() - 6);
-    var oWeek = new Date();
-    var week = oWeek.setDate(oWeek.getDate() - 7);
+
     $('#daterangepicker')
         .dateRangePicker({separator: ' ~ '})
         .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
         .bind('datepicker-apply', filterChanged);
-    //六个月：
-    $('.rec_sixmonth').on('click', function () {
-        $('#daterangepicker').val((oDate.toLocaleDateString()) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-    });
-    //今天：
-    $('.rec_today').on('click', function () {
-        $('#daterangepicker').val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-    });
-    //一个月：
-    $('.rec_month').on('click', function () {
-        $('#daterangepicker').val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-    });
-    //一周：
-    $('.rec_week').on('click', function () {
-        $('#daterangepicker').val((oWeek.toLocaleDateString()) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-    });
-    //全部：
-    $('.rec_all').on('click', function () {
-        $('#daterangepicker').val('');
-    });
     function filterChanged() {
         var dates = $('#daterangepicker').val().split('~');
         var startDay = dates[0];
         var endDay = dates[1];
         var selectedType = $('.rec_type').find(".active").attr('data-value');
         var url = '/static/jsons/table.json?startday=' + startDay + '&endday=' + endDay + '&type=' + selectedType;
-        var arr = [startDay, endDay, selectedType];
-        return arr;
     }
 
     filterChanged();
@@ -80,39 +52,11 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
             var url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + page + rec_typestr;
         }
         $.get(url, function (res) {
-
             if (res.status === 'success') {
                 $(".query_type strong").css("display", 'none');
                 var ret = Mustache.render(dealtableTpl, res.data);
                 $('.result').html(ret);
             }
-            $('.nextbtn').click(function(){
-                if(res.data.totalPages<=res.data.currentPage){
-                    alert('下一页没有更多数据了!');
-                    return false;
-                }
-                var cPage=res.data.currentPage+1;
-                $('.page_record').find('small').eq(2).html(cPage);
-                url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + cPage + rec_typestr;
-                $.get(url,function(){
-                    return false;
-                });
-            });
-            $('.prevbtn').on('click', function () {
-                if(res.data.currentPage<=1){
-                    alert('上一页没有更多数据了');
-                    return false;
-                }
-                //在这里ajax请求
-                var cPage=res.data.currentPage-1;
-                $('.page_record').find('small').eq(2).html(cPage);
-                url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + cPage + rec_typestr;
-                $.get(url,function(){
-                    return false;
-                });
-
-            });
-            ;
         });
     }
 })
