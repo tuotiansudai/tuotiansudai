@@ -1,29 +1,29 @@
 package com.tuotiansudai.web.dto;
 
-import java.lang.Object;
+import java.util.List;
 
 /**
  * Created by Administrator on 2015/6/24.
  */
 public class JsonDto {
 
-    private String status;
+    private RegisterVerificationStatus status;
 
-    private Object model;
+    private List modelList;
 
-    public String getStatus() {
+    public RegisterVerificationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RegisterVerificationStatus status) {
         this.status = status;
     }
 
-    public Object getModel() {
-        return model;
+    public List getModelList() {
+        return modelList;
     }
 
-    public void setModel(Object model) {
-        this.model = model;
+    public void setModelList(List modelList) {
+        this.modelList = modelList;
     }
 }

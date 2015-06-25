@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Controller
-public class UserController extends BaseController{
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -88,18 +91,20 @@ public class UserController extends BaseController{
 
     }
 
-    @RequestMapping(value = "/register/insertUser", method = RequestMethod.POST)
-    public @ResponseBody JsonDto jsonRegisterUser(@ModelAttribute("userModel") UserModel userModel){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public @ResponseBody JsonDto jsonRegisterUser(@RequestBody UserModel userModel){
         JsonDto jsonDto = new JsonDto();
         try {
             this.userService.registerUser(userModel);
-            jsonDto.setStatus(RegisterVerificationStatus.SUCCESS.toString());
+            List<UserModel> userModelList = new ArrayList<UserModel>();
+            userModelList.add(userModel);
+            jsonDto.setStatus(RegisterVerificationStatus.SUCCESS);
+            jsonDto.setModelList(userModelList);
         } catch (Exception e){
-            jsonDto.setStatus(RegisterVerificationStatus.FAIL.toString());
+            jsonDto.setStatus(RegisterVerificationStatus.FAIL);
             e.getStackTrace();
             e.printStackTrace();
         }
-        jsonDto.setModel(userModel);
         return jsonDto;
     }
 
