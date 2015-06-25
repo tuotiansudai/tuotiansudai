@@ -26,8 +26,8 @@
       <file leaf-file-name="calendar.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/calendar.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3105802" vertical-offset="130" max-vertical-offset="792">
-              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.91808873" vertical-offset="158" max-vertical-offset="864">
+              <caret line="63" column="4" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="4" />
               <folding>
                 <element signature="e#719#1043#0" expanded="false" />
                 <element signature="e#1193#1451#0" expanded="false" />
@@ -360,8 +360,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/calendar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3105802" vertical-offset="130" max-vertical-offset="792">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.91808873" vertical-offset="158" max-vertical-offset="864">
+          <caret line="63" column="4" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="4" />
           <folding>
             <element signature="e#719#1043#0" expanded="false" />
             <element signature="e#1193#1451#0" expanded="false" />
