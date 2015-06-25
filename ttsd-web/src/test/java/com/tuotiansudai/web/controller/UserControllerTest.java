@@ -1,14 +1,15 @@
 package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.common.CommonConstants;
-import com.tuotiansudai.web.dto.UserInteractiveDto;
+import com.tuotiansudai.web.dto.RegisterVerificationStatus;
+import com.tuotiansudai.web.dto.RegisterVerifyDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,17 +48,17 @@ public class UserControllerTest {
 
         when(userService.userEmailIsExisted(anyString())).thenReturn(true);
 
-        MvcResult result = this.mockMvc.perform(get("/register/email/123@abc.com/verify")).
-                andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
-                andDo(MockMvcResultHandlers.print()).andReturn();
+        MvcResult result = this.mockMvc.perform(get("/register/email/123@abc.com/verify"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("registerVerifyDto"))
+                .andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.SUCCESS_STATUS, status);
+        assertEquals(RegisterVerificationStatus.SUCCESS, registerVerifyDto.getStatus().SUCCESS);
         assertTrue(exist);
+
     }
 
     @Test
@@ -67,14 +68,13 @@ public class UserControllerTest {
 
         MvcResult result = this.mockMvc.perform(get("/register/email/123@abc.com/verify")).
                 andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
+                andExpect(model().attributeExists("registerVerifyDto")).
                 andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.FAIL_STATUS, status);
+        assertEquals(RegisterVerificationStatus.FAIL, registerVerifyDto.getStatus().FAIL);
         assertFalse(exist);
     }
 
@@ -85,14 +85,13 @@ public class UserControllerTest {
 
         MvcResult result = this.mockMvc.perform(get("/register/mobileNumber/13900000000/verify")).
                 andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
+                andExpect(model().attributeExists("registerVerifyDto")).
                 andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.SUCCESS_STATUS, status);
+        assertEquals(RegisterVerificationStatus.SUCCESS, registerVerifyDto.getStatus().SUCCESS);
         assertTrue(exist);
     }
 
@@ -103,14 +102,13 @@ public class UserControllerTest {
 
         MvcResult result = this.mockMvc.perform(get("/register/mobileNumber/13900000000/verify")).
                 andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
+                andExpect(model().attributeExists("registerVerifyDto")).
                 andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.FAIL_STATUS, status);
+        assertEquals(RegisterVerificationStatus.FAIL, registerVerifyDto.getStatus().FAIL);
         assertFalse(exist);
     }
 
@@ -121,14 +119,13 @@ public class UserControllerTest {
 
         MvcResult result = this.mockMvc.perform(get("/register/referrer/hourglass/verify")).
                 andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
+                andExpect(model().attributeExists("registerVerifyDto")).
                 andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.SUCCESS_STATUS, status);
+        assertEquals(RegisterVerificationStatus.FAIL, registerVerifyDto.getStatus().FAIL);
         assertTrue(exist);
     }
 
@@ -139,14 +136,13 @@ public class UserControllerTest {
 
         MvcResult result = this.mockMvc.perform(get("/register/referrer/hourglass/verify")).
                 andExpect(status().isOk()).
-                andExpect(model().attributeExists("userInteractiveDto")).
+                andExpect(model().attributeExists("registerVerifyDto")).
                 andDo(MockMvcResultHandlers.print()).andReturn();
 
-        UserInteractiveDto UserInteractiveDto = ((UserInteractiveDto)result.getModelAndView().getModel().get("userInteractiveDto"));
-        String status = UserInteractiveDto.getStatus();
-        boolean exist = UserInteractiveDto.getData().getExist();
+        RegisterVerifyDto registerVerifyDto = ((RegisterVerifyDto)result.getModelAndView().getModel().get("registerVerifyDto"));
+        boolean exist = registerVerifyDto.getData().getExist();
 
-        assertEquals(CommonConstants.FAIL_STATUS, status);
+        assertEquals(RegisterVerificationStatus.FAIL, registerVerifyDto.getStatus().FAIL);
         assertFalse(exist);
     }
 

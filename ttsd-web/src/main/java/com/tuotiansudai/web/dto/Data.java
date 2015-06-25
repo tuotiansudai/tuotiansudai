@@ -6,7 +6,7 @@ public class Data {
 
     private boolean exist;
 
-    public boolean getIsExist() {
+    public boolean getExist() {
         return exist;
     }
 
