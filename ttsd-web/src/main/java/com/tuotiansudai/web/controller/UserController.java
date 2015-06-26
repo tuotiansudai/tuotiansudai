@@ -1,98 +1,9 @@
 package com.tuotiansudai.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.dto.Data;
-import com.tuotiansudai.web.dto.RegisterVerificationStatus;
-import com.tuotiansudai.web.dto.RegisterVerifyDto;
-import com.tuotiansudai.web.dto.RegisterVerifyJsonView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 
 @Controller
 public class UserController {
-
-    @Autowired
-    private UserService userService;
-
-    @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
-    @RequestMapping(value = "/register/email/{email}/verify", method = RequestMethod.GET)
-    public RegisterVerifyDto jsonEmailIsExisted(@PathVariable String email) {
-        RegisterVerifyDto registerVerifyDto = new RegisterVerifyDto();
-        Data data = new Data();
-        try {
-            boolean isExistEmail = userService.userEmailIsExisted(email);
-            RegisterVerificationStatus status = RegisterVerificationStatus.FAIL;
-            if (isExistEmail) {
-                status = RegisterVerificationStatus.SUCCESS;
-            }
-            data.setExist(isExistEmail);
-            registerVerifyDto.setStatus(status);
-            registerVerifyDto.setData(data);
-        } catch (Exception e) {
-            data.setExist(false);
-            registerVerifyDto.setStatus(RegisterVerificationStatus.FAIL);
-            registerVerifyDto.setData(data);
-            e.printStackTrace();
-        }
-
-        return registerVerifyDto;
-
-
-    }
-
-    @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
-    @RequestMapping(value = "/register/mobileNumber/{mobileNumber}/verify", method = RequestMethod.GET)
-    public RegisterVerifyDto jsonMobileNumberIsExisted(@PathVariable String mobileNumber) {
-        RegisterVerifyDto registerVerifyDto = new RegisterVerifyDto();
-        Data data = new Data();
-        try {
-            boolean isExistedEmail = userService.userMobileNumberIsExisted(mobileNumber);
-            RegisterVerificationStatus status = RegisterVerificationStatus.FAIL;
-            if (isExistedEmail) {
-                status = RegisterVerificationStatus.SUCCESS;
-            }
-            data.setExist(isExistedEmail);
-            registerVerifyDto.setStatus(status);
-            registerVerifyDto.setData(data);
-        } catch (Exception e) {
-            data.setExist(false);
-            registerVerifyDto.setStatus(RegisterVerificationStatus.SUCCESS);
-            registerVerifyDto.setData(data);
-            e.printStackTrace();
-        }
-        return registerVerifyDto;
-
-    }
-    @JsonView(RegisterVerifyJsonView.RegisterVerify.class)
-    @RequestMapping(value = "/register/referrer/{referrer}/verify", method = RequestMethod.GET)
-    public RegisterVerifyDto jsonReferrerIsExisted(@PathVariable String referrer) {
-        RegisterVerifyDto registerVerifyDto = new RegisterVerifyDto();
-        Data data = new Data();
-        try {
-            boolean isExistedEmail = userService.referrerIsExisted(referrer);
-            RegisterVerificationStatus status = RegisterVerificationStatus.FAIL;
-            if (isExistedEmail) {
-                status = RegisterVerificationStatus.SUCCESS;
-            }
-            data.setExist(isExistedEmail);
-            registerVerifyDto.setStatus(status);
-            registerVerifyDto.setData(data);
-        } catch (Exception e) {
-            data.setExist(false);
-            registerVerifyDto.setStatus(RegisterVerificationStatus.FAIL);
-            registerVerifyDto.setData(data);
-            e.printStackTrace();
-        }
-        return registerVerifyDto;
-
-    }
 
 }

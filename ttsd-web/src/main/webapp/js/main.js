@@ -160,7 +160,7 @@ require(['jquery'], function ($) {
         //Mobil 验证
         $(function () {
             function checkMobile(str) {
-                var re = /^1[1-9]{10}$/;
+                var re = /^1[0-9]{10}$/;
                 if ($('.phone').val().length < 11 && $('.phone').val().length > 0 ) {
                     $('.step_one_phone em').css({'opacity': 0});
                     $('.step_one_phone b').css({'opacity': 1}).html('手机号不能小于11位!');
@@ -194,12 +194,12 @@ require(['jquery'], function ($) {
                     $('.step_one_phone em').css({'opacity': 0});
                     $('.step_one_phone  b').css({'opacity': 1});
                 }
-            }).on('change', function () {
                 $('.step_one_phone b').css({'opacity': 1}).html('手机号不能为空！');
                 var phone_change = checkMobile($(this).val());
                 if (phone_change) {
+                    var phoneNumber = $('.phone').val();
                     $.ajax({
-                        url: '/static/jsons/mobile.json?vcode_num=',
+                        url: '/register/mobileNumber/'+ phoneNumber + '/verify',
                         type: 'GET',
                         dataType: 'json',
                         beforeSend: function () {
@@ -209,11 +209,11 @@ require(['jquery'], function ($) {
                             $('.step_one_phone strong').hide();
                             $('.step_one_phone em').css({'opacity':0});
                             $('.step_one_phonee b').css({'opacity': 0});
-                            if (response.status === 'success' && response.data.exist) {
+                            if (response.status === 'success' && response.data.status) {
                                 $('.step_one_phone em').css({'opacity': 0});
                                 $('.step_one_phone b').css({'opacity':1}).html('手机号已存在！');
                                 $('.step_one_phone strong').hide()
-                            }else if(!response.data.exist){
+                            }else if(!response.data.status){
                                 $('.step_one_phone em').css({'opacity': 1});
                                 $('.step_one_phone b').hide();
                                 $('.step_one_phone strong').hide();
@@ -226,6 +226,8 @@ require(['jquery'], function ($) {
                         }
                     });
                 }
+            }).on('change', function () {
+
             });
 
         });
@@ -343,8 +345,9 @@ require(['jquery'], function ($) {
             }).on('change', function () {
                 var validFormat = checkEmail($(this).val());
                 if (validFormat) {
+                    var registerEmail = $('.email').val();
                     $.ajax({
-                        url: '/static/jsons/mobile.json?vcode_num=',
+                        url: '/register/email/' + registerEmail + '/verify',
                         type: 'GET',
                         dataType: 'json',
                         beforeSend: function () {
@@ -355,11 +358,11 @@ require(['jquery'], function ($) {
                             $('.step_four_email strong').hide();
                             $('.step_four_email em').hide();
                             $('.step_four_email b').css({'opacity': 0});
-                            if (response.status === 'success' && response.data.exist) {
+                            if (response.status === 'success' && response.data.status) {
                                 $('.step_four_email em').css({'opacity': 0});
                                 $('.step_four_email b').html('邮箱已经存在!').css({'opacity':1,'display':'block'});
                                 $('.step_four_email strong').hide()
-                            } else if(!response.data.exist) {
+                            } else if(!response.data.status) {
                                 $('.step_four_email em').show();
                                 $('.step_four_email b').hide();
                             }
@@ -408,8 +411,9 @@ require(['jquery'], function ($) {
                     $('.step_five_user b').css({'opacity': 1});
                 }
             }).on('change',function(){
+                    var referrer = $('.user').val();
                     $.ajax({
-                        url: '/static/jsons/mobile.json',
+                        url: '/register/referrer/' + referrer + '/verify',
                         type: 'GET',
                         datatype: 'json',
                         timeout: 500,
@@ -418,7 +422,7 @@ require(['jquery'], function ($) {
                         },
                         success: function (response) {
                             $('.step_five_user strong').hide();
-                            if (response.status && response.data.exist) {
+                            if (response.status && response.data.status) {
                                 $('.step_five_user em').css({'opacity': 1, 'display': 'block'});
                                 $('.step_five_user b').show();
                                 $('.step_five_user strong').hide();

@@ -1,8 +1,5 @@
 package com.tuotiansudai.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-
 public class UserDto {
 
     private int id;
