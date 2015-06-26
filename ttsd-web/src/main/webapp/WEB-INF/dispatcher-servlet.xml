@@ -11,8 +11,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<import resource="spring-security.xml" />-->
-
     <mvc:annotation-driven />
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
@@ -27,24 +25,14 @@
         <property name="defaultEncoding" value="utf-8"/>
     </bean>
 
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="viewResolvers">
-            <list>
-                <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-                    <property name="cache" value="true"/>
-                    <property name="prefix" value=""/>
-                    <property name="suffix" value=".ftl"/>
-                    <property name="contentType" value="text/html;charset=UTF-8"/>
-                </bean>
-            </list>
-        </property>
-        <property name="defaultViews">
-            <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-                    <property name="encoding" value="UTF8"/>
-                    <property name="contentType" value="application/json;charset=UTF-8"/>
-                </bean>
-            </list>
-        </property>
+    <!--
+    View resolvers can also be configured with ResourceBundles or XML files. If you need
+    different view resolving based on Locale, you have to use the resource bundle resolver.
+    -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
     </bean>
 </beans>

@@ -9,13 +9,13 @@ dependencies {
     compile "org.springframework:spring-core:$springVersion",
             "org.springframework:spring-context:$springVersion",
             "org.springframework:spring-beans:$springVersion",
-            "org.springframework:spring-test:$springVersion",
             "org.springframework:spring-jdbc:$springVersion",
             "org.springframework:spring-tx:$springVersion",
             "org.mybatis:mybatis:$mybatisVersion",
             "org.mybatis:mybatis-spring:$mybatisSpringVersion",
             'mysql:mysql-connector-java:5.1.35',
             'com.jolbox:bonecp-spring:0.8.0.RELEASE'
+    testCompile "org.springframework:spring-test:$springVersion"
 }
 
 buildscript {
