@@ -5,6 +5,7 @@
     <title></title>
 </head>
 <body>
+    中文
     ${placeHolder}
 </body>
 </html>

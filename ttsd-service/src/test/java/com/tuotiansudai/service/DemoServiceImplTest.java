@@ -36,5 +36,6 @@ public class DemoServiceImplTest {
 
         DemoModel actualDemoModel = demoService.getDemoById(demoId);
         assertThat(actualDemoModel.getId(), is(demoId));
+
     }
 }

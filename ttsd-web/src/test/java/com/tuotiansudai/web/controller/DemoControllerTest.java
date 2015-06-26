@@ -48,4 +48,5 @@ public class DemoControllerTest {
                 andExpect(model().attribute("placeHolder", "demoId")).
                 andExpect(view().name("/view.helloworld"));
     }
+
 }
