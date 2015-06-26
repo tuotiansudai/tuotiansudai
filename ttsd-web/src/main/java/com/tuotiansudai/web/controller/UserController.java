@@ -99,7 +99,7 @@ public class UserController {
             List<UserModel> userModelList = new ArrayList<UserModel>();
             userModelList.add(userModel);
             jsonDto.setStatus(RegisterVerificationStatus.SUCCESS);
-            jsonDto.setModelList(userModelList);
+            jsonDto.setData(userModelList);
         } catch (Exception e){
             jsonDto.setStatus(RegisterVerificationStatus.FAIL);
             e.getStackTrace();

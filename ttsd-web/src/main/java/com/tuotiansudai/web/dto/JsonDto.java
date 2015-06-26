@@ -9,7 +9,7 @@ public class JsonDto {
 
     private RegisterVerificationStatus status;
 
-    private List modelList;
+    private List data;
 
     public RegisterVerificationStatus getStatus() {
         return status;
@@ -19,11 +19,11 @@ public class JsonDto {
         this.status = status;
     }
 
-    public List getModelList() {
-        return modelList;
+    public List getData() {
+        return data;
     }
 
-    public void setModelList(List modelList) {
-        this.modelList = modelList;
+    public void setData(List data) {
+        this.data = data;
     }
 }

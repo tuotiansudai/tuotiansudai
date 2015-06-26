@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -149,9 +150,12 @@ public class UserControllerTest {
     @Test
     public void shouldJsonRegisterUser() throws Exception{
         String jsonStr =  "{\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"mobileNumber\":\"13436964915\"}";
-        mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).
+        MvcResult result = mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).
                 andExpect(status().isOk()).
-                andDo(MockMvcResultHandlers.print());
+                andDo(MockMvcResultHandlers.print()).andReturn();
+        String expectJson = "{\"status\":\"success\",\"data\":[{\"id\":0,\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"address\":null,\"mobileNumber\":\"13436964915\",\"lastLoginTime\":null,\"registerTime\":null,\"lastModifiedTime\":null,\"lastModifiedUser\":null,\"forbiddenTime\":null,\"avatar\":null,\"referrer\":null,\"status\":null,\"salt\":null}]}";
+        String resultJson = result.getResponse().getContentAsString();
+        assertEquals(expectJson,resultJson);
     }
 
 
