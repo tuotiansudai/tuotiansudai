@@ -2,6 +2,7 @@ package com.esoft.umpay.loan.service.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -171,14 +172,16 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			ServletResponse response) {
 		try {
 			Map<String,String> paramMap = UmPaySignUtil.getMapDataByRequest(request);
-			log.debug("放款S2S验签通过");
+
 			// 
 			String ret_code = paramMap.get("ret_code");
 			//订单ID(01+loanId)
 			String order_id = paramMap.get("order_id");
+
+			log.debug(MessageFormat.format("放款S2S验签通过: ret_code={0}, order_id={1}", ret_code, order_id));
+			TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER, order_id, UmPayConstants.OperationType.UMPAY);
 			//获取操作记录
-			if("0000".equals(ret_code)){	//处理成功
-				TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER, order_id, UmPayConstants.OperationType.UMPAY);
+			if(to != null && "0000".equals(ret_code)){	//处理成功
 				to.setStatus(TrusteeshipConstants.Status.PASSED);
 				ht.update(to);
 				String loanId = to.getOperator();

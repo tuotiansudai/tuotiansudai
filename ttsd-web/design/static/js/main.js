@@ -4,7 +4,7 @@
 require.config({
     baseUrl: "../js",//此处存放文件路径
     paths: {
-        "jquery": "jquery-1.10.1.min"//此处存放baseURL路径下要引入的JS文件
+        "jquery": "libs/jquery-1.10.1.min"//此处存放baseURL路径下要引入的JS文件
     }
 });
 require(['jquery'], function ($) {

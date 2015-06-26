@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.esoft.core.util.DateStyle;
