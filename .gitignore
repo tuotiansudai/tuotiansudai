@@ -10,5 +10,7 @@
 **/war/**
 **/gradle
 **/gradlew.bat
+**/gradlew
 **/gradle/**
+**/classes/**
 **/node_modules/
