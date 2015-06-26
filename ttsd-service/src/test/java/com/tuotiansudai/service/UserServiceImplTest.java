@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,19 +15,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-@TransactionConfiguration(defaultRollback = true)
+@TransactionConfiguration
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userServiceImpl;
+
     @Mock
     private UserMapper userMapper;
 
@@ -110,8 +112,11 @@ public class UserServiceImplTest {
         userModel.setEmail("zourenzheng@tuotiansudai.com");
         userModel.setMobileNumber("13436964915");
         userModel.setPassword("123abc");
-        userServiceImpl.registerUser(userModel);
-        UserModel userModelRes = this.userMapper.findUserByLoginName("zourenzheng");
-        assertNotNull(userModelRes);
+        userModel.setStatus(UserStatus.ACTIVE);
+        doNothing().when(userMapper).insertUser(any(UserModel.class));
+
+        boolean success = userServiceImpl.registerUser(userModel);
+        assertNotNull(userModel.getSalt());
+        assertTrue(success);
     }
 }

@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.model;
 
 
-import com.tuotiansudai.service.impl.UserServiceImpl;
-
 import java.util.Date;
 
 public class UserModel {
@@ -33,7 +31,7 @@ public class UserModel {
 
     private String referrer;
 
-    private UserServiceImpl.userStatus status;
+    private UserStatus status;
 
     private String salt;
 
@@ -149,12 +147,27 @@ public class UserModel {
         this.referrer = referrer;
     }
 
-    public UserServiceImpl.userStatus getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(UserServiceImpl.userStatus status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserModel userModel = (UserModel) o;
+
+        return id == userModel.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

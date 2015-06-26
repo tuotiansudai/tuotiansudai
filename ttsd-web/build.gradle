@@ -21,7 +21,9 @@ dependencies {
             'com.jolbox:bonecp-spring:0.8.0.RELEASE',
             'mysql:mysql-connector-java:5.1.35'
 
-    testCompile "javax.servlet:javax.servlet-api:3.1.0"
+    testCompile "javax.servlet:javax.servlet-api:3.1.0",
+            "org.springframework:spring-test:$springVersion",
+            "com.jayway.jsonpath:json-path:2.0.0"
 
     compile project(':ttsd-service')
 }

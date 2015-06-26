@@ -1,6 +1,6 @@
 **/*.db
 **/*.pyc
-**/.idea/**
+**/.idea/
 **/out/**
 **/build/**/*
 **/*.iml
@@ -13,4 +13,4 @@
 **/gradlew
 **/gradle/**
 **/classes/**
-**/node_modules/**
+**/node_modules/

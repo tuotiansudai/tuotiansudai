@@ -1,0 +1,50 @@
+apply plugin: 'war'
+apply plugin: 'org.flywaydb.flyway'
+apply from: 'db_migration.gradle'
+
+dependencies {
+    def springVersion = '4.1.6.RELEASE'
+    def springSecurityVersion = '4.0.1.RELEASE'
+    def jacksonVersion = '2.5.4'
+    def mybatisVersion = '3.3.0'
+    def mybatisSpringVersion = '1.2.3'
+    compile "org.springframework:spring-webmvc:$springVersion",
+            "org.springframework:spring-jdbc:$springVersion",
+            "org.springframework.security:spring-security-web:$springSecurityVersion",
+            "org.springframework.security:spring-security-config:$springSecurityVersion",
+            "org.springframework:spring-context-support:$springSecurityVersion",
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            "org.mybatis:mybatis:$mybatisVersion",
+            "org.mybatis:mybatis-spring:$mybatisSpringVersion",
+            'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+            'mysql:mysql-connector-java:5.1.35',
+            'com.squareup.okhttp:okhttp:2.4.0',
+            'dom4j:dom4j:1.6.1'
+
+    testCompile "javax.servlet:javax.servlet-api:3.1.0",
+            'com.squareup.okhttp:mockwebserver:2.4.0',
+            "org.springframework:spring-test:$springVersion",
+            "com.jayway.jsonpath:json-path:2.0.0"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
+
+flyway {
+    locations = ['filesystem:db_migration/sms_operations']
+    user = 'root'
+    password = ''
+    outOfOrder = true
+    placeholders = ['sms_operations': 'sms_operations']
+    schemas = ['sms_operations']
+    url = 'jdbc:mysql://192.168.33.10:3306/'
+}

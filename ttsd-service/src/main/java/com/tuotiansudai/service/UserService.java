@@ -2,16 +2,13 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.repository.model.UserModel;
 
-/**
- * Created by hourglasskoala on 15/6/18.
- */
 public interface UserService {
 
-    public boolean userEmailIsExisted(String email);
+    boolean userEmailIsExisted(String email);
 
-    public boolean userMobileNumberIsExisted(String mobileNumber);
+    boolean userMobileNumberIsExisted(String mobileNumber);
 
-    public void registerUser(UserModel userModel) throws Exception;
+    boolean registerUser(UserModel userModel);
 
-    public boolean referrerIsExisted(String referrer);
+    boolean referrerIsExisted(String referrer);
 }
