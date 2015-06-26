@@ -1,13 +1,13 @@
 package com.tuotiansudai.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class UserDto {
 
-    @JsonView(UserJsonView.User.class)
+    @JsonProperty("abc")
     private int id;
 
-    @JsonView(UserJsonView.User.class)
     private String name;
 
     public int getId() {
