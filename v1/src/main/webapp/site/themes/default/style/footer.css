@@ -15,8 +15,9 @@
 .ft-top ul li.tel{font-size: 20px;margin: 10px 0px}
 .ft-top ul li.tel span{font-size: 12px; margin-left:10px; color:#ccc;}
 .clear{clear: both;}
-.footer_zs{width:1000px; height: 70px; line-height:70px;border-top: 1px solid #606060; margin-top: 22px;}
+.footer_zs{  width: 1000px;height: auto;border-top: 1px solid #606060;margin-top: 22px;padding: 5px 0px; overflow: hidden;}
 
-.footer_zs .pull-right{  float: right;  margin-top: 5px;margin-left:5px;}
-.footer_zs span a{ display: block; float: left; margin-top: 25px; margin-left:-20px;}
-.copyright{font-size: 15px;color: #ffffff; width:500px; float:left; }
+.footer_zs .pull-right{  float: right;}
+.footer_zs .pull-right a { display: block;float: left; margin-left: 5px; height: 47px;}
+.footer_zs span a{   display: block;float: left;margin-top: 13px;margin-left: -20px;}
+.copyright{ font-size: 15px;color: #ffffff;width: 500px; float: left; height: 47px; line-height: 47px; }
