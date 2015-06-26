@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class UserDto {
 
-    @JsonProperty("abc")
     private int id;
 
     private String name;

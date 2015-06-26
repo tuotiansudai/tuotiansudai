@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-@Service(value = "smsService")
+@Service
 public class SmsServiceImpl implements SmsService {
 
     @Autowired
