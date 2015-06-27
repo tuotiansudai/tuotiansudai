@@ -11,10 +11,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -29,32 +32,34 @@ public class SmsCaptchaMapperTest {
         SmsCaptchaModel smsCaptchaModel = this.getSmsCaptchaModeal();
         smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel);
 
-        List<SmsCaptchaModel> smsCaptchaMappers = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel);
-        assertEquals(1, smsCaptchaMappers.size());
-
+        SmsCaptchaModel smsCaptchaModel1 = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel);
+        assertNotNull(smsCaptchaModel1);
     }
+
 
     @Test
     @Transactional
     public void shouldModifySmsCaptcha() {
         SmsCaptchaModel smsCaptchaModel1 = this.getSmsCaptchaModeal();
-        SmsCaptchaModel smsCaptchaModel2 = this.getSmsCaptchaModeal();
-        smsCaptchaModel2.setCode("1001");
         smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel1);
-        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel2);
 
-        SmsCaptchaModel smsCaptchaModel3 = new SmsCaptchaModel();
-        smsCaptchaModel3.setMobile("13900000000");
-        smsCaptchaModel3.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        smsCaptchaModel3.setStatus(CaptchaStatus.INACTIVE);
-        smsCaptchaMapper.updateStatusByMobile(smsCaptchaModel3);
+        SmsCaptchaModel smsCaptchaModel2 = new SmsCaptchaModel();
+        smsCaptchaModel2.setMobile("13900000000");
+        smsCaptchaModel2.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+        smsCaptchaModel2.setStatus(CaptchaStatus.ACTIVATED);
+        SmsCaptchaModel smsCaptchaModel3 = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel2);
+        int delayedMinute = 10;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, delayedMinute);
+        smsCaptchaModel3.setCode("1002");
+        smsCaptchaModel3.setDeadLine(cal.getTime());
+        smsCaptchaModel3.setGenerationTime(new Date());
+        smsCaptchaMapper.updateSmsCaptchaByMobile(smsCaptchaModel3);
 
-        List<SmsCaptchaModel> smsCaptchaMappers = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel1);
-
-        for (SmsCaptchaModel sms : smsCaptchaMappers) {
-            assertEquals(CaptchaStatus.INACTIVE, sms.getStatus());
-        }
-        assertEquals(2, smsCaptchaMappers.size());
+        SmsCaptchaModel smsCaptchaModel4 = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel2);
+        assertNotNull(smsCaptchaModel4);
+        assertEquals("1002",smsCaptchaModel4.getCode());
 
     }
 
@@ -62,16 +67,21 @@ public class SmsCaptchaMapperTest {
     @Transactional
     public void shouldFindSmsCaptchabyMobileIsNotNull() {
         SmsCaptchaModel smsCaptchaModel1 = this.getSmsCaptchaModeal();
-        SmsCaptchaModel smsCaptchaModel2 = this.getSmsCaptchaModeal();
-        smsCaptchaModel2.setCode("1234");
         smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel1);
-        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel2);
 
-        List<SmsCaptchaModel> smsCaptchaMappers = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel1);
+        SmsCaptchaModel smsCaptchaModel2 = new SmsCaptchaModel();
+        smsCaptchaModel2.setMobile("13900000000");
+        smsCaptchaModel2.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+        smsCaptchaModel2.setStatus(CaptchaStatus.ACTIVATED);
 
-        for (SmsCaptchaModel sms : smsCaptchaMappers) {
-            assertNotNull(sms);
-        }
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel1);
+
+        assertNotNull(smsCaptchaModel);
+
+        assertEquals("13900000000", smsCaptchaModel.getMobile());
+        assertEquals("12345",smsCaptchaModel.getCode());
+
+
 
     }
 
@@ -81,8 +91,10 @@ public class SmsCaptchaMapperTest {
         SmsCaptchaModel smsCaptchaModel1 = this.getSmsCaptchaModeal();
         smsCaptchaModel1.setMobile("12345678900");
         smsCaptchaModel1.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        List<SmsCaptchaModel> smsCaptchaMappers = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel1);
-        assertEquals(0, smsCaptchaMappers.size());
+        smsCaptchaModel1.setStatus(CaptchaStatus.ACTIVATED);
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel1);
+        assertNull(smsCaptchaModel);
+
     }
 
     @Test

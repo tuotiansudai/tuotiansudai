@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class SmsCaptchaServiceImpl implements SmsCaptchaService {
@@ -27,7 +29,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean sendSmsbyMobileNumberRegister(String mobileNumber) throws Exception {
+    public boolean sendSmsbyMobileNumberRegister(String mobileNumber) {
         //校验手机号的有效性
         if (!this.verifyMobileNumber(mobileNumber)) {
             return false;
@@ -49,7 +51,10 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         if (mobileNumber.length() != 11) {
             return false;
         }
-        return true;
+        Pattern pattern = Pattern.compile("^\\d{11}$");
+        Matcher matcher = pattern.matcher(mobileNumber);
+
+        return matcher.matches();
     }
 
     @Override
@@ -60,28 +65,34 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, delayedMinute);
 
-        SmsCaptchaModel smsCaptchaModelNew = new SmsCaptchaModel();
-        smsCaptchaModelNew.setCode("1000");
-        smsCaptchaModelNew.setMobile(mobileNumber);
-        smsCaptchaModelNew.setGenerationTime(new Date());
-        smsCaptchaModelNew.setDeadLine(cal.getTime());
-        smsCaptchaModelNew.setStatus(CaptchaStatus.ACTIVATED);
-        smsCaptchaModelNew.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        smsCaptchaModelNew.setUserId(null);
-
         SmsCaptchaModel smsCaptchaModelOld = new SmsCaptchaModel();
         smsCaptchaModelOld.setMobile(mobileNumber);
         smsCaptchaModelOld.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        smsCaptchaModelOld.setStatus(CaptchaStatus.INACTIVE);
+        smsCaptchaModelOld.setStatus(CaptchaStatus.ACTIVATED);
+        SmsCaptchaModel smsCaptchaModelUpdate = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModelOld);
+        if (smsCaptchaModelUpdate != null) {
+            smsCaptchaModelUpdate.setCode(createRandomVcode(6));
+            smsCaptchaModelUpdate.setDeadLine(cal.getTime());
+            smsCaptchaModelUpdate.setGenerationTime(new Date());
+            smsCaptchaMapper.updateSmsCaptchaByMobile(smsCaptchaModelUpdate);
+            return smsCaptchaModelUpdate;
+        } else {
+            SmsCaptchaModel smsCaptchaModelNew = new SmsCaptchaModel();
+            smsCaptchaModelNew.setCode(createRandomVcode(6));
+            smsCaptchaModelNew.setMobile(mobileNumber);
+            smsCaptchaModelNew.setGenerationTime(new Date());
+            smsCaptchaModelNew.setDeadLine(cal.getTime());
+            smsCaptchaModelNew.setStatus(CaptchaStatus.ACTIVATED);
+            smsCaptchaModelNew.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+            smsCaptchaModelNew.setUserId(null);
+            smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModelNew);
+            return smsCaptchaModelNew;
+        }
 
-        smsCaptchaMapper.updateStatusByMobile(smsCaptchaModelOld);
-        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModelNew);
-
-        return smsCaptchaModelNew;
     }
 
     @Override
-    public boolean verifyCaptcha(String mobile,String code) {
+    public boolean verifyCaptcha(String mobile, String code) {
         SmsCaptchaModel smsCaptchaModelQuery = new SmsCaptchaModel();
         smsCaptchaModelQuery.setCode(code);
         smsCaptchaModelQuery.setMobile(mobile);
@@ -101,9 +112,18 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     }
 
     @Override
-    public boolean sendRegisterCaptcha(String mobile, String captcha) throws Exception {
+    public boolean sendRegisterCaptcha(String mobile, String captcha) {
         ResultDto resultDto = smsClient.sendSms(mobile, captcha);
         return resultDto != null && resultDto.getData().getStatus();
+    }
+
+    public  String createRandomVcode(Integer captchaLength){
+        //验证码
+        String vcode = "";
+        for (int i = 0; i < captchaLength; i++) {
+            vcode = vcode + (int)(Math.random() * 9);
+        }
+        return vcode;
     }
 
 

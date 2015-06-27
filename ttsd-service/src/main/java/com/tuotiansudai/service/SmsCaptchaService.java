@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.SmsCaptchaModel;
 
 public interface SmsCaptchaService {
 
-    public boolean sendSmsbyMobileNumberRegister(String mobileNumber) throws Exception;
+    public boolean sendSmsbyMobileNumberRegister(String mobileNumber);
 
     public boolean verifyMobileNumber(String mobileNumber);
 
@@ -14,6 +14,9 @@ public interface SmsCaptchaService {
 
     public boolean verifyCaptcha(String code, String mobile);
 
-    public boolean sendRegisterCaptcha(String mobile, String captcha) throws Exception;
+    public boolean sendRegisterCaptcha(String mobile, String captcha);
+
+    public String createRandomVcode(Integer captchaLength);
+
 
 }

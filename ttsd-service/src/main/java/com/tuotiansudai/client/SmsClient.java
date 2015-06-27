@@ -13,13 +13,14 @@ import org.springframework.stereotype.Component;
 
 
 import java.io.IOException;
+
 @Component
 public class SmsClient {
 
     @Value("${sms_wrapper_host}")
     private String host;
 
-    private final String REGISTER_SMS_URI = "/mobile/{mobile}/captcha/{captcha}";
+    private final String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}";
 
     public String getHost() {
         return host;
@@ -32,20 +33,21 @@ public class SmsClient {
     @Autowired
     private OkHttpClient httpClient;
 
-    public ResultDto sendSms(String mobile,String code) throws Exception {
-        String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}",code);
+    public ResultDto sendSms(String mobile, String code) {
+        String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
 
         Request request = new Request.Builder().url(url).get().build();
 
-        Response response = httpClient.newCall(request).execute();
+        ResultDto resultDto = null;
+        try {
+            Response response = httpClient.newCall(request).execute();
+            String jsonData = response.body().string();
+            resultDto = this.jsonConvertToObject(jsonData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-        String jsonData = response.body().string();
-
-        ResultDto resultDto = this.jsonConvertToObject(jsonData);
-
-        return resultDto ;
+        return resultDto;
     }
 
     public ResultDto jsonConvertToObject(String jsonString) {

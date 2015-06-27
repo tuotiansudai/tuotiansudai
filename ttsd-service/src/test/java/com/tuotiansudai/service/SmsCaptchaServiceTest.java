@@ -3,42 +3,22 @@ package com.tuotiansudai.service;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.client.SmsClient;
-import com.tuotiansudai.client.dto.ResultDataDto;
-import com.tuotiansudai.client.dto.ResultDto;
-import com.tuotiansudai.repository.mapper.DemoMapper;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaStatus;
 import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.DemoModel;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
-import com.tuotiansudai.service.impl.DemoServiceImpl;
-import com.tuotiansudai.service.impl.SmsCaptchaServiceImpl;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Date;
-import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -99,23 +79,34 @@ public class SmsCaptchaServiceTest {
 
     @Test
     public void shouldCreateRegisterCaptchaIsOk() {
-        SmsCaptchaModel smsCaptchaModel1 = this.getSmsCaptchaModeal();
-        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel1);
-        SmsCaptchaModel smsCaptchaModel2 = this.getSmsCaptchaModeal();
-        smsCaptchaModel2.setCode("5555");
-        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel2);
-
         smsCaptchaService.createSmsCaptcha("13900000000");
-
-        SmsCaptchaModel smsCaptchaModel = this.getSmsCaptchaModeal();
-
+        SmsCaptchaModel smsCaptchaModel = new SmsCaptchaModel();
         smsCaptchaModel.setMobile("13900000000");
+        smsCaptchaModel.setStatus(CaptchaStatus.ACTIVATED);
         smsCaptchaModel.setCaptchaType(CaptchaType.MOBILECAPTCHA);
 
-        List<SmsCaptchaModel> smsCaptchaModels = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel);
+        SmsCaptchaModel smsCaptchaModel1 = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel);
 
-        assertNotNull(smsCaptchaModels);
-        assertEquals(3, smsCaptchaModels.size());
+        assertNotNull(smsCaptchaModel1);
+        System.out.println(smsCaptchaModel1.getCode());
+        assertEquals("13900000000", smsCaptchaModel1.getMobile());
+    }
+    @Test
+    public void shouldModifyRegisterCaptchaIsOk(){
+        SmsCaptchaModel smsCaptchaModel = this.getSmsCaptchaModeal();
+        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel);
+        smsCaptchaService.createSmsCaptcha("13900000000");
+
+        SmsCaptchaModel smsCaptchaModel1 = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModel);
+        assertNotNull(smsCaptchaModel1);
+        System.out.println(smsCaptchaModel1.getCode());
+        assertNotEquals("12345", smsCaptchaModel1.getCode());
+
+    }
+    @Test
+    public void shouldGenerateCaptchaIsOk(){
+        String captcha = smsCaptchaService.createRandomVcode(6);
+        assertNotNull(captcha);
     }
 
     @Test
@@ -125,6 +116,7 @@ public class SmsCaptchaServiceTest {
 
     @Test
     public void shouldVerifyMobileNumberIsInvalid() {
+        assertFalse(smsCaptchaService.verifyMobileNumber("aaaa"));
         assertFalse(smsCaptchaService.verifyMobileNumber(""));
     }
 
@@ -137,12 +129,12 @@ public class SmsCaptchaServiceTest {
         smsClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
         boolean result = smsCaptchaService.sendSmsbyMobileNumberRegister("13900000000");
 
-        SmsCaptchaModel SmsCaptchaModelQuery = new SmsCaptchaModel();
-        SmsCaptchaModelQuery.setMobile("13900000000");
-        SmsCaptchaModelQuery.setCode("1000");
-        SmsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVATED);
-        SmsCaptchaModelQuery.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
+        SmsCaptchaModel smsCaptchaModelQuery = new SmsCaptchaModel();
+        smsCaptchaModelQuery.setMobile("13900000000");
+        smsCaptchaModelQuery.setCode("1000");
+        smsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVATED);
+        smsCaptchaModelQuery.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModelQuery);
 
         assertTrue(result);
         assertNotNull(smsCaptchaModel);
@@ -158,12 +150,12 @@ public class SmsCaptchaServiceTest {
         smsClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
         boolean result = smsCaptchaService.sendSmsbyMobileNumberRegister("13900000000");
 
-        SmsCaptchaModel SmsCaptchaModelQuery = new SmsCaptchaModel();
-        SmsCaptchaModelQuery.setMobile("13900000000");
-        SmsCaptchaModelQuery.setCode("1000");
-        SmsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVATED);
-        SmsCaptchaModelQuery.setCaptchaType(CaptchaType.MOBILECAPTCHA);
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
+        SmsCaptchaModel smsCaptchaModelQuery = new SmsCaptchaModel();
+        smsCaptchaModelQuery.setMobile("13900000000");
+        smsCaptchaModelQuery.setCode("1000");
+        smsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVATED);
+        smsCaptchaModelQuery.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findCaptchabyMobile(smsCaptchaModelQuery);
 
         assertFalse(result);
         assertNotNull(smsCaptchaModel);
@@ -179,6 +171,22 @@ public class SmsCaptchaServiceTest {
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
 
         assertNull(smsCaptchaModel);
+
+
+    }
+
+    @Test
+    public void shouldVerifyCaptchaIsExisted(){
+        SmsCaptchaModel smsCaptchaModel1 = this.getSmsCaptchaModeal();
+        smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModel1);
+        SmsCaptchaModel SmsCaptchaModelQuery = new SmsCaptchaModel();
+        SmsCaptchaModelQuery.setMobile("13900000000");
+        SmsCaptchaModelQuery.setCode("12345");
+        SmsCaptchaModelQuery.setCaptchaType(CaptchaType.MOBILECAPTCHA);
+        SmsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVATED);
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
+
+        assertNotNull(smsCaptchaModel);
 
 
     }

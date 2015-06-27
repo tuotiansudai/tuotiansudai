@@ -8,9 +8,9 @@ public interface SmsCaptchaMapper {
 
     public void insertSmsCaptcha(SmsCaptchaModel smsCaptchaModel);
 
-    public List<SmsCaptchaModel> findCaptchabyMobile(SmsCaptchaModel smsCaptchaModel);
+    public SmsCaptchaModel findCaptchabyMobile(SmsCaptchaModel smsCaptchaModel);
 
-    public void updateStatusByMobile(SmsCaptchaModel smsCaptchaModel);
+    public void updateSmsCaptchaByMobile(SmsCaptchaModel smsCaptchaModel);
 
     public SmsCaptchaModel findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModel smsCaptchaModel);
 }

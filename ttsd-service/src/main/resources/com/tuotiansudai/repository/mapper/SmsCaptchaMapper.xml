@@ -20,8 +20,8 @@
           value(#{id},#{code},#{mobile},#{deadLine},#{generationTime},#{status},#{captchaType},#{userId})
     </insert>
 
-    <update id="updateStatusByMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel">
-          update sms_captcha set status = #{status} where mobile = #{mobile} and captcha_type = #{captchaType}
+    <update id="updateSmsCaptchaByMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel">
+          update sms_captcha set code = #{code},deadline = #{deadLine},generation_time=#{generationTime} where mobile = #{mobile} and status = #{status} and captcha_type = #{captchaType}
     </update>
     <select id="findCaptchabyMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel"
             resultMap="smsCaptchaModelResultMap">
