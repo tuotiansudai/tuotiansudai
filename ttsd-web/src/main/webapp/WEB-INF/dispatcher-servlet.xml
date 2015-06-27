@@ -11,8 +11,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <mvc:annotation-driven />
-
+    <!--<import resource="spring-security.xml" />-->
+    <mvc:annotation-driven/>
     <context:component-scan base-package="com.tuotiansudai.web"/>
 
     <mvc:resources mapping="/style/**" location="/style/" />
