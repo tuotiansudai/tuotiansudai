@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -36,7 +38,13 @@ public class RegisterControllerTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.registerController).build();
+
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setSuffix(".ftl");
+
+        this.mockMvc = MockMvcBuilders.standaloneSetup(this.registerController)
+                .setViewResolvers(viewResolver)
+                .build();
     }
 
     @Test
@@ -112,7 +120,7 @@ public class RegisterControllerTest {
     }
 
     @Test
-    public void shouldJsonRegisterUser() throws Exception{
+    public void shouldRegisterUser() throws Exception{
         when(userService.registerUser(any(UserModel.class))).thenReturn(true);
 
         String jsonStr =  "{\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"mobileNumber\":\"13436964915\"}";
@@ -120,5 +128,12 @@ public class RegisterControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
+    }
+
+    @Test
+    public void shouldDisplayRegisterTemplate() throws Exception {
+        this.mockMvc.perform(get("/register"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/register"));
     }
 }

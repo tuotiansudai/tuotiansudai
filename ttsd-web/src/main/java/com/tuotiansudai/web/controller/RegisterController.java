@@ -3,8 +3,8 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.dto.BaseDataDto;
-import com.tuotiansudai.web.dto.BaseDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView register() {
-        return new ModelAndView("/view.register");
+        return new ModelAndView("/register");
     }
 
     @RequestMapping(value = "/email/{email}/verify", method = RequestMethod.GET)

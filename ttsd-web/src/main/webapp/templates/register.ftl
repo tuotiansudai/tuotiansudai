@@ -8,7 +8,7 @@
     <script src="../js/libs/require.js" defer async="true" data-main="../js/main"></script>
 </head>
 <body>
-<#include "view.header.ftl" />
+<#include "header.ftl" />
 <div id="nav"><!--nav begin-->
     <div class="nav_main">
         <a href="homepage.html" class="logo"> <img src="../images/logo.png" alt=""></a>
@@ -112,6 +112,6 @@
     <p>
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
-<#include "view.footer.ftl">
+<#include "footer.ftl">
 </body>
 </html>
