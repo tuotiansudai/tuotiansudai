@@ -23,7 +23,7 @@ public class SmsCaptchaController {
         ResultDto resultDto = new ResultDto();
         ResultDataDto data = new ResultDataDto();
         try {
-            data.setStatus(smsCaptchaService.sendSmsbyMobileNumberRegister(mobile));
+            data.setStatus(smsCaptchaService.sendSmsByMobileNumberRegister(mobile));
         } catch (Exception e) {
             data.setStatus(false);
             e.printStackTrace();

@@ -2,18 +2,8 @@ package com.tuotiansudai.repository.model;
 
 public enum CaptchaStatus {
 
-    INACTIVE("inactive"),
+    INACTIVE,
 
-    ACTIVATED("activated");
-
-    private String status;
-
-    private CaptchaStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
+    ACTIVE
 
 }

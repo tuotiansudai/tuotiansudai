@@ -23,13 +23,13 @@
     <update id="updateSmsCaptchaByMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel">
           update sms_captcha set code = #{code},deadline = #{deadLine},generation_time=#{generationTime} where mobile = #{mobile} and status = #{status} and captcha_type = #{captchaType}
     </update>
-    <select id="findCaptchabyMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel"
+    <select id="findRegisterCaptchaByMobile" parameterType="java.lang.String"
             resultMap="smsCaptchaModelResultMap">
-          select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType}
+          select * from sms_captcha where mobile = #{mobile} and captcha_type = 'REGISTERCAPTCHA'
     </select>
     <select id="findSmsCaptchaByMobileAndCaptcha" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel"
             resultMap="smsCaptchaModelResultMap">
-          select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType} and code = #{code} and status = #{status}
+          select * from sms_captcha where mobile = #{mobile} and captcha_type = 'REGISTERCAPTCHA' and code = #{code} and status = 'ACTIVE'
     </select>
 
 </mapper>

@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 public enum CaptchaType {
 
-    MOBILECAPTCHA("mobilecaptcha");
+    REGISTERCAPTCHA("registercaptcha");
 
     private String type;
 

@@ -8,7 +8,7 @@ public interface SmsCaptchaMapper {
 
     public void insertSmsCaptcha(SmsCaptchaModel smsCaptchaModel);
 
-    public SmsCaptchaModel findCaptchabyMobile(SmsCaptchaModel smsCaptchaModel);
+    public SmsCaptchaModel findRegisterCaptchaByMobile(String mobile);
 
     public void updateSmsCaptchaByMobile(SmsCaptchaModel smsCaptchaModel);
 
