@@ -24,6 +24,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
+
     @Autowired
     private SmsClient smsClient;
 
@@ -37,10 +38,13 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         //创建验证码
         SmsCaptchaModel smsCaptchaModel = this.createSmsCaptcha(mobileNumber);
 
-        //发送短信
         String captcha = smsCaptchaModel.getCode();
+        if (!Strings.isNullOrEmpty(captcha)) {
+            ResultDto resultDto = smsClient.sendSms(mobileNumber, captcha);
+            return resultDto.getData().getStatus();
+        }
 
-        return !Strings.isNullOrEmpty(captcha) && this.sendRegisterCaptcha(captcha, mobileNumber);
+        return  false;
     }
 
     private boolean verifyMobileNumber(String mobileNumber) {
@@ -78,7 +82,6 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
             smsCaptchaModelNew.setDeadLine(cal.getTime());
             smsCaptchaModelNew.setStatus(CaptchaStatus.ACTIVE);
             smsCaptchaModelNew.setCaptchaType(CaptchaType.REGISTERCAPTCHA);
-            smsCaptchaModelNew.setUserId(null);
             smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModelNew);
             return smsCaptchaModelNew;
         }
@@ -102,11 +105,6 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
             return false;
         }
         return true;
-    }
-
-    private boolean sendRegisterCaptcha(String mobile, String captcha) {
-        ResultDto resultDto = smsClient.sendSms(mobile, captcha);
-        return resultDto != null && resultDto.getData().getStatus();
     }
 
     private String createRandomCaptcha(Integer captchaLength) {

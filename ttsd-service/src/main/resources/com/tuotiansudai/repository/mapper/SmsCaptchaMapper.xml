@@ -11,13 +11,12 @@
         <result column="generation_time" property="generationTime"></result>
         <result column="status" property="status"></result>
         <result column="captcha_type" property="captchaType"></result>
-        <result column="user_id" property="userId"></result>
     </resultMap>
 
     <insert id="insertSmsCaptcha" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel"
             useGeneratedKeys="true" keyProperty="id">
-          insert into sms_captcha(id,code,mobile,deadline,generation_time,status,captcha_type,user_id)
-          value(#{id},#{code},#{mobile},#{deadLine},#{generationTime},#{status},#{captchaType},#{userId})
+          insert into sms_captcha(id,code,mobile,deadline,generation_time,status,captcha_type)
+          value(#{id},#{code},#{mobile},#{deadLine},#{generationTime},#{status},#{captchaType})
     </insert>
 
     <update id="updateSmsCaptchaByMobile" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel">
