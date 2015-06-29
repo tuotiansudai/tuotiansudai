@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.UserMapper">
+    <resultMap id="userResultMap" type="userModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="password" property="password"></result>
+        <result column="email" property="email"></result>
+        <result column="address" property="address"></result>
+        <result column="mobile_number" property="mobileNumber"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+        <result column="register_time" property="registerTime"></result>
+        <result column="last_modified_time" property="lastModifiedTime"></result>
+        <result column="last_modified_user" property="lastModifiedUser"></result>
+        <result column="forbidden_time" property="forbiddenTime"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="referrer" property="referrer"></result>
+        <result column="status" property="status"></result>
+        <result column="salt" property="salt"></result>
+
+    </resultMap>
+    <select id="findUserByEmail" resultType="java.lang.String" resultMap="userResultMap">
+           select * from user where email = #{email}
+        </select>
+    <select id="findUserByMobileNumber" resultType="java.lang.String" resultMap="userResultMap">
+                select * from user where mobile_number = #{mobileNumber}
+        </select>
+    <select id="findUserByLoginName" resultType="java.lang.String" resultMap="userResultMap">
+                select * from user where login_name = #{loginName}
+        </select>
+    <insert id="insertUser" parameterType="com.tuotiansudai.repository.model.UserModel" useGeneratedKeys="true"
+            keyProperty="id">
+
+                insert into user (login_name,password,email,address,mobile_number,last_login_time,register_time,last_modified_time,last_modified_user,forbidden_time,avatar,referrer,status,salt)
+                  value(#{loginName},#{password},#{email},#{address},#{mobileNumber},#{lastLoginTime},#{registerTime},#{lastModifiedTime},#{lastModifiedUser},#{forbiddenTime},#{avatar},#{referrer},#{status},#{salt})
+        </insert>
+</mapper>

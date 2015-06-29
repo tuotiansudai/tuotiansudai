@@ -14,14 +14,16 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
+    <context:property-placeholder location="classpath*:sms_client.properties" />
+
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository"/>
+    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://192.168.33.10:3306/tuotiansudai"/>
+        <property name="jdbcUrl" value="jdbc:mysql://192.168.33.10:3306/aa"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
         <property name="maxConnectionsPerPartition" value="30"/>
@@ -51,4 +53,5 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
     </bean>
 
+    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 </beans>
