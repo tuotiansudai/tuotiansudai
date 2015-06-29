@@ -157,6 +157,24 @@ require(['jquery'], function ($) {
                 }
             });
         })
+        //username
+        $(function(){
+            function checkusername(str){
+                //var re=/^(([a-zA-Z]{3,})+([0-9]{3,}))|(([0-9]{3,})+([a-zA-Z]{3,})|(?=[\x21-\x7e]+))+$/;
+                var re=/^(?![^a-zA-Z]+$)(?!\D+$).{5,24}$/;
+                if(re.test(str)){
+                    $('.step_username em').css({'opacity':1});
+                    $('.step_username b').css({'opacity':0});
+                }else{
+                    $('.step_username b').css({'opacity':1});
+                    $('.step_username em').css({'opacity':0});
+                }
+            };
+            $('.username').on('blur',function(){
+                checkusername($(this).val());
+                $('.step_username b').css({'lineHeight':'20px'});
+            });
+        });
         //Mobil 验证
         $(function () {
             function checkMobile(str) {
