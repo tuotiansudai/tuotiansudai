@@ -2232,7 +2232,8 @@ body {
   border-top: #d7d7d7 1px solid; }
   .project_type ul {
     width: 1000px;
-    margin: 0px auto; }
+    margin: 0px auto;
+    display: none; }
     .project_type ul li {
       height: 45px;
       line-height: 45px;

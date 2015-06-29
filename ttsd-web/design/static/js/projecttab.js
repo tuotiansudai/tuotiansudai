@@ -10,12 +10,16 @@ require.config({
 require(['jquery'], function ($) {
     $(function(){
         var aBtn=$('.project_btn ul li');
+        var aProject_type=$('.project_type ul');
         for( var i=0;i<aBtn.length;i++){
+            aBtn[i].index=i;
             aBtn[i].onclick=function(){
                 for(var i=0;i<aBtn.length;i++){
                     aBtn[i].className='';
+                    aProject_type[i].style.display='none';
                 }
                 this.className='project_active';
+                aProject_type[this.index].style.display='block';
             }
         }
     })

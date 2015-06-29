@@ -2539,7 +2539,7 @@ body {
   }
 }
 .project_type{width:100%; height:184px; background: #fff; border-bottom:#d7d7d7 1px solid; border-top:#d7d7d7 1px solid;
-  & ul{ width:1000px; margin:0px auto;
+  & ul{ width:1000px; margin:0px auto; display: none;
     & li{ height: 45px; line-height: 45px; border-bottom:#d7d7d7 1px solid;font-size: 14px;
       & span{width:104px; text-align: center; display: block; float: left;}
       & a{ display: block; float:left; width:auto; height: 24px; line-height: 24px; padding: 0px 10px; margin: 11px 0px 0px 10px; color:#333;
