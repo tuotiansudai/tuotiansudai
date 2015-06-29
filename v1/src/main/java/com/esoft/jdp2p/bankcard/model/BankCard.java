@@ -2,21 +2,12 @@ package com.esoft.jdp2p.bankcard.model;
 
 // default package
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.esoft.archer.user.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.esoft.archer.user.model.User;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * BankCard entity. @author MyEclipse Persistence Tools
@@ -55,6 +46,16 @@ public class BankCard implements java.io.Serializable {
 	private Date time;
 	private String status;
 
+	private String isOpenFastPayment;
+
+	@Column(name = "get_isOpen_fastPayment",length = 2)
+	public String getIsOpenFastPayment() {
+		return isOpenFastPayment;
+	}
+
+	public void setIsOpenFastPayment(String isOpenFastPayment) {
+		this.isOpenFastPayment = isOpenFastPayment;
+	}
 	// Constructors
 
 	/** default constructor */
