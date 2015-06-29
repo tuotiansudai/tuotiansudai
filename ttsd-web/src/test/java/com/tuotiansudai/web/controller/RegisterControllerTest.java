@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -149,7 +150,7 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldRegisterUser() throws Exception{
-        when(userService.registerUser(any(UserModel.class))).thenReturn(true);
+        when(userService.registerUser(any(RegisterDto.class))).thenReturn(true);
 
         String jsonStr = "{\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"mobileNumber\":\"13436964915\"}";
         this.mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonStr))

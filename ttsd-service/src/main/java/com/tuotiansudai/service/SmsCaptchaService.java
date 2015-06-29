@@ -5,6 +5,6 @@ public interface SmsCaptchaService {
 
     boolean sendSmsByMobileNumberRegister(String mobileNumber);
 
-    boolean verifyCaptcha(String code, String mobile);
+    boolean verifyCaptcha(String mobile, String code);
 
 }

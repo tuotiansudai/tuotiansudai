@@ -29,7 +29,16 @@ buildscript {
     }
 }
 
+war {
+    archiveName "ttsd-web.war"
+    destinationDir = file("war")
+    from('/workspace/new_version_config/ttsd-web/') {
+        into 'WEB-INF/classes/'
+    }
+}
+
 flyway {
+    def productionFlywayConfig = '/workspace/new_version_config/ttsd-web/jdbc.properties'
     locations = ['filesystem:db_migration/aa']
     user = 'root'
     password = ''
@@ -37,4 +46,15 @@ flyway {
     placeholders = ['aa': 'aa']
     schemas = ['aa']
     url = 'jdbc:mysql://192.168.33.10:3306/'
+    if (new File(productionFlywayConfig).exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(productionFlywayConfig))
+        def schema = properties.getProperty('jdbc.scheam', 'aa')
+        user = properties.getProperty('jdbc.username', user)
+        password = properties.getProperty('jdbc.password', password)
+        url = properties.getProperty('flyway.url', url)
+        locations = ["filesystem:db_migration/$schema"]
+        placeholders = ['aa': "$schema"]
+        schemas = ["$schema"]
+    }
 }

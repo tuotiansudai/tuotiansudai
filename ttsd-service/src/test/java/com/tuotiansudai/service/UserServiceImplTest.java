@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -26,11 +27,15 @@ import static org.mockito.Mockito.when;
 @TransactionConfiguration
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class UserServiceImplTest {
+
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private SmsCaptchaService smsCaptchaService;
 
     @Before
     public void init() {
@@ -129,16 +134,21 @@ public class UserServiceImplTest {
 
     @Test
     public void testRegisterUser() throws Exception{
-        UserModel userModel = new UserModel();
-        userModel.setLoginName("zourenzheng");
-        userModel.setEmail("zourenzheng@tuotiansudai.com");
-        userModel.setMobileNumber("13436964915");
-        userModel.setPassword("123abc");
-        userModel.setStatus(UserStatus.ACTIVE);
+        RegisterDto registerDto = new RegisterDto();
+        registerDto.setLoginName("zourenzheng");
+        registerDto.setEmail("zourenzheng@tuotiansudai.com");
+        registerDto.setMobileNumber("13436964915");
+        registerDto.setCaptcha("123456");
+        registerDto.setPassword("123abc");
         doNothing().when(userMapper).insertUser(any(UserModel.class));
+        when(userMapper.findUserByEmail(anyString())).thenReturn(null);
+        when(userMapper.findUserByLoginName(anyString())).thenReturn(null);
+        when(userMapper.findUserByMobileNumber(anyString())).thenReturn(null);
 
-        boolean success = userServiceImpl.registerUser(userModel);
-        assertNotNull(userModel.getSalt());
+        when(smsCaptchaService.verifyCaptcha(anyString(), anyString())).thenReturn(true);
+
+        boolean success = userServiceImpl.registerUser(registerDto);
+
         assertTrue(success);
     }
 }

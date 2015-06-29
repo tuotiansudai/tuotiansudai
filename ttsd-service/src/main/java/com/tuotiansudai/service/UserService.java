@@ -1,6 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.dto.RegisterDto;
 
 public interface UserService {
 
@@ -8,9 +8,9 @@ public interface UserService {
 
     boolean userMobileNumberIsExisted(String mobileNumber);
 
-    boolean registerUser(UserModel userModel);
+    boolean registerUser(RegisterDto userModel);
 
     boolean referrerIsExisted(String referrer);
 
-    public boolean loginNameIsExisted(String loginName);
+    boolean loginNameIsExisted(String loginName);
 }

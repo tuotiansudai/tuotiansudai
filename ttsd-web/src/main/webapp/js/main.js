@@ -168,7 +168,60 @@ require(['jquery'], function ($) {
                     vcode_count--;
                 }
             });
-        })
+        });
+        $(function () {
+            function checkusername(str) {
+                var re = /^(?![^a-zA-Z]+$)(?!\D+$).{5,24}$/;
+                if (re.test(str)) {
+                    $('.step_username em').css({'opacity': 1});
+                    $('.step_username b').css({'opacity': 0});
+                    return true;
+                } else {
+                    $('.step_username b').css({'opacity': 1});
+                    $('.step_username em').css({'opacity': 0});
+                    return false
+                }
+            };
+            $('.username').on('blur', function () {
+                $('.step_username b').css({'lineHeight': '20px'});
+                if ($(this).val() == '') {
+                    $('.step_username b').css({'opacity': 1, 'lineHeight': '40px'}).html('用户名不能为空！');
+                } else {
+                    var loginName = $(this).val();
+                    var result = checkusername(loginName);
+                    $('.step_username b').html('用户名只允许包含字母和数字，长度为5-25位，请勿使用手机号！');
+                    if (result) {
+                        $.ajax({
+                            url: '/register/loginName/'+ loginName + '/verify',
+                            type: 'GET',
+                            dataType: 'json',
+                            beforeSend: function () {
+                                $('.step_username strong').show();
+                            },
+                            success: function (response) {
+                                $('.step_username strong').hide();
+                                $('.step_username em').css({'opacity':0});
+                                $('.step_username b').css({'opacity': 0});
+                                if (response.status === 'success' && response.data.status) {
+                                    $('.step_username em').css({'opacity': 0});
+                                    $('.step_username b').css({'opacity':1}).html('手机号已存在！');
+                                    $('.step_username strong').hide()
+                                }else if(!response.data.status){
+                                    $('.step_username em').css({'opacity': 1});
+                                    $('.step_username b').hide();
+                                    $('.step_username strong').hide();
+                                }
+                            },
+                            error: function () {
+                                if (status == 500) {
+                                    alert('服务器错误！');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
         //Mobil 验证
         $(function () {
             function checkMobile(str) {
@@ -475,7 +528,9 @@ require(['jquery'], function ($) {
                 $('.registered div').eq(0).hide();
                 $('.registered div').eq(1).show();
                 var postData = {
+                    loginName: $('.username').val(),
                     mobileNumber: $('.phone').val(),
+                    captcha: $('.vcode').val(),
                     password: $('.password').val(),
                     email: $('.email').val(),
                     referrer: $('.user').val()

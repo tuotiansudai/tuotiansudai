@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -81,8 +82,8 @@ public class RegisterController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto registerUser(@RequestBody UserModel userModel) {
-        boolean success = this.userService.registerUser(userModel);
+    public BaseDto registerUser(@RequestBody RegisterDto registerDto) {
+        boolean success = this.userService.registerUser(registerDto);
 
         BaseDto registerResultDto = new BaseDto();
         BaseDataDto dataDto = new BaseDataDto();

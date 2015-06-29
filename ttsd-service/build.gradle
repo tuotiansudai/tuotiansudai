@@ -20,3 +20,9 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
 
 }
+
+jar {
+    from('/workspace/new_version_config/ttsd-service/') {
+        into '/'
+    }
+}
