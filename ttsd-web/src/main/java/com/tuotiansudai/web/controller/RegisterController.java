@@ -67,6 +67,18 @@ public class RegisterController {
         return registerVerifyDto;
     }
 
+    @RequestMapping(value = "/loginName/{loginName}/verify", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto loginNameIsExisted(@PathVariable String loginName) {
+        boolean isExist = userService.loginNameIsExisted(loginName);
+
+        BaseDto registerVerifyDto = new BaseDto();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(isExist);
+        registerVerifyDto.setData(dataDto);
+        return registerVerifyDto;
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto registerUser(@RequestBody UserModel userModel) {

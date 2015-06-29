@@ -36,7 +36,10 @@ public class UserServiceImpl implements UserService {
     public boolean referrerIsExisted(String referrer) {
         return userMapper.findUserByLoginName(referrer) != null;
     }
-
+    @Override
+    public boolean loginNameIsExisted(String loginName) {
+        return userMapper.findUserByLoginName(loginName) != null;
+    }
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     public boolean registerUser(UserModel userModel) {
