@@ -54,7 +54,7 @@ flyway {
     user = 'root'
     password = ''
     outOfOrder = true
-    placeholders = ['aa': 'sms_operations']
+    placeholders = ['sms_operations': 'sms_operations']
     schemas = ['aa']
     url = 'jdbc:mysql://192.168.33.10:3306/'
     if (new File(productionFlywayConfig).exists()) {
@@ -65,7 +65,7 @@ flyway {
         password = properties.getProperty('jdbc.password', password)
         url = properties.getProperty('flyway.url', url)
         locations = ["filesystem:db_migration/$schema"]
-        placeholders = ['aa': "$schema"]
+        placeholders = ['sms_operations': "$schema"]
         schemas = ["$schema"]
     }
 }
