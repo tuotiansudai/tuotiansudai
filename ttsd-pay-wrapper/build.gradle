@@ -1,5 +1,27 @@
 apply plugin: 'war'
+apply plugin: 'org.flywaydb.flyway'
+apply from: 'db_migration.gradle'
 
 dependencies {
     compile project(':ttsd-service')
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
+
+flyway {
+    locations = ['filesystem:db_migration/ump_operations']
+    user = 'root'
+    password = ''
+    outOfOrder = true
+    placeholders = ['ump_operations': 'ump_operations']
+    schemas = ['ump_operations']
+    url = 'jdbc:mysql://192.168.33.10:3306/'
 }

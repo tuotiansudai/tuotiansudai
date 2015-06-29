@@ -474,6 +474,21 @@ require(['jquery'], function ($) {
                 }
                 $('.registered div').eq(0).hide();
                 $('.registered div').eq(1).show();
+                var postData = {
+                    mobileNumber: $('.phone').val(),
+                    password: $('.password').val(),
+                    email: $('.email').val(),
+                    referrer: $('.user').val()
+                };
+                $.ajax('/register', {
+                    type: "POST",
+                    data: JSON.stringify(postData),
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    dataType: 'json'
+                });
             } else {
                 $('.next_re').css('pointer-events', 'none');
                 alert('必须同意服务协议才可以继续！');
