@@ -106,6 +106,28 @@ public class UserServiceImplTest {
     }
 
     @Test
+    public void shouldLoginNameIsExisted() throws Exception {
+        UserModel userModel = new UserModel();
+        userModel.setLoginName("hourglass");
+
+        when(userMapper.findUserByLoginName(anyString())).thenReturn(userModel);
+
+        boolean isExist = userServiceImpl.loginNameIsExisted(anyString());
+
+        assertTrue(isExist);
+    }
+
+    @Test
+    public void shouldLoginNameIsNotExisted() throws Exception {
+
+        when(userMapper.findUserByLoginName(anyString())).thenReturn(null);
+
+        boolean isExist = userServiceImpl.loginNameIsExisted(anyString());
+
+        assertFalse(isExist);
+    }
+
+    @Test
     public void testRegisterUser() throws Exception{
         UserModel userModel = new UserModel();
         userModel.setLoginName("zourenzheng");

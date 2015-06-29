@@ -11,4 +11,6 @@ public interface UserService {
     boolean registerUser(UserModel userModel);
 
     boolean referrerIsExisted(String referrer);
+
+    public boolean loginNameIsExisted(String loginName);
 }
