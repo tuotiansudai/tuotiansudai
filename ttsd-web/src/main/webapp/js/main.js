@@ -146,6 +146,18 @@ require(['jquery'], function ($) {
             $('.send_vcode').on('click', function () {
                 var vcode_count = 30;
                 var v_countdown = setInterval(v_CountDown, 1000);
+                var phoneNumber = $('.phone').val();
+                $.ajax({
+                    url: '/register/mobile/'+ phoneNumber + '/sendCaptcha',
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function () {
+                    },
+                    success: function (response) {
+                    },
+                    error: function () {
+                    }
+                });
 
                 function v_CountDown() {
                     $('.send_vcode').html(vcode_count + '秒后重新发送');
@@ -254,9 +266,10 @@ require(['jquery'], function ($) {
                 }
             }).on('change', function () {
                 var vcode_change = verCode($(this).val());
+                var mobileNumber = $('.phone').val();
                 if (vcode_change) {
                     $.ajax({
-                        url: '/static/jsons/vcode.json?vcode_num=',
+                        url: '/register/mobile/' + mobileNumber + '/captcha/' + vcode_change + '/verify',
                         type: 'GET',
                         dataType: 'json',
                         beforeSend: function () {
@@ -265,7 +278,7 @@ require(['jquery'], function ($) {
                         success: function (response) {
                             $('.step_two_verCode strong').hide();
                             $('.step_two_verCode b').css({'opacity': 0});
-                            if (response.status === 'success' && response.data.exist) {
+                            if (response.status === 'success' && response.data.status) {
                                 $('.step_two_verCode em').css({'opacity': 1});
                                 $('.step_two_verCode b').hide();
                                 $('.step_two_verCode strong').hide()

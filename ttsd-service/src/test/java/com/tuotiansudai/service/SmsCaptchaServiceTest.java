@@ -159,8 +159,6 @@ public class SmsCaptchaServiceTest {
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
 
         assertNull(smsCaptchaModel);
-
-
     }
 
     @Test
@@ -175,10 +173,7 @@ public class SmsCaptchaServiceTest {
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModelQuery);
 
         assertNotNull(smsCaptchaModel);
-
-
     }
-
 
     public SmsCaptchaModel getSmsCaptchaModeal() {
         SmsCaptchaModel smsCaptchaModel = new SmsCaptchaModel();
@@ -188,7 +183,6 @@ public class SmsCaptchaServiceTest {
         smsCaptchaModel.setGenerationTime(new Date());
         smsCaptchaModel.setStatus(CaptchaStatus.ACTIVE);
         smsCaptchaModel.setCaptchaType(CaptchaType.REGISTERCAPTCHA);
-        smsCaptchaModel.setUserId(100001);
         return smsCaptchaModel;
     }
 

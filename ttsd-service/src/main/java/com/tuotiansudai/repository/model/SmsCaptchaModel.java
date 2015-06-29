@@ -17,8 +17,6 @@ public class SmsCaptchaModel {
 
     private CaptchaType captchaType;
 
-    private Integer userId;
-
     public Integer getId() {
         return id;
     }
@@ -67,14 +65,6 @@ public class SmsCaptchaModel {
         this.status = status;
     }
 
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public CaptchaType getCaptchaType() {
         return captchaType;

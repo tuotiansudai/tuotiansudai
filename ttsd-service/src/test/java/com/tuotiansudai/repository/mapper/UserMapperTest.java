@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,8 +39,8 @@ public class UserMapperTest {
     @Test
     public void shouldFindUserByEmailIsNull() throws Exception {
         UserModel userModel = userMapper.findUserByEmail("22345@abc.com");
-        assertNull(userModel);
 
+        assertNull(userModel);
     }
 
     @Test

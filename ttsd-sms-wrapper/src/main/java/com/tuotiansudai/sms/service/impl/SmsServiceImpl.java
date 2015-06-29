@@ -31,6 +31,6 @@ public class SmsServiceImpl implements SmsService {
         String resultCode = smsClient.sendSMS(mobile, content);
         RegisterCaptchaModel model = new RegisterCaptchaModel(mobile, content, resultCode);
         registerCaptchaMapper.create(model);
-        return !Strings.isNullOrEmpty(resultCode) && Integer.parseInt(resultCode) > 0;
+        return !Strings.isNullOrEmpty(resultCode) && Long.parseLong(resultCode) > 0;
     }
 }

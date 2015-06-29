@@ -2,9 +2,12 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.web.dto.BaseDataDto;
-import com.tuotiansudai.web.dto.BaseDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.web.dto.ResultDataDto;
+import com.tuotiansudai.web.dto.ResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,12 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SmsCaptchaService smsCaptchaService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView register() {
-        return new ModelAndView("/view.register");
+        return new ModelAndView("/register");
     }
 
     @RequestMapping(value = "/email/{email}/verify", method = RequestMethod.GET)
@@ -72,6 +78,39 @@ public class RegisterController {
         dataDto.setStatus(success);
 
         return registerResultDto;
+    }
+
+    @RequestMapping(value = "/mobile/{mobile}/sendCaptcha", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto sendRegisterByMobileNumberSMS(@PathVariable String mobile) {
+        ResultDto resultDto = new ResultDto();
+        ResultDataDto data = new ResultDataDto();
+        try {
+            data.setStatus(smsCaptchaService.sendSmsByMobileNumberRegister(mobile));
+        } catch (Exception e) {
+            data.setStatus(false);
+            e.printStackTrace();
+        }
+        resultDto.setSuccess(true);
+        resultDto.setData(data);
+        return resultDto;
+    }
+
+    @RequestMapping(value = "/mobile/{mobile}/captcha/{captcha}/verify", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
+        ResultDto resultDto = new ResultDto();
+
+        ResultDataDto data = new ResultDataDto();
+
+        data.setStatus(smsCaptchaService.verifyCaptcha(mobile, captcha));
+
+        resultDto.setSuccess(true);
+
+        resultDto.setData(data);
+
+        return resultDto;
+
     }
 
 }

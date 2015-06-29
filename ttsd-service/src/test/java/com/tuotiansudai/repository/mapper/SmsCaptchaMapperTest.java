@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 
-import static junit.framework.Assert.*;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -122,7 +122,6 @@ public class SmsCaptchaMapperTest {
         smsCaptchaModel.setGenerationTime(new Date());
         smsCaptchaModel.setStatus(CaptchaStatus.ACTIVE);
         smsCaptchaModel.setCaptchaType(CaptchaType.REGISTERCAPTCHA);
-        smsCaptchaModel.setUserId(100001);
         return smsCaptchaModel;
     }
 

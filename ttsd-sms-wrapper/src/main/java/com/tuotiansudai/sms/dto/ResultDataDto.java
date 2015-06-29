@@ -2,13 +2,13 @@ package com.tuotiansudai.sms.dto;
 
 public class ResultDataDto {
 
-    private boolean sendSuccess;
+    private boolean status;
 
-    public boolean isSendSuccess() {
-        return sendSuccess;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setSendSuccess(boolean sendSuccess) {
-        this.sendSuccess = sendSuccess;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

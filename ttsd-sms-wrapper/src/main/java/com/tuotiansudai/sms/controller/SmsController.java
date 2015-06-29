@@ -22,7 +22,7 @@ public class SmsController {
 
         ResultDto resultDto = new ResultDto();
         ResultDataDto data = new ResultDataDto();
-        data.setSendSuccess(sendSuccess);
+        data.setStatus(sendSuccess);
         resultDto.setSuccess(true);
         resultDto.setData(data);
         return resultDto;

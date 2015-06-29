@@ -1,6 +1,6 @@
-package com.tuotiansudai.web.dto;
+package com.tuotiansudai.dto;
 
-public class BaseDto {
+public class BaseDto{
 
     private boolean success = true;
 
