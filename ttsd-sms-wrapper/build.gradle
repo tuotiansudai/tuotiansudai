@@ -55,7 +55,7 @@ flyway {
     password = ''
     outOfOrder = true
     placeholders = ['sms_operations': 'sms_operations']
-    schemas = ['aa']
+    schemas = ['sms_operations']
     url = 'jdbc:mysql://192.168.33.10:3306/'
     if (new File(productionFlywayConfig).exists()) {
         Properties properties = new Properties()
