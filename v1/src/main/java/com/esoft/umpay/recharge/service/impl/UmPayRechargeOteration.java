@@ -67,12 +67,16 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	 * 发送请求
 	 */
 	@SuppressWarnings({ "unchecked" })
-	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(Recharge recharge,
-			FacesContext facesContext) throws IOException {
+			FacesContext facesContext,boolean isOpenFastPayment) throws IOException {
+
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser()
 				.getId());
+		if(isOpenFastPayment){
+			recharge.setRechargeWay(rechargeService.getRechangeWay(recharge.getUser()
+					.getId()));
+		}
 		// 保存一个充值订单
 		String id = rechargeService.createRechargeOrder(recharge);
 		log.debug(id);
@@ -103,7 +107,14 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		 * value="DEBITCARD">借记卡快捷</option>
 		 */
 		// 充值方式
-		sendMap.put("pay_type", "B2CDEBITBANK");
+		if(isOpenFastPayment){
+			sendMap.put("pay_type", "DEBITCARD");
+			sendMap.put("gate_id","");
+		}else{
+			sendMap.put("pay_type", "B2CDEBITBANK");
+			// 发卡银行编号
+			sendMap.put("gate_id", recharge.getRechargeWay());
+		}
 		// 资金账户托管平台的用户号
 		sendMap.put("user_id", ta.getId());
 		// 资金账户托管平台的账户号
@@ -113,8 +124,6 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		int monery = (int) actualMoney * 100;
 		// 充值金额
 		sendMap.put("amount", String.valueOf(monery));
-		// 发卡银行编号
-		sendMap.put("gate_id", recharge.getRechargeWay());
 		// 用户IP地址
 		HttpServletRequest request = (HttpServletRequest) FacesContext
 				.getCurrentInstance().getExternalContext().getRequest();
@@ -135,6 +144,11 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			e.printStackTrace();
 		}
 		return to;
+	}
+
+	@Override
+	public TrusteeshipOperation createOperation(Recharge recharge, FacesContext facesContext) throws Exception {
+		return null;
 	}
 
 	/**

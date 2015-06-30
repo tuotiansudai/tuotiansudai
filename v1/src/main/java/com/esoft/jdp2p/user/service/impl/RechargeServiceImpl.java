@@ -11,6 +11,7 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
 import org.hibernate.classic.Session;
@@ -207,6 +208,21 @@ public class RechargeServiceImpl implements RechargeService {
 	}
 
 	@Override
+	public List<RechargeBankCard> getBankCardsQuickPayList(String userId) {
+		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
+		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+		if(bankCard == null){
+			return null;
+		}
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		for(BankCard bc:bankCard){
+			bcs.add(new RechargeBankCardImpl("CMB", "招商银行"));
+		}
+		return bcs;
+	}
+
+
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void rechargeByAdmin(UserBill userBill) {
 		Recharge r = new Recharge();
@@ -247,6 +263,21 @@ public class RechargeServiceImpl implements RechargeService {
 			recharge.setStatus(UserConstants.RechargeStatus.FAIL);
 			ht.merge(recharge);
 		}
+	}
+	@Transactional(rollbackFor = Exception.class)
+	public String  getRechangeWay(String userId){
+
+		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
+
+		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+
+		if(bankCard != null&& bankCard.size() > 0){
+			return bankCard.get(0).getBankNo();
+		}
+
+		return null;
+
+
 	}
 
 }
