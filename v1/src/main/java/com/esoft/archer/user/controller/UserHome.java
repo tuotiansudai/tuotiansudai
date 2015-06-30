@@ -385,6 +385,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
 			userService.registerByMobileNumber(getInstance(), authCode,
 					referrer);
+			userService.addRegisterEmailVerificationJob(getInstance());
 			if (isLoginAfterRegister) {
 				login(getInstance().getId(), FacesUtil.getHttpSession());
 			}

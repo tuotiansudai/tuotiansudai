@@ -1,23 +1,25 @@
 package com.esoft.archer.user.service.impl;
 
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 
 import javax.annotation.Resource;
 
 import com.esoft.archer.common.model.AuthInfo;
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.core.annotations.Logger;
-import com.esoft.jdp2p.coupon.exception.ExceedDeadlineException;
+import com.esoft.jdp2p.schedule.ScheduleConstants;
+import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,6 @@ import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
-import com.esoft.archer.config.controller.ConfigHome;
 
 /**
  * <p>
@@ -103,6 +104,9 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	private MessageService messageService;
 
+	@Resource
+	StdScheduler scheduler;
+
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -124,15 +128,9 @@ public class UserServiceImpl implements UserService {
 			throws NoMatchingObjectsException, AuthInfoOutOfDateException,
 			AuthInfoAlreadyActivedException {
 		// 验证手机认证码是否正确
-		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
-				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-		Calendar cal = Calendar.getInstance();
-		int emailValidDay = 7;
-		Date today = new Date();
-		cal.setTime(today);
-		cal.add(Calendar.DATE, emailValidDay);
-		Date deadline = cal.getTime();
-		user.setRegisterTime(today);
+//		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
+//				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+		user.setRegisterTime(new Date());
 		// 用户密码通过sha加密
 		user.setPassword(HashCrypt.getDigestHash(user.getPassword()));
 		user.setCashPassword(HashCrypt.getDigestHash(user.getCashPassword()));
@@ -141,16 +139,6 @@ public class UserServiceImpl implements UserService {
 		// 添加普通用户权限
 		Role role = new Role("MEMBER");
 		userBO.addRole(user, role);
-		try {
-			sendActiveEmail(
-					user,
-					authService.createAuthInfo(user.getId(), user.getEmail(), deadline,
-							CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-							.getAuthCode());
-		}catch (Exception e){
-			log.error(e.getStackTrace());
-		}
-
 	}
 
 	@Override
@@ -175,10 +163,10 @@ public class UserServiceImpl implements UserService {
 				user,
 				authService.createAuthInfo(user.getId(), user.getEmail(), null,
 						CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-						.getAuthCode());
+						.getAuthCode(), null);
 	}
 
-	private void sendActiveEmail(User user, String authCode) {
+	private void sendActiveEmail(User user, String authCode, String url) {
 		final String email = user.getEmail();
 		// 发送账号激活邮件
 		Map<String, String> params = new HashMap<String, String>();
@@ -188,7 +176,8 @@ public class UserServiceImpl implements UserService {
 		String activeCode = email + "&" + authCode;
 		// base64编码
 		activeCode = Base64.encodeBase64URLSafeString(activeCode.getBytes());
-		String activeLink = FacesUtil.getCurrentAppUrl()
+		String currentAppUrl = Strings.isNullOrEmpty(url) ? FacesUtil.getCurrentAppUrl() : url;
+		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
 		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
@@ -197,13 +186,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void sendActiveEmail(String userId, String authCode)
+	public void sendActiveEmail(String userId, String authCode, String url)
 			throws UserNotFoundException {
 		User user = ht.get(User.class, userId);
 		if (user == null) {
 			throw new UserNotFoundException("userId:" + userId);
 		}
-		sendActiveEmail(user, authCode);
+		sendActiveEmail(user, authCode, url);
 	}
 
 	@Override
@@ -240,7 +229,7 @@ public class UserServiceImpl implements UserService {
 				user,
 				authService.createAuthInfo(user.getId(), user.getEmail(), null,
 						CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-						.getAuthCode());
+						.getAuthCode(), null);
 	}
 
 	// ////////////////////
@@ -853,6 +842,44 @@ public class UserServiceImpl implements UserService {
 		messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_CASH_PASSWORD_BY_MOBILE
 						+ "_sms"), params, mobileNumber);
+	}
+
+	@Override
+	public void addRegisterEmailVerificationJob(User user) {
+		Date now = new Date();
+		Calendar cal = Calendar.getInstance();
+		int emailValidDay = 7;
+		cal.setTime(now);
+		cal.add(Calendar.DATE, emailValidDay);
+		Date deadline = cal.getTime();
+
+		String userId = user.getId();
+		String authCode = authService.createAuthInfo(userId, user.getEmail(), deadline,
+				CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
+				.getAuthCode();
+
+		Date threeMinutesLater = DateUtil.addMinute(now, 2);
+		JobDetail jobDetail = JobBuilder
+				.newJob(RegisterEmailVerificationJob.class)
+				.withIdentity(userId, ScheduleConstants.JobGroup.REGISTER_VERIFICATION_EMAIL)
+				.build();
+		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.USER_ID, userId);
+		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.AUTH_CODE, authCode);
+		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
+		SimpleTrigger trigger = TriggerBuilder
+				.newTrigger()
+				.withIdentity(userId, ScheduleConstants.TriggerGroup.LOAN_OUT_NOTIFICATION)
+				.forJob(jobDetail)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+				.startAt(threeMinutesLater).build();
+		try {
+			scheduler.scheduleJob(jobDetail, trigger);
+		} catch (SchedulerException e) {
+			log.error("用户注册添加邮箱验证Job 失败: " + userId);
+			log.error(e);
+		}
+		if (log.isDebugEnabled())
+			log.debug("用户注册添加邮箱验证Job完成: " + userId);
 	}
 
 }
