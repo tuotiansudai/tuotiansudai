@@ -182,7 +182,7 @@
     </servlet>
 
     <servlet>
-        <servlet-name>Bind Card</servlet-name>
+        <servlet-name>BindCard</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -204,8 +204,7 @@
 
     <servlet-mapping>
         <servlet-name>Investment</servlet-name>
-        <url-pattern>/**/loanDetail.htm;/**/loanDetail_xsb.htm;/**/loanDetail_jxb.htm;/**/loanDetail_dxb.htm
-        </url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail.htm;/site/themes/default/templates/p2p/loanDetail_xsb.htm;/site/themes/default/templates/p2p/loanDetail_jxb.htm;/site/themes/default/templates/p2p/loanDetail_dxb.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -219,7 +218,7 @@
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>Bind Card</servlet-name>
+        <servlet-name>BindCard</servlet-name>
         <url-pattern>/site/themes/default/templates/user/mybankcards.htm</url-pattern>
     </servlet-mapping>
 
