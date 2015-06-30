@@ -86,9 +86,10 @@ public interface UserService {
 	 * 发送激活邮件
 	 * 
 	 * @param userId
+	 * @param url
 	 * @throws UserNotFoundException
 	 */
-	public void sendActiveEmail(String userId, String authCode)
+	public void sendActiveEmail(String userId, String authCode, String url)
 			throws UserNotFoundException;
 
 	/**
@@ -450,4 +451,6 @@ public interface UserService {
 	 */
 	public void sendFindCashPwdSMS(String id, String mobileNumber)
 			throws UserNotFoundException;
+
+	void addRegisterEmailVerificationJob(User user);
 }
