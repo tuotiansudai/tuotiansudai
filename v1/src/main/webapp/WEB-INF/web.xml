@@ -210,17 +210,17 @@
 
     <servlet-mapping>
         <servlet-name>Certification</servlet-name>
-        <url-pattern>/site/themes/default/templates/user/get_investor_permission.xhtml</url-pattern>
+        <url-pattern>/site/themes/default/templates/user/get_investor_permission.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
-        <url-pattern>/site/themes/default/templates/memberRegister.xhtml</url-pattern>
+        <url-pattern>/site/themes/default/templates/memberRegister.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Bind Card</servlet-name>
-        <url-pattern>/site/themes/default/templates/user/mybankcards.xhtml</url-pattern>
+        <url-pattern>/site/themes/default/templates/user/mybankcards.htm</url-pattern>
     </servlet-mapping>
 
     <context-param>
