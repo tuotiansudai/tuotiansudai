@@ -204,7 +204,10 @@
 
     <servlet-mapping>
         <servlet-name>Investment</servlet-name>
-        <url-pattern>/site/themes/default/templates/p2p/loanDetail.htm;/site/themes/default/templates/p2p/loanDetail_xsb.htm;/site/themes/default/templates/p2p/loanDetail_jxb.htm;/site/themes/default/templates/p2p/loanDetail_dxb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_xsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_jsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_dsb.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
