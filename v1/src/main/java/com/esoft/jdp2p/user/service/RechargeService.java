@@ -59,6 +59,11 @@ public interface RechargeService {
 	public List<RechargeBankCard> getBankCardsList();
 
 	/**
+	 * 获快捷支付列表
+	 */
+	public List<RechargeBankCard> getBankCardsQuickPayList(String user_id);
+
+	/**
 	 * 线下充值
 	 * @param recharge
 	 * @return
@@ -71,4 +76,6 @@ public interface RechargeService {
 	 * @return
 	 */
 	String getBankNameByNo(String bankNo);
+
+	String getRechangeWay(String userId);
 }

@@ -41,6 +41,8 @@ public class RechargeList extends EntityQuery<Recharge> implements
 	private RechargeService rechargeService;
 
 	private List<RechargeBankCard> rechargeBankCards;
+
+	private List<RechargeBankCard> rechargeBankCardQuickPays;
 	
 	private Date startTime ;
 	private Date endTime ;
@@ -68,6 +70,13 @@ public class RechargeList extends EntityQuery<Recharge> implements
 			this.rechargeBankCards = rechargeService.getBankCardsList();
 		}
 		return this.rechargeBankCards;
+	}
+	public List<RechargeBankCard> getRechargeBankCardQuickPays() {
+		if (this.rechargeBankCardQuickPays == null) {
+			String userId = "sidneygao";
+   			this.rechargeBankCardQuickPays = rechargeService.getBankCardsQuickPayList(userId);
+		}
+		return this.rechargeBankCardQuickPays;
 	}
 
 	public Double getSumActualMoney(){
