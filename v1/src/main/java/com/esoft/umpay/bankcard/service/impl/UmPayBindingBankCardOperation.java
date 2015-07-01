@@ -1,20 +1,5 @@
 package com.esoft.umpay.bankcard.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -35,6 +20,19 @@ import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 绑定银行卡
@@ -61,17 +59,7 @@ public class UmPayBindingBankCardOperation extends
 			FacesContext facesContext) throws IOException {
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		// 判断是否是换卡操作
-		User us = bankCard.getUser();
-		String hql = "from BankCard where user.id =? and status =?";
-		List<BankCard> userWillBindingBankCard = ht.find(hql, new String[] { us.getId(), "delete_for_replace" });
-		Map<String, String> sendMap;
-		if (null == userWillBindingBankCard && userWillBindingBankCard.size() > 0) {
-			sendMap = UmPaySignUtil.getSendMapDate("mer_replace_card");
-		} else {
-			sendMap = UmPaySignUtil
-					.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
-		}
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
 		// 同步地址
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 				+ UmPayConstants.OperationType.MER_BIND_CARD);
@@ -103,7 +91,7 @@ public class UmPayBindingBankCardOperation extends
 		// 开户行
 		/* map.put("card_branch_name",""); */
 		// 快捷协议标志
-		sendMap.put("is_open_fastPayment", "0");
+		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment());
 		TrusteeshipOperation to = null;
 		try {
 			// 加密参数

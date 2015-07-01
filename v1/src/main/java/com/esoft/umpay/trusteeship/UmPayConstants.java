@@ -74,6 +74,8 @@ public class UmPayConstants {
 		public static final String MER_REGISTER_PERSON = "mer_register_person";
 		/** 绑定银行卡 */
 		public static final String MER_BIND_CARD = "mer_bind_card";
+
+		public static final String MER_REPLACE_CARD = "mer_replace_card";
 		/** 个人账户充值 */
 		public static final String MER_RECHARGE_PERSON = "mer_recharge_person";
 		/** 个人账户提现 */
