@@ -81,12 +81,12 @@
                                         <p:watermark value="16至19位卡号" for="bankCardNumber"></p:watermark>
                                     </div>
                                     <div class="clear"></div>
-                                    <div class="txczje">
-                                        <h:selectBooleanCheckbox id="agree" value="#{bankCardHome.isOpenFastPayment}">
-                                            <f:ajax event="click" listener="#{rechargeList.setIsOpenFastPayment(!rechargeList.isOpenFastPayment)}" render="@form"></f:ajax>
-                                        </h:selectBooleanCheckbox>
-                                        <label>开通快捷支付（开通后不可撤销）</label>
-                                    </div>
+                                </div>
+                                <div class="fastPayment">
+                                    <h:selectBooleanCheckbox id="agree" value="#{bankCardHome.isOpenFastPayment}">
+                                        <f:ajax event="click" listener="#{rechargeList.setIsOpenFastPayment(!rechargeList.isOpenFastPayment)}" render="@form"></f:ajax>
+                                    </h:selectBooleanCheckbox>
+                                    <label>开通快捷支付（开通后不可撤销）</label>
                                 </div>
                                 <div class="txczje02">
                                     <div class="txczje_l"></div>
@@ -116,20 +116,20 @@
 
                                             <p> #{fn:substring(bankcard.cardNo,0,4)} **** **** #{fn:substring(bankcard.cardNo,bcnL-4,bcnL)}</p>
                                         </div>
-                                        <div class="clear"></div>
+                                        <div class="clear updateCard">
+                                            <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
+                                                <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
+                                                    <a href="#{path}/user/replaceCard" target="_blank">更换银行卡</a>
+                                                </ui:fragment>
+                                            </ui:fragment>
+                                        </div>
                                     </li>
-                                    <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
-                                        <li>
-                                            <h:commandLink action="#{bankCardHome.bingAgreement}" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
-                                        </li>
-                                        <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
-                                            <li>
-                                                <a href="#{path}/user/replaceCard" target="_blank">更换银行卡</a>
-                                            </li>
-                                        </ui:fragment>
-                                    </ui:fragment>
                                 </ui:repeat>
-                                <div class="clear"></div>
+                                <div class="clear fastPaymentLink">
+                                    <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
+                                        <h:commandLink action="#{bankCardHome.bingAgreement}" target="_blank" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
+                                    </ui:fragment>
+                                </div>
                             </h:panelGroup>
                         </ul>
                     </ui:fragment>

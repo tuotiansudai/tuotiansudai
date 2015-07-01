@@ -48,10 +48,8 @@ public class UmPayBindingAgreementOperation extends
     @SuppressWarnings({"unchecked", "null"})
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TrusteeshipOperation createOperation(String userId, FacesContext facesContext)  {
-        System.out.println("=================1");
+    public TrusteeshipOperation createOperation(String userId, FacesContext facesContext) throws IOException {
         TrusteeshipAccount ta = getTrusteeshipAccount(userId);
-        System.out.println("=================2");
         String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
 
         List<BankCard> userBankCard = ht.find(hql, new String[]{userId, "1","passed"});
@@ -68,12 +66,11 @@ public class UmPayBindingAgreementOperation extends
                         + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
         sendMap.put("user_id", ta.getId());
         sendMap.put("account_id", ta.getAccountId());
-        sendMap.put("user_bind_ agreement_list", "ZKJP0700");
+        sendMap.put("user_bind_agreement_list", "ZKJP0700");
         TrusteeshipOperation to = null;
         try {
             // 加密参数
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-            System.out.println("签约协议发送数据:"+reqData);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
             String order_id = System.currentTimeMillis() + userId;
@@ -84,8 +81,6 @@ public class UmPayBindingAgreementOperation extends
             // 发送请求
             sendOperation(to, facesContext);
         } catch (ReqDataException e) {
-            log.error(e.getStackTrace());
-        } catch (IOException e) {
             log.error(e.getStackTrace());
         }
         return to;
@@ -121,7 +116,7 @@ public class UmPayBindingAgreementOperation extends
                 String hql = "from BankCard where user.id =? and status = ?";
                 List<BankCard> userBankCard = ht
                         .find(hql,new String[]{user_id,"passed"});
-                if (null != userBankCard) {
+                if (null != userBankCard && userBankCard.size() >0) {
                     BankCard bankCard = userBankCard.get(0);
                     //更新isOpenFastPayment标志
                     bankCard.setIsOpenFastPayment("1");
@@ -164,7 +159,7 @@ public class UmPayBindingAgreementOperation extends
                         String hql = "from BankCard where user.id =?";
                         List<BankCard> userBankCard = ht
                                 .find(hql,new String[]{user_id,"passed"});
-                        if (null != userBankCard) {
+                        if (null != userBankCard && userBankCard.size() >0) {
                             BankCard bankCard = userBankCard.get(0);
                             //更新isOpenFastPayment标志
                             bankCard.setIsOpenFastPayment("1");
