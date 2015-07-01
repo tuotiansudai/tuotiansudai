@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @Service("umPayBindingAgreementOperation")
 public class UmPayBindingAgreementOperation extends
-        UmPayOperationServiceAbs<BankCard> {
+        UmPayOperationServiceAbs<String> {
 
     @Resource
     private HibernateTemplate ht;
@@ -48,13 +48,14 @@ public class UmPayBindingAgreementOperation extends
     @SuppressWarnings({"unchecked", "null"})
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TrusteeshipOperation createOperation(BankCard bankCard, FacesContext facesContext) throws Exception {
-        TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
-                .getId());
-        String hql = "from BankCard where user.id =? and isOpenFastPayment =?";
+    public TrusteeshipOperation createOperation(String userId, FacesContext facesContext)  {
+        System.out.println("=================1");
+        TrusteeshipAccount ta = getTrusteeshipAccount(userId);
+        System.out.println("=================2");
+        String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
 
-        List<BankCard> userBankCard = ht.find(hql, new String[]{bankCard.getUser().getId(), "0"});
-        if (userBankCard == null) {
+        List<BankCard> userBankCard = ht.find(hql, new String[]{userId, "1","passed"});
+        if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
@@ -65,9 +66,6 @@ public class UmPayBindingAgreementOperation extends
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
                         + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        String order_id = System.currentTimeMillis() + bankCard.getCardNo();
-        // 流水号(时间戳)
-        sendMap.put("order_id", order_id);
         sendMap.put("user_id", ta.getId());
         sendMap.put("account_id", ta.getAccountId());
         sendMap.put("user_bind_ agreement_list", "ZKJP0700");
@@ -75,15 +73,19 @@ public class UmPayBindingAgreementOperation extends
         try {
             // 加密参数
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            System.out.println("签约协议发送数据:"+reqData);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
+            String order_id = System.currentTimeMillis() + userId;
             to = createTrusteeshipOperation(order_id, reqData.getUrl(),
-                    bankCard.getUser().getId(),
+                    userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
             // 发送请求
             sendOperation(to, facesContext);
         } catch (ReqDataException e) {
+            log.error(e.getStackTrace());
+        } catch (IOException e) {
             log.error(e.getStackTrace());
         }
         return to;

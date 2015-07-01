@@ -181,9 +181,10 @@ public class UmPayBankCardHome extends BankCardHome {
             FacesUtil.addErrorMessage("用户未登录");
             return;
         }
+		String userId = loginUser.getId();
         bingAgreementSave();
         try {
-            umPayBindingAgreementOperation.createOperation(getInstance(), FacesContext.getCurrentInstance());
+            umPayBindingAgreementOperation.createOperation(userId, FacesContext.getCurrentInstance());
         } catch (Exception e) {
             log.error(e.getStackTrace());
             FacesUtil.addErrorMessage("签约快捷协议失败!");
