@@ -116,9 +116,9 @@ public class UmPayBindingAgreementOperation extends
                 to.setResponseTime(new Date());
                 to.setResponseData(paramMap.toString());
                 ht.update(to);
-                String hql = "from BankCard where user.id =?";
+                String hql = "from BankCard where user.id =? and status = ?";
                 List<BankCard> userBankCard = ht
-                        .find(hql,user_id);
+                        .find(hql,new String[]{user_id,"passed"});
                 if (null != userBankCard) {
                     BankCard bankCard = userBankCard.get(0);
                     //更新isOpenFastPayment标志
@@ -161,7 +161,7 @@ public class UmPayBindingAgreementOperation extends
 
                         String hql = "from BankCard where user.id =?";
                         List<BankCard> userBankCard = ht
-                                .find(hql,user_id);
+                                .find(hql,new String[]{user_id,"passed"});
                         if (null != userBankCard) {
                             BankCard bankCard = userBankCard.get(0);
                             //更新isOpenFastPayment标志
