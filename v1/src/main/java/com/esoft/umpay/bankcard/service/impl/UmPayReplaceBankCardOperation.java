@@ -142,7 +142,14 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 					ht.evict(user);
 					String bankCardId = order_id.substring(13,
 							order_id.length());
+
 					String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+
+					String hqlPassed = "from BankCard where user.id =? and status =?";
+
+					List<BankCard> userAlreadyBindingBankCard = ht
+							.find(hqlPassed, new String[] { user.getId(), "passed"});
+
 					List<BankCard> userWillBindingBankCard = ht
 							.find(hql, new String[] { user.getId(), "uncheck",
 									bankCardId });
@@ -150,6 +157,11 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 						BankCard bankCard = userWillBindingBankCard.get(0);
 						bankCard.setStatus("passed");
 						ht.update(bankCard);
+						if (userAlreadyBindingBankCard != null) {
+							BankCard bankCardPassed = userAlreadyBindingBankCard.get(0);
+							bankCardPassed.setStatus("remove");
+							ht.update(bankCardPassed);
+						}
 						log.debug(("用户:"
 								+ userWillBindingBankCard.get(0).getUser()
 								.getId() + "换卡"
