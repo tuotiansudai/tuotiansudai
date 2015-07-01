@@ -22,6 +22,16 @@
 		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
+				if (#{loanHome.instance.loanActivityType eq 'pt'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'jx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_jxb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'dx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_dxb/#{loanHome.instance.id}"
+				}
+
 				if (#{loanHome.instance.businessType eq '企业借款'}) {
 					window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
 				}
