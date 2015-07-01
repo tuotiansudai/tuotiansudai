@@ -1,12 +1,12 @@
 package com.esoft.archer.user.controller;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import com.esoft.archer.common.controller.EntityQuery;
+import com.esoft.archer.user.model.RechargeBankCard;
+import com.esoft.archer.user.model.User;
+import com.esoft.core.annotations.Logger;
+import com.esoft.core.annotations.ScopeType;
+import com.esoft.jdp2p.loan.model.Recharge;
+import com.esoft.jdp2p.user.service.RechargeService;
 import org.apache.commons.logging.Log;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -15,13 +15,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Component;
 
-import com.esoft.archer.common.controller.EntityQuery;
-import com.esoft.archer.user.model.RechargeBankCard;
-import com.esoft.archer.user.model.User;
-import com.esoft.core.annotations.Logger;
-import com.esoft.core.annotations.ScopeType;
-import com.esoft.jdp2p.loan.model.Recharge;
-import com.esoft.jdp2p.user.service.RechargeService;
+import javax.annotation.Resource;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 充值查询
@@ -41,6 +39,8 @@ public class RechargeList extends EntityQuery<Recharge> implements
 	private RechargeService rechargeService;
 
 	private List<RechargeBankCard> rechargeBankCards;
+
+	private boolean isOpenFastPayment;
 
 	private List<RechargeBankCard> rechargeBankCardQuickPays;
 	
@@ -66,17 +66,12 @@ public class RechargeList extends EntityQuery<Recharge> implements
 	}
 
 	public List<RechargeBankCard> getRechargeBankCards() {
-		if (this.rechargeBankCards == null) {
+		if (this.isOpenFastPayment) {
+			this.rechargeBankCards = rechargeService.getFastPayBankCardsList();
+		} else {
 			this.rechargeBankCards = rechargeService.getBankCardsList();
 		}
 		return this.rechargeBankCards;
-	}
-	public List<RechargeBankCard> getRechargeBankCardQuickPays() {
-		if (this.rechargeBankCardQuickPays == null) {
-			String userId = "sidneygao";
-   			this.rechargeBankCardQuickPays = rechargeService.getBankCardsQuickPayList(userId);
-		}
-		return this.rechargeBankCardQuickPays;
 	}
 
 	public Double getSumActualMoney(){
@@ -123,4 +118,11 @@ public class RechargeList extends EntityQuery<Recharge> implements
 		return endTime;
 	}
 
+	public boolean getIsOpenFastPayment() {
+		return isOpenFastPayment;
+	}
+
+	public void setIsOpenFastPayment(boolean isOpenFastPayment) {
+		this.isOpenFastPayment = isOpenFastPayment;
+	}
 }

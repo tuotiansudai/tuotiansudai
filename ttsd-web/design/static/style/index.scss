@@ -2550,7 +2550,8 @@ body {
   }
 }
 .project_type ul li a:hover{background: #eb950f; color:#fff; border-radius: 5px;}
-.project_centent{width:1000px; height: auto; overflow: hidden;margin:10px auto 0px;
+
+.project_centent{width:1000px; height: auto; overflow: hidden;margin:10px auto 0px; display: none;
   & ol{width:998px; height: 33px; border:#d7d7d7 1px solid; background: #fff;
     & li{ width:92px; float: left; border-right: #d7d7d7 1px solid; line-height: 33px; text-align: center;
       & a{ display: block; height: 33px; color:#333;}

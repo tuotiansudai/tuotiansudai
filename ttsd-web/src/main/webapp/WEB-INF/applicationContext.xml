@@ -14,7 +14,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:sms_client.properties" />
+    <context:property-placeholder location="classpath:sms_wrapper_client.properties, classpath:jdbc.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -22,10 +22,10 @@
     <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://192.168.33.10:3306/aa"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}${jdbc.schema}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>

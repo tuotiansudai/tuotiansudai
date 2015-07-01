@@ -70,9 +70,8 @@ war {
     }
     from('/workspace/production_config/') {
         include 'web.xml'
-        into 'WEB-INF'
+        into 'WEB-INF/'
     }
-
 }
 
 flyway {

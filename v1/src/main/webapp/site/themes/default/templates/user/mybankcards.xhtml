@@ -81,6 +81,12 @@
                                         <p:watermark value="16至19位卡号" for="bankCardNumber"></p:watermark>
                                     </div>
                                     <div class="clear"></div>
+                                    <div class="txczje">
+                                        <h:selectBooleanCheckbox id="agree" value="#{bankCardHome.isOpenFastPayment}">
+                                            <f:ajax event="click" listener="#{rechargeList.setIsOpenFastPayment(!rechargeList.isOpenFastPayment)}" render="@form"></f:ajax>
+                                        </h:selectBooleanCheckbox>
+                                        <label>开通快捷支付（开通后不可撤销）</label>
+                                    </div>
                                 </div>
                                 <div class="txczje02">
                                     <div class="txczje_l"></div>
@@ -112,6 +118,16 @@
                                         </div>
                                         <div class="clear"></div>
                                     </li>
+                                    <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
+                                        <li>
+                                            <h:commandLink action="#{UmPayBankCardHome.bingAgreement}" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
+                                        </li>
+                                        <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
+                                            <li>
+                                                <a href="#{path}/user/replaceCard" target="_blank">更换银行卡</a>
+                                            </li>
+                                        </ui:fragment>
+                                    </ui:fragment>
                                 </ui:repeat>
                                 <div class="clear"></div>
                             </h:panelGroup>

@@ -1,10 +1,10 @@
 package com.esoft.jdp2p.user.service;
 
-import java.util.List;
-
 import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.jdp2p.loan.model.Recharge;
+
+import java.util.List;
 
 /**
  * Filename:RechargeService.java
@@ -57,6 +57,8 @@ public interface RechargeService {
 	 * 获取银行卡直连的列表
 	 */
 	public List<RechargeBankCard> getBankCardsList();
+
+	public List<RechargeBankCard> getFastPayBankCardsList();
 
 	/**
 	 * 获快捷支付列表
