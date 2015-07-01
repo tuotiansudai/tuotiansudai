@@ -2,9 +2,13 @@ package com.esoft.archer.user.controller;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.user.model.RechargeBankCard;
+import com.esoft.archer.user.model.RechargeBankCardImpl;
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.context.annotation.Scope;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 import com.esoft.archer.common.controller.EntityHome;
@@ -19,13 +23,17 @@ import com.esoft.core.util.SpringBeanUtil;
 import com.esoft.jdp2p.loan.model.Recharge;
 import com.esoft.jdp2p.user.service.RechargeService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Scope(ScopeType.VIEW)
 public class RechargeHome extends EntityHome<Recharge> {
 
 	@Logger
 	static Log log;
-
+	@Resource
+	HibernateTemplate ht;
 	@Resource
 	private LoginUserInfo loginUserInfo;
 

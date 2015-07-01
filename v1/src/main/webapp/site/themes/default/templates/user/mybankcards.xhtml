@@ -120,7 +120,7 @@
                                     </li>
                                     <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
                                         <li>
-                                            <h:commandLink action="" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
+                                            <h:commandLink action="#{UmPayBankCardHome.bingAgreement}" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
                                         </li>
                                         <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)} == 0.00">
                                             <li>

@@ -1,5 +1,24 @@
 package com.esoft.jdp2p.user.service.impl;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
+
+import javax.annotation.Resource;
+
+import com.esoft.jdp2p.bankcard.model.BankCard;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.LockMode;
+import org.hibernate.classic.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
 import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.UserConstants.RechargeStatus;
@@ -216,6 +235,21 @@ public class RechargeServiceImpl implements RechargeService {
 	}
 
 	@Override
+	public List<RechargeBankCard> getBankCardsQuickPayList(String userId) {
+		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
+		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+		if(bankCard == null){
+			return null;
+		}
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		for(BankCard bc:bankCard){
+			bcs.add(new RechargeBankCardImpl("CMB", "招商银行"));
+		}
+		return bcs;
+	}
+
+
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void rechargeByAdmin(UserBill userBill) {
 		Recharge r = new Recharge();
@@ -256,6 +290,21 @@ public class RechargeServiceImpl implements RechargeService {
 			recharge.setStatus(UserConstants.RechargeStatus.FAIL);
 			ht.merge(recharge);
 		}
+	}
+	@Transactional(rollbackFor = Exception.class)
+	public String  getRechangeWay(String userId){
+
+		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
+
+		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+
+		if(bankCard != null&& bankCard.size() > 0){
+			return bankCard.get(0).getBankNo();
+		}
+
+		return null;
+
+
 	}
 
 }

@@ -42,6 +42,8 @@ public class RechargeList extends EntityQuery<Recharge> implements
 
 	private boolean isOpenFastPayment;
 
+	private List<RechargeBankCard> rechargeBankCardQuickPays;
+	
 	private Date startTime ;
 	private Date endTime ;
 

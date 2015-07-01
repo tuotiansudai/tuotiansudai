@@ -1,5 +1,18 @@
 package com.esoft.umpay.bankcard.controller;
 
+import java.io.IOException;
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+
+import com.esoft.core.annotations.Logger;
+import com.esoft.umpay.bankcard.service.impl.UmPayBindingAgreementOperation;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
@@ -33,10 +46,13 @@ public class UmPayBankCardHome extends BankCardHome {
 	UmPayReplaceBankCardOperation umPayReplaceBankCardOperation;
 	@Resource
 	private RechargeService rechargeService;
+	@Resource
+	UmPayBindingAgreementOperation umPayBindingAgreementOperation;
 	@Logger
 	private static Log log;
 
 	private boolean isOpenFastPayment;
+
 	/**
 	 * 绑定银行卡
 	 */
@@ -157,6 +173,36 @@ public class UmPayBankCardHome extends BankCardHome {
 	public Class<BankCard> getEntityClass() {
 		return BankCard.class;
 	}
+
+    @Transactional(readOnly = false)
+    public void bingAgreement() {
+        User loginUser = getBaseService().get(User.class, loginUserInfo.getLoginUserId());
+        if (loginUser == null) {
+            FacesUtil.addErrorMessage("用户未登录");
+            return;
+        }
+        bingAgreementSave();
+        try {
+            umPayBindingAgreementOperation.createOperation(getInstance(), FacesContext.getCurrentInstance());
+        } catch (Exception e) {
+            log.error(e.getStackTrace());
+            FacesUtil.addErrorMessage("签约快捷协议失败!");
+        } finally {
+            this.setInstance(null);
+        }
+
+    }
+
+    @Transactional(readOnly = false)
+    public String bingAgreementSave(){
+
+        FacesUtil.addInfoMessage("签约快捷协议成功！");
+        if(StringUtils.isNotEmpty(super.getSaveView())){
+            return super.getSaveView();
+        }
+        return "pretty:bankCardList";
+
+    }
 
 	public boolean getIsOpenFastPayment() {
 		return isOpenFastPayment;
