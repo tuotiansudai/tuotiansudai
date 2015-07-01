@@ -9,6 +9,7 @@ import com.esoft.jdp2p.invest.exception.ExceedMoneyNeedRaised;
 import com.esoft.jdp2p.invest.exception.IllegalLoanStatusException;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Filename: InvestService.java <br/>
@@ -66,6 +67,9 @@ public interface InvestService {
 	 * @return
 	 */
 	public long getUserInvestCount(String userId);
+
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	long getUserInvestXSCount(String userId);
 
 	/**
 	 * 通过用户id，查询该用户的所有投资
