@@ -140,7 +140,7 @@
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>元
+							</h:inputText>元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
 							<ui:fragment rendered="#{loan.investPassword != 0}">
 								<h:inputText id="ut" label="投资密码" required="true" value="#{investHome.instance.userInvestPass}">
 									<f:ajax event="blur"></f:ajax>
@@ -178,6 +178,7 @@
 						</p>
 						<p class="p-line"></p>
 						<p>投资人数：#{loanCalculator.countSuccessInvest(loan.id)}人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<p><a href="/loanAgreementSample" target="_Blank">借款协议样本</a></p>
 						<br />
 						<p>
 							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
