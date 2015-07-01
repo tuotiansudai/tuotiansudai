@@ -1,6 +1,8 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +36,9 @@ public class RegisterControllerTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private SmsCaptchaService smsCaptchaService;
 
     @Before
     public void init() {
@@ -120,14 +125,81 @@ public class RegisterControllerTest {
     }
 
     @Test
-    public void shouldRegisterUser() throws Exception{
-        when(userService.registerUser(any(UserModel.class))).thenReturn(true);
+    public void shouldLoginNameIsExisted() throws Exception {
 
-        String jsonStr =  "{\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"mobileNumber\":\"13436964915\"}";
+        when(userService.loginNameIsExisted(anyString())).thenReturn(true);
+
+        this.mockMvc.perform(get("/register/loginName/hourglass/verify"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
+    }
+
+    @Test
+    public void shouldLoginNameIsNotExisted() throws Exception {
+
+        when(userService.loginNameIsExisted(anyString())).thenReturn(false);
+
+        this.mockMvc.perform(get("/register/loginName/hourglass/verify"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(false));
+    }
+
+    @Test
+    public void shouldRegisterUser() throws Exception{
+        when(userService.registerUser(any(RegisterDto.class))).thenReturn(true);
+
+        String jsonStr = "{\"loginName\":\"zourenzheng\",\"password\":\"123abc\",\"email\":\"zourenzheng@tuotiansudai.com\",\"mobileNumber\":\"13436964915\"}";
         this.mockMvc.perform(post("/register").contentType(MediaType.APPLICATION_JSON).content(jsonStr))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
+    }
+
+    @Test
+    public void shouldVerifyCaptchaIsValid() throws Exception {
+        when(smsCaptchaService.verifyCaptcha(anyString(), anyString())).thenReturn(true);
+
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
+
+    }
+
+    @Test
+    public void shouldVerifyCaptchaIsInValid() throws Exception {
+        when(smsCaptchaService.verifyCaptcha(anyString(), anyString())).thenReturn(false);
+
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(false));
+
+    }
+
+    @Test
+    public void shouldSendRegisterByMobileNumberSmsIsOk() throws Exception {
+        when(smsCaptchaService.sendSmsByMobileNumberRegister(anyString())).thenReturn(true);
+
+        this.mockMvc.perform(get("/register/mobile/13900000000/sendCaptcha")).andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
+    }
+
+    @Test
+    public void shouldSendRegisterByMobileNumberSmsIsFailed() throws Exception {
+        when(smsCaptchaService.sendSmsByMobileNumberRegister(anyString())).thenReturn(false);
+
+        this.mockMvc.perform(get("/register/mobile/13900000000/sendCaptcha")).andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(false));
+
     }
 
     @Test

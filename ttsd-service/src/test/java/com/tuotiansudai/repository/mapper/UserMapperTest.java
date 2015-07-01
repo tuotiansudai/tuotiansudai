@@ -97,11 +97,9 @@ public class UserMapperTest {
         userModelTest.setLastLoginTime(new Date());
         userModelTest.setRegisterTime(new Date());
         userModelTest.setLastModifiedTime(new Date());
-        userModelTest.setLastModifiedUser("nihao");
         userModelTest.setForbiddenTime(new Date());
         userModelTest.setAvatar("avatar");
         userModelTest.setStatus(UserStatus.ACTIVE);
-        userModelTest.setReferrer("100001");
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }

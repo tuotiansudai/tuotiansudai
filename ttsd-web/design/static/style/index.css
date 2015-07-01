@@ -2269,7 +2269,8 @@ body {
   width: 1000px;
   height: auto;
   overflow: hidden;
-  margin: 10px auto 0px; }
+  margin: 10px auto 0px;
+  display: none; }
   .project_centent ol {
     width: 998px;
     height: 33px;

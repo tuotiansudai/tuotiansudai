@@ -1,8 +1,11 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Strings;
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private SmsCaptchaService smsCaptchaService;
 
     public static String SHA = "SHA";
 
@@ -38,21 +44,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean loginNameIsExisted(String loginName) {
+        return userMapper.findUserByLoginName(loginName) != null;
+    }
+
+    @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public boolean registerUser(UserModel userModel) {
+    public boolean registerUser(RegisterDto registerDto) {
+        boolean loginNameIsExisted = this.loginNameIsExisted(registerDto.getLoginName());
+        boolean mobileNumberIsExisted = this.userMobileNumberIsExisted(registerDto.getMobileNumber());
+        boolean userEmailIsExisted = this.userEmailIsExisted(registerDto.getEmail());
+        boolean referrerIsNotExisted = !Strings.isNullOrEmpty(registerDto.getReferrer()) && !this.referrerIsExisted(registerDto.getReferrer());
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyCaptcha(registerDto.getMobileNumber(), registerDto.getCaptcha());
+
+        if (loginNameIsExisted || mobileNumberIsExisted || userEmailIsExisted || referrerIsNotExisted || verifyCaptchaFailed) {
+            return false;
+        }
+
+        UserModel registerUserModel = registerDto.convertToUserModel();
+
+        if (!Strings.isNullOrEmpty(registerDto.getReferrer())) {
+            UserModel referrer = userMapper.findUserByLoginName(registerDto.getReferrer());
+            registerUserModel.setReferrerId(referrer.getId());
+        }
+
         String randomSalt = getRandomSalt();
         String password;
         try {
-            password = encodeSHA(encodeSHA(userModel.getPassword()) + randomSalt);
+            password = encodeSHA(encodeSHA(registerUserModel.getPassword()) + randomSalt);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return false;
         }
-        userModel.setSalt(randomSalt);
-        userModel.setRegisterTime(new Date());
-        userModel.setPassword(password);
-        userModel.setStatus(UserStatus.ACTIVE);
-        this.userMapper.insertUser(userModel);
+        registerUserModel.setSalt(randomSalt);
+        registerUserModel.setRegisterTime(new Date());
+        registerUserModel.setPassword(password);
+        registerUserModel.setStatus(UserStatus.ACTIVE);
+        this.userMapper.insertUser(registerUserModel);
         return true;
     }
 

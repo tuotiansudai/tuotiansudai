@@ -157,11 +157,34 @@ require(['jquery'], function ($) {
                 }
             });
         })
+        //username
+        $(function () {
+            function checkusername(str) {
+                var re = /^(?![^a-zA-Z]+$)(?!\D+$).{5,24}$/;
+                if (re.test(str)) {
+                    $('.step_username em').css({'opacity': 1});
+                    $('.step_username b').css({'opacity': 0});
+                } else {
+                    $('.step_username b').css({'opacity': 1});
+                    $('.step_username em').css({'opacity': 0});
+                }
+            };
+            $('.username').on('blur', function () {
+                checkusername($(this).val());
+                $('.step_username b').css({'lineHeight': '20px'});
+                if ($(this).val() == '') {
+                    $('.step_username b').css({'opacity': 1, 'lineHeight': '40px'}).html('用户名不能为空！');
+                } else {
+                    checkusername($(this).val());
+                    $('.step_username b').html('用户名只允许包含字母和数字，长度为5-25位，请勿使用手机号！');
+                }
+            });
+        });
         //Mobil 验证
         $(function () {
             function checkMobile(str) {
                 var re = /^1[1-9]{10}$/;
-                if ($('.phone').val().length < 11 && $('.phone').val().length > 0 ) {
+                if ($('.phone').val().length < 11 && $('.phone').val().length > 0) {
                     $('.step_one_phone em').css({'opacity': 0});
                     $('.step_one_phone b').css({'opacity': 1}).html('手机号不能小于11位!');
                 } else if ($('.phone').val().length > 11) {
@@ -174,19 +197,21 @@ require(['jquery'], function ($) {
                 }
                 return false;
             }
-            function mastnumber(){
-                $(".phone").on('input',function () {
-                    if(isNaN($('.phone').val())){
+
+            function mastnumber() {
+                $(".phone").on('input', function () {
+                    if (isNaN($('.phone').val())) {
                         $('.step_one_phone b').css({'opacity': 1}).html('只能输入数字！');
                         $('.step_one_phone em').hide();
                         var tmptxt = $(this).val();
                         $(this).val(tmptxt.replace(/\D|^0/g, ''));
-                    }else{
+                    } else {
                         checkMobile($('.phone').val());
                         $('.step_one_phone b').css({'opacity': 0});
                     }
                 })
             }
+
             mastnumber();
 
             $('.phone').on('blur', function () {
@@ -207,13 +232,13 @@ require(['jquery'], function ($) {
                         },
                         success: function (response) {
                             $('.step_one_phone strong').hide();
-                            $('.step_one_phone em').css({'opacity':0});
+                            $('.step_one_phone em').css({'opacity': 0});
                             $('.step_one_phonee b').css({'opacity': 0});
                             if (response.status === 'success' && response.data.exist) {
                                 $('.step_one_phone em').css({'opacity': 0});
-                                $('.step_one_phone b').css({'opacity':1}).html('手机号已存在！');
+                                $('.step_one_phone b').css({'opacity': 1}).html('手机号已存在！');
                                 $('.step_one_phone strong').hide()
-                            }else if(!response.data.exist){
+                            } else if (!response.data.exist) {
                                 $('.step_one_phone em').css({'opacity': 1});
                                 $('.step_one_phone b').hide();
                                 $('.step_one_phone strong').hide();
@@ -233,7 +258,7 @@ require(['jquery'], function ($) {
         $(function () {
             function verCode(str) {
                 var re = /^\d{6}$/
-                if ($('.vcode').val().length < 6 || $('.vcode').val().length > 6 ) {
+                if ($('.vcode').val().length < 6 || $('.vcode').val().length > 6) {
                     $('.step_two_verCode em').hide();
                     $('.step_two_verCode b').css({'opacity': 1}).html('验证码格式错误！');
                 } else if (re.test(str)) {
@@ -288,32 +313,33 @@ require(['jquery'], function ($) {
         //password验证
         $(function () {
 
-                function condition(){
-                    if ($('.password').val().length > 16) {
-                        $('.step_three_password b').html('密码不能大于16位').css({'opacity': 1});
-                        $('.step_three_password em').hide();
-                    }
-                    if ($('.password').val() == '') {
-                        $('.step_three_password b').css({'opacity': 1, 'display': 'block'});
-                        $('.step_three_password em').hide();
-                    }else if ($('.password').val().length < 6 ) {
-                        $('.step_three_password b').html('密码不能小于6位').css({'opacity': 1});
-                        $('.step_three_password em').hide();
-                    }
-                    if ($('.password').val().length >= 6 && $('.password').val().length <= 16) {
-                        var re = /^(([a-zA-Z]{3,})+([0-9]{3,}))|(([0-9]{3,})+([a-zA-Z]{3,})|(?=[\x21-\x7e]+))+$/;
-                        if (re.test($('.password').val())) {
-                            $('.step_three_password em').css({'opacity': 1, 'display': 'block'});
-                            $('.step_three_password b').css({'opacity': 0});
-                        }else{
-                            $('.step_three_password em').css({'opacity': 0});
-                            $('.step_three_password b').css({'opacity': 1}).html('验证码必须是数字和字母组合！');
-                        }
+            function condition() {
+                if ($('.password').val().length > 16) {
+                    $('.step_three_password b').html('密码不能大于16位').css({'opacity': 1});
+                    $('.step_three_password em').hide();
+                }
+                if ($('.password').val() == '') {
+                    $('.step_three_password b').css({'opacity': 1, 'display': 'block'});
+                    $('.step_three_password em').hide();
+                } else if ($('.password').val().length < 6) {
+                    $('.step_three_password b').html('密码不能小于6位').css({'opacity': 1});
+                    $('.step_three_password em').hide();
+                }
+                if ($('.password').val().length >= 6 && $('.password').val().length <= 16) {
+                    var re = /^(([a-zA-Z]{3,})+([0-9]{3,}))|(([0-9]{3,})+([a-zA-Z]{3,})|(?=[\x21-\x7e]+))+$/;
+                    if (re.test($('.password').val())) {
+                        $('.step_three_password em').css({'opacity': 1, 'display': 'block'});
+                        $('.step_three_password b').css({'opacity': 0});
+                    } else {
+                        $('.step_three_password em').css({'opacity': 0});
+                        $('.step_three_password b').css({'opacity': 1}).html('验证码必须是数字和字母组合！');
                     }
                 }
-            $('.password').on('blur',function(){
+            }
+
+            $('.password').on('blur', function () {
                 condition();
-            }).on('change',function(){
+            }).on('change', function () {
                 condition();
             });
         });
@@ -357,9 +383,9 @@ require(['jquery'], function ($) {
                             $('.step_four_email b').css({'opacity': 0});
                             if (response.status === 'success' && response.data.exist) {
                                 $('.step_four_email em').css({'opacity': 0});
-                                $('.step_four_email b').html('邮箱已经存在!').css({'opacity':1,'display':'block'});
+                                $('.step_four_email b').html('邮箱已经存在!').css({'opacity': 1, 'display': 'block'});
                                 $('.step_four_email strong').hide()
-                            } else if(!response.data.exist) {
+                            } else if (!response.data.exist) {
                                 $('.step_four_email em').show();
                                 $('.step_four_email b').hide();
                             }
@@ -407,39 +433,39 @@ require(['jquery'], function ($) {
                     $('.step_five_user em').css({'opacity': 0});
                     $('.step_five_user b').css({'opacity': 1});
                 }
-            }).on('change',function(){
-                    $.ajax({
-                        url: '/static/jsons/mobile.json',
-                        type: 'GET',
-                        datatype: 'json',
-                        timeout: 500,
-                        beforeSend: function () {
-                            $('.step_five_user strong').show();
-                        },
-                        success: function (response) {
+            }).on('change', function () {
+                $.ajax({
+                    url: '/static/jsons/mobile.json',
+                    type: 'GET',
+                    datatype: 'json',
+                    timeout: 500,
+                    beforeSend: function () {
+                        $('.step_five_user strong').show();
+                    },
+                    success: function (response) {
+                        $('.step_five_user strong').hide();
+                        if (response.status && response.data.exist) {
+                            $('.step_five_user em').css({'opacity': 1, 'display': 'block'});
+                            $('.step_five_user b').show();
                             $('.step_five_user strong').hide();
-                            if (response.status && response.data.exist) {
-                                $('.step_five_user em').css({'opacity': 1, 'display': 'block'});
-                                $('.step_five_user b').show();
-                                $('.step_five_user strong').hide();
-                            } else {
-                                $('.step_five_user em').css({'opacity': 0});
-                                $('.step_five_user b').html('此用户不存在！').css({'opacity':1,'display':'block'});
-                                $('.step_five_user strong').hide();
-                            }
-                            if ($('.user').val() == '') {
-                                $('.step_five_user em').css({'opacity': 0});
-                                $('.step_five_user b').css({'opacity': 0});
-                                $('.step_five_user strong').hide();
-                            }
-                        },
-                        error: function (status) {
-                            if (status == 500) {
-                                alert('服务器错误！');
-                            }
-                        },
-                        timeout: 500
-                    });
+                        } else {
+                            $('.step_five_user em').css({'opacity': 0});
+                            $('.step_five_user b').html('此用户不存在！').css({'opacity': 1, 'display': 'block'});
+                            $('.step_five_user strong').hide();
+                        }
+                        if ($('.user').val() == '') {
+                            $('.step_five_user em').css({'opacity': 0});
+                            $('.step_five_user b').css({'opacity': 0});
+                            $('.step_five_user strong').hide();
+                        }
+                    },
+                    error: function (status) {
+                        if (status == 500) {
+                            alert('服务器错误！');
+                        }
+                    },
+                    timeout: 500
+                });
             });
         });
         //Next step
@@ -507,7 +533,7 @@ require(['jquery'], function ($) {
     });
 
     //record页面:
-    $(function(){
+    $(function () {
 
     })
 });

@@ -1,6 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
+import com.tuotiansudai.dto.RegisterDto;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -67,10 +68,22 @@ public class RegisterController {
         return registerVerifyDto;
     }
 
+    @RequestMapping(value = "/loginName/{loginName}/verify", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto loginNameIsExisted(@PathVariable String loginName) {
+        boolean isExist = userService.loginNameIsExisted(loginName);
+
+        BaseDto registerVerifyDto = new BaseDto();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(isExist);
+        registerVerifyDto.setData(dataDto);
+        return registerVerifyDto;
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto registerUser(@RequestBody UserModel userModel) {
-        boolean success = this.userService.registerUser(userModel);
+    public BaseDto registerUser(@RequestBody RegisterDto registerDto) {
+        boolean success = this.userService.registerUser(registerDto);
 
         BaseDto registerResultDto = new BaseDto();
         BaseDataDto dataDto = new BaseDataDto();

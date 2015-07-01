@@ -88,6 +88,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     }
 
+    @Override
     public boolean verifyCaptcha(String mobile, String code) {
         SmsCaptchaModel smsCaptchaModelQuery = new SmsCaptchaModel();
         smsCaptchaModelQuery.setCode(code);
@@ -97,14 +98,8 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(smsCaptchaModelQuery);
         //校验手机验证码存在
-        if (smsCaptchaModel == null) {
-            return false;
-        }
-        //校验验证码是否失效
-        if (smsCaptchaModel.getDeadLine() != null && smsCaptchaModel.getDeadLine().before(new Date())) {
-            return false;
-        }
-        return true;
+        Date now = new Date();
+        return smsCaptchaModel != null && smsCaptchaModel.getDeadLine().after(now);
     }
 
     private String createRandomCaptcha(Integer captchaLength) {

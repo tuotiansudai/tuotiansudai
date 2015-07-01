@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class UserModel {
 
-    private int id;
+    private Long id;
 
     private String loginName;
 
@@ -23,13 +23,13 @@ public class UserModel {
 
     private Date lastModifiedTime;
 
-    private String lastModifiedUser;
+    private Long lastModifiedUser;
 
     private Date forbiddenTime;
 
     private String avatar;
 
-    private String referrer;
+    private Long referrerId;
 
     private UserStatus status;
 
@@ -43,11 +43,11 @@ public class UserModel {
         this.salt = salt;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -115,11 +115,11 @@ public class UserModel {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public String getLastModifiedUser() {
+    public Long getLastModifiedUser() {
         return lastModifiedUser;
     }
 
-    public void setLastModifiedUser(String lastModifiedUser) {
+    public void setLastModifiedUser(Long lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
     }
 
@@ -139,12 +139,12 @@ public class UserModel {
         this.avatar = avatar;
     }
 
-    public String getReferrer() {
-        return referrer;
+    public Long getReferrerId() {
+        return referrerId;
     }
 
-    public void setReferrer(String referrer) {
-        this.referrer = referrer;
+    public void setReferrerId(Long referrerId) {
+        this.referrerId = referrerId;
     }
 
     public UserStatus getStatus() {
@@ -162,12 +162,12 @@ public class UserModel {
 
         UserModel userModel = (UserModel) o;
 
-        return id == userModel.id;
+        return id.equals(userModel.id);
 
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 }

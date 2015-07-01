@@ -71,7 +71,7 @@ public class SmsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.sendSuccess").value(true));
+                .andExpect(jsonPath("$.data.status").value(true));
     }
 
 }
