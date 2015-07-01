@@ -122,7 +122,7 @@
                                         <li>
                                             <h:commandLink action="#{UmPayBankCardHome.bingAgreement}" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
                                         </li>
-                                        <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId)} == 0.00">
+                                        <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
                                             <li>
                                                 <a href="#{path}/user/replaceCard" target="_blank">更换银行卡</a>
                                             </li>

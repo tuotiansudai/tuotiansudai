@@ -10,6 +10,8 @@
                 xmlns:o="http://omnifaces.org/ui"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:param name="activeCenterMenuUrl" value="/user/bankCardList"></ui:param>
+    <ui:param name="pnr_enable" value="#{configHome.getConfigValue('pnrpay_enable') eq '1'}"></ui:param>
     <ui:define name="center_right">
         <sec:ifNotGranted roles="INVESTOR,LOANER,GUARANTEE">
             <script>
@@ -22,6 +24,8 @@
             </script>
         </sec:ifNotGranted>
         <sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
+            <f:event type="preRenderComponent" listener="#{userHome.setId(loginUserInfo.loginUserId)}"></f:event>
+            <div class="center_right">
             <h:form id="form">
                    <div class="zhcz_h3">更换提现银行卡</div>
                    <div class="txczje">
@@ -87,6 +91,14 @@
                        </div>
                    </div>
             </h:form>
+            <p class="zhcz_p02">
+                温馨提示<br/>
+                1、如果您填写的开户行支行不正确，可能将无法成功提现，由此产生的提现费用将不予返还。<br/>
+                2、如果您不确定开户行支行名称，可打电话到所在地银行的营业网点询问或上网查询。<br/>
+                3、不支持提现至信用卡账户。
+            </p>
+            </div>
+            <div class="clear"></div>
         </sec:ifAnyGranted>
     </ui:define>
 </ui:composition>
