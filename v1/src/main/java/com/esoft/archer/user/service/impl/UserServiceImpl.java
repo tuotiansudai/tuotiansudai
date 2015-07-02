@@ -9,7 +9,10 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.model.AuthInfo;
+import com.esoft.archer.common.service.ValidationService;
+import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
@@ -35,10 +38,6 @@ import com.esoft.archer.openauth.OpenAuthConstants;
 import com.esoft.archer.openauth.service.OpenAuthService;
 import com.esoft.archer.system.service.SpringSecurityService;
 import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.ConfigNotFoundException;
-import com.esoft.archer.user.exception.NotConformRuleException;
-import com.esoft.archer.user.exception.RoleNotFoundException;
-import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.Role;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserInfoService;
@@ -107,6 +106,9 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	StdScheduler scheduler;
 
+	@Resource
+	private ValidationService validationService;
+
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -128,8 +130,8 @@ public class UserServiceImpl implements UserService {
 			throws NoMatchingObjectsException, AuthInfoOutOfDateException,
 			AuthInfoAlreadyActivedException {
 		// 验证手机认证码是否正确
-//		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
-//				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
+				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
 		user.setRegisterTime(new Date());
 		// 用户密码通过sha加密
 		user.setPassword(HashCrypt.getDigestHash(user.getPassword()));
@@ -880,6 +882,66 @@ public class UserServiceImpl implements UserService {
 		}
 		if (log.isDebugEnabled())
 			log.debug("用户注册添加邮箱验证Job完成: " + userId);
+	}
+
+	@Override
+	public boolean validateRegisterUser(User instance) throws UserRegisterException, InputRuleMatchingException {
+		try {
+			validationService.inputRuleValidation("input.username", instance.getUsername());
+
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "用户名"));
+		}
+
+		try {
+			validationService.inputRuleValidation("input.mobile", instance.getMobileNumber());
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "手机号"));
+		}
+
+		try {
+			validationService.inputRuleValidation("input.email", instance.getEmail());
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "邮箱"));
+		}
+
+		try {
+			String className = User.class.getName();
+			boolean usernameIsExist = validationService.isAlreadExist(className, "username", instance.getUsername());
+			if (usernameIsExist) {
+				throw new UserRegisterException("用户名已存在！");
+			}
+
+			boolean emailIsExist = validationService.isAlreadExist(className, "email", instance.getEmail());
+			if (emailIsExist) {
+				throw new UserRegisterException("邮箱已存在！");
+			}
+
+			boolean mobileIsExist = validationService.isAlreadExist(className, "mobileNumber", instance.getMobileNumber());
+			if (mobileIsExist) {
+				throw new UserRegisterException("手机号已存在!");
+			}
+
+			if (!Strings.isNullOrEmpty(instance.getReferrer()) ) {
+				boolean referrerIsNotExist = !validationService.isAlreadExist(className, "username", instance.getReferrer());
+				if (referrerIsNotExist) {
+					throw new UserRegisterException("推荐人不存在！");
+				}
+			}
+		} catch (ClassNotFoundException | NoSuchMethodException e) {
+			log.error(e);
+			return false;
+		}
+		return true;
 	}
 
 }
