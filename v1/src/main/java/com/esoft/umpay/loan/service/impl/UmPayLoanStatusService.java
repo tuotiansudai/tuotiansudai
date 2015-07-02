@@ -1,17 +1,5 @@
 package com.esoft.umpay.loan.service.impl;
 
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
@@ -31,6 +19,16 @@ import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description : 修改第三方标的状态
@@ -64,7 +62,7 @@ public class UmPayLoanStatusService{
 		DecimalFormat currentNumberFormat = new DecimalFormat("#");
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_PROJECT);
 		sendMap.put("project_id",loan.getId());
-		sendMap.put("project_name",loan.getName());
+		sendMap.put("project_name",loan.getId());
 		sendMap.put("project_amount",String.valueOf(currentNumberFormat.format(loan.getLoanMoney().doubleValue() * 100)));
 		sendMap.put("project_expire_date",DateUtil.DateToString(loan.getExpectTime(), DateStyle.YYYYMMDD));
 		sendMap.put("loan_user_id",getTrusteeshipAccount(loan.getUser().getId()).getId());
@@ -112,7 +110,7 @@ public class UmPayLoanStatusService{
 	    sendMap.put("change_type",UmPayConstants.UpdateProjectStatus.CHANGE_TYPE_UPDATE_PRIJECT);
 	    sendMap.put("project_state",loanStatus);
 	    if(flag){
-	    	sendMap.put("project_name",loan.getName());
+	    	sendMap.put("project_name",loan.getId());
 		    sendMap.put("project_amount",currentNumberFormat.format(loan.getMoney()*100));
 		    sendMap.put("project_expire_date",DateUtil.DateToString(loan.getExpectTime(), DateStyle.YYYYMMDD));
 		    sendMap.put("loan_user_id",getTrusteeshipAccount(loan.getUser().getId()).getId());
