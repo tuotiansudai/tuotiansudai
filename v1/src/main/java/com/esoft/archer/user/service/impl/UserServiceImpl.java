@@ -932,7 +932,7 @@ public class UserServiceImpl implements UserService {
 			}
 
 			if (!Strings.isNullOrEmpty(instance.getReferrer()) ) {
-				boolean referrerIsNotExist = !validationService.isAlreadExist(className, "referrer", instance.getReferrer());
+				boolean referrerIsNotExist = !validationService.isAlreadExist(className, "username", instance.getReferrer());
 				if (referrerIsNotExist) {
 					throw new UserRegisterException("推荐人不存在！");
 				}
