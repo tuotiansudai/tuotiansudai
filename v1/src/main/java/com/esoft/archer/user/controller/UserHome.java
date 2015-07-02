@@ -8,7 +8,9 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.user.exception.UserRegisterException;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.util.CommonUtils;
@@ -382,7 +384,11 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	 */
 	public String registerByMobileNumber() {
 		try {
-
+			boolean validationSuccess = userService.validateRegisterUser(getInstance());
+			if (!validationSuccess) {
+				FacesUtil.addErrorMessage("注册失败！");
+				return null;
+			}
 			userService.registerByMobileNumber(getInstance(), authCode,
 					referrer);
 			userService.addRegisterEmailVerificationJob(getInstance());
@@ -404,6 +410,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 			FacesUtil.addErrorMessage("验证码已过期！");
 		} catch (AuthInfoAlreadyActivedException e) {
 			FacesUtil.addErrorMessage("验证码已被使用！");
+		} catch (InputRuleMatchingException | UserRegisterException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		return null;
 	}
