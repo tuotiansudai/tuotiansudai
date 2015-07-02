@@ -11,7 +11,7 @@ public class CommonUtils {
         return PropertiesUtils.getPro(environment).equals("dev");
     }
 
-    public static String emailAddress(){
-        return PropertiesUtils.getPro("email");
+    public static String administratorEmailAddress(){
+        return PropertiesUtils.getPro("administratorEmail");
     }
 }
