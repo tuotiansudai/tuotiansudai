@@ -2,12 +2,10 @@ package com.esoft.archer.user.service;
 
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
 import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.ConfigNotFoundException;
-import com.esoft.archer.user.exception.NotConformRuleException;
-import com.esoft.archer.user.exception.RoleNotFoundException;
-import com.esoft.archer.user.exception.UserNotFoundException;
+import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.User;
 
 /**
@@ -453,4 +451,6 @@ public interface UserService {
 			throws UserNotFoundException;
 
 	void addRegisterEmailVerificationJob(User user);
+
+	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
 }
