@@ -1,25 +1,22 @@
 package com.esoft.jdp2p.message.service.impl;
 
-import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
+import com.esoft.archer.config.ConfigConstants;
+import com.esoft.archer.config.model.Config;
+import com.esoft.core.annotations.Logger;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.SpringBeanUtil;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.service.MailService;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
-import com.esoft.archer.config.ConfigConstants;
-import com.esoft.archer.config.model.Config;
-import com.esoft.core.annotations.Logger;
-import com.esoft.core.util.SpringBeanUtil;
-import com.esoft.jdp2p.message.exception.MailSendErrorException;
-import com.esoft.jdp2p.message.service.MailService;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Properties;
 
 @Service("mailService")
 public class MailServiceImpl implements MailService {
@@ -96,9 +93,11 @@ public class MailServiceImpl implements MailService {
 			// FIXME 需要修改为异步发送消息
 			trans.send(mailMessage);
 
-		} catch (Exception e) {
+		} catch (MessagingException e) {
 			log.error(e);
-			throw new MailSendErrorException(e);
+			FacesUtil.addErrorMessage("验证码发送失败，请检查邮箱合法性！");
+		} catch (UnsupportedEncodingException e) {
+			log.error(e);
 		}
 	}
 
