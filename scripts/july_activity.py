@@ -31,11 +31,14 @@ SQL = """
         ) AS '是否实名',
         IF (n.`id` IS NOT NULL, 1, 0) AS '是否充值',
         IFNULL(investtemp.`money`, 0.00) AS '投资情况',
-        t.`referrer` AS '推荐人'
+        t.`referrer` AS '推荐人',
+        u.`mobile_number`
       FROM
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
+        LEFT JOIN `user` u
+          ON t.`referrer` = u.`username`
         LEFT JOIN recharge n
           ON t.`id` = n.`user_id`
           AND n.`status` = 'success'
