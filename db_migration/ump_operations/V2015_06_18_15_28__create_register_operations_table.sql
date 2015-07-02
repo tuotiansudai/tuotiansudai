@@ -1,4 +1,4 @@
-CREATE TABLE ${ump_operations}.`ump_mer_register_request` (
+CREATE TABLE ${ump_operations}.`mer_register_request` (
   `id`            INT(32)      NOT NULL AUTO_INCREMENT,
   `mer_cust_id`   VARCHAR(32)  NOT NULL,
   `mer_cust_name` VARCHAR(256) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE ${ump_operations}.`ump_mer_register_request` (
   AUTO_INCREMENT = 100001
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE `${ump_operations}`.`ump_mer_register_response` (
+CREATE TABLE `${ump_operations}`.`mer_register_response` (
   `id`            INT(32)    NOT NULL AUTO_INCREMENT,
   `reg_date`      DATETIME,
   `user_id`       VARCHAR(32),
@@ -24,7 +24,7 @@ CREATE TABLE `${ump_operations}`.`ump_mer_register_response` (
   `response_time` DATETIME   NOT NULL,
   `request_id`    INT(32)    NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_REGISTER_RES_FOR_REQ FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`ump_mer_register_request` (`id`)
+  CONSTRAINT FK_REGISTER_RES_FOR_REQ FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_register_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

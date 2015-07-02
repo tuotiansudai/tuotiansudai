@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper">
+
+
+    <insert id="createMerRegisterPersonRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonRequestModel">
+        insert into mer_register_request (mer_cust_id, mer_cust_name, identity_type, identity_code, mobile_id, request_time, request_url)
+        values (#{loginName}, #{userName}, #{identityType}, #{identityNumber}, #{mobileNumber}, #{requestTime}, #{requestUrl})
+    </insert>
+
+    <select id="findMerRegisterPersonRequestById" parameterType="java.lang.Long" resultMap="">
+        select * from mer_register_request where id = #{id}
+    </select>
+
+</mapper>

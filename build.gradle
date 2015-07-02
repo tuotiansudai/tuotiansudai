@@ -13,6 +13,7 @@ subprojects {
         def springVersion = '4.1.6.RELEASE'
         def slf4jVersion = '1.7.12'
         compile 'log4j:log4j:1.2.17',
+                'com.google.guava:guava:18.0',
                 "org.slf4j:slf4j-log4j12:$slf4jVersion",
                 "org.slf4j:slf4j-api:$slf4jVersion"
 

@@ -16,10 +16,10 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <context:property-placeholder location="classpath:zucp.properties, classpath:jdbc.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties, classpath:umpay.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.smswrapper"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.client, com.tuotiansudai.repository, com.tuotiansudai.service"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}"/>
@@ -40,7 +40,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.smswrapper.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -50,7 +50,7 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.smswrapper.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.paywrapper.repository.mapper"/>
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />

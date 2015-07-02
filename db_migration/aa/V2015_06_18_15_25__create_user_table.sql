@@ -28,17 +28,17 @@ CREATE TABLE ${aa}.`user` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE ${aa}.`account` (
-  id             INT(32)     NOT NULL AUTO_INCREMENT,
-  identity_id    VARCHAR(20) NOT NULL,
-  user_name      VARCHAR(50) NOT NULL,
-  ump_user_id    VARCHAR(32),
-  ump_account_id VARCHAR(15),
-  create_time    DATETIME    NOT NULL,
-  user_id        INT(32)     NOT NULL,
+  id              INT(32)     NOT NULL AUTO_INCREMENT,
+  identity_number VARCHAR(20) NOT NULL,
+  user_name       VARCHAR(50) NOT NULL,
+  ump_user_id     VARCHAR(32),
+  ump_account_id  VARCHAR(15),
+  create_time     DATETIME    NOT NULL,
+  user_id         INT(32)     NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY ACCOUNT_IDENTITY_UNIQUE (identity_id),
+  UNIQUE KEY ACCOUNT_IDENTITY_UNIQUE (identity_number),
   INDEX ACCOUNT_USER_NAME_INDEX(user_name),
-  INDEX ACCOUNT_IDENTITY_INDEX(identity_id),
+  INDEX ACCOUNT_IDENTITY_INDEX(identity_number),
   CONSTRAINT FK_ACCOUNT_FOR_USER FOREIGN KEY (user_id) REFERENCES ${aa}.`user` (id)
 )
   ENGINE = InnoDB
