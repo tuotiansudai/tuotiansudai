@@ -15,6 +15,7 @@ import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.core.annotations.Logger;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
@@ -451,7 +452,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void sendBindingEmail(String userId, String email)
-			throws UserNotFoundException {
+			throws UserNotFoundException,MailSendErrorException {
 		User user = ht.get(User.class, userId);
 		if (user == null) {
 			throw new UserNotFoundException("user.id:" + userId);
