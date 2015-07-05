@@ -124,5 +124,10 @@ public class ScheduleConstants {
 		 * 放款成功通知
 		 */
 		public static final String LOAN_OUT_NOTIFICATION = "loan_out_notification";
+
+		/**
+		 * 注册邮箱验证
+		 */
+		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
 	}
 }

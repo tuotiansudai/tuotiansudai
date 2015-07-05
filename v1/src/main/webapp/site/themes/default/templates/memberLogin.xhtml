@@ -153,13 +153,14 @@
 						<div class="clear"></div>
 					</div>
 				</form>
+				<div>#{request.getAttribute("ttsd")}</div>
 			</div>
 			<div class="clear"></div>
 		</div>
 		<ui:fragment
 			rendered="#{not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
 			<script>
-				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 2);
+				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 5);
 			</script>
 		</ui:fragment>
 		<ui:include src="footer.xhtml"></ui:include>

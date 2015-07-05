@@ -1,24 +1,24 @@
 package com.esoft.archer.user.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.service.BaseService;
+import com.esoft.archer.config.ConfigConstants;
+import com.esoft.archer.config.model.Config;
+import com.esoft.archer.config.service.ConfigService;
+import com.esoft.archer.openauth.OpenAuthConstants;
+import com.esoft.archer.openauth.service.OpenAuthService;
+import com.esoft.archer.user.UserConstants;
+import com.esoft.archer.user.exception.IllegalLoginIPException;
+import com.esoft.archer.user.exception.UserNotFoundException;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.model.UserLoginLog;
+import com.esoft.archer.user.schedule.EnableUserJob;
+import com.esoft.archer.user.service.UserService;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.SimpleTrigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -32,31 +32,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.service.BaseService;
-import com.esoft.archer.config.ConfigConstants;
-import com.esoft.archer.config.model.Config;
-import com.esoft.archer.config.service.ConfigService;
-import com.esoft.archer.openauth.OpenAuthConstants;
-import com.esoft.archer.openauth.service.OpenAuthService;
-import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.IllegalLoginIPException;
-import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.model.UserLoginLog;
-import com.esoft.archer.user.schedule.EnableUserJob;
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.Base64Coder;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.IdGenerator;
-import com.esoft.core.util.SpringBeanUtil;
-import com.esoft.core.util.StringManager;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Service("myAuthenticationManager")
 public class MyAuthenticationManager extends DaoAuthenticationProvider {
-	private BaseService<User> userService;
+
 	private BaseService<UserLoginLog> loginLogService;
-	private static StringManager sm = StringManager
-			.getManager(UserConstants.Package);
+
+	private static StringManager sm = StringManager.getManager(UserConstants.Package);
 
 	@Override
 	@Resource(name = "jdbcUserDetailsManager")
@@ -113,27 +99,19 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication)
 			throws AuthenticationException {
+		request.setAttribute("ttsd", "515151515");
 		authentication = this.decryptBase64(authentication);
 		// 是否需要验证码
-		Boolean needValidateCode = (Boolean) request.getSession(true)
-				.getAttribute(
-						UserConstants.AuthenticationManager.NEED_VALIDATE_CODE);
-		int loginFailLimit = Integer.parseInt(getHt().get(Config.class,
-				ConfigConstants.UserSafe.LOGIN_FAIL_MAX_TIMES).getValue());
-
-		if (needValidateCode == null) {
-			needValidateCode = false;
-		}
+		Boolean needValidateCode = (Boolean) request.getSession(true).getAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE);
 
 		// check validate code
-		if (needValidateCode || loginFailLimit == 0) {
+		if (needValidateCode != null && needValidateCode) {
 			checkValidateCode(request);
 		}
 		try {
 			return super.authenticate(authentication);
 		} catch (AuthenticationException ae) {
 			// 方法additionalAuthenticationChecks中会捕获此异常并进行异常处理，因此无需再次对此异常进行处理
-			handleLoginFail(null, request);
 			throw ae;
 		}
 	}
@@ -168,36 +146,30 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	 * @param user
 	 * @param request
 	 */
-	private void handleLoginSuccess(User user, HttpServletRequest request) {
-		request.getSession(true).setAttribute(
-				UserConstants.AuthenticationManager.LOGIN_FAIL_TIME, 0);
-		request.getSession(true).setAttribute(
-				UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
-		String openAuthBidding = request
-				.getParameter("open_auth_bidding_login");
-		if (StringUtils.isNotEmpty(openAuthBidding)
-				&& openAuthBidding.trim().equals("true")) {
+	private void handleLoginSuccess(User user, HttpServletRequest request) throws UserNotFoundException {
+		UserService userService = (UserService) SpringBeanUtil.getBeanByName("userService");
+		userService.changeUserStatus(user.getId(), UserConstants.UserStatus.ENABLE);
+
+		request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
+
+		String openAuthBidding = request.getParameter("open_auth_bidding_login");
+
+		if (StringUtils.isNotEmpty(openAuthBidding) && openAuthBidding.trim().equals("true")) {
 			// 第三方首次登录，绑定已有账号
-			Object openId = request.getSession().getAttribute(
-					OpenAuthConstants.OPEN_ID_SESSION_KEY);
-			Object openAutyType = request.getSession().getAttribute(
-					OpenAuthConstants.OPEN_AUTH_TYPE_SESSION_KEY);
-			Object accessToken = request.getSession().getAttribute(
-					OpenAuthConstants.ACCESS_TOKEN_SESSION_KEY);
-			if (openId != null && openAutyType != null && accessToken != null) {
+			Object openId = request.getSession().getAttribute(OpenAuthConstants.OPEN_ID_SESSION_KEY);
+			Object openAuthType = request.getSession().getAttribute(OpenAuthConstants.OPEN_AUTH_TYPE_SESSION_KEY);
+			Object accessToken = request.getSession().getAttribute(OpenAuthConstants.ACCESS_TOKEN_SESSION_KEY);
+
+			if (openId != null && openAuthType != null && accessToken != null) {
 				OpenAuthService oas = null;
-				if (OpenAuthConstants.Type.QQ.equals((String) openAutyType)) {
-					oas = (OpenAuthService) SpringBeanUtil
-							.getBeanByName("qqOpenAuthService");
-				} else if (OpenAuthConstants.Type.SINA_WEIBO
-						.equals((String) openAutyType)) {
-					oas = (OpenAuthService) SpringBeanUtil
-							.getBeanByName("sinaWeiboOpenAuthService");
+				if (OpenAuthConstants.Type.QQ.equals((String) openAuthType)) {
+					oas = (OpenAuthService) SpringBeanUtil.getBeanByName("qqOpenAuthService");
+				} else if (OpenAuthConstants.Type.SINA_WEIBO.equals((String) openAuthType)) {
+					oas = (OpenAuthService) SpringBeanUtil.getBeanByName("sinaWeiboOpenAuthService");
 				}
 				// 找不到应该抛异常
 				if (oas != null) {
-					oas.binding(user.getId(), (String) openId,
-							(String) accessToken);
+					oas.binding(user.getId(), (String) openId, (String) accessToken);
 				}
 			}
 		}
@@ -212,30 +184,20 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	 * @param request
 	 */
 	private void handleLoginFail(User user, HttpServletRequest request) {
-		if (user == null) {
-			// 连续登录失败，达到一定次数，就出验证码
-			int loginFailLimit = Integer.parseInt(getHt().get(Config.class,
-					ConfigConstants.UserSafe.LOGIN_FAIL_MAX_TIMES).getValue());
-			Integer loginFailTime = (Integer) request
-					.getSession(true)
-					.getAttribute(
-							UserConstants.AuthenticationManager.LOGIN_FAIL_TIME);
-			if (loginFailTime == null) {
-				loginFailTime = 0;
-			}
-			loginFailTime++;
-			request.getSession(true).setAttribute(
-					UserConstants.AuthenticationManager.LOGIN_FAIL_TIME,
-					loginFailTime);
-			if (loginFailLimit <= loginFailTime) {
-				request.getSession(true).setAttribute(
-						UserConstants.AuthenticationManager.NEED_VALIDATE_CODE,
-						true);
-			}
-		} else {
-			handleUserState(user);
-			addUserLoginLog(user, request, UserConstants.UserLoginLog.FAIL);
+		// 连续登录失败，达到一定次数，就出验证码
+		int loginFailLimit = Integer.parseInt(getHt().get(Config.class, ConfigConstants.UserSafe.LOGIN_FAIL_MAX_TIMES).getValue());
+		Integer loginFailTime = user.getLoginFailedTimes();
+		loginFailTime = loginFailTime == null ? 1 : loginFailTime + 1;
+		user.setLoginFailedTimes(loginFailLimit);
+		BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
+		userService.save(user);
+
+		if (loginFailLimit <= loginFailTime) {
+			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, true);
 		}
+
+		handleUserState(user);
+		addUserLoginLog(user, request, UserConstants.UserLoginLog.FAIL);
 	}
 
 	/**
@@ -245,37 +207,23 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	 */
 	private void handleUserState(User user) {
 		// 同一个用户名，密码一直输入错误，达到一定次数，就锁定账号。
-		int passwordFailLimit = Integer.parseInt(getHt().get(Config.class,
-				ConfigConstants.UserSafe.PASSWORD_FAIL_MAX_TIMES).getValue());
-		DetachedCriteria criteria = DetachedCriteria
-				.forClass(UserLoginLog.class);
-		criteria.addOrder(Order.desc("loginTime"));
-		criteria.add(Restrictions.eq("username", user.getUsername()));
-		List<UserLoginLog> ulls = getHt().findByCriteria(criteria, 0,
-				passwordFailLimit);
-		if (ulls.size() == passwordFailLimit) {
-			// 达到最大次数了
-			// 有一次登录成功的，就不锁定
-			for (UserLoginLog ull : ulls) {
-				if (ull.getIsSuccess().equals(
-						UserConstants.UserLoginLog.SUCCESS)) {
-					return;
-				}
-			}
+		int passwordFailLimit = Integer.parseInt(getHt().get(Config.class, ConfigConstants.UserSafe.PASSWORD_FAIL_MAX_TIMES).getValue());
+
+		if (user.getLoginFailedTimes() >= passwordFailLimit) {
 			// 锁定账号
 			user.setStatus(UserConstants.UserStatus.DISABLE);
-			userService = (BaseService<User>) SpringBeanUtil
-					.getBeanByName("baseService");
-			userService.save(user);
 
-			// 解锁时间可配(默认3小时)
-			int disableTime = 10800;
+			BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
+
+			userService.save(user);
+			// 解锁时间可配(默认30分钟)
+			int disableTime = 1800;
 			try {
-				String disableTimeStr = configService
-						.getConfigValue("user_safe.user_disable_time");
+				String disableTimeStr = configService.getConfigValue("user_safe.user_disable_time");
+
 				disableTime = Integer.parseInt(disableTimeStr);
-			} catch (ObjectNotFoundException e) {
-			} catch (NumberFormatException nfe) {
+			} catch (ObjectNotFoundException | NumberFormatException e) {
+				logger.error(e);
 			}
 
 			Date enableDate = DateUtil.addSecond(new Date(), disableTime);
@@ -292,8 +240,8 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 					// 生成新的job和trigger
 					JobDetail jobDetail = JobBuilder
 							.newJob(EnableUserJob.class)
-							.withIdentity("enable" + user.getId(),
-									"enable_user").build();
+							.withIdentity("enable " + user.getId(), "enable_user").build();
+					jobDetail.getJobDataMap().put(EnableUserJob.USER_ID, user.getId());
 					trigger = TriggerBuilder
 							.newTrigger()
 							.withIdentity(user.getId(), EnableUserJob.USER_ID)
@@ -306,7 +254,8 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 				}
 
 			} catch (SchedulerException e) {
-				e.printStackTrace();
+				logger.error("用户 " + user.getId() + " 解锁任务创建失败！");
+				logger.error(e);
 			}
 		}
 	}

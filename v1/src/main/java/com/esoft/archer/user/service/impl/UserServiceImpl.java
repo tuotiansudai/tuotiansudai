@@ -296,6 +296,9 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException("userId:" + userId);
 		}
 		user.setStatus(status);
+		if (status.equalsIgnoreCase(UserConstants.UserStatus.ENABLE)) {
+			user.setLoginFailedTimes(0);
+		}
 		userBO.update(user);
 	}
 
@@ -870,7 +873,7 @@ public class UserServiceImpl implements UserService {
 		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
 		SimpleTrigger trigger = TriggerBuilder
 				.newTrigger()
-				.withIdentity(userId, ScheduleConstants.TriggerGroup.LOAN_OUT_NOTIFICATION)
+				.withIdentity(userId, ScheduleConstants.TriggerGroup.REGISTER_VERIFICATION_EMAIL)
 				.forJob(jobDetail)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
 				.startAt(threeMinutesLater).build();
