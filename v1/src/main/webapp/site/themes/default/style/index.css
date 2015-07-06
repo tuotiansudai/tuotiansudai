@@ -67,5 +67,10 @@
 .tab1-cons,.tab2-cons{ padding-top:20px;}
 .gengduo{font-size: 12px !important;color: #7f7f7f !important;margin-top: 18px;padding-right: 0px !important;}
 .gengduo:hover{color: #f77462 !important}
-.announcement{font-size: 15px; text-align: center;padding: 5px 0; background-color: #fa6458}
+.announcement{width: 1000px;margin: 0 auto;height: 52px;border-bottom: 1px #d7dbde solid;border-left: 1px #d7dbde solid;border-right: 1px #d7dbde solid;position: relative;}
+.announcement a{padding-left:16px;}
+.announcement a:hover{color: red;}
+.latest-announcement{padding: 16px;display: inline-block;}
+.latest-announcement:after {content: "";display: block;border-right: 1px #d7dbde solid;height: 33px;position: absolute;left: 87px;top: 8px;}
+.more-announcements {position: absolute;right: 16px;top: 16px;}
 /**layout end**/
