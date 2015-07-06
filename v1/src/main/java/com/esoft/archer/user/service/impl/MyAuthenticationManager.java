@@ -23,6 +23,7 @@ import org.quartz.impl.StdScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.Date;
 
 @Service("myAuthenticationManager")
@@ -97,9 +99,7 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	 * 验证用户名
 	 */
 	@Override
-	public Authentication authenticate(Authentication authentication)
-			throws AuthenticationException {
-		request.setAttribute("ttsd", "515151515");
+	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		authentication = this.decryptBase64(authentication);
 		// 是否需要验证码
 		Boolean needValidateCode = (Boolean) request.getSession(true).getAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE);
@@ -112,14 +112,18 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 			return super.authenticate(authentication);
 		} catch (AuthenticationException ae) {
 			// 方法additionalAuthenticationChecks中会捕获此异常并进行异常处理，因此无需再次对此异常进行处理
+			if (ae instanceof DisabledException) {
+				String lock_time = configService.getConfigValue("user_safe.user_disable_time");
+				int seconds = Integer.parseInt(lock_time);
+				String messageTemplate = "由于登录失败过多，您的账户将禁用{0}分钟，或与客服联系！";
+				request.setAttribute(UserConstants.AuthenticationManager.USER_LOCK, MessageFormat.format(messageTemplate, seconds / 60));
+			}
 			throw ae;
 		}
 	}
 
 	@Override
-	protected void additionalAuthenticationChecks(UserDetails userDetails,
-			UsernamePasswordAuthenticationToken authentication)
-			throws AuthenticationException {
+	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 		this.setPasswordEncoder(new ShaPasswordEncoder());
 		User user = (User) getHt().findByNamedQuery("User.findUserByUsername",
 				userDetails.getUsername()).get(0);
@@ -146,11 +150,16 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	 * @param user
 	 * @param request
 	 */
-	private void handleLoginSuccess(User user, HttpServletRequest request) throws UserNotFoundException {
+	private void handleLoginSuccess(User user, HttpServletRequest request) {
 		UserService userService = (UserService) SpringBeanUtil.getBeanByName("userService");
-		userService.changeUserStatus(user.getId(), UserConstants.UserStatus.ENABLE);
 
-		request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
+		try {
+			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
+			userService.changeUserStatus(user.getId(), UserConstants.UserStatus.ENABLE);
+		} catch (UserNotFoundException e) {
+			logger.error(e);
+			return;
+		}
 
 		String openAuthBidding = request.getParameter("open_auth_bidding_login");
 
@@ -188,7 +197,7 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		int loginFailLimit = Integer.parseInt(getHt().get(Config.class, ConfigConstants.UserSafe.LOGIN_FAIL_MAX_TIMES).getValue());
 		Integer loginFailTime = user.getLoginFailedTimes();
 		loginFailTime = loginFailTime == null ? 1 : loginFailTime + 1;
-		user.setLoginFailedTimes(loginFailLimit);
+		user.setLoginFailedTimes(loginFailTime);
 		BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
 		userService.save(user);
 
