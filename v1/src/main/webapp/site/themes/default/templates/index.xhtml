@@ -22,7 +22,16 @@
 			<ui:include src="banner.xhtml"></ui:include>
 		</div>
 		<!-- banner end -->
-		<div class="announcement"><a href="https://tuotiansudai.com/node/announcement/10000">拓天速贷7月注册活动，发送红包延时公告</a></div>
+		<div class="announcement">
+			<span class="latest-announcement">最新公告</span>
+
+			<ui:param name="pageModel" value="#{nodeList.getNodes('announcement',1)}"></ui:param>
+			<ui:repeat var="node" value="#{pageModel.data}" varStatus="i">
+				<a title="#{node.title}" href="#{path}/node/announcement/#{node.id}">#{node.title}</a>
+			</ui:repeat>
+			<a class="more-announcements" href="/news/announcement">更多</a>
+		</div>
+
 
 		<div class="data-con clearfix">
 			<span class="fl wid330 m_bottom_0">
@@ -495,9 +504,6 @@
 							}
 							$(".opacityI").css("opacity","0");
 						}
-						$(document).ready(function(){
-							$('.announcement').delay(10000).fadeOut(5000);
-						});
 					//]]>
 				</script>
 				
