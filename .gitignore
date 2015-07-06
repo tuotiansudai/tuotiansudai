@@ -1,4 +1,5 @@
 **/*.db
+.sass-cache
 spike.py
 **/*.pyc
 **/.idea/

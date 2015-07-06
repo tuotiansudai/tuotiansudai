@@ -5,7 +5,6 @@
     <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
     <title>注册</title>
     <link rel="stylesheet" type="text/css" href="../style/index.css">
-    <script src="../js/libs/require.js" defer async="true" data-main="../js/main"></script>
 </head>
 <body>
 <#include "header.ftl" />
@@ -21,26 +20,34 @@
 <!--registered begin-->
 <div class="registered">
     <ul>
-        <li class="reg_one"><a href="javascript:;"><span>1</span>注册</a></li>
-        <li class="reg_two"><a href="javascript:;"><span>2</span>实名验证</a></li>
-        <li class="reg_three"><a href="javascript:;"><span>3</span>充值投资</a></li>
+        <li class="reg_one"><span>1</span>注册</li>
+        <li class="reg_two"><span>2</span>实名验证</li>
+        <li class="reg_three"><span>3</span>充值投资</li>
     </ul>
     <div class="step_one">
         <ol>
-            <form>
-                <li class="step_username"><input type="text" placeholder="5至25位以字母、数字组合，请勿使用手机号"
-                                                 class="username"/><b>用户名只允许包含字母和数字，长度为5-25位，
-                    请勿使用手机号！</b><em></em><strong></strong></li>
-                <li class="step_one_phone"><input type="text" placeholder="请输入您的手机号"
-                                                  class="phone"/><b>手机号不能为空！</b><em></em><strong></strong></li>
-                <li class="step_two_verCode"><input type="text" placeholder="请输入验证码" class="vcode"/>
-                    <span class="send_vcode">获取验证码</span><b>验证码不能为空</b><em></em><strong></strong></li>
-                <li class="step_three_password"><input type="password" placeholder="请输入6-16位字母、数字密码组合"
-                                                       class="password"/> <b>密码不能为空</b><em></em></li>
-                <li class="step_four_email"><input type="text" placeholder="请输入邮箱" class="email"/><b>邮箱不能为空</b><em></em><strong></strong>
+            <form id="registrationForm">
+                <li class="step_username">
+                    <input type="text" name="username" placeholder="5至25位以字母、数字组合，请勿使用手机号" class="username"/>
                 </li>
-                <li class="step_five_user"><input type="text" placeholder="请输入推荐人用户（选填）"
-                                                  class="user"/><b>没有这个用户！</b><em></em><strong></strong></li>
+
+                <li class="step_one_phone">
+                    <input type="text" name="mobile-number" placeholder="请输入您的手机号" class="phone"/>
+                </li>
+
+                <li class="step_two_verCode">
+                    <input type="text" name="vcode" placeholder="请输入验证码" class="vcode"/>
+                    <#--<span class="send_vcode">获取验证码</span>-->
+                </li>
+
+                <li class="step_three_password">
+                    <input type="password" name="password" placeholder="请输入6-16位字母、数字密码组合" class="password"/>
+                    <#--<b>密码不能为空</b>-->
+                </li>
+
+                <li class="step_five_user">
+                    <input type="text" name="referrer" placeholder="请输入推荐人用户（选填）" class="user"/>
+                </li>
             </form>
         </ol>
         <a href="javascript:;" class="next_reg">下一步</a>
@@ -115,6 +122,8 @@
     <p>
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
+<script src="../js/config.js"></script>
+<script src="../js/libs/require.js" defer async="true" data-main="../js/register.js"></script>
 <#include "footer.ftl">
 </body>
 </html>

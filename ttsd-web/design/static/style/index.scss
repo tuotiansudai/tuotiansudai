@@ -1713,30 +1713,19 @@ body {
     & li.reg_one {
       width: 330px;
       margin-left: 7px;
-      & a {
-        background: url("../images/register/reg_one.png") no-repeat;
-      }
-      & a:hover {
-        background: url("../images/register/reg_one_active.png") no-repeat;
-        color: #fff;
-      }
+      background: url("../images/register/reg_one_active.png") no-repeat;
+      color: #fff;
     }
+
     & li.reg_two {
       width: 324px;
-      & a {
-        background: url("../images/register/reg_two.png") no-repeat;
-      }
-      & a:hover {
-        background: url("../images/register/reg_two_active.png") no-repeat;
-        color: #fff;
-      }
+      background: url("../images/register/reg_two.png") no-repeat;
+
     }
     & li.reg_three {
       width: 324px;
       margin-left: 6px;
-      & a {
-        background: url("../images/register/reg_three.png") no-repeat;
-      }
+      background: url("../images/register/reg_three.png") no-repeat;
     }
   }
 }
@@ -1753,20 +1742,20 @@ body {
       height: 40px;
       margin-top: 20px;
       position: relative;
-      & b {
+
+      .form-error {
         font-weight: normal;
         color: #f68e3a;
         font-size: 12px;
         margin-left: 6px;
         width: 180px;
         float: left;
-        height: 40px;
-        line-height: 40px;
+        line-height: 20px;
         display: block;
         padding-left: 28px;
         background: url("../images/register/registered.png") no-repeat 0px -81px;
-        opacity: 0;
       }
+
       & em {
         position: absolute;
         left: 330px;
@@ -1797,7 +1786,7 @@ body {
       padding-left: 40px;
       float: left;
     }
-    & span {
+    & .send_vcode {
       display: block;
       width: 90px;
       height: 28px;
