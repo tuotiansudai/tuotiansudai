@@ -632,6 +632,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
+		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -645,11 +646,11 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(null, mobileNumber, null,
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
-		if(CommonUtils.isDevEnvironment("environment")){
+		if(!CommonUtils.isDevEnvironment("environment")){
 			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String ip = CommonUtils.getRemoteHost(request);
 			Date nowTime = new Date();
-			redisClinet.getJedis().lpush("userRegisterList",ip+"|"+mobileNumber+"|"+DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss"));
+			redisClinet.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
 			if (redisClinet.getJedis().exists(ip)) {
 				Date lastTime = DateUtil.StringToDate(redisClinet.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
 				long diff = nowTime.getTime() - lastTime.getTime();
