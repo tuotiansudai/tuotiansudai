@@ -20,6 +20,7 @@ import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
@@ -245,8 +246,8 @@ public class JulyActivityRewardService {
                     log.error(e);
                 }
                 try {
-                    String systemBillDetailTemplate = "推荐新用户充值成功奖励: orderId = {0}, rechargeId= {1} referrerId = {2}, userId = {3}";
-                    systemBillService.transferOut(referrerRechargeReward / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, accountId, referrerId, userId));
+                    String systemBillDetailTemplate = "推荐新用户充值成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
+                    systemBillService.transferOut(referrerRechargeReward / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, referrerId, userId));
                 } catch (Exception e) {
                     String template = "Create system bill recharge reward failed: rewardId = {0}";
                     log.error(MessageFormat.format(template, rewardId));
@@ -271,7 +272,7 @@ public class JulyActivityRewardService {
                     log.error(e);
                 }
                 try {
-                    String systemBillDetailTemplate = "推荐新用户投资成功奖励: orderId = {0}, investId= {1}, referrerId = {2}, userId = {3}";
+                    String systemBillDetailTemplate = "推荐新用户投资成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
                     systemBillService.transferOut(referrerInvestReward / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, accountId, referrerId, userId));
                 } catch (Exception e) {
                     String template = "Create system bill invest reward failed: rewardId = {0}";
@@ -287,7 +288,10 @@ public class JulyActivityRewardService {
             DetachedCriteria investCriteria = DetachedCriteria.forClass(Invest.class);
             investCriteria.createAlias("loan", "loan")
                     .add(Restrictions.eq("user.id", userId))
-                    .add(Restrictions.eq("status", InvestConstants.InvestStatus.BID_SUCCESS))
+                    .add(Restrictions.in("status", Lists.newArrayList(InvestConstants.InvestStatus.BID_SUCCESS,
+                            InvestConstants.InvestStatus.CANCEL,
+                            InvestConstants.InvestStatus.COMPLETE,
+                            InvestConstants.InvestStatus.REPAYING)))
                     .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 1D)),
                             Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1D))))
                     .addOrder(Order.asc("time"));
