@@ -428,9 +428,15 @@ public class JulyActivityRewardService {
     private boolean isSuccessBindBankCard(String userId) {
         try {
             DetachedCriteria bankCardCriteria = DetachedCriteria.forClass(BankCard.class);
-            bankCardCriteria.add(Restrictions.eq("user.id", userId));
+            bankCardCriteria.add(Restrictions.eq("user.id", userId))
+                    .add(Restrictions.eq("status", "passed"));
             List<BankCard> bankCards = ht.findByCriteria(bankCardCriteria, 0, 1);
-            return CollectionUtils.isNotEmpty(bankCards);
+            boolean successBindBankCard = CollectionUtils.isNotEmpty(bankCards);
+            if (!successBindBankCard) {
+                String template = "Not bind bank card: userId = {0}";
+                log.error(MessageFormat.format(template, userId));
+            }
+            return successBindBankCard;
         } catch (Exception e) {
             String template = "Query bank card failed: userId = {0}";
             log.error(MessageFormat.format(template, userId));
