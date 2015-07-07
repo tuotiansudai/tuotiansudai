@@ -30,7 +30,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -289,8 +288,8 @@ public class JulyActivityRewardService {
             investCriteria.createAlias("loan", "loan")
                     .add(Restrictions.eq("user.id", userId))
                     .add(Restrictions.eq("status", InvestConstants.InvestStatus.BID_SUCCESS))
-                    .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 500D)),
-                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1000D))))
+                    .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 1D)),
+                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1D))))
                     .addOrder(Order.asc("time"));
             List<Invest> invests = ht.findByCriteria(investCriteria, 0, 1);
             return CollectionUtils.isNotEmpty(invests);
