@@ -102,16 +102,16 @@ public class ReferrerRelationList extends EntityQuery<User> {
     }
 
     private Integer getMaxGradeByRoleUserId(String userId) {
-        boolean hasMerchandiser = userService.hasRole(userId, ROLE_MERCHANDISER);//是否业务员
-        boolean hasInvest = false;//是否投资人
+        boolean isMerchandiser = userService.hasRole(userId, ROLE_MERCHANDISER);//是否业务员
+        boolean isInvest = false;//是否投资人
         Integer grade = -1;
 
-        if (hasMerchandiser){
-            grade = referGradePtSysService.getAddHighestMerchandiserGrade() - 1;
+        if (isMerchandiser){
+            grade = referGradePtSysService.getMerchandiserMaxGrade();
         }else{
-            hasInvest = userService.hasRole(userId,INVESTOR);
-            if(hasInvest){
-                grade = referGradePtSysService.getAddHighestInvestGrade() - 1;
+            isInvest = userService.hasRole(userId,INVESTOR);
+            if(isInvest){
+                grade = referGradePtSysService.getInvestMaxGrade();
             }
         }
         return grade;
