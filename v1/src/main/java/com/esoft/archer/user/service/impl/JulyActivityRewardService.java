@@ -94,7 +94,7 @@ public class JulyActivityRewardService {
                         reward.setReferrer(referrer);
                     }
                     ht.save(reward);
-                    String template = "Create activity reward success: rewardId = {0}, userId = {0}";
+                    String template = "Create activity reward success: rewardId = {0}, userId = {1}";
                     log.info(MessageFormat.format(template, Long.toString(reward.getId()), userId));
                 }
             } catch (Exception e) {
@@ -198,8 +198,8 @@ public class JulyActivityRewardService {
         String accountId = this.getAccount(referrerId);
 
 
-        if (Strings.isNullOrEmpty(accountId) || this.isSuccessBindBankCard(referrerId)) {
-            String template = "Referrer account is not Exist or no bank card: referrerId = {0}, rewardId = {1}";
+        if (Strings.isNullOrEmpty(accountId) || !this.isSuccessBindBankCard(referrerId)) {
+            String template = "Referrer account is not exist or no bank card: referrerId = {0}, rewardId = {1}";
             log.error(MessageFormat.format(template, referrerId, rewardId));
             return;
         }
