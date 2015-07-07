@@ -292,8 +292,8 @@ public class JulyActivityRewardService {
                             InvestConstants.InvestStatus.CANCEL,
                             InvestConstants.InvestStatus.COMPLETE,
                             InvestConstants.InvestStatus.REPAYING)))
-                    .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 1D)),
-                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1D))))
+                    .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 500D)),
+                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1000D))))
                     .addOrder(Order.asc("time"));
             List<Invest> invests = ht.findByCriteria(investCriteria, 0, 1);
             return CollectionUtils.isNotEmpty(invests);
