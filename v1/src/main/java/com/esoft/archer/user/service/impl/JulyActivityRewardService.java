@@ -61,7 +61,7 @@ public class JulyActivityRewardService {
 
     @Transactional
     public void createActivityRewards() {
-        DateTime firstJuly = new DateTime().withDate(2014, 7, 1).withTimeAtStartOfDay();
+        DateTime firstJuly = new DateTime().withDate(2015, 6, 1).withTimeAtStartOfDay();
 
         DetachedCriteria accountCriteria = DetachedCriteria.forClass(TrusteeshipAccount.class);
         accountCriteria.createAlias("user", "user")
