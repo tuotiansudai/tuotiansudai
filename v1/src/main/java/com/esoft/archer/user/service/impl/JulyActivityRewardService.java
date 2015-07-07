@@ -327,8 +327,8 @@ public class JulyActivityRewardService {
             return false;
         }
 
-        String operationId = createTrusteeshipOperation(orderId, reqData);
-        if (Strings.isNullOrEmpty(operationId)) {
+        TrusteeshipOperation operation = createTrusteeshipOperation(orderId, reqData);
+        if (operation == null) {
             return false;
         }
 
@@ -337,7 +337,7 @@ public class JulyActivityRewardService {
             String responseBodyAsString = HttpClientUtil.getResponseBodyAsString(reqData.getUrl());
             Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
             log.info("Response Data" + resData);
-            return updateTrusteeshipOperationStatus(operationId, resData);
+            return updateTrusteeshipOperationStatus(operation, resData);
         } catch (Exception e) {
             String template = "Activity reward transfer failed: orderId = {0}, accountId = {1}, cent = {2}";
             log.error(MessageFormat.format(template, orderId, accountId, cent));
@@ -368,7 +368,7 @@ public class JulyActivityRewardService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private String createTrusteeshipOperation(String markId, ReqData reqData) {
+    private TrusteeshipOperation createTrusteeshipOperation(String markId, ReqData reqData) {
         try {
             TrusteeshipOperation operation = new TrusteeshipOperation();
             operation.setId(IdGenerator.randomUUID());
@@ -382,25 +382,24 @@ public class JulyActivityRewardService {
             operation.setRequestTime(new Date());
             operation.setStatus(TrusteeshipConstants.Status.SENDED);
             ht.save(operation);
-            return operation.getId();
-        } catch (DataAccessException e) {
+            return operation;
+        } catch (Exception e) {
             log.error("Create operation failed: " + reqData.getPlain());
             log.error(e);
         }
         return null;
     }
 
-    @Transactional
-    private boolean updateTrusteeshipOperationStatus(String operationId, Map<String, String> resData) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateTrusteeshipOperationStatus(TrusteeshipOperation operation, Map<String, String> resData) {
         try {
-            TrusteeshipOperation operation = ht.load(TrusteeshipOperation.class, operationId);
             operation.setStatus(SUCCESS_CODE.equals(resData.get("ret_code")) ? TrusteeshipConstants.Status.PASSED : TrusteeshipConstants.Status.REFUSED);
             operation.setResponseData(resData.toString());
             operation.setResponseTime(new Date());
-            ht.saveOrUpdate(operation);
+            ht.save(operation);
         } catch (Exception e) {
             String template = "Update operation failed: operationId = {0}, resDate = {1}";
-            log.error(MessageFormat.format(template, operationId, resData.toString()));
+            log.error(MessageFormat.format(template, operation.getId(), resData.toString()));
             log.error(e);
         }
         return SUCCESS_CODE.equals(resData.get("ret_code"));
