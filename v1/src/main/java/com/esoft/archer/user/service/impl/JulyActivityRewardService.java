@@ -396,7 +396,7 @@ public class JulyActivityRewardService {
             operation.setStatus(SUCCESS_CODE.equals(resData.get("ret_code")) ? TrusteeshipConstants.Status.PASSED : TrusteeshipConstants.Status.REFUSED);
             operation.setResponseData(resData.toString());
             operation.setResponseTime(new Date());
-            ht.save(operation);
+            ht.saveOrUpdate(operation);
         } catch (Exception e) {
             String template = "Update operation failed: operationId = {0}, resDate = {1}";
             log.error(MessageFormat.format(template, operation.getId(), resData.toString()));
