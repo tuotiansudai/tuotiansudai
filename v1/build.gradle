@@ -11,8 +11,7 @@ repositories {
 sourceSets.main.resources.srcDir 'src/main/java'
 
 dependencies {
-    testCompile "junit:junit:4.11",
-                "org.springframework:spring-test:3.2.5"
+    testCompile "junit:junit:4.11"
 
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             'joda-time:joda-time:2.8.1'
