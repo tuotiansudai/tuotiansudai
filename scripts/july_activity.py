@@ -12,7 +12,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-RECIPIENT = ["xupengfei@tuotiansudai.com", "lei@tuotiansudai.com"]
+RECIPIENT = ["xupengfei@tuotiansudai.com"]
 
 
 SQL = """
