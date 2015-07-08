@@ -45,19 +45,6 @@
                                 </div>
                                 <div class="txczje02">
                                     <div class="txczje_l">
-                                        <span>*</span>选择银行
-                                    </div>
-                                    <div class="txczje_r">
-                                        <h:selectOneMenu value="#{bankCardHome.instance.bankNo}"
-                                                         styleClass="date_select date_select03">
-                                            <f:selectItems value="#{rechargeList.rechargeBankCards}" var="bc"
-                                                           itemLabel="#{bc.bankName}" itemValue="#{bc.no}"/>
-                                        </h:selectOneMenu>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="txczje02">
-                                    <div class="txczje_l">
                                         <span>*</span>卡类型
                                     </div>
                                     <div class="txczje_r">
@@ -104,10 +91,14 @@
                                 <ui:repeat var="bankcard" value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId)}">
                                     <li>
                                         <div class="yhk">
-                                            <img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bankcard.bankNo}.png"/>
+                                            <ui:fragment rendered="#{bankCardHome.isExistsBankPhoto(bankcard.bankNo) eq true}">
+                                                <img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bankcard.bankNo}.png"/>
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{bankCardHome.isExistsBankPhoto(bankcard.bankNo) eq false}">
+                                                <span class="spanBank">#{bankcard.bank}</span>
+                                            </ui:fragment>
                                             <br/>
                                             <ui:param name="bcnL" value="#{bankcard.cardNo.length()}"></ui:param>
-
                                             <p> #{fn:substring(bankcard.cardNo,0,4)} **** **** #{fn:substring(bankcard.cardNo,bcnL-4,bcnL)}</p>
                                         </div>
                                         <div class="clear"></div>

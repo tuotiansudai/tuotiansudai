@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -123,6 +122,10 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 
 	public boolean isBoundBankCard(String userId) {
 		return bankCardService.isBoundBankCard(userId);
+	}
+
+	public boolean isExistsBankPhoto(String bankNo){
+		return this.bankCardService.isExistsBankPhoto(bankNo);
 	}
 
 }

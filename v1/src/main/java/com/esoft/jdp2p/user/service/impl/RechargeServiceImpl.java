@@ -2,18 +2,16 @@ package com.esoft.jdp2p.user.service.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.hibernate.classic.Session;
+import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,26 +181,13 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	public List<RechargeBankCard> getBankCardsList() {
+		String sql = "select * from bank_list";
 		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
-		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
-		bcs.add(new RechargeBankCardImpl("ABC", "中国农业银行"));
-		bcs.add(new RechargeBankCardImpl("ICBC", "中国工商银行"));
-		bcs.add(new RechargeBankCardImpl("CCB", "中国建设银行"));
-		bcs.add(new RechargeBankCardImpl("PSBC", "邮储银行"));
-		bcs.add(new RechargeBankCardImpl("CMBC", "中国民生银行"));
-		bcs.add(new RechargeBankCardImpl("CMB", "招商银行"));
-		bcs.add(new RechargeBankCardImpl("SPDB", "浦发银行"));
-		bcs.add(new RechargeBankCardImpl("GDB", "广发银行"));
-		bcs.add(new RechargeBankCardImpl("HXB", "华夏银行"));
-		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
-		bcs.add(new RechargeBankCardImpl("BEA", "东亚银行"));
-		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
-		bcs.add(new RechargeBankCardImpl("COMM", "交通银行"));
-		bcs.add(new RechargeBankCardImpl("CITIC", "中信银行"));
-		bcs.add(new RechargeBankCardImpl("BJBANK", "北京银行"));
-		bcs.add(new RechargeBankCardImpl("SHRCB", "上海农商银行"));
-		bcs.add(new RechargeBankCardImpl("WZCB", "温州银行"));
-
+		Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		List<Map<String,Object>> list = query.list();
+		for (int i=0;i<list.size();i++){
+			bcs.add(new RechargeBankCardImpl(list.get(i).get("bankno").toString(),list.get(i).get("bankname").toString()));
+		}
 		return bcs;
 	}
 

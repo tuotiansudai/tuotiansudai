@@ -196,6 +196,8 @@ public class UmPayBindingBankCardOperation extends
 					if (null != userWillBindingBankCard) {
 						BankCard bankCard = userWillBindingBankCard.get(0);
 						bankCard.setStatus("passed");
+						bankCard.setBankNo(paramMap.get("gate_id"));
+						bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 						ht.update(bankCard);
 						log.debug(("用户:"
 								+ userWillBindingBankCard.get(0).getUser()
