@@ -50,7 +50,6 @@ public class UmPayBankCardHome extends BankCardHome {
 			getInstance().setId(IdGenerator.randomUUID());
 			getInstance().setUser(loginUser);
 			getInstance().setStatus("uncheck");
-			//getInstance().setBank(rechargeService.getBankNameByNo(getInstance().getBankNo()));
 		} else {
 			this.setId(getInstance().getId());
 		}
