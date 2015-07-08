@@ -3,6 +3,7 @@ package com.esoft.core.application;
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.jdp2p.message.service.MailService;
 import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import com.esoft.jdp2p.message.service.impl.SendCloudMailServiceImpl;
 import com.ttsd.util.CommonUtils;
 
 import javax.faces.FacesException;
@@ -86,8 +87,8 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     flag += 1;
                 }
                 if (!CommonUtils.isDevEnvironment("environment")) {
-                    MailService mailService = new MailServiceImpl();
-                    mailService.sendMailException(CommonUtils.administratorEmailAddress(), "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
+                    SendCloudMailServiceImpl sendCloudMailServiceImpl = new SendCloudMailServiceImpl();
+                    sendCloudMailServiceImpl.sendMailException(CommonUtils.administratorEmailAddress(), "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
                 }
                 throw new RuntimeException(exceptionStringBuffer.toString());
             } finally {
