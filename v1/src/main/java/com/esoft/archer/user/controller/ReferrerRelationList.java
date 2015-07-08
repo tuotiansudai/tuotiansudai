@@ -91,7 +91,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
         for (User referee : refereeList) {
             ReferrerRelation relation = new ReferrerRelation();
             Integer level = (Integer) getHt().find(MessageFormat.format(QUERY_LEVEL, referrerId, referee.getId())).get(0);
-            if (level > maxLevel){
+            if ( level != null && level.intValue()> maxLevel.intValue()){
                 continue;
             }
             relation.setUser(referee);
