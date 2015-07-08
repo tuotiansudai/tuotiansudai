@@ -194,11 +194,14 @@ public class UmPayBindingBankCardOperation extends
 							.find(hql, new String[] { user.getId(), "uncheck",
 									bankCardId });
 					if (null != userWillBindingBankCard) {
-						BankCard bankCard = userWillBindingBankCard.get(0);
-						bankCard.setStatus("passed");
-						bankCard.setBankNo(paramMap.get("gate_id"));
-						bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
-						ht.update(bankCard);
+						for (int i=0;i<userWillBindingBankCard.size();i++) {
+							BankCard bankCard = new BankCard();
+							bankCard = userWillBindingBankCard.get(i);
+							bankCard.setStatus("passed");
+							bankCard.setBankNo(paramMap.get("gate_id"));
+							bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
+							ht.update(bankCard);
+						}
 						log.debug(("用户:"
 								+ userWillBindingBankCard.get(0).getUser()
 										.getId() + "绑定"
