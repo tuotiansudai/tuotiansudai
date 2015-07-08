@@ -1,7 +1,6 @@
 package com.ttsd.redis;
 
 import com.ttsd.aliyun.PropertiesUtils;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -13,6 +12,8 @@ public class RedisClinet {
 
     public RedisClinet() {
         jedis = new Jedis(PropertiesUtils.getPro("redis.ip"),Integer.parseInt(PropertiesUtils.getPro("redis.port")));
+        jedis.auth(PropertiesUtils.getPro("redis.password"));
+        jedis.select(Integer.parseInt(PropertiesUtils.getPro("redis.db")));
     }
 
     public Jedis getJedis() {
