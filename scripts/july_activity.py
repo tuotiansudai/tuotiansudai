@@ -32,13 +32,27 @@ SQL = """
         IF (n.`id` IS NOT NULL, 1, 0) AS '是否充值',
         IFNULL(investtemp.`money`, 0.00) AS '投资情况',
         t.`referrer` AS '推荐人',
-        u.`mobile_number`
+        u.`mobile_number`,
+        IF (
+          b.`status` = 'passed',
+          1,
+          0
+        ) AS '用户是否绑卡',
+        IF (
+          b1.`status` = 'passed',
+          1,
+          0
+        ) AS '推荐人是否绑卡'
       FROM
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
         LEFT JOIN `user` u
           ON t.`referrer` = u.`username`
+        LEFT JOIN bank_card b
+          ON t.`id` = b.`user_id` AND b.`status` = 'passed'
+        LEFT JOIN `bank_card` b1
+          ON t.`referrer` = b1.`user_id` AND b1.`status` = 'passed'
         LEFT JOIN recharge n
           ON t.`id` = n.`user_id`
           AND n.`status` = 'success'
