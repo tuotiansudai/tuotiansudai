@@ -16,7 +16,7 @@
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.ttsd.mobile.configuration.CustomerObjectMapper" />
+                    <bean class="com.ttsd.mobile.configuration.CustomerObjectMapper"/>
                 </property>
                 <property name="supportedMediaTypes">
                     <list>
@@ -36,6 +36,7 @@
     <mvc:resources mapping="/mobile/style/**" location="/mobile/style/"/>
     <mvc:resources mapping="/mobile/images/**" location="/mobile/images/"/>
     <mvc:resources mapping="/mobile/js/**" location="/mobile/js/"/>
+    <mvc:default-servlet-handler />
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
