@@ -131,8 +131,8 @@ public class UserServiceImpl implements UserService {
 			throws NoMatchingObjectsException, AuthInfoOutOfDateException,
 			AuthInfoAlreadyActivedException {
 		// 验证手机认证码是否正确
-//		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
-//				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
+				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
 		user.setRegisterTime(new Date());
 		// 用户密码通过sha加密
 		user.setPassword(HashCrypt.getDigestHash(user.getPassword()));
