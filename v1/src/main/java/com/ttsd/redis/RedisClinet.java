@@ -12,7 +12,9 @@ public class RedisClinet {
 
     public RedisClinet() {
         jedis = new Jedis(PropertiesUtils.getPro("redis.ip"),Integer.parseInt(PropertiesUtils.getPro("redis.port")));
-        jedis.auth(PropertiesUtils.getPro("redis.password"));
+        if (!PropertiesUtils.getPro("redis.password").equals("") && PropertiesUtils.getPro("redis.password")!=null) {
+            jedis.auth(PropertiesUtils.getPro("redis.password"));
+        }
         jedis.select(Integer.parseInt(PropertiesUtils.getPro("redis.db")));
     }
 
