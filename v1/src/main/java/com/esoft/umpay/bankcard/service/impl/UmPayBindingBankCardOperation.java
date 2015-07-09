@@ -39,7 +39,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 
 /**
  * 绑定银行卡
- * 
+ *
  * @author zt
  */
 @Service("umPayBindingBankCardOperation")
@@ -182,6 +182,9 @@ public class UmPayBindingBankCardOperation extends
 			if (null != paramMap) {
 				String ret_code = paramMap.get("ret_code");
 				String order_id = paramMap.get("order_id");
+				if (order_id == null){
+					order_id = "";
+				}
 				if ("0000".equals(ret_code)) {
 					TrusteeshipAccount ta = ht.get(TrusteeshipAccount.class,
 							paramMap.get("user_id"));
@@ -193,7 +196,7 @@ public class UmPayBindingBankCardOperation extends
 								order_id.length());
 						String hql = "from BankCard where user.id =? and status =? and cardNo =?";
 						List<BankCard> userWillBindingBankCard = ht
-								.find(hql, new String[] { user.getId(), "uncheck",
+								.find(hql, new String[]{user.getId(), "uncheck",
 										bankCardId });
 						if (null != userWillBindingBankCard) {
 							BankCard bankCard = userWillBindingBankCard.get(0);
