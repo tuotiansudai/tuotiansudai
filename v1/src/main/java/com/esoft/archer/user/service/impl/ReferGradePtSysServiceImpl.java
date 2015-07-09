@@ -55,30 +55,17 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 	@Override
 	public Integer getAddHighestMerchandiserGrade(){
 
-		Integer addHighestGrade = null;
-
-		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='ROLE_MERCHANDISER' ";
-
-		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
-
-
-		return addHighestGrade;
+		return getMerchandiserMaxGrade() + 1;
 
 	}
+
 	/**
 	 *	获取新增用户的系统最高层级
 	 */
 	@Override
 	public Integer getAddHighestInvestGrade(){
 
-		Integer addHighestGrade = null;
-
-		String hql  = " select count(referGradeProfitSys) from ReferGradeProfitSys referGradeProfitSys where  referGradeProfitSys.gradeRole='INVESTOR' ";
-
-		addHighestGrade = ((Long)ht.find(hql).get(0)).intValue() + 1;
-
-
-		return addHighestGrade;
+		return getInvestMaxGrade() + 1;
 
 	}
 
@@ -130,7 +117,7 @@ public class ReferGradePtSysServiceImpl implements ReferGradePtSysService {
 		maxGrade = (Integer)ht.find(hql).get(0) ;
 
 		return maxGrade;
-	};
+	}
 
 
 

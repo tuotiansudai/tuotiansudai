@@ -12,7 +12,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-RECIPIENT = ["xupengfei@tuotiansudai.com", "lei@tuotiansudai.com"]
+RECIPIENT = ["xupengfei@tuotiansudai.com"]
 
 
 SQL = """
@@ -26,16 +26,33 @@ SQL = """
         t.`mobile_number` AS '注册手机号',
         IF (
           m.`account_id` IS NOT NULL,
-          'Y',
-          'N'
+          1,
+          0
         ) AS '是否实名',
-        IF (n.`id` IS NOT NULL, 'Y', 'N') AS '是否充值',
+        IF (n.`id` IS NOT NULL, 1, 0) AS '是否充值',
         IFNULL(investtemp.`money`, 0.00) AS '投资情况',
-        t.`referrer` AS '推荐人'
+        t.`referrer` AS '推荐人',
+        u.`mobile_number`,
+        IF (
+          b.`status` = 'passed',
+          1,
+          0
+        ) AS '用户是否绑卡',
+        IF (
+          b1.`status` = 'passed',
+          1,
+          0
+        ) AS '推荐人是否绑卡'
       FROM
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
+        LEFT JOIN `user` u
+          ON t.`referrer` = u.`username`
+        LEFT JOIN bank_card b
+          ON t.`id` = b.`user_id` AND b.`status` = 'passed'
+        LEFT JOIN `bank_card` b1
+          ON t.`referrer` = b1.`user_id` AND b1.`status` = 'passed'
         LEFT JOIN recharge n
           ON t.`id` = n.`user_id`
           AND n.`status` = 'success'
@@ -48,8 +65,8 @@ SQL = """
           WHERE i.`status` NOT IN ('test', 'cancel', 'wait_affirm', 'unfinished')
           GROUP BY i.`user_id`) investtemp
           ON t.`id` = investtemp.`user_id`
-      WHERE t.`register_time` BETWEEN '{0}'
-        AND '{1}'
+      WHERE t.`register_time` BETWEEN '2015-07-01'
+        AND '{0}'
       ORDER BY t.`register_time`) temp,
       (SELECT
         @rownum := 0) AS rownum
@@ -58,8 +75,7 @@ SQL = """
 
 def build_sql():
     now = datetime.now()
-    last_hour = now - timedelta(hours=1)
-    return SQL.format(last_hour, now)
+    return SQL.format(now)
 
 
 def query(host, user_name, password, db_name):
@@ -71,7 +87,7 @@ def query(host, user_name, password, db_name):
         sql = build_sql()
         cursor.execute(sql)
         return cursor.fetchall()
-    except Exception as e:
+    except Exception:
         logger.exception("db error")
     finally:
         db.close()

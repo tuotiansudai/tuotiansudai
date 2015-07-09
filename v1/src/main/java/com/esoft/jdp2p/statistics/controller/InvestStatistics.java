@@ -189,8 +189,13 @@ public class InvestStatistics {
 	 * @return
 	 */
 	public double getAllInvestsInterest() {
-		String hql = "Select sum(interest+defaultInterest-fee) from InvestRepay where time is not null";
-		List<Object> oos = ht.find(hql);
+		String hql = "Select sum(investRepay.interest+investRepay.defaultInterest-investRepay.fee) from InvestRepay investRepay join investRepay.invest invest where invest.status not in (?,?,?,?)";
+		List<Object> oos = ht.find(hql,new String[]{
+			InvestConstants.InvestStatus.UNFINISHED,
+			InvestConstants.InvestStatus.TEST,
+			InvestConstants.InvestStatus.WAIT_AFFIRM,
+			InvestConstants.InvestStatus.CANCEL
+		});
 		Object o = oos.get(0);
 		if (o == null) {
 			return 0;
@@ -233,8 +238,9 @@ public class InvestStatistics {
 	@SuppressWarnings("unchecked")
 	public long getAllSuccessInvestsNum() {
 		String hql = "select count(invest) from Invest invest "
-				+ "where invest.status not in (?,?)";
+				+ "where invest.status not in (?,?,?,?)";
 		List<Object> oos = ht.find(hql, new String[]{
+				InvestConstants.InvestStatus.UNFINISHED,InvestConstants.InvestStatus.TEST,
 				InvestConstants.InvestStatus.WAIT_AFFIRM,
 				InvestConstants.InvestStatus.CANCEL});
 		if (oos.get(0) == null) {
@@ -250,8 +256,9 @@ public class InvestStatistics {
 	@SuppressWarnings("unchecked")
 	public long getAllSuccessInvestsNum(String businessType) {
 		String hql = "select count(invest) from Invest invest "
-				+ "where invest.status not in (?,?) and invest.loan.businessType=?";
+				+ "where invest.status not in (?,?,?,?) and invest.loan.businessType=?";
 		List<Object> oos = ht.find(hql, new String[] {
+				InvestConstants.InvestStatus.TEST,InvestConstants.InvestStatus.UNFINISHED,
 				InvestConstants.InvestStatus.WAIT_AFFIRM,
 				InvestConstants.InvestStatus.CANCEL, businessType });
 		if (oos.get(0) == null) {

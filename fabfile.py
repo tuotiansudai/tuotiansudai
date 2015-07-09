@@ -12,6 +12,7 @@ env.roledefs = {
 @roles('web')
 def pull():
     with cd('/workspace/tuotian'):
+        sudo('chmod -R g=u .')
         run('git pull')
 
 
