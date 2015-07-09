@@ -10,7 +10,7 @@ def parse_csv():
     with open(CSV_FILE, 'rb') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            _, _, user_id, _, _, _, id_reward, _, _, recharge_reward, _, referral, _, _, referral_id_reward, _, referral_recharge_reward, _, referral_invest_reward, _ = row
+            _, _, user_id, _, _, _, id_reward, _, _, recharge_reward, _, referral, _, _, referral_id_reward, _, referral_recharge_reward, _, referral_invest_reward, _, _ = row
             if referral == '':
                 referral = None
             reward = Reward(user_id, id_reward == '1', recharge_reward == '1', referral, referral_id_reward == '1',
