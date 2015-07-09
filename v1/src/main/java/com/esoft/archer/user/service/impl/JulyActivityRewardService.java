@@ -59,22 +59,28 @@ public class JulyActivityRewardService {
 
     private static String SUCCESS_CODE = "0000";
 
-    private static int userCertifiedReward = 5;
-    private static int userRechargeReward = 5;
-    private static int referrerCertifiedReward = 10;
-    private static int referrerRechargeReward = 10;
-    private static int referrerInvestReward = 30;
+    private static int userCertifiedReward = 500;
+    private static int userRechargeReward = 500;
+    private static int referrerCertifiedReward = 1000;
+    private static int referrerRechargeReward = 1000;
+    private static int referrerInvestReward = 3000;
 
 
     @Transactional
     public void createActivityRewards() {
-        DateTime firstJuly = new DateTime().withDate(2015, 6, 1).withTimeAtStartOfDay();
+        DateTime startTime = new DateTime().withDate(2015, 7, 9).withTimeAtStartOfDay();
+        DateTime endTime = new DateTime().withDate(2015, 7, 9).withTime(9, 0, 0, 0);
+
+        log.info(MessageFormat.format("Scan register time from {0} to {1}", startTime.toString(), endTime.toString()));
 
         DetachedCriteria accountCriteria = DetachedCriteria.forClass(TrusteeshipAccount.class);
         accountCriteria.createAlias("user", "user")
-                .add(Restrictions.ge("user.registerTime", firstJuly.toDate()))
-                .add(Restrictions.ge("createTime", firstJuly.toDate()));
+                .add(Restrictions.ge("user.registerTime", startTime.toDate()))
+                .add(Restrictions.le("user.registerTime", endTime.toDate()))
+                .add(Restrictions.ge("createTime", startTime.toDate()));
         List<TrusteeshipAccount> accounts = ht.findByCriteria(accountCriteria);
+
+        log.info(MessageFormat.format("Found {0} register user", CollectionUtils.isEmpty(accounts) ? 0 : accounts.size()));
 
         for (TrusteeshipAccount account : accounts) {
             User user = account.getUser();

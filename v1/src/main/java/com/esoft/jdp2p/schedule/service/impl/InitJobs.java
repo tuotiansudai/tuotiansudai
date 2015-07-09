@@ -5,13 +5,8 @@ import javax.annotation.Resource;
 import com.esoft.jdp2p.schedule.job.*;
 import org.apache.commons.logging.Log;
 import org.hibernate.ObjectNotFoundException;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import org.joda.time.DateTime;
+import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -268,13 +263,17 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	 * @throws SchedulerException
 	 */
 	private void initAutoActivityRewardJob() throws SchedulerException {
+		DateTime triggerTime = new DateTime().plusMinutes(10);
+
 		JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
 				.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
 				.build();
 
-		CronTrigger trigger = TriggerBuilder.newTrigger()
+		SimpleTrigger trigger = TriggerBuilder.newTrigger()
 				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
-				.forJob(jobDetail).withSchedule(CronScheduleBuilder.cronSchedule("0 0/2 * * * ? *")) /* 每2分钟执行一次*/
+				.forJob(jobDetail)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+				.startAt(triggerTime.toDate())
 				.build();
 
 		scheduler.scheduleJob(jobDetail, trigger);
