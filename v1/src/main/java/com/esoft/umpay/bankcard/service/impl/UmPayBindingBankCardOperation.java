@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -186,21 +187,23 @@ public class UmPayBindingBankCardOperation extends
 							paramMap.get("user_id"));
 					User user = ta.getUser();
 					ht.evict(user);
-					// 拿到用户未绑定的卡ID(截取13位到最后,因为银行卡长度是不固定的)
-					String bankCardId = order_id.substring(13,
-							order_id.length());
-					String hql = "from BankCard where user.id =? and status =? and cardNo =?";
-					List<BankCard> userWillBindingBankCard = ht
-							.find(hql, new String[] { user.getId(), "uncheck",
-									bankCardId });
-					if (null != userWillBindingBankCard) {
-						BankCard bankCard = userWillBindingBankCard.get(0);
-						bankCard.setStatus("passed");
-						ht.update(bankCard);
-						log.debug(("用户:"
-								+ userWillBindingBankCard.get(0).getUser()
-										.getId() + "绑定"
-								+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+					if(StringUtils.isNotEmpty(order_id)){
+						// 拿到用户未绑定的卡ID(截取13位到最后,因为银行卡长度是不固定的)
+						String bankCardId = order_id.substring(13,
+								order_id.length());
+						String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+						List<BankCard> userWillBindingBankCard = ht
+								.find(hql, new String[] { user.getId(), "uncheck",
+										bankCardId });
+						if (null != userWillBindingBankCard) {
+							BankCard bankCard = userWillBindingBankCard.get(0);
+							bankCard.setStatus("passed");
+							ht.update(bankCard);
+							log.debug(("用户:"
+									+ userWillBindingBankCard.get(0).getUser()
+									.getId() + "绑定"
+									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+						}
 					}
 				}
 				try {
