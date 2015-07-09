@@ -25,7 +25,7 @@ public class BankCardServiceImpl implements BankCardService{
     @Override
     @Transactional
     public List<BankCard> getBoundBankCardsByUserId(String userId) {
-        String hqlTemplate = "select bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed''";
+        String hqlTemplate = "select distinct bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed''";
         List<BankCard> bankCards = ht.find(MessageFormat.format(hqlTemplate, userId));
         return bankCards;
     }
