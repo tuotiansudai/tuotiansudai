@@ -118,8 +118,7 @@ body {
     height: 36px;
     width: 880px;
     overflow: hidden;
-    display: block;
-    line-height: 36px;
+    line-height: 30px;
 }
 
 .tab table {
