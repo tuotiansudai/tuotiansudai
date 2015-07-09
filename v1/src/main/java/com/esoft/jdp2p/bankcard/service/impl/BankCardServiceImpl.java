@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("bankCardService")
@@ -25,9 +26,11 @@ public class BankCardServiceImpl implements BankCardService{
     @Override
     @Transactional
     public List<BankCard> getBoundBankCardsByUserId(String userId) {
-        String hqlTemplate = "select distinct bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed''";
+        String hqlTemplate = "select bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' order by bankCard.time desc";
         List<BankCard> bankCards = ht.find(MessageFormat.format(hqlTemplate, userId));
-        return bankCards;
+        List<BankCard> returnBankCards = new ArrayList<BankCard>();
+        returnBankCards.add(bankCards.get(0));
+        return returnBankCards;
     }
 
     @Override
