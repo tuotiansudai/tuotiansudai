@@ -19,7 +19,7 @@
 			href="#{tplVars.themeStylePath}/content.css" />
 
 		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
-		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
+		<f:event type="preRenderView" listener="#{loanHome.redirecttouziHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
 				if (#{loanHome.instance.loanActivityType eq 'xs'}) {
@@ -87,6 +87,10 @@
 						<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 						<em class="jd-bar"><b style="width:#{cr}%"></b></em>#{cr}%
 					</p>
+					<div class="">
+						<span>代理人：#{loan.user.id}</span>
+						<span>借款人：#{loan.agent}</span>
+					</div>
 					<div class="span3-div">
 						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 						<span>发布日期：
