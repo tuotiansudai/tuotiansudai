@@ -20,7 +20,7 @@ public class MobileRegisterDaoImpl implements IMobileRegisterService {
     public Integer getUserCountByUserName(){
         Session session = this.getSession();
         String sql = "select count(1) from USER where username=?";
-        SQLQuery sqlQuery = session.createSQLQuery("");
+        SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setParameter(0, 1);
         return ((Number)sqlQuery.uniqueResult()).intValue();
     }
