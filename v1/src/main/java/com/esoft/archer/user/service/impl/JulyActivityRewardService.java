@@ -68,7 +68,7 @@ public class JulyActivityRewardService {
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     public static int TOTAL_REWARD = 0;
-    public static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta where not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
+    public static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta inner join user u on ta.user_id=u.id where u.register_time >= '2015-07-01 00:00:00' and ta.create_time >= '2015-07-01 00:00:00' and not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
 
 
     @Transactional
