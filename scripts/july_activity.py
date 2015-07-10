@@ -12,7 +12,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-RECIPIENT = ["xupengfei@tuotiansudai.com", "lei@tuotiansudai.com"]
+RECIPIENT = ["xupengfei@tuotiansudai.com"]
 
 
 SQL = """
@@ -47,8 +47,15 @@ SQL = """
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
-        LEFT JOIN `user` u
-          ON t.`referrer` = u.`username`
+        LEFT JOIN
+          (SELECT DISTINCT
+             x.`mobile_number`,
+             x.`id`
+           FROM
+             `user` x
+           JOIN `user` y
+           ON x.`id` = y.`referrer`) u
+          ON t.`referrer` = u.`id`
         LEFT JOIN bank_card b
           ON t.`id` = b.`user_id` AND b.`status` = 'passed'
         LEFT JOIN `bank_card` b1
