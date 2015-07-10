@@ -1,19 +1,8 @@
 package com.esoft.umpay.bankcard.controller;
 
-import java.io.IOException;
-import java.util.Date;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-
-import com.esoft.core.annotations.Logger;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.model.User;
+import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.controller.BankCardHome;
@@ -21,6 +10,15 @@ import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingBankCardOperation;
 import com.esoft.umpay.bankcard.service.impl.UmPayReplaceBankCardOperation;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Date;
 
 public class UmPayBankCardHome extends BankCardHome {
 
@@ -52,7 +50,6 @@ public class UmPayBankCardHome extends BankCardHome {
 			getInstance().setId(IdGenerator.randomUUID());
 			getInstance().setUser(loginUser);
 			getInstance().setStatus("uncheck");
-			getInstance().setBank(rechargeService.getBankNameByNo(getInstance().getBankNo()));
 		} else {
 			this.setId(getInstance().getId());
 		}
