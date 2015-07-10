@@ -50,4 +50,5 @@ def deploy():
 @roles('db')
 def migrate():
     with cd('/workspace/tuotian/v1'):
+        run('/opt/gradle/latest/bin/gradle clean')
         run('/opt/gradle/latest/bin/gradle flywayMigrate')
