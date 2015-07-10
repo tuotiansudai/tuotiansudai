@@ -61,17 +61,8 @@ public class UmPayBindingBankCardOperation extends
 			FacesContext facesContext) throws IOException {
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		// 判断是否是换卡操作
-		User us = bankCard.getUser();
-		String hql = "from BankCard where user.id =? and status =?";
-		List<BankCard> userWillBindingBankCard = ht.find(hql, new String[] { us.getId(), "delete_for_replace" });
-		Map<String, String> sendMap;
-		if (null == userWillBindingBankCard && userWillBindingBankCard.size() > 0) {
-			sendMap = UmPaySignUtil.getSendMapDate("mer_replace_card");
-		} else {
-			sendMap = UmPaySignUtil
+		Map<String, String> sendMap = UmPaySignUtil
 					.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
-		}
 		// 同步地址
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 				+ UmPayConstants.OperationType.MER_BIND_CARD);
