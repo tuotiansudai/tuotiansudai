@@ -13,6 +13,7 @@ env.roledefs = {
 def pull():
     with cd('/workspace/tuotian'):
         sudo('chmod -R g=u .')
+        run('git checkout master')
         run('git pull')
 
 
