@@ -33,8 +33,7 @@ public class EnableUserJob implements Job {
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
-		String userId = context.getJobDetail().getJobDataMap()
-				.getString(USER_ID);
+		String userId = context.getJobDetail().getJobDataMap().getString(USER_ID);
 		try {
 			userService.enableUser(userId);
 		} catch (UserNotFoundException e) {
