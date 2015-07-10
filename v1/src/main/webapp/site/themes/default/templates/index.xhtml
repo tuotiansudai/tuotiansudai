@@ -86,7 +86,7 @@
 				</div>
 
 				<ui:param name="restriction"
-					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
+					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
 				<f:event type="preRenderComponent"
 					listener="#{loanList2.addRestriction(restriction)}"></f:event>
 
@@ -186,12 +186,12 @@
 				</div>
 				
 				<ui:param name="restriction"
-					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
+					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
 				<f:event type="preRenderComponent"
 					listener="#{loanList.addRestriction(restriction)}"></f:event>
 
 				<f:event type="preRenderComponent"
-					listener="#{loanList.setPageSize(4)}"></f:event>
+					listener="#{loanList.setPageSize(8)}"></f:event>
 				<f:event type="preRenderComponent"
 					listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
 				<f:event type="preRenderComponent"
@@ -272,7 +272,7 @@
 							</div>
 						</div>
 					</ui:repeat>
-					<ui:fragment rendered="#{loanListSize lt 4}">
+					<ui:fragment rendered="#{loanListSize lt 8}">
 						<div class="list-box">
 							<div class="list">
 								<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
@@ -312,7 +312,7 @@
 						</div>
 					</ui:fragment>
 
-					<ui:fragment rendered="#{loanListSize lt 3}">
+					<ui:fragment rendered="#{loanListSize lt 7}">
 					<div class="list-box">
 						<div class="list">
 							<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
@@ -352,7 +352,7 @@
 					</div>
 					</ui:fragment>
 
-					<ui:fragment rendered="#{loanListSize lt 2}">
+					<ui:fragment rendered="#{loanListSize lt 6}">
 					<div class="list-box">
 						<div class="list">
 							<h3><i><img src="/site/themes/default/images/index/qiche.png" /></i>
