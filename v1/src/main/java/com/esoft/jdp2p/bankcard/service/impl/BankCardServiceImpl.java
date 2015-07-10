@@ -29,7 +29,9 @@ public class BankCardServiceImpl implements BankCardService{
         String hqlTemplate = "select bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' order by bankCard.time desc";
         List<BankCard> bankCards = ht.find(MessageFormat.format(hqlTemplate, userId));
         List<BankCard> returnBankCards = new ArrayList<BankCard>();
-        returnBankCards.add(bankCards.get(0));
+        if (bankCards != null && bankCards.size() > 0) {
+            returnBankCards.add(bankCards.get(0));
+        }
         return returnBankCards;
     }
 
