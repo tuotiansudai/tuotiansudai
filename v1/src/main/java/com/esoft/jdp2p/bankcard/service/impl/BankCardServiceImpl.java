@@ -3,6 +3,8 @@ package com.esoft.jdp2p.bankcard.service.impl;
 import com.esoft.archer.theme.controller.TplVars;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,8 @@ public class BankCardServiceImpl implements BankCardService{
     public List<BankCard> getBoundBankCardsByUserId(String userId) {
         String hqlTemplate = "select bankCard from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' order by bankCard.time desc";
         List<BankCard> bankCards = ht.find(MessageFormat.format(hqlTemplate, userId));
-        List<BankCard> returnBankCards = new ArrayList<BankCard>();
-        if (bankCards != null && bankCards.size() > 0) {
+        List<BankCard> returnBankCards = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(bankCards)) {
             returnBankCards.add(bankCards.get(0));
         }
         return returnBankCards;
