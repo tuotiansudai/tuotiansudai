@@ -263,17 +263,14 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	 * @throws SchedulerException
 	 */
 	private void initAutoActivityRewardJob() throws SchedulerException {
-		DateTime triggerTime = new DateTime().withDate(2015, 7, 10).withTime(14, 30, 0, 0);
-
 		JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
 				.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
 				.build();
 
-		SimpleTrigger trigger = TriggerBuilder.newTrigger()
+		CronTrigger trigger = TriggerBuilder.newTrigger()
 				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
 				.forJob(jobDetail)
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(triggerTime.toDate())
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))// 每天1点
 				.build();
 
 		scheduler.scheduleJob(jobDetail, trigger);
