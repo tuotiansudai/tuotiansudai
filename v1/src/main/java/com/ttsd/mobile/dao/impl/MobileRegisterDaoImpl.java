@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by tuotian on 15/7/9.
  */
-@Repository(name="com.ttsd.mobile.dao.impl.MobileRegisterDaoImpl")
+@Repository(value = "com.ttsd.mobile.dao.impl.MobileRegisterDaoImpl")
 public class MobileRegisterDaoImpl implements IMobileRegisterService {
     @Resource
     private HibernateTemplate hibernateTemplate;
