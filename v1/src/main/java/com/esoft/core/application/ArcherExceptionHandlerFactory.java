@@ -1,5 +1,7 @@
 package com.esoft.core.application;
 
+import com.esoft.core.util.SpringBeanUtil;
+
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 
@@ -16,7 +18,8 @@ public class ArcherExceptionHandlerFactory extends ExceptionHandlerFactory {
     @Override
     public ExceptionHandler getExceptionHandler() {
         if(cached == null) {
-            cached = new ArcherExceptionHandler(base.getExceptionHandler());
+            this.cached = (ArcherExceptionHandler) SpringBeanUtil.getBeanByName("archerExceptionHandler");
+            cached.setWrapped(base.getExceptionHandler());
         }
         
         return cached;

@@ -18,20 +18,25 @@ import java.util.Properties;
 
 @Service("sendCloudMailService")
 public class SendCloudMailServiceImpl implements SendCloudMailService {
+
     @Resource
     SendCloudClient sendCloudClient;
     @Logger
     static Log log;
 
     @Override
-    public boolean sendMailException(String toAddress, String personal, String title, String content) {
+    public boolean sendMailException(String toAddress, String title, String content) {
         try {
             sendCloudClient.sendMailBySendCloud(toAddress,title,content,"text");
             return true;
         } catch (MessagingException e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
             log.error(e.getStackTrace());
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return false;
     }

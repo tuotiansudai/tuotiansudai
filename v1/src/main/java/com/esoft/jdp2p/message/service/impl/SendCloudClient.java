@@ -13,6 +13,7 @@ import java.util.Properties;
 
 @Service
 public class SendCloudClient {
+
     @Value("${sendCloud.smtp.host}")
     private   String sendCloudSmtpHost;
     @Value("${sendCloud.smtp.port}")
