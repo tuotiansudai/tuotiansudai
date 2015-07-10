@@ -22,6 +22,15 @@
 		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
+				if (#{loanHome.instance.loanActivityType eq 'xs'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_xsb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'pt'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'dx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_dxb/#{loanHome.instance.id}"
+				}
 				if (#{loanHome.instance.businessType eq '企业借款'}) {
 					window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
 				}
@@ -136,7 +145,7 @@
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>&#160;元
+							</h:inputText>&#160;元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
 						</p>
 						<p>
 							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
@@ -168,6 +177,7 @@
 						</p>
 						<p class="p-line"></p>
 						<p>投资人数：#{loanCalculator.countSuccessInvest(loan.id)}人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<p><a href="/loanAgreementSample" target="_Blank">借款协议样本</a></p>
 						<br />
 						<p>
 							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
@@ -225,7 +235,7 @@
 							<f:event type="preRenderComponent"
 								listener="#{investList.addOrder('invest.time','desc')}"></f:event>
 							<ui:param name="restriction"
-									  value="#{'(invest.status!=\''}#{InvestStatus.WAIT_AFFIRM}#{'\' and invest.status!=\''}#{InvestStatus.CANCEL}#{''}')"></ui:param>
+									  value="#{'(invest.status not in (\''}#{InvestStatus.WAIT_AFFIRM}#{'\', \''}#{InvestStatus.CANCEL}#{'\', \''}#{InvestStatus.UNFINISHED}#{'\')'})"></ui:param>
 							<f:event type="preRenderComponent"
 									 listener="#{investList.addRestriction(restriction)}"></f:event>
 							<f:event type="preRenderComponent"
@@ -262,8 +272,7 @@
 					</h:form>
 				</div>
 			</div>
-			<script src="js/jquery1.42.min.js"></script>
-			<script>
+			<script type="text/javascript">
 			$(function(){
 				var $li=$(".tabs ul li");
 				$li.click(function(){

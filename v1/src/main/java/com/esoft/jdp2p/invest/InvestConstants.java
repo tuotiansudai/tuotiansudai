@@ -87,6 +87,15 @@ public class InvestConstants {
 		 * 坏账
 		 */
 		public final static String BAD_DEBT = "bad_debt";
+		/**
+		 * 交易取消
+		 */
+		public final static String UNFINISHED = "unfinished";
+
+		/**
+		 * 内部测试
+		 */
+		public final static String TEST = "test";
 	};
 
 	/**

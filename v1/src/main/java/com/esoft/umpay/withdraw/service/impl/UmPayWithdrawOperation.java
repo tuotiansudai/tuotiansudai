@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.core.util.ArithUtil;
 import org.apache.commons.logging.Log;
@@ -138,6 +139,8 @@ public class UmPayWithdrawOperation extends
 			wc = ht.get(WithdrawCash.class, order_id, LockMode.UPGRADE);
 
 			if (TrusteeshipConstants.Status.SENDED.equals(to.getStatus())) {
+				wc.setVerifyTime(new Date());
+				wc.setVerifyMessage(ret_msg);
 				if ("0000".equals(ret_code)) {
 					// 提现订单编号
 					// withdrawCashService.passWithdrawCashRecheck(wc);
@@ -153,10 +156,12 @@ public class UmPayWithdrawOperation extends
 							wc.getMoney() + wc.getFee(),
 							OperatorInfo.APPLY_WITHDRAW,
 							operationDetail);
+					wc.setStatus(UserConstants.WithdrawStatus.RECHECK);
 				} else {
 					// withdrawCashService.refuseWithdrawCashApply(wc);
 					to.setStatus(TrusteeshipConstants.Status.REFUSED);
 					ht.merge(to);
+					wc.setStatus(UserConstants.WithdrawStatus.VERIFY_FAIL);
 					throw new UmPayOperationException("提现失败:" + ret_msg);
 				}
 			}
@@ -182,6 +187,7 @@ public class UmPayWithdrawOperation extends
 			receiveOperationPostCallback(request);
 			String order_id = paramMap.get("order_id");
 			wc = ht.get(WithdrawCash.class, order_id, LockMode.UPGRADE);
+			wc.setRecheckMessage(paramMap.containsKey("ret_msg") ? paramMap.get("ret_msg") : "");
 			if ("0000".equals(paramMap.get("ret_code"))) {
 				// 处理提现成功
 				withdrawCashService.passWithdrawCashRecheck(wc);

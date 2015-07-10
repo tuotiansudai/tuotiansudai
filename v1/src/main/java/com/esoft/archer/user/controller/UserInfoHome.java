@@ -1,18 +1,5 @@
 package com.esoft.archer.user.controller;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.primefaces.context.RequestContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.common.controller.EntityHome;
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
@@ -31,8 +18,20 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.primefaces.context.RequestContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Filename: UserHome.java Description: Copyright: Copyright (c)2013
@@ -481,8 +480,8 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public void checkCurrentEmail(){
 			try {
 				User user=userService.getUserById(loginUserInfo.getLoginUserId());
-				//验证认证码        CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL(类型) 修改绑定邮箱
-				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.CHANGE_BINDING_EMAIL);
+
+				authService.verifyAuthInfo(user.getId(), user.getEmail(), authCode, CommonConstants.AuthInfoType.BINDING_EMAIL);
 				this.step = 2;
 				this.authCode = null;
 			} catch (UserNotFoundException e) {
@@ -524,12 +523,19 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			//根据当前登录用户的id,获得当前用户
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
 			//发送绑定新邮箱接口 、 新邮箱需要验证唯一性()    发邮件(认证码)给新邮箱
-			userService.sendBindingEmail(user.getId(), newEmail);
+			String email = newEmail;
+			if (email == null){
+				email = getInstance().getEmail();
+			}
+			userService.sendBindingEmail(user.getId(), email);
 			FacesUtil.addInfoMessage("验证码已经发送至新邮箱！");
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {
 			FacesUtil.addErrorMessage("用户未登录");
-			e.printStackTrace();
+			log.error(e);
+		} catch (MailSendErrorException e) {
+			FacesUtil.addErrorMessage("验证码发送失败，请检查邮箱合法性！");
+			log.error(e);
 		}
 	}
 	
@@ -541,7 +547,12 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public String changeBindingEmail() {
 		try {
 			User user=userService.getUserById(loginUserInfo.getLoginUserId());
-			userService.bindingEmail(user.getId(), newEmail, authCode);
+			String email = newEmail;
+			if (email == null){
+				email = getInstance().getEmail();
+			}
+
+			userService.bindingEmail(user.getId(), email, authCode);
 			FacesUtil.addInfoMessage("绑定新邮箱成功！");
 			return "pretty:userCenter";
 		} catch (UserNotFoundException e) {

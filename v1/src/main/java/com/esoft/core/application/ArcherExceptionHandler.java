@@ -1,21 +1,20 @@
 package com.esoft.core.application;
 
-import java.util.Iterator;
-import java.util.Map;
+import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.jdp2p.message.service.MailService;
+import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import com.ttsd.util.CommonUtils;
+
 import javax.faces.FacesException;
-import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import com.esoft.archer.system.controller.LoginUserInfo;
-import com.esoft.jdp2p.message.service.MailService;
-import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -41,8 +40,18 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 LoginUserInfo loginUserInfo = new LoginUserInfo();
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
+                Enumeration headerNames = request.getHeaderNames();
                 String RequestUrl = request.getRequestURL().toString();
                 StringBuffer exceptionStringBuffer = new StringBuffer();
+                exceptionStringBuffer.append("headers：");
+                exceptionStringBuffer.append("\n");
+                while (headerNames.hasMoreElements()) {
+                    String key = (String) headerNames.nextElement();
+                    String value = request.getHeader(key);
+                    exceptionStringBuffer.append(key + "=" + value + ";");
+                    exceptionStringBuffer.append("\n");
+                }
+                exceptionStringBuffer.append("\n");
                 if (request.getMethod().equals("GET")) {
                     RequestUrl += "?"+request.getQueryString();
                 } else {
@@ -76,9 +85,11 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     throwable = throwable.getCause();
                     flag += 1;
                 }
-                MailService mailService = new MailServiceImpl();
-                mailService.sendMailException("all@tuotiansudai.com","托天速贷","系统异常报告:用户-"+userId+";"+request.getMethod()+"-"+RequestUrl,exceptionStringBuffer.toString());
-                throw new FacesException(exceptionStringBuffer.toString());
+                if (!CommonUtils.isDevEnvironment("environment")) {
+                    MailService mailService = new MailServiceImpl();
+                    mailService.sendMailException(CommonUtils.administratorEmailAddress(), "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
+                }
+                throw new RuntimeException(exceptionStringBuffer.toString());
             } finally {
                 it.remove();
             }

@@ -8,8 +8,12 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.esoft.archer.common.exception.InputRuleMatchingException;
+import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.user.exception.UserRegisterException;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
@@ -76,6 +80,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
 	@Resource
 	private UserBO userBO;
+	@Resource
+	private AuthInfoBO authInfoBO;
 
 	/**
 	 * 推荐人
@@ -378,8 +384,14 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	 */
 	public String registerByMobileNumber() {
 		try {
+			boolean validationSuccess = userService.validateRegisterUser(getInstance());
+			if (!validationSuccess) {
+				FacesUtil.addErrorMessage("注册失败！");
+				return null;
+			}
 			userService.registerByMobileNumber(getInstance(), authCode,
 					referrer);
+			userService.addRegisterEmailVerificationJob(getInstance());
 			if (isLoginAfterRegister) {
 				login(getInstance().getId(), FacesUtil.getHttpSession());
 			}
@@ -398,6 +410,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 			FacesUtil.addErrorMessage("验证码已过期！");
 		} catch (AuthInfoAlreadyActivedException e) {
 			FacesUtil.addErrorMessage("验证码已被使用！");
+		} catch (InputRuleMatchingException | UserRegisterException e) {
+			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		return null;
 	}
@@ -696,11 +710,13 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	public void uploadPhoto(FileUploadEvent event) {
 		UploadedFile file = event.getFile();
 		try {
-			boolean isUploadByOSS = PropertiesUtils.getPro("plat.is.start").equals("oss");
-
+			boolean isUpload = false;
+			if (!CommonUtils.isDevEnvironment("environment")) {
+				isUpload = true;
+			}
 			InputStream is = file.getInputstream();
 			String fileName = file.getFileName();
-			String uploadPath = isUploadByOSS ? AliyunUtils.uploadFile(fileName, is) : ImageUploadUtil.upload(is, fileName);
+			String uploadPath = isUpload ? AliyunUtils.uploadFile(fileName, is) : ImageUploadUtil.upload(is, fileName);
 			this.getInstance().setPhoto(uploadPath);
 			getBaseService().merge(getInstance());
 			FacesUtil.addInfoMessage("上传成功！");
@@ -846,6 +862,27 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 					SecurityContextHolder.getContext());
 			sessionRegistry.registerNewSession(session.getId(), userDetails);
 		}
+	}
+	/**
+	 * 获取邮箱验证状态
+	 *
+	 * @param source 用户名
+	 * @param target 邮箱
+	 */
+	public boolean isActivatedByEmail(String source, String target){
+		String activateUseByEmailAt = CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL;
+		boolean isActivatedFlag = false;
+		AuthInfo  activateUseByEmailAi = authInfoBO.get(source, target, activateUseByEmailAt);
+		if (activateUseByEmailAi != null){
+			isActivatedFlag = CommonConstants.AuthInfoStatus.ACTIVATED.equals(activateUseByEmailAi.getStatus());
+		}else{
+			String bingEmailAt = CommonConstants.AuthInfoType.BINDING_EMAIL;
+			AuthInfo bingEmailAi = authInfoBO.get(source, target, bingEmailAt);
+			if (bingEmailAi != null){
+				isActivatedFlag = CommonConstants.AuthInfoStatus.ACTIVATED.equals(bingEmailAi.getStatus());
+			}
+		}
+		return isActivatedFlag;
 	}
 
 	public boolean getIsLoginAfterRegister() {

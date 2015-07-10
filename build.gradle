@@ -1,0 +1,26 @@
+allprojects {
+    //Put instructions for all projects
+}
+
+subprojects {
+    //Put instructions for each sub project
+    apply plugin: "java"
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        def springVersion = '4.1.6.RELEASE'
+        def slf4jVersion = '1.7.12'
+        compile 'log4j:log4j:1.2.17',
+                "org.slf4j:slf4j-log4j12:$slf4jVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion"
+
+        testCompile "junit:junit:4.12",
+                'org.mockito:mockito-all:1.10.19',
+                "javax.servlet:javax.servlet-api:3.1.0",
+                "org.springframework:spring-test:$springVersion",
+                "com.jayway.jsonpath:json-path:2.0.0",
+                'com.squareup.okhttp:mockwebserver:2.4.0'
+    }
+}

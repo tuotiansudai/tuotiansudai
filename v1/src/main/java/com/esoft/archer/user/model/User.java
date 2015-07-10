@@ -74,6 +74,11 @@ public class User implements java.io.Serializable {
 
 	private List<User> referrers;
 
+	/**
+	 * 用户登录失败次数
+	 */
+	private Integer loginFailedTimes;
+
 	// Constructors
 
 	/** default constructor */
@@ -380,5 +385,14 @@ public class User implements java.io.Serializable {
 
 	public void setReferrers(List<User> referrers) {
 		this.referrers = referrers;
+	}
+
+	@Column(name = "login_failed_times")
+	public Integer getLoginFailedTimes() {
+		return loginFailedTimes;
+	}
+
+	public void setLoginFailedTimes(Integer loginFailedTimes) {
+		this.loginFailedTimes = loginFailedTimes;
 	}
 }

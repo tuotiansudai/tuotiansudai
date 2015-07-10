@@ -39,6 +39,11 @@ public class UserConstants {
 		 * 是否需要验证码
 		 */
 		public static final String NEED_VALIDATE_CODE = "need_validate_code";
+
+		/**
+		 * 用户锁
+		 */
+		public static final String USER_LOCK = "user_lock";
 	}
 
 	public final static class UservalidateCodeType {
@@ -91,6 +96,11 @@ public class UserConstants {
 		 * 审核未通过
 		 */
 		public static final String VERIFY_FAIL = "verify_fail";
+
+		/**
+		 * 复审未通过
+		 */
+		public static final String RECHECK_FAIL = "recheck_fail";
 	}
 
 	/**

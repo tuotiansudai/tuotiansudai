@@ -1,0 +1,146 @@
+p, a, h3, body, html {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+body {
+    font-family: "microsoft yahei";
+    background: #ff6000;
+}
+
+.wrap_pc {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.wrap_pc i {
+    width: 876px;
+    margin: 34px auto 84px;
+    color: #fff;
+    line-height: 24px;
+    font-size: 16px;
+    text-indent: 35px;
+    font-style: normal;
+    display: block;
+}
+
+.header {
+    width: 100%;
+    height: 619px;
+    background: url("../images/imgpc/header.jpg") no-repeat center;
+    background-size: cover;
+}
+
+.content {
+    width: 971px;
+    height: 1877px;
+    overflow: hidden;
+    margin: 0px auto;
+    background: url("../images/imgpc/body_background.jpg") no-repeat;
+    position: relative;
+}
+
+.title {
+    width: 300px;
+    line-height: 30px;
+    height: 30px;
+    position: absolute;
+    left: 205px;
+    top: 614px;
+    font-size: 19px;
+    color: #ff6000;
+}
+
+.content h3 {
+    width: 971px;
+    text-align: center;
+    font-size: 33px;
+    height: 38px;
+    line-height: 38px;
+    margin: 8px 0px 8px 0px;
+    font-weight: normal;
+}
+
+.content p {
+    padding: 0px 60px 0px 90px;
+    width: 821px;
+    line-height: 28px;
+    text-indent: 35px;
+    margin-top: 14px;
+}
+
+.content a {
+    width: 230px;
+    height: 59px;
+    background: url("../images/imgpc/btn.png") no-repeat;
+    display: block;
+    margin: 0px auto ;
+}
+
+.content a.logup {
+    background: url("../images/imgpc/logup.png") no-repeat;
+    position: absolute;
+    right: 24px;
+    top: 656px;
+    display: block;
+    width: 210px;
+    height: 27px;
+    line-height: 27px;
+    color: #ff6000;
+    font-size: 19px;
+    margin: 0px;
+    text-align: center;
+    padding-right: 40px;
+    font-family: 'stsong';
+    text-decoration: none;
+}
+
+.tab {
+    width: 882px;
+    height: 170px;
+    margin: 230px auto 0px;
+}
+
+.tab h4 {
+    font-weight: normal;
+    height: 30px;
+    line-height: 30px;
+    margin: 30px 0px 0px 0px;
+}
+
+.tab h4:first-child {
+    margin-top: 0px;
+}
+
+.tab span {
+    height: 36px;
+    width: 880px;
+    overflow: hidden;
+    line-height: 30px;
+}
+
+.tab table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tab table tr td {
+    border: 1px solid #000;
+    width: 220px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: #ff6000;
+    font-size: 25px;
+    font-family: "stsong"
+}
+
+
+
+
+
+
+
+

@@ -59,9 +59,13 @@ public class MyPrettyFilter implements Filter {
 	 * process the pattern, storing parameters into the request map, then
 	 * forward the request to the specified viewId.
 	 */
-	public void doFilter(final ServletRequest req, final ServletResponse resp,
-			final FilterChain chain) throws IOException, ServletException {
+	public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
+
+		if (request.getRequestURI().startsWith("/mobile/")) {
+			chain.doFilter(req, resp);
+			return;
+		}
 
 		// let PrettyConfigReloader reload the configuration if required
 		// if (!PrettyContext.isInstantiated(request)) {

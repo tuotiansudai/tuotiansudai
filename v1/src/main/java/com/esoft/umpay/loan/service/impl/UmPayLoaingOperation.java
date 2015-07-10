@@ -2,6 +2,7 @@ package com.esoft.umpay.loan.service.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,11 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.jdp2p.schedule.ScheduleConstants;
+import com.esoft.jdp2p.schedule.job.LoanOutSuccessfulNotificationJob;
 import org.apache.commons.logging.Log;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +78,9 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 	@Logger
 	Log log;
 
+	@Resource
+	StdScheduler scheduler;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -133,6 +141,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				umPayLoanMoneyService.loanMoney2Mer("02"+loan.getId(), loanGuranteeFee, loan.getId());
 				//更新标的状态为还款中,对于投标中的不能改变几个参数已经做了处理
 				umPayLoanStatusService.updateLoanStatusOperation(loan, UmPayConstants.UpdateProjectStatus.PROJECT_STATE_REPAYING, false);
+				this.addLoanOutSuccessfulNotificationJob(loan);
 			}else{
 				to.setStatus(TrusteeshipConstants.Status.REFUSED);
 				ht.update(to);
@@ -163,20 +172,22 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			ServletResponse response) {
 		try {
 			Map<String,String> paramMap = UmPaySignUtil.getMapDataByRequest(request);
-			log.debug("放款S2S验签通过");
+
 			// 
 			String ret_code = paramMap.get("ret_code");
 			//订单ID(01+loanId)
 			String order_id = paramMap.get("order_id");
+
+			log.debug(MessageFormat.format("放款S2S验签通过: ret_code={0}, order_id={1}", ret_code, order_id));
+			TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER, order_id, UmPayConstants.OperationType.UMPAY);
 			//获取操作记录
-			if("0000".equals(ret_code)){	//处理成功
-				TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_GIVE_MONEY_TO_BORROWER, order_id, UmPayConstants.OperationType.UMPAY);
+			if(to != null && "0000".equals(ret_code)){	//处理成功
 				to.setStatus(TrusteeshipConstants.Status.PASSED);
 				ht.update(to);
 				String loanId = to.getOperator();
 				Loan loan = ht.get(Loan.class, loanId);
 				ht.evict(loan);
-				loan = ht.get(Loan.class, loanId);	
+				loan = ht.get(Loan.class, loanId);
 				if(LoanConstants.LoanStatus.RECHECK.equals(loan.getStatus())){
 					try {
 						loanService.giveMoneyToBorrower(loanId);
@@ -209,6 +220,30 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 			throws TrusteeshipReturnException {
 
 	}
+
+	private void addLoanOutSuccessfulNotificationJob(Loan loan) {
+		Date now = new Date();
+		Date threeMinutesLater = DateUtil.addMinute(now, 3);
+		JobDetail jobDetail = JobBuilder
+				.newJob(LoanOutSuccessfulNotificationJob.class)
+				.withIdentity(loan.getId(), ScheduleConstants.JobGroup.LOAN_OUT_NOTIFICATION)
+				.build();
+		jobDetail.getJobDataMap().put(LoanOutSuccessfulNotificationJob.LOAN_ID, loan.getId());
+		SimpleTrigger trigger = TriggerBuilder
+				.newTrigger()
+				.withIdentity(loan.getId(), ScheduleConstants.TriggerGroup.LOAN_OUT_NOTIFICATION)
+				.forJob(jobDetail)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+				.startAt(threeMinutesLater).build();
+		try {
+			scheduler.scheduleJob(jobDetail, trigger);
+		} catch (SchedulerException e) {
+			log.error(e);
+		}
+		if (log.isDebugEnabled())
+			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");
+	}
+	
 
 	/**
 	 * 平台收费

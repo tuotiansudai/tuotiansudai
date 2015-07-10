@@ -54,6 +54,16 @@ public class ScheduleConstants {
 		 */
 		public static final String LOAN_OVERDUE_CHECK = "loan_overdue_check";
 
+		/**
+		 * 放款成功通知
+		 */
+		public static final String LOAN_OUT_NOTIFICATION = "loan_out_notification";
+
+		/**
+		 * 注册邮件验证
+		 */
+		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
+
 	}
 
 	/**
@@ -110,5 +120,14 @@ public class ScheduleConstants {
 		 * 借款逾期检查
 		 */
 		public static final String LOAN_OVERDUE_CHECK = "loan_overdue_check";
+		/**
+		 * 放款成功通知
+		 */
+		public static final String LOAN_OUT_NOTIFICATION = "loan_out_notification";
+
+		/**
+		 * 注册邮箱验证
+		 */
+		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
 	}
 }
