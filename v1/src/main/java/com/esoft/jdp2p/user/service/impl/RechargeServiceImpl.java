@@ -197,8 +197,8 @@ public class RechargeServiceImpl implements RechargeService {
 		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
 		bcs.add(new RechargeBankCardImpl("COMM", "交通银行"));
 		bcs.add(new RechargeBankCardImpl("CITIC", "中信银行"));
-		bcs.add(new RechargeBankCardImpl("BJBANK", "北京银行"));
-		bcs.add(new RechargeBankCardImpl("SHRCB", "上海农商银行"));
+		bcs.add(new RechargeBankCardImpl("BJB", "北京银行"));
+		bcs.add(new RechargeBankCardImpl("SHNS", "上海农商银行"));
 		bcs.add(new RechargeBankCardImpl("WZCB", "温州银行"));
 		return bcs;
 	}
