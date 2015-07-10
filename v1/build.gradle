@@ -11,8 +11,11 @@ repositories {
 sourceSets.main.resources.srcDir 'src/main/java'
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile fileTree(dir: 'libs', include: '**/*.jar')
+    testCompile "junit:junit:4.11"
+
+    compile fileTree(dir: 'libs', include: '**/*.jar'),
+            'joda-time:joda-time:2.8.1'
+
     providedCompile 'mysql:mysql-connector-java:5.1.35'
 }
 
