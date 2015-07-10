@@ -158,7 +158,7 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	public String getBankNameByNo(final String bankNo) {
-		List<RechargeBankCard> banks = getBankCardsList();
+		List<RechargeBankCard> banks = getAllBankCards();
 		for (RechargeBankCard bank : banks) {
 			if (StringUtils.equals(bank.getNo(), bankNo)) {
 				return bank.getBankName();
@@ -181,6 +181,29 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	public List<RechargeBankCard> getBankCardsList() {
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
+		bcs.add(new RechargeBankCardImpl("ABC", "中国农业银行"));
+		bcs.add(new RechargeBankCardImpl("ICBC", "中国工商银行"));
+		bcs.add(new RechargeBankCardImpl("CCB", "中国建设银行"));
+		bcs.add(new RechargeBankCardImpl("PSBC", "邮储银行"));
+		bcs.add(new RechargeBankCardImpl("CMBC", "中国民生银行"));
+		bcs.add(new RechargeBankCardImpl("CMB", "招商银行"));
+		bcs.add(new RechargeBankCardImpl("SPDB", "浦发银行"));
+		bcs.add(new RechargeBankCardImpl("GDB", "广发银行"));
+		bcs.add(new RechargeBankCardImpl("HXB", "华夏银行"));
+		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
+		bcs.add(new RechargeBankCardImpl("BEA", "东亚银行"));
+		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
+		bcs.add(new RechargeBankCardImpl("COMM", "交通银行"));
+		bcs.add(new RechargeBankCardImpl("CITIC", "中信银行"));
+		bcs.add(new RechargeBankCardImpl("BJBANK", "北京银行"));
+		bcs.add(new RechargeBankCardImpl("SHRCB", "上海农商银行"));
+		bcs.add(new RechargeBankCardImpl("WZCB", "温州银行"));
+		return bcs;
+	}
+
+	private List<RechargeBankCard> getAllBankCards() {
 		String sql = "select * from bank_list";
 		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
 		Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
