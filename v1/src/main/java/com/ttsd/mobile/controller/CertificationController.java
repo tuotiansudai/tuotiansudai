@@ -31,8 +31,8 @@ public class CertificationController {
 
     @RequestMapping(value = "/realName/{realName}/{id}/{idCard}/{mobileNumber}", method = RequestMethod.GET)
     @ResponseBody
-    public DataMsg realNameCertification(@PathVariable String realName,String id,String idCard,String mobileNumber,@ModelAttribute DataMsg dataMsg) {
-        if (!StringUtils.isNotEmpty(realName)){
+    public DataMsg realNameCertification(@PathVariable String realName,@PathVariable String id,@PathVariable String idCard,@PathVariable String mobileNumber,@ModelAttribute DataMsg dataMsg) {
+        if (!StringUtils.isNotEmpty(realName) || !StringUtils.isNotEmpty(idCard)){
             dataMsg.setMsg("false");
             return dataMsg;
         }
