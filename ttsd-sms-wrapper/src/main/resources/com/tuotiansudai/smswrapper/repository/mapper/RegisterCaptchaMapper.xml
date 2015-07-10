@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper">
-    <resultMap id="registerCaptchaMap" type="RegisterCaptchaModel">
+    <resultMap id="smsModelMap" type="SmsModel">
         <id property="id" column="id"/>
         <result property="mobile" column="mobile"/>
         <result property="content" column="content"/>
@@ -14,12 +14,12 @@
         <result property="resultCode" column="result_code"/>
     </resultMap>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="RegisterCaptchaModel">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="SmsModel">
         insert into register_captcha (mobile, content, ext, stime, rrid, send_time, result_code)
         values (#{mobile}, #{content}, #{ext}, #{stime}, #{rrid}, #{sendTime}, #{resultCode})
     </insert>
 
-    <select id="findByMobile" resultMap="registerCaptchaMap">
+    <select id="findByMobile" resultMap="smsModelMap" parameterType="map">
         select * from register_captcha where mobile = #{mobile} order by send_time desc
     </select>
 </mapper>

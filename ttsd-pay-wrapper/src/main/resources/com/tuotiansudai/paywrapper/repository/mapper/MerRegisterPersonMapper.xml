@@ -4,14 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper">
 
+    <resultMap id="requestMap" type="MerRegisterPersonRequestModel">
+        <id property="id" column="id" />
+        <result property="service" column="service"/>
+        <result property="loginName" column="mer_cust_id"/>
+        <result property="userName" column="mer_cust_name"/>
+        <result property="identityType" column="identity_type"/>
+        <result property="identityNumber" column="identity_code"/>
+        <result property="mobile" column="mobile_id"/>
+        <result property="requestTime" column="request_time"/>
+        <result property="requestUrl" column="request_url"/>
+        <result property="requestData" column="request_data"/>
+        <result property="status" column="status"/>
+    </resultMap>
 
-    <insert id="createMerRegisterPersonRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonRequestModel">
-        insert into mer_register_request (mer_cust_id, mer_cust_name, identity_type, identity_code, mobile_id, request_time, request_url)
-        values (#{loginName}, #{userName}, #{identityType}, #{identityNumber}, #{mobileNumber}, #{requestTime}, #{requestUrl})
-    </insert>
-
-    <select id="findMerRegisterPersonRequestById" parameterType="java.lang.Long" resultMap="">
+    <select id="findRequestById" resultMap="requestMap" parameterType="java.lang.Long">
         select * from mer_register_request where id = #{id}
     </select>
+
+    <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonRequestModel">
+        insert into mer_register_request (service, mer_cust_id, mer_cust_name, identity_type, identity_code, mobile_id, request_url, request_data, request_time, status)
+        values (#{service}, #{loginName}, #{userName}, #{identityType}, #{identityNumber}, #{mobile}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
+    </insert>
+
+    <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
+        update mer_register_request set status = #{status} where id = #{id}
+    </update>
+
+    <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRegisterPersonResponseModel">
+        insert into mer_register_response (request_id, user_id, account_id, reg_date, ret_code, ret_msg, response_data, response_time)
+        values (#{requestId}, #{umpUserId}, #{umpAccountId}, #{registerDate}, #{returnCode}, #{returnMessage}, #{responseData}, #{responseTime})
+    </insert>
 
 </mapper>

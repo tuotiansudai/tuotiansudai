@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.tuotiansudai.client.dto.ResultDto;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,23 +16,17 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class SmsClient {
+public class SmsWrapperClient {
 
-    @Value("${sms_wrapper_host}")
+    static Logger logger = Logger.getLogger(SmsWrapperClient.class);
+
+    @Value("${smswrapper.host}")
     private String host;
 
     private final String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}";
 
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
     @Autowired
-    private OkHttpClient httpClient;
+    private OkHttpClient okHttpClient;
 
     public ResultDto sendSms(String mobile, String code) {
         String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
@@ -40,11 +35,11 @@ public class SmsClient {
 
         ResultDto resultDto = null;
         try {
-            Response response = httpClient.newCall(request).execute();
+            Response response = okHttpClient.newCall(request).execute();
             String jsonData = response.body().string();
             resultDto = this.jsonConvertToObject(jsonData);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         return resultDto;
@@ -54,24 +49,15 @@ public class SmsClient {
         ObjectMapper mapper = new ObjectMapper();
         ResultDto resultDto = null;
         try {
-
             resultDto = mapper.readValue(jsonString, ResultDto.class);
-
-        } catch (JsonGenerationException e) {
-
-            e.printStackTrace();
-
-        } catch (JsonMappingException e) {
-
-            e.printStackTrace();
-
         } catch (IOException e) {
-
-            e.printStackTrace();
-
+            logger.error(e.getLocalizedMessage(), e);
         }
         return resultDto;
+    }
 
+    public void setHost(String host) {
+        this.host = host;
     }
 
 }

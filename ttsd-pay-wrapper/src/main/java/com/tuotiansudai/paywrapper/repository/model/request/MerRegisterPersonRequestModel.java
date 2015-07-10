@@ -1,10 +1,8 @@
-package com.tuotiansudai.paywrapper.repository.model;
+package com.tuotiansudai.paywrapper.repository.model.request;
 
 import java.util.Map;
 
 public class MerRegisterPersonRequestModel extends BaseRequestModel {
-
-    private Long id;
 
     private String loginName;
 
@@ -14,18 +12,18 @@ public class MerRegisterPersonRequestModel extends BaseRequestModel {
 
     private String identityNumber;
 
-    private String mobileNumber;
+    private String mobile;
 
     public MerRegisterPersonRequestModel() {
     }
 
-    public MerRegisterPersonRequestModel(String loginName, String userName, String identityNumber, String mobileNumber) {
+    public MerRegisterPersonRequestModel(String loginName, String userName, String identityNumber, String mobile) {
         super();
         this.service = "mer_register_person";
         this.loginName = loginName;
         this.userName = userName;
         this.identityNumber = identityNumber;
-        this.mobileNumber = mobileNumber;
+        this.mobile = mobile;
     }
 
     @Override
@@ -35,23 +33,9 @@ public class MerRegisterPersonRequestModel extends BaseRequestModel {
         payRequestData.put("mer_cust_name", this.userName);
         payRequestData.put("identity_type", this.identityType);
         payRequestData.put("identity_code", this.identityNumber);
-        payRequestData.put("mobile_id", this.mobileNumber);
+        payRequestData.put("mobile_id", this.mobile);
         return payRequestData;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        MerRegisterPersonRequestModel that = (MerRegisterPersonRequestModel) o;
-
-        return id.equals(that.id);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
 }

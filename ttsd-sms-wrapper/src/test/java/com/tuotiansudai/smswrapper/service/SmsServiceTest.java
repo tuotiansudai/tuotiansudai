@@ -6,7 +6,7 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
-import com.tuotiansudai.smswrapper.repository.model.RegisterCaptchaModel;
+import com.tuotiansudai.smswrapper.repository.model.SmsModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,11 +68,11 @@ public class SmsServiceTest {
 
         this.smsService.sendRegisterCaptcha(mobile, captcha);
 
-        List<RegisterCaptchaModel> records = this.registerCaptchaMapper.findByMobile(mobile);
+        List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
 
         assertThat(records.size(), is(1));
 
-        RegisterCaptchaModel record = records.get(0);
+        SmsModel record = records.get(0);
 
         assertThat(record.getMobile(), is(mobile));
 

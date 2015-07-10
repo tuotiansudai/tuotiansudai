@@ -1,8 +1,9 @@
 package com.tuotiansudai.smswrapper.repository.model;
 
+
 import java.util.Date;
 
-public class RegisterCaptchaModel {
+public class SmsModel {
 
     private long id;
 
@@ -20,10 +21,10 @@ public class RegisterCaptchaModel {
 
     private String resultCode;
 
-    public RegisterCaptchaModel() {
+    public SmsModel() {
     }
 
-    public RegisterCaptchaModel(String mobile, String content, String resultCode) {
+    public SmsModel(String mobile, String content, String resultCode) {
         this.mobile = mobile;
         this.content = content;
         this.resultCode = resultCode;
@@ -98,7 +99,7 @@ public class RegisterCaptchaModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RegisterCaptchaModel that = (RegisterCaptchaModel) o;
+        SmsModel that = (SmsModel) o;
 
         return id == that.id;
 

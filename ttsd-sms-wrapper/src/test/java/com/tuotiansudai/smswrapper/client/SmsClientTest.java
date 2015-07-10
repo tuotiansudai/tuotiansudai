@@ -3,6 +3,7 @@ package com.tuotiansudai.smswrapper.client;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import okio.Buffer;
 import org.junit.After;
 import org.junit.Before;
@@ -52,7 +53,7 @@ public class SmsClientTest {
 
         String mobile = "13900000000";
         String content = "content";
-        String actualResultCode = this.smsClient.sendSMS(mobile, content);
+        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content);
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();
@@ -61,28 +62,6 @@ public class SmsClientTest {
 
         assertTrue(requestBody.contains("mobile=" + mobile));
         assertTrue(requestBody.contains("content=" + content));
-        assertThat(actualResultCode, is(resultCode));
-    }
-
-    @Test
-    public void shouldGetNullWhenMobileIsEmptyOrNull() throws Exception {
-        String resultCode1 = this.smsClient.sendSMS("", "content");
-
-        assertNull(resultCode1);
-
-        String resultCode2 = this.smsClient.sendSMS(null, "content");
-
-        assertNull(resultCode2);
-    }
-
-    @Test
-    public void shouldGetNullWhenContentIsEmptyOrNull() throws Exception {
-        String resultCode1 = this.smsClient.sendSMS("13900000000", "");
-
-        assertNull(resultCode1);
-
-        String resultCode2 = this.smsClient.sendSMS("13900000000", null);
-
-        assertNull(resultCode2);
+        assertTrue(actualResult);
     }
 }

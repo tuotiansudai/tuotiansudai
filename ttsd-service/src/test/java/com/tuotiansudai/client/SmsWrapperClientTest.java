@@ -20,10 +20,10 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @TransactionConfiguration
-public class SendSmsClientTest {
+public class SmsWrapperClientTest {
 
     @Autowired
-    private SmsClient smsClient;
+    private SmsWrapperClient smsWrapperClient;
 
     private MockWebServer server;
 
@@ -41,7 +41,7 @@ public class SendSmsClientTest {
     @Test
     public void jsonConvertToObject() {
         String jsonString = "{\"success\":true,\"data\":{\"status\":false}}";
-        ResultDto resultDto = smsClient.jsonConvertToObject(jsonString);
+        ResultDto resultDto = smsWrapperClient.jsonConvertToObject(jsonString);
 
         assertNotNull(resultDto);
         assertEquals(false, resultDto.getData().getStatus());
@@ -55,10 +55,10 @@ public class SendSmsClientTest {
         String jsonString = "{\"success\":true,\"data\":{\"status\":false}}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
-        smsClient.setHost("http://"+server.getHostName()+":"+server.getPort());
+        smsWrapperClient.setHost("http://"+server.getHostName()+":"+server.getPort());
         String mobile = "13900000000";
         String code = "1000";
-        ResultDto resultDto = this.smsClient.sendSms(mobile, code);
+        ResultDto resultDto = this.smsWrapperClient.sendSms(mobile, code);
 
         assertNotNull(resultDto);
         assertFalse(resultDto.getData().getStatus());

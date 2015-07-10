@@ -3,7 +3,7 @@ apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
-    def springVersion = '4.1.6.RELEASE'
+    def springVersion = '4.1.7.RELEASE'
     def jacksonVersion = '2.5.4'
     def mybatisVersion = '3.3.0'
     def mybatisSpringVersion = '1.2.3'

@@ -14,7 +14,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath:sms_wrapper_client.properties, classpath:jdbc.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties, classpath:sms_wrapper_client.properties, classpath:pay_wrapper_client.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -53,6 +53,6 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 
 </beans>

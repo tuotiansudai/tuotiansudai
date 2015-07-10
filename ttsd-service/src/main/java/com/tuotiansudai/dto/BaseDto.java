@@ -1,10 +1,10 @@
 package com.tuotiansudai.dto;
 
-public class BaseDto{
+public class BaseDto<T extends BaseDataDto> {
 
     private boolean success = true;
 
-    private BaseDataDto data;
+    private T data;
 
     public boolean isSuccess() {
         return success;
@@ -14,11 +14,11 @@ public class BaseDto{
         this.success = success;
     }
 
-    public BaseDataDto getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(BaseDataDto data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

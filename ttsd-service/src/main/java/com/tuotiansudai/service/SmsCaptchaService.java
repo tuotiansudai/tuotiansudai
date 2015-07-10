@@ -3,8 +3,8 @@ package com.tuotiansudai.service;
 
 public interface SmsCaptchaService {
 
-    boolean sendSmsByMobileNumberRegister(String mobileNumber);
+    boolean sendRegisterCaptcha(String mobile);
 
-    boolean verifyCaptcha(String mobile, String code);
+    boolean verifyRegisterCaptcha(String mobile, String captcha);
 
 }

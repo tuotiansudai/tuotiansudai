@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
     <title>注册</title>
-    <link rel="stylesheet" type="text/css" href="../style/index.css">
-    <script src="../js/libs/require.js" defer async="true" data-main="../js/main"></script>
+    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/index.css">
+    <script src="${requestContext.getContextPath()}/js/libs/require.js" defer async="true"
+            data-main="${requestContext.getContextPath()}/js/main"></script>
 </head>
 <body>
 <#include "header.ftl" />
 <div id="nav"><!--nav begin-->
     <div class="nav_main">
-        <a href="homepage.html" class="logo"> <img src="../images/logo.png" alt=""></a>
-
+        <a href="homepage.html" class="logo">
+            <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
+        </a>
         <p>注册</p>
-        <span>已有账号，请<a href="javascript:;">登陆</a> </span>
+        <span>已有账号，请<a href="javascript:;">登陆</a></span>
     </div>
 </div>
 <!--nav end-->

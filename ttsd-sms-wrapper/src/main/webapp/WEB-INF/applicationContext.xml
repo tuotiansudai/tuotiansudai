@@ -55,4 +55,6 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
+    <bean class="com.tuotiansudai.smswrapper.util.SpringContextUtil" />
+
 </beans>

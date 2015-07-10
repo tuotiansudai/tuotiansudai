@@ -1,13 +1,12 @@
 package com.tuotiansudai.smswrapper.repository.mapper;
 
-import com.tuotiansudai.smswrapper.repository.model.RegisterCaptchaModel;
+import com.tuotiansudai.smswrapper.repository.model.SmsModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,7 @@ public class RegisterCaptchaMapperTest {
     @Test
     public void shouldCreateRegisterCaptcha() throws Exception {
         Date now = new Date();
-        RegisterCaptchaModel model = new RegisterCaptchaModel();
+        SmsModel model = new SmsModel();
         model.setMobile("13800000000");
         model.setContent("content");
         model.setExt("ext");
@@ -37,7 +36,7 @@ public class RegisterCaptchaMapperTest {
 
         registerCaptchaMapper.create(model);
 
-        List<RegisterCaptchaModel> models = registerCaptchaMapper.findByMobile(model.getMobile());
+        List<SmsModel> models = registerCaptchaMapper.findByMobile(model.getMobile());
 
         assertThat(models.size(), is(1));
     }

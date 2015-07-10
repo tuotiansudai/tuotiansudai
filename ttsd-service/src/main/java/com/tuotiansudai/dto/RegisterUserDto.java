@@ -1,16 +1,25 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.UserModel;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class RegisterDto {
+import javax.validation.constraints.Pattern;
+
+public class RegisterUserDto {
+
+    @NotEmpty
+    @Pattern(regexp = "^[A-Za-z0-9]{5,25}$")
     private String loginName;
 
-    private String mobileNumber;
+    @NotEmpty
+    @Pattern(regexp = "^\\d{11}$")
+    private String mobile;
 
+    @NotEmpty
+    @Pattern(regexp = "^[A-Za-z0-9]{6}$")
     private String captcha;
 
-    private String email;
-
+    @NotEmpty
     private String password;
 
     private String referrer;
@@ -23,12 +32,12 @@ public class RegisterDto {
         this.loginName = loginName;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getCaptcha() {
@@ -37,14 +46,6 @@ public class RegisterDto {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPassword() {
@@ -66,9 +67,9 @@ public class RegisterDto {
     public UserModel convertToUserModel() {
         UserModel userModel = new UserModel();
         userModel.setLoginName(this.loginName);
-        userModel.setMobileNumber(this.mobileNumber);
+        userModel.setMobile(this.mobile);
         userModel.setPassword(this.password);
-        userModel.setEmail(this.email);
+        userModel.setReferrer(this.referrer);
         return userModel;
     }
 

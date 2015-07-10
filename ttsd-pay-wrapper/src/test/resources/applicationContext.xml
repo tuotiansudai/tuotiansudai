@@ -16,12 +16,11 @@
 
     <context:property-placeholder location="classpath:jdbc.properties, classpath:sms_wrapper_client.properties" />
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-    <tx:annotation-driven transaction-manager="payTransactionManager"/>
-
-
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
     <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.pay.driver}"/>
@@ -58,7 +57,7 @@
 
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="payBoneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.request,com.tuotiansudai.paywrapper.repository.model.response"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -78,5 +77,7 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean class="com.tuotiansudai.paywrapper.util.SpringContextUtil" />
 
 </beans>

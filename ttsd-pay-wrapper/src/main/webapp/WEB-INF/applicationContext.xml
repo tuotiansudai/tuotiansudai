@@ -14,18 +14,31 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <context:property-placeholder location="classpath:jdbc.properties, classpath:umpay.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties, classpath:sms_wrapper_client.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.client, com.tuotiansudai.repository, com.tuotiansudai.service"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="payTransactionManager"/>
+
+    <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.pay.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}"/>
+        <property name="username" value="${jdbc.pay.username}"/>
+        <property name="password" value="${jdbc.pay.password}"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="10"/>
+        <property name="partitionCount" value="3"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.url}${jdbc.schema}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
+        <property name="driverClass" value="${jdbc.aa.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}"/>
+        <property name="username" value="${jdbc.aa.username}"/>
+        <property name="password" value="${jdbc.aa.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>
@@ -34,25 +47,37 @@
     </bean>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="payTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="payBoneCPDataSource"/>
+    </bean>
+
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="boneCPDataSource"/>
     </bean>
 
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model"/>
+    <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="payBoneCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.request,com.tuotiansudai.paywrapper.repository.model.response"/>
     </bean>
 
-    <!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
     </bean>
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="paySqlSessionFactory"/>
         <property name="basePackage" value="com.tuotiansudai.paywrapper.repository.mapper"/>
     </bean>
 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+    </bean>
+
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean class="com.tuotiansudai.paywrapper.util.SpringContextUtil" />
 
 </beans>

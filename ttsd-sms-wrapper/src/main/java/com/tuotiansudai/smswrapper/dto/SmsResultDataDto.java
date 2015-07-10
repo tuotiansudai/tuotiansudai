@@ -1,6 +1,6 @@
 package com.tuotiansudai.smswrapper.dto;
 
-public class ResultDataDto {
+public class SmsResultDataDto {
 
     private boolean status;
 

@@ -1,12 +1,14 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.dto.RegisterDto;
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -26,61 +29,58 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SmsCaptchaService smsCaptchaService;
 
+    @Autowired
+    private PayWrapperClient payWrapperClient;
+
     public static String SHA = "SHA";
 
     @Override
-    public boolean userEmailIsExisted(String email) {
-        return userMapper.findUserByEmail(email) != null;
+    public boolean emailIsExist(String email) {
+        return userMapper.findByEmail(email) != null;
     }
 
     @Override
-    public boolean userMobileNumberIsExisted(String mobileNumber) {
-        return userMapper.findUserByMobileNumber(mobileNumber) != null;
+    public boolean mobileIsExist(String mobile) {
+        return userMapper.findByMobile(mobile) != null;
     }
 
     @Override
-    public boolean referrerIsExisted(String referrer) {
-        return userMapper.findUserByLoginName(referrer) != null;
+    public boolean loginNameIsExist(String loginName) {
+        return userMapper.findByLoginName(loginName) != null;
     }
 
     @Override
-    public boolean loginNameIsExisted(String loginName) {
-        return userMapper.findUserByLoginName(loginName) != null;
-    }
+    @Transactional
+    public boolean registerUser(RegisterUserDto dto) {
+        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
+        boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
+        boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyRegisterCaptcha(dto.getMobile(), dto.getCaptcha());
 
-    @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public boolean registerUser(RegisterDto registerDto) {
-        boolean loginNameIsExisted = this.loginNameIsExisted(registerDto.getLoginName());
-        boolean mobileNumberIsExisted = this.userMobileNumberIsExisted(registerDto.getMobileNumber());
-        boolean userEmailIsExisted = this.userEmailIsExisted(registerDto.getEmail());
-        boolean referrerIsNotExisted = !Strings.isNullOrEmpty(registerDto.getReferrer()) && !this.referrerIsExisted(registerDto.getReferrer());
-        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyCaptcha(registerDto.getMobileNumber(), registerDto.getCaptcha());
-
-        if (loginNameIsExisted || mobileNumberIsExisted || userEmailIsExisted || referrerIsNotExisted || verifyCaptchaFailed) {
+        if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
 
-        UserModel registerUserModel = registerDto.convertToUserModel();
+        UserModel userModel = dto.convertToUserModel();
 
-        if (!Strings.isNullOrEmpty(registerDto.getReferrer())) {
-            UserModel referrer = userMapper.findUserByLoginName(registerDto.getReferrer());
-            registerUserModel.setReferrerId(referrer.getId());
-        }
-
+        // TODO implement it by Spring Security
         String randomSalt = getRandomSalt();
         String password;
         try {
-            password = encodeSHA(encodeSHA(registerUserModel.getPassword()) + randomSalt);
+            password = encodeSHA(encodeSHA(userModel.getPassword()) + randomSalt);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
             return false;
         }
-        registerUserModel.setSalt(randomSalt);
-        registerUserModel.setRegisterTime(new Date());
-        registerUserModel.setPassword(password);
-        registerUserModel.setStatus(UserStatus.ACTIVE);
-        this.userMapper.insertUser(registerUserModel);
+        userModel.setSalt(randomSalt);
+        userModel.setPassword(password);
+        this.userMapper.create(userModel);
+        return true;
+    }
+
+    @Override
+    public boolean registerAccount(RegisterAccountDto dto) {
+        payWrapperClient.register(dto);
         return true;
     }
 
