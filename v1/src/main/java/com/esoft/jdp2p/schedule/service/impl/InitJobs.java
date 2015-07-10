@@ -161,7 +161,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 				}
 
 				// 借款逾期调度
-				CronTrigger activityRewardTrigger = (CronTrigger) scheduler
+				SimpleTrigger activityRewardTrigger = (SimpleTrigger) scheduler
 						.getTrigger(TriggerKey.triggerKey(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD,
 								ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD));
 				if (activityRewardTrigger == null) {
