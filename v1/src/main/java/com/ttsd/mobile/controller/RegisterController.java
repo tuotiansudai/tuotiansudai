@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/register")
 public class RegisterController {
 
-    @Resource(name = "com.ttsd.mobile.service.impl.MobileRegisterImpl")
+    @Resource(name = "mobileRegisterImpl")
     private IMobileRegisterService mobileRegister;
 
     @RequestMapping(method = RequestMethod.GET)
