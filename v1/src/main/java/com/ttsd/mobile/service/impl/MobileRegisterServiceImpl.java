@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * Created by tuotian on 15/7/9.
  */
-@Service(value = "mobileRegisterImpl")
+@Service(value = "mobileRegisterServiceImpl")
 public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Logger
     private Log log;
@@ -104,6 +104,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                     }
                     User user = new User();
                     user.setRegisterTime(new Date());
+                    user.setUsername(userName);
+                    user.setMobileNumber(phoneNum);
                     // 用户密码通过sha加密
                     user.setPassword(HashCrypt.getDigestHash(password));
                     user.setStatus(UserConstants.UserStatus.ENABLE);
@@ -125,5 +127,21 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setLog(Log log) {
+        this.log = log;
+    }
+
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
+
+    public void setMessageBO(MessageBO messageBO) {
+        this.messageBO = messageBO;
+    }
+
+    public void setUserBO(UserBO userBO) {
+        this.userBO = userBO;
     }
 }

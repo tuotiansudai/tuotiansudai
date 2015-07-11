@@ -21,15 +21,15 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/register")
 public class RegisterController {
 
-    @Resource(name = "mobileRegisterImpl")
-    private IMobileRegisterService mobileRegister;
+    @Resource(name = "mobileRegisterServiceImpl")
+    private IMobileRegisterService mobileRegisterService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView register() {
         return new ModelAndView("/register");
     }
 
-    @RequestMapping(value = "mobileRegister",method = RequestMethod.GET)
+    @RequestMapping(value = "/mobileRegister",method = RequestMethod.GET)
     @ResponseBody
     public String mobileRegister(HttpServletRequest request,HttpServletResponse response){
         /**
@@ -41,12 +41,12 @@ public class RegisterController {
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
-        HttpSession sesion = request.getSession();
+        mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
         return "";
     }
 
     /***************************setter注入方法****************************/
-    public void setMobileRegister(IMobileRegisterService mobileRegister) {
-        this.mobileRegister = mobileRegister;
+    public void setMobileRegisterService(IMobileRegisterService mobileRegisterService) {
+        this.mobileRegisterService = mobileRegisterService;
     }
 }

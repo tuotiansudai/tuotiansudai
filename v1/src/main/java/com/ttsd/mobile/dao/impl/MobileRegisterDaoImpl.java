@@ -67,4 +67,5 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
     public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
         this.hibernateTemplate = hibernateTemplate;
     }
+
 }
