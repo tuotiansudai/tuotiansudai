@@ -89,7 +89,7 @@
 					<div class="span3-div">
 						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 						<span>发布日期：
-							<h:outputText value="#{loan.commitTime}">
+							<h:outputText value="#{loan.verifyTime}">
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>
