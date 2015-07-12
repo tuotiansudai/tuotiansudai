@@ -122,31 +122,34 @@ public class JulyActivityRewardService {
 
         for (JulyActivityReward reward : rewards) {
             final String userId = reward.getUser().getId();
+            boolean successRechargeExist = this.isSuccessRechargeExist(userId);
+            boolean successInvestExist = this.isSuccessInvestExist(userId);
+
             Optional<String> userFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
                 @Override
                 public boolean apply(String multipleBankCardUserId) {
                     return userId.equalsIgnoreCase(multipleBankCardUserId);
                 }
             });
+
             if (!userFound.isPresent()) {
-                boolean successRechargeExist = this.isSuccessRechargeExist(userId);
-                boolean successInvestExist = this.isSuccessInvestExist(userId);
-
                 this.rewardUser(reward, successRechargeExist);
-                if (reward.getReferrer() != null) {
-                    final String referrerId = reward.getReferrer().getId();
-                    Optional<String> referrerFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
-                        @Override
-                        public boolean apply(String multipleBankCardUserId) {
-                            return referrerId.equalsIgnoreCase(multipleBankCardUserId);
-                        }
-                    });
+            }
 
-                    if (!referrerFound.isPresent()) {
-                        this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+            if (reward.getReferrer() != null) {
+                final String referrerId = reward.getReferrer().getId();
+                Optional<String> referrerFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+                    @Override
+                    public boolean apply(String multipleBankCardUserId) {
+                        return referrerId.equalsIgnoreCase(multipleBankCardUserId);
                     }
+                });
+
+                if (!referrerFound.isPresent()) {
+                    this.rewardReferrer(reward, successRechargeExist, successInvestExist);
                 }
             }
+
         }
 
         log.info("Total Reward: " + TOTAL_REWARD / 100);
