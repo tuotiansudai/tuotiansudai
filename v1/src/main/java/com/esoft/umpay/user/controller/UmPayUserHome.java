@@ -1,10 +1,12 @@
 package com.esoft.umpay.user.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.esoft.archer.user.controller.UserHome;
@@ -13,15 +15,25 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.HashCrypt;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 @SuppressWarnings("serial")
 public class UmPayUserHome extends UserHome {
+	@Resource
+	HibernateTemplate ht;
 
 	@Resource
 	UmPayUserOperation umPayUserOperation;
 
 	@Override
 	public String getInvestorPermission() {
+		String idCard = getInstance().getIdCard();
+		List<User> users = ht.find(" from User user where user.idCard = ? and user.status = '1' ",idCard);
+		if(CollectionUtils.isNotEmpty(users)){
+			FacesUtil.addErrorMessage("身份证号：" + idCard + "已经存在");
+			return  null;
+		}
+
 		if (StringUtils.equals(
 				HashCrypt.getDigestHash(getInstance().getCashPassword()),
 				getInstance().getPassword())) {
