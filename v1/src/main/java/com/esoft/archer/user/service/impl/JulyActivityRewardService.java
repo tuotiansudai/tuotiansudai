@@ -114,7 +114,7 @@ public class JulyActivityRewardService {
         TOTAL_REWARD = 0;
         List<JulyActivityReward> rewards = ht.find("from JulyActivityReward");
 
-        String sql = "select a.card_no, count(*) from (\n" +
+        String sql = "select a.user_id from (\n" +
                 "\tselect distinct card_no, user_id from bank_card where status ='passed' and card_no in( SELECT card_no FROM bank_card where status ='passed' group by card_no having count(*) >1) order by card_no\n" +
                 "\t    ) as a group by a.card_no having count(*) > 1 order by a.card_no";
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
