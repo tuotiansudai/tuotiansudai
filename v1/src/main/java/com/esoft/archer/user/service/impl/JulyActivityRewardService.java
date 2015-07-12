@@ -119,22 +119,32 @@ public class JulyActivityRewardService {
                 "\t    ) as a group by a.card_no having count(*) > 1 order by a.card_no";
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
         List<String> multipleBankCardUsers = query.list();
-        
+
         for (JulyActivityReward reward : rewards) {
             final String userId = reward.getUser().getId();
-            Optional<String> found = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+            Optional<String> userFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
                 @Override
                 public boolean apply(String multipleBankCardUserId) {
                     return userId.equalsIgnoreCase(multipleBankCardUserId);
                 }
             });
-            if (!found.isPresent()) {
+            if (!userFound.isPresent()) {
                 boolean successRechargeExist = this.isSuccessRechargeExist(userId);
                 boolean successInvestExist = this.isSuccessInvestExist(userId);
 
                 this.rewardUser(reward, successRechargeExist);
                 if (reward.getReferrer() != null) {
-                    this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                    final String referrerId = reward.getReferrer().getId();
+                    Optional<String> referrerFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+                        @Override
+                        public boolean apply(String multipleBankCardUserId) {
+                            return referrerId.equalsIgnoreCase(multipleBankCardUserId);
+                        }
+                    });
+
+                    if (!referrerFound.isPresent()) {
+                        this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                    }
                 }
             }
         }
