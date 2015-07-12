@@ -19,7 +19,10 @@ import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
@@ -111,14 +114,28 @@ public class JulyActivityRewardService {
         TOTAL_REWARD = 0;
         List<JulyActivityReward> rewards = ht.find("from JulyActivityReward");
 
+        String sql = "select a.card_no, count(*) from (\n" +
+                "\tselect distinct card_no, user_id from bank_card where status ='passed' and card_no in( SELECT card_no FROM bank_card where status ='passed' group by card_no having count(*) >1) order by card_no\n" +
+                "\t    ) as a group by a.card_no having count(*) > 1 order by a.card_no";
+        Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
+        List<String> multipleBankCardUsers = query.list();
+        
         for (JulyActivityReward reward : rewards) {
-            String userId = reward.getUser().getId();
-            boolean successRechargeExist = this.isSuccessRechargeExist(userId);
-            boolean successInvestExist = this.isSuccessInvestExist(userId);
+            final String userId = reward.getUser().getId();
+            Optional<String> found = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+                @Override
+                public boolean apply(String multipleBankCardUserId) {
+                    return userId.equalsIgnoreCase(multipleBankCardUserId);
+                }
+            });
+            if (!found.isPresent()) {
+                boolean successRechargeExist = this.isSuccessRechargeExist(userId);
+                boolean successInvestExist = this.isSuccessInvestExist(userId);
 
-            this.rewardUser(reward, successRechargeExist);
-            if (reward.getReferrer() != null) {
-                this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                this.rewardUser(reward, successRechargeExist);
+                if (reward.getReferrer() != null) {
+                    this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                }
             }
         }
 
