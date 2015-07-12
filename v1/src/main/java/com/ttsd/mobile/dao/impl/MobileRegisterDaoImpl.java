@@ -22,21 +22,24 @@ import java.util.List;
 @Repository(value = "mobileRegisterDaoImpl")
 public class MobileRegisterDaoImpl implements IMobileRegisterDao {
     @Resource
-    private HibernateTemplate hibernateTemplate;
+    private HibernateTemplate ht;
 
     public Integer getUserCountByUserName(String userName){
         Session session = this.getSession();
-        String sql = "select count(1) from USER where username=?";
+        String sql = "select count(1) from user where username=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
-        sqlQuery.setParameter(1,userName);
-        return ((Number)sqlQuery.uniqueResult()).intValue();
+        sqlQuery.setParameter(0, userName);
+        System.out.println("*********************username="+userName);
+        int count = ((Number)sqlQuery.uniqueResult()).intValue();
+        System.out.println("*********************count="+count);
+        return count;
     }
 
     public Integer getUserCountByCellphone(String userCellphone){
         Session session = this.getSession();
-        String sql = "select count(1) from USER where mobile_number=?";
+        String sql = "select count(1) from user where mobile_number=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
-        sqlQuery.setParameter(1,userCellphone);
+        sqlQuery.setParameter(0, userCellphone);
         return ((Number)sqlQuery.uniqueResult()).intValue();
     }
     public void persistentUserRegistInfo(User user){
@@ -46,7 +49,7 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
 
     @Override
     public UserMessageTemplate getMessageTemplate(Class clazz, String templateName) {
-        return hibernateTemplate.get(UserMessageTemplate.class,templateName);
+        return ht.get(UserMessageTemplate.class, templateName);
     }
 
     @Override
@@ -54,18 +57,14 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
         Session session = getSession();
         String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=? and deadline<=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
-        sqlQuery.setString(1, phoneNum);
-        sqlQuery.setParameter(2,vCode);
-        sqlQuery.setParameter(3,new Date());
+        sqlQuery.setString(0, phoneNum);
+        sqlQuery.setParameter(1,vCode);
+        sqlQuery.setParameter(2,new Date());
         return ((Integer)sqlQuery.uniqueResult()).intValue();
     }
 
     public Session getSession(){
-        return hibernateTemplate.getSessionFactory().getCurrentSession();
-    }
-    /************setter注入方法*************/
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
+        return ht.getSessionFactory().getCurrentSession();
     }
 
 }

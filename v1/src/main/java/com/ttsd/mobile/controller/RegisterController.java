@@ -41,8 +41,7 @@ public class RegisterController {
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
-        mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
-        return "";
+        return mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
     }
 
     /***************************setter注入方法****************************/

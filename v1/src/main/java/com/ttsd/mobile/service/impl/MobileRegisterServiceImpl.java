@@ -22,6 +22,7 @@ import com.ttsd.mobile.service.IMobileRegisterService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -55,7 +56,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     private UserBO userBO;
 
     @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public String mobileRegister(String userName, String password, String phoneNum, String vCode,String operationType) {
         if (userName == null || userName.equals("")){
             return "false";
@@ -100,19 +101,19 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                 }else if (operationType.equals("1")){
                     int codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,"activated");
                     if(codeCount < 2 && codeCount > 0) {
-
+                        User user = new User();
+                        user.setRegisterTime(new Date());
+                        user.setUsername(userName);
+                        user.setMobileNumber(phoneNum);
+                        // 用户密码通过sha加密
+                        user.setPassword(HashCrypt.getDigestHash(password));
+                        user.setStatus(UserConstants.UserStatus.ENABLE);
+                        userBO.save(user);
+                        // 添加普通用户权限
+                        Role role = new Role("MEMBER");
+                        userBO.addRole(user, role);
+                        return "true";
                     }
-                    User user = new User();
-                    user.setRegisterTime(new Date());
-                    user.setUsername(userName);
-                    user.setMobileNumber(phoneNum);
-                    // 用户密码通过sha加密
-                    user.setPassword(HashCrypt.getDigestHash(password));
-                    user.setStatus(UserConstants.UserStatus.ENABLE);
-                    userBO.save(user);
-                    // 添加普通用户权限
-                    Role role = new Role("MEMBER");
-                    userBO.addRole(user, role);
                 }
             }
         }
