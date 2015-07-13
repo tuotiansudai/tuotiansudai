@@ -83,41 +83,6 @@ import java.util.Properties;
             return var5;
         }
 
-        public static String getPro(String pro,String path) {
-            InputStream in = null;
-
-            String var5;
-            try {
-                Properties ex = new Properties();
-                in = ProFileUtil.class.getClassLoader().getResourceAsStream(path);
-                if(in == null) {
-                    throw new RuntimeException("没有找到配置文件"+path);
-                }
-
-                ex.load(in);
-                in.close();
-                var5 = StringUtil.trim(ex.getProperty(pro));
-            } catch (Exception var13) {
-                RuntimeException rex = new RuntimeException(var13.getMessage());
-                rex.setStackTrace(var13.getStackTrace());
-                throw rex;
-            } finally {
-                if(in != null) {
-                    try {
-                        in.close();
-                    } catch (Exception var12) {
-                        RuntimeException rex1 = new RuntimeException(var12.getMessage());
-                        rex1.setStackTrace(var12.getStackTrace());
-                        throw rex1;
-                    }
-                }
-
-            }
-
-            return var5;
-        }
-
-
         public static String getUrlPix() {
             return getPro("plat.url");
         }
