@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD INDEX INDEX_ID_CARD (`id_card`);
