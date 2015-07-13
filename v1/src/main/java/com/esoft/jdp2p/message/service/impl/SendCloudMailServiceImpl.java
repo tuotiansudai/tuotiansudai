@@ -30,13 +30,9 @@ public class SendCloudMailServiceImpl implements SendCloudMailService {
             sendCloudClient.sendMailBySendCloud(toAddress,title,content,"text");
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
             log.error(e.getStackTrace());
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
             log.error(e.getStackTrace());
-        }catch (Exception e){
-            e.printStackTrace();
         }
         return false;
     }
@@ -48,10 +44,8 @@ public class SendCloudMailServiceImpl implements SendCloudMailService {
             sendCloudClient.sendMailBySendCloud(toAddress,title,content,"content");
             return true;
         } catch (MessagingException e) {
-            e.printStackTrace();
             log.error(e.getStackTrace());
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
             log.error(e.getStackTrace());
         }
         return false;
