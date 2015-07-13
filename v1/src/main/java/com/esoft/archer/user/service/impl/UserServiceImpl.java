@@ -851,44 +851,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addRegisterEmailVerificationJob(User user) {
-		Date now = new Date();
-		Calendar cal = Calendar.getInstance();
-		int emailValidDay = 7;
-		cal.setTime(now);
-		cal.add(Calendar.DATE, emailValidDay);
-		Date deadline = cal.getTime();
-
-		String userId = user.getId();
-		String authCode = authService.createAuthInfo(userId, user.getEmail(), deadline,
-				CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-				.getAuthCode();
-
-		Date threeMinutesLater = DateUtil.addMinute(now, 2);
-		JobDetail jobDetail = JobBuilder
-				.newJob(RegisterEmailVerificationJob.class)
-				.withIdentity(userId, ScheduleConstants.JobGroup.REGISTER_VERIFICATION_EMAIL)
-				.build();
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.USER_ID, userId);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.AUTH_CODE, authCode);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
-		SimpleTrigger trigger = TriggerBuilder
-				.newTrigger()
-				.withIdentity(userId, ScheduleConstants.TriggerGroup.REGISTER_VERIFICATION_EMAIL)
-				.forJob(jobDetail)
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(threeMinutesLater).build();
-		try {
-			scheduler.scheduleJob(jobDetail, trigger);
-		} catch (SchedulerException e) {
-			log.error("用户注册添加邮箱验证Job 失败: " + userId);
-			log.error(e);
-		}
-		if (log.isDebugEnabled())
-			log.debug("用户注册添加邮箱验证Job完成: " + userId);
-	}
-
-	@Override
 	public boolean validateRegisterUser(User instance) throws UserRegisterException, InputRuleMatchingException {
 		try {
 			validationService.inputRuleValidation("input.username", instance.getUsername());
