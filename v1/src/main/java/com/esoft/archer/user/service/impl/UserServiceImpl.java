@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
 		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
+						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
 	}
 
@@ -529,7 +529,7 @@ public class UserServiceImpl implements UserService {
 		if (activateUserByEmailAi != null){
 			ht.delete(activateUserByEmailAi);
 		}
-		if (!oldEmail.equals(email) && bingEmailAi != null){
+		if (oldEmail != null && !oldEmail.equals(email) && bingEmailAi != null){
 				ht.delete(bingEmailAi);
 		}
 		// 如果认证码输入正确，更改此认证码的状态为已激活
