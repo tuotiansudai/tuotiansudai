@@ -58,7 +58,6 @@ public class TrusteeshipOperationBO {
 	/**
 	 * 操作类型（type） 操作的唯一标识（markId） 托管方(trusteeship) 上述三者一致，则认为是同一条数据。
 	 */
-	@Transactional(rollbackFor = Exception.class)
 	public void save(TrusteeshipOperation to) {
 		String sqlTemplate = "delete from trusteeship_operation where type = ''{0}'' and mark_id = ''{1}'' and trusteeship = ''{2}''";
 		if (StringUtils.isEmpty(to.getType())) {
@@ -75,10 +74,6 @@ public class TrusteeshipOperationBO {
 		}
 
 		ht.getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sqlTemplate, to.getType(), to.getMarkId(), to.getTrusteeship()));
-//		ht.bulkUpdate(
-//				"delete TrusteeshipOperation to where to.type=? and to.markId=? and to.trusteeship=?",
-//				new String[] { to.getType(), to.getMarkId(),
-//						to.getTrusteeship() });
 		ht.save(to);
 	}
 
