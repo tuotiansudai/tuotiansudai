@@ -1,24 +1,38 @@
 package com.esoft.archer.user.service.impl;
 
-import java.text.MessageFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.InputRuleMatchingException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.model.AuthInfo;
+import com.esoft.archer.common.service.AuthService;
 import com.esoft.archer.common.service.ValidationService;
+import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.openauth.OpenAuthConstants;
+import com.esoft.archer.openauth.service.OpenAuthService;
+import com.esoft.archer.system.service.SpringSecurityService;
+import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.archer.user.model.Role;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.service.UserInfoService;
+import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.DateStyle;
+import com.esoft.core.util.DateUtil;
+import com.esoft.core.util.HashCrypt;
+import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.model.UserMessageTemplate;
+import com.esoft.jdp2p.message.service.MessageService;
+import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
+import com.ttsd.redis.RedisClinet;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -29,28 +43,13 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
-import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
-import com.esoft.archer.common.exception.NoMatchingObjectsException;
-import com.esoft.archer.common.service.AuthService;
-import com.esoft.archer.common.service.impl.AuthInfoBO;
-import com.esoft.archer.openauth.OpenAuthConstants;
-import com.esoft.archer.openauth.service.OpenAuthService;
-import com.esoft.archer.system.service.SpringSecurityService;
-import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.model.Role;
-import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.service.UserInfoService;
-import com.esoft.archer.user.service.UserService;
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.HashCrypt;
-import com.esoft.jdp2p.message.MessageConstants;
-import com.esoft.jdp2p.message.model.UserMessageTemplate;
-import com.esoft.jdp2p.message.service.MessageService;
-import com.esoft.jdp2p.message.service.impl.MessageBO;
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.*;
 
 /**
  * <p>
@@ -109,7 +108,6 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private ValidationService validationService;
-
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -636,8 +634,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void sendRegisterByMobileNumberSMS(String mobileNumber) {
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
+		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
+		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
 		Map<String, String> params = new HashMap<String, String>();
 		// TODO:实现模板
@@ -649,11 +650,24 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
+			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String ip = CommonUtils.getRemoteHost(request);
+			Date nowTime = new Date();
+			redisClinet.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClinet.getJedis().exists(ip)) {
+				Date lastTime = DateUtil.StringToDate(redisClinet.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
+				long diff = nowTime.getTime() - lastTime.getTime();
+				long diffMM = diff/60000;
+				if (diffMM < 1) {
+					return false;
+				}
+			}
+			redisClinet.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);
-
 		}
+		return true;
 	}
 
 	@Override
