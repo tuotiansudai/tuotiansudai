@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -960,6 +961,11 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean idCardIsExists(String idCard){
+		int count = DataAccessUtils.intResult(ht.find("select count(user) FROM User user WHERE user.idCard = ?", new String[]{idCard}));
+		return  count > 0;
 	}
 
 }

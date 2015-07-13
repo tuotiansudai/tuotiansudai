@@ -453,4 +453,6 @@ public interface UserService {
 	void addRegisterEmailVerificationJob(User user);
 
 	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
+
+	public boolean idCardIsExists(String idCard);
 }
