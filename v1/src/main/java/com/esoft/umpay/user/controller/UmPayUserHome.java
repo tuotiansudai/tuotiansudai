@@ -28,7 +28,7 @@ public class UmPayUserHome extends UserHome {
 	@Override
 	public String getInvestorPermission() {
 		String idCard = getInstance().getIdCard();
-		List<User> users = ht.find(" from User user where user.idCard = ? and user.status = '1' ",idCard);
+		List<User> users = ht.find(" from User user where user.idCard = ? ",idCard);
 		if(CollectionUtils.isNotEmpty(users)){
 			FacesUtil.addErrorMessage("身份证号：" + idCard + "已经存在");
 			return  null;
