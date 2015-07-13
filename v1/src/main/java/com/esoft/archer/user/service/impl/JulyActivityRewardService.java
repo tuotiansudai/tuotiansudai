@@ -29,6 +29,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.DetachedCriteria;
@@ -63,6 +64,8 @@ public class JulyActivityRewardService {
     @Resource
     private HibernateTemplate ht;
 
+    private List<String> multipleBankCardUsers = Lists.newArrayList();
+
     private static String SUCCESS_CODE = "0000";
 
     private static int USER_CERTIFIED_REWARD = 500;
@@ -70,9 +73,9 @@ public class JulyActivityRewardService {
     private static int REFERRER_CERTIFIED_REWARD = 1000;
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
-    public static int TOTAL_REWARD = 0;
-    public static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta inner join user u on ta.user_id=u.id where u.register_time >= '2015-07-01 00:00:00' and ta.create_time >= '2015-07-01 00:00:00' and not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
-
+    private static int TOTAL_REWARD = 0;
+    private static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta inner join user u on ta.user_id=u.id where u.register_time >= '2015-07-01 00:00:00' and ta.create_time >= '2015-07-01 00:00:00' and not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
+    private static final String MULTIPLE_BANK_CARD_USER_SQL = "select a.user_id from (select distinct card_no, user_id from bank_card where status ='passed' and card_no in (select card_no from bank_card where status ='passed' group by card_no having count(1) > 1)) as a group by a.card_no having count(1) > 1";
 
     @Transactional
     public void createActivityRewards() {
@@ -108,49 +111,44 @@ public class JulyActivityRewardService {
             }
         }
 
+        this.multipleBankCardUsers = this.getUserBoundMultipleBankCards();
+
     }
 
     public void reward() {
-        TOTAL_REWARD = 0;
         log.info("start reward:");
-        List<JulyActivityReward> rewards = ht.find("from JulyActivityReward");
+        TOTAL_REWARD = 0;
+        int start = 0;
+        int limit = 50;
+        boolean loop = true;
 
-        String sql = "select a.user_id from (\n" +
-                "\tselect distinct card_no, user_id from bank_card where status ='passed' and card_no in( SELECT card_no FROM bank_card where status ='passed' group by card_no having count(*) >1) order by card_no\n" +
-                "\t    ) as a group by a.card_no having count(*) > 1 order by a.card_no";
-        Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
-        List<String> multipleBankCardUsers = query.list();
+        while (loop) {
+            List<JulyActivityReward> rewards = this.fetchRewardList(start);
+            loop = CollectionUtils.isNotEmpty(rewards);
+            if (CollectionUtils.isNotEmpty(rewards)) {
+                log.info(MessageFormat.format("Reward index form {0} to {1}", start, start + limit));
+                for (JulyActivityReward reward : rewards) {
+                    String userId = reward.getUser().getId();
+                    boolean successRechargeExist = this.isSuccessRechargeExist(userId);
+                    boolean successInvestExist = this.isSuccessInvestExist(userId);
 
-        for (JulyActivityReward reward : rewards) {
-            final String userId = reward.getUser().getId();
-            boolean successRechargeExist = this.isSuccessRechargeExist(userId);
-            boolean successInvestExist = this.isSuccessInvestExist(userId);
-
-            Optional<String> userFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
-                @Override
-                public boolean apply(String multipleBankCardUserId) {
-                    return userId.equalsIgnoreCase(multipleBankCardUserId);
-                }
-            });
-
-            if (!userFound.isPresent()) {
-                this.rewardUser(reward, successRechargeExist);
-            }
-
-            if (reward.getReferrer() != null) {
-                final String referrerId = reward.getReferrer().getId();
-                Optional<String> referrerFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
-                    @Override
-                    public boolean apply(String multipleBankCardUserId) {
-                        return referrerId.equalsIgnoreCase(multipleBankCardUserId);
+                    if (multipleBankCardUsers.indexOf(userId) == -1) {
+                        this.rewardUser(reward, successRechargeExist);
+                    } else {
+                        log.info(MessageFormat.format("{0} have bound multiple bank cards.", userId));
                     }
-                });
 
-                if (!referrerFound.isPresent()) {
-                    this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                    if (reward.getReferrer() != null) {
+                        String referrerId = reward.getReferrer().getId();
+                        if (multipleBankCardUsers.indexOf(referrerId) == -1) {
+                            this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                        } else {
+                            log.info(MessageFormat.format("{0} have bound multiple bank cards.", referrerId));
+                        }
+                    }
                 }
+                start += limit;
             }
-
         }
 
         log.info("Total Reward: " + TOTAL_REWARD / 100);
@@ -495,4 +493,23 @@ public class JulyActivityRewardService {
         return false;
     }
 
+    private List<JulyActivityReward> fetchRewardList(int start) {
+        int limit = 50;
+        DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
+        rewardCriteria.addOrder(Order.asc("id"));
+        List<JulyActivityReward> rewardList = ht.findByCriteria(rewardCriteria, start, limit);
+        return rewardList;
+    }
+
+    public List<String> getUserBoundMultipleBankCards() {
+        List<String> multipleBankCardUsers = Lists.newArrayList();
+        try {
+            Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(MULTIPLE_BANK_CARD_USER_SQL);
+            multipleBankCardUsers = query.list();
+        } catch (HibernateException e) {
+            log.error(e);
+        }
+        log.info(MessageFormat.format("User have bound multiple bank cards: {0}", multipleBankCardUsers.size()));
+        return multipleBankCardUsers;
+    }
 }
