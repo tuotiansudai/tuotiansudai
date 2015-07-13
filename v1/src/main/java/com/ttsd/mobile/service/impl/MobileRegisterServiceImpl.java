@@ -17,6 +17,7 @@ import com.esoft.core.util.HashCrypt;
 import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
 import com.ttsd.util.CommonUtils;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,9 +44,6 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Resource(name = "mobileRegisterDaoImpl")
     private IMobileRegisterDao mobileRegisterDao;
-
-    @Resource(name = "userService")
-    private UserService userService;
 
     @Resource
     private AuthService authService;
@@ -86,13 +85,21 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                 return "false";
             }else {
                 if (operationType.equals("0")) {
-                    String regStr = "^((13[0-9])|(15[^4,\\\\D])|(18[0,5-9]))\\\\d{8}$";
+                    String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
                     Pattern pattern = Pattern.compile(regStr);
                     Matcher matcher = pattern.matcher(phoneNum);
                     String authCode = null;
                     if (matcher.matches()) {
                         try {
-                            authCode = authService.createAuthInfo(null, phoneNum, new Date(), CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
+                            //授权验证码的有效期为自发送短信时起，十分钟内有效，配置在common.properties文件中
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(new Date());
+                            calendar.add(Calendar.MINUTE, new Integer(PropertiesUtils.getPro("authMessageValidTime").trim()));
+                            Long validTime = calendar.getTimeInMillis();
+                            Date deadLine = new Date(validTime);
+                            //创建授权码，并持久化到数据库中
+                            authCode = authService.createAuthInfo(userName, phoneNum, deadLine, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
+                            log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建激活码！");
                         }catch (Exception e){
                             log.error("生成授权码异常！");
                             e.printStackTrace();
@@ -102,18 +109,13 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                         params.put("authCode", authCode);
                         if(!CommonUtils.isDevEnvironment("environment")){
                             try {
+                                //给指定用户发送授权码
                                 messageBO.sendSMS(mobileRegisterDao.getMessageTemplate(UserMessageTemplate.class,MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER + "_sms"), params, phoneNum);
+                                log.info("给用户名为："+userName+"，手机号为："+phoneNum+"的用户发送授权码成功！");
                             }catch (Exception e){
                                 log.error("持久化手机号为"+phoneNum+"的用户的注册授权码失败！");
                                 e.printStackTrace();
                             }
-                        }
-                        try {
-                            userService.sendRegisterByMobileNumberSMS(phoneNum);
-                            log.info("给手机号为" + phoneNum + "的用户发送注册授权码成功！");
-                        }catch (Exception e){
-                            log.error("给手机号为"+phoneNum+"的用户发送注册授权码异常！");
-                            e.printStackTrace();
                         }
                         return "ture";
                     }
@@ -135,9 +137,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                         try {
                             userBO.save(user);
                             log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
-                        }catch (Exception e){
+                        }catch (Exception e1){
                             log.error("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化失败！");
-                            e.printStackTrace();
+                            e1.printStackTrace();
                         }
                         // 添加普通用户权限
                         Role role = new Role("MEMBER");
@@ -156,7 +158,11 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             e.printStackTrace();
                         }
                         return "true";
+                    }else {
+                        return "false";
                     }
+                }else {
+                    return "false";
                 }
             }
         }
@@ -167,10 +173,6 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     /***************************setter注入方法****************************/
     public void setMobileRegisterDao(IMobileRegisterDao mobileRegisterDao) {
         this.mobileRegisterDao = mobileRegisterDao;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void setLog(Log log) {

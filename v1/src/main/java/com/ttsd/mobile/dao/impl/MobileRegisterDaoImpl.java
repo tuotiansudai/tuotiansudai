@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -46,18 +47,23 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
 
     @Override
     public UserMessageTemplate getMessageTemplate(Class clazz, String templateName) {
-        return ht.get(UserMessageTemplate.class, templateName);
+        Session session = getSession();
+        return (UserMessageTemplate)session.get(UserMessageTemplate.class,templateName);
     }
 
     @Override
     public int getAuthInfo(String phoneNum, String vCode, String vCodeStatus) {
         Session session = getSession();
-        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=? and deadline<=?";
+        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=? and deadline>=str_to_date(?,'%Y-%m-%d %H:%i:%s') and generation_time<=str_to_date(?,'%Y-%m-%d %H:%i:%s')";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setString(0, phoneNum);
-        sqlQuery.setParameter(1,vCode);
-        sqlQuery.setParameter(2,new Date());
-        return ((Integer)sqlQuery.uniqueResult()).intValue();
+        sqlQuery.setString(1, vCode);
+        sqlQuery.setParameter(2, vCodeStatus);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowTimeStr = sdf.format(new Date());
+        sqlQuery.setString(3, nowTimeStr);
+        sqlQuery.setString(4, nowTimeStr);
+        return ((Number)sqlQuery.uniqueResult()).intValue();
     }
 
     @Override
@@ -66,8 +72,8 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
         String sql = "update auth_info set status=? where auth_target=? and auth_type=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setString(0,status);
-        sqlQuery.setString(0,phoneNum);
-        sqlQuery.setString(1,authType);
+        sqlQuery.setString(1,phoneNum);
+        sqlQuery.setString(2,authType);
         sqlQuery.executeUpdate();
     }
 

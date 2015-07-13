@@ -44,12 +44,12 @@ public class RegisterController {
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
         String responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
-        if (operationType.equals("1") && responseResult.equals("ture")){
+        if (operationType.equals("1") && "ture".equals(responseResult)){
             HttpSession session = request.getSession();
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNumber);
-            session.setAttribute("userInfo",user);
+            session.setAttribute(CommonConstants.USER_INFO,user);
         }
         return responseResult;
     }
