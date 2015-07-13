@@ -1,14 +1,9 @@
 package com.esoft.jdp2p.trusteeship.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
+import com.esoft.core.util.HtmlElementUtil;
+import com.esoft.core.util.MapUtil;
+import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
+import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.criterion.DetachedCriteria;
@@ -18,10 +13,14 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esoft.core.util.HtmlElementUtil;
-import com.esoft.core.util.MapUtil;
-import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
-import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
+import javax.annotation.Resource;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Company: jdp2p <br/>
@@ -59,7 +58,9 @@ public class TrusteeshipOperationBO {
 	/**
 	 * 操作类型（type） 操作的唯一标识（markId） 托管方(trusteeship) 上述三者一致，则认为是同一条数据。
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public void save(TrusteeshipOperation to) {
+		String sqlTemplate = "delete from trusteeship_operation where type = ''{0}'' and mark_id = ''{1}'' and trusteeship = ''{2}''";
 		if (StringUtils.isEmpty(to.getType())) {
 			throw new IllegalArgumentException(
 					"trusteshipOperation.type can not be empty!");
@@ -73,10 +74,11 @@ public class TrusteeshipOperationBO {
 					"trusteshipOperation.trusteeship can not be empty!");
 		}
 
-		ht.bulkUpdate(
-				"delete TrusteeshipOperation to where to.type=? and to.markId=? and to.trusteeship=?",
-				new String[] { to.getType(), to.getMarkId(),
-						to.getTrusteeship() });
+		ht.getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sqlTemplate, to.getType(), to.getMarkId(), to.getTrusteeship()));
+//		ht.bulkUpdate(
+//				"delete TrusteeshipOperation to where to.type=? and to.markId=? and to.trusteeship=?",
+//				new String[] { to.getType(), to.getMarkId(),
+//						to.getTrusteeship() });
 		ht.save(to);
 	}
 
