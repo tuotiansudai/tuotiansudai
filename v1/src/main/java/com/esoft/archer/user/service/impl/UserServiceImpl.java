@@ -181,8 +181,8 @@ public class UserServiceImpl implements UserService {
 		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
+						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
 	}
 
@@ -418,7 +418,7 @@ public class UserServiceImpl implements UserService {
 								null,
 								CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
@@ -446,7 +446,7 @@ public class UserServiceImpl implements UserService {
 				+ "/find_pwd_by_email3/" + activeCode;
 		params.put("reset_password_url", resetPasswrodUrl);
 		// 发送邮件
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
@@ -469,9 +469,10 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, email, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 						MessageConstants.UserMessageNodeId.BINDING_EMAIL + "_email"),
 				params, email);
+
 	}
 
 	/**
@@ -494,7 +495,7 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, oriEmail, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.BINDING_EMAIL
 						+ "_email"), params, oriEmail);
 	}

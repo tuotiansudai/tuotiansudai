@@ -2,9 +2,13 @@ package com.esoft.core.application;
 
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.jdp2p.message.service.MailService;
+import com.esoft.jdp2p.message.service.SendCloudMailService;
 import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import com.esoft.jdp2p.message.service.impl.SendCloudMailServiceImpl;
 import com.ttsd.util.CommonUtils;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.faces.FacesException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
@@ -15,15 +19,21 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
-
+@Service
 public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
+
+    @Resource
+    SendCloudMailService sendCloudMailService;
 
     private ExceptionHandler wrapped;
 
-    public ArcherExceptionHandler(ExceptionHandler wrapped) {
+    public void setWrapped(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
 
+//    public ArcherExceptionHandler(ExceptionHandler wrapped) {
+//        this.wrapped = wrapped;
+//    }
     @Override
     public ExceptionHandler getWrapped() {
         return this.wrapped;
@@ -86,11 +96,12 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     flag += 1;
                 }
                 if (!CommonUtils.isDevEnvironment("environment")) {
-                    MailService mailService = new MailServiceImpl();
-                    mailService.sendMailException(CommonUtils.administratorEmailAddress(), "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
+                    sendCloudMailService.sendMailException(CommonUtils.administratorEmailAddress(), "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
                 }
                 throw new RuntimeException(exceptionStringBuffer.toString());
-            } finally {
+            }
+
+            finally {
                 it.remove();
             }
 
