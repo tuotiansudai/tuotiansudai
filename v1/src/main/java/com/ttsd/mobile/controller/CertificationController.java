@@ -1,6 +1,9 @@
 package com.ttsd.mobile.controller;
 
+import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.ttsd.mobile.bean.DataMsg;
@@ -24,14 +27,29 @@ public class CertificationController {
     @Autowired
     private UmPayUserOperation umPayUserOperation;
 
+    @Autowired
+    private LoginUserInfo loginUserInfo;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView certification() {
         return new ModelAndView("/certification");
     }
 
-    @RequestMapping(value = "/realName/{realName}/{id}/{idCard}/{mobileNumber}", method = RequestMethod.GET)
+    @RequestMapping(value = "/realName/{realName}/{idCard}", method = RequestMethod.GET)
     @ResponseBody
-    public DataMsg realNameCertification(@PathVariable String realName,@PathVariable String id,@PathVariable String idCard,@PathVariable String mobileNumber,@ModelAttribute DataMsg dataMsg) {
+    public DataMsg realNameCertification(@PathVariable String realName,@PathVariable String idCard,@ModelAttribute DataMsg dataMsg) {
+        User user = new User();
+        try {
+            user = this.userService.getUserById(this.loginUserInfo
+                    .getLoginUserId());
+        } catch (UserNotFoundException e) {
+            dataMsg.setMsg("false");
+            log.error(e);
+            return dataMsg;
+        }
         if (!StringUtils.isNotEmpty(realName) || !StringUtils.isNotEmpty(idCard)){
             dataMsg.setMsg("false");
             return dataMsg;
@@ -42,11 +60,8 @@ public class CertificationController {
             dataMsg.setMsg("false");
             return dataMsg;
         }
-        User user = new User();
-        user.setId(id);
         user.setRealname(realName);
         user.setIdCard(idCard);
-        user.setMobileNumber(mobileNumber);
         try {
             this.umPayUserOperation.createOperation(user, null);
             dataMsg.setMsg("true");
