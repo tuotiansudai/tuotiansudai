@@ -2,15 +2,11 @@ package com.esoft.jdp2p.schedule.service.impl;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.schedule.job.*;
 import org.apache.commons.logging.Log;
 import org.hibernate.ObjectNotFoundException;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import org.joda.time.DateTime;
+import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -20,10 +16,8 @@ import com.esoft.archer.config.ConfigConstants;
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
-import com.esoft.jdp2p.schedule.job.AutoRepayment;
-import com.esoft.jdp2p.schedule.job.LoanOverdueCheck;
-import com.esoft.jdp2p.schedule.job.RefreshTrusteeshipOperation;
-import com.esoft.jdp2p.schedule.job.RepayAlert;
+
+import java.util.Date;
 
 /**
  * Company: jdp2p <br/>
@@ -167,6 +161,16 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 				} else {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
+
+				//Reward
+				SimpleTrigger activityRewardTrigger = (SimpleTrigger) scheduler
+						.getTrigger(TriggerKey.triggerKey(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD,
+								ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD));
+				if (activityRewardTrigger == null) {
+					this.initAutoActivityRewardJob();
+				} else {
+					scheduler.resumeTrigger(activityRewardTrigger.getKey());
+				}
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
@@ -253,5 +257,31 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	 */
 	private void initRefreshUserLoanstatusJob() throws SchedulerException {
 
+	}
+
+	/**
+	 * 资金托管主动查询
+	 *
+	 * @throws SchedulerException
+	 */
+	private void initAutoActivityRewardJob() throws SchedulerException {
+		JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
+				.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
+				.build();
+
+//		CronTrigger trigger = TriggerBuilder.newTrigger()
+//				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
+//				.forJob(jobDetail)
+//				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))// 每天1点
+//				.build();
+
+		SimpleTrigger trigger = TriggerBuilder.newTrigger()
+				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
+				.forJob(jobDetail)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+				.startAt(new DateTime(new Date()).plusMinutes(5).toDate())
+				.build();
+
+		scheduler.scheduleJob(jobDetail, trigger);
 	}
 }

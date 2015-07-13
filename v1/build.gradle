@@ -19,7 +19,10 @@ dependencies {
             "org.freemarker:freemarker:$freemarkerVersion",
             "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            'redis.clients:jedis:2.7.2',
+            'joda-time:joda-time:2.8.1'
+
     providedCompile 'mysql:mysql-connector-java:5.1.35'
 }
 

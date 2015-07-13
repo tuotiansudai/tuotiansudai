@@ -2,18 +2,16 @@ package com.esoft.jdp2p.user.service.impl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.hibernate.classic.Session;
+import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,7 +158,7 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	public String getBankNameByNo(final String bankNo) {
-		List<RechargeBankCard> banks = getBankCardsList();
+		List<RechargeBankCard> banks = getAllBankCards();
 		for (RechargeBankCard bank : banks) {
 			if (StringUtils.equals(bank.getNo(), bankNo)) {
 				return bank.getBankName();
@@ -202,7 +200,17 @@ public class RechargeServiceImpl implements RechargeService {
 		bcs.add(new RechargeBankCardImpl("BJBANK", "北京银行"));
 		bcs.add(new RechargeBankCardImpl("SHRCB", "上海农商银行"));
 		bcs.add(new RechargeBankCardImpl("WZCB", "温州银行"));
+		return bcs;
+	}
 
+	private List<RechargeBankCard> getAllBankCards() {
+		String sql = "select * from bank_list";
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		List<Map<String,Object>> list = query.list();
+		for (int i=0;i<list.size();i++){
+			bcs.add(new RechargeBankCardImpl(list.get(i).get("bankno").toString(),list.get(i).get("bankname").toString()));
+		}
 		return bcs;
 	}
 

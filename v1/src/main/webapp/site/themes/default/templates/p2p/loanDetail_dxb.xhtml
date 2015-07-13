@@ -82,10 +82,14 @@
 						<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 						<em class="jd-bar"><b style="width:#{cr}%"></b></em>#{cr}%
 					</p>
+					<div class="">
+						<span>代理人：#{loan.user.id}</span>
+						<span>借款人：#{loan.agent}</span>
+					</div>
 					<div class="span3-div">
 						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 						<span>发布日期：
-							<h:outputText value="#{loan.commitTime}">
+							<h:outputText value="#{loan.verifyTime}">
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>
