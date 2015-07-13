@@ -112,6 +112,7 @@ public class JulyActivityRewardService {
 
     public void reward() {
         TOTAL_REWARD = 0;
+        log.info("start reward:");
         List<JulyActivityReward> rewards = ht.find("from JulyActivityReward");
 
         String sql = "select a.user_id from (\n" +
