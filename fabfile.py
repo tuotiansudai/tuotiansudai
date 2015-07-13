@@ -13,6 +13,7 @@ env.roledefs = {
 def pull():
     with cd('/workspace/tuotian'):
         sudo('chmod -R g=u .')
+        run('git checkout master')
         run('git pull')
 
 
@@ -50,4 +51,5 @@ def deploy():
 @roles('db')
 def migrate():
     with cd('/workspace/tuotian/v1'):
+        run('/opt/gradle/latest/bin/gradle clean')
         run('/opt/gradle/latest/bin/gradle flywayMigrate')
