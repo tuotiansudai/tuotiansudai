@@ -61,10 +61,11 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
     }
 
     @Override
-    public void updateUserAuthInfo(String phoneNum, String authType) {
+    public void updateUserAuthInfo(String status, String phoneNum, String authType) {
         Session session = getSession();
-        String sql = "update auth_info set status='inactive' where auth_target=? and auth_type=?";
+        String sql = "update auth_info set status=? where auth_target=? and auth_type=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
+        sqlQuery.setString(0,status);
         sqlQuery.setString(0,phoneNum);
         sqlQuery.setString(1,authType);
         sqlQuery.executeUpdate();

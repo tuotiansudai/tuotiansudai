@@ -1,5 +1,7 @@
 package com.ttsd.mobile.controller;
 
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.user.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +43,15 @@ public class RegisterController {
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
-        return mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
+        String responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
+        if (operationType.equals("1") && responseResult.equals("ture")){
+            HttpSession session = request.getSession();
+            User user = new User();
+            user.setUsername(userName);
+            user.setMobileNumber(phoneNumber);
+            session.setAttribute("userInfo",user);
+        }
+        return responseResult;
     }
 
     /***************************setter注入方法****************************/

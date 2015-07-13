@@ -92,7 +92,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                     String authCode = null;
                     if (matcher.matches()) {
                         try {
-                            authCode = authService.createAuthInfo(null, phoneNum, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
+                            authCode = authService.createAuthInfo(null, phoneNum, new Date(), CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
                         }catch (Exception e){
                             log.error("生成授权码异常！");
                             e.printStackTrace();
@@ -120,7 +120,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                 }else if (operationType.equals("1")){
                     int codeCount = 0;
                     try {
-                        codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,"activated");
+                        codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoStatus.INACTIVE);
                     }catch (Exception e){
                         log.error("获取用户名为："+userName+",手机号为："+phoneNum+"的用户授权码信息失败！");
                     }
@@ -145,7 +145,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             userBO.addRole(user, role);
                             log.info("给用户名为：" + userName + ",手机号为：" + phoneNum + "的用户添加普通用户权限成功！");
                             try {
-                                mobileRegisterDao.updateUserAuthInfo(phoneNum,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+                                //用户注册成功后，将发给该用户的注册码状态更新成已激活状态
+                                mobileRegisterDao.updateUserAuthInfo(CommonConstants.AuthInfoStatus.ACTIVATED, phoneNum,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
                             }catch (Exception e){
                                 log.error("更新用户名为："+userName+",手机号为："+phoneNum+"的授权码状态失败！");
                                 e.printStackTrace();

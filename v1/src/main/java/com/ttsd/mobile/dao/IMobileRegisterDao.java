@@ -54,6 +54,6 @@ public interface IMobileRegisterDao {
      * @param phoneNum 手机号
      * @param authType 授权码类型
      */
-    void updateUserAuthInfo(String phoneNum,String authType);
+    void updateUserAuthInfo(String status, String phoneNum, String authType);
 
 }
