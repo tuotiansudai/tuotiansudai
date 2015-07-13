@@ -31,7 +31,7 @@ public class RegisterController {
         return new ModelAndView("/register");
     }
 
-    @RequestMapping(value = "/mobileRegister",method = RequestMethod.GET)
+    @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     @ResponseBody
     public String mobileRegister(HttpServletRequest request,HttpServletResponse response){
         /**
@@ -44,7 +44,7 @@ public class RegisterController {
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
         String responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
-        if (operationType.equals("1") && "ture".equals(responseResult)){
+        if ("1".equals(operationType) && "ture".equals(responseResult)){
             HttpSession session = request.getSession();
             User user = new User();
             user.setUsername(userName);
@@ -54,6 +54,27 @@ public class RegisterController {
         return responseResult;
     }
 
+    @RequestMapping(value = "/userNameValidation", method = RequestMethod.GET)
+    @ResponseBody
+    public String validateUserName(HttpServletRequest request,HttpServletResponse response){
+        String userName = request.getParameter("userName");
+        return mobileRegisterService.validateUserName(userName);
+    }
+
+    @RequestMapping(value = "/mobilePhoneNumValidation", method = RequestMethod.GET)
+    @ResponseBody
+    public String validatemobilePhoneNum(HttpServletRequest request,HttpServletResponse response){
+        String phoneNumber = request.getParameter("phoneNumber");
+        return mobileRegisterService.validateMobilePhoneNum(phoneNumber);
+    }
+
+    @RequestMapping(value = "/vCodeValidation", method = RequestMethod.GET)
+    @ResponseBody
+    public String validateVCode(HttpServletRequest request,HttpServletResponse response){
+        String phoneNum = request.getParameter("phoneNumber");
+        String vCode = request.getParameter("vCode");
+        return mobileRegisterService.validateVCode(phoneNum,vCode);
+    }
     /***************************setter注入方法****************************/
     public void setMobileRegisterService(IMobileRegisterService mobileRegisterService) {
         this.mobileRegisterService = mobileRegisterService;

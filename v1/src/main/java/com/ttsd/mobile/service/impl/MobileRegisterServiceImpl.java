@@ -85,11 +85,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                 return "false";
             }else {
                 if (operationType.equals("0")) {
-                    String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
-                    Pattern pattern = Pattern.compile(regStr);
-                    Matcher matcher = pattern.matcher(phoneNum);
                     String authCode = null;
-                    if (matcher.matches()) {
+                    if (regValidatePhoneNum(phoneNum)) {
                         try {
                             //授权验证码的有效期为自发送短信时起，十分钟内有效，配置在common.properties文件中
                             Calendar calendar = Calendar.getInstance();
@@ -169,7 +166,50 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         return null;
     }
 
+    @Override
+    public String validateUserName(String userName) {
+        int count = mobileRegisterDao.getUserCountByUserName(userName);
+        if (count > 0){
+            return "false";
+        }
+        return "true";
+    }
 
+    @Override
+    public String validateMobilePhoneNum(String phoneNumber) {
+        if (regValidatePhoneNum(phoneNumber)){
+            int count = mobileRegisterDao.getUserCountByCellphone(phoneNumber);
+            if (count > 0){
+                return "false";
+            }
+            return "true";
+        }
+        return "false";
+    }
+
+    @Override
+    public String validateVCode(String phoneNumber, String vCode) {
+        if (regValidatePhoneNum(phoneNumber)){
+            int count = mobileRegisterDao.getAuthInfo(phoneNumber, vCode, CommonConstants.AuthInfoStatus.INACTIVE);
+            if (count > 0){
+                return "true";
+            }
+            return "false";
+        }
+        return "false";
+    }
+
+    /**
+     * @function 校验手机号是否符合要求
+     * @param phoneNumber
+     * @return
+     */
+    public boolean regValidatePhoneNum(String phoneNumber){
+        String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
+        Pattern pattern = Pattern.compile(regStr);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
+    }
     /***************************setter注入方法****************************/
     public void setMobileRegisterDao(IMobileRegisterDao mobileRegisterDao) {
         this.mobileRegisterDao = mobileRegisterDao;
