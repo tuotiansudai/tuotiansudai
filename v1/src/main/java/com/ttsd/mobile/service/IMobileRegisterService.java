@@ -1,5 +1,7 @@
 package com.ttsd.mobile.service;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by tuotian on 15/7/9.
  */

@@ -49,5 +49,11 @@ public interface IMobileRegisterDao {
      */
     int getAuthInfo(String phoneNum,String vCode,String vCodeStatus);
 
+    /**
+     * @function 更新用户授权码状态为：inactive（无效状态）
+     * @param phoneNum 手机号
+     * @param authType 授权码类型
+     */
+    void updateUserAuthInfo(String phoneNum,String authType);
 
 }

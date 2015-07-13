@@ -29,10 +29,7 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
         String sql = "select count(1) from user where username=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setParameter(0, userName);
-        System.out.println("*********************username="+userName);
-        int count = ((Number)sqlQuery.uniqueResult()).intValue();
-        System.out.println("*********************count="+count);
-        return count;
+        return ((Number)sqlQuery.uniqueResult()).intValue();
     }
 
     public Integer getUserCountByCellphone(String userCellphone){
@@ -61,6 +58,16 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
         sqlQuery.setParameter(1,vCode);
         sqlQuery.setParameter(2,new Date());
         return ((Integer)sqlQuery.uniqueResult()).intValue();
+    }
+
+    @Override
+    public void updateUserAuthInfo(String phoneNum, String authType) {
+        Session session = getSession();
+        String sql = "update auth_info set status='inactive' where auth_target=? and auth_type=?";
+        SQLQuery sqlQuery = session.createSQLQuery(sql);
+        sqlQuery.setString(0,phoneNum);
+        sqlQuery.setString(1,authType);
+        sqlQuery.executeUpdate();
     }
 
     public Session getSession(){
