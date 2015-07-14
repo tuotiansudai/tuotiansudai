@@ -1,2 +1,1 @@
-ALTER TABLE `tuotiansudai`.`user`
-DROP INDEX `email_UNIQUE` ;
+ALTER TABLE `user` DROP INDEX `email_UNIQUE` ;
