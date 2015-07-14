@@ -205,6 +205,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      * @return
      */
     public boolean regValidatePhoneNum(String phoneNumber){
+        if(phoneNumber==null || "".equals(phoneNumber)){
+            return false;
+        }
         String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
         Pattern pattern = Pattern.compile(regStr);
         Matcher matcher = pattern.matcher(phoneNumber);

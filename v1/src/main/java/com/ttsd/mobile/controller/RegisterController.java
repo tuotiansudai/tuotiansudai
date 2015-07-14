@@ -31,6 +31,11 @@ public class RegisterController {
         return new ModelAndView("/register");
     }
 
+    @RequestMapping(value = "/certification",method = RequestMethod.GET)
+    public ModelAndView certification() {
+        return new ModelAndView("/certification");
+    }
+
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     @ResponseBody
     public boolean mobileRegister(HttpServletRequest request,HttpServletResponse response){
@@ -38,8 +43,8 @@ public class RegisterController {
          * 注：operationType＝0，表示获取验证码
          * operationType＝1，表示正常的注册操作
          */
-        String userName =  request.getParameter("userName");
-        String passWord = request.getParameter("passWord");
+        String userName =  request.getParameter("username");
+        String passWord = request.getParameter("password");
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
@@ -58,7 +63,7 @@ public class RegisterController {
     @RequestMapping(value = "/userNameValidation", method = RequestMethod.GET)
     @ResponseBody
     public boolean validateUserName(HttpServletRequest request,HttpServletResponse response){
-        String userName = request.getParameter("userName");
+        String userName = request.getParameter("username");
         response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateUserName(userName);
     }

@@ -2,79 +2,162 @@
  * Created by zhaoshuai on 2015/7/1.
  */
 require.config({
-    baseUrl: 'js',
+    baseUrl: '/mobile/js',
     paths: {
         'jquery': 'libs/jquery-1.10.1.min',
-        'validate': 'libs/jquery.validate.min'
+        'validate': 'libs/jquery.validate.min',
+        'validate-ex': 'validate-ex'
     }
 });
-require(['jquery', 'validate'], function ($) {
+require(['jquery', 'validate', 'validate-ex'], function ($) {
+    $('.cmxForm').validate({
+        //focusInvalid: false,
+        rules: {
+            username: {
+                required: true,
+                rangelength: [5, 25],
+                remote: {
+                    url: 'http://127.0.0.1:8088/mobile/register/userNameValidation',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        username: function () {
+                            return $('.userName').val();
+                        }
+                    }
+                }
+            },
+            password: {
+                required: true,
+                minlength: 6
+            },
+            phoneNumber: {
+                isMobile: true,
+                required: true,
+                remote: {
+                    url: 'http://127.0.0.1:8088/mobile/register/mobilePhoneNumValidation',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        phoneNumber: function () {
+                            return $('.phoneNumber').val();
+                        }
+                    }
+                }
+            },
+            vCode: {
+                required: true,
+                remote: {
+                    url: 'http://127.0.0.1:8088/mobile/register/vCodeValidation',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        vCode: function () {
+                            return $('.vCode').val();
+                        }
+                    }
+                }
+            }
+        },
+        errorElement: 'span',
+        messages: {
+            username: {
+                required: "用户名不能为空！",
+                rangelength: "用户名的长度必须在5至25个字符之间！",
+                remote:"用户名已存在！"
+            },
+            password: {
+                required:"密码不能为空!",
+                minlength: "密码最少为6位！"
+            },
+            phoneNumber: {
+                isMobile: "手机号码格式错误",
+                required: "手机号不能为空！",
+                remote:"手机号码已存在!"
+            },
+            vCode: {
+                required: "验证码不能为空！",
+                remote:"验证码输入错误！"
+            }
+        }
+        //submitHandler: function (form) {
+        //    form.submit();
+        //    alert('1');
+        //}
+    });
+
+    /**
+     * 手机端注册
+     */
+    $('.logUp').on('click',function(){
+        var userValue=$('.userName').val();
+        var passValue=$('.passWord').val();
+        var phoneValue=$('.phoneNumber').val();
+        var vCodeValue=$('.vCode').val();
+        $.ajax({
+            url: 'http://192.168.100.11:8088/mobile/register/mobileRegister',
+            type: 'POST',
+            data:{
+                username:userValue,
+                password:passValue,
+                phoneNumber:phoneValue,
+                vCode:vCodeValue,
+                operationType:'1'
+            },
+            dataType: 'json',
+            success: function (res) {
+                alert(res);
+                if (res || res == 'true') {
+                    $.ajax({
+                        url: 'http://192.168.100.11:8088/mobile/register/certification',
+                        type: 'GET'
+                    });
+                }
+            }
+        });
+    });
+
+    /**
+     * 手机端获取注册授权码
+     */
     $('.send_vCode').on('click', function () {
+        var userValue=$('.userName').val();
+        var passValue=$('.passWord').val();
+        var phoneValue=$('.phoneNumber').val();
+        $.ajax({
+            url: 'http://192.168.100.11:8088/mobile/register/mobileRegister',
+            type: 'POST',
+            data:{
+                username:userValue,
+                password:passValue,
+                phoneNumber:phoneValue,
+                operationType:'0'
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res=='true') {
+                    alert('注册成功');
+                } else if (res=='false') {
+                    alert('注册失败！');
+                    return false;
+                }
+            }
+        });
         var Num = 5;
         var Down = setInterval(countDown, 1000);
-
+        countDown();
         function countDown() {
-            $('.send_vCode').html(Num + '秒后重新发送').css({'background': '#666', 'color': '#fff', 'width': '100','pointer-events': 'none'});
+            $('.send_vCode').html(Num + '秒后重新发送').css({
+                'background': '#666',
+                'color': '#fff',
+                'width': '100',
+                'pointer-events': 'none'
+            });
             if (Num == 0) {
                 clearInterval(Down);
-                $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922','pointer-events': 'auto'});
+                $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
             }
             Num--;
         }
     });
-    var oUserName=$('.userName');
-    var oPassWord=$('.passWord');
-    var oPhoneNumber=$('.phoneNumber');
-    var obj=['oUserName','oPassWord','oPhoneNumber'];
-    for(var i=0;i<obj.length;i++){
-        obj[i].index=i;
-        obj[i].onblur=function(){
-            alert(this.index);
-        }
-    }
-
-    $('.cmxForm').validate({
-        onkeyup:false,
-        rules: {
-            username: {
-                required: true,
-                regex: "^[a-zA-Z0-9]+$",
-                rangeLength: [5, 25]
-            },
-            passWord: {
-                required: true,
-                minLength: 5
-            },
-            phoneNumber: {
-                required: true,
-                digits: true,
-                rangeLength: [11, 11]
-            },
-            vCode: {
-                required: true,
-                regex: "/^[0-9]+$/",
-                digits: true
-            }
-        },
-        remote: {
-            url: "check-email.php",     //后台处理程序
-            type: "GET",               //数据发送方式
-            dataType: "json",           //接受数据格式
-            data: {                     //要传递的数据
-                username: function() {
-                    return $("#username").val();
-                }
-            }
-        },
-        messages: {
-            userName: "5-25位非手机号用户名",
-            passWord: "请输入6位以上字母混合密码",
-            phoneNumber: "手机号码不正确",
-            vCode: "验证码不正确"
-        },
-        success:function(label){
-            label.text(" ").addClass('success');
-        }
-    });
-
 });

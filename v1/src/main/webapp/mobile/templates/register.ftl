@@ -13,10 +13,10 @@
 <body>
 <div class="wrap"><!--wrap begin-->
     <div class="step">
-        <form class="cmxForm" action="" method="get">
+        <form class="cmxForm" action="" method="">
             <ul>
                 <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/></li>
-                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="passWord"
+                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
                            minLength="6" required/></li>
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" maxLength="11" name="phoneNumber"
                            required/></li>
