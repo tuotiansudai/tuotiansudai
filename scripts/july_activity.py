@@ -133,12 +133,15 @@ def send_mail(data):
 
 
 def main(host="localhost", user_name="root", password="", db="tuotiansudai"):
-    logger.info('start')
-    data = query(host, user_name, password, db)
-    logger.info("total new count is {0}".format(len(data)))
-    csv_data = build_csv(data)
-    send_mail(csv_data)
-    logger.info('done')
+    try:
+        logger.info('start')
+        data = query(host, user_name, password, db)
+        logger.info("total new count is {0}".format(len(data)))
+        csv_data = build_csv(data)
+        send_mail(csv_data)
+        logger.info('done')
+    except Exception as e:
+        logger.error(e)
 
 
 if __name__ == "__main__":
