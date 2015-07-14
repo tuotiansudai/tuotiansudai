@@ -92,6 +92,12 @@
 .yhkxx li a{color:#f33735; line-height:25px; }
 .yhkxx_l{ margin-left:53px;}
 .yhkxx_r{ margin-left:15px;}
+.yhk span.spanBank {
+	display: block;
+	line-height: 18px;
+	font-size: 18px;
+	color: #000;
+}
 .yhkxx_c{ margin-left:80px; line-height:10px;}
 .yhkxx li img.jia{width:44px; height:44px; padding-top:10px;}
 .txczje_r span.xzyhk{font-size:14px; color:#ababab; padding-left:20px;}

@@ -17,6 +17,8 @@ import com.esoft.archer.config.service.ConfigService;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 
+import java.util.Date;
+
 /**
  * Company: jdp2p <br/>
  * Copyright: Copyright (c)2013 <br/>
@@ -160,7 +162,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
 
-				// 借款逾期调度
+				//Reward
 				SimpleTrigger activityRewardTrigger = (SimpleTrigger) scheduler
 						.getTrigger(TriggerKey.triggerKey(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD,
 								ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD));
@@ -263,17 +265,21 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	 * @throws SchedulerException
 	 */
 	private void initAutoActivityRewardJob() throws SchedulerException {
-		DateTime triggerTime = new DateTime().withDate(2015, 7, 10).withTime(14, 30, 0, 0);
-
 		JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
 				.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
 				.build();
+
+//		CronTrigger trigger = TriggerBuilder.newTrigger()
+//				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
+//				.forJob(jobDetail)
+//				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))// 每天1点
+//				.build();
 
 		SimpleTrigger trigger = TriggerBuilder.newTrigger()
 				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
 				.forJob(jobDetail)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(triggerTime.toDate())
+				.startAt(new DateTime(new Date()).plusMinutes(5).toDate())
 				.build();
 
 		scheduler.scheduleJob(jobDetail, trigger);
