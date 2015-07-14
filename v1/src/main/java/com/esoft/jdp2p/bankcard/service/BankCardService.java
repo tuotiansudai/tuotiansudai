@@ -1,8 +1,8 @@
 package com.esoft.jdp2p.bankcard.service;
 
-import java.util.List;
-
 import com.esoft.jdp2p.bankcard.model.BankCard;
+
+import java.util.List;
 
 
 /**  
@@ -28,4 +28,8 @@ public interface BankCardService {
 	List<BankCard> getBoundBankCardsByUserId(String userId);
 
 	boolean isBoundBankCard(String userId);
+
+	public boolean isExistsBankPhoto(String bankNo);
+
+	public boolean isCardNoBinding(String cardNo);
 }

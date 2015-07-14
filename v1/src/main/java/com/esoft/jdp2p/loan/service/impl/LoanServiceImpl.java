@@ -640,7 +640,7 @@ public class LoanServiceImpl implements LoanService {
             String email = invest.getUser().getEmail();
             if (!Strings.isNullOrEmpty(email)) {
                 try {
-                    messageBO.sendEmail(emailMessageTemplate, emailParameters, email);
+                    messageBO.sendEmailBySendCloud(emailMessageTemplate, emailParameters, email);
                 } catch (MailSendErrorException e) {
                     log.error(e);
                 }

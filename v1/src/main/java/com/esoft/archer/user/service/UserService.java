@@ -403,7 +403,7 @@ public interface UserService {
 	 * 
 	 * @param mobileNumber
 	 */
-	public void sendRegisterByMobileNumberSMS(String mobileNumber);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber);
 
 	/**
 	 * 管理员创建借款者
