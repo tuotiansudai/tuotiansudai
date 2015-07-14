@@ -17,7 +17,17 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 },
                 yourId:{
                     required:true,
-                    isIdCardNo:true
+                    isIdCardNo:true,
+                    remote:{
+                        url: 'index.json',
+                        type: 'GET',
+                        dataType:'json',
+                        data: {
+                            yourId: function () {
+                                return $('.yourId').val();
+                            }
+                        }
+                    }
                 }
             },
             errorElement: 'small',
@@ -26,7 +36,19 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 yourId:'请输入正确的身份证号码'
             },
             submitHandler:function(form){
-                form.submit();
+                $.ajax({
+                    url:'/certification/realName',
+                    type: 'POST',
+                    dataType: 'json',
+                    success:function(status){
+                        form.submit();
+                        if(status==true){
+
+                        }else{
+
+                        }
+                    }
+                });
             }
         });
 });
