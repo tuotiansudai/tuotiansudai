@@ -80,4 +80,6 @@ public interface RechargeService {
 	String getBankNameByNo(String bankNo);
 
 	String getRechangeWay(String userId);
+
+	public List<RechargeBankCard> getRealNameBankList();
 }

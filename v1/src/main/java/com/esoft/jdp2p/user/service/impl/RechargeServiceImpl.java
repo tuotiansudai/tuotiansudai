@@ -182,6 +182,10 @@ public class RechargeServiceImpl implements RechargeService {
 		return "Not found Bank";
 	}
 
+//	public boolean isRealNameBank() {
+//
+//	}
+
 	private static Properties props = new Properties();
 	static {
 		try {
@@ -204,6 +208,18 @@ public class RechargeServiceImpl implements RechargeService {
 		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
 		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
 		bcs.add(new RechargeBankCardImpl("SDB", "深圳发展银行"));
+		return bcs;
+	}
+
+	@Override
+	public List<RechargeBankCard> getRealNameBankList(){
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
+		bcs.add(new RechargeBankCardImpl("ABC", "中国农业银行"));
+		bcs.add(new RechargeBankCardImpl("CCB", "中国建设银行"));
+		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
+		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
+		bcs.add(new RechargeBankCardImpl("CITIC", "中信银行"));
 		return bcs;
 	}
 

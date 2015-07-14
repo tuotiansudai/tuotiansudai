@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -210,6 +211,10 @@ public class UmPayBindingBankCardOperation extends
 								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 								ht.update(bankCard);
 							}
+							List<RechargeBankCard> realNameBankList = this.rechargeService.getRealNameBankList();
+//							for () {
+//
+//							}
 							log.debug(("用户:"
 									+ userWillBindingBankCard.get(0).getUser()
 									.getId() + "绑定"
