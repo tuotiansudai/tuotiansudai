@@ -1,20 +1,38 @@
 package com.esoft.archer.user.service.impl;
 
-import java.text.MessageFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.InputRuleMatchingException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.model.AuthInfo;
+import com.esoft.archer.common.service.AuthService;
+import com.esoft.archer.common.service.ValidationService;
+import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.openauth.OpenAuthConstants;
+import com.esoft.archer.openauth.service.OpenAuthService;
+import com.esoft.archer.system.service.SpringSecurityService;
+import com.esoft.archer.user.UserConstants;
+import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.ReferrerRelation;
+import com.esoft.archer.user.model.Role;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.service.UserInfoService;
+import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.DateStyle;
+import com.esoft.core.util.DateUtil;
+import com.esoft.core.util.HashCrypt;
+import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
+import com.esoft.jdp2p.message.model.UserMessageTemplate;
+import com.esoft.jdp2p.message.service.MessageService;
+import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
+import com.ttsd.redis.RedisClinet;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
@@ -25,32 +43,13 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
-import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
-import com.esoft.archer.common.exception.NoMatchingObjectsException;
-import com.esoft.archer.common.service.AuthService;
-import com.esoft.archer.common.service.impl.AuthInfoBO;
-import com.esoft.archer.openauth.OpenAuthConstants;
-import com.esoft.archer.openauth.service.OpenAuthService;
-import com.esoft.archer.system.service.SpringSecurityService;
-import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.ConfigNotFoundException;
-import com.esoft.archer.user.exception.NotConformRuleException;
-import com.esoft.archer.user.exception.RoleNotFoundException;
-import com.esoft.archer.user.exception.UserNotFoundException;
-import com.esoft.archer.user.model.Role;
-import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.service.UserInfoService;
-import com.esoft.archer.user.service.UserService;
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.HashCrypt;
-import com.esoft.jdp2p.message.MessageConstants;
-import com.esoft.jdp2p.message.model.UserMessageTemplate;
-import com.esoft.jdp2p.message.service.MessageService;
-import com.esoft.jdp2p.message.service.impl.MessageBO;
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.*;
 
 /**
  * <p>
@@ -107,6 +106,8 @@ public class UserServiceImpl implements UserService {
 	@Resource
 	StdScheduler scheduler;
 
+	@Resource
+	private ValidationService validationService;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -128,8 +129,8 @@ public class UserServiceImpl implements UserService {
 			throws NoMatchingObjectsException, AuthInfoOutOfDateException,
 			AuthInfoAlreadyActivedException {
 		// 验证手机认证码是否正确
-//		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
-//				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+		authService.verifyAuthInfo(null, user.getMobileNumber(), authCode,
+				CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
 		user.setRegisterTime(new Date());
 		// 用户密码通过sha加密
 		user.setPassword(HashCrypt.getDigestHash(user.getPassword()));
@@ -180,8 +181,8 @@ public class UserServiceImpl implements UserService {
 		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
+						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
 	}
 
@@ -294,6 +295,9 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException("userId:" + userId);
 		}
 		user.setStatus(status);
+		if (status.equalsIgnoreCase(UserConstants.UserStatus.ENABLE)) {
+			user.setLoginFailedTimes(0);
+		}
 		userBO.update(user);
 	}
 
@@ -414,7 +418,7 @@ public class UserServiceImpl implements UserService {
 								null,
 								CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
@@ -442,14 +446,14 @@ public class UserServiceImpl implements UserService {
 				+ "/find_pwd_by_email3/" + activeCode;
 		params.put("reset_password_url", resetPasswrodUrl);
 		// 发送邮件
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
 
 	@Override
 	public void sendBindingEmail(String userId, String email)
-			throws UserNotFoundException {
+			throws UserNotFoundException,MailSendErrorException {
 		User user = ht.get(User.class, userId);
 		if (user == null) {
 			throw new UserNotFoundException("user.id:" + userId);
@@ -465,9 +469,10 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, email, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 						MessageConstants.UserMessageNodeId.BINDING_EMAIL + "_email"),
 				params, email);
+
 	}
 
 	/**
@@ -490,7 +495,7 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, oriEmail, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.BINDING_EMAIL
 						+ "_email"), params, oriEmail);
 	}
@@ -630,8 +635,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void sendRegisterByMobileNumberSMS(String mobileNumber) {
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
+		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
+		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
 		Map<String, String> params = new HashMap<String, String>();
 		// TODO:实现模板
@@ -643,11 +651,24 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
+			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String ip = CommonUtils.getRemoteHost(request);
+			Date nowTime = new Date();
+			redisClinet.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClinet.getJedis().exists(ip)) {
+				Date lastTime = DateUtil.StringToDate(redisClinet.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
+				long diff = nowTime.getTime() - lastTime.getTime();
+				long diffMM = diff/60000;
+				if (diffMM < 1) {
+					return false;
+				}
+			}
+			redisClinet.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);
-
 		}
+		return true;
 	}
 
 	@Override
@@ -868,7 +889,7 @@ public class UserServiceImpl implements UserService {
 		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
 		SimpleTrigger trigger = TriggerBuilder
 				.newTrigger()
-				.withIdentity(userId, ScheduleConstants.TriggerGroup.LOAN_OUT_NOTIFICATION)
+				.withIdentity(userId, ScheduleConstants.TriggerGroup.REGISTER_VERIFICATION_EMAIL)
 				.forJob(jobDetail)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
 				.startAt(threeMinutesLater).build();
@@ -880,6 +901,66 @@ public class UserServiceImpl implements UserService {
 		}
 		if (log.isDebugEnabled())
 			log.debug("用户注册添加邮箱验证Job完成: " + userId);
+	}
+
+	@Override
+	public boolean validateRegisterUser(User instance) throws UserRegisterException, InputRuleMatchingException {
+		try {
+			validationService.inputRuleValidation("input.username", instance.getUsername());
+
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "用户名"));
+		}
+
+		try {
+			validationService.inputRuleValidation("input.mobile", instance.getMobileNumber());
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "手机号"));
+		}
+
+		try {
+			validationService.inputRuleValidation("input.email", instance.getEmail());
+		} catch (NoMatchingObjectsException e) {
+			log.error(e);
+			return false;
+		} catch (InputRuleMatchingException e) {
+			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "邮箱"));
+		}
+
+		try {
+			String className = User.class.getName();
+			boolean usernameIsExist = validationService.isAlreadExist(className, "username", instance.getUsername());
+			if (usernameIsExist) {
+				throw new UserRegisterException("用户名已存在！");
+			}
+
+			boolean emailIsExist = validationService.isAlreadExist(className, "email", instance.getEmail());
+			if (emailIsExist) {
+				throw new UserRegisterException("邮箱已存在！");
+			}
+
+			boolean mobileIsExist = validationService.isAlreadExist(className, "mobileNumber", instance.getMobileNumber());
+			if (mobileIsExist) {
+				throw new UserRegisterException("手机号已存在!");
+			}
+
+			if (!Strings.isNullOrEmpty(instance.getReferrer()) ) {
+				boolean referrerIsNotExist = !validationService.isAlreadExist(className, "username", instance.getReferrer());
+				if (referrerIsNotExist) {
+					throw new UserRegisterException("推荐人不存在！");
+				}
+			}
+		} catch (ClassNotFoundException | NoSuchMethodException e) {
+			log.error(e);
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -1,0 +1,1 @@
+ALTER TABLE `bank_card` ADD INDEX index_bank_no (`bank_no`);

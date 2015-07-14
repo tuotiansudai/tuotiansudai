@@ -22,6 +22,15 @@
 		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
+				if (#{loanHome.instance.loanActivityType eq 'xs'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_xsb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'jx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_jxb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'dx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_dxb/#{loanHome.instance.id}"
+				}
 				if (#{loanHome.instance.businessType eq '企业借款'}) {
 					window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
 				}
@@ -80,7 +89,7 @@
 						<div class="span3-div">
 						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 						<span>发布日期：
-							<h:outputText value="#{loan.commitTime}">
+							<h:outputText value="#{loan.verifyTime}">
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>

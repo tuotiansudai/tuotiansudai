@@ -1,18 +1,5 @@
 package com.esoft.archer.user.controller;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.primefaces.context.RequestContext;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.common.controller.EntityHome;
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
@@ -31,8 +18,20 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.jdp2p.message.MessageConstants;
+import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.primefaces.context.RequestContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Filename: UserHome.java Description: Copyright: Copyright (c)2013
@@ -533,7 +532,10 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {
 			FacesUtil.addErrorMessage("用户未登录");
-			e.printStackTrace();
+			log.error(e);
+		} catch (MailSendErrorException e) {
+			FacesUtil.addErrorMessage("验证码发送失败，请检查邮箱合法性！");
+			log.error(e);
 		}
 	}
 	
