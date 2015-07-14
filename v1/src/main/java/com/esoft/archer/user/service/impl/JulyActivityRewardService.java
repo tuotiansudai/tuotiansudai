@@ -273,7 +273,7 @@ public class JulyActivityRewardService {
             if (result) {
                 TOTAL_REWARD += REFERRER_RECHARGE_REWARD;
                 reward.setReferrerFirstRechargeReward(true);
-                reward.setReferrerFirstInvestRewardTime(new Date());
+                reward.setReferrerFirstRechargeRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
                     String operatorDetail = "推荐新用户（{0}）充值成功奖励";
