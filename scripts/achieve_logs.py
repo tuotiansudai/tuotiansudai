@@ -17,7 +17,6 @@ bucket_name = "ttsd-logs"
 from oss.oss_api import *
 
 
-
 def get_yesterday_str():
     today = datetime.datetime.today()
     yesterday = today - datetime.timedelta(days=1)
@@ -26,15 +25,26 @@ def get_yesterday_str():
 
 def compress_tomcat_logs(yesterday_str):
     tomcat_debug_log = "/var/log/tomcat6/debug.log.{0}".format(yesterday_str)
+    tomcat_error_log = "/var/log/tomcat6/error.log.{0}".format(yesterday_str)
+    tomcat_info_log = "/var/log/tomcat6/info.log.{0}".format(yesterday_str)
+    tomcat_warn_log = "/var/log/tomcat6/warn.log.{0}".format(yesterday_str)
+    catalina_log = "/var/log/tomcat6/catalina.{0}.log".format(yesterday_str)
+    catalina_localhost_log = "/var/log/tomcat6/localhost.{0}.log".format(yesterday_str)
+    catalina_host_manager_log = "/var/log/tomcat6/host-manager.{0}.log".format(yesterday_str)
+    catalina_manager_log = "/var/log/tomcat6/manager.{0}.log".format(yesterday_str)
     from subprocess import call
 
     tar_file = "{0}.tar.gz".format(tomcat_debug_log)
-    ret = call(["tar", "czf", tar_file, tomcat_debug_log])
+    ret = call(["tar", "czf", tar_file, tomcat_debug_log, tomcat_error_log,
+                tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
+                catalina_host_manager_log, catalina_manager_log])
     if ret != 0:
         logger.error('compress {0} error, ret: {1}'.format(tomcat_debug_log, ret))
         raise Exception()
     else:
-        call(['rm', tomcat_debug_log])
+        call(['rm', tomcat_debug_log, tomcat_error_log,
+              tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
+              catalina_host_manager_log, catalina_manager_log])
     return tar_file
 
 
