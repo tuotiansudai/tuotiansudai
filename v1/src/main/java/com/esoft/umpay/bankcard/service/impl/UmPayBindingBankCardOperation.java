@@ -1,6 +1,7 @@
 package com.esoft.umpay.bankcard.service.impl;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import javax.servlet.ServletResponse;
 
 import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -69,6 +72,8 @@ public class UmPayBindingBankCardOperation extends
 	private RechargeService rechargeService;
 	@Resource
 	private BankCardService bankCardService;
+	@Resource
+	private SystemBillService systemBillService;
 	@Logger
 	Log log;
 
@@ -211,10 +216,16 @@ public class UmPayBindingBankCardOperation extends
 								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 								ht.update(bankCard);
 							}
-							List<RechargeBankCard> realNameBankList = this.rechargeService.getRealNameBankList();
-//							for () {
-//
-//							}
+							if (!this.rechargeService.isRealNameBank(paramMap.get("gate_id"))){
+								String detailTemplate = "用户{0}绑定{1}银行卡";
+								try {
+									this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
+											userWillBindingBankCard.get(0).getUser().getId(),
+											this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
+								} catch (InsufficientBalance insufficientBalance) {
+									log.error(insufficientBalance);
+								}
+							}
 							log.debug(("用户:"
 									+ userWillBindingBankCard.get(0).getUser()
 									.getId() + "绑定"

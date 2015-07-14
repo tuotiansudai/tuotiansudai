@@ -182,9 +182,16 @@ public class RechargeServiceImpl implements RechargeService {
 		return "Not found Bank";
 	}
 
-//	public boolean isRealNameBank() {
-//
-//	}
+	@Override
+	public boolean isRealNameBank(String bankNo) {
+		List<RechargeBankCard> realNameList = this.getRealNameBankList();
+		for (RechargeBankCard rechargeBankCard : realNameList){
+			if (StringUtils.equals(rechargeBankCard.getNo(), bankNo)){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private static Properties props = new Properties();
 	static {

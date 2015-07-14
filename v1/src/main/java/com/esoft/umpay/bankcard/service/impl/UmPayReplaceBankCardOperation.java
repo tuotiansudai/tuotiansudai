@@ -7,11 +7,13 @@ import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
 import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
+import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
@@ -46,6 +48,12 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 
 	@Resource
 	private TrusteeshipOperationBO trusteeshipOperationBO;
+
+	@Resource
+	private BankCardService bankCardService;
+
+	@Resource
+	private RechargeService rechargeService;
 
 	@Resource
 	private HibernateTemplate ht;
@@ -132,7 +140,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 			Map<String, String> paramMap = UmPaySignUtil
 					.getMapDataByRequest(request);
 			log.debug("换卡-后台-通知:" + paramMap.toString());
-			if (null != paramMap) {
+			if (null != paramMap && paramMap.get("service").equals(UmPayConstants.OperationType.MER_BIND_CARD_NOTIFY)) {
 				String ret_code = paramMap.get("ret_code");
 				String order_id = paramMap.get("order_id");
 				if ("0000".equals(ret_code)) {
@@ -142,30 +150,34 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 					ht.evict(user);
 					String bankCardId = order_id.substring(13,
 							order_id.length());
-
-					String hql = "from BankCard where user.id =? and status =? and cardNo =?";
-
-					String hqlPassed = "from BankCard where user.id =? and status =?";
-
-					List<BankCard> userAlreadyBindingBankCard = ht
-							.find(hqlPassed, new String[] { user.getId(), "passed"});
-
-					List<BankCard> userWillBindingBankCard = ht
-							.find(hql, new String[] { user.getId(), "uncheck",
-									bankCardId });
-					if (null != userWillBindingBankCard) {
-						BankCard bankCard = userWillBindingBankCard.get(0);
-						bankCard.setStatus("passed");
-						ht.update(bankCard);
-						if (userAlreadyBindingBankCard != null) {
-							BankCard bankCardPassed = userAlreadyBindingBankCard.get(0);
-							bankCardPassed.setStatus("remove");
-							ht.update(bankCardPassed);
+					if (!this.bankCardService.isCardNoBinding(bankCardId)) {
+						String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+						String hqlPassed = "from BankCard where user.id =? and status =?";
+						List<BankCard> userAlreadyBindingBankCard = ht
+								.find(hqlPassed, new String[]{user.getId(), "passed"});
+						List<BankCard> userWillBindingBankCard = ht
+								.find(hql, new String[]{user.getId(), "uncheck",
+										bankCardId});
+						if (null != userWillBindingBankCard) {
+							for (BankCard bankCard : userWillBindingBankCard){
+								bankCard.setStatus("passed");
+								bankCard.setBankNo(paramMap.get("gate_id"));
+								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
+								ht.update(bankCard);
+							}
+							if (userAlreadyBindingBankCard != null) {
+								for (BankCard bankCardPassed : userAlreadyBindingBankCard) {
+									bankCardPassed.setStatus("remove");
+									ht.update(bankCardPassed);
+								}
+							}
+							log.debug(("用户:"
+									+ userWillBindingBankCard.get(0).getUser()
+									.getId() + "换卡"
+									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 						}
-						log.debug(("用户:"
-								+ userWillBindingBankCard.get(0).getUser()
-								.getId() + "换卡"
-								+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+					} else {
+						log.debug(bankCardId+"已经被绑定！！！！");
 					}
 				}
 				try {
