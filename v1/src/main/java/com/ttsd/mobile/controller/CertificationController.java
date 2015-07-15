@@ -1,14 +1,15 @@
 package com.ttsd.mobile.controller;
 
-import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
+import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,8 +31,7 @@ public class CertificationController {
     @Autowired
     private UmPayUserOperation umPayUserOperation;
 
-    @Resource
-    private LoginUserInfo loginUserInfo;
+    private String loginUserId;
 
     @Autowired
     private UserService userService;
@@ -62,9 +61,15 @@ public class CertificationController {
         String realName = request.getParameter("realName");
         String idCard = request.getParameter("idCard");
         User user = new User();
+        if (this.loginUserId == null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) FacesUtil
+                    .getSessionAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl != null) {
+                loginUserId = securityContextImpl.getAuthentication().getName();
+            }
+        }
         try {
-            user = this.userService.getUserById(this.loginUserInfo
-                    .getLoginUserId());
+            user = this.userService.getUserById(this.loginUserId);
         } catch (UserNotFoundException e) {
             log.error(e);
             return "false";
