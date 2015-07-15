@@ -182,7 +182,7 @@ public class UserServiceImpl implements UserService {
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
 		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
+						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
 	}
 
@@ -636,7 +636,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
-		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
@@ -650,6 +649,7 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
+			RedisClinet redisClinet = new RedisClinet();
 			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String ip = CommonUtils.getRemoteHost(request);
 			Date nowTime = new Date();

@@ -31,10 +31,13 @@
 			src="#{tplVars.themeJSPath}/jquery.SuperSlide.2.1.1.js"></script>
 		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
 		<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/register.js"></script>
 		<link type="text/css" rel="stylesheet"
 			href="#{tplVars.themeStylePath}/common.css" />
 		<link type="text/css" rel="stylesheet"
 			href="#{tplVars.themeStylePath}/login.css" />
+		<link type="text/css" rel="stylesheet"
+			  href="#{tplVars.themeStylePath}/register.css" />
 	</h:head>
 	<h:body style="background:#f3f3f3;">
 		<archer:archerMessages focus="false" showGlobalMessages="true"
@@ -131,16 +134,12 @@
 					<div class="login_box login_box01">
 						<div class="login_box_l login_box_l01">验证码：</div>
 						<div class="login_box_r">
-							<h:inputText id="captcha" label="验证码" maxlength="6"
-								required="true" styleClass="login_txt login_txt03"
-								value="#{userHome.authCode}">
+							<h:inputText id="image_captcha" label="验证码" maxlength="6"
+								required="true" styleClass="login_txt login_txt03">
 								<f:ajax event="blur"></f:ajax>
 							</h:inputText>
-							<p:watermark value="请输入验证码" for="captcha"></p:watermark>
-							<h:commandButton value="获取验证码" id="sendAuthCodeBtn" onclick="$(this).attr('disabled','disabled')" style="border: none;width: 100px;" styleClass="hqyzm pointer">
-								<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
-									listener="#{userHome.sendRegisterAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
-							</h:commandButton>
+							<p:watermark value="请输入验证码" for="image_captcha"></p:watermark>
+							<img class="imageCaptchaClass" alt="点击刷新" id="verifyCode" src="#{request.contextPath}/verifyCodeServlet" onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()"/>
 						</div>
 						<div class="clear"></div>
 					</div>
@@ -174,10 +173,45 @@
 					<div class="login_box login_box01">
 						<div class="login_box_l login_box_l01"></div>
 						<div class="login_box_r">
-							<p:commandLink value="立即注册" styleClass="login_btn"
-								action="#{userHome.registerByMobileNumber}"></p:commandLink>
+							<p:commandLink value="下一步" styleClass="login_btn_next_step"
+										   action="#{userHome.registerByMobileNumber}"></p:commandLink>
 						</div>
 						<div class="clear"></div>
+					</div>
+					<div class="mask_phone_modify">
+						<div class="main_phone_modify">
+
+							<span class="close">关闭</span>
+							<small>验证码已经发送到您的手机，如果长时间收不到，请重新获取短信验证码!</small>
+							<div class="phone">您的手机号码:<em class="phoneNumber"></em>
+								<span class="changeNumber">更换号码</span></div>
+							<div class="phone">
+								<p><label>短 信 验 证 码:</label>
+								<h:inputText id="captcha" label="短信验证码" maxlength="6"
+											 required="true" styleClass="login_txt_captcha  login_txt03 login_txt03_captcha"
+											 value="#{userHome.authCode}">
+									<f:ajax event="blur"></f:ajax>
+								</h:inputText>
+								<p:watermark value="请输入短信验证码" for="captcha"></p:watermark>
+								<h:commandButton value="获取短信验证码" id="sendAuthCodeBtn" onclick="$(this).attr('disabled','disabled')"  styleClass="hqyzm_captcha pointer">
+									<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
+											listener="#{userHome.sendRegisterAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+
+								</h:commandButton>
+								</p>
+							</div>
+
+							<div class="login_box login_box01">
+								<div class="login_box_l login_box_l01"></div>
+								<div class="login_box_r">
+									<p:commandLink value="立即注册" styleClass="login_btn"
+												   action="#{userHome.registerByMobileNumber}"></p:commandLink>
+								</div>
+								<div class="clear"></div>
+							</div>
+
+						</div>
+
 					</div>
 				</h:form>
 			</div>
@@ -188,7 +222,10 @@
 				<img src="#{tplVars.themeImagePath}/img56.png" />
 			</div>
 			<div class="clear"></div>
+
 		</div>
+
+
 	</h:body>
 </f:view>
 </html>

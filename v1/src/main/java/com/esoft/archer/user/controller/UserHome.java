@@ -665,6 +665,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	 */
 	public void sendRegisterAuthCodeToMobile(String mobileNumber, String jsCode) {
 		boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+		System.out.println("jsCode============" + jsCode);
 		if (isSend) {
 			FacesUtil.addInfoMessage("短信已发送，请注意查收！");
 			RequestContext.getCurrentInstance().execute(jsCode);
