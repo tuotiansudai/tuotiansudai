@@ -1,17 +1,13 @@
 package com.ttsd.mobile.controller;
 
-import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
-import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,31 +37,32 @@ public class CertificationController {
         return new ModelAndView("/certification");
     }
 
-    @RequestMapping(value = "/idCard/{idCard}", method = RequestMethod.GET)
+    @RequestMapping(value = "/idCard", method = RequestMethod.GET)
     @ResponseBody
-    public boolean idCardIsExists(@PathVariable String idCard) {
+    public boolean idCardIsExists(HttpServletRequest request) {
+        String idCard = request.getParameter("yourId");
         return !this.userService.idCardIsExists(idCard);
     }
 
     @RequestMapping(value = "/realName", method = RequestMethod.POST)
     @ResponseBody
     public boolean realNameCertification(HttpServletRequest request) {
-        String realName = request.getParameter("realName");
-        String idCard = request.getParameter("idCard");
+        String realName = request.getParameter("yourName");
+        String idCard = request.getParameter("yourId");
         User user = new User();
-        if (this.loginUserId == null) {
-            SecurityContextImpl securityContextImpl = (SecurityContextImpl) FacesUtil
-                    .getSessionAttribute("SPRING_SECURITY_CONTEXT");
-            if (securityContextImpl != null) {
-                loginUserId = securityContextImpl.getAuthentication().getName();
-            }
-        }
-        try {
-            user = this.userService.getUserById(this.loginUserId);
-        } catch (UserNotFoundException e) {
-            log.error(e);
-            return false;
-        }
+//        if (this.loginUserId == null) {
+//            SecurityContextImpl securityContextImpl = (SecurityContextImpl) FacesUtil
+//                    .getSessionAttribute("SPRING_SECURITY_CONTEXT");
+//            if (securityContextImpl != null) {
+//                loginUserId = securityContextImpl.getAuthentication().getName();
+//            }
+//        }
+//        try {
+//            user = this.userService.getUserById(this.loginUserId);
+//        } catch (UserNotFoundException e) {
+//            log.error(e);
+//            return false;
+//        }
         if (!StringUtils.isNotEmpty(realName) || !StringUtils.isNotEmpty(idCard)){
             return false;
         }

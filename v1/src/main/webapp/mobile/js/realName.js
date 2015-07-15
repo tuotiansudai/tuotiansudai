@@ -19,7 +19,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                     required:true,
                     isIdCardNo:true,
                     remote:{
-                        url: 'index.json',
+                        url: '/mobile/certification/idCard/',
                         type: 'GET',
                         dataType:'json',
                         data: {
@@ -36,19 +36,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 yourId:'请输入正确的身份证号码'
             },
             submitHandler:function(form){
-                $.ajax({
-                    url:'/certification/realName',
-                    type: 'POST',
-                    dataType: 'json',
-                    success:function(status){
-                        form.submit();
-                        if(status==true){
-
-                        }else{
-
-                        }
-                    }
-                });
+                form.submit();
             }
         });
 });
