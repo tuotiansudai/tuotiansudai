@@ -43,21 +43,13 @@ public class CertificationController {
 
     @RequestMapping(value = "/idCard/{idCard}", method = RequestMethod.GET)
     @ResponseBody
-    public String idCardIsExists(@PathVariable String idCard) {
-        return judgeIdCardIsExists(idCard);
-    }
-
-    private String judgeIdCardIsExists(String idCard) {
-        if (this.userService.idCardIsExists(idCard)) {
-            return "false";
-        } else {
-            return "true";
-        }
+    public boolean idCardIsExists(@PathVariable String idCard) {
+        return !this.userService.idCardIsExists(idCard);
     }
 
     @RequestMapping(value = "/realName", method = RequestMethod.POST)
     @ResponseBody
-    public String realNameCertification(HttpServletRequest request) {
+    public boolean realNameCertification(HttpServletRequest request) {
         String realName = request.getParameter("realName");
         String idCard = request.getParameter("idCard");
         User user = new User();
@@ -72,24 +64,24 @@ public class CertificationController {
             user = this.userService.getUserById(this.loginUserId);
         } catch (UserNotFoundException e) {
             log.error(e);
-            return "false";
+            return false;
         }
         if (!StringUtils.isNotEmpty(realName) || !StringUtils.isNotEmpty(idCard)){
-            return "false";
+            return false;
         }
         Pattern idNumPattern = Pattern.compile("(\\d{14}[0-9a-zA-Z])|(\\d{17}[0-9a-zA-Z])");
         Matcher idNumMatcher = idNumPattern.matcher(idCard);
         if (!idNumMatcher.matches() || this.userService.idCardIsExists(idCard)){
-            return "false";
+            return false;
         }
         user.setRealname(realName);
         user.setIdCard(idCard);
         try {
             this.umPayUserOperation.createOperation(user, null);
-            return "true";
+            return true;
         } catch (Exception e) {
             log.error(e);
-            return "false";
+            return false;
         }
     }
 
