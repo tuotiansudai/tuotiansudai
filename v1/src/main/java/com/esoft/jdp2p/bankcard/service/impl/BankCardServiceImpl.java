@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("bankCardService")
@@ -41,6 +40,13 @@ public class BankCardServiceImpl implements BankCardService{
     public boolean isBoundBankCard(String userId) {
         String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed''";
         int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, userId)));
+        return count > 0;
+    }
+
+    @Override
+    public boolean isCardNoBinding(String cardNo) {
+        String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.cardNo=''{0}'' and bankCard.status=''passed''";
+        int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, cardNo)));
         return count > 0;
     }
 

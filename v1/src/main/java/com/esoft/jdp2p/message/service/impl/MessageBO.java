@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.exception.SmsSendErrorException;
+import com.esoft.jdp2p.message.service.SendCloudMailService;
 import com.google.common.collect.Maps;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -44,6 +45,9 @@ public class MessageBO {
 	
 	@Resource
 	MailService mailService;
+
+	@Resource
+	SendCloudMailService sendCloudMailService;
 
 	@Resource
 	private HibernateTemplate ht;
@@ -117,6 +121,13 @@ public class MessageBO {
 		String msg = replaceParams(umt, params);
 		//发送邮件
 		mailService.sendMail(email, umt.getName(), msg);
+	}
+
+	public void sendEmailBySendCloud(UserMessageTemplate umt, Map<String, String> params, String email) throws MailSendErrorException {
+		//替换模板中的参数
+		String msg = replaceParams(umt, params);
+		//发送邮件
+		sendCloudMailService.sendMail(email, umt.getName(), msg);
 	}
 
 	public void sendSMS(UserMessageTemplate umt, Map<String, String> params,

@@ -68,7 +68,6 @@ public class UmPayUserOperation extends UmPayOperationServiceAbs<User> {
 		map.put("identity_type", "IDENTITY_CARD");
 		map.put("identity_code", user.getIdCard());
 		map.put("mobile_id", user.getMobileNumber());
-		map.put("email", user.getEmail());
 		ReqData reqData;
 		Map<String, String> resData = null;
 		try {
