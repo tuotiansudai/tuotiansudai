@@ -8,6 +8,8 @@ import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
@@ -31,6 +33,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +60,10 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 
 	@Resource
 	private HibernateTemplate ht;
-	
+
+	@Resource
+	private SystemBillService systemBillService;
+
 	@Override
 	@SuppressWarnings({ "unchecked", "null" })
 	@Transactional(rollbackFor = Exception.class)
@@ -164,6 +170,16 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 								bankCard.setBankNo(paramMap.get("gate_id"));
 								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 								ht.update(bankCard);
+							}
+							if (!this.rechargeService.isRealNameBank(paramMap.get("gate_id"))){
+								String detailTemplate = "用户{0}更换{1}银行卡";
+								try {
+									this.systemBillService.transferOut(0.01,"replace_card", MessageFormat.format(detailTemplate,
+											userWillBindingBankCard.get(0).getUser().getId(),
+											this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
+								} catch (InsufficientBalance insufficientBalance) {
+									log.error(insufficientBalance);
+								}
 							}
 							if (userAlreadyBindingBankCard != null) {
 								for (BankCard bankCardPassed : userAlreadyBindingBankCard) {
