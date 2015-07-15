@@ -33,46 +33,50 @@ public class RegisterController {
 
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     @ResponseBody
-    public String mobileRegister(HttpServletRequest request,HttpServletResponse response){
+    public boolean mobileRegister(HttpServletRequest request,HttpServletResponse response){
         /**
          * 注：operationType＝0，表示获取验证码
          * operationType＝1，表示正常的注册操作
          */
-        String userName =  request.getParameter("userName");
-        String passWord = request.getParameter("passWord");
+        String userName =  request.getParameter("username");
+        String passWord = request.getParameter("password");
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
-        String responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
-        if ("1".equals(operationType) && "ture".equals(responseResult)){
+        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
+        if ("1".equals(operationType) && responseResult){
             HttpSession session = request.getSession();
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNumber);
             session.setAttribute(CommonConstants.USER_INFO,user);
         }
+        response.setContentType("text/json; charset=utf-8");
         return responseResult;
     }
 
     @RequestMapping(value = "/userNameValidation", method = RequestMethod.GET)
     @ResponseBody
-    public String validateUserName(HttpServletRequest request,HttpServletResponse response){
-        String userName = request.getParameter("userName");
+    public boolean validateUserName(HttpServletRequest request,HttpServletResponse response){
+        String userName = request.getParameter("username");
+        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateUserName(userName);
     }
 
     @RequestMapping(value = "/mobilePhoneNumValidation", method = RequestMethod.GET)
     @ResponseBody
-    public String validatemobilePhoneNum(HttpServletRequest request,HttpServletResponse response){
+    public boolean validatemobilePhoneNum(HttpServletRequest request,HttpServletResponse response){
         String phoneNumber = request.getParameter("phoneNumber");
+        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateMobilePhoneNum(phoneNumber);
     }
 
     @RequestMapping(value = "/vCodeValidation", method = RequestMethod.GET)
     @ResponseBody
-    public String validateVCode(HttpServletRequest request,HttpServletResponse response){
+    public boolean validateVCode(HttpServletRequest request,HttpServletResponse response){
         String phoneNum = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
+        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateVCode(phoneNum,vCode);
     }
     /***************************setter注入方法****************************/

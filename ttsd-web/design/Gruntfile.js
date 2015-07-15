@@ -13,7 +13,6 @@ module.exports = function (grunt) {
                 src: 'doMove.js',//需要压缩的文件名，注意路径问题;
                 dest: './doMove.min.js'//压缩后输出的文件名，注意路径问题;
             }
-
         },
         sass: {
             dist: {

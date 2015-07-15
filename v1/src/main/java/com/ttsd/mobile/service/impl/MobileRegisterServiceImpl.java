@@ -56,33 +56,33 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public String mobileRegister(String userName, String password, String phoneNum, String vCode,String operationType) {
+    public boolean mobileRegister(String userName, String password, String phoneNum, String vCode,String operationType) {
         if (userName == null || userName.equals("")){
             log.info("提交的用户名为空！");
-            return "false";
+            return false;
         }else {
             int count = mobileRegisterDao.getUserCountByUserName(userName);
             log.info("用户名为"+userName+"的用户有"+count+"个！");
             if(count > 0){
                 log.info("用户名为"+userName+"的用户已经存在！");
-                return "false";
+                return false;
             }
         }
 
         if (password == null || password.equals("")){
             log.info("提交的密码为空！");
-            return "false";
+            return false;
         }
 
         if (phoneNum == null || phoneNum.equals("")){
             log.info("提交的手机号为空！");
-            return "false";
+            return false;
         }else {
             log.info("提交的手机号为"+phoneNum);
             int count = mobileRegisterDao.getUserCountByCellphone(phoneNum);
             if (count > 0){
                 log.info("手机号为"+phoneNum+"的用户已经存在！");
-                return "false";
+                return false;
             }else {
                 if (operationType.equals("0")) {
                     String authCode = null;
@@ -114,7 +114,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                                 e.printStackTrace();
                             }
                         }
-                        return "ture";
+                        return true;
                     }
                 }else if (operationType.equals("1")){
                     int codeCount = 0;
@@ -154,49 +154,49 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             log.error("给用户名为："+userName+",手机号为："+phoneNum+"的用户添加普通用户权限失败！");
                             e.printStackTrace();
                         }
-                        return "true";
+                        return true;
                     }else {
-                        return "false";
+                        return false;
                     }
                 }else {
-                    return "false";
+                    return false;
                 }
             }
         }
-        return null;
+        return false;
     }
 
     @Override
-    public String validateUserName(String userName) {
+    public boolean validateUserName(String userName) {
         int count = mobileRegisterDao.getUserCountByUserName(userName);
         if (count > 0){
-            return "false";
+            return false;
         }
-        return "true";
+        return true;
     }
 
     @Override
-    public String validateMobilePhoneNum(String phoneNumber) {
+    public boolean validateMobilePhoneNum(String phoneNumber) {
         if (regValidatePhoneNum(phoneNumber)){
             int count = mobileRegisterDao.getUserCountByCellphone(phoneNumber);
             if (count > 0){
-                return "false";
+                return false;
             }
-            return "true";
+            return true;
         }
-        return "false";
+        return false;
     }
 
     @Override
-    public String validateVCode(String phoneNumber, String vCode) {
+    public boolean validateVCode(String phoneNumber, String vCode) {
         if (regValidatePhoneNum(phoneNumber)){
             int count = mobileRegisterDao.getAuthInfo(phoneNumber, vCode, CommonConstants.AuthInfoStatus.INACTIVE);
             if (count > 0){
-                return "true";
+                return true;
             }
-            return "false";
+            return false;
         }
-        return "false";
+        return false;
     }
 
     /**
@@ -205,6 +205,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      * @return
      */
     public boolean regValidatePhoneNum(String phoneNumber){
+        if(phoneNumber==null || "".equals(phoneNumber)){
+            return false;
+        }
         String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
         Pattern pattern = Pattern.compile(regStr);
         Matcher matcher = pattern.matcher(phoneNumber);
