@@ -10,45 +10,33 @@ require.config({
     }
 });
 require(['jquery', 'validate','validate-ex'], function ($) {
-        $('.realName').validate({
-            rules:{
-                yourName:{
-                    required:true
-                },
-                yourId:{
-                    required:true,
-                    isIdCardNo:true,
-                    remote:{
-                        url: 'index.json',
-                        type: 'GET',
-                        dataType:'json',
-                        data: {
-                            yourId: function () {
-                                return $('.yourId').val();
-                            }
-                        }
-                    }
-                }
+    $('.realName').validate({
+        rules:{
+            yourName:{
+                required:true
             },
-            errorElement: 'small',
-            messages:{
-                yourName:'请检查您的输入',
-                yourId:'请输入正确的身份证号码'
-            },
-            submitHandler:function(form){
-                $.ajax({
-                    url:'/certification/realName',
-                    type: 'POST',
-                    dataType: 'json',
-                    success:function(status){
-                        form.submit();
-                        if(status==true){
-
-                        }else{
-
-                        }
-                    }
-                });
+            yourId:{
+                required:true,
+                isIdCardNo:true
             }
-        });
+        },
+        errorElement: 'small',
+        messages:{
+            yourName:'名字不能为空!',
+            yourId:'身份证号码错误!'
+        },
+        submitHandler:function(form){
+            var realName=$('.yourName').val();
+            var idCard=$('.yourId').val();
+
+            $.ajax({
+                url:'/certification/realName',
+                type: 'GET',
+                dataType: 'json',
+                success:function(status){
+                    form.submit();
+                }
+            });
+        }
+    });
 });

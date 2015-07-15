@@ -13,31 +13,31 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
     $('.cmxForm').validate({
         //focusInvalid: false,
         rules: {
-            userName: {
+            username: {
                 required: true,
                 rangelength: [5, 25],
                 remote: {
                     url: 'http://127.0.0.1:8088/mobile/register/userNameValidation',
                     type: 'GET',
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     data: {
-                        userName: function () {
+                        username: function () {
                             return $('.userName').val();
                         }
                     }
                 }
             },
-            passWord: {
+            password: {
                 required: true,
-                minLength: 6
+                minlength: 6
             },
             phoneNumber: {
                 isMobile: true,
                 required: true,
                 remote: {
-                    url: 'http://127.0.0.1:8088/mobile/register/mobilePhoneNumValidation',
+                    url: 'http://192.168.100.11:8088/mobile/register/mobilePhoneNumValidation',
                     type: 'GET',
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     data: {
                         phoneNumber: function () {
                             return $('.phoneNumber').val();
@@ -50,7 +50,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 remote: {
                     url: 'http://127.0.0.1:8088/mobile/register/vCodeValidation',
                     type: 'GET',
-                    dataType: 'json',
+                    dataType: 'jsonp',
                     data: {
                         vCode: function () {
                             return $('.vCode').val();
@@ -66,9 +66,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 rangelength: "用户名的长度必须在5至25个字符之间！",
                 remote:"用户名已存在！"
             },
-            passWord: {
-                required:"密码不能为空!",
-                minLength: "密码最少为6位！"
+            password: {
+                required: "请输入密码",
+                minlength: "密码至少6位"
             },
             phoneNumber: {
                 isMobile: "手机号码格式错误",
