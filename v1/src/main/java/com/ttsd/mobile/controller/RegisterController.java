@@ -31,11 +31,6 @@ public class RegisterController {
         return new ModelAndView("/register");
     }
 
-    @RequestMapping(value = "/certification",method = RequestMethod.GET)
-    public ModelAndView certification() {
-        return new ModelAndView("/certification");
-    }
-
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     @ResponseBody
     public boolean mobileRegister(HttpServletRequest request,HttpServletResponse response){

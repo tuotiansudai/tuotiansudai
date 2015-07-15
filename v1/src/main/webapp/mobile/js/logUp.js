@@ -17,7 +17,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 required: true,
                 rangelength: [5, 25],
                 remote: {
-                    url: 'http://127.0.0.1:8088/mobile/register/userNameValidation',
+                    url: '/mobile/register/userNameValidation',
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -35,7 +35,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 isMobile: true,
                 required: true,
                 remote: {
-                    url: 'http://127.0.0.1:8088/mobile/register/mobilePhoneNumValidation',
+                    url: '/mobile/register/mobilePhoneNumValidation',
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -48,7 +48,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
             vCode: {
                 required: true,
                 remote: {
-                    url: 'http://127.0.0.1:8088/mobile/register/vCodeValidation',
+                    url: '/mobile/register/vCodeValidation',
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -80,6 +80,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 remote:"验证码输入错误！"
             }
         }
+        //,
         //submitHandler: function (form) {
         //    form.submit();
         //    alert('1');
@@ -95,7 +96,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         var phoneValue=$('.phoneNumber').val();
         var vCodeValue=$('.vCode').val();
         $.ajax({
-            url: 'http://192.168.100.11:8088/mobile/register/mobileRegister',
+            url: '/mobile/register/mobileRegister',
             type: 'POST',
             data:{
                 username:userValue,
@@ -105,13 +106,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 operationType:'1'
             },
             dataType: 'json',
-            success: function (res) {
-                alert(res);
-                if (res || res == 'true') {
-                    $.ajax({
-                        url: 'http://192.168.100.11:8088/mobile/register/certification',
-                        type: 'GET'
-                    });
+            success: function (result) {
+                if (result) {
+                    window.location.href='/mobile/templates/certification.ftl'
                 }
             }
         });
@@ -125,7 +122,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         var passValue=$('.passWord').val();
         var phoneValue=$('.phoneNumber').val();
         $.ajax({
-            url: 'http://192.168.100.11:8088/mobile/register/mobileRegister',
+            url: '/mobile/register/mobileRegister',
             type: 'POST',
             data:{
                 username:userValue,
@@ -133,15 +130,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 phoneNumber:phoneValue,
                 operationType:'0'
             },
-            dataType: 'json',
-            success: function (res) {
-                if (res=='true') {
-                    alert('注册成功');
-                } else if (res=='false') {
-                    alert('注册失败！');
-                    return false;
-                }
-            }
+            dataType: 'json'
         });
         var Num = 5;
         var Down = setInterval(countDown, 1000);
