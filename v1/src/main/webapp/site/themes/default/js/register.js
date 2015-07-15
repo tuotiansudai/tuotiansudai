@@ -6,7 +6,6 @@ $(function(){
 	var clientH = $(window).height();
 	$('.mask_phone_modify').css('height', clientH);
 	oLoginBtn.on('click',function(){
-		//var imageCaptcha = document.getElementById("form:image_captcha").value;
 		var imageCaptcha = $('#form\\:image_captcha').val();
 		var mobileNumber = $('#form\\:mobileNumber').val();
 		var username = $('#form\\:username').val();
@@ -60,7 +59,6 @@ $(function(){
 		oMask.css('display','none');
 		oMain.css('display','none');
 		$('.imageCaptchaClass').click();
-		//document.getElementById("form:image_captcha").value = '';
 		$('#form\\:image_captcha').val("");
 
 	});
@@ -68,7 +66,6 @@ $(function(){
 		oMask.css('display','none');
 		oMain.css('display','none');
 		$('.imageCaptchaClass').click();
-		//document.getElementById("form:image_captcha").value = '';
 		$('#form\\:image_captcha').val("");
 
 	});
