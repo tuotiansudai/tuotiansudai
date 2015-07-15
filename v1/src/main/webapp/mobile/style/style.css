@@ -178,6 +178,28 @@
     color:#fff000;
     font-size: 18px;
 }
+.tipMask{
+    position: fixed;
+    width:100%;
+    background: rgba(0,0,0,.6);
+    color:#fff;
+    text-align: center;
+    z-index: 909;
+    display: none;
+    left:0px;
+    top:0px;
+}
+.tipMask p{
+    position: absolute;
+    left: 0px;
+    top:50%;
+    height:60px;
+    line-height: 60px;
+    margin-top: -30px;
+    z-index: 999;
+    width:100%;
+    text-align: center;
+}
 /**cerWrap**/
 
 @media (max-width: 320px) {

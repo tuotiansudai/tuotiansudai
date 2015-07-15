@@ -2,7 +2,7 @@
  * Created by zhaoshuai on 2015/7/9.
  */
 require.config({
-    baseUrl: 'js',
+    baseUrl: '/mobile/js',
     paths: {
         'jquery': 'libs/jquery-1.10.1.min',
         'validate': 'libs/jquery.validate.min',
@@ -34,9 +34,38 @@ require(['jquery', 'validate','validate-ex'], function ($) {
             messages:{
                 yourName:'请检查您的输入',
                 yourId:'请输入正确的身份证号码'
-            },
-            submitHandler:function(form){
-                form.submit();
             }
         });
+
+
+    $('.realName_submit').on('click', function () {
+        var nameValue = $('.yourName').val();
+        var idValue = $('.yourId').val();
+        $.ajax({
+            url: '/mobile/certification/realName',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                realName: nameValue,
+                idCard: idValue
+            },
+            success: function (data) {
+                if (data.success == "true") {
+                    window.location.href='/user/center';
+                }
+                if (data.success == "false") {
+                    var aTip=$('.tipMask');
+                    var clientH=$(window).height();
+                    aTip.css({'height':clientH,'display':'block'});
+                }
+            }
+        });
+    });
+    var aTip=$('.tipMask');
+    var clientH=$(window).height();
+    aTip.on('click',function(){
+        $(this).css('display','none');
+    });
 });
+
+
