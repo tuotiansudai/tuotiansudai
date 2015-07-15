@@ -24,12 +24,11 @@
             </ul>
             <i class="send_vCode">获取验证码</i>
             <input type="submit" value="立即注册" class="logUp">
-            <input type="hidden" name="operationType" value="1">
         </form>
         <p>已有账号 | <a href="" class="landNow">立即登录</a></p>
     </div>
 
-    <div class="check"><input type="checkbox" class="check_input">我已阅读并同意《网站服务协议》</div>
+    <div class="check"><input type="checkbox" checked="checked" class="check_input" id="agreementList"><label for="agreementList">我已阅读并同意<a href="">《网站服务协议》</a></label></div>
     <div class="copyright">
         ©拓天速贷 京ICP备14008676号<br/><a href="javascript:;">手机版</a> <a href="javascript:;">PC版</a> 电话：400-169-1188
     </div>

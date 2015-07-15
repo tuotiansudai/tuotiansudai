@@ -17,7 +17,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 required: true,
                 rangelength: [5, 25],
                 remote: {
-                    url: '/mobile/register/userNameValidation',
+                    url: '/mobile/register/userNameValidation?tempData='+new Date().getTime(),
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -35,7 +35,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 isMobile: true,
                 required: true,
                 remote: {
-                    url: '/mobile/register/mobilePhoneNumValidation',
+                    url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -47,8 +47,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
             },
             vCode: {
                 required: true,
+                vCode:true,
                 remote: {
-                    url: '/mobile/register/vCodeValidation',
+                    url: '/mobile/register/vCodeValidation?tempData='+new Date().getTime(),
                     type: 'GET',
                     dataType: 'json',
                     data: {
@@ -59,7 +60,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 }
             }
         },
-        errorElement: 'span',
+        errorElement: 'div',
         messages: {
             username: {
                 required: "用户名不能为空！",
@@ -77,6 +78,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
             },
             vCode: {
                 required: "验证码不能为空！",
+                vCode:"验证码输入错误！",
                 remote:"验证码输入错误！"
             }
         }
@@ -90,28 +92,39 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
     /**
      * 手机端注册
      */
+
     $('.logUp').on('click',function(){
-        var userValue=$('.userName').val();
-        var passValue=$('.passWord').val();
-        var phoneValue=$('.phoneNumber').val();
-        var vCodeValue=$('.vCode').val();
-        $.ajax({
-            url: '/mobile/register/mobileRegister',
-            type: 'POST',
-            data:{
-                username:userValue,
-                password:passValue,
-                phoneNumber:phoneValue,
-                vCode:vCodeValue,
-                operationType:'1'
-            },
-            dataType: 'json',
-            success: function (result) {
-                if (result) {
-                    window.location.href='/mobile/templates/certification.ftl'
+
+            var userValue=$('.userName').val();
+            var passValue=$('.passWord').val();
+            var phoneValue=$('.phoneNumber').val();
+            var vCodeValue=$('.vCode').val();
+            $.ajax({
+                url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
+                type: 'POST',
+                data:{
+                    username:userValue,
+                    password:passValue,
+                    phoneNumber:phoneValue,
+                    vCode:vCodeValue,
+                    operationType:'1'
+                },
+                dataType: 'json',
+                success: function (result) {
+                    if (result) {
+                        window.location.href='/mobile/templates/certification.ftl?tempData='+new Date().getTime();
+                    }
                 }
-            }
-        });
+            });
+
+    });
+
+    $('.check_input').bind('click',function(){
+        if($('.check_input').prop('checked')){
+            $(".logUp").css({'pointer-events': 'auto','background':'#edaa20' });
+        }else{
+            $(".logUp").css({'pointer-events': 'none','background':'gray' });
+        }
     });
 
     /**

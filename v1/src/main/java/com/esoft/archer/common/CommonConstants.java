@@ -23,11 +23,6 @@ public class CommonConstants {
 	public static final String VALIDATEID = "validateId";
 
 	/**
-	 * 用户存放登陆用户信息
-	 */
-	public static final String USER_INFO = "userInfo";
-	
-	/**
 	 * 验证码标识
 	 * @author Administrator
 	 *

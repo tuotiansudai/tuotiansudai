@@ -96,6 +96,10 @@
     text-align: center;
     color: #fff;
 }
+#vCode-error{
+    position:absolute;
+    bottom:150px;
+}
 /**Registered**/
 /**cerWrap**/
 .cerWrap{
@@ -232,6 +236,10 @@
     .check {
         height: 50px;
         line-height: 50px;
+    }
+    .check label a{
+        color:#fff;
+        text-decoration: none;
     }
     .cerWrap h3{
         width:100%;

@@ -2,6 +2,14 @@ package com.ttsd.mobile.controller;
 
 import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.user.model.User;
+import com.esoft.core.jsf.util.FacesUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +34,11 @@ public class RegisterController {
     @Resource(name = "mobileRegisterServiceImpl")
     private IMobileRegisterService mobileRegisterService;
 
+    @Resource
+    UserDetailsService userDetailsService;
+    @Autowired
+    SessionRegistry sessionRegistry;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView register() {
         return new ModelAndView("/register");
@@ -44,12 +57,25 @@ public class RegisterController {
         String vCode = request.getParameter("vCode");
         String operationType = request.getParameter("operationType");
         boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
+        /**
+         * 用户注册成功后登录
+         */
         if ("1".equals(operationType) && responseResult){
             HttpSession session = request.getSession();
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNumber);
-            session.setAttribute(CommonConstants.USER_INFO,user);
+            UserDetails userDetails = userDetailsService
+                    .loadUserByUsername(user.getUsername());
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    user.getUsername(), userDetails.getPassword(),
+                    userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(token);
+            session.setAttribute(
+                    HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                    SecurityContextHolder.getContext());
+            sessionRegistry.registerNewSession(session.getId(), userDetails);
         }
         response.setContentType("text/json; charset=utf-8");
         return responseResult;
