@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
+import com.esoft.jdp2p.bankcard.service.BankCardService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -52,6 +52,8 @@ public class UmPayBindingBankCardOperation extends
 	private TrusteeshipOperationBO trusteeshipOperationBO;
 	@Resource
 	private RechargeService rechargeService;
+	@Resource
+	private BankCardService bankCardService;
 	@Logger
 	Log log;
 
@@ -62,17 +64,8 @@ public class UmPayBindingBankCardOperation extends
 			FacesContext facesContext) throws IOException {
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		// 判断是否是换卡操作
-		User us = bankCard.getUser();
-		String hql = "from BankCard where user.id =? and status =?";
-		List<BankCard> userWillBindingBankCard = ht.find(hql, new String[] { us.getId(), "delete_for_replace" });
-		Map<String, String> sendMap;
-		if (null == userWillBindingBankCard && userWillBindingBankCard.size() > 0) {
-			sendMap = UmPaySignUtil.getSendMapDate("mer_replace_card");
-		} else {
-			sendMap = UmPaySignUtil
+		Map<String, String> sendMap = UmPaySignUtil
 					.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
-		}
 		// 同步地址
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 				+ UmPayConstants.OperationType.MER_BIND_CARD);
@@ -190,25 +183,36 @@ public class UmPayBindingBankCardOperation extends
 							paramMap.get("user_id"));
 					User user = ta.getUser();
 					ht.evict(user);
-					if(StringUtils.isNotEmpty(order_id)){
+					if(StringUtils.isNotEmpty(order_id)) {
 						// 拿到用户未绑定的卡ID(截取13位到最后,因为银行卡长度是不固定的)
 						String bankCardId = order_id.substring(13,
 								order_id.length());
-						String hql = "from BankCard where user.id =? and status =? and cardNo =?";
-						List<BankCard> userWillBindingBankCard = ht
-								.find(hql, new String[]{user.getId(), "uncheck",
-										bankCardId });
-						if (null != userWillBindingBankCard) {
-							BankCard bankCard = userWillBindingBankCard.get(0);
-							bankCard.setStatus("passed");
-							ht.update(bankCard);
-							log.debug(("用户:"
-									+ userWillBindingBankCard.get(0).getUser()
-									.getId() + "绑定"
-									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+						if (!this.bankCardService.isCardNoBinding(bankCardId)) {
+							String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+							List<BankCard> userWillBindingBankCard = ht
+									.find(hql, new String[]{user.getId(), "uncheck",
+											bankCardId});
+							if (null != userWillBindingBankCard) {
+								for (int i = 0; i < userWillBindingBankCard.size(); i++) {
+									BankCard bankCard = new BankCard();
+									bankCard = userWillBindingBankCard.get(i);
+									bankCard.setStatus("passed");
+									bankCard.setBankNo(paramMap.get("gate_id"));
+									bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
+									ht.update(bankCard);
+								}
+								log.debug(("用户:"
+										+ userWillBindingBankCard.get(0).getUser()
+										.getId() + "绑定"
+										+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+							}
+
+						} else {
+							log.debug(bankCardId + "已经被绑定！！！！");
 						}
 					}
 				}
+
 				try {
 					response.setCharacterEncoding("utf-8");
 					// 返回数据

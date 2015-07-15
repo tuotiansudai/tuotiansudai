@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.message.service.SendCloudMailService;
 import org.apache.commons.logging.Log;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -45,6 +46,9 @@ public class UserList extends EntityQuery<User> {
 	
 	@Resource
 	MailService mailService;
+
+	@Resource
+	SendCloudMailService sendCloudMailService;
 
 	private List<User> hasLoanRoleUsers;
 
@@ -142,7 +146,7 @@ public class UserList extends EntityQuery<User> {
 			for (User user : getSelectedUsers()) {
 				if (user.getEmail() != null && !"".equals(user.getEmail())) {
 					try {
-						mailService.sendMail(user.getEmail(), emailTitle, emailContent);
+						sendCloudMailService.sendMail(user.getEmail(), emailTitle, emailContent);
 						flag = true;
 					} catch (MailSendErrorException e) {
 						log.debug(user.getUsername()+"的邮箱"+user.getEmail()+"不存在！");

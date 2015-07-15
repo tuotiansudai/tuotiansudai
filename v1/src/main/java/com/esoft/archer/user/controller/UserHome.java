@@ -391,7 +391,6 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 			}
 			userService.registerByMobileNumber(getInstance(), authCode,
 					referrer);
-			userService.addRegisterEmailVerificationJob(getInstance());
 			if (isLoginAfterRegister) {
 				login(getInstance().getId(), FacesUtil.getHttpSession());
 			}
@@ -664,9 +663,13 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 	 *            成功后执行的js代码
 	 */
 	public void sendRegisterAuthCodeToMobile(String mobileNumber, String jsCode) {
-		userService.sendRegisterByMobileNumberSMS(mobileNumber);
-		FacesUtil.addInfoMessage("短信已发送，请注意查收！");
-		RequestContext.getCurrentInstance().execute(jsCode);
+		boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+		if (isSend) {
+			FacesUtil.addInfoMessage("短信已发送，请注意查收！");
+			RequestContext.getCurrentInstance().execute(jsCode);
+		} else {
+			FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
+		}
 	}
 
 	public void setAuthCode(String authCode) {

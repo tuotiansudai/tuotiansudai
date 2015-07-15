@@ -2,15 +2,11 @@ package com.esoft.jdp2p.schedule.service.impl;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.schedule.job.*;
 import org.apache.commons.logging.Log;
 import org.hibernate.ObjectNotFoundException;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import org.joda.time.DateTime;
+import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -20,10 +16,8 @@ import com.esoft.archer.config.ConfigConstants;
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
-import com.esoft.jdp2p.schedule.job.AutoRepayment;
-import com.esoft.jdp2p.schedule.job.LoanOverdueCheck;
-import com.esoft.jdp2p.schedule.job.RefreshTrusteeshipOperation;
-import com.esoft.jdp2p.schedule.job.RepayAlert;
+
+import java.util.Date;
 
 /**
  * Company: jdp2p <br/>
@@ -167,6 +161,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 				} else {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
+
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
@@ -254,4 +249,5 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	private void initRefreshUserLoanstatusJob() throws SchedulerException {
 
 	}
+
 }
