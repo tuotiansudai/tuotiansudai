@@ -58,7 +58,7 @@ public class RegisterController {
         String operationType = request.getParameter("operationType");
         boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
         /**
-         * 用户注册成功后登录
+         * 用户注册成功之后，登录
          */
         if ("1".equals(operationType) && responseResult){
             HttpSession session = request.getSession();
@@ -77,7 +77,6 @@ public class RegisterController {
                     SecurityContextHolder.getContext());
             sessionRegistry.registerNewSession(session.getId(), userDetails);
         }
-        response.setContentType("text/json; charset=utf-8");
         return responseResult;
     }
 
