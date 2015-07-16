@@ -126,5 +126,3 @@ public class SystemBillServiceImpl implements SystemBillService {
 	}
 
 }
-
-SELECT u.id AS id,u.referrer AS referrer,u.register_time AS register_time,ta.create_time AS create_time,re.time AS recharge_time FROM user u JOIN trusteeship_account ta ON u.id = ta.user_id AND (u.register_time BETWEEN '2015-07-14 23:00:00' AND '2015-07-14 23:59:59')AND (ta.create_time BETWEEN '2015-07-14 23:00:00' AND '2015-07-14 23:59:59')JOIN recharge re ON u.id = re.user_id AND re.status = 'success'AND (re.time BETWEEN '2015-07-14 23:00:00' AND '2015-07-14 23:59:59')WHERE EXISTS( SELECT 1 FROM bank_card bc WHERE u.id = bc.user_id AND bc.status = 'passed'AND (bc.time BETWEEN '2015-07-14 23:00:00' AND '2015-07-14 23:59:59'))AND EXISTS( SELECT 1 FROM bank_card rbc WHERE u.referrer = rbc.user_id AND rbc.status = 'passed'AND rbc.time < '2015-07-14 23:59:59');
