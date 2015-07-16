@@ -96,11 +96,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(new Date());
-                            calendar.add(Calendar.MINUTE, new Integer(mobileAuthMessageValidTime));
+                            calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
                             Long validTime = calendar.getTimeInMillis();
                             Date deadLine = new Date(validTime);
-                            log.error("****************************************validaTime="+validTime);
-                            System.out.println("*****************************************************");
                             //创建授权码，并持久化到数据库中
                             authCode = authService.createAuthInfo(userName, phoneNum, deadLine, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
                             log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建激活码！");
@@ -117,7 +115,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                                 messageBO.sendSMS(mobileRegisterDao.getMessageTemplate(UserMessageTemplate.class,MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER + "_sms"), params, phoneNum);
                                 log.info("给用户名为："+userName+"，手机号为："+phoneNum+"的用户发送授权码成功！");
                             }catch (Exception e){
-                                log.error("持久化手机号为"+phoneNum+"的用户的注册授权码失败！");
+                                log.error("持久化手机号为" + phoneNum + "的用户的注册授权码失败！");
                                 e.printStackTrace();
                             }
                         }
@@ -212,19 +210,13 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      * @return
      */
     public boolean regValidatePhoneNum(String phoneNumber){
-        log.error("1.验证手机号为："+phoneNumber);
-        log.error("2.验证结果为："+(phoneNumber==null || "".equals(phoneNumber)));
         if(phoneNumber==null || "".equals(phoneNumber)){
             return false;
         }
-        log.error("3.来到了这里！");
         String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
         Pattern pattern = Pattern.compile(regStr);
-        log.error("4.来到了这里！");
         Matcher matcher = pattern.matcher(phoneNumber);
-        log.error("5.来到了这里！");
         matcher.matches();
-        log.error("6.来到了这里！");
         return matcher.matches();
     }
     /***************************setter注入方法****************************/
