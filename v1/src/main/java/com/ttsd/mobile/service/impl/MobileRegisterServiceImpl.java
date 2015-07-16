@@ -94,6 +94,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             calendar.add(Calendar.MINUTE, new Integer(PropertiesUtils.getPro("authMessageValidTime").trim()));
                             Long validTime = calendar.getTimeInMillis();
                             Date deadLine = new Date(validTime);
+                            log.error("****************************************validaTime="+validTime);
+                            System.out.println("*****************************************************");
                             //创建授权码，并持久化到数据库中
                             authCode = authService.createAuthInfo(userName, phoneNum, deadLine, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
                             log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建激活码！");
