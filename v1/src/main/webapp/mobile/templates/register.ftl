@@ -19,11 +19,12 @@
                 <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
                            minLength="6" required/></li>
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" maxLength="11" name="phoneNumber"
-                           required/></li>
+                           required/><span class="tip">手机号码不能为空</span></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode" required/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
-            <a href="javascript:;" class="logUp">立即注册</a>
+            <input type="submit" class="logUp" value="立即注册">
+            <#--<a href="javascript:;" class="logUp">立即注册</a>-->
         </form>
         <p>已有账号 | <a href="" class="landNow">立即登录</a></p>
     </div>

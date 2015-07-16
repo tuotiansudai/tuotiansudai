@@ -55,6 +55,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     data: {
                         vCode: function () {
                             return $('.vCode').val();
+                        },
+                        phoneNumber: function () {
+                            return $('.phoneNumber').val();
                         }
                     }
                 }
@@ -94,6 +97,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
      */
 
     $('.logUp').on('click',function(){
+        //alert($('.phoneNumber').val());
 
             var userValue=$('.userName').val();
             var passValue=$('.passWord').val();
@@ -116,7 +120,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     }
                 }
             });
-
+        //}
     });
 
     $('.check_input').bind('click',function(){
@@ -135,6 +139,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         var passValue=$('.passWord').val();
         var phoneValue=$('.phoneNumber').val();
         if($('.phoneNumber').val()!=""){
+            $('.tip').css({'display':'none'});
             $.ajax({
             url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
             type: 'POST',
@@ -145,7 +150,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 operationType:'0'
             },
             dataType: 'json'
-        });
+            });
+        }else {
+            $('.tip').css({'display':'block'});
         }
         var Num = 5;
         var Down = setInterval(countDown, 1000);
