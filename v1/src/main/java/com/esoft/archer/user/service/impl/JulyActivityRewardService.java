@@ -71,7 +71,7 @@ public class JulyActivityRewardService {
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     private static int TOTAL_REWARD = 0;
-    private static final String NEW_REGISTER_USER_SQL = "select bc.user_id from bank_card bc inner join user u on bc.user_id = u.id and (u.register_time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') and bc.status = 'passed' and (bc.time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') inner join trusteeship_account ta on u.id = ta.user_id and (ta.create_time between'2015-07-14 23:00:00' and '2015-07-14 23:59:59') where not exists (select 1 from july_activity_reward reward where reward.user_id = bc.user_id)";
+    private static final String NEW_REGISTER_USER_SQL = "select distinct bc.user_id from bank_card bc inner join user u on bc.user_id = u.id and (u.register_time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') and bc.status = 'passed' and (bc.time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') inner join trusteeship_account ta on u.id = ta.user_id and (ta.create_time between'2015-07-14 23:00:00' and '2015-07-14 23:59:59') where not exists (select 1 from july_activity_reward reward where reward.user_id = bc.user_id)";
     private static final String MULTIPLE_BANK_CARD_USER_SQL = "select a.user_id from (select distinct card_no, user_id from bank_card where status ='passed' and card_no in (select card_no from bank_card where status ='passed' group by card_no having count(1) > 1)) as a group by a.card_no having count(1) > 1";
 
     @Transactional
@@ -118,6 +118,10 @@ public class JulyActivityRewardService {
         boolean loop = true;
 
         while (loop) {
+            if (TOTAL_REWARD > 450000 * 100) {
+                log.error("No enough money! Stop reward!");
+                break;
+            }
             List<JulyActivityReward> rewards = this.fetchRewardList(start);
             loop = CollectionUtils.isNotEmpty(rewards);
             if (CollectionUtils.isNotEmpty(rewards)) {
