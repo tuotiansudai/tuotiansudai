@@ -112,7 +112,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 dataType: 'json',
                 success: function (result) {
                     if (result) {
-                        window.location.href='/mobile/certification?tempData='+new Date().getTime();
+                        window.location.href='/mobile/certification';
                     }
                 }
             });

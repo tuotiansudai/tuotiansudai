@@ -13,7 +13,7 @@
 <body>
 <div class="wrap"><!--wrap begin-->
     <div class="step">
-        <form class="cmxForm" action="/mobile/register/mobileRegister" method="POST">
+        <form class="cmxForm" action="" method="">
             <ul>
                 <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/></li>
                 <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
@@ -23,7 +23,7 @@
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode" required/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
-            <input type="submit" value="立即注册" class="logUp">
+            <input type="button" value="立即注册" class="logUp">
         </form>
         <p>已有账号 | <a href="" class="landNow">立即登录</a></p>
     </div>
