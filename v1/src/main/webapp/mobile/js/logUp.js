@@ -112,7 +112,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 dataType: 'json',
                 success: function (result) {
                     if (result) {
-                        window.location.href='/mobile/certification';
+                        window.location.href='/mobile/certification?tempData='+new Date().getTime();
                     }
                 }
             });
@@ -135,7 +135,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         var passValue=$('.passWord').val();
         var phoneValue=$('.phoneNumber').val();
         $.ajax({
-            url: '/mobile/register/mobileRegister',
+            url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
             type: 'POST',
             data:{
                 username:userValue,

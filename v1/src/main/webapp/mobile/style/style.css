@@ -96,10 +96,6 @@
     text-align: center;
     color: #fff;
 }
-#vCode-error{
-    position:absolute;
-    bottom:150px;
-}
 /**Registered**/
 /**cerWrap**/
 .cerWrap{
@@ -182,34 +178,13 @@
     color:#fff000;
     font-size: 18px;
 }
-.tipMask{
-    position: fixed;
-    width:100%;
-    background: rgba(0,0,0,.6);
-    color:#fff;
-    text-align: center;
-    z-index: 909;
-    display: none;
-    left:0px;
-    top:0px;
-}
-.tipMask p{
-    position: absolute;
-    left: 0px;
-    top:50%;
-    height:60px;
-    line-height: 60px;
-    margin-top: -30px;
-    z-index: 999;
-    width:100%;
-    text-align: center;
-}
 /**cerWrap**/
 
 @media (max-width: 320px) {
     .step {
-        padding: 0px 10px;
+        padding: 0px 0px 0px 10px;
         margin-top: 120px;
+        width:300px;
     }
     .step i {
         width: 80px;
@@ -217,11 +192,11 @@
         line-height: 22px;
         color: #fff;
         top: 221px;
-        right: 32px;
+        right: 6px;
         font-size: 12px;
     }
     .step ul li {
-        width: 300px;
+        width: 296px;
         height: 30px;
         line-height: 30px;
     }
@@ -243,7 +218,7 @@
         width: 100%;
         height: 40px;
         line-height: 40px;
-        border-radius: 0px;
+        border-radius: 5px;
         font-size: 16px;
     }
     .step ul li input.userName {
@@ -258,10 +233,6 @@
     .check {
         height: 50px;
         line-height: 50px;
-    }
-    .check label a{
-        color:#fff;
-        text-decoration: none;
     }
     .cerWrap h3{
         width:100%;
@@ -310,7 +281,7 @@
     }
 }
 
-@media (max-width: 380px ) and (min-width: 324px) {
+@media ( max-width: 380px ) and ( min-width: 324px ) {
     .step {
         margin-top: 130px;
         padding: 0px 10px;
@@ -323,12 +294,12 @@
         line-height: 22px;
         color: #fff;
         top: 221px;
-        right: 28px;
+        right: 30px;
         font-size: 12px;
     }
 
     .step ul li {
-        width: 340px;
+        width: 338px;
         height: 30px;
         line-height: 30px;
     }
@@ -351,11 +322,13 @@
     }
 
     .wrap input.logUp {
-        width: 100%;
+        width: 340px;
         height: 40px;
         line-height: 40px;
         border-radius: 0px;
         font-size: 16px;
+        padding:0px;
+        margin: 30px 0px 0px 0px;
     }
 
     .step ul li input.userName {
@@ -427,7 +400,7 @@
     }
 }
 
-@media (max-width: 460px ) and (min-width: 381px) {
+@media ( max-width: 460px ) and ( min-width: 381px ) {
     .step {
         margin-top: 146px;
         padding: 0px 10px;
@@ -440,7 +413,7 @@
         line-height: 22px;
         color: #fff;
         top: 243px;
-        right: 28px;
+        right: 26px;
         font-size: 12px;
     }
 
@@ -451,7 +424,7 @@
     }
 
     .step ul li input {
-        width: 338px;
+        width: 234px;
         height: 32px;
         line-height: 32px;
         font-size: 12px;
@@ -468,11 +441,14 @@
     }
 
     .wrap input.logUp {
-        width: 100%;
+        width: 96%;
         height: 40px;
         line-height: 40px;
         border-radius: 0px;
         font-size: 16px;
+        padding:0px;
+        margin:30px 0px 0px 0px;
+        border-radius:5px;
     }
 
     .step ul li input.userName {
@@ -543,7 +519,7 @@
     }
 }
 
-@media (max-width: 540px ) and (min-width: 459px) {
+@media ( max-width: 540px ) and (min-width: 459px ) {
     .step {
         margin-top: 146px;
         padding: 0 10px;
@@ -612,9 +588,65 @@
     }
 }
 
-@media (max-width: 600px ) and (min-width: 541px) {
+@media ( max-width: 600px ) and (min-width: 541px  ) {
+    .step {
+        margin-top: 146px;
+        padding: 0 10px;
+        width: 95%;
+    }
+
+    .step i {
+        width: 80px;
+        height: 22px;
+        line-height: 22px;
+        color: #fff;
+        top: 243px;
+        right: 30px;
+        font-size: 12px;
+    }
+
+    .step ul li {
+        width: 90%;
+        height: 36px;
+        line-height: 36px;
+    }
+
+    .step ul li input {
+        width: 388px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+
+    .step p {
+        padding-right: 40px;
+    }
+
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.phoneNumber {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+    .wrap input.logUp {
+        width: 98%;
+        height: 50px;
+        line-height: 50px;
+        border-radius:5px;
+        font-size: 16px;
+        padding:0px;
+        margin:30px 0px 0px 0px;
+        border-radius:5px;
+    }
 }
-
-
-
-

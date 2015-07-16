@@ -98,7 +98,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             Date deadLine = new Date(validTime);
                             //创建授权码，并持久化到数据库中
                             authCode = authService.createAuthInfo(userName, phoneNum, deadLine, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
-                            log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建激活码！");
+                            log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建授权码！");
                         }catch (Exception e){
                             log.error("生成授权码异常！");
                             e.printStackTrace();
