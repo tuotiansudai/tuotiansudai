@@ -114,6 +114,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             }catch (Exception e){
                                 log.error("持久化手机号为"+phoneNum+"的用户的注册授权码失败！");
                                 e.printStackTrace();
+                                log.error("错误日志："+e.getMessage());
                             }
                         }
                         return true;
