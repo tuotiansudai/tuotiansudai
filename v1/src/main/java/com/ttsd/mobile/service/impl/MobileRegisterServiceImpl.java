@@ -55,9 +55,6 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Resource(name = "userBO")
     private UserBO userBO;
 
-    @Value(value = "${mobile_authMessageValidTime}")
-    private String mobileAuthMessageValidTime;
-
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean mobileRegister(String userName, String password, String phoneNum, String vCode,String operationType) {
