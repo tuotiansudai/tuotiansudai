@@ -546,7 +546,7 @@ public class JulyActivityRewardService {
     private List<JulyActivityReward> fetchRewardList(int start) {
         int limit = 50;
         DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
-        rewardCriteria.add(Restrictions.gt("id", 227949));
+        rewardCriteria.add(Restrictions.gt("id", 227949L));
         rewardCriteria.addOrder(Order.asc("id"));
         List<JulyActivityReward> rewardList = ht.findByCriteria(rewardCriteria, start, limit);
         return rewardList;

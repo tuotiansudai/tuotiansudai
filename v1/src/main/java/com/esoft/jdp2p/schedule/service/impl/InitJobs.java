@@ -266,7 +266,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
 				.forJob(jobDetail)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(new DateTime(new Date()).plusMinutes(10).toDate())
+				.startAt(new DateTime(new Date()).plusMinutes(5).toDate())
 				.build();
 
 		scheduler.scheduleJob(jobDetail, trigger);
