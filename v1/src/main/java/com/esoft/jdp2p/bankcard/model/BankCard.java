@@ -2,21 +2,12 @@ package com.esoft.jdp2p.bankcard.model;
 
 // default package
 
-import java.sql.Timestamp;
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.esoft.archer.user.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.esoft.archer.user.model.User;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * BankCard entity. @author MyEclipse Persistence Tools
@@ -59,6 +50,7 @@ public class BankCard implements java.io.Serializable {
 
 	/** default constructor */
 	public BankCard() {
+		this.bankCardType = "DEBIT";
 	}
 
 	/** full constructor */
@@ -101,6 +93,9 @@ public class BankCard implements java.io.Serializable {
 
 	@Column(name = "bank_card_type", length = 100)
 	public String getBankCardType() {
+		if (this.bankCardType == null) {
+			this.bankCardType = "DEBIT";
+		}
 		return bankCardType;
 	}
 
