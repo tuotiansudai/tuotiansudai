@@ -134,7 +134,8 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         var userValue=$('.userName').val();
         var passValue=$('.passWord').val();
         var phoneValue=$('.phoneNumber').val();
-        $.ajax({
+        if($('.phoneNumber').val()!=""){
+            $.ajax({
             url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
             type: 'POST',
             data:{
@@ -145,6 +146,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
             },
             dataType: 'json'
         });
+        }
         var Num = 5;
         var Down = setInterval(countDown, 1000);
         countDown();

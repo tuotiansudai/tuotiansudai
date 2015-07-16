@@ -57,21 +57,50 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public boolean mobileRegister(String userName, String password, String phoneNum, String vCode,String operationType) {
+    public boolean mobileRegister(String userName, String password, String phoneNum, String vCode, String operationType) {
         if (userName == null || userName.equals("")){
             log.info("提交的用户名为空！");
             return false;
-        }else {
-            int count = mobileRegisterDao.getUserCountByUserName(userName);
-            log.info("用户名为"+userName+"的用户有"+count+"个！");
-            if(count > 0){
-                log.info("用户名为"+userName+"的用户已经存在！");
+        }else if(userName.length()<5){
+            log.info("提交的用户名的长度为："+userName.length()+" ,少于五个字符！");
+            return false;
+        }else if(userName.length()>25){
+            log.info("提交的用户名的长度为："+userName.length()+" ,多于二十五个字符！");
+            return false;
+        }
+        final String REGEX="^[a-z;]+$";
+        final String REGEX1="^[0-9;]+$";
+        final String REGEX2="^[a-z0-9;]+$";
+        Matcher matcher = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE).matcher(userName);
+        if(matcher.find()){
+            log.info("提交的用户名为："+userName+" ,不能为纯英文！");
+            return false;
+        }else{
+            matcher=Pattern.compile(REGEX1, Pattern.CASE_INSENSITIVE).matcher(userName);
+            if(matcher.find()){
+                log.info("提交的用户名为："+userName+" ,不能为纯数字！");
                 return false;
+            }else{
+                matcher = Pattern.compile(REGEX2, Pattern.CASE_INSENSITIVE).matcher(userName);
+                if(matcher.find()){
+                    int count = mobileRegisterDao.getUserCountByUserName(userName);
+                    log.info("用户名为" + userName + "的用户有" + count + "个！");
+                    if(count > 0){
+                        log.info("用户名为"+userName+"的用户已经存在！");
+                        return false;
+                    }
+                }else{
+                    log.info("提交的用户名为："+userName+" ,不能有特殊字符！");
+                    return false;
+                }
             }
         }
 
         if (password == null || password.equals("")){
             log.info("提交的密码为空！");
+            return false;
+        }else if(password.length()<6){
+            log.info("提交的密码长度是："+password.length()+" 位，少于6个字符");
             return false;
         }
 
@@ -89,8 +118,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                     String authCode = null;
                     if (regValidatePhoneNum(phoneNum)) {
                         try {
-                            //授权验证码的有效期为自发送短信时起，十分钟内有效，配置在common.properties文件中
-
+                            //授权验证码的有效期为自发送短信时起
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(new Date());
                             calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
@@ -170,11 +198,36 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Override
     public boolean validateUserName(String userName) {
-        int count = mobileRegisterDao.getUserCountByUserName(userName);
-        if (count > 0){
+        final String REGEX="^[a-z;]+$";
+        final String REGEX1="^[0-9;]+$";
+        final String REGEX2="^[a-z0-9;]+$";
+        Matcher matcher = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE).matcher(userName);
+        if(matcher.find()){
+            log.info("提交的用户名为："+userName+" ,不能为纯英文！");
             return false;
+        }else{
+            matcher=Pattern.compile(REGEX1, Pattern.CASE_INSENSITIVE).matcher(userName);
+            if(matcher.find()){
+                log.info("提交的用户名为："+userName+" ,不能为纯数字！");
+                return false;
+            }else{
+                matcher = Pattern.compile(REGEX2, Pattern.CASE_INSENSITIVE).matcher(userName);
+                if(matcher.find()){
+                    int count = mobileRegisterDao.getUserCountByUserName(userName);
+                    log.info("用户名为" + userName + "的用户有" + count + "个！");
+                    if(count > 0){
+                        log.info("用户名为"+userName+"的用户已经存在！");
+                        return false;
+                    }else{
+                        log.info("用户名为"+userName+"的用户已通过验证！");
+                        return true;
+                    }
+                }else{
+                    log.info("提交的用户名为："+userName+" ,不能有特殊字符！");
+                    return false;
+                }
+            }
         }
-        return true;
     }
 
     @Override

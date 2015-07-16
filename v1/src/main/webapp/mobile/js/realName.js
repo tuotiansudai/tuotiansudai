@@ -32,8 +32,12 @@ require(['jquery', 'validate','validate-ex'], function ($) {
             },
             errorElement: 'small',
             messages:{
-                yourName:'请检查您的输入',
-                yourId:'请输入正确的身份证号码'
+                yourName:'真实姓名不能为空！',
+                yourId:{
+                    required:'身份证号码不能为空！',
+                    isIdCardNo:'身份证号码格式错误！',
+                    remote:'身份证号码已存在！'
+                }
             }
         });
 
