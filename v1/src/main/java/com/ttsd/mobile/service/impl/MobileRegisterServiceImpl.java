@@ -22,6 +22,7 @@ import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Resource(name = "userBO")
     private UserBO userBO;
+
+    @Value(value = "${mobile_authMessageValidTime}")
+    private String mobileAuthMessageValidTime;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
@@ -89,9 +93,10 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                     if (regValidatePhoneNum(phoneNum)) {
                         try {
                             //授权验证码的有效期为自发送短信时起，十分钟内有效，配置在common.properties文件中
+
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(new Date());
-                            calendar.add(Calendar.MINUTE, new Integer(PropertiesUtils.getPro("authMessageValidTime").trim()));
+                            calendar.add(Calendar.MINUTE, new Integer(mobileAuthMessageValidTime));
                             Long validTime = calendar.getTimeInMillis();
                             Date deadLine = new Date(validTime);
                             log.error("****************************************validaTime="+validTime);
@@ -114,7 +119,6 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                             }catch (Exception e){
                                 log.error("持久化手机号为"+phoneNum+"的用户的注册授权码失败！");
                                 e.printStackTrace();
-                                log.error("错误日志："+e.getMessage());
                             }
                         }
                         return true;
