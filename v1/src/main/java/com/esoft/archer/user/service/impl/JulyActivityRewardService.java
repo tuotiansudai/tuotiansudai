@@ -19,16 +19,22 @@ import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
@@ -65,6 +71,7 @@ public class JulyActivityRewardService {
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     public static int TOTAL_REWARD = 0;
+    public static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta inner join user u on ta.user_id=u.id where u.register_time >= '2015-07-01 00:00:00' and ta.create_time >= '2015-07-01 00:00:00' and not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
 
 
     @Transactional
@@ -73,56 +80,77 @@ public class JulyActivityRewardService {
 
         log.info(MessageFormat.format("Scan register time from {0}", startTime.toString()));
 
-        DetachedCriteria accountCriteria = DetachedCriteria.forClass(TrusteeshipAccount.class);
-        accountCriteria.createAlias("user", "user")
-                .add(Restrictions.ge("user.registerTime", startTime.toDate()))
-                .add(Restrictions.ge("createTime", startTime.toDate()));
-        List<TrusteeshipAccount> accounts = ht.findByCriteria(accountCriteria);
+        Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(NEW_REGISTER_USER_SQL);
+        List<String> userIdList = query.list();
 
-        log.info(MessageFormat.format("Found {0} register user", CollectionUtils.isEmpty(accounts) ? 0 : accounts.size()));
+        log.info(MessageFormat.format("Found {0} register user", CollectionUtils.isEmpty(userIdList) ? 0 : userIdList.size()));
 
-        for (TrusteeshipAccount account : accounts) {
-            User user = account.getUser();
-            String userId = user.getId();
+        for (String userId : userIdList) {
             try {
-                DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
-                rewardCriteria.add(Restrictions.eq("user.id", userId));
-                JulyActivityReward reward = (JulyActivityReward) DataAccessUtils.uniqueResult(ht.findByCriteria(rewardCriteria));
-
-                if (reward == null) {
-                    reward = new JulyActivityReward();
-                    reward.setUser(user);
-                    if (!Strings.isNullOrEmpty(user.getReferrer())) {
-                        DetachedCriteria referrerCriteria = DetachedCriteria.forClass(User.class);
-                        referrerCriteria.add(Restrictions.eq("id", user.getReferrer()));
-                        User referrer = (User) DataAccessUtils.uniqueResult(ht.findByCriteria(referrerCriteria));
-                        reward.setReferrer(referrer);
-                    }
-                    ht.save(reward);
-                    String template = "Create activity reward success: rewardId = {0}, userId = {1}";
-                    log.info(MessageFormat.format(template, Long.toString(reward.getId()), userId));
+                JulyActivityReward reward = new JulyActivityReward();
+                DetachedCriteria userCriteria = DetachedCriteria.forClass(User.class);
+                userCriteria.add(Restrictions.eq("id", userId));
+                User user = (User) DataAccessUtils.uniqueResult(ht.findByCriteria(userCriteria));
+                reward.setUser(user);
+                if (!Strings.isNullOrEmpty(user.getReferrer())) {
+                    DetachedCriteria referrerCriteria = DetachedCriteria.forClass(User.class);
+                    referrerCriteria.add(Restrictions.eq("id", user.getReferrer()));
+                    User referrer = (User) DataAccessUtils.uniqueResult(ht.findByCriteria(referrerCriteria));
+                    reward.setReferrer(referrer);
                 }
+                ht.save(reward);
+                String template = "Create activity reward success: rewardId = {0}, userId = {1}";
+                log.info(MessageFormat.format(template, Long.toString(reward.getId()), userId));
             } catch (Exception e) {
                 String template = "Create activity reward Failed: userId = {0}";
                 log.error(MessageFormat.format(template, userId));
                 log.error(e);
             }
         }
+
     }
 
     public void reward() {
         TOTAL_REWARD = 0;
+        log.info("start reward:");
         List<JulyActivityReward> rewards = ht.find("from JulyActivityReward");
 
+        String sql = "select a.user_id from (\n" +
+                "\tselect distinct card_no, user_id from bank_card where status ='passed' and card_no in( SELECT card_no FROM bank_card where status ='passed' group by card_no having count(*) >1) order by card_no\n" +
+                "\t    ) as a group by a.card_no having count(*) > 1 order by a.card_no";
+        Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
+        List<String> multipleBankCardUsers = query.list();
+
         for (JulyActivityReward reward : rewards) {
-            String userId = reward.getUser().getId();
+            final String userId = reward.getUser().getId();
             boolean successRechargeExist = this.isSuccessRechargeExist(userId);
             boolean successInvestExist = this.isSuccessInvestExist(userId);
 
-            this.rewardUser(reward, successRechargeExist);
-            if (reward.getReferrer() != null) {
-                this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+            Optional<String> userFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+                @Override
+                public boolean apply(String multipleBankCardUserId) {
+                    return userId.equalsIgnoreCase(multipleBankCardUserId);
+                }
+            });
+
+            if (!userFound.isPresent()) {
+                this.rewardUser(reward, successRechargeExist);
             }
+
+            if (reward.getReferrer() != null) {
+                final String referrerId = reward.getReferrer().getId();
+                Optional<String> referrerFound = Iterators.tryFind(multipleBankCardUsers.iterator(), new Predicate<String>() {
+                    @Override
+                    public boolean apply(String multipleBankCardUserId) {
+                        return referrerId.equalsIgnoreCase(multipleBankCardUserId);
+                    }
+                });
+
+                if (!referrerFound.isPresent()) {
+                    this.rewardReferrer(reward, successRechargeExist, successInvestExist);
+                }
+            }
+
         }
 
         log.info("Total Reward: " + TOTAL_REWARD / 100);
@@ -438,7 +466,7 @@ public class JulyActivityRewardService {
             DetachedCriteria accountCriteria = DetachedCriteria.forClass(TrusteeshipAccount.class);
             accountCriteria.add(Restrictions.eq("user.id", userId));
             TrusteeshipAccount account = (TrusteeshipAccount) DataAccessUtils.uniqueResult(ht.findByCriteria(accountCriteria, 0, 1));
-            return account.getId();
+            return account != null ? account.getId() : null;
         } catch (Exception e) {
             String template = "Query umpay account failed: userId = {0}";
             log.error(MessageFormat.format(template, userId));
