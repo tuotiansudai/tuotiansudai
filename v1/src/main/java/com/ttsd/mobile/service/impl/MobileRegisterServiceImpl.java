@@ -207,12 +207,19 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      * @return
      */
     public boolean regValidatePhoneNum(String phoneNumber){
+        log.error("1.验证手机号为："+phoneNumber);
+        log.error("2.验证结果为："+(phoneNumber==null || "".equals(phoneNumber)));
         if(phoneNumber==null || "".equals(phoneNumber)){
             return false;
         }
+        log.error("3.来到了这里！");
         String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
         Pattern pattern = Pattern.compile(regStr);
+        log.error("4.来到了这里！");
         Matcher matcher = pattern.matcher(phoneNumber);
+        log.error("5.来到了这里！");
+        matcher.matches();
+        log.error("6.来到了这里！");
         return matcher.matches();
     }
     /***************************setter注入方法****************************/
