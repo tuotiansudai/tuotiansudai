@@ -15,7 +15,7 @@ public class AutoActivityRewardJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-//        julyActivityRewardService.createActivityRewards();
-//        julyActivityRewardService.reward();
+        julyActivityRewardService.createActivityRewards();
+        julyActivityRewardService.reward();
     }
 }
