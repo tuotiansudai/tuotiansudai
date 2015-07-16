@@ -19,15 +19,18 @@
         <form class="realName">
             <li><input type="text"name="yourName" required placeholder="请输入您的姓名" class="yourName"/> </li>
             <li><input type="text" name="yourId" minLength="15" maxLength="18" required placeholder="请输入您的身份证号" class="yourId"/> </li>
-            <input type="submit" class="realName" value="实名认证" />
+            <input type="button" class="realName realName_submit" value="实名认证" />
         </form>
     </ul>
 
-    <a href="javascript:;" class="skip">跳过</a>
+    <a href="/user/center" class="skip">跳过</a>
     <div class="copyright">
         ©拓天速贷 京ICP备14008676号<br/><a href="javascript:;">手机版</a> <a href="javascript:;">PC版</a> 电话：400-169-1188
     </div>
 </div>
 <!--cerWrap end-->
+<div class="tipMask"><!--tipMask begin-->
+    <p>实名认证失败！</p>
+</div><!--tipMask end-->
 </body>
 </html>

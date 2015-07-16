@@ -7,6 +7,7 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.controller.BankCardHome;
 import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingBankCardOperation;
 import com.esoft.umpay.bankcard.service.impl.UmPayReplaceBankCardOperation;
@@ -33,6 +34,8 @@ public class UmPayBankCardHome extends BankCardHome {
 	UmPayReplaceBankCardOperation umPayReplaceBankCardOperation;
 	@Resource
 	private RechargeService rechargeService;
+	@Resource
+	private BankCardService bankCardService;
 	@Logger
 	private static Log log;
 
@@ -44,6 +47,10 @@ public class UmPayBankCardHome extends BankCardHome {
 		User loginUser = getBaseService().get(User.class, loginUserInfo.getLoginUserId());
 		if (loginUser == null) {
 			FacesUtil.addErrorMessage("用户未登录");
+			return;
+		}
+		if (StringUtils.isNotEmpty(this.getInstance().getCardNo()) && this.bankCardService.isCardNoBinding(this.getInstance().getCardNo())) {
+			FacesUtil.addErrorMessage("此银行卡已经被绑定！！！！");
 			return;
 		}
 		if (StringUtils.isEmpty(this.getInstance().getId())) {

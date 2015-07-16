@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -181,8 +182,8 @@ public class UserServiceImpl implements UserService {
 		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
-				MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
+						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
 	}
 
@@ -418,7 +419,7 @@ public class UserServiceImpl implements UserService {
 								null,
 								CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
@@ -446,7 +447,7 @@ public class UserServiceImpl implements UserService {
 				+ "/find_pwd_by_email3/" + activeCode;
 		params.put("reset_password_url", resetPasswrodUrl);
 		// 发送邮件
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_EMAIL
 						+ "_email"), params, email);
 	}
@@ -469,9 +470,10 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, email, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 						MessageConstants.UserMessageNodeId.BINDING_EMAIL + "_email"),
 				params, email);
+
 	}
 
 	/**
@@ -494,7 +496,7 @@ public class UserServiceImpl implements UserService {
 				authService.createAuthInfo(userId, oriEmail, null,
 						CommonConstants.AuthInfoType.BINDING_EMAIL)
 						.getAuthCode());
-		messageBO.sendEmail(ht.get(UserMessageTemplate.class,
+		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 				MessageConstants.UserMessageNodeId.BINDING_EMAIL
 						+ "_email"), params, oriEmail);
 	}
@@ -527,7 +529,7 @@ public class UserServiceImpl implements UserService {
 		if (activateUserByEmailAi != null){
 			ht.delete(activateUserByEmailAi);
 		}
-		if (!oldEmail.equals(email) && bingEmailAi != null){
+		if (oldEmail != null && !oldEmail.equals(email) && bingEmailAi != null){
 				ht.delete(bingEmailAi);
 		}
 		// 如果认证码输入正确，更改此认证码的状态为已激活
@@ -865,44 +867,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addRegisterEmailVerificationJob(User user) {
-		Date now = new Date();
-		Calendar cal = Calendar.getInstance();
-		int emailValidDay = 7;
-		cal.setTime(now);
-		cal.add(Calendar.DATE, emailValidDay);
-		Date deadline = cal.getTime();
-
-		String userId = user.getId();
-		String authCode = authService.createAuthInfo(userId, user.getEmail(), deadline,
-				CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-				.getAuthCode();
-
-		Date threeMinutesLater = DateUtil.addMinute(now, 2);
-		JobDetail jobDetail = JobBuilder
-				.newJob(RegisterEmailVerificationJob.class)
-				.withIdentity(userId, ScheduleConstants.JobGroup.REGISTER_VERIFICATION_EMAIL)
-				.build();
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.USER_ID, userId);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.AUTH_CODE, authCode);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
-		SimpleTrigger trigger = TriggerBuilder
-				.newTrigger()
-				.withIdentity(userId, ScheduleConstants.TriggerGroup.REGISTER_VERIFICATION_EMAIL)
-				.forJob(jobDetail)
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(threeMinutesLater).build();
-		try {
-			scheduler.scheduleJob(jobDetail, trigger);
-		} catch (SchedulerException e) {
-			log.error("用户注册添加邮箱验证Job 失败: " + userId);
-			log.error(e);
-		}
-		if (log.isDebugEnabled())
-			log.debug("用户注册添加邮箱验证Job完成: " + userId);
-	}
-
-	@Override
 	public boolean validateRegisterUser(User instance) throws UserRegisterException, InputRuleMatchingException {
 		try {
 			validationService.inputRuleValidation("input.username", instance.getUsername());
@@ -960,6 +924,11 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean idCardIsExists(String idCard){
+		int count = DataAccessUtils.intResult(ht.find("select count(user) FROM User user WHERE user.idCard = ?", new String[]{idCard}));
+		return  count > 0;
 	}
 
 }

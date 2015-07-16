@@ -449,8 +449,9 @@ public interface UserService {
 	 */
 	public void sendFindCashPwdSMS(String id, String mobileNumber)
 			throws UserNotFoundException;
-
-	void addRegisterEmailVerificationJob(User user);
+	
 
 	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
+
+	public boolean idCardIsExists(String idCard);
 }

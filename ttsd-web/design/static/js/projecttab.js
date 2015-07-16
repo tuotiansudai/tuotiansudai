@@ -13,20 +13,6 @@ require(['jquery'], function ($) {
         var aProject_type=$('.project_type ul');
         var aDivtab=$('.project_centent');
         var oProject_centent_queryType=$('.project_centent ol li a');
-        var oType=$('.project_type li a');
-
-        function queryType(str,name){
-            for(var i=0;i<str.length;i++){
-                str[i].onclick=function(){
-                    for(var i=0;i<str.length;i++){
-                        str[i].className='';
-                    }
-                    this.className=name;
-                }
-            }
-        };
-        queryType(oType,'project_type_active');
-        queryType(oProject_centent_queryType,'project_centent_active');
 
         for( var i=0;i<aBtn.length;i++){
             aBtn[i].index=i;
@@ -40,6 +26,14 @@ require(['jquery'], function ($) {
                 aProject_type[this.index].style.display='block';
                 aDivtab[this.index].style.display='block';
             }
-        };
+        }
+        for(var i=0;i<oProject_centent_queryType.length;i++){
+            oProject_centent_queryType[i].onclick=function(){
+                for(var i=0;i<oProject_centent_queryType.length;i++){
+                    oProject_centent_queryType[i].className='';
+                }
+                this.className='project_centent_active';
+            }
+        }
     })
 })
