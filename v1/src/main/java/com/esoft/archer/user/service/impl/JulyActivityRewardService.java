@@ -19,10 +19,7 @@ import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
@@ -31,11 +28,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
@@ -68,20 +63,20 @@ public class JulyActivityRewardService {
 
     private static String SUCCESS_CODE = "0000";
 
+    private static Date activityStartTime = new DateTime(2015, 7, 14, 23, 0, 0).toDate();
+    private static Date activityEndTime = new DateTime(2015, 7, 14, 23, 59, 59).toDate();
     private static int USER_CERTIFIED_REWARD = 500;
     private static int USER_RECHARGE_REWARD = 500;
     private static int REFERRER_CERTIFIED_REWARD = 1000;
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     private static int TOTAL_REWARD = 0;
-    private static final String NEW_REGISTER_USER_SQL = "select ta.user_id from trusteeship_account ta inner join user u on ta.user_id=u.id where u.register_time >= '2015-07-01 00:00:00' and ta.create_time >= '2015-07-01 00:00:00' and not exists (select 1 from july_activity_reward reward where reward.user_id=ta.user_id)";
+    private static final String NEW_REGISTER_USER_SQL = "select bc.user_id from bank_card bc inner join user u on bc.user_id = u.id and (u.register_time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') and bc.status = 'passed' and (bc.time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') inner join trusteeship_account ta on u.id = ta.user_id and (ta.create_time between'2015-07-14 23:00:00' and '2015-07-14 23:59:59') where not exists (select 1 from july_activity_reward reward where reward.user_id = bc.user_id)";
     private static final String MULTIPLE_BANK_CARD_USER_SQL = "select a.user_id from (select distinct card_no, user_id from bank_card where status ='passed' and card_no in (select card_no from bank_card where status ='passed' group by card_no having count(1) > 1)) as a group by a.card_no having count(1) > 1";
 
     @Transactional
     public void createActivityRewards() {
-        DateTime startTime = new DateTime().withDate(2015, 7, 1).withTimeAtStartOfDay();
-
-        log.info(MessageFormat.format("Scan register time from {0}", startTime.toString()));
+        log.info(MessageFormat.format("Scan register time from {0}", activityStartTime.toString()));
 
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(NEW_REGISTER_USER_SQL);
         List<String> userIdList = query.list();
@@ -161,14 +156,15 @@ public class JulyActivityRewardService {
 
         String rewardId = Long.toString(reward.getId());
         String userId = reward.getUser().getId();
-        String accountId = this.getAccount(userId);
 
-        if (Strings.isNullOrEmpty(accountId) || !this.isSuccessBindBankCard(userId)) {
-            String template = "User account is not Exist or no bank card: userId = {0}, rewardId = {1}";
+
+        if (!this.isSuccessBindBankCard(userId, true)) {
+            String template = "User have no bank card: userId = {0}, rewardId = {1}";
             log.error(MessageFormat.format(template, userId, rewardId));
             return;
         }
 
+        String accountId = this.getAccount(userId);
         if (!reward.getCertifiedReward()) {
             String orderId = MessageFormat.format(certOrderIdTemplate, rewardId);
             boolean result = transferMerToUser(orderId, accountId, Integer.toString(USER_CERTIFIED_REWARD));
@@ -178,18 +174,8 @@ public class JulyActivityRewardService {
                 reward.setCertifiedRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
-                    userBillBO.transferIntoBalance(userId, USER_CERTIFIED_REWARD / 100D, billType, "新用户实名认证奖励");
+                    certifiedReward(billType, rewardId, userId, orderId);
                 } catch (Exception e) {
-                    String template = "Create user bill certified reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
-                    log.error(e);
-                }
-                try {
-                    String systemBillDetailTemplate = "新用户实名认证奖励: orderId = {0}, userId = {1}";
-                    systemBillService.transferOut(USER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, userId));
-                } catch (Exception e) {
-                    String template = "Create system bill certified reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
                     log.error(e);
                 }
             }
@@ -204,21 +190,50 @@ public class JulyActivityRewardService {
                 reward.setFirstRechargeRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
-                    userBillBO.transferIntoBalance(userId, USER_RECHARGE_REWARD / 100D, billType, "新用户充值成功奖励");
+                    firstRechargeReward(billType, rewardId, userId, orderId);
                 } catch (Exception e) {
-                    String template = "Create user bill recharge reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
-                    log.error(e);
-                }
-                try {
-                    String systemBillDetailTemplate = "新用户充值成功奖励: orderId = {0}, userId = {1}";
-                    systemBillService.transferOut(USER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, userId));
-                } catch (Exception e) {
-                    String template = "Create system bill recharge reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
                     log.error(e);
                 }
             }
+        }
+    }
+
+    @Transactional
+    private void firstRechargeReward(String billType, String rewardId, String userId, String orderId) throws Exception {
+        try {
+            userBillBO.transferIntoBalance(userId, USER_RECHARGE_REWARD / 100D, billType, "新用户充值成功奖励");
+        } catch (Exception e) {
+            String template = "Create user bill recharge reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+        try {
+            String systemBillDetailTemplate = "新用户充值成功奖励: orderId = {0}, userId = {1}";
+            systemBillService.transferOut(USER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, userId));
+        } catch (Exception e) {
+            String template = "Create system bill recharge reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+    }
+
+    @Transactional
+    private void certifiedReward(String billType, String rewardId, String userId, String orderId) throws Exception {
+        try {
+            userBillBO.transferIntoBalance(userId, USER_CERTIFIED_REWARD / 100D, billType, "新用户实名认证奖励");
+        } catch (Exception e) {
+            String template = "Create user bill certified reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+        try {
+            String systemBillDetailTemplate = "新用户实名认证奖励: orderId = {0}, userId = {1}";
+            systemBillService.transferOut(USER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, userId));
+        } catch (Exception e) {
+            String template = "Create system bill certified reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+
         }
     }
 
@@ -231,17 +246,17 @@ public class JulyActivityRewardService {
         String rewardId = Long.toString(reward.getId());
         String userId = reward.getUser().getId();
         String referrerId = reward.getReferrer().getId();
-        String accountId = this.getAccount(referrerId);
 
-
-        if (Strings.isNullOrEmpty(accountId) || !this.isSuccessBindBankCard(referrerId)) {
-            String template = "Referrer account is not exist or no bank card: referrerId = {0}, rewardId = {1}";
-            log.error(MessageFormat.format(template, referrerId, rewardId));
+        if (!this.isSuccessBindBankCard(referrerId, false) || !this.isSuccessBindBankCard(userId, true)) {
+            String template = "Referrer or user have no bank card: referrerId = {0}, userId = {1}, rewardId = {2}";
+            log.error(MessageFormat.format(template, referrerId, userId, rewardId));
             return;
         }
 
+        String accountId = this.getAccount(referrerId);
         if (!reward.getReferrerCertifiedReward()) {
             String orderId = MessageFormat.format(referrerCertOrderIdTemplate, rewardId);
+
             boolean result = transferMerToUser(orderId, accountId, Integer.toString(REFERRER_CERTIFIED_REWARD));
             if (result) {
                 TOTAL_REWARD += REFERRER_CERTIFIED_REWARD;
@@ -249,19 +264,8 @@ public class JulyActivityRewardService {
                 reward.setReferrerCertifiedRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
-                    String operatorDetail = "推荐新用户（{0}）实名认证奖励";
-                    userBillBO.transferIntoBalance(referrerId, REFERRER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+                    referrerCertifiedReward(billType, rewardId, userId, referrerId, orderId);
                 } catch (Exception e) {
-                    String template = "Create referrer bill certified reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
-                    log.error(e);
-                }
-                try {
-                    String systemBillDetailTemplate = "推荐新用户实名认证奖励: orderId = {0}, referrerId = {1}, userId = {2}";
-                    systemBillService.transferOut(REFERRER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, referrerId, userId));
-                } catch (Exception e) {
-                    String template = "Create system bill certified reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
                     log.error(e);
                 }
             }
@@ -276,19 +280,8 @@ public class JulyActivityRewardService {
                 reward.setReferrerFirstRechargeRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
-                    String operatorDetail = "推荐新用户（{0}）充值成功奖励";
-                    userBillBO.transferIntoBalance(referrerId, REFERRER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+                    referrerFirstRechargeReward(billType, rewardId, userId, referrerId, orderId);
                 } catch (Exception e) {
-                    String template = "Create referrer bill recharge reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
-                    log.error(e);
-                }
-                try {
-                    String systemBillDetailTemplate = "推荐新用户充值成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
-                    systemBillService.transferOut(REFERRER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, referrerId, userId));
-                } catch (Exception e) {
-                    String template = "Create system bill recharge reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
                     log.error(e);
                 }
             }
@@ -303,30 +296,80 @@ public class JulyActivityRewardService {
                 reward.setReferrerFirstInvestRewardTime(new Date());
                 updateActivityReward(reward);
                 try {
-                    String operatorDetail = "推荐新用户（{0}）投资成功奖励";
-                    userBillBO.transferIntoBalance(referrerId, REFERRER_INVEST_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+                    referrerFirstInvestReward(billType, rewardId, userId, referrerId, accountId, orderId);
                 } catch (Exception e) {
-                    String template = "Create referrer bill invest reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
-                    log.error(e);
-                }
-                try {
-                    String systemBillDetailTemplate = "推荐新用户投资成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
-                    systemBillService.transferOut(REFERRER_INVEST_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, accountId, referrerId, userId));
-                } catch (Exception e) {
-                    String template = "Create system bill invest reward failed: rewardId = {0}";
-                    log.error(MessageFormat.format(template, rewardId));
                     log.error(e);
                 }
             }
         }
     }
 
-    private boolean isSuccessInvestExist(String userId) {
+    @Transactional
+    private void referrerFirstInvestReward(String billType, String rewardId, String userId, String referrerId, String accountId, String orderId) throws Exception {
+        try {
+            String operatorDetail = "推荐新用户（{0}）投资成功奖励";
+            userBillBO.transferIntoBalance(referrerId, REFERRER_INVEST_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+        } catch (Exception e) {
+            String template = "Create referrer bill invest reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+        try {
+            String systemBillDetailTemplate = "推荐新用户投资成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
+            systemBillService.transferOut(REFERRER_INVEST_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, accountId, referrerId, userId));
+        } catch (Exception e) {
+            String template = "Create system bill invest reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+    }
+
+    @Transactional
+    private void referrerFirstRechargeReward(String billType, String rewardId, String userId, String referrerId, String orderId) throws Exception {
+        try {
+            String operatorDetail = "推荐新用户（{0}）充值成功奖励";
+            userBillBO.transferIntoBalance(referrerId, REFERRER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+        } catch (Exception e) {
+            String template = "Create referrer bill recharge reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+        try {
+            String systemBillDetailTemplate = "推荐新用户充值成功奖励: orderId = {0}, referrerId = {1}, userId = {2}";
+            systemBillService.transferOut(REFERRER_RECHARGE_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, referrerId, userId));
+        } catch (Exception e) {
+            String template = "Create system bill recharge reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+    }
+
+    @Transactional
+    private void referrerCertifiedReward(String billType, String rewardId, String userId, String referrerId, String orderId) throws Exception {
+        try {
+            String operatorDetail = "推荐新用户（{0}）实名认证奖励";
+            userBillBO.transferIntoBalance(referrerId, REFERRER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(operatorDetail, userId));
+        } catch (Exception e) {
+            String template = "Create referrer bill certified reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+        try {
+            String systemBillDetailTemplate = "推荐新用户实名认证奖励: orderId = {0}, referrerId = {1}, userId = {2}";
+            systemBillService.transferOut(REFERRER_CERTIFIED_REWARD / 100D, billType, MessageFormat.format(systemBillDetailTemplate, orderId, referrerId, userId));
+        } catch (Exception e) {
+            String template = "Create system bill certified reward failed: rewardId = {0}";
+            log.error(MessageFormat.format(template, rewardId));
+            throw e;
+        }
+    }
+
+    public boolean isSuccessInvestExist(String userId) {
         try {
             DetachedCriteria investCriteria = DetachedCriteria.forClass(Invest.class);
             investCriteria.createAlias("loan", "loan")
                     .add(Restrictions.eq("user.id", userId))
+                    .add(Restrictions.between("time", activityStartTime, activityEndTime))
                     .add(Restrictions.in("status", Lists.newArrayList(InvestConstants.InvestStatus.BID_SUCCESS,
                             InvestConstants.InvestStatus.CANCEL,
                             InvestConstants.InvestStatus.COMPLETE,
@@ -344,11 +387,12 @@ public class JulyActivityRewardService {
         return false;
     }
 
-    private boolean isSuccessRechargeExist(String userId) {
+    public boolean isSuccessRechargeExist(String userId) {
         try {
             DetachedCriteria rechargeCriteria = DetachedCriteria.forClass(Recharge.class);
             rechargeCriteria.add(Restrictions.eq("user.id", userId))
                     .add(Restrictions.eq("status", UserConstants.RechargeStatus.SUCCESS))
+                    .add(Restrictions.between("time", activityStartTime, activityEndTime))
                     .add(Restrictions.not(Restrictions.eq("rechargeWay", "admin")))
                     .addOrder(Order.asc("successTime"));
 
@@ -473,11 +517,17 @@ public class JulyActivityRewardService {
         return null;
     }
 
-    private boolean isSuccessBindBankCard(String userId) {
+    public boolean isSuccessBindBankCard(String userId, boolean isUser) {
         try {
             DetachedCriteria bankCardCriteria = DetachedCriteria.forClass(BankCard.class);
             bankCardCriteria.add(Restrictions.eq("user.id", userId))
                     .add(Restrictions.eq("status", "passed"));
+            if (isUser) {
+                bankCardCriteria.add(Restrictions.between("time", activityStartTime, activityEndTime));
+            } else {
+                bankCardCriteria.add(Restrictions.lt("time", activityEndTime));
+            }
+
             List<BankCard> bankCards = ht.findByCriteria(bankCardCriteria, 0, 1);
             boolean successBindBankCard = CollectionUtils.isNotEmpty(bankCards);
             if (!successBindBankCard) {
@@ -496,6 +546,7 @@ public class JulyActivityRewardService {
     private List<JulyActivityReward> fetchRewardList(int start) {
         int limit = 50;
         DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
+        rewardCriteria.add(Restrictions.gt("id", 227949));
         rewardCriteria.addOrder(Order.asc("id"));
         List<JulyActivityReward> rewardList = ht.findByCriteria(rewardCriteria, start, limit);
         return rewardList;
