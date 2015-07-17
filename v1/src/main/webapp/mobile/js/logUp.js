@@ -10,11 +10,22 @@ require.config({
     }
 });
 require(['jquery', 'validate', 'validate-ex'], function ($) {
+
+        //$('.userName').on('keyup',function(){
+        //    var str=$('.userName').val();
+        //    if(/\s+/g.test(str)){
+        //        $('.userTip').css('display','block');
+        //        $('#username-error').css('display','none');
+        //    } else {
+        //        $('.userTip').css('display','none');
+        //    }
+        //});
     $('.cmxForm').validate({
         //focusInvalid: false,
         rules: {
             username: {
                 required: true,
+                userName:true,
                 rangelength: [5, 25],
                 remote: {
                     url: '/mobile/register/userNameValidation?tempData='+new Date().getTime(),
@@ -43,7 +54,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                             return $('.phoneNumber').val();
                         }
                     }
-                }
+                },
             },
             vCode: {
                 required: true,
@@ -67,6 +78,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
         messages: {
             username: {
                 required: "用户名不能为空！",
+                userName:'用户名不能包含空格！',
                 rangelength: "用户名的长度必须在5至25个字符之间！",
                 remote:"用户名已存在！"
             },
@@ -85,20 +97,18 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 remote:"验证码输入错误！"
             }
         }
-        //,
-        //submitHandler: function (form) {
-        //    form.submit();
-        //    alert('1');
-        //}
     });
 
     /**
      * 手机端注册
      */
 
-    $('.logUp').on('click',function(){
-        //alert($('.phoneNumber').val());
+    //var userValue=$('.userName').val();
+    //    userValue.replace(/\s+/g,'');
+    var userValue = $('.userName').val();
+    //$('.userName').val(userValue.replace(/\s*/g, ''));
 
+    $('.logUp').on('click',function(){
             var userValue=$('.userName').val();
             var passValue=$('.passWord').val();
             var phoneValue=$('.phoneNumber').val();
@@ -134,41 +144,49 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
     /**
      * 手机端获取注册授权码
      */
-    $('.send_vCode').on('click', function () {
-        var userValue=$('.userName').val();
-        var passValue=$('.passWord').val();
-        var phoneValue=$('.phoneNumber').val();
-        if($('.phoneNumber').val()!=""){
-            $('.tip').css({'display':'none'});
-            $.ajax({
-            url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
-            type: 'POST',
-            data:{
-                username:userValue,
-                password:passValue,
-                phoneNumber:phoneValue,
-                operationType:'0'
-            },
-            dataType: 'json'
+    $('.phoneNumber').on('blur',function(){
+        var cellphoneValue = $('.phoneNumber').val().trim();
+        var cellphoneLength = ((cellphoneValue.length) < 11);
+        if(cellphoneLength){
+            $('.tip').css('display','none');
+            $('#phoneNumber-error').css('display','block');
+            $('.send_vCode').css({'pointer-events':'none','background':'gray'});
+        } else {
+            $('.tip').css('display','none');
+            $('.send_vCode').css({'pointer-events':'auto','background':'#edaa20'});
+            $('.send_vCode').on('click', function () {
+                var userValue=$('.userName').val();
+                var passValue=$('.passWord').val();
+                var phoneValue=$('.phoneNumber').val();
+                $.ajax({
+                    url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
+                    type: 'POST',
+                    data:{
+                        username:userValue,
+                        password:passValue,
+                        phoneNumber:phoneValue,
+                        operationType:'0'
+                    },
+                    dataType: 'json'
+                });
+
+                var Num = 5;
+                var Down = setInterval(countDown, 1000);
+                countDown();
+                function countDown() {
+                    $('.send_vCode').html(Num + '秒后重新发送').css({
+                        'background': '#666',
+                        'color': '#fff',
+                        'width': '100',
+                        'pointer-events': 'none'
+                    });
+                    if (Num == 0) {
+                        clearInterval(Down);
+                        $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
+                    }
+                    Num--;
+                }
             });
-        }else {
-            $('.tip').css({'display':'block'});
-        }
-        var Num = 5;
-        var Down = setInterval(countDown, 1000);
-        countDown();
-        function countDown() {
-            $('.send_vCode').html(Num + '秒后重新发送').css({
-                'background': '#666',
-                'color': '#fff',
-                'width': '100',
-                'pointer-events': 'none'
-            });
-            if (Num == 0) {
-                clearInterval(Down);
-                $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
-            }
-            Num--;
         }
     });
 });

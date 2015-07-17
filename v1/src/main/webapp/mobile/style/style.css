@@ -69,7 +69,7 @@
     line-height: 42px;
     text-align: center;
     color: #fff;
-    background: #e9a922;
+    background: #666;
     top: 350px;
     right: 50px;
     font-style: normal;
@@ -428,7 +428,7 @@
     }
 
     .step ul li {
-        width: 390px;
+        width: 380px;
         height: 36px;
         line-height: 36px;
     }

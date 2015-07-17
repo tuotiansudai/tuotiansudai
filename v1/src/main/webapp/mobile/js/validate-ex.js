@@ -21,4 +21,10 @@ require(['jquery', 'validate'], function ($) {
         var vCode=/^[0-9]{6,}$/;
         return this.optional(element)||(vCode.test(value));
     },"请输入正确的验证码!");
+
+    jQuery.validator.addMethod('userName',function(value,element){
+        var spaceRegex = /\s+/g;
+        return this.optional(element)||(!spaceRegex.test(value));
+    },"用户名不能包含空格!");
+
 });

@@ -62,6 +62,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                     var clientH=$(window).height();
                     aTip.css({'height':clientH,'display':'block'});
                 }
+
             }
         });
     });
