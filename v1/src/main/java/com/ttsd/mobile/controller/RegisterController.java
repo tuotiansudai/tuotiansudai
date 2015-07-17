@@ -46,16 +46,12 @@ public class RegisterController {
 
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     @ResponseBody
-    public boolean mobileRegister(HttpServletRequest request,HttpServletResponse response){
-        /**
-         * 注：operationType＝0，表示获取验证码
-         * operationType＝1，表示正常的注册操作
-         */
+    public ModelAndView mobileRegister(HttpServletRequest request,HttpServletResponse response){
         String userName =  request.getParameter("username");
         String passWord = request.getParameter("password");
         String phoneNumber = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
-        String operationType = request.getParameter("operationType");
+        String operationType = "1";//表示注册
         boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
         /**
          * 用户注册成功之后，登录
@@ -77,6 +73,17 @@ public class RegisterController {
                     SecurityContextHolder.getContext());
             sessionRegistry.registerNewSession(session.getId(), userDetails);
         }
+        return new ModelAndView("/certification");
+    }
+
+    @RequestMapping(value = "/mobileRegisterValidationCode",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean mobileRegisterValidationCode(HttpServletRequest request,HttpServletResponse response){
+        String userName =  request.getParameter("username");
+        String passWord = request.getParameter("password");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String operationType = "0";//表示获取注册授权码
+        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,null,operationType);
         return responseResult;
     }
 

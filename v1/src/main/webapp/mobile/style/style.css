@@ -198,22 +198,22 @@
     }
     .step i {
         width: 80px;
-        height: 22px;
-        line-height: 22px;
+        height: 32px;
+        line-height: 32px;
         color: #fff;
-        top: 191px;
+        top: 165px;
         right: 6px;
         font-size: 12px;
     }
     .step ul li {
         width: 296px;
-        height: 30px;
-        line-height: 30px;
+        height: 46px;
+        line-height: 46px;
     }
     .step ul li input {
         width: 240px;
-        height: 30px;
-        line-height: 30px;
+        height: 46px;
+        line-height: 46px;
         font-size: 12px;
         -webkit-background-size: 25px 12px;
         padding-left: 50px;
@@ -300,24 +300,24 @@
 
     .step i {
         width: 80px;
-        height: 22px;
-        line-height: 22px;
+        height: 32px;
+        line-height: 32px;
         color: #fff;
-        top: 191px;
+        top: 166px;
         right: 14px;
         font-size: 12px;
     }
 
     .step ul li {
         width: 354px;
-        height: 30px;
-        line-height: 30px;
+        height: 46px;
+        line-height: 46px;
     }
 
     .step ul li input {
         width: 290px;
-        height: 30px;
-        line-height: 30px;
+        height: 46px;
+        line-height: 46px;
         font-size: 12px;
         -webkit-background-size: 25px 12px;
         padding-left: 50px;
@@ -429,14 +429,14 @@
 
     .step ul li {
         width: 380px;
-        height: 36px;
-        line-height: 36px;
+        height: 46px;
+        line-height: 46px;
     }
 
     .step ul li input {
         width: 234px;
-        height: 32px;
-        line-height: 32px;
+        height: 42px;
+        line-height: 42px;
         font-size: 12px;
         -webkit-background-size: 25px 12px;
         padding-left: 50px;
@@ -548,14 +548,14 @@
 
     .step ul li {
         width: 388px;
-        height: 36px;
-        line-height: 36px;
+        height: 48px;
+        line-height: 48px;
     }
 
     .step ul li input {
         width: 338px;
-        height: 32px;
-        line-height: 32px;
+        height: 46px;
+        line-height: 46px;
         font-size: 12px;
         -webkit-background-size: 25px 12px;
         padding-left: 50px;
@@ -617,14 +617,14 @@
 
     .step ul li {
         width: 90%;
-        height: 36px;
-        line-height: 36px;
+        height: 46px;
+        line-height: 46px;
     }
 
     .step ul li input {
         width: 388px;
-        height: 32px;
-        line-height: 32px;
+        height: 44px;
+        line-height: 4px;
         font-size: 12px;
         -webkit-background-size: 25px 12px;
         padding-left: 50px;

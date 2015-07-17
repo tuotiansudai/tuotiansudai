@@ -11,15 +11,6 @@ require.config({
 });
 require(['jquery', 'validate', 'validate-ex'], function ($) {
 
-        //$('.userName').on('keyup',function(){
-        //    var str=$('.userName').val();
-        //    if(/\s+/g.test(str)){
-        //        $('.userTip').css('display','block');
-        //        $('#username-error').css('display','none');
-        //    } else {
-        //        $('.userTip').css('display','none');
-        //    }
-        //});
     $('.cmxForm').validate({
         //focusInvalid: false,
         rules: {
@@ -96,6 +87,9 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 vCode:"验证码输入错误！",
                 remote:"验证码输入错误！"
             }
+        },
+        submitHandler: function(form){
+            form.submit(); //没有这一句表单不会提交
         }
     });
 
@@ -103,35 +97,31 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
      * 手机端注册
      */
 
-    //var userValue=$('.userName').val();
-    //    userValue.replace(/\s+/g,'');
-    var userValue = $('.userName').val();
-    //$('.userName').val(userValue.replace(/\s*/g, ''));
-
-    $('.logUp').on('click',function(){
-            var userValue=$('.userName').val();
-            var passValue=$('.passWord').val();
-            var phoneValue=$('.phoneNumber').val();
-            var vCodeValue=$('.vCode').val();
-            $.ajax({
-                url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
-                type: 'POST',
-                data:{
-                    username:userValue,
-                    password:passValue,
-                    phoneNumber:phoneValue,
-                    vCode:vCodeValue,
-                    operationType:'1'
-                },
-                dataType: 'json',
-                success: function (result) {
-                    if (result) {
-                        window.location.href='/mobile/certification';
-                    }
-                }
-            });
-        //}
-    });
+    //var userValue = $('.userName').val();
+    //$('.logUp').on('click',function(){
+    //        var userValue=$('.userName').val();
+    //        var passValue=$('.passWord').val();
+    //        var phoneValue=$('.phoneNumber').val();
+    //        var vCodeValue=$('.vCode').val();
+    //        $.ajax({
+    //            url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
+    //            type: 'POST',
+    //            data:{
+    //                username:userValue,
+    //                password:passValue,
+    //                phoneNumber:phoneValue,
+    //                vCode:vCodeValue,
+    //                operationType:'1'
+    //            },
+    //            dataType: 'json',
+    //            success: function (result) {
+    //                if (result) {
+    //                    window.location.href='/mobile/certification';
+    //                }
+    //            }
+    //        });
+    //    //}
+    //});
 
     $('.check_input').bind('click',function(){
         if($('.check_input').prop('checked')){
@@ -159,7 +149,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                 var passValue=$('.passWord').val();
                 var phoneValue=$('.phoneNumber').val();
                 $.ajax({
-                    url: '/mobile/register/mobileRegister?tempData='+new Date().getTime(),
+                    url: '/mobile/register/mobileRegisterValidationCode?tempData='+new Date().getTime(),
                     type: 'POST',
                     data:{
                         username:userValue,
