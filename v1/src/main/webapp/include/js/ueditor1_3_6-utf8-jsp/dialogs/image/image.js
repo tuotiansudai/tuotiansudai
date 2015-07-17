@@ -169,6 +169,7 @@ var imageUploader = {},
     function addOKListener() {
         dialog.onok = function () {
             var currentTab = findFocus("tabHeads", "tabSrc");
+            alert(currentTab);
             switch (currentTab) {
                 case "remote":
                     return insertSingle();
@@ -218,6 +219,7 @@ var imageUploader = {},
      * 插入单张图片
      */
     function insertSingle() {
+        alert(111111);
         var url = g("url"),
             width = g("width"),
             height = g("height"),
