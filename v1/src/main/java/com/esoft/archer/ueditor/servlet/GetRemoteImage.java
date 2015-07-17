@@ -60,6 +60,7 @@ public class GetRemoteImage extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
     	response.setCharacterEncoding("UTF-8");
     	String url = request.getParameter("upfile");
+		System.out.println("url--"+url);
     	String state = "远程图片抓取成功！";
     	ServletContext application = request.getSession().getServletContext();
     	String filePath = "upload";
