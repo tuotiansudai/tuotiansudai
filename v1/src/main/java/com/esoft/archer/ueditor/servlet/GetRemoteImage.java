@@ -86,10 +86,10 @@ public class GetRemoteImage extends HttpServlet {
 //		    	state = "请求地址头不正确";
 //		    	continue;
 //		    }
-		    if(conn.getResponseCode() != 200){
-		    	state = "request address is not exists";
-		    	continue;
-		    }
+//		    if(conn.getResponseCode() != 200){
+//		    	state = "request address is not exists";
+//		    	continue;
+//		    }
             File dir = new File(savePath);
 			if (!dir.exists()) {
 				dir.mkdirs();
