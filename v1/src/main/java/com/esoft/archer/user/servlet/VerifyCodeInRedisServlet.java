@@ -12,6 +12,7 @@ import org.primefaces.context.RequestContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,22 +21,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Component
-public class VerifyCaptchaServlet extends HttpServlet {
-
-	private static final  String VERIFYCAPTCHAERROR = "verifyCaptchaError";
-
-	private static final  String SENDSMSERROR = "sendSmsError";
-
-	private static final  String ERROR = "error";
+public class VerifyCodeInRedisServlet extends HttpServlet {
 
 	@Resource
 	CaptchaService captchaSrv;
 
-	@Resource
-	UserService userService;
 
-	@Logger
-	static Log log;
+	public VerifyCodeInRedisServlet() {
+		super();
+	}
+
 
 	public void destroy() {
 		super.destroy();
@@ -51,45 +46,18 @@ public class VerifyCaptchaServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String captcha = request.getParameter("image_captcha");
-		String mobileNumber = request.getParameter("mobileNumber");
-		PrintWriter out = null;
-		boolean verifyCaptchaResult = false;
-		boolean sendSmsResult = false;
-		String message = "";
+
 		try {
-			verifyCaptchaResult = captchaSrv.verifyCaptcha(captcha, request.getSession());
-
-			if (verifyCaptchaResult){
-				sendSmsResult = userService.sendRegisterByMobileNumberSMS(mobileNumber);
-				if (!sendSmsResult){
-					message = SENDSMSERROR;
-				}
-			}else{
-				message = VERIFYCAPTCHAERROR;
-			}
-			out = response.getWriter();
-			out.println("[{\"message\":\"" + message + "\"}]");
-			out.flush();
-		}catch (Exception e){
-			message = ERROR;
-			out = response.getWriter();
-			out.println("[{\"message\":\""+message+"\"}]");
-			out.flush();
-			log.error(e.getStackTrace());
-		}finally {
-			if(out != null){
-				out.close();
-
-			}
+			ImageIO.write(captchaSrv.generateCaptchaImgByRedis(request.getSession()),
+					"JPG", response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-
 	}
 
 
 	public void init() throws ServletException {
-		// Put your code here
+
 	}
 
 }

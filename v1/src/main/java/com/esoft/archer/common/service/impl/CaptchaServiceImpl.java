@@ -8,8 +8,12 @@ import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
+import com.esoft.core.annotations.Logger;
+import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.redis.RedisClinet;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import com.esoft.archer.common.CommonConstants;
@@ -31,8 +35,88 @@ import com.esoft.core.jsf.util.FacesUtil;
  */
 @Service("captchaService")
 public class CaptchaServiceImpl implements CaptchaService {
-	// FIXME:两个参数的session，都需要判空。
-	
+	@Logger
+	static Log log;
+
+
+	@Override
+	public void generateCaptchaInRedis(String sessionId, String captcha) {
+		try{
+			RedisClinet redisClinet = new RedisClinet();
+			redisClinet.getJedis().set(sessionId,captcha);
+			redisClinet.getJedis().expire(sessionId, Integer.parseInt(PropertiesUtils.getPro("redis.expireTime")));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error(e.getStackTrace());
+		}
+	}
+	@Override
+	public void deleteCaptchFormRedis(String sessionId ){
+		RedisClinet redisClinet = new RedisClinet();
+		redisClinet.getJedis().del(sessionId);
+	}
+
+	@Override
+	public BufferedImage generateCaptchaImgByRedis(HttpSession session) {
+		int width = 80;
+		int height = 30;
+
+		BufferedImage image = new BufferedImage(width, height, 1);
+		Graphics g = image.getGraphics();
+
+		Random random = new Random();
+		int fc = 200;
+		int bc = 250;
+		if (fc > 255)
+			fc = 255;
+		if (bc > 255)
+			bc = 255;
+		int r1 = fc + random.nextInt(bc - fc);
+		int g1 = fc + random.nextInt(bc - fc);
+		int b1 = fc + random.nextInt(bc - fc);
+
+		g.setColor(new Color(r1, g1, b1));
+		g.fillRect(0, 0, width, height);
+		g.setFont(new Font("Arial", 0, 25));
+
+		int r2 = fc + random.nextInt(bc - fc);
+		int g2 = fc + random.nextInt(bc - fc);
+		int b2 = fc + random.nextInt(bc - fc);
+		g.setColor(new Color(r2, g2, b2));
+		for (int i = 0; i < 155; i++) {
+			int x = random.nextInt(width + 100);
+			int y = random.nextInt(height + 100);
+			int xl = random.nextInt(10);
+			int yl = random.nextInt(12);
+			g.drawOval(x, y, x + xl, y + yl);
+		}
+		StringBuffer sRand = new StringBuffer();
+		for (int i = 0; i < codeCount; i++) {
+			// 得到随机产生的验证码数字。
+			String strRand = String.valueOf(codeSequence[random.nextInt(codeSequence.length)]);
+
+			g.setColor(new Color(20 + random.nextInt(110), 20 + random
+					.nextInt(110), 20 + random.nextInt(110)));
+			g.drawString(strRand, 14 * i + 5, 25);
+			sRand.append(strRand);
+		}
+		g.dispose();
+		String sessionId = session.getId();
+		generateCaptchaInRedis(sessionId,sRand.toString().toUpperCase());
+
+		return  image;
+	}
+
+	@Override
+	public String getImageCaptchaInRedis(String sessionId) {
+		String captchaInRedis = "";
+		RedisClinet redisClinet = new RedisClinet();
+		if(redisClinet.getJedis().exists(sessionId)){
+			captchaInRedis = redisClinet.getJedis().get(sessionId);
+		}
+		return captchaInRedis;
+	}
+
 	/**
 	 * 验证码字符个数
 	 */
@@ -109,5 +193,6 @@ public class CaptchaServiceImpl implements CaptchaService {
 		}
 		return true;
 	}
+
 
 }

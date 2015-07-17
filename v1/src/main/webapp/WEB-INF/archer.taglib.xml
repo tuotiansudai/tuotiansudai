@@ -52,6 +52,16 @@
 			<type>java.lang.Boolean</type>
 		</attribute>
 	</tag>
+
+	<tag>
+		<tag-name>validateImageCaptcha</tag-name>
+		<validator>
+			<validator-id>com.esoft.core.validator.ValidateImageCaptchaValidator</validator-id>
+			<handler-class>javax.faces.view.facelets.ValidatorHandler</handler-class>
+		</validator>
+
+	</tag>
+
 	
 	<tag>
 		<tag-name>validateIdCardAlreadyExist</tag-name>

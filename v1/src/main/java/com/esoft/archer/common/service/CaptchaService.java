@@ -34,4 +34,13 @@ public interface CaptchaService {
 	 */
 	public boolean verifyCaptcha(String captcha, HttpSession session);
 
+	public void generateCaptchaInRedis(String sessionId ,String captcha);
+
+	public BufferedImage generateCaptchaImgByRedis(HttpSession session);
+
+	public String getImageCaptchaInRedis(String sessionId);
+
+	public void deleteCaptchFormRedis(String sessionId );
+
+
 }
