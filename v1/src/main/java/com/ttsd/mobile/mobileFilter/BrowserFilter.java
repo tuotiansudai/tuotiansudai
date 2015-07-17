@@ -20,7 +20,7 @@ public class BrowserFilter implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
-        boolean isMobileBrowser = FacesUtil.isMobileRequest(req);
+        boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
         if (!isMobileBrowser){
             String path = req.getContextPath();
             req.getRequestDispatcher("/register").forward(req, res);

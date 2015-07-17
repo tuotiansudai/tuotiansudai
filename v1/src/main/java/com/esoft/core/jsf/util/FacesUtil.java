@@ -56,6 +56,13 @@ public class FacesUtil {
 		return userAgent.contains("Mobile") && !userAgent.contains("iPad") && "1".equals(cs.getConfigValue("enable_mobile_site"));
 	}
 
+
+	public static boolean isMobileRequestForMobile(HttpServletRequest request) {
+		String userAgent = request.getHeader("user-agent");
+		ConfigService cs=  (ConfigService) SpringBeanUtil.getBeanByName("configService");
+		return userAgent.contains("Mobile");
+	}
+
 	public static void evictSecondLevelCache() {
 		SessionFactory sf = (SessionFactory) SpringBeanUtil
 				.getBeanByName("sessionFactory");
