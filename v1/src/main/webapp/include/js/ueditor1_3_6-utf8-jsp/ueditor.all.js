@@ -22134,7 +22134,7 @@ UE.plugins['catchremoteimage'] = function () {
                             var url = urls[j - 1];
                             if (src == cj && url != "error") {  //抓取失败时不做替换处理
                                 //地址修正
-                                var newSrc = me.options.catcherPath + url;
+                                var newSrc = me.options.catcherPath + url!=null?url:src;
                                 domUtils.setAttributes(ci, {
                                     "src":newSrc,
                                     "_src":newSrc
