@@ -1,21 +1,16 @@
 package com.esoft.archer.ueditor.servlet;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
 
 public class GetRemoteImage extends HttpServlet {
 
@@ -87,10 +82,10 @@ public class GetRemoteImage extends HttpServlet {
     		//大小验证
     		HttpURLConnection.setFollowRedirects(false); 
 		    HttpURLConnection   conn   = (HttpURLConnection) new URL(arr[i]).openConnection(); 
-		    if(conn.getContentType().indexOf("image")==-1){
-		    	state = "请求地址头不正确";
-		    	continue;
-		    }
+//		    if(conn.getContentType().indexOf("image")==-1){
+//		    	state = "请求地址头不正确";
+//		    	continue;
+//		    }
 		    if(conn.getResponseCode() != 200){
 		    	state = "请求地址不存在！";
 		    	continue;
