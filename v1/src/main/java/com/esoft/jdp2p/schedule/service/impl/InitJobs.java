@@ -162,15 +162,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
 
-				//Reward
-//				SimpleTrigger activityRewardTrigger = (SimpleTrigger) scheduler
-//						.getTrigger(TriggerKey.triggerKey(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD,
-//								ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD));
-//				if (activityRewardTrigger == null) {
-//					this.initAutoActivityRewardJob();
-//				} else {
-//					scheduler.resumeTrigger(activityRewardTrigger.getKey());
-//				}
+				this.initAutoActivityRewardJob();
 
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
@@ -252,24 +244,28 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initAutoActivityRewardJob() throws SchedulerException {
-//		JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
-//				.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
-//				.build();
+		Date triggerTime = new DateTime(2015, 7, 17, 17, 0, 0).toDate();
+
+		if (triggerTime.after(new Date())) {
+			JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
+					.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
+					.build();
+
+			SimpleTrigger trigger = TriggerBuilder.newTrigger()
+					.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
+					.forJob(jobDetail)
+					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+					.startAt(triggerTime)
+					.build();
+
+			scheduler.scheduleJob(jobDetail, trigger);
+		}
 
 //		CronTrigger trigger = TriggerBuilder.newTrigger()
 //				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
 //				.forJob(jobDetail)
 //				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))// 每天1点
 //				.build();
-
-//		SimpleTrigger trigger = TriggerBuilder.newTrigger()
-//				.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
-//				.forJob(jobDetail)
-//				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-//				.startAt(new DateTime(new Date()).plusMinutes(5).toDate())
-//				.build();
-//
-//		scheduler.scheduleJob(jobDetail, trigger);
 	}
 
 }

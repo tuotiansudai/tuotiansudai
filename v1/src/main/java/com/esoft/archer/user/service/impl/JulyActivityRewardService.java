@@ -63,15 +63,15 @@ public class JulyActivityRewardService {
 
     private static String SUCCESS_CODE = "0000";
 
-    private static Date activityStartTime = new DateTime(2015, 7, 14, 23, 0, 0).toDate();
-    private static Date activityEndTime = new DateTime(2015, 7, 14, 23, 59, 59).toDate();
+    private static Date activityStartTime = new DateTime(2015, 7, 14, 22, 15, 0).toDate();
+    private static Date activityEndTime = new DateTime(2015, 7, 14, 22, 45, 59).toDate();
     private static int USER_CERTIFIED_REWARD = 500;
     private static int USER_RECHARGE_REWARD = 500;
     private static int REFERRER_CERTIFIED_REWARD = 1000;
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     private static int TOTAL_REWARD = 0;
-    private static final String NEW_REGISTER_USER_SQL = "select distinct bc.user_id from bank_card bc inner join user u on bc.user_id = u.id and (u.register_time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') and bc.status = 'passed' and (bc.time between '2015-07-14 23:00:00' and '2015-07-14 23:59:59') inner join trusteeship_account ta on u.id = ta.user_id and (ta.create_time between'2015-07-14 23:00:00' and '2015-07-14 23:59:59') where not exists (select 1 from july_activity_reward reward where reward.user_id = bc.user_id)";
+    private static final String NEW_REGISTER_USER_SQL = "SELECT u.id FROM user u INNER JOIN trusteeship_account ta ON u.id = ta.user_id AND(u.register_time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59') AND (ta.create_time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59') WHERE NOT EXISTS (SELECT 1 FROM july_activity_reward jar where jar.user_id=u.id) AND EXISTS (SELECT 1 FROM bank_card bc WHERE u.id=bc.user_id AND bc.status='passed' AND (bc.time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59'))";
     private static final String MULTIPLE_BANK_CARD_USER_SQL = "select a.user_id from (select distinct card_no, user_id from bank_card where status ='passed' and card_no in (select card_no from bank_card where status ='passed' group by card_no having count(1) > 1)) as a group by a.card_no having count(1) > 1";
 
     @Transactional
@@ -100,7 +100,7 @@ public class JulyActivityRewardService {
                 String template = "Create activity reward success: rewardId = {0}, userId = {1}";
                 log.info(MessageFormat.format(template, Long.toString(reward.getId()), userId));
             } catch (Exception e) {
-                String template = "Create activity reward Failed: userId = {0}";
+                String template = "Create activity reward failed: userId = {0}";
                 log.error(MessageFormat.format(template, userId));
                 log.error(e);
             }
@@ -124,26 +124,22 @@ public class JulyActivityRewardService {
             }
             List<JulyActivityReward> rewards = this.fetchRewardList(start);
             loop = CollectionUtils.isNotEmpty(rewards);
-            if (CollectionUtils.isNotEmpty(rewards)) {
+            if (loop) {
                 log.info(MessageFormat.format("Reward index form {0} to {1}", start, start + limit));
                 for (JulyActivityReward reward : rewards) {
                     String userId = reward.getUser().getId();
-                    boolean successRechargeExist = this.isSuccessRechargeExist(userId);
-                    boolean successInvestExist = this.isSuccessInvestExist(userId);
+                    String referrerId = reward.getReferrer() != null ? reward.getReferrer().getId() : "";
 
-                    if (multipleBankCardUsers.indexOf(userId) == -1) {
+                    if (multipleBankCardUsers.indexOf(userId) == -1 && (Strings.isNullOrEmpty(referrerId) || multipleBankCardUsers.indexOf(referrerId) == -1)) {
+                        boolean successRechargeExist = this.isSuccessRechargeExist(userId);
+                        boolean successInvestExist = this.isSuccessInvestExist(userId);
                         this.rewardUser(reward, successRechargeExist);
-                    } else {
-                        log.info(MessageFormat.format("{0} have bound multiple bank cards.", userId));
-                    }
 
-                    if (reward.getReferrer() != null) {
-                        String referrerId = reward.getReferrer().getId();
-                        if (multipleBankCardUsers.indexOf(referrerId) == -1) {
+                        if (!Strings.isNullOrEmpty(referrerId)) {
                             this.rewardReferrer(reward, successRechargeExist, successInvestExist);
-                        } else {
-                            log.info(MessageFormat.format("{0} have bound multiple bank cards.", referrerId));
                         }
+                    } else {
+                        log.info(MessageFormat.format("user = {0} or referrer = {1} have bound multiple bank cards.", userId, referrerId));
                     }
                 }
                 start += limit;
@@ -160,7 +156,6 @@ public class JulyActivityRewardService {
 
         String rewardId = Long.toString(reward.getId());
         String userId = reward.getUser().getId();
-
 
         if (!this.isSuccessBindBankCard(userId, true)) {
             String template = "User have no bank card: userId = {0}, rewardId = {1}";
@@ -379,8 +374,7 @@ public class JulyActivityRewardService {
                             InvestConstants.InvestStatus.COMPLETE,
                             InvestConstants.InvestStatus.REPAYING)))
                     .add(Restrictions.or(Restrictions.and(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS), Restrictions.ge("money", 500D)),
-                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1000D))))
-                    .addOrder(Order.asc("time"));
+                            Restrictions.and(Restrictions.not(Restrictions.eq("loan.loanActivityType", LoanConstants.LoanActivityType.XS)), Restrictions.ge("money", 1000D))));
             List<Invest> invests = ht.findByCriteria(investCriteria, 0, 1);
             return CollectionUtils.isNotEmpty(invests);
         } catch (Exception e) {
@@ -397,8 +391,7 @@ public class JulyActivityRewardService {
             rechargeCriteria.add(Restrictions.eq("user.id", userId))
                     .add(Restrictions.eq("status", UserConstants.RechargeStatus.SUCCESS))
                     .add(Restrictions.between("time", activityStartTime, activityEndTime))
-                    .add(Restrictions.not(Restrictions.eq("rechargeWay", "admin")))
-                    .addOrder(Order.asc("successTime"));
+                    .add(Restrictions.not(Restrictions.eq("rechargeWay", "admin")));
 
             List<Recharge> recharges = ht.findByCriteria(rechargeCriteria, 0, 1);
             return CollectionUtils.isNotEmpty(recharges);
@@ -423,10 +416,9 @@ public class JulyActivityRewardService {
         }
 
         try {
-            log.info("Request Url: " + reqData.getUrl());
             String responseBodyAsString = HttpClientUtil.getResponseBodyAsString(reqData.getUrl());
             Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyAsString);
-            log.info("Response Data" + resData);
+            log.info(MessageFormat.format("Pay orderId = {0}, returnCode = {1}", orderId, resData.get("ret_code")));
             return updateTrusteeshipOperationStatus(operation, resData);
         } catch (Exception e) {
             String template = "Activity reward transfer failed: orderId = {0}, accountId = {1}, cent = {2}";
@@ -446,7 +438,6 @@ public class JulyActivityRewardService {
             sendMap.put("amount", cent); // 单位为分
             sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
             ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
-            log.info("reqDate: " + reqData.getPlain());
             return reqData;
         } catch (Exception e) {
             String template = "Generate req data failed: accountId = {0}, cent = {cent}";
@@ -521,7 +512,7 @@ public class JulyActivityRewardService {
         return null;
     }
 
-    public boolean isSuccessBindBankCard(String userId, boolean isUser) {
+    private boolean isSuccessBindBankCard(String userId, boolean isUser) {
         try {
             DetachedCriteria bankCardCriteria = DetachedCriteria.forClass(BankCard.class);
             bankCardCriteria.add(Restrictions.eq("user.id", userId))
@@ -550,8 +541,8 @@ public class JulyActivityRewardService {
     private List<JulyActivityReward> fetchRewardList(int start) {
         int limit = 50;
         DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
-        rewardCriteria.add(Restrictions.gt("id", 227949L));
-        rewardCriteria.addOrder(Order.asc("id"));
+        rewardCriteria.add(Restrictions.gt("id", 228969L));
+                rewardCriteria.addOrder(Order.asc("id"));
         List<JulyActivityReward> rewardList = ht.findByCriteria(rewardCriteria, start, limit);
         return rewardList;
     }
