@@ -63,15 +63,15 @@ public class JulyActivityRewardService {
 
     private static String SUCCESS_CODE = "0000";
 
-    private static Date activityStartTime = new DateTime(2015, 7, 14, 22, 15, 0).toDate();
-    private static Date activityEndTime = new DateTime(2015, 7, 14, 22, 45, 59).toDate();
+    private static Date activityStartTime = new DateTime(2015, 7, 1, 0, 0, 0).toDate();
+    private static Date activityEndTime = new DateTime(2015, 7, 14, 23, 59, 59).toDate();
     private static int USER_CERTIFIED_REWARD = 500;
     private static int USER_RECHARGE_REWARD = 500;
     private static int REFERRER_CERTIFIED_REWARD = 1000;
     private static int REFERRER_RECHARGE_REWARD = 1000;
     private static int REFERRER_INVEST_REWARD = 3000;
     private static int TOTAL_REWARD = 0;
-    private static final String NEW_REGISTER_USER_SQL = "SELECT u.id FROM user u INNER JOIN trusteeship_account ta ON u.id = ta.user_id AND(u.register_time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59') AND (ta.create_time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59') WHERE NOT EXISTS (SELECT 1 FROM july_activity_reward jar where jar.user_id=u.id) AND EXISTS (SELECT 1 FROM bank_card bc WHERE u.id=bc.user_id AND bc.status='passed' AND (bc.time BETWEEN '2015-07-14 22:15:00' AND '2015-07-14 22:44:59'))";
+    private static final String NEW_REGISTER_USER_SQL = "SELECT u.id FROM user u INNER JOIN trusteeship_account ta ON u.id = ta.user_id AND(u.register_time BETWEEN '2015-07-01 00:00:00' AND '2015-07-14 23:59:59') AND (ta.create_time BETWEEN '2015-07-01 00:00:00' AND '2015-07-14 23:59:59') WHERE NOT EXISTS (SELECT 1 FROM july_activity_reward jar where jar.user_id=u.id) AND EXISTS (SELECT 1 FROM bank_card bc WHERE u.id=bc.user_id AND bc.status='passed' AND (bc.time BETWEEN '2015-07-01 00:00:00' AND '2015-07-14 23:59:59'))";
     private static final String MULTIPLE_BANK_CARD_USER_SQL = "select a.user_id from (select distinct card_no, user_id from bank_card where status ='passed' and card_no in (select card_no from bank_card where status ='passed' group by card_no having count(1) > 1)) as a group by a.card_no having count(1) > 1";
 
     @Transactional
@@ -541,8 +541,7 @@ public class JulyActivityRewardService {
     private List<JulyActivityReward> fetchRewardList(int start) {
         int limit = 50;
         DetachedCriteria rewardCriteria = DetachedCriteria.forClass(JulyActivityReward.class);
-        rewardCriteria.add(Restrictions.gt("id", 228969L));
-                rewardCriteria.addOrder(Order.asc("id"));
+        rewardCriteria.addOrder(Order.asc("id"));
         List<JulyActivityReward> rewardList = ht.findByCriteria(rewardCriteria, start, limit);
         return rewardList;
     }
