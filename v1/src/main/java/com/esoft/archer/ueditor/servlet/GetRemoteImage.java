@@ -1,7 +1,5 @@
 package com.esoft.archer.ueditor.servlet;
 
-import com.ttsd.aliyun.PropertiesUtils;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -59,9 +57,6 @@ public class GetRemoteImage extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String ossName = PropertiesUtils.getPro("plat.oss.bucket_name");
-		String endpoint = PropertiesUtils.getPro("plat.oss.oss_endpoint");
-		String ossAddress = endpoint.substring(0,7) + ossName + "." + endpoint.substring(7,endpoint.length()) + "/";
 		request.setCharacterEncoding("UTF-8");
     	response.setCharacterEncoding("UTF-8");
     	String url = request.getParameter("upfile");
@@ -91,12 +86,9 @@ public class GetRemoteImage extends HttpServlet {
 //		    	continue;
 //		    }
 		    if(conn.getResponseCode() != 200){
-		    	//state = "request address is not exists";
-		    	//continue;
-				filePath = ossAddress;
-		    } else {
-				filePath = "upload";
-			}
+		    	state = "request address is not exists";
+		    	continue;
+		    }
             File dir = new File(savePath);
 			if (!dir.exists()) {
 				dir.mkdirs();
