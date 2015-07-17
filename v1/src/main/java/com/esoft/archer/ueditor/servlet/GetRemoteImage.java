@@ -75,7 +75,7 @@ public class GetRemoteImage extends HttpServlet {
     		//格式验证
     		String type = getFileType(arr[i]);
 			if(type.equals("")){
-				state = "图片类型不正确！";
+				state = "image type is not right";
 				continue;
 			}
     		String saveName = Long.toString(new Date().getTime())+type;
@@ -87,7 +87,7 @@ public class GetRemoteImage extends HttpServlet {
 //		    	continue;
 //		    }
 		    if(conn.getResponseCode() != 200){
-		    	state = "请求地址不存在！";
+		    	state = "request address is not exists";
 		    	continue;
 		    }
             File dir = new File(savePath);
