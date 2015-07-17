@@ -212,18 +212,21 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     @Override
     public boolean validateVCode(String phoneNumber, String vCode) {
-        if (regValidatePhoneNum(phoneNumber)){
+        if ("".equals(phoneNumber) || phoneNumber == null){
+            return false;
+        } else if(!regValidatePhoneNum(phoneNumber)){
+            return false;
+        } else {
             int count = mobileRegisterDao.getAuthInfo(phoneNumber, vCode, CommonConstants.AuthInfoStatus.INACTIVE);
             if (count > 0){
                 return true;
             }
             return false;
         }
-        return false;
     }
 
     /**
-     * @function 校验手机号是否符合要求
+     * @function 正则校验手机号是否符合要求
      * @param phoneNumber
      * @return
      */
