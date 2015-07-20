@@ -26,7 +26,7 @@
     max-width: 558px;
     height: 78px;
     border: #fff 1px solid;
-    margin-bottom: 30px;
+    margin:0px auto 30px;
     color: #fff;
     position: relative;
 }
@@ -87,33 +87,44 @@
 .step p a {
     color: #ebff0b;
 }
-.wrap input.logUp {
-    display: block;
+.wrap div.submitBtn {
     width: 344px;
-    height: 80px;
-    line-height: 80px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
-    color: #fff;
-    background: #edaa20;
-    opacity:1;
-    filter:alpha(opacity:0);
-    margin: 30px auto 0px;
+    margin: 0px auto 10px;
     border-radius: 5px;
-    font-size: 46px;
+    font-size: 18px;
     border: none;
+    position: relative;
 }
-.wrap a.logUp-a {
-    display: block;
-    width: 344px;
-    height: 80px;
-    line-height: 80px;
+.wrap div.submitBtn a{
+    position: absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:60px;
+    line-height: 60px;
     text-align: center;
-    color: #fff;
-    background: #edaa20;
-    margin: 30px auto 0px;
-    border-radius: 5px;
-    font-size: 46px;
-    border: none;
+    background: #ebaa20;
+    border-radius:5px;
+    z-index: 990;
+    color:#fff;
+    text-decoration: none;
+    pointer-events: none;
+}
+.wrap div.submitBtn input{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:60px;
+    border:0px;
+    z-index: 999;
+    opacity:0;
+    filter:alpha(opacity:0);
+    color:#fff;
+    font-size: 14px;
 }
 .check {
     height: 76px;
@@ -246,13 +257,15 @@
         border-radius: 5px;
         font-size: 16px;
     }
-    .wrap a.logUp-a {
+
+    .wrap div.submitBtn {
         width: 100%;
         height: 40px;
         line-height: 40px;
         border-radius: 5px;
         font-size: 16px;
     }
+
     .step ul li input.userName {
         background-size: 25px 20px;
     }
@@ -326,12 +339,12 @@
         line-height: 32px;
         color: #fff;
         top: 166px;
-        right: 14px;
+        right: 30px;
         font-size: 12px;
     }
 
     .step ul li {
-        width: 354px;
+        width: 340px;
         height: 46px;
         line-height: 46px;
     }
@@ -357,19 +370,11 @@
         width: 354px;
         height: 40px;
         line-height: 40px;
-        border-radius: 0px;
         font-size: 16px;
         padding:0px;
-        margin: 30px 0px 0px 0px;
-    }
-    .wrap a.logUp-a {
-        width: 354px;
-        height: 40px;
-        line-height: 40px;
-        border-radius: 0px;
-        font-size: 16px;
-        padding:0px;
-        margin: 30px 0px 0px 0px;
+        margin:0px;
+        left:0px;
+        top:0px;
     }
 
     .step ul li input.userName {
@@ -450,16 +455,16 @@
 
     .step i {
         width: 80px;
-        height: 22px;
-        line-height: 22px;
+        height: 32px;
+        line-height: 32px;
         color: #fff;
-        top: 213px;
-        right: 26px;
+        top: 243px;
+        right: 16px;
         font-size: 12px;
     }
 
     .step ul li {
-        width: 380px;
+        width: 378px;
         height: 46px;
         line-height: 46px;
     }
@@ -488,7 +493,6 @@
         border-radius: 0px;
         font-size: 16px;
         padding:0px;
-        margin:30px 0px 0px 0px;
         border-radius:5px;
     }
     .wrap a.logUp-a {
@@ -498,7 +502,6 @@
         border-radius: 0px;
         font-size: 16px;
         padding:0px;
-        margin:30px 0px 0px 0px;
         border-radius:5px;
     }
 
@@ -612,15 +615,15 @@
 
     .wrap input.logUp {
         width: 100%;
-        height: 40px;
-        line-height: 40px;
+        height: 60px;
+        line-height: 60px;
         border-radius: 0px;
         font-size: 16px;
     }
     .wrap a.logUp-a {
         width: 100%;
-        height: 40px;
-        line-height: 40px;
+        height: 60px;
+        line-height: 60px;
         border-radius: 0px;
         font-size: 16px;
     }
@@ -698,32 +701,21 @@
     }
     .wrap input.logUp {
         width: 98%;
-        height: 50px;
-        line-height: 50px;
+        height: 60px;
+        line-height: 60px;
         border-radius:5px;
         font-size: 16px;
         padding:0px;
-        margin:30px 0px 0px 0px;
         border-radius:5px;
     }
     .wrap a.logUp-a {
         width: 98%;
-        height: 50px;
-        line-height: 50px;
+        height: 60px;
+        line-height: 60px;
         border-radius:5px;
         font-size: 16px;
         padding:0px;
-        margin:30px 0px 0px 0px;
-        border-radius:5px;
-    }
-    .wrap a.logup-a{
-        width:98%;
-        heigth:50px;
-        line-height: 50px;
-        border-radius:5px;
-        font-size:16px;
-        padding:0px;
-        margin:30px 0px 0px 0px;
+        margin:0px;
         border-radius:5px;
     }
 }

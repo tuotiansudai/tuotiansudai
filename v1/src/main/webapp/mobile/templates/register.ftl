@@ -25,8 +25,10 @@
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode" required/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
-            <input type="submit" class="logUp" value="立即注册"/>
-            <#--<a href="javascript:;" class="logUp">立即注册</a>-->
+            <div class="submitBtn">
+                <a href="javascript:;" class="logUp-a">立即注册</a>
+                <input type="submit" class="logUp" value="立即注册"/>
+            </div>
         </form>
         <p>已有账号 | <a href="" class="landNow">立即登录</a></p>
     </div>
