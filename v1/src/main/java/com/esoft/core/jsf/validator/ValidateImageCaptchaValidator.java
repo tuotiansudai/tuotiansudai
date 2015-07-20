@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 
 @FacesValidator(value = "com.esoft.core.validator.ValidateImageCaptchaValidator")
 public class ValidateImageCaptchaValidator extends ValueChangeValidator implements
@@ -23,6 +24,8 @@ public class ValidateImageCaptchaValidator extends ValueChangeValidator implemen
 	public static final String VALIDATOR_ID = "com.esoft.core.validator.ValidateImageCaptchaValidator";
 
 	CaptchaService captchaService;
+
+	private  static String imageCaptchaStatus = "{0}_image_captcha_status";
 
 	@Override
 	public void validateChangedObject(FacesContext context,

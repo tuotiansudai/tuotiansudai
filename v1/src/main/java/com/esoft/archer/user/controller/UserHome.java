@@ -2,6 +2,7 @@ package com.esoft.archer.user.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.service.CaptchaService;
 import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.common.service.impl.CaptchaServiceImpl;
 import com.esoft.archer.user.exception.UserRegisterException;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.aliyun.PropertiesUtils;
@@ -92,6 +94,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     ValidationService vdtService;
     @Resource
     CaptchaService captchaService;
+
+    private static String imageCaptchaStatus = "{0}_image_captcha_status";
 
     /**
      * 推荐人
@@ -404,8 +408,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            String sessionStatus = request.getSession().getId()+ "_status";
-            captchaService.deleteCaptchFormRedis(sessionStatus);
+            String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, request.getSession().getId());
+            captchaService.deleteCaptchFormRedis(sessionIdInRedisStatus);
             if (isLoginAfterRegister) {
                 login(getInstance().getId(), FacesUtil.getHttpSession());
             }
@@ -686,28 +690,48 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
     }
 
-    public void verifyRegisterAndSendAuthCodeToMobile(String mobileNumber, String jsCode, String verifyType) {
+
+    public void verifyRegisterAndSendAuthCodeToMobile(String mobileNumber, String jsCode) {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String sessionId = request.getSession().getId();
-        String sessionStatus = captchaService.getValueInRedisByKey(sessionId + "_status");
-        if ("RegisterNextStep".equals(verifyType)) {
-            if (!verifyRegisterUser(request)) {
-                return;
-            }
-
+        String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, sessionId);
+        String sessionStatus = captchaService.getValueInRedisByKey(sessionIdInRedisStatus);
+        if (!verifyRegisterUser(request)) {
+            return;
         }
 
-        if(StringUtils.isEmpty(sessionStatus) || !"success".equals(sessionStatus)){
+        if (StringUtils.isEmpty(sessionStatus) || !"success".equals(sessionStatus)) {
             FacesUtil.addInfoMessage("验证码已经过期,请重新获取验证码!！");
-            RequestContext.getCurrentInstance().execute("closeDialog()");
+            RequestContext.getCurrentInstance().execute("closeSendSmsDialog()");
             return;
         }
 
         boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
         if (isSend) {
-            if (!"RegisterNextStep".equals(verifyType)) {
-                FacesUtil.addInfoMessage("短信已发送，请注意查收！");
-            }
+            RequestContext.getCurrentInstance().execute(jsCode);
+        } else {
+            FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
+        }
+    }
+
+    public void sendAuthCodeToMobileAgain(String mobileNumber, String jsCode) {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String sessionId = request.getSession().getId();
+        String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, sessionId);
+        String sessionIdInRedisStatusValue = captchaService.getValueInRedisByKey(sessionIdInRedisStatus);
+
+
+        if (StringUtils.isEmpty(sessionIdInRedisStatusValue) || !"success".equals(sessionIdInRedisStatusValue)) {
+            FacesUtil.addInfoMessage("验证码已经过期,请重新获取验证码!！");
+            RequestContext.getCurrentInstance().execute("closeSendSmsDialog()");
+            return;
+        }
+
+        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        if (isSend) {
+
+            FacesUtil.addInfoMessage("短信已发送，请注意查收！");
+
             RequestContext.getCurrentInstance().execute(jsCode);
         } else {
             FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
@@ -722,7 +746,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         String rePassword = request.getParameter("form:repass");
         String referrer = request.getParameter("form:referrer");
         String imageCaptcha = request.getParameter("form:imageCaptcha");
-        String[] inputValues = {userName, password, rePassword, confirmMobileNumber,imageCaptcha};
+        String[] inputValues = {userName, password, rePassword, confirmMobileNumber, imageCaptcha};
 
         try {
             if (verifyRegisterInputIsNull(inputValues)) {

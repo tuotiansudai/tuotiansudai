@@ -9,12 +9,7 @@ function inputMobileNumber() {
     $('#captchaForm\\:mobileNumber').val(confirmMobileNumber);
 
     $('.changeNumber').on('click', function () {
-        $('.mobileNumberClass').css({
-            'pointer-events': 'auto',
-            'border': '1px #d9d9d9 solid',
-            'border-radius': '5',
-            'background': '#c00;'
-        })
+        $('.mobileNumberClass').removeClass("mobileNumberClass").addClass("mobileNumberReadOnly");
     });
 
 
@@ -44,7 +39,7 @@ function inputMobileNumber() {
     timerCountB('captchaForm\\:sendAuthCodeBtn');
 }
 
-function closeDialog(){
+function closeSendSmsDialog(){
     $('.mask_phone_modify').css('display','none');
     $('.main_phone_modify').css('display','none');
     $('#form\\:imageCaptcha').val('');

@@ -25,6 +25,8 @@ public class VerifyCodeInRedisServlet extends HttpServlet {
 
 	@Resource
 	CaptchaService captchaSrv;
+	@Logger
+	Log log;
 
 
 	public VerifyCodeInRedisServlet() {
@@ -51,7 +53,7 @@ public class VerifyCodeInRedisServlet extends HttpServlet {
 			ImageIO.write(captchaSrv.generateCaptchaImgByRedis(request.getSession()),
 					"JPG", response.getOutputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getStackTrace());
 		}
 	}
 

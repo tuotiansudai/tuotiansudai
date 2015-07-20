@@ -174,7 +174,7 @@
                         <div class="login_box_r">
                             <p:commandLink value="下一步" styleClass="login_btn_next_step">
                                 <f:ajax event="click" execute="confirmMobileNumber"
-                                        listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'inputMobileNumber()','RegisterNextStep')}"></f:ajax>
+                                        listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'inputMobileNumber()')}"></f:ajax>
                             </p:commandLink>
                         </div>
                         <div class="clear"></div>
@@ -208,7 +208,7 @@
                                                      onclick="$(this).attr('disabled','disabled')"
                                                      styleClass="hqyzm_captcha pointer">
                                         <f:ajax execute="mobileNumber" onevent="enableBtn('captchaForm\\\\:sendAuthCodeBtn')"
-                                                listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'captchaForm\\\\:sendAuthCodeBtn\')','RegisterSave')}"></f:ajax>
+                                                listener="#{userHome.sendAuthCodeToMobileAgain(userHome.instance.mobileNumber, 'timerCountB(\'captchaForm\\\\:sendAuthCodeBtn\')')}"></f:ajax>
 
                                     </h:commandButton>
 

@@ -68,3 +68,13 @@ a{ color:#000; text-decoration:none;}
 	pointer-events: none;
 	border:0px;
 }
+
+.mobileNumberReadOnly{
+	width:133px;
+	height:40px;
+	border:#d9d9d9 1px solid;
+	border-radius:5px;
+	pointer-ecents:none;
+	float:none;
+	margin-left:14px;
+}

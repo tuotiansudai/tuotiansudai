@@ -34,7 +34,7 @@ public interface CaptchaService {
 	 */
 	public boolean verifyCaptcha(String captcha, HttpSession session);
 
-	public void generateCaptchaInRedis(String sessionId ,String captcha);
+	public void generateCaptchaInRedis(String sessionId ,String captcha) throws Exception;
 
 	public void generateCaptchaStatusInRedis(String sessionId);
 
