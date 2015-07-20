@@ -52,9 +52,6 @@ public class VerifyCodeInRedisServlet extends HttpServlet {
 
 		try {
 			BufferedImage image = captchaSrv.generateCaptchaImgByRedis(request.getSession());
-			//test
-			image = null;
-
 			if (image != null){
 				ImageIO.write(captchaSrv.generateCaptchaImgByRedis(request.getSession()),
 						"JPG", response.getOutputStream());
