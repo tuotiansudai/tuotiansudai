@@ -31,10 +31,10 @@ public class CertificationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView certification() {
-        String loginUserId = mobileUtil.getLoginUserId();
-        if (loginUserId == null || "".equals(loginUserId)){
-            return new ModelAndView("/register");
-        }
+//        String loginUserId = mobileUtil.getLoginUserId();
+//        if (loginUserId == null || "".equals(loginUserId)){
+//            return new ModelAndView("/register");
+//        }
         return new ModelAndView("/certification");
     }
 

@@ -69,6 +69,8 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/payreturn/**" filters="none" />
 		<intercept-url pattern="/pay/**" filters="none" />
 		<intercept-url pattern="/error/**" filters="none" />
+		<intercept-url pattern="/mobile/certification" access="hasRole('USER')" />
+		<intercept-url pattern="/mobile/register" access="not hasRole('USER')" />
 		
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />
 		<intercept-url pattern="/**" access="URL_MAPPING_PERMISSION" />
