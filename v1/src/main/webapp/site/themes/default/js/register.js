@@ -39,11 +39,15 @@ function inputMobileNumber() {
     timerCountB('captchaForm\\:sendAuthCodeBtn');
 }
 
-function closeSendSmsDialog(){
-    $('.mask_phone_modify').css('display','none');
-    $('.main_phone_modify').css('display','none');
+function closeSendSmsDialog() {
+    $('.mask_phone_modify').css('display', 'none');
+    $('.main_phone_modify').css('display', 'none');
     $('#form\\:imageCaptcha').val('');
     $('.imageCaptchaClass').click();
+    var mobileNumber = $('#captchaForm\\:mobileNumber').val();
+    $('#form\\:confirmMobileNumber').val(mobileNumber);
+    $('#captchaForm\\:captcha').val('');
+    $('.mobileNumberReadOnly').removeClass("mobileNumberReadOnly").addClass("mobileNumberClass");
 
 }
 
