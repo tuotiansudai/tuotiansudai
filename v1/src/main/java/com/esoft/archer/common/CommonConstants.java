@@ -21,6 +21,11 @@ public class CommonConstants {
 	 * 用于验证保存数据时，是否有已经存在有相同的ID
 	 */
 	public static final String VALIDATEID = "validateId";
+
+	/**
+	 * 用户存放登陆用户信息
+	 */
+	public static final String USER_INFO = "userInfo";
 	
 	/**
 	 * 验证码标识

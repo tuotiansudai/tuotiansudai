@@ -14,7 +14,7 @@
 
 	<context:property-placeholder location="classpath:jdbc.properties,classpath:sendCloud.properties" />
 	<context:annotation-config />
-	<context:component-scan base-package="com.esoft" />
+	<context:component-scan base-package="com.esoft,com.ttsd" />
 	<tx:annotation-driven transaction-manager="transactionManager"
 		proxy-target-class="true" />
 
