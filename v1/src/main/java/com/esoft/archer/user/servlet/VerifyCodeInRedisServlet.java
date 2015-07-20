@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -50,8 +51,15 @@ public class VerifyCodeInRedisServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		try {
-			ImageIO.write(captchaSrv.generateCaptchaImgByRedis(request.getSession()),
-					"JPG", response.getOutputStream());
+			BufferedImage image = captchaSrv.generateCaptchaImgByRedis(request.getSession());
+			//test
+			image = null;
+
+			if (image != null){
+				ImageIO.write(captchaSrv.generateCaptchaImgByRedis(request.getSession()),
+						"JPG", response.getOutputStream());
+
+			}
 		} catch (IOException e) {
 			log.error(e);
 		}
