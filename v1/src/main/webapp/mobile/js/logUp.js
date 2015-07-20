@@ -175,21 +175,21 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     if (Num == 0) {
                         clearInterval(Down);
                         $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
-                        $.ajax({
-                            url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
-                            type: 'GET',
-                            data:{
-                                phoneNumber:  $('.phoneNumber').val()
-                            },
-                            dataType: 'json',
-                            success:function(res){
-                                if(res){
-                                    $('.send_vCode').css({'background': '#666','pointer-events':'none'});
-                                }else{
-                                    $('.send_vCode').css({'background': '#e9a922','pointer-events':'auto'});
-                                }
-                            }
-                        });
+                        //$.ajax({
+                        //    url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
+                        //    type: 'GET',
+                        //    data:{
+                        //        phoneNumber:  $('.phoneNumber').val()
+                        //    },
+                        //    dataType: 'json',
+                        //    success:function(res){
+                        //        if(res){
+                        //            $('.send_vCode').css({'background': '#666','pointer-events':'none'});
+                        //        }else{
+                        //            $('.send_vCode').css({'background': '#e9a922','pointer-events':'auto'});
+                        //        }
+                        //    }
+                        //});
                     }
                     Num--;
                 }
