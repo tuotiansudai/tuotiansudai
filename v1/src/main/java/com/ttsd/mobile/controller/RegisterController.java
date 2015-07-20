@@ -45,7 +45,6 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
-    @ResponseBody
     public ModelAndView mobileRegister(HttpServletRequest request,HttpServletResponse response){
         String userName =  request.getParameter("username");
         String passWord = request.getParameter("password");

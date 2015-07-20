@@ -30,12 +30,12 @@
                 <input type="submit" class="logUp" value="立即注册"/>
             </div>
         </form>
-        <p>已有账号 | <a href="" class="landNow">立即登录</a></p>
+        <p>已有账号 | <a href="/memberLoginPage" class="landNow">立即登录</a></p>
     </div>
 
-    <div class="check"><input type="checkbox" checked="checked" class="check_input" id="agreementList"><label for="agreementList">我已阅读并同意<a href="">《网站服务协议》</a></label></div>
+    <div class="check"><input type="checkbox" checked="checked" class="check_input" id="agreementList"><label for="agreementList">我已阅读并同意<a href="/node/spage/registerService">《网站服务协议》</a></label></div>
     <div class="copyright">
-        ©拓天速贷 京ICP备14008676号<br/><a href="javascript:;">手机版</a> <a href="javascript:;">PC版</a> 电话：400-169-1188
+        ©拓天速贷 京ICP备14008676号<br/><a href="/">手机版</a> <a href="/">PC版</a> 电话：400-169-1188
     </div>
 </div>
 <!--wrap end-->

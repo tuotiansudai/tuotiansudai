@@ -22,7 +22,7 @@ public class CommonConstants {
 	 */
 	public static final String VALIDATEID = "validateId";
 
-	public static final Integer MOBILE_AUTH_MESSAGE_VALID_TIME=10;
+	public static final Integer MOBILE_AUTH_MESSAGE_VALID_TIME=5;
 	/**
 	 * 验证码标识
 	 * @author Administrator
