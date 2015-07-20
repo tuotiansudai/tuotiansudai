@@ -159,14 +159,13 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     },
                     dataType: 'json'
                 });
-                $('.phoneNumber').onblur(function(){
-                    $('.send_vCode').css({'background': '#666','pointer-events':'none'});
-                });
+                //$('.phoneNumber').onblur(function(){
+                //    $('.send_vCode').css({'background': '#666','pointer-events':'none'});
+                //});
                 var Num = 60;
                 var Down = setInterval(countDown, 1000);
                 countDown();
                 function countDown() {
-                    //alert('asd');
                     $('.send_vCode').html(Num + '秒后重新发送').css({
                         'background': '#666',
                         'color': '#fff',
@@ -176,21 +175,21 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     if (Num == 0) {
                         clearInterval(Down);
                         $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
-                        //$.ajax({
-                        //    url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
-                        //    type: 'GET',
-                        //    data:{
-                        //        phoneNumber:  $('.phoneNumber').val()
-                        //    },
-                        //    dataType: 'json',
-                        //    success:function(res){
-                        //        if(res){
-                        //            $('.send_vCode').css({'background': '#666','pointer-events':'none'});
-                        //        }else{
-                        //            $('.send_vCode').css({'background': '#e9a922','pointer-events':'auto'});
-                        //        }
-                        //    }
-                        //});
+                        $.ajax({
+                            url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
+                            type: 'GET',
+                            data:{
+                                phoneNumber:  $('.phoneNumber').val()
+                            },
+                            dataType: 'json',
+                            success:function(res){
+                                if(res){
+                                    $('.send_vCode').css({'background': '#666','pointer-events':'none'});
+                                }else{
+                                    $('.send_vCode').css({'background': '#e9a922','pointer-events':'auto'});
+                                }
+                            }
+                        });
                     }
                     Num--;
                 }
