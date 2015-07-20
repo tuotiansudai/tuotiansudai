@@ -68,6 +68,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
     });
     var aTip=$('.tipMask');
     var clientH=$(window).height();
+    //aTip.css('height',clientH);
     aTip.on('click',function(){
         $(this).css('display','none');
     });
