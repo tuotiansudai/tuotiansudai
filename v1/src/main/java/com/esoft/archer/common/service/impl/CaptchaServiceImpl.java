@@ -51,6 +51,8 @@ public class CaptchaServiceImpl implements CaptchaService {
 
     private  static String imageCaptchaStatus = "{0}_image_captcha_status";
 
+    private  final static String IMAGECAPTCHAUSEINGSTATUS = "success";
+
 
 
     @Override
@@ -63,7 +65,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             redisClient.getJedis().set(sessionId, captcha);
             redisClient.getJedis().expire(sessionId, imageCaptchaExpireTime);
         } catch (Exception e) {
-            log.error(e.getStackTrace());
+            log.error(e);
             throw e;
         }
     }
@@ -73,17 +75,27 @@ public class CaptchaServiceImpl implements CaptchaService {
         try {
 
             String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus,sessionId);
-            redisClient.getJedis().set(sessionIdInRedisStatus, "success");
+            redisClient.getJedis().set(sessionIdInRedisStatus, IMAGECAPTCHAUSEINGSTATUS);
             redisClient.getJedis().expire(sessionIdInRedisStatus, imageCaptchaDurationTime);
 
         } catch (Exception e) {
-            log.error(e.getStackTrace());
+            log.error(e);
         }
     }
 
     @Override
     public void deleteCaptchFormRedis(String sessionId) {
         redisClient.getJedis().del(sessionId);
+    }
+
+    @Override
+    public boolean imageCaptchaStatusIsSuccess(String sessionId) {
+        String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, sessionId);
+        String sessionStatus = this.getValueInRedisByKey(sessionIdInRedisStatus);
+        if(IMAGECAPTCHAUSEINGSTATUS.equals(sessionStatus)){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -135,7 +147,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         try {
             generateCaptchaInRedis(sessionId, sRand.toString().toUpperCase());
         } catch (Exception e) {
-            log.error(e.getStackTrace());
+            log.error(e);
             return null;
         }
 

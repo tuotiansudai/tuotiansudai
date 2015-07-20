@@ -44,5 +44,7 @@ public interface CaptchaService {
 
 	public void deleteCaptchFormRedis(String sessionId );
 
+	public boolean imageCaptchaStatusIsSuccess(String sessionIdInRedisStatus);
+
 
 }

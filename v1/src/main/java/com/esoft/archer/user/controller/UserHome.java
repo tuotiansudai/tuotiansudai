@@ -694,13 +694,11 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     public void verifyRegisterAndSendAuthCodeToMobile(String mobileNumber, String jsCode) {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String sessionId = request.getSession().getId();
-        String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, sessionId);
-        String sessionStatus = captchaService.getValueInRedisByKey(sessionIdInRedisStatus);
         if (!verifyRegisterUser(request)) {
             return;
         }
 
-        if (StringUtils.isEmpty(sessionStatus) || !"success".equals(sessionStatus)) {
+        if (!captchaService.imageCaptchaStatusIsSuccess(sessionId)) {
             FacesUtil.addInfoMessage("验证码已经过期,请重新获取验证码!！");
             RequestContext.getCurrentInstance().execute("closeSendSmsDialog()");
             return;
@@ -717,11 +715,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     public void sendAuthCodeToMobileAgain(String mobileNumber, String jsCode) {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String sessionId = request.getSession().getId();
-        String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, sessionId);
-        String sessionIdInRedisStatusValue = captchaService.getValueInRedisByKey(sessionIdInRedisStatus);
 
-
-        if (StringUtils.isEmpty(sessionIdInRedisStatusValue) || !"success".equals(sessionIdInRedisStatusValue)) {
+        if (!captchaService.imageCaptchaStatusIsSuccess(sessionId)) {
             FacesUtil.addInfoMessage("验证码已经过期,请重新获取验证码!！");
             RequestContext.getCurrentInstance().execute("closeSendSmsDialog()");
             return;
