@@ -21,14 +21,14 @@ def start_listen(channel):
 
 @task
 def listen_fe():
-    from tests.ump_service.constants import FRONTEND_NOTIFY_CHANNEL
+    from test.ump_service.constants import FRONTEND_NOTIFY_CHANNEL
 
     start_listen(FRONTEND_NOTIFY_CHANNEL)
 
 
 @task
 def listen_be():
-    from tests.ump_service.constants import BACKEND_NOTIFY_CHANNEL
+    from test.ump_service.constants import BACKEND_NOTIFY_CHANNEL
 
     start_listen(BACKEND_NOTIFY_CHANNEL)
 
@@ -101,4 +101,4 @@ def get_current_dir():
 
 def get_base_dir():
     test_dir = get_current_dir()
-    return os.path.join(test_dir, 'tests', 'ump_service')
+    return os.path.join(test_dir, 'test', 'ump_service')

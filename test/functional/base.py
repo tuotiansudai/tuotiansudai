@@ -1,7 +1,7 @@
 from unittest import TestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from tests.functional import settings
+from test.functional import settings
 
 # driver = webdriver.PhantomJS()
 # driver.get("http://www.python.org")
