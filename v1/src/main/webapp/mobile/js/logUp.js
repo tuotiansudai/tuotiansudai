@@ -135,6 +135,7 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
      * 手机端获取注册授权码
      */
     $('.phoneNumber').on('blur',function(){
+        $('.send_vCode').css({'pointer-events':'none','background':'gray'});
         var cellphoneValue = $('.phoneNumber').val().trim();
         var cellphoneLength = ((cellphoneValue.length) < 11);
         if(cellphoneLength){
@@ -159,9 +160,6 @@ require(['jquery', 'validate', 'validate-ex'], function ($) {
                     },
                     dataType: 'json'
                 });
-                //$('.phoneNumber').onblur(function(){
-                //    $('.send_vCode').css({'background': '#666','pointer-events':'none'});
-                //});
                 var Num = 60;
                 var Down = setInterval(countDown, 1000);
                 countDown();
