@@ -1,4 +1,5 @@
 **/*.db
+*.log
 spike.py
 **/*.pyc
 **/.idea/**
