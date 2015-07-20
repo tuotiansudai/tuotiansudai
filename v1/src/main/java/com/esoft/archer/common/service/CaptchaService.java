@@ -36,9 +36,11 @@ public interface CaptchaService {
 
 	public void generateCaptchaInRedis(String sessionId ,String captcha);
 
+	public void generateCaptchaStatusInRedis(String sessionId);
+
 	public BufferedImage generateCaptchaImgByRedis(HttpSession session);
 
-	public String getImageCaptchaInRedis(String sessionId);
+	public String getValueInRedisByKey(String key);
 
 	public void deleteCaptchFormRedis(String sessionId );
 

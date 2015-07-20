@@ -31,8 +31,8 @@ public class ValidateImageCaptchaValidator extends ValueChangeValidator implemen
 		HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
 		String sessionId = request.getSession().getId();
 		captchaService = (CaptchaService) SpringBeanUtil.getBeanByName("captchaService");
-		String captchaInRedis = captchaService.getImageCaptchaInRedis(sessionId);
-		if(!StringUtils.isNotEmpty(captchaInRedis)){
+		String captchaInRedis = captchaService.getValueInRedisByKey(sessionId);
+		if(StringUtils.isEmpty(captchaInRedis)){
 			throw new ValidatorException(
 					MessageFactory
 							.getMessage(
@@ -40,6 +40,7 @@ public class ValidateImageCaptchaValidator extends ValueChangeValidator implemen
 									"com.esoft.core.validator.ValidateImageCaptchaValidator.CAPTCHA_EXPIRE"));
 		}else{
 			if( !value.toUpperCase().equals(captchaInRedis)) {
+				captchaService.deleteCaptchFormRedis(sessionId);
 				throw new ValidatorException(
 						MessageFactory
 								.getMessage(
@@ -47,6 +48,7 @@ public class ValidateImageCaptchaValidator extends ValueChangeValidator implemen
 										"com.esoft.core.validator.ValidateImageCaptchaValidator.CAPTCHA_WRONG"));
 			}else{
 				captchaService.deleteCaptchFormRedis(sessionId);
+				captchaService.generateCaptchaStatusInRedis(sessionId);
 			}
 
 		}

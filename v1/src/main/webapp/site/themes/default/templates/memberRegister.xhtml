@@ -43,7 +43,7 @@
                 if(data.status == 'success'){
                     if(data.responseText.indexOf("验证码不正确,请重新获取验证码") > -1
                             || data.responseText.indexOf("验证码已经过期") > -1){
-                        $('#form\\:image_captcha').val('');
+                        $('#form\\:imageCaptcha').val('');
                         $('.imageCaptchaClass').click();
                     }
                 }
@@ -129,13 +129,13 @@
                     <div class="login_box login_box01">
                         <div class="login_box_l login_box_l01">验证码：</div>
                         <div class="login_box_r">
-                            <h:inputText id="image_captcha" label="验证码" maxlength="6"
+                            <h:inputText id="imageCaptcha" label="验证码" maxlength="6"
                                          required="true" styleClass="login_txt login_txt03">
                                 <archer:validateImageCaptcha/>
                                 <f:ajax event="blur"  onevent="refreshImageCaptcha"></f:ajax>
 
                             </h:inputText>
-                            <p:watermark value="请输入验证码" for="image_captcha"></p:watermark>
+                            <p:watermark value="请输入验证码" for="imageCaptcha"></p:watermark>
                             <img class="imageCaptchaClass" alt="点击刷新" id="verifyCode"
                                  src="#{request.contextPath}/verifyCodeInRedisServlet"
                                  onclick="this.src='#{request.contextPath}/verifyCodeInRedisServlet?'+new Date().getTime()"/>
@@ -174,7 +174,7 @@
                         <div class="login_box_r">
                             <p:commandLink value="下一步" styleClass="login_btn_next_step">
                                 <f:ajax event="click" execute="confirmMobileNumber"
-                                        listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'inputMobileNumber()')}"></f:ajax>
+                                        listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'inputMobileNumber()','RegisterNextStep')}"></f:ajax>
                             </p:commandLink>
                         </div>
                         <div class="clear"></div>
@@ -208,7 +208,7 @@
                                                      onclick="$(this).attr('disabled','disabled')"
                                                      styleClass="hqyzm_captcha pointer">
                                         <f:ajax execute="mobileNumber" onevent="enableBtn('captchaForm\\\\:sendAuthCodeBtn')"
-                                                listener="#{userHome.sendRegisterAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'captchaForm\\\\:sendAuthCodeBtn\')')}"></f:ajax>
+                                                listener="#{userHome.verifyRegisterAndSendAuthCodeToMobile(userHome.instance.mobileNumber, 'timerCountB(\'captchaForm\\\\:sendAuthCodeBtn\')','RegisterSave')}"></f:ajax>
 
                                     </h:commandButton>
 

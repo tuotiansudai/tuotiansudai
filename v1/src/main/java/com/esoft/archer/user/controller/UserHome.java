@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.esoft.archer.common.exception.InputRuleMatchingException;
+import com.esoft.archer.common.service.CaptchaService;
 import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
 import com.esoft.archer.user.exception.UserRegisterException;
@@ -19,6 +20,7 @@ import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.apache.http.HttpRequest;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -88,6 +90,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
     @Resource
     ValidationService vdtService;
+    @Resource
+    CaptchaService captchaService;
 
     /**
      * 推荐人
@@ -399,6 +403,9 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             }
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            String sessionStatus = request.getSession().getId()+ "_status";
+            captchaService.deleteCaptchFormRedis(sessionStatus);
             if (isLoginAfterRegister) {
                 login(getInstance().getId(), FacesUtil.getHttpSession());
             }
@@ -679,30 +686,62 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
     }
 
-    public void verifyRegisterAndSendAuthCodeToMobile(String mobileNumber, String jsCode) {
+    public void verifyRegisterAndSendAuthCodeToMobile(String mobileNumber, String jsCode, String verifyType) {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String sessionId = request.getSession().getId();
+        String sessionStatus = captchaService.getValueInRedisByKey(sessionId + "_status");
+        if ("RegisterNextStep".equals(verifyType)) {
+            if (!verifyRegisterUser(request)) {
+                return;
+            }
+
+        }
+
+        if(StringUtils.isEmpty(sessionStatus) || !"success".equals(sessionStatus)){
+            FacesUtil.addInfoMessage("验证码已经过期,请重新获取验证码!！");
+            RequestContext.getCurrentInstance().execute("closeDialog()");
+            return;
+        }
+
+        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        if (isSend) {
+            if (!"RegisterNextStep".equals(verifyType)) {
+                FacesUtil.addInfoMessage("短信已发送，请注意查收！");
+            }
+            RequestContext.getCurrentInstance().execute(jsCode);
+        } else {
+            FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
+        }
+    }
+
+    public boolean verifyRegisterUser(HttpServletRequest request) {
+        boolean verifyResult = true;
         String userName = request.getParameter("form:username");
         String confirmMobileNumber = request.getParameter("form:confirmMobileNumber");
         String password = request.getParameter("form:pass");
         String rePassword = request.getParameter("form:repass");
         String referrer = request.getParameter("form:referrer");
-        String[] inputValues = {userName, password, rePassword, confirmMobileNumber};
+        String imageCaptcha = request.getParameter("form:imageCaptcha");
+        String[] inputValues = {userName, password, rePassword, confirmMobileNumber,imageCaptcha};
 
-        if (verifyRegisterInputIsNull(inputValues)) {
-            return;
-        }
         try {
+            if (verifyRegisterInputIsNull(inputValues)) {
+                verifyResult = false;
+            }
+            if (!password.equals(rePassword)) {
+                verifyResult = false;
+            }
             if (!vdtService.inputRuleValidation("input.username", userName)
                     || !vdtService.inputRuleValidation("input.mobile", confirmMobileNumber)) {
-                return;
+
             }
             if (vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", userName)
-                    || StringUtils.isNotEmpty(referrer)&&!vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
-                return;
+                    || StringUtils.isNotEmpty(referrer) && !vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
+                verifyResult = false;
             }
         } catch (InputRuleMatchingException e) {
             log.error(e.getStackTrace());
-            return;
+            verifyResult = false;
         } catch (NoMatchingObjectsException e) {
             log.error(e.getStackTrace());
         } catch (ClassNotFoundException e) {
@@ -711,16 +750,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             log.error(e.getStackTrace());
         }
 
-        if (!password.equals(rePassword)) {
-            return;
-        }
-
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
-        if (isSend) {
-            RequestContext.getCurrentInstance().execute(jsCode);
-        } else {
-            FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
-        }
+        return verifyResult;
     }
 
     public boolean verifyRegisterInputIsNull(String[] inputValues) {

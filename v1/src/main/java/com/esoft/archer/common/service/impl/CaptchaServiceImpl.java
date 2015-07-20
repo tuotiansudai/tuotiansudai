@@ -45,8 +45,20 @@ public class CaptchaServiceImpl implements CaptchaService {
 			RedisClinet redisClinet = new RedisClinet();
 			redisClinet.getJedis().set(sessionId,captcha);
 			redisClinet.getJedis().expire(sessionId, Integer.parseInt(PropertiesUtils.getPro("redis.expireTime")));
+
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error(e.getStackTrace());
+		}
+	}
+	@Override
+	public void generateCaptchaStatusInRedis(String sessionId) {
+		try{
+			RedisClinet redisClinet = new RedisClinet();
+			String sessionStatus = sessionId + "_status";
+			redisClinet.getJedis().set(sessionStatus,"success");
+			redisClinet.getJedis().expire(sessionStatus, Integer.parseInt(PropertiesUtils.getPro("redis.duration")));
+
+		}catch(Exception e){
 			log.error(e.getStackTrace());
 		}
 	}
@@ -108,13 +120,13 @@ public class CaptchaServiceImpl implements CaptchaService {
 	}
 
 	@Override
-	public String getImageCaptchaInRedis(String sessionId) {
-		String captchaInRedis = "";
+	public String getValueInRedisByKey(String key) {
+		String value = "";
 		RedisClinet redisClinet = new RedisClinet();
-		if(redisClinet.getJedis().exists(sessionId)){
-			captchaInRedis = redisClinet.getJedis().get(sessionId);
+		if(redisClinet.getJedis().exists(key)){
+			value = redisClinet.getJedis().get(key);
 		}
-		return captchaInRedis;
+		return value;
 	}
 
 	/**

@@ -44,5 +44,13 @@ function inputMobileNumber() {
     timerCountB('captchaForm\\:sendAuthCodeBtn');
 }
 
+function closeDialog(){
+    $('.mask_phone_modify').css('display','none');
+    $('.main_phone_modify').css('display','none');
+    $('#form\\:imageCaptcha').val('');
+    $('.imageCaptchaClass').click();
+
+}
+
 
 
