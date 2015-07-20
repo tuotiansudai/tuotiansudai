@@ -87,18 +87,18 @@
 .step p a {
     color: #ebff0b;
 }
-.wrap div.submitBtn {
+.wrap div.submitBtn,.cerWrap div.submitBtn {
     width: 344px;
     height: 60px;
     line-height: 60px;
     text-align: center;
-    margin: 0px auto 10px;
+    margin: 0px auto 20px;
     border-radius: 5px;
     font-size: 18px;
     border: none;
     position: relative;
 }
-.wrap div.submitBtn a{
+.wrap div.submitBtn a,.cerWrap div.submitBtn a{
     position: absolute;
     left:0px;
     top:0px;
@@ -113,7 +113,10 @@
     text-decoration: none;
     pointer-events: none;
 }
-.wrap div.submitBtn input{
+.cerWrap div.submitBtn a{
+    margin-top:20px;
+}
+.wrap div.submitBtn input,.cerWrap div.submitBtn input{
     position:absolute;
     left:0px;
     top:0px;
@@ -193,8 +196,8 @@
 
 .cerWrap input.realName{
     width:344px;
-    height: 78px;
-    line-height: 78px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
     background: #eea81e;
     display: block;
@@ -246,7 +249,7 @@
         height: 32px;
         line-height: 32px;
         color: #fff;
-        top: 165px;
+        top: 244px;
         right: 6px;
         font-size: 12px;
     }
@@ -311,20 +314,23 @@
         font-size: 12px;
         line-height: 20px;
     }
+    .cerWrap div.submitBtn input{
+        width:296px;
+    }
     .cerWrap ul{
         margin: 0px 10px;
         width:298px;
     }
     .cerWrap ul li{
         width:296px;
-        height: 38px;
-        line-height: 38px;
+        height: 46px;
+        line-height: 46px;
         margin-top: 20px;
     }
     .cerWrap ul li input{
         width:84%;
-        height: 36px;
-        line-height: 36px;
+        height: 46px;
+        line-height: 46px;
         font-size: 12px;
         padding-left: 46px;
         color:#fff;
@@ -335,8 +341,8 @@
     .cerWrap input.realName{
         width:100%;
         border-radius:0px;
-        height: 38px;
-        line-height: 38px;
+        height: 60px;
+        line-height: 60px;
         margin: 20px auto 0px;
         font-size: 16px;
     }
@@ -357,7 +363,7 @@
         height: 32px;
         line-height: 32px;
         color: #fff;
-        top: 166px;
+        top: 243px;
         right: 30px;
         font-size: 12px;
     }
@@ -437,14 +443,14 @@
 
     .cerWrap ul li{
         width:99%;
-        height: 38px;
-        line-height: 38px;
+        height: 46px;
+        line-height: 46px;
         margin-top: 20px;
     }
     .cerWrap ul li input{
         width:86%;
-        height: 34px;
-        line-height: 34px;
+        height: 46px;
+        line-height: 46px;
         font-size: 12px;
         padding-left: 46px;
         color:#fff;
@@ -582,8 +588,8 @@
     .cerWrap input.realName{
         width:100%;
         border-radius:0px;
-        height: 38px;
-        line-height: 38px;
+        height: 60px;
+        line-height: 60px;
         margin: 20px auto 0px;
         font-size: 16px;
     }

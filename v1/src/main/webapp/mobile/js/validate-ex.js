@@ -11,7 +11,7 @@ require.config({
 require(['jquery', 'validate'], function ($) {
     jQuery.validator.addMethod("isMobile", function (value, element) {
         var length = value.length;
-        return this.optional(element) || (length == 11 && /^(((13[0-9]{1})|(14[0-9]{1})|(18[0-9]{1})|(17[0-9]{1})|(15[0-9]{1}))+\d{8})$/.test(value));
+        return this.optional(element) || (length == 11 && /^[+]{0,1}(\d){1,3}[ ]?([-]?((\d)|[ ]){1,12})+$/.test(value));
     }, "请正确填写您的手机号码!"),
     jQuery.validator.addMethod("isIdCardNo", function (value, element) {
         var idCard = /^[^a-zA-Z]\d{18}|\d{15}/;
