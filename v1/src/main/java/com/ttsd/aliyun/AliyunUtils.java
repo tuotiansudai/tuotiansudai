@@ -88,9 +88,10 @@ public class AliyunUtils {
         String waterPath = rootPath + "/site/themes/default/images/watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath,inputStream,0,0).toByteArray());
         objectMeta.setContentLength(in.available());
-        //objectMeta.setContentType("image/jpeg");
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        if (fileName.endsWith("jpg")) {
+            objectMeta.setContentType("image/jpeg");
+        }
+        String sitePath = PropertiesUtils.getPro("plat.oss.address");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
@@ -104,9 +105,10 @@ public class AliyunUtils {
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
         objectMeta.setContentLength(input.available());
-        //objectMeta.setContentType("image/jpeg");
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
+        if (fileName.endsWith("jpg")) {
+            objectMeta.setContentType("image/jpeg");
+        }
+        String sitePath = PropertiesUtils.getPro("plat.oss.address");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
@@ -114,9 +116,6 @@ public class AliyunUtils {
         log.debug("result etag :" + result.getETag() + "filepath:" + filePath);
         return filePath;
     }
-
-
-
 
     public static String uploadFileInputStream(UploadedFile uploadedFile)
             throws OSSException, ClientException ,IOException{
@@ -143,8 +142,5 @@ public class AliyunUtils {
         log.info("filepath : " + filepath + "etag:" + result.getETag());
         return filepath;
     }
-
-
-
 
 }
