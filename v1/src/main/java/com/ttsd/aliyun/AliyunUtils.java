@@ -92,7 +92,7 @@ public class AliyunUtils {
             objectMeta.setContentType("image/jpeg");
         }
         String sitePath = PropertiesUtils.getPro("plat.oss.address");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
         PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
@@ -109,7 +109,7 @@ public class AliyunUtils {
             objectMeta.setContentType("image/jpeg");
         }
         String sitePath = PropertiesUtils.getPro("plat.oss.address");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
         PutObjectResult result = client.putObject(BUCKET_NAME, fileName, input, objectMeta);

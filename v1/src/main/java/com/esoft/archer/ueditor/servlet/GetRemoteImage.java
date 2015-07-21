@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -60,33 +58,8 @@ public class GetRemoteImage extends HttpServlet {
     	String url = request.getParameter("upfile");
 		System.out.println("url--" + url);
     	String state = "远程图片抓取成功！";
-    	String[] arr = url.split("ue_separate_ue");
-    	String[] outSrc = new String[arr.length];
-    	for(int i=0;i<arr.length;i++){
-    		String type = getFileType(arr[i]);
-			if(type.equals("")){
-				state = "image type is not right";
-				continue;
-			}
-    		//大小验证
-    		HttpURLConnection.setFollowRedirects(false); 
-		    HttpURLConnection   conn   = (HttpURLConnection) new URL(arr[i]).openConnection(); 
-//		    if(conn.getContentType().indexOf("image")==-1){
-//		    	state = "请求地址头不正确";
-//		    	continue;
-//		    }
-		    if(conn.getResponseCode() != 200){
-		    	state = "request address is not exists";
-		    	continue;
-		    }
-			outSrc[i] = arr[i];
-    	}
-   	String outstr = "";
-   	for(int i=0;i<outSrc.length;i++){
-   		outstr+=outSrc[i]+"ue_separate_ue";
-   	}
-   	outstr = outstr.substring(0,outstr.lastIndexOf("ue_separate_ue"));
-   	response.getWriter().print("{'url':'" + outstr + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
+		String outStr = url.substring(0,url.lastIndexOf("ue_separate_ue"));
+   		response.getWriter().print("{'url':'" + outStr + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
 	}
 
 	/**
