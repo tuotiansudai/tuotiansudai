@@ -244,7 +244,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initAutoActivityRewardJob() throws SchedulerException {
-		Date triggerTime = new DateTime(2015, 7, 17, 18, 30, 0).toDate();
+		Date triggerTime = new DateTime(2015, 7, 21, 22, 10, 0).toDate();
 
 		if (triggerTime.after(new Date())) {
 			JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
