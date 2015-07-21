@@ -113,6 +113,9 @@
     text-decoration: none;
     pointer-events: none;
 }
+.cerWrap div.submitBtn{
+    margin:30px auto 20px;
+}
 .cerWrap div.submitBtn a{
     margin-top:20px;
 }
@@ -324,7 +327,6 @@
     .cerWrap ul li{
         width:296px;
         height: 46px;
-        line-height: 46px;
         margin-top: 20px;
     }
     .cerWrap ul li input{
@@ -444,7 +446,6 @@
     .cerWrap ul li{
         width:99%;
         height: 46px;
-        line-height: 46px;
         margin-top: 20px;
     }
     .cerWrap ul li input{
