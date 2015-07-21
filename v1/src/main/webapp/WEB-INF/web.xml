@@ -56,6 +56,10 @@
             <param-value>UTF-8</param-value>
         </init-param>
     </filter>
+    <filter>
+        <filter-name>browserFilter</filter-name>
+        <filter-class>com.ttsd.mobile.mobileFilter.BrowserFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -75,6 +79,10 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>browserFilter</filter-name>
+        <url-pattern>/mobile/*</url-pattern>
     </filter-mapping>
     <!-- 系统过滤器 -->
     <!-- <filter> -->
@@ -362,6 +370,17 @@
     <servlet-mapping>
         <servlet-name>activateAccount</servlet-name>
         <url-pattern>/activateAccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/mobile/*</url-pattern>
     </servlet-mapping>
 
     <security-constraint>

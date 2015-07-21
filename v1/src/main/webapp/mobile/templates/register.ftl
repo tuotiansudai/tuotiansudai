@@ -13,25 +13,29 @@
 <body>
 <div class="wrap"><!--wrap begin-->
     <div class="step">
-        <form class="cmxForm" method="get" action="">
+        <form class="cmxForm" action="/mobile/register/mobileRegister" method="post">
             <ul>
-                <li><input type="text" value="" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="userName"
-                           minLength="5" maxLength="25" required/></li>
-                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="passWord"
+                <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/>
+                    <span class="userTip">用户名不能包含空格！</span>
+                </li>
+                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
                            minLength="6" required/></li>
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" maxLength="11" name="phoneNumber"
-                           required/></li>
+                           required/><span class="tip">手机号码不能为空</span></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode" required/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
+            <div class="submitBtn">
+                <a href="javascript:;" class="logUp-a">立即注册</a>
+                <input type="submit" class="logUp" value="立即注册"/>
+            </div>
         </form>
-        <p>已有账号 | <a href="javascript:;">立即登录</a></p>
+        <p>已有账号 | <a href="/memberLoginPage" class="landNow">立即登录</a></p>
     </div>
-    <a href="javascript:;" class="logUp">立即注册</a>
 
-    <div class="check"><input type="checkbox" class="check_input">我已阅读并同意《网站服务协议》</div>
+    <div class="check"><input type="checkbox" checked="checked" class="check_input" id="agreementList"><label for="agreementList">我已阅读并同意<a href="/node/spage/registerService">《网站服务协议》</a></label></div>
     <div class="copyright">
-        ©拓天速贷 京ICP备14008676号<br/><a href="javascript:;">手机版</a> <a href="javascript:;">PC版</a> 电话：400-169-1188
+        ©拓天速贷 京ICP备14008676号<br/><a href="/">手机版</a> <a href="/">PC版</a> 电话：400-169-1188
     </div>
 </div>
 <!--wrap end-->
