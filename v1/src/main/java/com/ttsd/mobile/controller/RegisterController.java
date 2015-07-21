@@ -71,8 +71,9 @@ public class RegisterController {
                     HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                     SecurityContextHolder.getContext());
             sessionRegistry.registerNewSession(session.getId(), userDetails);
+            return new ModelAndView("/certification");
         }
-        return new ModelAndView("/certification");
+        return new ModelAndView("/register");
     }
 
     @RequestMapping(value = "/mobileRegisterValidationCode",method = RequestMethod.POST)
