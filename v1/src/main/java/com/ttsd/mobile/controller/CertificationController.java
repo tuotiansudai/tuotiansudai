@@ -31,6 +31,9 @@ public class CertificationController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView certification() {
+        if (this.userService.hasRole(mobileUtil.getLoginUserId(),"INVESTOR")){
+            return new ModelAndView("redirect:/user/get_investor_permission");
+        }
         return new ModelAndView("/certification");
     }
 
