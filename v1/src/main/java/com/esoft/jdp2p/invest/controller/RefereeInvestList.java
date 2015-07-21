@@ -8,17 +8,24 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 import org.springframework.context.annotation.Scope;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -31,40 +38,44 @@ public class RefereeInvestList implements java.io.Serializable {
     @Resource
     HibernateTemplate ht;
 
-    private List<InvestItem> lazyModel = Lists.newArrayList();
-
     private Date startTime;
     private Date endTime;
 
     private InvestItem condition = new InvestItem();
 
+    private LazyDataModel<InvestItem> lazyModel;
 
-    public List<InvestItem> getLazyModel() {
-        List<Invest> invests = ht.find(generateQueryHql());
-        List<InvestItem> investItems = Lists.newArrayList();
-        for (Invest invest : invests) {
-            List<User> referrers = invest.getUser().getReferrers();
-            if (CollectionUtils.isEmpty(referrers) && Strings.isNullOrEmpty(condition.getReferrerId())) {
-                List<InvestItem> newInvestItems = createInvestItems(invest, null);
-                investItems.addAll(newInvestItems);
-            }
-            for (User referrer : referrers) {
-                if (referrer.getId().equals(condition.getReferrerId())
-                        || Strings.isNullOrEmpty(condition.getReferrerId())) {
-                    List<InvestItem> newInvestItems = createInvestItems(invest, referrer);
-                    investItems.addAll(newInvestItems);
+    public LazyDataModel<InvestItem> getLazyModel() {
+        if (this.lazyModel == null) {
+            this.lazyModel = new LazyDataModel<InvestItem>() {
+                @Override
+                public List<InvestItem> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+                    DetachedCriteria criteria = generateQueryCriteria();
+                    List<Invest> invests = ht.findByCriteria(criteria, first, pageSize);
+                    List<InvestItem> investItems = Lists.newArrayList();
+                    for (Invest invest : invests) {
+                        List<User> referrers = invest.getUser().getReferrers();
+                        if (CollectionUtils.isEmpty(referrers) && Strings.isNullOrEmpty(condition.getReferrerId())) {
+                            List<InvestItem> newInvestItems = createInvestItems(invest, null);
+                            investItems.addAll(newInvestItems);
+                        }
+                        for (User referrer : referrers) {
+                            if (referrer.getId().equals(condition.getReferrerId())
+                                    || Strings.isNullOrEmpty(condition.getReferrerId())) {
+                                List<InvestItem> newInvestItems = createInvestItems(invest, referrer);
+                                investItems.addAll(newInvestItems);
+                            }
+                        }
+                    }
+
+                    Long count = (Long) DataAccessUtils.uniqueResult(ht.findByCriteria(generateQueryCriteria().setProjection(Projections.rowCount())));
+                    this.setRowCount(count.intValue());
+
+                    return investItems;
                 }
-            }
+            };
         }
-
-        Ordering<InvestItem> ordering = new Ordering<InvestItem>() {
-            @Override
-            public int compare(InvestItem left, InvestItem right) {
-                return left.getInvestTime().compareTo(right.getInvestTime());
-            }
-        };
-
-        return ordering.reverse().sortedCopy(investItems);
+        return lazyModel;
     }
 
     private List<InvestItem> createInvestItems(Invest invest, User referrer) {
@@ -130,68 +141,85 @@ public class RefereeInvestList implements java.io.Serializable {
         return relations.get(0).getLevel();
     }
 
-    private String generateQueryHql() {
-        String hql = "select invest from Invest invest ";
+    private DetachedCriteria generateQueryCriteria() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(Invest.class);
+        criteria.createAlias("user", "user")
+                .createAlias("loan", "loan")
+                .createAlias("user.referrers", "referrer", Criteria.LEFT_JOIN);
 
         if (!Strings.isNullOrEmpty(condition.getReferrerId())) {
-            String referrerConditionTemplate = "inner join invest.user investor inner join investor.referrers referrer where referrer.id=''{0}'' ";
-            hql += MessageFormat.format(referrerConditionTemplate, condition.getReferrerId());
-        } else {
-            hql += "where 1=1 ";
+            criteria.add(Restrictions.eq("referrer.id", condition.getReferrerId()));
         }
 
         if (!Strings.isNullOrEmpty(condition.getInvestStatus())) {
-            String loanStatusConditionTemplate = "and invest.loan.status=''{0}'' ";
-            hql += MessageFormat.format(loanStatusConditionTemplate, condition.getInvestStatus());
-        } else {
-            hql += "and invest.status in ('complete', 'bad_debt', 'overdue', 'bid_success', 'repaying') ";
+            criteria.add(Restrictions.eq("loan.status", condition.getInvestStatus()));
         }
 
         if (!Strings.isNullOrEmpty(condition.getLoanId())) {
-            String loanConditionTemplate = "and invest.loan=''{0}'' ";
-            hql += MessageFormat.format(loanConditionTemplate, condition.getLoanId());
+            criteria.add(Restrictions.eq("loan.id", condition.getLoanId()));
         }
 
         if (!Strings.isNullOrEmpty(condition.getInvestorId())) {
-            String investorConditionTemplate = "and invest.user=''{0}'' ";
-            hql += MessageFormat.format(investorConditionTemplate, condition.getInvestorId());
+            criteria.add(Restrictions.eq("user.id", condition.getInvestorId()));
         }
 
         if (startTime != null) {
-            String startTimeConditionTemplate = "and invest.time>=''{0}'' ";
-            hql += MessageFormat.format(startTimeConditionTemplate, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startTime));
+            criteria.add(Restrictions.ge("time", startTime));
         }
 
         if (endTime != null) {
-            String endTimeConditionTemplate = "and invest.time<=''{0}'' ";
-            hql += MessageFormat.format(endTimeConditionTemplate, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(endTime));
+            criteria.add(Restrictions.le("time", endTime));
         }
 
-        return hql;
+        criteria.addOrder(Order.desc("time"))
+                .addOrder(Order.asc("id"));
+        return criteria;
     }
 
     public Double getSumMoney() {
-        List<Invest> invests = ht.find(generateQueryHql());
-        double sumMoney = 0;
-        for (Invest invest : invests) {
-            sumMoney += invest.getMoney();
-        }
-        return sumMoney;
+        DetachedCriteria criteria = generateQueryCriteria();
+        criteria.setProjection(Projections.sum("money"));
+
+        Double count = (Double) DataAccessUtils.uniqueResult(ht.findByCriteria(criteria));
+        return count == null ? 0D : count;
     }
 
     public Double getSumReward() {
-        List<InvestItem> investItems = this.getLazyModel();
-        Double sumReward = 0D;
-        for (InvestItem investItem : investItems) {
-            if (investItem.getReward() != null) {
-                sumReward += investItem.getReward();
-            }
-        }
-        return sumReward;
-    }
+        DetachedCriteria criteria = DetachedCriteria.forClass(InvestUserReferrer.class);
+        criteria.createAlias("invest", "invest")
+                .createAlias("invest.user", "user")
+                .createAlias("invest.loan", "loan")
+                .createAlias("referrer", "referrer");
 
-    public void setLazyModel(List<InvestItem> lazyModel) {
-        this.lazyModel = lazyModel;
+        if (!Strings.isNullOrEmpty(condition.getReferrerId())) {
+            criteria.add(Restrictions.eq("referrer.id", condition.getReferrerId()));
+        }
+
+        if (!Strings.isNullOrEmpty(condition.getInvestStatus())) {
+            criteria.add(Restrictions.eq("loan.status", condition.getInvestStatus()));
+        }
+
+        if (!Strings.isNullOrEmpty(condition.getLoanId())) {
+            criteria.add(Restrictions.eq("loan.id", condition.getLoanId()));
+        }
+
+        if (!Strings.isNullOrEmpty(condition.getInvestorId())) {
+            criteria.add(Restrictions.eq("user.id", condition.getInvestorId()));
+        }
+
+        if (startTime != null) {
+            criteria.add(Restrictions.ge("invest.time", startTime));
+        }
+
+        if (endTime != null) {
+            criteria.add(Restrictions.le("invest.time", endTime));
+        }
+
+
+        criteria.setProjection(Projections.sum("bonus"));
+
+        Double count = (Double) DataAccessUtils.uniqueResult(ht.findByCriteria(criteria));
+        return count == null ? 0D : count;
     }
 
     public Date getStartTime() {
