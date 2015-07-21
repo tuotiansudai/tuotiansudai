@@ -38,40 +38,12 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                     isIdCardNo:'身份证号码格式错误！',
                     remote:'身份证号码已存在！'
                 }
-            }
-        });
-
-
-    $('.realName_submit').on('click', function () {
-        var nameValue = $('.yourName').val();
-        var idValue = $('.yourId').val();
-        $.ajax({
-            url: '/mobile/certification/realName',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                realName: nameValue,
-                idCard: idValue
             },
-            success: function (data) {
-                if (data.success == "true") {
-                    window.location.href='/user/center';
-                }
-                if (data.success == "false") {
-                    var aTip=$('.tipMask');
-                    var clientH=$(window).height();
-                    aTip.css({'height':clientH,'display':'block'});
-                }
-
+            submitHandler: function(form){
+                form.submit(); //没有这一句表单不会提交
             }
         });
-    });
-    var aTip=$('.tipMask');
-    var clientH=$(window).height();
-    //aTip.css('height',clientH);
-    aTip.on('click',function(){
-        $(this).css('display','none');
-    });
+
 });
 
 

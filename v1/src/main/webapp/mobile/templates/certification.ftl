@@ -16,9 +16,10 @@
 
     <p>拓天速贷与第三方支付平台（联动优势）合作，您的资金由联动优势平台进行托管，充分保障了安全，让您安心理财.</p>
     <ul>
-        <form class="realName">
-            <li><input type="text"name="yourName" required placeholder="请输入您的姓名" class="yourName"/> </li>
-            <li><input type="text" name="yourId" minLength="15" maxLength="18" required placeholder="请输入您的身份证号" class="yourId"/> </li>
+        <form class="realName" action="/mobile/certification/realName" method="post">
+            <li><input type="text"name="yourName" required placeholder="请输入您的姓名" class="yourName" value="${yourName!}"/> </li>
+            <li><input type="text" name="yourId" minLength="15" maxLength="18" required placeholder="请输入您的身份证号" class="yourId" value="${yourId!}"/> </li>
+            <span class="tip">${message!}</span>
             <div class="submitBtn">
                 <a href="javascript:;" class="logUp-a">实名认证</a>
                 <input type="submit" class="realName realName_submit" value="实名认证" />
@@ -32,8 +33,6 @@
     </div>
 </div>
 <!--cerWrap end-->
-<div class="tipMask"><!--tipMask begin-->
-    <p>实名认证失败！</p>
-</div><!--tipMask end-->
+
 </body>
 </html>

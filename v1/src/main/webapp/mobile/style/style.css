@@ -221,27 +221,13 @@
     color:#fff000;
     font-size: 18px;
 }
-.tipMask{
-    display: none;
+.cerWrap ul span.tip{
     width:100%;
-    background:rgba(0,0,0,.6);
-    position:fixed;
-    left:0px;
-    top:0px;
-    z-index:999;
-}
-.tipMask p{
-    width:100%;
-    line-height:40px;
+    line-height:16px;
     text-align:center;
-    color:#fff;
-    position: absolute;
-    left:0px;
-    top:50%;
-    margin-top:-20px;
+    display:inline-block;
+    margin-top:16px;
 }
-/**cerWrap**/
-
 @media (max-width: 320px) {
     .step {
         padding: 0px 0px 0px 10px;
