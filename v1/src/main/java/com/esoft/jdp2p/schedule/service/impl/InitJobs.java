@@ -162,7 +162,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
 
-				this.initAutoActivityRewardJob();
+//				this.initAutoActivityRewardJob();
 
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
