@@ -278,6 +278,15 @@
             <param-value>com.esoft.archer.user.servlet.VerifyCodeServlet</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <!-- 验证码 -->
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.user.servlet.VerifyCodeInRedisServlet</param-value>
+        </init-param>
+    </servlet>
 
     <servlet>
         <servlet-name>activateAccount</servlet-name>
@@ -345,6 +354,10 @@
     <servlet-mapping>
         <servlet-name>verifyCodeServlet</servlet-name>
         <url-pattern>/verifyCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <url-pattern>/verifyCodeInRedisServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>activateAccount</servlet-name>
