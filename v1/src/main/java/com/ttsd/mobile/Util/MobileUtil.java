@@ -35,12 +35,10 @@ public class MobileUtil {
     }
 
     public String getLoginUserId() {
-        if (loginUserId == null) {
-            // 获取当前登录用户的id
-            SecurityContextImpl securityContextImpl = (SecurityContextImpl) getSessionAttribute("SPRING_SECURITY_CONTEXT");
-            if (securityContextImpl != null) {
-                loginUserId = securityContextImpl.getAuthentication().getName();
-            }
+        // 获取当前登录用户的id
+        SecurityContextImpl securityContextImpl = (SecurityContextImpl) getSessionAttribute("SPRING_SECURITY_CONTEXT");
+        if (securityContextImpl != null) {
+            loginUserId = securityContextImpl.getAuthentication().getName();
         }
         return loginUserId;
     }
