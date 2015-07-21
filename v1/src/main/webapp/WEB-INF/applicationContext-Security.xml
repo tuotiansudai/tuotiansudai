@@ -71,6 +71,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/error/**" filters="none" />
 		<intercept-url pattern="/mobile/certification" access="hasRole('USER')" />
 		<intercept-url pattern="/mobile/register" access="not hasRole('USER')" />
+		<intercept-url pattern="/mobile/register/mobileRegisterValidationCode" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/mobileRegister" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/userNameValidation" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/mobilePhoneNumValidation" access="not hasRole('USER')" />
