@@ -234,4 +234,8 @@ public class InvestHome extends EntityHome<Invest> implements Serializable {
 		return investService.getUserInvestCount(userId);
 	}
 
+	public long getUserInvestXSCount(String userId) {
+		return investService.getUserInvestXSCount(userId);
+	}
+
 }

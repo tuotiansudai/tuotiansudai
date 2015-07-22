@@ -12,5 +12,8 @@ spike.py
 **/war/**
 **/gradle
 **/gradlew.bat
+**/gradlew
 **/gradle/**
 **/node_modules/**
+**/classes/**
+**/node_modules/

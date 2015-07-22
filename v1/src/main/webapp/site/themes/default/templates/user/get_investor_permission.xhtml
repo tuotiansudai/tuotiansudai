@@ -56,8 +56,7 @@
 						</tr>
 						<tr>
 							<td align="right"><span>*</span>出生日期：</td>
-							<td><h:outputText value="#{userHome.instance.birthday}">
-									<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+							<td><h:outputText value="#{fn:substring(userHome.instance.birthday,0,10)}">
 								</h:outputText></td>
 							<td class="gray"><img
 								src="#{tplVars.themeImagePath}/img71.png" alt="" width="16"

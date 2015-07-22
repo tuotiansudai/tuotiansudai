@@ -56,6 +56,10 @@
             <param-value>UTF-8</param-value>
         </init-param>
     </filter>
+    <filter>
+        <filter-name>browserFilter</filter-name>
+        <filter-class>com.ttsd.mobile.mobileFilter.BrowserFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -75,6 +79,10 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>browserFilter</filter-name>
+        <url-pattern>/mobile/*</url-pattern>
     </filter-mapping>
     <!-- 系统过滤器 -->
     <!-- <filter> -->
@@ -182,7 +190,7 @@
     </servlet>
 
     <servlet>
-        <servlet-name>Bind Card</servlet-name>
+        <servlet-name>BindCard</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -204,23 +212,25 @@
 
     <servlet-mapping>
         <servlet-name>Investment</servlet-name>
-        <url-pattern>/**/loanDetail.htm;/**/loanDetail_xsb.htm;/**/loanDetail_jxb.htm;/**/loanDetail_dxb.htm
-        </url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_xsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_jsb.htm</url-pattern>
+        <url-pattern>/site/themes/default/templates/p2p/loanDetail_dsb.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Certification</servlet-name>
-        <url-pattern>/site/themes/default/templates/user/get_investor_permission.xhtml</url-pattern>
+        <url-pattern>/site/themes/default/templates/user/get_investor_permission.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
-        <url-pattern>/site/themes/default/templates/memberRegister.xhtml</url-pattern>
+        <url-pattern>/site/themes/default/templates/memberRegister.htm</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
-        <servlet-name>Bind Card</servlet-name>
-        <url-pattern>/site/themes/default/templates/user/mybankcards.xhtml</url-pattern>
+        <servlet-name>BindCard</servlet-name>
+        <url-pattern>/site/themes/default/templates/user/mybankcards.htm</url-pattern>
     </servlet-mapping>
 
     <context-param>
@@ -274,6 +284,15 @@
         <init-param>
             <param-name>targetServletBeanClassName</param-name>
             <param-value>com.esoft.archer.user.servlet.VerifyCodeServlet</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <!-- 验证码 -->
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <servlet-class>com.esoft.core.base.DelegatingServletProxy</servlet-class>
+        <init-param>
+            <param-name>targetServletBeanClassName</param-name>
+            <param-value>com.esoft.archer.user.servlet.VerifyCodeInRedisServlet</param-value>
         </init-param>
     </servlet>
 
@@ -345,8 +364,23 @@
         <url-pattern>/verifyCodeServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>verifyCodeInRedisServlet</servlet-name>
+        <url-pattern>/verifyCodeInRedisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>activateAccount</servlet-name>
         <url-pattern>/activateAccount</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/mobile/*</url-pattern>
     </servlet-mapping>
 
     <security-constraint>

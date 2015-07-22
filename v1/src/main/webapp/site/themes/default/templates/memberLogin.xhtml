@@ -120,8 +120,8 @@
 										<p:watermark value="请输入验证码" for="captcha_input"></p:watermark>
 										<a class="login_yzm" href="javascript:void(0)"><img
 											alt="点击刷新" id="verifyCode"
-											src="#{request.contextPath}/verifyCodeServlet"
-											onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" /></a>
+											src="#{request.contextPath}/verifyCodeInRedisServlet"
+											onclick="this.src='#{request.contextPath}/verifyCodeInRedisServlet?'+new Date().getTime()" /></a>
 										<div class="clear"></div>
 									</div>
 								</div>
@@ -153,13 +153,14 @@
 						<div class="clear"></div>
 					</div>
 				</form>
+				<div style="font-size: 14px; text-align: center; color: red; font-weight: bold">#{request.getAttribute("user_lock")}</div>
 			</div>
 			<div class="clear"></div>
 		</div>
 		<ui:fragment
 			rendered="#{not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">
 			<script>
-				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 2);
+				$.dialog.tips('#{requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message}', 5);
 			</script>
 		</ui:fragment>
 		<ui:include src="footer.xhtml"></ui:include>

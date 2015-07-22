@@ -21,7 +21,8 @@ public class CommonConstants {
 	 * 用于验证保存数据时，是否有已经存在有相同的ID
 	 */
 	public static final String VALIDATEID = "validateId";
-	
+
+	public static final Integer MOBILE_AUTH_MESSAGE_VALID_TIME=5;
 	/**
 	 * 验证码标识
 	 * @author Administrator

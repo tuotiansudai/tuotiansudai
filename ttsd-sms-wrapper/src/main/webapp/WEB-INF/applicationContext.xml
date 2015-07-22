@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- enable autowire -->
+    <context:annotation-config/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <context:property-placeholder location="classpath:zucp.properties, classpath:jdbc.properties" />
+
+    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
+    <context:component-scan base-package="com.tuotiansudai.sms"/>
+
+    <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}${jdbc.schema}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="10"/>
+        <property name="partitionCount" value="3"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="boneCPDataSource"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.sms.repository.model"/>
+    </bean>
+
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.tuotiansudai.sms.repository.mapper"/>
+    </bean>
+
+    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+</beans>

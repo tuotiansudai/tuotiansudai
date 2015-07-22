@@ -223,4 +223,20 @@ public class InvestServiceImpl implements InvestService {
 		return (Long) oos.get(0);
 	}
 
+	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public long getUserInvestXSCount(String userId) {
+		String hql = "select count(invest) from Invest invest join invest.loan loan where loan.loanActivityType='xs' and invest.status not in (?, ?, ?, ?) and invest.user.id=?";
+		List<Object> oos = ht.find(hql, new String[] {
+				InvestConstants.InvestStatus.UNFINISHED,
+				InvestConstants.InvestStatus.TEST,
+				InvestConstants.InvestStatus.WAIT_AFFIRM,
+				InvestConstants.InvestStatus.CANCEL,
+				userId });
+		if (null == oos.get(0)) {
+			return 0;
+		}
+		return (Long) oos.get(0);
+	}
+
 }

@@ -1,39 +1,28 @@
 apply plugin: 'java'
-apply plugin: 'org.flywaydb.flyway'
-apply from: 'db_migration.gradle'
 
 dependencies {
     def springVersion = '4.1.6.RELEASE'
     def mybatisVersion = '3.3.0'
     def mybatisSpringVersion = '1.2.3'
+    def jacksonVersion = '2.5.4'
     compile "org.springframework:spring-core:$springVersion",
             "org.springframework:spring-context:$springVersion",
             "org.springframework:spring-beans:$springVersion",
-            "org.springframework:spring-test:$springVersion",
             "org.springframework:spring-jdbc:$springVersion",
             "org.springframework:spring-tx:$springVersion",
             "org.mybatis:mybatis:$mybatisVersion",
             "org.mybatis:mybatis-spring:$mybatisSpringVersion",
             'mysql:mysql-connector-java:5.1.35',
-            'com.jolbox:bonecp-spring:0.8.0.RELEASE'
+            'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+            'com.squareup.okhttp:okhttp:2.4.0',
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+
 }
 
-buildscript {
-    repositories {
-        jcenter()
+jar {
+    from('/workspace/new_version_config/ttsd-service/') {
+        into '/'
     }
-
-    dependencies {
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
-    }
-}
-
-flyway {
-    locations = ['filesystem:db_migration/aa', 'filesystem:db_migration/ump_operations']
-    user = 'root'
-    password = ''
-    placeholders = ['aa'            : 'aa',
-                    'ump_operations': 'ump_operations']
-    schemas = ['aa', 'ump_operations']
-    url = 'jdbc:mysql://192.168.33.10:3306/'
 }

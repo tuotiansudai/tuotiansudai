@@ -22,6 +22,16 @@
 		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
 		<script>
 			//<![CDATA[
+				if (#{loanHome.instance.loanActivityType eq 'pt'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'jx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_jxb/#{loanHome.instance.id}"
+				}
+				if (#{loanHome.instance.loanActivityType eq 'dx'}) {
+					window.location.href = "#{request.contextPath}/p2p_loan_dxb/#{loanHome.instance.id}"
+				}
+
 				if (#{loanHome.instance.businessType eq '企业借款'}) {
 					window.location.href = "#{request.contextPath}/loan/#{loanHome.instance.id}";
 				}
@@ -72,10 +82,14 @@
 						<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 						<em class="jd-bar"><b style="width:#{cr}%"></b></em>#{cr}%
 					</p>
+					<div class="">
+						<span>代理人：#{loan.user.id}</span>
+						<span>借款人：#{loan.agent}</span>
+					</div>
 					<div class="span3-div">
 						<span>还款方式：#{dictUtil.getValue('repay_type',loan.type.repayType)}</span>
 						<span>发布日期：
-							<h:outputText value="#{loan.commitTime}">
+							<h:outputText value="#{loan.verifyTime}">
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>
@@ -130,7 +144,7 @@
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>&#160;元
+							</h:inputText>&#160;元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
 						</p>
 						<p>
 							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">
@@ -140,7 +154,7 @@
 								</h:link>
 							</ui:fragment>
 							<ui:fragment rendered="#{not empty loginUserInfo.loginUserId}">
-								<ui:fragment rendered="#{investHome.getUserInvestCount(loginUserInfo.loginUserId) &lt;= (configHome.getConfigIntValue('sprog_invest_count')-1)}">
+								<ui:fragment rendered="#{investHome.getUserInvestXSCount(loginUserInfo.loginUserId) &lt;= (configHome.getConfigIntValue('sprog_invest_count')-1)}">
 									<sec:ifNotGranted roles="INVESTOR">
 										<a class="sure-btn" href="javascript:void(0)" onclick="getInvestorPer();">确认投资</a>
 									</sec:ifNotGranted>
@@ -150,8 +164,8 @@
 										</h:commandLink>
 									</sec:ifAllGranted>
 								</ui:fragment>
-								<ui:fragment rendered="#{investHome.getUserInvestCount(loginUserInfo.loginUserId) &gt; (configHome.getConfigIntValue('sprog_invest_count')-1)}">
-									<a class="nsure-btn" style="font-size: 13px;">请选择其他项目投资</a>
+								<ui:fragment rendered="#{investHome.getUserInvestXSCount(loginUserInfo.loginUserId) &gt; (configHome.getConfigIntValue('sprog_invest_count')-1)}">
+									<a class="nsure-btn" style="font-size: 13px;">不符合新手标投资条件</a>
 								</ui:fragment>
 							</ui:fragment>
 						</p>
@@ -167,6 +181,7 @@
 						</p>
 						<p class="p-line"></p>
 						<p>投资人数：#{loanCalculator.countSuccessInvest(loan.id)}人投资此项目<br />项目状态：#{dictUtil.getValue('loan',loan.status)}</p>
+						<p><a href="/loanAgreementSample" target="_Blank">借款协议样本</a></p>
 						<br />
 						<p>
 							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">

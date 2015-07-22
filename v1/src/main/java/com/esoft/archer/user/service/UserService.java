@@ -2,12 +2,10 @@ package com.esoft.archer.user.service;
 
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
 import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.ConfigNotFoundException;
-import com.esoft.archer.user.exception.NotConformRuleException;
-import com.esoft.archer.user.exception.RoleNotFoundException;
-import com.esoft.archer.user.exception.UserNotFoundException;
+import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.User;
 
 /**
@@ -86,9 +84,10 @@ public interface UserService {
 	 * 发送激活邮件
 	 * 
 	 * @param userId
+	 * @param url
 	 * @throws UserNotFoundException
 	 */
-	public void sendActiveEmail(String userId, String authCode)
+	public void sendActiveEmail(String userId, String authCode, String url)
 			throws UserNotFoundException;
 
 	/**
@@ -404,7 +403,7 @@ public interface UserService {
 	 * 
 	 * @param mobileNumber
 	 */
-	public void sendRegisterByMobileNumberSMS(String mobileNumber);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber);
 
 	/**
 	 * 管理员创建借款者
@@ -450,4 +449,9 @@ public interface UserService {
 	 */
 	public void sendFindCashPwdSMS(String id, String mobileNumber)
 			throws UserNotFoundException;
+	
+
+	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
+
+	public boolean idCardIsExists(String idCard);
 }
