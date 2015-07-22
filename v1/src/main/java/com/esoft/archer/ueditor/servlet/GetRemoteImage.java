@@ -58,8 +58,8 @@ public class GetRemoteImage extends HttpServlet {
 		String url = request.getParameter("upfile");
 		System.out.println("url--" + url);
 		String state = "远程图片抓取成功！";
-		String outStr = url.substring(0,url.lastIndexOf("ue_separate_ue"));
-		response.getWriter().print("{'url':'" + outStr + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
+		//String outStr = url.substring(0,url.lastIndexOf("ue_separate_ue"));
+		response.getWriter().print("{'url':'" + url + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
 	}
 
 	/**
