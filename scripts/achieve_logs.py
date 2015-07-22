@@ -23,6 +23,12 @@ def get_yesterday_str():
     return yesterday.strftime("%Y-%m-%d")
 
 
+def filter_exist_logs(logs):
+    import os.path
+
+    return [log_path for log_path in logs if os.path.isfile(log_path)]
+
+
 def compress_tomcat_logs(yesterday_str):
     tomcat_debug_log = "/var/log/tomcat6/debug.log.{0}".format(yesterday_str)
     tomcat_error_log = "/var/log/tomcat6/error.log.{0}".format(yesterday_str)
@@ -35,16 +41,18 @@ def compress_tomcat_logs(yesterday_str):
     from subprocess import call
 
     tar_file = "{0}.tar.gz".format(tomcat_debug_log)
-    ret = call(["tar", "czf", tar_file, tomcat_debug_log, tomcat_error_log,
-                tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
-                catalina_host_manager_log, catalina_manager_log])
+    exist_logs = filter_exist_logs(
+        [tomcat_debug_log, tomcat_error_log, tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
+         catalina_host_manager_log, catalina_manager_log])
+    logger.info("Tomcat logs: {0}".format(exist_logs))
+    tar_command = ["tar", "czf", tar_file]
+    ret = call(tar_command + exist_logs)
     if ret != 0:
         logger.error('compress {0} error, ret: {1}'.format(tomcat_debug_log, ret))
         raise Exception()
     else:
-        call(['rm', tomcat_debug_log, tomcat_error_log,
-              tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
-              catalina_host_manager_log, catalina_manager_log])
+        rm_command = ['rm']
+        call(rm_command + exist_logs)
     return tar_file
 
 
