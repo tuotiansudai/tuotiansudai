@@ -1,5 +1,8 @@
 package com.esoft.archer.ueditor.servlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +13,7 @@ import java.util.Iterator;
 
 public class GetRemoteImage extends HttpServlet {
 
+	static Log log = LogFactory.getLog(GetRemoteImage.class);
 	/**
 	 * Constructor of the object.
 	 */
@@ -56,7 +60,7 @@ public class GetRemoteImage extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		String url = request.getParameter("upfile");
-		System.out.println("url--" + url);
+		log.info("url--" + url);
 		String state = "远程图片抓取成功！";
 		response.getWriter().print("{'url':'" + url + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
 	}
