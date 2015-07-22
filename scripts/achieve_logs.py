@@ -130,6 +130,28 @@ def main(suffix_name):
         logger.info("done")
     except Exception as e:
         logger.error(e)
+        send_mail()
+
+
+def send_mail():
+    # Send the email (this example assumes SMTP authentication is required)
+    import smtplib
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
+
+    strFrom = 'no-reply@tuotiansudai.com'
+    msg = MIMEMultipart()
+    msg["From"] = strFrom
+    recipient = 'all@tuotiansudai.com'
+    msg["To"] = recipient
+
+    msg["Subject"] = "[ALERT] {0} achieve log error!".format(datetime.datetime.today())
+
+    smtp = smtplib.SMTP()
+    smtp.connect('smtp.exmail.qq.com')
+    smtp.login('no-reply@tuotiansudai.com', 'w62CQIhM6acj')
+    smtp.sendmail(strFrom, recipient, msg.as_string())
+    smtp.quit()
 
 
 if __name__ == '__main__':
