@@ -160,11 +160,12 @@
     margin: 0px 64px;
     width:484px;
     padding: 10px;
-    border:#000 1px solid;
+    border:#fff 1px solid;
     font-size: 22px;
     line-height: 40px;
     text-indent: 30px;
     background: #e7783a;
+    color:#fff;
 }
 .cerWrap ul{
     margin: 0px 64px;
@@ -179,7 +180,7 @@
     margin-top: 40px;
 }
 .cerWrap ul li small{
-    color:#fff;
+    color:#000;
 }
 .cerWrap ul li input{
     width:405px;

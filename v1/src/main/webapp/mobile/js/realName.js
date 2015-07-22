@@ -18,6 +18,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 yourId:{
                     required:true,
                     isIdCardNo:true,
+                    minlength:15,
                     remote:{
                         url: '/mobile/certification/idCard/',
                         type: 'GET',
@@ -36,6 +37,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 yourId:{
                     required:'身份证号码不能为空！',
                     isIdCardNo:'身份证号码格式错误！',
+                    minlength:'身份证号码至少为15位！',
                     remote:'身份证号码已存在！'
                 }
             },
