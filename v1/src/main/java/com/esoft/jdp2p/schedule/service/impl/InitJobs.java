@@ -162,6 +162,10 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					scheduler.resumeTrigger(trigger.getKey());
 				}
 
+
+
+				this.initAutoActivityRewardJob();
+
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
@@ -241,13 +245,30 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 		scheduler.scheduleJob(jobDetail2, trigger2);
 	}
 
-	/**
-	 * 检查项目逾期
-	 * 
-	 * @throws SchedulerException
-	 */
-	private void initRefreshUserLoanstatusJob() throws SchedulerException {
+	private void initAutoActivityRewardJob() throws SchedulerException {
+		Date triggerTime = new DateTime(2015, 7, 21, 23, 30, 0).toDate();
 
+		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler
+				.getTrigger(TriggerKey
+						.triggerKey(
+								ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD,
+								ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD));
+
+
+		if (existedTrigger == null && triggerTime.after(new Date())) {
+			JobDetail jobDetail = JobBuilder.newJob(AutoActivityRewardJob.class)
+					.withIdentity(ScheduleConstants.JobName.AUTO_ACTIVITY_REWARD, ScheduleConstants.JobGroup.AUTO_ACTIVITY_REWARD)
+					.build();
+
+			SimpleTrigger trigger = TriggerBuilder.newTrigger()
+					.withIdentity(ScheduleConstants.TriggerName.AUTO_ACTIVITY_REWARD, ScheduleConstants.TriggerGroup.AUTO_ACTIVITY_REWARD)
+					.forJob(jobDetail)
+					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+					.startAt(triggerTime)
+					.build();
+
+			scheduler.scheduleJob(jobDetail, trigger);
+		}
 	}
 
 }

@@ -29,15 +29,13 @@ import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
-import com.esoft.jdp2p.schedule.ScheduleConstants;
-import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
-import com.ttsd.redis.RedisClinet;
+import com.ttsd.redis.RedisClient;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
-import org.quartz.*;
 import org.quartz.impl.StdScheduler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -49,7 +47,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.*;
 
 /**
@@ -109,6 +106,12 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private ValidationService validationService;
+
+	@Resource
+	RedisClient redisClient;
+
+	@Value("${redis.registerVerifyCode.expireTime}")
+	private int registerVerifyCodeExpireTime;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -182,6 +185,7 @@ public class UserServiceImpl implements UserService {
 		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
+
 		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
@@ -638,9 +642,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
-		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
 		Map<String, String> params = new HashMap<String, String>();
 		// TODO:实现模板
@@ -655,16 +657,12 @@ public class UserServiceImpl implements UserService {
 			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String ip = CommonUtils.getRemoteHost(request);
 			Date nowTime = new Date();
-			redisClinet.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
-			if (redisClinet.getJedis().exists(ip)) {
-				Date lastTime = DateUtil.StringToDate(redisClinet.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
-				long diff = nowTime.getTime() - lastTime.getTime();
-				long diffMM = diff/60000;
-				if (diffMM < 1) {
-					return false;
-				}
+			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.getJedis().exists(ip)) {
+				return false;
+			} else {
+				redisClient.getJedis().setex(ip, registerVerifyCodeExpireTime, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			}
-			redisClinet.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);
