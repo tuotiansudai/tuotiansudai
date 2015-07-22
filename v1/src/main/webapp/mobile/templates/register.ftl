@@ -8,7 +8,8 @@
     <link rel="stylesheet" type="text/css" href="/mobile/style/style.css"/>
     <link rel="stylesheet" type="text/css" href="/mobile/style/global.css"/>
     <link rel="stylesheet" type="text/css" href="/mobile/style/copyright.css"/>
-    <script src="/mobile/js/libs/require.js" defer async="true" data-main="/mobile/js/logUp"></script>
+    <script src="/mobile/js/config.js" type="application/javascript"></script>
+    <script src="/mobile/js/libs/require.js" defer async="true" data-main="/mobile/js/logUp.js"></script>
 </head>
 <body>
 <div class="wrap"><!--wrap begin-->
@@ -19,10 +20,10 @@
                     <span class="userTip">用户名不能包含空格！</span>
                 </li>
                 <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
-                           minLength="6" required/></li>
-                <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" maxLength="11" name="phoneNumber"
-                           required/><span class="tip">手机号码不能为空</span></li>
-                <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode" required/></li>
+                           /></li>
+                <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"
+                           /></li>
+                <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode"/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
             <div class="submitBtn">
