@@ -1,5 +1,5 @@
 import redis
-from tests.ump_service.constants import REDIS_HOST, FRONTEND_NOTIFY_CHANNEL, BACKEND_NOTIFY_CHANNEL
+from test.ump_service.constants import REDIS_HOST, FRONTEND_NOTIFY_CHANNEL, BACKEND_NOTIFY_CHANNEL
 
 
 class Store(object):

@@ -4,7 +4,7 @@ import random
 from time import sleep
 import sys
 import requests
-from tests.ump_service.store_helper import Store
+from test.ump_service.store_helper import Store
 
 logger = logging.getLogger(__name__)
 store = Store()
