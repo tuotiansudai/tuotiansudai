@@ -12,9 +12,9 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
 	xmlns:tx="http://www.springframework.org/schema/tx" default-lazy-init="true">
 
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:sendCloud.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:sendCloud.properties,classpath:common.properties" />
 	<context:annotation-config />
-	<context:component-scan base-package="com.esoft" />
+	<context:component-scan base-package="com.esoft,com.ttsd" />
 	<tx:annotation-driven transaction-manager="transactionManager"
 		proxy-target-class="true" />
 

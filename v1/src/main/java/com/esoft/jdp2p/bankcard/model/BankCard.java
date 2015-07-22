@@ -60,6 +60,7 @@ public class BankCard implements java.io.Serializable {
 
 	/** default constructor */
 	public BankCard() {
+		this.bankCardType = "DEBIT";
 	}
 
 	/** full constructor */
@@ -102,6 +103,9 @@ public class BankCard implements java.io.Serializable {
 
 	@Column(name = "bank_card_type", length = 100)
 	public String getBankCardType() {
+		if (this.bankCardType == null) {
+			this.bankCardType = "DEBIT";
+		}
 		return bankCardType;
 	}
 

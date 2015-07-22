@@ -120,8 +120,8 @@
 										<p:watermark value="请输入验证码" for="captcha_input"></p:watermark>
 										<a class="login_yzm" href="javascript:void(0)"><img
 											alt="点击刷新" id="verifyCode"
-											src="#{request.contextPath}/verifyCodeServlet"
-											onclick="this.src='#{request.contextPath}/verifyCodeServlet?'+new Date().getTime()" /></a>
+											src="#{request.contextPath}/verifyCodeInRedisServlet"
+											onclick="this.src='#{request.contextPath}/verifyCodeInRedisServlet?'+new Date().getTime()" /></a>
 										<div class="clear"></div>
 									</div>
 								</div>

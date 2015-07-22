@@ -29,16 +29,14 @@ import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
-import com.esoft.jdp2p.schedule.ScheduleConstants;
-import com.esoft.jdp2p.schedule.job.RegisterEmailVerificationJob;
 import com.google.common.base.Strings;
-import com.ttsd.redis.RedisClinet;
+import com.ttsd.redis.RedisClient;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
-import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +46,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.*;
 
 /**
@@ -108,6 +105,9 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	private ValidationService validationService;
+
+	@Resource
+	RedisClient redisClient;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -181,6 +181,7 @@ public class UserServiceImpl implements UserService {
 		String activeLink = currentAppUrl
 				+ "/activateAccount?activeCode=" + activeCode;
 		params.put("active_url", activeLink);
+
 		messageBO.sendEmailBySendCloud(ht.get(UserMessageTemplate.class,
 						MessageConstants.UserMessageNodeId.REGISTER_ACTIVE + "_email"),
 				params, email);
@@ -528,7 +529,7 @@ public class UserServiceImpl implements UserService {
 		if (activateUserByEmailAi != null){
 			ht.delete(activateUserByEmailAi);
 		}
-		if (!oldEmail.equals(email) && bingEmailAi != null){
+		if (oldEmail != null && !oldEmail.equals(email) && bingEmailAi != null){
 				ht.delete(bingEmailAi);
 		}
 		// 如果认证码输入正确，更改此认证码的状态为已激活
@@ -637,7 +638,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
-		RedisClinet redisClinet = new RedisClinet();
 		// FIXME:验证手机号码的合法性
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
@@ -654,16 +654,16 @@ public class UserServiceImpl implements UserService {
 			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String ip = CommonUtils.getRemoteHost(request);
 			Date nowTime = new Date();
-			redisClinet.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
-			if (redisClinet.getJedis().exists(ip)) {
-				Date lastTime = DateUtil.StringToDate(redisClinet.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
+			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.getJedis().exists(ip)) {
+				Date lastTime = DateUtil.StringToDate(redisClient.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
 				long diff = nowTime.getTime() - lastTime.getTime();
 				long diffMM = diff/60000;
 				if (diffMM < 1) {
 					return false;
 				}
 			}
-			redisClinet.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+			redisClient.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);
@@ -866,44 +866,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addRegisterEmailVerificationJob(User user) {
-		Date now = new Date();
-		Calendar cal = Calendar.getInstance();
-		int emailValidDay = 7;
-		cal.setTime(now);
-		cal.add(Calendar.DATE, emailValidDay);
-		Date deadline = cal.getTime();
-
-		String userId = user.getId();
-		String authCode = authService.createAuthInfo(userId, user.getEmail(), deadline,
-				CommonConstants.AuthInfoType.ACTIVATE_USER_BY_EMAIL)
-				.getAuthCode();
-
-		Date threeMinutesLater = DateUtil.addMinute(now, 2);
-		JobDetail jobDetail = JobBuilder
-				.newJob(RegisterEmailVerificationJob.class)
-				.withIdentity(userId, ScheduleConstants.JobGroup.REGISTER_VERIFICATION_EMAIL)
-				.build();
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.USER_ID, userId);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.AUTH_CODE, authCode);
-		jobDetail.getJobDataMap().put(RegisterEmailVerificationJob.URL, FacesUtil.getCurrentAppUrl());
-		SimpleTrigger trigger = TriggerBuilder
-				.newTrigger()
-				.withIdentity(userId, ScheduleConstants.TriggerGroup.REGISTER_VERIFICATION_EMAIL)
-				.forJob(jobDetail)
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-				.startAt(threeMinutesLater).build();
-		try {
-			scheduler.scheduleJob(jobDetail, trigger);
-		} catch (SchedulerException e) {
-			log.error("用户注册添加邮箱验证Job 失败: " + userId);
-			log.error(e);
-		}
-		if (log.isDebugEnabled())
-			log.debug("用户注册添加邮箱验证Job完成: " + userId);
-	}
-
-	@Override
 	public boolean validateRegisterUser(User instance) throws UserRegisterException, InputRuleMatchingException {
 		try {
 			validationService.inputRuleValidation("input.username", instance.getUsername());
@@ -961,6 +923,11 @@ public class UserServiceImpl implements UserService {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean idCardIsExists(String idCard){
+		int count = DataAccessUtils.intResult(ht.find("select count(user) FROM User user WHERE user.idCard = ?", new String[]{idCard}));
+		return  count > 0;
 	}
 
 }

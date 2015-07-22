@@ -23,9 +23,15 @@ def mkwar():
         run('/opt/gradle/latest/bin/gradle war')
 
 
+def stop_tomcat():
+    sudo('kill -9 `cat /var/run/tomcat6.pid`')
+    sudo('rm /var/run/tomcat6.pid')
+    sudo('rm /var/lock/subsys/tomcat6')
+
+
 def deploy_tomcat():
     with cd('/workspace/tuotian/v1'):
-        sudo('service tomcat6 stop')
+        stop_tomcat()
         sudo('rm -rf /usr/share/tomcat6/webapps/ROOT')
         sudo('cp war/ROOT.war /usr/share/tomcat6/webapps/')
         sudo('service tomcat6 start')
