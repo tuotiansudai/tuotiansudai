@@ -221,15 +221,13 @@ public class UmPayBindingBankCardOperation extends
 									ht.update(bankCard);
 								}
 							}
-							if (!this.rechargeService.isRealNameBank(paramMap.get("gate_id"))){
-								String detailTemplate = "用户{0}绑定{1}银行卡";
-								try {
-									this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
-											userWillBindingBankCard.get(0).getUser().getId(),
-											this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
-								} catch (InsufficientBalance insufficientBalance) {
-									log.error(insufficientBalance);
-								}
+							String detailTemplate = "用户{0}绑定{1}银行卡";
+							try {
+								this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
+										userWillBindingBankCard.get(0).getUser().getId(),
+										this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
+							} catch (InsufficientBalance insufficientBalance) {
+								log.error(insufficientBalance);
 							}
 							log.debug(("用户:"
 									+ userWillBindingBankCard.get(0).getUser()
