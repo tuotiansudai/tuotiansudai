@@ -24,23 +24,19 @@ public class BrowserFilter implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
-        String functionVersion = request.getParameter("functionVersion");
         boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
         HttpSession session = req.getSession();
         SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         boolean notLogin = (securityContextImpl == null);
-        String visitURL = req.getRequestURL().toString();
-        if(!visitURL.contains(".js") && !visitURL.contains(".css") && !visitURL.contains(".png") && !visitURL.contains(".jpg")  && !visitURL.contains(".jpeg") && !visitURL.contains(".gif")){
-            if (functionVersion != null && isMobileBrowser && notLogin){
-                if ("computer".equals(functionVersion)){
-                    req.getRequestDispatcher("/").forward(req, res);
-                }else if ("mobile".equals(functionVersion)){
-                    req.getRequestDispatcher("/mobile/register").forward(req, res);
-                }
-            }else if (functionVersion == null && isMobileBrowser && notLogin){
-                if (isMobileBrowser){
-                    req.getRequestDispatcher("/mobile/register").forward(req, res);
-                }
+        String visitURI = req.getRequestURI();
+
+        if (isMobileBrowser) {
+            if (visitURI.equals("/") && notLogin) {
+                ((HttpServletResponse) response).sendRedirect("/mobile/register");
+            }
+        } else {
+            if (visitURI.equals("/mobile/register") && notLogin) {
+                ((HttpServletResponse) response).sendRedirect("/register");
             }
         }
         chain.doFilter(req,res);
