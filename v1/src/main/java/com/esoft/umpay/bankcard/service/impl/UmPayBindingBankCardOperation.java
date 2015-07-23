@@ -1,26 +1,5 @@
 package com.esoft.umpay.bankcard.service.impl;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import com.esoft.archer.user.model.RechargeBankCard;
-import com.esoft.jdp2p.bankcard.service.BankCardService;
-import com.esoft.jdp2p.loan.exception.InsufficientBalance;
-import com.esoft.jdp2p.risk.service.SystemBillService;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -28,6 +7,8 @@ import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
 import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
@@ -41,6 +22,7 @@ import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -207,7 +189,12 @@ public class UmPayBindingBankCardOperation extends
 						String bankCardId = order_id.substring(13,
 								order_id.length());
 						if (!this.bankCardService.isCardNoBinding(bankCardId)) {
-							String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+							String hql = "";
+							if (StringUtils.isNotEmpty(paramMap.get("user_bind_ agreement_list"))) {
+								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = '1'";
+							} else {
+								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = '0'";
+							}
 							List<BankCard> userWillBindingBankCard = ht
 									.find(hql, new String[]{user.getId(), "uncheck",
 											bankCardId});
@@ -221,14 +208,7 @@ public class UmPayBindingBankCardOperation extends
 									ht.update(bankCard);
 								}
 							}
-							String detailTemplate = "用户{0}绑定{1}银行卡";
-							try {
-								this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
-										userWillBindingBankCard.get(0).getUser().getId(),
-										this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
-							} catch (InsufficientBalance insufficientBalance) {
-								log.error(insufficientBalance);
-							}
+
 							log.debug(("用户:"
 									+ userWillBindingBankCard.get(0).getUser()
 									.getId() + "绑定"
