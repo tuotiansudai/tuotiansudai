@@ -46,6 +46,13 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                         }
                     }
                 }
+            },
+            referrer:{
+                remote:{
+                    url: '/mobile/register/referrerValidation',
+                    type: 'GET',
+                    dataType: 'json'
+                }
             }
         },
         errorElement: 'div',
@@ -70,12 +77,17 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 required: "验证码不能为空！",
                 vCode:"验证码输入错误！",
                 remote:"验证码输入错误！"
+            },
+            referrer:{
+                remote:'此用户不存在！'
             }
         },
         submitHandler: function(form){
             form.submit();
         }
     });
+
+
 
     $('.check_input').bind('click',function(){
         if($('.check_input').prop('checked')){
@@ -110,29 +122,6 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
             }
             Num--;
-        }
-    });
-
-    $('.rec').on('blur',function(){
-        var recValue=$('.rec').val();
-        if($(this).val()!==''){
-            $.ajax({
-                url:'',
-                type:'GET',
-                dataType:'json',
-                data:{
-                    rev:recValue
-                },
-                error:function( status ){
-                    if( status == 'false' ){
-                        $('.rec-tip').css('display','block');
-                        $('.send_vCode').css('pointer-events','none');
-                    } else {
-                        $('.rec-tip').css('display','none');
-                        $('.send_vCode').css('pointer-events','auto');
-                    }
-                }
-            });
         }
     });
 });
