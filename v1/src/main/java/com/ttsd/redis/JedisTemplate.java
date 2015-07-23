@@ -23,6 +23,9 @@ public class JedisTemplate {
     @Value("${redis.password}")
     private String redisPassword;
 
+    @Value("${redis.db}")
+    private Integer redisDb;
+
     public void setJedisPool(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
@@ -31,13 +34,6 @@ public class JedisTemplate {
 
         return jedisPool;
     }
-
-    @Value("${redis.db}")
-    private Integer redisDb;
-
-//    public JedisTemplate(JedisPool jedisPool) {
-//        this.jedisPool = jedisPool;
-//    }
 
     /**
      * Callback interface for template.

@@ -15,14 +15,11 @@ import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.service.CaptchaService;
 import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
-import com.esoft.archer.common.service.impl.CaptchaServiceImpl;
 import com.esoft.archer.user.exception.UserRegisterException;
 import com.ttsd.aliyun.AliyunUtils;
-import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.http.HttpRequest;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -409,7 +406,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, request.getSession().getId());
-            captchaService.deleteCaptchFormRedis(sessionIdInRedisStatus);
+            captchaService.deleteCaptchaFormRedis(sessionIdInRedisStatus);
             if (isLoginAfterRegister) {
                 login(getInstance().getId(), FacesUtil.getHttpSession());
             }
@@ -759,15 +756,9 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                     || StringUtils.isNotEmpty(referrer) && !vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
                 verifyResult = false;
             }
-        } catch (InputRuleMatchingException e) {
+        } catch (InputRuleMatchingException | NoMatchingObjectsException | ClassNotFoundException | NoSuchMethodException e) {
             log.error(e.getLocalizedMessage(),e);
             verifyResult = false;
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getLocalizedMessage(),e);
-        } catch (ClassNotFoundException e) {
-            log.error(e.getLocalizedMessage(),e);
-        } catch (NoSuchMethodException e) {
-            log.error(e.getLocalizedMessage(),e);
         }
 
         return verifyResult;
