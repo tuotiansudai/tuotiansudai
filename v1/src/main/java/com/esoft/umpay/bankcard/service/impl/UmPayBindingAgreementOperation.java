@@ -113,14 +113,16 @@ public class UmPayBindingAgreementOperation extends
                 to.setResponseTime(new Date());
                 to.setResponseData(paramMap.toString());
                 ht.update(to);
-                String hql = "from BankCard where user.id =? and status = ?";
+                String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = '0'";
                 List<BankCard> userBankCard = ht
                         .find(hql,new String[]{user_id,"passed"});
                 if (null != userBankCard && userBankCard.size() >0) {
-                    BankCard bankCard = userBankCard.get(0);
-                    //更新isOpenFastPayment标志
-                    bankCard.setIsOpenFastPayment("1");
-                    ht.update(bankCard);
+                    for (int i=0;i<userBankCard.size();i++) {
+                        BankCard bankCard = new BankCard();
+                        bankCard = userBankCard.get(i);
+                        bankCard.setIsOpenFastPayment("1");
+                        ht.update(bankCard);
+                    }
                     log.debug(("用户:"
                             + userBankCard.get(0).getUser()
                             +"签约协议成功!"));
@@ -156,14 +158,16 @@ public class UmPayBindingAgreementOperation extends
                     String user_id = paramMap.get("user_id");
                     if ("0000".equals(ret_code)) {
 
-                        String hql = "from BankCard where user.id =?";
+                        String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = '0'";
                         List<BankCard> userBankCard = ht
                                 .find(hql,new String[]{user_id,"passed"});
                         if (null != userBankCard && userBankCard.size() >0) {
-                            BankCard bankCard = userBankCard.get(0);
-                            //更新isOpenFastPayment标志
-                            bankCard.setIsOpenFastPayment("1");
-                            ht.update(bankCard);
+                            for (int i=0;i<userBankCard.size();i++) {
+                                BankCard bankCard = new BankCard();
+                                bankCard = userBankCard.get(i);
+                                bankCard.setIsOpenFastPayment("1");
+                                ht.update(bankCard);
+                            }
                             log.debug(("用户:"
                                     + userBankCard.get(0).getUser()
                                     +"签约协议成功!"));
