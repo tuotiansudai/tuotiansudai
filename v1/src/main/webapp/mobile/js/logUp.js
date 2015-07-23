@@ -124,10 +124,12 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                     rev:recValue
                 },
                 error:function( status ){
-                    if( status=='false' ){
+                    if( status == 'false' ){
                         $('.rec-tip').css('display','block');
+                        $('.send_vCode').css('pointer-events','none');
                     } else {
                         $('.rec-tip').css('display','none');
+                        $('.send_vCode').css('pointer-events','auto');
                     }
                 }
             });
