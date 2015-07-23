@@ -38,6 +38,7 @@
 }
 .step ul li span{
     display:none;
+    color:#000;
 }
 .step ul li input {
     display: block;
