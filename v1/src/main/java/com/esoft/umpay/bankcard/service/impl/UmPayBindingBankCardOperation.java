@@ -190,7 +190,7 @@ public class UmPayBindingBankCardOperation extends
 								order_id.length());
 						if (!this.bankCardService.isCardNoBinding(bankCardId)) {
 							String hql = "";
-							if (StringUtils.isNotEmpty(paramMap.get("user_bind_ agreement_list"))) {
+							if (StringUtils.isNotEmpty(paramMap.get("user_bind_agreement_list"))) {
 								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = '1'";
 							} else {
 								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = '0'";
