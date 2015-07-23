@@ -96,8 +96,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNum);
-            // 用户密码通过sha加密
             user.setPassword(password);
+            user.setReferrer(referrer);
             try {
                 userService.registerByMobileNumber(user, vCode, referrer);
                 log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
