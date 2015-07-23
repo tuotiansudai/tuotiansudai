@@ -403,7 +403,7 @@ public interface UserService {
 	 * 
 	 * @param mobileNumber
 	 */
-	public void sendRegisterByMobileNumberSMS(String mobileNumber);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber);
 
 	/**
 	 * 管理员创建借款者
@@ -449,8 +449,9 @@ public interface UserService {
 	 */
 	public void sendFindCashPwdSMS(String id, String mobileNumber)
 			throws UserNotFoundException;
-
-	void addRegisterEmailVerificationJob(User user);
+	
 
 	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
+
+	public boolean idCardIsExists(String idCard);
 }

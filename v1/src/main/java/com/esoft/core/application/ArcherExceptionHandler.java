@@ -1,32 +1,39 @@
 package com.esoft.core.application;
 
-import java.util.Iterator;
-import java.util.Map;
+import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.jdp2p.message.service.MailService;
+import com.esoft.jdp2p.message.service.SendCloudMailService;
+import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
+import com.esoft.jdp2p.message.service.impl.SendCloudMailServiceImpl;
+import com.ttsd.util.CommonUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 import javax.faces.FacesException;
-import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import com.esoft.archer.system.controller.LoginUserInfo;
-import com.esoft.jdp2p.message.service.MailService;
-import com.esoft.jdp2p.message.service.impl.MailServiceImpl;
-import com.ttsd.aliyun.PropertiesUtils;
-import com.ttsd.util.CommonUtils;
-
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Map;
+@Service
 public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
+
+    @Resource
+    SendCloudMailService sendCloudMailService;
 
     private ExceptionHandler wrapped;
 
-    public ArcherExceptionHandler(ExceptionHandler wrapped) {
+    public void setWrapped(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
 
+//    public ArcherExceptionHandler(ExceptionHandler wrapped) {
+//        this.wrapped = wrapped;
+//    }
     @Override
     public ExceptionHandler getWrapped() {
         return this.wrapped;
@@ -43,8 +50,18 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                 LoginUserInfo loginUserInfo = new LoginUserInfo();
                 String userId = loginUserInfo.getLoginUserId();
                 HttpServletRequest request = (HttpServletRequest)context.getCurrentInstance().getExternalContext().getRequest();
+                Enumeration headerNames = request.getHeaderNames();
                 String RequestUrl = request.getRequestURL().toString();
                 StringBuffer exceptionStringBuffer = new StringBuffer();
+                exceptionStringBuffer.append("headers：");
+                exceptionStringBuffer.append("\n");
+                while (headerNames.hasMoreElements()) {
+                    String key = (String) headerNames.nextElement();
+                    String value = request.getHeader(key);
+                    exceptionStringBuffer.append(key + "=" + value + ";");
+                    exceptionStringBuffer.append("\n");
+                }
+                exceptionStringBuffer.append("\n");
                 if (request.getMethod().equals("GET")) {
                     RequestUrl += "?"+request.getQueryString();
                 } else {
@@ -79,11 +96,12 @@ public class ArcherExceptionHandler extends ExceptionHandlerWrapper {
                     flag += 1;
                 }
                 if (!CommonUtils.isDevEnvironment("environment")) {
-                    MailService mailService = new MailServiceImpl();
-                    mailService.sendMailException("all@tuotiansudai.com", "托天速贷", "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
+                    sendCloudMailService.sendMailException(CommonUtils.administratorEmailAddress(), "系统异常报告:用户-" + userId + ";" + request.getMethod() + "-" + RequestUrl, exceptionStringBuffer.toString());
                 }
-                throw new FacesException(exceptionStringBuffer.toString());
-            } finally {
+                throw new RuntimeException(exceptionStringBuffer.toString());
+            }
+
+            finally {
                 it.remove();
             }
 

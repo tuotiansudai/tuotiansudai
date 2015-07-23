@@ -45,19 +45,6 @@
                                 </div>
                                 <div class="txczje02">
                                     <div class="txczje_l">
-                                        <span>*</span>选择银行
-                                    </div>
-                                    <div class="txczje_r">
-                                        <h:selectOneMenu value="#{bankCardHome.instance.bankNo}"
-                                                         styleClass="date_select date_select03">
-                                            <f:selectItems value="#{rechargeList.rechargeBankCards}" var="bc"
-                                                           itemLabel="#{bc.bankName}" itemValue="#{bc.no}"/>
-                                        </h:selectOneMenu>
-                                    </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="txczje02">
-                                    <div class="txczje_l">
                                         <span>*</span>卡类型
                                     </div>
                                     <div class="txczje_r">
@@ -104,10 +91,14 @@
                                 <ui:repeat var="bankcard" value="#{bankCardList.getBoundBankCardsByUserId(loginUserInfo.loginUserId)}">
                                     <li>
                                         <div class="yhk">
-                                            <img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bankcard.bankNo}.png"/>
+                                            <ui:fragment rendered="#{bankCardHome.isExistsBankPhoto(bankcard.bankNo) eq true}">
+                                                <img src="#{tplVars.themeImagePath}/umpaybanklogo/#{bankcard.bankNo}.png"/>
+                                            </ui:fragment>
+                                            <ui:fragment rendered="#{bankCardHome.isExistsBankPhoto(bankcard.bankNo) eq false}">
+                                                <span class="spanBank">#{bankcard.bank}</span>
+                                            </ui:fragment>
                                             <br/>
                                             <ui:param name="bcnL" value="#{bankcard.cardNo.length()}"></ui:param>
-
                                             <p> #{fn:substring(bankcard.cardNo,0,4)} **** **** #{fn:substring(bankcard.cardNo,bcnL-4,bcnL)}</p>
                                         </div>
                                         <div class="clear"></div>
@@ -123,7 +114,8 @@
                     温馨提示<br/>
                     1、如果您填写的开户行支行不正确，可能将无法成功提现，由此产生的提现费用将不予返还。<br/>
                     2、如果您不确定开户行支行名称，可打电话到所在地银行的营业网点询问或上网查询。<br/>
-                    3、不支持提现至信用卡账户。
+                    3、不支持提现至信用卡账户。<br/>
+                    4、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。
                 </p>
             </div>
             <div class="clear"></div>

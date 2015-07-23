@@ -12,7 +12,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-RECIPIENT = ["xupengfei@tuotiansudai.com", "lei@tuotiansudai.com"]
+RECIPIENT = ["xupengfei@tuotiansudai.com"]
 
 
 SQL = """
@@ -32,13 +32,34 @@ SQL = """
         IF (n.`id` IS NOT NULL, 1, 0) AS '是否充值',
         IFNULL(investtemp.`money`, 0.00) AS '投资情况',
         t.`referrer` AS '推荐人',
-        u.`mobile_number`
+        u.`mobile_number`,
+        IF (
+          b.`status` = 'passed',
+          1,
+          0
+        ) AS '用户是否绑卡',
+        IF (
+          b1.`status` = 'passed',
+          1,
+          0
+        ) AS '推荐人是否绑卡'
       FROM
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
-        LEFT JOIN `user` u
-          ON t.`referrer` = u.`username`
+        LEFT JOIN
+          (SELECT DISTINCT
+             x.`mobile_number`,
+             x.`id`
+           FROM
+             `user` x
+           JOIN `user` y
+           ON x.`id` = y.`referrer`) u
+          ON t.`referrer` = u.`id`
+        LEFT JOIN bank_card b
+          ON t.`id` = b.`user_id` AND b.`status` = 'passed'
+        LEFT JOIN `bank_card` b1
+          ON t.`referrer` = b1.`user_id` AND b1.`status` = 'passed'
         LEFT JOIN recharge n
           ON t.`id` = n.`user_id`
           AND n.`status` = 'success'
@@ -112,12 +133,15 @@ def send_mail(data):
 
 
 def main(host="localhost", user_name="root", password="", db="tuotiansudai"):
-    logger.info('start')
-    data = query(host, user_name, password, db)
-    logger.info("total new count is {0}".format(len(data)))
-    csv_data = build_csv(data)
-    send_mail(csv_data)
-    logger.info('done')
+    try:
+        logger.info('start')
+        data = query(host, user_name, password, db)
+        logger.info("total new count is {0}".format(len(data)))
+        csv_data = build_csv(data)
+        send_mail(csv_data)
+        logger.info('done')
+    except Exception as e:
+        logger.error(e)
 
 
 if __name__ == "__main__":

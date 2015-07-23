@@ -1,8 +1,9 @@
 **/*.db
 .sass-cache
+*.log
 spike.py
 **/*.pyc
-**/.idea/
+**/.idea/**
 **/out/**
 **/build/**/*
 **/*.iml
@@ -14,5 +15,6 @@ spike.py
 **/gradlew.bat
 **/gradlew
 **/gradle/**
+**/node_modules/**
 **/classes/**
 **/node_modules/

@@ -36,7 +36,7 @@ public class MyJdbcUserDetailsManager extends JdbcDaoImpl {
 			return new ArrayList<UserDetails>();
 		}
 		return getJdbcTemplate()
-				.query("select username,password,status from user where username=? or email=? or mobile_number=?",
+				.query("select username, password, status from user where username=? or email=? or mobile_number=?",
 						new String[] { username, username, username },
 						new RowMapper<UserDetails>() {
 							public UserDetails mapRow(ResultSet rs, int rowNum)

@@ -88,9 +88,10 @@ public class AliyunUtils {
         String waterPath = rootPath + "/site/themes/default/images/watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(WaterMarkUtils.pressImage(waterPath,inputStream,0,0).toByteArray());
         objectMeta.setContentLength(in.available());
+        objectMeta.setContentType("image/jpeg");
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
         PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
@@ -103,10 +104,10 @@ public class AliyunUtils {
         OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
         objectMeta.setContentLength(input.available());
-
+        objectMeta.setContentType("image/jpeg");
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         String sitePath = PropertiesUtils.getPro("plat.sitePath")+format.format(new Date())+"/";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + ImageUploadUtil.getFileExt(fileName);
         String filePath = sitePath+ fileName;
         PutObjectResult result = client.putObject(BUCKET_NAME, fileName, input, objectMeta);
