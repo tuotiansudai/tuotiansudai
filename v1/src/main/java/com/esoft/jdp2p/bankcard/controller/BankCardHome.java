@@ -125,7 +125,12 @@ public class BankCardHome extends EntityHome<BankCard> implements java.io.Serial
 	}
 
 	public boolean isOpenFastPay(String userId) {
-		return this.bankCardService.isOpenFastPayment(userId);}
+		return this.bankCardService.isOpenFastPayment(userId);
+	}
+
+	public boolean isFastPaymentBank(String bankNo) {
+		return this.rechargeService.isFastPaymentBank(bankNo);
+	}
 
 	public boolean isExistsBankPhoto(String bankNo){
 		return this.bankCardService.isExistsBankPhoto(bankNo);

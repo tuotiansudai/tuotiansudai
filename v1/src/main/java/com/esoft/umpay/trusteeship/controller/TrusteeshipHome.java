@@ -181,7 +181,7 @@ public class TrusteeshipHome {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-		return "pretty:withdraw";
+		return "pretty:bankCardList";
 	}
 
 	/**

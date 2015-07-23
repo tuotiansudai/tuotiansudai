@@ -84,4 +84,6 @@ public interface RechargeService {
 	public List<RechargeBankCard> getRealNameBankList();
 
 	public boolean isRealNameBank(String bankNo);
+
+	public boolean isFastPaymentBank(String bankNo);
 }

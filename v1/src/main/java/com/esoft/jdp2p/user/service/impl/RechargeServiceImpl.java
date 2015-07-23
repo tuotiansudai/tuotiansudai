@@ -193,6 +193,17 @@ public class RechargeServiceImpl implements RechargeService {
 		return false;
 	}
 
+	@Override
+	public boolean isFastPaymentBank(String bankNo) {
+		List<RechargeBankCard> fastPayList = this.getFastPayBankCardsList();
+		for (RechargeBankCard rechargeBankCard : fastPayList){
+			if (StringUtils.equals(rechargeBankCard.getNo(), bankNo)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static Properties props = new Properties();
 	static {
 		try {

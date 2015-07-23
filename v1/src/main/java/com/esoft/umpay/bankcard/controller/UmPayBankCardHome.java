@@ -1,6 +1,7 @@
 package com.esoft.umpay.bankcard.controller;
 
 import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -21,6 +22,7 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 public class UmPayBankCardHome extends BankCardHome {
 
@@ -179,7 +181,6 @@ public class UmPayBankCardHome extends BankCardHome {
             return;
         }
 		String userId = loginUser.getId();
-        bingAgreementSave();
         try {
             umPayBindingAgreementOperation.createOperation(userId, FacesContext.getCurrentInstance());
         } catch (Exception e) {
@@ -188,17 +189,6 @@ public class UmPayBankCardHome extends BankCardHome {
         } finally {
             this.setInstance(null);
         }
-
-    }
-
-    @Transactional(readOnly = false)
-    public String bingAgreementSave(){
-
-        FacesUtil.addInfoMessage("签约快捷协议成功！");
-        if(StringUtils.isNotEmpty(super.getSaveView())){
-            return super.getSaveView();
-        }
-        return "pretty:bankCardList";
 
     }
 
