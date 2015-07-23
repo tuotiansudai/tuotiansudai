@@ -750,23 +750,24 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             if (!password.equals(rePassword)) {
                 verifyResult = false;
             }
-            if (!vdtService.inputRuleValidation("input.username", userName)
-                    || !vdtService.inputRuleValidation("input.mobile", confirmMobileNumber)) {
+            vdtService.inputRuleValidation("input.username", userName);
+            vdtService.inputRuleValidation("input.mobile", confirmMobileNumber);
+            vdtService.inputRuleValidation("input.password", password);
+            vdtService.inputRuleValidation("input.password", rePassword);
 
-            }
             if (vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", userName)
                     || StringUtils.isNotEmpty(referrer) && !vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
                 verifyResult = false;
             }
         } catch (InputRuleMatchingException e) {
-            log.error(e.getStackTrace());
+            log.error(e.getLocalizedMessage(),e);
             verifyResult = false;
         } catch (NoMatchingObjectsException e) {
-            log.error(e.getStackTrace());
+            log.error(e.getLocalizedMessage(),e);
         } catch (ClassNotFoundException e) {
-            log.error(e.getStackTrace());
+            log.error(e.getLocalizedMessage(),e);
         } catch (NoSuchMethodException e) {
-            log.error(e.getStackTrace());
+            log.error(e.getLocalizedMessage(),e);
         }
 
         return verifyResult;

@@ -653,16 +653,16 @@ public class UserServiceImpl implements UserService {
 			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String ip = CommonUtils.getRemoteHost(request);
 			Date nowTime = new Date();
-			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
-			if (redisClient.getJedis().exists(ip)) {
-				Date lastTime = DateUtil.StringToDate(redisClient.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
+			redisClient.lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.exists(ip)) {
+				Date lastTime = DateUtil.StringToDate(redisClient.get(ip), "yyyy-MM-dd HH:mm:ss");
 				long diff = nowTime.getTime() - lastTime.getTime();
 				long diffMM = diff/60000;
 				if (diffMM < 1) {
 					return false;
 				}
 			}
-			redisClient.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+			redisClient.set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);
