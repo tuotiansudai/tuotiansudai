@@ -4,7 +4,6 @@
 require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
 
     $('.cmxForm').validate({
-        onkeyup:false,
         rules: {
             username: {
                 required: true,
