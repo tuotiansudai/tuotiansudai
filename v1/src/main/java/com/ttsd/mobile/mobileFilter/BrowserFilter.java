@@ -26,16 +26,14 @@ public class BrowserFilter implements Filter{
         HttpServletResponse res = (HttpServletResponse)response;
         boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
         HttpSession session = req.getSession();
-        SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
-        boolean notLogin = (securityContextImpl == null);
         String visitURI = req.getRequestURI();
 
         if (isMobileBrowser) {
-            if (visitURI.equals("/register") && notLogin){
+            if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
             }
         } else {
-            if (visitURI.equals("/mobile/register") && notLogin) {
+            if (visitURI.equals("/mobile/register")) {
                 ((HttpServletResponse) response).sendRedirect("/register");
             }
         }
