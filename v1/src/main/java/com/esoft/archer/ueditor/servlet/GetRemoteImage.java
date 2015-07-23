@@ -1,24 +1,19 @@
 package com.esoft.archer.ueditor.servlet;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class GetRemoteImage extends HttpServlet {
 
+	static Log log = LogFactory.getLog(GetRemoteImage.class);
 	/**
 	 * Constructor of the object.
 	 */
@@ -62,66 +57,12 @@ public class GetRemoteImage extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		request.setCharacterEncoding("UTF-8");
-    	response.setCharacterEncoding("UTF-8");
-    	String url = request.getParameter("upfile");
-    	String state = "远程图片抓取成功！";
-    	ServletContext application = request.getSession().getServletContext();
-    	String filePath = "upload";
-    	String[] arr = url.split("ue_separate_ue");
-    	String[] outSrc = new String[arr.length];
-    	for(int i=0;i<arr.length;i++){
-
-    		//保存文件路径
-    		String str = application.getRealPath(request.getServletPath());
-			File f = new File(str);
-			String savePath = f.getParent() + "/"+filePath;
-    		//格式验证
-    		String type = getFileType(arr[i]);
-			if(type.equals("")){
-				state = "图片类型不正确！";
-				continue;
-			}
-    		String saveName = Long.toString(new Date().getTime())+type;
-    		//大小验证
-    		HttpURLConnection.setFollowRedirects(false); 
-		    HttpURLConnection   conn   = (HttpURLConnection) new URL(arr[i]).openConnection(); 
-		    if(conn.getContentType().indexOf("image")==-1){
-		    	state = "请求地址头不正确";
-		    	continue;
-		    }
-		    if(conn.getResponseCode() != 200){
-		    	state = "请求地址不存在！";
-		    	continue;
-		    }
-            File dir = new File(savePath);
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
-    		File savetoFile = new File(savePath +"/"+ saveName);
-    		outSrc[i]=filePath +"/"+ saveName;
-    		try {
-    			InputStream is = conn.getInputStream();
-    			OutputStream os = new FileOutputStream(savetoFile);
-    			int b;
-    			while ((b = is.read()) != -1) {
-    				os.write(b);
-    			}
-    			os.close();
-    			is.close();
-    			// 这里处理 inputStream
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    			System.err.println("页面无法访问");
-    		}
-    	}
-   	String outstr = "";
-   	for(int i=0;i<outSrc.length;i++){
-   		outstr+=outSrc[i]+"ue_separate_ue";
-   	}
-   	outstr = outstr.substring(0,outstr.lastIndexOf("ue_separate_ue"));
-   	response.getWriter().print("{'url':'" + outstr + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
+		response.setCharacterEncoding("UTF-8");
+		String url = request.getParameter("upfile");
+		log.info("url--" + url);
+		String state = "远程图片抓取成功！";
+		response.getWriter().print("{'url':'" + url + "','tip':'"+state+"','srcUrl':'" + url + "'}" );
 	}
 
 	/**

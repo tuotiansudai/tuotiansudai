@@ -23,6 +23,12 @@ def get_yesterday_str():
     return yesterday.strftime("%Y-%m-%d")
 
 
+def filter_exist_logs(logs):
+    import os.path
+
+    return [log_path for log_path in logs if os.path.isfile(log_path)]
+
+
 def compress_tomcat_logs(yesterday_str):
     tomcat_debug_log = "/var/log/tomcat6/debug.log.{0}".format(yesterday_str)
     tomcat_error_log = "/var/log/tomcat6/error.log.{0}".format(yesterday_str)
@@ -35,16 +41,18 @@ def compress_tomcat_logs(yesterday_str):
     from subprocess import call
 
     tar_file = "{0}.tar.gz".format(tomcat_debug_log)
-    ret = call(["tar", "czf", tar_file, tomcat_debug_log, tomcat_error_log,
-                tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
-                catalina_host_manager_log, catalina_manager_log])
+    exist_logs = filter_exist_logs(
+        [tomcat_debug_log, tomcat_error_log, tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
+         catalina_host_manager_log, catalina_manager_log])
+    logger.info("Tomcat logs: {0}".format(exist_logs))
+    tar_command = ["tar", "czf", tar_file]
+    ret = call(tar_command + exist_logs)
     if ret != 0:
         logger.error('compress {0} error, ret: {1}'.format(tomcat_debug_log, ret))
         raise Exception()
     else:
-        call(['rm', tomcat_debug_log, tomcat_error_log,
-              tomcat_info_log, tomcat_warn_log, catalina_log, catalina_localhost_log,
-              catalina_host_manager_log, catalina_manager_log])
+        rm_command = ['rm']
+        call(rm_command + exist_logs)
     return tar_file
 
 
@@ -122,6 +130,28 @@ def main(suffix_name):
         logger.info("done")
     except Exception as e:
         logger.error(e)
+        send_mail()
+
+
+def send_mail():
+    # Send the email (this example assumes SMTP authentication is required)
+    import smtplib
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
+
+    strFrom = 'no-reply@tuotiansudai.com'
+    msg = MIMEMultipart()
+    msg["From"] = strFrom
+    recipient = 'all@tuotiansudai.com'
+    msg["To"] = recipient
+
+    msg["Subject"] = "[ALERT] {0} achieve log error!".format(datetime.datetime.today())
+
+    smtp = smtplib.SMTP()
+    smtp.connect('smtp.exmail.qq.com')
+    smtp.login('no-reply@tuotiansudai.com', 'w62CQIhM6acj')
+    smtp.sendmail(strFrom, recipient, msg.as_string())
+    smtp.quit()
 
 
 if __name__ == '__main__':

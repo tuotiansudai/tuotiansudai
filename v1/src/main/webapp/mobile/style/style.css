@@ -38,6 +38,7 @@
 }
 .step ul li span{
     display:none;
+    color:#000;
 }
 .step ul li input {
     display: block;
@@ -61,6 +62,9 @@
 }
 .step ul li input.vCode {
     background: url("/mobile/images/singup/phone_vCode.png") no-repeat 18px center;
+}
+.step ul li input.rec{
+    background: url("/mobile/images/singup/phone_rec.png") no-repeat 18px center;
 }
 .step i {
     position: absolute;
@@ -160,11 +164,12 @@
     margin: 0px 64px;
     width:484px;
     padding: 10px;
-    border:#000 1px solid;
+    border:#fff 1px solid;
     font-size: 22px;
     line-height: 40px;
     text-indent: 30px;
     background: #e7783a;
+    color:#fff;
 }
 .cerWrap ul{
     margin: 0px 64px;
@@ -178,8 +183,8 @@
     border: #fff 1px solid;
     margin-top: 40px;
 }
-.cerWrap ul li small{
-    color:#fff;
+.cerWrap ul li small,.step ul li div{
+    color:#000;
 }
 .cerWrap ul li input{
     width:405px;
@@ -284,7 +289,7 @@
     .step ul li input.passWord {
         background-size: 25px 20px;
     }
-    .step ul li input.phoneNumber,.step ul li input.vCode {
+    .step ul li input.phoneNumber,.step ul li input.vCode,.step ul li input.rec {
         background-size: 25px 20px;
     }
     .check {
@@ -404,6 +409,10 @@
     }
 
     .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.rec {
         background-size: 25px 20px;
     }
 
@@ -534,6 +543,10 @@
         background-size: 25px 20px;
     }
 
+    .step ul li input.rec {
+        background-size: 25px 20px;
+    }
+
     .check {
         height: 50px;
         line-height: 50px;
@@ -655,6 +668,11 @@
     .step ul li input.vCode {
         background-size: 25px 20px;
     }
+
+    .step ul li input.rec {
+        background-size: 25px 20px;
+    }
+
     .check {
         height: 50px;
         line-height: 50px;
@@ -712,6 +730,11 @@
     .step ul li input.vCode {
         background-size: 25px 20px;
     }
+
+    .step ul li input.rec {
+        background-size: 25px 20px;
+    }
+
     .wrap input.logUp {
         width: 98%;
         height: 60px;
