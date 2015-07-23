@@ -55,123 +55,111 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Resource(name = "userBO")
     private UserBO userBO;
 
+    @Resource(name = "userService")
+    private UserService userService;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean mobileRegister(String userName, String password, String phoneNum, String vCode, String operationType) {
-        if (userName == null || userName.equals("")){
-            log.info("提交的用户名为空！");
-            return false;
-        }else if(userName.length()<5){
-            log.info("提交的用户名的长度为："+userName.length()+" ,少于五个字符！");
-            return false;
-        }else if(userName.length()>25){
-            log.info("提交的用户名的长度为："+userName.length()+" ,多于二十五个字符！");
-            return false;
-        }else{
-            int count = mobileRegisterDao.getUserCountByUserName(userName);
-            log.info("用户名为" + userName + "的用户有" + count + "个！");
-            if(count > 0){
-                log.info("用户名为"+userName+"的用户已经存在！");
-                return false;
-            }
-        }
-
-        if (password == null || password.equals("")){
-            log.info("提交的密码为空！");
-            return false;
-        }else if(password.length()<6){
-            log.info("提交的密码长度是："+password.length()+" 位，少于6个字符");
-            return false;
-        }
-
-        if (phoneNum == null || phoneNum.equals("")){
-            log.info("提交的手机号为空！");
-            return false;
-        }else {
-            log.info("提交的手机号为"+phoneNum);
-            int count = mobileRegisterDao.getUserCountByCellphone(phoneNum);
-            if (count > 0){
-                log.info("手机号为"+phoneNum+"的用户已经存在！");
-                return false;
-            }else {
-                if (operationType.equals("0")) {
-                    String authCode = null;
-                    if (regValidatePhoneNum(phoneNum)) {
-                        try {
-                            //授权验证码的有效期为自发送短信时起
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(new Date());
-                            calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
-                            Long validTime = calendar.getTimeInMillis();
-                            Date deadLine = new Date(validTime);
-                            //创建授权码，并持久化到数据库中
-                            authCode = authService.createAuthInfo(userName, phoneNum, deadLine, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER).getAuthCode();
-                            log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建授权码！");
-                        }catch (Exception e){
-                            log.error("生成授权码异常！");
-                            e.printStackTrace();
-                        }
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
-                        params.put("authCode", authCode);
-                        if(!CommonUtils.isDevEnvironment("environment")){
-                            try {
-                                //给指定用户发送授权码
-                                messageBO.sendSMS(mobileRegisterDao.getMessageTemplate(UserMessageTemplate.class,MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER + "_sms"), params, phoneNum);
-                                log.info("给用户名为："+userName+"，手机号为："+phoneNum+"的用户发送授权码成功！");
-                            }catch (Exception e){
-                                log.error("持久化手机号为" + phoneNum + "的用户的注册授权码失败！");
-                                e.printStackTrace();
-                            }
-                        }
-                        return true;
-                    }
-                }else if (operationType.equals("1")){
-                    int codeCount = 0;
-                    try {
-                        codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoStatus.INACTIVE);
-                    }catch (Exception e){
-                        log.error("获取用户名为："+userName+",手机号为："+phoneNum+"的用户授权码信息失败！");
-                    }
-                    if(codeCount > 0) {
-                        User user = new User();
-                        user.setRegisterTime(new Date());
-                        user.setUsername(userName);
-                        user.setMobileNumber(phoneNum);
-                        // 用户密码通过sha加密
-                        user.setPassword(HashCrypt.getDigestHash(password));
-                        user.setStatus(UserConstants.UserStatus.ENABLE);
-                        try {
-                            userBO.save(user);
-                            log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
-                        }catch (Exception e1){
-                            log.error("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化失败！");
-                            e1.printStackTrace();
-                        }
-                        // 添加普通用户权限
-                        Role role = new Role("MEMBER");
-                        try {
-                            userBO.addRole(user, role);
-                            log.info("给用户名为：" + userName + ",手机号为：" + phoneNum + "的用户添加普通用户权限成功！");
-                            try {
-                                //用户注册成功后，将发给该用户的注册码状态更新成已激活状态
-                                mobileRegisterDao.updateUserAuthInfo(CommonConstants.AuthInfoStatus.ACTIVATED, phoneNum,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-                            }catch (Exception e){
-                                log.error("更新用户名为："+userName+",手机号为："+phoneNum+"的授权码状态失败！");
-                                e.printStackTrace();
-                            }
-                        }catch (Exception e){
-                            log.error("给用户名为："+userName+",手机号为："+phoneNum+"的用户添加普通用户权限失败！");
-                            e.printStackTrace();
-                        }
-                        return true;
-                    }else {
+        if ("0".equals(operationType)) {
+            String authCode = null;
+            if (regValidatePhoneNum(phoneNum)) {
+                try {
+                    boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNum);
+                    if (!validateFlag){
+                        log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户试图在一分钟内连续多次获取授权码！");
                         return false;
                     }
-                }else {
+                    log.info("已为用户名为："+userName+",手机号为："+phoneNum+"的用户成功创建授权码！");
+                } catch (Exception e){
+                    log.error("生成授权码异常！");
+                    log.error(e.getLocalizedMessage(),e);
+                    return false;
+                }
+                return true;
+            }
+        }else if ("1".equals(operationType)){
+            //校验用户名
+            if (userName == null || userName.equals("")){
+                log.info("提交的用户名为空！");
+                return false;
+            }else if(userName.length()<5){
+                log.info("提交的用户名的长度为："+userName.length()+" ,少于五个字符！");
+                return false;
+            }else if(userName.length()>25){
+                log.info("提交的用户名的长度为："+userName.length()+" ,多于二十五个字符！");
+                return false;
+            }else{
+                int count = mobileRegisterDao.getUserCountByUserName(userName);
+                log.info("用户名为" + userName + "的用户有" + count + "个！");
+                if(count > 0){
+                    log.info("用户名为"+userName+"的用户已经存在！");
                     return false;
                 }
             }
+
+            //校验密码
+            if (password == null || password.equals("")){
+                log.info("提交的密码为空！");
+                return false;
+            }else if(password.length()<6){
+                log.info("提交的密码长度是："+password.length()+" 位，少于6个字符");
+                return false;
+            }
+
+            //校验手机号
+            if (!regValidatePhoneNum(phoneNum)){
+                return false;
+            }
+
+            int codeCount = 0;
+            try {
+                codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoStatus.INACTIVE);
+            }catch (Exception e){
+                log.error("获取用户名为："+userName+",手机号为："+phoneNum+"的用户授权码信息失败！");
+                log.error(e.getLocalizedMessage(),e);
+                return false;
+            }
+            if(codeCount > 0) {
+                User user = new User();
+                user.setRegisterTime(new Date());
+                user.setUsername(userName);
+                user.setMobileNumber(phoneNum);
+                // 用户密码通过sha加密
+                user.setPassword(HashCrypt.getDigestHash(password));
+                user.setStatus(UserConstants.UserStatus.ENABLE);
+                try {
+                    userBO.save(user);
+                    log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
+                }catch (Exception e1){
+                    log.error("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化失败！");
+                    log.error(e1.getLocalizedMessage(),e1);
+                    return false;
+                }
+                // 添加普通用户权限
+                Role role = new Role("MEMBER");
+                try {
+                    userBO.addRole(user, role);
+                    log.info("给用户名为：" + userName + ",手机号为：" + phoneNum + "的用户添加普通用户权限成功！");
+                    try {
+                        //用户注册成功后，将发给该用户的注册码状态更新成已激活状态
+                        mobileRegisterDao.updateUserAuthInfo(CommonConstants.AuthInfoStatus.ACTIVATED, phoneNum,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+                    }catch (Exception e){
+                        log.error("更新用户名为："+userName+",手机号为："+phoneNum+"的授权码状态失败！");
+                        log.error(e.getLocalizedMessage(), e);
+                        return false;
+                    }
+                }catch (Exception e){
+                    log.error("给用户名为："+userName+",手机号为："+phoneNum+"的用户添加普通用户权限失败！");
+                    log.error(e.getLocalizedMessage(),e);
+                    return false;
+                }
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
         }
         return false;
     }
@@ -259,5 +247,9 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
     public void setUserBO(UserBO userBO) {
         this.userBO = userBO;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 }

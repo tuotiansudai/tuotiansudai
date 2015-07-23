@@ -91,7 +91,6 @@ public class RegisterController {
     @ResponseBody
     public boolean validateUserName(HttpServletRequest request,HttpServletResponse response){
         String userName = request.getParameter("username");
-        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateUserName(userName);
     }
 
@@ -99,7 +98,6 @@ public class RegisterController {
     @ResponseBody
     public boolean validatemobilePhoneNum(HttpServletRequest request,HttpServletResponse response){
         String phoneNumber = request.getParameter("phoneNumber");
-        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateMobilePhoneNum(phoneNumber);
     }
 
@@ -108,7 +106,6 @@ public class RegisterController {
     public boolean validateVCode(HttpServletRequest request,HttpServletResponse response){
         String phoneNum = request.getParameter("phoneNumber");
         String vCode = request.getParameter("vCode");
-        response.setContentType("text/json; charset=utf-8");
         return mobileRegisterService.validateVCode(phoneNum,vCode);
     }
     /***************************setter注入方法****************************/

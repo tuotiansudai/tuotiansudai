@@ -54,15 +54,11 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
     @Override
     public int getAuthInfo(String phoneNum, String vCode, String vCodeStatus) {
         Session session = getSession();
-        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=? and deadline>=str_to_date(?,'%Y-%m-%d %H:%i:%s') and generation_time<=str_to_date(?,'%Y-%m-%d %H:%i:%s')";
+        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setString(0, phoneNum);
         sqlQuery.setString(1, vCode);
         sqlQuery.setParameter(2, vCodeStatus);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String nowTimeStr = sdf.format(new Date());
-        sqlQuery.setString(3, nowTimeStr);
-        sqlQuery.setString(4, nowTimeStr);
         return ((Number)sqlQuery.uniqueResult()).intValue();
     }
 
