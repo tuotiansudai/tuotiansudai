@@ -25,9 +25,7 @@ public class BrowserFilter implements Filter{
         HttpServletRequest req = (HttpServletRequest)request;
         HttpServletResponse res = (HttpServletResponse)response;
         boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
-        HttpSession session = req.getSession();
         String visitURI = req.getRequestURI();
-
         if (isMobileBrowser) {
             if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");

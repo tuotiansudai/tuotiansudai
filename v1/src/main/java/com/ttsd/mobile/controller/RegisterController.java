@@ -144,7 +144,7 @@ public class RegisterController {
 
 
     /**
-     * @function 用户名校验
+     * @function 推荐人校验
      * @param referrer 推荐人
      * @return boolean 校验通过，返回true，否则返回false
      */

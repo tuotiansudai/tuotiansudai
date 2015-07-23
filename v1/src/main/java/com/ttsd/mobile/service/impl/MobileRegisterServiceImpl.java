@@ -17,6 +17,7 @@ import com.esoft.core.util.HashCrypt;
 import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import com.google.common.base.Strings;
 import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
@@ -58,6 +59,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Resource(name = "userService")
     private UserService userService;
 
+    
     /**
      * @function 手机端用户注册
      * @param userName 用户名
@@ -71,7 +73,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean mobileRegister(String userName, String password, String phoneNum, String vCode, String referrer) {
         //校验密码
-        if (password == null || password.equals("")){
+        if (Strings.isNullOrEmpty(password)){
             log.info("提交的密码为空！");
             return false;
         }else if(password.length()<6){
@@ -112,6 +114,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         }
     }
 
+
     /**
      * @function 获取生成的授权码
      * @param phoneNumber 手机号
@@ -136,6 +139,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         return false;
     }
 
+
     /**
      * @function 校验用户注册的用户名是否已存在
      * @param userName 用户名
@@ -143,7 +147,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     @Override
     public boolean validateUserName(String userName) {
-        if (userName == null || userName.equals("")){
+        if (Strings.isNullOrEmpty(userName)){
             log.info("提交的用户名为空！");
             return false;
         }else if(userName.length()<5){
@@ -163,6 +167,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         }
     }
 
+
     /**
      * @function 校验用注册的手机号已存在
      * @param phoneNumber 手机号
@@ -180,6 +185,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         return false;
     }
 
+
     /**
      * @function 校验用户输入的注册授权码是否正确
      * @param phoneNumber 手机号
@@ -188,7 +194,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     @Override
     public boolean validateVCode(String phoneNumber, String vCode) {
-        if ("".equals(phoneNumber) || phoneNumber == null){
+        if (Strings.isNullOrEmpty(phoneNumber)){
             return false;
         } else if(!regValidatePhoneNum(phoneNumber)){
             return false;
@@ -200,6 +206,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             return false;
         }
     }
+
 
     /**
      * @function 校验推荐人是否存在
@@ -215,13 +222,14 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         return false;
     }
 
+
     /**
      * @function 正则校验手机号是否符合要求
      * @param phoneNumber 手机号
      * @return 通过校验返回true，否则返回false
      */
     public boolean regValidatePhoneNum(String phoneNumber){
-        if(phoneNumber==null || "".equals(phoneNumber)){
+        if(Strings.isNullOrEmpty(phoneNumber)){
             return false;
         }
         String regStr = "^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$";
@@ -230,6 +238,8 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         matcher.matches();
         return matcher.matches();
     }
+
+
     /***************************setter注入方法****************************/
     public void setMobileRegisterDao(IMobileRegisterDao mobileRegisterDao) {
         this.mobileRegisterDao = mobileRegisterDao;
