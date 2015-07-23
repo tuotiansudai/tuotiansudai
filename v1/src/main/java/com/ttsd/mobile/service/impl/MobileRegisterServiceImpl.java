@@ -1,38 +1,21 @@
 package com.ttsd.mobile.service.impl;
 
 import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
-import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
-import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.service.AuthService;
-import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.model.Role;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.HashCrypt;
-import com.esoft.jdp2p.message.MessageConstants;
-import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
-import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
-import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -120,10 +103,10 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      * @param phoneNumber 手机号
      * @return boolean 授权码发送成功，返回true，否则返回false
      */
-    public boolean getCreatedValidateCode(String phoneNumber){
+    public boolean getCreatedValidateCode(String phoneNumber,String remoteIp){
         if (regValidatePhoneNum(phoneNumber)) {
             try {
-                boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNumber);
+                boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNumber, remoteIp);
                 if (!validateFlag){
                     log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
                     return false;

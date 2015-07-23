@@ -46,7 +46,6 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -640,7 +639,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		// FIXME:验证手机号码的合法性
 		// 发送手机验证码
@@ -654,14 +653,16 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
-			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-			String ip = CommonUtils.getRemoteHost(request);
+			if (Strings.isNullOrEmpty(remoteIp)){
+				HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+				remoteIp = CommonUtils.getRemoteHost(request);
+			}
 			Date nowTime = new Date();
-			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
-			if (redisClient.getJedis().exists(ip)) {
+			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, remoteIp, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.getJedis().exists(remoteIp)) {
 				return false;
 			} else {
-				redisClient.getJedis().setex(ip, registerVerifyCodeExpireTime, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+				redisClient.getJedis().setex(remoteIp, registerVerifyCodeExpireTime, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
 			}
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER

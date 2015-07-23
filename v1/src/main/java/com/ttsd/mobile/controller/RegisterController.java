@@ -3,6 +3,7 @@ package com.ttsd.mobile.controller;
 import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.jsf.util.FacesUtil;
+import com.ttsd.util.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -98,8 +100,8 @@ public class RegisterController {
      */
     @RequestMapping(value = "/mobileRegisterValidationCode",method = RequestMethod.POST)
     @ResponseBody
-    public boolean mobileRegisterValidationCode(@RequestParam(value = "phoneNumber")String phoneNumber){
-        boolean responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber);
+    public boolean mobileRegisterValidationCode(HttpServletRequest request,@RequestParam(value = "phoneNumber")String phoneNumber){
+        boolean responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber,CommonUtils.getRemoteHost(request));
         return responseResult;
     }
 
@@ -112,7 +114,6 @@ public class RegisterController {
     @RequestMapping(value = "/userNameValidation", method = RequestMethod.GET)
     @ResponseBody
     public boolean validateUserName(@RequestParam(value = "username")String userName){
-//        String userName = request.getParameter("username");
         return mobileRegisterService.validateUserName(userName);
     }
 

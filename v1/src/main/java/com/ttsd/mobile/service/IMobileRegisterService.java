@@ -21,10 +21,12 @@ public interface IMobileRegisterService {
 
     /**
      * @function 获取生成的授权码
-     * @param phoneNumber 手机号
+     * @param phoneNumber
+     * @param remoteIp
      * @return boolean 授权码发送成功，返回true，否则返回false
      */
-    boolean getCreatedValidateCode(String phoneNumber);
+
+    boolean getCreatedValidateCode(String phoneNumber,String remoteIp);
 
     /**
      * @function 校验用户注册的用户名是否已存在
