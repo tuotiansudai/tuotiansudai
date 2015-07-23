@@ -16,14 +16,13 @@
     <div class="step">
         <form class="cmxForm" action="/mobile/register/mobileRegister" method="post">
             <ul>
-                <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/>
-                    <span class="userTip">用户名不能包含空格！</span>
-                </li>
-                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"
-                           /></li>
-                <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"
-                           /></li>
+                <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/></li>
+                <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"/></li>
+                <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"/></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode"/></li>
+                <li><input type="text" value="" placeholder="请输入推荐人" class="rec" name="rec"/>
+                    <span class="rec-tip">用户名不存在！</span>
+                </li>
             </ul>
             <i class="send_vCode">获取验证码</i>
             <div class="submitBtn">

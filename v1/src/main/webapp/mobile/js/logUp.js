@@ -76,9 +76,7 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             form.submit();
         }
     });
-    /**
-     * 手机端注册
-     */
+
     $('.check_input').bind('click',function(){
         if($('.check_input').prop('checked')){
             $(".logUp").css({'pointer-events': 'auto','background':'#edaa20' });
@@ -86,7 +84,6 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             $(".logUp").css({'pointer-events': 'none','background':'gray' });
         }
     });
-
 
     $('.send_vCode').on('click', function () {
         var phoneValue = $('.phoneNumber').val();
@@ -113,6 +110,27 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 $('.send_vCode').html('重新获取验证码').css({'background': '#e9a922', 'pointer-events': 'auto'});
             }
             Num--;
+        }
+    });
+
+    $('.rec').on('blur',function(){
+        var recValue=$('.rec').val();
+        if($(this).val()!==''){
+            $.ajax({
+                url:'',
+                type:'GET',
+                dataType:'json',
+                data:{
+                    rev:recValue
+                },
+                error:function( status ){
+                    if( status=='false' ){
+                        $('.rec-tip').css('display','block');
+                    } else {
+                        $('.rec-tip').css('display','none');
+                    }
+                }
+            });
         }
     });
 });
