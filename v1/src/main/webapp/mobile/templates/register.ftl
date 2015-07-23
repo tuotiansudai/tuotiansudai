@@ -21,7 +21,7 @@
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"/></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode"/></li>
                 <li><input type="text" value="" placeholder="请输入推荐人" class="rec" name="rec"/>
-                    <span class="rec-tip">用户名不存在！</span>
+                    <span class="rec-tip">此用户不存在！</span>
                 </li>
             </ul>
             <i class="send_vCode">获取验证码</i>
