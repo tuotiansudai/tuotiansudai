@@ -31,7 +31,7 @@ public class BrowserFilter implements Filter{
         String visitURI = req.getRequestURI();
 
         if (isMobileBrowser) {
-            if (visitURI.equals("/") && notLogin) {
+            if (visitURI.equals("/register") && notLogin){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
             }
         } else {
