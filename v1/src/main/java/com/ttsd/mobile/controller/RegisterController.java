@@ -11,15 +11,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ttsd.mobile.service.IMobileRegisterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -39,31 +37,47 @@ public class RegisterController {
     @Autowired
     SessionRegistry sessionRegistry;
 
+
+    /**
+     * @function 手机端注册页面访问接口
+     * @return ModelAndView
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView register() {
         return new ModelAndView("/register");
     }
 
+
+    /**
+     * @function 手机端注册
+     * @param request
+     * @param userName 用户名
+     * @param passWord 密码
+     * @param phoneNumber 手机号
+     * @param vCode 验证码
+     * @param referrer 推荐人
+     * @return ModelAndView
+     */
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
-    public ModelAndView mobileRegister(HttpServletRequest request,HttpServletResponse response){
-        String userName =  request.getParameter("username");
-        String passWord = request.getParameter("password");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String vCode = request.getParameter("vCode");
-        String operationType = "1";//表示注册
-        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,operationType);
+    public ModelAndView mobileRegister(HttpServletRequest request,
+                                       @RequestParam(value = "username")String userName,
+                                       @RequestParam(value = "password")String passWord,
+                                       @RequestParam(value = "phoneNumber")String phoneNumber,
+                                       @RequestParam(value = "vCode")String vCode,
+                                       @RequestParam(value = "referrer")String referrer){
+        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,referrer);
         /**
          * 用户注册成功之后，登录
          */
-        if ("1".equals(operationType) && responseResult){
+        if (responseResult){
             HttpSession session = request.getSession();
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNumber);
-            UserDetails userDetails = userDetailsService
-                    .loadUserByUsername(user.getUsername());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    user.getUsername(), userDetails.getPassword(),
+                    user.getUsername(),
+                    userDetails.getPassword(),
                     userDetails.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(token);
@@ -76,37 +90,68 @@ public class RegisterController {
         return new ModelAndView("/register");
     }
 
+
+    /**
+     * @function 发送手机授权码
+     * @param phoneNumber 手机号
+     * @return boolean 手机授权码发送成功，返回true，否则返回false
+     */
     @RequestMapping(value = "/mobileRegisterValidationCode",method = RequestMethod.POST)
     @ResponseBody
-    public boolean mobileRegisterValidationCode(HttpServletRequest request,HttpServletResponse response){
-        String userName =  request.getParameter("username");
-        String passWord = request.getParameter("password");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String operationType = "0";//表示获取注册授权码
-        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,null,operationType);
+    public boolean mobileRegisterValidationCode(@RequestParam(value = "phoneNumber")String phoneNumber){
+        boolean responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber);
         return responseResult;
     }
 
+
+    /**
+     * @function 用户名校验
+     * @param userName 用户名
+     * @return boolean 校验通过，返回true，否则返回false
+     */
     @RequestMapping(value = "/userNameValidation", method = RequestMethod.GET)
     @ResponseBody
-    public boolean validateUserName(HttpServletRequest request,HttpServletResponse response){
-        String userName = request.getParameter("username");
+    public boolean validateUserName(@RequestParam(value = "username")String userName){
+//        String userName = request.getParameter("username");
         return mobileRegisterService.validateUserName(userName);
     }
 
+
+    /**
+     * @function 手机号校验
+     * @param phoneNumber 手机号
+     * @return boolean 校验通过，返回true，否则返回false
+     */
     @RequestMapping(value = "/mobilePhoneNumValidation", method = RequestMethod.GET)
     @ResponseBody
-    public boolean validatemobilePhoneNum(HttpServletRequest request,HttpServletResponse response){
-        String phoneNumber = request.getParameter("phoneNumber");
+    public boolean validatemobilePhoneNum(@RequestParam(value = "phoneNumber")String phoneNumber){
         return mobileRegisterService.validateMobilePhoneNum(phoneNumber);
     }
 
+
+    /**
+     * @function 授权码校验
+     * @param phoneNumber 手机号
+     * @param vCode 授权码
+     * @return boolean 校验通过，返回true，否则返回false
+     */
     @RequestMapping(value = "/vCodeValidation", method = RequestMethod.GET)
     @ResponseBody
-    public boolean validateVCode(HttpServletRequest request,HttpServletResponse response){
-        String phoneNum = request.getParameter("phoneNumber");
-        String vCode = request.getParameter("vCode");
-        return mobileRegisterService.validateVCode(phoneNum,vCode);
+    public boolean validateVCode(@RequestParam(value = "phoneNumber")String phoneNumber,
+                                 @RequestParam(value = "vCode")String vCode){
+        return mobileRegisterService.validateVCode(phoneNumber, vCode);
+    }
+
+
+    /**
+     * @function 用户名校验
+     * @param referrer 推荐人
+     * @return boolean 校验通过，返回true，否则返回false
+     */
+    @RequestMapping(value = "/referrerValidation", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean validateReferrer(@RequestParam(value = "referrer")String referrer){
+        return mobileRegisterService.validateReferrer(referrer);
     }
     /***************************setter注入方法****************************/
     public void setMobileRegisterService(IMobileRegisterService mobileRegisterService) {
