@@ -30,16 +30,13 @@
     color: #fff;
     position: relative;
 }
-.step ul li div,.step ul li span{
+.step ul li div {
     position: absolute;
     left:0px;
     bottom:-20px;
     line-height: 20px;
 }
-.step ul li span{
-    display:none;
-    color:#000;
-}
+
 .step ul li input {
     display: block;
     width: 462px;
@@ -63,8 +60,8 @@
 .step ul li input.vCode {
     background: url("/mobile/images/singup/phone_vCode.png") no-repeat 18px center;
 }
-.step ul li input.rec{
-    background: url("/mobile/images/singup/phone_rec.png") no-repeat 18px center;
+.step ul li input.referrer{
+    background: url("/mobile/images/singup/phone_referrer.png") no-repeat 18px center;
 }
 .step i {
     position: absolute;
@@ -289,7 +286,7 @@
     .step ul li input.passWord {
         background-size: 25px 20px;
     }
-    .step ul li input.phoneNumber,.step ul li input.vCode,.step ul li input.rec {
+    .step ul li input.phoneNumber,.step ul li input.vCode,.step ul li input.referrer {
         background-size: 25px 20px;
     }
     .check {
@@ -412,7 +409,7 @@
         background-size: 25px 20px;
     }
 
-    .step ul li input.rec {
+    .step ul li input.referrer {
         background-size: 25px 20px;
     }
 
@@ -543,7 +540,7 @@
         background-size: 25px 20px;
     }
 
-    .step ul li input.rec {
+    .step ul li input.referrer {
         background-size: 25px 20px;
     }
 
@@ -669,7 +666,7 @@
         background-size: 25px 20px;
     }
 
-    .step ul li input.rec {
+    .step ul li input.referrer {
         background-size: 25px 20px;
     }
 
@@ -731,7 +728,7 @@
         background-size: 25px 20px;
     }
 
-    .step ul li input.rec {
+    .step ul li input.referrer {
         background-size: 25px 20px;
     }
 

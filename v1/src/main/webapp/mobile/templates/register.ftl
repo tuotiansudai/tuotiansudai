@@ -20,9 +20,7 @@
                 <li><input type="password" value="" placeholder="请输入密码,至少6位" class="passWord" name="password"/></li>
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"/></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode"/></li>
-                <li><input type="text" value="" placeholder="请输入推荐人" class="rec" name="rec"/>
-                    <span class="rec-tip">此用户不存在！</span>
-                </li>
+                <li><input type="text" value="" placeholder="请输入推荐人" class="referrer" name="referrer"/></li>
             </ul>
             <i class="send_vCode">获取验证码</i>
             <div class="submitBtn">
