@@ -96,7 +96,6 @@ public class JedisTemplate {
      */
     protected boolean handleJedisException(JedisException jedisException) {
         if (jedisException instanceof JedisConnectionException) {
-            jedisException.printStackTrace();
            log.error(jedisException.getLocalizedMessage(), jedisException);
         } else if (jedisException instanceof JedisDataException) {
             if ((jedisException.getMessage() != null) && (jedisException.getMessage().indexOf("READONLY") != -1)) {
