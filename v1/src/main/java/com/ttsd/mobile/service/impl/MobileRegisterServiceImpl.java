@@ -193,7 +193,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         } else if(!regValidatePhoneNum(phoneNumber)){
             return false;
         } else {
-            int count = mobileRegisterDao.getAuthInfo(phoneNumber, vCode, CommonConstants.AuthInfoStatus.INACTIVE);
+            int count = mobileRegisterDao.getAuthInfo(phoneNumber, vCode, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
             if (count > 0){
                 return true;
             }
