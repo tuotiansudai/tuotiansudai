@@ -86,7 +86,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
 
         int codeCount = 0;
         try {
-            codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoStatus.INACTIVE);
+            codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         }catch (Exception e){
             log.error("获取用户名为："+userName+",手机号为："+phoneNum+"的用户授权码信息失败！");
             log.error(e.getLocalizedMessage(),e);
@@ -101,30 +101,12 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             try {
                 userService.registerByMobileNumber(user, vCode, referrer);
                 log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
+                return true;
             }catch (Exception e1){
                 log.error("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化失败！");
                 log.error(e1.getLocalizedMessage(),e1);
                 return false;
             }
-            // 添加普通用户权限
-            Role role = new Role("MEMBER");
-            try {
-                userBO.addRole(user, role);
-                log.info("给用户名为：" + userName + ",手机号为：" + phoneNum + "的用户添加普通用户权限成功！");
-                try {
-                    //用户注册成功后，将发给该用户的注册码状态更新成已激活状态
-                    mobileRegisterDao.updateUserAuthInfo(CommonConstants.AuthInfoStatus.ACTIVATED, phoneNum,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-                }catch (Exception e){
-                    log.error("更新用户名为："+userName+",手机号为："+phoneNum+"的授权码状态失败！");
-                    log.error(e.getLocalizedMessage(), e);
-                    return false;
-                }
-            }catch (Exception e){
-                log.error("给用户名为："+userName+",手机号为："+phoneNum+"的用户添加普通用户权限失败！");
-                log.error(e.getLocalizedMessage(),e);
-                return false;
-            }
-            return true;
         }else {
             return false;
         }

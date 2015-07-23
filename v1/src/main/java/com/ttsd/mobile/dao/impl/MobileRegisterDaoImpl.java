@@ -52,13 +52,13 @@ public class MobileRegisterDaoImpl implements IMobileRegisterDao {
     }
 
     @Override
-    public int getAuthInfo(String phoneNum, String vCode, String vCodeStatus) {
+    public int getAuthInfo(String phoneNum, String vCode, String authType) {
         Session session = getSession();
-        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and status=?";
+        String sql = "select count(1) from auth_info where auth_target=? and auth_code=? and auth_type=?";
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setString(0, phoneNum);
         sqlQuery.setString(1, vCode);
-        sqlQuery.setParameter(2, vCodeStatus);
+        sqlQuery.setParameter(2, authType);
         return ((Number)sqlQuery.uniqueResult()).intValue();
     }
 
