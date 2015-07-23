@@ -59,7 +59,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     @Resource(name = "userService")
     private UserService userService;
 
-    
+
     /**
      * @function 手机端用户注册
      * @param userName 用户名

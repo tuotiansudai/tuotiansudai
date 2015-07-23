@@ -52,7 +52,7 @@ public class RegisterController {
      * @function 手机端注册
      * @param request
      * @param userName 用户名
-     * @param passWord 密码
+     * @param password 密码
      * @param phoneNumber 手机号
      * @param vCode 验证码
      * @param referrer 推荐人
@@ -61,11 +61,11 @@ public class RegisterController {
     @RequestMapping(value = "/mobileRegister",method = RequestMethod.POST)
     public ModelAndView mobileRegister(HttpServletRequest request,
                                        @RequestParam(value = "username")String userName,
-                                       @RequestParam(value = "password")String passWord,
+                                       @RequestParam(value = "password")String password,
                                        @RequestParam(value = "phoneNumber")String phoneNumber,
                                        @RequestParam(value = "vCode")String vCode,
                                        @RequestParam(value = "referrer")String referrer){
-        boolean responseResult = mobileRegisterService.mobileRegister(userName,passWord,phoneNumber,vCode,referrer);
+        boolean responseResult = mobileRegisterService.mobileRegister(userName,password,phoneNumber,vCode,referrer);
         /**
          * 用户注册成功之后，登录
          */
