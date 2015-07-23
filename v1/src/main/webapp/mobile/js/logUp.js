@@ -91,9 +91,11 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
 
     $('.check_input').bind('click',function(){
         if($('.check_input').prop('checked')){
-            $(".logUp").css({'pointer-events': 'auto','background':'#edaa20' });
+            $(".logUp-a").css('background','#edaa20');
+            $('.logUp').css('pointer-events', 'auto')
         }else{
-            $(".logUp").css({'pointer-events': 'none','background':'gray' });
+            $(".logUp-a").css('background','#666');
+            $('.logUp').css('pointer-events', 'none')
         }
     });
 
