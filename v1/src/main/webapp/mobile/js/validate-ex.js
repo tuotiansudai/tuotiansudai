@@ -34,7 +34,6 @@ require(['jquery', 'jquery.validate'], function ($) {
                 }
             });
         }
-
     return true;
     },"");
 
