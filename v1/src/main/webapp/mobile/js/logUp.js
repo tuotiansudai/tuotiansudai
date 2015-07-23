@@ -49,7 +49,7 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             },
             referrer:{
                 remote:{
-                    url: '/mobile/register//referrerValidation',
+                    url: '/mobile/register/referrerValidation',
                     type: 'GET',
                     dataType: 'json'
                 }
