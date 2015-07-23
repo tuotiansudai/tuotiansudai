@@ -163,7 +163,7 @@ public class TrusteeshipHome {
 			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
 			return "pretty:withdraw";
 		} catch (TrusteeshipReturnException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		return  null;
@@ -174,10 +174,10 @@ public class TrusteeshipHome {
 			umPayBindingAgreementOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
 			FacesUtil.addInfoMessage("签约协议成功");
 		} catch (TrusteeshipReturnException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());

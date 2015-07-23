@@ -277,21 +277,6 @@ public class RechargeServiceImpl implements RechargeService {
 	}
 
 	@Override
-	public List<RechargeBankCard> getBankCardsQuickPayList(String userId) {
-		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
-		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
-		if(bankCard == null){
-			return null;
-		}
-		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
-		for(BankCard bc:bankCard){
-			bcs.add(new RechargeBankCardImpl("CMB", "招商银行"));
-		}
-		return bcs;
-	}
-
-
-	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void rechargeByAdmin(UserBill userBill) {
 		Recharge r = new Recharge();

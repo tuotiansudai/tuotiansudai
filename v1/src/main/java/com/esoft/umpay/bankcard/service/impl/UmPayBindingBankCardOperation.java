@@ -98,7 +98,7 @@ public class UmPayBindingBankCardOperation extends
 		// 开户行
 		/* map.put("card_branch_name",""); */
 		// 快捷协议标志
-		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment());
+		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment()?"1":"0");
 		TrusteeshipOperation to = null;
 		try {
 			// 加密参数

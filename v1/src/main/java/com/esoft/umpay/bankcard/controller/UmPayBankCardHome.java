@@ -1,7 +1,6 @@
 package com.esoft.umpay.bankcard.controller;
 
 import com.esoft.archer.system.controller.LoginUserInfo;
-import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -22,7 +21,6 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 public class UmPayBankCardHome extends BankCardHome {
 
@@ -68,17 +66,13 @@ public class UmPayBankCardHome extends BankCardHome {
 			this.setId(getInstance().getId());
 		}
 		getInstance().setTime(new Date());
-		if (this.isOpenFastPayment) {
-			getInstance().setIsOpenFastPayment("1");
-		} else {
-			getInstance().setIsOpenFastPayment("0");
-		}
+		getInstance().setIsOpenFastPayment(this.isOpenFastPayment);
 		super.save(false);
 		try {
 			umPayBindingBankCardOperation.createOperation(getInstance(), FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			FacesUtil.addErrorMessage("绑定银行卡失败!");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		} finally {
 			this.setInstance(null);
 		}
@@ -103,13 +97,13 @@ public class UmPayBankCardHome extends BankCardHome {
 			this.setId(getInstance().getId());
 		}
 		getInstance().setTime(new Date());
-		getInstance().setIsOpenFastPayment("0");
+		getInstance().setIsOpenFastPayment(false);
 		super.save(false);
 		try {
 			this.umPayReplaceBankCardOperation.createOperation(getInstance(), FacesContext.getCurrentInstance());
 		} catch (IOException e) {
 			FacesUtil.addErrorMessage("更换银行卡失败!");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		} finally {
 			this.setInstance(null);
 		}

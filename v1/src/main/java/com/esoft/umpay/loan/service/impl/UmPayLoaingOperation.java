@@ -148,10 +148,10 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				throw new UmPayOperationException("放款失败;:状态异常:"+resData.get("ret_code")+"信息:"+resData.get("ret_msg"));
 			}
 		} catch (ReqDataException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("放款失败:参数加密失败!");
 		} catch (RetDataException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("放款失败:参数解密失败!");
 		} catch (ExistWaitAffirmInvests e) {
 			throw new UmPayOperationException("放款失败:存在第三方确认的投资!");
@@ -238,7 +238,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 		try {
 			scheduler.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 		if (log.isDebugEnabled())
 			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");

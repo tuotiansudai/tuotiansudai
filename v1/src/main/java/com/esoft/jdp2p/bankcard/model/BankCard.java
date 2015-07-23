@@ -46,14 +46,14 @@ public class BankCard implements java.io.Serializable {
 	private Date time;
 	private String status;
 
-	private String isOpenFastPayment;
+	private boolean isOpenFastPayment;
 
-	@Column(name = "is_open_fastPayment",length = 2)
-	public String getIsOpenFastPayment() {
+	@Column(name = "is_open_fastPayment")
+	public boolean getIsOpenFastPayment() {
 		return isOpenFastPayment;
 	}
 
-	public void setIsOpenFastPayment(String isOpenFastPayment) {
+	public void setIsOpenFastPayment(boolean isOpenFastPayment) {
 		this.isOpenFastPayment = isOpenFastPayment;
 	}
 	// Constructors

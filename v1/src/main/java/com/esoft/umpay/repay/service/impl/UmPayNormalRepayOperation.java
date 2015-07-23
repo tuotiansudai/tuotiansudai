@@ -378,7 +378,7 @@ public class UmPayNormalRepayOperation extends
 		 * userBillBO.unfreezeMoney(lr.getLoan().getUser().getId(),ArithUtil
 		 * .add(lr.getCorpus(), lr.getDefaultInterest(),lr.getFee(),
 		 * lr.getInterest()),OperatorInfo.NORMAL_REPAY,"资金托管方还款失败，解冻还款金额，还款编号："
-		 * + lr.getId()); } catch (InsufficientBalance e) { log.error(e); throw
+		 * + lr.getId()); } catch (InsufficientBalance e) { log.error(e.getLocalizedMessage(), e); throw
 		 * new RuntimeException(e); }
 		 */
 		to.setStatus(TrusteeshipConstants.Status.REFUSED);

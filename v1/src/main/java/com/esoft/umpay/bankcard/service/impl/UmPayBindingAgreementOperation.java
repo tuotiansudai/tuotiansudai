@@ -120,7 +120,7 @@ public class UmPayBindingAgreementOperation extends
                     for (int i=0;i<userBankCard.size();i++) {
                         BankCard bankCard = new BankCard();
                         bankCard = userBankCard.get(i);
-                        bankCard.setIsOpenFastPayment("1");
+                        bankCard.setIsOpenFastPayment(true);
                         ht.update(bankCard);
                     }
                     log.debug(("用户:"
@@ -165,7 +165,7 @@ public class UmPayBindingAgreementOperation extends
                             for (int i=0;i<userBankCard.size();i++) {
                                 BankCard bankCard = new BankCard();
                                 bankCard = userBankCard.get(i);
-                                bankCard.setIsOpenFastPayment("1");
+                                bankCard.setIsOpenFastPayment(true);
                                 ht.update(bankCard);
                             }
                             log.debug(("用户:"

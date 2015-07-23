@@ -65,7 +65,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             redisClient.getJedis().set(sessionId, captcha);
             redisClient.getJedis().expire(sessionId, imageCaptchaExpireTime);
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
             throw e;
         }
     }
@@ -79,7 +79,7 @@ public class CaptchaServiceImpl implements CaptchaService {
             redisClient.getJedis().expire(sessionIdInRedisStatus, imageCaptchaDurationTime);
 
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
@@ -147,7 +147,7 @@ public class CaptchaServiceImpl implements CaptchaService {
         try {
             generateCaptchaInRedis(sessionId, sRand.toString().toUpperCase());
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
             return null;
         }
 
