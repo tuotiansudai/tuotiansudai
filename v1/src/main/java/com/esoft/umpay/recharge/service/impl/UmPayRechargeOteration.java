@@ -109,7 +109,6 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 充值方式
 		if(isOpenFastPayment){
 			sendMap.put("pay_type", "DEBITCARD");
-			sendMap.put("gate_id","");
 		}else{
 			sendMap.put("pay_type", "B2CDEBITBANK");
 			// 发卡银行编号
