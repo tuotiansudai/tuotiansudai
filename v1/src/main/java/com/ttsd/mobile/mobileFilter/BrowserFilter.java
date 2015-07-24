@@ -25,14 +25,18 @@ public class BrowserFilter implements Filter{
         if (isMobileBrowser) {
             if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
+                return;
             } else if (visitURI.equals("/user/get_investor_permission")) {
                 ((HttpServletResponse) response).sendRedirect("/mobile/certification");
+                return;
             }
         } else {
             if (visitURI.equals("/mobile/register")) {
                 ((HttpServletResponse) response).sendRedirect("/register");
+                return;
             } else if (visitURI.equals("/mobile/certification")) {
                 ((HttpServletResponse) response).sendRedirect("/user/get_investor_permission");
+                return;
             }
         }
         chain.doFilter(req,res);
