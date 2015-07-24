@@ -1,8 +1,8 @@
 package com.ttsd.mobile.mobileFilter;
 
 import com.esoft.archer.user.service.UserService;
-import com.esoft.archer.user.service.impl.UserServiceImpl;
 import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.SpringBeanUtil;
 import com.ttsd.mobile.Util.MobileUtil;
 
 import javax.servlet.*;
@@ -14,6 +14,7 @@ import java.io.IOException;
  * Created by tuotian on 15/7/15.
  */
 public class BrowserFilter implements Filter{
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -26,7 +27,7 @@ public class BrowserFilter implements Filter{
         boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
         String visitURI = req.getRequestURI();
         MobileUtil mobileUtil = new MobileUtil();
-        UserService userService = new UserServiceImpl();
+        UserService userService = (UserService)SpringBeanUtil.getBeanByName("userService");
         if (isMobileBrowser) {
             if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
