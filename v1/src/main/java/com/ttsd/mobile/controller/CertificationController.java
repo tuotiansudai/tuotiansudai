@@ -47,7 +47,7 @@ public class CertificationController {
     @RequestMapping(value = "/realName", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView realNameCertification(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("/certification");
+        ModelAndView modelAndView = new ModelAndView("redirect:/mobile/certification");
         String realName = request.getParameter("yourName");
         String idCard = request.getParameter("yourId");
         modelAndView.addObject("yourName",realName);
@@ -71,7 +71,7 @@ public class CertificationController {
             return modelAndView;
         } catch (UmPayOperationException e) {
             e.printStackTrace();
-            modelAndView.addObject("message",e.getMessage());
+            modelAndView.addObject("message","实名认证失败！");
             return modelAndView;
         }
     }
