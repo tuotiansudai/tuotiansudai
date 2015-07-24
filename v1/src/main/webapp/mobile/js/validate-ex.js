@@ -33,6 +33,8 @@ require(['jquery', 'jquery.validate'], function ($) {
                     }
                 }
             });
+        }else {
+            $('.send_vCode').css({'pointer-events': 'none', 'background': '#666'});
         }
     return true;
     },"");
