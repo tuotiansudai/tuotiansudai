@@ -658,11 +658,11 @@ public class UserServiceImpl implements UserService {
 				remoteIp = CommonUtils.getRemoteHost(request);
 			}
 			Date nowTime = new Date();
-			redisClient.lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			redisClient.lpush("userRegisterList",MessageFormat.format(template, remoteIp, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
 			if (redisClient.exists(remoteIp)) {
 				return false;
 			} else {
-				redisClient.setex(remoteIp, registerVerifyCodeExpireTime, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+				redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
 			}
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
