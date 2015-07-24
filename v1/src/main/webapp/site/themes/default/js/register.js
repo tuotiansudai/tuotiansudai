@@ -48,7 +48,7 @@ function closeSendSmsDialog() {
     $('#form\\:confirmMobileNumber').val(mobileNumber);
     $('#captchaForm\\:captcha').val('');
     $('.mobileNumberReadOnly').removeClass("mobileNumberReadOnly").addClass("mobileNumberClass");
-
+    window.onmousewheel = document.onmousewheel = null;
 }
 
 

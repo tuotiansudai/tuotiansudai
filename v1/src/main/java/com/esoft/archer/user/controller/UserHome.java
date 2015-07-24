@@ -406,7 +406,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, request.getSession().getId());
-            captchaService.deleteCaptchFormRedis(sessionIdInRedisStatus);
+            captchaService.deleteCaptchaFormRedis(sessionIdInRedisStatus);
             if (isLoginAfterRegister) {
                 login(getInstance().getId(), FacesUtil.getHttpSession());
             }
@@ -747,23 +747,18 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             if (!password.equals(rePassword)) {
                 verifyResult = false;
             }
-            if (!vdtService.inputRuleValidation("input.username", userName)
-                    || !vdtService.inputRuleValidation("input.mobile", confirmMobileNumber)) {
+            vdtService.inputRuleValidation("input.username", userName);
+            vdtService.inputRuleValidation("input.mobile", confirmMobileNumber);
+            vdtService.inputRuleValidation("input.password", password);
+            vdtService.inputRuleValidation("input.password", rePassword);
 
-            }
             if (vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", userName)
                     || StringUtils.isNotEmpty(referrer) && !vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
                 verifyResult = false;
             }
-        } catch (InputRuleMatchingException e) {
-            log.error(e.getStackTrace());
+        } catch (InputRuleMatchingException | NoMatchingObjectsException | ClassNotFoundException | NoSuchMethodException e) {
+            log.error(e.getLocalizedMessage(),e);
             verifyResult = false;
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getStackTrace());
-        } catch (ClassNotFoundException e) {
-            log.error(e.getStackTrace());
-        } catch (NoSuchMethodException e) {
-            log.error(e.getStackTrace());
         }
 
         return verifyResult;
