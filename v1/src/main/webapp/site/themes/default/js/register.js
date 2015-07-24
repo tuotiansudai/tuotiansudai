@@ -13,27 +13,6 @@ function inputMobileNumber() {
     });
 
 
-    function disabledMouseWheel() {
-        if (document.addEventListener) {
-            document.addEventListener('DOMMouseScroll', scrollFunc, false);
-        }
-        window.onmousewheel = document.onmousewheel = scrollFunc;//IE/Opera/Chrome
-    }
-
-    function scrollFunc(evt) {
-        evt = evt || window.event;
-        if (evt.preventDefault) {
-            // Firefox
-            evt.preventDefault();
-            evt.stopPropagation();
-        } else {
-            // IE
-            evt.cancelBubble = true;
-            evt.returnValue = false;
-        }
-        return false;
-    }
-
     disabledMouseWheel();
 
     timerCountB('captchaForm\\:sendAuthCodeBtn');
@@ -48,7 +27,33 @@ function closeSendSmsDialog() {
     $('#form\\:confirmMobileNumber').val(mobileNumber);
     $('#captchaForm\\:captcha').val('');
     $('.mobileNumberReadOnly').removeClass("mobileNumberReadOnly").addClass("mobileNumberClass");
+    addMouseWheel();
+}
+
+function disabledMouseWheel() {
+    if (document.addEventListener) {
+        document.addEventListener('DOMMouseScroll', scrollFunc, false);
+    }
+    window.onmousewheel = document.onmousewheel = scrollFunc;
+}
+
+function addMouseWheel() {
+    if (document.addEventListener) {
+        document.addEventListener('DOMMouseScroll', scrollFunc, false);
+    }
     window.onmousewheel = document.onmousewheel = null;
+    document.removeEventListener('DOMMouseScroll', scrollFunc, false)
+}
+
+function scrollFunc(evt) {
+    evt = evt || window.event;
+    if (evt.preventDefault) {
+        evt.preventDefault();
+        evt.stopPropagation();
+    } else {
+        evt.cancelBubble = true;
+    }
+    return false;
 }
 
 
