@@ -22,13 +22,13 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             phoneNumber: {
                 required: true,
                 digits: true,
+                phoneNumberExist: true,
                 rangelength: [11,11],
                 remote: {
                     url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
                     type: 'GET',
                     dataType: 'json',
-                },
-                'phoneNumberExist':true
+                }
             },
             vCode: {
                 required: true,
