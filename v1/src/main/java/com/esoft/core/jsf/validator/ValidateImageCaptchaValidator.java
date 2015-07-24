@@ -1,13 +1,10 @@
 package com.esoft.core.jsf.validator;
 
 import com.esoft.archer.common.service.CaptchaService;
-import com.esoft.archer.common.service.ValidationService;
 import com.esoft.core.util.SpringBeanUtil;
 import com.sun.faces.util.MessageFactory;
 import org.apache.commons.lang.StringUtils;
 import org.omnifaces.validator.ValueChangeValidator;
-import org.primefaces.context.RequestContext;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import javax.faces.component.PartialStateHolder;
 import javax.faces.component.UIComponent;
@@ -15,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
 
 @FacesValidator(value = "com.esoft.core.validator.ValidateImageCaptchaValidator")
 public class ValidateImageCaptchaValidator extends ValueChangeValidator implements
@@ -43,14 +39,14 @@ public class ValidateImageCaptchaValidator extends ValueChangeValidator implemen
 									"com.esoft.core.validator.ValidateImageCaptchaValidator.CAPTCHA_EXPIRE"));
 		}else{
 			if( !value.toUpperCase().equals(captchaInRedis)) {
-				captchaService.deleteCaptchFormRedis(sessionId);
+				captchaService.deleteCaptchaFormRedis(sessionId);
 				throw new ValidatorException(
 						MessageFactory
 								.getMessage(
 										context,
 										"com.esoft.core.validator.ValidateImageCaptchaValidator.CAPTCHA_WRONG"));
 			}else{
-				captchaService.deleteCaptchFormRedis(sessionId);
+				captchaService.deleteCaptchaFormRedis(sessionId);
 				captchaService.generateCaptchaStatusInRedis(sessionId);
 			}
 

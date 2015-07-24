@@ -44,10 +44,10 @@ public interface IMobileRegisterDao {
      * @function 获取用户验证码相关信息
      * @param phoneNum 手机号
      * @param vCode 用户输入的验证码
-     * @param vCodeStatus 验证码状态
+     * @param authType 授权码类型
      * @return AuthInfo
      */
-    int getAuthInfo(String phoneNum,String vCode,String vCodeStatus);
+    int getAuthInfo(String phoneNum,String vCode,String authType);
 
     /**
      * @function 更新用户授权码状态为：inactive（无效状态）

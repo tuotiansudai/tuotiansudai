@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/mobile/style/style.css"/>
     <link rel="stylesheet" type="text/css" href="/mobile/style/global.css"/>
     <link rel="stylesheet" type="text/css" href="/mobile/style/copyright.css"/>
-    <script src="/mobile/js/libs/require.js" defer async="true" data-main="/mobile/js/realName"></script>
+    <script src="/mobile/js/config.js" type="application/javascript"></script>
+    <script src="/mobile/js/libs/require.js" defer async="true" data-main="/mobile/js/realName.js"></script>
     <title>手机认证</title>
 </head>
 <body>

@@ -1,9 +1,12 @@
 package com.ttsd.redis;
 
-import com.ttsd.aliyun.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+import javax.annotation.Resource;
 
 @Service
 public class RedisClient {
@@ -11,23 +14,20 @@ public class RedisClient {
     private String redisIp;
     @Value("${redis.port}")
     private Integer redisPort;
-    @Value("${redis.password}")
-    private String redisPassword;
-    @Value("${redis.db}")
-    private Integer redisDb;
+    @Resource
+    private JedisTemplate jedisTemplate;
 
-    private static Jedis jedis;
+    private static JedisPool pool = null;
 
-    public  Jedis getJedis() {
-        if (jedis == null) {
-            jedis = new Jedis(redisIp, redisPort);
-            if (redisPassword != null && !"".equals(redisPassword)) {
-                jedis.auth(redisPassword);
-            }
-            jedis.select(redisDb);
+    public JedisPool getPool() {
+        if (pool == null) {
+            JedisPoolConfig config = new JedisPoolConfig();
+
+            pool = new JedisPool(config, redisIp, redisPort);
         }
-        return jedis;
+        return pool;
     }
+
 
     public String getRedisIp() {
         return redisIp;
@@ -44,24 +44,32 @@ public class RedisClient {
     public void setRedisPort(Integer redisPort) {
         this.redisPort = redisPort;
     }
-
-    public String getRedisPassword() {
-        return redisPassword;
+    public String get(String key) {
+        jedisTemplate.setJedisPool(getPool());
+        return jedisTemplate.get(key);
     }
 
-    public void setRedisPassword(String redisPassword) {
-        this.redisPassword = redisPassword;
+    public boolean exists(String key) {
+        jedisTemplate.setJedisPool(getPool());
+        return jedisTemplate.exists(key);
     }
 
-    public Integer getRedisDb() {
-        return redisDb;
+    public void setex(String key, String value, int seconds) {
+        jedisTemplate.setJedisPool(getPool());
+        jedisTemplate.setex(key, value, seconds);
     }
 
-    public void setRedisDb(Integer redisDb) {
-        this.redisDb = redisDb;
+    public void set(String key, String value) {
+        jedisTemplate.setJedisPool(getPool());
+        jedisTemplate.set(key, value);
     }
 
-    public static void setJedis(Jedis jedis) {
-        RedisClient.jedis = jedis;
+    public boolean del(String key) {
+        jedisTemplate.setJedisPool(getPool());
+        return jedisTemplate.del(key);
+    }
+    public Long lpush(final String key, final String... values) {
+        jedisTemplate.setJedisPool(getPool());
+        return jedisTemplate.lpush(key,values);
     }
 }
