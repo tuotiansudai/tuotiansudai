@@ -1,14 +1,10 @@
 package com.ttsd.mobile.mobileFilter;
 
 import com.esoft.core.jsf.util.FacesUtil;
-import com.ttsd.mobile.Util.MobileUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -29,10 +25,14 @@ public class BrowserFilter implements Filter{
         if (isMobileBrowser) {
             if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
+            } else if (visitURI.equals("/user/get_investor_permission")) {
+                ((HttpServletResponse) response).sendRedirect("/mobile/certification");
             }
         } else {
             if (visitURI.equals("/mobile/register")) {
                 ((HttpServletResponse) response).sendRedirect("/register");
+            } else if (visitURI.equals("/mobile/certification")) {
+                ((HttpServletResponse) response).sendRedirect("/user/get_investor_permission");
             }
         }
         chain.doFilter(req,res);
