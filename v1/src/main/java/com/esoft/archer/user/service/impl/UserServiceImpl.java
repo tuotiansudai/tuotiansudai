@@ -670,7 +670,6 @@ public class UserServiceImpl implements UserService {
 		}
 		return true;
 	}
-
 	@Override
 	public void sendChangeBindingMobileNumberSMS(String userId,
 			String oriMobileNumber) throws UserNotFoundException {
@@ -700,6 +699,42 @@ public class UserServiceImpl implements UserService {
 					MessageConstants.UserMessageNodeId.CHANGE_BINDING_MOBILE_NUMBER
 							+ "_sms"), params, oriMobileNumber);
 		}
+	}
+
+	@Override
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber,Date deadLine){
+		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
+		// FIXME:验证手机号码的合法性
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// 发送手机验证码
+		Map<String, String> params = new HashMap<String, String>();
+		// TODO:实现模板
+		params.put("time", DateUtil.DateToString(new Date(),
+				DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
+		params.put(
+				"authCode",
+				authService.createAuthInfo(null, mobileNumber, deadLine,
+						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
+						.getAuthCode());
+		if(!CommonUtils.isDevEnvironment("environment")){
+			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String ip = CommonUtils.getRemoteHost(request);
+			Date nowTime = new Date();
+			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.getJedis().exists(ip)) {
+				Date lastTime = DateUtil.StringToDate(redisClient.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
+				long diff = nowTime.getTime() - lastTime.getTime();
+				long diffMM = diff/60000;
+				if (diffMM < 1) {
+					return false;
+				}
+			}
+			redisClient.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
+					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
+							+ "_sms"), params, mobileNumber);
+		}
+		return true;
 	}
 
 	/**

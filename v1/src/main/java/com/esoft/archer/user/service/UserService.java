@@ -8,6 +8,8 @@ import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.User;
 
+import java.util.Date;
+
 /**
  * Description: 用户service<br/>
  * Copyright: Copyright (c)2013<br/>
@@ -454,4 +456,7 @@ public interface UserService {
 	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
 
 	public boolean idCardIsExists(String idCard);
+
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber,Date deadLine);
+
 }

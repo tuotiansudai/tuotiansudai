@@ -1,0 +1,53 @@
+package com.ttsd.api.dto;
+
+public enum ReturnMessage {
+    SUCCESS("0000",""),
+    MOBILE_NUMBER_IS_NULL("0001", "手机号码为空"),
+    MOBILE_NUMBER_IS_INVALID("0002","手机号码不合法"),
+    MOBILE_NUMBER_IS_EXIST("0003","手机号已经存在"),
+    SEND_SMS_IS_FAIL("0004","短信验证码发送失败"),
+    USER_NAME_IS_NULL("0005","用户名为空"),
+    USER_NAME_IS_INVALID("0006","用户名不允许包含特殊字符，长度为5-16位，请勿使用手机号"),
+    USER_NAME_IS_EXIST("0007","用户名已经存在"),
+    REFERRER_IS_EXIST("0008","推荐人已经存在"),
+    SMS_CAPTCHA_ERROR("0009","短信验证码不正确"),
+    SMS_CAPTCHA_IS_OVERDUE("0010","短信验证码已经过期"),
+    USER_IS_ACTIVE("0011","用户已经被激活"),
+    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位");
+
+
+    private String code;
+    private String msg;
+
+    private ReturnMessage(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public static String getErrorMsgByCode(String code){
+
+        for(ReturnMessage errorMsg : ReturnMessage.values() ){
+            if(errorMsg.code.equals(code)){
+                return errorMsg.msg;
+            }
+        }
+        return null;
+    }
+
+}

@@ -230,6 +230,7 @@
 
     <servlet-mapping>
         <servlet-name>BindCard</servlet-name>
+
         <url-pattern>/site/themes/default/templates/user/mybankcards.htm</url-pattern>
     </servlet-mapping>
 
@@ -381,6 +382,7 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/mobile/*</url-pattern>
+        <url-pattern>/v1.0/*</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
