@@ -47,7 +47,7 @@ public class CertificationController {
     @RequestMapping(value = "/realName", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView realNameCertification(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/mobile/certification");
+        ModelAndView modelAndView = new ModelAndView("/certification");
         String realName = request.getParameter("yourName");
         String idCard = request.getParameter("yourId");
         modelAndView.addObject("yourName",realName);
