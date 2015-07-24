@@ -1,6 +1,9 @@
 package com.ttsd.mobile.mobileFilter;
 
+import com.esoft.archer.user.service.UserService;
+import com.esoft.archer.user.service.impl.UserServiceImpl;
 import com.esoft.core.jsf.util.FacesUtil;
+import com.ttsd.mobile.Util.MobileUtil;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +25,13 @@ public class BrowserFilter implements Filter{
         HttpServletResponse res = (HttpServletResponse)response;
         boolean isMobileBrowser = FacesUtil.isMobileRequestForMobile(req);
         String visitURI = req.getRequestURI();
+        MobileUtil mobileUtil = new MobileUtil();
+        UserService userService = new UserServiceImpl();
         if (isMobileBrowser) {
             if (visitURI.equals("/register")){
                 ((HttpServletResponse) response).sendRedirect("/mobile/register");
                 return;
-            } else if (visitURI.equals("/user/get_investor_permission")) {
+            } else if (visitURI.equals("/user/get_investor_permission") && !userService.hasRole(mobileUtil.getLoginUserId(),"INVESTOR")) {
                 ((HttpServletResponse) response).sendRedirect("/mobile/certification");
                 return;
             }
