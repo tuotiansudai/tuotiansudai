@@ -1,26 +1,5 @@
 package com.esoft.umpay.loan.service.impl;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import com.esoft.jdp2p.schedule.ScheduleConstants;
-import com.esoft.jdp2p.schedule.job.LoanOutSuccessfulNotificationJob;
-import org.apache.commons.logging.Log;
-import org.quartz.*;
-import org.quartz.impl.StdScheduler;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.ArithUtil;
@@ -34,10 +13,13 @@ import com.esoft.jdp2p.loan.exception.BorrowedMoneyTooLittle;
 import com.esoft.jdp2p.loan.exception.ExistWaitAffirmInvests;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanService;
+import com.esoft.jdp2p.schedule.ScheduleConstants;
+import com.esoft.jdp2p.schedule.job.LoanOutSuccessfulNotificationJob;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
+import com.esoft.umpay.repay.service.impl.UmPayNormalRepayOperation;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
@@ -51,6 +33,23 @@ import com.umpay.api.exception.RetDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.logging.Log;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Description : 放款操作 
@@ -74,6 +73,9 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 
 	@Resource
 	UmPayLoanStatusService umPayLoanStatusService;
+
+	@Resource
+	UmPayNormalRepayOperation umPayNormalRepayOperation;
 
 	@Logger
 	Log log;
@@ -190,6 +192,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				loan = ht.get(Loan.class, loanId);
 				if(LoanConstants.LoanStatus.RECHECK.equals(loan.getStatus())){
 					try {
+						umPayNormalRepayOperation.recommendedIncome(loan);
 						loanService.giveMoneyToBorrower(loanId);
 						log.debug("标的"+loanId+"放款成功");
 					} catch (BorrowedMoneyTooLittle e) {
@@ -200,7 +203,11 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 						log.debug("标的"+loanId+"放款失败");
 						log.debug(e.getMessage());
 						e.printStackTrace();
-					} 
+					} catch (RetDataException e) {
+						e.printStackTrace();
+					} catch (ReqDataException e) {
+						e.printStackTrace();
+					}
 				}
 				String responseData = getResponseData(order_id, ret_code);
 				response.getWriter().print(responseData);
