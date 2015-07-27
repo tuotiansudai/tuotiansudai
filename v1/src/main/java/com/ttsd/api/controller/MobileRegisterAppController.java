@@ -6,6 +6,7 @@ import com.ttsd.api.dto.RegisterRequestDto;
 import com.ttsd.api.dto.RegisterResponseDto;
 import com.ttsd.api.dto.SendSmsRequestDto;
 import com.ttsd.api.service.MobileRegisterAppService;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping(value = "/mobileAppRegister")
@@ -32,9 +34,10 @@ public class MobileRegisterAppController {
 
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto) {
+    public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto,HttpServletRequest request) {
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
-        return mobileRegisterAppService.sendRegisterByMobileNumberSMS(mobileNumber);
+        String remoteIp = CommonUtils.getRemoteHost(request);
+        return mobileRegisterAppService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
     }
 
 }

@@ -402,10 +402,11 @@ public interface UserService {
 
 	/**
 	 * 发送“通过手机号注册”的认证短信
-	 * 
+	 *
 	 * @param mobileNumber
+	 * @param remoteIp
 	 */
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp);
 
 	/**
 	 * 管理员创建借款者
@@ -457,6 +458,6 @@ public interface UserService {
 
 	public boolean idCardIsExists(String idCard);
 
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber,Date deadLine);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber,Date deadLine,String remoteIp);
 
 }

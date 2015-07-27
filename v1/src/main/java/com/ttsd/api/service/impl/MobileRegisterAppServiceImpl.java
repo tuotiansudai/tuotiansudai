@@ -41,7 +41,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
 
 
     @Override
-    public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber) {
+    public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber,String remoteIp) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String returnCode = ReturnMessage.SUCCESS.getCode();
         returnCode = this.verifyMobileNumber(mobileNumber);
@@ -52,7 +52,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
             Long validTime = calendar.getTimeInMillis();
             Date deadLine = new Date(validTime);
-            boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber, deadLine);
+            boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber, deadLine,remoteIp);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
