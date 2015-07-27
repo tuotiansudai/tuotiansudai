@@ -52,7 +52,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
             Long validTime = calendar.getTimeInMillis();
             Date deadLine = new Date(validTime);
-            boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber, deadLine,remoteIp);
+            boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
@@ -73,7 +73,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         try {
             vdtService.inputRuleValidation("input.mobile", mobileNumber);
         } catch (NoMatchingObjectsException | InputRuleMatchingException e) {
-            log.info(mobileNumber + ":" + ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode();
         }
         User user = userBO.getUserByMobileNumber(mobileNumber);
@@ -92,7 +92,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         try {
             vdtService.inputRuleValidation("input.username", userName);
         } catch (NoMatchingObjectsException | InputRuleMatchingException e) {
-            log.info(userName + ":" + ReturnMessage.USER_NAME_IS_INVALID.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.USER_NAME_IS_INVALID.getCode();
         }
         User user = userBO.getUserByUsername(userName);
@@ -106,13 +106,11 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
 
     @Override
     public String verifyReferrer(String referrer) {
-        if (StringUtils.isEmpty(referrer)) {
-            return ReturnMessage.SUCCESS.getCode();
-        }
+
         User user = userBO.getUserByUsername(referrer);
-        if (user != null) {
-            log.info(referrer + ":" + ReturnMessage.REFERRER_IS_EXIST.getCode());
-            return ReturnMessage.REFERRER_IS_EXIST.getCode();
+        if (user == null) {
+            log.info(referrer + ":" + ReturnMessage.REFERRER_IS_NOT_EXIST.getCode());
+            return ReturnMessage.REFERRER_IS_NOT_EXIST.getCode();
         }
 
         return ReturnMessage.SUCCESS.getCode();
@@ -123,14 +121,14 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         try {
             authService.verifyAuthInfo(null, mobileNumber, captcha,
                     CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-        } catch (NoMatchingObjectsException e) {
-            log.info(mobileNumber + "&&" + captcha + ":" + ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+        } catch (NoMatchingObjectsException  e) {
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.SMS_CAPTCHA_ERROR.getCode();
         } catch (AuthInfoOutOfDateException e) {
-            log.info(mobileNumber + "&&" + captcha + ":" + ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getCode();
         } catch (AuthInfoAlreadyActivedException e) {
-            log.info(mobileNumber + "&&" + captcha + ":" + ReturnMessage.USER_IS_ACTIVE.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.USER_IS_ACTIVE.getCode();
         }
         return ReturnMessage.SUCCESS.getCode();
@@ -158,14 +156,16 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         try {
             userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
         } catch (NoMatchingObjectsException e) {
-            log.info(registerRequestDto.getPhoneNum() + "&&" + registerRequestDto.getCaptcha() + ":" + ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
+            log.error(e.getLocalizedMessage(), e);
             returnCode = ReturnMessage.SMS_CAPTCHA_ERROR.getCode();
         } catch (AuthInfoOutOfDateException e) {
-            log.info(registerRequestDto.getPhoneNum() + "&&" + registerRequestDto.getCaptcha() + ":" + ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getCode());
+            log.error(e.getLocalizedMessage(), e);
             returnCode = ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getCode();
         } catch (AuthInfoAlreadyActivedException e) {
-            log.info(registerRequestDto.getPhoneNum() + "&&" + registerRequestDto.getCaptcha() + ":" + ReturnMessage.USER_IS_ACTIVE.getCode());
+            log.error(e.getLocalizedMessage(), e);
             returnCode = ReturnMessage.USER_IS_ACTIVE.getCode();
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         registerResponseDto.setCode(returnCode);
@@ -175,6 +175,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             registerDataDto.setUserId(registerRequestDto.getUserName());
             registerDataDto.setUserName(registerRequestDto.getUserName());
             registerDataDto.setToken(registerRequestDto.getBaseParam().getToken());
+            registerResponseDto.setData(registerDataDto);
         }
         return registerResponseDto;
     }
@@ -184,10 +185,10 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         try {
             vdtService.inputRuleValidation("input.password", password);
         } catch (NoMatchingObjectsException e) {
-            log.info(password + ":" + ReturnMessage.PASSWORD_IS_INVALID.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.PASSWORD_IS_INVALID.getCode();
         } catch (InputRuleMatchingException e) {
-            log.info(password + ":" + ReturnMessage.PASSWORD_IS_INVALID.getMsg());
+            log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.PASSWORD_IS_INVALID.getCode();
         }
         return ReturnMessage.SUCCESS.getCode();

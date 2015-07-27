@@ -458,6 +458,5 @@ public interface UserService {
 
 	public boolean idCardIsExists(String idCard);
 
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber,Date deadLine,String remoteIp);
 
 }

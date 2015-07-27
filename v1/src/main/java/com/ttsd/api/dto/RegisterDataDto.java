@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
-public class RegisterDataDto {
+public class RegisterDataDto extends DataDto{
     private String userId;
     private String userName;
     private String token;

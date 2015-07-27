@@ -1,17 +1,8 @@
 package com.ttsd.api.dto;
 
-public class SendSmsRequestDto {
-    private com.ttsd.api.dto.BaseParam baseParam;
+public class SendSmsRequestDto extends BaseParamDto{
     private String type;
     private String phoneNum;
-
-    public com.ttsd.api.dto.BaseParam getBaseParam() {
-        return baseParam;
-    }
-
-    public void setBaseParam(com.ttsd.api.dto.BaseParam baseParam) {
-        this.baseParam = baseParam;
-    }
 
     public String getType() {
         return type;
@@ -28,4 +19,5 @@ public class SendSmsRequestDto {
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
+
 }
