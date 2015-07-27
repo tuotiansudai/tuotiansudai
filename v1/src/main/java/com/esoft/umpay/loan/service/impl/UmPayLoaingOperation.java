@@ -143,7 +143,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				umPayLoanMoneyService.loanMoney2Mer("02"+loan.getId(), loanGuranteeFee, loan.getId());
 				//更新标的状态为还款中,对于投标中的不能改变几个参数已经做了处理
 				umPayLoanStatusService.updateLoanStatusOperation(loan, UmPayConstants.UpdateProjectStatus.PROJECT_STATE_REPAYING, false);
-				System.out.println("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+				umPayNormalRepayOperation.recommendedIncome(loan);
 				this.addLoanOutSuccessfulNotificationJob(loan);
 			}else{
 				to.setStatus(TrusteeshipConstants.Status.REFUSED);
@@ -193,9 +193,7 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				loan = ht.get(Loan.class, loanId);
 				if(LoanConstants.LoanStatus.RECHECK.equals(loan.getStatus())){
 					try {
-						//umPayNormalRepayOperation.recommendedIncome(loan);
 						loanService.giveMoneyToBorrower(loanId);
-						System.out.println("22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
 						log.debug("标的"+loanId+"放款成功");
 					} catch (BorrowedMoneyTooLittle e) {
 						log.debug("标的"+loanId+"放款失败");
