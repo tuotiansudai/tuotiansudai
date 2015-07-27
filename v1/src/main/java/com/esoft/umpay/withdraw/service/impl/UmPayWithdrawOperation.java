@@ -196,7 +196,7 @@ public class UmPayWithdrawOperation extends
 				ub.unfreezeMoney(wc.getUser().getId(),
 						wc.getMoney() + wc.getFee(),
 						OperatorInfo.APPLY_WITHDRAW,
-						MessageFormat.format(operationDetailTemplate, wc.getMoney(), wc.getFee(), wc.getId()));
+						MessageFormat.format(operationDetailTemplate, wc.getMoney() + wc.getFee(), wc.getFee(), wc.getId()));
 				// 处理提现失败
 				withdrawCashService.refuseWithdrawCashApply(wc);
 			}

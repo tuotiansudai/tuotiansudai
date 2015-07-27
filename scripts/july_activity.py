@@ -47,8 +47,15 @@ SQL = """
         `user` t
         LEFT JOIN trusteeship_account m
           ON t.`id` = m.`user_id`
-        LEFT JOIN `user` u
-          ON t.`referrer` = u.`username`
+        LEFT JOIN
+          (SELECT DISTINCT
+             x.`mobile_number`,
+             x.`id`
+           FROM
+             `user` x
+           JOIN `user` y
+           ON x.`id` = y.`referrer`) u
+          ON t.`referrer` = u.`id`
         LEFT JOIN bank_card b
           ON t.`id` = b.`user_id` AND b.`status` = 'passed'
         LEFT JOIN `bank_card` b1
@@ -126,12 +133,15 @@ def send_mail(data):
 
 
 def main(host="localhost", user_name="root", password="", db="tuotiansudai"):
-    logger.info('start')
-    data = query(host, user_name, password, db)
-    logger.info("total new count is {0}".format(len(data)))
-    csv_data = build_csv(data)
-    send_mail(csv_data)
-    logger.info('done')
+    try:
+        logger.info('start')
+        data = query(host, user_name, password, db)
+        logger.info("total new count is {0}".format(len(data)))
+        csv_data = build_csv(data)
+        send_mail(csv_data)
+        logger.info('done')
+    except Exception as e:
+        logger.error(e)
 
 
 if __name__ == "__main__":

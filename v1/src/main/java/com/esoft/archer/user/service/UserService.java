@@ -400,10 +400,11 @@ public interface UserService {
 
 	/**
 	 * 发送“通过手机号注册”的认证短信
-	 * 
+	 *
 	 * @param mobileNumber
+	 * @param remoteIp
 	 */
-	public void sendRegisterByMobileNumberSMS(String mobileNumber);
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp);
 
 	/**
 	 * 管理员创建借款者
@@ -449,8 +450,9 @@ public interface UserService {
 	 */
 	public void sendFindCashPwdSMS(String id, String mobileNumber)
 			throws UserNotFoundException;
-
-	void addRegisterEmailVerificationJob(User user);
+	
 
 	boolean validateRegisterUser(User instance) throws UserRegisterException, NoMatchingObjectsException, InputRuleMatchingException;
+
+	public boolean idCardIsExists(String idCard);
 }

@@ -1,0 +1,753 @@
+/**Registered**/
+.wrap {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    overflow: hidden;
+    background: url("/mobile/images/singup/phone_logo.png") no-repeat center 40px;
+    margin: 0px auto;
+}
+.step {
+    width: 100%;
+    max-width: 560px;
+    padding: 0px 40px;
+    margin-top: 212px;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+}
+.step ul {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+.step ul li {
+    width: 100%;
+    max-width: 558px;
+    height: 78px;
+    border: #fff 1px solid;
+    margin:0px auto 30px;
+    color: #fff;
+    position: relative;
+}
+.step ul li div {
+    position: absolute;
+    left:0px;
+    bottom:-20px;
+    line-height: 20px;
+}
+
+.step ul li input {
+    display: block;
+    width: 462px;
+    height: 76px;
+    line-height: 76px;
+    background: #ea7938;
+    border: none;
+    color: #fff;
+    font-size: 22px;
+    padding-left: 96px;
+}
+.step ul li input.userName {
+    background: url("/mobile/images/phone_username.png") no-repeat 18px center;
+}
+.step ul li input.passWord {
+    background: url("/mobile/images/singup/phone_password.png") no-repeat 18px center;
+}
+.step ul li input.phoneNumber {
+    background: url("/mobile/images/singup/phone_phonen.png") no-repeat 18px center;
+}
+.step ul li input.vCode {
+    background: url("/mobile/images/singup/phone_vCode.png") no-repeat 18px center;
+}
+.step ul li input.referrer{
+    background: url("/mobile/images/singup/phone_referrer.png") no-repeat 18px center;
+}
+.step i {
+    position: absolute;
+    width: 134px;
+    height: 42px;
+    line-height: 42px;
+    text-align: center;
+    color: #fff;
+    background: #666;
+    top: 350px;
+    right: 50px;
+    font-style: normal;
+    font-size: 12px;
+    cursor: pointer;
+}
+.step p {
+    width: 200px;
+    height: 60px;
+    line-height: 60px;
+    float: right;
+    color: #fff;
+    text-align: right;
+}
+.step p a {
+    color: #ebff0b;
+}
+.wrap div.submitBtn,.cerWrap div.submitBtn {
+    width: 344px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    margin: 0px auto 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    border: none;
+    position: relative;
+}
+.wrap div.submitBtn a,.cerWrap div.submitBtn a{
+    position: absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:60px;
+    line-height: 60px;
+    text-align: center;
+    background: #ebaa20;
+    border-radius:5px;
+    z-index: 990;
+    color:#fff;
+    text-decoration: none;
+    pointer-events: none;
+}
+.cerWrap div.submitBtn{
+    margin:30px auto 20px;
+    width:336px;
+}
+.cerWrap div.submitBtn a{
+    margin-top:20px;
+}
+.wrap div.submitBtn input,.cerWrap div.submitBtn input{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:60px;
+    border:0px;
+    z-index: 999;
+    opacity:0;
+    filter:alpha(opacity:0);
+    color:#fff;
+    font-size: 14px;
+}
+.check {
+    height: 76px;
+    line-height: 76px;
+    text-align: center;
+    color: #fff;
+}
+/**Registered**/
+/**cerWrap**/
+.cerWrap{
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    overflow: hidden;
+    margin:0px auto;
+}
+.cerWrap h3{
+    width:100%;
+    height: 162px;
+    line-height: 162px;
+    text-align: center;
+    color:#fff;
+    font-size: 46px;
+}
+.cerWrap p{
+    margin: 0px 64px;
+    width:484px;
+    padding: 10px;
+    border:#fff 1px solid;
+    font-size: 22px;
+    line-height: 40px;
+    text-indent: 30px;
+    background: #e7783a;
+    color:#fff;
+}
+.cerWrap ul{
+    margin: 0px 64px;
+    width:504px;
+    height: auto;
+    overflow: hidden;
+}
+.cerWrap ul li{
+    width:502px;
+    height: 78px;
+    border: #fff 1px solid;
+    margin-top: 40px;
+}
+.cerWrap ul li small,.step ul li div{
+    color:#000;
+}
+.cerWrap ul li input{
+    width:405px;
+    height: 74px;
+    line-height: 74px;
+    background: #ea7938;
+    font-size: 24px;
+    border: none;
+    padding-left: 96px;
+    color:#fff;
+}
+.cerWrap ul li input.yourName{
+    background: url("/mobile/images/phone_username.png") no-repeat 18px center;
+}
+.cerWrap ul li input.yourId{
+    background: url("/mobile/images/phone_rz/background_id.png") no-repeat 18px center;
+}
+
+.cerWrap input.realName{
+    width:344px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: #eea81e;
+    display: block;
+    border-radius:5px;
+    color:#fff;
+    margin: 0px auto;
+    font-size: 24px;
+    border: 0px;
+    font-family: 'microsoft yahei';
+}
+.cerWrap a.skip{
+    width:100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    display: block;
+    color:#fff000;
+    font-size: 18px;
+}
+.cerWrap ul span.tip{
+    width:100%;
+    line-height:16px;
+    text-align:center;
+    display:inline-block;
+    margin-top:16px;
+}
+@media (max-width: 320px) {
+    .step {
+        padding: 0px 0px 0px 10px;
+        margin-top: 150px;
+        width:300px;
+    }
+    .step i {
+        width: 80px;
+        height: 32px;
+        line-height: 32px;
+        color: #fff;
+        top: 244px;
+        right: 6px;
+        font-size: 12px;
+    }
+    .step ul li {
+        width: 296px;
+        height: 46px;
+        line-height: 46px;
+    }
+    .step ul li input {
+        width: 240px;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+    .step p {
+        padding-right: 20px;
+    }
+    .wrap {
+        background-size: 90%;
+    }
+    .wrap input.logUp {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .wrap div.submitBtn {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+    .step ul li input.phoneNumber,.step ul li input.vCode,.step ul li input.referrer {
+        background-size: 25px 20px;
+    }
+    .check {
+        height: 50px;
+        line-height: 50px;
+    }
+    .cerWrap h3{
+        width:100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .cerWrap p{
+        margin: 0px 10px;
+        width:290px;
+        padding: 5px;
+        font-size: 12px;
+        line-height: 20px;
+    }
+    .cerWrap div.submitBtn input{
+        width:296px;
+    }
+    .cerWrap ul{
+        margin: 0px 10px;
+        width:298px;
+    }
+    .cerWrap ul li{
+        width:296px;
+        height: 46px;
+        margin-top: 20px;
+    }
+    .cerWrap ul li input{
+        width:84%;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        padding-left: 46px;
+        color:#fff;
+    }
+    .cerWrap ul li input.yourName,.cerWrap ul li input.yourId{
+        background-size:25px 20px;
+    }
+    .cerWrap input.realName{
+        width:100%;
+        border-radius:0px;
+        height: 60px;
+        line-height: 60px;
+        margin: 20px auto 0px;
+        font-size: 16px;
+    }
+    .cerWrap a.skip{
+        font-size: 12px;
+    }
+}
+
+@media ( max-width: 380px ) and ( min-width: 324px ) {
+    .step {
+        margin-top: 150px;
+        padding: 0px 10px;
+        width: 95%;
+    }
+
+    .step i {
+        width: 80px;
+        height: 32px;
+        line-height: 32px;
+        color: #fff;
+        top: 243px;
+        right: 30px;
+        font-size: 12px;
+    }
+
+    .step ul li {
+        width: 340px;
+        height: 46px;
+        line-height: 46px;
+    }
+
+    .step ul li input {
+        width: 290px;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+
+    .step p {
+        padding-right: 40px;
+    }
+
+    .wrap {
+        background-size: 90%;
+    }
+
+    .wrap input.logUp {
+        width: 354px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        padding:0px;
+        margin:0px;
+        left:0px;
+        top:0px;
+    }
+
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.phoneNumber {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.referrer {
+        background-size: 25px 20px;
+    }
+
+    .check {
+        height: 50px;
+        line-height: 50px;
+    }
+    .cerWrap h3{
+        width:100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .cerWrap p{
+        margin: 0px 10px;
+        width:85%;
+        padding: 5px 5%;
+        font-size: 12px;
+        line-height: 20px;
+    }
+    .cerWrap ul{
+        margin: 0px 10px;
+        width:94%;
+        margin: 0px 3%;
+    }
+
+    .cerWrap ul li{
+        width:99%;
+        height: 46px;
+        margin-top: 20px;
+    }
+    .cerWrap ul li input{
+        width:86%;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        padding-left: 46px;
+        color:#fff;
+    }
+    .cerWrap ul li input.yourName,.cerWrap ul li input.yourId{
+        background-size:25px 20px;
+    }
+    .cerWrap input.realName{
+        width:100%;
+        border-radius:0px;
+        height: 38px;
+        line-height: 38px;
+        margin: 20px auto 0px;
+        font-size: 16px;
+    }
+    .cerWrap a.skip{
+        font-size: 12px;
+    }
+}
+
+@media ( max-width: 460px ) and ( min-width: 381px ) {
+    .step {
+        margin-top: 166px;
+        padding: 0px 10px;
+        width: 95%;
+    }
+
+    .step i {
+        width: 80px;
+        height: 32px;
+        line-height: 32px;
+        color: #fff;
+        top: 243px;
+        right: 26px;
+        font-size: 12px;
+    }
+
+    .step ul li {
+        width: 378px;
+        height: 46px;
+        line-height: 46px;
+    }
+
+    .step ul li input {
+        width: 234px;
+        height: 42px;
+        line-height: 42px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+
+    .step p {
+        padding-right: 40px;
+    }
+
+    .wrap {
+        background-size: 90%;
+    }
+
+    .wrap input.logUp {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 0px;
+        font-size: 16px;
+        padding:0px;
+        border-radius:5px;
+    }
+    .wrap a.logUp-a {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 0px;
+        font-size: 16px;
+        padding:0px;
+        border-radius:5px;
+    }
+
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.phoneNumber {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.referrer {
+        background-size: 25px 20px;
+    }
+
+    .check {
+        height: 50px;
+        line-height: 50px;
+    }
+    .cerWrap h3{
+        width:100%;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .cerWrap p{
+        margin: 0 10px;
+        width:85%;
+        padding: 5px 5%;
+        font-size: 12px;
+        line-height: 20px;
+    }
+    .cerWrap ul{
+        width:94%;
+        margin: 0 3%;
+    }
+    .cerWrap ul li{
+        width:99%;
+        height: 46px;
+        margin-top: 20px;
+    }
+
+    .cerWrap ul li input{
+        width:86%;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        padding-left: 46px;
+        color:#fff;
+    }
+    .cerWrap ul li input.yourName,.cerWrap ul li input.yourId{
+        background-size:25px 20px;
+    }
+    .cerWrap input.realName{
+        width:100%;
+        border-radius:0px;
+        height: 60px;
+        line-height: 60px;
+        margin: 20px auto 0px;
+        font-size: 16px;
+    }
+    .cerWrap a.skip{
+        font-size: 12px;
+    }
+}
+
+@media ( max-width: 540px ) and (min-width: 459px ) {
+    .step {
+        margin-top: 156px;
+        padding: 0 10px;
+        width: 95%;
+    }
+
+    .step i {
+        width: 80px;
+        height: 22px;
+        line-height: 22px;
+        color: #fff;
+        top: 243px;
+        right: 20px;
+        font-size: 12px;
+    }
+
+    .step ul li {
+        width: 388px;
+        height: 48px;
+        line-height: 48px;
+    }
+
+    .step ul li input {
+        width: 338px;
+        height: 46px;
+        line-height: 46px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+
+    .step p {
+        padding-right: 40px;
+    }
+
+    .wrap {
+        background-size: 90%;
+    }
+
+    .wrap input.logUp {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        border-radius: 0px;
+        font-size: 16px;
+    }
+    .wrap a.logUp-a {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        border-radius: 0px;
+        font-size: 16px;
+    }
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.phoneNumber {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.referrer {
+        background-size: 25px 20px;
+    }
+
+    .check {
+        height: 50px;
+        line-height: 50px;
+    }
+}
+
+@media ( max-width: 600px ) and (min-width: 541px  ) {
+    .step {
+        margin-top: 166px;
+        padding: 0 10px;
+        width: 95%;
+    }
+
+    .step i {
+        width: 80px;
+        height: 22px;
+        line-height: 22px;
+        color: #fff;
+        top: 243px;
+        right: 30px;
+        font-size: 12px;
+    }
+
+    .step ul li {
+        width: 90%;
+        height: 46px;
+        line-height: 46px;
+    }
+
+    .step ul li input {
+        width: 388px;
+        height: 44px;
+        line-height: 4px;
+        font-size: 12px;
+        -webkit-background-size: 25px 12px;
+        padding-left: 50px;
+    }
+
+    .step p {
+        padding-right: 40px;
+    }
+
+    .step ul li input.userName {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.passWord {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.phoneNumber {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.vCode {
+        background-size: 25px 20px;
+    }
+
+    .step ul li input.referrer {
+        background-size: 25px 20px;
+    }
+
+    .wrap input.logUp {
+        width: 98%;
+        height: 60px;
+        line-height: 60px;
+        border-radius:5px;
+        font-size: 16px;
+        padding:0px;
+        border-radius:5px;
+    }
+    .wrap a.logUp-a {
+        width: 98%;
+        height: 60px;
+        line-height: 60px;
+        border-radius:5px;
+        font-size: 16px;
+        padding:0px;
+        margin:0px;
+        border-radius:5px;
+    }
+}

@@ -21,14 +21,14 @@ def start_listen(channel):
 
 @task
 def listen_fe():
-    from tests.ump_service.constants import FRONTEND_NOTIFY_CHANNEL
+    from test.ump_service.constants import FRONTEND_NOTIFY_CHANNEL
 
     start_listen(FRONTEND_NOTIFY_CHANNEL)
 
 
 @task
 def listen_be():
-    from tests.ump_service.constants import BACKEND_NOTIFY_CHANNEL
+    from test.ump_service.constants import BACKEND_NOTIFY_CHANNEL
 
     start_listen(BACKEND_NOTIFY_CHANNEL)
 
@@ -61,9 +61,15 @@ def mkwar():
     run_shell_under_v1('/opt/gradle/latest/bin/gradle war')
 
 
+def stop_tomcat():
+    run_shell_under_v1('sudo kill -9 `cat /var/run/tomcat6.pid`')
+    run_shell_under_v1('sudo rm /var/run/tomcat6.pid')
+    run_shell_under_v1('sudo rm /var/lock/subsys/tomcat6')
+
+
 @task
 def deploy_tomcat():
-    run_shell_under_v1('sudo service tomcat6 stop')
+    stop_tomcat()
     run_shell_under_v1('sudo rm -rf /usr/share/tomcat6/webapps/ROOT')
     run_shell_under_v1('sudo cp war/ROOT.war /usr/share/tomcat6/webapps/')
     run_shell_under_v1('sudo service tomcat6 start')
@@ -101,4 +107,4 @@ def get_current_dir():
 
 def get_base_dir():
     test_dir = get_current_dir()
-    return os.path.join(test_dir, 'tests', 'ump_service')
+    return os.path.join(test_dir, 'test', 'ump_service')

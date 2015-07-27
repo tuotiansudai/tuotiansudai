@@ -4,8 +4,8 @@ import random
 from flask import Flask, request, abort
 from flask.templating import render_template
 from markupsafe import Markup
-from tests.ump_service.constants import WEB_HOST
-from tests.ump_service.store_helper import Store
+from test.ump_service.constants import WEB_HOST
+from test.ump_service.store_helper import Store
 
 app = Flask(__name__)
 
