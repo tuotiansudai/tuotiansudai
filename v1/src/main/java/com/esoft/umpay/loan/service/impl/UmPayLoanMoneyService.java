@@ -148,7 +148,7 @@ public class UmPayLoanMoneyService {
 			try {
 				systemBillService.transferOut(money,"referrer_reward","标的放款推荐人奖励");
 			} catch (InsufficientBalance insufficientBalance) {
-				insufficientBalance.printStackTrace();
+				log.error(insufficientBalance.getLocalizedMessage(),insufficientBalance);
 			}
 		} else {
 			log.error("普通转账免密(划账)-失败-编号:" + orderId + "-原因: " + resData.get("ret_msg"));
