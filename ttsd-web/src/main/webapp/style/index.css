@@ -1483,24 +1483,16 @@ body {
           margin-right: 10px; }
     .registered ul li.reg_one {
       width: 330px;
-      margin-left: 7px; }
-      .registered ul li.reg_one a {
-        background: url("../images/register/reg_one.png") no-repeat; }
-      .registered ul li.reg_one a:hover {
-        background: url("../images/register/reg_one_active.png") no-repeat;
-        color: #fff; }
+      margin-left: 7px;
+      background: url("../images/register/reg_one_active.png") no-repeat;
+      color: #fff; }
     .registered ul li.reg_two {
-      width: 324px; }
-      .registered ul li.reg_two a {
-        background: url("../images/register/reg_two.png") no-repeat; }
-      .registered ul li.reg_two a:hover {
-        background: url("../images/register/reg_two_active.png") no-repeat;
-        color: #fff; }
+      width: 324px;
+      background: url("../images/register/reg_two.png") no-repeat; }
     .registered ul li.reg_three {
       width: 324px;
-      margin-left: 6px; }
-      .registered ul li.reg_three a {
-        background: url("../images/register/reg_three.png") no-repeat; }
+      margin-left: 6px;
+      background: url("../images/register/reg_three.png") no-repeat; }
 
 .step_one {
   width: 610px;
@@ -1514,19 +1506,17 @@ body {
       height: 40px;
       margin-top: 20px;
       position: relative; }
-      .step_one ol li b {
+      .step_one ol li .form-error {
         font-weight: normal;
         color: #f68e3a;
         font-size: 12px;
         margin-left: 6px;
         width: 180px;
         float: left;
-        height: 40px;
-        line-height: 40px;
+        line-height: 20px;
         display: block;
         padding-left: 28px;
-        background: url("../images/register/registered.png") no-repeat 0px -81px;
-        opacity: 0; }
+        background: url("../images/register/registered.png") no-repeat 0px -81px; }
       .step_one ol li em {
         position: absolute;
         left: 330px;
@@ -1553,7 +1543,7 @@ body {
       border-radius: 3px;
       padding-left: 40px;
       float: left; }
-    .step_one ol span {
+    .step_one ol .send_vcode {
       display: block;
       width: 90px;
       height: 28px;

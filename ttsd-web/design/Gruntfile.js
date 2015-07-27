@@ -17,12 +17,17 @@ module.exports = function (grunt) {
         },
         sass: {
             dist: {
-                files: {
-                    //输出后的文件：要输出的文件，也就是源文件；
-                    "static/style/index.css": "static/style/index.scss"
-                },
-                options: {
-                }
+                files: [{
+                    expand: true,
+                    cwd: 'static/style',
+                    src: ['*.scss'],
+                    dest: '../src/main/webapp/style',
+                    ext: '.css'
+                }]
+                //options: {
+                //    "sourcemap": "none",
+                //    "style": "compressed"
+                //}
             }
         },
         watch: {
@@ -64,44 +69,15 @@ module.exports = function (grunt) {
                 }
             }
         }
-
-//        'string-replace': {
-//            dist: {
-//                files: {
-//                    'static/': ['static/templates/homepage.html', 'static/templates/cash.html', 'static/templates/email.html', 'static/templates/realname.html', 'static/templates/recharge.html'],
-//                    'static/': ['static/templates/homepage.html', 'static/templates/cash.html', 'static/templates/email.html', 'static/templates/realname.html', 'static/templates/recharge.html']
-//                },
-//                options: {
-//                    replacements: [
-//                        {
-//                            pattern: 'index.min.css',
-//                            replacement :"index.min<%= grunt.template.today('yyyy-mm-dd') %>.css"
-//                        }
-//                    ]
-//                }
-//            }
-//        }
     });
     //插件加载(可选项，如果使用了插件，就要调用，如果没使用插件，可以忽略)
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    //grunt.loadNpmTasks('grunt-string-replace');
+    //grunt.loadNpmTasks('grunt-contrib-cssmin');
     //任务注册：注册一个任务。在 default 上面注册了一个 Uglify 任务，default 就是别名，它是默认的 task，当你在项目目录执行 grunt 的时候，它会执行注册到 default 上面的任务。也就是说，当我们执行 grunt 命令的时候，uglify 的所有代码将会执行。我们也可以注册别的 task，例如：grunt.registerTask('compress', ['uglify:build']);
-    grunt.registerTask('default', ['connect', 'cssmin', 'watch']);
+    grunt.registerTask('default', ['connect', 'watch']);
     grunt.registerTask('live', ['watch']);
-}
-
-//"connect-livereload": "^0.5.3",/*页面无刷新显示修改后的样式*/
-//"grunt": "^0.4.5",
-//    "grunt-contirb-cssmin": ">=0.4.0",/css压缩/
-//  "grunt-contrib-concat": "^0.5.1",
-//  "grunt-contrib-connect": "^0.10.1",
-//  "grunt-contrib-jshint": "^0.11.2",/JS语法检查/
-//  "grunt-contrib-sass": "^0.9.2",/sass文件转css/
-//  "grunt-contrib-uglify": "^0.9.1",/默认/
-//  "grunt-contrib-watch": "^0.6.1",/文件修改监听/
-//  "grunt-string-replace": "^0.4.0"/实现修改的文件加时间戳/
-
+    //grunt.registerTask('watch');
+};
