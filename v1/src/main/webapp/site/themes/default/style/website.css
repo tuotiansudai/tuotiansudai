@@ -341,10 +341,10 @@ body{
 .safe-main div:nth-child(1){
     padding-right: 198px;
     width:516px;
-    background: url("#{tplVars.themeImagePath}/aboutus/safelist1.jpg") no-repeat 526px center;
+    background: url("../images/aboutus/safelist1.jpg") no-repeat 526px center;
 }
 .safe-main div:nth-child(2){
-    background: url("#{tplVars.themeImagePath}/aboutus/safelist2.jpg") no-repeat 0px center;
+    background: url("../images/aboutus/safelist2.jpg") no-repeat 0px center;
 }
 .safe-main div:nth-child(2) p{
     padding-left: 196px;
@@ -355,7 +355,7 @@ body{
     width:544px;
     height: auto;
     overflow: hidden;
-    background: url("#{tplVars.themeImagePath}/aboutus/safelist3.jpg") no-repeat right 0px;
+    background: url("../images/aboutus/safelist3.jpg") no-repeat right 0px;
 }
 .safe-main div:nth-child(3) p{
     margin-top: 12px;
@@ -364,7 +364,7 @@ body{
     padding-left: 277px;
     width:437px;
     height: 182px;
-    background: url("#{tplVars.themeImagePath}/aboutus/safelist4.jpg") no-repeat left center;
+    background: url("../images/aboutus/safelist4.jpg") no-repeat left center;
 }
 .safe-main div:nth-child(4) p{
     margin-top: 30px;
@@ -381,7 +381,7 @@ body{
     color:#666;
 }
 .safe-main div span{
-    background: url("#{tplVars.themeImagePath}/aboutus/safelist5.jpg") no-repeat center;
+    background: url("../images/aboutus/safelist5.jpg") no-repeat center;
     display: block;
     width: 696px;
     height: 14px;
