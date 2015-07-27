@@ -13,6 +13,7 @@ import com.esoft.archer.user.model.*;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
@@ -88,6 +89,9 @@ public class UmPayNormalRepayOperation extends
 
 	@Logger
 	Log log;
+
+	@Resource
+	SystemBillService systemBillService;
 
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)

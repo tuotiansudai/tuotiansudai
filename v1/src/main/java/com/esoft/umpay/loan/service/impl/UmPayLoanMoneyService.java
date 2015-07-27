@@ -1,25 +1,16 @@
 package com.esoft.umpay.loan.service.impl;
 
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import com.esoft.umpay.repay.service.impl.UmPayImitateSign;
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.HttpClientUtil;
 import com.esoft.core.util.IdGenerator;
+import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
+import com.esoft.umpay.repay.service.impl.UmPayImitateSign;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.umpay.api.common.ReqData;
@@ -27,6 +18,15 @@ import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Description :控制第三方标的里面的资金
@@ -45,6 +45,9 @@ public class UmPayLoanMoneyService {
 
 	@Resource
 	UmPayImitateSign umPayImitateSignService;
+
+	@Resource
+	SystemBillService systemBillService;
 
 	@Logger
 	Log log;
@@ -142,6 +145,11 @@ public class UmPayLoanMoneyService {
 		if ("0000".equals(ret_code)) { // 成功划账
 			log.debug("普通转账免密(划账)-成功!");
 			to.setStatus(TrusteeshipConstants.Status.PASSED);
+			try {
+				systemBillService.transferOut(money,"referrer_reward","标的放款推荐人奖励");
+			} catch (InsufficientBalance insufficientBalance) {
+				insufficientBalance.printStackTrace();
+			}
 		} else {
 			log.error("普通转账免密(划账)-失败-编号:" + orderId + "-原因: " + resData.get("ret_msg"));
 			to.setStatus(TrusteeshipConstants.Status.REFUSED);
