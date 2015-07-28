@@ -24,6 +24,7 @@ import com.esoft.jdp2p.message.service.impl.MessageBO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +51,10 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 
 	@Logger
 	static Log log;
-	
+
+	@Value("${redis.registerVerifyCode.expireTime}")
+	private int registerVerifyCodeExpireTime;
+
 	/**
 	 * 步骤
 	 */
