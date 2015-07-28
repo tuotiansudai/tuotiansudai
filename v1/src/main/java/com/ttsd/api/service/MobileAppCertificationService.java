@@ -1,5 +1,9 @@
 package com.ttsd.api.service;
 
+import com.ttsd.api.dto.BaseParamDto;
+import com.ttsd.api.dto.CertificationRequestDto;
+import com.ttsd.api.dto.CertificationResponseDto;
+
 import javax.annotation.Resource;
 import java.util.Map;
 
@@ -9,17 +13,9 @@ import java.util.Map;
 public interface MobileAppCertificationService {
     /**
      * @function 平台登录用户实名认证接口
-     * @param userId 登录用户ID
-     * @param userRealName 登录用户真实姓名
-     * @param idCardNumber 身份证号码
-     * @return String
+     * @param certificationRequestDto 移动端用户实名认证请求参数包装类
+     * @return CertificationResponseDto
      */
-    Map<String,Object> validateUserCertificationInfo(String userId,String userRealName,String idCardNumber);
+    CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto);
 
-    /**
-     * @function 获取用户实名认证信息
-     * @param userId 用户ID
-     * @return String
-     */
-    Map<String,Object> getUserCertificationInfo(String userId);
 }

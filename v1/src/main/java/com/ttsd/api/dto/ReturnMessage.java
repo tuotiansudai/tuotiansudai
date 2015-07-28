@@ -20,9 +20,8 @@ public enum ReturnMessage {
     /******手机端实名认证返回码******/
     ID_CARD_IS_NULL("0013","身份号码为空"),
     REAL_NAME_IS_NULL("0014","真实姓名为空"),
-    ID_CARD_IS_INVALID("0015","无效身份证号"),
-    ID_CARD_IS_EXIST("0016","身份证号已被实名认证"),
-    CERTIFICATION_FAIL("0017","实名认证失败"),
+    ID_CARD_IS_EXIST("0015","身份证号已被实名认证"),
+    CERTIFICATION_FAIL("0016","实名认证失败"),
     USER_ID_IS_NULL("0017","用户ID为空"),
     USER_ID_NOT_EXIST("0018","用户ID不存在");
     /******手机端实名认证返回码******/

@@ -1,11 +1,11 @@
 package com.ttsd.api.controller;
 
+import com.ttsd.api.dto.BaseParamDto;
+import com.ttsd.api.dto.CertificationRequestDto;
+import com.ttsd.api.dto.CertificationResponseDto;
 import com.ttsd.api.service.MobileAppCertificationService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -22,16 +22,8 @@ public class MobileCertificationController {
 
     @RequestMapping(value = "/certification",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> userMobileCertification(@RequestParam(value = "userId") String userId,
-                                          @RequestParam(value = "userRealName") String userRealName,
-                                          @RequestParam(value = "userIdCardNumber") String userIdCardNumber){
-        return mobileAppCertificationService.validateUserCertificationInfo(userId,userRealName,userIdCardNumber);
-    }
-
-    @RequestMapping(value = "/getUserCertificationInfo",method = RequestMethod.GET)
-    @ResponseBody
-    public Map<String,Object> getUserCertificationInfo(@RequestParam(value = "userId")String userId){
-        return mobileAppCertificationService.getUserCertificationInfo(userId);
+    public CertificationResponseDto userMobileCertification(@RequestBody CertificationRequestDto certificationRequestDto){
+        return mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
     }
 
     public void setMobileAppCertificationService(MobileAppCertificationService mobileAppCertificationService) {

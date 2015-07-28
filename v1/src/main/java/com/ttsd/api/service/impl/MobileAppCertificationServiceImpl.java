@@ -7,15 +7,13 @@ import com.esoft.core.annotations.Logger;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.google.common.base.Strings;
-import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppCertificationService;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by tuotian on 15/7/27.
@@ -34,13 +32,16 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
 
     /**
      * @function 移动端实名认证接口
-     * @param userId 登录用户ID
-     * @param userRealName 登录用户真实姓名
-     * @param idCardNumber 身份证号码
-     * @return Map<String,Object>
+     * @param certificationRequestDto 移动端用户实名认证请求参数包装类
+     * @return CertificationResponseDto
      */
     @Override
-    public Map<String,Object> validateUserCertificationInfo(String userId, String userRealName, String idCardNumber) {
+    public CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
+        BaseParam baseParam = certificationRequestDto.getBaseParam();//TODO 将此参数信息持久化到数据库中
+        String userId = baseParam.getUserId();
+        String userRealName = certificationRequestDto.getUserRealName();
+        String idCardNumber = certificationRequestDto.getUserIdCardNumber();
+
         if (Strings.isNullOrEmpty(userId)){
             return assembleResult(ReturnMessage.USER_ID_IS_NULL.getCode(), ReturnMessage.USER_ID_IS_NULL.getMsg(), userRealName, idCardNumber);
         }
@@ -68,7 +69,7 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
                 umPayUserOperation.createOperation(user, null);
                 return assembleResult(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg(), userRealName, idCardNumber);
             } catch (IOException e) {
-                log.error("由于网络异常，用户ID为：" + userId + " 的用户实名认证失败！");
+                log.error("由于网络异常，ID为：" + userId + " 的用户实名认证失败！");
                 log.error(e.getLocalizedMessage());
                 return assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
             } catch (UmPayOperationException e){
@@ -80,29 +81,6 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
         return null;
     }
 
-    /**
-     * @function 移动端获取用户实名认证信息(已经处理过的用户信息)
-     * @param userId 用户ID
-     * @return Map<String,Object>
-     */
-    @Override
-    public Map<String,Object> getUserCertificationInfo(String userId) {
-        if (Strings.isNullOrEmpty(userId)){
-            return assembleResult(ReturnMessage.USER_ID_IS_NULL.getCode(), ReturnMessage.USER_ID_IS_NULL.getMsg(), null, null);
-        }
-        try {
-            User user = userService.getUserById(userId);
-            String userRealName = user.getRealname();
-            String idCardNumber = user.getIdCard();
-            userRealName = userRealName.substring(0,1);
-            idCardNumber = (idCardNumber.substring(0,6)+"******"+idCardNumber.substring(13,18));
-            return assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
-        } catch (UserNotFoundException e) {
-            log.error("由于网络异常，用户ID为：" + userId + " 的用户实名认证认证信息失败！");
-            log.error(e.getLocalizedMessage());
-            return assembleResult(ReturnMessage.USER_ID_NOT_EXIST.getCode(), ReturnMessage.USER_ID_NOT_EXIST.getMsg(), null, null);
-        }
-    }
 
     /**
      * @function 封装结果集
@@ -110,17 +88,17 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
      * @param message 消息描述
      * @param userRealName 用户真实姓名
      * @param idCardNumber 用户身份证号码
-     * @return Map<String,Object>
+     * @return CertificationResponseDto
      */
-    public Map<String,Object> assembleResult(String code,String message,String userRealName,String idCardNumber){
-        Map<String,Object> resMap = new HashMap<String,Object>();
-        resMap.put("code", code);
-        resMap.put("message",message);
-        Map<String,String> userInfoMap = new HashMap<String,String>();
-        userInfoMap.put("userRealName",userRealName);
-        userInfoMap.put("userIdCardNumber",idCardNumber);
-        resMap.put("certificationData",userInfoMap);
-        return resMap;
+    public CertificationResponseDto assembleResult(String code,String message,String userRealName,String idCardNumber){
+        CertificationDataDto certificationDataDto = new CertificationDataDto();
+        certificationDataDto.setUserRealName(userRealName);
+        certificationDataDto.setUserIdCardNumber(idCardNumber);
+        CertificationResponseDto certificationResponseDto = new CertificationResponseDto();
+        certificationResponseDto.setCode(code);
+        certificationResponseDto.setMessage(message);
+        certificationResponseDto.setData(certificationDataDto);
+        return certificationResponseDto;
     }
 
     /*************************************set方法**************************************/
