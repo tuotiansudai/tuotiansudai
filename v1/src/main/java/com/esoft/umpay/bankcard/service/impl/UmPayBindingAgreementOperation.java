@@ -73,8 +73,7 @@ public class UmPayBindingAgreementOperation extends
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
-            String order_id = System.currentTimeMillis() + userId;
-            to = createTrusteeshipOperation(order_id, reqData.getUrl(),
+            to = createTrusteeshipOperation(userId, reqData.getUrl(),
                     userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
@@ -97,15 +96,14 @@ public class UmPayBindingAgreementOperation extends
             log.debug("签约协议-前台-通知:" + paramMap.toString());
             TrusteeshipAccount ta = ht.get(TrusteeshipAccount.class,
                     paramMap.get("user_id"));
-            // 这里是uuid+时间戳组成
-            String order_id = paramMap.get("order_id");
-            // 操作记录
-            TrusteeshipOperation to = trusteeshipOperationBO.get(
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, order_id, ta
-                            .getUser().getId(),
-                    UmPayConstants.OperationType.UMPAY);
             String ret_code = paramMap.get("ret_code");
             String user_id = paramMap.get("user_id");
+            // 操作记录
+            TrusteeshipOperation to = trusteeshipOperationBO.get(
+                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, ta
+                            .getUser().getId(),
+                    UmPayConstants.OperationType.UMPAY);
+
 
             if ("0000".equals(ret_code)) {
 
@@ -154,7 +152,6 @@ public class UmPayBindingAgreementOperation extends
                 log.debug("签约协议-后台-通知:" + paramMap.toString());
                 if (null != paramMap) {
                     String ret_code = paramMap.get("ret_code");
-                    String order_id = paramMap.get("order_id");
                     String user_id = paramMap.get("user_id");
                     if ("0000".equals(ret_code)) {
 
@@ -176,7 +173,7 @@ public class UmPayBindingAgreementOperation extends
                     try {
                         response.setCharacterEncoding("utf-8");
                         // 返回数据
-                        String responseData = getResponseData(order_id, ret_code);
+                        String responseData = getResponseData(user_id, ret_code);
                         response.getWriter().print(responseData);
                         FacesUtil.getCurrentInstance().responseComplete();
                     } catch (IOException e) {
