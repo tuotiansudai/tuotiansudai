@@ -44,7 +44,7 @@ public class BankCardServiceImpl implements BankCardService{
     }
 
     public boolean isOpenFastPayment(String userId) {
-        String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' and bankCard.isOpenFastPayment=''1''";
+        String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' and bankCard.isOpenFastPayment=true";
         int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, userId)));
         return count > 0;
     }
