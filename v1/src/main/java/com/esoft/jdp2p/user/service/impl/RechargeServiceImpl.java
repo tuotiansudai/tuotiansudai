@@ -323,7 +323,7 @@ public class RechargeServiceImpl implements RechargeService {
 
 		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
 
-		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+		List<BankCard> bankCard= ht.find(hql, new Object[]{userId, true,"passed"});
 
 		if(bankCard != null&& bankCard.size() > 0){
 			return bankCard.get(0).getBankNo();
