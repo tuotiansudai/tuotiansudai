@@ -5,7 +5,7 @@
   .nav-main a {
     display: block;
     float: left;
-    margin-top: 10px; }
+     }
   .nav-main p {
     position: absolute;
     width: 100px;
@@ -13,7 +13,7 @@
     text-align: center;
     line-height: 62px;
     border-left: #f68e3a 1px solid;
-    top: 36px;
+    top: 6px;
     left: 776px;
     display: block;
     font-size: 24px;
@@ -58,15 +58,15 @@
     .registered ul li.reg-one {
       width: 330px;
       margin-left: 7px;
-      background: url("../images/register/reg_one_active.png") no-repeat;
+      background: url("../images/register/reg-one-active.png") no-repeat;
       color: #fff; }
     .registered ul li.reg-two {
       width: 324px;
-      background: url("../images/register/reg_two.png") no-repeat; }
+      background: url("../images/register/reg-two.png") no-repeat; }
     .registered ul li.reg-three {
       width: 324px;
       margin-left: 6px;
-      background: url("../images/register/reg_three.png") no-repeat; }
+      background: url("../images/register/reg-three.png") no-repeat; }
 
 .step-one {
   width: 610px;

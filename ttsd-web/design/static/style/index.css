@@ -1,89 +1,89 @@
 /******index**********/
-#top {
+.top {
   width: 100%;
   height: 30px;
   background: #333;
   font-size: 12px; }
 
-#top div {
+.top div {
   width: 994px;
   height: 30px;
   line-height: 30px;
   margin: 0px auto; }
 
-#top div p {
+.top div p {
   width: 400px;
   float: left;
   color: #fff; }
 
-#top div p span {
+.top div p span {
   color: #979797;
   margin-left: 8px; }
 
-#top div ul {
+.top div ul {
   width: 160px;
   float: right; }
 
-#top div ul li {
+.top div ul li {
   float: left;
   margin-right: 10px;
   color: #fff; }
 
-#top div ul li a {
+.top div ul li a {
   width: auto;
   padding-left: 8px;
   color: #fff; }
 
-#top div ul li a:hover {
+.top div ul li a:hover {
   color: #ffc600; }
 
-#nav {
+.nav {
   width: 100%;
   height: 77px;
   border-bottom: #f58243 1px solid;
   background: #fff; }
 
-#nav .nav_main {
+.nav .nav-main {
   width: 994px;
   position: relative;
   margin: 0px auto; }
 
-#nav .nav_main a.logo {
+.nav .nav-main a.logo {
   width: 386px;
   height: 57px;
   display: block;
   float: left;
   margin-top: 10px; }
 
-#nav .nav_main img {
+.nav .nav-main img {
   width: 386px;
   height: 57px; }
 
-#nav .nav_main ul {
+.nav .nav-main ul {
   width: 564px;
   height: 44px;
   line-height: 44px;
   float: right;
   margin-top: 16px; }
 
-#nav .nav_main ul li {
+.nav .nav-main ul li {
   float: left;
   width: 100px;
   height: 44px;
   margin-left: 12px;
   position: relative; }
 
-#nav .nav_main ul li a {
+.nav .nav-main ul li a {
   display: block;
   color: #000;
   text-align: center; }
 
-#nav .nav_main ul li a:hover {
+.nav .nav-main ul li a:hover {
   border: #f58243 1px solid;
   border-radius: 3px;
   color: #f58243; }
 
-#nav .nav_main ul li .subnav {
+.nav .nav-main ul li .subnav {
   display: none;
   position: absolute;
   left: 0px;
@@ -94,14 +94,14 @@
   background: #fff;
   z-index: 999; }
 
-#nav .nav_main ul li .subnav li {
+.nav .nav-main ul li .subnav li {
   width: 102px;
   height: 36px;
   clear: both;
   margin-top: -1px;
   margin-left: 0px; }
 
-#nav .nav_main ul li .subnav li a {
+.nav .nav-main ul li .subnav li a {
   width: 102px;
   height: 36px;
   text-align: center;
@@ -109,28 +109,28 @@
   line-height: 36px;
   clear: both; }
 
-#nav .nav_main ul li .subnav li a:hover {
+.nav .nav-main ul li .subnav li a:hover {
   border: none;
   border-bottom: #f58243 1px solid;
   color: #f58243; }
 
-#banner {
+.banner {
   width: 100%;
   height: 368px;
   margin-top: 3px; }
 
-#banner .ban_one {
+.banner .ban-one {
   width: 100%;
   height: 368px;
   background: url("../images/homepage/banner1.jpg") no-repeat center center;
   background-size: cover; }
 
-#banner .ban_one div {
+.banner .ban-one div {
   width: 994px;
   margin: 0px auto;
   position: relative; }
 
-#banner .ban_one div p {
+.banner .ban-one div p {
   position: absolute;
   background: url("../images/homepage/login.png") no-repeat;
   width: 260px;
@@ -138,7 +138,7 @@
   top: 12px;
   right: 38px; }
 
-#banner .ban_one div p a.registered {
+.banner .ban-one div p a.registered {
   background: #ea3926;
   color: #fff;
   border-radius: 3px;
@@ -151,7 +151,7 @@
   top: 172px;
   left: 36px; }
 
-#banner .ban_one div p a.login_in {
+.banner .ban-one div p a.login-in {
   font-size: 13px;
   color: #494848;
   position: absolute;
@@ -160,11 +160,11 @@
   left: 36px;
   top: 224px; }
 
-#banner .ban_one div p a.login_in i {
+.banner .ban-one div p a.login-in i {
   color: #e74c3c;
   font-style: normal; }
 
-#dynamic {
+.dynamic {
   width: 994px;
   margin: 0px auto 20px;
   height: 134px;
@@ -172,23 +172,23 @@
   border: #DBD6CE 1px solid;
   border-radius: 3px; }
 
-#dynamic .dy_main {
+.dynamic .dy-main {
   width: 100%;
   height: 120px; }
 
-#dynamic .dy_main ul {
+.dynamic .dy-main ul {
   float: left;
   width: 496px;
   border-right: 1px #bdbdbd solid;
   margin-top: 8px; }
 
-#dynamic .dy_main ul p {
+.dynamic .dy-main ul p {
   font-size: 16px;
   width: 112px;
   text-align: center;
   color: #636363; }
 
-#dynamic .dy_main ul li {
+.dynamic .dy-main ul li {
   padding: 0px 24px 0px 56px;
   width: 416px;
   margin-top: 15px;
@@ -196,21 +196,21 @@
   color: #5c5c5c;
   font-size: 14px; }
 
-#dynamic .dy_main ul li a {
+.dynamic .dy-main ul li a {
   width: 336px;
   overflow: hidden;
   float: left;
   color: #5c5c5c; }
 
-#dynamic .dy_main ul li span {
+.dynamic .dy-main ul li span {
   width: 80px;
   text-align: center;
   float: right; }
 
-#dynamic .dy_main ul :hover {
+.dynamic .dy-main ul :hover {
   color: #f58243; }
 
-#dynamic .dy_main ul span.more {
+.dynamic .dy-main ul span.more {
   width: 64px;
   height: 18px;
   float: right;
@@ -219,24 +219,24 @@
   margin: 8px 12px 0px 0px;
   font-size: 14px; }
 
-#dynamic .dy_main ul span.more a {
+.dynamic .dy-main ul span.more a {
   color: #5c5c5c; }
 
-#dynamic .dy_main ul span.more :hover {
+.dynamic .dy-main ul span.more :hover {
   color: #f58243; }
 
-#dynamic .dy_main dl {
+.dynamic .dy-main dl {
   float: left;
   width: 496px;
   margin-top: 8px; }
 
-#dynamic .dy_main dl dt {
+.dynamic .dy-main dl dt {
   font-size: 16px;
   width: 112px;
   text-align: center;
   color: #636363; }
 
-#dynamic .dy_main dl dd {
+.dynamic .dy-main dl dd {
   padding: 0px 24px 0px 56px;
   width: 416px;
   margin-top: 10px;
@@ -245,14 +245,14 @@
   font-size: 14px;
   color: #5c5c5c; }
 
-#dynamic .dy_main dl dd span {
+.dynamic .dy-main dl dd span {
   width: 80px;
   text-align: center;
   padding: 0px 28px;
   font-size: 18px;
   color: #f58243; }
 
-#dynamic:hover {
+.dynamic:hover {
   -webkit-box-shadow: 1px 1px 2px 1px #ccc;
   -moz-box-shadow: 1px 1px 2px 1px #ccc;
   -ms-box-shadow: 1px 1px 2px 1px #ccc;
@@ -269,7 +269,7 @@
   -ms-box-shadow: 1px 1px 2px 1px #ccc;
   box-shadow: 1px 1px 2px 1px #ccc; }
 
-.contentA_left {
+.contentA-left {
   height: 135px;
   border: #dbd6ce 1px solid;
   float: left;
@@ -279,14 +279,14 @@
   background: url("../images/homepage/xinshou.jpg") no-repeat 0px 0px #fff;
   padding-left: 60px; }
 
-.contentA_left_l {
+.contentA-left-l {
   width: 325px;
   height: 120px;
   float: left;
   margin: 8px 0px;
   border-right: #eeeeee 1px solid; }
 
-.contentA_left_l p {
+.contentA-left-l p {
   font-size: 16px;
   color: #333;
   height: 50px;
@@ -294,26 +294,26 @@
   padding-left: 23px;
   width: 302px; }
 
-.contentA_left_l ul {
+.contentA-left-l ul {
   width: 315px;
   padding-left: 10px;
   height: 74px;
   overflow: hidden;
   position: relative; }
 
-.contentA_left_l ul li {
+.contentA-left-l ul li {
   width: 155px;
   float: left;
   text-align: center; }
 
-.contentA_left_l ul li em {
+.contentA-left-l ul li em {
   font-size: 36px;
   color: #f0bc11; }
 
-.contentA_left_l ul li a {
+.contentA-left-l ul li a {
   font-size: 36px; }
 
-.contentA_left_l ul li span {
+.contentA-left-l ul li span {
   position: absolute;
   display: block;
   width: 70px;
@@ -323,22 +323,22 @@
   color: #f0bc11;
   font-size: 20px; }
 
-.contentA_left_l ul li i {
+.contentA-left-l ul li i {
   font-style: normal;
   font-size: 14px;
   color: #999999; }
 
-.contentA_left_l ul li.p_20 {
+.contentA-left-l ul li.p-20 {
   padding-right: 50px;
   width: 105px; }
 
-.contentA_left_r {
+.contentA-left-r {
   width: 298px;
   height: 120px;
   float: right;
   margin: 8px 0px; }
 
-.contentA_left_r p {
+.contentA-left-r p {
   width: 280px;
   height: 58px;
   margin-left: 6px;
@@ -347,7 +347,7 @@
   font-size: 17px;
   position: relative; }
 
-.contentA_left_r p em {
+.contentA-left-r p em {
   width: 172px;
   display: block;
   position: absolute;
@@ -359,7 +359,7 @@
   background: #eeeeee;
   z-index: 1; }
 
-.contentA_left_r p b {
+.contentA-left-r p b {
   width: 50%;
   height: 7px;
   background: #eb950f;
@@ -368,7 +368,7 @@
   top: 0px;
   z-index: 3; }
 
-.contentA_left_r p i {
+.contentA-left-r p i {
   float: right;
   display: block;
   width: 32px;
@@ -377,7 +377,7 @@
   color: #333333;
   font-size: 14px; }
 
-.contentA_left_r p span {
+.contentA-left-r p span {
   clear: both;
   display: block;
   width: 280px;
@@ -387,12 +387,12 @@
   font-size: 12px;
   color: #999999; }
 
-.contentA_left_r dl {
+.contentA-left-r dl {
   height: 60px;
   width: 280px;
   position: relative; }
 
-.contentA_left_r dl dt {
+.contentA-left-r dl dt {
   width: 104px;
   height: 30px;
   background: #eb950f;
@@ -401,14 +401,14 @@
   top: 18px;
   right: 18px; }
 
-.contentA_left_r dl dt a {
+.contentA-left-r dl dt a {
   line-height: 30px;
   text-align: center;
   color: #fff;
   width: 104px;
   display: block; }
 
-.contentA_left_r dl dd {
+.contentA-left-r dl dd {
   height: 24px;
   line-height: 24px;
   width: 156px;
@@ -417,11 +417,11 @@
   padding-top: 6px;
   color: #999999; }
 
-.contentA_left_r dl dd em {
+.contentA-left-r dl dd em {
   color: #000;
   font-style: normal; }
 
-.contentA_right {
+.contentA-right {
   width: 294px;
   height: 135px;
   border: #dbd6ce 1px solid;
@@ -430,7 +430,7 @@
   float: right;
   position: relative; }
 
-.contentA_right p {
+.contentA-right p {
   width: 130px;
   height: 30px;
   border: #eb6100 1px solid;
@@ -439,7 +439,7 @@
   left: 116px;
   top: 92px; }
 
-.contentA_right p a {
+.contentA-right p a {
   display: block;
   line-height: 30px;
   text-align: center;
@@ -447,7 +447,7 @@
   border-radius: 5px;
   background: #fff; }
 
-.contentA_right :hover {
+.contentA-right :hover {
   color: #eb6100;
   background: #f2ce7b; }
 
@@ -463,7 +463,7 @@
   color: #4b4b4b;
   font-weight: normal; }
 
-.contentB_list {
+.contentB-list {
   width: 240px;
   height: 332px;
   border: #fafafa 1px solid;
@@ -472,18 +472,18 @@
   background: #fff;
   margin-right: 8px; }
 
-.contentB_list h4 {
+.contentB-list h4 {
   width: 240px;
   height: 35px;
   line-height: 30px;
-  background: url("../images/homepage/title_bj.jpg") no-repeat center;
+  background: url("../images/homepage/title-bj.jpg") no-repeat center;
   color: #fff;
   text-align: center;
   font-size: 15px;
   font-weight: normal;
   border-radius: 3px; }
 
-.contentB_list p span {
+.contentB-list p span {
   float: left;
   padding-left: 15px;
   display: block;
@@ -491,7 +491,7 @@
   font-size: 13px;
   color: #999999; }
 
-.contentB_list p em {
+.contentB-list p em {
   float: right;
   padding-right: 15px;
   display: block;
@@ -499,36 +499,36 @@
   font-size: 13px;
   color: #999999; }
 
-.contentB_list .p_a {
+.contentB-list .p-a {
   height: 29px;
   line-height: 29px;
   width: 220px;
   margin: 6px 10px 0px 10px;
   border-bottom: #eaeaea 1px solid; }
 
-.contentB_list ul {
+.contentB-list ul {
   height: 90px;
   width: 220px;
   margin: 0px 10px;
   border-bottom: #eaeaea 1px solid; }
 
-.contentB_list ul li {
+.contentB-list ul li {
   width: 100px;
   float: left;
   text-align: center;
   height: 90px; }
 
-.contentB_list ul li span {
+.contentB-list ul li span {
   font-size: 29px;
   color: #000;
   line-height: 60px; }
 
-.contentB_list ul li p {
+.contentB-list ul li p {
   font-size: 14px;
   color: #999999;
   line-height: 14px; }
 
-.contentB_list .p_b {
+.contentB-list .p-b {
   width: 220px;
   margin: 20px 10px;
   font-size: 14px;
@@ -538,30 +538,30 @@
   line-height: 16px;
   text-align: center; }
 
-.contentB_list .p_c {
+.contentB-list .p-c {
   height: 16px;
   width: 220px;
   margin: 4px 10px 16px 10px; }
 
-.contentB_list .p_c span {
+.contentB-list .p-c span {
   font-size: 14px;
   width: 70px;
   padding-left: 0px;
   text-align: left; }
 
-.contentB_list .p_c em {
+.contentB-list .p-c em {
   color: #eb950f;
   font-size: 14px;
   width: 120px;
   padding-right: 0px;
   text-align: right; }
 
-.contentB_list .p_d {
+.contentB-list .p-d {
   width: 240px;
   height: 16px;
   position: relative; }
 
-.contentB_list .p_d em {
+.contentB-list .p-d em {
   width: 190px;
   height: 6px;
   display: block;
@@ -574,7 +574,7 @@
   border: #ed9d22 1px solid;
   padding: 0px; }
 
-.contentB_list .p_d b {
+.contentB-list .p-d b {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -582,7 +582,7 @@
   background: #f27531;
   height: 6px; }
 
-.contentB_list .p_d span {
+.contentB-list .p-d span {
   float: right;
   display: block;
   width: 50px;
@@ -592,7 +592,7 @@
   font-size: 14px;
   color: #a1a1a1; }
 
-.contentB_list a {
+.contentB-list a {
   display: block;
   width: 215px;
   height: 34px;
@@ -603,14 +603,14 @@
   text-align: center;
   margin: 16px 12px; }
 
-.m_r0 {
+.m-r0 {
   margin-right: 0px; }
 
-.contentB_list:hover {
+.contentB-list:hover {
   border: #f37f41 1px solid;
   border-radius: 4px; }
 
-.contentB_list:hover a {
+.contentB-list:hover a {
   background: #ff6b1b; }
 
 .contentC {
@@ -625,43 +625,43 @@
   font-weight: normal;
   color: #4b4b4b; }
 
-.contentC_list {
+.contentC-list {
   height: 108px;
   border: #d7d7d7 1px solid;
   border-radius: 3px;
   margin-top: 10px;
   background: #fff; }
 
-.contentC_list ul {
+.contentC-list ul {
   height: 96px;
   border-right: #d7d7d7 1px solid;
   margin-top: 6px;
   width: 699px;
   float: left; }
 
-.contentC_list ul li {
+.contentC-list ul li {
   width: 174px;
   height: 96px;
   text-align: center;
   float: left; }
 
-.contentC_list ul .li_a {
+.contentC-list ul .li-a {
   line-height: 96px;
   font-size: 20px;
   color: #333333; }
 
-.contentC_list ul .li_b span, .contentC_list ul .li_c span {
+.contentC-list ul .li-b span, .contentC-list ul .li-c span {
   font-size: 42px;
   color: #f0bc11; }
 
-.contentC_list ul .li_b p, .contentC_list ul .li_c p {
+.contentC-list ul .li-b p, .contentC-list ul .li-c p {
   font-size: 14px;
   color: #999999; }
 
-.contentC_list ul .li_c span {
+.contentC-list ul .li-c span {
   color: #2c2c2c; }
 
-.contentC_list ul .li_d em {
+.contentC-list ul .li-d em {
   font-weight: normal;
   display: block;
   width: 174px;
@@ -669,7 +669,7 @@
   height: 56px;
   line-height: 56px; }
 
-.contentC_list ul .li_d span {
+.contentC-list ul .li-d span {
   display: block;
   width: 174px;
   text-align: center;
@@ -678,13 +678,13 @@
   font-size: 14px;
   color: #999999; }
 
-.contentC_list div {
+.contentC-list div {
   float: right;
   width: 280px;
   height: 96px;
   margin: 6px 5px; }
 
-.contentC_list div p {
+.contentC-list div p {
   width: 280px;
   height: 41px;
   margin-left: 6px;
@@ -693,7 +693,7 @@
   font-size: 17px;
   position: relative; }
 
-.contentC_list div em {
+.contentC-list div em {
   width: 172px;
   display: block;
   position: absolute;
@@ -705,7 +705,7 @@
   background: #eeeeee;
   z-index: 1; }
 
-.contentC_list div b {
+.contentC-list div b {
   width: 50%;
   height: 7px;
   background: #eb950f;
@@ -714,7 +714,7 @@
   top: 0px;
   z-index: 3; }
 
-.contentC_list div i {
+.contentC-list div i {
   float: right;
   display: block;
   width: 32px;
@@ -723,12 +723,12 @@
   color: #333333;
   font-size: 14px; }
 
-.contentC_list div dl {
+.contentC-list div dl {
   height: 60px;
   width: 280px;
   position: relative; }
 
-.contentC_list div dl dt {
+.contentC-list div dl dt {
   width: 104px;
   height: 30px;
   background: #eb950f;
@@ -737,14 +737,14 @@
   top: 18px;
   right: 18px; }
 
-.contentC_list div dl dt a {
+.contentC-list div dl dt a {
   line-height: 30px;
   text-align: center;
   color: #FFF;
   width: 104px;
   display: block; }
 
-.contentC_list div dl dd {
+.contentC-list div dl dd {
   height: 20px;
   line-height: 20px;
   width: 156px;
@@ -754,12 +754,12 @@
   color: #999;
   font-size: 14px; }
 
-.contentC_list div dl dd strong {
+.contentC-list div dl dd strong {
   color: #000;
   font-size: 14px;
   font-weight: normal; }
 
-.contentC_list:hover {
+.contentC-list:hover {
   -webkit-box-shadow: 1px 1px 2px 1px #ccc;
   -moz-box-shadow: 1px 1px 2px 1px #ccc;
   -ms-box-shadow: 1px 1px 2px 1px #ccc;
@@ -874,7 +874,7 @@
   margin: 20px auto;
   overflow: hidden; }
 
-.email_nav {
+.email-nav {
   width: 168px;
   height: auto;
   overflow: hidden;
@@ -883,21 +883,21 @@
   float: left;
   background: #fff; }
 
-.email_nav li {
+.email-nav li {
   border-bottom: #dadada 1px solid; }
 
-.email_nav a {
+.email-nav a {
   display: block;
   height: 41px;
   line-height: 41px;
   text-align: center;
   color: #ffac2a; }
 
-.email_nav a:hover {
+.email-nav a:hover {
   background: #ffac2a;
   color: #fff; }
 
-.email_right {
+.email-right {
   width: 820px;
   height: auto;
   min-height: 294px;
@@ -907,7 +907,7 @@
   float: right;
   background: #fff;
   position: relative; }
-  .email_right h4 {
+  .email-right h4 {
     height: 18px;
     line-height: 18px;
     color: #333333;
@@ -915,17 +915,17 @@
     font-size: 20px;
     margin: 12px 12px;
     width: 786px; }
-  .email_right p {
+  .email-right p {
     width: 316px;
     height: 36px;
     margin: 36px 0px 0px 130px; }
-    .email_right p input {
+    .email-right p input {
       width: 220px;
       height: 32px;
       border: #cccccc 1px solid;
       margin-left: 14px;
       padding: 0px 14px; }
-    .email_right p span {
+    .email-right p span {
       display: block;
       width: 248px;
       height: 32px;
@@ -934,7 +934,7 @@
       left: 198px;
       top: 66px;
       color: #999; }
-  .email_right input.send {
+  .email-right input.send {
     width: 150px;
     height: 30px;
     text-align: center;
@@ -954,7 +954,7 @@
   z-index: 1;
   display: none; }
 
-.email_yz {
+.email-yz {
   z-index: 3;
   width: 564px;
   height: 264px;
@@ -964,7 +964,7 @@
   top: 50%;
   margin: -132px 0px 0px -282px;
   display: none; }
-  .email_yz em {
+  .email-yz em {
     width: 522px;
     margin: 20px 0px 0px 21px;
     height: 16px;
@@ -973,7 +973,7 @@
     width: 522px;
     display: block;
     font-size: 14px; }
-    .email_yz em span {
+    .email-yz em span {
       display: block;
       float: right;
       font-size: 18px;
@@ -982,18 +982,18 @@
       text-align: center;
       line-height: 16px;
       margin-right: 6px; }
-    .email_yz em :hover {
+    .email-yz em :hover {
       cursor: pointer; }
-  .email_yz p {
+  .email-yz p {
     width: 522px;
     margin-left: 21px;
     line-height: 20px;
     font-size: 14px;
     margin-top: 18px; }
-    .email_yz p i {
+    .email-yz p i {
       font-weight: normal;
       color: #ff3333; }
-  .email_yz a {
+  .email-yz a {
     display: block;
     background: #ff6c00;
     color: #fff;
@@ -1003,24 +1003,24 @@
     line-height: 36px;
     margin: 22px 0px 0px 210px;
     border-radius: 5px; }
-  .email_yz ol {
+  .email-yz ol {
     width: 246px;
     height: 54px;
     margin: 18px 0px 0px 184px;
     font-size: 14px;
     color: #333; }
-    .email_yz ol li {
+    .email-yz ol li {
       width: 100%;
       height: 16px;
       margin-top: 10px;
       line-height: 16px; }
-      .email_yz ol li i {
+      .email-yz ol li i {
         color: #007fe5;
         text-decoration: underline; }
 
 /**********email*********/
 /**********cash*********/
-.content_cash {
+.content-cash {
   width: 820px;
   height: auto;
   overflow: hidden;
@@ -1028,13 +1028,13 @@
   background: #fff;
   border: #dadada 1px solid;
   border-radius: 3px; }
-  .content_cash p.p_e {
+  .content-cash p.p-e {
     display: block;
     width: 100%;
     height: 32px;
     margin-top: 10px;
     border-bottom: #d5d5d5 1px solid; }
-    .content_cash p.p_e em {
+    .content-cash p.p-e em {
       display: block;
       height: 30px;
       padding: 1px 0px;
@@ -1042,10 +1042,10 @@
       width: 110px;
       text-align: center;
       color: #ffac2a; }
-  .content_cash p.p_g {
+  .content-cash p.p-g {
     color: #212121;
     margin: 0px 0px 0px 20px; }
-  .content_cash p.p_f {
+  .content-cash p.p-f {
     color: #353535;
     font-size: 15px;
     width: 780px;
@@ -1053,31 +1053,31 @@
     height: 18px;
     line-height: 18px;
     margin: 36px 0px 20px 0px; }
-    .content_cash p.p_f i {
+    .content-cash p.p-f i {
       color: #ffac2a;
       font-size: 20px;
       margin: 0px 10px; }
-    .content_cash p.p_f b {
+    .content-cash p.p-f b {
       font-weight: normal;
       font-size: 14px;
       color: #afafaf; }
-  .content_cash div {
+  .content-cash div {
     width: 780px;
     margin-left: 24px;
     position: relative;
     height: auto;
     overflow: hidden; }
-    .content_cash div p {
+    .content-cash div p {
       width: 122px;
       height: 32px;
       line-height: 32px;
       float: left; }
-    .content_cash div input {
+    .content-cash div input {
       height: 32px;
       width: 166px;
       padding: 0px 15px;
       margin-right: 5px; }
-    .content_cash div span {
+    .content-cash div span {
       position: absolute;
       left: 348px;
       top: 0px;
@@ -1087,7 +1087,7 @@
       background: url("../images/cash/close.jpg") no-repeat 0px center;
       padding-left: 25px;
       display: none; }
-    .content_cash div em {
+    .content-cash div em {
       display: block;
       float: right;
       height: 32px;
@@ -1096,7 +1096,7 @@
       margin-right: 260px;
       font-size: 14px;
       color: #999; }
-    .content_cash div a {
+    .content-cash div a {
       display: block;
       width: 192px;
       height: 36px;
@@ -1106,19 +1106,19 @@
       background: #666666;
       borrder-radius: 3px;
       margin: 38px 0px 20px 122px; }
-  .content_cash div.cash_description {
+  .content-cash div.cash-description {
     width: 810px;
     height: 182px;
     border: #d1d1d1 1px solid;
     margin: 20px 4px; }
-    .content_cash div.cash_description p {
+    .content-cash div.cash-description p {
       width: 770px;
       height: 30px;
       line-height: 30px;
       font-size: 14px;
       padding: 0px 15px; }
 
-.bind_card {
+.bind-card {
   width: 540px;
   height: 244px;
   position: fixed;
@@ -1129,7 +1129,7 @@
   background: #f2f3f5;
   z-index: 3;
   display: none; }
-  .bind_card span {
+  .bind-card span {
     width: 26px;
     height: 26px;
     display: block;
@@ -1142,7 +1142,7 @@
     text-align: center;
     line-height: 26px;
     color: #fff; }
-  .bind_card h4 {
+  .bind-card h4 {
     width: 510px;
     height: 50px;
     line-height: 50px;
@@ -1150,13 +1150,13 @@
     font-size: 14px;
     color: #666;
     font-weight: normal; }
-  .bind_card p {
+  .bind-card p {
     height: 120px;
     width: 100%;
     line-height: 120px;
     text-align: center;
     background: url("../images/cash/tan.jpg") no-repeat 84px center #fff; }
-  .bind_card a {
+  .bind-card a {
     width: 158px;
     height: 36px;
     display: block;
@@ -1169,7 +1169,7 @@
 
 /**********cash*********/
 /************recharge*********/
-.content_recharge {
+.content-recharge {
   width: 820px;
   height: auto;
   overflow: hidden;
@@ -1177,13 +1177,13 @@
   background: #fff;
   border: #dadada 1px solid;
   border-radius: 3px; }
-  .content_recharge p.p_e {
+  .content-recharge p.p-e {
     display: block;
     width: 100%;
     height: 32px;
     margin-top: 10px;
     border-bottom: #d5d5d5 1px solid; }
-    .content_recharge p.p_e em {
+    .content-recharge p.p-e em {
       display: block;
       height: 30px;
       padding: 1px 0px;
@@ -1191,12 +1191,12 @@
       width: 110px;
       text-align: center;
       color: #ffac2a; }
-  .content_recharge .banking {
+  .content-recharge .banking {
     width: 800px;
     height: 330px;
     margin: 10px 4px 0px;
     position: relative; }
-    .content_recharge .banking h5 {
+    .content-recharge .banking h5 {
       width: 114px;
       height: 48px;
       text-align: center;
@@ -1211,76 +1211,76 @@
       font-size: 17px;
       color: #353535;
       font-weight: normal; }
-    .content_recharge .banking ol {
+    .content-recharge .banking ol {
       width: 800px;
       height: 322px;
       margin: 60px 0px;
       border: #dddddd 1px solid;
       z-index: 1; }
-      .content_recharge .banking ol p {
+      .content-recharge .banking ol p {
         width: 764px;
         height: 56px;
         line-height: 56px;
         padding-left: 26px;
         font-size: 15px;
         color: #353535; }
-      .content_recharge .banking ol li {
+      .content-recharge .banking ol li {
         height: 38px;
         float: left;
         line-height: 38px;
         width: 145px;
         margin: 10px 56px 0px 10px; }
-        .content_recharge .banking ol li.m_right_0 {
+        .content-recharge .banking ol li.m-right-0 {
           margin: 10px 0px 0px 4px; }
-        .content_recharge .banking ol li input {
+        .content-recharge .banking ol li input {
           display: block;
           float: left;
           width: 12px;
           height: 12px;
           margin: 13px 8px 0px 0px; }
-        .content_recharge .banking ol li label {
+        .content-recharge .banking ol li label {
           display: block;
           float: left;
           width: 123px;
           height: 38px; }
-          .content_recharge .banking ol li label img {
+          .content-recharge .banking ol li label img {
             width: 123px;
             height: 36px;
             border: #dddddd 1px solid; }
-  .content_recharge .recharge_bank {
+  .content-recharge .recharge-bank {
     width: 800px;
     height: 230px;
     margin: 0px 4px; }
-    .content_recharge .recharge_bank p {
+    .content-recharge .recharge-bank p {
       height: 34px;
       line-height: 34px;
       margin: 13px 0px 0px 16px;
       color: #353535;
       font-size: 15px; }
-      .content_recharge .recharge_bank p i {
+      .content-recharge .recharge-bank p i {
         color: #ffac2a;
         margin: 0px 4px; }
-      .content_recharge .recharge_bank p b {
+      .content-recharge .recharge-bank p b {
         color: #afafaf;
         font-size: 14px;
         font-weight: normal;
         margin-left: 4px; }
-      .content_recharge .recharge_bank p input {
+      .content-recharge .recharge-bank p input {
         width: 164px;
         height: 34px;
         border: #747474 1px solid;
         margin: 0px 12px 0px 10px;
         padding: 0px 15px;
         line-height: 34px; }
-    .content_recharge .recharge_bank .p_h {
+    .content-recharge .recharge-bank .p-h {
       font-size: 14px;
       color: #979797;
       margin-left: 132px; }
-      .content_recharge .recharge_bank .p_h span {
+      .content-recharge .recharge-bank .p-h span {
         margin-right: 34px; }
-      .content_recharge .recharge_bank .p_h em {
+      .content-recharge .recharge-bank .p-h em {
         margin: 0px 4px; }
-    .content_recharge .recharge_bank a {
+    .content-recharge .recharge-bank a {
       margin: 40px 0px 0px 162px;
       width: 190px;
       height: 36px;
@@ -1290,12 +1290,12 @@
       line-height: 36px;
       text-align: center;
       border-radius: 3px; }
-  .content_recharge div.cash_description {
+  .content-recharge div.cash-description {
     width: 810px;
     height: 182px;
     border: #d1d1d1 1px solid;
     margin: 20px 4px; }
-    .content_recharge div.cash_description p {
+    .content-recharge div.cash-description p {
       width: 770px;
       height: 30px;
       line-height: 30px;
@@ -1308,7 +1308,7 @@
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../images/login/login_background.jpg") no-repeat left; }
+  background: url("../images/login/login-background.jpg") no-repeat left; }
   .login div {
     margin-left: 670px;
     width: 328px;
@@ -1359,7 +1359,7 @@
       padding-left: 30px;
       clear: both;
       margin: 26px 0px 30px 0px; }
-      .login div span a.login_now {
+      .login div span a.login-now {
         width: 184px;
         height: 37px;
         line-height: 37px;
@@ -1379,13 +1379,13 @@
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../images/login/login_lock.png") no-repeat 0px;
+      background: url("../images/login/login-lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal; }
 
 /*************login***************/
 /************pcenter************/
-.content_pcenter {
+.content-pcenter {
   width: 820px;
   height: auto;
   overflow: hidden;
@@ -1393,13 +1393,13 @@
   background: #fff;
   border: #dadada 1px solid;
   border-radius: 3px; }
-  .content_pcenter h3 {
+  .content-pcenter h3 {
     width: 800px;
     height: 50px;
     border-bottom: #d5d5d5 1px solid;
     line-height: 50px;
     padding-left: 20px; }
-  .content_pcenter p {
+  .content-pcenter p {
     width: 110px;
     padding-left: 35px;
     height: 18px;
@@ -1409,12 +1409,12 @@
     color: #ffac2a;
     padding-top: 16px;
     background: url("../images/pcenter/pcenter.png") no-repeat 6px 12px; }
-  .content_pcenter ul {
+  .content-pcenter ul {
     padding-left: 42px;
     width: 756px;
     height: auto;
     overflow: hidden; }
-    .content_pcenter ul li {
+    .content-pcenter ul li {
       width: 100%;
       height: 18px;
       margin-top: 18px;
@@ -1422,27 +1422,27 @@
       line-height: 18px;
       font-size: 14px;
       color: #797979; }
-      .content_pcenter ul li i {
+      .content-pcenter ul li i {
         font-weight: normal;
         width: 80px;
         display: inline-block;
         text-align: right;
         padding-right: 30px; }
-      .content_pcenter ul li span {
+      .content-pcenter ul li span {
         text-align: left;
         width: 460px;
         display: inline-block; }
-      .content_pcenter ul li em {
+      .content-pcenter ul li em {
         width: 68px;
         display: inline-block;
         background: url("../images/pcenter/pcenter.png") no-repeat 0px -45px;
         padding-left: 22px; }
-      .content_pcenter ul li b {
+      .content-pcenter ul li b {
         font-weight: normal;
         color: #ffac2a;
         cursor: pointer; }
 
-.content_pcenter li div {
+.content-pcenter li div {
   width: 476px;
   height: 262px;
   position: fixed;
@@ -1452,7 +1452,7 @@
   background: #f9f9f9;
   z-index: 901;
   display: none; }
-  .content_pcenter li div p {
+  .content-pcenter li div p {
     width: 462px;
     height: 48px;
     line-height: 48px;
@@ -1462,39 +1462,39 @@
     background: none;
     border-top: 0px;
     border-bottom: #d4d4d4 1px solid; }
-    .content_pcenter li div p em {
+    .content-pcenter li div p em {
       background: none;
       width: 200px;
       float: left;
       display: block; }
-    .content_pcenter li div p span {
+    .content-pcenter li div p span {
       display: block;
       float: right;
       background: none;
       width: 50px;
       color: #d3d3d3;
       cursor: pointer; }
-  .content_pcenter li div ul {
+  .content-pcenter li div ul {
     width: 410px;
     padding-left: 60px;
     padding-top: 20px;
     height: auto;
     overflow: hidden; }
-    .content_pcenter li div ulli {
+    .content-pcenter li div ulli {
       width: 410px;
       height: 40px;
       line-height: 40px; }
-      .content_pcenter li div ulli i {
+      .content-pcenter li div ulli i {
         display: block;
         float: left;
         width: 64px; }
 
-.mobil_pcenter {
+.mobil-pcenter {
   width: 136px;
   height: 34px;
   border: #e2e2e2 1px solid; }
 
-.email_pcenter {
+.email-pcenter {
   width: 240px;
   height: 34px;
   border: #e2e2e2 1px solid;
@@ -1502,10 +1502,10 @@
   padding-left: 12px;
   line-height: 34px; }
 
-.change_content ul li {
+.change-content ul li {
   margin-top: 14px;
   height: 36px; }
-.change_content ul .sure_change {
+.change-content ul .sure-change {
   margin: 10px 0px 0px 144px;
   width: 78px;
   height: 32px;
@@ -1513,14 +1513,14 @@
   border: none;
   color: #fff; }
 
-.content_pcenter ul li div.change_password ul {
+.content-pcenter ul li div.change-password ul {
   padding-left: 40px; }
-  .content_pcenter ul li div.change_password ul li {
+  .content-pcenter ul li div.change-password ul li {
     margin-top: 14px;
     height: 36px; }
-  .content_pcenter ul li div.change_password ul i {
+  .content-pcenter ul li div.change-password ul i {
     width: 100px; }
-  .content_pcenter ul li div.change_password ul .sure_change {
+  .content-pcenter ul li div.change-password ul .sure-change {
     margin: 10px 0px 0px 144px;
     width: 78px;
     height: 32px;
@@ -1528,7 +1528,7 @@
     border: none;
     color: #fff; }
 
-.sure_pcenter {
+.sure-pcenter {
   margin: 42px 0px 0px 144px;
   width: 78px;
   height: 32px;
@@ -1536,7 +1536,7 @@
   border: none;
   color: #fff; }
 
-.send_vcode {
+.send-vcode {
   width: 100px;
   height: 30px;
   font-size: 12px;
@@ -1601,7 +1601,7 @@
       left: 131px;
       top: 14px; }
 
-.pcenter_mask {
+.pcenter-mask {
   width: 100%;
   position: fixed;
   left: 0px;
@@ -1612,7 +1612,7 @@
 
 /************pcenter************/
 /***********record**********/
-.content_record {
+.content-record {
   width: 820px;
   height: auto;
   overflow: hidden;
@@ -1620,13 +1620,13 @@
   background: #fff;
   border: #dadada 1px solid;
   border-radius: 3px; }
-  .content_record h3 {
+  .content-record h3 {
     width: 800px;
     height: 50px;
     border-bottom: #d5d5d5 1px solid;
     line-height: 50px;
     padding-left: 20px;
-    color: #content_record;
+    color: #content-record;
     font-weight: normal; }
 
 .balance {
@@ -1675,41 +1675,41 @@
   .balance p a:hover {
     background: #c00; }
 
-.start_end {
+.start-end {
   height: 25px;
   width: 800px;
   margin: 16px 0px 16px 10px; }
-  .start_end span {
+  .start-end span {
     padding: 0px 10px;
     display: inline-block;
     height: 26px;
     line-height: 26px; }
-  .start_end span:hover, .start_end span.active {
+  .start-end span:hover, .start-end span.active {
     background: #ffac2a;
     cursor: pointer;
     border-radius: 4px;
     color: #fff; }
 
-.query_type {
+.query-type {
   height: auto;
   width: 800px; }
-  .query_type span {
+  .query-type span {
     margin-left: 10px;
     float: left;
     height: 76px;
     line-height: 76px; }
-  .query_type strong {
+  .query-type strong {
     background: url("../images/loading.gif") no-repeat;
     width: 22px;
     height: 22px;
     display: block;
     margin: 50px auto;
     opacity: 0; }
-  .query_type ol {
+  .query-type ol {
     width: 800px;
     height: 76px;
     line-height: 76px; }
-    .query_type ol li {
+    .query-type ol li {
       width: 60px;
       height: 26px;
       margin: 25px 10px;
@@ -1717,7 +1717,7 @@
       text-align: center;
       color: #333;
       float: left; }
-    .query_type ol li:hover, .query_type ol li.active {
+    .query-type ol li:hover, .query-type ol li.active {
       background: #ffac2a;
       border-radius: 4px;
       color: #fff;
@@ -1739,43 +1739,43 @@
   display: block;
   float: none; }
 
-.content_record table {
+.content-record table {
   border-collapse: collapse;
   display: block; }
 
-.content_record table thead tr {
+.content-record table thead tr {
   background: #e1e1e1;
   height: 40px; }
 
-.content_record table tbody tr {
+.content-record table tbody tr {
   height: 30px; }
 
-.content_record table thead tr td, .content_record table tbody tr td {
+.content-record table thead tr td, .content-record table tbody tr td {
   text-align: center;
   width: 155px; }
 
-.content_record table tbody tr:nth-child(even) {
+.content-record table tbody tr:nth-child(even) {
   background: #f1f1f1; }
 
-.content_record table tbody tr td {
+.content-record table tbody tr td {
   font-size: 12px; }
 
-.content_record table thead tr td:last-child {
+.content-record table thead tr td:last-child {
   width: 200px; }
 
-.page_record {
+.page-record {
   width: 820px;
   height: 30px;
   line-height: 30px;
   margin: 20px auto;
   text-align: center; }
-  .page_record p {
+  .page-record p {
     margin: 0px auto; }
-    .page_record p i {
+    .page-record p i {
       padding: 0px 10px; }
-    .page_record p em {
+    .page-record p em {
       padding: 0px 10px; }
-    .page_record p em:hover {
+    .page-record p em:hover {
       text-decoration: underline;
       cursor: pointer; }
 
@@ -1789,7 +1789,7 @@
   margin-top: 46px;
   z-index: 1; }
 
-.project_btn {
+.project-btn {
   width: 1000px;
   height: 41px;
   margin: 6px auto 0px;
@@ -1799,44 +1799,44 @@
   margin-left: -500px;
   top: 107px;
   z-index: 999; }
-  .project_btn ul {
+  .project-btn ul {
     height: 41px; }
-    .project_btn ul li {
+    .project-btn ul li {
       width: 106px;
       height: 40px;
       float: left;
       text-align: center; }
-      .project_btn ul li a {
+      .project-btn ul li a {
         display: block;
         color: #333; }
-    .project_btn ul li.project_active a {
+    .project-btn ul li.project-active a {
       border: #d7d7d7 1px solid;
       border-bottom: #fff 1px solid;
       border-radius: 3px;
       background: #fff;
       color: #f59b74; }
 
-.project_type {
+.project-type {
   width: 100%;
   height: 184px;
   background: #fff;
   border-bottom: #d7d7d7 1px solid;
   border-top: #d7d7d7 1px solid; }
-  .project_type ul {
+  .project-type ul {
     width: 1000px;
     margin: 0px auto;
     display: none; }
-    .project_type ul li {
+    .project-type ul li {
       height: 45px;
       line-height: 45px;
       border-bottom: #d7d7d7 1px solid;
       font-size: 14px; }
-      .project_type ul li span {
+      .project-type ul li span {
         width: 104px;
         text-align: center;
         display: block;
         float: left; }
-      .project_type ul li a {
+      .project-type ul li a {
         display: block;
         float: left;
         width: auto;
@@ -1845,43 +1845,43 @@
         padding: 0px 10px;
         margin: 11px 0px 0px 10px;
         color: #333; }
-      .project_type ul li a.project_type_active {
+      .project-type ul li a.project-type-active {
         background: #eb950f;
         color: #fff;
         border-radius: 5px; }
-    .project_type ul li:last-child {
+    .project-type ul li:last-child {
       border-bottom: none; }
 
-.project_type ul li a:hover {
+.project-type ul li a:hover {
   background: #eb950f;
   color: #fff;
   border-radius: 5px; }
 
-.project_centent {
+.project-centent {
   width: 1000px;
   height: auto;
   overflow: hidden;
   margin: 10px auto 0px;
   display: none; }
-  .project_centent ol {
+  .project-centent ol {
     width: 998px;
     height: 33px;
     border: #d7d7d7 1px solid;
     background: #fff; }
-    .project_centent ol li {
+    .project-centent ol li {
       width: 92px;
       float: left;
       border-right: #d7d7d7 1px solid;
       line-height: 33px;
       text-align: center; }
-      .project_centent ol li a {
+      .project-centent ol li a {
         display: block;
         height: 33px;
         color: #333; }
-      .project_centent ol li a.project_centent_active {
+      .project-centent ol li a.project-centent-active {
         color: #eb950f; }
 
-.project_list {
+.project-list {
   margin-top: 10px;
   width: 998px;
   height: 109px;
@@ -1889,15 +1889,15 @@
   border: #d7d7d7 1px solid;
   border-radius: 5px;
   position: relative; }
-  .project_list ul {
+  .project-list ul {
     width: 696px;
     height: 107px;
     float: left; }
-    .project_list ul li {
+    .project-list ul li {
       width: 696px;
       height: 54px;
       line-height: 54px; }
-      .project_list ul li span {
+      .project-list ul li span {
         width: 232px;
         text-align: center;
         color: #999;
@@ -1905,29 +1905,29 @@
         float: left;
         height: 54px;
         line-height: 54px; }
-        .project_list ul li span strong.font32 {
+        .project-list ul li span strong.font32 {
           color: #f0bc11;
           font-size: 32px; }
-        .project_list ul li span strong {
+        .project-list ul li span strong {
           font-size: 17px;
           color: #333;
           font-weight: normal;
           margin-left: 8px; }
-        .project_list ul li span i {
+        .project-list ul li span i {
           height: 54px;
           line-height: 54px;
           width: 96px;
           text-align: center;
           float: left;
           margin-right: -96px; }
-    .project_list ul li:first-child {
+    .project-list ul li:first-child {
       border-bottom: #d7d7d7 1px solid; }
-      .project_list ul li:first-child em {
+      .project-list ul li:first-child em {
         font-size: 20px;
         color: #333;
         float: left;
         margin-left: 20px; }
-      .project_list ul li:first-child a {
+      .project-list ul li:first-child a {
         width: 104px;
         height: 30px;
         display: block;
@@ -1939,37 +1939,37 @@
         border-radius: 5px;
         margin-top: 12px;
         margin-right: 24px; }
-  .project_list small {
+  .project-list small {
     height: 108px;
     width: 1px;
     background: #d7d7d7;
     position: absolute;
     top: 0px;
     left: 700px; }
-  .project_list ul.float_r {
+  .project-list ul.float-r {
     width: 292px;
     float: right;
     border: none;
     margin-right: 2px; }
-    .project_list ul.float_r li {
+    .project-list ul.float-r li {
       width: 292px;
       border: none;
       height: 54px;
       line-height: 54px; }
-      .project_list ul.float_r li span {
+      .project-list ul.float-r li span {
         display: block;
         height: 16px;
         line-height: 16px;
         width: 292px;
         margin: 8px 0px 0px 0px; }
-    .project_list ul.float_r li:first-child {
+    .project-list ul.float-r li:first-child {
       border-bottom: #d7d7d7 1px solid;
       color: #eb950f;
       font-size: 16px;
       position: relative;
       padding-left: 6px;
       width: 286px; }
-      .project_list ul.float_r li:first-child em {
+      .project-list ul.float-r li:first-child em {
         height: 7px;
         width: 172px;
         border: #ec9917 1px solid;
@@ -1978,17 +1978,17 @@
         position: absolute;
         top: 22px;
         left: 55px; }
-        .project_list ul.float_r li:first-child em b {
+        .project-list ul.float-r li:first-child em b {
           height: 7px;
           background: #f27531;
           position: absolute;
           left: 0px;
           top: 0px;
           width: 50%; }
-      .project_list ul.float_r li:first-child i {
+      .project-list ul.float-r li:first-child i {
         float: right; }
 
-.project_list:hover {
+.project-list:hover {
   border: #f27a38 1px solid;
   border-radius: 5px; }
 
