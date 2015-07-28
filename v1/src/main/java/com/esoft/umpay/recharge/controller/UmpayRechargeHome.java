@@ -50,7 +50,7 @@ public class UmpayRechargeHome extends RechargeHome {
 
 		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
 
-		List<BankCard> bankCard= ht.find(hql, new String[]{userId, "1","passed"});
+		List<BankCard> bankCard= ht.find(hql, new Object[]{userId, true,"passed"});
 
 		return bankCard != null&& bankCard.size() > 0;
 
