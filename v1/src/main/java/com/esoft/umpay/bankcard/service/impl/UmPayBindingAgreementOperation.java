@@ -64,7 +64,7 @@ public class UmPayBindingAgreementOperation extends
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
                         + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        sendMap.put("user_id", ta.getId());
+        sendMap.put("user_id", userId);
         sendMap.put("account_id", ta.getAccountId());
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
         TrusteeshipOperation to = null;
@@ -94,14 +94,12 @@ public class UmPayBindingAgreementOperation extends
             // 解密
             paramMap = UmPaySignUtil.getMapDataByRequest(request);
             log.debug("签约协议-前台-通知:" + paramMap.toString());
-            TrusteeshipAccount ta = ht.get(TrusteeshipAccount.class,
-                    paramMap.get("user_id"));
+
             String ret_code = paramMap.get("ret_code");
             String user_id = paramMap.get("user_id");
             // 操作记录
             TrusteeshipOperation to = trusteeshipOperationBO.get(
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, ta
-                            .getUser().getId(),
+                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, user_id,
                     UmPayConstants.OperationType.UMPAY);
 
 
