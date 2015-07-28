@@ -64,7 +64,7 @@ public class UmPayBindingAgreementOperation extends
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
                         + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        sendMap.put("user_id", userId);
+        sendMap.put("user_id", ta.getId());
         sendMap.put("account_id", ta.getAccountId());
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
         TrusteeshipOperation to = null;
@@ -73,7 +73,7 @@ public class UmPayBindingAgreementOperation extends
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
-            to = createTrusteeshipOperation(userId, reqData.getUrl(),
+            to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
                     userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
@@ -97,9 +97,10 @@ public class UmPayBindingAgreementOperation extends
 
             String ret_code = paramMap.get("ret_code");
             String user_id = paramMap.get("user_id");
+            TrusteeshipAccount trusteeshipAccount = ht.get(TrusteeshipAccount.class,user_id);
             // 操作记录
             TrusteeshipOperation to = trusteeshipOperationBO.get(
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, user_id,
+                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, trusteeshipAccount.getUser().getId(),
                     UmPayConstants.OperationType.UMPAY);
 
 
@@ -111,7 +112,7 @@ public class UmPayBindingAgreementOperation extends
                 ht.update(to);
                 String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = false";
                 List<BankCard> userBankCard = ht
-                        .find(hql,new String[]{user_id,"passed"});
+                        .find(hql,new String[]{trusteeshipAccount.getUser().getId(),"passed"});
                 if (null != userBankCard && userBankCard.size() >0) {
                     for (int i=0;i<userBankCard.size();i++) {
                         BankCard bankCard = new BankCard();
@@ -151,11 +152,12 @@ public class UmPayBindingAgreementOperation extends
                 if (null != paramMap) {
                     String ret_code = paramMap.get("ret_code");
                     String user_id = paramMap.get("user_id");
+                    TrusteeshipAccount trusteeshipAccount = ht.get(TrusteeshipAccount.class, user_id);
                     if ("0000".equals(ret_code)) {
 
                         String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = false";
                         List<BankCard> userBankCard = ht
-                                .find(hql,new String[]{user_id,"passed"});
+                                .find(hql,new String[]{trusteeshipAccount.getUser().getId(),"passed"});
                         if (null != userBankCard && userBankCard.size() >0) {
                             for (int i=0;i<userBankCard.size();i++) {
                                 BankCard bankCard = new BankCard();
