@@ -10,7 +10,7 @@ public enum ReturnMessage {
     USER_NAME_IS_NULL("0005","用户名为空"),
     USER_NAME_IS_INVALID("0006","用户名不允许包含特殊字符，长度为5-16位，请勿使用手机号"),
     USER_NAME_IS_EXIST("0007","用户名已经存在"),
-    REFERRER_IS_EXIST("0008","推荐人已经存在"),
+    REFERRER_IS_NOT_EXIST("0008","推荐人不存在"),
     SMS_CAPTCHA_ERROR("0009","短信验证码不正确"),
     SMS_CAPTCHA_IS_OVERDUE("0010","短信验证码已经过期"),
     USER_IS_ACTIVE("0011","用户已经被激活"),

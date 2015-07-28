@@ -15,14 +15,11 @@ import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.service.CaptchaService;
 import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
-import com.esoft.archer.common.service.impl.CaptchaServiceImpl;
 import com.esoft.archer.user.exception.UserRegisterException;
 import com.ttsd.aliyun.AliyunUtils;
-import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.apache.http.HttpRequest;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -409,7 +406,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String sessionIdInRedisStatus = MessageFormat.format(imageCaptchaStatus, request.getSession().getId());
-            captchaService.deleteCaptchFormRedis(sessionIdInRedisStatus);
+            captchaService.deleteCaptchaFormRedis(sessionIdInRedisStatus);
             if (isLoginAfterRegister) {
                 login(getInstance().getId(), FacesUtil.getHttpSession());
             }
@@ -670,7 +667,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     @Deprecated
     public void sendRegisterAuthCodeToMobile(String mobileNumber) {
-        userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
         FacesUtil.addInfoMessage("短信已发送，请注意查收！");
     }
 
@@ -681,7 +678,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      * @param jsCode       成功后执行的js代码
      */
     public void sendRegisterAuthCodeToMobile(String mobileNumber, String jsCode) {
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
         if (isSend) {
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
             RequestContext.getCurrentInstance().execute(jsCode);
@@ -704,7 +701,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
         if (isSend) {
             RequestContext.getCurrentInstance().execute(jsCode);
         } else {
@@ -722,7 +719,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber);
+        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
         if (isSend) {
 
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
@@ -750,23 +747,18 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             if (!password.equals(rePassword)) {
                 verifyResult = false;
             }
-            if (!vdtService.inputRuleValidation("input.username", userName)
-                    || !vdtService.inputRuleValidation("input.mobile", confirmMobileNumber)) {
+            vdtService.inputRuleValidation("input.username", userName);
+            vdtService.inputRuleValidation("input.mobile", confirmMobileNumber);
+            vdtService.inputRuleValidation("input.password", password);
+            vdtService.inputRuleValidation("input.password", rePassword);
 
-            }
             if (vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", userName)
                     || StringUtils.isNotEmpty(referrer) && !vdtService.isAlreadExist("com.esoft.archer.user.model.User", "id", referrer)) {
                 verifyResult = false;
             }
-        } catch (InputRuleMatchingException e) {
-            log.error(e.getStackTrace());
+        } catch (InputRuleMatchingException | NoMatchingObjectsException | ClassNotFoundException | NoSuchMethodException e) {
+            log.error(e.getLocalizedMessage(),e);
             verifyResult = false;
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getStackTrace());
-        } catch (ClassNotFoundException e) {
-            log.error(e.getStackTrace());
-        } catch (NoSuchMethodException e) {
-            log.error(e.getStackTrace());
         }
 
         return verifyResult;
@@ -852,7 +844,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     public String sendAuthCodeToMobile(String mobileNumber) {
         String hql = "from User u where u.mobileNumber = ?";
         if (0 != getBaseService().find(hql, mobileNumber).size()) {
-            userService.sendRegisterByMobileNumberSMS(mobileNumber);
+            userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
             RequestContext.getCurrentInstance().addCallbackParam("sendSuccess",
                     true);
             FacesUtil.setSessionAttribute("mobileNumber", mobileNumber);

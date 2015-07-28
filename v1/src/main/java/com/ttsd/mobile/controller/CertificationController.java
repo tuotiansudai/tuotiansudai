@@ -71,7 +71,7 @@ public class CertificationController {
             return modelAndView;
         } catch (UmPayOperationException e) {
             e.printStackTrace();
-            modelAndView.addObject("message",e.getMessage());
+            modelAndView.addObject("message","实名认证失败！");
             return modelAndView;
         }
     }

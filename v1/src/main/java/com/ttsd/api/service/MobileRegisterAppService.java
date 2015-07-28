@@ -7,7 +7,7 @@ import com.ttsd.api.dto.RegisterResponseDto;
 public interface MobileRegisterAppService {
 
 
-    public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber);
+    public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber,String remoteIp);
 
     public String verifyMobileNumber(String mobileNumber);
 

@@ -1,9 +1,9 @@
 package com.ttsd.api.dto;
 
-public class RegisterResponseDto {
+public class RegisterResponseDto <T extends RegisterDataDto> {
     private String code;
     private String message;
-    private RegisterDataDto data;
+    private T data;
 
     public String getCode() {
         return code;
@@ -21,11 +21,11 @@ public class RegisterResponseDto {
         this.message = message;
     }
 
-    public com.ttsd.api.dto.RegisterDataDto getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(com.ttsd.api.dto.RegisterDataDto data) {
+    public void setData(T data) {
         this.data = data;
     }
 }
