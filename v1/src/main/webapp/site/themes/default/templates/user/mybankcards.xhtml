@@ -117,8 +117,10 @@
                                     </li>
                                 </ui:repeat>
                                 <div class="clear fastPaymentLink">
-                                    <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false and bankCardHome.isFastPaymentBank(bankcard.bankNo) eq true}">
-                                        <h:commandLink action="#{bankCardHome.bingAgreement}" target="_blank" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
+                                    <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
+                                        <ui:fragment rendered="#{bankCardHome.isFastPaymentBank(bankcard.bankNo) eq true}">
+                                            <h:commandLink action="#{bankCardHome.bingAgreement}" target="_blank" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
+                                        </ui:fragment>
                                     </ui:fragment>
                                 </div>
                             </h:panelGroup>
