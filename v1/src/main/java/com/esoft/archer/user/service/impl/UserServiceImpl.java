@@ -35,6 +35,7 @@ import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.quartz.impl.StdScheduler;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -45,7 +46,6 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -108,6 +108,9 @@ public class UserServiceImpl implements UserService {
 
 	@Resource
 	RedisClient redisClient;
+
+	@Value("${redis.registerVerifyCode.expireTime}")
+	private int registerVerifyCodeExpireTime;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -636,10 +639,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber) {
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		// FIXME:验证手机号码的合法性
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 发送手机验证码
 		Map<String, String> params = new HashMap<String, String>();
 		// TODO:实现模板
@@ -651,19 +653,17 @@ public class UserServiceImpl implements UserService {
 						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
-			HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-			String ip = CommonUtils.getRemoteHost(request);
-			Date nowTime = new Date();
-			redisClient.getJedis().lpush("userRegisterList",MessageFormat.format(template, ip, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
-			if (redisClient.getJedis().exists(ip)) {
-				Date lastTime = DateUtil.StringToDate(redisClient.getJedis().get(ip), "yyyy-MM-dd HH:mm:ss");
-				long diff = nowTime.getTime() - lastTime.getTime();
-				long diffMM = diff/60000;
-				if (diffMM < 1) {
-					return false;
-				}
+			if (Strings.isNullOrEmpty(remoteIp)){
+				HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+				remoteIp = CommonUtils.getRemoteHost(request);
 			}
-			redisClient.getJedis().set(ip,DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"));
+			Date nowTime = new Date();
+			redisClient.lpush("userRegisterList",MessageFormat.format(template, remoteIp, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			if (redisClient.exists(remoteIp)) {
+				return false;
+			} else {
+				redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
+			}
 			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
 					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
 							+ "_sms"), params, mobileNumber);

@@ -60,7 +60,6 @@
 					<td align="right"><img src="#{tplVars.themeImagePath}/p2c_img21.png" /></td>
 					<td class="font18">绑定手机</td>
 					<td>#{fn:substring(userHome.instance.mobileNumber,0,3)}****#{fn:substring(userHome.instance.mobileNumber,7,11)}</td>
-					<td><a href="#{path}/user/change_binding_mobile">修改</a></td>
 				</tr>
 				<ui:fragment rendered="#{configHome.getConfigValue('enable_cash_password') eq '1'}">
 				<tr>
