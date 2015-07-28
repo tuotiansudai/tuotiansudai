@@ -275,7 +275,7 @@ body{
     border-bottom: 0px;
 }
 .management-main div p{
-    width:182px;
+    width:180px;
     height: 250px;
     float: left;
     border: #999 1px solid;
@@ -402,6 +402,49 @@ body{
     font-style:normal;
     line-height: 32px;
     margin-right: 58px;
+}
+
+.joinUs-main{
+    background: url("../images/aboutus/joinus.jpg") no-repeat center;
+    width:760px;
+    height: 550px;
+}
+.joinUs-main ul{
+    float:left;
+    margin-top: 80px;
+}
+.joinUs-main ul:nth-child(2){
+    margin-left:60px;
+}
+.joinUs-main ul li{
+    line-height: 20px;
+    font-size: 14px;
+}
+.joinUs-main-describe{
+    margin: 10px;
+}
+.joinUs-main-describe h3{
+    font-size: 17px;
+    color:#171717;
+    font-weight: normal;
+}
+.joinUs-main-describe strong{
+    font-size: 17px;
+    color:#f33735;
+    display: block;
+    font-weight: normal;
+    margin: 26px 0px 18px 0px;
+}
+.joinUs-main-describe p{
+    font-size: 14px;
+    color:#0f0f0f;
+    margin: 6px;
+}
+.joinUs-main-describe span{
+    font-size: 14px;
+    color:#707070;
+    line-height: 20px;
+    display: block;
 }
 
 .wrap-left,.wrap-right{
