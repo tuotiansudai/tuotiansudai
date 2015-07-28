@@ -3,7 +3,7 @@ package com.ttsd.api.dto;
 /**
  * Created by tuotian on 15/7/28.
  */
-public class CertificationResponseDto {
+public class CertificationResponseDto<T extends CertificationDataDto> {
     /**
      * 返回码
      */
@@ -17,7 +17,7 @@ public class CertificationResponseDto {
     /**
      * 实名认证返回的其它数据
      */
-    private CertificationDataDto data;
+    private T data;
 
     /**
      * 返回码描述
@@ -55,15 +55,16 @@ public class CertificationResponseDto {
      * 实名认证返回的其它数据
      * @return
      */
-    public CertificationDataDto getData() {
+    public T getData() {
         return data;
     }
+
 
     /**
      * 实名认证返回的其它数据
      * @param data
      */
-    public void setData(CertificationDataDto data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

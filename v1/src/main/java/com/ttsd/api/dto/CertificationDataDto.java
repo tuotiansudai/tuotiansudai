@@ -5,19 +5,19 @@ package com.ttsd.api.dto;
  */
 public class CertificationDataDto {
     /**
-     * 用户实名认证使用的姓名（已经过处理）
+     * 用户实名认证使用的姓名
      */
     private String userRealName;
 
     /**
-     * 用户实名认证使用的身份证号（已经过处理）
+     * 用户实名认证使用的身份证号
      */
     private String userIdCardNumber;
 
 
 
     /**
-     * 用户实名认证使用的姓名（已经过处理）
+     * 用户实名认证使用的姓名
      * @return
      */
     public String getUserRealName() {
@@ -25,7 +25,7 @@ public class CertificationDataDto {
     }
 
     /**
-     * 用户实名认证使用的姓名（已经过处理）
+     * 用户实名认证使用的姓名
      * @param userRealName
      */
     public void setUserRealName(String userRealName) {
@@ -33,7 +33,7 @@ public class CertificationDataDto {
     }
 
     /**
-     * 用户实名认证使用的身份证号（已经过处理）
+     * 用户实名认证使用的身份证号
      * @return
      */
     public String getUserIdCardNumber() {
@@ -41,7 +41,7 @@ public class CertificationDataDto {
     }
 
     /**
-     * 用户实名认证使用的身份证号（已经过处理）
+     * 用户实名认证使用的身份证号
      * @param userIdCardNumber
      */
     public void setUserIdCardNumber(String userIdCardNumber) {
