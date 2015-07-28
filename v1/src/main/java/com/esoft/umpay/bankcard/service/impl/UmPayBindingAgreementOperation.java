@@ -52,7 +52,7 @@ public class UmPayBindingAgreementOperation extends
         TrusteeshipAccount ta = getTrusteeshipAccount(userId);
         String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
 
-        List<BankCard> userBankCard = ht.find(hql, new String[]{userId, "1","passed"});
+        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
         if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
@@ -113,7 +113,7 @@ public class UmPayBindingAgreementOperation extends
                 to.setResponseTime(new Date());
                 to.setResponseData(paramMap.toString());
                 ht.update(to);
-                String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = '0'";
+                String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = false";
                 List<BankCard> userBankCard = ht
                         .find(hql,new String[]{user_id,"passed"});
                 if (null != userBankCard && userBankCard.size() >0) {
@@ -158,7 +158,7 @@ public class UmPayBindingAgreementOperation extends
                     String user_id = paramMap.get("user_id");
                     if ("0000".equals(ret_code)) {
 
-                        String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = '0'";
+                        String hql = "from BankCard where user.id =? and status = ? and isOpenFastPayment = false";
                         List<BankCard> userBankCard = ht
                                 .find(hql,new String[]{user_id,"passed"});
                         if (null != userBankCard && userBankCard.size() >0) {
