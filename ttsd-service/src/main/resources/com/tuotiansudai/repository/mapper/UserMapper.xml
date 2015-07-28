@@ -27,11 +27,11 @@
     </select>
 
     <select id="findByMobile" resultType="java.lang.String" resultMap="userResultMap">
-                select * from user where mobile = #{mobile}
+            select * from user where mobile = #{mobile}
     </select>
 
     <select id="findByLoginName" resultType="java.lang.String" resultMap="userResultMap">
-                select * from user where login_name = #{loginName}
+            select * from user where login_name = #{loginName}
     </select>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.UserModel" useGeneratedKeys="true" keyProperty="id">

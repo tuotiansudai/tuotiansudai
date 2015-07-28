@@ -1,8 +1,10 @@
 package com.tuotiansudai.dto;
 
+import com.google.common.base.Strings;
 import com.tuotiansudai.repository.model.UserModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
 
 public class RegisterUserDto {
@@ -12,7 +14,7 @@ public class RegisterUserDto {
     private String loginName;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d{11}$")
+    @Pattern(regexp = "^1\\d{10}$")
     private String mobile;
 
     @NotEmpty
@@ -23,6 +25,9 @@ public class RegisterUserDto {
     private String password;
 
     private String referrer;
+
+    @AssertTrue
+    private boolean agreement;
 
     public String getLoginName() {
         return loginName;
@@ -64,12 +69,22 @@ public class RegisterUserDto {
         this.referrer = referrer;
     }
 
+    public boolean getAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(boolean agreement) {
+        this.agreement = agreement;
+    }
+
     public UserModel convertToUserModel() {
         UserModel userModel = new UserModel();
         userModel.setLoginName(this.loginName);
         userModel.setMobile(this.mobile);
         userModel.setPassword(this.password);
-        userModel.setReferrer(this.referrer);
+        if (!Strings.isNullOrEmpty(this.referrer)) {
+            userModel.setReferrer(this.referrer);
+        }
         return userModel;
     }
 

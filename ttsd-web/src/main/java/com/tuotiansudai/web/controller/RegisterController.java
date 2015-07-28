@@ -51,7 +51,7 @@ public class RegisterController extends BaseController{
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/isExist", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/isexist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -63,7 +63,7 @@ public class RegisterController extends BaseController{
 
     }
 
-    @RequestMapping(value = "/loginName/{loginName}/isExist", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -74,7 +74,7 @@ public class RegisterController extends BaseController{
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/sendRegisterCaptcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/sendregistercaptcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto sendRegisterCaptcha(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();

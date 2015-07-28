@@ -54,5 +54,5 @@
         <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
     </bean>
 
-    <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 </beans>
