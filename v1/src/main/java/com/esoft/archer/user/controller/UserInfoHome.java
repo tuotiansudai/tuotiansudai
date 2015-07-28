@@ -21,6 +21,7 @@ import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import com.ttsd.redis.RedisClient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
@@ -54,6 +55,9 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 
 	@Value("${redis.registerVerifyCode.expireTime}")
 	private int registerVerifyCodeExpireTime;
+
+	@Resource
+	RedisClient redisClient;
 
 	/**
 	 * 步骤
@@ -232,12 +236,16 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			return;
 		}
 		this.setInstance(l);
-		
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
-		params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
-		// 发送手机验证码
-		messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
+		if (redisClient.exists(remoteIp)) {
+			FacesUtil.addInfoMessage("验证码已经发送至手机！");
+		} else {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
+			params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
+			// 发送手机验证码
+			messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
+			redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
+		}
 		FacesUtil.addInfoMessage("验证码已经发送至手机！");
 		RequestContext.getCurrentInstance().execute(jsCode);
 	}
