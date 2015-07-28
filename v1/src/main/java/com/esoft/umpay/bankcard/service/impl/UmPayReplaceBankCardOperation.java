@@ -157,8 +157,8 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 					String bankCardId = order_id.substring(13,
 							order_id.length());
 					if (!this.bankCardService.isCardNoBinding(bankCardId)) {
-						String hql = "from BankCard where user.id =? and status =? and cardNo =?";
-						String hqlPassed = "from BankCard where user.id =? and status =?";
+						String hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment=false";
+						String hqlPassed = "from BankCard where user.id =? and status =? and isOpenFastPayment=false";
 						List<BankCard> userAlreadyBindingBankCard = ht
 								.find(hqlPassed, new String[]{user.getId(), "passed"});
 						List<BankCard> userWillBindingBankCard = ht

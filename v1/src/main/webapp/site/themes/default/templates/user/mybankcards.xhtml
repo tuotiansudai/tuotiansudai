@@ -110,7 +110,7 @@
                                         <div class="clear updateCard">
                                             <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
                                                 <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
-                                                    <a href="#{path}/user/replaceCard" target="_blank">更换银行卡</a>
+                                                    <a href="#{path}/user/replaceCard">更换银行卡</a>
                                                 </ui:fragment>
                                             </ui:fragment>
                                         </div>
