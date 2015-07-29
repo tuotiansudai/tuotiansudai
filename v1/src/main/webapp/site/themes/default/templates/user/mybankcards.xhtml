@@ -108,18 +108,12 @@
                                             <p> #{fn:substring(bankcard.cardNo,0,4)} **** **** #{fn:substring(bankcard.cardNo,bcnL-4,bcnL)}</p>
                                         </div>
                                         <div class="clear updateCard">
-                                            <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
-                                                <ui:fragment rendered="#{billStatistics.getBalanceByUserId(loginUserInfo.loginUserId) == 0.0}">
-                                                    <a href="#{path}/user/replaceCard">更换银行卡</a>
-                                                </ui:fragment>
-                                            </ui:fragment>
+                                            <h:commandLink action="#{bankCardHome.isCanReplaceCard(loginUserInfo.loginUserId)}" value="更换银行卡"></h:commandLink>
                                         </div>
                                     </li>
                                     <div class="clear fastPaymentLink">
                                         <ui:fragment rendered="#{bankCardHome.isOpenFastPay(loginUserInfo.loginUserId) eq false}">
-                                            <ui:fragment rendered="#{bankCardHome.isFastPaymentBank(bankcard.bankNo) eq true}">
-                                                <h:commandLink action="#{bankCardHome.bingAgreement}" target="_blank" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
-                                            </ui:fragment>
+                                            <h:commandLink action="#{bankCardHome.bingAgreement}" target="_blank" value="开通快捷支付（开通后不可撤销）"></h:commandLink>
                                         </ui:fragment>
                                     </div>
                                 </ui:repeat>

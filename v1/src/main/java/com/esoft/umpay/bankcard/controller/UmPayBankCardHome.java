@@ -8,6 +8,7 @@ import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.controller.BankCardHome;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.statistics.controller.BillStatistics;
 import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingAgreementOperation;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingBankCardOperation;
@@ -39,6 +40,8 @@ public class UmPayBankCardHome extends BankCardHome {
 	UmPayBindingAgreementOperation umPayBindingAgreementOperation;
 	@Resource
 	private BankCardService bankCardService;
+	@Resource
+	private BillStatistics billStatistics;
 	@Logger
 	private static Log log;
 
@@ -75,6 +78,24 @@ public class UmPayBankCardHome extends BankCardHome {
 			log.error(e.getLocalizedMessage(), e);
 		} finally {
 			this.setInstance(null);
+		}
+	}
+
+	@Transactional(readOnly = false)
+	public void isCanReplaceCard(String userId) {
+		if (isOpenFastPay(userId)){
+			FacesUtil.addErrorMessage("您已经签约快捷支付协议，不能更换银行卡!");
+			return;
+		}
+		if (billStatistics.getBalanceByUserId(userId) == 0.0){
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/user/replaceCard");
+			} catch (IOException e) {
+				log.error(e.getLocalizedMessage(),e);
+			}
+		} else {
+			FacesUtil.addErrorMessage("您当前账户余额不为0，不能更换银行卡!");
+			return;
 		}
 	}
 
