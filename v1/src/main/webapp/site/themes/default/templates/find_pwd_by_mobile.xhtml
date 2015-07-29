@@ -80,9 +80,6 @@
 							<div class="login_box_r login_box_r_02">
 								<h:inputText id="imageCaptcha" label="图形码" maxlength="6"
 											 required="true" styleClass="login_txt login_txt_txt" value="#{userInfoHome.imageCaptcha}">
-									<!--<archer:validateImageCaptcha/>-->
-									<!--<f:ajax event="blur"  onevent="refreshImageCaptcha"></f:ajax>-->
-
 								</h:inputText>
 								<img class="imageCaptchaClass imageCode" alt="点击刷新" id="verifyCode"
 									 src="#{request.contextPath}/verifyCodeInRedisServlet"
