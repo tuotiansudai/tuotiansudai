@@ -215,8 +215,11 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         if(Strings.isNullOrEmpty(phoneNumber)){
             return false;
         }
-        String firstLetter = phoneNumber.substring(0,1);
-        return "1".equals(firstLetter);
+        String regStr = "^(1[0-9])\\d{9}$";
+        Pattern pattern = Pattern.compile(regStr);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        matcher.matches();
+        return matcher.matches();
     }
 
 
