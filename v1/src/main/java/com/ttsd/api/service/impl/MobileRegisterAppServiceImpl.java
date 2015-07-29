@@ -46,12 +46,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         String returnCode = ReturnMessage.SUCCESS.getCode();
         returnCode = this.verifyMobileNumber(mobileNumber);
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
-            Long validTime = calendar.getTimeInMillis();
-            Date deadLine = new Date(validTime);
+            
             boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
