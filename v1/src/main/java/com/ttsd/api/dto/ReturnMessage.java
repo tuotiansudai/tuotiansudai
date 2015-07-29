@@ -2,6 +2,7 @@ package com.ttsd.api.dto;
 
 public enum ReturnMessage {
     SUCCESS("0000",""),
+    /******手机端注册返回码******/
     MOBILE_NUMBER_IS_NULL("0001", "手机号码为空"),
     MOBILE_NUMBER_IS_INVALID("0002","手机号码不合法"),
     MOBILE_NUMBER_IS_EXIST("0003","手机号已经存在"),
@@ -13,7 +14,17 @@ public enum ReturnMessage {
     SMS_CAPTCHA_ERROR("0009","短信验证码不正确"),
     SMS_CAPTCHA_IS_OVERDUE("0010","短信验证码已经过期"),
     USER_IS_ACTIVE("0011","用户已经被激活"),
-    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位");
+    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位"),
+    /******手机端注册返回码******/
+
+    /******手机端实名认证返回码******/
+    ID_CARD_IS_NULL("0013","身份号码为空"),
+    REAL_NAME_IS_NULL("0014","真实姓名为空"),
+    ID_CARD_IS_EXIST("0015","身份证号已被实名认证"),
+    CERTIFICATION_FAIL("0016","实名认证失败"),
+    USER_ID_IS_NULL("0017","用户ID为空"),
+    USER_ID_NOT_EXIST("0018","用户ID不存在");
+    /******手机端实名认证返回码******/
 
 
     private String code;
