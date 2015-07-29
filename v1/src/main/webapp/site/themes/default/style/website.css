@@ -290,13 +290,24 @@ body{
     display: block;
     text-align: center;
 }
-.management-main div h4{
+.management-main div dl{
     width:500px;
     line-height: 26px;
     font-size: 18px;
     color:#000;
     border-bottom:#d7d7d7 1px solid;
     float: right;
+}
+.management-main div dl dt{
+    width:400px;
+    float:left;
+
+}
+.management-main div dl dd{
+    float:right;
+    width:100px;
+    text-align:center;
+    font-size:12px;
 }
 .management-main div i{
     font-style: normal;
