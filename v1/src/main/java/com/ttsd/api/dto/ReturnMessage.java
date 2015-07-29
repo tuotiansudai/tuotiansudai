@@ -13,7 +13,8 @@ public enum ReturnMessage {
     SMS_CAPTCHA_ERROR("0009","短信验证码不正确"),
     SMS_CAPTCHA_IS_OVERDUE("0010","短信验证码已经过期"),
     USER_IS_ACTIVE("0011","用户已经被激活"),
-    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位");
+    PASSWORD_IS_INVALID("0012","密码是数字和字母的组合，长度为6-16位"),
+    USER_IS_NOT_EXIST("0019","用户名不存在");
 
 
     private String code;

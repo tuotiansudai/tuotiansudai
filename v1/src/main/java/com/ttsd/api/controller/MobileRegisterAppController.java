@@ -21,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/mobileAppRegister")
 public class MobileRegisterAppController {
 
-    @Logger
-    static Log log;
     @Resource
     private MobileRegisterAppService mobileRegisterAppService;
 
