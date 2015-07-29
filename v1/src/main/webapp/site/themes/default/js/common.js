@@ -128,4 +128,8 @@ function timerCount(xhr, status, args, buttonId) {
 function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
+$(function(){
+	$('.jq_mobile').removeAttr('disabled');
+})
+
 
