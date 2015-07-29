@@ -34,6 +34,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -280,20 +281,25 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			if (redisClient.exists(sessionId)) {
 				if (!redisClient.get(sessionId).equalsIgnoreCase(this.imageCaptcha)) {
 					FacesUtil.addErrorMessage("图形码输入错误！");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
 					return;
 				}
 			} else {
 				FacesUtil.addErrorMessage("图形码已经过期！");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
 				return;
 			}
 			//imageCaptcha
 			this.step = 2;
-		} catch (NoMatchingObjectsException e) {
+		} catch (NoMatchingObjectsException |AuthInfoOutOfDateException |AuthInfoAlreadyActivedException e) {
 			FacesUtil.addErrorMessage("验证码输入有误！");
-		} catch (AuthInfoOutOfDateException e) {
-			FacesUtil.addErrorMessage("验证码输入有误！");
-		} catch (AuthInfoAlreadyActivedException e) {
-			FacesUtil.addErrorMessage("验证码输入有误！");
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+			} catch (IOException e1) {
+				log.error(e1.getLocalizedMessage(),e1);
+			}
+		} catch (IOException e) {
+			log.error(e.getLocalizedMessage(),e);
 		}
 	}
 	
