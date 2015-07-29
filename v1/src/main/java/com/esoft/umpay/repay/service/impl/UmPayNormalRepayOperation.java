@@ -13,6 +13,7 @@ import com.esoft.archer.user.model.*;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
@@ -89,13 +90,16 @@ public class UmPayNormalRepayOperation extends
 	@Logger
 	Log log;
 
+	@Resource
+	SystemBillService systemBillService;
+
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public void recommendedIncome(LoanRepay lr) throws IOException,ReqDataException, RetDataException{
+	public void recommendedIncome(Loan loan) throws IOException,ReqDataException, RetDataException{
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
 				"from Invest i where i.loan.id=? and i.status!=?",
-				new String[] { lr.getLoan().getId(), InvestConstants.InvestStatus.CANCEL });
+				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL });
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
@@ -114,7 +118,7 @@ public class UmPayNormalRepayOperation extends
 				}else{
 					roleId = "MEMBER";
 				}
-				double bonus = calculateBonus(invest, referrerRelation,lr.getLoan(),roleId);
+				double bonus = calculateBonus(invest, referrerRelation, loan, roleId);
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
@@ -147,31 +151,24 @@ public class UmPayNormalRepayOperation extends
 	}
 
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan,String roleId) {
-		String repayTimeUnit = loan.getType().getRepayTimeUnit();
 		int percentage = 100;
 		int maxDigital = 2;
-		int repayWay = 1;
-		if(repayTimeUnit.equals("month")){
-			repayWay = 12;
-		}else if(repayTimeUnit.equals("day")){
-			repayWay = 365;
-		}
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
                 new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
         }else {
 			if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
 				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
 				if (referGradeProfitSysListEx.size() > 0){
-					return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+					return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
 				}else{
 					return -1;
 				}
 			}
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
 			}else {
 				return -1;
 			}
@@ -336,11 +333,6 @@ public class UmPayNormalRepayOperation extends
 										repay.getLoan(),
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
-					}
-					try {
-						recommendedIncome(repay);
-					}catch (Exception e){
-						log.error(e.getStackTrace());
 					}
 				}
 			} else {
