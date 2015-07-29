@@ -7,6 +7,7 @@ import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.service.AuthService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.config.model.Config;
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
@@ -246,8 +247,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
 		} else {
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
+			Config config = getBaseService().get(Config.class, "site_phone");
+			String site_phone = "";
+			if (config != null) {
+				site_phone = config.getValue();
+			}
 			params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
+			params.put("site_phone",site_phone);
 			// 发送手机验证码
 			messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
 			redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
