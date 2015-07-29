@@ -68,7 +68,7 @@
 									styleClass="login_txt login_txt_txt" maxlength="10">
 								</h:inputText>
 								<h:commandButton value="获取验证码" id="sendAuthCodeBtn" style="border: none;cursor: pointer;"
-									styleClass="login_yzm login_yzm_01" onclick="$(this).attr('disabled','disabled')">
+									styleClass="login_yzm login_yzm_01" onclick="$(this).attr('disabled',true)">
 									<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
 									listener="#{userInfoHome.sentVerifyAuthCodeToMobile(userInfoHome.instance.mobileNumber, 'timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
 								</h:commandButton>
