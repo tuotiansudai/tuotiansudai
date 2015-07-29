@@ -76,6 +76,21 @@
 							<div class="clear"></div>
 						</div>
 						<div class="login_box login_box03 login_box04">
+							<div class="login_box_l login_box_l_02">图形码：</div>
+							<div class="login_box_r login_box_r_02">
+								<h:inputText id="imageCaptcha" label="图形码" maxlength="6"
+											 required="true" styleClass="login_txt login_txt_txt" value="#{userInfoHome.imageCaptcha}">
+									<archer:validateImageCaptcha/>
+									<f:ajax event="blur"  onevent="refreshImageCaptcha"></f:ajax>
+
+								</h:inputText>
+								<img class="imageCaptchaClass imageCode" alt="点击刷新" id="verifyCode"
+									 src="#{request.contextPath}/verifyCodeInRedisServlet"
+									 onclick="this.src='#{request.contextPath}/verifyCodeInRedisServlet?'+new Date().getTime()"/>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="login_box login_box03 login_box04">
 							<div class="login_box_l login_box_l_02"></div>
 							<div class="login_box_r login_box_r_02">
 								<h:commandLink value="提交" styleClass="login_btn"

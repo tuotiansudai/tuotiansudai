@@ -99,6 +99,8 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	private String newMobileNumber;
 	// 认证码
 	private String authCode;
+
+	private String imageCaptcha;
 	
 	
 	public String getFindPwdEmail() {
@@ -126,7 +128,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 		this.authCode = authCode;
 	}
 
+	public String getImageCaptcha() {
+		return imageCaptcha;
+	}
 
+	public void setImageCaptcha(String imageCaptcha) {
+		this.imageCaptcha = imageCaptcha;
+	}
 	// /////////////////////////////////////////通过邮箱找回密码--开始////////////////////////////////////
 
 	/**
@@ -263,10 +271,22 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	}
 
 	public void findPwdByMobile1(){
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String sessionId = request.getSession().getId();
 		try {
 			authService.verifyAuthInfo(getInstance().getId(), getInstance().getMobileNumber(),
 					authCode,
 					CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
+			if (redisClient.exists(sessionId)) {
+				if (!redisClient.get(sessionId).equals(this.imageCaptcha)) {
+					FacesUtil.addErrorMessage("图形码输入错误！");
+					return;
+				}
+			} else {
+				FacesUtil.addErrorMessage("图形码已经过期！");
+				return;
+			}
+			//imageCaptcha
 			this.step = 2;
 		} catch (NoMatchingObjectsException e) {
 			FacesUtil.addErrorMessage("验证码输入有误！");
