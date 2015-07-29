@@ -278,7 +278,7 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 					authCode,
 					CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
 			if (redisClient.exists(sessionId)) {
-				if (!redisClient.get(sessionId).equals(this.imageCaptcha)) {
+				if (!redisClient.get(sessionId).equalsIgnoreCase(this.imageCaptcha)) {
 					FacesUtil.addErrorMessage("图形码输入错误！");
 					return;
 				}
