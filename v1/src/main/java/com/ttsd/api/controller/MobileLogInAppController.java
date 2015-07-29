@@ -17,7 +17,7 @@ public class MobileLogInAppController {
     private MobileLogInAppService mobileLogInAppService;
 
     @ResponseBody
-    @RequestMapping(value="/LogIn",method = RequestMethod.POST)
+    @RequestMapping(value="/applogin",method = RequestMethod.POST)
     public LogInResponseDto login(@RequestBody LogInRequestDto logInRequestDto){
        return mobileLogInAppService.logIn(logInRequestDto);
     }
