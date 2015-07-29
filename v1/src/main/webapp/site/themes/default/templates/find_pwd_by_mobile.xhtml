@@ -53,7 +53,7 @@
 							<div class="login_box_r login_box_r_02">
 								<h:inputText id="mobileNumber"
 									value="#{userInfoHome.instance.mobileNumber}" label="手机号" autocomplete="off"
-									required="true" styleClass="login_txt login_txt_txt jq_mobile">
+									required="true" styleClass="login_txt login_txt_txt">
 									<archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
 									<f:ajax event="blur" render="@this"></f:ajax>
 								</h:inputText>
@@ -68,7 +68,7 @@
 									styleClass="login_txt login_txt_txt" maxlength="10">
 								</h:inputText>
 								<h:commandButton value="获取验证码" id="sendAuthCodeBtn" style="border: none;cursor: pointer;"
-									styleClass="login_yzm login_yzm_01" onclick="$(this).attr('disabled',true)">
+									styleClass="login_yzm login_yzm_01 jq_mobile" onclick="$(this).attr('disabled',true)">
 									<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
 									listener="#{userInfoHome.sentVerifyAuthCodeToMobile(userInfoHome.instance.mobileNumber, 'timerCountB(\'form\\\\:sendAuthCodeBtn\')')}"></f:ajax>
 								</h:commandButton>
