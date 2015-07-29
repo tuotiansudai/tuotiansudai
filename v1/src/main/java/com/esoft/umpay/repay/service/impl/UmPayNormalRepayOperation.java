@@ -98,8 +98,8 @@ public class UmPayNormalRepayOperation extends
 	public void recommendedIncome(Loan loan) throws IOException,ReqDataException, RetDataException{
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
-				"from Invest i where i.loan.id=? and i.status!=?",
-				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL });
+				"from Invest i where i.loan.id=? and i.status not in (?,?)",
+				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
