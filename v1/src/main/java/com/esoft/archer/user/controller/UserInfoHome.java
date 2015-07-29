@@ -22,6 +22,7 @@ import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.ttsd.redis.RedisClient;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
@@ -30,6 +31,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -229,6 +232,9 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	 * @param jsCode 方法执行完以后要执行的js
 	 */
 	public void sentVerifyAuthCodeToMobile(String mobileNumber, String jsCode){
+		Date nowTime = new Date();
+		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String remoteIp = CommonUtils.getRemoteHost(request);
 		User l = userBO.getUserByMobileNumber(mobileNumber);
 		if(l == null ){
 			FacesUtil.getCurrentInstance().validationFailed();
@@ -237,7 +243,7 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 		}
 		this.setInstance(l);
 		if (redisClient.exists(remoteIp)) {
-			FacesUtil.addInfoMessage("验证码已经发送至手机！");
+			FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
 		} else {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
@@ -245,11 +251,11 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			// 发送手机验证码
 			messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
 			redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
+			FacesUtil.addInfoMessage("验证码已经发送至手机！");
+			RequestContext.getCurrentInstance().execute(jsCode);
 		}
-		FacesUtil.addInfoMessage("验证码已经发送至手机！");
-		RequestContext.getCurrentInstance().execute(jsCode);
 	}
-	
+
 	public void findPwdByMobile1(){
 		try {
 			authService.verifyAuthInfo(getInstance().getId(), getInstance().getMobileNumber(),
