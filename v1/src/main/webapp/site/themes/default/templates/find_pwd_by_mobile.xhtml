@@ -52,7 +52,7 @@
 							<div class="login_box_l login_box_l_02">手机号：</div>
 							<div class="login_box_r login_box_r_02">
 								<h:inputText id="mobileNumber"
-									value="#{userInfoHome.instance.mobileNumber}" label="手机号"
+									value="#{userInfoHome.instance.mobileNumber}" label="手机号" autocomplete="off"
 									required="true" styleClass="login_txt login_txt_txt">
 									<archer:validateInputRule ruleId="input.mobile"></archer:validateInputRule>
 									<f:ajax event="blur" render="@this"></f:ajax>
