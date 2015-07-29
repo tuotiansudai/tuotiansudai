@@ -215,7 +215,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         if(Strings.isNullOrEmpty(phoneNumber)){
             return false;
         }
-        String regStr = "^(1[0-9])\\d{9}$";
+        String regStr = "^1\\d{10}$";
         Pattern pattern = Pattern.compile(regStr);
         Matcher matcher = pattern.matcher(phoneNumber);
         matcher.matches();
