@@ -3,7 +3,9 @@ package com.tuotiansudai.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -33,7 +35,7 @@ public class PayWrapperClient {
     private OkHttpClient okHttpClient;
 
     public BaseDto register(RegisterAccountDto dto) {
-        String requestJson = null;
+        String requestJson;
         try {
             requestJson = objectMapper.writeValueAsString(dto);
         } catch (JsonProcessingException e) {
@@ -44,6 +46,13 @@ public class PayWrapperClient {
         }
 
         String responseJson = this.post(registerPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            BaseDto<PayDataDto> baseDto = new BaseDto();
+            PayDataDto payDataDto = new PayDataDto();
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
         return this.parsePayResponseJson(responseJson);
     }
 
@@ -55,7 +64,9 @@ public class PayWrapperClient {
 
         try {
             Response response = okHttpClient.newCall(request).execute();
-            return response.body().string();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
         } catch (IOException e) {
             logger.error(e);
         }
@@ -69,7 +80,9 @@ public class PayWrapperClient {
 
         try {
             Response response = okHttpClient.newCall(request).execute();
-            return response.body().string();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

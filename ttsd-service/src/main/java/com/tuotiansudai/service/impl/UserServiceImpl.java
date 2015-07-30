@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -80,8 +81,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerAccount(RegisterAccountDto dto) {
-        payWrapperClient.register(dto);
-        return true;
+        BaseDto baseDto = payWrapperClient.register(dto);
+        return baseDto.getData().getStatus();
     }
 
     private String getRandomSalt(){

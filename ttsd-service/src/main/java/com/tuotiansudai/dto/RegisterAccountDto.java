@@ -11,15 +11,15 @@ public class RegisterAccountDto {
     private String loginName;
 
     @NotEmpty
+    @Pattern(regexp = "^\\d{11}$")
+    private String mobile;
+
+    @NotEmpty
     private String userName;
 
     @NotEmpty
     @Pattern(regexp = "[1-9]\\d{13,16}[a-zA-Z0-9]{1}")
     private String identityNumber;
-
-    @NotEmpty
-    @Pattern(regexp = "^\\d{11}$")
-    private String mobile;
 
     public String getLoginName() {
         return loginName;
