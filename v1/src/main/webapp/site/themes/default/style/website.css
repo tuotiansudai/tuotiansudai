@@ -430,6 +430,8 @@ body{
 .joinUs-main ul li{
     line-height: 20px;
     font-size: 14px;
+    margin:6px 0px;
+    color:#707070;
 }
 .joinUs-main-describe{
     margin: 10px;
