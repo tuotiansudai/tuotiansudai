@@ -24,8 +24,12 @@ public enum ReturnMessage {
     ID_CARD_IS_EXIST("0015","身份证号已被实名认证"),
     CERTIFICATION_FAIL("0016","实名认证失败"),
     USER_ID_IS_NULL("0017","用户ID为空"),
-    USER_ID_NOT_EXIST("0018","用户ID不存在");
+    USER_ID_NOT_EXIST("0018","用户不存在"),
     /******手机端实名认证返回码******/
+
+    /******手机端找回密码返回码******/
+    SMS_CAPTCHA_IS_NULL("0020","验证码为空");
+    /******手机端找回密码返回码******/
 
 
     private String code;

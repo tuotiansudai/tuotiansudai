@@ -2,10 +2,7 @@ package com.ttsd.api.controller;
 
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.core.annotations.Logger;
-import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.dto.RetrievePasswordRequestDto;
-import com.ttsd.api.dto.RetrievePasswordResponseDto;
-import com.ttsd.api.dto.SendSmsRequestDto;
+import com.ttsd.api.dto.*;
 import com.ttsd.api.service.RetrievePasswordService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
@@ -36,8 +33,8 @@ public class RetrievePasswordController {
            return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
         } catch (UserNotFoundException e) {
             RetrievePasswordResponseDto retrievePasswordResponseDto = new RetrievePasswordResponseDto();
-            retrievePasswordResponseDto.setCode("");
-            retrievePasswordResponseDto.setMessage("");
+            retrievePasswordResponseDto.setCode(ReturnMessage.USER_ID_NOT_EXIST.getCode());
+            retrievePasswordResponseDto.setMessage(ReturnMessage.USER_IS_NOT_EXIST.getMsg());
             log.error(e.getLocalizedMessage(),e);
             return retrievePasswordResponseDto;
         }
