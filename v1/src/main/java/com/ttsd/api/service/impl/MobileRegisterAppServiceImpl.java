@@ -46,12 +46,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         String returnCode = ReturnMessage.SUCCESS.getCode();
         returnCode = this.verifyMobileNumber(mobileNumber);
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.MINUTE, CommonConstants.MOBILE_AUTH_MESSAGE_VALID_TIME);
-            Long validTime = calendar.getTimeInMillis();
-            Date deadLine = new Date(validTime);
+            
             boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
@@ -106,7 +101,9 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
 
     @Override
     public String verifyReferrer(String referrer) {
-
+        if(StringUtils.isEmpty(referrer)){
+            return ReturnMessage.SUCCESS.getCode();
+        }
         User user = userBO.getUserByUsername(referrer);
         if (user == null) {
             log.info(referrer + ":" + ReturnMessage.REFERRER_IS_NOT_EXIST.getCode());
@@ -152,9 +149,13 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             returnCode = this.verifyCaptcha(registerRequestDto.getPhoneNum(), registerRequestDto.getCaptcha());
         }
-        User user = registerRequestDto.convertToUser();
+
         try {
-            userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
+            if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
+                User user = registerRequestDto.convertToUser();
+                userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
+            }
+
         } catch (NoMatchingObjectsException e) {
             log.error(e.getLocalizedMessage(), e);
             returnCode = ReturnMessage.SMS_CAPTCHA_ERROR.getCode();
@@ -165,7 +166,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             log.error(e.getLocalizedMessage(), e);
             returnCode = ReturnMessage.USER_IS_ACTIVE.getCode();
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getLocalizedMessage(),e);
         }
 
         registerResponseDto.setCode(returnCode);
@@ -175,6 +176,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             registerDataDto.setUserId(registerRequestDto.getUserName());
             registerDataDto.setUserName(registerRequestDto.getUserName());
             registerDataDto.setToken(registerRequestDto.getBaseParam().getToken());
+            registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
             registerResponseDto.setData(registerDataDto);
         }
         return registerResponseDto;

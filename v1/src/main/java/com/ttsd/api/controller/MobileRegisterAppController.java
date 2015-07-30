@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value = "/mobileAppRegister")
 public class MobileRegisterAppController {
 
     @Resource
@@ -30,7 +29,7 @@ public class MobileRegisterAppController {
         return mobileRegisterAppService.registerUser(registerRequestDto);
     }
 
-    @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
+    @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto,HttpServletRequest request) {
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
