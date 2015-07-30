@@ -244,6 +244,7 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	public void sentVerifyAuthCodeToMobile(String mobileNumber, String jsCode){
 		Date nowTime = new Date();
 		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String sessionId = request.getSession().getId()+"_image_captcha_status";
 		String remoteIp = CommonUtils.getRemoteHost(request);
 		User l = userBO.getUserByMobileNumber(mobileNumber);
 		if(l == null ){
@@ -263,6 +264,25 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			}
 			params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
 			params.put("site_phone",site_phone);
+			if (redisClient.exists(sessionId)) {
+				if (!redisClient.get(sessionId).equals("success")) {
+					FacesUtil.addErrorMessage("图形码输入错误！");
+					try {
+						FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+					} catch (IOException e) {
+						log.error(e.getLocalizedMessage(),e);
+					}
+					return;
+				}
+			} else {
+				FacesUtil.addErrorMessage("图形码已经过期！");
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+				} catch (IOException e) {
+					log.error(e.getLocalizedMessage(),e);
+				}
+				return;
+			}
 			// 发送手机验证码
 			messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
 			redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
@@ -299,7 +319,7 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 				log.error(e1.getLocalizedMessage(),e1);
 			}
 		} catch (IOException e) {
-			log.error(e.getLocalizedMessage(),e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 	
