@@ -129,7 +129,7 @@ function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
 $(function(){
-	$('.jq_mobile').removeAttr('disabled');
+	$('.jq_mobile').attr('disabled',true);
 })
 
 

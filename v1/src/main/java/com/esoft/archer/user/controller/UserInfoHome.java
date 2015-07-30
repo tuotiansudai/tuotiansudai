@@ -273,13 +273,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 
 	public void findPwdByMobile1(){
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		String sessionId = request.getSession().getId();
+		String sessionId = request.getSession().getId()+"_image_captcha_status";
 		try {
 			authService.verifyAuthInfo(getInstance().getId(), getInstance().getMobileNumber(),
 					authCode,
 					CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
 			if (redisClient.exists(sessionId)) {
-				if (!redisClient.get(sessionId).equalsIgnoreCase(this.imageCaptcha)) {
+				if (!redisClient.get(sessionId).equals("success")) {
 					FacesUtil.addErrorMessage("图形码输入错误！");
 					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
 					return;

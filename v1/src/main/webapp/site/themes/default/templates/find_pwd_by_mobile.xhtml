@@ -25,6 +25,19 @@
 			src="#{tplVars.themeJSPath}/jquery.artDialog.js?skin=idialog"></script>
 		<script type="text/javascript" src="#{tplVars.themeJSPath}/common.js"></script>
 		<script type="text/javascript" src="#{tplVars.themeJSPath}/timer.js"></script>
+		<script type="text/javascript">
+			var refreshImageCaptcha = function(data) {
+				if(data.status == 'success'){
+					if(data.responseText.indexOf("验证码不正确,请重新获取验证码") > -1
+							|| data.responseText.indexOf("验证码已经过期") > -1){
+						$('#form\\:imageCaptcha').val('');
+						$('.imageCaptchaClass').click();
+					} else {
+						$('.jq_mobile').attr('disabled',false);
+					}
+				}
+			}
+		</script>
 		<link type="text/css" rel="stylesheet"
 			href="#{tplVars.themeStylePath}/common.css" />
 		<link type="text/css" rel="stylesheet"
@@ -67,6 +80,7 @@
 									value="#{userInfoHome.authCode}"
 									styleClass="login_txt login_txt_txt" maxlength="10">
 								</h:inputText>
+
 								<h:commandButton value="获取验证码" id="sendAuthCodeBtn" style="border: none;cursor: pointer;"
 									styleClass="login_yzm login_yzm_01 jq_mobile" onclick="$(this).attr('disabled',true)">
 									<f:ajax execute="mobileNumber" onevent="enableBtn('form\\\\:sendAuthCodeBtn')"
@@ -80,6 +94,8 @@
 							<div class="login_box_r login_box_r_02">
 								<h:inputText id="imageCaptcha" label="图形码" maxlength="6"
 											 required="true" styleClass="login_txt login_txt_txt" value="#{userInfoHome.imageCaptcha}">
+									<archer:validateImageCaptcha/>
+									<f:ajax event="blur"  onevent="refreshImageCaptcha"></f:ajax>
 								</h:inputText>
 								<img class="imageCaptchaClass imageCode" alt="点击刷新" id="verifyCode"
 									 src="#{request.contextPath}/verifyCodeInRedisServlet"
