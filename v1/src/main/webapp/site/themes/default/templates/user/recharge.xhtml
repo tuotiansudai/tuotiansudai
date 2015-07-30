@@ -88,8 +88,6 @@
 						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
 					</ui:fragment>
 					<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
-						<!--<a href="#{path}/user/bankCardList"  title="开通快捷支付">开通快捷支付-->
-						<!--</a>-->
 						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="false" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
 												 requiredMessage="快捷支付">
 						</h:selectBooleanCheckbox>
