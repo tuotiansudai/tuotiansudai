@@ -85,6 +85,386 @@ body,html,ol,li,ul,p,h3,h4,h5{margin:0px; padding: 0px;list-style: none; font-fa
 
 
 
+body,html,div,p,span,i,em,p,h3,h4,h5,ul,li{
+    margin:0px;
+    padding:0px;
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+h3,h4,h5{
+    font-weight: normal;
+}
+body{
+    font-family: 'microsoft yahei';
+}
+.wrapAbout{
+    width:1000px;
+    height: auto;
+    margin: 10px auto;
+    overflow: hidden;
+}
+.wrap-left{
+    width:222px;
+    height: auto;
+    overflow: hidden;
+    float: left;
+    text-align: center;
+}
+.wrap-left h3{
+    line-height: 54px;
+    color:#f33735;
+    border-bottom:#bbb 1px solid ;
+    font-size: 22px;
+}
+.wrap-left ul{
+    width:222px;
+    height:auto;
+    overflow: hidden;
+}
+.wrap-left ul h4{
+    line-height: 52px;
+    color:#f33735;
+    border-bottom:#bbb 1px solid ;
+    font-size: 18px;
+}
+.wrap-left ul li{
+    line-height: 38px;
+    border-bottom:#bbb 1px solid ;
+}
+.wrap-left ul li:last-child{
+    border-bottom:0px ;
+}
+.wrap-left ul li a.wrap-active{
+    background: #f33735;
+    color:#fff;
+}
+.wrap-left ul li a{
+    display: block;
+    color:#7a7a7a;
+}
+.wrap-left ul li a:hover{
+    background: #f33735;
+    color:#fff;
+}
+.wrap-right{
+    width:762px;
+    height:auto;
+    overflow: hidden;
+    float:right;
+}
+.wrap-tab{
+    display: none;
+    padding: 0px 24px;
+    width:714px;
+}
+.title-right{
+    width:100%;
+    height:24px;
+    position: relative;
+    margin: 38px 0px 28px 0px;
+}
+.title-right h3{
+    width:130px;
+    text-align: center;
+    line-height: 24px;
+    font-size: 21px;
+    color:#f33735;
+}
+.title-right span{
+    position: absolute;
+    right:0px;
+    top:13px;
+    height:1px;
+    width:582px;
+    background: #c2c2c2;
+}
+.wrap-right-company p{
+    color:#6f6f6f;
+    line-height: 22px;
+    text-indent: 35px;
+    font-size: 14px;
+    margin-bottom: 17px;
+}
+.wrap-right-company img{
+    float: left;
+    width:343px;
+    height:229px;
+    margin:7px;
+}
+.service-main h4{
+    font-size: 14px;
+    color:#000;
+    line-height: 22px;
+    margin: 10px 0px;
+}
+.service-main strong{
+    line-height: 36px;
+}
+.service-main p{
+    line-height: 22px;
+    font-size: 14px;
+    text-indent: 35px;
+    margin: 6px 0px 12px 0px;
+}
+.service-main span{
+    line-height: 20px;
+    font-size: 14px;
+    color:#666;
+    text-indent: 35px;
+    margin: 10px;
+    display: block;
+}
+.problem-main p{
+    line-height: 22px;
+    margin: 16px;
+}
+.problem-main span{
+    line-height: 20px;
+    margin:6px 0px 10px 0px;
+    color:#666;
+    display: block;
+    font-size: 14px;
+    text-indent: 30px;
+}
+.team-main{
+    margin: 10px 0px;
+    width:100%;
+    height:auto;
+    overflow: hidden;
+}
+.team-main p{
+    width:340px;
+    height: auto;
+    float: left;
+    margin:0px 0px 26px 8px;
+}
+.team-main p strong{
+    font-weight: normal;
+    font-size: 18px;
+    color:#f44d4b;
+    display: block;
+    margin-bottom: 6px;
+}
+.team-main p:nth-child(even){
+    margin-left: 24px;
+}
+.team-main p img{
+    width:340px;
+    height: 226px;
+}
+.team-main p span{
+    line-height: 20px;
+    text-indent: 33px;
+    color:#333;
+    display: block;
+    font-size: 14px;
+}
+.management-main div{
+    width:100%;
+    height:auto;
+    padding:26px 0px;
+    border-bottom: #999 1px dashed;
+    overflow: hidden;
+}
+.management-main div:nth-child(1){
+    padding-top:0px;
+}
+.management-main div:nth-child(6){
+    border-bottom: 0px;
+}
+.management-main div p{
+    width:180px;
+    height: 250px;
+    float: left;
+    border: #999 1px solid;
+}
+.management-main div p img{
+    width:180px;
+    height: 224px;
+}
+.management-main div p span{
+    width:100%;
+    line-height: 24px;
+    display: block;
+    text-align: center;
+}
+.management-main div dl{
+    width:500px;
+    line-height: 26px;
+    font-size: 18px;
+    color:#000;
+    border-bottom:#d7d7d7 1px solid;
+    float: right;
+}
+.management-main div dl dt{
+    width:400px;
+    float:left;
+
+}
+.management-main div dl dd{
+    float:right;
+    width:100px;
+    text-align:center;
+    font-size:12px;
+}
+.management-main div i{
+    font-style: normal;
+    font-size: 14px;
+    float: right;
+    color:#666;
+    margin-top: 12px;
+    width:500px;
+    display:block;
+}
+.content-main{
+    margin-top: 12px;
+    width:100%;
+    height: auto;
+    overflow: hidden;
+}
+.content-main h4{
+    font-size: 18px;
+    color:#c00;
+}
+.content-main p{
+    width:100%;
+    line-height: 22px;
+    font-size: 16px;
+    color:#000;
+    margin: 10px 0px;
+}
+.content-main span{
+    display: block;
+    line-height: 20px;
+    color:#666;
+    font-size: 14px;
+}
+.content-main img{
+    display: block;
+    width:694px;
+    height: 522px;
+    margin: 10px 0px;
+}
+.safe-main{
+    margin-top: 12px;
+    width:100%;
+    height: auto;
+    overflow: hidden;
+}
+.safe-main div{
+    width:100%;
+    height:auto;
+    overflow: hidden;
+}
+.safe-main div:nth-child(1){
+    padding-right: 198px;
+    width:516px;
+    background: url("../images/aboutus/safelist1.jpg") no-repeat 526px center;
+}
+.safe-main div:nth-child(2){
+    background: url("../images/aboutus/safelist2.jpg") no-repeat 0px center;
+}
+.safe-main div:nth-child(2) p{
+    padding-left: 196px;
+    width:516px;
+}
+.safe-main div:nth-child(3){
+    padding-right: 180px;
+    width:544px;
+    height: auto;
+    overflow: hidden;
+    background: url("../images/aboutus/safelist3.jpg") no-repeat right 0px;
+}
+.safe-main div:nth-child(3) p{
+    margin-top: 12px;
+}
+.safe-main div:nth-child(4){
+    padding-left: 277px;
+    width:437px;
+    height: 182px;
+    background: url("../images/aboutus/safelist4.jpg") no-repeat left center;
+}
+.safe-main div:nth-child(4) p{
+    margin-top: 30px;
+}
+.safe-main div h4{
+    width:100%;
+    line-height: 28px;
+    color:#c00;
+    text-align: center;
+}
+.safe-main div p{
+    text-indent: 30px;
+    font-size: 14px;
+    color:#666;
+}
+.safe-main div span{
+    background: url("../images/aboutus/safelist5.jpg") no-repeat center;
+    display: block;
+    width: 696px;
+    height: 14px;
+    margin: 12px auto 10px;
+    clear: both;
+}
+.safe-main div:nth-child(3) em{
+    color:#e46008;
+    font-style:normal;
+    line-height: 32px;
+    margin-right: 58px;
+}
+
+.joinUs-main{
+    background: url("../images/aboutus/joinus.jpg") no-repeat center;
+    width:760px;
+    height: 550px;
+}
+.joinUs-main ul{
+    float:left;
+    margin-top: 80px;
+}
+.joinUs-main ul:nth-child(2){
+    margin-left:60px;
+}
+.joinUs-main ul li{
+    line-height: 20px;
+    font-size: 14px;
+    margin:6px 0px;
+    color:#707070;
+}
+.joinUs-main-describe{
+    margin: 10px;
+}
+.joinUs-main-describe h3{
+    font-size: 17px;
+    color:#171717;
+    font-weight: normal;
+}
+.joinUs-main-describe strong{
+    font-size: 17px;
+    color:#f33735;
+    display: block;
+    font-weight: normal;
+    margin: 26px 0px 18px 0px;
+}
+.joinUs-main-describe p{
+    font-size: 16px;
+    line-height: 40px;
+    color:#0f0f0f;
+    margin: 6px 0px;
+}
+.joinUs-main-describe span{
+    font-size: 14px;
+    color:#707070;
+    line-height: 18px;
+    display: block;
+    margin: 6px 0px;
+}
+
+.wrap-left,.wrap-right{
+    border:#bbb 1px solid;
+}
 
 
 
