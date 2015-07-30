@@ -1,13 +1,13 @@
 BEGIN ;
-  UPDATE
-  `user` t
-  JOIN
+    UPDATE
+    `user` t
+    JOIN
     (SELECT
-      m.`user_id`
-    FROM
-      user_role m
-    WHERE m.`role_id` = 'ROLE_MERCHANDISER') temp
-    ON t.`id` = temp.`user_id` SET t.`referrer` = '' ;
+       m.`user_id`
+     FROM
+       user_role m
+     WHERE m.`role_id` = 'ROLE_MERCHANDISER') temp
+      ON t.`id` = temp.`user_id` SET t.`referrer` = NULL WHERE t.`referrer` IS NOT NULL;
 
     DELETE
     FROM
