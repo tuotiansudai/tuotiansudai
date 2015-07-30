@@ -46,7 +46,6 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -640,7 +639,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
+	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp, String authType) {
+		if (Strings.isNullOrEmpty(authType)){
+			return false;
+		}
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		// FIXME:验证手机号码的合法性
 		// 发送手机验证码
