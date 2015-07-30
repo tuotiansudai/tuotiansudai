@@ -1,9 +1,14 @@
 package com.ttsd.mobile.controller;
 
 import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.model.User;
+import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.ttsd.util.CommonUtils;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +35,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value = "/register")
 public class RegisterController {
+
+    @Logger
+    static Log log;
 
     @Resource(name = "mobileRegisterServiceImpl")
     private IMobileRegisterService mobileRegisterService;
@@ -67,7 +75,19 @@ public class RegisterController {
                                        @RequestParam(value = "phoneNumber")String phoneNumber,
                                        @RequestParam(value = "vCode")String vCode,
                                        @RequestParam(value = "referrer")String referrer){
-        boolean responseResult = mobileRegisterService.mobileRegister(userName,password,phoneNumber,vCode,referrer);
+        boolean responseResult = false;
+        try {
+            responseResult = mobileRegisterService.mobileRegister(userName,password,phoneNumber,vCode,referrer);
+        } catch (AuthInfoOutOfDateException e) {
+            log.error("用户名为："+userName+",手机号为："+phoneNumber+"的用户信息持久化失败！");
+            log.error(e.getLocalizedMessage(), e);
+        } catch (AuthInfoAlreadyActivedException e) {
+            log.error("用户名为："+userName+",手机号为："+phoneNumber+"的用户信息持久化失败！");
+            log.error(e.getLocalizedMessage(), e);
+        } catch (NoMatchingObjectsException e) {
+            log.error("用户名为："+userName+",手机号为："+phoneNumber+"的用户信息持久化失败！");
+            log.error(e.getLocalizedMessage(), e);
+        }
         /**
          * 用户注册成功之后，登录
          */
@@ -101,8 +121,14 @@ public class RegisterController {
     @RequestMapping(value = "/mobileRegisterValidationCode",method = RequestMethod.POST)
     @ResponseBody
     public boolean mobileRegisterValidationCode(HttpServletRequest request,@RequestParam(value = "phoneNumber")String phoneNumber){
-        boolean responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber,CommonUtils.getRemoteHost(request));
-        return responseResult;
+        boolean responseResult = false;
+        try {
+            responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber,CommonUtils.getRemoteHost(request));
+            return responseResult;
+        }catch (Exception e){
+            log.error("手机授权码发送异常！");
+            return false;
+        }
     }
 
 
@@ -157,5 +183,18 @@ public class RegisterController {
     /***************************setter注入方法****************************/
     public void setMobileRegisterService(IMobileRegisterService mobileRegisterService) {
         this.mobileRegisterService = mobileRegisterService;
+    }
+
+
+    public void setLog(Log log) {
+        this.log = log;
+    }
+
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    public void setSessionRegistry(SessionRegistry sessionRegistry) {
+        this.sessionRegistry = sessionRegistry;
     }
 }
