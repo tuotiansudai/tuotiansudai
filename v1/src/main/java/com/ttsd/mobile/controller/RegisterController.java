@@ -184,17 +184,4 @@ public class RegisterController {
     public void setMobileRegisterService(IMobileRegisterService mobileRegisterService) {
         this.mobileRegisterService = mobileRegisterService;
     }
-
-
-    public void setLog(Log log) {
-        this.log = log;
-    }
-
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    public void setSessionRegistry(SessionRegistry sessionRegistry) {
-        this.sessionRegistry = sessionRegistry;
-    }
 }
