@@ -10,7 +10,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-
+    <bean class="com.esoft.core.bean.factory.config.LogBeanPostProcessor" />
     <!--<import resource="spring-security.xml" />-->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
