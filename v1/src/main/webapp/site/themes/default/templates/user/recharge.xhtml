@@ -76,15 +76,17 @@
 		<!-- 已实名认证 -->
 		<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
 			<div class="counterMark">
-				<span class="quickPayment"><img src="#{tplVars.themeImagePath}/umpaybanklogo/new.jpg"/>快捷支付</span>
+				<span class="quickPayment">快捷支付<img src="#{tplVars.themeImagePath}/umpaybanklogo/new.png"/></span>
 				<span class="onlineRecharge">网银充值</span>
 			</div>
 			<div class="center_right">
 				<h:form id="recharge">
+					<h:selectBooleanCheckbox name="isOpenFastPayment" id = "isOpenFastPayment" styleClass="isOpenFastPayment" value="#{rechargeHome.isOpenFastPayment}" style="display: none"
+											 requiredMessage="快捷支付">
+					</h:selectBooleanCheckbox>
 					<ui:fragment rendered="#{rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
-						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="true" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
-												 requiredMessage="快捷支付">
-						</h:selectBooleanCheckbox>
+						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
+						<div class="zhcz_h3 zhcz_h302"></div>
 						<div class="zhcz" style="display: none;">
 							<ul class="zhcz_ul">
 								<h:panelGroup id="rechargeWay">
@@ -102,25 +104,21 @@
 								<div class="clear"></div>
 							</ul>
 						</div>
-						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
 					</ui:fragment>
 					<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
-						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="false" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
-												 requiredMessage="快捷支付">
-						</h:selectBooleanCheckbox>
 						<input value="0" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
 						<div class="zhcz_h3 zhcz_h302"></div>
 						<div class="zhcz">
 							<ul class="zhcz_ul">
-								<h:panelGroup id="rechargeWay">
+								<h:panelGroup id="rechargeWay1">
 									<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
-										<ui:param name="rechargeWarStr" value="#{bc.no}"></ui:param>
+										<ui:param name="rechargeWarStr1" value="#{bc.no}"></ui:param>
 										<li><h:commandLink
-												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr?'hover':''}">
+												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr1?'hover':''}">
 											<img
 													src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
-											<f:ajax execute="@this" render=":recharge:rechargeWay"
-													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr)}"></f:ajax>
+											<f:ajax execute="@this" render=":recharge:rechargeWay1"
+													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr1)}"></f:ajax>
 										</h:commandLink></li>
 									</ui:repeat>
 								</h:panelGroup>
