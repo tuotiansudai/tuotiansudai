@@ -1,12 +1,7 @@
 .nav-main {
-  width:1000px;
-  margin:0px auto;
+  width: 1000px;
+  margin: 0px auto;
   height: 62px;
-  & a{
-    display: block;
-    float:left;
-    margin-top:10px;
-  }
   & p {
     position: absolute;;
     width: 100px;
@@ -14,7 +9,7 @@
     text-align: center;
     line-height: 62px;
     border-left: #f68e3a 1px solid;
-    top: 36px;
+    top: 6px;
     left: 776px;
     display: block;
     font-size: 24px;
@@ -32,10 +27,9 @@
   }
 }
 
-.registered {
-  width: 998px;
+.register {
+  width: 972px;
   height: auto;
-  min-height: 570px;
   overflow: hidden;
   background: #fff;
   margin: 12px auto;
@@ -63,30 +57,27 @@
         }
       }
     }
-    & li.reg-one {
-      width: 330px;
-      margin-left: 7px;
-      background: url("../images/register/reg_one_active.png") no-repeat;
-      color: #fff;
-    }
 
-    & li.reg-two {
+    & li.register-arrow {
       width: 324px;
-      background: url("../images/register/reg_two.png") no-repeat;
+      background: url("../images/register/register-arrow.png") no-repeat;
     }
-    & li.reg-three {
+    & li.register-arrow.active {
+      color: #fff;
       width: 324px;
-      margin-left: 6px;
-      background: url("../images/register/reg_three.png") no-repeat;
+      background: url("../images/register/register-arrow-active.png") no-repeat;
     }
+  }
+  & .agreement-check{
+    float: left;
   }
 }
 
-.step-one {
+.register-step {
   width: 610px;
   height: 410px;
-  margin-left: 348px;
-  display: block;
+  margin-left: 325px;
+  display: none;
   & ol {
     width: 600px;
     & li {
@@ -105,14 +96,14 @@
         line-height: 20px;
         display: block;
         padding-left: 28px;
-        background: url("../images/register/registered.png") no-repeat 0px -81px;
+        background: url("../images/register/register.png") no-repeat 0px -81px;
       }
 
       & em {
         position: absolute;
         left: 330px;
         top: 8px;
-        background: url("../images/register/registered.png") no-repeat 0px -465px;
+        background: url("../images/register/register.png") no-repeat 0px -465px;
         width: 22px;
         height: 22px;
         opacity: 0;
@@ -130,6 +121,7 @@
       }
     }
     & input {
+      color:#999;
       width: 280px;
       height: 38px;
       line-height: 38px;
@@ -137,8 +129,9 @@
       border-radius: 3px;
       padding-left: 40px;
       float: left;
+      font-size: 12px;
     }
-    & .send-vcode {
+    & .fetch-captcha {
       display: block;
       width: 90px;
       height: 28px;
@@ -147,34 +140,45 @@
       border-radius: 3px;
       position: absolute;
       left: 224px;
-      top: 3px;
+      top: 6px;
       font-size: 12px;
       line-height: 28px;
       text-align: center;
       cursor: pointer;
     }
-    & input.phone {
-      background: url("../images/register/registered.png") no-repeat 6px -362px;
+    & input.mobile {
+      background: url("../images/register/register.png") no-repeat 6px -362px;
     }
-    & input.vcode {
-      background: url("../images/register/registered.png") no-repeat 6px -548px;
+    & input.captcha {
+      background: url("../images/register/register.png") no-repeat 6px -548px;
     }
     & input.email {
-      background: url("../images/register/registered.png") no-repeat 6px 9px;
+      background: url("../images/register/register.png") no-repeat 6px 9px;
     }
     & input.password {
-      background: url("../images/register/registered.png") no-repeat 6px -173px;
+      background: url("../images/register/register.png") no-repeat 6px -173px;
     }
-    & input.user {
-      background: url("../images/register/registered.png") no-repeat 6px -268px;
+    & input.referrer {
+      background: url("../images/register/register.png") no-repeat 6px -268px;
     }
-    & input.username{
-      background: url("../images/register/registered.png") no-repeat 6px -640px;
+    & input.login-name {
+      background: url("../images/register/register.png") no-repeat 6px -640px;
+    }
+    & input.user-name {
+      background: url("../images/register/register.png") no-repeat 6px -268px;
     }
 
+    & input.identity-number {
+      background: url("../images/register/register.png") no-repeat 6px -724px;
+    }
   }
-
-  & a {
+  & .active {
+    display: block;
+  }
+  & .register-step-two {
+    margin-top: 100px;
+  }
+  & .register-user {
     width: 174px;
     height: 48px;
     background: #fee2cb;
@@ -182,35 +186,41 @@
     line-height: 48px;
     text-align: center;
     display: block;
-    margin: 20px 0px 20px 66px;
+    margin: 0 0 20px 74px;;
     font-size: 20px;
     color: #f68e3a;
+    padding-left: 0;
+    border: 0;
+    cursor: pointer;
   }
-  & p {
-    width: 190px;
-    height: 14px;
-    line-height: 14px;
-    margin-left: 68px;
+  & .register-account {
+    width: 174px;
+    height: 48px;
+    background: #fee2cb;
+    border-radius: 3px;
+    line-height: 48px;
+    text-align: center;
     display: block;
-    font-size: 12px;
-    position: relative;
-    padding-left: 20px;
-    & input.check-input {
-      width: 13px;
-      height: 13px;
-      float: left;
-      display: inline-block;
-      position: absolute;
-      left: 0px;
-      top: 1px;
-    }
+    margin: 50px 0 20px 74px;
+    font-size: 20px;
+    color: #f68e3a;
+    padding-left: 0;
+    border: 0;
+    cursor: pointer;
     & span {
       cursor: pointer;
     }
   }
+  & input.agreement-check {
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    left: 0;
+    top: 1px;
+  }
 }
 
-.reg-mask {
+.agreement-dialog {
   width: 100%;
   height: 643px;
   background: rgba(0, 0, 0, .8);
@@ -222,7 +232,7 @@
   display: none;
 }
 
-.areen {
+.agreement {
   width: 1000px;
   height: 643px;
   overflow: auto;
@@ -246,8 +256,7 @@
     padding: 0px 20px;
     font-size: 14px;
     line-height: 24px;
-    margin-top: 20px;
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0px 0px;
     height: auto;
 
   }
@@ -259,76 +268,33 @@
   }
 }
 
-.step-two {
-  width: 700px;
-  height: 340px;
-  overflow: hidden;
-  margin: 70px 0px 0px 280px;
+.register label {
+  padding-left: 30px;
+  height: 38px;
+  display: inline-block;
+  margin-left: 10px;
+  line-height: 38px;
+}
 
-  display: none;
+.register label.error {
+  background: url("../images/register/register.png") no-repeat 0px -82px;
+  font-size: 12px;
+  color: #f68e3a;
+}
 
-  & p {
-    width: 700px;
-    height: 40px;
-    line-height: 40px;
-    margin-top: 20px;
-    position: relative;
-    & input {
-      float: left;
-      width: 260px;
-      height: 38px;
-      line-height: 38px;
-      border: #cecece 1px solid;
-      border-radius: 3px;
-      display: block;
-      padding-left: 40px;
-    }
-    & input.register-name{
-       background: url("../images/register/registered.png") no-repeat 6px -268px;
-    }
-    & input.register-idcard{
-      background: url("../images/register/registered.png") no-repeat 6px -724px;
-    }
-    & span {
-      width: 80px;
-      display: block;
-      text-align: right;
-      float: left;
-    }
-    & b {
-      font-size: 12px;
-      color: #f68e3a;
-      margin-left: 6px;
-      width: 280px;
-      padding-left: 26px;
-      height: 38px;
-      line-height: 38px;
-      background: url("../images/register/registered.png") no-repeat 0px -82px;
-      display: block;
-      float: left;
-      display: none;
-    }
-    & em {
-      position: absolute;
-      left: 370px;
-      top: 10px;
-      background: url("../images/register/registered.png") no-repeat 0px -465px;
-      width: 22px;
-      height: 22px;
-      display: none;
-    }
-  }
-  & a {
-    width: 174px;
-    height: 48px;
-    background: #fee2cb;
-    border-radius: 3px;
-    line-height: 48px;
-    text-align: center;
-    display: block;
-    margin: 90px 0px 0px 120px;
-    font-size: 20px;
-    color: #f68e3a;
-  }
+.register label.valid {
+  background: url("../images/register/register.png") no-repeat 0px -456px;
+}
 
+.register .agreement-title {
+  float: left;
+  font-size: 12px;
+  margin-top: -2px;
+  padding-left: 5px;
+  color: #999;
+}
+
+.register .show-agreement {
+  color: #999;
+  text-decoration: underline;
 }
