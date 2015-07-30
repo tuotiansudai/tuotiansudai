@@ -85,6 +85,23 @@
 						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="true" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
 												 requiredMessage="快捷支付">
 						</h:selectBooleanCheckbox>
+						<div class="zhcz" style="display: none;">
+							<ul class="zhcz_ul">
+								<h:panelGroup id="rechargeWay">
+									<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
+										<ui:param name="rechargeWarStr" value="#{bc.no}"></ui:param>
+										<li><h:commandLink
+												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr?'hover':''}">
+											<img
+													src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
+											<f:ajax execute="@this" render=":recharge:rechargeWay"
+													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr)}"></f:ajax>
+										</h:commandLink></li>
+									</ui:repeat>
+								</h:panelGroup>
+								<div class="clear"></div>
+							</ul>
+						</div>
 						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
 					</ui:fragment>
 					<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
