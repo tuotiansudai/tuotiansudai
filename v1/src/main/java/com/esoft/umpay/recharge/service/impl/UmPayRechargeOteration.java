@@ -1,20 +1,5 @@
 package com.esoft.umpay.recharge.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.UserConstants.RechargeStatus;
@@ -38,6 +23,19 @@ import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Description : 充值操作
@@ -99,6 +97,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 视图类型
 		// map.put("sourceV",sourceV);
 		sendMap.put("order_id", recharge.getId());
+		log.debug("order_id="+recharge.getId());
 		sendMap.put("mer_date",
 				DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		/**
