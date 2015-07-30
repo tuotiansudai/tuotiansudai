@@ -96,7 +96,13 @@ public class UserBO {
 		}
 		return users.get(0);
 	}
-
+	public User getUserByUserNameOrMobileNumber(String userName){
+		List<User> users = ht.find("from User user where user.username=? or user.mobileNumber=?", userName,userName);
+		if (users.size() == 0) {
+			return null;
+		}
+		return users.get(0);
+	}
 	public User getUserByEmail(String email) {
 		List<User> users = ht.find("from User user where user.email=?", email);
 		if (users.size() == 0) {
