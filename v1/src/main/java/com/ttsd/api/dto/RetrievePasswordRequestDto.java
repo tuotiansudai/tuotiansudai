@@ -19,6 +19,8 @@ public class RetrievePasswordRequestDto extends BaseParamDto {
      */
     private String password;
 
+
+
     /**
      * 手机号
      * @return

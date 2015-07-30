@@ -1,22 +1,33 @@
 package com.ttsd.api.service;
 
+import com.esoft.archer.user.exception.UserNotFoundException;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.RetrievePasswordRequestDto;
+import com.ttsd.api.dto.RetrievePasswordResponseDto;
+import com.ttsd.api.dto.SendSmsRequestDto;
+
 /**
  * Created by tuotian on 15/7/29.
  */
 public interface RetrievePasswordService {
     /**
      * @function 修改密码
-     * @param phoneNum 手机号
-     * @param password 密码
-     * @return String
+     * @param retrievePasswordRequestDto 修改密码参数封装类
+     * @return RetrievePasswordResponseDto
      */
-    String retrievePassword(String phoneNum,String password);
+    RetrievePasswordResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException;
 
     /**
      * @function 校验验证码
-     * @param phoneNum 手机号
-     * @param authCode 验证码
-     * @return String
+     * @param retrievePasswordRequestDto 校验验证码参数封装类
+     * @return BaseResponseDto
      */
-    String validateAuthCode(String phoneNum,String authCode);
+    BaseResponseDto validateAuthCode(RetrievePasswordRequestDto retrievePasswordRequestDto);
+
+    /**
+     * @function 发送手机验证码
+     * @param sendSmsRequestDto 发送手机验证码参数封装类
+     * @return BaseResponseDto
+     */
+    BaseResponseDto sendSMS(SendSmsRequestDto sendSmsRequestDto,String remoteIp);
 }
