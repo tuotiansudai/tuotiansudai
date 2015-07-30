@@ -75,42 +75,44 @@
 		</sec:ifNotGranted>
 		<!-- 已实名认证 -->
 		<sec:ifAnyGranted roles="INVESTOR,LOANER,GUARANTEE">
-			<span><img src=""/>快捷支付</span>
-			<span>网银充值</span>
+			<div class="counterMark">
+				<span class="quickPayment"><img src="#{tplVars.themeImagePath}/umpaybanklogo/new.jpg"/>快捷支付</span>
+				<span class="onlineRecharge">网银充值</span>
+			</div>
 			<div class="center_right">
 				<h:form id="recharge">
-					<p class="zhcz_p">充值银行
-						<ui:fragment rendered="#{rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
-							<label>快捷支付</label>
-							<h:selectBooleanCheckbox id="isOpenFastPayment" selected="true" value="#{rechargeHome.isOpenFastPayment}"
-													 requiredMessage="快捷支付">
-							</h:selectBooleanCheckbox>
-							<label>(如果您选择"快捷支付"方式充值,无需选择“充值银行”)</label>
-						</ui:fragment>
-						<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
-							<a href="#{path}/user/bankCardList"  title="开通快捷支付">开通快捷支付
-							</a>
-						</ui:fragment>
-					</p>
-
-					<div class="zhcz">
-						<ul class="zhcz_ul">
-							<h:panelGroup id="rechargeWay">
-								<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
-									<ui:param name="rechargeWarStr" value="#{bc.no}"></ui:param>
-									<li><h:commandLink
-											styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr?'hover':''}">
+					<ui:fragment rendered="#{rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
+						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="true" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
+												 requiredMessage="快捷支付">
+						</h:selectBooleanCheckbox>
+						<input value="1" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
+					</ui:fragment>
+					<ui:fragment rendered="#{!rechargeHome.isOpenedQuickPay(loginUserInfo.loginUserId)}">
+						<!--<a href="#{path}/user/bankCardList"  title="开通快捷支付">开通快捷支付-->
+						<!--</a>-->
+						<h:selectBooleanCheckbox name="isOpenFastPayment" selected="false" value="#{rechargeHome.isOpenFastPayment}" disabled="true" style="display: none"
+												 requiredMessage="快捷支付">
+						</h:selectBooleanCheckbox>
+						<input value="0" class="isOpenFastPay" name="isOpenFastPay" type="hidden"/>
+						<div class="zhcz_h3 zhcz_h302"></div>
+						<div class="zhcz">
+							<ul class="zhcz_ul">
+								<h:panelGroup id="rechargeWay">
+									<ui:repeat var="bc" value="#{rechargeList.rechargeBankCards}">
+										<ui:param name="rechargeWarStr" value="#{bc.no}"></ui:param>
+										<li><h:commandLink
+												styleClass="#{rechargeHome.instance.rechargeWay==rechargeWarStr?'hover':''}">
 											<img
-												src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
+													src="#{tplVars.themeImagePath}/umpaybanklogo/#{bc.no}.png" />
 											<f:ajax execute="@this" render=":recharge:rechargeWay"
-												listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr)}"></f:ajax>
+													listener="#{rechargeHome.instance.setRechargeWay(rechargeWarStr)}"></f:ajax>
 										</h:commandLink></li>
-								</ui:repeat>
-							</h:panelGroup>
-							<div class="clear"></div>
-						</ul>
-					</div>
-
+									</ui:repeat>
+								</h:panelGroup>
+								<div class="clear"></div>
+							</ul>
+						</div>
+					</ui:fragment>
 					<div class="zhcz_h3 zhcz_h302">填写充值金额</div>
 					<div class="txczje">
 						<div class="txczje02">

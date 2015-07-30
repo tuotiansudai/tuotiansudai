@@ -129,3 +129,43 @@ function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
 
+$(function(){
+	if ($('.isOpenFastPay').val() == '1'){
+		$('.quickPayment').addClass('current');
+	} else {
+		$('.onlineRecharge').addClass('current');
+	}
+});
+
+$(function(){
+	$('.quickPayment').on('click',function(){
+		if ($(this).hasClass('current')) {
+			return;
+		} else {
+			if ($('.isOpenFastPay').val() == '1') {
+				$(this).addClass('current');
+				$('.onlineRecharge').removeClass('current');
+				$('.zhcz').hide();
+			} else {
+				window.location.href = '/user/bankCardList';
+			}
+		}
+	});
+	$('.onlineRecharge').on('click',function(){
+		if ($(this).hasClass('current')) {
+			return;
+		} else {
+			$(this).addClass('current');
+			$('.quickPayment').removeClass('current');
+			$('.zhcz').show();
+		}
+	});
+});
+
+
+
+
+
+
+
+
