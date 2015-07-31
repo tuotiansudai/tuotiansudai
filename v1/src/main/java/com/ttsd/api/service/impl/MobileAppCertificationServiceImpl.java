@@ -12,6 +12,7 @@ import com.ttsd.api.service.MobileAppCertificationService;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -36,7 +37,8 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
      * @return CertificationResponseDto
      */
     @Override
-    public CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) {
+    @Transactional
+    public CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) throws IOException, UserNotFoundException {
         BaseParam baseParam = certificationRequestDto.getBaseParam();//TODO 将此参数信息持久化到数据库中
         String userId = baseParam.getUserId();
         String userRealName = certificationRequestDto.getUserRealName();
@@ -54,29 +56,12 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
         if (userService.idCardIsExists(idCardNumber)){
             return assembleResult(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg(), userRealName, idCardNumber);
         }
-        User user = null;
-        try {
-            user = userService.getUserById(userId);
-        } catch (UserNotFoundException e) {
-            log.error("获取用户ID为："+userId+" 的用户信息异常！");
-            log.error(e.getLocalizedMessage(),e);
-            return assembleResult(ReturnMessage.USER_ID_NOT_EXIST.getCode(), ReturnMessage.USER_ID_NOT_EXIST.getMsg(), userRealName, idCardNumber);
-        }
+        User user = userService.getUserById(userId);
         if (user != null){
             user.setRealname(userRealName);
             user.setIdCard(idCardNumber);
-            try {
-                umPayUserOperation.createOperation(user, null);
-                return assembleResult(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg(), userRealName, idCardNumber);
-            } catch (IOException e) {
-                log.error("由于网络异常，ID为：" + userId + " 的用户实名认证失败！");
-                log.error(e.getLocalizedMessage());
-                return assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
-            } catch (UmPayOperationException e){
-                log.error("用户ID为："+userId+" 的用户使用真实姓名为："+userRealName+"，身份证号为："+idCardNumber+"进行实名认证未通过！");
-                log.error(e.getLocalizedMessage());
-                return assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
-            }
+            umPayUserOperation.createOperation(user, null);
+            return assembleResult(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg(), userRealName, idCardNumber);
         }
         return null;
     }

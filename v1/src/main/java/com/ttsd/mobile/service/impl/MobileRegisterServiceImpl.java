@@ -106,7 +106,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     public boolean getCreatedValidateCode(String phoneNumber,String remoteIp){
         if (regValidatePhoneNum(phoneNumber)) {
             try {
-                boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNumber, remoteIp);
+                boolean validateFlag = userService.sendSmsMobileNumber(phoneNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
                 if (!validateFlag){
                     log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
                     return false;

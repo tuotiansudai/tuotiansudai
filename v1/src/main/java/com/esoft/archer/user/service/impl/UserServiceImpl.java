@@ -46,7 +46,6 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -640,7 +639,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
+	public boolean sendSmsMobileNumber(String mobileNumber, String remoteIp, String authType) {
+		if (Strings.isNullOrEmpty(authType)){
+			return false;
+		}
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		// FIXME:验证手机号码的合法性
 		// 发送手机验证码
@@ -650,8 +652,7 @@ public class UserServiceImpl implements UserService {
 				DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
 		params.put(
 				"authCode",
-				authService.createAuthInfo(null, mobileNumber, null,
-						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
+				authService.createAuthInfo(null, mobileNumber, null,authType)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
 			if (Strings.isNullOrEmpty(remoteIp)){
@@ -665,9 +666,7 @@ public class UserServiceImpl implements UserService {
 			} else {
 				redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
 			}
-			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
-					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
-							+ "_sms"), params, mobileNumber);
+			messageBO.sendSMS(ht.get(UserMessageTemplate.class,authType + "_sms"), params, mobileNumber);
 		}
 		return true;
 	}

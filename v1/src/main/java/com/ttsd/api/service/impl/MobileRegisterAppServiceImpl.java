@@ -18,8 +18,6 @@ import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
 
 @Service
 public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
@@ -47,7 +45,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         returnCode = this.verifyMobileNumber(mobileNumber);
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             
-            boolean sendSmsFlag = userService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
+            boolean sendSmsFlag = userService.sendSmsMobileNumber(mobileNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
