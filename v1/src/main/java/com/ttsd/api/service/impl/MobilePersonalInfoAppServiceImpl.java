@@ -51,7 +51,7 @@ public class MobilePersonalInfoAppServiceImpl implements MobilePersonalInfoAppSe
         boolean certificationFlag = verifyCertification(user.getUsername());
         personalInfoDataDto.setCertificationFlag(certificationFlag);
         boolean isBindedBankCard = isBindedBankCard(user.getUsername());
-        personalInfoDataDto.setIsBindedBankCard(isBindedBankCard);
+        personalInfoDataDto.setIsBoundBankCard(isBindedBankCard);
         if(certificationFlag){
             personalInfoDataDto.setRealName(user.getRealname());
             personalInfoDataDto.setIdCard(user.getIdCard());
