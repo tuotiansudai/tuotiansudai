@@ -19,6 +19,11 @@ public class RetrievePasswordRequestDto extends BaseParamDto {
      */
     private String password;
 
+    /**
+     * 验证码类型
+     */
+    private String authType;
+
 
 
     /**
@@ -67,5 +72,21 @@ public class RetrievePasswordRequestDto extends BaseParamDto {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * 验证码类型
+     * @return
+     */
+    public String getAuthType() {
+        return authType;
+    }
+
+    /**
+     * 验证码类型
+     * @param authType
+     */
+    public void setAuthType(String authType) {
+        this.authType = authType;
     }
 }

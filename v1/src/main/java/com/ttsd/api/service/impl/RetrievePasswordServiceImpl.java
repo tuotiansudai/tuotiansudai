@@ -4,11 +4,14 @@ import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
+import com.esoft.core.annotations.Logger;
 import com.google.common.base.Strings;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.RetrievePasswordService;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.regex.Matcher;
@@ -19,6 +22,9 @@ import java.util.regex.Pattern;
  */
 @Service(value = "RetrievePasswordServiceImpl")
 public class RetrievePasswordServiceImpl implements RetrievePasswordService {
+
+    @Logger
+    private Log log;
 
     @Resource(name = "mobileRegisterDaoImpl")
     private IMobileRegisterDao mobileRegisterDao;
@@ -32,11 +38,13 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
      * @return String
      */
     @Override
+    @Transactional
     public RetrievePasswordResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException {
         RetrievePasswordResponseDto retrievePasswordResponseDto = new RetrievePasswordResponseDto();
         String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         String authCode = retrievePasswordRequestDto.getValidateCode();
         String password = retrievePasswordRequestDto.getPassword();
+        String authType = CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE;
         if (Strings.isNullOrEmpty(authCode)){
             //验证码不能为空
             retrievePasswordResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
@@ -50,14 +58,14 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             retrievePasswordResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
             return retrievePasswordResponseDto;
         }
-        if (Strings.isNullOrEmpty(password)){
-            //密码不能为空
+        String passwordRegStr = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+        if (!regValidateTarget(password,passwordRegStr)){
+            //密码过于简单
             retrievePasswordResponseDto.setCode(ReturnMessage.PASSWORD_IS_INVALID.getCode());
             retrievePasswordResponseDto.setMessage(ReturnMessage.PASSWORD_IS_INVALID.getMsg());
             return retrievePasswordResponseDto;
         }
-
-        int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
+        int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, authType);
         if (codeCount == 1){
             User user = userService.getUserByMobileNumber(phoneNumber);
             userService.modifyPassword(user.getId(), password);
@@ -83,10 +91,11 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         String authCode = retrievePasswordRequestDto.getValidateCode();
+        String authType = CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE;
         if (Strings.isNullOrEmpty(authCode)){
             //验证码不能为空
-            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_OVERDUE.getMsg());
+            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
+            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
             return baseResponseDto;
         }
         String regStr = "^1\\d{10}$";
@@ -96,7 +105,7 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
             return baseResponseDto;
         }
-        int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
+        int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, authType);
         if (codeCount == 1){
             //验证码输入正确
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
@@ -112,18 +121,18 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
 
     /**
      * @funtion 发送手机验证码
-     * @param sendSmsRequestDto 发送手机验证码参数封装类
+     * @param retrievePasswordRequestDto 发送手机验证码参数封装类
      * @return String
      */
     @Override
-    public BaseResponseDto sendSMS(SendSmsRequestDto sendSmsRequestDto,String remoteIp) {
+    public BaseResponseDto sendSMS(RetrievePasswordRequestDto retrievePasswordRequestDto,String remoteIp) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String authType = sendSmsRequestDto.getType();
-        String phoneNumber = sendSmsRequestDto.getPhoneNum();
+        String authType = retrievePasswordRequestDto.getAuthType();
+        String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         if (Strings.isNullOrEmpty(authType)){
             //验证码类型不能为空
-            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
+            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getCode());
+            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getMsg());
             return baseResponseDto;
         }
         String regStr = "^1\\d{10}$";
@@ -133,14 +142,25 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
             return baseResponseDto;
         }
-        if (userService.sendRegisterByMobileNumberSMS(phoneNumber,remoteIp,authType)){
-            //手机验证码发送成功
-            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        }else {
+        int count = mobileRegisterDao.getUserCountByCellphone(phoneNumber);
+        if (count < 1){
+            baseResponseDto.setCode(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode());
+            baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
+            return baseResponseDto;
+        }
+        try {
+            if (userService.sendRegisterByMobileNumberSMS(phoneNumber,remoteIp,authType)){
+                //手机验证码发送成功
+                baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+                baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            }
+        }catch (Exception e){
             //手机验证码发送失败
+            log.error("send retrieve password message fail , cause by server fault !");
+            log.error(e.getLocalizedMessage(),e);
             baseResponseDto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
             baseResponseDto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
+
         }
         return baseResponseDto;
     }

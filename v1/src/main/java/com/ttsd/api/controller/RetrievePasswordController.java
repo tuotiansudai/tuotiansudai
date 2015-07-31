@@ -58,14 +58,14 @@ public class RetrievePasswordController {
 
     /**
      * @function 发送手机验证码
-     * @param sendSmsRequestDto
+     * @param retrievePasswordRequestDto
      * @param request
      * @return BaseResponseDto
      */
     @RequestMapping(value = "/retrievepassword/sendsms")
     @ResponseBody
-    public BaseResponseDto sendSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto,HttpServletRequest request){
-        return retrievePasswordService.sendSMS(sendSmsRequestDto,CommonUtils.getRemoteHost(request));
+    public BaseResponseDto sendSMS(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto,HttpServletRequest request){
+        return retrievePasswordService.sendSMS(retrievePasswordRequestDto,CommonUtils.getRemoteHost(request));
     }
 
 

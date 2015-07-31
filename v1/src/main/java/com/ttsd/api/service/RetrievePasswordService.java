@@ -4,7 +4,6 @@ import com.esoft.archer.user.exception.UserNotFoundException;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.RetrievePasswordRequestDto;
 import com.ttsd.api.dto.RetrievePasswordResponseDto;
-import com.ttsd.api.dto.SendSmsRequestDto;
 
 /**
  * Created by tuotian on 15/7/29.
@@ -26,8 +25,8 @@ public interface RetrievePasswordService {
 
     /**
      * @function 发送手机验证码
-     * @param sendSmsRequestDto 发送手机验证码参数封装类
+     * @param retrievePasswordRequestDto 发送手机验证码参数封装类
      * @return BaseResponseDto
      */
-    BaseResponseDto sendSMS(SendSmsRequestDto sendSmsRequestDto,String remoteIp);
+    BaseResponseDto sendSMS(RetrievePasswordRequestDto retrievePasswordRequestDto,String remoteIp);
 }
