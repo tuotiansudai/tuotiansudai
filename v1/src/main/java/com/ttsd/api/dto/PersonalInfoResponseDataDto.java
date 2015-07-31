@@ -9,6 +9,24 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String realName;
     private String idCard;
     private boolean isBoundBankCard;
+
+
+    public boolean isCertificationFlag() {
+        return certificationFlag;
+    }
+
+    public void setCertificationFlag(boolean certificationFlag) {
+        this.certificationFlag = certificationFlag;
+    }
+
+    public boolean isBoundBankCard() {
+        return isBoundBankCard;
+    }
+
+    public void setIsBoundBankCard(boolean isBoundBankCard) {
+        this.isBoundBankCard = isBoundBankCard;
+    }
+
     private String photo;
 
     public String getUserId() {
@@ -35,14 +53,6 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.phoneNum = phoneNum;
     }
 
-    public boolean getCertificationFlag() {
-        return certificationFlag;
-    }
-
-    public void setCertificationFlag(boolean certificationFlag) {
-        this.certificationFlag = certificationFlag;
-    }
-
     public String getRealName() {
         return realName;
     }
@@ -59,13 +69,7 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.idCard = idCard;
     }
 
-    public boolean getIsBindedBankCard() {
-        return isBoundBankCard;
-    }
 
-    public void setIsBindedBankCard(boolean isBindedBankCard) {
-        this.isBoundBankCard = isBindedBankCard;
-    }
 
     public String getPhoto() {
         return photo;
