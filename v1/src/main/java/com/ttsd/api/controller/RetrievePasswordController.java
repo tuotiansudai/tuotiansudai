@@ -26,6 +26,11 @@ public class RetrievePasswordController {
     @Resource(name = "RetrievePasswordServiceImpl")
     private RetrievePasswordService retrievePasswordService;
 
+    /**
+     * @function 找回密码
+     * @param retrievePasswordRequestDto
+     * @return RetrievePasswordResponseDto
+     */
     @RequestMapping(value = "/retrievepassword",method = RequestMethod.POST)
     @ResponseBody
     public RetrievePasswordResponseDto retrievePassword(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto){
@@ -40,12 +45,23 @@ public class RetrievePasswordController {
         }
     }
 
+    /**
+     * @function 校验手机验证码是否正确
+     * @param retrievePasswordRequestDto
+     * @return BaseResponseDto
+     */
     @RequestMapping(value = "/validatecaptcha",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto validateAuthCode(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto){
         return retrievePasswordService.validateAuthCode(retrievePasswordRequestDto);
     }
 
+    /**
+     * @function 发送手机验证码
+     * @param sendSmsRequestDto
+     * @param request
+     * @return BaseResponseDto
+     */
     @RequestMapping(value = "/retrievepassword/sendsms")
     @ResponseBody
     public BaseResponseDto sendSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto,HttpServletRequest request){
