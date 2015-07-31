@@ -3,7 +3,6 @@ package com.ttsd.api.service;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.RetrievePasswordRequestDto;
-import com.ttsd.api.dto.RetrievePasswordResponseDto;
 
 /**
  * Created by tuotian on 15/7/29.
@@ -12,9 +11,9 @@ public interface RetrievePasswordService {
     /**
      * @function 修改密码
      * @param retrievePasswordRequestDto 修改密码参数封装类
-     * @return RetrievePasswordResponseDto
+     * @return BaseResponseDto
      */
-    RetrievePasswordResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException;
+    BaseResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException;
 
     /**
      * @function 校验验证码

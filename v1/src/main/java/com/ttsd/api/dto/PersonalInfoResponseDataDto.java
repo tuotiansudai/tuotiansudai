@@ -1,15 +1,14 @@
 package com.ttsd.api.dto;
 
 
-public class LogInDataDto extends DataDto{
+public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String userId;
     private String userName;
-    private String token;
     private String phoneNum;
     private boolean certificationFlag;
     private String realName;
     private String idCard;
-    private boolean isBindedBankCard;
+    private boolean isBoundBankCard;
     private String photo;
 
     public String getUserId() {
@@ -26,14 +25,6 @@ public class LogInDataDto extends DataDto{
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getPhoneNum() {
@@ -69,11 +60,11 @@ public class LogInDataDto extends DataDto{
     }
 
     public boolean getIsBindedBankCard() {
-        return isBindedBankCard;
+        return isBoundBankCard;
     }
 
     public void setIsBindedBankCard(boolean isBindedBankCard) {
-        this.isBindedBankCard = isBindedBankCard;
+        this.isBoundBankCard = isBindedBankCard;
     }
 
     public String getPhoto() {

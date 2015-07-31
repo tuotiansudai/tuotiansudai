@@ -4,7 +4,6 @@ import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileLogInAppService;
 import com.ttsd.api.service.MobilePersonalInfoAppService;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -24,27 +23,27 @@ public class MobilePersonalInfoAppServiceImpl implements MobilePersonalInfoAppSe
     private UserBO userBO;
 
     @Override
-    public PersonalInfoResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
+    public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
         String returnCode = ReturnMessage.SUCCESS.getCode();
-        PersonalInfoResponseDto personalInfoResponseDto = new PersonalInfoResponseDto();
+        BaseResponseDto<PersonalInfoResponseDataDto> dto = new BaseResponseDto();
         String userName = personalInfoRequestDto.getUserName();
 
         User user = userBO.getUserByUserNameOrMobileNumber(userName);
         if (user == null){
-            returnCode = ReturnMessage.USER_IS_NOT_EXIST.getCode();
+            returnCode = ReturnMessage.USER_ID_IS_NULL.getCode();
         }
         if(ReturnMessage.SUCCESS.getCode().equals(returnCode)){
-            PersonalInfoDataDto personalInfoDataDto = generatePersonalInfoData(user);
-            personalInfoResponseDto.setData(personalInfoDataDto);
+            PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(user);
+            dto.setData(personalInfoDataDto);
         }
-        personalInfoResponseDto.setCode(returnCode);
-        personalInfoResponseDto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
-        return personalInfoResponseDto;
+        dto.setCode(returnCode);
+        dto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
+        return dto;
     }
 
     @Override
-    public PersonalInfoDataDto generatePersonalInfoData(User user) {
-        PersonalInfoDataDto personalInfoDataDto = new PersonalInfoDataDto();
+    public PersonalInfoResponseDataDto generatePersonalInfoData(User user) {
+        PersonalInfoResponseDataDto personalInfoDataDto = new PersonalInfoResponseDataDto();
         personalInfoDataDto.setUserId(user.getUsername());
         personalInfoDataDto.setUserName(user.getUsername());
         personalInfoDataDto.setPhoneNum(user.getMobileNumber());

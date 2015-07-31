@@ -1,13 +1,10 @@
 package com.ttsd.api.service;
 
 import com.esoft.archer.user.exception.UserNotFoundException;
-import com.ttsd.api.dto.BaseParamDto;
+import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.CertificationRequestDto;
-import com.ttsd.api.dto.CertificationResponseDto;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by tuotian on 15/7/27.
@@ -18,7 +15,7 @@ public interface MobileAppCertificationService {
      * @param certificationRequestDto 移动端用户实名认证请求参数包装类
      * @return CertificationResponseDto
      */
-    CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) throws IOException, UserNotFoundException;
+    BaseResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) throws IOException, UserNotFoundException;
 
     /**
      * @function 封装结果集
@@ -28,5 +25,5 @@ public interface MobileAppCertificationService {
      * @param idCardNumber 用户身份证号码
      * @return CertificationResponseDto
      */
-    CertificationResponseDto assembleResult(String code,String message,String userRealName,String idCardNumber);
+    BaseResponseDto assembleResult(String code, String message, String userRealName, String idCardNumber);
 }

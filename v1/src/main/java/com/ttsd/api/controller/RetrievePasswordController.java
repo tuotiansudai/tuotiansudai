@@ -29,19 +29,19 @@ public class RetrievePasswordController {
     /**
      * @function 找回密码
      * @param retrievePasswordRequestDto
-     * @return RetrievePasswordResponseDto
+     * @return BaseResponseDto
      */
     @RequestMapping(value = "/retrievepassword",method = RequestMethod.POST)
     @ResponseBody
-    public RetrievePasswordResponseDto retrievePassword(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto){
+    public BaseResponseDto retrievePassword(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto){
         try {
            return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
         } catch (UserNotFoundException e) {
-            RetrievePasswordResponseDto retrievePasswordResponseDto = new RetrievePasswordResponseDto();
-            retrievePasswordResponseDto.setCode(ReturnMessage.USER_ID_NOT_EXIST.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.USER_IS_NOT_EXIST.getMsg());
+            BaseResponseDto dto = new BaseResponseDto();
+            dto.setCode(ReturnMessage.USER_ID_NOT_EXIST.getCode());
+            dto.setMessage(ReturnMessage.USER_ID_NOT_EXIST.getMsg());
             log.error(e.getLocalizedMessage(),e);
-            return retrievePasswordResponseDto;
+            return dto;
         }
     }
 
@@ -66,10 +66,5 @@ public class RetrievePasswordController {
     @ResponseBody
     public BaseResponseDto sendSMS(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto,HttpServletRequest request){
         return retrievePasswordService.sendSMS(retrievePasswordRequestDto,CommonUtils.getRemoteHost(request));
-    }
-
-
-    public void setRetrievePasswordService(RetrievePasswordService retrievePasswordService) {
-        this.retrievePasswordService = retrievePasswordService;
     }
 }

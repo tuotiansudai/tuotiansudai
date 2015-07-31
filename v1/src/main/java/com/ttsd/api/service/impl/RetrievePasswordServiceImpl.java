@@ -39,45 +39,45 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
      */
     @Override
     @Transactional
-    public RetrievePasswordResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException {
-        RetrievePasswordResponseDto retrievePasswordResponseDto = new RetrievePasswordResponseDto();
+    public BaseResponseDto retrievePassword(RetrievePasswordRequestDto retrievePasswordRequestDto) throws UserNotFoundException {
+        BaseResponseDto dto = new BaseResponseDto();
         String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         String authCode = retrievePasswordRequestDto.getValidateCode();
         String password = retrievePasswordRequestDto.getPassword();
         String authType = CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE;
         if (Strings.isNullOrEmpty(authCode)){
             //验证码不能为空
-            retrievePasswordResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
-            return retrievePasswordResponseDto;
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
+            return dto;
         }
         String regStr = "^1\\d{10}$";
         if (!regValidateTarget(phoneNumber, regStr)){
             //你输入的手机号不符合规则
-            retrievePasswordResponseDto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
-            return retrievePasswordResponseDto;
+            dto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
+            dto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
+            return dto;
         }
         String passwordRegStr = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
         if (!regValidateTarget(password,passwordRegStr)){
             //密码过于简单
-            retrievePasswordResponseDto.setCode(ReturnMessage.PASSWORD_IS_INVALID.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.PASSWORD_IS_INVALID.getMsg());
-            return retrievePasswordResponseDto;
+            dto.setCode(ReturnMessage.PASSWORD_IS_INVALID.getCode());
+            dto.setMessage(ReturnMessage.PASSWORD_IS_INVALID.getMsg());
+            return dto;
         }
         int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, authType);
         if (codeCount == 1){
             User user = userService.getUserByMobileNumber(phoneNumber);
             userService.modifyPassword(user.getId(), password);
             //修改成功
-            retrievePasswordResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            dto.setCode(ReturnMessage.SUCCESS.getCode());
+            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         }else {
             //校验码错误
-            retrievePasswordResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
-            retrievePasswordResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
-        return retrievePasswordResponseDto;
+        return dto;
     }
 
 
@@ -88,34 +88,34 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
      */
     @Override
     public BaseResponseDto validateAuthCode(RetrievePasswordRequestDto retrievePasswordRequestDto) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        BaseResponseDto dto = new BaseResponseDto();
         String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         String authCode = retrievePasswordRequestDto.getValidateCode();
         String authType = CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE;
         if (Strings.isNullOrEmpty(authCode)){
             //验证码不能为空
-            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
-            return baseResponseDto;
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
+            return dto;
         }
         String regStr = "^1\\d{10}$";
         if (!regValidateTarget(phoneNumber,regStr)){
             //你输入的手机号不符合规则
-            baseResponseDto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
-            baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
-            return baseResponseDto;
+            dto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
+            dto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
+            return dto;
         }
         int codeCount = mobileRegisterDao.getAuthInfo(phoneNumber, authCode, authType);
         if (codeCount == 1){
             //验证码输入正确
-            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            dto.setCode(ReturnMessage.SUCCESS.getCode());
+            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         }else {
             //验证码输入错误
-            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
-        return baseResponseDto;
+        return dto;
     }
 
 
@@ -126,43 +126,43 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
      */
     @Override
     public BaseResponseDto sendSMS(RetrievePasswordRequestDto retrievePasswordRequestDto,String remoteIp) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        BaseResponseDto dto = new BaseResponseDto();
         String authType = retrievePasswordRequestDto.getAuthType();
         String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
         if (Strings.isNullOrEmpty(authType)){
             //验证码类型不能为空
-            baseResponseDto.setCode(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getMsg());
-            return baseResponseDto;
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_TYPE_IS_NULL.getMsg());
+            return dto;
         }
         String regStr = "^1\\d{10}$";
         if (!regValidateTarget(phoneNumber,regStr)){
             //手机号格式不符合要求
-            baseResponseDto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
-            baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
-            return baseResponseDto;
+            dto.setCode(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getCode());
+            dto.setMessage(ReturnMessage.MOBILE_NUMBER_IS_INVALID.getMsg());
+            return dto;
         }
         int count = mobileRegisterDao.getUserCountByCellphone(phoneNumber);
         if (count < 1){
-            baseResponseDto.setCode(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode());
-            baseResponseDto.setMessage(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
-            return baseResponseDto;
+            dto.setCode(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getCode());
+            dto.setMessage(ReturnMessage.MOBILE_NUMBER_NOT_EXIST.getMsg());
+            return dto;
         }
         try {
             if (userService.sendSmsMobileNumber(phoneNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)){
                 //手机验证码发送成功
-                baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
-                baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+                dto.setCode(ReturnMessage.SUCCESS.getCode());
+                dto.setMessage(ReturnMessage.SUCCESS.getMsg());
             }
         }catch (Exception e){
             //手机验证码发送失败
             log.error("send retrieve password message fail , cause by server fault !");
             log.error(e.getLocalizedMessage(),e);
-            baseResponseDto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
-            baseResponseDto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
+            dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
+            dto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
 
         }
-        return baseResponseDto;
+        return dto;
     }
 
 
@@ -182,9 +182,6 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
         return matcher.matches();
     }
 
-    public void setMobileRegisterDao(IMobileRegisterDao mobileRegisterDao) {
-        this.mobileRegisterDao = mobileRegisterDao;
-    }
 }
 
 

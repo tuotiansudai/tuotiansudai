@@ -2,22 +2,21 @@ package com.ttsd.api.service;
 
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.RegisterRequestDto;
-import com.ttsd.api.dto.RegisterResponseDto;
 
 public interface MobileRegisterAppService {
 
 
-    public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber,String remoteIp);
+    BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp);
 
-    public String verifyMobileNumber(String mobileNumber);
+    String verifyMobileNumber(String mobileNumber);
 
-    public String verifyUserName(String userName);
+    String verifyUserName(String userName);
 
-    public String verifyReferrer(String userName);
+    String verifyReferrer(String userName);
 
-    public String verifyCaptcha(String mobile,String captcha);
+    String verifyCaptcha(String mobile, String captcha);
 
-    public RegisterResponseDto registerUser(RegisterRequestDto registerRequestDto);
+    BaseResponseDto registerUser(RegisterRequestDto registerRequestDto);
 
-    public String verifyPassword(String password);
+    String verifyPassword(String password);
 }

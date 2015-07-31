@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
-public class RegisterDataDto extends DataDto {
+public class RegisterResponseDataDto extends BaseResponseDataDto {
     private String userId;
     private String userName;
     private String phoneNum;

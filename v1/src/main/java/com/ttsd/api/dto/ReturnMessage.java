@@ -37,7 +37,7 @@ public enum ReturnMessage {
     private String code;
     private String msg;
 
-    private ReturnMessage(String code, String msg) {
+    ReturnMessage(String code, String msg) {
         this.code = code;
         this.msg = msg;
     }

@@ -3,7 +3,7 @@ package com.ttsd.api.dto;
 /**
  * Created by tuotian on 15/7/28.
  */
-public class CertificationRequestDto extends BaseParamDto{
+public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户真实姓名

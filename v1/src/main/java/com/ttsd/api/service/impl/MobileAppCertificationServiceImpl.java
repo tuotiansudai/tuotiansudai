@@ -4,7 +4,6 @@ import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
-import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.google.common.base.Strings;
 import com.ttsd.api.dto.*;
@@ -38,7 +37,7 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
      */
     @Override
     @Transactional
-    public CertificationResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) throws IOException, UserNotFoundException {
+    public BaseResponseDto validateUserCertificationInfo(CertificationRequestDto certificationRequestDto) throws IOException, UserNotFoundException {
         BaseParam baseParam = certificationRequestDto.getBaseParam();//TODO 将此参数信息持久化到数据库中
         String userId = baseParam.getUserId();
         String userRealName = certificationRequestDto.getUserRealName();
@@ -75,15 +74,15 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
      * @param idCardNumber 用户身份证号码
      * @return CertificationResponseDto
      */
-    public CertificationResponseDto assembleResult(String code,String message,String userRealName,String idCardNumber){
-        CertificationDataDto certificationDataDto = new CertificationDataDto();
-        certificationDataDto.setUserRealName(userRealName);
-        certificationDataDto.setUserIdCardNumber(idCardNumber);
-        CertificationResponseDto certificationResponseDto = new CertificationResponseDto();
-        certificationResponseDto.setCode(code);
-        certificationResponseDto.setMessage(message);
-        certificationResponseDto.setData(certificationDataDto);
-        return certificationResponseDto;
+    public BaseResponseDto assembleResult(String code, String message, String userRealName, String idCardNumber){
+        CertificationResponseDataDto dataDto = new CertificationResponseDataDto();
+        dataDto.setUserRealName(userRealName);
+        dataDto.setUserIdCardNumber(idCardNumber);
+        BaseResponseDto<CertificationResponseDataDto> dto = new BaseResponseDto();
+        dto.setCode(code);
+        dto.setMessage(message);
+        dto.setData(dataDto);
+        return dto;
     }
 
     /*************************************set方法**************************************/
