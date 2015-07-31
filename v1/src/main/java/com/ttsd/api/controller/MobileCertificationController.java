@@ -35,7 +35,7 @@ public class MobileCertificationController {
             return mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
         } catch (IOException e) {
             log.error("由于网络异常，ID为：" + userId + " 的用户实名认证失败！");
-            log.error(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage(),e);
             return mobileAppCertificationService.assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
         } catch (UserNotFoundException e) {
             log.error("获取用户ID为："+userId+" 的用户信息异常！");
@@ -43,7 +43,7 @@ public class MobileCertificationController {
             return mobileAppCertificationService.assembleResult(ReturnMessage.USER_ID_NOT_EXIST.getCode(), ReturnMessage.USER_ID_NOT_EXIST.getMsg(), userRealName, idCardNumber);
         } catch (UmPayOperationException e){
             log.error("用户ID为：" + userId + " 的用户使用真实姓名为：" + userRealName + "，身份证号为：" + idCardNumber + "进行实名认证未通过！");
-            log.error(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage(),e);
             return mobileAppCertificationService.assembleResult(ReturnMessage.CERTIFICATION_FAIL.getCode(), ReturnMessage.CERTIFICATION_FAIL.getMsg(), userRealName, idCardNumber);
         }
     }
