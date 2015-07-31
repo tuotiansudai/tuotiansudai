@@ -406,7 +406,7 @@ public interface UserService {
 	 * @param remoteIp
 	 * @param authType
 	 */
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp, String authType);
+	public boolean sendSmsMobileNumber(String mobileNumber, String remoteIp, String authType);
 
 	/**
 	 * 管理员创建借款者

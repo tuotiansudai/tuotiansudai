@@ -639,7 +639,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp, String authType) {
+	public boolean sendSmsMobileNumber(String mobileNumber, String remoteIp, String authType) {
 		if (Strings.isNullOrEmpty(authType)){
 			return false;
 		}

@@ -149,7 +149,7 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
             return baseResponseDto;
         }
         try {
-            if (userService.sendRegisterByMobileNumberSMS(phoneNumber,remoteIp,authType)){
+            if (userService.sendSmsMobileNumber(phoneNumber, remoteIp, authType)){
                 //手机验证码发送成功
                 baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
                 baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
