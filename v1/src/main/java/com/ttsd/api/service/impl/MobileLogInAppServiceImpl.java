@@ -1,16 +1,13 @@
 package com.ttsd.api.service.impl;
 
 import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
-import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.ttsd.api.dto.LogInDataDto;
 import com.ttsd.api.dto.LogInRequestDto;
 import com.ttsd.api.dto.LogInResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.service.MobileLogInAppService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -36,7 +33,7 @@ public class MobileLogInAppServiceImpl implements MobileLogInAppService{
 
         User user = userBO.getUserByUserNameOrMobileNumber(userName);
         if (user == null){
-            returnCode = ReturnMessage.USER_IS_NOT_EXIST.getCode();
+            returnCode = ReturnMessage.LOGIN_FAILED.getCode();
         }
         if(ReturnMessage.SUCCESS.getCode().equals(returnCode)){
             LogInDataDto logInDataDto = generateLogInData(user);

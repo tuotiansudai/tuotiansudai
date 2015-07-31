@@ -14,30 +14,34 @@ public class MyUrlAuthenticationFailureHandler extends
 		SimpleUrlAuthenticationFailureHandler {
 	private boolean useModalBox;
 
+	private String source = "web";
+
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request,
 			HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
-		String targetUrl = request.getHeader("Referer");
-		String failTargetUrl = request
-				.getParameter("spring-security-fail-redirect");
-		if (StringUtils.hasText(failTargetUrl)) {
-			saveException(request, exception);
-			if (super.isUseForward()) {
-				logger.debug("Forwarding to " + failTargetUrl);
-				request.getRequestDispatcher(failTargetUrl).forward(request,
-						response);
+		if (source.equalsIgnoreCase(request.getParameter("source"))) {
+			String targetUrl = request.getHeader("Referer");
+			String failTargetUrl = request
+					.getParameter("spring-security-fail-redirect");
+			if (StringUtils.hasText(failTargetUrl)) {
+				saveException(request, exception);
+				if (super.isUseForward()) {
+					logger.debug("Forwarding to " + failTargetUrl);
+					request.getRequestDispatcher(failTargetUrl).forward(request,
+							response);
+				} else {
+					logger.debug("Redirecting to " + failTargetUrl);
+					getRedirectStrategy().sendRedirect(request, response,
+							failTargetUrl);
+				}
+			} else if (StringUtils.hasText(targetUrl) && useModalBox
+					&& targetUrl.endsWith("?needLogin=true")) {
+				saveException(request, exception);
+				getRedirectStrategy().sendRedirect(request, response, targetUrl);
 			} else {
-				logger.debug("Redirecting to " + failTargetUrl);
-				getRedirectStrategy().sendRedirect(request, response,
-						failTargetUrl);
+				super.onAuthenticationFailure(request, response, exception);
 			}
-		} else if (StringUtils.hasText(targetUrl) && useModalBox
-				&& targetUrl.endsWith("?needLogin=true")) {
-			saveException(request, exception);
-			getRedirectStrategy().sendRedirect(request, response, targetUrl);
-		} else {
-			super.onAuthenticationFailure(request, response, exception);
 		}
 	}
 

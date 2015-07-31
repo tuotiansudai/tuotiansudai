@@ -51,15 +51,12 @@
 				if(name==""){
 					return ;
 				}
-				var nameB64=base64encode(utf16to8(name));
-				$("#j_username").val(nameB64);
-				//alert(nameB64);
 				var pass=$("#password").val();
 				if(pass==""){
 					return ;
 				}
-				var passB64=base64encode(utf16to8(pass));
-				$("#j_password").val(passB64);
+				$("#j_username").val(name);
+				$("#j_password").val(pass);
 				//alert(passB64);
 				$("#form").submit();
 			});
@@ -84,16 +81,16 @@
 				<img src="#{tplVars.themeImagePath}/img49.png" />
 			</div>
 			<div class="login_r">
-				<form action="#{request.contextPath}/memberLogin"
+				<form action="#{request.contextPath}/login"
 					accept-charset="UTF-8" method="post" id="form">
 					<ui:fragment
 						rendered="#{not empty request.getParameter('spring-security-redirect')}">
 						<input type="hidden" name="spring-security-redirect"
 							value="#{request.getParameter('spring-security-redirect')}"></input>
 					</ui:fragment>
-					<h:inputText id="j_username" style="display:none" />
+					<h:inputText id="j_username" style="display:none"/>
 					<h:inputText id="j_password" style="display:none" />
-					<h:inputText id="encrypt" value="encrypt" style="display:none" />
+					<h:inputText id="source" value="web" style="display:none" />
 					<div class="login_box">
 						<div class="login_box_l">登录：</div>
 						<div class="login_box_r">
