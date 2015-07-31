@@ -1,3 +1,3 @@
 ENV = 'dev'
-TEST_BASE_URL = "http://121.43.71.173:13210"
+TEST_BASE_URL = "https://tuotiansudai.com"
 WAIT_TIME = 6
