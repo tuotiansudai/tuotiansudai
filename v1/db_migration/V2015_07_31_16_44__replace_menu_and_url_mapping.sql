@@ -1,4 +1,5 @@
 BEGIN ;
+REPLACE INTO `menu` VALUES ('n-intro','Navigation','关于我们','/website/intro',NULL,1,'0','','1','*','_self','');
 REPLACE INTO `menu` VALUES ('n-contact','Navigation','联系我们','/website/contactus','n-intro',1,'4','','1','*','_self','');
 REPLACE INTO `menu` VALUES ('n-cost','Navigation','网站费用','/website/cost','n-center',1,'2','','1','*','_self','');
 REPLACE INTO `menu` VALUES ('n-guide','Navigation','新手指引','/website/guide','n-center',1,'1','','1','*','_self','');
