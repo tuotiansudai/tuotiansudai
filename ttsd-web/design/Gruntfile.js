@@ -1,11 +1,3 @@
-/**
- * 
- * @authors Belen (985322190@qq.com)
- * @date    2015-07-31 15:29:06
- * @company 拓天速贷
- * @version $Id$
- */
-
 module.exports = function(grunt) {
 
   grunt.initConfig({
