@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
 
-public class DataDto<T> {
+public class DataDto {
 
 }
