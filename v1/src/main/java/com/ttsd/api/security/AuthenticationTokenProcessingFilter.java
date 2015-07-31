@@ -52,7 +52,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                 httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Authentication token was either missing or invalid.");
                 return;
             }
-            this.authenticateToken(token);
+            this.authenticateToken(loginName);
             chain.doFilter(bufferedRequest, response);
             return;
         }
