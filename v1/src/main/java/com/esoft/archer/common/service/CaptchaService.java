@@ -42,7 +42,7 @@ public interface CaptchaService {
 
 	public String getValueInRedisByKey(String key);
 
-	public void deleteCaptchFormRedis(String sessionId );
+	public void deleteCaptchaFormRedis(String sessionId);
 
 	public boolean imageCaptchaStatusIsSuccess(String sessionIdInRedisStatus);
 

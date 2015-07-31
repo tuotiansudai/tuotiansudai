@@ -59,7 +59,9 @@ public class FacesUtil {
 
 	public static boolean isMobileRequestForMobile(HttpServletRequest request) {
 		String userAgent = request.getHeader("user-agent");
-		ConfigService cs=  (ConfigService) SpringBeanUtil.getBeanByName("configService");
+		if (null == userAgent){
+			return false;
+		}
 		return userAgent.contains("Mobile");
 	}
 

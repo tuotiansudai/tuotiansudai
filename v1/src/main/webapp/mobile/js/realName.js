@@ -1,15 +1,8 @@
 /**
  * Created by zhaoshuai on 2015/7/9.
  */
-require.config({
-    baseUrl: '/mobile/js',
-    paths: {
-        'jquery': 'libs/jquery-1.10.1.min',
-        'validate': 'libs/jquery.validate.min',
-        'validate-ex':'validate-ex'
-    }
-});
-require(['jquery', 'validate','validate-ex'], function ($) {
+
+require(['jquery', 'jquery.validate','validate-ex'], function ($) {
         $('.realName').validate({
             rules:{
                 yourName:{
@@ -42,7 +35,7 @@ require(['jquery', 'validate','validate-ex'], function ($) {
                 }
             },
             submitHandler: function(form){
-                form.submit(); //没有这一句表单不会提交
+                form.submit();
             }
         });
 
