@@ -402,7 +402,7 @@ public interface UserService {
 
 	/**
 	 * 发送“通过手机号注册”的认证短信
-	 *  @param mobileNumber
+	 * @param mobileNumber
 	 * @param remoteIp
 	 * @param authType
 	 */

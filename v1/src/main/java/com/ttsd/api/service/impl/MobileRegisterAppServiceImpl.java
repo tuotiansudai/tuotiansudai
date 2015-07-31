@@ -45,7 +45,7 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
         returnCode = this.verifyMobileNumber(mobileNumber);
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             
-            boolean sendSmsFlag = userService.sendSmsMobileNumber(mobileNumber, remoteIp, "register_by_mobile_number");
+            boolean sendSmsFlag = userService.sendSmsMobileNumber(mobileNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
             if (!sendSmsFlag) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
                 log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
