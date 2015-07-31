@@ -132,7 +132,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         //TODO: generate token
         String token = "test";
         int expiredSeconds = 300;
-//        this.redisClient.setex(token, authentication.getName(), expiredSeconds);
+        this.redisClient.setex(token, authentication.getName(), expiredSeconds);
         return token;
     }
 }
