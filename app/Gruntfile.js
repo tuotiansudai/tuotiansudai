@@ -28,9 +28,10 @@ module.exports = function(grunt) {
                     expand: true,     // Enable dynamic expansion.
                     cwd: '',      // Src matches are relative to this path.
                     src: ['<%= meta.srcPath %>*.scss'], // Actual pattern(s) to match.
-                    dest: 'dist/',   // Destination path prefix.
+                    dest: 'dist/css',   // Destination path prefix.
                     ext: '.css',   // Dest filepaths will have this extension.
-                    extDot: 'first'   // Extensions in filenames begin after the first dot
+                    extDot: 'first',   // Extensions in filenames begin after the first dot
+                    flatten : true
                   }
                 ],
                 options: {
@@ -54,6 +55,7 @@ module.exports = function(grunt) {
                 src: [
                   '.tmp',
                   'build/*',
+                  'dist/',
                   '<%= meta.deployPath %>/*',
                   '!<%= meta.deployPath %>/.git*'
                 ]
@@ -72,10 +74,11 @@ module.exports = function(grunt) {
                   {
                     expand: true,     // Enable dynamic expansion.
                     cwd: '',      // Src matches are relative to this path.
-                    src: ['dist/assets/sass/*.css'], // Actual pattern(s) to match.
-                    dest: 'dist',   // Destination path prefix.
+                    src: ['dist/css/*.css'], // Actual pattern(s) to match.
+                    dest: 'dist/',   // Destination path prefix.
                     ext: '.min.<%= grunt.template.today("yyyymmddHHMM") %>.css',   // Dest filepaths will have this extension.
-                    extDot: 'first'   // Extensions in filenames begin after the first dot
+                    extDot: 'first' ,  // Extensions in filenames begin after the first dot
+                    flatten : true
                   }
                 ],
             }
