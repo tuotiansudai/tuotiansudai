@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: 'src/<%= pkg.name %>.js',
-        dest: 'build/<%= pkg.name %>.min.js'
+        dest: 'build/<%= pkg.name %>.min.<%= grunt.template.today("yyyymmddHHMM") %>.js'
       }
     },
     // Metadata.
@@ -20,9 +20,19 @@ module.exports = function(grunt) {
     // Task configuration.
         sass: {
             dist: {
-                files: {
-                    '<%= meta.deployPath %>style.css': '<%= meta.srcPath %>style.scss'
-                },
+                // files: {
+                //     '<%= meta.deployPath %>style.css': '<%= meta.srcPath %>style.scss'
+                // },
+                files : [
+                  {
+                    expand: true,     // Enable dynamic expansion.
+                    cwd: '',      // Src matches are relative to this path.
+                    src: ['<%= meta.srcPath %>*.scss'], // Actual pattern(s) to match.
+                    dest: 'dist/',   // Destination path prefix.
+                    ext: '.css',   // Dest filepaths will have this extension.
+                    extDot: 'first'   // Extensions in filenames begin after the first dot
+                  }
+                ],
                 options: {
                     sourcemap: 'true'
                 }
@@ -43,6 +53,7 @@ module.exports = function(grunt) {
                 dot: true,
                 src: [
                   '.tmp',
+                  'build/*',
                   '<%= meta.deployPath %>/*',
                   '!<%= meta.deployPath %>/.git*'
                 ]
@@ -53,10 +64,20 @@ module.exports = function(grunt) {
         
         cssmin: {
             dist: {
-              files: {
-                '<%= meta.deployPath %>style.min.<%= grunt.template.today("yyyymmddHHMM") %>.css': '<%= meta.deployPath %>style.css',
+              // files: {
+              //   '<%= meta.deployPath %>style.min.<%= grunt.template.today("yyyymmddHHMM") %>.css': '<%= meta.deployPath %>style.css',
               
-              }
+              // }
+              files : [
+                  {
+                    expand: true,     // Enable dynamic expansion.
+                    cwd: '',      // Src matches are relative to this path.
+                    src: ['dist/assets/sass/*.css'], // Actual pattern(s) to match.
+                    dest: 'dist',   // Destination path prefix.
+                    ext: '.min.<%= grunt.template.today("yyyymmddHHMM") %>.css',   // Dest filepaths will have this extension.
+                    extDot: 'first'   // Extensions in filenames begin after the first dot
+                  }
+                ],
             }
           }
 
@@ -77,6 +98,6 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   // 默认被执行的任务列表。
-  grunt.registerTask('default', ['uglify','clean','sass','cssmin']);
+  grunt.registerTask('default', ['clean','uglify','sass','cssmin']);
 
 };
