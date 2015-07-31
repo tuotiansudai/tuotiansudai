@@ -170,7 +170,6 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	<beans:bean id="successHandler"
 		class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/" />
-		<beans:property name="source" value="web" />
 	</beans:bean>
 
 	<!-- 登录过滤器，验证后台用户 -->
