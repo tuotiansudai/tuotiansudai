@@ -78,6 +78,124 @@
 			</div>
 		</div>
 		<!--icon end-->
+
+		<div class="layout">
+			<div class="tip clearfix">
+				<span class="fl">可投标</span>
+				<a href="#{path}/p2p_loan-list" class="fr more">更多</a>
+			</div>
+
+			<ui:param name="restriction"
+					  value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\')'}"></ui:param>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.addRestriction(restriction)}"></f:event>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.setPageSize(4)}"></f:event>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.addOrder('loan.seqNum','desc')}"></f:event>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.example.setBusinessType('个人借款')}"></f:event>
+			<ui:param name="orderColumn"
+					  value="#{'(case loan.loanActivityType when \'xs\' then 1 when \'pt\' then 2 when \'jx\' then 3 else 4 end)'}"></ui:param>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.addOrder(orderColumn, 'asc')}"></f:event>
+			<f:event type="preRenderComponent"
+					 listener="#{loanListRaising.addOrder('loan.commitTime','asc')}"></f:event>
+
+			<div class="list-div clearfix">
+				<ui:repeat var="loan" value="#{loanListRaising.lazyModelData}">
+					<div class="list-box" style="position: relative;">
+						<div class="list">
+							<h3><i><img src="#{tplVars.themeImagePath}/index/qiche.png" /></i>
+								<ui:fragment rendered="#{loan.loanActivityType == 'xs'}">
+									<a href="#{path}/p2p_loan_xsb/#{loan.id}">
+										#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.loanActivityType == 'pt'}">
+									<a href="#{path}/p2p_loan/#{loan.id}">
+										#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.loanActivityType == 'jx'}">
+									<a href="#{path}/p2p_loan_jxb/#{loan.id}">
+										#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.loanActivityType == 'dx'}">
+									<a href="#{path}/p2p_loan_dxb/#{loan.id}">
+										#{fn:substring(loan.name,0,8)}<ui:fragment rendered="#{fn:length(loan.name) > 8}">...</ui:fragment></a>
+								</ui:fragment>
+							</h3>
+							<p class="color1">
+								<strong class="color2 font26">
+									<ui:fragment rendered="#{loan.hdRatePercent != null}">
+										#{loan.jkRatePercent}%+#{loan.hdRatePercent}%
+									</ui:fragment>
+									<ui:fragment rendered="#{loan.hdRatePercent == null}">
+										#{loan.jkRatePercent}%
+									</ui:fragment>
+								</strong><br />
+								年化收益
+							</p>
+							<p class="color1">
+								剩余可投金额：
+								<ui:param name="moneyNeedRaised" value="#{loanCalculator.calculateMoneyNeedRaised(loan.id)}"></ui:param>
+								<h:outputText value="#{moneyNeedRaised}">
+									<f:convertNumber currencySymbol="￥" type="currency" minFractionDigits="" />
+								</h:outputText>
+							</p>
+							<p class="line"></p>
+							<p class="color1">
+								项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
+							</p>
+							<p class="color2">
+								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
+									投标进行中
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+									#{dictUtil.getValue('LOAN',loan.status)}
+								</ui:fragment>
+							</p>
+							<p>
+								<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+								<em class="progress-bar"><b style="width:#{cr}%"></b></em><i class="precent-i">#{cr}%</i>
+							</p>
+							<p class="line"></p>
+							<p class="clearfix">
+									<span  class="fl">
+										金额：
+										<h:outputText value="#{loan.loanMoney}">
+											<f:convertNumber type="number" />
+										</h:outputText>元
+									</span>
+							</p>
+							<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+							<p class="time">
+								<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
+								<ui:fragment rendered="#{cr == 100}">
+									<i></i>#{loanCalculator.calculateRemainTime(loan.id)}
+								</ui:fragment>
+							</p>
+							<ui:fragment rendered="#{loan.loanActivityType == 'xs'}">
+								<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.loanActivityType == 'pt'}">
+								<a href="#{path}/p2p_loan/#{loan.id}" class="tz-btn" >普通可投</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.loanActivityType == 'jx'}">
+								<a href="#{path}/p2p_loan_jxb/#{loan.id}" class="tz-btn" >加息可投</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{loan.loanActivityType == 'dx'}">
+								<a href="#{path}/p2p_loan_dxb/#{loan.id}" class="tz-btn" >定向可投</a>
+							</ui:fragment>
+
+						</div>
+						<ui:fragment rendered="#{loan.loanActivityType == 'xs'}">
+							<img src="#{tplVars.themeImagePath}/index/newico.png" style="position:absolute; right:0px; top:0px; width:96px; height: 81px;"/>
+						</ui:fragment>
+					</div>
+				</ui:repeat>
+			</div>
+		</div>
+
 		<div class="layout">
 			<div class="newbie">
 				<div class="tip clearfix">
