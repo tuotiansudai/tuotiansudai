@@ -28,7 +28,7 @@ public class ScheduleConstants {
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
 
-
+		public static final String REPAYING_LOAN_REFERRER_REWARD = "repaying_loan_referrer_reward";
 	}
 
 	/**
@@ -74,6 +74,8 @@ public class ScheduleConstants {
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
 
+		public static final String REPAYING_LOAN_REFERRER_REWARD = "repaying_loan_referrer_reward";
+
 	}
 
 	/**
@@ -100,6 +102,8 @@ public class ScheduleConstants {
 		 * 自动发放活动奖励
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
+
+		public static final String REPAYING_LOAN_REFERRER_REWARD = "repaying_loan_referrer_reward";
 	}
 
 	/**
@@ -147,5 +151,7 @@ public class ScheduleConstants {
 		 * 注册邮箱验证
 		 */
 		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
+
+		public static final String REPAYING_LOAN_REFERRER_REWARD = "repaying_loan_referrer_reward";
 	}
 }
