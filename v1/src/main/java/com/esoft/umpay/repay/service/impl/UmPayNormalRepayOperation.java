@@ -247,9 +247,7 @@ public class UmPayNormalRepayOperation extends
 		}
 		List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
 		if (referGradeProfitSysList.size() > 0){
-			System.out.println("---------" + referrerRelation.getLevel()+"---------------"+roleId+"------------"+referrerRelation.getReferrerId());
-			if (referrerRelation.getLevel().equals("1") && roleId.equals("ROLE_MERCHANDISER")) {
-				System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+			if (referrerRelation.getLevel()==1 && roleId.equals("ROLE_MERCHANDISER")) {
 				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 1, maxDigital), percentage, maxDigital);
 			} else {
 				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 0.2, maxDigital), percentage, maxDigital);
