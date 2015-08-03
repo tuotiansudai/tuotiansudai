@@ -532,10 +532,10 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {
 			FacesUtil.addErrorMessage("用户未登录");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		} catch (MailSendErrorException e) {
 			FacesUtil.addErrorMessage("验证码发送失败，请检查邮箱合法性！");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 	

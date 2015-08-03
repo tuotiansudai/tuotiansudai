@@ -79,11 +79,11 @@ public class ThemeDesign {
 			//FIXME : 模板路径应该由系统自动获取
 		} catch (IOException e) {
 			FacesUtil.addErrorMessage(sm.getString("log.generateTplIOExceptoin"));
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			e.printStackTrace();
 		} catch (TemplateException e) {
 			FacesUtil.addErrorMessage(sm.getString("log.generateTplError"));
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			e.printStackTrace();
 		}
 		

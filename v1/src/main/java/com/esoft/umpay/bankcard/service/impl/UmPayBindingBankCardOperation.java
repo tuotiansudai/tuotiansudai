@@ -1,21 +1,5 @@
 package com.esoft.umpay.bankcard.service.impl;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import com.esoft.jdp2p.bankcard.service.BankCardService;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -23,6 +7,8 @@ import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
 import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
@@ -36,6 +22,20 @@ import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 绑定银行卡
@@ -54,6 +54,8 @@ public class UmPayBindingBankCardOperation extends
 	private RechargeService rechargeService;
 	@Resource
 	private BankCardService bankCardService;
+	@Resource
+	private SystemBillService systemBillService;
 	@Logger
 	Log log;
 
@@ -64,8 +66,7 @@ public class UmPayBindingBankCardOperation extends
 			FacesContext facesContext) throws IOException {
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		Map<String, String> sendMap = UmPaySignUtil
-					.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
 		// 同步地址
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 				+ UmPayConstants.OperationType.MER_BIND_CARD);
@@ -97,7 +98,7 @@ public class UmPayBindingBankCardOperation extends
 		// 开户行
 		/* map.put("card_branch_name",""); */
 		// 快捷协议标志
-		sendMap.put("is_open_fastPayment", "0");
+		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment()?"1":"0");
 		TrusteeshipOperation to = null;
 		try {
 			// 加密参数
@@ -188,7 +189,12 @@ public class UmPayBindingBankCardOperation extends
 						String bankCardId = order_id.substring(13,
 								order_id.length());
 						if (!this.bankCardService.isCardNoBinding(bankCardId)) {
-							String hql = "from BankCard where user.id =? and status =? and cardNo =?";
+							String hql = "";
+							if (StringUtils.isNotEmpty(paramMap.get("user_bind_agreement_list"))) {
+								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = true";
+							} else {
+								hql = "from BankCard where user.id =? and status =? and cardNo =? and isOpenFastPayment = false";
+							}
 							List<BankCard> userWillBindingBankCard = ht
 									.find(hql, new String[]{user.getId(), "uncheck",
 											bankCardId});
@@ -201,12 +207,12 @@ public class UmPayBindingBankCardOperation extends
 									bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 									ht.update(bankCard);
 								}
-								log.debug(("用户:"
-										+ userWillBindingBankCard.get(0).getUser()
-										.getId() + "绑定"
-										+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 							}
 
+							log.debug(("用户:"
+									+ userWillBindingBankCard.get(0).getUser()
+									.getId() + "绑定"
+									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 						} else {
 							log.debug(bankCardId + "已经被绑定！！！！");
 						}

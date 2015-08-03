@@ -104,7 +104,7 @@ public class UmPayWithdrawOperation extends
 					GsonUtil.fromMap2Json(reqData.getField()));
 			sendOperation(to, facesContext);
 		} catch (ReqDataException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("提现失败！");
 		}
 		return to;

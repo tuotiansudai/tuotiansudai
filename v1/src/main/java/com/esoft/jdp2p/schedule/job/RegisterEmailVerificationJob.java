@@ -26,7 +26,7 @@ public class RegisterEmailVerificationJob implements Job {
         try {
             userService.sendActiveEmail(userId, authCode, url);
         } catch (UserNotFoundException e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 }
