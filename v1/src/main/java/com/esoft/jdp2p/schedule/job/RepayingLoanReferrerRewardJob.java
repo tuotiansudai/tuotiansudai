@@ -31,7 +31,7 @@ public class RepayingLoanReferrerRewardJob implements Job {
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
-    Log log = LogFactory.getLog(AutoInvestAfterLoanPassed.class);
+    Log log = LogFactory.getLog(RepayingLoanReferrerRewardJob.class);
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
