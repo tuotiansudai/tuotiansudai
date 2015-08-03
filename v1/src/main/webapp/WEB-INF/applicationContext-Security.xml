@@ -27,7 +27,15 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="accessDeniedUrl" value="/error/403.htm" />
 	</beans:bean>
 
-	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter" />
+	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
+		<beans:property name="loginUrl" value="/login" />
+		<beans:property name="appRequestUrlPrefix" value="/v1.0/" />
+		<beans:property name="excludedUrls">
+			<beans:list>
+				<beans:value>/test</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
 
 	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"
 		access-decision-manager-ref="accessDecisionManager">

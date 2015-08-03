@@ -2,7 +2,11 @@ package com.ttsd.api.security;
 
 import com.esoft.archer.user.service.impl.MyJdbcUserDetailsManager;
 import com.esoft.core.annotations.Logger;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.redis.RedisClient;
 import org.apache.commons.logging.Log;
@@ -35,16 +39,27 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     @Autowired
     private RedisClient redisClient;
 
-
-    private static String APP_REQUEST_URL_PREFIX = "/v1.0/";
-    private static String LOGIN_URI = "/login";
+    private String loginUrl;
+    private String appRequestUrlPrefix;
+    private List<String> excludedUrls = Lists.newArrayList();
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        String uri = httpServletRequest.getRequestURI();
+        final String uri = httpServletRequest.getRequestURI();
 
-        if (uri.startsWith(APP_REQUEST_URL_PREFIX) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
+        Optional<String> tryFindExcludedUrl = Iterators.tryFind(excludedUrls.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String excludedUrl) {
+                return uri.equalsIgnoreCase(excludedUrl);
+            }
+        });
+        if (tryFindExcludedUrl.isPresent()) {
+            chain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+        }
+
+        if (uri.startsWith(appRequestUrlPrefix) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
             BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
             String token = this.getToken(bufferedRequest);
             String loginName = this.getTokenLoginName(token);
@@ -57,7 +72,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             return;
         }
 
-        if (Strings.isNullOrEmpty(httpServletRequest.getParameter("source")) && LOGIN_URI.equalsIgnoreCase(uri) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
+        if (Strings.isNullOrEmpty(httpServletRequest.getParameter("source")) && loginUrl.equalsIgnoreCase(uri) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
             chain.doFilter(httpServletRequest, httpServletResponse);
             this.generateLoginResponse(httpServletResponse);
             return;
@@ -134,5 +149,17 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         int expiredSeconds = 300;
         this.redisClient.setex(token, authentication.getName(), expiredSeconds);
         return token;
+    }
+
+    public void setExcludedUrls(List<String> excludedUrls) {
+        this.excludedUrls = excludedUrls;
+    }
+
+    public void setAppRequestUrlPrefix(String appRequestUrlPrefix) {
+        this.appRequestUrlPrefix = appRequestUrlPrefix;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
     }
 }
