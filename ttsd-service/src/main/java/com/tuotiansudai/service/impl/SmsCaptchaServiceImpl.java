@@ -1,23 +1,20 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.client.SmsClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.client.dto.ResultDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
-import com.tuotiansudai.repository.model.CaptchaStatus;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Random;
 
 @Service
 public class SmsCaptchaServiceImpl implements SmsCaptchaService {
@@ -26,90 +23,60 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private SmsCaptchaMapper smsCaptchaMapper;
 
     @Autowired
-    private SmsClient smsClient;
+    private SmsWrapperClient smsWrapperClient;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean sendSmsByMobileNumberRegister(String mobileNumber) {
-        //校验手机号的有效性
-        if (!this.verifyMobileNumber(mobileNumber)) {
-            return false;
-        }
-        //创建验证码
-        SmsCaptchaModel smsCaptchaModel = this.createSmsCaptcha(mobileNumber);
-
-        String captcha = smsCaptchaModel.getCode();
+    public boolean sendRegisterCaptcha(String mobile) {
+        String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            ResultDto resultDto = smsClient.sendSms(mobileNumber, captcha);
+            ResultDto resultDto = smsWrapperClient.sendSms(mobile, captcha);
             return resultDto.getData().getStatus();
         }
 
         return  false;
     }
 
-    private boolean verifyMobileNumber(String mobileNumber) {
-        if (StringUtils.isEmpty(mobileNumber)) {
-            return false;
-        }
-        if (mobileNumber.length() != 11) {
-            return false;
-        }
-        Pattern pattern = Pattern.compile("^\\d{11}$");
-        Matcher matcher = pattern.matcher(mobileNumber);
-
-        return matcher.matches();
-    }
-
     @Transactional(rollbackFor = Exception.class)
-    private SmsCaptchaModel createSmsCaptcha(String mobileNumber) {
-        int delayedMinute = 10;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.MINUTE, delayedMinute);
-
-        SmsCaptchaModel smsCaptchaModelUpdate = smsCaptchaMapper.findRegisterCaptchaByMobile(mobileNumber);
-        if (smsCaptchaModelUpdate != null) {
-            smsCaptchaModelUpdate.setCode(createRandomCaptcha(6));
-            smsCaptchaModelUpdate.setDeadLine(cal.getTime());
-            smsCaptchaModelUpdate.setGenerationTime(new Date());
-            smsCaptchaMapper.updateSmsCaptchaByMobile(smsCaptchaModelUpdate);
-            return smsCaptchaModelUpdate;
-        } else {
-            SmsCaptchaModel smsCaptchaModelNew = new SmsCaptchaModel();
-            smsCaptchaModelNew.setCode(createRandomCaptcha(6));
-            smsCaptchaModelNew.setMobile(mobileNumber);
-            smsCaptchaModelNew.setGenerationTime(new Date());
-            smsCaptchaModelNew.setDeadLine(cal.getTime());
-            smsCaptchaModelNew.setStatus(CaptchaStatus.ACTIVE);
-            smsCaptchaModelNew.setCaptchaType(CaptchaType.REGISTERCAPTCHA);
-            smsCaptchaMapper.insertSmsCaptcha(smsCaptchaModelNew);
-            return smsCaptchaModelNew;
-        }
-
-    }
-
-    @Override
-    public boolean verifyCaptcha(String mobile, String code) {
-        SmsCaptchaModel smsCaptchaModelQuery = new SmsCaptchaModel();
-        smsCaptchaModelQuery.setCode(code);
-        smsCaptchaModelQuery.setMobile(mobile);
-        smsCaptchaModelQuery.setCaptchaType(CaptchaType.REGISTERCAPTCHA);
-        smsCaptchaModelQuery.setStatus(CaptchaStatus.ACTIVE);
-
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findSmsCaptchaByMobileAndCaptcha(smsCaptchaModelQuery);
-        //校验手机验证码存在
+    private String createRegisterCaptcha(String mobile) {
         Date now = new Date();
-        return smsCaptchaModel != null && smsCaptchaModel.getDeadLine().after(now);
-    }
+        Date tenMinuteLater = new DateTime(now).plusMinutes(10).toDate();
+        String captcha = createRandomCaptcha(6);
 
-    private String createRandomCaptcha(Integer captchaLength) {
-        //验证码
-        String captcha = "";
-        for (int i = 0; i < captchaLength; i++) {
-            captcha = captcha + (int) (Math.random() * 9);
+        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobile(mobile);
+
+        if (existingCaptcha != null) {
+            existingCaptcha.setCaptcha(captcha);
+            existingCaptcha.setExpiredTime(tenMinuteLater);
+            existingCaptcha.setCreatedTime(now);
+            smsCaptchaMapper.update(existingCaptcha);
+        } else {
+            SmsCaptchaModel newSmsCaptchaModel = new SmsCaptchaModel();
+            newSmsCaptchaModel.setCaptcha(captcha);
+            newSmsCaptchaModel.setMobile(mobile);
+            newSmsCaptchaModel.setCreatedTime(now);
+            newSmsCaptchaModel.setExpiredTime(tenMinuteLater);
+            newSmsCaptchaModel.setCaptchaType(CaptchaType.REGISTER_CAPTCHA);
+            smsCaptchaMapper.create(newSmsCaptchaModel);
         }
+
         return captcha;
     }
 
+    @Override
+    public boolean verifyRegisterCaptcha(String mobile, String captcha) {
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile(mobile);
+        Date now = new Date();
+        return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
+    }
 
+    private String createRandomCaptcha(int captchaLength) {
+        int min = 0;
+        int max = 9;
+        Random random = new Random();
+        StringBuilder captcha = new StringBuilder();
+        for (int i = 0; i < captchaLength; i++) {
+            captcha.append(String.valueOf(random.nextInt(max - min + 1) + min));
+        }
+        return captcha.toString();
+    }
 }

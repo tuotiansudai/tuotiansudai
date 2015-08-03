@@ -1,16 +1,15 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface SmsCaptchaMapper {
 
-    void insertSmsCaptcha(SmsCaptchaModel smsCaptchaModel);
+    void create(SmsCaptchaModel smsCaptchaModel);
 
-    SmsCaptchaModel findRegisterCaptchaByMobile(String mobile);
+    SmsCaptchaModel findByMobile(String mobile);
 
-    void updateSmsCaptchaByMobile(SmsCaptchaModel smsCaptchaModel);
-
-    SmsCaptchaModel findSmsCaptchaByMobileAndCaptcha(SmsCaptchaModel smsCaptchaModel);
+    void update(SmsCaptchaModel smsCaptchaModel);
 }
