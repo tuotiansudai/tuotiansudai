@@ -237,7 +237,6 @@ public class UmPayNormalRepayOperation extends
 		int maxDigital = 2;
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
 				new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
-		System.out.println("------------------------------------"+referrerRelation.getLevel()+"-----------------------------------------"+roleId+"----------------------------"+invest.getUser().getId());
 		if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
 			List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
 			if (referGradeProfitSysListEx.size() > 0){
@@ -248,7 +247,9 @@ public class UmPayNormalRepayOperation extends
 		}
 		List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
 		if (referGradeProfitSysList.size() > 0){
-			if (referrerRelation.getLevel().equals("1")) {
+			System.out.println("---------" + referrerRelation.getLevel()+"---------------"+roleId+"------------"+referrerRelation.getReferrerId());
+			if (referrerRelation.getLevel().equals("1") && roleId.equals("ROLE_MERCHANDISER")) {
+				System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
 				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 1, maxDigital), percentage, maxDigital);
 			} else {
 				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 0.2, maxDigital), percentage, maxDigital);
