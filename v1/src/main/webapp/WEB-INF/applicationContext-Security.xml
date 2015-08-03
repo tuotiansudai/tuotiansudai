@@ -30,11 +30,6 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
 		<beans:property name="loginUrl" value="/login" />
 		<beans:property name="appRequestUrlPrefix" value="/v1.0/" />
-		<beans:property name="excludedUrls">
-			<beans:list>
-				<beans:value>/test</beans:value>
-			</beans:list>
-		</beans:property>
 	</beans:bean>
 
 	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"
@@ -89,6 +84,12 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/mobile/register/mobilePhoneNumValidation" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/vCodeValidation" access="not hasRole('USER')" />
 
+
+		<intercept-url pattern="/v1.0/register/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword" filters="none" />
+		<intercept-url pattern="/v1.0/validatecaptcha" filters="none" />
+		<intercept-url pattern="/v1.0/register" filters="none" />
 		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />
