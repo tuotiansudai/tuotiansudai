@@ -63,7 +63,7 @@ public class UmPayRepayHome extends RepayHome {
 		} catch (InsufficientBalance e) {
 			FacesUtil.addErrorMessage("您的账户余额不足，无法完成还款，请充值。");
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new RuntimeException("unexpected invocation", e);
 		} catch (UmPayOperationException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
@@ -138,7 +138,7 @@ public class UmPayRepayHome extends RepayHome {
 				umPayOverdueRepayOperation.createOperation(lr,
 						FacesContext.getCurrentInstance());
 			} catch (IOException e) {
-				log.error(e);
+				log.error(e.getLocalizedMessage(), e);
 				throw new RuntimeException("unexpected invocation", e);
 			} catch (UmPayOperationException e) {
 				FacesUtil.addErrorMessage(e.getMessage());

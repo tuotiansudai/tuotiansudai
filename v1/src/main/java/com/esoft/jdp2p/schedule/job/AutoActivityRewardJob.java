@@ -23,7 +23,7 @@ public class AutoActivityRewardJob implements Job {
         try {
             julyActivityRewardService.reward();
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
             throw e;
         }
     }

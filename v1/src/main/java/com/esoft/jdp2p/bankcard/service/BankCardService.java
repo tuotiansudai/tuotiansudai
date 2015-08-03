@@ -29,7 +29,10 @@ public interface BankCardService {
 
 	boolean isBoundBankCard(String userId);
 
+	public boolean isOpenFastPayment(String userId);
+
 	public boolean isExistsBankPhoto(String bankNo);
 
 	public boolean isCardNoBinding(String cardNo);
+
 }

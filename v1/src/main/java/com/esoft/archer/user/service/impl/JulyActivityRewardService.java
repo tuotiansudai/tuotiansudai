@@ -102,7 +102,7 @@ public class JulyActivityRewardService {
             } catch (Exception e) {
                 String template = "Create activity reward failed: userId = {0}";
                 log.error(MessageFormat.format(template, userId));
-                log.error(e);
+                log.error(e.getLocalizedMessage(), e);
             }
         }
 
@@ -175,7 +175,7 @@ public class JulyActivityRewardService {
                 try {
                     certifiedReward(billType, rewardId, userId, orderId);
                 } catch (Exception e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -191,7 +191,7 @@ public class JulyActivityRewardService {
                 try {
                     firstRechargeReward(billType, rewardId, userId, orderId);
                 } catch (Exception e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -265,7 +265,7 @@ public class JulyActivityRewardService {
                 try {
                     referrerCertifiedReward(billType, rewardId, userId, referrerId, orderId);
                 } catch (Exception e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -281,7 +281,7 @@ public class JulyActivityRewardService {
                 try {
                     referrerFirstRechargeReward(billType, rewardId, userId, referrerId, orderId);
                 } catch (Exception e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -297,7 +297,7 @@ public class JulyActivityRewardService {
                 try {
                     referrerFirstInvestReward(billType, rewardId, userId, referrerId, accountId, orderId);
                 } catch (Exception e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
@@ -380,7 +380,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Query user success invest failed: user = {0}";
             log.error(MessageFormat.format(template, userId));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -398,7 +398,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Query user success recharge failed: user = {0}";
             log.error(MessageFormat.format(template, userId));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -423,7 +423,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Activity reward transfer failed: orderId = {0}, accountId = {1}, cent = {2}";
             log.error(MessageFormat.format(template, orderId, accountId, cent));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -442,7 +442,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Generate req data failed: accountId = {0}, cent = {cent}";
             log.error(MessageFormat.format(template, accountId, cent));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
 
         return null;
@@ -466,7 +466,7 @@ public class JulyActivityRewardService {
             return operation;
         } catch (Exception e) {
             log.error("Create operation failed: " + reqData.getPlain());
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
@@ -481,7 +481,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Update operation failed: operationId = {0}, resDate = {1}";
             log.error(MessageFormat.format(template, operation.getId(), resData.toString()));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return SUCCESS_CODE.equals(resData.get("ret_code"));
     }
@@ -493,7 +493,7 @@ public class JulyActivityRewardService {
             return true;
         } catch (Exception e) {
             log.error("Update JulyActivityReward failed: " + reward.toString());
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -507,7 +507,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Query umpay account failed: userId = {0}";
             log.error(MessageFormat.format(template, userId));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
@@ -533,7 +533,7 @@ public class JulyActivityRewardService {
         } catch (Exception e) {
             String template = "Query bank card failed: userId = {0}";
             log.error(MessageFormat.format(template, userId));
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -552,7 +552,7 @@ public class JulyActivityRewardService {
             Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(MULTIPLE_BANK_CARD_USER_SQL);
             multipleBankCardUsers = query.list();
         } catch (HibernateException e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
         }
         log.info(MessageFormat.format("User have bound multiple bank cards: {0}", multipleBankCardUsers.size()));
         return multipleBankCardUsers;

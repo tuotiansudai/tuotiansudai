@@ -138,7 +138,7 @@ public class EntityHome<E> {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(commonSM.getString(saveFailMessageKey));
 		}
 

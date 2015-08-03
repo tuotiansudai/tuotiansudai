@@ -1,16 +1,12 @@
 package com.esoft.umpay.trusteeship.controller;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.logging.Log;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.annotations.ScopeType;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
+import com.esoft.umpay.bankcard.service.impl.UmPayBindingAgreementOperation;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingBankCardOperation;
+import com.esoft.umpay.bankcard.service.impl.UmPayReplaceBankCardOperation;
 import com.esoft.umpay.invest.service.impl.UmPayInvestOeration;
 import com.esoft.umpay.loan.service.impl.UmPayCancelLoanOperation;
 import com.esoft.umpay.loan.service.impl.UmPayLoaingOperation;
@@ -22,7 +18,11 @@ import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.esoft.umpay.withdraw.service.impl.UmPayWithdrawOperation;
+import org.apache.commons.logging.Log;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 @Component
@@ -31,6 +31,9 @@ public class TrusteeshipHome {
 
 	@Resource
 	UmPayBindingBankCardOperation umPayBindingBankCardOperation;
+
+	@Resource
+	UmPayReplaceBankCardOperation umPayReplaceBankCardOperation;
 
 	@Resource
 	UmPayRechargeOteration umPayRechargeOteration;
@@ -55,6 +58,9 @@ public class TrusteeshipHome {
 
 	@Resource
 	UmPayOverdueRepayOperation umPayOverdueRepayOperation;
+
+	@Resource
+	UmPayBindingAgreementOperation umPayBindingAgreementOperation;
 
 	@Logger
 	static Log log;
@@ -86,6 +92,10 @@ public class TrusteeshipHome {
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_OVERDUE_REPAY
 				.equals(this.operationType)) {
 			return this.overdueRepay();
+		} else if (UmPayConstants.OperationType.MER_REPLACE_CARD.equals(this.operationType)) {
+			return this.replaceBankCardWeb();
+		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+			return this.bindingAgreementWeb();
 		}
 		return "404";
 	}
@@ -121,6 +131,10 @@ public class TrusteeshipHome {
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_OVERDUE_REPAY
 				.equals(this.operationType)) {
 			this.S2S(umPayOverdueRepayOperation);
+		} else if (UmPayConstants.OperationType.MER_REPLACE_CARD.equals(this.operationType)) {
+			this.S2S(umPayReplaceBankCardOperation);
+		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+			this.S2S(umPayBindingAgreementOperation);
 		}
 	}
 
@@ -141,6 +155,33 @@ public class TrusteeshipHome {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
 		return null;
+	}
+
+	public String replaceBankCardWeb() {
+		try {
+			this.umPayReplaceBankCardOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
+			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
+			return "pretty:withdraw";
+		} catch (TrusteeshipReturnException e) {
+			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.addErrorMessage(e.getMessage());
+		}
+		return  null;
+	}
+
+	public String bindingAgreementWeb() {
+		try {
+			umPayBindingAgreementOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
+			FacesUtil.addInfoMessage("签约协议成功");
+		} catch (TrusteeshipReturnException e) {
+			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.addErrorMessage(e.getMessage());
+		} catch (IOException e) {
+			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.addErrorMessage(e.getMessage());
+		}
+		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
+		return "pretty:bankCardList";
 	}
 
 	/**
