@@ -272,7 +272,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initRepayingLoanReferrerReward() throws SchedulerException {
-		Date triggerTime = new DateTime(2015, 8, 3, 17, 56, 0).toDate();
+		Date triggerTime = new DateTime(2015, 8, 3, 18, 15, 0).toDate();
 		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler.getTrigger(TriggerKey.
 				triggerKey(ScheduleConstants.TriggerName.REPAYING_LOAN_REFERRER_REWARD, ScheduleConstants.TriggerName.REPAYING_LOAN_REFERRER_REWARD));
 		if (existedTrigger == null && triggerTime.after(new Date())) {
