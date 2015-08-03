@@ -35,7 +35,7 @@ public class RepayingLoanReferrerRewardJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         try {
-            String hql = "from Loan t where t.status in (?,?,?) and t.giveMoneyTime < ?";
+            String hql = "from Loan t where t.status in (?,?) and t.giveMoneyTime < ?";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             List<Loan> listLoan= hibernateTemplate.find(hql, new Object[]{LoanConstants.LoanStatus.REPAYING,LoanConstants.LoanStatus.COMPLETE, simpleDateFormat.parse("2015-04-27 00:00:00")});
             log.info("四级奖励补发共需要处理" + listLoan.size() + "个标的！");
