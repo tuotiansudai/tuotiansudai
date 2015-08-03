@@ -177,7 +177,7 @@ public class UserBillList extends EntityQuery<UserBill> {
 				FacesUtil.getCurrentInstance().responseComplete();
 			} catch (IOException e) {
 				e.printStackTrace();
-				log.error(e);
+				log.error(e.getLocalizedMessage(), e);
 			} finally {
 				if (stream != null) {
 					try {

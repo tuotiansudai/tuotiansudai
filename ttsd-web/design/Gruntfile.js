@@ -29,6 +29,7 @@ module.exports = function(grunt) {
                     flatten : true
                   }
                 ]
+
             }
         },
     // Task configuration.

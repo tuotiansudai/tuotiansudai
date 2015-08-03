@@ -1,22 +1,22 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.RegisterDto;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.web.dto.ResultDataDto;
-import com.tuotiansudai.web.dto.ResultDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping(value = "/register")
-public class RegisterController {
+public class RegisterController extends BaseController{
 
     @Autowired
     private UserService userService;
@@ -29,100 +29,71 @@ public class RegisterController {
         return new ModelAndView("/register");
     }
 
-    @RequestMapping(value = "/email/{email}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto emailIsExisted(@PathVariable String email) {
-        boolean isExist = userService.userEmailIsExisted(email);
-
-        BaseDto registerVerifyDto = new BaseDto();
+    public BaseDto registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(isExist);
-        registerVerifyDto.setData(dataDto);
+        dataDto.setStatus(this.userService.registerUser(registerUserDto));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
 
-        return registerVerifyDto;
+        return baseDto;
     }
 
-    @RequestMapping(value = "/mobileNumber/{mobileNumber}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto mobileNumberIsExisted(@PathVariable String mobileNumber) {
-        boolean isExist = userService.userMobileNumberIsExisted(mobileNumber);
-
-        BaseDto registerVerifyDto = new BaseDto();
+    public BaseDto registerAccount(@Valid @RequestBody RegisterAccountDto registerAccountDto) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(isExist);
-        registerVerifyDto.setData(dataDto);
+        dataDto.setStatus(this.userService.registerAccount(registerAccountDto));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
 
-        return registerVerifyDto;
-
+        return baseDto;
     }
 
-    @RequestMapping(value = "/referrer/{referrer}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/isexist", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto referrerIsExisted(@PathVariable String referrer) {
-        boolean isExist = userService.referrerIsExisted(referrer);
-
-        BaseDto registerVerifyDto = new BaseDto();
+    public BaseDto mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(isExist);
-        registerVerifyDto.setData(dataDto);
-        return registerVerifyDto;
+        dataDto.setStatus(userService.mobileIsExist(mobile));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+
     }
 
-    @RequestMapping(value = "/loginName/{loginName}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto loginNameIsExisted(@PathVariable String loginName) {
-        boolean isExist = userService.loginNameIsExisted(loginName);
-
-        BaseDto registerVerifyDto = new BaseDto();
+    public BaseDto loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(isExist);
-        registerVerifyDto.setData(dataDto);
-        return registerVerifyDto;
+        dataDto.setStatus(userService.loginNameIsExist(loginName));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
+
+        return baseDto;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/sendregistercaptcha", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto registerUser(@RequestBody RegisterDto registerDto) {
-        boolean success = this.userService.registerUser(registerDto);
-
-        BaseDto registerResultDto = new BaseDto();
+    public BaseDto sendRegisterCaptcha(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
-        registerResultDto.setData(dataDto);
-        dataDto.setStatus(success);
+        dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
 
-        return registerResultDto;
+        return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile}/sendCaptcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
     @ResponseBody
-    public ResultDto sendRegisterByMobileNumberSMS(@PathVariable String mobile) {
-        ResultDto resultDto = new ResultDto();
-        ResultDataDto data = new ResultDataDto();
-        try {
-            data.setStatus(smsCaptchaService.sendSmsByMobileNumberRegister(mobile));
-        } catch (Exception e) {
-            data.setStatus(false);
-            e.printStackTrace();
-        }
-        resultDto.setSuccess(true);
-        resultDto.setData(data);
-        return resultDto;
-    }
+    public BaseDto verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha));
+        BaseDto baseDto = new BaseDto();
+        baseDto.setData(dataDto);
 
-    @RequestMapping(value = "/mobile/{mobile}/captcha/{captcha}/verify", method = RequestMethod.GET)
-    @ResponseBody
-    public ResultDto verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
-        ResultDto resultDto = new ResultDto();
-
-        ResultDataDto data = new ResultDataDto();
-
-        data.setStatus(smsCaptchaService.verifyCaptcha(mobile, captcha));
-
-        resultDto.setSuccess(true);
-
-        resultDto.setData(data);
-
-        return resultDto;
+        return baseDto;
 
     }
 
