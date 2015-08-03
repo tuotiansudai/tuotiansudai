@@ -32,11 +32,11 @@ public class RepayingLoanReferrerRewardService {
 
     public void reward() {
         try {
-//            String hql = "from Loan t where t.status in (?,?) and t.giveMoneyTime < ?";
-//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            List<Loan> listLoan= hibernateTemplate.find(hql, new Object[]{LoanConstants.LoanStatus.REPAYING,LoanConstants.LoanStatus.COMPLETE, simpleDateFormat.parse("2015-04-27 00:00:00")});
-            String hql = "from Loan t where t.id = ?";
-            List<Loan> listLoan= hibernateTemplate.find(hql, new Object[]{"20150727000031"});
+            String hql = "from Loan t where t.status in (?,?) and t.giveMoneyTime < ? and t.id <> ?";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            List<Loan> listLoan= hibernateTemplate.find(hql, new Object[]{LoanConstants.LoanStatus.REPAYING,LoanConstants.LoanStatus.COMPLETE, simpleDateFormat.parse("2015-07-29 23:00:00"),"20150727000031"});
+//            String hql = "from Loan t where t.id = ?";
+//            List<Loan> listLoan= hibernateTemplate.find(hql, new Object[]{"20150727000031"});
             log.info("四级奖励补发共需要处理" + listLoan.size() + "个标的！");
             for (int i = 0; i < listLoan.size(); i++) {
                 try {
