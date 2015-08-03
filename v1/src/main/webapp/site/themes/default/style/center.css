@@ -234,6 +234,7 @@
 	text-align: center;
 	font-size: 16px;
 	position:relative;
+	cursor: pointer;
 }
 
 .counterMark span img {

@@ -1,16 +1,17 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.RegisterDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 
 public interface UserService {
 
-    boolean userEmailIsExisted(String email);
+    boolean emailIsExist(String email);
 
-    boolean userMobileNumberIsExisted(String mobileNumber);
+    boolean mobileIsExist(String mobile);
 
-    boolean registerUser(RegisterDto userModel);
+    boolean registerUser(RegisterUserDto dto);
 
-    boolean referrerIsExisted(String referrer);
+    boolean loginNameIsExist(String loginName);
 
-    boolean loginNameIsExisted(String loginName);
+    boolean registerAccount(RegisterAccountDto dto);
 }

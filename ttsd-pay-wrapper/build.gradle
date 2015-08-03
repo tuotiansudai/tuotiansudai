@@ -3,6 +3,23 @@ apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
+    def springVersion = '4.1.7.RELEASE'
+    def jacksonVersion = '2.5.4'
+    def mybatisVersion = '3.3.0'
+    def mybatisSpringVersion = '1.2.3'
+    compile "org.springframework:spring-webmvc:$springVersion",
+            "org.springframework:spring-jdbc:$springVersion",
+            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            "org.mybatis:mybatis:$mybatisVersion",
+            "org.mybatis:mybatis-spring:$mybatisSpringVersion",
+            'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+            'mysql:mysql-connector-java:5.1.35',
+            'com.squareup.okhttp:okhttp:2.4.0',
+            'dom4j:dom4j:1.6.1',
+            fileTree(dir: 'libs', include: '**/*.jar')
+
     compile project(':ttsd-service')
 }
 
@@ -16,7 +33,16 @@ buildscript {
     }
 }
 
+war {
+    archiveName "ttsd-pay-wrapper.war"
+    destinationDir = file("war")
+    from('/workspace/new_version_config/ttsd-pay-wrapper/') {
+        into 'WEB-INF/classes/'
+    }
+}
+
 flyway {
+    def productionFlywayConfig = '/workspace/new_version_config/ttsd-pay-wrapper/jdbc.properties'
     locations = ['filesystem:db_migration/ump_operations']
     user = 'root'
     password = ''
@@ -24,4 +50,15 @@ flyway {
     placeholders = ['ump_operations': 'ump_operations']
     schemas = ['ump_operations']
     url = 'jdbc:mysql://192.168.33.10:3306/'
+    if (new File(productionFlywayConfig).exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(productionFlywayConfig))
+        def schema = properties.getProperty('jdbc.scheam', 'ump_operations')
+        user = properties.getProperty('jdbc.username', user)
+        password = properties.getProperty('jdbc.password', password)
+        url = properties.getProperty('flyway.url', url)
+        locations = ["filesystem:db_migration/$schema"]
+        placeholders = ['ump_operations': "$schema"]
+        schemas = ["$schema"]
+    }
 }

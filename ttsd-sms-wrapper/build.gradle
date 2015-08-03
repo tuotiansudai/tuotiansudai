@@ -3,7 +3,7 @@ apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
-    def springVersion = '4.1.6.RELEASE'
+    def springVersion = '4.1.7.RELEASE'
     def jacksonVersion = '2.5.4'
     def mybatisVersion = '3.3.0'
     def mybatisSpringVersion = '1.2.3'
@@ -28,16 +28,6 @@ buildscript {
     dependencies {
         classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
     }
-}
-
-flyway {
-    locations = ['filesystem:db_migration/sms_operations']
-    user = 'root'
-    password = ''
-    outOfOrder = true
-    placeholders = ['sms_operations': 'sms_operations']
-    schemas = ['sms_operations']
-    url = 'jdbc:mysql://192.168.33.10:3306/'
 }
 
 war {
