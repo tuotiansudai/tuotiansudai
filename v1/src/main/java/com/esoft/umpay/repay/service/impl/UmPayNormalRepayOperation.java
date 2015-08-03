@@ -150,6 +150,63 @@ public class UmPayNormalRepayOperation extends
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(rollbackFor = Exception.class)
+	public void recommendedIncomeReward(Loan loan) throws IOException,ReqDataException, RetDataException{
+		//找到该笔借款的投资明细
+		List<Invest> investList = ht.find(
+				"from Invest i where i.loan.id=? and i.status not in (?,?)",
+				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
+		for (Invest invest : investList) {
+			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
+			for(ReferrerRelation referrerRelation : referrerRelationList){
+				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
+				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
+					@Override
+					public String apply(Role role) {
+						return role.getId();
+					}
+				});
+				String roleId = "";
+				if(list.contains("ROLE_MERCHANDISER")){
+					roleId = "ROLE_MERCHANDISER";
+				}else if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER")){
+					roleId = "INVESTOR";
+				}else{
+					roleId = "MEMBER";
+				}
+				double bonus = calculateBonusReward(invest, referrerRelation, loan, roleId);
+				String orderId = invest.getId() + System.currentTimeMillis();
+				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
+				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
+				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
+				Date nowdate = new Date();
+				String status = InvestUserReferrer.FAIL;
+				String msg = "";
+				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
+					//调用联动优势接口
+					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
+					if(returnMsg.split("\\|")[0].equals("0000")){
+						status = InvestUserReferrer.SUCCESS;
+					}else{
+						msg = returnMsg.split("\\|")[1];
+					}
+				}
+				if(bonus == -1){
+					continue;
+				}
+				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
+					msg = NOT_BIND_CARD;
+				}
+				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
+				if(list.contains("ROLE_MERCHANDISER")){
+					continue;
+				}
+				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, msg);
+			}
+		}
+	}
+
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan,String roleId) {
 		int percentage = 100;
 		int maxDigital = 2;
@@ -173,6 +230,31 @@ public class UmPayNormalRepayOperation extends
 				return -1;
 			}
         }
+	}
+
+	private double calculateBonusReward(Invest invest, ReferrerRelation referrerRelation,Loan loan,String roleId) {
+		int percentage = 100;
+		int maxDigital = 2;
+		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
+				new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
+		if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
+			List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
+			if (referGradeProfitSysListEx.size() > 0){
+				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 0.2, maxDigital), percentage, maxDigital);
+			}else{
+				return -1;
+			}
+		}
+		List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
+		if (referGradeProfitSysList.size() > 0){
+			if (referrerRelation.getLevel()==1 && roleId.equals("ROLE_MERCHANDISER")) {
+				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 1, maxDigital), percentage, maxDigital);
+			} else {
+				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), 0.2, maxDigital), percentage, maxDigital);
+			}
+		}else {
+			return -1;
+		}
 	}
 
 	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {

@@ -1,7 +1,9 @@
 package com.esoft.jdp2p.schedule.service.impl;
 
-import javax.annotation.Resource;
-
+import com.esoft.archer.config.ConfigConstants;
+import com.esoft.archer.config.service.ConfigService;
+import com.esoft.core.annotations.Logger;
+import com.esoft.jdp2p.schedule.ScheduleConstants;
 import com.esoft.jdp2p.schedule.job.*;
 import org.apache.commons.logging.Log;
 import org.hibernate.ObjectNotFoundException;
@@ -12,11 +14,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import com.esoft.archer.config.ConfigConstants;
-import com.esoft.archer.config.service.ConfigService;
-import com.esoft.core.annotations.Logger;
-import com.esoft.jdp2p.schedule.ScheduleConstants;
-
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -166,6 +164,8 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 				this.initAutoActivityRewardJob();
 
+				this.initRepayingLoanReferrerReward();
+
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
@@ -267,6 +267,20 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					.startAt(triggerTime)
 					.build();
 
+			scheduler.scheduleJob(jobDetail, trigger);
+		}
+	}
+
+	private void initRepayingLoanReferrerReward() throws SchedulerException {
+		Date triggerTime = new DateTime(2015, 8, 3, 21, 17, 0).toDate();
+		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler.getTrigger(TriggerKey.
+				triggerKey(ScheduleConstants.TriggerName.REPAYING_LOAN_REFERRER_REWARD, ScheduleConstants.TriggerName.REPAYING_LOAN_REFERRER_REWARD));
+		if (existedTrigger == null && triggerTime.after(new Date())) {
+			JobDetail jobDetail = JobBuilder.newJob(RepayingLoanReferrerRewardJob.class).
+					withIdentity(ScheduleConstants.JobName.REPAYING_LOAN_REFERRER_REWARD, ScheduleConstants.JobGroup.REPAYING_LOAN_REFERRER_REWARD).build();
+
+			SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(ScheduleConstants.TriggerName.REPAYING_LOAN_REFERRER_REWARD,ScheduleConstants.TriggerGroup.REPAYING_LOAN_REFERRER_REWARD)
+					.forJob(jobDetail).withSchedule(SimpleScheduleBuilder.simpleSchedule()).startAt(triggerTime).build();
 			scheduler.scheduleJob(jobDetail, trigger);
 		}
 	}
