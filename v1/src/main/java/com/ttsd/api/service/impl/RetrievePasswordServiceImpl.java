@@ -153,16 +153,21 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService {
                 //手机验证码发送成功
                 dto.setCode(ReturnMessage.SUCCESS.getCode());
                 dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+
+            }else {
+                log.error("send retrieve password message fail , cause by message interface fault !");
+                dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
+                dto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
             }
+            return dto;
         }catch (Exception e){
             //手机验证码发送失败
             log.error("send retrieve password message fail , cause by server fault !");
             log.error(e.getLocalizedMessage(),e);
             dto.setCode(ReturnMessage.SEND_SMS_IS_FAIL.getCode());
             dto.setMessage(ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
-
+            return dto;
         }
-        return dto;
     }
 
 
