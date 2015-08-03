@@ -4,9 +4,9 @@ import com.esoft.archer.user.model.User;
 import com.ttsd.api.dto.*;
 
 public interface MobilePersonalInfoAppService {
-    public PersonalInfoResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto);
+    public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto);
 
-    public PersonalInfoDataDto generatePersonalInfoData(User user);
+    public PersonalInfoResponseDataDto generatePersonalInfoData(User user);
 
     public boolean verifyCertification(String userName);
 

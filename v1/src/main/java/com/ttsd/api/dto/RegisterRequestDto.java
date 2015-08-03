@@ -3,22 +3,12 @@ package com.ttsd.api.dto;
 
 import com.esoft.archer.user.model.User;
 
-public class RegisterRequestDto  {
+public class RegisterRequestDto extends BaseParamDto {
     private String userName;
     private String phoneNum;
     private String captcha;
     private String password;
     private String referrer;
-
-    public BaseParam getBaseParam() {
-        return baseParam;
-    }
-
-    public void setBaseParam(BaseParam baseParam) {
-        this.baseParam = baseParam;
-    }
-
-    private BaseParam baseParam;
 
     public String getUserName() {
         return userName;

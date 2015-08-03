@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by tuotian on 15/7/27.
@@ -20,14 +19,14 @@ import java.util.Map;
 public class MobileCertificationController {
 
     @Logger
-    private Log log;
+    Log log;
 
     @Resource(name = "MobileAppCertificationServiceImpl")
-    MobileAppCertificationService mobileAppCertificationService;
+    private MobileAppCertificationService mobileAppCertificationService;
 
     @RequestMapping(value = "/certificate",method = RequestMethod.POST)
     @ResponseBody
-    public CertificationResponseDto userMobileCertification(@RequestBody CertificationRequestDto certificationRequestDto){
+    public BaseResponseDto userMobileCertification(@RequestBody CertificationRequestDto certificationRequestDto){
         String userId = certificationRequestDto.getBaseParam().getUserId();
         String userRealName = certificationRequestDto.getUserRealName();
         String idCardNumber = certificationRequestDto.getUserIdCardNumber();
@@ -48,7 +47,4 @@ public class MobileCertificationController {
         }
     }
 
-    public void setMobileAppCertificationService(MobileAppCertificationService mobileAppCertificationService) {
-        this.mobileAppCertificationService = mobileAppCertificationService;
-    }
 }

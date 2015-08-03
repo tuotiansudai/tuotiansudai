@@ -3,7 +3,7 @@ package com.ttsd.api.dto;
 /**
  * Created by tuotian on 15/7/28.
  */
-public class CertificationDataDto {
+public class CertificationResponseDataDto extends BaseResponseDataDto{
     /**
      * 用户实名认证使用的姓名
      */

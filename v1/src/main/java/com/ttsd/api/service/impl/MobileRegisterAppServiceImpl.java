@@ -40,9 +40,8 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber,String remoteIp) {
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String returnCode = ReturnMessage.SUCCESS.getCode();
-        returnCode = this.verifyMobileNumber(mobileNumber);
+        BaseResponseDto dto = new BaseResponseDto();
+        String returnCode = this.verifyMobileNumber(mobileNumber);
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             
             boolean sendSmsFlag = userService.sendSmsMobileNumber(mobileNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
@@ -52,9 +51,9 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             }
         }
 
-        baseResponseDto.setCode(returnCode);
-        baseResponseDto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
-        return baseResponseDto;
+        dto.setCode(returnCode);
+        dto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
+        return dto;
     }
 
     @Override
@@ -131,10 +130,9 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
 
 
     @Override
-    public RegisterResponseDto registerUser(RegisterRequestDto registerRequestDto) {
-        RegisterResponseDto registerResponseDto = new RegisterResponseDto();
-        String returnCode = ReturnMessage.SUCCESS.getCode();
-        returnCode = this.verifyUserName(registerRequestDto.getUserName());
+    public BaseResponseDto registerUser(RegisterRequestDto registerRequestDto) {
+        BaseResponseDto dto = new BaseResponseDto();
+        String returnCode = this.verifyUserName(registerRequestDto.getUserName());
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             returnCode = this.verifyPassword(registerRequestDto.getPassword());
         }
@@ -167,16 +165,16 @@ public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
             log.error(e.getLocalizedMessage(),e);
         }
 
-        registerResponseDto.setCode(returnCode);
-        registerResponseDto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
+        dto.setCode(returnCode);
+        dto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
-            RegisterDataDto registerDataDto = new RegisterDataDto();
+            RegisterResponseDataDto registerDataDto = new RegisterResponseDataDto();
             registerDataDto.setUserId(registerRequestDto.getUserName());
             registerDataDto.setUserName(registerRequestDto.getUserName());
             registerDataDto.setPhoneNum(registerRequestDto.getPhoneNum());
-            registerResponseDto.setData(registerDataDto);
+            dto.setData(registerDataDto);
         }
-        return registerResponseDto;
+        return dto;
     }
 
     @Override

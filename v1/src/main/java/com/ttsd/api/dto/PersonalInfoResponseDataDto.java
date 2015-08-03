@@ -1,15 +1,32 @@
 package com.ttsd.api.dto;
 
 
-public class LogInDataDto extends DataDto{
+public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String userId;
     private String userName;
-    private String token;
     private String phoneNum;
     private boolean certificationFlag;
     private String realName;
     private String idCard;
-    private boolean isBindedBankCard;
+    private boolean isBoundBankCard;
+
+
+    public boolean isCertificationFlag() {
+        return certificationFlag;
+    }
+
+    public void setCertificationFlag(boolean certificationFlag) {
+        this.certificationFlag = certificationFlag;
+    }
+
+    public boolean isBoundBankCard() {
+        return isBoundBankCard;
+    }
+
+    public void setIsBoundBankCard(boolean isBoundBankCard) {
+        this.isBoundBankCard = isBoundBankCard;
+    }
+
     private String photo;
 
     public String getUserId() {
@@ -28,28 +45,12 @@ public class LogInDataDto extends DataDto{
         this.userName = userName;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public String getPhoneNum() {
         return phoneNum;
     }
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
-    }
-
-    public boolean getCertificationFlag() {
-        return certificationFlag;
-    }
-
-    public void setCertificationFlag(boolean certificationFlag) {
-        this.certificationFlag = certificationFlag;
     }
 
     public String getRealName() {
@@ -68,13 +69,7 @@ public class LogInDataDto extends DataDto{
         this.idCard = idCard;
     }
 
-    public boolean getIsBindedBankCard() {
-        return isBindedBankCard;
-    }
 
-    public void setIsBindedBankCard(boolean isBindedBankCard) {
-        this.isBindedBankCard = isBindedBankCard;
-    }
 
     public String getPhoto() {
         return photo;
