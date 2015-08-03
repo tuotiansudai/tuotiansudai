@@ -538,16 +538,18 @@ require(['jquery'], function ($) {
         $('.fetch-captcha').on('click',function(){
             var clientH=$(window).height();
             $('.verification-code').css({'height':clientH,'display':'block'});
+            $('.verification-code-main').css('display','block');
         });
         $('.complete,.verification-code,.close').on('click',function(){
-            $('.verification-code').css('display','none');
+            $('.verification-code,.verification-code-main').css('display','none');
             var num=30;
             var count=setInterval(countdown,1000);
             countdown();
             function countdown(){
-                $('.fetch-captcha').html(num+'秒后重新发送')
+                $('.fetch-captcha').html(num+'秒后重新发送');
                 if(num==0){
                     clearInterval(count);
+                    $('.fetch-captcha').html('重新发送');
                 }
                 num--;
             }
