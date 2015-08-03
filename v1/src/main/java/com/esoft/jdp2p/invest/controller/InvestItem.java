@@ -5,7 +5,6 @@ import java.util.Date;
 public class InvestItem implements java.io.Serializable {
     private String loanId;
     private String loanName;
-    private String loadType;
     private String investorId;
     private String investorName;
     private String referrerId;
@@ -16,7 +15,6 @@ public class InvestItem implements java.io.Serializable {
     private String rewardStatus;
     private Date rewardTime;
     private Date investTime;
-    private boolean isAutoInvest;
     private Double money;
     private String investStatus;
 
@@ -50,14 +48,6 @@ public class InvestItem implements java.io.Serializable {
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
-    }
-
-    public String getLoadType() {
-        return loadType;
-    }
-
-    public void setLoadType(String loadType) {
-        this.loadType = loadType;
     }
 
     public String getInvestorId() {
@@ -106,14 +96,6 @@ public class InvestItem implements java.io.Serializable {
 
     public void setInvestTime(Date investTime) {
         this.investTime = investTime;
-    }
-
-    public boolean getIsAutoInvest() {
-        return isAutoInvest;
-    }
-
-    public void setIsAutoInvest(boolean isAutoInvest) {
-        this.isAutoInvest = isAutoInvest;
     }
 
     public Double getMoney() {
