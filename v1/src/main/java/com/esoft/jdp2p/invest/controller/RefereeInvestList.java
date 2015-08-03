@@ -93,6 +93,7 @@ public class RefereeInvestList implements java.io.Serializable {
         if (InvestUserReferrer.SUCCESS.equals(result.get("rewardStatus"))) {
             investItem.setRewardStatus("奖励已入账");
         }
+
         String referrerRole = (String) result.get("referrerRole");
         if ("INVESTOR".equalsIgnoreCase(referrerRole) && InvestUserReferrer.FAIL.equalsIgnoreCase((String) result.get("rewardStatus"))) {
             investItem.setRewardStatus("奖励入账失败");
@@ -131,7 +132,7 @@ public class RefereeInvestList implements java.io.Serializable {
     private String generateWhereTemplate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String whereTemplate = "where invest.status in ('complete', 'bid_success', 'repaying')";
+        String whereTemplate = "where 1=1";
 
         if (!Strings.isNullOrEmpty(condition.getReferrerId())) {
             whereTemplate += " and referrer.id='" + condition.getReferrerId() + "'";
@@ -153,6 +154,8 @@ public class RefereeInvestList implements java.io.Serializable {
         }
         if (!Strings.isNullOrEmpty(condition.getInvestStatus())) {
             whereTemplate += " and invest.status='" + condition.getInvestStatus() + "'";
+        } else {
+            whereTemplate += " and invest.status in ('complete', 'bid_success', 'repaying')";
         }
         return whereTemplate;
     }
