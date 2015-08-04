@@ -147,7 +147,7 @@ public class TrusteeshipOperationBO {
 	 */
 	@Deprecated
 	public TrusteeshipOperation get(String type, String markId,
-			String operator, String trusteeship) {
+			String operator, String trusteeship) throws DuplicateKeyException{
 		DetachedCriteria criteria = DetachedCriteria
 				.forClass(TrusteeshipOperation.class);
 		if (type == null) {
@@ -172,7 +172,8 @@ public class TrusteeshipOperationBO {
 		}
 		List<TrusteeshipOperation> tos = ht.findByCriteria(criteria);
 
-		if (tos.size() > 1 && !type.equals(UmPayConstants.OperationType.MER_BIND_AGREEMENT)) {
+//		if (tos.size() > 1 && !type.equals(UmPayConstants.OperationType.MER_BIND_AGREEMENT)) {
+		if (tos.size() > 1) {
 			throw new DuplicateKeyException("type:" + type + " markId:"
 					+ markId + " operator:" + operator + " trusteeship:"
 					+ trusteeship + "  duplication!");
