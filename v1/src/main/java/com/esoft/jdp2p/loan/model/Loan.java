@@ -296,7 +296,7 @@ public class Loan implements java.io.Serializable, Cloneable {
 	@Column(name = "cardinal_number")
 	public Double getCardinalNumber() {
 		if (this.cardinalNumber == null) {
-			this.cardinalNumber = 1D;
+			this.cardinalNumber = 0.1D;
 		}
 		return cardinalNumber;
 	}
