@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
-public class InvestDto  {
+public class LoanDto {
     private String loanId;
     private String loanType;
     private String loanName;

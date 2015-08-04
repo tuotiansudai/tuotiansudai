@@ -1,11 +1,10 @@
 package com.ttsd.api.dao;
 
 import com.esoft.jdp2p.loan.model.Loan;
-import com.ttsd.api.dto.InvestDto;
 
 import java.util.List;
 
-public interface InvestListDao {
+public interface LoanListDao {
 
     boolean isHasNextPage(Integer index, Integer pageSize);
 

@@ -1,27 +1,23 @@
 package com.ttsd.api.dao.impl;
 
 import com.esoft.jdp2p.loan.model.Loan;
-import com.ttsd.api.dao.InvestListDao;
-import com.ttsd.api.dto.InvestDto;
-import org.apache.commons.lang.StringUtils;
+import com.ttsd.api.dao.LoanListDao;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.SQLQuery;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class InvestListDaoImpl implements InvestListDao {
+public class LoanListDaoImpl implements LoanListDao {
     @Resource
     private HibernateTemplate ht;
 
     private static String loanListSql = "select * from loan where "
-            + " status <> 'test' and (status='raising' "
-            + " or status='complete' "
-            + " or status='recheck' "
-            + " or status='repaying')"
+            + " status <> 'test' "
+            + " AND status in ('raising','complete','recheck','repaying')"
             + " order by case status when 'raising' then 1 "
             + " when 'recheck' then 2 when 'repaying' then 3 else 4 end asc,"
             + " commit_time desc limit ?,? ";
@@ -37,7 +33,7 @@ public class InvestListDaoImpl implements InvestListDao {
         sqlQuery.setParameter(1, pageSizeInt);
         List<Loan> investList = sqlQuery.list();
 
-        return investList != null && investList.size() > 0;
+        return CollectionUtils.isNotEmpty(investList);
     }
 
     @Override

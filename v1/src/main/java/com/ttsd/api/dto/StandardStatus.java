@@ -1,12 +1,12 @@
 package com.ttsd.api.dto;
 
-import org.apache.http.impl.cookie.DefaultCookieSpecProvider;
+import com.esoft.jdp2p.loan.LoanConstants;
 
 public enum StandardStatus {
-    RECHECK("recheck", "等待复核"),
-    REPAYING("repaying", "回款中"),
-    RAISING("raising", "抢投"),
-    COMPLETE("complete","已完成");
+    RECHECK(LoanConstants.LoanStatus.RECHECK, "等待复核"),
+    REPAYING(LoanConstants.LoanStatus.REPAYING, "回款中"),
+    RAISING(LoanConstants.LoanStatus.RAISING, "抢投"),
+    COMPLETE(LoanConstants.LoanStatus.COMPLETE,"已完成");
     String code;
     String message;
 

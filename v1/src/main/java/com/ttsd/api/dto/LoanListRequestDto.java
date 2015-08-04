@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
-public class InvestListRequestDto extends BaseParamDto{
+public class LoanListRequestDto extends BaseParamDto{
     private Integer index;
     private Integer pageSize;
 
