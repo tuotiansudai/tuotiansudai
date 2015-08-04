@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.core.util.SpringBeanUtil;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -22,6 +24,7 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 
 @Service(value = "userBillBO")
 public class UserBillBO {
+	LoginUserInfo loginUserInfo = (LoginUserInfo) SpringBeanUtil.getBeanByName("loginUserInfo");
 
 	@Resource
 	private HibernateTemplate ht;
@@ -100,6 +103,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.FREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
+			ib.setCrUserId(loginUserInfo.getLoginUserId());
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
 				// 余额=0
@@ -236,6 +240,8 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.UNFREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
+			ib.setCrUserId(loginUserInfo.getLoginUserId());
+
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
 				// 余额=0
@@ -284,6 +290,8 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.TO_BALANCE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
+			ib.setCrUserId(loginUserInfo.getLoginUserId());
+
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
 				// 余额=0
@@ -360,6 +368,7 @@ public class UserBillBO {
 		lb.setType(UserBillConstants.Type.TI_BALANCE);
 		lb.setTypeInfo(operatorInfo);
 		lb.setUser(new User(userId));
+		lb.setCrUserId(loginUserInfo.getLoginUserId());
 
 		if (ibLastest == null) {
 			lb.setSeqNum(1L);

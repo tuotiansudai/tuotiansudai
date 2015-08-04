@@ -60,6 +60,7 @@ public class UserBillList extends EntityQuery<UserBill> {
 	public UserBillList() {
 		final String[] RESTRICTIONS = { "id like #{userBillList.example.id}",
 				"user.id like #{userBillList.example.user.id}",
+				"crUserId like #{userBillList.example.crUserId}",
 				"type like #{userBillList.example.type}",
 				"typeInfo like #{userBillList.example.typeInfo}",
 				"time >= #{userBillList.startTime}",

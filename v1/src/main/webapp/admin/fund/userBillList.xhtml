@@ -39,9 +39,12 @@
 						<f:selectItem itemValue="" itemLabel="请选择操作类型" />
 						<f:selectItems var="bo" value="#{dictUtil.getDictByParentKey('bill_operator')}" itemValue="#{bo.key}" itemLabel="#{bo.value}" />
 					</h:selectOneMenu>
+					<p:inputText id="crUserId" value="#{userBillList.example.crUserId}"></p:inputText>
+
 					<p:commandButton process="filters" update="dataTable" value="#{commonMsg.searchLabel}"></p:commandButton>
 				</p:panel>
 				<p:watermark for="searchName" value="用户名"></p:watermark>
+				<p:watermark for="crUserId" value="操作人"></p:watermark>
 				<p:watermark for="searchStartTime" value="时间&gt;="></p:watermark>
 				<p:watermark for="searchEndTime" value="=&lt;时间"></p:watermark>
 
@@ -116,6 +119,12 @@
 							<h:outputText value="费用详情"></h:outputText>
 						</f:facet>
 						<h:outputText value="#{userBill.detail}" title="#{userBill.detail}"></h:outputText>
+					</p:column>
+					<p:column sortBy="userBill.crUserId">
+						<f:facet name="header">
+							<h:outputText value="操作人"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{userBill.crUserId}"></h:outputText>
 					</p:column>
 
 					<f:facet name="footer">
