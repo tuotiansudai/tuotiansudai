@@ -19,7 +19,7 @@ import com.esoft.archer.user.exception.ConfigNotFoundException;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.exception.UserRegisterException;
 import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.service.AdminOperationLogService;
+import com.esoft.archer.user.service.UserInfoLogService;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
@@ -82,7 +82,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     private LoginUserInfo loginUser;
 
     @Resource
-    private AdminOperationLogService adminOperationLogService;
+    private UserInfoLogService userInfoLogService;
 
     @Resource
     private UserBO userBO;
@@ -243,7 +243,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         try {
             userService.changeUserStatus(userId,
                     UserConstants.UserStatus.DISABLE);
-            adminOperationLogService.logUserOperation(userId, "禁用了用户：" + userId, true);
+            userInfoLogService.logUserOperation(userId, "禁用了用户：" + userId, true);
         } catch (ConfigNotFoundException e) {
         } catch (UserNotFoundException e) {
             FacesUtil.addErrorMessage("该用户不存在");
@@ -494,7 +494,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         try {
             userService.changeUserStatus(userId,
                     UserConstants.UserStatus.ENABLE);
-            adminOperationLogService.logUserOperation(userId, "解禁了用户：" + userId, true);
+            userInfoLogService.logUserOperation(userId, "解禁了用户：" + userId, true);
 
             // FIXME:下面异常不合理
         } catch (ConfigNotFoundException e) {
@@ -527,15 +527,15 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         setUpdateView(FacesUtil.redirect("/admin/user/userList"));
         String viewName = null;
 
-        String userString = adminOperationLogService.generateUserInfoString(getInstance());
+        String userString = userInfoLogService.generateUserInfoString(getInstance());
         logMessage.append(userString);
 
         try {
             viewName = super.save();
 
-            adminOperationLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), true);
+            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), true);
         } catch (Exception e) {
-            adminOperationLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), false);
+            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), false);
             e.printStackTrace();
             throw e;
         }
@@ -568,8 +568,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         getBaseService().merge(getInstance());
         FacesUtil.addInfoMessage("用户信息修改成功！");
 
-        String userString = adminOperationLogService.generateUserInfoString(getInstance());
-        adminOperationLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
+        String userString = userInfoLogService.generateUserInfoString(getInstance());
+        userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
 
         return FacesUtil.redirect("/admin/user/userList");
     }

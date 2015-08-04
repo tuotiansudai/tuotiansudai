@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.annotation.Resource;
 
-import com.esoft.archer.user.service.AdminOperationLogService;
+import com.esoft.archer.user.service.UserInfoLogService;
 import org.apache.commons.logging.Log;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,9 +39,6 @@ public class UserBillHome extends EntityHome<UserBill> implements Serializable {
 
     @Resource
     private WithdrawCashService wcService;
-
-    @Resource
-    private AdminOperationLogService adminOperationLogService;
 
     @Resource
     private ConfigService cs;
@@ -109,8 +106,6 @@ public class UserBillHome extends EntityHome<UserBill> implements Serializable {
                         + this.getInstance().getType());
                 return null;
             }
-            String logMessage = adminOperationLogService.generateFinanceInfoString(getInstance());
-            adminOperationLogService.logFinanceOperation(getInstance().getId(), logMessage, true);
         } catch (InsufficientBalance e) {
             FacesUtil.addErrorMessage("余额不足");
             return null;
