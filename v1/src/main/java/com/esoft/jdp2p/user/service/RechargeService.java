@@ -1,10 +1,10 @@
 package com.esoft.jdp2p.user.service;
 
-import java.util.List;
-
 import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.jdp2p.loan.model.Recharge;
+
+import java.util.List;
 
 /**
  * Filename:RechargeService.java
@@ -58,6 +58,8 @@ public interface RechargeService {
 	 */
 	public List<RechargeBankCard> getBankCardsList();
 
+	public List<RechargeBankCard> getFastPayBankCardsList();
+
 	/**
 	 * 线下充值
 	 * @param recharge
@@ -71,4 +73,12 @@ public interface RechargeService {
 	 * @return
 	 */
 	String getBankNameByNo(String bankNo);
+
+	String getRechangeWay(String userId);
+
+	public List<RechargeBankCard> getRealNameBankList();
+
+	public boolean isRealNameBank(String bankNo);
+
+	public boolean isFastPaymentBank(String bankNo);
 }

@@ -21,8 +21,8 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             },
             phoneNumber: {
                 required: true,
-                digits: true,
                 phoneNumberExist: true,
+                digits: true,
                 rangelength: [11,11],
                 remote: {
                     url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
@@ -68,8 +68,9 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 minlength: "密码最少为6位！"
             },
             phoneNumber: {
-                digits: "手机号码格式错误",
                 required: "手机号不能为空！",
+                phoneNumberExist:'手机号输入错误！',
+                digits: "手机号码格式错误",
                 rangelength:'请输入正确的手机号！',
                 remote:"手机号码已存在或者不合法!"
             },

@@ -3,7 +3,7 @@ apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
-    def springVersion = '4.1.6.RELEASE'
+    def springVersion = '4.1.7.RELEASE'
     def springSecurityVersion = '4.0.1.RELEASE'
     def freemarkerVersion = '2.3.22'
     def jacksonVersion = '2.5.4'

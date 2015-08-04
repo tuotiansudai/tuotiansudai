@@ -285,7 +285,7 @@ public class LoanServiceImpl implements LoanService {
                     actualMoney = ArithUtil.add(actualMoney,
                             invest.getInvestMoney());
                 } catch (InsufficientBalance e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                     throw new RuntimeException(e);
                 }
                 // 更改投资状态
@@ -323,7 +323,7 @@ public class LoanServiceImpl implements LoanService {
                     OperatorInfo.GIVE_MONEY_TO_BORROWER,
                     "借款管理费, 借款ID：" + loan.getId());
         } catch (InsufficientBalance e) {
-            log.error(e);
+            log.error(e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
         ht.merge(loan);
@@ -614,7 +614,7 @@ public class LoanServiceImpl implements LoanService {
             try {
                 messageBO.sendSMS(smsMessageTemplate, smsParameters, invest.getUser().getMobileNumber());
             } catch (Exception e) {
-                log.error(e);
+                log.error(e.getLocalizedMessage(), e);
             }
 
         }
@@ -642,7 +642,7 @@ public class LoanServiceImpl implements LoanService {
                 try {
                     messageBO.sendEmailBySendCloud(emailMessageTemplate, emailParameters, email);
                 } catch (MailSendErrorException e) {
-                    log.error(e);
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
         }
