@@ -9,14 +9,13 @@ public class InvestItem implements java.io.Serializable {
     private String investorName;
     private String referrerId;
     private String referrerName;
-    private String referrerRole;
+    private Boolean isMerchandiser;
     private Integer refereeLevel;
     private Double reward;
     private String rewardStatus;
     private Date rewardTime;
     private Date investTime;
     private Double money;
-    private String investStatus;
 
     public String getInvestorName() {
         return investorName;
@@ -32,14 +31,6 @@ public class InvestItem implements java.io.Serializable {
 
     public void setReferrerName(String referrerName) {
         this.referrerName = referrerName;
-    }
-
-    public String getLoanId() {
-        return loanId;
-    }
-
-    public void setLoanId(String loanId) {
-        this.loanId = loanId;
     }
 
     public String getLoanName() {
@@ -106,27 +97,27 @@ public class InvestItem implements java.io.Serializable {
         this.money = money;
     }
 
-    public String getInvestStatus() {
-        return investStatus;
-    }
-
-    public void setInvestStatus(String investStatus) {
-        this.investStatus = investStatus;
-    }
-
-    public String getReferrerRole() {
-        return referrerRole;
-    }
-
-    public void setReferrerRole(String referrerRole) {
-        this.referrerRole = referrerRole;
-    }
-
     public String getRewardStatus() {
         return rewardStatus;
     }
 
     public void setRewardStatus(String rewardStatus) {
         this.rewardStatus = rewardStatus;
+    }
+
+    public Boolean getIsMerchandiser() {
+        return isMerchandiser;
+    }
+
+    public void setIsMerchandiser(Boolean isMerchandiser) {
+        this.isMerchandiser = isMerchandiser;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
     }
 }

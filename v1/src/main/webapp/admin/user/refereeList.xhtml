@@ -37,29 +37,36 @@
 						<h:outputLabel value="推荐层级: "></h:outputLabel>
 						<h:inputText value="#{refereeInvestList.condition.refereeLevel}"></h:inputText>
 
-						<h:outputLabel value="项目编号: "></h:outputLabel>
-						<h:inputText value="#{refereeInvestList.condition.loanId}"></h:inputText>
-
-						<h:outputLabel value="投资时间范围"></h:outputLabel>
+						<h:outputLabel value="投资时间"></h:outputLabel>
 						<ui:fragment>
-							<p:calendar value="#{refereeInvestList.startTime}"
+							<p:calendar value="#{refereeInvestList.investStartTime}"
 										pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
 										showButtonPanel="true" timeZone="GMT+8"/>
 							~
 							<p:calendar
-									value="#{refereeInvestList.endTime}"
+									value="#{refereeInvestList.investEndTime}"
 									pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
 									showButtonPanel="true" timeZone="GMT+8"/>
 						</ui:fragment>
 
-						<h:outputLabel value="投资状态"></h:outputLabel>
+						<h:outputLabel value="奖励时间"></h:outputLabel>
 						<ui:fragment>
-							<h:selectOneMenu value="#{refereeInvestList.condition.investStatus}">
-								<f:selectItem itemLabel="请选择 &#160;&#160;"
-											  noSelectionOption="true"/>
-								<f:selectItems
-										value="#{refereeInvestList.getSuccessInvestStatus()}"
-										var="dict" itemValue="#{dict.key}" itemLabel="#{dict.value}"/>
+							<p:calendar value="#{refereeInvestList.rewardStartTime}"
+										pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+										showButtonPanel="true" timeZone="GMT+8"/>
+							~
+							<p:calendar
+									value="#{refereeInvestList.rewardEndTime}"
+									pattern="yyyy-MM-dd HH:mm:ss" navigator="true"
+									showButtonPanel="true" timeZone="GMT+8"/>
+						</ui:fragment>
+
+						<h:outputLabel value="推荐人角色"></h:outputLabel>
+						<ui:fragment>
+							<h:selectOneMenu value="#{refereeInvestList.condition.isMerchandiser}">
+								<f:selectItem itemLabel="全部" noSelectionOption="true"/>
+								<f:selectItem itemLabel="业务员" itemValue="#{true}"/>
+								<f:selectItem itemLabel="用户" itemValue="#{false}"/>
 							</h:selectOneMenu>
 						</ui:fragment>
 						<h:outputText></h:outputText>
@@ -92,17 +99,12 @@
                         </span>
 
 					</f:facet>
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="项目编号"></h:outputText>
-						</f:facet>
-						<h:outputText value="#{invest.loanId}"></h:outputText>
-					</p:column>
+
 					<p:column>
 						<f:facet name="header">
 							<h:outputText value="项目名称"></h:outputText>
 						</f:facet>
-						<h:outputText value="#{invest.loanName}"></h:outputText>
+						<h:link value="#{invest.loanName}" outcome="/p2p_loan/#{invest.loanId}"></h:link>
 					</p:column>
 
 					<p:column>
@@ -112,20 +114,20 @@
 						<h:outputText value="#{invest.investorId}"></h:outputText>
 					</p:column>
 
-					<p:column style="text-align:right;">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="投资人姓名"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.investorName}"></h:outputText>
+					</p:column>
+
+					<p:column>
 						<f:facet name="header">
 							<h:outputText value="投资金额"></h:outputText>
 						</f:facet>
 						<h:outputText value="#{invest.money}">
 							<f:convertNumber minIntegerDigits="1" minFractionDigits="2"></f:convertNumber>
 						</h:outputText>
-					</p:column>
-
-					<p:column>
-						<f:facet name="header">
-							<h:outputText value="投资状态"></h:outputText>
-						</f:facet>
-						<h:outputText value="#{dictUtil.getValue('invest_status', invest.investStatus)}"></h:outputText>
 					</p:column>
 
 					<p:column>
@@ -142,6 +144,20 @@
 							<h:outputText value="推荐人"></h:outputText>
 						</f:facet>
 						<h:outputText value="#{invest.referrerId}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐人姓名"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.referrerName}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="推荐人是否业务员"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.isMerchandiser ? '是' : '否'}"></h:outputText>
 					</p:column>
 
 					<p:column>
