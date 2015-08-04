@@ -24,7 +24,7 @@
     </tbody>
 </table>
 {{#currentPage}}
-<div class="page_record" data-currentpage="{{currentPage}}">
+<div class="page-record" data-currentpage="{{currentPage}}">
     <p><i>共 <small>{{totalPages}}</small> 页, <small>{{totalCount}}</small> 条记录,当前第<small>{{currentPage}}</small>页</i>
         {{#hasPreviousPage}}<em class="prevbtn">上一页</em>{{/hasPreviousPage}}
         {{#hasNextPage}}<em class="nextbtn">下一页</em>{{/hasNextPage}}

@@ -12,6 +12,24 @@ require.config({
 });
 require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], function ($, Mustache, dealtableTpl) {
 
+    var oDate = new Date();
+    var oYear = oDate.getFullYear();
+    var oMonth = oDate.getMonth();
+    var oToday = oDate.getDate();
+
+    $(".start-end span").click(function () {
+        $(this).addClass("active").siblings("span").removeClass("active");
+        $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
+        var getarr = filterChanged();
+        getAjax(getarr[0], getarr[1], 1, getarr[2]);
+    });
+    $(".rec-type li").click(function () {
+        $(this).addClass("active").siblings("li").removeClass("active");
+        var getarr = filterChanged();
+        getAjax(getarr[0], getarr[1], 1, getarr[2]);
+
+    });
+
     $('#daterangepicker')
         .dateRangePicker({separator: ' ~ '})
         .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
@@ -19,27 +37,15 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
     function filterChanged() {
         var dates = $('#daterangepicker').val().split('~');
         var startDay = dates[0];
+
         var endDay = dates[1];
-        var selectedType = $('.rec_type').find(".active").attr('data-value');
-        var url = '/static/jsons/table.json?startday=' + startDay + '&endday=' + endDay + '&type=' + selectedType;
+        var selectedType = $('.rec-type').find(".active").attr('data-value');
+        //var url = '/static/jsons/table.json?startday=' + startDay + '&endday=' + endDay + '&type=' + selectedType;
+        var attr = new Array();
+        attr= [startDay,endDay,selectedType];
+        //console.log(attr)
+        return attr;
     }
-
-    filterChanged();
-    var getarr = filterChanged();
-    getAjax(getarr[0], getarr[1], 1, getarr[2]);
-
-    $(".start_end span").click(function () {
-        $(this).addClass("active").siblings("span").removeClass("active");
-        $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
-        getarr = filterChanged();
-        getAjax(getarr[0], getarr[1], 1, getarr[2]);
-    })
-    $(".rec_type li").click(function () {
-        $(this).addClass("active").siblings("li").removeClass("active");
-        getarr = filterChanged();
-        getAjax(getarr[0], getarr[1], 1, getarr[2]);
-
-    })
     function getAjax(stime, etime, page, rec_type) {
         $(".query_type strong").css("opacity", '1');
         var rec_typestr = '';
@@ -47,16 +53,24 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
             rec_typestr = "&type=" + rec_type;
         }
         if (stime == '' || stime == 'undefined') {
-            var url = "/static/jsons/table.json?page=" + page + rec_typestr;
+            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?page=" + page + rec_typestr;
         } else {
-            var url = "/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + page + rec_typestr;
+            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + page + rec_typestr;
         }
         $.get(url, function (res) {
             if (res.status === 'success') {
-                $(".query_type strong").css("display", 'none');
+                $(".query-type strong").css("display", 'none');
                 var ret = Mustache.render(dealtableTpl, res.data);
                 $('.result').html(ret);
             }
         });
     }
+    filterChanged();
+    var getarr = filterChanged();
+
+    getAjax(getarr[0], getarr[1], 1, getarr[2]);
+
+
+
+
 })
