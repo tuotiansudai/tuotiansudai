@@ -55,9 +55,9 @@ public class NumberValidator extends ValueChangeValidator implements
                         "numberValidator cardinalNumber is zero!",
                         Components.getLabel(component)));
             }
-            int decimalBit_1 = getDecimalBit(number);
-            int decimalBit_2 = getDecimalBit(cardinalNumber);
-            int decimaiBit = decimalBit_1 > decimalBit_2 ? decimalBit_1 : decimalBit_2;
+            int decimalBitInput = getDecimalBit(number);
+            int decimalBitCardinalNumber = getDecimalBit(cardinalNumber);
+            int decimaiBit = decimalBitInput > decimalBitCardinalNumber ? decimalBitInput : decimalBitCardinalNumber;
             int mutiple = (int) Math.pow(10, decimaiBit);
             number = (int) number * mutiple;
             double cardinalNumber_end = cardinalNumber * mutiple;
@@ -72,9 +72,9 @@ public class NumberValidator extends ValueChangeValidator implements
     }
 
     public int getDecimalBit(double target) {
-        String targetStr = target + "";
+        String targetStr = String.valueOf(target);
         int decimalPosition = targetStr.indexOf(".");
-        if (decimalPosition > 0) {
+        if (decimalPosition > -1) {
             int decimalBit = targetStr.substring(decimalPosition + 1).length();
             return decimalBit;
         }
