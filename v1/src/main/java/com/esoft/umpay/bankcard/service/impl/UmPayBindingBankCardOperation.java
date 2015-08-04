@@ -8,6 +8,7 @@ import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
@@ -33,6 +34,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -206,6 +208,14 @@ public class UmPayBindingBankCardOperation extends
 									bankCard.setBankNo(paramMap.get("gate_id"));
 									bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 									ht.update(bankCard);
+								}
+								String detailTemplate = "用户{0}绑定{1}银行卡";
+								try {
+									this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
+											userWillBindingBankCard.get(0).getUser().getId(),
+											this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
+								} catch (InsufficientBalance insufficientBalance) {
+									log.error(insufficientBalance);
 								}
 							}
 
