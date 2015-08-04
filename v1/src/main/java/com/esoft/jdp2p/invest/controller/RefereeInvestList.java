@@ -119,7 +119,9 @@ public class RefereeInvestList implements java.io.Serializable {
                 "invest.time as investTime, " +
                 "invest.money as money, " +
                 "investor.id as userId, " +
+                "investor.real_name as userName, " +
                 "referrer.id as referrerId, " +
+                "referrer.real_name as referrerName, " +
                 "rr.level as level, " +
                 "reward.role_name as referrerRole, " +
                 "reward.bonus as reward, " +
