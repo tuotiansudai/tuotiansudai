@@ -16,25 +16,22 @@ public class LoanListDaoImpl implements LoanListDao {
     private HibernateTemplate ht;
 
     private static String loanListSql = "select * from loan where "
-            + " status <> 'test' "
-            + " AND status in ('raising','complete','recheck','repaying')"
+            + " status in ('raising','complete','recheck','repaying')"
             + " order by case status when 'raising' then 1 "
             + " when 'recheck' then 2 when 'repaying' then 3 else 4 end asc,"
             + " case loan_activity_type when 'xs' then 1 else 2 end asc, "
             + " commit_time desc limit ?,? ";
 
+    private static String loanListCountSql = "select count(*) from loan where "
+            + " status in ('raising','complete','recheck','repaying') ";
+
+
+
     @Override
-    public boolean isHasNextPage(Integer index, Integer pageSize) {
-        int indexInt = index.intValue();
-        int pageSizeInt = pageSize.intValue();
+    public Integer getTotalCount() {
+        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(loanListCountSql);
 
-        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(loanListSql);
-        sqlQuery.addEntity(Loan.class);
-        sqlQuery.setParameter(0, indexInt * pageSizeInt);
-        sqlQuery.setParameter(1, pageSizeInt);
-        List<Loan> investList = sqlQuery.list();
-
-        return CollectionUtils.isNotEmpty(investList);
+        return ((Number)sqlQuery.uniqueResult()).intValue();
     }
 
     @Override

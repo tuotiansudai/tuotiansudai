@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LoanListDao {
 
-    boolean isHasNextPage(Integer index, Integer pageSize);
+    Integer getTotalCount();
 
     List<Loan> getInvestList(Integer index, Integer pageSize);
 }

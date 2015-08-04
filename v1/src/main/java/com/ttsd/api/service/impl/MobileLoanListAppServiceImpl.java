@@ -50,7 +50,7 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
             loanListResponseDataDto.setLoanList(loanDtoList);
             loanListResponseDataDto.setIndex(index);
             loanListResponseDataDto.setPageSize(pageSize);
-            loanListResponseDataDto.setHasNextPage(loanListDao.isHasNextPage(index,pageSize));
+            loanListResponseDataDto.setTotalCount(loanListDao.getTotalCount());
             dto.setData(loanListResponseDataDto);
         }
 

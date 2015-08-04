@@ -5,7 +5,7 @@ import java.util.List;
 public class LoanListResponseDataDto extends BaseResponseDataDto{
     private Integer index;
     private Integer pageSize;
-    private boolean hasNextPage;
+    private Integer totalCount;
     private List<LoanDto> loanList;
 
     public Integer getIndex() {
@@ -24,16 +24,12 @@ public class LoanListResponseDataDto extends BaseResponseDataDto{
         this.pageSize = pageSize;
     }
 
-    public boolean getHasNextPage() {
-        return hasNextPage;
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setHasNextPage(boolean hasNextPage) {
-        this.hasNextPage = hasNextPage;
-    }
-
-    public boolean isHasNextPage() {
-        return hasNextPage;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     public List<LoanDto> getLoanList() {
