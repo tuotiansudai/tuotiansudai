@@ -43,9 +43,9 @@ public class RefereeInvestList implements java.io.Serializable {
     public static final String SQL_TEMPLATE = "{0} {1} {2} {3}";
     public static final String FROM_TEMPLATE = "from invest join loan on invest.loan_id=loan.id " +
             "join user investor on invest.user_id=investor.id " +
-            "join invest_userReferrer reward on reward.invest_id=invest.id " +
             "join referrer_relation rr on rr.user_id=investor.id " +
-            "join user referrer on rr.referrer_id=referrer.id";
+            "join user referrer on rr.referrer_id=referrer.id " +
+            "join invest_userReferrer reward on reward.invest_id=invest.id and reward.referrer_id=referrer.id";
     public static final String ORDER_BY_TEMPLATE = "order by invest.time desc, invest.id, referrer.id";
 
     public LazyDataModel<InvestItem> getLazyModel() {

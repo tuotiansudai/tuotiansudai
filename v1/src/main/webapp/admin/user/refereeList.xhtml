@@ -104,7 +104,7 @@
 						<f:facet name="header">
 							<h:outputText value="项目名称"></h:outputText>
 						</f:facet>
-						<h:link value="#{invest.loanName}" outcome="/p2p_loan/#{invest.loanId}"></h:link>
+						<h:outputLink value="/p2p_loan/#{invest.loanId}" target="_blank">#{invest.loanName}</h:outputLink>
 					</p:column>
 
 					<p:column>
