@@ -13,4 +13,8 @@ CREATE TABLE `user_info_log` (
   KEY `user_info_log_user_id` (`user_id`) USING BTREE,
   KEY `user_info_log_obj_id` (`obj_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+insert into menu(id, type, label, url, pid, enable, seq_num, description, expanded, language, target, icon) values('user_info_log_list', 'Management', '用户管理日志', '/admin/user/userInfoLogList.htm', 'system_audit', 1, 1, '', 1, '*', '_self','');
+
 COMMIT ;
