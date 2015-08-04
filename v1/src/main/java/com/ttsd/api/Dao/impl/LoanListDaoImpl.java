@@ -20,6 +20,7 @@ public class LoanListDaoImpl implements LoanListDao {
             + " AND status in ('raising','complete','recheck','repaying')"
             + " order by case status when 'raising' then 1 "
             + " when 'recheck' then 2 when 'repaying' then 3 else 4 end asc,"
+            + " case loan_activity_type when 'xs' then 1 else 2 end asc, "
             + " commit_time desc limit ?,? ";
 
     @Override
