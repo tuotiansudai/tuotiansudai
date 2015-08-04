@@ -30,8 +30,12 @@ public enum ReturnMessage {
     /******手机端找回密码返回码******/
     SMS_CAPTCHA_IS_NULL("0020","验证码为空"),
     MOBILE_NUMBER_NOT_EXIST("0021","没有该手机号的用户"),
-    SMS_CAPTCHA_TYPE_IS_NULL("0022","验证码类型不能为空");
+    SMS_CAPTCHA_TYPE_IS_NULL("0022","验证码类型不能为空"),
     /******手机端找回密码返回码******/
+
+    /******手机端投资列表******/
+    REQUEST_PARAM_IS_WRONG("0023","请求参数错误");
+    /******手机端投资列表******/
 
 
     private String code;

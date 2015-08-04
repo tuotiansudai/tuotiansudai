@@ -1,12 +1,13 @@
 package com.ttsd.api.dto;
 
+import java.util.List;
 import java.util.Set;
 
 public class InvestListResponseDataDto extends BaseResponseDataDto{
     private Integer index;
     private Integer pageSize;
     private boolean hasNextPage;
-    private Set<InvestDto> loanList;
+    private List<InvestDto> loanList;
 
     public Integer getIndex() {
         return index;
@@ -36,11 +37,11 @@ public class InvestListResponseDataDto extends BaseResponseDataDto{
         return hasNextPage;
     }
 
-    public Set<InvestDto> getLoanList() {
+    public List<InvestDto> getLoanList() {
         return loanList;
     }
 
-    public void setLoanList(Set<InvestDto> loanList) {
+    public void setLoanList(List<InvestDto> loanList) {
         this.loanList = loanList;
     }
 }

@@ -1,5 +1,6 @@
 package com.ttsd.api.dao.impl;
 
+import com.esoft.jdp2p.loan.model.Loan;
 import com.ttsd.api.dao.InvestListDao;
 import com.ttsd.api.dto.InvestDto;
 import org.apache.commons.lang.StringUtils;
@@ -21,66 +22,35 @@ public class InvestListDaoImpl implements InvestListDao {
             + " or status='complete' "
             + " or status='recheck' "
             + " or status='repaying')"
-            + " order by seq_Num desc,case status when 'raising' then 1 "
+            + " order by case status when 'raising' then 1 "
             + " when 'recheck' then 2 when 'repaying' then 3 else 4 end asc,"
             + " commit_time desc limit ?,? ";
-
-    private static String loanListCountSql = "select count(1) from loan where "
-            + " status <> 'test' and (status='raising' "
-            + " or status='complete' "
-            + " or status='recheck' "
-            + " or status='repaying')"
-            + " order by seq_Num desc,case status when 'raising' then 1 "
-            + " when 'recheck' then 2 when 'repaying' then 3 else 4 end asc,"
-            + " commit_time desc limit ?,? ";
-
-
-    @Override
-    public String getLimitCondition(String index, String pageSize) {
-        return null;
-    }
 
     @Override
     public boolean isHasNextPage(Integer index, Integer pageSize) {
-        int indexInt;
-        int pageSizeInt;
-        if (index == null) {
-            indexInt = 1;
-        } else {
-            indexInt = index.intValue();
-        }
+        int indexInt = index.intValue();
+        int pageSizeInt = pageSize.intValue();
 
-        if (pageSize == null) {
-            pageSizeInt = 0;
-        } else {
-            pageSizeInt = pageSize.intValue();
-        }
-        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(loanListCountSql);
+        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(loanListSql);
+        sqlQuery.addEntity(Loan.class);
         sqlQuery.setParameter(0, indexInt * pageSizeInt);
         sqlQuery.setParameter(1, pageSizeInt);
-        return ((Number) sqlQuery.uniqueResult()).intValue() > 0;
+        List<Loan> investList = sqlQuery.list();
+
+        return investList != null && investList.size() > 0;
     }
 
     @Override
-    public List<InvestDto> getInvestList(Integer index, Integer pageSize) {
-        int indexInt;
-        int pageSizeInt;
-        if (index == null) {
-            indexInt = 1;
-        } else {
-            indexInt = index.intValue();
-        }
+    public List<Loan> getInvestList(Integer index, Integer pageSize) {
+        int indexInt = index.intValue();
+        int pageSizeInt = pageSize.intValue();
 
-        if (pageSize == null) {
-            pageSizeInt = 0;
-        } else {
-            pageSizeInt = pageSize.intValue();
-        }
 
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(loanListSql);
+        sqlQuery.addEntity(Loan.class);
         sqlQuery.setParameter(0, (indexInt - 1) * pageSizeInt);
         sqlQuery.setParameter(1, pageSizeInt);
-        List<InvestDto> investList = sqlQuery.list();
+        List<Loan> investList = sqlQuery.list();
 
         return investList;
     }
