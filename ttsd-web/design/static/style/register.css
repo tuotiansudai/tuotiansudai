@@ -376,7 +376,7 @@
 
 .verification-code-main p input.verification-code-text {
     background: url("../images/register/register.png") no-repeat 6px -548px;
-    width: 116px;
+    width: 160px;
     height: 38px;
     border: #bababa 1px solid;
     border-radius: 5px;
@@ -395,18 +395,6 @@
     background: #e4e4e4;
     border-radius: 5px;
     border: #bababa 1px solid;
-}
-
-.verification-code-main p a {
-    float: left;
-    width: 25px;
-    height: 15px;
-    border: #bababa 1px solid;
-    border-radius: 5px;
-    background: url("../images/register/register.png") no-repeat 15px -805px #e4e4e4;
-    color: #f68e3a;
-    font-size: 12px;
-    padding: 16px 8px 5px 8px;
 }
 
 .verification-code-main b {

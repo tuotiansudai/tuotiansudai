@@ -140,7 +140,9 @@
 <div class="verification-code"></div>
 <div class="verification-code-main">
     <span>手机验证<i class="close">X</i></span>
-    <p><input type="text" class="verification-code-text" placeholder="请输入图形验证码"/> <img src="" alt="" class="verification-code-img"/> <a href="javacript:;" class="">刷新</a>
+    <p>
+        <input type="text" class="verification-code-text" placeholder="请输入图形验证码"/>
+        <img src="" alt="" class="verification-code-img"/>
     </p>
     <b>验证码输入错误</b>
     <a href="javascript:;" class="complete">完成</a>
