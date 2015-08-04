@@ -2,12 +2,14 @@ package com.esoft.archer.user.controller;
 
 import com.esoft.archer.common.controller.EntityQuery;
 import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.archer.user.model.ReferrerInvest;
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.ReferGradePtSysService;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.ScopeType;
 import com.google.common.collect.Lists;
+import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Scope(ScopeType.VIEW)
@@ -80,6 +83,24 @@ public class ReferrerRelationList extends EntityQuery<User> {
         };
         setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
         return super.getLazyModelData();
+    }
+
+    public List<ReferrerInvest> getReferrerInvestList() {
+        List<ReferrerInvest> listResult = Lists.newArrayList();
+        String sql = "";
+        List<Map<String, Object>> result = getHt().getSessionFactory().getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+        for (int i=0;i<result.size();i++) {
+            ReferrerInvest referrerInvest = new ReferrerInvest();
+            referrerInvest.setInvestUserId(result.get(i).get("investUserId").toString());
+            referrerInvest.setLevel(Integer.parseInt(result.get(i).get("level").toString()));
+            referrerInvest.setInvestMoney(Double.parseDouble(result.get(i).get("investMoney").toString()));
+            referrerInvest.setInvestTime();
+            referrerInvest.setRewardMoney();
+            referrerInvest.setRewardRate();
+            referrerInvest.setRewardTime();
+            listResult.add(referrerInvest);
+        }
+        return listResult;
     }
 
     public List<ReferrerRelation> getReferrerRelations() {
