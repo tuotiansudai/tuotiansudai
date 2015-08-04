@@ -110,7 +110,7 @@ public class UserBillHome extends EntityHome<UserBill> implements Serializable {
                 return null;
             }
             String logMessage = adminOperationLogService.generateFinanceInfoString(getInstance());
-            adminOperationLogService.logFinanceOperation(getInstance().getUser().getId(), logMessage, true);
+            adminOperationLogService.logFinanceOperation(getInstance().getId(), logMessage, true);
         } catch (InsufficientBalance e) {
             FacesUtil.addErrorMessage("余额不足");
             return null;

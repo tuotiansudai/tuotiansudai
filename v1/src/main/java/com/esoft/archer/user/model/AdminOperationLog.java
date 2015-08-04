@@ -28,7 +28,6 @@ public class AdminOperationLog implements java.io.Serializable {
     private String operateType;
     private String objId;
     private String description;
-    private String username;
     private String userId;
     private String isSuccess;
 
@@ -49,15 +48,6 @@ public class AdminOperationLog implements java.io.Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Column(name = "user_name", nullable = false, length = 100)
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Column(name = "user_id", nullable = false, length = 32)
