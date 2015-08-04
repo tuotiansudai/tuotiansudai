@@ -25,8 +25,9 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
         getAjax(getarr[0], getarr[1], 1, getarr[2]);
     });
     $(".rec-type li").click(function () {
+        _day = $(".start-end span.active").attr('day');
         $(this).addClass("active").siblings("li").removeClass("active");
-        getarr = filterChanged();
+        getarr = filterChanged(_day);
         getAjax(getarr[0], getarr[1], 1, getarr[2]);
 
     });
@@ -65,19 +66,23 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
                         var _s_month = 12+oMonth-5;
                         var _s_year = oYear -1;
                     }
-
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((_s_year + '-' + _s_month + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
                         .bind('datepicker-apply', filterChanged);
-                }else{
-                    var _s_month = parseInt(oMonth);
-                    var _s_day = 30+oToday - _days;
+                }else if (_days == 7){
+                    var _s_day = 30+ oToday - _days;
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + _s_month + '-' + _s_day) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
+                        .val((oYear + '-' + oMonth + '-' + _s_day) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
+                        .bind('datepicker-apply', filterChanged);
+                }else{
+                    $('#daterangepicker')
+                        .dateRangePicker({separator: ' ~ '})
+                        .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
                         .bind('datepicker-apply', filterChanged);
                 }
+
             }
 
         }else{
@@ -88,10 +93,8 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
         }
         var dates = $('#daterangepicker').val().split('~');
         var startDay = dates[0];
-        console.log(startDay)
         var endDay = dates[1];
         var selectedType = $('.rec-type').find(".active").attr('data-value');
-        //var url = '/static/jsons/table.json?startday=' + startDay + '&endday=' + endDay + '&type=' + selectedType;
         var attr = new Array();
         attr= [startDay,endDay,selectedType];
         return attr;
