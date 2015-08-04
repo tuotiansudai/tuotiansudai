@@ -63,7 +63,6 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
         List<LoanDto> investList = new ArrayList<LoanDto>();
         for (Loan loan : loanList) {
             LoanDto loanDto = new LoanDto();
-            System.out.println("=======loan=id===" + loan.getId());
             loanDto.setLoanId(loan.getId());
             loanDto.setLoanType(loan.getLoanActivityType());
             loanDto.setLoanName(loan.getName());
