@@ -165,10 +165,10 @@ public class RefereeInvestList implements java.io.Serializable {
             whereTemplate += " and invest.time <='" + dateFormat.format(investEndTime) + "'";
         }
         if (rewardStartTime != null) {
-            whereTemplate += " and invest.time >='" + dateFormat.format(rewardStartTime) + "'";
+            whereTemplate += " and reward.time >='" + dateFormat.format(rewardStartTime) + "'";
         }
         if (rewardEndTime != null) {
-            whereTemplate += " and invest.time <='" + dateFormat.format(rewardEndTime) + "'";
+            whereTemplate += " and reward.time <='" + dateFormat.format(rewardEndTime) + "'";
         }
 
         return whereTemplate;
