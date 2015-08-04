@@ -338,5 +338,4 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             }
         }
     });
-    
 });
