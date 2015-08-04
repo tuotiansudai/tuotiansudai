@@ -275,7 +275,7 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 					return;
 				}
 			} else {
-				FacesUtil.addErrorMessage("图形码已经过期！");
+				FacesUtil.addErrorMessage("图形码未记录！");
 				try {
 					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
 				} catch (IOException e) {
