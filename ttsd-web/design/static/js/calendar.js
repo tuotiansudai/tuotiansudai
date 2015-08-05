@@ -16,7 +16,7 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
     var oYear = oDate.getFullYear();
     var oMonth = oDate.getMonth();
     var oToday = oDate.getDate();
-    var _day = 30;
+    //var _day = $(".start-end span.active").attr('day');
     $(".start-end span").click(function () {
         $(this).addClass("active").siblings("span").removeClass("active");
         $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
@@ -37,25 +37,25 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
         .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
         .bind('datepicker-apply', filterChanged);
     function filterChanged(ele) {
-        var _days = ele;
+        var _days = true;
         if(_days){
             if(_days <= oToday){
                 if(parseInt(_days) == 1){
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }else if( oToday - _days == 0) {
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((oYear + '-' + parseInt(oMonth + 1) + '-' + '1') + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }else{
                     var _s_day = oToday - _days;
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }
             }else{
                 if(_days == 180){
@@ -69,18 +69,18 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((_s_year + '-' + _s_month + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }else if (_days == 7){
                     var _s_day = 30+ oToday - _days;
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((oYear + '-' + oMonth + '-' + _s_day) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }else{
                     $('#daterangepicker')
                         .dateRangePicker({separator: ' ~ '})
                         .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        .bind('datepicker-apply', filterChanged);
+                        //.bind('datepicker-apply', filterChanged);
                 }
 
             }
@@ -89,7 +89,7 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
             $('#daterangepicker')
                 .dateRangePicker({separator: ' ~ '})
                 .val('')
-                .bind('datepicker-apply', filterChanged);
+                //.bind('datepicker-apply', filterChanged);
         }
         var dates = $('#daterangepicker').val().split('~');
         var startDay = dates[0];
@@ -118,12 +118,14 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
             }
         });
     }
-    filterChanged(_day);
-    var getarr = filterChanged(_day);
+    filterChanged();
+    var getarr = filterChanged();
 
     getAjax(getarr[0], getarr[1], 1, getarr[2]);
 
-
+    //$('#daterangepicker').bind('focus',function(){
+    //   $('.date-picker-wrapper').show();
+    //})
 
 
 })
