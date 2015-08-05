@@ -72,7 +72,7 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
         log.setId(IdGenerator.randomUUID());
         log.setDescription(description);
         log.setIp(userIp);
-        log.setIsSuccess(isSuccess ? "1" : "0");
+        log.setSuccess(isSuccess);
         log.setObjId(objId);
         log.setOperateTime(operateTime);
         log.setUserId(userId);

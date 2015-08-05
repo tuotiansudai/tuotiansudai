@@ -29,7 +29,7 @@ public class UserInfoLogList extends EntityQuery<UserInfoLog> {
 				"objId like #{userInfoLogList.example.objId}",
 				"userId like #{userInfoLogList.example.userId}",
 				"ip like #{userInfoLogList.example.ip}",
-				"isSuccess = #{userInfoLogList.example.isSuccess}",
+				"success = #{userInfoLogList.example.success}",
 				"operateTime >= #{userInfoLogList.operateTimeStart}",
 				"operateTime <= #{userInfoLogList.operateTimeEnd}"};
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));

@@ -30,10 +30,10 @@
                                 pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
                     <p:inputText id="userId" value="#{userInfoLogList.example.userId}"></p:inputText>
                     <p:inputText id="ip" value="#{userInfoLogList.example.ip}"></p:inputText>
-                    <h:selectOneMenu id="isSuccess" value="#{userInfoLogList.example.isSuccess}">
+                    <h:selectOneMenu id="success" value="#{userInfoLogList.example.success}">
                         <f:selectItem itemValue="" itemLabel="执行结果"/>
-                        <f:selectItem itemValue="1" itemLabel="成功"/>
-                        <f:selectItem itemValue="0" itemLabel="失败"/>
+                        <f:selectItem itemValue="true" itemLabel="成功"/>
+                        <f:selectItem itemValue="false" itemLabel="失败"/>
                     </h:selectOneMenu>
                     <p:commandButton update="dataTable" process="filters"
                                      value="#{commonMsg.searchLabel}"></p:commandButton>
@@ -73,8 +73,8 @@
                     </p:column>
 
                     <p:column headerText="执行结果">
-                        <h:outputText value="成功" rendered="#{log.isSuccess == '1'}"></h:outputText>
-                        <h:outputText style="color:red;" value="失败" rendered="#{log.isSuccess == '0'}"></h:outputText>
+                        <h:outputText value="成功" rendered="#{log.success}"></h:outputText>
+                        <h:outputText style="color:red;" value="失败" rendered="#{not log.success}"></h:outputText>
                     </p:column>
 
 

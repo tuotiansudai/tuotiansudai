@@ -7,7 +7,7 @@ CREATE TABLE `user_info_log` (
   `ip` varchar(70) DEFAULT NULL,
   `obj_id` varchar(100) DEFAULT NULL,
   `description` text,
-  `is_success` varchar(1),
+  `is_success` boolean,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_info_log_id` (`id`) USING BTREE,
   KEY `user_info_log_user_id` (`user_id`) USING BTREE,
@@ -17,7 +17,7 @@ CREATE TABLE `user_info_log` (
 
 insert into menu(id, type, label, url, pid, enable, seq_num, description, expanded, language, target, icon) values('user_info_log_list', 'Management', '用户管理日志', '/admin/user/userInfoLogList.htm', 'system_audit', 1, 1, '', 1, '*', '_self','');
 
-alter table `user_bill` add column(`cr_user_id` varchar(32) DEFAULT NULL) ;
-alter table `user_bill` add index `user_bill_cr_user_id` (`cr_user_id`)  USING BTREE;
+alter table `user_bill` add column(`operator` varchar(32) DEFAULT NULL) ;
+alter table `user_bill` add index `user_bill_operator` (`operator`)  USING BTREE;
 
 COMMIT ;

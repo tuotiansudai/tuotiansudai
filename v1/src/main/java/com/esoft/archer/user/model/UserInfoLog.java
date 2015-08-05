@@ -2,6 +2,7 @@ package com.esoft.archer.user.model;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +18,6 @@ import java.util.Date;
 @Table(name = "user_info_log")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entityCache")
 public class UserInfoLog implements java.io.Serializable {
-
-    public static final String OPERATE_TYPE_USER = "user";
-    public static final String OPERATE_TYPE_FINANCE = "finance";
     // Fields
 
     private String id;
@@ -29,7 +27,7 @@ public class UserInfoLog implements java.io.Serializable {
     private String objId;
     private String description;
     private String userId;
-    private String isSuccess;
+    private Boolean success;
 
     // Constructors
 
@@ -104,13 +102,14 @@ public class UserInfoLog implements java.io.Serializable {
         this.description = description;
     }
 
-    @Column(name = "is_success", nullable = false, length = 1)
-    public String getIsSuccess() {
-        return this.isSuccess;
+    @Column(name = "is_success",columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public void setIsSuccess(String isSuccess) {
-        this.isSuccess = isSuccess;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
 }

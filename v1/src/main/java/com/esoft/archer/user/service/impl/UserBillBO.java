@@ -105,7 +105,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.FREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setCrUserId(loginUserInfo.getLoginUserId());
+			ib.setOperator(loginUserInfo.getLoginUserId());
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
 				// 余额=0
@@ -242,7 +242,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.UNFREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setCrUserId(loginUserInfo.getLoginUserId());
+			ib.setOperator(loginUserInfo.getLoginUserId());
 
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
@@ -292,7 +292,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.TO_BALANCE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setCrUserId(loginUserInfo.getLoginUserId());
+			ib.setOperator(loginUserInfo.getLoginUserId());
 
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
@@ -370,7 +370,7 @@ public class UserBillBO {
 		lb.setType(UserBillConstants.Type.TI_BALANCE);
 		lb.setTypeInfo(operatorInfo);
 		lb.setUser(new User(userId));
-		lb.setCrUserId(loginUserInfo.getLoginUserId());
+		lb.setOperator(loginUserInfo.getLoginUserId());
 
 		if (ibLastest == null) {
 			lb.setSeqNum(1L);

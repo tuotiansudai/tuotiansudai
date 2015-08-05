@@ -36,7 +36,7 @@ public class UserBill implements java.io.Serializable {
 	 * 冻结金额
 	 */
 	private Double frozenMoney;
-	private String crUserId;
+	private String operator;
 
 	public UserBill() {
 	}
@@ -134,12 +134,12 @@ public class UserBill implements java.io.Serializable {
 		this.seqNum = seqNum;
 	}
 
-	@Column(name = "cr_user_id")
-	public String getCrUserId() {
-		return crUserId;
+	@Column(name = "operator")
+	public String getOperator() {
+		return operator;
 	}
 
-	public void setCrUserId(String crUserId) {
-		this.crUserId = crUserId;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 }
