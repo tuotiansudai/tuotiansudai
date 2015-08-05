@@ -164,19 +164,22 @@ public class UmPayNormalRepayOperation extends
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
                 new Object[]{referrerRelation.getReferrer(), referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital), deadLine, maxDigital);
+			return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitUserList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
+//			return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital), deadLine, maxDigital);
         }else {
 			if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
 				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), "INVESTOR"});
 				if (referGradeProfitSysListEx.size() > 0){
-					return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital), deadLine, maxDigital);
+					return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysListEx.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
+//					return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital), deadLine, maxDigital);
 				}else{
 					return -1;
 				}
 			}
             List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), roleId});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital),deadLine,maxDigital);
+				return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
+//				return ArithUtil.mul(ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital), deadLine, maxDigital);
 			}else {
 				return -1;
 			}
