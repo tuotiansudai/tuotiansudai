@@ -23,10 +23,12 @@ import java.util.List;
  */
 @Service(value = "userInfoLogService")
 public class UserInfoLogServiceImpl implements UserInfoLogService {
-    LoginUserInfo loginUserInfo = (LoginUserInfo) SpringBeanUtil.getBeanByName("loginUserInfo");
 
     @Resource
-    HibernateTemplate ht;
+    private LoginUserInfo loginUserInfo;
+
+    @Resource
+    private HibernateTemplate ht;
 
     @Override
     public String generateUserInfoString(User user) {

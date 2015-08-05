@@ -24,7 +24,9 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 
 @Service(value = "userBillBO")
 public class UserBillBO {
-	LoginUserInfo loginUserInfo = (LoginUserInfo) SpringBeanUtil.getBeanByName("loginUserInfo");
+
+	@Resource
+	private LoginUserInfo loginUserInfo;
 
 	@Resource
 	private HibernateTemplate ht;
