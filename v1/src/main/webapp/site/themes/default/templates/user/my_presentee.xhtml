@@ -23,7 +23,8 @@
 			/**清除筛选条件*/
 			function clearFilters() {
 				$(".datepicker").val('');
-				$("#dataTable\\:typeInfoFilter").val('');
+				$("#dataTable1\\:typeInfoFilter").val('');
+				$("#dataTable2\\:typeInfoFilter").val('');
 			}
 			$(function() {
 				initDatepicker();
@@ -66,7 +67,7 @@
 					<h:inputText style="width: 85px;" value="#{referrerRelationList.userName}" styleClass="date_txt date_txt02"> </h:inputText>
 					<div class="grzx_r02" style="padding-left: 15px;">
 						<h:commandLink styleClass="cx" value="查询">
-							<p:ajax process="@form" update="dataTable"
+							<p:ajax process="@form" update="form"
 								oncomplete="initDatepicker()"></p:ajax>
 							<f:setPropertyActionListener value="1"
 								target="#{referrerRelationList.currentPage}" />
@@ -75,53 +76,105 @@
 							class="cx cx02">重置</a>
 					</div>
 				</div>
-				<h:panelGroup id="dataTable">
-				<p class="jf">我的推荐列表</p>
-				<table width="786" border="0" cellspacing="0" cellpadding="0"
-					class="tab tab_01" >
-					<tr>
-						<td align="center" class="tab01">被推荐人</td>
-						<td align="center" class="tab01">被推荐人层级</td>
-						<td align="center" class="tab01">时间</td>
-					</tr>
-					<ui:repeat var="relation" value="#{referrerRelationList.getReferrerRelations()}">
-						<tr class="tab02bg">
-							<td align="center" class="tab02"><h:outputText
-									value="#{relation.user.username}">
-								</h:outputText></td>
-							<td align="center" class="tab02"><h:outputText
-									value="#{relation.level}"></h:outputText></td>
-							<td align="center" class="tab02"><h:outputText
-									value="#{relation.user.registerTime}">
-								<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
-												   timeZone="GMT+8" />
-							</h:outputText></td>
-						</tr>
-					</ui:repeat>
-				</table>
+				<div class="slideBox">
+					<div class="hd">
+						<ul class="slidings">
+							<li class="hover" id="two1"><a href="javascript:void(0)">我的推荐列表</a></li>
+							<li id="two2"><a href="javascript:void(0)">推荐人投资列表</a></li>
+						</ul>
+						<div class="bd">
+							<div id="con_two_1" class="slidnr">
+								<h:panelGroup id="dataTable1">
+								<table width="786" border="0" cellspacing="0" cellpadding="0"
+									   class="tab tab_01" >
+									<tr>
+										<td align="center" class="tab01">被推荐人</td>
+										<td align="center" class="tab01">被推荐人层级</td>
+										<td align="center" class="tab01">时间</td>
+									</tr>
+									<ui:repeat var="relation" value="#{referrerRelationList.getReferrerRelations()}">
+										<tr class="tab02bg">
+											<td align="center" class="tab02"><h:outputText
+													value="#{relation.user.username}">
+											</h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relation.level}"></h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relation.user.registerTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+																   timeZone="GMT+8" />
+											</h:outputText></td>
+										</tr>
+									</ui:repeat>
+								</table>
+								</h:panelGroup>
+							</div>
+							<div id="con_two_2" class="slidnr sliding_yc">
+								<h:panelGroup id="dataTable2">
+								<table width="786" border="0" cellspacing="0" cellpadding="0"
+									   class="tab tab_01" >
+									<tr>
+										<td align="center" class="tab01">被推荐人</td>
+										<td align="center" class="tab01">层级</td>
+										<td align="center" class="tab01">投资金额</td>
+										<td align="center" class="tab01">投资时间</td>
+										<td align="center" class="tab01">奖励金额</td>
+										<td align="center" class="tab01">奖励比例（%）</td>
+										<td align="center" class="tab01">奖励时间</td>
+									</tr>
+									<ui:repeat var="relationInvest" value="#{referrerRelationList.getReferrerInvestList()}">
+										<tr class="tab02bg">
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.investUserId}">
+											</h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.level}"></h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.investMoney}"></h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.investTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+																   timeZone="GMT+8" />
+											</h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.rewardMoney}"></h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.rewardRate}"></h:outputText></td>
+											<td align="center" class="tab02"><h:outputText
+													value="#{relationInvest.rewardTime}">
+												<f:convertDateTime pattern="yyyy-MM-dd"
+																   timeZone="GMT+8" />
+											</h:outputText></td>
+										</tr>
+									</ui:repeat>
+								</table>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="page_box">
 					<div class="page_r">
 						<ui:include src="refereeRelation.xhtml"></ui:include>
 					</div>
 				</div>
-				</h:panelGroup>
-			</h:form>
-		</div>
-		<div class="clear"></div>
+                </h:form>
+            </div>
+            <div class="clear"></div>
 
-		<script>
-			//复制
-			ZeroClipboard.config({
-				swfPath : "#{tplVars.themeJSPath}/ZeroClipboard.swf"
-			});
-			var client = new ZeroClipboard($(".copy"));
+            <script>
+                //复制
+                ZeroClipboard.config({
+                    swfPath : "#{tplVars.themeJSPath}/ZeroClipboard.swf"
+                });
+                var client = new ZeroClipboard($(".copy"));
 
-			client.on("ready", function(readyEvent) {
-				client.on("aftercopy", function(event) {
-					$.dialog.alert('复制成功！', function() {
-					});
-				});
-			});
-		</script>
-	</ui:define>
-</ui:composition>
+                client.on("ready", function(readyEvent) {
+                    client.on("aftercopy", function(event) {
+                        $.dialog.alert('复制成功！', function() {
+                        });
+                    });
+                });
+            </script>
+        </ui:define>
+    </ui:composition>
