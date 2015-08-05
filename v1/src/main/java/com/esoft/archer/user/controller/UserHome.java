@@ -1,21 +1,35 @@
 package com.esoft.archer.user.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.controller.EntityHome;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.InputRuleMatchingException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
+import com.esoft.archer.common.model.AuthInfo;
+import com.esoft.archer.common.service.AuthService;
 import com.esoft.archer.common.service.CaptchaService;
 import com.esoft.archer.common.service.ValidationService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.openauth.OpenAuthConstants;
+import com.esoft.archer.openauth.service.OpenAuthService;
+import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.archer.user.UserConstants;
+import com.esoft.archer.user.exception.ConfigNotFoundException;
+import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.exception.UserRegisterException;
+import com.esoft.archer.user.model.Role;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.service.UserInfoLogService;
+import com.esoft.archer.user.service.UserService;
+import com.esoft.archer.user.service.impl.UserBO;
+import com.esoft.core.annotations.Logger;
+import com.esoft.core.annotations.ScopeType;
+import com.esoft.core.jsf.util.FacesUtil;
+import com.esoft.core.util.HashCrypt;
+import com.esoft.core.util.ImageUploadUtil;
+import com.esoft.core.util.SpringBeanUtil;
+import com.esoft.core.util.StringManager;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,29 +48,16 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.esoft.archer.common.CommonConstants;
-import com.esoft.archer.common.controller.EntityHome;
-import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
-import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
-import com.esoft.archer.common.exception.NoMatchingObjectsException;
-import com.esoft.archer.common.model.AuthInfo;
-import com.esoft.archer.common.service.AuthService;
-import com.esoft.archer.openauth.OpenAuthConstants;
-import com.esoft.archer.openauth.service.OpenAuthService;
-import com.esoft.archer.system.controller.LoginUserInfo;
-import com.esoft.archer.user.UserConstants;
-import com.esoft.archer.user.exception.ConfigNotFoundException;
-import com.esoft.archer.user.exception.UserNotFoundException;
-import com.esoft.archer.user.model.User;
-import com.esoft.archer.user.service.UserService;
-import com.esoft.archer.user.service.impl.UserBO;
-import com.esoft.core.annotations.Logger;
-import com.esoft.core.annotations.ScopeType;
-import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.HashCrypt;
-import com.esoft.core.util.ImageUploadUtil;
-import com.esoft.core.util.SpringBeanUtil;
-import com.esoft.core.util.StringManager;
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Filename: UserHome.java Description: Copyright: Copyright (c)2013
@@ -73,6 +74,9 @@ import com.esoft.core.util.StringManager;
 @Scope(ScopeType.VIEW)
 public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
+    // 业务员角色名
+    private static final String ROLE_MERCHANDISER = "ROLE_MERCHANDISER";
+
     @Resource
     private UserService userService;
 
@@ -83,7 +87,11 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     private LoginUserInfo loginUser;
 
     @Resource
+    private UserInfoLogService userInfoLogService;
+
+    @Resource
     private UserBO userBO;
+
     @Resource
     private AuthInfoBO authInfoBO;
 
@@ -99,6 +107,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     @Deprecated
     private String referrer;
+
 
     // 验证认证码是否正确
     private boolean correctAuthCode = false;
@@ -240,6 +249,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         try {
             userService.changeUserStatus(userId,
                     UserConstants.UserStatus.DISABLE);
+            userInfoLogService.logUserOperation(userId, "禁用了用户：" + userId, true);
         } catch (ConfigNotFoundException e) {
         } catch (UserNotFoundException e) {
             FacesUtil.addErrorMessage("该用户不存在");
@@ -490,6 +500,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         try {
             userService.changeUserStatus(userId,
                     UserConstants.UserStatus.ENABLE);
+            userInfoLogService.logUserOperation(userId, "解禁了用户：" + userId, true);
+
             // FIXME:下面异常不合理
         } catch (ConfigNotFoundException e) {
         } catch (UserNotFoundException e) {
@@ -505,15 +517,36 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     @Transactional(readOnly = false)
     public String save() {
         // FIXME:放在service中
+        StringBuffer logMessage = new StringBuffer();
+
         if (StringUtils.isEmpty(getInstance().getId())) {
             getInstance().setId(getInstance().getUsername());
             getInstance().setPassword(HashCrypt.getDigestHash("123abc"));
             FacesUtil.addInfoMessage("用户创建成功，初始密码为123abc，请及时通知用户修改密码！");
             getInstance().setRegisterTime(new Date());
+            logMessage.append("创建了用户：");
+        } else {
+            logMessage.append("修改了用户信息：");
         }
 
+
         setUpdateView(FacesUtil.redirect("/admin/user/userList"));
-        return super.save();
+        String viewName = null;
+
+        String userString = userInfoLogService.generateUserInfoString(getInstance());
+        logMessage.append(userString);
+
+        try {
+            viewName = super.save();
+
+            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), true);
+        } catch (Exception e) {
+            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), false);
+            e.printStackTrace();
+            throw e;
+        }
+
+        return viewName;
     }
 
     /**
@@ -538,9 +571,43 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                 return null;
             }
         }
+        // 验证当前用户是否有推荐人，并设置有业务员角色。
+        if (verifyUserHasReferAndSetToMerchandiserRole()) {
+            FacesUtil.addErrorMessage("有推荐人的用户不允许添加业务员角色！");
+            return null;
+        }
         getBaseService().merge(getInstance());
         FacesUtil.addInfoMessage("用户信息修改成功！");
+
+        String userString = userInfoLogService.generateUserInfoString(getInstance());
+        userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
+
         return FacesUtil.redirect("/admin/user/userList");
+    }
+
+    /**
+     * 验证当前用户是否有推荐人，并设置有业务员角色。
+     *
+     * @return 有推荐人，且有业务员角色时返回true，其它情况返回false
+     */
+    private boolean verifyUserHasReferAndSetToMerchandiserRole() {
+        // 没有推荐人，则直接放行
+        if (StringUtils.isBlank(getInstance().getReferrer())) {
+            return false;
+        }
+        // 有推荐人则再检查角色列表。
+        List<Role> roles = getInstance().getRoles();
+        // 没有任何角色，则直接放行
+        if(roles==null || roles.size()==0){
+            return false;
+        }
+        // 有角色，则角色中不允许出现业务员
+        for (Role r : roles) {
+            if(ROLE_MERCHANDISER.equalsIgnoreCase(r.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -757,7 +824,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                 verifyResult = false;
             }
         } catch (InputRuleMatchingException | NoMatchingObjectsException | ClassNotFoundException | NoSuchMethodException e) {
-            log.error(e.getLocalizedMessage(),e);
+            log.error(e.getLocalizedMessage(), e);
             verifyResult = false;
         }
 
