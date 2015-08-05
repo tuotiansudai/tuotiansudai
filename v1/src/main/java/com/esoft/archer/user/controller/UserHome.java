@@ -18,6 +18,7 @@ import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.exception.ConfigNotFoundException;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.exception.UserRegisterException;
+import com.esoft.archer.user.model.Role;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserInfoLogService;
 import com.esoft.archer.user.service.UserService;
@@ -56,6 +57,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Filename: UserHome.java Description: Copyright: Copyright (c)2013
@@ -71,6 +73,9 @@ import java.util.Date;
 @Component
 @Scope(ScopeType.VIEW)
 public class UserHome extends EntityHome<User> implements java.io.Serializable {
+
+    // 业务员角色名
+    private static final String ROLE_MERCHANDISER = "ROLE_MERCHANDISER";
 
     @Resource
     private UserService userService;
@@ -102,6 +107,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     @Deprecated
     private String referrer;
+
 
     // 验证认证码是否正确
     private boolean correctAuthCode = false;
@@ -565,6 +571,11 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                 return null;
             }
         }
+        // 验证当前用户是否有推荐人，并设置有业务员角色。
+        if (verifyUserHasReferAndSetToMerchandiserRole()) {
+            FacesUtil.addErrorMessage("有推荐人的用户不允许添加业务员角色！");
+            return null;
+        }
         getBaseService().merge(getInstance());
         FacesUtil.addInfoMessage("用户信息修改成功！");
 
@@ -572,6 +583,31 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
 
         return FacesUtil.redirect("/admin/user/userList");
+    }
+
+    /**
+     * 验证当前用户是否有推荐人，并设置有业务员角色。
+     *
+     * @return 有推荐人，且有业务员角色时返回true，其它情况返回false
+     */
+    private boolean verifyUserHasReferAndSetToMerchandiserRole() {
+        // 没有推荐人，则直接放行
+        if (StringUtils.isBlank(getInstance().getReferrer())) {
+            return false;
+        }
+        // 有推荐人则再检查角色列表。
+        List<Role> roles = getInstance().getRoles();
+        // 没有任何角色，则直接放行
+        if(roles==null || roles.size()==0){
+            return false;
+        }
+        // 有角色，则角色中不允许出现业务员
+        for (Role r : roles) {
+            if(ROLE_MERCHANDISER.equalsIgnoreCase(r.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
