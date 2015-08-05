@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +90,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
 
     public List<ReferrerInvest> getReferrerInvestList() {
         List<ReferrerInvest> listResult = Lists.newArrayList();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String referrerId = loginUserInfo.getLoginUserId();
         String sql = "SELECT " +
                 "  temp.`investUserId`, " +
@@ -122,8 +124,11 @@ public class ReferrerRelationList extends EntityQuery<User> {
         }
         sql += "        AND i.`status` NOT IN (''{0}'', ''{1}'')  " +
                 "    WHERE t.`referrer_id` = ''{2}''" ;
-        if () {
-            sql += " AND t.`time` BETWEEN '"++"' AND '"++"'";
+        if (registerTimeStart !=null) {
+            sql += " AND t.`time` >= '"+simpleDateFormat.format(registerTimeStart)+"' ";
+        }
+        if (registerTimeEnd != null) {
+            sql += " AND t.`time` <= '"+simpleDateFormat.format(registerTimeEnd)+"' ";
         }
         sql += " ) temp  " +
                 "    ON r.`user_id` = temp.`investUserId`  " +
