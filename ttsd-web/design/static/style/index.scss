@@ -2014,6 +2014,7 @@
 .content-record table thead tr td, .content-record table tbody tr td {
   text-align: center;
   width: 155px;
+  font-size:15px;
 }
 
 .content-record table tbody tr:nth-child(even) {
@@ -2105,6 +2106,7 @@
   width: 128px;
   height: 28px;text-align: center;
 }
+
 .project-list:hover{ border:#f27a38 1px solid; border-radius:5px;}
 /**********project************/
 /*# sourceMappingURL=index.scss.map */
