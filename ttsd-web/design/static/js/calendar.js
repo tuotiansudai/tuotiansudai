@@ -12,103 +12,30 @@ require.config({
 });
 require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], function ($, Mustache, dealtableTpl) {
 
+    //初始化页面
     var oDate = new Date();
     var oYear = oDate.getFullYear();
     var oMonth = oDate.getMonth();
     var oToday = oDate.getDate();
-    //var _day = $(".start-end span.active").attr('day');
-    $(".start-end span").click(function () {
-        $(this).addClass("active").siblings("span").removeClass("active");
-        $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
-        _day = $(this).attr('day');
-        getarr = filterChanged(_day);
-        getAjax(getarr[0], getarr[1], 1, getarr[2]);
-    });
-    $(".rec-type li").click(function () {
-        _day = $(".start-end span.active").attr('day');
-        $(this).addClass("active").siblings("li").removeClass("active");
-        getarr = filterChanged(_day);
-        getAjax(getarr[0], getarr[1], 1, getarr[2]);
-
-    });
-
+    // 页面初始化日期 条件筛选1个月
     $('#daterangepicker')
         .dateRangePicker({separator: ' ~ '})
-        .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-        .bind('datepicker-apply', filterChanged);
-    function filterChanged(ele) {
-        var _days = true;
-        if(_days){
-            if(_days <= oToday){
-                if(parseInt(_days) == 1){
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }else if( oToday - _days == 0) {
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + parseInt(oMonth + 1) + '-' + '1') + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }else{
-                    var _s_day = oToday - _days;
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + parseInt(oMonth + 1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }
-            }else{
-                if(_days == 180){
-                    if(oMonth+1>6){
-                        var _s_month = parseInt(oMonth)-5;
-                        var _s_year = oYear;
-                    }else{
-                        var _s_month = 12+oMonth-5;
-                        var _s_year = oYear -1;
-                    }
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((_s_year + '-' + _s_month + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }else if (_days == 7){
-                    var _s_day = 30+ oToday - _days;
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + oMonth + '-' + _s_day) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }else{
-                    $('#daterangepicker')
-                        .dateRangePicker({separator: ' ~ '})
-                        .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday))
-                        //.bind('datepicker-apply', filterChanged);
-                }
-
-            }
-
-        }else{
-            $('#daterangepicker')
-                .dateRangePicker({separator: ' ~ '})
-                .val('')
-                //.bind('datepicker-apply', filterChanged);
-        }
+        .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
+    //ajax 请求
+    function getAjax(page) {
         var dates = $('#daterangepicker').val().split('~');
-        var startDay = dates[0];
-        var endDay = dates[1];
+        var startDay = $.trim(dates[0]);
+        var endDay = $.trim(dates[1]);
         var selectedType = $('.rec-type').find(".active").attr('data-value');
-        var attr = new Array();
-        attr= [startDay,endDay,selectedType];
-        return attr;
-    }
-    function getAjax(stime, etime, page, rec_type) {
         $(".query_type strong").css("opacity", '1');
         var rec_typestr = '';
-        if (rec_type != 0) {
-            rec_typestr = "&type=" + rec_type;
+        if (selectedType) {
+            rec_typestr = "&type=" + selectedType;
         }
-        if (stime == '' || stime == 'undefined') {
+        if (startDay == '' || startDay == 'undefined') {
             var url = "/tuotian/ttsd-web/design/static/jsons/table.json?page=" + page + rec_typestr;
         } else {
-            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?startday=" + stime + "&endday=" + etime + "&page=" + page + rec_typestr;
+            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?startday=" + startDay + "&endday=" + endDay + "&page=" + page + rec_typestr;
         }
         $.get(url, function (res) {
             if (res.status === 'success') {
@@ -118,14 +45,87 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
             }
         });
     }
-    filterChanged();
-    var getarr = filterChanged();
+    getAjax(1);
 
-    getAjax(getarr[0], getarr[1], 1, getarr[2]);
+    // 筛选日期修改
+    $(".start-end span").click(function () {
+        $(this).addClass("active").siblings("span").removeClass("active");
+        $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
+        filterChanged();
 
-    //$('#daterangepicker').bind('focus',function(){
-    //   $('.date-picker-wrapper').show();
-    //})
+    });
+
+    // 筛选操作类型
+    $(".rec-type li").click(function () {
+        $(this).addClass("active").siblings("li").removeClass("active");
+        getAjax(1);
+
+    });
+
+    //自定义修改日期筛选
+    $('.apply-btn').click(function () {
+        getAjax(1);
+    })
+
+    function filterChanged() {
+        var _year = oYear,
+            _month = oMonth,
+            _today = oToday,
+            _days = $(".start-end span.active").attr('day');
+        if(_days){
+            if(_days < oToday){
+                if(parseInt(_days) == 1){
+                    _month = oMonth+1;
+                    _today = oToday;
+
+                }else{
+
+                    _today = oToday - _days;
+
+                }
+            }else if(_days == oToday) {
+
+                _today = 1;
+
+            }else{
+                if(_days == 180){ //半年 六个月
+                    if(oMonth+1>6){
+                        _month = parseInt(oMonth)-5;
+
+                    }else{
+                        _month = 12+oMonth-5;
+                        _year = oYear -1;
+                    }
+
+                }else if (_days == 30){ // 一个月
+                    if(oMonth+1 == 2){
+                        _month = 12;
+                        _year = oYear -1;
+                    }else{
+                        _month = oMonth;
+                    }
+                }else{ //一周
+                    if(oMonth+1 == 2){
+                        _month = 12;
+                        _year = oYear -1;
+
+                    }else{
+                        _month = oMonth;
+                        _year = oYear ;
+
+                    }
+                    _days = _days || 0;
+                    oToday = oToday || 0;
+                    _today = 30+ oToday - _days;
+                }
+            }
+            $('#daterangepicker').val((_year + '-' + _month + '-' + _today) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
+
+        }else{
+            $('#daterangepicker').val('');
+        }
+        getAjax(1);
+    }
 
 
 })
