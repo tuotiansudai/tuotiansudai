@@ -25,9 +25,6 @@ import java.util.List;
 public class UserInfoLogServiceImpl implements UserInfoLogService {
 
     @Resource
-    private LoginUserInfo loginUserInfo;
-
-    @Resource
     private HibernateTemplate ht;
 
     @Override
@@ -38,7 +35,11 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
         sb.append("RealName:"+user.getRealname()+"; ");
         sb.append("Email:"+user.getEmail()+"; ");
         sb.append("Sex:"+user.getSex()+"; ");
-        sb.append("Status:"+user.getStatus()+"; ");
+        if("0".equalsIgnoreCase(user.getStatus())) {
+            sb.append("Status:禁用; ");
+        }else{
+            sb.append("Status:正常; ");
+        }
         sb.append("MobileNumber:"+user.getMobileNumber()+"; ");
         sb.append("BindIp:"+user.getBindIP()+"; ");
         sb.append("IdCard:"+user.getIdCard()+"; ");
@@ -66,8 +67,7 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String userIp = FacesUtil.getRequestIp(request);
         Timestamp operateTime = new Timestamp(System.currentTimeMillis());
-        String userId = loginUserInfo.getLoginUserId();
-
+        String userId = String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}"));
         UserInfoLog log = new UserInfoLog();
         log.setId(IdGenerator.randomUUID());
         log.setDescription(description);

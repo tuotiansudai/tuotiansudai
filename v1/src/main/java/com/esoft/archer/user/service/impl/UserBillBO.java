@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import com.esoft.archer.system.controller.LoginUserInfo;
+import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.SpringBeanUtil;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.DetachedCriteria;
@@ -24,9 +25,6 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 
 @Service(value = "userBillBO")
 public class UserBillBO {
-
-	@Resource
-	private LoginUserInfo loginUserInfo;
 
 	@Resource
 	private HibernateTemplate ht;
@@ -105,7 +103,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.FREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setOperator(loginUserInfo.getLoginUserId());
+			ib.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
 				// 余额=0
@@ -242,7 +240,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.UNFREEZE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setOperator(loginUserInfo.getLoginUserId());
+			ib.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
 
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
@@ -292,7 +290,7 @@ public class UserBillBO {
 			ib.setType(UserBillConstants.Type.TO_BALANCE);
 			ib.setTypeInfo(operatorInfo);
 			ib.setUser(new User(userId));
-			ib.setOperator(loginUserInfo.getLoginUserId());
+			ib.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
 
 			if (ibLastest == null) {
 				ib.setSeqNum(1L);
@@ -370,7 +368,7 @@ public class UserBillBO {
 		lb.setType(UserBillConstants.Type.TI_BALANCE);
 		lb.setTypeInfo(operatorInfo);
 		lb.setUser(new User(userId));
-		lb.setOperator(loginUserInfo.getLoginUserId());
+		lb.setOperator(String.valueOf(FacesUtil.getExpressionValue("#{loginUserInfo.loginUserId}")));
 
 		if (ibLastest == null) {
 			lb.setSeqNum(1L);
