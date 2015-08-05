@@ -8,9 +8,9 @@ import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.ReferGradePtSysService;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.ScopeType;
-import com.esoft.core.util.DateUtil;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -116,22 +116,30 @@ public class ReferrerRelationList extends EntityQuery<User> {
                 "    FROM " +
                 "      invest_userReferrer t  " +
                 "      JOIN invest i  " +
-                "        ON t.`invest_id` = i.`id`  " +
-                "        AND i.`status` NOT IN (''{0}'', ''{1}'')  " +
-                "    WHERE t.`referrer_id` = ''{2}'') temp  " +
+                "        ON t.`invest_id` = i.`id`  " ;
+        if (StringUtils.isNotEmpty(userName)) {
+            sql += "AND i.`user_id` LIKE #{referrerRelationList.userName} ";
+        }
+        sql += "        AND i.`status` NOT IN (''{0}'', ''{1}'')  " +
+                "    WHERE t.`referrer_id` = ''{2}''" ;
+        if () {
+            sql += " AND t.`time` BETWEEN '"++"' AND '"++"'";
+        }
+        sql += " ) temp  " +
                 "    ON r.`user_id` = temp.`investUserId`  " +
                 "    AND r.`referrer_id` = temp.`referrer_id`  " +
-                "ORDER BY temp.`rewardTime` DESC";
+                "ORDER BY temp.`rewardTime` DESC " +
+                "limit 0,7";
         List<Map<String, Object>> result = getHt().getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sql, InvestConstants.InvestStatus.CANCEL,InvestConstants.InvestStatus.UNFINISHED,referrerId)).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
         for (int i=0;i<result.size();i++) {
             ReferrerInvest referrerInvest = new ReferrerInvest();
             referrerInvest.setInvestUserId(result.get(i).get("investUserId").toString());
             referrerInvest.setLevel(Integer.parseInt(result.get(i).get("level").toString()));
             referrerInvest.setInvestMoney(Double.parseDouble(result.get(i).get("investMoney").toString()));
-            referrerInvest.setInvestTime(DateUtil.StringToDate(result.get(i).get("investTime").toString()));
+            referrerInvest.setInvestTime(result.get(i).get("investTime").toString().substring(0,10));
             referrerInvest.setRewardMoney(Double.parseDouble(result.get(i).get("rewardMoney").toString()));
             referrerInvest.setRewardRate(Double.parseDouble(result.get(i).get("rewardRate").toString()));
-            referrerInvest.setRewardTime(DateUtil.StringToDate(result.get(i).get("rewardTime").toString()));
+            referrerInvest.setRewardTime(result.get(i).get("rewardTime").toString().substring(0,10));
             listResult.add(referrerInvest);
         }
         return listResult;

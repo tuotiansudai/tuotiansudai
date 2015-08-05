@@ -1,7 +1,5 @@
 package com.esoft.archer.user.model;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2015/8/4.
  */
@@ -10,10 +8,10 @@ public class ReferrerInvest {
     private String investUserId;
     private int level;
     private double investMoney;
-    private Date investTime;
+    private String investTime;
     private double rewardMoney;
     private double rewardRate;
-    private Date rewardTime;
+    private String rewardTime;
 
     public String getInvestUserId() {
         return investUserId;
@@ -39,11 +37,11 @@ public class ReferrerInvest {
         this.investMoney = investMoney;
     }
 
-    public Date getInvestTime() {
+    public String getInvestTime() {
         return investTime;
     }
 
-    public void setInvestTime(Date investTime) {
+    public void setInvestTime(String investTime) {
         this.investTime = investTime;
     }
 
@@ -63,11 +61,11 @@ public class ReferrerInvest {
         this.rewardRate = rewardRate;
     }
 
-    public Date getRewardTime() {
+    public String getRewardTime() {
         return rewardTime;
     }
 
-    public void setRewardTime(Date rewardTime) {
+    public void setRewardTime(String rewardTime) {
         this.rewardTime = rewardTime;
     }
 }

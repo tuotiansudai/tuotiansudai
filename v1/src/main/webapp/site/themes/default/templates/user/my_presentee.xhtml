@@ -125,26 +125,19 @@
 									<ui:repeat var="relationInvest" value="#{referrerRelationList.getReferrerInvestList()}">
 										<tr class="tab02bg">
 											<td align="center" class="tab02"><h:outputText
-													value="#{relationInvest.investUserId}">
-											</h:outputText></td>
+													value="#{relationInvest.investUserId}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
 													value="#{relationInvest.level}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
 													value="#{relationInvest.investMoney}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
-													value="#{relationInvest.investTime}">
-												<f:convertDateTime pattern="yyyy-MM-dd"
-																   timeZone="GMT+8" />
-											</h:outputText></td>
+													value="#{relationInvest.investTime}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
 													value="#{relationInvest.rewardMoney}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
 													value="#{relationInvest.rewardRate}"></h:outputText></td>
 											<td align="center" class="tab02"><h:outputText
-													value="#{relationInvest.rewardTime}">
-												<!--<f:convertDateTime pattern="yyyy-MM-dd"-->
-																   <!--timeZone="GMT+8" />-->
-											</h:outputText></td>
+													value="#{relationInvest.rewardTime}"></h:outputText></td>
 										</tr>
 									</ui:repeat>
 								</table>
