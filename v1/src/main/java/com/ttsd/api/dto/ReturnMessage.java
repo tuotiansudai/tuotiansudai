@@ -34,8 +34,12 @@ public enum ReturnMessage {
     /******手机端找回密码返回码******/
 
     /******手机端投资列表******/
-    REQUEST_PARAM_IS_WRONG("0023","请求参数错误");
+    REQUEST_PARAM_IS_WRONG("0023","请求参数错误"),
     /******手机端投资列表******/
+
+    /******手机端标的详情******/
+    LOAN_ID_IS_NOT_EXIST("0024","标的详细信息不存在");
+    /******手机端标的详情******/
 
 
     private String code;
