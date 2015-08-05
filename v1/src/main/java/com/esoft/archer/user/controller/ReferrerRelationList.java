@@ -108,7 +108,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
                 "      t.`bonus` AS rewardMoney, " +
                 "      IF( " +
                 "        i.`money` != 0, " +
-                "        (t.`bonus` * 100) / i.`money`, " +
+                "        ROUND((t.`bonus` * 100) / i.`money`,2), " +
                 "        0 " +
                 "      ) AS rewardRate, " +
                 "      t.`time` AS rewardTime, " +
