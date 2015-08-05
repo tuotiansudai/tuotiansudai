@@ -17,11 +17,12 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
     var oYear = oDate.getFullYear();
     var oMonth = oDate.getMonth();
     var oToday = oDate.getDate();
+    var _page,_hasNextPage,_hasPreviousPage;  //define pages
     // 页面初始化日期 条件筛选1个月
     $('#daterangepicker')
         .dateRangePicker({separator: ' ~ '})
         .val((oYear + '-' + oMonth + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-    //ajax 请求
+    //ajax require
     function getAjax(page) {
         var dates = $('#daterangepicker').val().split('~');
         var startDay = $.trim(dates[0]);
@@ -42,12 +43,16 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
                 $(".query-type strong").css("display", 'none');
                 var ret = Mustache.render(dealtableTpl, res.data);
                 $('.result').html(ret);
+                _page = res.data['currentPage'];
+                _hasNextPage = res.data['hasNextPage'];
+                _hasPreviousPage = res.data['hasPreviousPage'];
+                console.log('分页'+ _page);
             }
         });
     }
     getAjax(1);
 
-    // 筛选日期修改
+    //select calendar
     $(".start-end span").click(function () {
         $(this).addClass("active").siblings("span").removeClass("active");
         $(".rec_type li").eq(0).addClass("active").siblings("li").removeClass("active");
@@ -55,14 +60,14 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
 
     });
 
-    // 筛选操作类型
+    // options
     $(".rec-type li").click(function () {
         $(this).addClass("active").siblings("li").removeClass("active");
         getAjax(1);
 
     });
 
-    //自定义修改日期筛选
+    //define calendar
     $('.apply-btn').click(function () {
         getAjax(1);
     })
@@ -88,7 +93,7 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
                 _today = 1;
 
             }else{
-                if(_days == 180){ //半年 六个月
+                if(_days == 180){ //  six month
                     if(oMonth+1>6){
                         _month = parseInt(oMonth)-5;
 
@@ -97,7 +102,7 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
                         _year = oYear -1;
                     }
 
-                }else if (_days == 30){ // 一个月
+                }else if (_days == 30){ // one month
                     if(oMonth+1 == 2){
                         _month = 12;
                         _year = oYear -1;
@@ -127,5 +132,27 @@ require(['jquery', 'mustache', 'text!../tpl/dealtable.tpl', 'daterangepicker'], 
         getAjax(1);
     }
 
+
+    //点击翻页按钮
+    $('body').on('click','.prevbtn',function(){
+        // prevbtn button
+        if(_hasPreviousPage){
+            _page--;
+            getAjax(_page);
+            $('.prevbtn').removeAttr('disabled');
+        }else{
+            $('.prevbtn').attr('disabled','true');
+        }
+    });
+    $('body').on('click','.nextbtn',function(){
+        // nextbtn button
+        if(_hasNextPage){
+            _page++;
+            getAjax(_page);
+            $('.nextbtn').removeAttr('disabled');
+        }else{
+            $('.nextbtn').attr('disabled','true');
+        }
+    });
 
 })
