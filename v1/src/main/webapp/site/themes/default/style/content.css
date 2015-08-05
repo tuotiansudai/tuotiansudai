@@ -54,7 +54,7 @@
 
 .detail-tab-con{width: 1000px;margin: 0 auto 80px;border: 1px solid #e5e5e5;background: #f8fbfc}
 .de-con-all{color: #909090;height: 253px;border-bottom:1px solid #ddd;width: 1000px;margin: 35px auto 25px;border: 1px solid #e5e5e5;background: #f8fbfc}
-.gabby-div{width: 668px;padding:20px 10px;}
+.gabby-div{width: 648px;padding:20px 10px;}
 .gabby-div h3{margin-bottom: 28px;}
 .gabby-div h3 a{font-size: 18px; color: #494949;}
 .gabby p strong{font-size: 26px;}
@@ -67,7 +67,7 @@
 .span3-div{height: 45px;line-height: 45px;}
 .span3-div span{display: inline-block;width: 30%}
 .span2-div span{display: inline-block;width: 40%}
-.gabby-right{width: 280px;background: #fff;height: 253px;padding-left: 20px;}
+.gabby-right{width: 300px;background: #fff;height: 253px;padding-left: 20px;}
 .p-line{background: #ebebeb;height: 1px;width: 304px;margin-left: -22px;}
 .fb{font-weight: bold;}
 .gabby-right p span{display: inline-block;width: 48%;font-size: 16px;}/* 宽度百分比过大 */
@@ -82,7 +82,7 @@
     outline: medium none;
     padding: 6px 0 6px 6px;
     width: 99px;}/* 调整宽度 */
-.sure-btn{display: inline-block;width: 244px;height: 46px;text-align: center;line-height: 46px;color: #fff;background: #f33735;font-size: 18px;border-radius: 4px;}
+.sure-btn{display: inline-block;width: 244px;height: 46px;text-align: center;line-height: 46px;color: #fff;background: #f33735;font-size: 18px;border-radius: 4px; margin-left:18px;}
 
 .nsure-btn { /* 颜色修改 */
 	background: none repeat scroll 0 0 #bfbfbf;
