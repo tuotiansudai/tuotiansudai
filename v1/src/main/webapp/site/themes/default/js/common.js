@@ -177,8 +177,6 @@ $(function(){
 			$('.dateTwo').hide();
 			$('.referrerTable').show();
 			$('.investTable').hide();
-			$('.referrerPage').show();
-			$('.investPage').hide();
 		}
 	});
 
@@ -192,8 +190,6 @@ $(function(){
 			$('.dateOne').hide();
 			$('.investTable').show();
 			$('.referrerTable').hide();
-			$('.investPage').show();
-			$('.referrerPage').hide();
 		}
 	});
 });
