@@ -191,6 +191,9 @@
 										</tr>
 									</ui:repeat>
 								</table>
+								<ui:fragment rendered="#{referrerRelationList.getRewardTotalMoney() > 0.0}">
+									<div class="income">推荐奖励总收益：<span class="total">#{referrerRelationList.getRewardTotalMoney()}元</span></div>
+								</ui:fragment>
 								<div class="page_box">
 									<div class="page_r">
 										<ui:include src="referrerInvestReward.xhtml"></ui:include>
