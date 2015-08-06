@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 @Component
@@ -161,8 +162,8 @@ public class TrusteeshipHome {
 		try {
 			this.umPayReplaceBankCardOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
 			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
-			return "pretty:withdraw";
-		} catch (TrusteeshipReturnException e) {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/user/withdraw");
+		} catch (TrusteeshipReturnException | IOException e) {
 			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
