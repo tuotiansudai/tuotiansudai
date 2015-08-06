@@ -35,8 +35,8 @@ import com.esoft.jdp2p.message.service.MailService;
 @Scope(ScopeType.VIEW)
 public class UserList extends EntityQuery<User> {
 
-	private static final String COUNT_HQL = "select count(distinct user) from User user left join user.roles role";
-	private static final String HQL = "select distinct user from User user left join user.roles role";
+	private static final String COUNT_HQL = "select count(*) from User";
+	private static final String HQL = "select user from User user";
 
 	private static StringManager sm = StringManager
 			.getManager(UserConstants.Package);
