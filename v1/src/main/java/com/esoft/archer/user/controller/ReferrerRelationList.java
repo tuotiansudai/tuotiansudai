@@ -134,7 +134,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
                 "  n.`loanId`, " +
                 "  l.`name` AS `loanName`, " +
                 "  l.`loan_activity_type` AS `loanActivityType`,"+
-                "  l.`deadline` "+
+                "  l.`deadline` AS `deadLine` "+
                 "FROM " +
                 "  (SELECT " +
                 "    temp.`investUserId`, " +
