@@ -12,13 +12,22 @@
   <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 <!-- link bootstrap css and js -->
-<link href="common/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="common/css/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-<script src="common/js/jquery-1.10.1.min.js"></script> <!-- jquery -->
-<script src="common/js/bootstrap.min.js"></script>
+<link href="../../common/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../common/css/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+<script src="../../common/js/jquery-1.10.1.min.js"></script> <!-- jquery -->
+<script src="../../common/js/bootstrap.min.js"></script>
 <!-- link bootstrap css and js -->
 
-<link rel="stylesheet" href="skin/css/index.css">
+<link rel="stylesheet" href="../../skin/css/index.css">
+<!-- 日历插件 -->
+<link href="../../common/css/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+<script type="text/javascript" charset="utf-8" src="../../common/js/moment-with-locales.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../common/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker').datetimepicker();
+    });
+</script> 
 </head>
 <body>
     <!-- header begin -->
@@ -31,7 +40,7 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a href="../" class="navbar-brand"><img src="skin/images/logo.jpg" alt=""></a>
+	      <a href="../../../" class="navbar-brand"><img src="../../skin/images/logo.jpg" alt=""></a>
 	    </div>
 	    </div>
 	    <nav id="bs-navbar" class="collapse navbar-collapse">
@@ -68,14 +77,17 @@
 				<!-- menu sidebar -->
 				<div class="col-md-2">
 					<ul class="nav bs-docs-sidenav">
-                		<li class=""><a href="#">所有借款</a></li>
-                		<li><a href="#">初审的借款</a></li>
-                		<li class="active"><a href="#">复审审核</a></li>
-                		<li><a href="#">筹款中借款</a></li>
-                		<li><a href="#">完成还款的借款</a></li>
-                		<li><a href="#">已经流标的借款</a></li>
-                		<li><a href="#">逾期借款</a></li>
-                		<li><a href="#">发起借款</a></li>
+						<li class="active"><a href="../../index.html">所有借款</a></li>
+						<li><a href="firstTrial.html">初审的借款</a></li>
+						<li><a href="moneyCollect.html">筹款中借款</a></li>
+						<li><a href="finishRefund.html">完成还款的借款</a></li>
+						<li><a href="Drain.html">已经流标的借款</a></li>
+						<li><a href="overdue.html">逾期借款</a></li>
+						<li><a href="star.html">发起借款</a></li>
+						<li><a href="twoTrial.html">复审借款</a></li>
+						<li><a href="recheck.html">复审核借款</a></li>
+						<li><a href="check.html">审核借款</a></li>
+						<li><a href="fundsEdit.html">复审借款</a></li>
                 	</ul>
 				</div>
 				<!-- menu sidebar end -->
@@ -90,49 +102,54 @@
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">代理用户:  </label>
+						    <label  class="col-sm-2 control-label">代理用户:  </label>
 						    <div class="col-sm-4">
 						    	<span class="form-control"> abc_sl_01</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">借款用户:	  </label>
+						    <label  class="col-sm-2 control-label">借款用户:	  </label>
 						    <div class="col-sm-4">
 						    	<span class="form-control"> abc_sl_01</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">标的类型:	  </label>
+						    <label  class="col-sm-2 control-label">标的类型:	  </label>
 						    <div class="col-sm-4">
 						    	<span class="form-control"> 先付利息后还本金，按天计息，即投即生息 </span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">审核信息:	  </label>
+						    <label  class="col-sm-2 control-label">审核信息:	  </label>
 						    <div class="col-sm-4">
 						    	<textarea class="form-control" rows="3"></textarea>
 						    </div>
 						</div>
 						<div class="form-group input-append">
-						    <label for="project" class="col-sm-2 control-label">筹款截止时间:	  </label>
+						    <label  class="col-sm-2 control-label">筹款截止时间:	  </label>
 						    <div class="col-sm-4">
-						    	<input type="text" class="input-small" ng-model="datepicker.date" placeholder="时间" data-date-format="yyyy/mm/dd" date-picker>
+					            <div class='input-group date' id='datetimepicker'>
+					                <input type='text' class="form-control" />
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+					            </div>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">风险等级:	  </label>
+						    <label  class="col-sm-2 control-label">风险等级:	  </label>
 						    <div class="col-sm-4">
 						    	<span class="form-control"> AAA</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">初审是否通过:	  </label>
+						    <label  class="col-sm-2 control-label">初审是否通过:	  </label>
 						    <div class="col-sm-4">
 						    	<span class="label label-success "> 是</span>
 						    </div>
 						</div>
 						<div class="form-group">
-						    <label for="project" class="col-sm-2 control-label">操作:	  </label>
+						    <label  class="col-sm-2 control-label">操作:	  </label>
 						    <div class="col-sm-4">
 						    	
 						    		<button type="submit" class="btn btn-primary">放款</button>
