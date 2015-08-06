@@ -9,8 +9,10 @@ import com.esoft.archer.user.service.ReferGradePtSysService;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.InvestConstants;
+import com.esoft.jdp2p.loan.LoanConstants;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -45,6 +47,12 @@ public class ReferrerRelationList extends EntityQuery<User> {
 
     private String userName;
 
+    private String referrerName;
+
+    private Date rewardTimeStart;
+
+    private Date rewardTimeEnd;
+
     private static final String LAZY_MODEL = "select distinct user from User user inner join user.referrers referrer where referrer.id=''{0}'' ";
 
     private static final String LAZY_MODEL_COUNT = "select count(distinct user) from User user inner join user.referrers referrer where referrer.id=''{0}''  ";
@@ -75,6 +83,30 @@ public class ReferrerRelationList extends EntityQuery<User> {
         this.userName = userName;
     }
 
+    public String getReferrerName() {
+        return referrerName;
+    }
+
+    public void setReferrerName(String referrerName) {
+        this.referrerName = referrerName;
+    }
+
+    public Date getRewardTimeStart() {
+        return rewardTimeStart;
+    }
+
+    public void setRewardTimeStart(Date rewardTimeStart) {
+        this.rewardTimeStart = rewardTimeStart;
+    }
+
+    public Date getRewardTimeEnd() {
+        return rewardTimeEnd;
+    }
+
+    public void setRewardTimeEnd(Date rewardTimeEnd) {
+        this.rewardTimeEnd = rewardTimeEnd;
+    }
+
     @Override
 
     public List<User> getLazyModelData() {
@@ -93,57 +125,71 @@ public class ReferrerRelationList extends EntityQuery<User> {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String referrerId = loginUserInfo.getLoginUserId();
         String sql = "SELECT " +
-                "  temp.`investUserId`, " +
-                "  r.`level`, " +
-                "  temp.`investMoney`, " +
-                "  temp.`investTime`, " +
-                "  temp.`rewardMoney`, " +
-                "  temp.`rewardRate`, " +
-                "  temp.`rewardTime` " +
+                "  n.`investUserId`, " +
+                "  n.`level`, " +
+                "  n.`investMoney`, " +
+                "  n.`investTime`, " +
+                "  n.`rewardMoney`, " +
+                "  n.`rewardTime`, " +
+                "  n.`loanId`, " +
+                "  l.`name` AS `loanName`, " +
+                "  l.`loan_activity_type` AS `loanActivityType`"+
                 "FROM " +
-                "  referrer_relation r  " +
-                "  JOIN  " +
-                "    (SELECT  " +
-                "      i.`user_id` AS investUserId, " +
-                "      i.`money` AS investMoney, " +
-                "      i.`time` AS investTime, " +
-                "      t.`bonus` AS rewardMoney, " +
-                "      IF( " +
-                "        i.`money` != 0, " +
-                "        ROUND((t.`bonus` * 100) / i.`money`,2), " +
-                "        0 " +
-                "      ) AS rewardRate, " +
-                "      t.`time` AS rewardTime, " +
-                "      t.`referrer_id` " +
-                "    FROM " +
-                "      invest_userReferrer t  " +
-                "      JOIN invest i  " +
-                "        ON t.`invest_id` = i.`id`  " ;
-        if (StringUtils.isNotEmpty(userName)) {
-            sql += "AND i.`user_id` LIKE #{referrerRelationList.userName} ";
-        }
-        sql += "        AND i.`status` NOT IN (''{0}'', ''{1}'')  " +
-                "    WHERE t.`referrer_id` = ''{2}''" ;
-        if (registerTimeStart !=null) {
-            sql += " AND t.`time` >= '"+simpleDateFormat.format(registerTimeStart)+"' ";
-        }
-        if (registerTimeEnd != null) {
-            sql += " AND t.`time` <= '"+simpleDateFormat.format(registerTimeEnd)+"' ";
-        }
-        sql += " ) temp  " +
-                "    ON r.`user_id` = temp.`investUserId`  " +
-                "    AND r.`referrer_id` = temp.`referrer_id`  " +
-                "ORDER BY temp.`rewardTime` DESC " +
-                "limit 0,7";
-        List<Map<String, Object>> result = getHt().getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sql, InvestConstants.InvestStatus.CANCEL,InvestConstants.InvestStatus.UNFINISHED,referrerId)).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+                "  (SELECT " +
+                "    temp.`investUserId`, " +
+                "    r.`level`, " +
+                "    temp.`investMoney`, " +
+                "    temp.`investTime`, " +
+                "    temp.`rewardMoney`, " +
+                "    temp.`rewardTime`, " +
+                "    temp.`loanId` " +
+                "  FROM " +
+                "    referrer_relation r " +
+                "    JOIN " +
+                "      (SELECT " +
+                "        i.`user_id` AS investUserId, " +
+                "        i.`money` AS investMoney, " +
+                "        i.`time` AS investTime, " +
+                "        i.`loan_id` AS loanId, " +
+                "        t.`bonus` AS rewardMoney, " +
+                "        t.`time` AS rewardTime, " +
+                "        t.`referrer_id` " +
+                "      FROM " +
+                "        invest_userReferrer t " +
+                "        JOIN invest i " +
+                "          ON t.`invest_id` = i.`id` ";
+                if (StringUtils.isNotEmpty(referrerName)) {
+                    sql += " AND i.`user_id` = ''"+referrerName+"'' ";
+                }
+               sql += " AND i.`status` NOT IN (''{0}'', ''{1}'') " +
+                "      WHERE t.`referrer_id` = ''{2}'' ";
+                if (rewardTimeStart != null) {
+                    sql += " AND t.`time` >= ''"+simpleDateFormat.format(rewardTimeStart)+"'' ";
+                }
+                if (rewardTimeEnd != null) {
+                    sql += " AND t.`time` <= ''"+simpleDateFormat.format(rewardTimeEnd)+"'' ";
+                }
+                sql += ") temp " +
+                "      ON r.`user_id` = temp.`investUserId` " +
+                "      AND r.`referrer_id` = temp.`referrer_id`) n " +
+                "  JOIN loan l " +
+                "    ON n.`loanId` = l.`id` " +
+                "    AND l.`status` IN (''{3}'', ''{4}'') " +
+                "ORDER BY n.`rewardTime` DESC " +
+                "LIMIT 0, 7";
+        String finalSql = MessageFormat.format(sql, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED, referrerId, LoanConstants.LoanStatus.COMPLETE, LoanConstants.LoanStatus.REPAYING);
+        Query query = getHt().getSessionFactory().getCurrentSession().createSQLQuery(finalSql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<Map<String, Object>> result = query.list();
         for (int i=0;i<result.size();i++) {
             ReferrerInvest referrerInvest = new ReferrerInvest();
             referrerInvest.setInvestUserId(result.get(i).get("investUserId").toString());
             referrerInvest.setLevel(Integer.parseInt(result.get(i).get("level").toString()));
             referrerInvest.setInvestMoney(Double.parseDouble(result.get(i).get("investMoney").toString()));
-            referrerInvest.setInvestTime(result.get(i).get("investTime").toString().substring(0,10));
+            referrerInvest.setInvestTime(result.get(i).get("investTime").toString().substring(0, 10));
             referrerInvest.setRewardMoney(Double.parseDouble(result.get(i).get("rewardMoney").toString()));
-            referrerInvest.setRewardRate(Double.parseDouble(result.get(i).get("rewardRate").toString()));
+            referrerInvest.setLoanId(result.get(i).get("loanId").toString());
+            referrerInvest.setLoanName(result.get(i).get("loanName").toString());
+            referrerInvest.setLoanActivityType(result.get(i).get("loanActivityType").toString());
             referrerInvest.setRewardTime(result.get(i).get("rewardTime").toString().substring(0,10));
             listResult.add(referrerInvest);
         }

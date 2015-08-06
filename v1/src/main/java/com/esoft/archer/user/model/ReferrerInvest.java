@@ -7,11 +7,13 @@ public class ReferrerInvest {
 
     private String investUserId;
     private int level;
+    private String loanId;
+    private String loanName;
     private double investMoney;
     private String investTime;
     private double rewardMoney;
-    private double rewardRate;
     private String rewardTime;
+    private String loanActivityType;
 
     public String getInvestUserId() {
         return investUserId;
@@ -53,19 +55,35 @@ public class ReferrerInvest {
         this.rewardMoney = rewardMoney;
     }
 
-    public double getRewardRate() {
-        return rewardRate;
-    }
-
-    public void setRewardRate(double rewardRate) {
-        this.rewardRate = rewardRate;
-    }
-
     public String getRewardTime() {
         return rewardTime;
     }
 
     public void setRewardTime(String rewardTime) {
         this.rewardTime = rewardTime;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
+    }
+
+    public String getLoanName() {
+        return loanName;
+    }
+
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
+    }
+
+    public String getLoanActivityType() {
+        return loanActivityType;
+    }
+
+    public void setLoanActivityType(String loanActivityType) {
+        this.loanActivityType = loanActivityType;
     }
 }
