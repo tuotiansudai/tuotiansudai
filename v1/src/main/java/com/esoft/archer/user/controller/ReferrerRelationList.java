@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -36,6 +37,11 @@ public class ReferrerRelationList extends EntityQuery<User> {
     @Resource
     private ReferGradePtSysService referGradePtSysService;
 
+    private int investRewardPageSize = 10;
+
+    private int currentInvestRewardPage = 1;
+
+    private int resultRowCount;
 
     public static final String INVESTOR = "INVESTOR";
 
@@ -107,6 +113,31 @@ public class ReferrerRelationList extends EntityQuery<User> {
         this.rewardTimeEnd = rewardTimeEnd;
     }
 
+    public int getInvestRewardPageSize() {
+        return investRewardPageSize;
+    }
+
+    public void setInvestRewardPageSize(int investRewardPageSize) {
+        this.investRewardPageSize = investRewardPageSize;
+    }
+
+    public int getCurrentInvestRewardPage() {
+        return currentInvestRewardPage;
+    }
+
+    public void setCurrentInvestRewardPage(int currentInvestRewardPage) {
+        this.currentInvestRewardPage = currentInvestRewardPage;
+    }
+
+    public int getResultRowCount() {
+        List<ReferrerInvest> referrerInvestList = getReferrerInvestList(false);
+        return referrerInvestList.size();
+    }
+
+    public void setResultRowCount(int resultRowCount) {
+        this.resultRowCount = resultRowCount;
+    }
+
     @Override
 
     public List<User> getLazyModelData() {
@@ -120,7 +151,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
         return super.getLazyModelData();
     }
 
-    public List<ReferrerInvest> getReferrerInvestList() {
+    public List<ReferrerInvest> getReferrerInvestList(boolean flag) {
         List<ReferrerInvest> listResult = Lists.newArrayList();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String referrerId = loginUserInfo.getLoginUserId();
@@ -176,8 +207,10 @@ public class ReferrerRelationList extends EntityQuery<User> {
                 "  JOIN loan l " +
                 "    ON n.`loanId` = l.`id` " +
                 "    AND l.`status` IN (''{3}'', ''{4}'') " +
-                "ORDER BY n.`rewardTime` DESC " +
-                "LIMIT 0, 7";
+                " ORDER BY n.`rewardTime` DESC ";
+                if (flag) {
+                 sql +=  " LIMIT " + (currentInvestRewardPage - 1) * 10 + "," + investRewardPageSize;
+                }
         String finalSql = MessageFormat.format(sql, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED, referrerId, LoanConstants.LoanStatus.COMPLETE, LoanConstants.LoanStatus.REPAYING);
         Query query = getHt().getSessionFactory().getCurrentSession().createSQLQuery(finalSql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String, Object>> result = query.list();
@@ -196,6 +229,16 @@ public class ReferrerRelationList extends EntityQuery<User> {
             listResult.add(referrerInvest);
         }
         return listResult;
+    }
+
+    public double getRewardTotalMoney() {
+        double resultMoney = 0.0;
+        List<ReferrerInvest> referrerInvestList = getReferrerInvestList(false);
+        for (int i=0;i<referrerInvestList.size();i++) {
+            resultMoney += referrerInvestList.get(i).getRewardMoney();
+        }
+        BigDecimal bigDecimal = new BigDecimal(resultMoney);
+        return bigDecimal.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public List<ReferrerRelation> getReferrerRelations() {

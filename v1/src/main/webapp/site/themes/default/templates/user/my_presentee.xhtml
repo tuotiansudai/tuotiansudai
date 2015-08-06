@@ -145,7 +145,7 @@
 										<td align="center" class="tab01">奖励金额</td>
 										<td align="center" class="tab01">奖励时间</td>
 									</tr>
-									<ui:repeat var="relationInvest" value="#{referrerRelationList.getReferrerInvestList()}">
+									<ui:repeat var="relationInvest" value="#{referrerRelationList.getReferrerInvestList(true)}">
 										<tr class="tab02bg">
 											<td align="center" class="tab02"><h:outputText
 													value="#{relationInvest.investUserId}"></h:outputText></td>
@@ -153,22 +153,22 @@
 													value="#{relationInvest.level}"></h:outputText></td>
 											<td align="center" class="tab02">
 												<ui:fragment rendered="#{relationInvest.loanActivityType == 'xs'}">
-													<a href="#{path}/p2p_loan_xsb/#{relationInvest.loanId}">
+													<a href="#{path}/p2p_loan_xsb/#{relationInvest.loanId}" target="_blank">
 														#{fn:substring(relationInvest.loanName,0,8)}<ui:fragment rendered="#{fn:length(relationInvest.loanName) > 8}">...</ui:fragment>
 													</a>
 												</ui:fragment>
 												<ui:fragment rendered="#{relationInvest.loanActivityType == 'pt'}">
-													<a href="#{path}/p2p_loan/#{relationInvest.loanId}">
+													<a href="#{path}/p2p_loan/#{relationInvest.loanId}" target="_blank">
 														#{fn:substring(relationInvest.loanName,0,8)}<ui:fragment rendered="#{fn:length(relationInvest.loanName) > 8}">...</ui:fragment>
 													</a>
 												</ui:fragment>
 												<ui:fragment rendered="#{relationInvest.loanActivityType == 'jx'}">
-													<a href="#{path}/p2p_loan_jxb/#{relationInvest.loanId}">
+													<a href="#{path}/p2p_loan_jxb/#{relationInvest.loanId}" target="_blank">
 														#{fn:substring(relationInvest.loanName,0,8)}<ui:fragment rendered="#{fn:length(relationInvest.loanName) > 8}">...</ui:fragment>
 													</a>
 												</ui:fragment>
 												<ui:fragment rendered="#{relationInvest.loanActivityType == 'dx'}">
-													<a href="#{path}/p2p_loan_dxb/#{relationInvest.loanId}">
+													<a href="#{path}/p2p_loan_dxb/#{relationInvest.loanId}" target="_blank">
 														#{fn:substring(relationInvest.loanName,0,8)}<ui:fragment rendered="#{fn:length(relationInvest.loanName) > 8}">...</ui:fragment>
 													</a>
 												</ui:fragment>
@@ -191,9 +191,14 @@
 						</div>
 					</div>
 				</div>
-				<div class="page_box">
+				<div class="page_box referrerPage">
 					<div class="page_r">
 						<ui:include src="refereeRelation.xhtml"></ui:include>
+					</div>
+				</div>
+				<div class="page_box investPage sliding_yc">
+					<div class="page_r">
+						<ui:include src="referrerInvestReward.xhtml"></ui:include>
 					</div>
 				</div>
                 </h:form>
