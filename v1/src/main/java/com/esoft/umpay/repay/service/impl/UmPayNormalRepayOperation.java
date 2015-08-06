@@ -159,22 +159,30 @@ public class UmPayNormalRepayOperation extends
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan,String roleId) {
 		int percentage = 100;
 		int maxDigital = 2;
+		int repayWay = 1;
+		String repayTimeUnit = loan.getType().getRepayTimeUnit();
+		int deadLine = loan.getDeadline();
+		if(repayTimeUnit.equals("month")){
+			repayWay = 12;
+		}else if(repayTimeUnit.equals("day")){
+			repayWay = 365;
+		}
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
-                new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
+                new Object[]{referrerRelation.getReferrer(), referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
+			return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitUserList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
         }else {
 			if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
-				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
+				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), "INVESTOR"});
 				if (referGradeProfitSysListEx.size() > 0){
-					return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
+					return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysListEx.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
 				}else{
 					return -1;
 				}
 			}
-            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
+            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), roleId});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), percentage, maxDigital);
+				return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
 			}else {
 				return -1;
 			}
