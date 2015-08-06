@@ -121,7 +121,7 @@ public class UmPayBindingAgreementOperation extends
                         ht.update(bankCard);
                     }
                     log.debug(("用户:"
-                            + userBankCard.get(0).getUser()
+                            + userBankCard.get(0).getUser().getId()
                             +"签约协议成功!"));
                 }
             } else {
@@ -166,7 +166,7 @@ public class UmPayBindingAgreementOperation extends
                                 ht.update(bankCard);
                             }
                             log.debug(("用户:"
-                                    + userBankCard.get(0).getUser()
+                                    + userBankCard.get(0).getUser().getId()
                                     +"签约协议成功!"));
                         }
                     }

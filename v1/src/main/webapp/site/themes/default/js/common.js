@@ -128,6 +128,10 @@ function timerCount(xhr, status, args, buttonId) {
 function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
+$(function(){
+	$('.jq_mobile').attr('disabled',true);
+})
+
 
 $(function(){
 	if ($('.isOpenFastPay').val() == '1'){
