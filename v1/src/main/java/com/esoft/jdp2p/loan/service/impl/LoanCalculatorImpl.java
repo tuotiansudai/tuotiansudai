@@ -1,5 +1,6 @@
 package com.esoft.jdp2p.loan.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -115,7 +116,18 @@ public class LoanCalculatorImpl implements LoanCalculator {
 //		remain = remain < loan.getMaxInvestMoney() ? remain :loan.getMaxInvestMoney();
 		return remain < 0 ? 0 : remain;
 	}
-	
+
+	public Double calculateMoneyRaised(String loanId)
+			throws NoMatchingObjectsException {
+		Loan loan = ht.get(Loan.class, loanId);
+		if (loan == null) {
+			throw new NoMatchingObjectsException(Loan.class,
+					"cannot find loan by loanId:" + loanId);
+		}
+		double moneyNeedRaised = calculateMoneyNeedRaised(loanId);
+		return new BigDecimal(loan.getLoanMoney() - moneyNeedRaised).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
+
 	@Override
 	public Double calculateMoneyMaxInvested(String loanId)
 			throws NoMatchingObjectsException {
