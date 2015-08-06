@@ -38,10 +38,8 @@
 
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.StaticResourceVersionMap">
         <property name="singleton" value="true"/>
-        <property name="javascriptDevelopmentLocation" value="/js/"/>
-        <property name="javascriptProductionLocation" value="/js/dest"/>
-        <property name="cssDevelopmentLocation" value="/css"/>
-        <property name="cssProductionLocation" value="/css/dest"/>
+        <property name="javascriptLocation" value="/js/dest"/>
+        <property name="cssLocation" value="/style/dest"/>
     </bean>
 
     <!-- freemarker config -->
