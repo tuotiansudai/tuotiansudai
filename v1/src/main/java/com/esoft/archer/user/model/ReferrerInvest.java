@@ -14,6 +14,7 @@ public class ReferrerInvest {
     private double rewardMoney;
     private String rewardTime;
     private String loanActivityType;
+    private int deadLine;
 
     public String getInvestUserId() {
         return investUserId;
@@ -85,5 +86,13 @@ public class ReferrerInvest {
 
     public void setLoanActivityType(String loanActivityType) {
         this.loanActivityType = loanActivityType;
+    }
+
+    public int getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(int deadLine) {
+        this.deadLine = deadLine;
     }
 }

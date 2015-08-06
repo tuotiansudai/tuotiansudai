@@ -133,7 +133,8 @@ public class ReferrerRelationList extends EntityQuery<User> {
                 "  n.`rewardTime`, " +
                 "  n.`loanId`, " +
                 "  l.`name` AS `loanName`, " +
-                "  l.`loan_activity_type` AS `loanActivityType`"+
+                "  l.`loan_activity_type` AS `loanActivityType`,"+
+                "  l.`deadline` "+
                 "FROM " +
                 "  (SELECT " +
                 "    temp.`investUserId`, " +
@@ -191,6 +192,7 @@ public class ReferrerRelationList extends EntityQuery<User> {
             referrerInvest.setLoanName(result.get(i).get("loanName").toString());
             referrerInvest.setLoanActivityType(result.get(i).get("loanActivityType").toString());
             referrerInvest.setRewardTime(result.get(i).get("rewardTime").toString().substring(0,10));
+            referrerInvest.setDeadLine(Integer.parseInt(result.get(i).get("deadLine").toString()));
             listResult.add(referrerInvest);
         }
         return listResult;
