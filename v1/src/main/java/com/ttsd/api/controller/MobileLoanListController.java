@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class MobileLoanListController {
     @Resource
     private MobileLoanListAppService mobileLoanListAppService;
-    @RequestMapping(value="/queryinvestlist",method = RequestMethod.POST)
+    @RequestMapping(value="/queryinvestlist1",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto queryLoanList(@RequestBody LoanListRequestDto loanListRequestDto){
         return mobileLoanListAppService.generateLoanList(loanListRequestDto);

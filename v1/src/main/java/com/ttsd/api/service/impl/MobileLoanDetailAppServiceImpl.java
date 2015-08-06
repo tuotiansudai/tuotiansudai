@@ -9,6 +9,7 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.ttsd.aliyun.PropertiesUtils;
+import com.ttsd.api.dao.InvestListDao;
 import com.ttsd.api.dao.LoanDetailDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileLoanDetailAppService;
@@ -30,9 +31,12 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
     static Log log;
     @Resource
     private LoanDetailDao loanDetailDao;
+    @Resource
+    private InvestListDao investListDao;
 
     @Resource
     private LoanCalculator loanCalculator;
+
 
 
     @Override
@@ -88,7 +92,7 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
         loanDetailResponseDataDto.setEvidence(evidences);
         loanDetailResponseDataDto.setTotalCount(loan.getInvests().size());
         if (CollectionUtils.isNotEmpty(loan.getInvests())) {
-            loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(loan.getInvests()));
+            loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(investListDao.getInvestList(1,5,loan.getId())));
         }
         return loanDetailResponseDataDto;
     }
@@ -96,7 +100,8 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
     @Override
     public List<InvestRecordDto> convertInvestRecordDtoFromInvest(List<Invest> invests) {
         List<InvestRecordDto> investRecordDtos = new ArrayList<InvestRecordDto>();
-        for (Invest invest : invests) {
+
+        for (Invest invest:invests) {
             InvestRecordDto investRecordDto = new InvestRecordDto();
             String userNameTemp = invest.getUser().getUsername();
             if(userNameTemp.length() > 3){
