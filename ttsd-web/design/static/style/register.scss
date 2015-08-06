@@ -68,7 +68,11 @@
       background: url("../images/register/register-arrow-active.png") no-repeat;
     }
   }
-  & .agreement-check{
+  & .register-step-two {
+    margin-top: 100px;
+    display: none;
+  }
+  & .agreement-check {
     float: left;
   }
 }
@@ -77,7 +81,7 @@
   width: 610px;
   height: 410px;
   margin-left: 325px;
-  display: none;
+  display: block;
   & ol {
     width: 600px;
     & li {
@@ -121,7 +125,7 @@
       }
     }
     & input {
-      color:#999;
+      color: #999;
       width: 280px;
       height: 38px;
       line-height: 38px;
@@ -175,9 +179,7 @@
   & .active {
     display: block;
   }
-  & .register-step-two {
-    margin-top: 100px;
-  }
+
   & .register-user {
     width: 174px;
     height: 48px;
@@ -298,3 +300,88 @@
   color: #999;
   text-decoration: underline;
 }
+
+.verification-code {
+  background: rgba(0, 0, 0, .7);
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  display: none;
+}
+
+.verification-code-main {
+  width: 390px;
+  height: 262px;
+  padding: 0px 16px;
+  background: #fff;
+  border: #bababa 1px solid;
+  border-radius: 5px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -131px 0px 0px -211px;
+  z-index: 999;
+  display: none;
+  & span {
+    width: 100%;
+    line-height: 18px;
+    padding: 22px 0 6px 0;
+    display: block;
+    border-bottom: #bababa 1px solid;
+    & i {
+      float: right;
+      cursor: pointer;
+    }
+  }
+  & p {
+    width: 290px;
+    height: 42px;
+    margin: 50px auto 0px;
+    & input.verification-code-text {
+      background: url("../images/register/register.png") no-repeat 6px -548px;
+      width: 160px;
+      height: 38px;
+      border: #bababa 1px solid;
+      border-radius: 5px;
+      float: left;
+      margin-right: 6px;
+      font-size: 12px;
+      padding-left: 30px;
+    }
+    & img.verification-code-img {
+      width: 80px;
+      height: 36px;
+      margin-right: 6px;
+      border-radius: 5px;
+      float: left;
+      background: #e4e4e4;
+      border-radius: 5px;
+      border: #bababa 1px solid;
+    }
+  }
+  & b {
+    color: #f68e3a;
+    font-size: 12px;
+    background: url("../images/register/register.png") no-repeat 0px -86px;
+    padding-left: 40px;
+    line-height: 30px;
+    margin-left: 58px;
+    height: 30px;
+    display: none;
+  }
+  & a.complete {
+    font-size: 17px;
+    width: 156px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    color: #fff;
+    background: #f68e3a;
+    border-radius: 5px;
+    margin: 25px auto;
+    display: block;
+  }
+}
+

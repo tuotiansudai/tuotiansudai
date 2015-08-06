@@ -137,6 +137,16 @@
     <p>
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
+<div class="verification-code"></div>
+<div class="verification-code-main">
+    <span>手机验证<i class="close">X</i></span>
+    <p>
+        <input type="text" class="verification-code-text" placeholder="请输入图形验证码"/>
+        <img src="" alt="" class="verification-code-img"/>
+    </p>
+    <b>验证码输入错误</b>
+    <a href="javascript:;" class="complete">完成</a>
+</div>
 <script src="${requestContext.getContextPath()}/js/config.js"></script>
 <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.js" defer async="true"
         data-main="${requestContext.getContextPath()}/js/register.js"></script>
