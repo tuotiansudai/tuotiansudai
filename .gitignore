@@ -18,3 +18,4 @@ spike.py
 **/node_modules/**
 **/classes/**
 **/node_modules/
+**/*.css.map
