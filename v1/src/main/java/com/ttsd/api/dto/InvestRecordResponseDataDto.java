@@ -1,8 +1,5 @@
 package com.ttsd.api.dto;
-
-import java.util.Date;
-
-public class InvestRecordDto {
+public class InvestRecordResponseDataDto {
     private String userName;
     private String investTime;
     private Double investMoney;

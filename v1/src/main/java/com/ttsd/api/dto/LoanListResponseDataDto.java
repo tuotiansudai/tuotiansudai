@@ -6,7 +6,7 @@ public class LoanListResponseDataDto extends BaseResponseDataDto{
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<LoanDto> loanList;
+    private List<LoanResponseDataDto> loanList;
 
     public Integer getIndex() {
         return index;
@@ -32,11 +32,11 @@ public class LoanListResponseDataDto extends BaseResponseDataDto{
         this.totalCount = totalCount;
     }
 
-    public List<LoanDto> getLoanList() {
+    public List<LoanResponseDataDto> getLoanList() {
         return loanList;
     }
 
-    public void setLoanList(List<LoanDto> loanList) {
+    public void setLoanList(List<LoanResponseDataDto> loanList) {
         this.loanList = loanList;
     }
 }

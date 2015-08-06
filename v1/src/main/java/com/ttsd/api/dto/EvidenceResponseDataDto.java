@@ -2,7 +2,7 @@ package com.ttsd.api.dto;
 
 import java.util.List;
 
-public class EvidenceDto {
+public class EvidenceResponseDataDto {
     private String title;
     private List<String> imageUrl;
 

@@ -34,15 +34,12 @@ public class InvestListDaoImpl implements InvestListDao {
 
     @Override
     public List<Invest> getInvestList(Integer index, Integer pageSize,String loanId) {
-        int indexInt = index.intValue();
-        int pageSizeInt = pageSize.intValue();
-
 
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(investListSql);
         sqlQuery.addEntity(Invest.class);
         sqlQuery.setParameter(0,loanId);
-        sqlQuery.setParameter(1, (indexInt - 1) * pageSizeInt);
-        sqlQuery.setParameter(2, pageSizeInt);
+        sqlQuery.setParameter(1, (index - 1) * pageSize);
+        sqlQuery.setParameter(2, pageSize);
         List<Invest> investList = sqlQuery.list();
 
         return investList;

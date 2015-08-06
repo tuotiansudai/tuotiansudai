@@ -51,12 +51,12 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
             log.info("标的详情" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode() + ":" + ReturnMessage.LOAN_ID_IS_NOT_EXIST.getMsg());
         }
         if (ReturnMessage.SUCCESS.getCode().equals(resultCode)) {
-            List<EvidenceDto> evidences = new ArrayList<EvidenceDto>();
-            EvidenceDto evidenceDto = new EvidenceDto();
+            List<EvidenceResponseDataDto> evidences = new ArrayList<EvidenceResponseDataDto>();
+            EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
             if (StringUtils.isNotEmpty(loan.getGuaranteeCompanyDescription())) {
-                evidenceDto.setImageUrl(getImageUrl(loan.getGuaranteeCompanyDescription()));
+                evidenceResponseDataDto.setImageUrl(getImageUrl(loan.getGuaranteeCompanyDescription()));
             }
-            evidences.add(evidenceDto);
+            evidences.add(evidenceResponseDataDto);
             LoanDetailResponseDataDto loanDetailResponseDataDto = convertLoanDetailFromLoan(loan, evidences);
             dto.setData(loanDetailResponseDataDto);
         }
@@ -66,7 +66,7 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
     }
 
     @Override
-    public LoanDetailResponseDataDto convertLoanDetailFromLoan(Loan loan, List<EvidenceDto> evidences) {
+    public LoanDetailResponseDataDto convertLoanDetailFromLoan(Loan loan, List<EvidenceResponseDataDto> evidences) {
         DictUtil dictUtil = new DictUtil();
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId(loan.getId());
@@ -86,11 +86,11 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
         } catch (NoMatchingObjectsException e) {
             log.error(e.getLocalizedMessage(), e);
         }
-        loanDetailResponseDataDto.setJkRatePercent(loan.getJkRatePercent());
-        loanDetailResponseDataDto.setHdRatePercent(loan.getHdRatePercent());
+        loanDetailResponseDataDto.setBaseRatePercent(loan.getJkRatePercent());
+        loanDetailResponseDataDto.setActivityRatePercent(loan.getHdRatePercent());
         loanDetailResponseDataDto.setDescription(loan.getDescription());
         loanDetailResponseDataDto.setEvidence(evidences);
-        loanDetailResponseDataDto.setTotalCount(loan.getInvests().size());
+        loanDetailResponseDataDto.setInvestCount(loan.getInvests().size());
         if (CollectionUtils.isNotEmpty(loan.getInvests())) {
             loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(investListDao.getInvestList(1,5,loan.getId())));
         }
@@ -98,23 +98,17 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
     }
 
     @Override
-    public List<InvestRecordDto> convertInvestRecordDtoFromInvest(List<Invest> invests) {
-        List<InvestRecordDto> investRecordDtos = new ArrayList<InvestRecordDto>();
+    public List<InvestRecordResponseDataDto> convertInvestRecordDtoFromInvest(List<Invest> invests) {
+        List<InvestRecordResponseDataDto> investRecordResponseDataDtos = new ArrayList<InvestRecordResponseDataDto>();
 
         for (Invest invest:invests) {
-            InvestRecordDto investRecordDto = new InvestRecordDto();
-            String userNameTemp = invest.getUser().getUsername();
-            if(userNameTemp.length() > 3){
-                userNameTemp = userNameTemp.substring(0,3) + "***";
-            }else{
-                userNameTemp +="***";
-            }
-            investRecordDto.setUserName(userNameTemp);
-            investRecordDto.setInvestMoney(invest.getInvestMoney());
-            investRecordDto.setInvestTime(invest.getTime().toString());
-            investRecordDtos.add(investRecordDto);
+            InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
+            investRecordResponseDataDto.setUserName(com.ttsd.api.util.CommonUtils.encryptUserName(invest.getUser().getUsername()));
+            investRecordResponseDataDto.setInvestMoney(invest.getInvestMoney());
+            investRecordResponseDataDto.setInvestTime(invest.getTime().toString());
+            investRecordResponseDataDtos.add(investRecordResponseDataDto);
         }
-        return investRecordDtos;
+        return investRecordResponseDataDtos;
     }
 
     @Override

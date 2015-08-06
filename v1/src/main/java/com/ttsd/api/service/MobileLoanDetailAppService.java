@@ -11,9 +11,9 @@ public interface MobileLoanDetailAppService {
 
     BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto);
 
-    LoanDetailResponseDataDto convertLoanDetailFromLoan(Loan loan,List<EvidenceDto> evidence);
+    LoanDetailResponseDataDto convertLoanDetailFromLoan(Loan loan,List<EvidenceResponseDataDto> evidence);
 
-    List<InvestRecordDto> convertInvestRecordDtoFromInvest(List<Invest> invests);
+    List<InvestRecordResponseDataDto> convertInvestRecordDtoFromInvest(List<Invest> invests);
 
     List<String> getImageUrl(String guaranteeCompanyDescription);
 

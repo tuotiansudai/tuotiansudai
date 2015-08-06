@@ -15,14 +15,14 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     private String loanStatus;
     private String loanStatusDesc;
     private Double investedMoney;
-    private Double jkRatePercent;
-    private Double hdRatePercent;
+    private Double baseRatePercent;
+    private Double activityRatePercent;
     private Long investedCount;
     private String description;
-    private Integer totalCount;
-    private List<EvidenceDto> evidence;
+    private Integer investCount;
+    private List<EvidenceResponseDataDto> evidence;
 
-    private List<InvestRecordDto> investRecord;
+    private List<InvestRecordResponseDataDto> investRecord;
 
     public String getLoanId() {
         return loanId;
@@ -60,9 +60,26 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         return repayTypeName;
     }
 
+    public Double getBaseRatePercent() {
+        return baseRatePercent;
+    }
+
+    public void setBaseRatePercent(Double baseRatePercent) {
+        this.baseRatePercent = baseRatePercent;
+    }
+
+    public Double getActivityRatePercent() {
+        return activityRatePercent;
+    }
+
+    public void setActivityRatePercent(Double activityRatePercent) {
+        this.activityRatePercent = activityRatePercent;
+    }
+
     public void setRepayTypeName(String repayTypeName) {
         this.repayTypeName = repayTypeName;
     }
+
 
     public Integer getDeadline() {
         return deadline;
@@ -120,22 +137,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         this.investedMoney = investedMoney;
     }
 
-    public Double getJkRatePercent() {
-        return jkRatePercent;
-    }
-
-    public void setJkRatePercent(Double jkRatePercent) {
-        this.jkRatePercent = jkRatePercent;
-    }
-
-    public Double getHdRatePercent() {
-        return hdRatePercent;
-    }
-
-    public void setHdRatePercent(Double hdRatePercent) {
-        this.hdRatePercent = hdRatePercent;
-    }
-
     public Long getInvestedCount() {
         return investedCount;
     }
@@ -143,12 +144,12 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     public void setInvestedCount(Long investedCount) {
         this.investedCount = investedCount;
     }
-    public Integer getTotalCount() {
-        return totalCount;
+    public Integer getInvestCount() {
+        return investCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
+    public void setInvestCount(Integer investCount) {
+        this.investCount = investCount;
     }
     public String getDescription() {
         return description;
@@ -158,19 +159,20 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         this.description = description;
     }
 
-    public List<EvidenceDto> getEvidence() {
+    public List<EvidenceResponseDataDto> getEvidence() {
         return evidence;
     }
 
-    public void setEvidence(List<EvidenceDto> evidence) {
+    public void setEvidence(List<EvidenceResponseDataDto> evidence) {
         this.evidence = evidence;
     }
 
-    public List<InvestRecordDto> getInvestRecord() {
+    public List<InvestRecordResponseDataDto> getInvestRecord() {
         return investRecord;
     }
 
-    public void setInvestRecord(List<InvestRecordDto> investRecord) {
+    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
         this.investRecord = investRecord;
     }
+
 }

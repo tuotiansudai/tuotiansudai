@@ -32,7 +32,7 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
         Integer index = loanListRequestDto.getIndex();
         Integer pageSize = loanListRequestDto.getPageSize();
         String returnCode = ReturnMessage.SUCCESS.getCode();
-        List<LoanDto> loanDtoList = null;
+        List<LoanResponseDataDto> loanDtoList = null;
         if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
             returnCode = ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode();
         }
@@ -58,30 +58,30 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
     }
 
     @Override
-    public List<LoanDto> convertLoanDto(List<Loan> loanList) {
+    public List<LoanResponseDataDto> convertLoanDto(List<Loan> loanList) {
         DictUtil dictUtil = new DictUtil();
-        List<LoanDto> investList = new ArrayList<LoanDto>();
+        List<LoanResponseDataDto> investList = new ArrayList<LoanResponseDataDto>();
         for (Loan loan : loanList) {
-            LoanDto loanDto = new LoanDto();
-            loanDto.setLoanId(loan.getId());
-            loanDto.setLoanType(loan.getLoanActivityType());
-            loanDto.setLoanName(loan.getName());
-            loanDto.setRepayTypeCode(loan.getType().getRepayType());
-            loanDto.setRepayTypeName(dictUtil.getValue("repay_type", loan.getType().getRepayType()));
-            loanDto.setDeadline(loan.getDeadline() * loan.getType().getRepayTimePeriod());
-            loanDto.setRepayUnit(dictUtil.getValue("repay_unit", loan.getType().getRepayTimeUnit()));
-            loanDto.setRatePercent(loan.getRatePercent());
-            loanDto.setLoanMoney(loan.getLoanMoney());
-            loanDto.setLoanStatus(loan.getStatus());
-            loanDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
+            LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
+            loanResponseDataDto.setLoanId(loan.getId());
+            loanResponseDataDto.setLoanType(loan.getLoanActivityType());
+            loanResponseDataDto.setLoanName(loan.getName());
+            loanResponseDataDto.setRepayTypeCode(loan.getType().getRepayType());
+            loanResponseDataDto.setRepayTypeName(dictUtil.getValue("repay_type", loan.getType().getRepayType()));
+            loanResponseDataDto.setDeadline(loan.getDeadline() * loan.getType().getRepayTimePeriod());
+            loanResponseDataDto.setRepayUnit(dictUtil.getValue("repay_unit", loan.getType().getRepayTimeUnit()));
+            loanResponseDataDto.setRatePercent(loan.getRatePercent());
+            loanResponseDataDto.setLoanMoney(loan.getLoanMoney());
+            loanResponseDataDto.setLoanStatus(loan.getStatus());
+            loanResponseDataDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
             try {
-                loanDto.setInvestedMoney(ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
+                loanResponseDataDto.setInvestedMoney(ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
             } catch (NoMatchingObjectsException e) {
                 log.error(e.getLocalizedMessage(), e);
             }
-            loanDto.setJkRatePercent(loan.getJkRatePercent());
-            loanDto.setHdRatePercent(loan.getHdRatePercent());
-            investList.add(loanDto);
+            loanResponseDataDto.setBaseRatePercent(loan.getJkRatePercent());
+            loanResponseDataDto.setActivityRatePercent(loan.getHdRatePercent());
+            investList.add(loanResponseDataDto);
         }
         return investList;
     }

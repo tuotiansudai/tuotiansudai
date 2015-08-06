@@ -6,7 +6,7 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<InvestRecordDto> investRecord;
+    private List<InvestRecordResponseDataDto> investRecord;
 
     public Integer getIndex() {
         return index;
@@ -32,11 +32,11 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
         this.totalCount = totalCount;
     }
 
-    public List<InvestRecordDto> getInvestRecord() {
+    public List<InvestRecordResponseDataDto> getInvestRecord() {
         return investRecord;
     }
 
-    public void setInvestRecord(List<InvestRecordDto> investRecord) {
+    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
         this.investRecord = investRecord;
     }
 }

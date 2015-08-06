@@ -5,6 +5,7 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.ttsd.api.dao.InvestListDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileInvestListAppService;
+import com.ttsd.api.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class MobileInvestListAppServiceImpl implements MobileInvestListAppServic
         Integer pageSize = investListRequestDto.getPageSize();
         String loanId = investListRequestDto.getLoanId();
         String returnCode = ReturnMessage.SUCCESS.getCode();
-        List<InvestRecordDto> investRecordDtoList = null;
+        List<InvestRecordResponseDataDto> investRecordResponseDataDtoList = null;
         if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
             returnCode = ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode();
             log.info("成交纪录" + ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode() + ":" + ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
@@ -35,14 +36,14 @@ public class MobileInvestListAppServiceImpl implements MobileInvestListAppServic
 
             List<Invest> investList = investListDao.getInvestList(index, pageSize,loanId);
 
-            investRecordDtoList = convertInvestRecordDto(investList);
+            investRecordResponseDataDtoList = convertInvestRecordDto(investList);
         }
 
         dto.setCode(returnCode);
         dto.setMessage(ReturnMessage.getErrorMsgByCode(returnCode));
-        if (ReturnMessage.SUCCESS.getCode().equals(returnCode) && investRecordDtoList != null) {
+        if (ReturnMessage.SUCCESS.getCode().equals(returnCode) && investRecordResponseDataDtoList != null) {
             InvestListResponseDataDto investListResponseDataDto = new InvestListResponseDataDto();
-            investListResponseDataDto.setInvestRecord(investRecordDtoList);
+            investListResponseDataDto.setInvestRecord(investRecordResponseDataDtoList);
             investListResponseDataDto.setIndex(index);
             investListResponseDataDto.setPageSize(pageSize);
             investListResponseDataDto.setTotalCount(investListDao.getTotalCount(loanId));
@@ -53,21 +54,15 @@ public class MobileInvestListAppServiceImpl implements MobileInvestListAppServic
     }
 
     @Override
-    public List<InvestRecordDto> convertInvestRecordDto(List<Invest> investList) {
-        List<InvestRecordDto> investRecordDtoList = new ArrayList<InvestRecordDto>();
+    public List<InvestRecordResponseDataDto> convertInvestRecordDto(List<Invest> investList) {
+        List<InvestRecordResponseDataDto> investRecordResponseDataDtoList = new ArrayList<InvestRecordResponseDataDto>();
         for (Invest invest : investList) {
-            InvestRecordDto investRecordDto = new InvestRecordDto();
-            String userNameTemp = invest.getUser().getUsername();
-            if(userNameTemp.length() > 3){
-                userNameTemp = userNameTemp.substring(0,3) + "***";
-            }else{
-                userNameTemp +="***";
-            }
-            investRecordDto.setUserName(userNameTemp);
-            investRecordDto.setInvestTime(invest.getTime().toString());
-            investRecordDto.setInvestMoney(invest.getInvestMoney());
-            investRecordDtoList.add(investRecordDto);
+            InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
+            investRecordResponseDataDto.setUserName(CommonUtils.encryptUserName(invest.getUser().getUsername()));
+            investRecordResponseDataDto.setInvestTime(invest.getTime().toString());
+            investRecordResponseDataDto.setInvestMoney(invest.getInvestMoney());
+            investRecordResponseDataDtoList.add(investRecordResponseDataDto);
         }
-        return investRecordDtoList;
+        return investRecordResponseDataDtoList;
     }
 }

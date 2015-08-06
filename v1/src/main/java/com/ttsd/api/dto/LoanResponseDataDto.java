@@ -1,6 +1,6 @@
 package com.ttsd.api.dto;
 
-public class LoanDto {
+public class LoanResponseDataDto {
     private String loanId;
     private String loanType;
     private String loanName;
@@ -13,8 +13,8 @@ public class LoanDto {
     private String loanStatus;
     private String loanStatusDesc;
     private Double investedMoney;
-    private Double jkRatePercent;
-    private Double hdRatePercent;
+    private Double baseRatePercent;
+    private Double activityRatePercent;
 
     public String getLoanId() {
         return loanId;
@@ -112,19 +112,19 @@ public class LoanDto {
         this.investedMoney = investedMoney;
     }
 
-    public Double getJkRatePercent() {
-        return jkRatePercent;
+    public Double getBaseRatePercent() {
+        return baseRatePercent;
     }
 
-    public void setJkRatePercent(Double jkRatePercent) {
-        this.jkRatePercent = jkRatePercent;
+    public void setBaseRatePercent(Double baseRatePercent) {
+        this.baseRatePercent = baseRatePercent;
     }
 
-    public Double getHdRatePercent() {
-        return hdRatePercent;
+    public Double getActivityRatePercent() {
+        return activityRatePercent;
     }
 
-    public void setHdRatePercent(Double hdRatePercent) {
-        this.hdRatePercent = hdRatePercent;
+    public void setActivityRatePercent(Double activityRatePercent) {
+        this.activityRatePercent = activityRatePercent;
     }
 }
