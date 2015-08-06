@@ -137,7 +137,7 @@ public class UmPayLoanMoneyService {
             log.debug("普通转账免密(划账)-成功!");
             to.setStatus(TrusteeshipConstants.Status.PASSED);
             try {
-                systemBillService.transferOut(money, "referrer_reward", "标的放款推荐人奖励。" + transferOutDetail);
+                systemBillService.transferOut(money, "referrer_reward", transferOutDetail);
             } catch (InsufficientBalance insufficientBalance) {
                 log.error(insufficientBalance.getLocalizedMessage(), insufficientBalance);
             }

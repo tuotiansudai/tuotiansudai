@@ -128,7 +128,7 @@ public class UmPayNormalRepayOperation extends
 				String status = InvestUserReferrer.FAIL;
 				String errorMessage = "";
 
-				String transferOutDetailFormat = "标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
+				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
 				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
 
 
@@ -203,7 +203,7 @@ public class UmPayNormalRepayOperation extends
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if((!particUserId.equals("") && status.equals("success")) || bonus == 0.00){
-            detail = "收到推荐人奖励。"+transferOutDetail;
+            detail = transferOutDetail;
         }else if(particUserId.equals("")){
             detail = NOT_BIND_CARD;
         }else{
