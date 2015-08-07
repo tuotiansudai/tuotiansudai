@@ -206,3 +206,40 @@
 	margin-top: 3px;
 	font-size: 14px;
 }
+
+.fastPayment{width: 566px; height: 40px; line-height: 40px; padding-left: 214px;}
+
+.updateCard a{text-align:right; display:block;width:220px;}
+
+.fastPaymentLink a{width:230px; display:block; text-align:center; color:#f33735; height:40px; line-height:40px;}
+
+.current {
+	border: 1px solid #efefef;
+	border-bottom: none;
+	background-color: white;
+	color: #f33735;
+}
+.counterMark {
+	margin-left: 214px;
+	position: absolute;
+	margin: -29px 212px;
+}
+
+.counterMark span {
+	display: block;
+	float: left;
+	width: 118px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	font-size: 16px;
+	position:relative;
+	cursor: pointer;
+}
+
+.counterMark span img {
+	vertical-align:middle;
+	position: absolute;
+	top:2px;
+	right:4px;
+}

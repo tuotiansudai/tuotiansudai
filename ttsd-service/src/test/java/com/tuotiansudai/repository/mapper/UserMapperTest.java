@@ -22,67 +22,59 @@ import static org.junit.Assert.assertNull;
 @Transactional
 @TransactionConfiguration(defaultRollback = true)
 public class UserMapperTest {
+
     @Autowired
     private UserMapper userMapper;
 
     @Test
     public void shouldFindUserByEmailIsNotNull() throws Exception {
-        UserModel userModelTest = new UserModel();
-        userModelTest = this.getUserModelTest();
-        userMapper.insertUser(userModelTest);
+        userMapper.create(this.getUserModelTest());
 
-        UserModel userModel = userMapper.findUserByEmail("12345@abc.com");
+        UserModel userModel = userMapper.findByEmail("12345@abc.com");
         assertNotNull(userModel);
 
     }
 
     @Test
     public void shouldFindUserByEmailIsNull() throws Exception {
-        UserModel userModel = userMapper.findUserByEmail("22345@abc.com");
+        UserModel userModel = userMapper.findByEmail("22345@abc.com");
 
         assertNull(userModel);
     }
 
     @Test
-    public void shouldFindUserByMobileNumberIsNotNull() throws Exception {
-        UserModel userModelTest = new UserModel();
-        userModelTest = this.getUserModelTest();
-        userMapper.insertUser(userModelTest);
+    public void shouldFindUserByMobileIsNotNull() throws Exception {
+        userMapper.create(this.getUserModelTest());
 
-        UserModel userModel = userMapper.findUserByMobileNumber("13900000000");
+        UserModel userModel = userMapper.findByMobile("13900000000");
         assertNotNull(userModel);
     }
 
     @Test
-    public void shouldFindUserByMobileNumberIsNull() throws Exception {
-        UserModel userModel = userMapper.findUserByMobileNumber("13800000000");
+    public void shouldFindUserByMobileIsNull() throws Exception {
+        UserModel userModel = userMapper.findByMobile("13800000000");
         assertNull(userModel);
     }
 
     @Test
     public void shouldFindUserByLoginNameIsNotNull() throws Exception {
-        UserModel userModelTest = new UserModel();
-        userModelTest = this.getUserModelTest();
-        userMapper.insertUser(userModelTest);
+        userMapper.create(this.getUserModelTest());
 
-        UserModel userModel = userMapper.findUserByLoginName("helloworld");
+        UserModel userModel = userMapper.findByLoginName("helloworld");
         assertNotNull(userModel);
     }
 
     @Test
     public void shouldFindUserByLoginNameIsNull() throws Exception {
-
-        UserModel userModel = userMapper.findUserByLoginName("helloworld1");
+        UserModel userModel = userMapper.findByLoginName("helloworld1");
         assertNull(userModel);
     }
 
     @Test
     public void shouldInsertUser() throws Exception {
-        UserModel userModelTest = new UserModel();
-        userModelTest = this.getUserModelTest();
-        userMapper.insertUser(userModelTest);
+        userMapper.create(this.getUserModelTest());
 
-        UserModel userModel = userMapper.findUserByLoginName("helloworld");
+        UserModel userModel = userMapper.findByLoginName("helloworld");
         assertNotNull(userModel);
 
     }
@@ -92,13 +84,8 @@ public class UserMapperTest {
         userModelTest.setLoginName("helloworld");
         userModelTest.setPassword("123abc");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setAddress("tuotiansudai");
-        userModelTest.setMobileNumber("13900000000");
-        userModelTest.setLastLoginTime(new Date());
+        userModelTest.setMobile("13900000000");
         userModelTest.setRegisterTime(new Date());
-        userModelTest.setLastModifiedTime(new Date());
-        userModelTest.setForbiddenTime(new Date());
-        userModelTest.setAvatar("avatar");
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;

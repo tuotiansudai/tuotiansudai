@@ -870,7 +870,7 @@ public class UserServiceImpl implements UserService {
 			validationService.inputRuleValidation("input.username", instance.getUsername());
 
 		} catch (NoMatchingObjectsException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			return false;
 		} catch (InputRuleMatchingException e) {
 			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "用户名"));
@@ -879,7 +879,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			validationService.inputRuleValidation("input.mobile", instance.getMobileNumber());
 		} catch (NoMatchingObjectsException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			return false;
 		} catch (InputRuleMatchingException e) {
 			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "手机号"));
@@ -888,7 +888,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			validationService.inputRuleValidation("input.email", instance.getEmail());
 		} catch (NoMatchingObjectsException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			return false;
 		} catch (InputRuleMatchingException e) {
 			throw new InputRuleMatchingException(MessageFormat.format(e.getMessage(), "邮箱"));
@@ -918,7 +918,7 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 		} catch (ClassNotFoundException | NoSuchMethodException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			return false;
 		}
 		return true;

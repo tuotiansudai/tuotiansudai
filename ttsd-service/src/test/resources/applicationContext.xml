@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:property-placeholder location="classpath*:sms_wrapper_client.properties" />
+    <context:property-placeholder location="classpath*:sms_wrapper_client.properties,classpath*:pay_wrapper_client.properties" />
 
     <!-- enable autowire -->
     <context:annotation-config />

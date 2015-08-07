@@ -43,7 +43,12 @@ public class BankCardServiceImpl implements BankCardService{
         return count > 0;
     }
 
-    @Override
+    public boolean isOpenFastPayment(String userId) {
+        String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed'' and bankCard.isOpenFastPayment=true";
+        int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, userId)));
+        return count > 0;
+    }
+
     public boolean isCardNoBinding(String cardNo) {
         String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.cardNo=''{0}'' and bankCard.status=''passed''";
         int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, cardNo)));
@@ -60,4 +65,5 @@ public class BankCardServiceImpl implements BankCardService{
         File file = new File(stringBufferPath.toString());
         return file.exists();
     }
+
 }
