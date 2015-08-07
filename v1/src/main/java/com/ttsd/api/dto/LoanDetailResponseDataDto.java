@@ -18,7 +18,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     private Double baseRatePercent;
     private Double activityRatePercent;
     private Long investedCount;
-    private String description;
+    private String loanDetail;
     private Integer investCount;
     private List<EvidenceResponseDataDto> evidence;
 
@@ -151,12 +151,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     public void setInvestCount(Integer investCount) {
         this.investCount = investCount;
     }
-    public String getDescription() {
-        return description;
+
+    public String getLoanDetail() {
+        return loanDetail;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLoanDetail(String loanDetail) {
+        this.loanDetail = loanDetail;
     }
 
     public List<EvidenceResponseDataDto> getEvidence() {

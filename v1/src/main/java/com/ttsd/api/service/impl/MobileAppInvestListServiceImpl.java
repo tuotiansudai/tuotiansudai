@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         for (Invest invest : investList) {
             InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
             investRecordResponseDataDto.setUserName(CommonUtils.encryptUserName(invest.getUser().getUsername()));
-            investRecordResponseDataDto.setInvestTime(invest.getTime().toString());
+            investRecordResponseDataDto.setInvestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getTime()).toString());
             investRecordResponseDataDto.setInvestMoney(invest.getInvestMoney());
             investRecordResponseDataDtoList.add(investRecordResponseDataDto);
         }

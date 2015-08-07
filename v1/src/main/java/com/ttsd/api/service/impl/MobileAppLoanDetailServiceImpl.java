@@ -88,7 +88,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         loanDetailResponseDataDto.setBaseRatePercent(loan.getJkRatePercent());
         loanDetailResponseDataDto.setActivityRatePercent(loan.getHdRatePercent());
-        loanDetailResponseDataDto.setDescription(loan.getDescription());
+        loanDetailResponseDataDto.setLoanDetail(loan.getDescription());
         loanDetailResponseDataDto.setEvidence(evidences);
         loanDetailResponseDataDto.setInvestCount(loan.getInvests().size());
         if (CollectionUtils.isNotEmpty(loan.getInvests())) {
