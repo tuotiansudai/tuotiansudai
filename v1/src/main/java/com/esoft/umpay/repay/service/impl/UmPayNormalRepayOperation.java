@@ -2,6 +2,7 @@ package com.esoft.umpay.repay.service.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -125,27 +126,32 @@ public class UmPayNormalRepayOperation extends
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
-				String msg = "";
+				String errorMessage = "";
+
+				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
+				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
+
+
 				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
 					//调用联动优势接口
-					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
+					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
 					if(returnMsg.split("\\|")[0].equals("0000")){
 						status = InvestUserReferrer.SUCCESS;
 					}else{
-						msg = returnMsg.split("\\|")[1];
+						errorMessage = returnMsg.split("\\|")[1];
 					}
 				}
 				if(bonus == -1){
 					continue;
 				}
 				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
-					msg = NOT_BIND_CARD;
+					errorMessage = NOT_BIND_CARD;
 				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
 				if(list.contains("ROLE_MERCHANDISER")){
 					continue;
 				}
-				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, msg);
+				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, errorMessage, transferOutDetail);
 			}
 		}
 	}
@@ -183,7 +189,7 @@ public class UmPayNormalRepayOperation extends
         }
 	}
 
-	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
+	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String errorMessage, String transferOutDetail) {
 		//插入交易流水
 		//获取当前余额
 		double balance = userBillBO.getBalance(referrerRelation.getReferrerId());
@@ -205,11 +211,11 @@ public class UmPayNormalRepayOperation extends
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if((!particUserId.equals("") && status.equals("success")) || bonus == 0.00){
-            detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
+            detail = transferOutDetail;
         }else if(particUserId.equals("")){
             detail = NOT_BIND_CARD;
         }else{
-            detail = msg;
+            detail = errorMessage;
         }
 		ub.setDetail(detail);
 		ht.save(ub);
