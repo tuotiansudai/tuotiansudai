@@ -2,11 +2,11 @@ package com.ttsd.api.dto;
 
 import java.util.List;
 
-public class LoanListResponseDataDto extends BaseResponseDataDto{
+public class InvestListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
     private Integer totalCount;
-    private List<LoanResponseDataDto> loanList;
+    private List<InvestRecordResponseDataDto> investRecord;
 
     public Integer getIndex() {
         return index;
@@ -32,11 +32,11 @@ public class LoanListResponseDataDto extends BaseResponseDataDto{
         this.totalCount = totalCount;
     }
 
-    public List<LoanResponseDataDto> getLoanList() {
-        return loanList;
+    public List<InvestRecordResponseDataDto> getInvestRecord() {
+        return investRecord;
     }
 
-    public void setLoanList(List<LoanResponseDataDto> loanList) {
-        this.loanList = loanList;
+    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
+        this.investRecord = investRecord;
     }
 }

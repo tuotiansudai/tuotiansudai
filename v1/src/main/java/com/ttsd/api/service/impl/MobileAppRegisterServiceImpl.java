@@ -12,7 +12,7 @@ import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileRegisterAppService;
+import com.ttsd.api.service.MobileAppRegisterService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 @Service
-public class MobileRegisterAppServiceImpl implements MobileRegisterAppService {
+public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Logger
     static Log log;

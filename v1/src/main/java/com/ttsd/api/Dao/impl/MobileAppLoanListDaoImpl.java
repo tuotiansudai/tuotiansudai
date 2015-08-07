@@ -1,8 +1,7 @@
 package com.ttsd.api.dao.impl;
 
 import com.esoft.jdp2p.loan.model.Loan;
-import com.ttsd.api.dao.LoanListDao;
-import org.apache.commons.collections.CollectionUtils;
+import com.ttsd.api.dao.MobileAppLoanListDao;
 import org.hibernate.SQLQuery;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class LoanListDaoImpl implements LoanListDao {
+public class MobileAppLoanListDaoImpl implements MobileAppLoanListDao {
     @Resource
     private HibernateTemplate ht;
 

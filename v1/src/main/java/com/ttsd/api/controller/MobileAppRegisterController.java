@@ -1,7 +1,7 @@
 package com.ttsd.api.controller;
 
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileRegisterAppService;
+import com.ttsd.api.service.MobileAppRegisterService;
 import com.ttsd.util.CommonUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +13,15 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class MobileRegisterAppController {
+public class MobileAppRegisterController {
 
     @Resource
-    private MobileRegisterAppService mobileRegisterAppService;
+    private MobileAppRegisterService mobileAppRegisterService;
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
-        return mobileRegisterAppService.registerUser(registerRequestDto);
+        return mobileAppRegisterService.registerUser(registerRequestDto);
     }
 
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
@@ -29,7 +29,7 @@ public class MobileRegisterAppController {
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto,HttpServletRequest request) {
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
         String remoteIp = CommonUtils.getRemoteHost(request);
-        return mobileRegisterAppService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
+        return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
     }
 
 }

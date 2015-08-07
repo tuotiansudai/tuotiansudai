@@ -4,7 +4,7 @@ import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobilePersonalInfoAppService;
+import com.ttsd.api.service.MobileAppPersonalInfoService;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
-public class MobilePersonalInfoAppServiceImpl implements MobilePersonalInfoAppService{
+public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoService {
 
     @Resource
     private HibernateTemplate ht;

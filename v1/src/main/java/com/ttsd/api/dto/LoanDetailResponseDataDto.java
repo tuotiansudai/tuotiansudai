@@ -1,6 +1,8 @@
 package com.ttsd.api.dto;
 
-public class LoanDto {
+import java.util.List;
+
+public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     private String loanId;
     private String loanType;
     private String loanName;
@@ -13,8 +15,14 @@ public class LoanDto {
     private String loanStatus;
     private String loanStatusDesc;
     private Double investedMoney;
-    private Double jkRatePercent;
-    private Double hdRatePercent;
+    private Double baseRatePercent;
+    private Double activityRatePercent;
+    private Long investedCount;
+    private String loanDetail;
+    private Integer investCount;
+    private List<EvidenceResponseDataDto> evidence;
+
+    private List<InvestRecordResponseDataDto> investRecord;
 
     public String getLoanId() {
         return loanId;
@@ -52,9 +60,26 @@ public class LoanDto {
         return repayTypeName;
     }
 
+    public Double getBaseRatePercent() {
+        return baseRatePercent;
+    }
+
+    public void setBaseRatePercent(Double baseRatePercent) {
+        this.baseRatePercent = baseRatePercent;
+    }
+
+    public Double getActivityRatePercent() {
+        return activityRatePercent;
+    }
+
+    public void setActivityRatePercent(Double activityRatePercent) {
+        this.activityRatePercent = activityRatePercent;
+    }
+
     public void setRepayTypeName(String repayTypeName) {
         this.repayTypeName = repayTypeName;
     }
+
 
     public Integer getDeadline() {
         return deadline;
@@ -112,19 +137,43 @@ public class LoanDto {
         this.investedMoney = investedMoney;
     }
 
-    public Double getJkRatePercent() {
-        return jkRatePercent;
+    public Long getInvestedCount() {
+        return investedCount;
     }
 
-    public void setJkRatePercent(Double jkRatePercent) {
-        this.jkRatePercent = jkRatePercent;
+    public void setInvestedCount(Long investedCount) {
+        this.investedCount = investedCount;
+    }
+    public Integer getInvestCount() {
+        return investCount;
     }
 
-    public Double getHdRatePercent() {
-        return hdRatePercent;
+    public void setInvestCount(Integer investCount) {
+        this.investCount = investCount;
     }
 
-    public void setHdRatePercent(Double hdRatePercent) {
-        this.hdRatePercent = hdRatePercent;
+    public String getLoanDetail() {
+        return loanDetail;
     }
+
+    public void setLoanDetail(String loanDetail) {
+        this.loanDetail = loanDetail;
+    }
+
+    public List<EvidenceResponseDataDto> getEvidence() {
+        return evidence;
+    }
+
+    public void setEvidence(List<EvidenceResponseDataDto> evidence) {
+        this.evidence = evidence;
+    }
+
+    public List<InvestRecordResponseDataDto> getInvestRecord() {
+        return investRecord;
+    }
+
+    public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
+        this.investRecord = investRecord;
+    }
+
 }
