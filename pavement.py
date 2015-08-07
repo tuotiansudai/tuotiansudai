@@ -1,5 +1,6 @@
 import os
-from paver.tasks import task, needs
+
+from paver.tasks import task, needs, cmdopts
 
 
 @task
@@ -80,6 +81,46 @@ def migrate():
     run_shell_under_v1('/opt/gradle/latest/bin/gradle flywayMigrate')
 
 
+def remove_old_container(name):
+    from docker import Client
+
+    client = Client(base_url='unix://var/run/docker.sock', version="1.17")
+    try:
+        client.stop(name)
+        client.remove_container(name)
+    except Exception:
+        pass
+
+
+def start_new_container(name, local_port):
+    from docker import Client, utils
+
+    client = Client(base_url='unix://var/run/docker.sock', version="1.17")
+    war_dir = get_v1_war_dir()
+    print "local war dir: {0}".format(war_dir)
+    host_config = utils.create_host_config(port_bindings={8080: local_port}, binds=['{0}:/webapps'.format(war_dir)])
+    container = client.create_container(image='leoshi/ttsd-tomcat6', ports=[8080], volumes=['/webapps'],
+                                        host_config=host_config, name=name)
+    print "Container id:{0}".format(container['Id'])
+    client.start(container)
+
+
+@task
+@needs('migrate', 'mkwar')
+@cmdopts([
+    ('port=', 'p', 'Local port which is mapped to containers 8080')
+])
+def deploy_to_docker(options):
+    """
+    Deploy web apps to Tomcat6 container, NEED sudo run!
+    Usage:
+        sudo paver deploy_to_docker.port=30001 deploy_to_docker
+    """
+    name = "ttsd-{0}".format(options.port)
+    remove_old_container(name)
+    start_new_container(name, options.port)
+
+
 @task
 @needs('mkwar', 'deploy_tomcat')
 def deploy():
@@ -139,6 +180,11 @@ def run_shell_under_v1(command):
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
+
+
+def get_v1_war_dir():
+    current_dir = get_current_dir()
+    return os.path.join(current_dir, 'v1', 'war')
 
 
 def get_base_dir():
