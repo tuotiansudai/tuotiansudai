@@ -69,7 +69,7 @@
 						<h:commandLink styleClass="cx" value="查询">
 							<p:ajax process="@form" update="dataTable1"
 								oncomplete="initDatepicker()"></p:ajax>
-							<f:setPropertyActionListener value="1" target="#{ReferrerRelationList.currentPage}" />
+							<f:setPropertyActionListener value="1" target="#{referrerRelationList.currentPage}" />
 						</h:commandLink>
 						<a href="javascript:void(0)" onclick="location.reload();"
 							class="cx cx02">重置</a>
@@ -94,7 +94,7 @@
 						<h:commandLink styleClass="cx" value="查询">
 							<p:ajax process="@form" update="dataTable2"
 									oncomplete="initDatepicker()"></p:ajax>
-							<f:setPropertyActionListener value="1" target="#{ReferrerRelationList.currentInvestRewardPage}" />
+							<f:setPropertyActionListener value="1" target="#{referrerRelationList.currentInvestRewardPage}" />
 						</h:commandLink>
 						<a href="javascript:void(0)" onclick="location.reload();"
 						   class="cx cx02">重置</a>
