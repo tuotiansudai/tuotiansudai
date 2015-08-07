@@ -7,14 +7,14 @@
 
 	<ui:fragment rendered="#{referrerRelationList.currentPage-5> 1}">
 		<h:commandLink title="到第一页" value="首页">
-			<f:ajax listener="#{referrerRelationList.setCurrentPage(1)}" render="dataTable"></f:ajax>
+			<f:ajax listener="#{referrerRelationList.setCurrentPage(1)}" render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage > 1}">
 		<h:commandLink title="到上一个页面" styleClass="pre" value="上一页">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-1)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage-5 > 0}">
@@ -22,7 +22,7 @@
 			value="#{referrerRelationList.currentPage-5}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-5)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage-4 > 0}">
@@ -30,7 +30,7 @@
 			value="#{referrerRelationList.currentPage-4}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-4)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage-3 > 0}">
@@ -38,7 +38,7 @@
 			value="#{referrerRelationList.currentPage-3}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-3)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage-2 > 0}">
@@ -46,7 +46,7 @@
 			value="#{referrerRelationList.currentPage-2}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-2)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment rendered="#{referrerRelationList.currentPage-1 > 0}">
@@ -54,7 +54,7 @@
 			value="#{referrerRelationList.currentPage-1}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage-1)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<a class="on">#{referrerRelationList.currentPage}</a>
@@ -64,7 +64,7 @@
 			value="#{referrerRelationList.currentPage+1}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+1)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -73,7 +73,7 @@
 			value="#{referrerRelationList.currentPage+2}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+2)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -82,7 +82,7 @@
 			value="#{referrerRelationList.currentPage+3}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+3)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -91,7 +91,7 @@
 			value="#{referrerRelationList.currentPage+4}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+4)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -100,7 +100,7 @@
 			value="#{referrerRelationList.currentPage+5}">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+5)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -108,7 +108,7 @@
 		<h:commandLink title="去下一个页面" styleClass="next" value="下一页">
 			<f:ajax
 				listener="#{referrerRelationList.setCurrentPage(referrerRelationList.currentPage+1)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 	<ui:fragment
@@ -117,7 +117,7 @@
 			value="#{math:ceil(referrerRelationList.lazyModel.rowCount/referrerRelationList.pageSize)}"></ui:param>
 		<h:commandLink title="到最后一页" value="尾页">
 			<f:ajax listener="#{referrerRelationList.setCurrentPage(endPage)}"
-				render="dataTable"></f:ajax>
+				render="dataTable1"></f:ajax>
 		</h:commandLink>
 	</ui:fragment>
 
