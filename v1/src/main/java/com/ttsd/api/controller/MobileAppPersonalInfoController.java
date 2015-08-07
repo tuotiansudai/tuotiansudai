@@ -2,7 +2,7 @@ package com.ttsd.api.controller;
 
 import com.ttsd.api.dto.PersonalInfoRequestDto;
 import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.service.MobilePersonalInfoAppService;
+import com.ttsd.api.service.MobileAppPersonalInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller
-public class MobilePersonalInfoAppController {
+public class MobileAppPersonalInfoController {
     @Resource
-    private MobilePersonalInfoAppService mobilePersonalInfoAppService;
+    private MobileAppPersonalInfoService mobileAppPersonalInfoService;
 
     @ResponseBody
-    @RequestMapping(value="/accesspersonalinfo",method = RequestMethod.POST)
-    public BaseResponseDto login(@RequestBody PersonalInfoRequestDto personalInfoRequestDto){
-       return mobilePersonalInfoAppService.getPersonalInfoData(personalInfoRequestDto);
+    @RequestMapping(value="/get/user",method = RequestMethod.POST)
+    public BaseResponseDto getPersonalInfoData(@RequestBody PersonalInfoRequestDto personalInfoRequestDto){
+       return mobileAppPersonalInfoService.getPersonalInfoData(personalInfoRequestDto);
     }
 
 }

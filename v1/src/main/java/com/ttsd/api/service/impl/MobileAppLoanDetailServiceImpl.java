@@ -9,10 +9,10 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.ttsd.aliyun.PropertiesUtils;
-import com.ttsd.api.dao.InvestListDao;
-import com.ttsd.api.dao.LoanDetailDao;
+import com.ttsd.api.dao.MobileAppInvestListDao;
+import com.ttsd.api.dao.MobileAppLoanDetailDao;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileLoanDetailAppService;
+import com.ttsd.api.service.MobileAppLoanDetailService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,13 +26,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppService {
+public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailService {
     @Logger
     static Log log;
     @Resource
-    private LoanDetailDao loanDetailDao;
+    private MobileAppLoanDetailDao mobileAppLoanDetailDao;
     @Resource
-    private InvestListDao investListDao;
+    private MobileAppInvestListDao mobileAppInvestListDao;
 
     @Resource
     private LoanCalculator loanCalculator;
@@ -44,7 +44,7 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
         String resultCode = ReturnMessage.SUCCESS.getCode();
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
         String loanId = loanDetailRequestDto.getLoanId();
-        Loan loan = loanDetailDao.getLoanById(loanId);
+        Loan loan = mobileAppLoanDetailDao.getLoanById(loanId);
 
         if (loan == null) {
             resultCode = ReturnMessage.LOAN_ID_IS_NOT_EXIST.getCode();
@@ -92,7 +92,7 @@ public class MobileLoanDetailAppServiceImpl implements MobileLoanDetailAppServic
         loanDetailResponseDataDto.setEvidence(evidences);
         loanDetailResponseDataDto.setInvestCount(loan.getInvests().size());
         if (CollectionUtils.isNotEmpty(loan.getInvests())) {
-            loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(investListDao.getInvestList(1,5,loan.getId())));
+            loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(mobileAppInvestListDao.getInvestList(1,5,loan.getId())));
         }
         return loanDetailResponseDataDto;
     }

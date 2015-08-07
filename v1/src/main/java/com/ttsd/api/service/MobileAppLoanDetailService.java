@@ -7,7 +7,7 @@ import com.ttsd.api.dto.*;
 
 import java.util.List;
 
-public interface MobileLoanDetailAppService {
+public interface MobileAppLoanDetailService {
 
     BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto);
 

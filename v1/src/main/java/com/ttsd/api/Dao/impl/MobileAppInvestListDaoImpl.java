@@ -2,7 +2,7 @@ package com.ttsd.api.dao.impl;
 
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
-import com.ttsd.api.dao.InvestListDao;
+import com.ttsd.api.dao.MobileAppInvestListDao;
 import org.hibernate.SQLQuery;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class InvestListDaoImpl implements InvestListDao {
+public class MobileAppInvestListDaoImpl implements MobileAppInvestListDao {
     @Resource
     private HibernateTemplate ht;
 

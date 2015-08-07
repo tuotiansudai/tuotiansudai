@@ -2,9 +2,9 @@ package com.ttsd.api.service.impl;
 
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.invest.model.Invest;
-import com.ttsd.api.dao.InvestListDao;
+import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileInvestListAppService;
+import com.ttsd.api.service.MobileAppInvestListService;
 import com.ttsd.api.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MobileInvestListAppServiceImpl implements MobileInvestListAppService {
+public class MobileAppInvestListServiceImpl implements MobileAppInvestListService {
     @Logger
     static Log log;
     @Resource
-    private InvestListDao investListDao;
+    private MobileAppInvestListDao mobileAppInvestListDao;
 
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
@@ -34,7 +34,7 @@ public class MobileInvestListAppServiceImpl implements MobileInvestListAppServic
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
 
-            List<Invest> investList = investListDao.getInvestList(index, pageSize,loanId);
+            List<Invest> investList = mobileAppInvestListDao.getInvestList(index, pageSize,loanId);
 
             investRecordResponseDataDtoList = convertInvestRecordDto(investList);
         }
@@ -46,7 +46,7 @@ public class MobileInvestListAppServiceImpl implements MobileInvestListAppServic
             investListResponseDataDto.setInvestRecord(investRecordResponseDataDtoList);
             investListResponseDataDto.setIndex(index);
             investListResponseDataDto.setPageSize(pageSize);
-            investListResponseDataDto.setTotalCount(investListDao.getTotalCount(loanId));
+            investListResponseDataDto.setTotalCount(mobileAppInvestListDao.getTotalCount(loanId));
             dto.setData(investListResponseDataDto);
         }
 

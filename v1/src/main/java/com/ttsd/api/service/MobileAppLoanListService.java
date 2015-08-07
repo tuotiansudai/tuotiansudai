@@ -7,7 +7,7 @@ import com.ttsd.api.dto.LoanListRequestDto;
 
 import java.util.List;
 
-public interface MobileLoanListAppService {
+public interface MobileAppLoanListService {
     BaseResponseDto generateLoanList(LoanListRequestDto investListRequestDt);
 
     List<LoanResponseDataDto> convertLoanDto(List<Loan> loanList);

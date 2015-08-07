@@ -5,7 +5,7 @@ import com.esoft.jdp2p.loan.model.Loan;
 
 import java.util.List;
 
-public interface InvestListDao {
+public interface MobileAppInvestListDao {
 
     Integer getTotalCount(String loanId);
 

@@ -2,7 +2,7 @@ package com.ttsd.api.controller;
 
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.LoanDetailRequestDto;
-import com.ttsd.api.service.MobileLoanDetailAppService;
+import com.ttsd.api.service.MobileAppLoanDetailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 
 @Controller
-public class MobileLoanDetailController {
+public class MobileAppLoanDetailController {
     @Resource
-    private MobileLoanDetailAppService mobileLoanDetailAppService;
-    @RequestMapping(value="/getloandetail",method = RequestMethod.POST)
+    private MobileAppLoanDetailService mobileAppLoanDetailService;
+    @RequestMapping(value="/get/loan",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponseDto queryLoanList(@RequestBody LoanDetailRequestDto loanDetailRequestDto){
-        return mobileLoanDetailAppService.generateLoanDetail(loanDetailRequestDto);
+        return mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
     }
 
 }

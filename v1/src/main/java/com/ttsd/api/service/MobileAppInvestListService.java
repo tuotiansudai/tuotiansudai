@@ -7,7 +7,7 @@ import com.ttsd.api.dto.InvestRecordResponseDataDto;
 
 import java.util.List;
 
-public interface MobileInvestListAppService {
+public interface MobileAppInvestListService {
     BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto);
 
     List<InvestRecordResponseDataDto> convertInvestRecordDto(List<Invest> investList);

@@ -89,9 +89,9 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/v1.0/retrievepassword/sendsms" filters="none" />
 		<intercept-url pattern="/v1.0/retrievepassword" filters="none" />
 		<intercept-url pattern="/v1.0/validatecaptcha" filters="none" />
-		<intercept-url pattern="/v1.0/queryinvestlist" filters="none" />
-		<intercept-url pattern="/v1.0/queryloanlist" filters="none" />
-		<intercept-url pattern="/v1.0/getloandetail" filters="none" />
+		<intercept-url pattern="/v1.0/get/invests" filters="none" />
+		<intercept-url pattern="/v1.0/get/loans" filters="none" />
+		<intercept-url pattern="/v1.0/get/loan" filters="none" />
 		<intercept-url pattern="/v1.0/register" filters="none" />
 		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 

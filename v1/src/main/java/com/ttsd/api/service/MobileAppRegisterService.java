@@ -3,7 +3,7 @@ package com.ttsd.api.service;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.RegisterRequestDto;
 
-public interface MobileRegisterAppService {
+public interface MobileAppRegisterService {
 
 
     BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp);

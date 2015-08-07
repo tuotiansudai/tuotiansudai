@@ -6,9 +6,9 @@ import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.ArithUtil;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
-import com.ttsd.api.dao.LoanListDao;
+import com.ttsd.api.dao.MobileAppLoanListDao;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.MobileLoanListAppService;
+import com.ttsd.api.service.MobileAppLoanListService;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
+public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
     @Logger
     static Log log;
     @Resource
-    private LoanListDao loanListDao;
+    private MobileAppLoanListDao mobileAppLoanListDao;
 
     @Resource
     private LoanCalculator loanCalculator;
@@ -38,7 +38,7 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
 
-            List<Loan> investList = loanListDao.getInvestList(index, pageSize);
+            List<Loan> investList = mobileAppLoanListDao.getInvestList(index, pageSize);
 
             loanDtoList = convertLoanDto(investList);
         }
@@ -50,7 +50,7 @@ public class MobileLoanListAppServiceImpl implements MobileLoanListAppService {
             loanListResponseDataDto.setLoanList(loanDtoList);
             loanListResponseDataDto.setIndex(index);
             loanListResponseDataDto.setPageSize(pageSize);
-            loanListResponseDataDto.setTotalCount(loanListDao.getTotalCount());
+            loanListResponseDataDto.setTotalCount(mobileAppLoanListDao.getTotalCount());
             dto.setData(loanListResponseDataDto);
         }
 
