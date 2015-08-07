@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                     cwd: '',      // Src matches are relative to this path.
                     src: ['<%= meta.baseJs %>/*.js'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseJs %>/dest/',   // Destination path prefix.
-                    ext: '.min.<%= grunt.template.today("yyyymmddHHMM") %>.js',   // Dest filepaths will have this extension.
+                    ext: '.min.js',   // Dest filepaths will have this extension.
                     extDot: 'first',   // Extensions in filenames begin after the first dot
                     flatten : true
                   }
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
                     cwd: '',      // Src matches are relative to this path.
                     src: ['<%= meta.baseCssdist %>/*.css'], // Actual pattern(s) to match.
                     dest: '<%= meta.baseCssdist %>/',   // Destination path prefix.
-                    ext: '.min.<%= grunt.template.today("yyyymmddHHMM") %>.css',   // Dest filepaths will have this extension.
+                    ext: '.min.css',   // Dest filepaths will have this extension.
                     extDot: 'first' ,  // Extensions in filenames begin after the first dot
                     flatten : true
                   }

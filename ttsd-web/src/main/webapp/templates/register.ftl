@@ -4,26 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
     <title>注册</title>
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/global.css">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/header.css">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/footer.css">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/register.css">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/browser-version-warning.css">
+    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.global}">
+    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.register}">
 </head>
 <body>
 <#include "header.ftl" />
-<!--nav begin-->
-<div class="nav">
-    <div class="nav-main">
-        <a href="#" class="logo">
-            <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
-        </a>
-
-        <p>注册</p>
-        <span>已有账号，请<a href="javascript:;">登陆</a></span>
-    </div>
-</div>
-<!--nav end-->
 <!--register begin-->
 <div class="register">
     <ul>
@@ -137,9 +122,9 @@
     <p>
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
-<script src="${requestContext.getContextPath()}/js/config.js"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.js" defer async="true"
-        data-main="${requestContext.getContextPath()}/js/register.js"></script>
+<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
+        data-main="${requestContext.getContextPath()}/js/dest/${js.register}"></script>
 <#include "footer.ftl">
 </body>
 </html>
