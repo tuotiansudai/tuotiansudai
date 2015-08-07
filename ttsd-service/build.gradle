@@ -1,7 +1,9 @@
 apply plugin: 'java'
 
+version = '1.0'
+
 dependencies {
-    def springVersion = '4.1.6.RELEASE'
+    def springVersion = '4.1.7.RELEASE'
     def mybatisVersion = '3.3.0'
     def mybatisSpringVersion = '1.2.3'
     def jacksonVersion = '2.5.4'
@@ -17,8 +19,8 @@ dependencies {
             'com.squareup.okhttp:okhttp:2.4.0',
             "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            'org.hibernate:hibernate-validator:5.2.0.Final'
 }
 
 jar {

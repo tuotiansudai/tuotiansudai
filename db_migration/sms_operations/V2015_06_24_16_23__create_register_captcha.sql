@@ -11,5 +11,5 @@ CREATE TABLE ${sms_operations}.`register_captcha` (
   INDEX REGISTER_CAPTCHA_MOBILE_INDEX(mobile)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 100001
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;

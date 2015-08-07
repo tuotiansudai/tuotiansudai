@@ -6,13 +6,11 @@ import org.apache.ibatis.annotations.Insert;
 
 public interface UserMapper {
 
-    UserModel findUserById(Long id);
+    UserModel findByEmail(String email) ;
 
-    UserModel findUserByEmail(String email) ;
+    UserModel findByMobile(String mobile) ;
 
-    UserModel findUserByMobileNumber(String mobileNumber) ;
+    UserModel findByLoginName(String loginName) ;
 
-    UserModel findUserByLoginName(String loginName) ;
-
-    void insertUser(UserModel userModel) ;
+    void create(UserModel userModel) ;
 }

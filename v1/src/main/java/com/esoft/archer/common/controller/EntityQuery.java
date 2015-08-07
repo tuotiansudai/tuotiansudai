@@ -402,7 +402,7 @@ public class EntityQuery<E> {
 			allResultList = ht.find("from " + getEntityClass().getSimpleName());
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 

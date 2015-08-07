@@ -197,7 +197,7 @@ public class UmPayLoanHome extends LoanHome {
 			umPayLoaingOperation.createOperation(loan, FacesContext.getCurrentInstance());
 			FacesUtil.addInfoMessage("放款成功");
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
 		} catch (UmPayOperationException e) {
 			log.error(e.getStackTrace());

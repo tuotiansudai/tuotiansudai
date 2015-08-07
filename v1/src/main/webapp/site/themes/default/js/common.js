@@ -128,4 +128,52 @@ function timerCount(xhr, status, args, buttonId) {
 function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
+$(function(){
+	$('.jq_mobile').attr('disabled',true);
+})
+
+
+$(function(){
+	if ($('.isOpenFastPay').val() == '1'){
+		$('.quickPayment').addClass('current');
+		$('.isOpenFastPayment').prop("checked", true);
+	} else {
+		$('.onlineRecharge').addClass('current');
+		$('.isOpenFastPayment').prop("checked", false);
+	}
+});
+
+$(function(){
+	$('.quickPayment').on('click',function(){
+		if ($(this).hasClass('current')) {
+			return;
+		} else {
+			if ($('.isOpenFastPay').val() == '1') {
+				$(this).addClass('current');
+				$('.onlineRecharge').removeClass('current');
+				$('.zhcz').hide();
+				$('.isOpenFastPayment').prop("checked", true);
+			} else {
+				window.location.href = '/user/bankCardList';
+			}
+		}
+	});
+	$('.onlineRecharge').on('click',function(){
+		if ($(this).hasClass('current')) {
+			return;
+		} else {
+			$(this).addClass('current');
+			$('.quickPayment').removeClass('current');
+			$('.isOpenFastPayment').prop("checked", false);
+			$('.zhcz').show();
+		}
+	});
+});
+
+
+
+
+
+
+
 

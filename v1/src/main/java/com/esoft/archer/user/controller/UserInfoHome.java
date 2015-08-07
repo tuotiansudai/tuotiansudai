@@ -7,6 +7,7 @@ import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.service.AuthService;
 import com.esoft.archer.common.service.impl.AuthInfoBO;
+import com.esoft.archer.config.model.Config;
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.model.User;
@@ -21,13 +22,19 @@ import com.esoft.jdp2p.message.MessageConstants;
 import com.esoft.jdp2p.message.exception.MailSendErrorException;
 import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
+import com.ttsd.redis.RedisClient;
+import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.primefaces.context.RequestContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,7 +57,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 
 	@Logger
 	static Log log;
-	
+
+	@Value("${redis.registerVerifyCode.expireTime}")
+	private int registerVerifyCodeExpireTime;
+
+	@Resource
+	RedisClient redisClient;
+
 	/**
 	 * 步骤
 	 */
@@ -87,6 +100,8 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	private String newMobileNumber;
 	// 认证码
 	private String authCode;
+
+	private String imageCaptcha;
 	
 	
 	public String getFindPwdEmail() {
@@ -114,7 +129,13 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 		this.authCode = authCode;
 	}
 
+	public String getImageCaptcha() {
+		return imageCaptcha;
+	}
 
+	public void setImageCaptcha(String imageCaptcha) {
+		this.imageCaptcha = imageCaptcha;
+	}
 	// /////////////////////////////////////////通过邮箱找回密码--开始////////////////////////////////////
 
 	/**
@@ -221,6 +242,10 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 	 * @param jsCode 方法执行完以后要执行的js
 	 */
 	public void sentVerifyAuthCodeToMobile(String mobileNumber, String jsCode){
+		Date nowTime = new Date();
+		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String sessionId = request.getSession().getId()+"_image_captcha_status";
+		String remoteIp = CommonUtils.getRemoteHost(request);
 		User l = userBO.getUserByMobileNumber(mobileNumber);
 		if(l == null ){
 			FacesUtil.getCurrentInstance().validationFailed();
@@ -228,28 +253,73 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			return;
 		}
 		this.setInstance(l);
-		
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("time", DateUtil.DateToString(new Date(), DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
-		params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
-		// 发送手机验证码
-		messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
-		FacesUtil.addInfoMessage("验证码已经发送至手机！");
-		RequestContext.getCurrentInstance().execute(jsCode);
+		if (redisClient.exists(remoteIp)) {
+			FacesUtil.addInfoMessage("您的操作过于频繁，请稍后再试！");
+		} else {
+			Map<String, String> params = new HashMap<String, String>();
+			Config config = getBaseService().get(Config.class, "site_phone");
+			String site_phone = "";
+			if (config != null) {
+				site_phone = config.getValue();
+			}
+			params.put("authCode", authService.createAuthInfo(l.getId(), mobileNumber, null, CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE).getAuthCode());
+			params.put("site_phone",site_phone);
+			if (redisClient.exists(sessionId)) {
+				if (!redisClient.get(sessionId).equals("success")) {
+					FacesUtil.addErrorMessage("图形码输入错误！");
+					try {
+						FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+					} catch (IOException e) {
+						log.error(e.getLocalizedMessage(),e);
+					}
+					return;
+				}
+			} else {
+				FacesUtil.addErrorMessage("图形码未记录！");
+				try {
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+				} catch (IOException e) {
+					log.error(e.getLocalizedMessage(),e);
+				}
+				return;
+			}
+			// 发送手机验证码
+			messageBO.sendSMS(getBaseService().get(UserMessageTemplate.class, MessageConstants.UserMessageNodeId.FIND_LOGIN_PASSWORD_BY_MOBILE + "_sms"), params, mobileNumber);
+			redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
+			FacesUtil.addInfoMessage("验证码已经发送至手机！");
+			RequestContext.getCurrentInstance().execute(jsCode);
+		}
 	}
-	
+
 	public void findPwdByMobile1(){
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String sessionId = request.getSession().getId()+"_image_captcha_status";
 		try {
 			authService.verifyAuthInfo(getInstance().getId(), getInstance().getMobileNumber(),
 					authCode,
 					CommonConstants.AuthInfoType.FIND_LOGIN_PASSWORD_BY_MOBILE);
+			if (redisClient.exists(sessionId)) {
+				if (!redisClient.get(sessionId).equals("success")) {
+					FacesUtil.addErrorMessage("图形码输入错误！");
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+					return;
+				}
+			} else {
+				FacesUtil.addErrorMessage("图形码已经过期！");
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+				return;
+			}
+			//imageCaptcha
 			this.step = 2;
-		} catch (NoMatchingObjectsException e) {
+		} catch (NoMatchingObjectsException |AuthInfoOutOfDateException |AuthInfoAlreadyActivedException e) {
 			FacesUtil.addErrorMessage("验证码输入有误！");
-		} catch (AuthInfoOutOfDateException e) {
-			FacesUtil.addErrorMessage("验证码输入有误！");
-		} catch (AuthInfoAlreadyActivedException e) {
-			FacesUtil.addErrorMessage("验证码输入有误！");
+			try {
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/find_pwd_by_mobile");
+			} catch (IOException e1) {
+				log.error(e1.getLocalizedMessage(),e1);
+			}
+		} catch (IOException e) {
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 	
@@ -532,10 +602,10 @@ public class UserInfoHome extends EntityHome<User> implements Serializable {
 			RequestContext.getCurrentInstance().execute(jsCode);
 		} catch (UserNotFoundException e) {
 			FacesUtil.addErrorMessage("用户未登录");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		} catch (MailSendErrorException e) {
 			FacesUtil.addErrorMessage("验证码发送失败，请检查邮箱合法性！");
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 	
