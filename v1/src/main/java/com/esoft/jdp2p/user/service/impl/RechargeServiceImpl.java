@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
@@ -32,6 +33,20 @@ import com.esoft.jdp2p.risk.FeeConfigConstants.FeePoint;
 import com.esoft.jdp2p.risk.FeeConfigConstants.FeeType;
 import com.esoft.jdp2p.risk.service.impl.FeeConfigBO;
 import com.esoft.jdp2p.user.service.RechargeService;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.LockMode;
+import org.hibernate.classic.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Company: jdp2p <br/>
@@ -167,6 +182,28 @@ public class RechargeServiceImpl implements RechargeService {
 		return "Not found Bank";
 	}
 
+	@Override
+	public boolean isRealNameBank(String bankNo) {
+		List<RechargeBankCard> realNameList = this.getRealNameBankList();
+		for (RechargeBankCard rechargeBankCard : realNameList){
+			if (StringUtils.equals(rechargeBankCard.getNo(), bankNo)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isFastPaymentBank(String bankNo) {
+		List<RechargeBankCard> fastPayList = this.getFastPayBankCardsList();
+		for (RechargeBankCard rechargeBankCard : fastPayList){
+			if (StringUtils.equals(rechargeBankCard.getNo(), bankNo)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static Properties props = new Properties();
 	static {
 		try {
@@ -177,6 +214,31 @@ public class RechargeServiceImpl implements RechargeService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<RechargeBankCard> getFastPayBankCardsList() {
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		bcs.add(new RechargeBankCardImpl("ICBC", "中国工商银行"));
+		bcs.add(new RechargeBankCardImpl("ABC", "中国农业银行"));
+		bcs.add(new RechargeBankCardImpl("CCB", "中国建设银行"));
+		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
+		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
+		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
+		bcs.add(new RechargeBankCardImpl("SDB", "深圳发展银行"));
+		return bcs;
+	}
+
+	@Override
+	public List<RechargeBankCard> getRealNameBankList(){
+		List<RechargeBankCard> bcs = new ArrayList<RechargeBankCard>();
+		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
+		bcs.add(new RechargeBankCardImpl("ABC", "中国农业银行"));
+		bcs.add(new RechargeBankCardImpl("CCB", "中国建设银行"));
+		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
+		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
+		bcs.add(new RechargeBankCardImpl("CITIC", "中信银行"));
+		return bcs;
 	}
 
 	@Override
@@ -255,6 +317,21 @@ public class RechargeServiceImpl implements RechargeService {
 			recharge.setStatus(UserConstants.RechargeStatus.FAIL);
 			ht.merge(recharge);
 		}
+	}
+	@Transactional(rollbackFor = Exception.class)
+	public String  getRechangeWay(String userId){
+
+		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
+
+		List<BankCard> bankCard= ht.find(hql, new Object[]{userId, true,"passed"});
+
+		if(bankCard != null&& bankCard.size() > 0){
+			return bankCard.get(0).getBankNo();
+		}
+
+		return null;
+
+
 	}
 
 }

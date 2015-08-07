@@ -97,7 +97,7 @@ public class MailServiceImpl implements MailService {
 			trans.send(mailMessage);
 
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new MailSendErrorException(e);
 		}
 	}
@@ -127,7 +127,7 @@ public class MailServiceImpl implements MailService {
 			// FIXME 需要修改为异步发送消息
 			trans.send(mailMessage);
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new MailSendErrorException(e);
 		}
 	}

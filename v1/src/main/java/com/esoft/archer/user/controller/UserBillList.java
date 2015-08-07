@@ -60,6 +60,7 @@ public class UserBillList extends EntityQuery<UserBill> {
 	public UserBillList() {
 		final String[] RESTRICTIONS = { "id like #{userBillList.example.id}",
 				"user.id like #{userBillList.example.user.id}",
+				"operator like #{userBillList.example.operator}",
 				"type like #{userBillList.example.type}",
 				"typeInfo like #{userBillList.example.typeInfo}",
 				"time >= #{userBillList.startTime}",
@@ -177,7 +178,7 @@ public class UserBillList extends EntityQuery<UserBill> {
 				FacesUtil.getCurrentInstance().responseComplete();
 			} catch (IOException e) {
 				e.printStackTrace();
-				log.error(e);
+				log.error(e.getLocalizedMessage(), e);
 			} finally {
 				if (stream != null) {
 					try {

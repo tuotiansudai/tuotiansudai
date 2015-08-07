@@ -217,3 +217,13 @@ img,h1,h2,h3,h4,h5,ul,li,dl,dt,dd,p,a{margin:0; padding:0; border:0; list-style:
   color: white;
   padding: 5px 10px;
 }
+
+.income {
+	border-top: 1px solid #eeeeee;
+	border-bottom: 1px solid #eeeeee;
+	padding: 25px;
+	text-align: center;
+}
+.imageCode {
+	margin:6px 0px 0px 9px;
+}

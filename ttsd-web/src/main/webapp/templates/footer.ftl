@@ -1,19 +1,19 @@
-<div class="foot"><!--foot begin-->
-    <div class="foot_main">
-        <ul class="foot_about">
+<div class="footer">
+    <div class="footer-main">
+        <ul class="footer-about">
             <p>关于我们</p>
             <li><a href="javascript:;">公司介绍</a></li>
             <li><a href="javascript:;">安全保障</a></li>
             <li><a href="javascript:;">媒体报道</a></li>
             <li><a href="javascript:;">联系我们</a></li>
         </ul>
-        <ul class="foot_help">
+        <ul class="footer-help">
             <p>帮助中心</p>
             <li><a href="javascript:;">新手指引</a></li>
             <li><a href="javascript:;">网站费用</a></li>
             <li><a href="javascript:;">网站服务协议</a></li>
         </ul>
-        <ol class="foot_phone">
+        <ol class="footer-phone">
             <span>客服电话</span>
 
             <p>400-169-1188<em>(沟通时间：9:00--18:00)</em></p>

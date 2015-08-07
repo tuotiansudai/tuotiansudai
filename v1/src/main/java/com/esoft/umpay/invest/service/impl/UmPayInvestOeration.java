@@ -175,13 +175,13 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest>{
 			}
 			ht.update(to);
 		} catch (VerifyException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("接收信息时出错!");
 		} catch (InsufficientBalance e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("余额不足!");
 		} catch (NoMatchingObjectsException e) {
-			log.error(e);
+			log.error(e.getLocalizedMessage(), e);
 		} 
 	}
 	

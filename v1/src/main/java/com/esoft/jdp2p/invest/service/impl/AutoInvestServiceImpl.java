@@ -239,7 +239,7 @@ public class AutoInvestServiceImpl implements AutoInvestService {
 					break;
 				} catch (Exception e) {
 					if (log.isErrorEnabled()) {
-						log.error(e);
+						log.error(e.getLocalizedMessage(), e);
 					}
 				}
 				// 扔到队尾

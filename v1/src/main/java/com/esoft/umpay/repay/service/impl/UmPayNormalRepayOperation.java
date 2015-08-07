@@ -2,6 +2,7 @@ package com.esoft.umpay.repay.service.impl;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -13,6 +14,7 @@ import com.esoft.archer.user.model.*;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
@@ -89,13 +91,16 @@ public class UmPayNormalRepayOperation extends
 	@Logger
 	Log log;
 
+	@Resource
+	SystemBillService systemBillService;
+
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public void recommendedIncome(LoanRepay lr) throws IOException,ReqDataException, RetDataException{
+	public void recommendedIncome(Loan loan) throws IOException,ReqDataException, RetDataException{
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
-				"from Invest i where i.loan.id=? and i.status!=?",
-				new String[] { lr.getLoan().getId(), InvestConstants.InvestStatus.CANCEL });
+				"from Invest i where i.loan.id=? and i.status not in (?,?)",
+				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
@@ -114,71 +119,77 @@ public class UmPayNormalRepayOperation extends
 				}else{
 					roleId = "MEMBER";
 				}
-				double bonus = calculateBonus(invest, referrerRelation,lr.getLoan(),roleId);
+				double bonus = calculateBonus(invest, referrerRelation, loan, roleId);
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
-				String msg = "";
+				String errorMessage = "";
+
+				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
+				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
+
+
 				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
 					//调用联动优势接口
-					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId);
+					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
 					if(returnMsg.split("\\|")[0].equals("0000")){
 						status = InvestUserReferrer.SUCCESS;
 					}else{
-						msg = returnMsg.split("\\|")[1];
+						errorMessage = returnMsg.split("\\|")[1];
 					}
 				}
 				if(bonus == -1){
 					continue;
 				}
 				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
-					msg = NOT_BIND_CARD;
+					errorMessage = NOT_BIND_CARD;
 				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
 				if(list.contains("ROLE_MERCHANDISER")){
 					continue;
 				}
-				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, msg);
+				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, errorMessage, transferOutDetail);
 			}
 		}
 	}
 
 	private double calculateBonus(Invest invest, ReferrerRelation referrerRelation,Loan loan,String roleId) {
-		String repayTimeUnit = loan.getType().getRepayTimeUnit();
 		int percentage = 100;
 		int maxDigital = 2;
 		int repayWay = 1;
+		String repayTimeUnit = loan.getType().getRepayTimeUnit();
+		int deadLine = loan.getDeadline();
 		if(repayTimeUnit.equals("month")){
 			repayWay = 12;
 		}else if(repayTimeUnit.equals("day")){
 			repayWay = 365;
 		}
 		List<ReferGradeProfitUser> referGradeProfitUserList = ht.find("from ReferGradeProfitUser t where t.referrer = ? and t.grade = ?",
-                new Object[]{referrerRelation.getReferrer(),referrerRelation.getLevel()});
+                new Object[]{referrerRelation.getReferrer(), referrerRelation.getLevel()});
 		if (referGradeProfitUserList.size() > 0){
-			return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitUserList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+			return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitUserList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
         }else {
 			if(!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
-				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),"INVESTOR"});
+				List<ReferGradeProfitSys> referGradeProfitSysListEx = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), "INVESTOR"});
 				if (referGradeProfitSysListEx.size() > 0){
-					return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysListEx.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+					return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysListEx.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
 				}else{
 					return -1;
 				}
 			}
-            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(),roleId});
+            List<ReferGradeProfitSys> referGradeProfitSysList = ht.find("from ReferGradeProfitSys t where t.grade = ? and t.gradeRole = ?", new Object[]{referrerRelation.getLevel(), roleId});
 			if (referGradeProfitSysList.size() > 0){
-				return ArithUtil.div(ArithUtil.div(ArithUtil.mul(invest.getMoney(), referGradeProfitSysList.get(0).getProfitRate(), maxDigital), repayWay, maxDigital), percentage, maxDigital);
+				return ArithUtil.div(ArithUtil.mul(ArithUtil.mul(invest.getMoney(), ArithUtil.div(referGradeProfitSysList.get(0).getProfitRate(), percentage)), deadLine),repayWay,maxDigital);
 			}else {
 				return -1;
 			}
         }
 	}
 
-	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String msg) {
+	public void insertIntoUserBill(Invest invest, double bonus, ReferrerRelation referrerRelation, String particUserId, Date nowdate, String status, String errorMessage, String transferOutDetail) {
 		//插入交易流水
 		//获取当前余额
 		double balance = userBillBO.getBalance(referrerRelation.getReferrerId());
@@ -200,11 +211,11 @@ public class UmPayNormalRepayOperation extends
 		ub.setUser(referrerRelation.getReferrer());
 		String detail = "";
 		if((!particUserId.equals("") && status.equals("success")) || bonus == 0.00){
-            detail = "收到分红,来自"+invest.getUser().getUsername()+"的投资";
+            detail = transferOutDetail;
         }else if(particUserId.equals("")){
             detail = NOT_BIND_CARD;
         }else{
-            detail = msg;
+            detail = errorMessage;
         }
 		ub.setDetail(detail);
 		ht.save(ub);
@@ -337,11 +348,6 @@ public class UmPayNormalRepayOperation extends
 										UmPayConstants.UpdateProjectStatus.PROJECT_STATE_FINISH,
 										false);
 					}
-					try {
-						recommendedIncome(repay);
-					}catch (Exception e){
-						log.error(e.getStackTrace());
-					}
 				}
 			} else {
 				fail(to);
@@ -378,7 +384,7 @@ public class UmPayNormalRepayOperation extends
 		 * userBillBO.unfreezeMoney(lr.getLoan().getUser().getId(),ArithUtil
 		 * .add(lr.getCorpus(), lr.getDefaultInterest(),lr.getFee(),
 		 * lr.getInterest()),OperatorInfo.NORMAL_REPAY,"资金托管方还款失败，解冻还款金额，还款编号："
-		 * + lr.getId()); } catch (InsufficientBalance e) { log.error(e); throw
+		 * + lr.getId()); } catch (InsufficientBalance e) { log.error(e.getLocalizedMessage(), e); throw
 		 * new RuntimeException(e); }
 		 */
 		to.setStatus(TrusteeshipConstants.Status.REFUSED);
