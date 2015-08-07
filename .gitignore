@@ -17,6 +17,5 @@ spike.py
 **/gradle/
 **/classes/
 **/node_modules/
-**/*.css.map
-ttsd-web/src/main/webapp/js/dest/*.[a-zA-Z0-9]{8}.min.js
-ttsd-web/src/main/webapp/style/dest/*.[a-zA-Z0-9]{8}.min.css
+ttsd-web/src/main/webapp/style/*.css.map
+ttsd-web/src/main/webapp/style/*.css

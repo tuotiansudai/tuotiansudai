@@ -1,7 +1,6 @@
 package com.tuotiansudai.web.configuration;
 
 import com.google.common.collect.Maps;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -19,8 +18,8 @@ public class StaticResourceVersionMap extends MapFactoryBean implements Resource
     private String javascriptLocation;
     private String cssLocation;
 
-    private static int devVersionLength = 3;
-    private static int prodVersionLength = 4;
+    private static int DEV_VERSION_LENGTH = 3;
+    private static int PROD_VERSION_LENGTH = 4;
 
     @Override
     protected Map<Object, Object> createInstance() {
@@ -57,10 +56,10 @@ public class StaticResourceVersionMap extends MapFactoryBean implements Resource
             String fileName = file.getName();
             String[] split = fileName.split("\\.");
             String filePrefix = split[0];
-            if (split.length == devVersionLength && !versionMap.containsKey(filePrefix)) {
+            if (split.length == DEV_VERSION_LENGTH && !versionMap.containsKey(filePrefix)) {
                 versionMap.put(filePrefix, fileName);
             }
-            if (split.length == prodVersionLength) {
+            if (split.length == PROD_VERSION_LENGTH) {
                 versionMap.put(filePrefix, fileName);
             }
 
