@@ -106,7 +106,7 @@ def start_new_container(name, local_port):
 
 
 @task
-@needs('mkwar')
+@needs('migrate', 'mkwar')
 @cmdopts([
     ('port=', 'p', 'Local port which is mapped to containers 8080')
 ])
