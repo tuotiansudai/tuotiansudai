@@ -19,6 +19,8 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -118,6 +120,63 @@ public class UmPayBindingBankCardOperation extends
 		}
 		return to;
 	}
+
+
+	/**
+	 * @function 用户通过app端绑定银行卡
+	 * @param bankCard
+	 * @return
+	 * @throws IOException
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResponseDto createOperation(BankCard bankCard) throws IOException {
+		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
+				.getId());
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
+		// 后台地址
+		sendMap.put("notify_url",
+				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
+						+ UmPayConstants.OperationType.MER_BIND_CARD);
+		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
+		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
+		// 流水号(时间戳)
+		sendMap.put("order_id", order_id);
+		// 时间
+		sendMap.put("mer_date",
+				DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
+		// 联动优势开设用户id
+		sendMap.put("user_id", ta.getId());
+		// 银行卡号
+		sendMap.put("card_id", bankCard.getCardNo());
+		// 开卡户名
+		sendMap.put("account_name", bankCard.getUser().getRealname());
+		// 证件类型
+		sendMap.put("identity_type", "IDENTITY_CARD");
+		// 身份证证件号码(记得前台判断没有开户不能够绑卡)
+		sendMap.put("identity_code", bankCard.getUser().getIdCard());
+		// 快捷协议标志
+		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment()?"1":"0");
+		TrusteeshipOperation to = null;
+		BaseResponseDto baseResponseDto = new BaseResponseDto();
+		try {
+			// 加密参数
+			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+			log.debug("绑卡发送数据:" + reqData);
+			// 保存操作记录
+			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
+					bankCard.getUser().getId(),
+					UmPayConstants.OperationType.MER_BIND_CARD,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+		}
+		return baseResponseDto;
+	}
+
 
 	/**
 	 * 绑卡-WEB通知

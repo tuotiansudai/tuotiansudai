@@ -19,6 +19,9 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.RechargeResponseDto;
+import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -143,6 +146,80 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		}
 		return to;
 	}
+
+
+	/**
+	 * @function 用户通过app端快捷充值
+	 * @param recharge 充值所需参数包装类
+	 * @return
+	 * @throws IOException
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResponseDto createOperation(Recharge recharge,HttpServletRequest request) throws IOException {
+
+		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser().getId());
+		recharge.setRechargeWay(rechargeService.getRechangeWay(recharge.getUser().getId()));
+		// 保存一个充值订单
+		String id = rechargeService.createRechargeOrder(recharge);
+		log.debug(id);
+		recharge = ht.get(Recharge.class, recharge.getId());
+		User user = ht.get(User.class, recharge.getUser().getId());
+		recharge.setIsRechargedByAdmin(false);
+		recharge.setTime(new Date());
+		recharge.setUser(user);
+		recharge.setStatus(UserConstants.RechargeStatus.WAIT_PAY);
+		// 获取拼装map
+		Map<String, String> sendMap = UmPaySignUtil
+				.getSendMapDate(UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		// 异步地址
+		sendMap.put("notify_url",
+				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
+						+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		sendMap.put("order_id", recharge.getId());
+		log.debug("order_id="+recharge.getId());
+		sendMap.put("mer_date",
+				DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
+		/**
+		 * <option value="B2CDEBITBANK">借记卡网银</option> <option
+		 * value="B2BBANK">企业网银</option> <option
+		 * value="DEBITCARD">借记卡快捷</option>
+		 */
+		// 充值方式
+		sendMap.put("pay_type", "DEBITCARD");
+		// 资金账户托管平台的用户号
+		sendMap.put("user_id", ta.getId());
+		// 资金账户托管平台的账户号
+		double actualMoney = (double) recharge.getActualMoney();
+		// 充值的时候必须发送的请求是整数倍 而且单位是分
+		int monery = (int) actualMoney * 100;
+		// 充值金额
+		sendMap.put("amount", String.valueOf(monery));
+		// 用户IP地址
+		sendMap.put("user_ip", FacesUtil.getRequestIp(request));
+		// 保存操作记录
+		TrusteeshipOperation to = null;
+		BaseResponseDto baseResponseDto = new BaseResponseDto();
+		try {
+			// 加密参数
+			ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
+			// 保存操作记录
+			to = createTrusteeshipOperation(recharge.getId(), reqData.getUrl(),
+					recharge.getId(),
+					UmPayConstants.OperationType.MER_RECHARGE_PERSON,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+			RechargeResponseDto rechargeResponseDto = new RechargeResponseDto();
+			rechargeResponseDto.setUrl(reqData.getUrl());
+			baseResponseDto.setData(rechargeResponseDto);
+		} catch (ReqDataException e) {
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+			log.error(e.getLocalizedMessage(),e);
+		}
+		return baseResponseDto;
+	}
+
 
 	@Override
 	public TrusteeshipOperation createOperation(Recharge recharge, FacesContext facesContext) throws Exception {

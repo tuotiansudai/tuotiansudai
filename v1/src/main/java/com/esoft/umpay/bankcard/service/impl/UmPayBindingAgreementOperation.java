@@ -13,6 +13,8 @@ import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -85,6 +87,52 @@ public class UmPayBindingAgreementOperation extends
         return to;
 
     }
+
+
+    /**
+     * @function 用户通过app端签约银行卡
+     * @param userId
+     * @return
+     * @throws IOException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public BaseResponseDto createOperation(String userId) throws IOException {
+        TrusteeshipAccount ta = getTrusteeshipAccount(userId);
+        String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
+
+        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
+        if (userBankCard == null || userBankCard.size() == 0) {
+            return null;
+        }
+        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+        // 后台地址
+        sendMap.put("notify_url",
+                UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
+                        + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+        sendMap.put("user_id", ta.getId());
+        sendMap.put("account_id", ta.getAccountId());
+        sendMap.put("user_bind_agreement_list", "ZKJP0700");
+        TrusteeshipOperation to = null;
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        try {
+            // 加密参数
+            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            log.debug("签约协议发送数据:" + reqData);
+            // 保存操作记录
+            to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
+                    userId,
+                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                    GsonUtil.fromMap2Json(reqData.getField()));
+            baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+            baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        } catch (ReqDataException e) {
+            log.error(e.getLocalizedMessage(),e);
+            baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+            baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+        }
+        return baseResponseDto;
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
