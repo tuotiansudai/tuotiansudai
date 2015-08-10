@@ -56,6 +56,21 @@ def stop():
     sh('pkill python')
 
 
+def copy_files_into_product_config(port):
+    if port:
+        import os
+        import shutil
+
+        src = '/workspace/docker_config_{0}'.format(port)
+        if os.path.isdir(src):
+            src_files = os.listdir(src)
+            for file_name in src_files:
+                full_file_name = os.path.join(src, file_name)
+                if (os.path.isfile(full_file_name)):
+                    dest = '/workspace/production_config/{0}'.format(file_name)
+                    shutil.copy(full_file_name, dest)
+
+
 @task
 def mkwar():
     run_shell_under_v1('/opt/gradle/latest/bin/gradle clean')
@@ -106,7 +121,7 @@ def start_new_container(name, local_port):
 
 
 @task
-@needs('migrate', 'mkwar')
+@needs('migrate')
 @cmdopts([
     ('port=', 'p', 'Local port which is mapped to containers 8080')
 ])
@@ -116,6 +131,8 @@ def deploy_to_docker(options):
     Usage:
         sudo paver deploy_to_docker.port=30001 deploy_to_docker
     """
+    copy_files_into_product_config(options.port)
+    mkwar()
     name = "ttsd-{0}".format(options.port)
     remove_old_container(name)
     start_new_container(name, options.port)
