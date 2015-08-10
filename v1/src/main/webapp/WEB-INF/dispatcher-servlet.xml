@@ -38,6 +38,8 @@
     <mvc:resources mapping="/mobile/js/**" location="/mobile/js/"/>
     <mvc:default-servlet-handler />
 
+    <bean class="com.esoft.core.bean.factory.config.LogBeanPostProcessor" />
+
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/mobile/templates"/>
