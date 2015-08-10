@@ -5,7 +5,7 @@ apply from: 'db_migration.gradle'
 dependencies {
     def springVersion = '4.1.7.RELEASE'
     def springSecurityVersion = '4.0.1.RELEASE'
-    def freemarkerVersion = '2.3.22'
+    def freemarkerVersion = '2.3.23'
     def jacksonVersion = '2.5.4'
     compile "org.springframework:spring-webmvc:$springVersion",
             "org.springframework:spring-context-support:$springVersion",
@@ -14,7 +14,8 @@ dependencies {
             "org.freemarker:freemarker:$freemarkerVersion",
             "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
+            'commons-io:commons-io:2.4'
 
     compile project(':ttsd-service')
 }

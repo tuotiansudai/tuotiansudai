@@ -14,7 +14,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8',
                 success: function (response) {
-
+                    console.log(response);
                 }
             });
         } else {
@@ -42,6 +42,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             type: 'GET',
             dataType: 'json',
             error: function (response) {
+                console.log(response);
                 previous.valid = isSuccess;
                 validator.stopRequest(element, isSuccess);
             },
@@ -172,9 +173,11 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8',
             success: function (response) {
+                var registerAccountForm = $('#register-account-form');
+                var registerUserForm = $('#register-user-form');
                 if (response.data.status) {
-                    $('#register-account-form .login-name').val($('#register-user-form .login-name').val())
-                    $('#register-account-form .mobile').val($('#register-user-form .mobile').val())
+                    registerAccountForm.find('.login-name').val(registerUserForm.find('.login-name').val());
+                    registerAccountForm.find('.mobile').val(registerUserForm.find('.mobile').val());
                     $('.register .register-step-one-title').removeClass("active");
                     $('.register .register-step-one').removeClass("active");
                     $('.register .register-step-two-title').addClass("active");
@@ -219,7 +222,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
         onfocusout: function (element) {
             this.element(element);
         },
-        submitHandler: function (validator, form, event) {
+        submitHandler: function (validator) {
             var names = ['loginName', 'mobile', 'userName', 'identityNumber'];
             var elements = validator.elements;
             var postData = {};
@@ -256,7 +259,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
         focusCleanup: true,
         focusInvalid: false,
         onkeyup: false,
-        submitHandler: function (validator, form, event) {
+        submitHandler: function (validator) {
             var names = ['loginName', 'mobile', 'captcha', 'password', 'referrer', 'agreement'];
             var elements = validator.elements;
             var postData = {};
