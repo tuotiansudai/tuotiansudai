@@ -13,6 +13,7 @@ import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
@@ -116,15 +117,18 @@ public class UmPayBindingAgreementOperation extends
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
             // 加密参数
-            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
             to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
                     userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
+            BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+            bankCardResponseDto.setUrl(reqData.getUrl());
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            baseResponseDto.setData(bankCardResponseDto);
         } catch (ReqDataException e) {
             log.error(e.getLocalizedMessage(),e);
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());

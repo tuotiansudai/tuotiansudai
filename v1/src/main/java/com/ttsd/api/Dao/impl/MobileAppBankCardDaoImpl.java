@@ -32,7 +32,7 @@ public class MobileAppBankCardDaoImpl implements MobileAppBankCardDao{
         Session session = ht.getSessionFactory().getCurrentSession();
         String sql = "select count(1) from bank_card where user_id=? and status='passed'";
         if (MobileAppCommonConstants.QUERY_SIGN_STATUS.equals(operationType)){
-            sql += " is_open_fastPayment='1'";
+            sql += " is_open_fastPayment='true'";
         }
         SQLQuery sqlQuery = session.createSQLQuery(sql);
         sqlQuery.setParameter(0, userId);

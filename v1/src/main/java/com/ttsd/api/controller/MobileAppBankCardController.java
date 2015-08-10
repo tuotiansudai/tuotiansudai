@@ -35,11 +35,11 @@ public class MobileAppBankCardController {
 
     /**
      * @function 绑卡
-     * @param bindBankCardRequestDto 绑卡请求参数
+     * @param bankCardRequestDto 绑卡请求参数
      * @return BaseResponseDto
      */
     @RequestMapping(value = "/bankcard/bind",method = RequestMethod.POST)
-    public BaseResponseDto bankCardBind(@RequestBody BindBankCardRequestDto bindBankCardRequestDto){
+    public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
             BankCard bankCard = new BankCard();
@@ -53,13 +53,13 @@ public class MobileAppBankCardController {
 
     /**
      * @function 签约
-     * @param signBankCardRequestDto
+     * @param bankCardRequestDto
      * @return BaseResponseDto
      */
     @RequestMapping(value = "/bankcard/sign",method = RequestMethod.POST)
-    public BaseResponseDto bankcardSign(@RequestBody SignBankCardRequestDto signBankCardRequestDto){
+    public BaseResponseDto bankcardSign(@RequestBody BankCardRequestDto bankCardRequestDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String userId = signBankCardRequestDto.getBaseParam().getUserId();
+        String userId = bankCardRequestDto.getBaseParam().getUserId();
         if (Strings.isNullOrEmpty(userId)){
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
