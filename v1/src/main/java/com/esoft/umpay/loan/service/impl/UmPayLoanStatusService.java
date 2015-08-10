@@ -131,9 +131,12 @@ public class UmPayLoanStatusService{
 				to.setStatus(TrusteeshipConstants.Status.REFUSED);
 			}
 			trusteeshipOperationBO.save(to);
-		} catch (ReqDataException | RetDataException e) {
-			log.error("联动优势收发数据时加解密失败",e);
-			throw new RuntimeException("联动优势收发数据时加解密失败",e);
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("更新标的状态失败:参数加密失败!");
+		} catch (RetDataException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("更新标的状态失败:参数解密失败!");
 		}
 		return resData;
 	}
