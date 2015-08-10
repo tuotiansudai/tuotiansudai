@@ -20,6 +20,12 @@ public interface LoanCalculator {
 	public Double calculateMoneyNeedRaised(String loanId)
 			throws NoMatchingObjectsException;
 
+	/**
+	 * @function 计算借款已募集的金额
+	 * @param loanId 借款id
+	 * @return
+	 */
+	Double calculateMoneyRaised(String loanId)throws NoMatchingObjectsException ;
 	
 	/**
 	 * 计算当前标的的最大投资金额（取最大投资额和当前可投金额的最小额）

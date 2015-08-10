@@ -98,8 +98,8 @@ def devdeploy():
 def generate_git_log_file():
     from paver.shell import sh
 
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js > git_version.log')
-    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style >> git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
 
 
 def versioning_min_files(path):
@@ -111,7 +111,7 @@ def versioning_min_files(path):
     log_file = open('git_version.log', 'rb')
     for line in log_file:
         columns = line.strip().split()
-        original_file_path, file_version = columns[-1], columns[2]
+        original_file_path, file_version = columns[-1], columns[0]
         if original_file_path in target_files:
             full_path_parts = original_file_path.split('/')
             name_parts = full_path_parts[-1].split('.')
