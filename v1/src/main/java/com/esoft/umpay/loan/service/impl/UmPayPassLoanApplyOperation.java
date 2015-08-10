@@ -72,10 +72,6 @@ public class UmPayPassLoanApplyOperation extends UmPayOperationServiceAbs<Loan>{
 			if(!"0000".equals(resDate2.get("ret_code"))){
 				throw new UmPayOperationException("错误信息:"+resData.get("ret_msg"));
 			}
-		} catch (ReqDataException e) {
-			throw new UmPayOperationException("加密信息失败");
-		} catch (RetDataException e) {
-			throw new UmPayOperationException("接收第三方信息失败");
 		} catch (InvalidExpectTimeException e) {
 			throw new UmPayOperationException("项目执行日期不合法");
 		} catch (InsufficientBalance e) {

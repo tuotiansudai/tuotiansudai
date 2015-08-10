@@ -49,11 +49,10 @@ public interface LoanService {
      * 借款放款，即借款执行，转钱给借款者。
      *
      * @param loanId
-     * @throws ExistWaitAffirmInvests 存在等待第三方资金托管确认的投资，不能放款。
      * @throws BorrowedMoneyTooLittle 募集到的资金太少，为0、或者不足以支付借款保证金
      */
     public void giveMoneyToBorrower(String loanId)
-            throws ExistWaitAffirmInvests, BorrowedMoneyTooLittle;
+            throws BorrowedMoneyTooLittle;
 
     /**
      * 借款申请，通过审核
@@ -171,7 +170,12 @@ public interface LoanService {
      */
     public List<Invest> getSuccessfulInvests(String loanId);
 
-    void changeInvestFromWaitAffirmToUnfinished(String loanId);
+    /**
+     * 检查是否有等待第三方资金托管确认的投资
+     * @param loanId
+     * @throws ExistWaitAffirmInvests 存在等待第三方资金托管确认的投资，不能放款。
+     */
+    void changeInvestFromWaitAffirmToUnfinished(String loanId) throws ExistWaitAffirmInvests;
 
     @Transactional
     void notifyInvestorsLoanOutSuccessful(String loanId);
