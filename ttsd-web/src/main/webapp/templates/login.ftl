@@ -21,18 +21,24 @@
             </label>
             <label>
                 <em class="name">密<i></i>码:</em>
-                <input class="password unlock" type="text" value="" name="password" placeholder="请输入密码"/>
+                <input class="password unlock" type="password" value="" name="password" placeholder="请输入密码"/>
             </label>
             <label>
                 <em class="name">验证码:</em>
-                <input class="jq-yzm yzm captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码"/>
+                <input class="captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码" maxlength="5"/>
                 <em class="img-captcha">
                     <img src="/login/captcha" alt=""/>
                 </em>
             </label>
             <div class="error"></div>
-            <p><input type="checkbox" value=""/>下次自动登录 <a href="javascript:;">忘记密码？</a></p>
-            <span><a href="javascript:;" class="login-now grey" disabled="disabled">立即登录</a><a href="javascript:;" class="reg">免费注册</a></span>
+
+            <p class="forgot-password"><a href="javascript:">忘记密码？</a></p>
+
+            <span>
+                <a href="javascript:" class="login-now grey" disabled="disabled">立即登录</a>
+                <a href="javascript:" class="reg">免费注册</a>
+            </span>
+
             <b>数据采用256位加密技术，保障您的信息安全！</b>
         </form>
     </div>

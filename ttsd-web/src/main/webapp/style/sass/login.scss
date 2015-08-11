@@ -1,9 +1,8 @@
-/*************login***************/
 .login {
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../../../images/login/login-background.jpg") no-repeat left;
+  background: url("/images/login/login-background.jpg") no-repeat left;
   & div {
     margin-left: 670px;
     width: 328px;
@@ -33,11 +32,11 @@
         padding-left: 10px;
         margin-left: 4px;
       }
-      & input.yzm {
+      & input.captcha {
         width: 95px;
         float: left;
       }
-      & .img-yzm {
+      & .img-captcha {
         width: 80px;
         float: left;
         overflow: hidden;
@@ -55,7 +54,7 @@
         padding: 0 8px;
       }
     }
-    & p {
+    & .forgot-password {
       width: 238px;
       padding-left: 90px;
       height: 14px;
@@ -69,7 +68,7 @@
         float: left;
       }
       & a {
-        margin-left: 36px;
+        margin-left: 150px;
         color: #545353;
       }
     }
@@ -107,7 +106,7 @@
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../../../images/login/login-lock.png") no-repeat 0px;
+      background: url("/images/login/login-lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal;
     }
@@ -123,11 +122,9 @@
     border: none;
   }
   & div.right {
-    background: url("../../images/login/ok.png") 95px center no-repeat;
+    background: url("/images/login/ok.png") 95px center no-repeat;
   }
   & div.wrong {
-    background: url("../../images/login/error.png") 95px center no-repeat;
+    background: url("/images/login/error.png") 95px center no-repeat;
   }
 }
-
-/*************login***************/
