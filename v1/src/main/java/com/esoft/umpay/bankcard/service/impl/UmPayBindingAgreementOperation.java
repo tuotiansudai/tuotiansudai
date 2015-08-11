@@ -52,13 +52,47 @@ public class UmPayBindingAgreementOperation extends
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TrusteeshipOperation createOperation(String userId, FacesContext facesContext) throws IOException {
-        TrusteeshipAccount ta = getTrusteeshipAccount(userId);
-        String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
-
-        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
+        TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(userId);
+        List<BankCard> userBankCard = getUserBindCard(userId);
         if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
+        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
+        TrusteeshipOperation trusteeshipOperation = null;
+        try {
+            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            log.debug("签约协议发送数据:" + reqData);
+            // 保存操作记录
+            trusteeshipOperation = createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
+                    userId,
+                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                    GsonUtil.fromMap2Json(reqData.getField()));
+            // 发送请求
+            sendOperation(trusteeshipOperation, facesContext);
+        } catch (ReqDataException e) {
+            log.error(e.getLocalizedMessage(),e);
+        }
+        return trusteeshipOperation;
+
+    }
+
+    /**
+     * @function 获取用户绑定的银行卡
+     * @param userId 用户ID
+     * @return
+     */
+    public List<BankCard> getUserBindCard(String userId){
+        String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
+        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
+        return ht.find(hql, new Object[]{userId, true,"passed"});
+    }
+
+    /**
+     * @function 组装请求联动优势签约接口的Map<String,String>报文
+     * @param userId 用户ID
+     * @return Map<String,String>
+     */
+    public Map<String,String> assembleSendMap(String userId,TrusteeshipAccount trusteeshipAccount){
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
         // 同步地址
         sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
@@ -67,28 +101,30 @@ public class UmPayBindingAgreementOperation extends
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
                         + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        sendMap.put("user_id", ta.getId());
-        sendMap.put("account_id", ta.getAccountId());
+        sendMap.put("user_id", trusteeshipAccount.getId());
+        sendMap.put("account_id", trusteeshipAccount.getAccountId());
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
-        TrusteeshipOperation to = null;
-        try {
-            // 加密参数
-            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-            log.debug("签约协议发送数据:" + reqData);
-            // 保存操作记录
-            to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
-                    userId,
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
-                    GsonUtil.fromMap2Json(reqData.getField()));
-            // 发送请求
-            sendOperation(to, facesContext);
-        } catch (ReqDataException e) {
-            log.error(e.getStackTrace());
-        }
-        return to;
-
+        return sendMap;
     }
 
+    /**
+     * @function 加密参数
+     * @param userId 用户ID
+     * @param sendMap 请求参数
+     * @return TrusteeshipOperation
+     * @throws ReqDataException
+     */
+    public TrusteeshipOperation persistentOperationRecords(String userId,Map<String,String> sendMap,ReqData reqData) throws ReqDataException {
+        // 加密参数
+        TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(userId);
+        log.debug("签约协议发送数据:" + reqData);
+        // 保存操作记录
+        TrusteeshipOperation trusteeshipOperation = createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
+                userId,
+                UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                GsonUtil.fromMap2Json(reqData.getField()));
+        return trusteeshipOperation;
+    }
 
     /**
      * @function 用户通过app端签约银行卡
@@ -99,39 +135,29 @@ public class UmPayBindingAgreementOperation extends
     @Transactional(rollbackFor = Exception.class)
     public BaseResponseDto createOperation(String userId) throws IOException {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        TrusteeshipAccount ta = getTrusteeshipAccount(userId);
-        String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
-
-        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
+        TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(userId);
+        List<BankCard> userBankCard = getUserBindCard(userId);
         if (userBankCard == null || userBankCard.size() == 0) {
             baseResponseDto.setCode(ReturnMessage.NOT_BIND_CARD.getCode());
             baseResponseDto.setMessage(ReturnMessage.NOT_BIND_CARD.getMsg());
             return baseResponseDto;
         }
-        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
         //配置此项，表示使用H5页面
         sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
         // 同步地址
         sendMap.put("ret_url", "NULL");
-        // 后台地址
-        sendMap.put("notify_url",
-                UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-                        + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        sendMap.put("user_id", ta.getId());
-        sendMap.put("account_id", ta.getAccountId());
-        sendMap.put("user_bind_agreement_list", "ZKJP0700");
-        TrusteeshipOperation to = null;
         try {
-            // 加密参数
-            ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
+            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             log.debug("签约协议发送数据:" + reqData);
             // 保存操作记录
-            to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
+            createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
                     userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
             BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
             bankCardResponseDto.setUrl(reqData.getUrl());
+            bankCardResponseDto.setRequestData(GsonUtil.fromMap2Json(reqData.getField()));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             baseResponseDto.setData(bankCardResponseDto);
