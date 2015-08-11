@@ -1,0 +1,93 @@
+/**
+ * Created by belen on 15/8/11.
+ */
+require(['jquery'], function ($) {
+    $(function () {
+        // 异步请求
+        var ajaxPost = function (url, arg, ele, attr) {
+            var _this = ele;
+            var attr = attr;
+            var arg = arg;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: arg,
+            })
+                .done(function (data) {
+                    if (data.data[attr] == arg[attr]) {
+                        _this.addClass('lock').removeClass('unlock');
+                        _this.closest('label').next().text('');
+                    } else {
+                        _this.closest('label').next().text(data.msg);
+                        _this.removeClass('lock').addClass('unlock');
+                    }
+                    validSuccess();
+                    console.log("success");
+                })
+                .fail(function () {
+                    console.log("error");
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+        }
+
+
+        //及时校验 用户名
+        $('.userName').blur(function () {
+            var _this = $(this);
+            var _value = _this.val();
+            var arg = {user: _value};  //传递数据
+            if (_this.val() == '') {
+                _this.removeClass('lock').addClass('unlock');
+                _this.closest('label').next().text('请输入用户名');
+            } else {
+                ajaxPost(_API_USER, arg, _this, "user");
+            }
+            validSuccess();
+        });
+
+        //密码校验
+        $('.userPass').blur(function () {
+            var _this = $(this);
+            var _value = _this.val();
+            if (_this.val() == '' || _value.length < 6) {
+                _this.removeClass('lock').addClass('unlock');
+                _this.closest('label').next().text('请输入密码,密码至少6位');
+            } else {
+                _this.addClass('lock').removeClass('unlock');
+                _this.closest('label').next().text('');
+            }
+            validSuccess();
+        });
+
+        //验证码校验
+        $('.jq-yzm').blur(function () {
+            var _this = $(this);
+            var _value = _this.val();
+            var arg = {yzm: _value};
+            if (_this.val() == '') {
+                _this.addClass('lock');
+                _this.closest('label').next().text('请输入验证码');
+            } else {
+                ajaxPost(_API_YZM, arg, _this, "yzm");
+            }
+            validSuccess();
+        });
+
+        // 校验是否全部通过 按钮变亮
+        var validSuccess = function () {
+            var _form = $('.form-login');
+            for (var i = 0; i < 3; i++) {
+                if (_form.find('label').eq(i).find('input').hasClass('unlock')) {
+                    $('.login-now').addClass('grey').attr('disabled', 'disabled');
+                    return false;
+                } else {
+                    $('.login-now').removeClass('grey').removeAttr('disabled');
+                }
+            }
+        }
+
+    });
+});

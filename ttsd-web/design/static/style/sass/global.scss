@@ -256,12 +256,16 @@ body {
     margin: 0 auto;
     color: #fff;
     font-size: 15px;
-    & span {
+    & span.copy {
       width: 520px;
       float: left;
       display: block;
       height: 68px;
       line-height: 68px;
+    }
+    & .pull-right{
+      float: left;
+      padding-top: 10px;
     }
     & p {
       float: left;
