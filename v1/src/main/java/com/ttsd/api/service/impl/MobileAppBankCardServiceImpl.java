@@ -20,10 +20,6 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     @Override
     public boolean queryBindAndSginStatus(String userId, String operationType) {
         int count = mobileAppBankCardDao.queryBindAndSginStatus(userId,operationType);
-        if (count > 0){
-            return true;
-        }else {
-            return false;
-        }
+        return count > 0;
     }
 }
