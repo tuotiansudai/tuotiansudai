@@ -199,7 +199,7 @@ public class UmPayLoanHome extends LoanHome {
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());
-		} catch (UmPayOperationException e) {
+		} catch (ExistWaitAffirmInvests e) {
 			log.error(e.getStackTrace());
 			FacesUtil.addErrorMessage(e.getMessage());
 		}

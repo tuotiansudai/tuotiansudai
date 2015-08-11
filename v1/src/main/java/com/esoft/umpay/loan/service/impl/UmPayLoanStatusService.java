@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,12 +99,10 @@ public class UmPayLoanStatusService{
 	 * @param loanStatus 要更新成的状态
 	 * @param flag		 其实这里不必要这个flag可以用status控制
 	 * @return
-	 * @throws ReqDataException
-	 * @throws RetDataException
 	 */
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public Map<String  ,String > updateLoanStatusOperation(Loan loan , String loanStatus , boolean flag) throws ReqDataException, RetDataException{
+	public Map<String  ,String > updateLoanStatusOperation(Loan loan , String loanStatus , boolean flag){
 		DecimalFormat currentNumberFormat = new DecimalFormat("#");
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_UPDATE_PROJECT);
 		sendMap.put("project_id",loan.getId());
@@ -115,20 +114,30 @@ public class UmPayLoanStatusService{
 		    sendMap.put("project_expire_date",DateUtil.DateToString(loan.getExpectTime(), DateStyle.YYYYMMDD));
 		    sendMap.put("loan_user_id",getTrusteeshipAccount(loan.getUser().getId()).getId());
 	    }
-		ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
-		log.debug("更新标的状态为:"+loanStatus+"->发送:"+reqData.toString());
-		TrusteeshipOperation to = createTrusteeshipOperation(loan.getId(), reqData.getUrl(), loan.getId(),loanStatus,reqData.getPlain());
-		String responseBody = HttpClientUtil.getResponseBodyAsString(to.getRequestUrl());
-		Map<String , String> resData = Plat2Mer_v40.getResData(responseBody);
-		log.debug("更新标的状态为:"+loanStatus+"->接收:"+resData.toString());
-		to.setResponseData(resData.toString());
-		to.setResponseTime(new Date());
-		if("0000".equals(resData.get("ret_code"))){
-			to.setStatus(TrusteeshipConstants.Status.PASSED);
-		}else{
-			to.setStatus(TrusteeshipConstants.Status.REFUSED);
+		Map<String , String> resData = new HashMap<>();
+		try {
+			ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);
+			log.debug("更新标的状态为:"+loanStatus+"->发送:"+reqData.toString());
+			TrusteeshipOperation to = createTrusteeshipOperation(loan.getId(), reqData.getUrl(), loan.getId(), loanStatus, reqData.getPlain());
+			String responseBody = HttpClientUtil.getResponseBodyAsString(to.getRequestUrl());
+
+			resData = Plat2Mer_v40.getResData(responseBody);
+			log.debug("更新标的状态为:" + loanStatus + "->接收:" + resData.toString());
+			to.setResponseData(resData.toString());
+			to.setResponseTime(new Date());
+			if("0000".equals(resData.get("ret_code"))){
+				to.setStatus(TrusteeshipConstants.Status.PASSED);
+			}else{
+				to.setStatus(TrusteeshipConstants.Status.REFUSED);
+			}
+			trusteeshipOperationBO.save(to);
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("更新标的状态失败:参数加密失败!");
+		} catch (RetDataException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("更新标的状态失败:参数解密失败!");
 		}
-		trusteeshipOperationBO.save(to);
 		return resData;
 	}
 	

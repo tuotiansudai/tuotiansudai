@@ -221,10 +221,6 @@ public class UmPayOverdueRepayOperation extends
 			throw new UmPayOperationException("逾期还款异常！");
 		} catch (InsufficientBalance e) {
 			throw new UmPayOperationException("余额不足以支付逾期！");
-		} catch (ReqDataException e) {
-			throw new UmPayOperationException("改变第三方标的状态未成功:加密失败！");
-		} catch (RetDataException e) {
-			throw new UmPayOperationException("改变第三方标的状态未成功:解密失败！");
 		}
 	}
 
