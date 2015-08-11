@@ -10,6 +10,10 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by Administrator on 2015/8/11.
  */
@@ -167,6 +171,15 @@ public class JedisServiceImpl {
         });
     }
 
+    public void append(final String key, final String value) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.append(key, value);
+            }
+        });
+    }
+
     public Long lpush(final String key, final String... values) {
         return execute(new JedisAction<Long>() {
             @Override
@@ -176,5 +189,67 @@ public class JedisServiceImpl {
         });
     }
 
+    public List lrange(final String key, final int start, final int end) {
+        return execute(new JedisAction<List>() {
+            @Override
+            public List action(Jedis jedis) {
+                return jedis.lrange(key, start, end);
+            }
+        });
+    }
+
+    public Long llen(final String key) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.llen(key);
+            }
+        });
+    }
+
+    public void hmset(final String key, final Map map) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hmset(key, map);
+            }
+        });
+    }
+
+    public Long hdel(final String key, final String... hkeys) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hdel(key, hkeys);
+            }
+        });
+    }
+
+    public Long hlen(final String key) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hlen(key);
+            }
+        });
+    }
+
+    public Set hkeys(final String key) {
+        return execute(new JedisAction<Set>() {
+            @Override
+            public Set action(Jedis jedis) {
+                return jedis.hkeys(key);
+            }
+        });
+    }
+
+    public List hmget(final String key, final String hkey) {
+        return execute(new JedisAction<List>() {
+            @Override
+            public List action(Jedis jedis) {
+                return jedis.hmget(key, hkey);
+            }
+        });
+    }
 
 }

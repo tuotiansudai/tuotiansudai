@@ -8,6 +8,9 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2015/8/7.
@@ -76,9 +79,49 @@ public class RedisWrapperClient {
         jedisService.setJedisPool(getPool());
         return jedisService.del(key);
     }
-    public Long lpush(final String key, final String... values) {
+
+    public void append(String key,String value) {
+        jedisService.setJedisPool(getPool());
+        jedisService.append(key, value);
+    }
+
+    public Long lpush(String key, String... values) {
         jedisService.setJedisPool(getPool());
         return jedisService.lpush(key,values);
     }
 
+    public List lrange(String key, int start, int end) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.lrange(key, start, end);
+    }
+
+    public Long llen(String key) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.llen(key);
+    }
+
+    public void hmset(String key, Map map) {
+        jedisService.setJedisPool(getPool());
+        jedisService.hmset(key, map);
+    }
+
+    public Long hdel(String key, String... hkeys) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.hdel(key, hkeys);
+    }
+
+    public Long hlen(String key) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.hlen(key);
+    }
+
+    public Set hkeys(String key) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.hkeys(key);
+    }
+
+    public List hmget(String key, String hkey) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.hmget(key, hkey);
+    }
 }
