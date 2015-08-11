@@ -84,6 +84,31 @@ require(['jquery'], function ($) {
                 }
             }
         }
+        
+        $('.login-now').click(function () {
+            var data = $('.form-login').serialize();
+            $.ajax({
+                url: url,    //post 提交地址
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+            })
+                .done(function (data) {
+                    if (data.status) {
 
+                        //go to
+                    } else {
+                        $('.userPass').addClass('lock').removeClass('unlock');
+                        $('.userPass').closest('label').next().text(data.msg);
+                    }
+                    console.log("success");
+                })
+                .fail(function () {
+                    console.log("error");
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+        })
     });
 });

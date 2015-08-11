@@ -35,14 +35,8 @@
                 </em>
             </label>
             <div class="error"></div>
-
-            <p><a href="javascript:">忘记密码？</a></p>
-
-            <span>
-                <a href="javascript:" class="login-now grey">立即登录</a>
-                <a href="javascript:" class="reg">免费注册</a>
-            </span>
-
+            <p><input type="checkbox" value=""/>下次自动登录 <a href="javascript:;">忘记密码？</a></p>
+            <span><a href="javascript:;" class="login-now grey" disabled="disabled">立即登录</a><a href="javascript:;" class="reg">免费注册</a></span>
             <b>数据采用256位加密技术，保障您的信息安全！</b>
         </form>
     </div>
