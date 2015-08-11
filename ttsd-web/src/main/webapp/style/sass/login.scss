@@ -1,4 +1,3 @@
-/*************login***************/
 .login {
   width: 1000px;
   height: 358px;
@@ -33,17 +32,18 @@
         padding-left: 10px;
         margin-left: 4px;
       }
-      & input.yzm {
+      & input.captcha {
         width: 95px;
         float: left;
       }
-      & .img-yzm {
+      & .img-captcha {
         width: 80px;
         float: left;
         overflow: hidden;
         height: 28px;
         border: 1px solid #ccc;
         margin-left: 10px;
+        cursor: pointer;
       }
       & .name {
         width: 60px;
@@ -123,5 +123,3 @@
     border: none;
   }
 }
-
-/*************login***************/

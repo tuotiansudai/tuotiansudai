@@ -1,6 +1,3 @@
-/**
- * Created by belen on 15/8/11.
- */
 require(['jquery'], function ($) {
     $(function () {
         // 异步请求
@@ -13,8 +10,7 @@ require(['jquery'], function ($) {
                 type: 'POST',
                 dataType: 'json',
                 data: arg,
-            })
-                .done(function (data) {
+            }).done(function (data) {
                     if (data.data[attr] == arg[attr]) {
                         _this.addClass('lock').removeClass('unlock');
                         _this.closest('label').next().text('');
@@ -31,11 +27,11 @@ require(['jquery'], function ($) {
                 .always(function () {
                     console.log("complete");
                 });
-        }
+        };
 
 
         //及时校验 用户名
-        $('.userName').blur(function () {
+        $('.login-name').blur(function () {
             var _this = $(this);
             var _value = _this.val();
             var arg = {user: _value};  //传递数据
@@ -49,7 +45,7 @@ require(['jquery'], function ($) {
         });
 
         //密码校验
-        $('.userPass').blur(function () {
+        $('.password').blur(function () {
             var _this = $(this);
             var _value = _this.val();
             if (_this.val() == '' || _value.length < 6) {
@@ -63,7 +59,7 @@ require(['jquery'], function ($) {
         });
 
         //验证码校验
-        $('.jq-yzm').blur(function () {
+        $('.captcha').blur(function () {
             var _this = $(this);
             var _value = _this.val();
             var arg = {yzm: _value};
