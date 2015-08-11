@@ -32,7 +32,6 @@ public class UserMapperTest {
 
         UserModel userModel = userMapper.findByEmail("12345@abc.com");
         assertNotNull(userModel);
-
     }
 
     @Test
@@ -68,6 +67,13 @@ public class UserMapperTest {
     public void shouldFindUserByLoginNameIsNull() throws Exception {
         UserModel userModel = userMapper.findByLoginName("helloworld1");
         assertNull(userModel);
+    }
+
+    @Test
+    public void shouldFindUserByLoginNameOrMobileIsNotNull() throws Exception {
+        userMapper.create(this.getUserModelTest());
+        UserModel userModel = userMapper.findByLoginNameOrMobile("helloword");
+        assertNotNull(userModel);
     }
 
     @Test

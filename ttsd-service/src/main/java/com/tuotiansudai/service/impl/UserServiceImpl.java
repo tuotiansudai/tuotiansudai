@@ -7,17 +7,13 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.security.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private MyShaPasswordEncoder myShaPasswordEncoder;
 
     public static String SHA = "SHA";
 
@@ -61,20 +60,11 @@ public class UserServiceImpl implements UserService {
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
-
         UserModel userModel = dto.convertToUserModel();
-
-        // TODO implement it by Spring Security
-        String randomSalt = getRandomSalt();
-        String password;
-        try {
-            password = encodeSHA(encodeSHA(userModel.getPassword()) + randomSalt);
-        } catch (NoSuchAlgorithmException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            return false;
-        }
-        userModel.setSalt(randomSalt);
-        userModel.setPassword(password);
+        String salt = myShaPasswordEncoder.generateSalt();
+        String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
+        userModel.setSalt(salt);
+        userModel.setPassword(encodePassword);
         this.userMapper.create(userModel);
         return true;
     }
@@ -83,15 +73,5 @@ public class UserServiceImpl implements UserService {
     public boolean registerAccount(RegisterAccountDto dto) {
         BaseDto baseDto = payWrapperClient.register(dto);
         return baseDto.getData().getStatus();
-    }
-
-    private String getRandomSalt(){
-        return UUID.randomUUID().toString().replace("-","");
-    }
-
-    private String encodeSHA(String data) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(SHA);
-        byte[] digest = md.digest(data.getBytes());
-        return new HexBinaryAdapter().marshal(digest);
     }
 }

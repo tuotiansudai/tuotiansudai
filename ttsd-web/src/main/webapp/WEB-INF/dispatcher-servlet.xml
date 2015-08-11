@@ -10,7 +10,6 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<import resource="spring-security.xml" />-->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -59,5 +58,6 @@
         <property name="suffix" value=".ftl"/>
         <property name="contentType" value="text/html;charset=UTF-8"/>
         <property name="requestContextAttribute" value="requestContext"/>
+        <property name="exposeSessionAttributes" value="true"/>
     </bean>
 </beans>
