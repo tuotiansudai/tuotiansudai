@@ -3,7 +3,6 @@ package com.esoft.jdp2p.user.service.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -33,16 +32,8 @@ import com.esoft.jdp2p.risk.FeeConfigConstants.FeePoint;
 import com.esoft.jdp2p.risk.FeeConfigConstants.FeeType;
 import com.esoft.jdp2p.risk.service.impl.FeeConfigBO;
 import com.esoft.jdp2p.user.service.RechargeService;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.LockMode;
-import org.hibernate.classic.Session;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,7 +136,7 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public String createRechargeOrder(Recharge recharge) {
+	public String createRechargeOrder(Recharge recharge, HttpServletRequest request) {
 		// 往recharge中插入值。
 		recharge.setId(generateId());
 		recharge.setFee(calculateFee(recharge.getActualMoney()));
@@ -167,8 +158,12 @@ public class RechargeServiceImpl implements RechargeService {
 		recharge.setTime(new Date());
 		recharge.setStatus(UserConstants.RechargeStatus.WAIT_PAY);
 		ht.save(recharge);
-		return FacesUtil.getHttpServletRequest().getContextPath()
-				+ "/to_recharge/" + recharge.getId();
+		if (request != null){
+			return request.getRequestURI()+"/to_recharge/" + recharge.getId();
+		}else {
+			return FacesUtil.getHttpServletRequest().getContextPath()
+					+ "/to_recharge/" + recharge.getId();
+		}
 	}
 
 	@Override

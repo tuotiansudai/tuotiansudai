@@ -19,8 +19,8 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.dto.RechargeResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
@@ -79,7 +79,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 					.getId()));
 		}
 		// 保存一个充值订单
-		String id = rechargeService.createRechargeOrder(recharge);
+		String id = rechargeService.createRechargeOrder(recharge, null);
 		log.debug(id);
 		recharge = ht.get(Recharge.class, recharge.getId());
 		User user = ht.get(User.class, recharge.getUser().getId());
@@ -160,7 +160,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser().getId());
 		recharge.setRechargeWay(rechargeService.getRechangeWay(recharge.getUser().getId()));
 		// 保存一个充值订单
-		String id = rechargeService.createRechargeOrder(recharge);
+		String id = rechargeService.createRechargeOrder(recharge, request);
 		log.debug(id);
 		recharge = ht.get(Recharge.class, recharge.getId());
 		User user = ht.get(User.class, recharge.getUser().getId());
@@ -171,6 +171,8 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 获取拼装map
 		Map<String, String> sendMap = UmPaySignUtil
 				.getSendMapDate(UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		// 同步地址
+		sendMap.put("ret_url", "NULL");
 		// 异步地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -209,15 +211,16 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 					GsonUtil.fromMap2Json(reqData.getField()));
 			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
-			RechargeResponseDto rechargeResponseDto = new RechargeResponseDto();
-			rechargeResponseDto.setUrl(reqData.getUrl());
-			baseResponseDto.setData(rechargeResponseDto);
+			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+			bankCardResponseDto.setUrl(reqData.getUrl());
+			baseResponseDto.setData(bankCardResponseDto);
+			return baseResponseDto;
 		} catch (ReqDataException e) {
 			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
 			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
 			log.error(e.getLocalizedMessage(),e);
+			return baseResponseDto;
 		}
-		return baseResponseDto;
 	}
 
 

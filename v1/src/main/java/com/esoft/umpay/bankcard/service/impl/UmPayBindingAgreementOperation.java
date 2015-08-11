@@ -98,14 +98,21 @@ public class UmPayBindingAgreementOperation extends
      */
     @Transactional(rollbackFor = Exception.class)
     public BaseResponseDto createOperation(String userId) throws IOException {
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
         TrusteeshipAccount ta = getTrusteeshipAccount(userId);
         String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
 
         List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
         if (userBankCard == null || userBankCard.size() == 0) {
-            return null;
+            baseResponseDto.setCode(ReturnMessage.NOT_BIND_CARD.getCode());
+            baseResponseDto.setMessage(ReturnMessage.NOT_BIND_CARD.getMsg());
+            return baseResponseDto;
         }
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+        //配置此项，表示使用H5页面
+        sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+        // 同步地址
+        sendMap.put("ret_url", "NULL");
         // 后台地址
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -114,7 +121,6 @@ public class UmPayBindingAgreementOperation extends
         sendMap.put("account_id", ta.getAccountId());
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
         TrusteeshipOperation to = null;
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
             // 加密参数
             ReqData reqData = Mer2Plat_v40.makeReqDataByGet(sendMap);

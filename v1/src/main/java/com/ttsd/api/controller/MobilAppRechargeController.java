@@ -4,14 +4,16 @@ import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.loan.model.Recharge;
 import com.esoft.umpay.recharge.service.impl.UmPayRechargeOteration;
+import com.ttsd.api.dto.BankCardRequestDto;
+import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.dto.RechargeRequestDto;
 import com.ttsd.api.dto.ReturnMessage;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -30,15 +32,15 @@ public class MobilAppRechargeController {
 
     /**
      * @function
-     * @param rechargeRequestDto
+     * @param bankCardRequestDto
      * @return
      */
     @RequestMapping(value = "/recharge",method = RequestMethod.POST)
-    public BaseResponseDto recharge(@RequestBody RechargeRequestDto rechargeRequestDto,
+    @ResponseBody
+    public BaseResponseDto recharge(@RequestBody BankCardRequestDto bankCardRequestDto,
                                     HttpServletRequest request){
-        BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String rechargeAmount = rechargeRequestDto.getRechargeAmount();
-        String userId = rechargeRequestDto.getUserId();
+        String rechargeAmount = bankCardRequestDto.getRechargeAmount();
+        String userId = bankCardRequestDto.getUserId();
         try {
             Recharge recharge = new Recharge();
             recharge.setActualMoney(new Double(rechargeAmount));
@@ -48,9 +50,10 @@ public class MobilAppRechargeController {
             return umPayRechargeOteration.createOperation(recharge, request);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(),e);
+            BaseResponseDto<BankCardResponseDto> baseResponseDto = new BaseResponseDto<BankCardResponseDto>();
             baseResponseDto.setCode(ReturnMessage.NETWORK_EXCEPTION.getCode());
             baseResponseDto.setMessage(ReturnMessage.NETWORK_EXCEPTION.getMsg());
+            return baseResponseDto;
         }
-        return baseResponseDto;
     }
 }

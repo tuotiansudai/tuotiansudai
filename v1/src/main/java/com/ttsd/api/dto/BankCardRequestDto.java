@@ -18,7 +18,18 @@ public class BankCardRequestDto extends BaseParamDto{
     private String cardNo;
 
     //是否开通快捷支付
-    private String isOpenFastPayment;
+    private boolean isOpenFastPayment;
+
+    /**
+     * 查询绑卡状态：query_bind_status
+     * 查询签约状态：query_sign_status
+     */
+    private String operationType;
+
+    /**
+     * 充值金额
+     */
+    private String rechargeAmount;
 
     public String getUserId() {
         return userId;
@@ -52,11 +63,27 @@ public class BankCardRequestDto extends BaseParamDto{
         this.cardNo = cardNo;
     }
 
-    public String getIsOpenFastPayment() {
+    public boolean isOpenFastPayment() {
         return isOpenFastPayment;
     }
 
-    public void setIsOpenFastPayment(String isOpenFastPayment) {
+    public void setIsOpenFastPayment(boolean isOpenFastPayment) {
         this.isOpenFastPayment = isOpenFastPayment;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
+    }
+
+    public String getRechargeAmount() {
+        return rechargeAmount;
+    }
+
+    public void setRechargeAmount(String rechargeAmount) {
+        this.rechargeAmount = rechargeAmount;
     }
 }

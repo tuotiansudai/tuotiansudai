@@ -1,5 +1,6 @@
 package com.ttsd.api.controller;
 
+import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingAgreementOperation;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class MobileAppBankCardController {
     private UmPayBindingBankCardOperation umPayBindingBankCardOperation;//绑卡
 
     @Resource(name = "mobileAppBankCardServiceImpl")
-    private MobileAppBankCardService mobileAppBankCardService;
+    private MobileAppBankCardService mobileAppBankCardService;//查询签约／绑卡结果
 
     @Logger
     private Log log;
@@ -39,16 +41,25 @@ public class MobileAppBankCardController {
      * @return BaseResponseDto
      */
     @RequestMapping(value = "/bankcard/bind",method = RequestMethod.POST)
+    @ResponseBody
     public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
             BankCard bankCard = new BankCard();
-            return umPayBindingBankCardOperation.createOperation(bankCard);
+            bankCard.setCardNo(bankCardRequestDto.getCardNo());
+            bankCard.setIsOpenFastPayment(bankCardRequestDto.isOpenFastPayment());
+            User user = new User();
+            user.setId(bankCardRequestDto.getUserId());
+            user.setRealname(bankCardRequestDto.getRealName());
+            user.setIdCard(bankCardRequestDto.getIdCard());
+            bankCard.setUser(user);
+            BaseResponseDto operation = umPayBindingBankCardOperation.createOperation(bankCard);
+            return operation;
         } catch (IOException e) {
             baseResponseDto.setCode(ReturnMessage.NETWORK_EXCEPTION.getCode());
             baseResponseDto.setMessage(ReturnMessage.NETWORK_EXCEPTION.getMsg());
+            return baseResponseDto;
         }
-        return baseResponseDto;
     }
 
     /**
@@ -57,34 +68,38 @@ public class MobileAppBankCardController {
      * @return BaseResponseDto
      */
     @RequestMapping(value = "/bankcard/sign",method = RequestMethod.POST)
-    public BaseResponseDto bankcardSign(@RequestBody BankCardRequestDto bankCardRequestDto){
+    @ResponseBody
+    public BaseResponseDto bankCardSign(@RequestBody BankCardRequestDto bankCardRequestDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String userId = bankCardRequestDto.getBaseParam().getUserId();
+        String userId = bankCardRequestDto.getUserId();
         if (Strings.isNullOrEmpty(userId)){
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             return baseResponseDto;
         }
         try {
-            umPayBindingAgreementOperation.createOperation(userId);
+            return umPayBindingAgreementOperation.createOperation(userId);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(),e);
+            baseResponseDto.setCode(ReturnMessage.NETWORK_EXCEPTION.getCode());
+            baseResponseDto.setMessage(ReturnMessage.NETWORK_EXCEPTION.getMsg());
+            return baseResponseDto;
         }
-        return baseResponseDto;
     }
 
-    @RequestMapping(value = "bankcard/query")
-    public BaseResponseDto queryBindAndSginStatus(@RequestBody QueryBindAndSignStatusRequestDto queryBindAndSignStatusRequestDto){
+    @RequestMapping(value = "/bankcard/query")
+    @ResponseBody
+    public BaseResponseDto queryBindAndSginStatus(@RequestBody BankCardRequestDto bankCardRequestDto){
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        String userId = queryBindAndSignStatusRequestDto.getUserId();
-        String operationType = queryBindAndSignStatusRequestDto.getOperationType();
+        String userId = bankCardRequestDto.getUserId();
+        String operationType = bankCardRequestDto.getOperationType();
         if (Strings.isNullOrEmpty(operationType) || Strings.isNullOrEmpty(userId)){
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             return baseResponseDto;
         }
-        boolean queryResult = mobileAppBankCardService.queryBindAndSginStatus(queryBindAndSignStatusRequestDto.getUserId(),
-                queryBindAndSignStatusRequestDto.getOperationType());
+        boolean queryResult = mobileAppBankCardService.queryBindAndSginStatus(bankCardRequestDto.getUserId(),
+                bankCardRequestDto.getOperationType());
         if (MobileAppCommonConstants.QUERY_BIND_STATUS.equals(operationType)){
             //查询绑定状态
             if (queryResult){
@@ -94,7 +109,6 @@ public class MobileAppBankCardController {
                 baseResponseDto.setCode(ReturnMessage.BIND_CARD_FAIL.getCode());
                 baseResponseDto.setMessage(ReturnMessage.BIND_CARD_FAIL.getMsg());
             }
-
         }else if (MobileAppCommonConstants.QUERY_SIGN_STATUS.equals(operationType)){
             //查询签约状态
             if (queryResult){

@@ -134,6 +134,10 @@ public class UmPayBindingBankCardOperation extends
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
+		//配置此项，表示使用H5页面
+		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		// 同步地址
+		sendMap.put("ret_url", "NULL");
 		// 后台地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
