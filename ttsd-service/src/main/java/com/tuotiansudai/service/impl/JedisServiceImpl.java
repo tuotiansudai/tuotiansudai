@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Created by Administrator on 2015/8/11.
  */
-@Service
+@Service("jedisService")
 public class JedisServiceImpl {
 
     static Logger log = Logger.getLogger(JedisServiceImpl.class);

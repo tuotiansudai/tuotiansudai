@@ -95,9 +95,9 @@ public class RedisWrapperClient {
         return jedisService.lrange(key, start, end);
     }
 
-    public Long llen(String key) {
+    public int llen(String key) {
         jedisService.setJedisPool(getPool());
-        return jedisService.llen(key);
+        return Integer.valueOf(jedisService.llen(key).toString());
     }
 
     public void hmset(String key, Map map) {
@@ -110,9 +110,9 @@ public class RedisWrapperClient {
         return jedisService.hdel(key, hkeys);
     }
 
-    public Long hlen(String key) {
+    public int hlen(String key) {
         jedisService.setJedisPool(getPool());
-        return jedisService.hlen(key);
+        return Integer.valueOf(jedisService.hlen(key).toString());
     }
 
     public Set hkeys(String key) {
