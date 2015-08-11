@@ -3,7 +3,7 @@
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../images/login/login_background.jpg") no-repeat left;
+  background: url("/images/login/login-background.jpg") no-repeat left;
   & div {
     margin-left: 670px;
     width: 328px;
@@ -28,15 +28,26 @@
       margin: 17px 0px;
       & input {
         border: #dadada 1px solid;
-        width: 210px;
+        width: 188px;
         height: 28px;
         padding-left: 10px;
         margin-left: 4px;
       }
+      & input.yzm{ width: 95px; float: left; }
+      & .img-yzm{ width: 80px;
+        float: left; overflow: hidden; height: 28px;
+       border: 1px solid #ccc; margin-left: 10px;}
+      & .name {
+        width: 60px;
+        text-align: left;
+        line-height: 30px;
+        float: left;
+      }
+      & .name i{ padding: 0 8px;}
     }
     & p {
       width: 238px;
-      padding-left: 80px;
+      padding-left: 90px;
       height: 14px;
       line-height: 14px;
       font-size: 12px;
@@ -60,7 +71,7 @@
       padding-left: 30px;
       clear: both;
       margin: 26px 0px 30px 0px;
-      a.login_now {
+      a.login-now {
         width: 184px;
         height: 37px;
         line-height: 37px;
@@ -83,7 +94,7 @@
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../images/login/login_lock.png") no-repeat 0px;
+      background: url("/images/login/login-lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal;
     }

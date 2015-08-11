@@ -19,11 +19,11 @@
         </beans:property>
     </beans:bean>
 
-    <!--<http pattern="/login" security="none"/>-->
+    <http pattern="/login" security="none"/>
 
     <http auto-config="true" use-expressions="true">
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <!--<form-login login-page="/login" />-->
+        <form-login login-page="/login" />
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/register/**" access="isAnonymous()"/>
 
