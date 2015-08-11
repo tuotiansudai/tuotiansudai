@@ -108,25 +108,6 @@ public class UmPayBindingAgreementOperation extends
     }
 
     /**
-     * @function 加密参数
-     * @param userId 用户ID
-     * @param sendMap 请求参数
-     * @return TrusteeshipOperation
-     * @throws ReqDataException
-     */
-    public TrusteeshipOperation persistentOperationRecords(String userId,Map<String,String> sendMap,ReqData reqData) throws ReqDataException {
-        // 加密参数
-        TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(userId);
-        log.debug("签约协议发送数据:" + reqData);
-        // 保存操作记录
-        TrusteeshipOperation trusteeshipOperation = createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
-                userId,
-                UmPayConstants.OperationType.MER_BIND_AGREEMENT,
-                GsonUtil.fromMap2Json(reqData.getField()));
-        return trusteeshipOperation;
-    }
-
-    /**
      * @function 用户通过app端签约银行卡
      * @param userId
      * @return
