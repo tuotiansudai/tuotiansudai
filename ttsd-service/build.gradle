@@ -20,7 +20,9 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
             "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
             "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion",
-            'org.hibernate:hibernate-validator:5.2.0.Final'
+            'org.hibernate:hibernate-validator:5.2.0.Final',
+            'redis.clients:jedis:2.7.3',
+            'org.apache.commons:commons-lang3:3.4'
 }
 
 jar {
