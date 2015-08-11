@@ -105,6 +105,11 @@ public class RedisWrapperClient {
         jedisService.hmset(key, map);
     }
 
+    public void hset(String key, String hkey, String value) {
+        jedisService.setJedisPool(getPool());
+        jedisService.hset(key, hkey, value);
+    }
+
     public Long hdel(String key, String... hkeys) {
         jedisService.setJedisPool(getPool());
         return jedisService.hdel(key, hkeys);
@@ -120,8 +125,13 @@ public class RedisWrapperClient {
         return jedisService.hkeys(key);
     }
 
-    public List hmget(String key, String hkey) {
+    public List hmget(String key, String... hkey) {
         jedisService.setJedisPool(getPool());
         return jedisService.hmget(key, hkey);
+    }
+
+    public String hget(String key, String hkey) {
+        jedisService.setJedisPool(getPool());
+        return jedisService.hget(key, hkey);
     }
 }

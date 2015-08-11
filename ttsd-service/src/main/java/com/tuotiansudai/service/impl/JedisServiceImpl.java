@@ -216,6 +216,15 @@ public class JedisServiceImpl {
         });
     }
 
+    public void hset(final String key, final String hkey, final String value) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key, hkey, value);
+            }
+        });
+    }
+
     public Long hdel(final String key, final String... hkeys) {
         return execute(new JedisAction<Long>() {
             @Override
@@ -243,7 +252,7 @@ public class JedisServiceImpl {
         });
     }
 
-    public List hmget(final String key, final String hkey) {
+    public List hmget(final String key, final String... hkey) {
         return execute(new JedisAction<List>() {
             @Override
             public List action(Jedis jedis) {
@@ -252,4 +261,12 @@ public class JedisServiceImpl {
         });
     }
 
+    public String hget(final String key, final String hkey) {
+        return execute(new JedisAction<String>() {
+            @Override
+            public String action(Jedis jedis) {
+                return jedis.hget(key, hkey);
+            }
+        });
+    }
 }
