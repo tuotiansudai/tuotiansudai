@@ -17,19 +17,19 @@
         <form action="" name="" class="form-login">
             <label>
                 <em class="name">账<i></i>号:</em>
-                <input class="login-name unlock" type="text" value="" placeholder="请输入账号/手机号"/>
+                <input class="login-name unlock" type="text" value="" name="user" placeholder="请输入账号/手机号"/>
             </label>
             <div class="error"></div>
 
             <label>
                 <em class="name">密<i></i>码:</em>
-                <input class="password unlock" type="text" value="" placeholder="请输入密码"/>
+                <input class="password unlock" type="text" value="" name="password" placeholder="请输入密码"/>
             </label>
             <div class="error"></div>
 
             <label>
                 <em class="name">验证码:</em>
-                <input class="jq-yzm yzm captcha unlock" type="text" value="" placeholder="请输入验证码"/>
+                <input class="jq-yzm yzm captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码"/>
                 <em class="img-captcha">
                     <img src="/login/captcha" alt=""/>
                 </em>
