@@ -97,6 +97,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	 * @param request
 	 * @return
 	 */
+	@Transactional(rollbackFor = Exception.class)
 	public Map<String,String> assembleSendMap(Recharge recharge, boolean isOpenFastPayment, HttpServletRequest request){
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser()
 				.getId());
@@ -105,7 +106,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 					.getId()));
 		}
 		// 保存一个充值订单
-		String id = rechargeService.createRechargeOrder(recharge, null);
+		String id = rechargeService.createRechargeOrder(recharge,request);
 		log.debug(id);
 		recharge = ht.get(Recharge.class, recharge.getId());
 		User user = ht.get(User.class, recharge.getUser().getId());

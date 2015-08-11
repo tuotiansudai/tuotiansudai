@@ -158,12 +158,13 @@ public class RechargeServiceImpl implements RechargeService {
 		recharge.setTime(new Date());
 		recharge.setStatus(UserConstants.RechargeStatus.WAIT_PAY);
 		ht.save(recharge);
+		String requestPath = "";
 		if (request != null){
-			return request.getRequestURI()+"/to_recharge/" + recharge.getId();
+			requestPath = request.getRequestURI();
 		}else {
-			return FacesUtil.getHttpServletRequest().getContextPath()
-					+ "/to_recharge/" + recharge.getId();
+			requestPath = FacesUtil.getHttpServletRequest().getContextPath();
 		}
+		return requestPath + "/to_recharge/" + recharge.getId();
 	}
 
 	@Override

@@ -93,6 +93,12 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/v1.0/get/loans" filters="none" />
 		<intercept-url pattern="/v1.0/get/loan" filters="none" />
 		<intercept-url pattern="/v1.0/register" filters="none" />
+
+		<intercept-url pattern="/v1.0/bankcard/bind" filters="none" />
+		<intercept-url pattern="/v1.0/bankcard/sign" filters="none" />
+		<intercept-url pattern="/v1.0/bankcard/query" filters="none" />
+		<intercept-url pattern="/v1.0/recharge" filters="none" />
+
 		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />
