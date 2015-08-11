@@ -253,10 +253,6 @@ public class UmpayAdvanceRepayOperation extends UmPayOperationServiceAbs<Loan> {
 			throw new UmPayOperationException("提前还款异常");
 		} catch (InsufficientBalance e) {
 			throw new UmPayOperationException("余额不足");
-		} catch (RetDataException e) {
-			e.printStackTrace();
-		} catch (ReqDataException e) {
-			e.printStackTrace();
 		}
 
 	}

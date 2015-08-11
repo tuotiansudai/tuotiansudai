@@ -237,7 +237,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void giveMoneyToBorrower(String loanId)
-            throws ExistWaitAffirmInvests, BorrowedMoneyTooLittle {
+            throws BorrowedMoneyTooLittle {
         if (log.isInfoEnabled()) {
             log.info("放款" + loanId);
         }
@@ -649,7 +649,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional
-    public void changeInvestFromWaitAffirmToUnfinished(String loanId) {
+    public void changeInvestFromWaitAffirmToUnfinished(String loanId) throws ExistWaitAffirmInvests {
         Date now = new Date();
         long thirtyMinutes = 1000 * 60 * 30;
         Loan loan = ht.load(Loan.class, loanId);
@@ -658,7 +658,7 @@ public class LoanServiceImpl implements LoanService {
             if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)) {
                 Date investTime = invest.getTime();
                 if (now.getTime() - investTime.getTime() < thirtyMinutes) {
-                    throw new UmPayOperationException("放款失败，存在等待第三方资金托管确认的投资。");
+                    throw new ExistWaitAffirmInvests("放款失败，存在等待第三方资金托管确认的投资。");
                 }
             }
         }
