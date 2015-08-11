@@ -85,7 +85,7 @@ public class UmPayBindingBankCardOperation extends
 			// 发送请求
 			sendOperation(to, facesContext);
 		} catch (ReqDataException e) {
-			e.getStackTrace();
+			log.error(e.getLocalizedMessage(),e);
 		}
 		return to;
 	}
@@ -213,7 +213,7 @@ public class UmPayBindingBankCardOperation extends
 						ret_code + ":" + paramMap.get("ret_msg")));
 			}
 		} catch (VerifyException e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(),e);
 			throw new TrusteeshipReturnException("验签失败");
 		}
 	}
@@ -292,11 +292,11 @@ public class UmPayBindingBankCardOperation extends
 					response.getWriter().print(responseData);
 					FacesUtil.getCurrentInstance().responseComplete();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error(e.getLocalizedMessage(),e);
 				}
 			}
 		} catch (VerifyException e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(),e);
 		}
 	}
 }
