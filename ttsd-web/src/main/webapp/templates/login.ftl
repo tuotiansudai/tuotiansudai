@@ -29,7 +29,7 @@
 
             <label>
                 <em class="name">验证码:</em>
-                <input class="captcha unlock" type="text" value="" placeholder="请输入验证码"/>
+                <input class="jq-yzm yzm captcha unlock" type="text" value="" placeholder="请输入验证码"/>
                 <em class="img-captcha">
                     <img src="/login/captcha" alt=""/>
                 </em>
