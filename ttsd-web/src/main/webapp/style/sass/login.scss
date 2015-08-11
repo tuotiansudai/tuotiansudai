@@ -122,4 +122,11 @@
     padding-left: 95px;
     border: none;
   }
+  & div.right {
+    background: url("/images/login/ok.png") 95px center no-repeat;
+  }
+  & div.wrong {
+    background: url("/images/login/error.png") 95px center no-repeat;
+  }
 }
+

@@ -1,7 +1,7 @@
 require(['jquery'], function ($) {
     $(function () {
         // 异步请求
-        var ajaxPost = function (url, arg, ele, attr) {
+        var ajaxPost = function (url, arg, ele) {
             var _this = ele;
             var attr = attr;
             var arg = arg;
@@ -10,12 +10,14 @@ require(['jquery'], function ($) {
                 type: 'POST',
                 dataType: 'json',
                 data: arg,
-            }).done(function (data) {
-                    if (data.data[attr] == arg[attr]) {
+
+            })
+                .done(function (data) {
+                    if (data.status) {
                         _this.addClass('lock').removeClass('unlock');
-                        _this.closest('label').next().text('');
+                        _this.closest('label').next().addClass('right').removeClass('wrong').text('');
                     } else {
-                        _this.closest('label').next().text(data.msg);
+                        _this.closest('label').next().addClass('wrong').removeClass('right').text("输入有误");
                         _this.removeClass('lock').addClass('unlock');
                     }
                     validSuccess();
@@ -37,7 +39,7 @@ require(['jquery'], function ($) {
             var arg = {user: _value};  //传递数据
             if (_this.val() == '') {
                 _this.removeClass('lock').addClass('unlock');
-                _this.closest('label').next().text('请输入用户名');
+                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入用户名');
             } else {
                 ajaxPost(_API_USER, arg, _this, "user");
             }
@@ -50,10 +52,10 @@ require(['jquery'], function ($) {
             var _value = _this.val();
             if (_this.val() == '' || _value.length < 6) {
                 _this.removeClass('lock').addClass('unlock');
-                _this.closest('label').next().text('请输入密码,密码至少6位');
+                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入密码,密码至少6位');
             } else {
                 _this.addClass('lock').removeClass('unlock');
-                _this.closest('label').next().text('');
+                _this.closest('label').next().addClass('right').removeClass('wrong').text('');
             }
             validSuccess();
         });
@@ -65,9 +67,9 @@ require(['jquery'], function ($) {
             var arg = {yzm: _value};
             if (_this.val() == '') {
                 _this.addClass('lock');
-                _this.closest('label').next().text('请输入验证码');
+                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入验证码');
             } else {
-                ajaxPost(_API_YZM, arg, _this, "yzm");
+                ajaxPost(_API_YZM, arg, _this);
             }
             validSuccess();
         });
@@ -84,7 +86,7 @@ require(['jquery'], function ($) {
                 }
             }
         }
-        
+
         $('.login-now').click(function () {
             var data = $('.form-login').serialize();
             $.ajax({

@@ -1,5 +1,5 @@
 {
-    "status": "success",
+    "status": true,
     "msg":"验证码不正确",
     "data": {
         "yzm": "1234"
