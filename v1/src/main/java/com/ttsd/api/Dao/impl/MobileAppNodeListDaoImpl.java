@@ -13,17 +13,17 @@ import java.util.List;
 @Service
 public class MobileAppNodeListDaoImpl implements MobileAppNodeListDao {
 
-    private static String Node_Count_Query_Sql = "select count(*) from node " +
-            "inner join category_term_node tn on tn.node_id = node.id " +
-            "inner join category_term term on tn.term_id = term.id " +
-            "where term_id = ?";
-
     @Resource
     private HibernateTemplate ht;
 
     @Override
     public Integer getTotalCount(String termId) {
-        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(Node_Count_Query_Sql);
+        String sql = "select count(*) from node " +
+                "inner join category_term_node tn on tn.node_id = node.id " +
+                "inner join category_term term on tn.term_id = term.id " +
+                "where term_id = ?";
+
+        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
         sqlQuery.setParameter(0, termId);
         Integer count = ((Number) sqlQuery.uniqueResult()).intValue();
         return count;
