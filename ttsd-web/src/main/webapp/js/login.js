@@ -2,10 +2,13 @@ require(['jquery'], function ($) {
     $(function () {
         var errorElement = $('.error');
 
-        $('.login .img-captcha img').click(function (event) {
-            var target = $(event.target);
-            target.attr('src', '/login/captcha?' + new Date().toTimeString());
-        });
+        var refreshCaptcha = function() {
+            var captcha = $('.login .img-captcha img');
+            captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
+        };
+
+
+        $('.login .img-captcha img').click(refreshCaptcha);
 
         //及时校验 用户名
         $('.login-name').blur(function () {
@@ -41,7 +44,7 @@ require(['jquery'], function ($) {
             var msg = "验证码错误";
             var _value = _this.val();
             if (_value.length < 5) {
-                _this.addClass('lock').removeClass('unlock');
+                _this.removeClass('lock').addClass('unlock');
                 errorElement.addClass('wrong').text(msg);
                 validSuccess();
             } else {
@@ -57,8 +60,7 @@ require(['jquery'], function ($) {
                     } else {
                         $('.error').addClass('wrong').text(msg);
                         _this.removeClass('lock').addClass('unlock');
-                        var captcha = $('.login .img-captcha img');
-                        captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
+                        refreshCaptcha();
                     }
                     validSuccess();
                 });
@@ -66,7 +68,6 @@ require(['jquery'], function ($) {
         });
 
         var validSuccess = function () {
-            console.log("in");
             var _form = $('.form-login');
             for (var i = 0; i < 3; i++) {
                 if (_form.find('label').eq(i).find('input').hasClass('unlock')) {
@@ -79,28 +80,24 @@ require(['jquery'], function ($) {
         };
 
         $('.login-now').click(function () {
+            var self = $(this);
+            if (self.hasClass('grey')) {
+                return;
+            }
             var data = $('.form-login').serialize();
             $.ajax({
-                url: url,    //post 提交地址
-                type: 'POST',
-                dataType: 'json',
+                url: '/loginHandler',
+                type: 'post',
                 data: data
-            })
-                .done(function (data) {
-                    if (data.status) {
-                        //go to
-                    } else {
-                        $('.captcha').addClass('unlock').removeClass('lock').val('');
-                        $('.error').addClass('wrong').text('用户名或密码错误');
-                    }
-                    console.log("success");
-                })
-                .fail(function () {
-                    console.log("error");
-                })
-                .always(function () {
-                    console.log("complete");
-                });
+            }).done(function (response) {
+                if (response.data.status) {
+                    window.location.href = '/';
+                } else {
+                    refreshCaptcha();
+                    $('.captcha').addClass('unlock').removeClass('lock').val('');
+                    $('.error').addClass('wrong').text('用户名或密码错误');
+                }
+            });
         })
     });
 });

@@ -14,10 +14,10 @@
     <div>
         <h3>欢迎登陆拓天速贷</h3>
 
-        <form action="" name="" class="form-login">
+        <form class="form-login">
             <label>
                 <em class="name">账<i></i>号:</em>
-                <input class="login-name unlock" type="text" value="" name="user" placeholder="请输入账号/手机号"/>
+                <input class="login-name unlock" type="text" value="" name="username" placeholder="请输入账号/手机号"/>
             </label>
             <label>
                 <em class="name">密<i></i>码:</em>
@@ -33,7 +33,7 @@
             <div class="error"></div>
 
             <p class="forgot-password">
-                <a href="javascript:" class="reg">免费注册</a>
+                <a href="javascript:" class="register">免费注册</a>
                 <a href="javascript:">忘记密码？</a>
             </p>
             <span>
@@ -47,7 +47,6 @@
 
 <#include "footer.ftl">
 <script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
-        data-main="${requestContext.getContextPath()}/js/dest/${js.login}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true" data-main="${requestContext.getContextPath()}/js/dest/${js.login}"></script>
 </body>
 </html>

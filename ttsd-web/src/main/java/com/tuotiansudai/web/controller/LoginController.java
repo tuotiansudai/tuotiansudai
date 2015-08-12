@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 
 @Controller
@@ -51,7 +52,8 @@ public class LoginController {
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         //TODO: Put into redis
-        request.getSession().setAttribute(request.getSession().getId(), captcha.getAnswer());
+        HttpSession session = request.getSession(true);
+        session.setAttribute(session.getId(), captcha.getAnswer());
     }
 
     @RequestMapping(value = "/captcha/{captcha}/verify", method = RequestMethod.GET,
