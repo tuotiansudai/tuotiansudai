@@ -20,8 +20,8 @@
                 <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
             </a>
 
-            <p>注册</p>
-            <span>已有账号，请<a href="javascript:;">登陆</a></span>
+            <#--<p>注册</p>-->
+            <#--<span>已有账号，请<a href="javascript:;">登陆</a></span>-->
         </div>
     </div>
 </div>

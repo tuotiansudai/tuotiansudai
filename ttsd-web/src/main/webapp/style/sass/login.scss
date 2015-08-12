@@ -1,9 +1,8 @@
-/*************login***************/
 .login {
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../images/login/login_background.jpg") no-repeat left;
+  background: url("/images/login/login-background.jpg") no-repeat left;
   & div {
     margin-left: 670px;
     width: 328px;
@@ -25,21 +24,44 @@
       height: 30px;
       display: block;
       padding-left: 30px;
-      margin: 17px 0px;
+      margin: 10px 0px;
       & input {
         border: #dadada 1px solid;
-        width: 210px;
+        width: 188px;
         height: 28px;
         padding-left: 10px;
         margin-left: 4px;
       }
+      & input.captcha {
+        width: 95px;
+        float: left;
+      }
+      & .img-captcha {
+        width: 80px;
+        float: left;
+        overflow: hidden;
+        height: 28px;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+      }
+      & .name {
+        width: 60px;
+        text-align: left;
+        line-height: 30px;
+        float: left;
+      }
+      & .name i {
+        padding: 0 8px;
+      }
     }
-    & p {
-      width: 238px;
-      padding-left: 80px;
+    & .forgot-password {
+      width: 208px;
+      padding-left: 90px;
       height: 14px;
       line-height: 14px;
       font-size: 12px;
+      text-align: right;
+      padding-right:100px;
       & input {
         width: 14px;
         height: 14px;
@@ -48,8 +70,11 @@
         float: left;
       }
       & a {
-        margin-left: 36px;
         color: #545353;
+      }
+      & a.register {
+        color: #e64d0a;
+        font-size: 12px;
       }
     }
     & span {
@@ -59,8 +84,8 @@
       line-height: 37px;
       padding-left: 30px;
       clear: both;
-      margin: 26px 0px 30px 0px;
-      a.login_now {
+      margin: 15px 0px 15px 0px;
+      a.login-now {
         width: 184px;
         height: 37px;
         line-height: 37px;
@@ -71,11 +96,10 @@
         border-radius: 3px;
         display: block;
         float: left;
+        margin-left: 45px;
       }
-      & a.reg {
-        color: #e64d0a;
-        font-size: 12px;
-        margin-left: 34px;
+      a.login-now.grey{
+        background: #ccc;
       }
     }
     & b {
@@ -83,12 +107,25 @@
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../images/login/login_lock.png") no-repeat 0px;
+      background: url("/images/login/login-lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal;
     }
   }
-
+  & div.error {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    margin: 0 0 10px 0;
+    width: 200px;
+    color: #cc0000;
+    padding-left: 118px;
+    border: none;
+  }
+  & div.right {
+    background: url("/images/login/ok.png") 95px center no-repeat;
+  }
+  & div.wrong {
+    background: url("/images/login/error.png") 95px center no-repeat;
+  }
 }
-
-/*************login***************/
