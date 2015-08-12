@@ -1,13 +1,16 @@
 package com.tuotiansudai.client;
 
-import com.tuotiansudai.service.impl.JedisServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.exceptions.JedisConnectionException;
+import redis.clients.jedis.exceptions.JedisDataException;
+import redis.clients.jedis.exceptions.JedisException;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,12 +29,26 @@ public class RedisWrapperClient {
     @Value("${redis.port}")
     private Integer redisPort;
 
-    @Resource
-    private JedisServiceImpl jedisService;
+    @Value("${redis.password}")
+    private String redisPassword;
+
+    @Value("${redis.db}")
+    private Integer redisDb;
+
+    private JedisPool jedisPool;
+
+    public void setJedisPool(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
+
+    public JedisPool getJedisPool() {
+
+        return jedisPool;
+    }
 
     private static JedisPool pool = null;
 
-    public JedisPool getPool() {
+    private JedisPool getPool() {
         if (pool == null) {
             JedisPoolConfig config = new JedisPoolConfig();
             pool = new JedisPool(config, redisIp, redisPort);
@@ -55,83 +72,251 @@ public class RedisWrapperClient {
         this.redisPort = redisPort;
     }
 
-    public String get(String key) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.get(key);
+    private interface JedisAction<T> {
+        T action(Jedis jedis);
     }
 
-    public boolean exists(String key) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.exists(key);
+    private interface JedisActionNoResult {
+        void action(Jedis jedis);
     }
 
-    public void setex(String key, int seconds, String value) {
-        jedisService.setJedisPool(getPool());
-        jedisService.setex(key, value, seconds);
+    private  <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = jedisPool.getResource();
+            if(StringUtils.isNotEmpty(redisPassword)){
+                jedis.auth(redisPassword);
+            }
+            jedis.select(redisDb);
+            return jedisAction.action(jedis);
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
+        }
     }
 
-    public void set(String key, String value) {
-        jedisService.setJedisPool(getPool());
-        jedisService.set(key, value);
+    private void execute(JedisActionNoResult jedisAction) throws JedisException {
+        Jedis jedis = null;
+        boolean broken = false;
+        try {
+            jedis = jedisPool.getResource();
+            if(StringUtils.isNotEmpty(redisPassword)){
+                jedis.auth(redisPassword);
+            }
+            jedis.select(redisDb);
+            jedisAction.action(jedis);
+        } catch (JedisException e) {
+            broken = handleJedisException(e);
+            throw e;
+        } finally {
+            closeResource(jedis, broken);
+        }
     }
 
-    public boolean del(String key) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.del(key);
+    protected boolean handleJedisException(JedisException jedisException) {
+        if (jedisException instanceof JedisConnectionException) {
+            logger.error(jedisException.getLocalizedMessage(), jedisException);
+        } else if (jedisException instanceof JedisDataException) {
+            if ((jedisException.getMessage() != null) && (jedisException.getMessage().indexOf("READONLY") != -1)) {
+                logger.error(jedisException.getLocalizedMessage(), jedisException);
+            } else {
+                return false;
+            }
+        } else {
+            logger.error(jedisException.getLocalizedMessage(), jedisException);
+        }
+        return true;
     }
 
-    public void append(String key,String value) {
-        jedisService.setJedisPool(getPool());
-        jedisService.append(key, value);
+    protected void closeResource(Jedis jedis, boolean conectionBroken) {
+        try {
+            if (conectionBroken) {
+                jedisPool.returnBrokenResource(jedis);
+            } else {
+                jedisPool.returnResource(jedis);
+            }
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+            destroyJedis(jedis);
+        }
     }
 
-    public Long lpush(String key, String... values) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.lpush(key,values);
+    private static void destroyJedis(Jedis jedis) {
+        if ((jedis != null) && jedis.isConnected()) {
+            try {
+                try {
+                    jedis.quit();
+                } catch (Exception e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+                jedis.disconnect();
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
     }
 
-    public List lrange(String key, int start, int end) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.lrange(key, start, end);
+    public String get(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<String>() {
+            @Override
+            public String action(Jedis jedis) {
+                return jedis.get(key);
+            }
+        });
     }
 
-    public int llen(String key) {
-        jedisService.setJedisPool(getPool());
-        return Integer.valueOf(jedisService.llen(key).toString());
+    public boolean exists(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.exists(key);
+            }
+        });
     }
 
-    public void hmset(String key, Map map) {
-        jedisService.setJedisPool(getPool());
-        jedisService.hmset(key, map);
+    public void setex(final String key, final int seconds, final String value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.setex(key, seconds, value);
+            }
+        });
     }
 
-    public void hset(String key, String hkey, String value) {
-        jedisService.setJedisPool(getPool());
-        jedisService.hset(key, hkey, value);
+    public void set(final String key, final String value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.set(key, value);
+            }
+        });
     }
 
-    public Long hdel(String key, String... hkeys) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.hdel(key, hkeys);
+    public boolean del(final String... keys) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.del(keys) == keys.length ? true : false;
+            }
+        });
     }
 
-    public int hlen(String key) {
-        jedisService.setJedisPool(getPool());
-        return Integer.valueOf(jedisService.hlen(key).toString());
+    public void append(final String key,final String value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.append(key, value);
+            }
+        });
     }
 
-    public Set hkeys(String key) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.hkeys(key);
+    public Long lpush(final String key, final String... values) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.lpush(key, values);
+            }
+        });
     }
 
-    public List hmget(String key, String... hkey) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.hmget(key, hkey);
+    public List lrange(final String key, final int start, final int end) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<List>() {
+            @Override
+            public List action(Jedis jedis) {
+                return jedis.lrange(key, start, end);
+            }
+        });
     }
 
-    public String hget(String key, String hkey) {
-        jedisService.setJedisPool(getPool());
-        return jedisService.hget(key, hkey);
+    public int llen(final String key) {
+        this.setJedisPool(getPool());
+        return Integer.valueOf(execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.llen(key);
+            }
+        }).toString());
     }
+
+    public void hmset(final String key, final Map map) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hmset(key, map);
+            }
+        });
+    }
+
+    public void hset(final String key, final String hkey, final String value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key, hkey, value);
+            }
+        });
+    }
+
+    public Long hdel(final String key, final String... hkeys) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hdel(key, hkeys);
+            }
+        });
+    }
+
+    public int hlen(final String key) {
+        this.setJedisPool(getPool());
+        return Integer.valueOf(execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hlen(key);
+            }
+        }).toString());
+    }
+
+    public Set hkeys(final String key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Set>() {
+            @Override
+            public Set action(Jedis jedis) {
+                return jedis.hkeys(key);
+            }
+        });
+    }
+
+    public List hmget(final String key, final String... hkey) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<List>() {
+            @Override
+            public List action(Jedis jedis) {
+                return jedis.hmget(key, hkey);
+            }
+        });
+    }
+
+    public String hget(final String key, final String hkey) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<String>() {
+            @Override
+            public String action(Jedis jedis) {
+                return jedis.hget(key, hkey);
+            }
+        });
+    }
+
 }
