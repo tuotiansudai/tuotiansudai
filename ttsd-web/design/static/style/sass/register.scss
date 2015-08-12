@@ -86,18 +86,15 @@
       background: url(/images/register/register.png) no-repeat 0 -456px;
     }
   }
-<<<<<<< HEAD:ttsd-web/design/static/style/sass/register.scss
   .agreement-check {
     float: left;
   }
   .agreement-title {
-=======
   & .register-step-two {
     margin-top: 100px;
     display: none;
   }
   & .agreement-check {
->>>>>>> origin/features/zs/yanzhengma:ttsd-web/design/static/style/register.scss
     float: left;
     font-size: 12px;
     margin-top: -2px;
@@ -115,12 +112,9 @@
   width: 610px;
   height: 410px;
   margin-left: 325px;
-<<<<<<< HEAD:ttsd-web/design/static/style/sass/register.scss
   ol {
-=======
   display: block;
   & ol {
->>>>>>> origin/features/zs/yanzhengma:ttsd-web/design/static/style/register.scss
     width: 600px;
     li {
       width: 600px;
@@ -160,11 +154,8 @@
         background: url(/images/loading.gif) no-repeat;
       }
     }
-<<<<<<< HEAD:ttsd-web/design/static/style/sass/register.scss
     input {
-=======
     & input {
->>>>>>> origin/features/zs/yanzhengma:ttsd-web/design/static/style/register.scss
       color: #999;
       width: 280px;
       height: 38px;
@@ -216,10 +207,8 @@
       text-align: center;
       cursor: pointer;
     }
-<<<<<<< HEAD:ttsd-web/design/static/style/sass/register.scss
   }
   .register-user {
-=======
     & input.mobile {
       background: url("../images/register/register.png") no-repeat 6px -362px;
     }
@@ -251,7 +240,6 @@
   }
 
   & .register-user {
->>>>>>> origin/features/zs/yanzhengma:ttsd-web/design/static/style/register.scss
     width: 174px;
     height: 48px;
     background: #fee2cb;
@@ -343,9 +331,6 @@
       margin-bottom: 100px;
     }
   }
-<<<<<<< HEAD:ttsd-web/design/static/style/sass/register.scss
-}
-=======
 }
 
 .register label {
@@ -463,4 +448,3 @@
   }
 }
 
->>>>>>> origin/features/zs/yanzhengma:ttsd-web/design/static/style/register.scss
