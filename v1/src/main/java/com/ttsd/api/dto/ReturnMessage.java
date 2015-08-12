@@ -52,7 +52,7 @@ public enum ReturnMessage {
     LLLEGAL_LOAN_STATUS_EXCEPTION("0035","当前借款不可投资"),
     NO_MATCHING_OBJECTS_EXCEPTION("0036","投资失败"),
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
-    USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资");
+    USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
     /******手机端投资******/
 
 

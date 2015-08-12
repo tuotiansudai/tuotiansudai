@@ -71,11 +71,11 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         }
 
 
-        if ("dx".equals(loan.getLoanActivityType())) {
+        if (loan.isLoanDx()) {
             if (StringUtils.isEmpty(investRequestDto.getPassword())) {
                 return ReturnMessage.INVEST_PASSWORD_IS_NULL.getCode();
             }
-            if (loan.getInvestPassword().equals(investRequestDto.getPassword())) {
+            if (!loan.getInvestPassword().equals(investRequestDto.getPassword())) {
                 return ReturnMessage.INVEST_PASSWORD_IS_WRONG.getCode();
             }
 

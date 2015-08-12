@@ -102,19 +102,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             /*investService.create(invest);*/
             //获取invest对象,保存至operation里面然后,等回调成功的时候讲对象取出来然后再进行保存,避免资金冻结情况的发生
             invest = investUnFreeze(invest);
-            DecimalFormat currentNumberFormat = new DecimalFormat("#");
-            Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
-            sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
-            sendMap.put("notify_url", UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
-            sendMap.put("order_id", invest.getId());
-            sendMap.put("mer_date", DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));
-            sendMap.put("project_id", invest.getLoan().getId());
-            sendMap.put("serv_type", TransferProjectStatus.SERV_TYPE_INVEST);
-            sendMap.put("trans_action", TransferProjectStatus.TRANS_ACTION_IN);
-            sendMap.put("partic_type", TransferProjectStatus.PARTIC_TYPE_INVESTOR);
-            sendMap.put("partic_acc_type", TransferProjectStatus.PARTIC_ACC_TYPE_PERSON);
-            sendMap.put("partic_user_id", getTrusteeshipAccount(invest.getUser().getId()).getId());
-            sendMap.put("amount", currentNumberFormat.format(invest.getInvestMoney() * 100));
+            Map<String, String> sendMap = assembleSendMap(invest);
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             // 保存操作记录(将对象直接转换成XML保存至operator里面,投资成功后取出)
             /*String xml = new XStream().toXML(invest);
@@ -155,19 +143,11 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
     public Map<String, String> createOperation(Invest invest) {
         try {
             invest = investUnFreeze(invest);
-            DecimalFormat currentNumberFormat = new DecimalFormat("#");
-            Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
-            sendMap.put("sourceV", "HTML5");
-            sendMap.put("notify_url", UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
-            sendMap.put("order_id", invest.getId());
-            sendMap.put("mer_date", DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));
-            sendMap.put("project_id", invest.getLoan().getId());
-            sendMap.put("serv_type", TransferProjectStatus.SERV_TYPE_INVEST);
-            sendMap.put("trans_action", TransferProjectStatus.TRANS_ACTION_IN);
-            sendMap.put("partic_type", TransferProjectStatus.PARTIC_TYPE_INVESTOR);
-            sendMap.put("partic_acc_type", TransferProjectStatus.PARTIC_ACC_TYPE_PERSON);
-            sendMap.put("partic_user_id", getTrusteeshipAccount(invest.getUser().getId()).getId());
-            sendMap.put("amount", currentNumberFormat.format(invest.getInvestMoney() * 100));
+
+            Map<String, String> sendMap = assembleSendMap(invest);
+
+            sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+            sendMap.put("ret_url", "");
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             sendMap.put("url", reqData.getUrl());
 
@@ -190,6 +170,25 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             throw new UmPayOperationException(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
         }
 
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, String> assembleSendMap(Invest invest) {
+        DecimalFormat currentNumberFormat = new DecimalFormat("#");
+        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
+        sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        sendMap.put("notify_url", UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        sendMap.put("order_id", invest.getId());
+        sendMap.put("mer_date", DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));
+        sendMap.put("project_id", invest.getLoan().getId());
+        sendMap.put("serv_type", TransferProjectStatus.SERV_TYPE_INVEST);
+        sendMap.put("trans_action", TransferProjectStatus.TRANS_ACTION_IN);
+        sendMap.put("partic_type", TransferProjectStatus.PARTIC_TYPE_INVESTOR);
+        sendMap.put("partic_acc_type", TransferProjectStatus.PARTIC_ACC_TYPE_PERSON);
+        sendMap.put("partic_user_id", getTrusteeshipAccount(invest.getUser().getId()).getId());
+        sendMap.put("amount", currentNumberFormat.format(invest.getInvestMoney() * 100));
+
+        return sendMap;
     }
 
 
