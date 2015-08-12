@@ -2,22 +2,21 @@ require(['jquery'], function ($) {
     $(function () {
         // 异步请求
         var ajaxPost = function (url, arg, ele) {
+            var msg = "验证码错误";
             var _this = ele;
-            var attr = attr;
             var arg = arg;
             $.ajax({
                 url: url,
-                type: 'POST',
+                type: 'GET',
                 dataType: 'json',
-                data: arg,
-
+                contentType: 'application/json; charset=UTF-8'
             })
                 .done(function (data) {
-                    if (data.status) {
+                    if (data.data.status) {
                         _this.addClass('lock').removeClass('unlock');
-                        _this.closest('label').next().addClass('right').removeClass('wrong').text('');
+                        $('.error').removeClass('wrong').text('');
                     } else {
-                        _this.closest('label').next().addClass('wrong').removeClass('right').text("输入有误");
+                        $('.error').addClass('wrong').text(msg);
                         _this.removeClass('lock').addClass('unlock');
                     }
                     validSuccess();
@@ -34,28 +33,28 @@ require(['jquery'], function ($) {
 
         //及时校验 用户名
         $('.login-name').blur(function () {
+            var msg = "用户名不能为空";
             var _this = $(this);
             var _value = _this.val();
-            var arg = {user: _value};  //传递数据
             if (_this.val() == '') {
                 _this.removeClass('lock').addClass('unlock');
-                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入用户名');
+                $('.error').addClass('wrong').text(msg);
             } else {
-                ajaxPost(_API_USER, arg, _this, "user");
+                $('.error').removeClass('wrong').text('');
             }
             validSuccess();
         });
 
         //密码校验
         $('.password').blur(function () {
+            var msg = "密码不能为空";
             var _this = $(this);
-            var _value = _this.val();
-            if (_this.val() == '' || _value.length < 6) {
+            if (_this.val() == '') {
                 _this.removeClass('lock').addClass('unlock');
-                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入密码,密码至少6位');
+                $('.error').addClass('wrong').text(msg);
             } else {
                 _this.addClass('lock').removeClass('unlock');
-                _this.closest('label').next().addClass('right').removeClass('wrong').text('');
+                $('.error').removeClass('wrong').text('');
             }
             validSuccess();
         });
@@ -63,13 +62,14 @@ require(['jquery'], function ($) {
         //验证码校验
         $('.captcha').blur(function () {
             var _this = $(this);
+            var msg = "验证码错误";
             var _value = _this.val();
             var arg = {yzm: _value};
             if (_this.val() == '') {
-                _this.addClass('lock');
-                _this.closest('label').next().addClass('wrong').removeClass('right').text('请输入验证码');
+                _this.addClass('lock').removeClass('unlock');
+                $('.error').addClass('wrong').text(msg);
             } else {
-                ajaxPost(_API_YZM, arg, _this);
+                ajaxPost('/login/captcha/'+ _value + '/verify', arg, _this);
             }
             validSuccess();
         });
@@ -100,8 +100,8 @@ require(['jquery'], function ($) {
 
                         //go to
                     } else {
-                        $('.userPass').addClass('lock').removeClass('unlock');
-                        $('.userPass').closest('label').next().text(data.msg);
+                        $('.captcha').addClass('unlock').removeClass('lock').val('');
+                        $('.error').addClass('wrong').text('用户名或密码错误');
                     }
                     console.log("success");
                 })

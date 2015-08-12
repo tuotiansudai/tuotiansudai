@@ -19,14 +19,10 @@
                 <em class="name">账<i></i>号:</em>
                 <input class="login-name unlock" type="text" value="" name="user" placeholder="请输入账号/手机号"/>
             </label>
-            <div class="error"></div>
-
             <label>
                 <em class="name">密<i></i>码:</em>
                 <input class="password unlock" type="text" value="" name="password" placeholder="请输入密码"/>
             </label>
-            <div class="error"></div>
-
             <label>
                 <em class="name">验证码:</em>
                 <input class="jq-yzm yzm captcha unlock" type="text" value="" name="captcha" placeholder="请输入验证码"/>
@@ -42,11 +38,6 @@
     </div>
 </div>
 
-<script>
-    //    json 数据 api
-    var _API_USER = '../../static/jsons/user.json';
-    var _API_YZM = '../../static/jsons/yzm.json';
-</script>
 <#include "footer.ftl">
 <script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
 <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
