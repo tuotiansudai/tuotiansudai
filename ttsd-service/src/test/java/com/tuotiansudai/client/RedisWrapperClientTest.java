@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by Administrator on 2015/8/11.
@@ -67,15 +68,16 @@ public class RedisWrapperClientTest {
         redisWrapperClient.hmset("bitch", fuck);
         assertThat(redisWrapperClient.hmget("bitch", "fuck").get(0).toString(), is("0"));
         assertThat(redisWrapperClient.hlen("bitch"), is(3));
-        Iterator<String> iter = redisWrapperClient.hkeys("bitch").iterator();
-        String i = "0";
-        while (iter.hasNext()) {
-            String hkey = iter.next();
-            assertThat(redisWrapperClient.hmget("bitch", hkey).get(0).toString(), is(i));
-            i = (Integer.parseInt(i) + 1) + "";
-        }
         redisWrapperClient.hdel("bitch","fuck","shit");
         assertThat(redisWrapperClient.hlen("bitch"), is(1));
+        Iterator<String> iter = redisWrapperClient.hkeys("bitch").iterator();
+        String i = "2";
+        while (iter.hasNext()) {
+            String hkey = iter.next();
+            assertThat(redisWrapperClient.hget("bitch", hkey), is(i));
+        }
+        redisWrapperClient.hset("bitch","cock","3");
+        assertThat(redisWrapperClient.hget("bitch","cock"), is("3"));
     }
 
 }
