@@ -42,10 +42,34 @@ public enum ReturnMessage {
     /******手机端标的详情******/
 
     /******手机端投资******/
-    INVEST_ID_IS_NOT_EXIST("0038","投资详细信息不存在"),
-    INVEST_CAN_NOT_BE_FOUND("0039","查找不到投资详情");
+    INVESTOR_SAME_TO_LOANER("0025","你不能投自己的项目"),
+    INVEST_PASSWORD_IS_WRONG("0029","投资密码不匹配"),
+    INVEST_PASSWORD_IS_NULL("0030","投资密码为空"),
+    UMPAY_INVEST_MESSAGE_INVALID("0031","请求第三方加密失败"),
+    INSUFFICIENT_BALANCE("0032","账户余额不足，请充值"),
+    EXCEED_MONEY_NEED_RAISED("0033","投资金额不能大于尚未募集的金额！"),
+    UNREACHED_MONEY_LIMIT_EXCETPTION("0034","投资金额未到达优惠券使用条件"),
+    LLLEGAL_LOAN_STATUS_EXCEPTION("0035","当前借款不可投资"),
+    NO_MATCHING_OBJECTS_EXCEPTION("0036","投资失败"),
+    EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
+    USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
+    INVEST_CAN_NOT_BE_FOUND("0039","查找不到投资详情"),
+
     /******手机端投资******/
 
+
+    /******绑卡失败******/
+    BIND_CARD_FAIL("0026","绑卡失败"),
+    /******绑卡失败******/
+
+    /******签约失败******/
+    BANK_CARD_SIGN_FAIL("0027","签约失败"),
+    NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
+    /******签约失败******/
+
+    /******手机端请求第三方接口时，出现网络异常******/
+    NETWORK_EXCEPTION("0028","网络异常");
+    /******手机端请求第三方接口时，出现网络异常******/
 
     private String code;
     private String msg;

@@ -31,6 +31,14 @@ public class UmPayConstants {
 	}
 
 	/**
+	 * 用于前端展示的资源视图
+	 */
+	public static final class SourceViewType{
+		/** 手机页面资源视图 */
+		public static final String SOURCE_V = "HTML5";
+	}
+
+	/**
 	 * 同步回调地址前缀
 	 */
 	public static final class ResponseWebUrl {
