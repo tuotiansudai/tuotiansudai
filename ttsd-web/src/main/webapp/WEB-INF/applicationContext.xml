@@ -15,7 +15,7 @@
     <context:annotation-config/>
 
 
-    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties" />
+    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
