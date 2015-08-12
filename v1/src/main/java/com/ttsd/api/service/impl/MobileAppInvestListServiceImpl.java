@@ -1,6 +1,7 @@
 package com.ttsd.api.service.impl;
 
 import com.esoft.core.annotations.Logger;
+import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dto.*;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 public class MobileAppInvestListServiceImpl implements MobileAppInvestListService {
+
     @Logger
     static Log log;
     @Resource
@@ -65,5 +67,48 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             investRecordResponseDataDtoList.add(investRecordResponseDataDto);
         }
         return investRecordResponseDataDtoList;
+    }
+
+
+    @Override
+    public BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto) {
+        String userId = requestDto.getBaseParam().getUserId();
+        String[] status = new String[]{};
+        return generateUserInvestListEx(requestDto, userId, status);
+    }
+
+    private BaseResponseDto generateUserInvestListEx(UserInvestListRequestDto requestDto, String userId, String[] status) {
+        // parameters
+        Integer index = requestDto.getIndex();
+        Integer pageSize = requestDto.getPageSize();
+
+        // query
+        List<Invest> investList = mobileAppInvestListDao.getUserInvestList(index, pageSize, userId, status);
+        Integer investCount = mobileAppInvestListDao.getUserInvestTotalCount(userId,status);
+
+        // build InvestList
+        UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
+        dtoData.setInvestList(convertResponseData(investList));
+        dtoData.setIndex(index);
+        dtoData.setPageSize(pageSize);
+        dtoData.setTotalCount(investCount);
+
+        // BaseDto
+        BaseResponseDto dto = new BaseResponseDto();
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        dto.setData(dtoData);
+
+        return dto;
+    }
+
+    private List<UserInvestRecordResponseDataDto> convertResponseData(List<Invest> investList){
+        List<UserInvestRecordResponseDataDto> list = new ArrayList<>();
+        if(investList != null){
+            for(Invest invest:investList){
+                list.add(new UserInvestRecordResponseDataDto(invest));
+            }
+        }
+        return list;
     }
 }

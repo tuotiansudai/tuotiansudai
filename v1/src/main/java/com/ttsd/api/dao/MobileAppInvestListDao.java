@@ -10,4 +10,8 @@ public interface MobileAppInvestListDao {
     Integer getTotalCount(String loanId);
 
     List<Invest> getInvestList(Integer index, Integer pageSize,String loanId);
+
+    Integer getUserInvestTotalCount(String userId, String[] status);
+
+    List<Invest> getUserInvestList(Integer index, Integer pageSize, String userId, String[] status);
 }

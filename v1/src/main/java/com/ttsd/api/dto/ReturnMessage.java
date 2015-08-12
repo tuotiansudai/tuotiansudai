@@ -38,8 +38,13 @@ public enum ReturnMessage {
     /******手机端投资列表******/
 
     /******手机端标的详情******/
-    LOAN_ID_IS_NOT_EXIST("0024","标的详细信息不存在");
+    LOAN_ID_IS_NOT_EXIST("0024","标的详细信息不存在"),
     /******手机端标的详情******/
+
+    /******手机端投资******/
+    INVEST_ID_IS_NOT_EXIST("0038","投资详细信息不存在"),
+    INVEST_CAN_NOT_BE_FOUND("0039","查找不到投资详情");
+    /******手机端投资******/
 
 
     private String code;
