@@ -55,11 +55,13 @@
       }
     }
     & .forgot-password {
-      width: 238px;
+      width: 208px;
       padding-left: 90px;
       height: 14px;
       line-height: 14px;
       font-size: 12px;
+      text-align: right;
+      padding-right:100px;
       & input {
         width: 14px;
         height: 14px;
@@ -68,8 +70,11 @@
         float: left;
       }
       & a {
-        margin-left: 150px;
         color: #545353;
+      }
+      & a.reg {
+        color: #e64d0a;
+        font-size: 12px;
       }
     }
     & span {
@@ -91,14 +96,10 @@
         border-radius: 3px;
         display: block;
         float: left;
+        margin-left: 45px;
       }
       a.login-now.grey{
         background: #ccc;
-      }
-      & a.reg {
-        color: #e64d0a;
-        font-size: 12px;
-        margin-left: 34px;
       }
     }
     & b {
