@@ -3,24 +3,47 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
     var registerUserForm = $("#register-user-form");
     var registerAccountForm = $("#register-account-form");
 
-    $('.register .fetch-captcha').click(function () {
-        var validate = registerUserForm.validate();
-        var isMobileValid = validate.check('.register .mobile');
-        if (isMobileValid) {
-            var mobile = $('.register .mobile').val();
-            $.ajax({
-                url: '/register/mobile/' + mobile + '/sendregistercaptcha',
-                type: 'get',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                success: function (response) {
-                    console.log(response);
+    //$('.register .fetch-captcha').click(function () {
+    //    var validate = registerUserForm.validate();
+    //    var isMobileValid = validate.check('.register .mobile');
+    //    if (isMobileValid) {
+    //        var mobile = $('.register .mobile').val();
+    //        $.ajax({
+    //            url: '/register/mobile/' + mobile + '/sendregistercaptcha',
+    //            type: 'get',
+    //            dataType: 'json',
+    //            contentType: 'application/json; charset=UTF-8',
+    //            success: function (response) {
+    //                console.log(response);
+    //            }
+    //        });
+    //    } else {
+    //        validate.showErrors();
+    //    }
+    //});
+
+    $(function(){
+        $('.fetch-captcha').on('click',function(){
+            var clientH=$(window).height();
+            $('.verification-code').css({'height':clientH,'display':'block'});
+            $('.verification-code-main').css('display','block');
+        });
+        $('.complete,.verification-code,.close').on('click',function(){
+            $('.verification-code,.verification-code-main').css('display','none');
+            var num=30;
+            var count=setInterval(countdown,1000);
+            countdown();
+            function countdown(){
+                $('.fetch-captcha').html(num+'秒后重新发送').css({'background':'#666','pointer-events':'none'});
+                if(num==0){
+                    clearInterval(count);
+                    $('.fetch-captcha').html('重新发送').css({'background':'#f68e3a','pointer-events':'auto'});
                 }
-            });
-        } else {
-            validate.showErrors();
-        }
+                num--;
+            }
+        })
     });
+
 
     $.validator.addMethod(
         "regex",
