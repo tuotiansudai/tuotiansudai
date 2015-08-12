@@ -532,8 +532,27 @@ require(['jquery'], function ($) {
         });
     });
 
-    //record页面:
-    $(function () {
 
-    })
+
+    $(function(){
+        $('.fetch-captcha').on('click',function(){
+            var clientH=$(window).height();
+            $('.verification-code').css({'height':clientH,'display':'block'});
+            $('.verification-code-main').css('display','block');
+        });
+        $('.complete,.verification-code,.close').on('click',function(){
+            $('.verification-code,.verification-code-main').css('display','none');
+            var num=30;
+            var count=setInterval(countdown,1000);
+            countdown();
+            function countdown(){
+                $('.fetch-captcha').html(num+'秒后重新发送').css({'background':'#666','pointer-events':'none'});
+                if(num==0){
+                    clearInterval(count);
+                    $('.fetch-captcha').html('重新发送').css({'background':'#f68e3a','pointer-events':'auto'});
+                }
+                num--;
+            }
+        })
+    });
 });

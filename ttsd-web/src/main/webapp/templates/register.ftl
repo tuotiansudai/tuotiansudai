@@ -125,6 +125,19 @@
 <script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
 <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
         data-main="${requestContext.getContextPath()}/js/dest/${js.register}"></script>
+<div class="verification-code"></div>
+<div class="verification-code-main">
+    <span>手机验证<i class="close">X</i></span>
+    <p>
+        <input type="text" class="verification-code-text" placeholder="请输入图形验证码"/>
+        <img src="" alt="" class="verification-code-img"/>
+    </p>
+    <b>验证码输入错误</b>
+    <a href="javascript:;" class="complete">完成</a>
+</div>
+<script src="${requestContext.getContextPath()}/js/config.js"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.js" defer async="true"
+        data-main="${requestContext.getContextPath()}/js/register.js"></script>
 <#include "footer.ftl">
 </body>
 </html>
