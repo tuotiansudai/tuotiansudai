@@ -39,7 +39,7 @@ public class RedisWrapperClientTest {
         assertFalse(redisWrapperClient.exists("fuck"));
         redisWrapperClient.setex("damn",5,"damn");
         assertTrue(redisWrapperClient.exists("damn"));
-            try {
+        try {
             Thread.sleep(1000 * 6);
         } catch (InterruptedException e) {
             e.printStackTrace();
