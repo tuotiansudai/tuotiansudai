@@ -18,7 +18,7 @@ INSERT INTO `permission` VALUES ('manual_recharge','手动充值','手动充值'
 INSERT INTO `permission` VALUES ('batch_recharge','批量充值','批量充值');
 
 /******添加“债权还款计划”权限******/
-INSERT INTO `permission` VALUES ('debt_repay_plan','债权还款计划','债权还款计划');
+INSERT INTO `permission` VALUES ('creditor_repay_plan_list','债权还款计划','债权还款计划');
 
 /******给“债权还款计划”菜单绑定“债权还款计划”权限******/
 INSERT INTO `menu_permission` VALUES ('creditor_repay_plan_list','creditor_repay_plan_list');
