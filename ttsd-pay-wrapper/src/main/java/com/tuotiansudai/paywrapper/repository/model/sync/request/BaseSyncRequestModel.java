@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.repository.model.request;
+package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 
-public class BaseRequestModel {
+public abstract class BaseSyncRequestModel {
 
-    static Logger logger = Logger.getLogger(BaseRequestModel.class);
+    static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
 
     private static Properties props = new Properties();
 
@@ -41,7 +41,7 @@ public class BaseRequestModel {
         if (props.isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("/umpay.properties");
-                BaseRequestModel.props = PropertiesLoaderUtils.loadProperties(resource);
+                BaseSyncRequestModel.props = PropertiesLoaderUtils.loadProperties(resource);
             } catch (IOException e) {
                 logger.error("umpay.properties 不存在!");
                 logger.error(e);
@@ -49,7 +49,7 @@ public class BaseRequestModel {
         }
     }
 
-    public BaseRequestModel() {
+    public BaseSyncRequestModel() {
         this.signType = props.getProperty("sign_type");
         this.charset = props.getProperty("charset");
         this.version = props.getProperty("version");
@@ -147,7 +147,7 @@ public class BaseRequestModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaseRequestModel that = (BaseRequestModel) o;
+        BaseSyncRequestModel that = (BaseSyncRequestModel) o;
 
         return id.equals(that.id);
 

@@ -57,7 +57,7 @@
 
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="payBoneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.request,com.tuotiansudai.paywrapper.repository.model.response"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.sync.request,com.tuotiansudai.paywrapper.repository.model.sync.response,com.tuotiansudai.paywrapper.repository.model.async.request,com.tuotiansudai.paywrapper.repository.model.async.callback"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

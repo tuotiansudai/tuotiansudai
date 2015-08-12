@@ -1,8 +1,8 @@
-package com.tuotiansudai.paywrapper.repository.model.request;
+package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import java.util.Map;
 
-public class MerRegisterPersonRequestModel extends BaseRequestModel {
+public class MerRegisterPersonRequestModel extends BaseSyncRequestModel {
 
     private String loginName;
 

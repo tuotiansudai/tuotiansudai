@@ -1,8 +1,8 @@
-package com.tuotiansudai.paywrapper.repository.model.response;
+package com.tuotiansudai.paywrapper.repository.model.sync.response;
 
 import java.util.Map;
 
-public class MerRegisterPersonResponseModel extends BaseResponseModel {
+public class MerRegisterPersonResponseModel extends BaseSyncResponseModel {
 
     private String registerDate;
 

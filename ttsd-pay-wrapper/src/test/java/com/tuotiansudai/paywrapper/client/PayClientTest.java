@@ -1,9 +1,8 @@
 package com.tuotiansudai.paywrapper.client;
 
-import com.google.common.collect.Maps;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper;
-import com.tuotiansudai.paywrapper.repository.model.request.MerRegisterPersonRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.response.MerRegisterPersonResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPersonResponseModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

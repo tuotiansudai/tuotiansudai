@@ -1,9 +1,9 @@
-package com.tuotiansudai.paywrapper.repository.model.response;
+package com.tuotiansudai.paywrapper.repository.model.sync.response;
 
 import java.util.Date;
 import java.util.Map;
 
-public class BaseResponseModel {
+public class BaseSyncResponseModel {
 
     private static String SUCCESS_CODE = "0000";
 
@@ -78,7 +78,7 @@ public class BaseResponseModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaseResponseModel that = (BaseResponseModel) o;
+        BaseSyncResponseModel that = (BaseSyncResponseModel) o;
 
         return id.equals(that.id);
 
