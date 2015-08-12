@@ -127,7 +127,7 @@ public class UmPayBindingAgreementOperation extends
         //配置此项，表示使用H5页面
         sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
         // 同步地址
-        sendMap.put("ret_url", "NULL");
+        sendMap.put("ret_url", "");
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             log.debug("签约协议发送数据:" + reqData);
@@ -136,11 +136,12 @@ public class UmPayBindingAgreementOperation extends
                     userId,
                     UmPayConstants.OperationType.MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
-            BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-            bankCardResponseDto.setUrl(reqData.getUrl());
-            bankCardResponseDto.setRequestData(GsonUtil.fromMap2Json(reqData.getField()));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+            BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+            Map<String,String> paramMap = reqData.getField();
+            paramMap.put("requestURL", reqData.getUrl());
+            bankCardResponseDto.setRequestData(paramMap);
             baseResponseDto.setData(bankCardResponseDto);
         } catch (ReqDataException e) {
             log.error(e.getLocalizedMessage(),e);

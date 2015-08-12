@@ -160,11 +160,12 @@ public class UmPayBindingBankCardOperation extends
 					bankCard.getUser().getId(),
 					UmPayConstants.OperationType.MER_BIND_CARD,
 					requestData);
-			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-			bankCardResponseDto.setUrl(reqData.getUrl());
-			bankCardResponseDto.setRequestData(requestData);
 			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+			Map<String,String> paramMap = reqData.getField();
+			paramMap.put("requestURL", reqData.getUrl());
+			bankCardResponseDto.setRequestData(paramMap);
 			baseResponseDto.setData(bankCardResponseDto);
 		} catch (ReqDataException e) {
 			log.error(e.getLocalizedMessage(),e);

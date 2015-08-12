@@ -38,6 +38,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -191,8 +192,9 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-			bankCardResponseDto.setUrl(reqData.getUrl());
-			bankCardResponseDto.setRequestData(requestData);
+			Map<String,String> paramMap = reqData.getField();
+			paramMap.put("requestURL", reqData.getUrl());
+			bankCardResponseDto.setRequestData(paramMap);
 			baseResponseDto.setData(bankCardResponseDto);
 			return baseResponseDto;
 		} catch (ReqDataException e) {
