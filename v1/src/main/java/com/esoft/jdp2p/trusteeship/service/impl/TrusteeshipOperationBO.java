@@ -147,7 +147,7 @@ public class TrusteeshipOperationBO {
 	 */
 	@Deprecated
 	public TrusteeshipOperation get(String type, String markId,
-			String operator, String trusteeship) {
+			String operator, String trusteeship) throws DuplicateKeyException{
 		DetachedCriteria criteria = DetachedCriteria
 				.forClass(TrusteeshipOperation.class);
 		if (type == null) {

@@ -799,7 +799,7 @@ public class UserServiceImpl implements UserService {
 		String userId = user.getId();
 		ReferrerRelation referrerRelation = new ReferrerRelation();
 		referrerRelation.setUserId(userId);
-		referrerRelation.setReferrerId(referrerId);
+		referrerRelation.setReferrerId(referrerId.trim());
 		referrerRelation.setLevel(1);
 		ht.save(referrerRelation);
 
