@@ -88,15 +88,22 @@ require(['jquery'], function ($) {
             $.ajax({
                 url: '/loginHandler',
                 type: 'post',
-                data: data
-            }).done(function (response) {
+                data: data,
+                beforeSend: function(){
+                    self.addClass('loading');
+                }
+            })
+                .done(function (response) {
                 if (response.data.status) {
                     window.location.href = '/';
+                    console.log('success');
                 } else {
                     refreshCaptcha();
                     $('.captcha').addClass('unlock').removeClass('lock').val('');
                     $('.error').addClass('wrong').text('用户名或密码错误');
                 }
+                    self.removeClass('loading');
+
             });
         })
     });
