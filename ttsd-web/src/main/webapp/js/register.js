@@ -15,7 +15,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
         });
         $('.mobile').blur(function () {
             var _this = $(this);
-            if(_this.val()=='' || _this.siblings('.error').css('display')=='inline-block'){
+            if(_this.val()=='' || _this.hasClass('error')){
                 $('.fetch-captcha').addClass('grey').attr('disabled','disabled');
             }else{
                 $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
