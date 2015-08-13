@@ -9,9 +9,14 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
     private String realName;
     private String idCard;
     private boolean isBoundBankCard;
+    private String photo;
+    private boolean isFastPayment;
+    private String bankCardNo;
+    private String bankId;
+    private boolean fastPaymentEnable;
 
 
-    public boolean isCertificationFlag() {
+    public boolean getCertificationFlag() {
         return certificationFlag;
     }
 
@@ -19,15 +24,13 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.certificationFlag = certificationFlag;
     }
 
-    public boolean isBoundBankCard() {
+    public boolean getBoundBankCard() {
         return isBoundBankCard;
     }
 
     public void setIsBoundBankCard(boolean isBoundBankCard) {
         this.isBoundBankCard = isBoundBankCard;
     }
-
-    private String photo;
 
     public String getUserId() {
         return userId;
@@ -69,13 +72,43 @@ public class PersonalInfoResponseDataDto extends BaseResponseDataDto {
         this.idCard = idCard;
     }
 
-
-
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public boolean getFastPayment() {
+        return isFastPayment;
+    }
+
+    public void setIsFastPayment(boolean isFastPayment) {
+        this.isFastPayment = isFastPayment;
+    }
+
+    public String getBankCardNo() {
+        return bankCardNo;
+    }
+
+    public void setBankCardNo(String bankCardNo) {
+        this.bankCardNo = bankCardNo;
+    }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
+    }
+
+    public boolean getFastPaymentEnable() {
+        return fastPaymentEnable;
+    }
+
+    public void setFastPaymentEnable(boolean fastPaymentEnable) {
+        this.fastPaymentEnable = fastPaymentEnable;
     }
 }

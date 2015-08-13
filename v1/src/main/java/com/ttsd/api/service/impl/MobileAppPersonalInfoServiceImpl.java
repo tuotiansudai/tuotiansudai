@@ -2,9 +2,15 @@ package com.ttsd.api.service.impl;
 
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
+import com.esoft.jdp2p.user.service.RechargeService;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppPersonalInfoService;
+import com.ttsd.api.util.CommonUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.SQLQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +27,9 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     @Resource
     private UserBO userBO;
+
+    @Autowired
+    private RechargeService rechargeService;
 
     @Override
     public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto) {
@@ -55,9 +64,21 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         if(certificationFlag){
             personalInfoDataDto.setRealName(user.getRealname());
             personalInfoDataDto.setIdCard(user.getIdCard());
-        }else{
+        }else {
             personalInfoDataDto.setRealName("");
             personalInfoDataDto.setIdCard("");
+        }
+        BankCard bankCard = queryBankCardByUserId(user.getUsername());
+        if(bankCard != null){
+            personalInfoDataDto.setBankCardNo(CommonUtils.encryptBankCardNo(bankCard.getCardNo()));
+            personalInfoDataDto.setBankId(bankCard.getBankNo());
+            personalInfoDataDto.setIsFastPayment(isOpenFastPayment(bankCard));
+            personalInfoDataDto.setFastPaymentEnable(rechargeService.isFastPaymentBank(bankCard.getBankNo()));
+        }else{
+            personalInfoDataDto.setBankCardNo("");
+            personalInfoDataDto.setBankId("");
+            personalInfoDataDto.setIsFastPayment(false);
+            personalInfoDataDto.setFastPaymentEnable(false);
         }
 
         return personalInfoDataDto;
@@ -80,6 +101,25 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
         String hqlTemplate = "select count(bankCard) from BankCard bankCard where bankCard.user=''{0}'' and bankCard.status=''passed''";
         int count = DataAccessUtils.intResult(ht.find(MessageFormat.format(hqlTemplate, userName)));
         return count > 0;
+    }
+
+    @Override
+    public BankCard queryBankCardByUserId(String userId) {
+        String sql = "select * from bank_card where user_id = ? and status='passed' ";
+        SQLQuery sqlQuery= ht.getSessionFactory().getCurrentSession().createSQLQuery(sql);
+        sqlQuery.setParameter(0, userId);
+        sqlQuery.addEntity(BankCard.class);
+        List<BankCard> bankCards = sqlQuery.list();
+        if(CollectionUtils.isNotEmpty(bankCards)){
+            return bankCards.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isOpenFastPayment(BankCard bankCard) {
+
+        return "1".equals(bankCard.getIsOpenFastPayment());
     }
 
 
