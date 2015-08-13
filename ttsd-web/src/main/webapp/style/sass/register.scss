@@ -195,9 +195,10 @@
       left: 224px;
       top: 6px;
       font-size: 12px;
-      line-height: 28px;
+      line-height: 24px;
       text-align: center;
       cursor: pointer;
+      border: none;
     }
     .fetch-captcha.grey{
       background: #ccc;
@@ -355,6 +356,7 @@
       background: #e4e4e4;
       border-radius: 5px;
       border: #bababa 1px solid;
+      cursor: pointer;
     }
   }
   & b {
@@ -367,19 +369,20 @@
     height: 30px;
     display: none;
   }
-  & a.complete {
+  & .complete {
     font-size: 17px;
     width: 156px;
     height: 36px;
-    line-height: 36px;
+    line-height: 32px;
     text-align: center;
     color: #fff;
     background: #f68e3a;
     border-radius: 5px;
     margin: 25px auto;
     display: block;
+    border: none;
   }
-  & a.complete.grey{
+  & .complete.grey{
     background: #ccc;
   }
 }
