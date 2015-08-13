@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>
-    <title>注册</title>
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.global}">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.register}">
-</head>
+<#import "global_macro.ftl" as global/>
+<@global.head title='注册' pageCss='${css.register}'>
+</@global.head >
 <body>
 <#include "header.ftl" />
-<!--register begin-->
 <div class="register">
     <ul>
         <li class="register-step-one-title register-arrow active">1 注册</li>
@@ -132,9 +127,13 @@
     <b>验证码输入错误</b>
     <button class="complete grey" disabled="disabled">完成</button>
 </div>
+<#include "footer.ftl">
+
+<@global.javascript pageJs='${js.register}'>
+</@global.javascript>
+
 <script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
 <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
         data-main="${requestContext.getContextPath()}/js/dest/${js.register}"></script>
-<#include "footer.ftl">
 </body>
 </html>
