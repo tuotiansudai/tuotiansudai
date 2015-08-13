@@ -330,4 +330,22 @@ public class RechargeServiceImpl implements RechargeService {
 
 	}
 
+	@Override
+	public List<Recharge> findUserRecharge(String userId, Integer offset, Integer limit) {
+		String hql = "from Recharge recharge where recharge.user.id=:userId order by recharge.time desc";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId", userId);
+		query.setMaxResults(limit);
+		query.setFirstResult(offset);
+		return query.list();
+	}
+
+	@Override
+	public Integer findUserRechargeCount(String userId) {
+		String hql = "select count(*) from Recharge recharge where recharge.user.id=:userId";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId",userId);
+		return ((Number)query.uniqueResult()).intValue();
+	}
+
 }

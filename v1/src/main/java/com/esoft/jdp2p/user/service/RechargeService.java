@@ -82,4 +82,8 @@ public interface RechargeService {
 	public boolean isRealNameBank(String bankNo);
 
 	public boolean isFastPaymentBank(String bankNo);
+
+	public List<Recharge> findUserRecharge(String userId, Integer offset, Integer limit);
+
+	public Integer findUserRechargeCount(String userId);
 }
