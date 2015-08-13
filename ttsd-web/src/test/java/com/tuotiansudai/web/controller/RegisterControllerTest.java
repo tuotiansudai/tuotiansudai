@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.security.MyShaPasswordEncoder;
+import com.tuotiansudai.security.CaptchaVerifier;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Before;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,6 +40,9 @@ public class RegisterControllerTest {
 
     @Mock
     private SmsCaptchaService smsCaptchaService;
+
+    @Mock
+    private CaptchaVerifier captchaVerifier;
 
     @Before
     public void init() {
@@ -142,8 +144,8 @@ public class RegisterControllerTest {
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
         when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
-
-        this.mockMvc.perform(get("/register/mobile/13900000000/sendregistercaptcha")).andExpect(status().isOk())
+        when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
+        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
@@ -151,13 +153,22 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(false);
-
-        this.mockMvc.perform(get("/register/mobile/13900000000/sendregistercaptcha")).andExpect(status().isOk())
+        when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
+        when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(false);
+        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
 
+    }
+
+    @Test
+    public void shouldPhotoCaptchaVerify() throws Exception {
+        when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
+
+        this.mockMvc.perform(get("/photo/captcha/123456/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(false));
     }
 
     @Test
