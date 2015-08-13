@@ -3,7 +3,7 @@ package com.ttsd.api.controller;
 import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.core.annotations.Logger;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.RetrievePasswordService;
+import com.ttsd.api.service.MobileAppRetrievePasswordService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
  * Created by tuotian on 15/7/29.
  */
 @Controller
-public class RetrievePasswordController {
+public class MobileAppRetrievePasswordController {
     @Logger
     Log log;
 
-    @Resource(name = "RetrievePasswordServiceImpl")
-    private RetrievePasswordService retrievePasswordService;
+    @Resource(name = "mobileAppRetrievePasswordServiceImpl")
+    private MobileAppRetrievePasswordService retrievePasswordService;
 
     /**
      * @function 找回密码
