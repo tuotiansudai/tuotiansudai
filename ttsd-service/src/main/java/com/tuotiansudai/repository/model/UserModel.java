@@ -135,6 +135,10 @@ public class UserModel {
         this.status = status;
     }
 
+    public boolean isActive() {
+        return this.status == UserStatus.ACTIVE;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

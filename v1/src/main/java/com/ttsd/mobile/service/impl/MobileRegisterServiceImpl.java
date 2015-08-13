@@ -1,6 +1,9 @@
 package com.ttsd.mobile.service.impl;
 
 import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.common.service.AuthService;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.UserService;
@@ -54,7 +57,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public boolean mobileRegister(String userName, String password, String phoneNum, String vCode, String referrer) {
+    public boolean mobileRegister(String userName, String password, String phoneNum, String vCode, String referrer) throws AuthInfoOutOfDateException, AuthInfoAlreadyActivedException, NoMatchingObjectsException {
         //校验密码
         if (Strings.isNullOrEmpty(password)){
             log.info("提交的密码为空！");
@@ -69,29 +72,16 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             return false;
         }
 
-        int codeCount = 0;
-        try {
-            codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
-        }catch (Exception e){
-            log.error("获取用户名为："+userName+",手机号为："+phoneNum+"的用户授权码信息失败！");
-            log.error(e.getLocalizedMessage(),e);
-            return false;
-        }
+        int codeCount = mobileRegisterDao.getAuthInfo(phoneNum,vCode,CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if(codeCount > 0) {
             User user = new User();
             user.setUsername(userName);
             user.setMobileNumber(phoneNum);
             user.setPassword(password);
             user.setReferrer(referrer);
-            try {
-                userService.registerByMobileNumber(user, vCode, referrer);
-                log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
-                return true;
-            }catch (Exception e1){
-                log.error("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化失败！");
-                log.error(e1.getLocalizedMessage(),e1);
-                return false;
-            }
+            userService.registerByMobileNumber(user, vCode, referrer);
+            log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
+            return true;
         }else {
             return false;
         }
@@ -117,6 +107,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
                 log.error(e.getLocalizedMessage(),e);
                 return false;
             }
+            log.info("已为手机号为："+phoneNumber+"的用户成功创建授权码！");
             return true;
         }
         return false;

@@ -1,6 +1,9 @@
 package com.ttsd.mobile.service;
 
 import com.esoft.archer.common.CommonConstants;
+import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
+import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
+import com.esoft.archer.common.exception.NoMatchingObjectsException;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +20,7 @@ public interface IMobileRegisterService {
      * @param referrer 推荐人
      * @return boolean 注册成功，返回true，否则返回false
      */
-    boolean mobileRegister(String userName,String password,String phoneNum,String vCode,String referrer);
+    boolean mobileRegister(String userName,String password,String phoneNum,String vCode,String referrer) throws AuthInfoOutOfDateException, AuthInfoAlreadyActivedException, NoMatchingObjectsException;
 
     /**
      * @function 获取生成的授权码

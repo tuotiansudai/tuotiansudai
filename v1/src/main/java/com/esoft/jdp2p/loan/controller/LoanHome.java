@@ -192,9 +192,6 @@ public class LoanHome extends EntityHome<Loan> implements Serializable {
 	public String recheck() {
 		try {
 			loanService.giveMoneyToBorrower(this.getInstance().getId());
-		} catch (ExistWaitAffirmInvests e) {
-			FacesUtil.addInfoMessage("放款失败，存在等待第三方资金托管确认的投资。");
-			return null;
 		} catch (BorrowedMoneyTooLittle e) {
 			FacesUtil.addInfoMessage("放款失败，募集到的资金太少。");
 			return null;

@@ -96,11 +96,12 @@ public class UmPayNormalRepayOperation extends
 
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
-	public void recommendedIncome(Loan loan) throws IOException,ReqDataException, RetDataException{
+	public void recommendedIncome(String loanId){
+		Loan loan = ht.get(Loan.class, loanId);
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
 				"from Invest i where i.loan.id=? and i.status not in (?,?)",
-				new String[] { loan.getId(), InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
+				new String[] { loanId, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
@@ -134,7 +135,14 @@ public class UmPayNormalRepayOperation extends
 
 				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
 					//调用联动优势接口
-					String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
+					String returnMsg = null;
+					try {
+						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
+					} catch (ReqDataException | RetDataException e) {
+						log.error(e.getLocalizedMessage(), e);
+						log.info("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
+						continue;
+					}
 					if(returnMsg.split("\\|")[0].equals("0000")){
 						status = InvestUserReferrer.SUCCESS;
 					}else{
@@ -358,10 +366,6 @@ public class UmPayNormalRepayOperation extends
 		} catch (InsufficientBalance e) {
 			e.printStackTrace();
 		} catch (NormalRepayException e) {
-			e.printStackTrace();
-		} catch (ReqDataException e) {
-			e.printStackTrace();
-		} catch (RetDataException e) {
 			e.printStackTrace();
 		}
 	}

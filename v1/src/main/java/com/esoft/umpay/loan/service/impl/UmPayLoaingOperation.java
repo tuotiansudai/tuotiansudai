@@ -143,7 +143,8 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				umPayLoanMoneyService.loanMoney2Mer("02"+loan.getId(), loanGuranteeFee, loan.getId());
 				//更新标的状态为还款中,对于投标中的不能改变几个参数已经做了处理
 				umPayLoanStatusService.updateLoanStatusOperation(loan, UmPayConstants.UpdateProjectStatus.PROJECT_STATE_REPAYING, false);
-				umPayNormalRepayOperation.recommendedIncome(loan);
+				//把下面这句耗时比较长的逻辑放到NotificationJob里了
+				//umPayNormalRepayOperation.recommendedIncome(loan);
 				this.addLoanOutSuccessfulNotificationJob(loan);
 			}else{
 				to.setStatus(TrusteeshipConstants.Status.REFUSED);
@@ -156,8 +157,6 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 		} catch (RetDataException e) {
 			log.error(e.getLocalizedMessage(), e);
 			throw new UmPayOperationException("放款失败:参数解密失败!");
-		} catch (ExistWaitAffirmInvests e) {
-			throw new UmPayOperationException("放款失败:存在第三方确认的投资!");
 		} catch (BorrowedMoneyTooLittle e) {
 			log.debug(e.getMessage());
 			throw new UmPayOperationException("放款失败:募集到的资金太少");
@@ -196,10 +195,6 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 						loanService.giveMoneyToBorrower(loanId);
 						log.debug("标的"+loanId+"放款成功");
 					} catch (BorrowedMoneyTooLittle e) {
-						log.debug("标的"+loanId+"放款失败");
-						log.debug(e.getMessage());
-						e.printStackTrace();
-					} catch (ExistWaitAffirmInvests e) {
 						log.debug("标的"+loanId+"放款失败");
 						log.debug(e.getMessage());
 						e.printStackTrace();

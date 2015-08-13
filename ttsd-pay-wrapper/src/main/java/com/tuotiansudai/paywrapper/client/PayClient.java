@@ -6,9 +6,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseMapper;
-import com.tuotiansudai.paywrapper.repository.model.request.BaseRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.request.RequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.response.BaseResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.paywrapper.util.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
@@ -33,7 +33,7 @@ public class PayClient {
     @Autowired
     private OkHttpClient httpClient;
 
-    public <T extends BaseResponseModel> T send(Class<? extends BaseMapper> baseMapperClass, BaseRequestModel requestModel, Class<T> responseModelClass) throws PayException {
+    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
             reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
@@ -73,7 +73,7 @@ public class PayClient {
     }
 
     @Transactional(value = "payTransactionManager")
-     private void createRequest(Class<? extends BaseMapper> baseMapperClass, BaseRequestModel requestModel) {
+     private void createRequest(Class<? extends BaseMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
         BaseMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.createRequest(requestModel);
     }
@@ -87,7 +87,7 @@ public class PayClient {
     }
 
     @Transactional(value = "payTransactionManager")
-    private <T extends BaseResponseModel> T createResponse(Class<? extends BaseMapper> baseMapperClass,
+    private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseMapper> baseMapperClass,
                                                            Map<String, String> resData,
                                                            Class<T> responseModelClass,
                                                            Long requestId) throws IllegalAccessException, InstantiationException {

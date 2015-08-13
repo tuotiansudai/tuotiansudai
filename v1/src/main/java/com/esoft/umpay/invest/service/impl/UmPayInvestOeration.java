@@ -1,23 +1,5 @@
 package com.esoft.umpay.invest.service.impl;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import com.ttsd.api.dto.ReturnMessage;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
 import com.esoft.archer.user.model.User;
@@ -49,10 +31,27 @@ import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.UmPayConstants.TransferProjectStatus;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.ReturnMessage;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -227,101 +226,106 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             throw new UmPayOperationException("余额不足!");
         } catch (NoMatchingObjectsException e) {
             log.error(e.getLocalizedMessage(), e);
-        }
-    }
-
-    /**
-     * 处理后台通知的投标
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void receiveOperationS2SCallback(ServletRequest request,
-                                            ServletResponse response) {
-        try {
-            Map<String, String> paramMap = UmPaySignUtil.getMapDataByRequest(request);
-            log.debug("投资后台验签通过数据为:" + paramMap.toString());
-            receiveOperationPostCallback(request);
-            String responseData = getResponseData(paramMap.get("order_id"), "0000");
-            log.debug("通知对方:" + responseData);
-            response.getWriter().print(responseData);
-            FacesUtil.getCurrentInstance().responseComplete();
-        } catch (TrusteeshipReturnException e) {
-            e.printStackTrace();
-        } catch (VerifyException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * 在未收到第三方通知的情况下,不冻结投资
-     * 当等到收到第三方成功通知的时候直接将用户的钱划走
-     *
-     * @param invest
-     * @throws IllegalLoanStatusException
-     * @throws NoMatchingObjectsException
-     * @throws ExceedMoneyNeedRaised
-     * @throws InsufficientBalance
-     * @throws ExceedDeadlineException
-     * @throws UnreachedMoneyLimitException
-     */
-    @SuppressWarnings("deprecation")
-    public Invest investUnFreeze(Invest invest) throws IllegalLoanStatusException, NoMatchingObjectsException, ExceedMoneyNeedRaised, InsufficientBalance, ExceedDeadlineException, UnreachedMoneyLimitException {
-        String loanId = invest.getLoan().getId();
-        invest.setInvestMoney(invest.getMoney());
-        Loan loan = ht.get(Loan.class, loanId);
-        ht.evict(loan);
-        loan = ht.get(Loan.class, loanId, LockMode.UPGRADE);
-        if (!loan.getStatus().equals(LoanStatus.RAISING)) {
-            throw new IllegalLoanStatusException(loan.getStatus());
-        }
-        //尚未募集的金额
-        double remainMoney = loanCalculator.calculateMoneyNeedRaised(loan.getId());
-        if (invest.getMoney() > remainMoney) {
-            throw new ExceedMoneyNeedRaised();
-        }
-        // 判断是否有代金券；判断能否用代金券
-        if (invest.getUserCoupon() != null) {
-            //代金券不是未使用状态，抛出异常
-            if (!invest.getUserCoupon().getStatus()
-                    .equals(CouponConstants.UserCouponStatus.UNUSED)) {
-                throw new ExceedDeadlineException();
-            }
-            // 判断代金券是否达到使用条件
-            if (invest.getMoney() < invest.getUserCoupon().getCoupon()
-                    .getLowerLimitMoney()) {
-                throw new UnreachedMoneyLimitException();
-            }
-            // 用户填写认购的钱数以后，判断余额，如果余额不够，不能提交，弹出新页面让用户充值
-            // investMoney>代金券金额+余额
-            if (invest.getMoney() > invest.getUserCoupon().getCoupon()
-                    .getMoney()
-                    + ubs.getBalance(invest.getUser().getId())) {
-                //throw new InsufficientBalance();
-            }
-        }
-        //是否余额不足
-        if (invest.getMoney() > ubs.getBalance(invest.getUser().getId())) {
-            throw new InsufficientBalance();
-        }
-        invest.setStatus(InvestConstants.InvestStatus.WAIT_AFFIRM);
-        invest.setRate(loan.getRate());
-        invest.setTime(new Date());
-        // 投资成功以后，判断项目是否有尚未认购的金额，如果没有，则更改项目状态。
-        invest.setId(investService.generateId(invest.getLoan().getId()));
-        if (invest.getTransferApply() == null || StringUtils.isEmpty(invest.getTransferApply().getId())) {
-            invest.setTransferApply(null);
-        }
-
-        invest.setLoan(ht.get(Loan.class, invest.getLoan().getId()));
-        invest.setUser(ht.get(User.class, invest.getUser().getId()));
-        ht.save(invest);
-
-        return invest;
-    }
+		} catch (DuplicateKeyException e) {
+			log.error(e.getLocalizedMessage(),e);
+			throw new TrusteeshipReturnException("duplication");
+		}
+	}
+	
+	/**
+	 * 处理后台通知的投标
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void receiveOperationS2SCallback(ServletRequest request,
+			ServletResponse response) {
+		try {
+			Map<String,String> paramMap = UmPaySignUtil.getMapDataByRequest(request);
+			log.debug("投资后台验签通过数据为:"+paramMap.toString());
+			receiveOperationPostCallback(request);
+			String responseData = getResponseData(paramMap.get("order_id"), "0000");
+			log.debug("通知对方:"+responseData);
+			response.getWriter().print(responseData);
+			FacesUtil.getCurrentInstance().responseComplete();
+		} catch (TrusteeshipReturnException e) {
+			e.printStackTrace();
+		} catch (VerifyException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
+	/**
+	 * 在未收到第三方通知的情况下,不冻结投资
+	 * 当等到收到第三方成功通知的时候直接将用户的钱划走
+	 * @param invest
+	 * @throws IllegalLoanStatusException 
+	 * @throws NoMatchingObjectsException 
+	 * @throws ExceedMoneyNeedRaised 
+	 * @throws InsufficientBalance 
+	 * @throws ExceedDeadlineException 
+	 * @throws UnreachedMoneyLimitException 
+	 */
+	@SuppressWarnings("deprecation")
+	public Invest investUnFreeze(Invest invest) throws IllegalLoanStatusException, NoMatchingObjectsException, ExceedMoneyNeedRaised, InsufficientBalance, ExceedDeadlineException, UnreachedMoneyLimitException{
+		String loanId = invest.getLoan().getId();
+		invest.setInvestMoney(invest.getMoney());
+		Loan loan = ht.get(Loan.class, loanId);
+		ht.evict(loan);
+		loan = ht.get(Loan.class, loanId, LockMode.UPGRADE);
+		if (!loan.getStatus().equals(LoanStatus.RAISING)) {
+			throw new IllegalLoanStatusException(loan.getStatus());
+		}
+		//尚未募集的金额
+		double remainMoney = loanCalculator.calculateMoneyNeedRaised(loan.getId());
+		if (invest.getMoney() > remainMoney) {
+			throw new ExceedMoneyNeedRaised();
+		}
+		// 判断是否有代金券；判断能否用代金券
+		if (invest.getUserCoupon() != null) {
+			//代金券不是未使用状态，抛出异常
+			if (!invest.getUserCoupon().getStatus()
+					.equals(CouponConstants.UserCouponStatus.UNUSED)) {
+				throw new ExceedDeadlineException();
+			}
+			// 判断代金券是否达到使用条件
+			if (invest.getMoney() < invest.getUserCoupon().getCoupon()
+					.getLowerLimitMoney()) {
+				throw new UnreachedMoneyLimitException();
+			}
+			// 用户填写认购的钱数以后，判断余额，如果余额不够，不能提交，弹出新页面让用户充值
+			// investMoney>代金券金额+余额
+			if (invest.getMoney() > invest.getUserCoupon().getCoupon()
+					.getMoney()
+					+ ubs.getBalance(invest.getUser().getId())) {
+				throw new InsufficientBalance();
+			}
+		}
+		//是否余额不足
+		if (invest.getMoney() > ubs.getBalance(invest.getUser().getId())) {
+			throw new InsufficientBalance();
+		}
+		invest.setStatus(InvestConstants.InvestStatus.WAIT_AFFIRM);
+		invest.setRate(loan.getRate());
+		invest.setTime(new Date());
+		// 投资成功以后，判断项目是否有尚未认购的金额，如果没有，则更改项目状态。
+		invest.setId(investService.generateId(invest.getLoan().getId()));
+		if (invest.getTransferApply() == null || StringUtils.isEmpty(invest.getTransferApply().getId())) {
+			invest.setTransferApply(null);
+		}
+		
+		invest.setLoan(ht.get(Loan.class, invest.getLoan().getId()));
+		invest.setUser(ht.get(User.class, invest.getUser().getId()));
+		ht.save(invest);
+		
+		return invest;
+	}
 
 
     /**
