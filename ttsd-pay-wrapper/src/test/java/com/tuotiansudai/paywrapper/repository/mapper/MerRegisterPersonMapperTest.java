@@ -2,10 +2,10 @@ package com.tuotiansudai.paywrapper.repository.mapper;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.paywrapper.repository.model.request.BaseRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.request.MerRegisterPersonRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.request.RequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.response.MerRegisterPersonResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPersonResponseModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class MerRegisterPersonMapperTest {
 
         merRegisterPersonMapper.updateRequestStatus(model.getId(), RequestStatus.SUCCESS);
 
-        BaseRequestModel updatedModel = merRegisterPersonMapper.findRequestById(model.getId());
+        BaseSyncRequestModel updatedModel = merRegisterPersonMapper.findRequestById(model.getId());
 
         assertThat(updatedModel.getStatus(), is(RequestStatus.SUCCESS));
     }

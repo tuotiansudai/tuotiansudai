@@ -5,9 +5,9 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.paywrapper.client.PayClient;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseMapper;
-import com.tuotiansudai.paywrapper.repository.model.request.MerRegisterPersonRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.response.BaseResponseModel;
-import com.tuotiansudai.paywrapper.repository.model.response.MerRegisterPersonResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPersonResponseModel;
 import com.tuotiansudai.paywrapper.service.impl.RegisterServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -62,7 +62,7 @@ public class RegisterServiceTest {
         UserModel userModel = new UserModel();
         userModel.setLoginName("loginName");
         when(userMapper.findByLoginName("loginName")).thenReturn(userModel);
-        when(payClient.send(Matchers.<Class<? extends BaseMapper>>any(), any(MerRegisterPersonRequestModel.class), Matchers.<Class<BaseResponseModel>>any()))
+        when(payClient.send(Matchers.<Class<? extends BaseMapper>>any(), any(MerRegisterPersonRequestModel.class), Matchers.<Class<BaseSyncResponseModel>>any()))
                 .thenReturn(responseModel);
         RegisterAccountDto dto = new RegisterAccountDto();
         dto.setLoginName("loginName");

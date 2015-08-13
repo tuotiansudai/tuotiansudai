@@ -2,14 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- enable autowire -->
     <context:annotation-config/>
@@ -57,7 +56,7 @@
 
     <bean id="paySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="payBoneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.request,com.tuotiansudai.paywrapper.repository.model.response"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.paywrapper.repository.model.sync.request,com.tuotiansudai.paywrapper.repository.model.sync.response,com.tuotiansudai.paywrapper.repository.model.async.request,com.tuotiansudai.paywrapper.repository.model.async.callback"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

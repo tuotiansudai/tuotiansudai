@@ -1,17 +1,17 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-import com.tuotiansudai.paywrapper.repository.model.request.BaseRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.request.RequestStatus;
-import com.tuotiansudai.paywrapper.repository.model.response.BaseResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import org.apache.ibatis.annotations.Param;
 
 public interface BaseMapper {
 
-    BaseRequestModel findRequestById(Long id);
+    BaseSyncRequestModel findRequestById(Long id);
 
-    void createRequest(BaseRequestModel model);
+    void createRequest(BaseSyncRequestModel model);
 
     void updateRequestStatus(@Param(value = "id") Long id, @Param(value = "status") RequestStatus status);
 
-    void createResponse(BaseResponseModel model);
+    void createResponse(BaseSyncResponseModel model);
 }

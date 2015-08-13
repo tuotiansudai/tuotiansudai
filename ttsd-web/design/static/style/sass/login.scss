@@ -3,7 +3,7 @@
   width: 1000px;
   height: 358px;
   margin: 60px auto 0px;
-  background: url("../../images/login/login-background.jpg") no-repeat left;
+  background: url("../../../images/login/login-background.jpg") no-repeat left;
   & div {
     margin-left: 670px;
     width: 328px;
@@ -25,7 +25,7 @@
       height: 30px;
       display: block;
       padding-left: 30px;
-      margin: 17px 0px;
+      margin: 5px 0px;
       & input {
         border: #dadada 1px solid;
         width: 188px;
@@ -33,17 +33,27 @@
         padding-left: 10px;
         margin-left: 4px;
       }
-      & input.yzm{ width: 95px; float: left; }
-      & .img-yzm{ width: 80px;
-        float: left; overflow: hidden; height: 28px;
-       border: 1px solid #ccc; margin-left: 10px;}
+      & input.yzm {
+        width: 95px;
+        float: left;
+      }
+      & .img-yzm {
+        width: 80px;
+        float: left;
+        overflow: hidden;
+        height: 28px;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+      }
       & .name {
         width: 60px;
         text-align: left;
         line-height: 30px;
         float: left;
       }
-      & .name i{ padding: 0 8px;}
+      & .name i {
+        padding: 0 8px;
+      }
     }
     & p {
       width: 238px;
@@ -70,7 +80,7 @@
       line-height: 37px;
       padding-left: 30px;
       clear: both;
-      margin: 26px 0px 30px 0px;
+      margin: 15px 0px 15px 0px;
       a.login-now {
         width: 184px;
         height: 37px;
@@ -83,6 +93,9 @@
         display: block;
         float: left;
       }
+      a.login-now.grey{
+        background: #ccc;
+      }
       & a.reg {
         color: #e64d0a;
         font-size: 12px;
@@ -94,12 +107,27 @@
       width: 288px;
       color: #797979;
       font-size: 14px;
-      background: url("../../images/login/login-lock.png") no-repeat 0px;
+      background: url("../../../images/login/login-lock.png") no-repeat 0px;
       padding-left: 20px;
       font-weight: normal;
     }
   }
-
+  & div.error {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    margin: 0;
+    width: 200px;
+    color: #cc0000;
+    padding-left: 118px;
+    border: none;
+  }
+  & div.right {
+    background: url("../../images/login/ok.png") 95px center no-repeat;
+  }
+  & div.wrong {
+    background: url("../../images/login/error.png") 95px center no-repeat;
+  }
 }
 
 /*************login***************/
