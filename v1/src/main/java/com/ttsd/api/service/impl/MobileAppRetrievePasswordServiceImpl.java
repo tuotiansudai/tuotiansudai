@@ -7,7 +7,7 @@ import com.esoft.archer.user.service.UserService;
 import com.esoft.core.annotations.Logger;
 import com.google.common.base.Strings;
 import com.ttsd.api.dto.*;
-import com.ttsd.api.service.RetrievePasswordService;
+import com.ttsd.api.service.MobileAppRetrievePasswordService;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 /**
  * Created by tuotian on 15/7/29.
  */
-@Service(value = "RetrievePasswordServiceImpl")
-public class RetrievePasswordServiceImpl implements RetrievePasswordService {
+@Service(value = "mobileAppRetrievePasswordServiceImpl")
+public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePasswordService {
 
     @Logger
     private Log log;
