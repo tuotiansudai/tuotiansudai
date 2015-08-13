@@ -38,6 +38,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -194,8 +195,13 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
 			bankCardResponseDto.setUrl(reqData.getUrl());
-			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField()));
+			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
 			baseResponseDto.setData(bankCardResponseDto);
+			return baseResponseDto;
+		} catch (UnsupportedEncodingException e){
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
 			return baseResponseDto;
 		} catch (ReqDataException e) {
 			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());

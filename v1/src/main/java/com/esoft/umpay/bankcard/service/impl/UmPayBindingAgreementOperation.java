@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -142,8 +143,12 @@ public class UmPayBindingAgreementOperation extends
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
             bankCardResponseDto.setUrl(reqData.getUrl());
-            bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField()));
+            bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
             baseResponseDto.setData(bankCardResponseDto);
+        } catch (UnsupportedEncodingException e){
+            log.error(e.getLocalizedMessage(),e);
+            baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+            baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         } catch (ReqDataException e) {
             log.error(e.getLocalizedMessage(),e);
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());

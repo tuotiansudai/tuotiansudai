@@ -1,6 +1,8 @@
 package com.ttsd.api.util;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +32,7 @@ public class CommonUtils {
         return "" + money;
     }
 
-    public static String mapToFormData(Map<String,String> map){
+    public static String mapToFormData(Map<String,String> map,boolean isURLEncoder) throws UnsupportedEncodingException {
         String formData = "";
         if (map != null && map.size()>0){
             Set<String> set = map.keySet();
@@ -40,10 +42,12 @@ public class CommonUtils {
                 String mapKey = (String) iterator.next();
                 String mapValue = map.get(mapKey);
                 stringBuffer.append(mapKey + "=" + mapValue + "&");
-                iterator.next();
             }
             formData = stringBuffer.toString();
-            formData.substring(0,formData.length()-1);
+            formData = formData.substring(0,formData.length()-1);
+            if (isURLEncoder){
+                formData = URLEncoder.encode(formData,"UTF-8");
+            }
         }
         return formData;
     }
