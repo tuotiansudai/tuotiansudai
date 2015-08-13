@@ -1,6 +1,14 @@
 package com.ttsd.api.util;
 
 
+import com.google.common.base.Joiner;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 public class CommonUtils {
 
     public static String encryptUserName(String userName) {
@@ -24,5 +32,16 @@ public class CommonUtils {
             return "-" + money;
         }
         return "" + money;
+    }
+
+    public static String mapToFormData(Map<String,String> map,boolean isURLEncoder) throws UnsupportedEncodingException {
+        String formData = "";
+        if (map != null && map.size()>0){
+            formData = Joiner.on("&").withKeyValueSeparator("=").join(map);
+            if (isURLEncoder){
+                formData = URLEncoder.encode(formData,"UTF-8");
+            }
+        }
+        return formData;
     }
 }

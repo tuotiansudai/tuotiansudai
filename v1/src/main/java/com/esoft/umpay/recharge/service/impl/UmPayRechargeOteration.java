@@ -22,6 +22,7 @@ import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -37,6 +38,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -192,10 +194,14 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-			Map<String,String> paramMap = reqData.getField();
-			paramMap.put("requestURL", reqData.getUrl());
-			bankCardResponseDto.setRequestData(paramMap);
+			bankCardResponseDto.setUrl(reqData.getUrl());
+			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
 			baseResponseDto.setData(bankCardResponseDto);
+			return baseResponseDto;
+		} catch (UnsupportedEncodingException e){
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
 			return baseResponseDto;
 		} catch (ReqDataException e) {
 			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
