@@ -124,13 +124,13 @@ public class RegisterController extends BaseController {
     public void registerCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
+        HttpSession session = request.getSession(true);
         Captcha.Builder captchaBuilder = new Captcha.Builder(captchaWidth, captchaHeight);
         DefaultWordRenderer wordRenderer = new DefaultWordRenderer(Lists.newArrayList(Color.BLACK), Lists.newArrayList(new Font("Geneva", Font.BOLD, 24)));
         CurvedLineNoiseProducer noiseProducer = new CurvedLineNoiseProducer(Color.BLACK, 1.0f);
         Captcha captcha = captchaBuilder.addText(wordRenderer).addNoise(noiseProducer).addBackground(new GradiatedBackgroundProducer()).build();
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        HttpSession session = request.getSession(true);
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
     }
 
