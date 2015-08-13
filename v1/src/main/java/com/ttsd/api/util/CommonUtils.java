@@ -1,6 +1,10 @@
 package com.ttsd.api.util;
 
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 public class CommonUtils {
 
     public static String encryptUserName(String userName) {
@@ -24,5 +28,23 @@ public class CommonUtils {
             return "-" + money;
         }
         return "" + money;
+    }
+
+    public static String mapToFormData(Map<String,String> map){
+        String formData = "";
+        if (map != null && map.size()>0){
+            Set<String> set = map.keySet();
+            Iterator iterator = set.iterator();
+            StringBuffer stringBuffer = new StringBuffer();
+            while (iterator.hasNext()){
+                String mapKey = (String) iterator.next();
+                String mapValue = map.get(mapKey);
+                stringBuffer.append(mapKey + "=" + mapValue + "&");
+                iterator.next();
+            }
+            formData = stringBuffer.toString();
+            formData.substring(0,formData.length()-1);
+        }
+        return formData;
     }
 }

@@ -16,6 +16,7 @@ import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -140,9 +141,8 @@ public class UmPayBindingAgreementOperation extends
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
-            Map<String,String> paramMap = reqData.getField();
-            paramMap.put("requestURL", reqData.getUrl());
-            bankCardResponseDto.setRequestData(paramMap);
+            bankCardResponseDto.setUrl(reqData.getUrl());
+            bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField()));
             baseResponseDto.setData(bankCardResponseDto);
         } catch (ReqDataException e) {
             log.error(e.getLocalizedMessage(),e);
