@@ -68,8 +68,11 @@ public enum ReturnMessage {
     /******签约失败******/
 
     /******手机端请求第三方接口时，出现网络异常******/
-    NETWORK_EXCEPTION("0028","网络异常");
+    NETWORK_EXCEPTION("0028","网络异常"),
     /******手机端请求第三方接口时，出现网络异常******/
+
+    /******文章管理******/
+    NODE_ID_IS_NOT_EXIST("0041","内容不存在");
 
     private String code;
     private String msg;
