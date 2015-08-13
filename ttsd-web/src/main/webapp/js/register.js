@@ -3,25 +3,6 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
     var registerUserForm = $("#register-user-form");
     var registerAccountForm = $("#register-account-form");
 
-    //$('.register .fetch-captcha').click(function () {
-    //    var validate = registerUserForm.validate();
-    //    var isMobileValid = validate.check('.register .mobile');
-    //    if (isMobileValid) {
-    //        var mobile = $('.register .mobile').val();
-    //        $.ajax({
-    //            url: '/register/mobile/' + mobile + '/sendregistercaptcha',
-    //            type: 'get',
-    //            dataType: 'json',
-    //            contentType: 'application/json; charset=UTF-8',
-    //            success: function (response) {
-    //                console.log(response);
-    //            }
-    //        });
-    //    } else {
-    //        validate.showErrors();
-    //    }
-    //});
-
     $(function(){
         $('.fetch-captcha').on('click',function(){
             var clientH=$(window).height();
@@ -57,7 +38,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
         // 刷新验证码
         var refreshCaptcha = function() {
             var captcha = $('.verification-code-img');
-            captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
+            captcha.attr('src', '/register/photo/captcha?' + new Date().toTimeString());
         };
         $('.verification-code-img').click(function(){
             refreshCaptcha();

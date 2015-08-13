@@ -134,8 +134,7 @@ public class RegisterController extends BaseController {
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
     }
 
-    @RequestMapping(value = "/photo/captcha/{captcha}/verify", method = RequestMethod.GET,
-            consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/photo/captcha/{captcha}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto photoCaptchaVerify(@PathVariable String captcha) {
         boolean result = this.captchaVerifier.registerPhotoCaptchaVerify(captcha);
