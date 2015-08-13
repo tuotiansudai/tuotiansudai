@@ -8,5 +8,5 @@ public interface MobileAppInvestRepayListDao {
 
     Integer getUserInvestRepayTotalCount(String userId, String[] status);
 
-    List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status);
+    List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, boolean isOrderByTimeAsc);
 }

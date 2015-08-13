@@ -17,18 +17,18 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
 
     @Override
     public Integer getUserInvestRepayTotalCount(String userId, String[] status) {
-        String hql = buildInvestRepayQueryHql(status, true);
+        String hql = buildInvestRepayQueryCountHql(status);
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(hql);
         sqlQuery.setParameter(0, userId);
         return ((Number) sqlQuery.uniqueResult()).intValue();
     }
 
     @Override
-    public List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status) {
-        String hql = buildInvestRepayQueryHql(status, false);
+    public List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, boolean isOrderByTimeAsc) {
+        String hql = buildInvestRepayQueryListHql(status, isOrderByTimeAsc);
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(hql);
         sqlQuery.addEntity(InvestRepay.class);
-        sqlQuery.setFirstResult((index-1)*pageSize);
+        sqlQuery.setFirstResult((index - 1) * pageSize);
         sqlQuery.setMaxResults(pageSize);
         sqlQuery.setParameter(0, userId);
         List<InvestRepay> investRepayList = sqlQuery.list();
@@ -36,11 +36,19 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
     }
 
 
-    private String buildInvestRepayQueryHql(String[] status, boolean forCount) {
+    private String buildInvestRepayQueryCountHql(String[] status) {
+        return buildInvestRepayQueryHql(status, true, false);
+    }
+
+    private String buildInvestRepayQueryListHql(String[] status, boolean isOrderByTimeAsc) {
+        return buildInvestRepayQueryHql(status, false, isOrderByTimeAsc);
+    }
+
+    private String buildInvestRepayQueryHql(String[] status, boolean forCount, boolean isOrderByTimeAsc) {
         StringBuffer sb = new StringBuffer("select ");
-        if(forCount){
+        if (forCount) {
             sb.append(" count(*) ");
-        }else {
+        } else {
             sb.append(" r.* ");
         }
         sb.append(" from invest_repay r");
@@ -50,7 +58,14 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
             if (status.length == 1) {
                 sb.append(" and r.status = '" + status[0] + "' ");
             } else {
-                sb.append(" and r.status in ('" + StringUtils.join(status, "','") + "')");
+                sb.append(" and r.status in ('" + StringUtils.join(status, "','") + "') ");
+            }
+        }
+        if (!forCount) {
+            if (isOrderByTimeAsc) {
+                sb.append(" order by time asc ");
+            } else {
+                sb.append(" order by time desc ");
             }
         }
         return sb.toString();
