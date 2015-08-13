@@ -55,6 +55,12 @@ public class NumberValidator extends ValueChangeValidator implements
 						"numberValidator cardinalNumber is zero!",
 						Components.getLabel(component)));
 			}
+            int decimalBit_1 = getDecimalBit(number);
+            int decimalBit_2 = getDecimalBit(cardinalNumber);
+            int decimaiBit = decimalBit_1 > decimalBit_2 ? decimalBit_1 : decimalBit_2;
+            double mutiple = Math.pow(10,decimaiBit);
+            number = number * mutiple;
+            cardinalNumber = cardinalNumber * mutiple;
 			if (number % cardinalNumber != 0) {
 				// 验证未通过
 				// TODO:国际化
@@ -65,9 +71,18 @@ public class NumberValidator extends ValueChangeValidator implements
 		}
 	}
 
+    public int getDecimalBit(double target) {
+        String targetStr = target + "";
+        int decimalPosition = targetStr.indexOf(".");
+        if (decimalPosition > 0) {
+            int decimalBit = targetStr.substring(decimalPosition+1).length();
+            return decimalBit;
+        }
+        return 0;
+    }
 	/**
 	 * 检查小数位数
-	 * 
+	 *
 	 * @param number
 	 */
 	private void checkPrecision(FacesContext context, UIComponent component,
@@ -85,19 +100,19 @@ public class NumberValidator extends ValueChangeValidator implements
 					throw new ValidatorException(
 							MessageFactory
 									.getMessage(
-											context,
-											"com.esoft.core.validator.NumberValidator.NOT_A_INTEGER",
-											MessageFactory.getLabel(context,
-													component), precision));
+                                            context,
+                                            "com.esoft.core.validator.NumberValidator.NOT_A_INTEGER",
+                                            MessageFactory.getLabel(context,
+                                                    component), precision));
 				}
 			} else if (ns.length == 2 && ns[1].length() > precision) {
 				throw new ValidatorException(
 						MessageFactory
 								.getMessage(
-										context,
-										"com.esoft.core.validator.NumberValidator.ERROR_PRECISION",
-										MessageFactory.getLabel(context,
-												component), precision));
+                                        context,
+                                        "com.esoft.core.validator.NumberValidator.ERROR_PRECISION",
+                                        MessageFactory.getLabel(context,
+                                                component), precision));
 			}
 		}
 	}

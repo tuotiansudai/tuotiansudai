@@ -24,6 +24,7 @@ import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.logging.Log;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,6 +135,9 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		} catch (VerifyException e){
 			e.printStackTrace();
 			throw new TrusteeshipReturnException("验签失败");
+		} catch (DuplicateKeyException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new TrusteeshipReturnException("duplication");
 		}
 	}
 

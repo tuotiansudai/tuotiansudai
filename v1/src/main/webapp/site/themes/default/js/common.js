@@ -128,6 +128,10 @@ function timerCount(xhr, status, args, buttonId) {
 function enableBtn(buttonId){
 	$('#'+buttonId).removeAttr("disabled");
 }
+$(function(){
+	$('.jq_mobile').attr('disabled',true);
+})
+
 
 $(function(){
 	if ($('.isOpenFastPay').val() == '1'){
@@ -162,6 +166,34 @@ $(function(){
 			$('.quickPayment').removeClass('current');
 			$('.isOpenFastPayment').prop("checked", false);
 			$('.zhcz').show();
+		}
+	});
+});
+
+$(function(){
+	$('.referrerList').on('click',function(){
+		if ($(this).hasClass('hover')){
+			return;
+		} else {
+			$(this).addClass('hover');
+			$('.referrerInvest').removeClass('hover');
+			$('.dateOne').show();
+			$('.dateTwo').hide();
+			$('.referrerTable').show();
+			$('.investTable').hide();
+		}
+	});
+
+	$('.referrerInvest').on('click',function(){
+		if ($(this).hasClass('hover')){
+			return;
+		} else {
+			$(this).addClass('hover');
+			$('.referrerList').removeClass('hover');
+			$('.dateTwo').show();
+			$('.dateOne').hide();
+			$('.investTable').show();
+			$('.referrerTable').hide();
 		}
 	});
 });

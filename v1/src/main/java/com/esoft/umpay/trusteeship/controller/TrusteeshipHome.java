@@ -149,7 +149,8 @@ public class TrusteeshipHome {
 					.receiveOperationPostCallback(FacesUtil
 							.getHttpServletRequest());
 			FacesUtil.addInfoMessage("您需要绑定的银行卡信息已经提交至联动优势,请等待审核!");
-			return "pretty:withdraw";
+			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
+			return "pretty:bankCardList";
 		} catch (TrusteeshipReturnException e) {
 			log.debug(e);
 			FacesUtil.addErrorMessage(e.getMessage());
@@ -161,7 +162,8 @@ public class TrusteeshipHome {
 		try {
 			this.umPayReplaceBankCardOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
 			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
-			return "pretty:withdraw";
+			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
+			return "pretty:bankCardList";
 		} catch (TrusteeshipReturnException e) {
 			log.error(e.getLocalizedMessage(), e);
 			FacesUtil.addErrorMessage(e.getMessage());

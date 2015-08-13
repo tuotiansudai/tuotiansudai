@@ -3,34 +3,32 @@ package com.tuotiansudai.repository.model;
 import java.util.Date;
 
 public class SmsCaptchaModel {
-    private Integer id;
+    private Long id;
 
-    private String code;
+    private String captcha;
 
     private String mobile;
 
-    private Date deadLine;
+    private Date expiredTime;
 
-    private Date generationTime;
-
-    private CaptchaStatus status;
+    private Date createdTime;
 
     private CaptchaType captchaType;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getCaptcha() {
+        return captcha;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 
     public String getMobile() {
@@ -41,30 +39,21 @@ public class SmsCaptchaModel {
         this.mobile = mobile;
     }
 
-    public Date getDeadLine() {
-        return deadLine;
+    public Date getExpiredTime() {
+        return expiredTime;
     }
 
-    public void setDeadLine(Date deadLine) {
-        this.deadLine = deadLine;
+    public void setExpiredTime(Date expiredTime) {
+        this.expiredTime = expiredTime;
     }
 
-    public Date getGenerationTime() {
-        return generationTime;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setGenerationTime(Date generationTime) {
-        this.generationTime = generationTime;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
-
-    public CaptchaStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CaptchaStatus status) {
-        this.status = status;
-    }
-
 
     public CaptchaType getCaptchaType() {
         return captchaType;

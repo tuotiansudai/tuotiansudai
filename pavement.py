@@ -1,5 +1,6 @@
 import os
-from paver.tasks import task, needs
+
+from paver.tasks import task, needs, cmdopts
 
 
 @task
@@ -55,6 +56,21 @@ def stop():
     sh('pkill python')
 
 
+def copy_files_into_product_config(port):
+    if port:
+        import os
+        import shutil
+
+        src = '/workspace/docker_config_{0}'.format(port)
+        if os.path.isdir(src):
+            src_files = os.listdir(src)
+            for file_name in src_files:
+                full_file_name = os.path.join(src, file_name)
+                if (os.path.isfile(full_file_name)):
+                    dest = '/workspace/production_config/{0}'.format(file_name)
+                    shutil.copy(full_file_name, dest)
+
+
 @task
 def mkwar():
     run_shell_under_v1('/opt/gradle/latest/bin/gradle clean')
@@ -80,6 +96,48 @@ def migrate():
     run_shell_under_v1('/opt/gradle/latest/bin/gradle flywayMigrate')
 
 
+def remove_old_container(name):
+    from docker import Client
+
+    client = Client(base_url='unix://var/run/docker.sock', version="1.17")
+    try:
+        client.stop(name)
+        client.remove_container(name)
+    except Exception:
+        pass
+
+
+def start_new_container(name, local_port):
+    from docker import Client, utils
+
+    client = Client(base_url='unix://var/run/docker.sock', version="1.17")
+    war_dir = get_v1_war_dir()
+    print "local war dir: {0}".format(war_dir)
+    host_config = utils.create_host_config(port_bindings={8080: local_port}, binds=['{0}:/webapps'.format(war_dir)])
+    container = client.create_container(image='leoshi/ttsd-tomcat6', ports=[8080], volumes=['/webapps'],
+                                        host_config=host_config, name=name)
+    print "Container id:{0}".format(container['Id'])
+    client.start(container)
+
+
+@task
+@needs('migrate')
+@cmdopts([
+    ('port=', 'p', 'Local port which is mapped to containers 8080')
+])
+def deploy_to_docker(options):
+    """
+    Deploy web apps to Tomcat6 container, NEED sudo run!
+    Usage:
+        sudo paver deploy_to_docker.port=30001 deploy_to_docker
+    """
+    copy_files_into_product_config(options.port)
+    mkwar()
+    name = "ttsd-{0}".format(options.port)
+    remove_old_container(name)
+    start_new_container(name, options.port)
+
+
 @task
 @needs('mkwar', 'deploy_tomcat')
 def deploy():
@@ -95,6 +153,42 @@ def devdeploy():
     """
 
 
+def generate_git_log_file():
+    from paver.shell import sh
+
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
+    sh('/usr/bin/git ls-tree -r HEAD ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
+
+
+def versioning_min_files(path):
+    import glob
+    import itertools
+    import shutil
+
+    target_files = glob.glob(path)
+    log_file = open('git_version.log', 'rb')
+    for line in log_file:
+        columns = line.strip().split()
+        original_file_path, file_version = columns[-1], columns[0]
+        if original_file_path in target_files:
+            full_path_parts = original_file_path.split('/')
+            name_parts = full_path_parts[-1].split('.')
+            new_name_parts = itertools.chain([name_parts[0], file_version[:8]], name_parts[1:])
+            new_name = '.'.join(new_name_parts)
+            new_file_full_path = os.path.join('/'.join(full_path_parts[:-1]), new_name)
+            shutil.copyfile(original_file_path, new_file_full_path)
+
+
+@task
+def jcversion():
+    """
+    Versioning all min js/css files based on git version
+    """
+    generate_git_log_file()
+    versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
+    versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
+
+
 def run_shell_under_v1(command):
     from paver.shell import sh
 
@@ -103,6 +197,11 @@ def run_shell_under_v1(command):
 
 def get_current_dir():
     return os.path.dirname(os.path.realpath(__file__))
+
+
+def get_v1_war_dir():
+    current_dir = get_current_dir()
+    return os.path.join(current_dir, 'v1', 'war')
 
 
 def get_base_dir():

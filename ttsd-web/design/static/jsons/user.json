@@ -1,6 +1,8 @@
 {
-    "status": "success",
+    "status": true,
+    "msg":"请输入有效用户名",
     "data": {
-        "exist": true
+        "user": "belen"
     }
+
 }

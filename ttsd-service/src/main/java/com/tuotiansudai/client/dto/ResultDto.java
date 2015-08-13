@@ -1,7 +1,8 @@
 package com.tuotiansudai.client.dto;
 
 public class ResultDto {
-    private boolean success;
+
+    private boolean success = true;
 
     private ResultDataDto data;
 

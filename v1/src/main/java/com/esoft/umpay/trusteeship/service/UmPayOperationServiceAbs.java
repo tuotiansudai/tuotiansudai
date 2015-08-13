@@ -1,23 +1,6 @@
 package com.esoft.umpay.trusteeship.service;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.GsonUtil;
-import com.esoft.core.util.HtmlElementUtil;
-import com.esoft.core.util.IdGenerator;
+import com.esoft.core.util.*;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipAccount;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
@@ -25,6 +8,16 @@ import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
 import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationServiceAbs;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class UmPayOperationServiceAbs<T> extends
 		TrusteeshipOperationServiceAbs<T> {
@@ -125,7 +118,7 @@ public abstract class UmPayOperationServiceAbs<T> extends
 		TrusteeshipAccount ta = null;
 		List<TrusteeshipAccount> taList = ht.find(
 				"from TrusteeshipAccount t where t.user.id=?",
-				new String[] { userId });
+				new String[] { userId.trim() });
 		if (null != taList && taList.size() > 0) {
 			ta = taList.get(0);
 		}

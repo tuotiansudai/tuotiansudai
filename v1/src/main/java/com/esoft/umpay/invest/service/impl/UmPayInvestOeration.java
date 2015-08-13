@@ -1,22 +1,5 @@
 package com.esoft.umpay.invest.service.impl;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
 import com.esoft.archer.user.model.User;
@@ -52,6 +35,22 @@ import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -182,7 +181,10 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest>{
 			throw new UmPayOperationException("余额不足!");
 		} catch (NoMatchingObjectsException e) {
 			log.error(e.getLocalizedMessage(), e);
-		} 
+		} catch (DuplicateKeyException e) {
+			log.error(e.getLocalizedMessage(),e);
+			throw new TrusteeshipReturnException("duplication");
+		}
 	}
 	
 	/**

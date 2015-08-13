@@ -263,7 +263,7 @@
 					<h:outputLabel value="投资递增金额"></h:outputLabel>
 					<h:inputText required="true" label="投资递增金额"
 						value="#{loanHome.instance.cardinalNumber}">
-						<f:validateDoubleRange minimum="1"></f:validateDoubleRange>
+						<f:validateDoubleRange minimum="0.01"></f:validateDoubleRange>
 					</h:inputText>
 					
 					<h:outputLabel value="单笔最大投资金额（元）"></h:outputLabel>

@@ -36,6 +36,7 @@ public class UserBill implements java.io.Serializable {
 	 * 冻结金额
 	 */
 	private Double frozenMoney;
+	private String operator;
 
 	public UserBill() {
 	}
@@ -133,4 +134,12 @@ public class UserBill implements java.io.Serializable {
 		this.seqNum = seqNum;
 	}
 
+	@Column(name = "operator")
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
 }

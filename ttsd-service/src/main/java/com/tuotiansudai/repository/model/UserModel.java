@@ -13,25 +13,21 @@ public class UserModel {
 
     private String email;
 
-    private String address;
+    private String mobile;
 
-    private String mobileNumber;
+    private Date registerTime = new Date();
 
     private Date lastLoginTime;
-
-    private Date registerTime;
 
     private Date lastModifiedTime;
 
     private Long lastModifiedUser;
 
-    private Date forbiddenTime;
-
     private String avatar;
 
-    private Long referrerId;
+    private String referrer;
 
-    private UserStatus status;
+    private UserStatus status = UserStatus.ACTIVE;
 
     private String salt;
 
@@ -75,20 +71,12 @@ public class UserModel {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Date getLastLoginTime() {
@@ -123,14 +111,6 @@ public class UserModel {
         this.lastModifiedUser = lastModifiedUser;
     }
 
-    public Date getForbiddenTime() {
-        return forbiddenTime;
-    }
-
-    public void setForbiddenTime(Date forbiddenTime) {
-        this.forbiddenTime = forbiddenTime;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -139,12 +119,12 @@ public class UserModel {
         this.avatar = avatar;
     }
 
-    public Long getReferrerId() {
-        return referrerId;
+    public String getReferrer() {
+        return referrer;
     }
 
-    public void setReferrerId(Long referrerId) {
-        this.referrerId = referrerId;
+    public void setReferrer(String referrer) {
+        this.referrer = referrer;
     }
 
     public UserStatus getStatus() {
@@ -153,6 +133,10 @@ public class UserModel {
 
     public void setStatus(UserStatus status) {
         this.status = status;
+    }
+
+    public boolean isActive() {
+        return this.status == UserStatus.ACTIVE;
     }
 
     @Override

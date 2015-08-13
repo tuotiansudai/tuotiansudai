@@ -35,15 +35,12 @@ import com.esoft.jdp2p.message.service.MailService;
 @Scope(ScopeType.VIEW)
 public class UserList extends EntityQuery<User> {
 
-	private static final String COUNT_HQL = "select count(distinct user) from User user left join user.roles role";
-	private static final String HQL = "select distinct user from User user left join user.roles role";
-
 	private static StringManager sm = StringManager
 			.getManager(UserConstants.Package);
 
 	@Logger
 	private static Log log;
-	
+
 	@Resource
 	MailService mailService;
 
@@ -56,8 +53,6 @@ public class UserList extends EntityQuery<User> {
 	private Date registerTimeEnd;
 
 	public UserList() {
-		setCountHql(COUNT_HQL);
-		setHql(HQL);
 		final String[] RESTRICTIONS = { "user.id like #{userList.example.id}",
 				"user.username like #{userList.example.username}",
 				"user.mobileNumber like #{userList.example.mobileNumber}",
@@ -66,7 +61,8 @@ public class UserList extends EntityQuery<User> {
 				"user.referrer like #{userList.example.referrer}",
 				"user.registerTime >= #{userList.registerTimeStart}",
 				"user.registerTime <= #{userList.registerTimeEnd}",
-				"user in elements(role.users) and role.id = #{userList.example.roles[0].id}" };
+				"#{userList.example.roles[0].id} in elements(user.roles)"
+		};
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
 
