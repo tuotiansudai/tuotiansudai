@@ -24,8 +24,8 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
     }
 
     @Override
-    public List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, boolean isOrderByTimeAsc) {
-        String hql = buildInvestRepayQueryListHql(status, isOrderByTimeAsc);
+    public List<InvestRepay> getUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, String orderBy) {
+        String hql = buildInvestRepayQueryListHql(status, orderBy);
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(hql);
         sqlQuery.addEntity(InvestRepay.class);
         sqlQuery.setFirstResult((index - 1) * pageSize);
@@ -37,14 +37,14 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
 
 
     private String buildInvestRepayQueryCountHql(String[] status) {
-        return buildInvestRepayQueryHql(status, true, false);
+        return buildInvestRepayQueryHql(status, true, null);
     }
 
-    private String buildInvestRepayQueryListHql(String[] status, boolean isOrderByTimeAsc) {
-        return buildInvestRepayQueryHql(status, false, isOrderByTimeAsc);
+    private String buildInvestRepayQueryListHql(String[] status, String orderBy) {
+        return buildInvestRepayQueryHql(status, false, orderBy);
     }
 
-    private String buildInvestRepayQueryHql(String[] status, boolean forCount, boolean isOrderByTimeAsc) {
+    private String buildInvestRepayQueryHql(String[] status, boolean forCount, String orderBy) {
         StringBuffer sb = new StringBuffer("select ");
         if (forCount) {
             sb.append(" count(*) ");
@@ -62,11 +62,7 @@ public class MobileAppInvestRepayListDaoImpl implements MobileAppInvestRepayList
             }
         }
         if (!forCount) {
-            if (isOrderByTimeAsc) {
-                sb.append(" order by time asc ");
-            } else {
-                sb.append(" order by time desc ");
-            }
+            sb.append(" order by r." + orderBy.trim());
         }
         return sb.toString();
     }

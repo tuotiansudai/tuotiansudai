@@ -26,19 +26,19 @@ public class MobileAppInvestRepayListServiceImpl implements MobileAppInvestRepay
         Integer pageSize = requestDto.getPageSize();
         String requestStatus = requestDto.getStatus();
         String[] status = null;
-        boolean isOrderByTimeAsc = false;
+        String orderBy = null;
         if (QueryInvestRepayStatus_UnPaid.equalsIgnoreCase(requestStatus)) {
             status = new String[]{LoanConstants.RepayStatus.OVERDUE, LoanConstants.RepayStatus.REPAYING, LoanConstants.RepayStatus.WAIT_REPAY_VERIFY};
-            isOrderByTimeAsc = true;
+            orderBy = "repay_day asc";
         } else if (QueryInvestRepayStatus_Paid.equalsIgnoreCase(requestStatus)) {
             status = new String[]{LoanConstants.RepayStatus.COMPLETE};
-            isOrderByTimeAsc = false;
+            orderBy = "time desc";
         }
-        return generateUserInvestRepayList(index, pageSize, userId, status, isOrderByTimeAsc);
+        return generateUserInvestRepayList(index, pageSize, userId, status, orderBy);
     }
 
-    private BaseResponseDto generateUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, boolean isOrderByTimeAsc) {
-        List<InvestRepay> repayList = mobileAppInvestRepayListDao.getUserInvestRepayList(index, pageSize, userId, status, isOrderByTimeAsc);
+    private BaseResponseDto generateUserInvestRepayList(Integer index, Integer pageSize, String userId, String[] status, String orderBy) {
+        List<InvestRepay> repayList = mobileAppInvestRepayListDao.getUserInvestRepayList(index, pageSize, userId, status, orderBy);
         int repayTotalCount = mobileAppInvestRepayListDao.getUserInvestRepayTotalCount(userId, status);
 
         // build InvestList

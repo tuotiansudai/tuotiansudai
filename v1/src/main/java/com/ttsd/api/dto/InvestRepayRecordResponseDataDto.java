@@ -58,7 +58,9 @@ public class InvestRepayRecordResponseDataDto{
         this.investMoney = invest.getInvestMoney();
         this.investTime = sdf.format(invest.getTime()).toString();
         this.repayDay = sdf.format(investRepay.getRepayDay()).toString();
-        this.time = sdf.format(investRepay.getTime()).toString();
+        if(investRepay.getTime()!=null) {
+            this.time = sdf.format(investRepay.getTime()).toString();
+        }
         this.corpus = investRepay.getCorpus();
         this.interest = investRepay.getInterest();
     }
