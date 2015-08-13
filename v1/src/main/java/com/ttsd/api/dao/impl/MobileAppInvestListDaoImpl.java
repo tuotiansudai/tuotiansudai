@@ -79,8 +79,11 @@ public class MobileAppInvestListDaoImpl implements MobileAppInvestListDao {
             if (status.length == 1) {
                 sb.append(" and invest.status = '" + status[0] + "' ");
             } else {
-                sb.append(" and invest.status in ('" + StringUtils.join(status, "','") + "')");
+                sb.append(" and invest.status in ('" + StringUtils.join(status, "','") + "') ");
             }
+        }
+        if(!forCount){
+            sb.append(" order by invest.time desc");
         }
         return sb.toString();
     }
