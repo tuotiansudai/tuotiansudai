@@ -27,8 +27,15 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="accessDeniedUrl" value="/error/403.htm" />
 	</beans:bean>
 
+	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
+		<beans:property name="loginUrl" value="/login" />
+		<beans:property name="appRequestUrlPrefix" value="/v1.0/" />
+	</beans:bean>
+
 	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"
 		access-decision-manager-ref="accessDecisionManager">
+		<custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
+
 <!-- 		是按照顺序加载和过滤么？ 结论：最后一个优先 -->
 		<intercept-url pattern="/re_active" access="hasRole('INACTIVE')" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN') and not hasRole('INACTIVE')" />
@@ -77,6 +84,16 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/mobile/register/mobilePhoneNumValidation" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/vCodeValidation" access="not hasRole('USER')" />
 
+
+		<intercept-url pattern="/v1.0/register/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword" filters="none" />
+		<intercept-url pattern="/v1.0/validatecaptcha" filters="none" />
+		<intercept-url pattern="/v1.0/get/invests" filters="none" />
+		<intercept-url pattern="/v1.0/get/loans" filters="none" />
+		<intercept-url pattern="/v1.0/get/loan" filters="none" />
+		<intercept-url pattern="/v1.0/register" filters="none" />
+		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />
 		<intercept-url pattern="/**" access="URL_MAPPING_PERMISSION" />
@@ -151,7 +168,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 			ref="failureHandler" />
 		<beans:property name="authenticationSuccessHandler"
 			ref="successHandler" />
-		<beans:property name="filterProcessesUrl" value="/memberLogin" />
+		<beans:property name="filterProcessesUrl" value="/login" />
 	</beans:bean>
 
 	<beans:bean id="failureHandler"
@@ -163,9 +180,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	</beans:bean>
 
 	<beans:bean id="successHandler"
-		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-		<!-- <beans:property name="useReferer" value="true" /> -->
-		<!-- <beans:property name="alwaysUseDefaultTargetUrl" value="false" /> -->
+		class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/" />
 	</beans:bean>
 

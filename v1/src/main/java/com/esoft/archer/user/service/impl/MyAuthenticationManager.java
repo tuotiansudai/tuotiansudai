@@ -68,39 +68,10 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	}
 
 	/**
-	 * 解密
-	 * 
-	 * @param authentication
-	 * @param userDetails
-	 * @return
-	 */
-	private Authentication decryptBase64(Authentication authentication) {
-		String en = request.getParameter("encrypt");
-		if (en != null && en.equals("encrypt")) {
-			try {
-				String username = new String(
-						Base64Coder.decryptBase64((String) authentication
-								.getPrincipal()));
-				String pass = new String(
-						Base64Coder.decryptBase64((String) authentication
-								.getCredentials()));
-				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-						username, pass, authentication.getAuthorities());
-				return token;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return authentication;
-	}
-
-	/**
 	 * 验证用户名
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		authentication = this.decryptBase64(authentication);
 		// 是否需要验证码
 		Boolean needValidateCode = (Boolean) request.getSession(true).getAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE);
 
@@ -156,6 +127,7 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		try {
 			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
 			userService.changeUserStatus(user.getId(), UserConstants.UserStatus.ENABLE);
+
 		} catch (UserNotFoundException e) {
 			logger.error(e);
 			return;
@@ -201,7 +173,7 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
 		userService.save(user);
 
-		if (loginFailLimit <= loginFailTime) {
+		if (loginFailLimit <= loginFailTime && "web".equalsIgnoreCase(request.getParameter("source"))) {
 			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, true);
 		}
 

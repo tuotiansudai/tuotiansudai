@@ -734,7 +734,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     @Deprecated
     public void sendRegisterAuthCodeToMobile(String mobileNumber) {
-        userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         FacesUtil.addInfoMessage("短信已发送，请注意查收！");
     }
 
@@ -745,7 +745,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      * @param jsCode       成功后执行的js代码
      */
     public void sendRegisterAuthCodeToMobile(String mobileNumber, String jsCode) {
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
             RequestContext.getCurrentInstance().execute(jsCode);
@@ -768,7 +768,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
             RequestContext.getCurrentInstance().execute(jsCode);
         } else {
@@ -786,7 +786,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
 
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
@@ -911,7 +911,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     public String sendAuthCodeToMobile(String mobileNumber) {
         String hql = "from User u where u.mobileNumber = ?";
         if (0 != getBaseService().find(hql, mobileNumber).size()) {
-            userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+            userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
             RequestContext.getCurrentInstance().addCallbackParam("sendSuccess",
                     true);
             FacesUtil.setSessionAttribute("mobileNumber", mobileNumber);
