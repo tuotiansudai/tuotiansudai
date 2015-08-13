@@ -16,4 +16,13 @@ public class CommonUtils {
         }
         return userName;
     }
+
+    public static String convertRealMoneyByType(double money, String type) {
+        if ("ti_balance".equals(type)){
+            return "+" + money;
+        }else if("to_balance".equals(type) || "to_frozen".equals(type) ) {
+            return "-" + money;
+        }
+        return "" + money;
+    }
 }
