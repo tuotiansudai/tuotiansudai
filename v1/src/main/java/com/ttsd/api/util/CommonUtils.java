@@ -1,6 +1,8 @@
 package com.ttsd.api.util;
 
 
+import com.google.common.base.Joiner;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Iterator;
@@ -35,16 +37,7 @@ public class CommonUtils {
     public static String mapToFormData(Map<String,String> map,boolean isURLEncoder) throws UnsupportedEncodingException {
         String formData = "";
         if (map != null && map.size()>0){
-            Set<String> set = map.keySet();
-            Iterator iterator = set.iterator();
-            StringBuffer stringBuffer = new StringBuffer();
-            while (iterator.hasNext()){
-                String mapKey = (String) iterator.next();
-                String mapValue = map.get(mapKey);
-                stringBuffer.append(mapKey + "=" + mapValue + "&");
-            }
-            formData = stringBuffer.toString();
-            formData = formData.substring(0,formData.length()-1);
+            formData = Joiner.on("&").withKeyValueSeparator("=").join(map);
             if (isURLEncoder){
                 formData = URLEncoder.encode(formData,"UTF-8");
             }
