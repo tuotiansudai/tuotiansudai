@@ -121,8 +121,8 @@
 <div class="verification-code-main">
     <span>手机验证<i class="close">X</i></span>
     <p>
-        <input type="text" class="verification-code-text" placeholder="请输入图形验证码"/>
-        <img src="/register/photo/captcha" alt="" class="verification-code-img"/>
+        <input type="text" class="verification-code-text" maxlength="5" placeholder="请输入图形验证码"/>
+        <img src="/register/captcha" alt="" class="verification-code-img"/>
     </p>
     <b>验证码输入错误</b>
     <button class="complete grey" disabled="disabled">完成</button>

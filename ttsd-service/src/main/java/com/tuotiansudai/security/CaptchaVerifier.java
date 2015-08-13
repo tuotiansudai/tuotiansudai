@@ -35,11 +35,7 @@ public class CaptchaVerifier {
     public boolean registerPhotoCaptchaVerify(String captcha) {
         String jSessionId = this.getJSessionId(httpServletRequest);
         if (redisWrapperClient.exists(jSessionId)) {
-            if (redisWrapperClient.get(jSessionId).equals(captcha)) {
-                return true;
-            } else {
-                return false;
-            }
+            return redisWrapperClient.get(jSessionId).equals(captcha);
         } else {
             return false;
         }

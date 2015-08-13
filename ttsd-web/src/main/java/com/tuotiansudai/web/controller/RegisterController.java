@@ -1,7 +1,6 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
@@ -10,11 +9,9 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.security.CaptchaVerifier;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.CaptchaGenerator;
 import nl.captcha.Captcha;
-import nl.captcha.backgrounds.GradiatedBackgroundProducer;
-import nl.captcha.noise.CurvedLineNoiseProducer;
 import nl.captcha.servlet.CaptchaServletUtil;
-import nl.captcha.text.renderer.DefaultWordRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.awt.*;
 
 @Controller
 @RequestMapping(value = "/register")
@@ -92,7 +88,7 @@ public class RegisterController extends BaseController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/{captcha}/sendregistercaptcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^[a-zA-Z0-9]{5}$}/sendregistercaptcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -120,21 +116,18 @@ public class RegisterController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/photo/captcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/captcha", method = RequestMethod.GET)
     public void registerCaptcha(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(true);
         int captchaWidth = 80;
         int captchaHeight = 30;
-        HttpSession session = request.getSession(true);
-        Captcha.Builder captchaBuilder = new Captcha.Builder(captchaWidth, captchaHeight);
-        DefaultWordRenderer wordRenderer = new DefaultWordRenderer(Lists.newArrayList(Color.BLACK), Lists.newArrayList(new Font("Geneva", Font.BOLD, 24)));
-        CurvedLineNoiseProducer noiseProducer = new CurvedLineNoiseProducer(Color.BLACK, 1.0f);
-        Captcha captcha = captchaBuilder.addText(wordRenderer).addNoise(noiseProducer).addBackground(new GradiatedBackgroundProducer()).build();
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
     }
 
-    @RequestMapping(value = "/photo/captcha/{captcha}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/captcha/{captcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto photoCaptchaVerify(@PathVariable String captcha) {
         boolean result = this.captchaVerifier.registerPhotoCaptchaVerify(captcha);

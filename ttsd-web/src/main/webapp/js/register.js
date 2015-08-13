@@ -36,13 +36,13 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             }
             var count = setInterval(countdown, 1000);
             $('.verification-code,.verification-code-main').hide();
-            $.get('/register/mobile/' + phone + '/' + captcha + '/sendregistercaptcha');
+            $.get('/register/mobile/' + phone + '/captcha/' + captcha + '/sendregistercaptcha');
         });
 
         // 刷新验证码
         var refreshCaptcha = function () {
             var captcha = $('.verification-code-img');
-            captcha.attr('src', '/register/photo/captcha?' + new Date().toTimeString());
+            captcha.attr('src', '/register/captcha?' + new Date().toTimeString());
         };
         $('.verification-code-img').click(function () {
             refreshCaptcha();
@@ -56,7 +56,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 $('.verification-code-main b').css('display', 'inline-block');
             } else {
                 $.ajax({
-                    url: '/register/photo/captcha/' + _value + '/verify',
+                    url: '/register/captcha/' + _value + '/verify',
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'

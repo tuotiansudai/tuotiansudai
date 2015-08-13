@@ -1,15 +1,12 @@
 package com.tuotiansudai.web.controller;
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.security.CaptchaVerifier;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.CaptchaGenerator;
 import nl.captcha.Captcha;
-import nl.captcha.backgrounds.GradiatedBackgroundProducer;
-import nl.captcha.noise.CurvedLineNoiseProducer;
 import nl.captcha.servlet.CaptchaServletUtil;
-import nl.captcha.text.renderer.DefaultWordRenderer;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -45,10 +41,7 @@ public class LoginController {
     public void loginCaptcha(HttpServletRequest request, HttpServletResponse response) {
         int captchaWidth = 80;
         int captchaHeight = 30;
-        Captcha.Builder captchaBuilder = new Captcha.Builder(captchaWidth, captchaHeight);
-        DefaultWordRenderer wordRenderer = new DefaultWordRenderer(Lists.newArrayList(Color.BLACK), Lists.newArrayList(new Font("Geneva", Font.BOLD, 24)));
-        CurvedLineNoiseProducer noiseProducer = new CurvedLineNoiseProducer(Color.BLACK, 1.0f);
-        Captcha captcha = captchaBuilder.addText(wordRenderer).addNoise(noiseProducer).addBackground(new GradiatedBackgroundProducer()).build();
+        Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
         //TODO: Put into redis
