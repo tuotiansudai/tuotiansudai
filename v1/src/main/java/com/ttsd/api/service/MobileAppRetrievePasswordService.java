@@ -7,7 +7,7 @@ import com.ttsd.api.dto.RetrievePasswordRequestDto;
 /**
  * Created by tuotian on 15/7/29.
  */
-public interface RetrievePasswordService {
+public interface MobileAppRetrievePasswordService {
     /**
      * @function 修改密码
      * @param retrievePasswordRequestDto 修改密码参数封装类

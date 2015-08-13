@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by tuotian on 15/7/27.
  */
 @Controller
-public class MobileCertificationController {
+public class MobileAppCertificationController {
 
     @Logger
     Log log;

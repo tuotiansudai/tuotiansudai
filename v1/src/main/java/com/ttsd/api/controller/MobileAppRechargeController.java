@@ -23,7 +23,7 @@ import java.io.IOException;
  * Created by tuotian on 15/8/7.
  */
 @Controller
-public class MobilAppRechargeController {
+public class MobileAppRechargeController {
     @Resource
     private UmPayRechargeOteration umPayRechargeOteration;
 
