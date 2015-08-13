@@ -1,15 +1,21 @@
 package com.ttsd.api.service;
 
 import com.esoft.archer.user.model.User;
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.ttsd.api.dto.*;
 
 public interface MobileAppPersonalInfoService {
-    public BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto);
+    BaseResponseDto getPersonalInfoData(PersonalInfoRequestDto personalInfoRequestDto);
 
-    public PersonalInfoResponseDataDto generatePersonalInfoData(User user);
+    PersonalInfoResponseDataDto generatePersonalInfoData(User user);
 
-    public boolean verifyCertification(String userName);
+    boolean verifyCertification(String userName);
 
-    public boolean isBindedBankCard(String userName);
+    boolean isBindedBankCard(String userName);
+
+    BankCard queryBankCardByUserId(String userId);
+
+    boolean isOpenFastPayment(BankCard bankCard);
+
 
 }
