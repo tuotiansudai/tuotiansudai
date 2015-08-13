@@ -128,16 +128,22 @@
         margin: 0px 4px;
       }
     }
-    & a {
+    & .recharge-qr {
       margin: 40px 0px 0px 162px;
       width: 190px;
       height: 36px;
-      background: #666;
+      background: #cc0000;
       color: #fff;
       display: block;
-      line-height: 36px;
+      line-height: 30px;
       text-align: center;
       border-radius: 3px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    & .recharge-qr.grey {
+      background: #666;
+      color: #fff;
     }
   }
   & div.cash-description {
@@ -325,5 +331,58 @@
         text-decoration: underline;
       }
     }
+  }
+}
+.bind-card {
+  width: 540px;
+  height: 244px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -270px;
+  margin-top: -122px;
+  background: #f2f3f5;
+  z-index: 3;
+  display: none;
+  & span {
+    width: 26px;
+    height: 26px;
+    display: block;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .43);
+    border-radius: 50%;
+    position: absolute;
+    right: -19px;
+    top: -20px;
+    text-align: center;
+    line-height: 26px;
+    color: #fff;
+  }
+  & h4 {
+    width: 510px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 28px;
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+  }
+  & p {
+    height: 120px;
+    width: 100%;
+    line-height: 120px;
+    text-align: center;
+    background: url("../../images/cash/tan.jpg") no-repeat 84px center #fff;
+  }
+  & a {
+    width: 158px;
+    height: 36px;
+    display: block;
+    text-align: center;
+    line-height: 36px;
+    color: #fff;
+    background: #ff6c00;
+    margin: 20px 0px 20px 190px;
+    border-radius: 3px;
   }
 }
