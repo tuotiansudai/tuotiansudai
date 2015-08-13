@@ -161,7 +161,7 @@
       &.mobile {
         background: url(/images/register/register.png) no-repeat 6px -362px;
       }
-      &.captcha {
+        &.captcha {
         background: url(/images/register/register.png) no-repeat 6px -548px;
       }
       &.email {
@@ -198,6 +198,9 @@
       line-height: 28px;
       text-align: center;
       cursor: pointer;
+    }
+    .fetch-captcha.grey{
+      background: #ccc;
     }
   }
   .register-user {
@@ -375,5 +378,8 @@
     border-radius: 5px;
     margin: 25px auto;
     display: block;
+  }
+  & a.complete.grey{
+    background: #ccc;
   }
 }

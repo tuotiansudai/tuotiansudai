@@ -27,7 +27,7 @@
                 </li>
                 <li>
                     <input type="text" name="captcha" placeholder="请输入手机验证码" class="captcha" maxlength="6"/>
-                    <span class="fetch-captcha">获取验证码</span>
+                    <span class="fetch-captcha grey"  disbled="disabled">获取验证码</span>
                 </li>
                 <li>
                     <input type="password" name="password" placeholder="请输入6-16位字母、数字密码组合" class="password"/>
@@ -130,7 +130,7 @@
         <img src="/register/photo/captcha" alt="" class="verification-code-img"/>
     </p>
     <b>验证码输入错误</b>
-    <a href="javascript:;" class="complete">完成</a>
+    <a href="javascript:;" class="complete grey" disabled="disabled">完成</a>
 </div>
 <script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
 <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
