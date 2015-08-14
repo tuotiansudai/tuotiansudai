@@ -35,5 +35,9 @@ require(['jquery'], function ($) {
         $('.ecope-dialog .close').click(function(){
             $('.ecope-overlay,.ecope-dialog').hide();
         });
+        //充值提交
+        $('.recharge-qr').click(function(){
+            $('.ecope-overlay,.ecope-dialog').show();
+        });
     });
 })
