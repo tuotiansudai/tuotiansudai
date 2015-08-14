@@ -86,8 +86,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
                 dto.setMessage(ReturnMessage.SUCCESS.getMsg());
                 dto.setData(responseDataDto);
             } catch (InsufficientBalance insufficientBalance) {
-                dto.setCode(ReturnMessage.INSUFFICIENT_BALANCE.getCode());
-                dto.setMessage(ReturnMessage.INSUFFICIENT_BALANCE.getMsg());
+                dto.setCode(ReturnMessage.NOT_SUFFICIENT_FUNDS.getCode());
+                dto.setMessage(ReturnMessage.NOT_SUFFICIENT_FUNDS.getMsg());
                 log.warn("提现失败：余额不足", insufficientBalance);
             } catch (ReqDataException e) {
                 dto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
