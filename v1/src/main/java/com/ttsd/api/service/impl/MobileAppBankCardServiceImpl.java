@@ -69,8 +69,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
         // verify cardNo
         if (StringUtils.isBlank(newCardNo)) {
-            dto.setCode(ReturnMessage.BANK_CARDNO_IS_NULL.getCode());
-            dto.setMessage(ReturnMessage.BANK_CARDNO_IS_NULL.getMsg());
+            dto.setCode(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getCode());
+            dto.setMessage(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getMsg());
             return dto;
         }
 
@@ -86,22 +86,22 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
         // verify fast payment
         if (bankCardService.isOpenFastPayment(userId)) {
-            dto.setCode(ReturnMessage.HAS_OPEN_FAST_PAYMENT.getCode());
-            dto.setMessage(ReturnMessage.HAS_OPEN_FAST_PAYMENT.getMsg());
+            dto.setCode(ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getCode());
+            dto.setMessage(ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getMsg());
             return dto;
         }
 
         // verify account is 0 or not
         if (billStatistics.getBalanceByUserId(userId) > 0.0) {
-            dto.setCode(ReturnMessage.ACCOUNT_BALANCE_IS_NOT_ZERO.getCode());
-            dto.setMessage(ReturnMessage.ACCOUNT_BALANCE_IS_NOT_ZERO.getMsg());
+            dto.setCode(ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getCode());
+            dto.setMessage(ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getMsg());
             return dto;
         }
 
         // verify card exists
         if (bankCardService.isCardNoBinding(newCardNo)) {
-            dto.setCode(ReturnMessage.BANK_CARD_EXIST.getCode());
-            dto.setMessage(ReturnMessage.BANK_CARD_EXIST.getMsg());
+            dto.setCode(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getCode());
+            dto.setMessage(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getMsg());
             return dto;
         }
 
