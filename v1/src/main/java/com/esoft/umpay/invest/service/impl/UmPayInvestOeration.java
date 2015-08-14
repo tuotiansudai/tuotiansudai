@@ -31,7 +31,9 @@ import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.UmPayConstants.TransferProjectStatus;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -49,6 +51,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Map;
@@ -139,8 +142,10 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
      */
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, String> createOperation(Invest invest) {
+    public InvestResponseDataDto createOperation(Invest invest) {
+        InvestResponseDataDto investResponseDataDto = null;
         try {
+            investResponseDataDto = new InvestResponseDataDto();
             invest = investUnFreeze(invest);
 
             Map<String, String> sendMap = assembleSendMap(invest);
@@ -148,24 +153,35 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
             sendMap.put("ret_url", "");
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-            sendMap.put("url", reqData.getUrl());
+            String requestData = CommonUtils.mapToFormData(reqData.getField(), false);
 
-            TrusteeshipOperation to = createTrusteeshipOperation(invest.getId(), reqData.getUrl(), invest.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, GsonUtil.fromMap2Json(reqData.getField()));
-
-            return sendMap;
-        } catch (ReqDataException e) {
+            createTrusteeshipOperation(invest.getId(), reqData.getUrl(), invest.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, GsonUtil.fromMap2Json(reqData.getField()));
+            investResponseDataDto.setUrl(reqData.getUrl());
+            investResponseDataDto.setRequestData(requestData);
+            return investResponseDataDto;
+        }catch (UnsupportedEncodingException e) {
+            log.error(e.getLocalizedMessage(), e);
+            throw new UmPayOperationException(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+        }catch (ReqDataException e) {
+            log.error(e.getLocalizedMessage(),e);
             throw new UmPayOperationException(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
         } catch (InsufficientBalance e1) {
+            log.error(e1.getLocalizedMessage(),e1);
             throw new UmPayOperationException(ReturnMessage.INSUFFICIENT_BALANCE.getCode());
         } catch (ExceedMoneyNeedRaised e1) {
+            log.error(e1.getLocalizedMessage(),e1);
             throw new UmPayOperationException(ReturnMessage.EXCEED_MONEY_NEED_RAISED.getCode());
         } catch (ExceedDeadlineException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
             throw new UmPayOperationException(ReturnMessage.EXCEED_DEAD_LINE_EXCEPTION.getCode());
         } catch (UnreachedMoneyLimitException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
             throw new UmPayOperationException(ReturnMessage.UNREACHED_MONEY_LIMIT_EXCETPTION.getCode());
         } catch (IllegalLoanStatusException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
             throw new UmPayOperationException(ReturnMessage.LLLEGAL_LOAN_STATUS_EXCEPTION.getCode());
         } catch (NoMatchingObjectsException e) {
+            log.error(e.getLocalizedMessage(),e);
             throw new UmPayOperationException(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
         }
 
