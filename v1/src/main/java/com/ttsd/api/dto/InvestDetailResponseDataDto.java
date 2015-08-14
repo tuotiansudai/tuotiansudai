@@ -65,8 +65,16 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
         RepayRoadmap rrmap = invest.getRepayRoadmap();
         this.paidCorpus = String.format("%.2f", rrmap.getPaidCorpus());
         this.paidInterest = String.format("%.2f", rrmap.getPaidInterest());
-        this.nextRepayDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rrmap.getNextRepayDate());
-        this.nextRepayMoney = String.format("%.2f", rrmap.getNextRepayMoney());
+        if(rrmap.getNextRepayDate()!=null) {
+            this.nextRepayDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rrmap.getNextRepayDate());
+        }else {
+            this.nextRepayDate = "";
+        }
+        if(rrmap.getNextRepayMoney()!=null) {
+            this.nextRepayMoney = String.format("%.2f", rrmap.getNextRepayMoney());
+        }else{
+            this.nextRepayMoney = "";
+        }
     }
 
     public String getLoanId() {
