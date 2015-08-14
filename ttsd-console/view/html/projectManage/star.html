@@ -32,17 +32,35 @@
     <script type="text/javascript" charset="utf-8" src="../../js/libs/ueditor/lang/zh-cn/zh-cn.js"></script>
     <script type="text/javascript" src="../../js/libs/ueditor/ueditor.js"></script>
     <!-- 富文本编辑器  end-->
+
+    <!--上传图片插件-->
+    <link rel="stylesheet" href="../../style/libs/fileinput.css"/>
+    <script src="../../js/libs/fileinput.js"></script>
+    <script src="../../js/libs/fileinput_locale_zh.js"></script>
+    <!--上传图片插件 end-->
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker6').datetimepicker();
             $('#datetimepicker7').datetimepicker();
+
+            $(".file").fileinput({
+                uploadUrl: '#', // you must set a valid URL here else you will get an error
+                allowedFileExtensions : ['jpg', 'png','gif'],
+                overwriteInitial: false,
+                maxFileSize: 1000,
+                maxFilesNum: 10,
+                //allowedFileTypes: ['image', 'video', 'flash'],
+                slugCallback: function(filename) {
+                    return filename.replace('(', '_').replace(']', '_');
+                }
+            });
         });
     </script>
 </head>
 <body>
 <!-- header begin -->
 <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
                     aria-controls="bs-navbar" aria-expanded="false">
@@ -55,7 +73,7 @@
         </div>
     </div>
     <nav id="bs-navbar" class="collapse navbar-collapse">
-        <div class="container">
+        <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a href="">系统主页</a>
@@ -83,7 +101,7 @@
 
 <!-- main begin -->
 <div class="main">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <!-- menu sidebar -->
             <div class="col-md-2">
@@ -181,7 +199,7 @@
                         <label for="project" class="col-sm-2 control-label">风险等级: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> AAA</span>
+                            <input id="file-1" type="file" multiple class="file" data-overwrite-initial="false" data-min-file-count="2">
                         </div>
                     </div>
                     <div class="form-group">
