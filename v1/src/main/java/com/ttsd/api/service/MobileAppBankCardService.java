@@ -1,5 +1,8 @@
 package com.ttsd.api.service;
 
+import com.ttsd.api.dto.BankCardReplaceRequestDto;
+import com.ttsd.api.dto.BaseResponseDto;
+
 /**
  * Created by tuotian on 15/8/7.
  */
@@ -10,4 +13,6 @@ public interface MobileAppBankCardService {
      * @return boolean
      */
     boolean queryBindAndSginStatus(String userId,String operationType);
+
+    BaseResponseDto generateBankCardResponse(BankCardReplaceRequestDto requestDto);
 }

@@ -63,6 +63,17 @@ public class MobileAppBankCardController {
     }
 
     /**
+     * @function 换卡
+     * @param requestDto 换卡请求参数
+     * @return BaseResponseDto
+     */
+    @RequestMapping(value = "/bankcard/replace",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto){
+        return mobileAppBankCardService.generateBankCardResponse(requestDto);
+    }
+
+    /**
      * @function 签约
      * @param bankCardRequestDto
      * @return BaseResponseDto

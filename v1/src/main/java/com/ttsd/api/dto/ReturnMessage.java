@@ -57,22 +57,22 @@ public enum ReturnMessage {
 
     /******手机端投资******/
 
-
-    /******绑卡失败******/
-    BIND_CARD_FAIL("0026","绑卡失败"),
-    /******绑卡失败******/
-
-    /******签约失败******/
-    BANK_CARD_SIGN_FAIL("0027","签约失败"),
-    NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
-    /******签约失败******/
-
     /******手机端请求第三方接口时，出现网络异常******/
     NETWORK_EXCEPTION("0028","网络异常"),
     /******手机端请求第三方接口时，出现网络异常******/
 
     /******文章管理******/
-    NODE_ID_IS_NOT_EXIST("0041","内容不存在");
+    NODE_ID_IS_NOT_EXIST("0041","内容不存在"),
+
+    /******银行卡相关******/
+    BIND_CARD_FAIL("0026","绑卡失败"),
+    BANK_CARD_SIGN_FAIL("0027","签约失败"),
+    NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
+    BANK_CARDNO_IS_NULL("0042","银行卡号为空"),
+    BANK_CARD_EXIST("0043","该银行卡已存在"),
+
+    /*****联动优势相关******/
+    UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败");
 
     private String code;
     private String msg;
