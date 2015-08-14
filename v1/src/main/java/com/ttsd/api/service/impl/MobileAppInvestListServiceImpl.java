@@ -63,7 +63,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
             InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
             investRecordResponseDataDto.setUserName(CommonUtils.encryptUserName(invest.getUser().getUsername()));
             investRecordResponseDataDto.setInvestTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getTime()).toString());
-            investRecordResponseDataDto.setInvestMoney(invest.getInvestMoney());
+            investRecordResponseDataDto.setInvestMoney("" + invest.getInvestMoney());
             investRecordResponseDataDtoList.add(investRecordResponseDataDto);
         }
         return investRecordResponseDataDtoList;

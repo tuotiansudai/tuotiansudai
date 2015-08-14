@@ -70,17 +70,17 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setRepayTypeName(dictUtil.getValue("repay_type", loan.getType().getRepayType()));
             loanResponseDataDto.setDeadline(loan.getDeadline() * loan.getType().getRepayTimePeriod());
             loanResponseDataDto.setRepayUnit(dictUtil.getValue("repay_unit", loan.getType().getRepayTimeUnit()));
-            loanResponseDataDto.setRatePercent(loan.getRatePercent());
-            loanResponseDataDto.setLoanMoney(loan.getLoanMoney());
+            loanResponseDataDto.setRatePercent("" + loan.getRatePercent());
+            loanResponseDataDto.setLoanMoney("" + loan.getLoanMoney());
             loanResponseDataDto.setLoanStatus(loan.getStatus());
             loanResponseDataDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
             try {
-                loanResponseDataDto.setInvestedMoney(ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
+                loanResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
             } catch (NoMatchingObjectsException e) {
                 log.error(e.getLocalizedMessage(), e);
             }
-            loanResponseDataDto.setBaseRatePercent(loan.getJkRatePercent());
-            loanResponseDataDto.setActivityRatePercent(loan.getHdRatePercent());
+            loanResponseDataDto.setBaseRatePercent("" + loan.getJkRatePercent());
+            loanResponseDataDto.setActivityRatePercent("" + loan.getHdRatePercent());
             investList.add(loanResponseDataDto);
         }
         return investList;

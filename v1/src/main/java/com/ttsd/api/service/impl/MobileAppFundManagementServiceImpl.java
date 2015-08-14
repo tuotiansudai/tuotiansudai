@@ -66,19 +66,19 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
 
 
         FundManagementResponseDataDto fundManagementResponseDataDto = new FundManagementResponseDataDto();
-        fundManagementResponseDataDto.setTotalAssets(totalAssets);
-        fundManagementResponseDataDto.setTotalInvestment(totalInvestment);
-        fundManagementResponseDataDto.setExpectedTotalInterest(expectedTotalInterest);
-        fundManagementResponseDataDto.setReceivedCorpus(receivedCorpus);
-        fundManagementResponseDataDto.setReceivedInterest(receivedInterest);
-        fundManagementResponseDataDto.setReceivableCorpus(receivableCorpus);
-        fundManagementResponseDataDto.setReceivableInterest(receivableInterest);
-        fundManagementResponseDataDto.setReceivableCorpusInterest(receivableCorpusInterest);
-        fundManagementResponseDataDto.setAccountBalance(accountBalance);
-        fundManagementResponseDataDto.setAvailableMoney(availableMoney);
-        fundManagementResponseDataDto.setFrozenMoney(frozenMoney);
-        fundManagementResponseDataDto.setPaidRechargeMoney(paidRechargeMoney);
-        fundManagementResponseDataDto.setSuccessWithdrawMoney(successWithdrawMoney);
+        fundManagementResponseDataDto.setTotalAssets("" + totalAssets);
+        fundManagementResponseDataDto.setTotalInvestment("" + totalInvestment);
+        fundManagementResponseDataDto.setExpectedTotalInterest("" + expectedTotalInterest);
+        fundManagementResponseDataDto.setReceivedCorpus("" + receivedCorpus);
+        fundManagementResponseDataDto.setReceivedInterest("" + receivedInterest);
+        fundManagementResponseDataDto.setReceivableCorpus("" + receivableCorpus);
+        fundManagementResponseDataDto.setReceivableInterest("" + receivableInterest);
+        fundManagementResponseDataDto.setReceivableCorpusInterest("" + receivableCorpusInterest);
+        fundManagementResponseDataDto.setAccountBalance("" + accountBalance);
+        fundManagementResponseDataDto.setAvailableMoney("" + availableMoney);
+        fundManagementResponseDataDto.setFrozenMoney("" + frozenMoney);
+        fundManagementResponseDataDto.setPaidRechargeMoney("" + paidRechargeMoney);
+        fundManagementResponseDataDto.setSuccessWithdrawMoney("" + successWithdrawMoney);
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

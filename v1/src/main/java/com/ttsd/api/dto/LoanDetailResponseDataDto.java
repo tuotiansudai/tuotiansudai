@@ -2,7 +2,7 @@ package com.ttsd.api.dto;
 
 import java.util.List;
 
-public class LoanDetailResponseDataDto extends BaseResponseDataDto{
+public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String loanId;
     private String loanType;
     private String loanName;
@@ -10,13 +10,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     private String repayTypeName;
     private Integer deadline;
     private String repayUnit;
-    private Double ratePercent;
-    private Double loanMoney;
+    private String ratePercent;
+    private String loanMoney;
     private String loanStatus;
     private String loanStatusDesc;
-    private Double investedMoney;
-    private Double baseRatePercent;
-    private Double activityRatePercent;
+    private String investedMoney;
+    private String baseRatePercent;
+    private String activityRatePercent;
     private Long investedCount;
     private String loanDetail;
     private Integer investCount;
@@ -60,22 +60,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         return repayTypeName;
     }
 
-    public Double getBaseRatePercent() {
-        return baseRatePercent;
-    }
-
-    public void setBaseRatePercent(Double baseRatePercent) {
-        this.baseRatePercent = baseRatePercent;
-    }
-
-    public Double getActivityRatePercent() {
-        return activityRatePercent;
-    }
-
-    public void setActivityRatePercent(Double activityRatePercent) {
-        this.activityRatePercent = activityRatePercent;
-    }
-
     public void setRepayTypeName(String repayTypeName) {
         this.repayTypeName = repayTypeName;
     }
@@ -97,22 +81,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         this.repayUnit = repayUnit;
     }
 
-    public Double getRatePercent() {
-        return ratePercent;
-    }
-
-    public void setRatePercent(Double ratePercent) {
-        this.ratePercent = ratePercent;
-    }
-
-    public Double getLoanMoney() {
-        return loanMoney;
-    }
-
-    public void setLoanMoney(Double loanMoney) {
-        this.loanMoney = loanMoney;
-    }
-
     public String getLoanStatus() {
         return loanStatus;
     }
@@ -129,14 +97,6 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         this.loanStatusDesc = loanStatusDesc;
     }
 
-    public Double getInvestedMoney() {
-        return investedMoney;
-    }
-
-    public void setInvestedMoney(Double investedMoney) {
-        this.investedMoney = investedMoney;
-    }
-
     public Long getInvestedCount() {
         return investedCount;
     }
@@ -144,6 +104,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
     public void setInvestedCount(Long investedCount) {
         this.investedCount = investedCount;
     }
+
     public Integer getInvestCount() {
         return investCount;
     }
@@ -176,4 +137,43 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto{
         this.investRecord = investRecord;
     }
 
+    public String getRatePercent() {
+        return ratePercent;
+    }
+
+    public void setRatePercent(String ratePercent) {
+        this.ratePercent = ratePercent;
+    }
+
+    public String getLoanMoney() {
+        return loanMoney;
+    }
+
+    public void setLoanMoney(String loanMoney) {
+        this.loanMoney = loanMoney;
+    }
+
+    public String getInvestedMoney() {
+        return investedMoney;
+    }
+
+    public void setInvestedMoney(String investedMoney) {
+        this.investedMoney = investedMoney;
+    }
+
+    public String getBaseRatePercent() {
+        return baseRatePercent;
+    }
+
+    public void setBaseRatePercent(String baseRatePercent) {
+        this.baseRatePercent = baseRatePercent;
+    }
+
+    public String getActivityRatePercent() {
+        return activityRatePercent;
+    }
+
+    public void setActivityRatePercent(String activityRatePercent) {
+        this.activityRatePercent = activityRatePercent;
+    }
 }

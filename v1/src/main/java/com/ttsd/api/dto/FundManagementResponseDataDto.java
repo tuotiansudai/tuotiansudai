@@ -1,121 +1,121 @@
 package com.ttsd.api.dto;
 
 public class FundManagementResponseDataDto extends BaseResponseDataDto {
-    private double totalAssets;
-    private double totalInvestment;
-    private double expectedTotalInterest;
-    private double receivedCorpus;
-    private double receivedInterest;
-    private double receivableCorpus;
-    private double receivableInterest;
-    private double receivableCorpusInterest;
-    private double accountBalance;
-    private double availableMoney;
-    private double frozenMoney;
-    private double paidRechargeMoney;
-    private double successWithdrawMoney;
+    private String totalAssets;
+    private String totalInvestment;
+    private String expectedTotalInterest;
+    private String receivedCorpus;
+    private String receivedInterest;
+    private String receivableCorpus;
+    private String receivableInterest;
+    private String receivableCorpusInterest;
+    private String accountBalance;
+    private String availableMoney;
+    private String frozenMoney;
+    private String paidRechargeMoney;
+    private String successWithdrawMoney;
 
-    public double getAccountBalance() {
-        return accountBalance;
-    }
-
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
-    }
-
-    public double getAvailableMoney() {
-        return availableMoney;
-    }
-
-    public void setAvailableMoney(double availableMoney) {
-        this.availableMoney = availableMoney;
-    }
-
-    public double getFrozenMoney() {
-        return frozenMoney;
-    }
-
-    public void setFrozenMoney(double frozenMoney) {
-        this.frozenMoney = frozenMoney;
-    }
-
-    public double getPaidRechargeMoney() {
-        return paidRechargeMoney;
-    }
-
-    public void setPaidRechargeMoney(double paidRechargeMoney) {
-        this.paidRechargeMoney = paidRechargeMoney;
-    }
-
-    public double getSuccessWithdrawMoney() {
-        return successWithdrawMoney;
-    }
-
-    public void setSuccessWithdrawMoney(double successWithdrawMoney) {
-        this.successWithdrawMoney = successWithdrawMoney;
-    }
-
-    public double getTotalAssets() {
+    public String getTotalAssets() {
         return totalAssets;
     }
 
-    public void setTotalAssets(double totalAssets) {
+    public void setTotalAssets(String totalAssets) {
         this.totalAssets = totalAssets;
     }
 
-    public double getTotalInvestment() {
+    public String getTotalInvestment() {
         return totalInvestment;
     }
 
-    public void setTotalInvestment(double totalInvestment) {
+    public void setTotalInvestment(String totalInvestment) {
         this.totalInvestment = totalInvestment;
     }
 
-    public double getExpectedTotalInterest() {
+    public String getExpectedTotalInterest() {
         return expectedTotalInterest;
     }
 
-    public void setExpectedTotalInterest(double expectedTotalInterest) {
+    public void setExpectedTotalInterest(String expectedTotalInterest) {
         this.expectedTotalInterest = expectedTotalInterest;
     }
 
-    public double getReceivedCorpus() {
+    public String getReceivedCorpus() {
         return receivedCorpus;
     }
 
-    public void setReceivedCorpus(double receivedCorpus) {
+    public void setReceivedCorpus(String receivedCorpus) {
         this.receivedCorpus = receivedCorpus;
     }
 
-    public double getReceivedInterest() {
+    public String getReceivedInterest() {
         return receivedInterest;
     }
 
-    public void setReceivedInterest(double receivedInterest) {
+    public void setReceivedInterest(String receivedInterest) {
         this.receivedInterest = receivedInterest;
     }
 
-    public double getReceivableCorpus() {
+    public String getReceivableCorpus() {
         return receivableCorpus;
     }
 
-    public void setReceivableCorpus(double receivableCorpus) {
+    public void setReceivableCorpus(String receivableCorpus) {
         this.receivableCorpus = receivableCorpus;
     }
 
-    public double getReceivableInterest() {
+    public String getReceivableInterest() {
         return receivableInterest;
     }
 
-    public void setReceivableInterest(double receivableInterest) {
+    public void setReceivableInterest(String receivableInterest) {
         this.receivableInterest = receivableInterest;
     }
 
-    public double getReceivableCorpusInterest() {
+    public String getReceivableCorpusInterest() {
         return receivableCorpusInterest;
     }
 
-    public void setReceivableCorpusInterest(double receivableCorpusInterest) {
+    public void setReceivableCorpusInterest(String receivableCorpusInterest) {
         this.receivableCorpusInterest = receivableCorpusInterest;
+    }
+
+    public String getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(String accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public String getAvailableMoney() {
+        return availableMoney;
+    }
+
+    public void setAvailableMoney(String availableMoney) {
+        this.availableMoney = availableMoney;
+    }
+
+    public String getFrozenMoney() {
+        return frozenMoney;
+    }
+
+    public void setFrozenMoney(String frozenMoney) {
+        this.frozenMoney = frozenMoney;
+    }
+
+    public String getPaidRechargeMoney() {
+        return paidRechargeMoney;
+    }
+
+    public void setPaidRechargeMoney(String paidRechargeMoney) {
+        this.paidRechargeMoney = paidRechargeMoney;
+    }
+
+    public String getSuccessWithdrawMoney() {
+        return successWithdrawMoney;
+    }
+
+    public void setSuccessWithdrawMoney(String successWithdrawMoney) {
+        this.successWithdrawMoney = successWithdrawMoney;
     }
 }

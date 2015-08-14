@@ -76,18 +76,18 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayTypeName(dictUtil.getValue("repay_type", loan.getType().getRepayType()));
         loanDetailResponseDataDto.setDeadline(loan.getDeadline() * loan.getType().getRepayTimePeriod());
         loanDetailResponseDataDto.setRepayUnit(dictUtil.getValue("repay_unit", loan.getType().getRepayTimeUnit()));
-        loanDetailResponseDataDto.setRatePercent(loan.getRatePercent());
-        loanDetailResponseDataDto.setLoanMoney(loan.getLoanMoney());
+        loanDetailResponseDataDto.setRatePercent("" + loan.getRatePercent());
+        loanDetailResponseDataDto.setLoanMoney("" + loan.getLoanMoney());
         loanDetailResponseDataDto.setLoanStatus(loan.getStatus());
         loanDetailResponseDataDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
         loanDetailResponseDataDto.setInvestedCount(loanCalculator.countSuccessInvest(loan.getId()));
         try {
-            loanDetailResponseDataDto.setInvestedMoney(ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
+            loanDetailResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
         } catch (NoMatchingObjectsException e) {
             log.error(e.getLocalizedMessage(), e);
         }
-        loanDetailResponseDataDto.setBaseRatePercent(loan.getJkRatePercent());
-        loanDetailResponseDataDto.setActivityRatePercent(loan.getHdRatePercent());
+        loanDetailResponseDataDto.setBaseRatePercent("" + loan.getJkRatePercent());
+        loanDetailResponseDataDto.setActivityRatePercent("" + loan.getHdRatePercent());
         loanDetailResponseDataDto.setLoanDetail(loan.getDescription());
         loanDetailResponseDataDto.setEvidence(evidences);
         loanDetailResponseDataDto.setInvestCount(loan.getInvests().size());
@@ -104,7 +104,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         for (Invest invest:invests) {
             InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
             investRecordResponseDataDto.setUserName(com.ttsd.api.util.CommonUtils.encryptUserName(invest.getUser().getUsername()));
-            investRecordResponseDataDto.setInvestMoney(invest.getInvestMoney());
+            investRecordResponseDataDto.setInvestMoney("" + invest.getInvestMoney());
             investRecordResponseDataDto.setInvestTime(invest.getTime().toString());
             investRecordResponseDataDtos.add(investRecordResponseDataDto);
         }
