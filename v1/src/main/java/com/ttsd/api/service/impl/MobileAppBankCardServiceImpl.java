@@ -7,6 +7,7 @@ import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
+import com.esoft.jdp2p.statistics.controller.BillStatistics;
 import com.esoft.umpay.bankcard.service.impl.UmPayReplaceBankCardOperation;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.ttsd.api.dao.MobileAppBankCardDao;
@@ -45,6 +46,9 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     @Autowired
     private UmPayReplaceBankCardOperation umPayReplaceBankCardOperation;
 
+    @Autowired
+    private BillStatistics billStatistics;
+
     /**
      * @param userId 绑卡或签约用户ID
      * @return boolean
@@ -80,7 +84,21 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             return dto;
         }
 
-        // verify card
+        // verify fast payment
+        if (bankCardService.isOpenFastPayment(userId)) {
+            dto.setCode(ReturnMessage.HAS_OPEN_FAST_PAYMENT.getCode());
+            dto.setMessage(ReturnMessage.HAS_OPEN_FAST_PAYMENT.getMsg());
+            return dto;
+        }
+
+        // verify account is 0 or not
+        if (billStatistics.getBalanceByUserId(userId) > 0.0) {
+            dto.setCode(ReturnMessage.ACCOUNT_BALANCE_IS_NOT_ZERO.getCode());
+            dto.setMessage(ReturnMessage.ACCOUNT_BALANCE_IS_NOT_ZERO.getMsg());
+            return dto;
+        }
+
+        // verify card exists
         if (bankCardService.isCardNoBinding(newCardNo)) {
             dto.setCode(ReturnMessage.BANK_CARD_EXIST.getCode());
             dto.setMessage(ReturnMessage.BANK_CARD_EXIST.getMsg());
@@ -94,13 +112,13 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             dto.setData(responseDataDto);
         } catch (UmPayOperationException e) {
             dto.setCode(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getCode());
-            dto.setMessage(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getMsg()+":"+e.getLocalizedMessage());
+            dto.setMessage(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getMsg() + ":" + e.getLocalizedMessage());
             log.warn(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getMsg(), e);
         }
         return dto;
     }
 
-    private BankCardReplaceResponseDataDto getBankCardReplaceResponseDataDto(String newCardNo, User user){
+    private BankCardReplaceResponseDataDto getBankCardReplaceResponseDataDto(String newCardNo, User user) {
         BankCard bankCard = new BankCard();
         bankCard.setCardNo(newCardNo);
         bankCard.setId(IdGenerator.randomUUID());

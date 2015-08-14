@@ -70,6 +70,8 @@ public enum ReturnMessage {
     NOT_BIND_CARD("0039","该用户尚未绑卡，签约失败"),
     BANK_CARDNO_IS_NULL("0042","银行卡号为空"),
     BANK_CARD_EXIST("0043","该银行卡已存在"),
+    HAS_OPEN_FAST_PAYMENT("0046","已开通快捷支付"),
+    ACCOUNT_BALANCE_IS_NOT_ZERO("0047","账户余额不为0"),
 
     /*****联动优势相关******/
     UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败");
