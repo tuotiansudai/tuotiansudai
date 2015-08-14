@@ -29,7 +29,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
      * 投资金额
      */
-    private Double investMoney;
+    private String investMoney;
     /**
      * 投资时间
      */
@@ -45,7 +45,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
      * 投资利率
      */
-    private Double investRate;
+    private String investRate;
 
     public UserInvestRecordResponseDataDto(){
     }
@@ -57,11 +57,11 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.loanStatus = loan.getStatus();
         this.loanStatusDesc = LoanStatus.getMessageByCode(loan.getStatus());
         this.investId = invest.getId();
-        this.investMoney = invest.getInvestMoney();
+        this.investMoney = String.format("%.2f", invest.getInvestMoney());
         this.investTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getTime()).toString();
         this.investStatus = invest.getStatus();
         this.investStatusDesc = InvestStatus.getMessageByCode(invest.getStatus());
-        this.investRate = invest.getRate();
+        this.investRate = String.format("%.1f", invest.getRatePercent());
     }
 
     public String getLoanId() {
@@ -104,11 +104,11 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investId = investId;
     }
 
-    public Double getInvestMoney() {
+    public String getInvestMoney() {
         return investMoney;
     }
 
-    public void setInvestMoney(Double investMoney) {
+    public void setInvestMoney(String investMoney) {
         this.investMoney = investMoney;
     }
 
@@ -136,11 +136,11 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatusDesc = investStatusDesc;
     }
 
-    public Double getInvestRate() {
+    public String getInvestRate() {
         return investRate;
     }
 
-    public void setInvestRate(Double investRate) {
+    public void setInvestRate(String investRate) {
         this.investRate = investRate;
     }
 }

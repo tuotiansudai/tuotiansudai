@@ -4,6 +4,7 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.repay.model.RepayRoadmap;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InvestDetailResponseDataDto extends BaseResponseDataDto{
@@ -22,7 +23,7 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
     /**
      * 投资金额
      */
-    private Double investMoney;
+    private String investMoney;
     /**
      * 投资状态
      */
@@ -30,23 +31,23 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
     /**
      * 投资利率
      */
-    private Double investRate;
+    private String investRate;
     /**
      * 已还本金
      */
-    private Double paidCorpus;
+    private String paidCorpus;
     /**
      * 已还利息
      */
-    private Double paidInterest;
+    private String paidInterest;
     /**
      * 下个还款日
      */
-    private Date nextRepayDate;
+    private String nextRepayDate;
     /**
      * 下个还款总金额
      */
-    private Double nextRepayMoney;
+    private String nextRepayMoney;
 
     public InvestDetailResponseDataDto(){
 
@@ -57,15 +58,15 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
         this.loanId = loan.getId();
         this.loanName = loan.getName();
         this.investId = invest.getId();
-        this.investMoney = invest.getInvestMoney();
+        this.investMoney = String.format("%.2f", invest.getInvestMoney());
         this.investStatus = invest.getStatus();
-        this.investRate = invest.getRate();
+        this.investRate = String.format("%.1f", invest.getRatePercent());
 
         RepayRoadmap rrmap = invest.getRepayRoadmap();
-        this.paidCorpus = rrmap.getPaidCorpus();
-        this.paidInterest = rrmap.getPaidInterest();
-        this.nextRepayDate = rrmap.getNextRepayDate();
-        this.nextRepayMoney = rrmap.getNextRepayMoney();
+        this.paidCorpus = String.format("%.2f", rrmap.getPaidCorpus());
+        this.paidInterest = String.format("%.2f", rrmap.getPaidInterest());
+        this.nextRepayDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(rrmap.getNextRepayDate());
+        this.nextRepayMoney = String.format("%.2f", rrmap.getNextRepayMoney());
     }
 
     public String getLoanId() {
@@ -92,11 +93,11 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
         this.investId = investId;
     }
 
-    public Double getInvestMoney() {
+    public String getInvestMoney() {
         return investMoney;
     }
 
-    public void setInvestMoney(Double investMoney) {
+    public void setInvestMoney(String investMoney) {
         this.investMoney = investMoney;
     }
 
@@ -108,43 +109,43 @@ public class InvestDetailResponseDataDto extends BaseResponseDataDto{
         this.investStatus = investStatus;
     }
 
-    public Double getInvestRate() {
+    public String getInvestRate() {
         return investRate;
     }
 
-    public void setInvestRate(Double investRate) {
+    public void setInvestRate(String investRate) {
         this.investRate = investRate;
     }
 
-    public Double getPaidCorpus() {
+    public String getPaidCorpus() {
         return paidCorpus;
     }
 
-    public void setPaidCorpus(Double paidCorpus) {
+    public void setPaidCorpus(String paidCorpus) {
         this.paidCorpus = paidCorpus;
     }
 
-    public Double getPaidInterest() {
+    public String getPaidInterest() {
         return paidInterest;
     }
 
-    public void setPaidInterest(Double paidInterest) {
+    public void setPaidInterest(String paidInterest) {
         this.paidInterest = paidInterest;
     }
 
-    public Date getNextRepayDate() {
+    public String getNextRepayDate() {
         return nextRepayDate;
     }
 
-    public void setNextRepayDate(Date nextRepayDate) {
+    public void setNextRepayDate(String nextRepayDate) {
         this.nextRepayDate = nextRepayDate;
     }
 
-    public Double getNextRepayMoney() {
+    public String getNextRepayMoney() {
         return nextRepayMoney;
     }
 
-    public void setNextRepayMoney(Double nextRepayMoney) {
+    public void setNextRepayMoney(String nextRepayMoney) {
         this.nextRepayMoney = nextRepayMoney;
     }
 }

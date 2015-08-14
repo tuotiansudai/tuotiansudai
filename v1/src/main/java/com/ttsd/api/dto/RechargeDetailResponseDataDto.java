@@ -48,7 +48,7 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.rechargeId = recharge.getId();
         this.userId = recharge.getUser().getId();
-        this.actualMoney = recharge.getActualMoney().toString();
+        this.actualMoney = String.format("%.2f", recharge.getActualMoney());
         this.status = recharge.getStatus();
         this.statusDesc = RechargeStatus.getMessageByCode(recharge.getStatus());
         this.time = sdf.format(recharge.getTime());
