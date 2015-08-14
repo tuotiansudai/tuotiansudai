@@ -28,6 +28,10 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
      */
     private String status;
     /**
+     * 充值状态描述
+     */
+    private String statusDesc;
+    /**
      * 充值时间
      */
     private String time;
@@ -46,11 +50,14 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
         this.userId = recharge.getUser().getId();
         this.actualMoney = recharge.getActualMoney().toString();
         this.status = recharge.getStatus();
+        this.statusDesc = RechargeStatus.getMessageByCode(recharge.getStatus());
         this.time = sdf.format(recharge.getTime());
         if(recharge.getSuccessTime()!=null) {
             this.successTime = sdf.format(recharge.getSuccessTime());
+        }else{
+            this.successTime = "";
         }
-        this.rechargeType = "None";
+        this.rechargeType = "";
     }
 
     public String getRechargeId() {
@@ -91,6 +98,14 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
     }
 
     public String getTime() {

@@ -33,6 +33,14 @@ public class InvestRepayRecordResponseDataDto{
      */
     private String repayDay;
     /**
+     * 还款状态
+     */
+    private String status;
+    /**
+     * 还款状态描述
+     */
+    private String statusDesc;
+    /**
      * 还款时间
      */
     private String time;
@@ -58,6 +66,8 @@ public class InvestRepayRecordResponseDataDto{
         this.investMoney = invest.getInvestMoney();
         this.investTime = sdf.format(invest.getTime()).toString();
         this.repayDay = sdf.format(investRepay.getRepayDay()).toString();
+        this.status = investRepay.getStatus();
+        this.statusDesc = InvestRepayStatus.getMessageByCode(investRepay.getStatus());
         if(investRepay.getTime()!=null) {
             this.time = sdf.format(investRepay.getTime()).toString();
         }
@@ -111,6 +121,22 @@ public class InvestRepayRecordResponseDataDto{
 
     public void setRepayDay(String repayDay) {
         this.repayDay = repayDay;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
     }
 
     public String getTime() {

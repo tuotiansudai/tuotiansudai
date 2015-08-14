@@ -4,7 +4,6 @@ import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
@@ -19,6 +18,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
      * 标的状态
      */
     private String loanStatus;
+    /**
+     * 标的状态描述
+     */
+    private String loanStatusDesc;
     /**
      * 投资ID
      */
@@ -36,6 +39,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
      */
     private String investStatus;
     /**
+     * 投资状态描述
+     */
+    private String investStatusDesc;
+    /**
      * 投资利率
      */
     private Double investRate;
@@ -48,10 +55,12 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.loanId = loan.getId();
         this.loanName = loan.getName();
         this.loanStatus = loan.getStatus();
+        this.loanStatusDesc = LoanStatus.getMessageByCode(loan.getStatus());
         this.investId = invest.getId();
         this.investMoney = invest.getInvestMoney();
         this.investTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getTime()).toString();
         this.investStatus = invest.getStatus();
+        this.investStatusDesc = InvestStatus.getMessageByCode(invest.getStatus());
         this.investRate = invest.getRate();
     }
 
@@ -77,6 +86,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setLoanStatus(String loanStatus) {
         this.loanStatus = loanStatus;
+    }
+
+    public String getLoanStatusDesc() {
+        return loanStatusDesc;
+    }
+
+    public void setLoanStatusDesc(String loanStatusDesc) {
+        this.loanStatusDesc = loanStatusDesc;
     }
 
     public String getInvestId() {
@@ -109,6 +126,14 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestStatus(String investStatus) {
         this.investStatus = investStatus;
+    }
+
+    public String getInvestStatusDesc() {
+        return investStatusDesc;
+    }
+
+    public void setInvestStatusDesc(String investStatusDesc) {
+        this.investStatusDesc = investStatusDesc;
     }
 
     public Double getInvestRate() {
