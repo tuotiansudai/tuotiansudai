@@ -131,9 +131,9 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         ReqData reqData = umPayReplaceBankCardOperation.buildReqData(bankCard, orderId);
         BankCardReplaceResponseDataDto responseDataDto = new BankCardReplaceResponseDataDto();
         try {
-            responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(), false));
+            responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(), true));
         } catch (UnsupportedEncodingException e) {
-            // 因为CommonUtils.mapToFormData调用不需要转码，因此此异常永远不会发生
+            // 因为CommonUtils.mapToFormData采用的编码格式为UTF-8，因此不会不支持，此异常不会出现
             log.warn("Encoding失败", e);
         }
         responseDataDto.setUrl(reqData.getUrl());
