@@ -116,9 +116,9 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         WithdrawOperateResponseDataDto responseDataDto = new WithdrawOperateResponseDataDto();
         responseDataDto.setUrl(reqData.getUrl());
         try {
-            responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
+            responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),true));
         } catch (UnsupportedEncodingException e) {
-            // 由于 CommonUtils.mapToFormData方法的第二个参数是false，因此永远不会出现该异常。
+            // 因为CommonUtils.mapToFormData采用的编码格式为UTF-8，因此不会不支持，此异常不会出现
         }
         return responseDataDto;
     }
