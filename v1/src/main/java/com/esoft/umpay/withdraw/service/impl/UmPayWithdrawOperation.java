@@ -77,9 +77,24 @@ public class UmPayWithdrawOperation extends
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(WithdrawCash withdrawCash,
 			FacesContext facesContext) throws IOException {
-		DecimalFormat currentNumberFormat = new DecimalFormat("#");
+		TrusteeshipOperation to;
+		try {
+			ReqData reqData = buildReqData(withdrawCash);
+			to = createTrusteeshipOperation(withdrawCash.getId(), reqData.getUrl(),
+					withdrawCash.getId(), UmPayConstants.OperationType.CUST_WITHDRAWALS,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			sendOperation(to, facesContext);
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("提现失败！");
+		}
+		return to;
+	}
+
+	public ReqData buildReqData(WithdrawCash withdrawCash) throws ReqDataException {
 		// 得到一个提现订单
 		WithdrawCash wc = ht.get(WithdrawCash.class, withdrawCash.getId());
+		DecimalFormat currentNumberFormat = new DecimalFormat("#");
 		Map<String, String> sendMap = UmPaySignUtil
 				.getSendMapDate(UmPayConstants.OperationType.CUST_WITHDRAWALS);
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
@@ -95,19 +110,7 @@ public class UmPayWithdrawOperation extends
 		// 金额
 		sendMap.put("amount", currentNumberFormat.format(wc.getMoney() * 100));
 		// FIXME UMPAY==P2P平台收取手续费UMPAY暂时不支持
-		TrusteeshipOperation to;
-		ReqData reqData;
-		try {
-			reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-			to = createTrusteeshipOperation(wc.getId(), reqData.getUrl(),
-					wc.getId(), UmPayConstants.OperationType.CUST_WITHDRAWALS,
-					GsonUtil.fromMap2Json(reqData.getField()));
-			sendOperation(to, facesContext);
-		} catch (ReqDataException e) {
-			log.error(e.getLocalizedMessage(), e);
-			throw new UmPayOperationException("提现失败！");
-		}
-		return to;
+		return Mer2Plat_v40.makeReqDataByPost(sendMap);
 	}
 
 	/**
