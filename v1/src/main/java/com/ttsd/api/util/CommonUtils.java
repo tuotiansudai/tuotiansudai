@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -49,13 +50,25 @@ public class CommonUtils {
     }
 
     public static String mapToFormData(Map<String, String> map, boolean isURLEncoder) throws UnsupportedEncodingException {
-        String formData = "";
-        if (map != null && map.size() > 0) {
-            formData = Joiner.on("&").withKeyValueSeparator("=").join(map);
-            if (isURLEncoder) {
-                formData = URLEncoder.encode(formData, "UTF-8");
+        Map<String, String> mapCopy = null;
+        if (isURLEncoder) {
+            mapCopy = new HashMap<>();
+            Iterator iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = (Map.Entry) iterator.next();
+                String encodeValue = URLEncoder.encode(entry.getValue(), "UTF-8");
+                mapCopy.put(entry.getKey(), encodeValue);
+
             }
+        }else{
+            mapCopy = map;
+        }
+
+        String formData = "";
+        if (mapCopy != null && mapCopy.size() > 0) {
+            formData = Joiner.on("&").withKeyValueSeparator("=").join(mapCopy);
         }
         return formData;
     }
+    
 }

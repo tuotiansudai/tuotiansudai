@@ -151,9 +151,9 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             Map<String, String> sendMap = assembleSendMap(invest);
 
             sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
-            sendMap.put("ret_url", "");
+            //sendMap.put("ret_url", "");
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-            String requestData = CommonUtils.mapToFormData(reqData.getField(), false);
+            String requestData = CommonUtils.mapToFormData(reqData.getField(), true);
 
             createTrusteeshipOperation(invest.getId(), reqData.getUrl(), invest.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, GsonUtil.fromMap2Json(reqData.getField()));
             investResponseDataDto.setUrl(reqData.getUrl());
