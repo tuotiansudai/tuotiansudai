@@ -31,6 +31,9 @@ require(['jquery'], function ($) {
                 $('.recharge-qr').addClass('grey').attr('disabled','disabled');
             }
         });
-        //
+        // 充值弹出页面
+        $('.ecope-dialog .close').click(function(){
+            $('.ecope-overlay,.ecope-dialog').hide();
+        });
     });
 })
