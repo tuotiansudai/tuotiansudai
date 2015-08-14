@@ -8,7 +8,7 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     private String withdrawId;
     private String time;
     private String recheckTime;
-    private double money;
+    private String money;
     private String status;
     private String statusDesc;
 
@@ -24,7 +24,7 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
         }else{
             this.recheckTime = "";
         }
-        this.money = withdrawCash.getMoney();
+        this.money = String.format("%.2f", withdrawCash.getMoney());
         this.status = withdrawCash.getStatus();
         this.statusDesc = WithdrawStatus.getMessageByCode(withdrawCash.getStatus());
     }
@@ -53,11 +53,11 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
         this.recheckTime = recheckTime;
     }
 
-    public double getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(double money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 
