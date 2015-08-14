@@ -13,7 +13,5 @@ public interface MobileAppUmPayInvestService {
 
     String verifyInvestRequestDto(InvestRequestDto investRequestDto);
 
-    InvestResponseDataDto convertInvestResponseDataDtoFromMap(Map<String,String> map);
-
     Invest createInvest(InvestRequestDto investRequestDto);
 }
