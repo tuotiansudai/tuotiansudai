@@ -100,10 +100,10 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		}
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_REPLACE_CARD);
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-                + UmPayConstants.OperationType.MER_REPLACE_CARD);
+				+ UmPayConstants.OperationType.MER_REPLACE_CARD);
 		sendMap.put("notify_url",
-                UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-                        + UmPayConstants.OperationType.MER_REPLACE_CARD);
+				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
+						+ UmPayConstants.OperationType.MER_REPLACE_CARD);
 		sendMap.put("order_id", orderId);
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		sendMap.put("user_id", trusteeshipAccount.getId());
