@@ -1,71 +1,25 @@
-CREATE TABLE `loan` (
-  `id` varchar(32) NOT NULL,
-  `actual_rate` double DEFAULT NULL,
-  `business_type` varchar(20) DEFAULT NULL,
-  `cancel_time` datetime DEFAULT NULL,
-  `cardinal_number` double DEFAULT NULL,
-  `commit_time` datetime DEFAULT NULL,
-  `company_description` longtext,
-  `company_name` text,
-  `companyno` varchar(255) DEFAULT NULL,
-  `complete_time` datetime DEFAULT NULL,
-  `contract_type` text,
-  `custom_picture` text,
-  `deadline` int(11) DEFAULT NULL,
-  `deposit` double DEFAULT NULL,
-  `description` longtext,
-  `expect_time` datetime DEFAULT NULL,
-  `fee_on_repay` double DEFAULT NULL,
-  `fund_description` longtext,
-  `give_money_time` datetime DEFAULT NULL,
-  `guarantee_company_description` longtext,
-  `guarantee_company_name` text,
-  `guarantee_info_description` longtext,
-  `has_pawn` varchar(10) DEFAULT NULL,
-  `interest_begin_time` datetime DEFAULT NULL,
-  `investor_fee_rate` double DEFAULT NULL,
-  `loan_gurantee_fee` double DEFAULT NULL,
-  `loan_instruction` longtext,
-  `loan_money` double DEFAULT NULL,
-  `loan_purpose` varchar(500) DEFAULT NULL,
-  `location` text,
-  `min_invest_money` double DEFAULT NULL,
-  `money` double DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `overdue_info` varchar(100) DEFAULT NULL,
-  `pawn` varchar(200) DEFAULT NULL,
-  `pawn_name` varchar(200) DEFAULT NULL,
-  `policy_description` longtext,
-  `rate` double DEFAULT NULL,
-  `repay_day` datetime DEFAULT NULL,
-  `repay_period` varchar(50) DEFAULT NULL,
-  `repay_type` varchar(100) DEFAULT NULL,
-  `risk_description` longtext,
-  `risk_instruction` longtext,
-  `risk_level` varchar(50) DEFAULT NULL,
-  `seq_num` int(11) DEFAULT NULL,
-  `status` varchar(50) DEFAULT NULL,
-  `verified` varchar(32) DEFAULT NULL,
-  `verify_message` varchar(500) DEFAULT NULL,
-  `verify_time` datetime DEFAULT NULL,
-  `video_id` varchar(255) DEFAULT NULL,
-  `type` varchar(32) DEFAULT NULL,
-  `user_id` varchar(32) DEFAULT NULL,
-  `verify_user_id` varchar(32) DEFAULT NULL,
-  `max_invest_money` double DEFAULT NULL,
-  `order_code` varchar(50) DEFAULT NULL,
-  `transfer_type` text,
-  `rate_iboi` double DEFAULT NULL,
-  `loan_activity_type` varchar(255) DEFAULT NULL,
-  `invest_password` varchar(20) DEFAULT NULL,
-  `jk_rate` double NOT NULL,
-  `hd_rate` double DEFAULT NULL,
-  `agent` varchar(20) DEFAULT NULL,
+CREATE TABLE ${aa}.`loan` (
+  `id`                          varchar(32)         NOT NULL,
+  `name`                        varchar(255)        NOT NULL,/***借款项目名称***/
+  `agent_login_name`            varchar(32)         NOT NULL,/***代理人***/
+  `loan_login_name`             varchar(32)         NOT NULL,/***借款用户***/
+  `type`                        VARCHAR (32)        NOT NULL ,/***标的类型***/
+  `periods`                     INT                 NOT NULL,/***借款期限***/
+  `description_text`            TEXT                NOT NULL,/***项目描述（纯文本）***/
+  `description_html`            TEXT                NOT NULL,/***项目描述（带html标签）***/
+  `loan_amount`                 DOUBLE              NOT NULL ,/***借款金额***/
+  `invest_fee_rate`             DOUBLE              NOT NULL,/***投资手续费比例***/
+  `min_invest_amount`           INT                 NOT NULL,/***最小投资金额***/
+  `invest_increasing_amount`    INT                 NOT NULL,/***投资递增金额***/
+  `max_invest_amount`           INT                 NOT NULL,/***单笔最大投资金额***/
+  `activity_type`               VARCHAR (1000)      NOT NULL,/***活动类型***/
+  `activity_rate`               DOUBLE              DEFAULT 0,/***活动利率***/
+  `contract_id`                 VARCHAR (32)        NOT NULL ,/***合同***/
+  `fundraising_start_time`      DATE                NOT NULL,/***筹款开始时间***/
+  `fundraising_end_time`        DATE                NOT NULL,/***筹款截止时间***/
+  `show_on_home`                boolean             DEFAULT TRUE
   PRIMARY KEY (`id`),
-  KEY `FK32C4F0D533E97D` (`verify_user_id`) USING BTREE,
-  KEY `FK32C4F02A334343` (`user_id`) USING BTREE,
-  CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `loan_ibfk_2` FOREIGN KEY (`verify_user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `FK_LOAN_CONTRACT_ID_REF_CONTRACT_ID` FOREIGN KEY (`contract_id`) REFERENCES ${aa}.`contract` (`id`),
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
