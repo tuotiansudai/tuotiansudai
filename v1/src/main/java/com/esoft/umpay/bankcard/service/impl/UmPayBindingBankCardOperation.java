@@ -151,7 +151,7 @@ public class UmPayBindingBankCardOperation extends
 		//配置此项，表示使用H5页面
 		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		// 同步地址
-		sendMap.put("ret_url", "");
+//		sendMap.put("ret_url", "");
 		BaseResponseDto baseResponseDto = new BaseResponseDto();
 		try {
 			// 加密参数

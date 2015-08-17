@@ -130,7 +130,7 @@ public class UmPayBindingAgreementOperation extends
         //配置此项，表示使用H5页面
         sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
         // 同步地址
-        sendMap.put("ret_url", "");
+//        sendMap.put("ret_url", "");
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             log.debug("签约协议发送数据:" + reqData);
