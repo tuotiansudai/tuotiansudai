@@ -72,7 +72,10 @@ public enum ReturnMessage {
     /******手机端请求第三方接口时，出现网络异常******/
 
     /******文章管理******/
-    NODE_ID_IS_NOT_EXIST("0041","内容不存在");
+    NODE_ID_IS_NOT_EXIST("0041","内容不存在"),
+
+    /******未开通快捷支付******/
+    NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付");
 
     private String code;
     private String msg;
