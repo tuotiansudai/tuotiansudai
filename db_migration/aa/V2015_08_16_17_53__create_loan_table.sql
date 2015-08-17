@@ -1,5 +1,5 @@
 CREATE TABLE ${aa}.`loan` (
-  `id`                          varchar(32)         NOT NULL,
+  `id`                          varchar(32)         NOT NULL AUTO_INCREMENT,
   `name`                        varchar(255)        NOT NULL,/***借款项目名称***/
   `agent_login_name`            varchar(32)         NOT NULL,/***代理人***/
   `loan_login_name`             varchar(32)         NOT NULL,/***借款用户***/
@@ -19,7 +19,7 @@ CREATE TABLE ${aa}.`loan` (
   `fundraising_end_time`        DATE                NOT NULL,/***筹款截止时间***/
   `show_on_home`                boolean             DEFAULT TRUE/***是否显示在首页true:显示在首页，false:不显示在首页***/
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_LOAN_CONTRACT_ID_REF_CONTRACT_ID` FOREIGN KEY (`contract_id`) REFERENCES ${aa}.`contract` (`id`),
+--   CONSTRAINT `FK_LOAN_CONTRACT_ID_REF_CONTRACT_ID` FOREIGN KEY (`contract_id`) REFERENCES ${aa}.`contract` (`id`),
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;

@@ -1,5 +1,5 @@
 CREATE TABLE ${aa}.`loan_title` (
-  `id`                    varchar (32)        NOT NULL ,
+  `id`                    varchar (32)        NOT NULL AUTO_INCREMENT,
   `loan_id`               varchar(32)         NOT NULL,/***借款标的***/
   `title_id`              varchar(32)         NOT NULL,/***申请材料标题***/
   `apply_metarial_url`    varchar(32)         NOT NULL,/***申请材料存放路径***/
