@@ -179,7 +179,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		//配置此项，表示使用H5页面
 		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		// 同步地址
-		sendMap.put("ret_url", "");
+//		sendMap.put("ret_url", "");
 		// 保存操作记录
 		BaseResponseDto baseResponseDto = new BaseResponseDto();
 		try {
