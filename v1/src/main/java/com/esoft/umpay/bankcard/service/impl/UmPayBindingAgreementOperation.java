@@ -143,7 +143,7 @@ public class UmPayBindingAgreementOperation extends
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
             BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
             bankCardResponseDto.setUrl(reqData.getUrl());
-            bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
+            bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),true));
             baseResponseDto.setData(bankCardResponseDto);
         } catch (UnsupportedEncodingException e){
             log.error(e.getLocalizedMessage(),e);
