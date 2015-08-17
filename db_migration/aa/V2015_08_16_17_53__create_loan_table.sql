@@ -17,7 +17,7 @@ CREATE TABLE ${aa}.`loan` (
   `contract_id`                 VARCHAR (32)        NOT NULL ,/***合同***/
   `fundraising_start_time`      DATE                NOT NULL,/***筹款开始时间***/
   `fundraising_end_time`        DATE                NOT NULL,/***筹款截止时间***/
-  `show_on_home`                boolean             DEFAULT TRUE
+  `show_on_home`                boolean             DEFAULT TRUE/***是否显示在首页true:显示在首页，false:不显示在首页***/
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_LOAN_CONTRACT_ID_REF_CONTRACT_ID` FOREIGN KEY (`contract_id`) REFERENCES ${aa}.`contract` (`id`),
 )
