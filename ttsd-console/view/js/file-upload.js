@@ -4,17 +4,22 @@
 $(function () {
     //模拟json数据
 
-    var data = {
-        title: '数组',
-        list: [
-            {name: "idcard", txt: "身份证", img: []},
-            {name: "room", txt: "房屋抵押", img: []},
-            {name: "cars", txt: "汽车抵押", img: []}
-        ]
+    //var data = {
+    //    title: '数组',
+    //    list: [
+    //        {name: "idcard", txt: "身份证", img: []},
+    //        {name: "room", txt: "房屋抵押", img: []},
+    //        {name: "cars", txt: "汽车抵押", img: []}
+    //    ]
+    //
+    //}
+    //var _html = template('upload', data);
 
-    }
-    var _html = template('upload', data);
-
+    var _html = '';
+    //初始化数据
+    $.get(API_SELECT,function(data){
+        _html = template('upload', data);
+    })
     //添加申请材料
     $('.btn-upload').click(function () {
         $('.upload-box').append(_html);
