@@ -97,19 +97,7 @@
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>
-						<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
-                        <span rel="invest-time-countdown" loan-id="#{loan.id}"
-							  invest-remain-time="剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}"
-							  invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
-							  server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
-                            <h:outputText value="#{loan.investBeginTime}">
-								<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
-							</h:outputText> 放标
-                        </span>
-						</ui:fragment>
-						<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
-							<span>剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}</span>
-						</ui:fragment>
+						<span>剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}</span>
 					</div>
 					<div>
 						<span class="marright"><img src="#{tplVars.themeImagePath}/index/icon4.png" />
@@ -149,18 +137,28 @@
 							</span>
 						</p>
 						<p>
-							<span>预期收益</span>
-							<span>
-								<h:outputText value="#{investCalculator.calculateAnticipatedInterest(investHome.instance.money, loan.id)}" id="anticipatedInterest">
-									<f:convertNumber maxFractionDigits="2" />
-								</h:outputText>元
-							</span></p>
-						<p>
-							<h:inputText label="投资金额" value="#{investHome.instance.money}" styleClass="p2c_input" required="true" requiredMessage="投资金额不能为空！">
+							<span><h:inputText label="投资金额" value="#{investHome.instance.money}" styleClass="p2c_input" required="true" requiredMessage="投资金额不能为空！">
 								<f:ajax event="blur" render="@this anticipatedInterest"></f:ajax>
 								<o:validator validatorId="javax.faces.DoubleRange" minimum="#{loan.minInvestMoney}" maximum="#{loanCalculator.calculateMoneyMaxInvested(loan.id)}"></o:validator>
 								<o:validator validatorId="com.esoft.core.validator.NumberValidator" cardinalNumber="#{loan.cardinalNumber}"></o:validator>
-							</h:inputText>&#160;元<a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
+							</h:inputText>元</span><a href="/loanAgreementSample" target="_Blank" class="loanContract">借款协议样本</a>
+						</p>
+						<p>
+							<span>预期收益
+								<h:outputText value="#{investCalculator.calculateAnticipatedInterest(investHome.instance.money, loan.id)}" id="anticipatedInterest">
+									<f:convertNumber maxFractionDigits="2" />
+								</h:outputText>元
+							</span>
+							<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+								<label rel="invest-time-countdown" loan-id="#{loan.id}"
+									   count-down-message=""
+									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+									<h:outputText value="#{loan.investBeginTime}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText> 放标
+								</label>
+							</ui:fragment>
 						</p>
 						<p>
 							<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">

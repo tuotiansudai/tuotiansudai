@@ -174,7 +174,7 @@
 
 							<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 								<p class="clearfix" rel="invest-time-countdown" loan-id="a-#{loan.id}"
-								   invest-remain-time="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+								   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 								   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 								   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 									<h:outputText value="#{loan.investBeginTime}">
@@ -296,7 +296,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" loan-id="b-#{loan.id}"
-									   invest-remain-time="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 										<h:outputText value="#{loan.investBeginTime}">
@@ -407,7 +407,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" loan-id="c-#{loan.id}"
-									   invest-remain-time="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 										<h:outputText value="#{loan.investBeginTime}">

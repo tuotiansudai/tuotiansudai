@@ -41,15 +41,16 @@
                 var remainSecondString = ('0'+remainSecond).substr(-2);
                 var remainMinute = parseInt(remain / 60);
                 var remainMinuteString = ('0'+remainMinute).substr(-2);
-                var cdString = "倒计时： " + remainMinuteString + ":" + remainSecondString;
+                var cdString = remainMinuteString + ":" + remainSecondString + ' 后可以投资';
                 this.el.html(cdString);
             }
         },
         onCountDownBegin:function(){
         },
         onCountDownOver:function(){
-            var investRemainTime = this.el.attr('invest-remain-time');
-            this.el.html(investRemainTime);
+            var countDownOverMessage = this.el.attr('count-down-message');
+            if(!countDownOverMessage){countDownOverMessage='';}
+            this.el.html(countDownOverMessage);
 
             // for index page
             var btn = $('#loan-btn-' + this.loanId);
@@ -73,8 +74,6 @@
             var beginTime = new Date(Date.parse(beginTimeString));
             var serverTimeString = cdEl.attr('server-now-time');
             var serverTime = new Date(Date.parse(serverTimeString));
-            console.log(serverTimeString);
-            console.log(Date.parse(serverTimeString));
             if(beginTime > serverTime){
                 // for index page
                 var btn = $('#loan-btn-'+loanId);
