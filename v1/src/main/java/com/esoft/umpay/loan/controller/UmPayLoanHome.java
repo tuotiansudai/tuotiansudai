@@ -108,6 +108,7 @@ public class UmPayLoanHome extends LoanHome {
 			return null;
 		} catch (UmPayOperationException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
+			return null;
 		}
 		FacesUtil.addInfoMessage("发布借款成功");
 		return FacesUtil.redirect(loanListUrl);

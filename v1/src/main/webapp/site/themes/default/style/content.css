@@ -41,6 +41,8 @@
 .btn02{ display:block; width:222px; height:40px; text-align:center; line-height:40px; background:#bfbfbf; color:#fff; font-size:16px;border-radius: 4px;margin-top: 6px;}
 .btn02:hover{ background:#bfbfbf;}
 .btn01:hover{ background:#DA2121;}
+.btn-waiting{background-color:#ff6969;}
+.btn-waiting:hover{background:#ff6969;}
 .color6{color: #666666;}
 .cf33735{color: #f33735}
 .page-bar{text-align: center;margin: 30px 0px;}

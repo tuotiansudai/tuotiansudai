@@ -1,14 +1,14 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pm="http://primefaces.org/mobile"
-	xmlns:archer="http://java.sun.com/jsf/archer"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:o="http://omnifaces.org/ui"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:of="http://omnifaces.org/functions"
+				template="../page.xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pm="http://primefaces.org/mobile"
+				xmlns:archer="http://java.sun.com/jsf/archer"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:o="http://omnifaces.org/ui"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<f:metadata>
 		<f:viewParam name="loanId" value="#{loanHome.id}"></f:viewParam>
 	</f:metadata>
@@ -20,6 +20,9 @@
 
 		<ui:param name="loan" value="#{loanHome.instance}"></ui:param>
 		<f:event type="preRenderView" listener="#{loanHome.redirectToHomeWhenLoanIsNotExist(loan)}" />
+		<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+			<script type="text/javascript" src="#{tplVars.themeJSPath}/invest-time-countdown.js"></script>
+		</ui:fragment>
 		<script>
 			//<![CDATA[
 				if (#{loanHome.instance.loanActivityType eq 'xs'}) {
@@ -98,7 +101,19 @@
 								<f:convertDateTime pattern="yyyy-MM-dd" locale="cn" timeZone="GMT+8"></f:convertDateTime>
 							</h:outputText>
 						</span>
-						<span>剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}</span>
+						<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+                        <span rel="invest-time-countdown" loan-id="#{loan.id}"
+							  invest-remain-time="剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}"
+							  invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+							  server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+                            <h:outputText value="#{loan.investBeginTime}">
+								<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
+							</h:outputText> 放标
+                        </span>
+						</ui:fragment>
+						<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
+							<span>剩余时间：#{loanCalculator.calculateRemainTime(loan.id)}</span>
+						</ui:fragment>
 					</div>
 					<div>
 						<span class="marright"><img src="#{tplVars.themeImagePath}/index/icon4.png" />

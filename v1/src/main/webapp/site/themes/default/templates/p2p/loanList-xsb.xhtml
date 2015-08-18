@@ -246,9 +246,13 @@
 								<span class="color6">项目正在等待复核</span>
 							</ui:fragment>
 							<p>
-								<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
+								<ui:fragment rendered="#{((not empty loan.investBeginTime) and loan.investBeginTime gt now) and loan.status == LoanStatus.RAISING}">
+									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn01 btn-waiting">预热中</a>
+								</ui:fragment>
+								<ui:fragment rendered="#{((empty loan.investBeginTime) or loan.investBeginTime lt now) and loan.status == LoanStatus.RAISING}">
 									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn01">新手可投</a>
-								</ui:fragment> <ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
+								</ui:fragment>
+								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
 									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn02">查看详情</a>
 								</ui:fragment>
 							</p>
