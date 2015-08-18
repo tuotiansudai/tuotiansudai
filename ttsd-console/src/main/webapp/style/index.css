@@ -22,5 +22,22 @@ a:hover{ color: #cc9900;}
 
 .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{ font-size: 12px;}
 
-
-/*筹款编辑*/
+/*登录*/
+.login-bg{ background: #eee;}
+.login {
+	width: 500px;
+	height: 420px;
+	margin: -250px 0 0 -250px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	padding:20px 30px;
+	background: #c1bebe;
+	border-radius: 5px;
+	z-index: 9999;
+}
+.captcha-img{
+	height: 34px;
+	background: #ccc;
+	width: 38.66666%;
+}
