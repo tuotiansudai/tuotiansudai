@@ -12,4 +12,7 @@ public interface MobileAppReferrerInvestListDao {
 
     double getRewardTotalMoney(String referrerId);
 
+    String getQueryCondition(String queryType);
+
+
 }
