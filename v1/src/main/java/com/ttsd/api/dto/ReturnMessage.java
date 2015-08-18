@@ -54,6 +54,7 @@ public enum ReturnMessage {
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
     USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
+    NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
 
     /******手机端投资******/
 
