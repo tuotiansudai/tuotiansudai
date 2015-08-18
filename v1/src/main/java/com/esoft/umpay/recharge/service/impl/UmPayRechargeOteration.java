@@ -105,8 +105,13 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser()
 				.getId());
 		if(isOpenFastPayment){
+			String bankCardNo = rechargeService.getRechangeWay(recharge.getUser().getId());
+			if (bankCardNo == null){
+				return null;
+			}
 			recharge.setRechargeWay(rechargeService.getRechangeWay(recharge.getUser()
 					.getId()));
+
 		}
 		// 保存一个充值订单
 		String id = rechargeService.createRechargeOrder(recharge,request);
@@ -174,14 +179,20 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResponseDto createOperation(Recharge recharge,HttpServletRequest request) throws IOException {
-
+		BaseResponseDto baseResponseDto = new BaseResponseDto();
 		Map<String,String> sendMap = assembleSendMap(recharge, true, request);
+
+		if (sendMap == null){
+			baseResponseDto.setCode(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode());
+			baseResponseDto.setMessage(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getMsg());
+			return baseResponseDto;
+		}
 		//配置此项，表示使用H5页面
 		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		// 同步地址
-		sendMap.put("ret_url", "");
+//		sendMap.put("ret_url", "");
 		// 保存操作记录
-		BaseResponseDto baseResponseDto = new BaseResponseDto();
+
 		try {
 			// 加密参数
 			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
@@ -195,7 +206,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
 			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
 			bankCardResponseDto.setUrl(reqData.getUrl());
-			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),false));
+			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),true));
 			baseResponseDto.setData(bankCardResponseDto);
 			return baseResponseDto;
 		} catch (UnsupportedEncodingException e){

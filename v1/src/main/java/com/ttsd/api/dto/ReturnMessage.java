@@ -54,6 +54,7 @@ public enum ReturnMessage {
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
     USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
+    NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
 
     /******手机端投资******/
 
@@ -77,12 +78,15 @@ public enum ReturnMessage {
     /******换卡******/
     REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL("0042","换卡失败:银行卡号为空"),
     REPLACE_CARD_FAIL_BANK_CARD_EXIST("0043","换卡失败:该银行卡已存在"),
-    REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT("0046","换卡失败:已开通快捷支付不能换卡"),
     REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO("0047","换卡失败:用户账户余额不为0"),
+    REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT("0048","换卡失败:已开通快捷支付不能换卡"),
+
 
     /*****联动优势相关******/
-    UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败");
+    UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败"),
 
+    /******未开通快捷支付******/
+    NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付");
 
     private String code;
     private String msg;
