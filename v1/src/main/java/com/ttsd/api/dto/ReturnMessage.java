@@ -75,6 +75,16 @@ public enum ReturnMessage {
     /******文章管理******/
     NODE_ID_IS_NOT_EXIST("0041","内容不存在"),
 
+    /******换卡******/
+    REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL("0042","换卡失败:银行卡号为空"),
+    REPLACE_CARD_FAIL_BANK_CARD_EXIST("0043","换卡失败:该银行卡已存在"),
+    REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO("0047","换卡失败:用户账户余额不为0"),
+    REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT("0048","换卡失败:已开通快捷支付不能换卡"),
+
+
+    /*****联动优势相关******/
+    UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败"),
+
     /******未开通快捷支付******/
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付");
 
