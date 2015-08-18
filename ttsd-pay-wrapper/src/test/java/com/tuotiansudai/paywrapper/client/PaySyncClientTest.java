@@ -11,14 +11,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class PayClientTest {
+public class PaySyncClientTest {
 
     @Autowired
-    private PayClient payClient;
+    private PaySyncClient paySyncClient;
 
     @Test
     public void testName() throws Exception {
         MerRegisterPersonRequestModel registerRequestData = new MerRegisterPersonRequestModel("sidneygao", "高希端", "650102198104281210", "13810586920");
-        MerRegisterPersonResponseModel response = payClient.send(MerRegisterPersonMapper.class, registerRequestData, MerRegisterPersonResponseModel.class);
+        MerRegisterPersonResponseModel response = paySyncClient.send(MerRegisterPersonMapper.class, registerRequestData, MerRegisterPersonResponseModel.class);
     }
 }

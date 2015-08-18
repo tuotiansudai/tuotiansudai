@@ -1,5 +1,7 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 
@@ -13,5 +15,5 @@ public interface UserService {
 
     boolean loginNameIsExist(String loginName);
 
-    boolean registerAccount(RegisterAccountDto dto);
+    BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 }

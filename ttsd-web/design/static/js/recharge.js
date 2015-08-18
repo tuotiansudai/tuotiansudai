@@ -1,6 +1,3 @@
-/**
- * Created by belen on 15/8/13.
- */
 require(['jquery'], function ($) {
     $(function () {
         //select bank

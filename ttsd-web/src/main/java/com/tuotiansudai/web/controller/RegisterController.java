@@ -1,10 +1,7 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +28,10 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
+    public BaseDto<BaseDataDto> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(this.userService.registerUser(registerUserDto));
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
         return baseDto;
@@ -42,21 +39,16 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto registerAccount(@Valid @RequestBody RegisterAccountDto registerAccountDto) {
-        BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(this.userService.registerAccount(registerAccountDto));
-        BaseDto baseDto = new BaseDto();
-        baseDto.setData(dataDto);
-
-        return baseDto;
+    public BaseDto<PayDataDto> registerAccount(@Valid @RequestBody RegisterAccountDto registerAccountDto) {
+        return this.userService.registerAccount(registerAccountDto);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/isexist", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto mobileIsExist(@PathVariable String mobile) {
+    public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(userService.mobileIsExist(mobile));
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
         return baseDto;
@@ -65,10 +57,10 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto loginNameIsExist(@PathVariable String loginName) {
+    public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(userService.loginNameIsExist(loginName));
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
         return baseDto;
@@ -76,10 +68,10 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/sendregistercaptcha", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto sendRegisterCaptcha(@PathVariable String mobile) {
+    public BaseDto<BaseDataDto> sendRegisterCaptcha(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile));
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
         return baseDto;
@@ -87,10 +79,10 @@ public class RegisterController extends BaseController {
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
+    public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha));
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
         return baseDto;

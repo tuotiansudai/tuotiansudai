@@ -3,7 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.security.CaptchaVerifier;
+import com.tuotiansudai.utils.CaptchaVerifier;
 import com.tuotiansudai.service.UserService;
 import nl.captcha.Captcha;
 import nl.captcha.backgrounds.GradiatedBackgroundProducer;

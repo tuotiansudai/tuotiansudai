@@ -2,7 +2,6 @@ package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.security.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.junit.Before;
@@ -11,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;

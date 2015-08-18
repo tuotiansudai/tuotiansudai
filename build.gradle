@@ -11,14 +11,34 @@ subprojects {
     }
 
     dependencies {
-        def springVersion = '4.1.7.RELEASE'
+        def springVersion = '4.2.0.RELEASE'
         def slf4jVersion = '1.7.12'
-        compile 'log4j:log4j:1.2.17',
+        def mybatisVersion = '3.3.0'
+        def mybatisSpringVersion = '1.2.3'
+        def jacksonVersion = '2.6.1'
+        def freemarkerVersion = '2.3.23'
+        compile "org.springframework:spring-webmvc:$springVersion",
+                "org.springframework:spring-context-support:$springVersion",
+                "org.springframework:spring-jdbc:$springVersion",
+                "org.freemarker:freemarker:$freemarkerVersion",
+                "org.mybatis:mybatis:$mybatisVersion",
+                "org.mybatis:mybatis-spring:$mybatisSpringVersion",
+                "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
+                "org.slf4j:slf4j-log4j12:$slf4jVersion",
+                "org.slf4j:slf4j-api:$slf4jVersion",
                 'com.google.guava:guava:18.0',
+                'org.apache.commons:commons-lang3:3.4',
+                'redis.clients:jedis:2.7.3',
+                'org.hibernate:hibernate-validator:5.2.1.Final',
+                'com.squareup.okhttp:okhttp:2.4.0',
+                'com.jolbox:bonecp-spring:0.8.0.RELEASE',
+                'mysql:mysql-connector-java:5.1.35',
+                'log4j:log4j:1.2.17',
                 'joda-time:joda-time:2.8.1',
                 'org.joda:joda-money:0.10.0',
-                "org.slf4j:slf4j-log4j12:$slf4jVersion",
-                "org.slf4j:slf4j-api:$slf4jVersion"
+                'dom4j:dom4j:1.6.1'
+
+
 
         testCompile "junit:junit:4.12",
                 'org.mockito:mockito-all:1.10.19',

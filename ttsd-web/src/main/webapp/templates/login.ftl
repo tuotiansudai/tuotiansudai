@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv=″X-UA-Compatible″ content=″IE=edge,chrome=1″/>
-    <title>登陆</title>
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.global}">
-    <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${css.login}">
+<#import "macro/global.ftl" as global>
+<@global.head title="登录" pageCss="${css.login}">
+</@global.head>
 
-</head>
 <body>
 <#include "header.ftl" />
 <div class="login">
     <div>
-        <h3>欢迎登陆拓天速贷</h3>
+        <h3>欢迎登录拓天速贷</h3>
 
         <form class="form-login">
             <label>
@@ -30,7 +26,10 @@
                     <img src="/login/captcha" alt=""/>
                 </em>
             </label>
+
             <div class="error"></div>
+
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
             <p class="forgot-password">
                 <a href="javascript:" class="register">免费注册</a>
@@ -44,9 +43,8 @@
         </form>
     </div>
 </div>
-
 <#include "footer.ftl">
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true" data-main="${requestContext.getContextPath()}/js/dest/${js.login}"></script>
+<@global.javascript pageJavascript="${js.login}">
+</@global.javascript>
 </body>
 </html>

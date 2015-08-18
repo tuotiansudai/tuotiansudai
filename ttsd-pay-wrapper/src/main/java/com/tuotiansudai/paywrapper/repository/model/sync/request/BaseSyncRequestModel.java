@@ -23,11 +23,13 @@ public abstract class BaseSyncRequestModel {
 
     private String signType;
 
+    private String sign;
+
     private String charset;
 
     private String version;
 
-    private String merchantId;
+    private String merId;
 
     private Date requestTime = new Date();
 
@@ -53,7 +55,7 @@ public abstract class BaseSyncRequestModel {
         this.signType = props.getProperty("sign_type");
         this.charset = props.getProperty("charset");
         this.version = props.getProperty("version");
-        this.merchantId = props.getProperty("mer_id");
+        this.merId = props.getProperty("mer_id");
     }
 
     public Map<String, String> generatePayRequestData() {
@@ -61,7 +63,7 @@ public abstract class BaseSyncRequestModel {
         payRequestData.put("service", this.service);
         payRequestData.put("sign_type", this.signType);
         payRequestData.put("charset", this.charset);
-        payRequestData.put("mer_id", this.merchantId);
+        payRequestData.put("mer_id", this.merId);
         payRequestData.put("version", this.version);
         return payRequestData;
     }
@@ -86,6 +88,14 @@ public abstract class BaseSyncRequestModel {
         this.signType = signType;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
     public String getCharset() {
         return charset;
     }
@@ -102,12 +112,12 @@ public abstract class BaseSyncRequestModel {
         this.version = version;
     }
 
-    public String getMerchantId() {
-        return merchantId;
+    public String getMerId() {
+        return merId;
     }
 
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
+    public void setMerId(String merId) {
+        this.merId = merId;
     }
 
     public Date getRequestTime() {
@@ -157,4 +167,6 @@ public abstract class BaseSyncRequestModel {
     public int hashCode() {
         return id.hashCode();
     }
+
+
 }

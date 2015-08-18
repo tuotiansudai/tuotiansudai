@@ -1,14 +1,13 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.utils;
 
+import com.tuotiansudai.security.MyUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
-@Component
 public class LoginUserInfo {
 
-    public String getLoginName() {
-        Object principal = this.getPrincipal();
+    public static String getLoginName() {
+        Object principal = LoginUserInfo.getPrincipal();
 
         if (principal instanceof MyUser) {
             return ((MyUser) principal).getUsername();
@@ -17,8 +16,8 @@ public class LoginUserInfo {
         return null;
     }
 
-    public String getMobile() {
-        Object principal = this.getPrincipal();
+    public static String getMobile() {
+        Object principal = LoginUserInfo.getPrincipal();
 
         if (principal instanceof MyUser) {
             return ((MyUser) principal).getMobile();
@@ -27,7 +26,17 @@ public class LoginUserInfo {
         return null;
     }
 
-    private Object getPrincipal() {
+    public static String getUmpUserId() {
+        Object principal = LoginUserInfo.getPrincipal();
+
+        if (principal instanceof MyUser) {
+            return ((MyUser) principal).getUmpUserId();
+        }
+
+        return null;
+    }
+
+    private static Object getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getPrincipal();
     }
