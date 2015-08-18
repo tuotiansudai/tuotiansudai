@@ -22,30 +22,6 @@ public class MobileAppReferrerInvestListDaoImpl implements MobileAppReferrerInve
     @Resource
     private HibernateTemplate ht;
 
-//    private static String referrerInvestListSql = "SELECT n.`investUserId`, n.`level`,n.`investMoney`,n.`investTime`,n.`rewardMoney`,n.`rewardTime`,"
-//            + " n.`loanId`,l.`name` AS `loanName`,l.`loan_activity_type` AS `loanActivityType`,l.`deadline` AS `deadLine`"
-//            + " FROM (SELECT temp.`investUserId`,r.`level`,temp.`investMoney`,temp.`investTime`,temp.`rewardMoney`,temp.`rewardTime`,"
-//            + " temp.`loanId` FROM referrer_relation r JOIN (SELECT i.`user_id` AS investUserId,i.`money` AS investMoney,i.`time` AS investTime,"
-//            + " i.`loan_id` AS loanId,t.`bonus` AS rewardMoney,t.`time` AS rewardTime,t.`referrer_id` FROM invest_userReferrer t JOIN invest i ON t.`invest_id` = i.`id`"
-//            + "  AND i.`status` NOT IN ('" + InvestConstants.InvestStatus.CANCEL + "', '" + InvestConstants.InvestStatus.UNFINISHED + "') WHERE t.`referrer_id` = ? ) temp "
-//            + " ON r.`user_id` = temp.`investUserId` AND r.`referrer_id` = temp.`referrer_id`) n JOIN loan l ON n.`loanId` = l.`id` AND l.`status` IN ('" + LoanConstants.LoanStatus.COMPLETE + "', '" + LoanConstants.LoanStatus.REPAYING + "')  ORDER BY n.`rewardTime` DESC limit ?,? ";
-//
-//
-//    private static String referrerInvestCountListSql = "SELECT count(1) "
-//            + " FROM (SELECT temp.`investUserId`,r.`level`,temp.`investMoney`,temp.`investTime`,temp.`rewardMoney`,temp.`rewardTime`,"
-//            + " temp.`loanId` FROM referrer_relation r JOIN (SELECT i.`user_id` AS investUserId,i.`money` AS investMoney,i.`time` AS investTime,"
-//            + " i.`loan_id` AS loanId,t.`bonus` AS rewardMoney,t.`time` AS rewardTime,t.`referrer_id` FROM invest_userReferrer t JOIN invest i ON t.`invest_id` = i.`id`"
-//            + "  AND i.`status` NOT IN ('" + InvestConstants.InvestStatus.CANCEL + "', '" + InvestConstants.InvestStatus.UNFINISHED + "') WHERE t.`referrer_id` = ? ) temp "
-//            + " ON r.`user_id` = temp.`investUserId` AND r.`referrer_id` = temp.`referrer_id`) n JOIN loan l ON n.`loanId` = l.`id` AND l.`status` IN ('" + LoanConstants.LoanStatus.COMPLETE + "', '" + LoanConstants.LoanStatus.REPAYING + "') ";
-//
-//    private static String rewardTotalMoneySql = "SELECT sum(n.`rewardMoney`) "
-//            + " FROM (SELECT temp.`investUserId`,r.`level`,temp.`investMoney`,temp.`investTime`,temp.`rewardMoney`,temp.`rewardTime`,"
-//            + " temp.`loanId` FROM referrer_relation r JOIN (SELECT i.`user_id` AS investUserId,i.`money` AS investMoney,i.`time` AS investTime,"
-//            + " i.`loan_id` AS loanId,t.`bonus` AS rewardMoney,t.`time` AS rewardTime,t.`referrer_id` FROM invest_userReferrer t JOIN invest i ON t.`invest_id` = i.`id`"
-//            + "  AND i.`status` NOT IN ('" + InvestConstants.InvestStatus.CANCEL + "', '" + InvestConstants.InvestStatus.UNFINISHED + "') WHERE t.`referrer_id` = ? ) temp "
-//            + " ON r.`user_id` = temp.`investUserId` AND r.`referrer_id` = temp.`referrer_id`) n JOIN loan l ON n.`loanId` = l.`id` AND l.`status` IN ('" + LoanConstants.LoanStatus.COMPLETE + "', '" + LoanConstants.LoanStatus.REPAYING + "')  ";
-
-
     @Override
     public Integer getTotalCount(String referrerId) {
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(getQueryCondition("totalCount"));
