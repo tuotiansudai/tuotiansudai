@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     private String nodeId;
     private String title;
-    private String description;
+    private String desc;
     private String content;
     private String time;
 
@@ -18,7 +18,7 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     public NodeDetailResponseDataDto(Node node, boolean includeContent){
         this.nodeId = node.getId();
         this.title = node.getTitle();
-        this.description = node.getDescription();
+        this.desc = node.getDescription();
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(node.getUpdateTime()).toString();
         if(includeContent){
             this.content = node.getNodeBody().getBody();
@@ -41,12 +41,12 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getContent() {
