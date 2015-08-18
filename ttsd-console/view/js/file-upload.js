@@ -21,6 +21,7 @@ $(function () {
         $(".file-loading").fileinput({
             language: "zh",
             uploadUrl: "/",
+            showUpload: false,
             allowedFileExtensions: ["jpg", "png", "gif"]
         });
         $('.selectpicker').selectpicker({
@@ -76,16 +77,22 @@ $(function () {
 
 
     //选择下拉框赋值给input
-    $('body').on('click','.dropdown-menu li',function(){
+    $('body').on('click', '.dropdown-menu li', function () {
         var _this = $(this);
         var txt = _this.find('.text').text();
-        $.each(data.list, function (i,value) {
-            if(value.txt == txt){
-               _this.closest('.col-file-box').find('.jq-txt').attr('name',value.name)
-                   .val(txt);
+        $.each(data.list, function (i, value) {
+            if (value.txt == txt) {
+                _this.closest('.col-file-box').find('.jq-txt').attr('name', value.name)
+                    .val(txt);
+                _this.closest('.col-file-box').find('.jq-src').attr('name',value.name+'_src');
             }
 
         })
     });
+
+
+    // 循环上传图片分配对应位置
+    var _parent = $('.upload-box');
+
 
 })

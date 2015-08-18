@@ -75,7 +75,8 @@
                     </div>
                     <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
                     <button type="button" class="btn btn-default jq-add">添加</button>
-                    <input type="hidden" class="jq-txt" value=""/>
+                    <input type="hidden" class="jq-txt" name="idcard" value="身份证"/>
+                    <input type="hidden" class="jq-src" name="idcard_src" value="">
                 </div>
                 <input type="file" name="file-upload-name[]" multiple=true class="file-loading">
             </div>
@@ -202,9 +203,7 @@
                             <button type="button" class="btn-upload btn btn-info">＋</button>
                         </div>
                     </div>
-                    <div class="upload-box">
-
-                    </div>
+                    <div class="upload-box"></div>
                     <div class="form-group input-append">
                         <label for="project" class="col-sm-2 control-label">筹款启动时间: </label>
 
