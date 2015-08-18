@@ -52,13 +52,16 @@
                     <label for="yzm">验证码：</label>
                     <div class="row">
                         <div class="col-md-7">
-                            <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="验证码">
+                            <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="验证码" maxlength="5">
                         </div>
                         <div class="captcha-img col-md-5"><img class="verification-console-img" src="/login/captcha" alt=""/></div>
                     </div>
                 </div>
+                <div class="form-group">
+                   <span class="error" style="display: none; color: #cc0000;"></span>
+                </div>
                 <div class="form-group" style="margin-top: 20px;">
-                    <button class="btn btn-primary btn-block btn-lg" type="button">登录</button>
+                    <button class="btn grey btn-primary btn-block btn-lg" type="button" disabled="disabled">登录</button>
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
