@@ -2,22 +2,19 @@
  * Created by belen on 15/8/17.
  */
 $(function () {
-    //模拟json数据
+    /*
 
-    //var data = {
-    //    title: '数组',
-    //    list: [
-    //        {name: "idcard", txt: "身份证", img: []},
-    //        {name: "room", txt: "房屋抵押", img: []},
-    //        {name: "cars", txt: "汽车抵押", img: []}
-    //    ]
-    //
-    //}
-    //var _html = template('upload', data);
+     API_SELECT : 数据请求地址申请材料标题
+     uploadUrl : 图片存放地址，可忽略
+     json数据格式参考 select.json 文件
+     name 跟 txt 属性名字变化，请跟随替换
+     84-88 行代码
+     
+     */
 
     var _html = '';
     //初始化数据
-    $.get(API_SELECT,function(data){
+    $.get(API_SELECT, function (data) {
         _html = template('upload', data);
     })
     //添加申请材料
@@ -105,13 +102,13 @@ $(function () {
             var arr = formGroup.eq(index).find('.jq-src');
             if (formGroup.eq(index).find('.file-preview-frame').index()) {
                 arr.val('');
-                console.log(index+':'+arr.val())
+                console.log(index + ':' + arr.val())
             } else {
                 formGroup.eq(index).find('.file-preview-frame').each(function (i) {
                     var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
                     str.push(_img);
                     arr.val(str);
-                    console.log(index+':'+arr.val())
+                    console.log(index + ':' + arr.val())
                 });
             }
         });
@@ -119,7 +116,7 @@ $(function () {
     $('.jq-btn-form').click(function () {
         indexPic();
         var result = $('.form-horizontal').serialize();
-        $.post(API_SELECT,result);
+        $.post(API_SELECT, result);
     })
 
 
