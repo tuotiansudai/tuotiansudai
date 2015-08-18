@@ -58,20 +58,20 @@
             });
 
 
-
         });
     </script>
     <script id="upload" type="text/html">
         <div class="form-group">
             <label for="project" class="col-sm-2 control-label"></label>
+
             <div class="col-sm-10">
                 <div class="row col-file-box">
                     <div class="select-box">
-                    <select class="selectpicker col-sm-5">
-                        {{each list }}
-                        <option role="{{$value.name}}" >{{$value.txt}}</option>
-                        {{/each}}
-                    </select>
+                        <select class="selectpicker col-sm-5">
+                            {{each list }}
+                            <option role="{{$value.name}}">{{$value.txt}}</option>
+                            {{/each}}
+                        </select>
                     </div>
                     <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
                     <button type="button" class="btn btn-default jq-add">添加</button>
@@ -85,7 +85,7 @@
     <script id="select" type="text/html">
         <select class="selectpicker col-sm-5">
             {{each list }}
-            <option role="{{$value.name}}" >{{$value.txt}}</option>
+            <option role="{{$value.name}}">{{$value.txt}}</option>
             {{/each}}
         </select>
     </script>
@@ -253,7 +253,7 @@
 
                         <div class="col-sm-4">
 
-                            <button type="submit" class="btn btn-primary">放款</button>
+                            <button type="button" class="btn jq-btn-form btn-primary">保存</button>
                         </div>
                     </div>
                 </form>

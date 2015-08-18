@@ -17,7 +17,7 @@
     font-size: 999px;
     text-align: right;
     color: #fff;
-    background: transparent url('../images/loading.gif') top left no-repeat;
+    background: transparent url('../../images/loading.gif') top left no-repeat;
     border: none;
 }
 
@@ -219,3 +219,5 @@
     background: url('../images/loading-sm.gif') no-repeat center bottom 10px;
     opacity: 0.6;
 }
+.kv-file-upload{
+    display: none;}
