@@ -231,7 +231,7 @@
 									<f:convertNumber maxFractionDigits="2" />
 								</h:outputText>
 							</strong> 元</span>
-							<span style="width: 210px;">已募集<strong class="colorea544a">#{loan.loanMoney-moneyNeedRaised}</strong>元</span>
+							<span style="width: 210px;">已募集<strong class="colorea544a">#{loanCalculator.calculateMoneyRaised(loan.id)}</strong>元</span>
 						</div>
 						<table class="rengou-tb">
 

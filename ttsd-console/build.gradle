@@ -1,0 +1,15 @@
+apply plugin: 'war'
+
+dependencies {
+    compile project(':ttsd-service'),
+            fileTree(dir: 'libs', include: '**/*.jar')
+
+}
+
+war {
+    archiveName "ttsd-console.war"
+    destinationDir = file("war")
+    from('/workspace/new_version_config/ttsd-console/') {
+        into 'WEB-INF/classes/'
+    }
+}

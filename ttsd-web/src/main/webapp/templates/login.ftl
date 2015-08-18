@@ -3,7 +3,6 @@
 <#import "macro/global.ftl" as global>
 <@global.head title="登录" pageCss="${css.login}">
 </@global.head>
-
 <body>
 <#include "header.ftl" />
 <div class="login">

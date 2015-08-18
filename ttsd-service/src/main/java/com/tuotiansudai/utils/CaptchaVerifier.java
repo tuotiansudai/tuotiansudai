@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.client.RedisWrapperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ public class CaptchaVerifier {
     @Autowired
     private HttpServletRequest httpServletRequest;
 
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
     public boolean loginCaptchaVerify(String captcha) {
         String jSessionId = this.getJSessionId(httpServletRequest);
         if (Strings.isNullOrEmpty(captcha) || Strings.isNullOrEmpty(jSessionId)) {
@@ -26,6 +30,15 @@ public class CaptchaVerifier {
 
         Object existingCaptcha = httpServletRequest.getSession().getAttribute(jSessionId);
         return existingCaptcha != null && captcha.equalsIgnoreCase((String) existingCaptcha);
+    }
+
+    public boolean registerPhotoCaptchaVerify(String captcha) {
+        String jSessionId = this.getJSessionId(httpServletRequest);
+        if (redisWrapperClient.exists(jSessionId)) {
+            return redisWrapperClient.get(jSessionId).equals(captcha);
+        } else {
+            return false;
+        }
     }
 
     private String getJSessionId(HttpServletRequest request) {
