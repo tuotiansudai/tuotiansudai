@@ -1536,7 +1536,7 @@
             };
             fnSuccess = function (data, textStatus, jqXHR) {
                 var outData = self.getOutData(jqXHR, data), $thumbs = self.getThumbs(), key = 0;
-                keys = isEmpty(data) || isEmpty(data.errorkeys) ? [] : data.errorkeys;
+                var keys = isEmpty(data) || isEmpty(data.errorkeys) ? [] : data.errorkeys;
                 if (isEmpty(data) || isEmpty(data.error)) {
                     self.raise('filebatchuploadsuccess', [outData]);
                     setAllUploaded();

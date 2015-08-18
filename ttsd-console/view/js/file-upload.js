@@ -13,8 +13,10 @@ $(function () {
      */
 
     var _html = '';
+    var data = '';
     //初始化数据
     $.get(API_SELECT, function (data) {
+        data = data;
         _html = template('upload', data);
     })
     //添加申请材料
@@ -44,6 +46,7 @@ $(function () {
         })
             .done(function (data) {
                 if (data.status) {
+                    data = data;
                     ajaxGet(API_SELECT, _this);
                 } else {
 
