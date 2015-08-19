@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,25 +30,25 @@ public class LoanController extends BaseController{
         return payLoanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "/get/loginName",method = RequestMethod.GET)
+    @RequestMapping(value = "/get/loginNames",method = RequestMethod.GET)
     @ResponseBody
     public List<String> getLoginNames(@Valid @RequestParam String loginName){
         return payLoanService.getLoginNames(loginName);
     }
 
-    @RequestMapping(value = "get/loanType",method = RequestMethod.GET)
+    @RequestMapping(value = "get/allLoanTypes",method = RequestMethod.GET)
     @ResponseBody
     public List<LoanType> getAllLoanTypes(){
         return loanService.getLoanType();
     }
 
-    @RequestMapping(value = "/get/activityType",method = RequestMethod.GET)
+    @RequestMapping(value = "/get/allActivityTypes",method = RequestMethod.GET)
     @ResponseBody
     public List<ActivityType> getAllActivityTypes(){
         return loanService.getActivityType();
     }
 
-    @RequestMapping(value = "get/contract",method = RequestMethod.GET)
+    @RequestMapping(value = "get/Allcontracts",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllContracts(){
         List contracts = new ArrayList();
@@ -56,5 +57,11 @@ public class LoanController extends BaseController{
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         return contracts;
+    }
+
+    @RequestMapping(value = "get/allTitles",method = RequestMethod.GET)
+    @ResponseBody
+    public List<TitleModel> findAllTitles(){
+        return payLoanService.findAllTitles();
     }
 }

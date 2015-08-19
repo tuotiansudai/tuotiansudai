@@ -100,6 +100,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createTitle(TitleModel titleModel) {
+        titleModel.setType("new");
         titleMapper.createTitle(titleModel);
     }
 
@@ -110,7 +111,10 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     public List<String> getLoginNames(String loginName) {
-        return accountMapper.findAllLoginNamesByLike(loginName);
+        return accountMapper.findAllLoginNamesByLike("%"+loginName+"%");
     }
 
+    public List<TitleModel> findAllTitles(){
+        return titleMapper.findAllTitles();
+    }
 }

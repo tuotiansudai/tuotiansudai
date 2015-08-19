@@ -25,11 +25,10 @@
         select * from account where login_name = #{loginName}
     </select>
 
-<<<<<<< HEAD
     <select id="findAllLoanLoginNamesByLike" resultMap="accountResultMap">
         select loginName from account where login_name like #{loginName}
     </select>
-=======
+
     <select id="lockByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>
@@ -41,5 +40,4 @@
         where login_name = #{loginName}
     </update>
 
->>>>>>> origin/master
 </mapper>

@@ -29,4 +29,10 @@ public interface LoanService {
      * @return
      */
     List<String> getLoginNames(String loginName);
+
+    /**
+     * @function 获取所有的标题
+     * @return
+     */
+    List<TitleModel> findAllTitles();
 }

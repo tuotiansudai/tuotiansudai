@@ -11,6 +11,10 @@
     </resultMap>
 
     <insert id="createTitle" parameterType="com.tuotiansudai.repository.model.TitleModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loan_title(type,title)VALUES (#{type},#{title})
+        insert into title(type,title)VALUES (#{type},#{title})
     </insert>
+
+    <select id="findAllTitles" resultMap="titleResultMap">
+        select * from title
+    </select>
 </mapper>
