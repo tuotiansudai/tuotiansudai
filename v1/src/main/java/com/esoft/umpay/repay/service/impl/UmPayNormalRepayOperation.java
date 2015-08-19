@@ -93,15 +93,20 @@ public class UmPayNormalRepayOperation extends
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
 	public void recommendedIncome(String loanId){
+		log.info("begin referrer reward after make loan "+ loanId);
 		Loan loan = ht.get(Loan.class, loanId);
+		String sql = "select role_id from user_role where user_id = ''{0}''";
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
 				"from Invest i where i.loan.id=? and i.status not in (?,?)",
 				new String[] { loanId, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
+			log.info("find invest "+ invest.getId());
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
-				Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery("select role_id from user_role where user_id = ''"+referrerRelation.getReferrer().getId()+"''").setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				log.info("referrer is" + referrerRelation.getReferrerId());
+				Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sql,referrerRelation.getReferrerId())).
+						setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 				List<Map<String, Object>> mapList = query.list();
 				List<String> list = new ArrayList<String>();
 				for (int i=0;i<mapList.size();i++) {
