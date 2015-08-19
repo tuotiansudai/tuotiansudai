@@ -120,15 +120,17 @@ public class UmPayNormalRepayOperation extends
 				}else{
 					roleId = "MEMBER";
 				}
+				log.info("roleId="+roleId);
 				double bonus = calculateBonus(invest, referrerRelation, loan, roleId);
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
+				log.info("user_id="+referrerRelation.getReferrerId());
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
 				String errorMessage = "";
-
+				log.info("particUserId="+particUserId);
 				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
 				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
 
