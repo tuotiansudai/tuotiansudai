@@ -15,8 +15,9 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
     private String loanUserId;
 
     public Map<String, String> generatePayRequestData() {
+        super.generatePayRequestData();
         Map<String, String> payRequestData = Maps.newHashMap();
-        payRequestData.put("service", this.service);
+        payRequestData.put("service", this.getService());
         payRequestData.put("sign_type", this.getSignType());
         payRequestData.put("charset", this.getCharset());
         payRequestData.put("mer_id", this.getMerId());
