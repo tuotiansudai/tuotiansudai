@@ -28,6 +28,21 @@ require(['jquery'], function ($) {
                 $('.recharge-qr').addClass('grey').attr('disabled','disabled');
             }
         });
-        //
+
+        //tab切换
+        var _li = $('.banking li');
+        _li.click(function(){
+            var _this = $(this);
+            var index = _this.index();
+            var boxBanking = $('.box-banking ol');
+            if(index == 1){
+                _this.addClass('active').siblings().removeClass('active');
+                boxBanking.eq(index).show().siblings().hide();
+            }else{
+                _this.addClass('active').siblings().removeClass('active');
+                boxBanking.eq(index).show().siblings().hide();
+            }
+
+        });
     });
 })

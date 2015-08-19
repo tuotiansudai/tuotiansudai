@@ -5,7 +5,9 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-Bind Card
+
+
+
 <#include "footer.ftl">
 <@global.javascript pageJavascript="demo">
 </@global.javascript>

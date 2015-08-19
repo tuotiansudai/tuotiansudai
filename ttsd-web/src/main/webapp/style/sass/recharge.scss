@@ -28,27 +28,38 @@
     height: 330px;
     margin: 10px 4px 0px;
     position: relative;
-    & h5 {
+
+    & ul{
+      position: relative;
+      height: 50px;
+    }
+    & ul li.active{
+      border-bottom: #fff 1px solid;
+      border-top: #e06b0c 1px solid;
+    }
+    & ul li {
       width: 114px;
       height: 48px;
       text-align: center;
       line-height: 48px;
       border: #dddddd 1px solid;
-      border-top: #e06b0c 1px solid;
-      border-bottom: #fff 1px solid;
-      z-index: 6;
-      position: absolute;
-      left: 0px;
-      top: -49px;
       font-size: 17px;
       color: #353535;
       font-weight: normal;
+      float: left;
+      margin-right: 10px;
+      cursor: pointer;
+      position: relative;
+      bottom: -1px;
+    }
+    & ol.fast-pay li{
+      width: auto;
     }
     & ol {
       width: 800px;
       height: 322px;
-      margin: 60px 0px;
       border: #dddddd 1px solid;
+      display: none;
       z-index: 1;
       & p {
         width: 764px;
@@ -91,7 +102,7 @@
   & .recharge-bank {
     width: 800px;
     height: 230px;
-    margin: 0px 4px;
+    margin: 50px 4px 0;
     & p {
       height: 34px;
       line-height: 34px;
