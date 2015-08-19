@@ -233,16 +233,14 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
 				.startAt(threeMinutesLater).build();
 		try {
-			if (trigger == null) {
-				scheduler.scheduleJob(jobDetail, trigger);
-			} else {
-				scheduler.rescheduleJob(trigger.getKey(), trigger);
-			}
+			scheduler.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
-		if (log.isDebugEnabled())
+		if (log.isDebugEnabled()) {
 			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");
+			log.debug("add make loan notify job,loan_id = " + loan.getId());
+		}
 	}
 	
 
