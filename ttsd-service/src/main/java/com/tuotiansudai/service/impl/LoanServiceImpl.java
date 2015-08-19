@@ -1,21 +1,13 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Strings;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tuotian on 15/8/17.
- */
 @Service
 public class LoanServiceImpl implements LoanService{
 
