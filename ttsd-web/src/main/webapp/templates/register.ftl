@@ -128,7 +128,6 @@
     <button class="complete grey" disabled="disabled">完成</button>
 </div>
 <#include "footer.ftl">
-<#include "footer.ftl">
 <@global.javascript pageJavascript="${js.register}">
 </@global.javascript>
 </body>
