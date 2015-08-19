@@ -70,7 +70,7 @@ public class UserMapperTest {
     @Test
     public void shouldFindUserByLoginNameOrMobileIsNotNull() throws Exception {
         userMapper.create(this.getUserModelTest());
-        UserModel userModel = userMapper.findByLoginNameOrMobile("helloword");
+        UserModel userModel = userMapper.findByLoginNameOrMobile("helloworld");
         assertNotNull(userModel);
     }
 

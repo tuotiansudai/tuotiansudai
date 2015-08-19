@@ -54,7 +54,7 @@ public class LoginController {
     @ResponseBody
     public BaseDto captchaVerify(@PathVariable String captcha) {
         boolean result = this.captchaVerifier.loginCaptchaVerify(captcha);
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);
         baseDto.setData(dataDto);

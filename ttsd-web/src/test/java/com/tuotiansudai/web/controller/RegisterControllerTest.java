@@ -56,7 +56,6 @@ public class RegisterControllerTest {
                 .build();
     }
 
-
     @Test
     public void shouldMobileIsExist() throws Exception {
         when(userService.mobileIsExist(anyString())).thenReturn(true);
@@ -145,7 +144,7 @@ public class RegisterControllerTest {
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
         when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
-        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/12345/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
@@ -155,7 +154,7 @@ public class RegisterControllerTest {
     public void shouldSendRegisterCaptchaFailed() throws Exception {
         when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(false);
-        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/12345/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
@@ -166,9 +165,9 @@ public class RegisterControllerTest {
     public void shouldPhotoCaptchaVerify() throws Exception {
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/photo/captcha/123456/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
+        this.mockMvc.perform(get("/register/captcha/12345/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(false));
+                .andExpect(jsonPath("$.data.status").value(true));
     }
 
     @Test
