@@ -1,7 +1,9 @@
 package com.tuotiansudai.security;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel userModel = userMapper.findByLoginNameOrMobile(username);
@@ -36,8 +41,11 @@ public class MyUserDetailsService implements UserDetailsService {
         boolean enabled = userModel.isActive();
         String salt = userModel.getSalt();
 
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        String umpUserId = accountModel != null ? accountModel.getPayUserId() : null;
+
         List<GrantedAuthority> authorities = Lists.newArrayList();
 
-        return new MyUser(loginName, password, enabled, true, true, true, authorities, mobile, salt);
+        return new MyUser(loginName, password, enabled, true, true, true, authorities, mobile, umpUserId, salt);
     }
 }

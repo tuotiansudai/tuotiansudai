@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.paywrapper.client.PayClient;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
@@ -27,7 +27,7 @@ public class LoanServiceImpl implements LoanService {
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
 
     @Autowired
-    private PayClient payClient;
+    private PaySyncClient paySyncClient;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -68,7 +68,7 @@ public class LoanServiceImpl implements LoanService {
         requestModel.setProjectName(loanDto.getProjectName());
         MerBindProjectResponseModel responseModel = null;
         try {
-            responseModel = payClient.send(MerBindProjectMapper.class, requestModel, MerBindProjectResponseModel.class);
+            responseModel = paySyncClient.send(MerBindProjectMapper.class, requestModel, MerBindProjectResponseModel.class);
             if (responseModel.isSuccess()) {
                 LoanModel loanModel = null;
                 try {
@@ -81,8 +81,8 @@ public class LoanServiceImpl implements LoanService {
                 loanMapper.createLoan(loanModel);
                 loanTitleMapper.createLoanTitle(loanDto.getLoanTitles());
                 dataDto.setStatus(responseModel.isSuccess());
-                dataDto.setCode(responseModel.getReturnCode());
-                dataDto.setMessage(responseModel.getReturnMessage());
+                dataDto.setCode(responseModel.getRetCode());
+                dataDto.setMessage(responseModel.getRetMsg());
             }
         } catch (PayException e) {
             logger.error(e.getLocalizedMessage(), e);

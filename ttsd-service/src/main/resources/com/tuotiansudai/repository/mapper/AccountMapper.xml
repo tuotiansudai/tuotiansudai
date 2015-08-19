@@ -11,6 +11,8 @@
         <result column="identity_number" property="identityNumber"></result>
         <result column="pay_user_id" property="payUserId"></result>
         <result column="pay_account_id" property="payAccountId"></result>
+        <result column="balance" property="balance"></result>
+        <result column="freeze" property="freeze"></result>
         <result column="register_time" property="registerTime"></result>
     </resultMap>
 
@@ -23,7 +25,21 @@
         select * from account where login_name = #{loginName}
     </select>
 
+<<<<<<< HEAD
     <select id="findAllLoanLoginNamesByLike" resultMap="accountResultMap">
         select loginName from account where login_name like #{loginName}
     </select>
+=======
+    <select id="lockByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
+        select * from account where login_name = #{loginName} for update
+    </select>
+
+    <update id="update" parameterType="com.tuotiansudai.repository.model.AccountModel">
+        update account set
+          balance = #{balance},
+          freeze = #{freeze}
+        where login_name = #{loginName}
+    </update>
+
+>>>>>>> origin/master
 </mapper>

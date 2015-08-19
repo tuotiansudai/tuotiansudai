@@ -10,5 +10,12 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
+<<<<<<< HEAD
     List<String> findAllLoginNamesByLike(String loginName);
+=======
+    AccountModel lockByLoginName(String loginName);
+
+    void update(AccountModel model);
+
+>>>>>>> origin/master
 }

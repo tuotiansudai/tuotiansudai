@@ -4,7 +4,7 @@
 require.config({
     baseUrl: "../js",//此处存放文件路径
     paths: {
-        "jquery": "libs/jquery-1.10.1.min",//此处存放baseURL路径下要引入的JS文件
+        "jquery": "libs/jquery-1.11.3.min",//此处存放baseURL路径下要引入的JS文件
         "daterangepicker": "libs/jquery.daterangepicker-0.0.7.js",//此处存放baseURL路径下要引入的JS文件
         "mustache": "libs/mustache-2.1.3.min.js",
         'text': 'libs/text-2.0.14'
