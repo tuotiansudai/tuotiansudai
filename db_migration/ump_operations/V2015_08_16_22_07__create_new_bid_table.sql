@@ -1,5 +1,5 @@
 CREATE TABLE ${ump_operations}.`mer_bind_project_request` (
-  `id`                  INT(32)         NOT NULL AUTO_INCREMENT,/******/
+  `id`                  INT             NOT NULL AUTO_INCREMENT,/******/
   `service`             VARCHAR(32)     NOT NULL,/***接口名称***/
   `sign_type`           VARCHAR(8)      NOT NULL,/***签名方式***/
   `sign`                VARCHAR(256)    NOT NULL,/***签名***/
@@ -12,16 +12,16 @@ CREATE TABLE ${ump_operations}.`mer_bind_project_request` (
   `loan_user_id`        VARCHAR(32)     NOT NULL,/***标的融资人资金账户托管平台用户号（个人）***/
   `request_url`         VARCHAR(2048)   NOT NULL,/***请求地址***/
   `request_data`        TEXT            NOT NULL,/***请求数据***/
-  `request_time`        DATE            NOT NULL ,/***请求时间***/
-  `status`              VARCHAR(10),    NOT NULL /***请求状态***/
+  `request_time`        DATETIME        NOT NULL,/***请求时间***/
+  `status`              VARCHAR(10)     NOT NULL, /***请求状态***/
   PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
 
 CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
-  `id`                            INT(32)         NOT NULL AUTO_INCREMENT,/******/
-  `request_id`                    INT(32)         NOT NULL AUTO_INCREMENT,/***请求ID***/
+  `id`                            INT             NOT NULL AUTO_INCREMENT,/******/
+  `request_id`                    INT             NOT NULL,/***请求ID***/
   `sign_type`                     varchar(8)      NOT NULL,/***签名方式***/
   `sign`                          varchar(256)    DEFAULT NULL,/***签名***/
   `merchant_id`                   varchar(8)      DEFAULT NULL,/***商户编号***/
@@ -32,9 +32,9 @@ CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
   `ret_code`                      varchar(8)      DEFAULT NULL,/***返回码***/
   `ret_msg`                       varchar(128)    DEFAULT NULL,/***返回信息***/
   `response_data`                 TEXT            NOT NULL,/***请求数据***/
-  `response_time`                 DATE            NOT NULL ,/***请求时间***/
+  `response_time`                 DATETIME        NOT NULL,/***请求时间***/
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_mer_bind_project_response_request_id_ref_mer_bind_project_request_id FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_bind_project_request` (`id`)
+  CONSTRAINT FK_response_request_id_ref_request_id FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_bind_project_request` (`id`)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8;
