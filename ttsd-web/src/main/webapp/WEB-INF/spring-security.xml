@@ -36,6 +36,7 @@
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
         <intercept-url pattern="/recharge" access="permitAll()"/>
+        <intercept-url pattern="/bind-card" access="permitAll()"/>
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/register/**" access="isAnonymous()"/>
 
