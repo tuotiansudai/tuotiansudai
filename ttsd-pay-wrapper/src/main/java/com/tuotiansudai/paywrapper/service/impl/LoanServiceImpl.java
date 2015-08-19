@@ -16,6 +16,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,8 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
     /**
      * @param loanDto
      * @return
@@ -62,8 +65,7 @@ public class LoanServiceImpl implements LoanService {
         MerBindProjectRequestModel requestModel = new MerBindProjectRequestModel();
         requestModel.setLoanUserId(loanDto.getProjectAmount());
         requestModel.setProjectAmount(loanUserId);
-        String projectId = String.valueOf(System.currentTimeMillis());/****标的号****/
-
+        String projectId = String.valueOf(idGenerator.generate());/****标的号****/
         requestModel.setProjectId(projectId);
         requestModel.setProjectName(loanDto.getProjectName());
         MerBindProjectResponseModel responseModel = null;
