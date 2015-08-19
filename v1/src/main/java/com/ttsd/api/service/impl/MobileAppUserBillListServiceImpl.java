@@ -63,7 +63,8 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
             UserBillRecordResponseDataDto userBillRecordResponseDataDto = new UserBillRecordResponseDataDto();
             userBillRecordResponseDataDto.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(userBill.getTime()));
             userBillRecordResponseDataDto.setMoney(CommonUtils.convertRealMoneyByType(userBill.getMoney(), userBill.getType()));
-            userBillRecordResponseDataDto.setTypeInfo(dictUtil.getValue("bill_operator", userBill.getTypeInfo()));
+            userBillRecordResponseDataDto.setTypeInfo(userBill.getTypeInfo());
+            userBillRecordResponseDataDto.setTypeInfoDesc(dictUtil.getValue("bill_operator", userBill.getTypeInfo()));
             userBillRecordResponseDataDto.setFrozenMoney(userBill.getFrozenMoney() + "");
             userBillRecordResponseDataDto.setDetail(userBill.getDetail());
             userBillRecords.add(userBillRecordResponseDataDto);

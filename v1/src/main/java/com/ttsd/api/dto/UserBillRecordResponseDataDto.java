@@ -6,6 +6,7 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
     private String balance;
     private String frozenMoney;
     private String detail;
+    private String typeInfoDesc;
 
     public String getTime() {
         return time;
@@ -53,5 +54,13 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
 
     public void setFrozenMoney(String frozenMoney) {
         this.frozenMoney = frozenMoney;
+    }
+
+    public String getTypeInfoDesc() {
+        return typeInfoDesc;
+    }
+
+    public void setTypeInfoDesc(String typeInfoDesc) {
+        this.typeInfoDesc = typeInfoDesc;
     }
 }
