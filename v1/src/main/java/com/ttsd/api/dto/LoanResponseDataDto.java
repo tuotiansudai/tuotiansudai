@@ -8,13 +8,13 @@ public class LoanResponseDataDto {
     private String repayTypeName;
     private Integer deadline;
     private String repayUnit;
-    private Double ratePercent;
-    private Double loanMoney;
+    private String ratePercent;
+    private String loanMoney;
     private String loanStatus;
     private String loanStatusDesc;
-    private Double investedMoney;
-    private Double baseRatePercent;
-    private Double activityRatePercent;
+    private String investedMoney;
+    private String baseRatePercent;
+    private String activityRatePercent;
 
     public String getLoanId() {
         return loanId;
@@ -72,22 +72,6 @@ public class LoanResponseDataDto {
         this.repayUnit = repayUnit;
     }
 
-    public Double getRatePercent() {
-        return ratePercent;
-    }
-
-    public void setRatePercent(Double ratePercent) {
-        this.ratePercent = ratePercent;
-    }
-
-    public Double getLoanMoney() {
-        return loanMoney;
-    }
-
-    public void setLoanMoney(Double loanMoney) {
-        this.loanMoney = loanMoney;
-    }
-
     public String getLoanStatus() {
         return loanStatus;
     }
@@ -104,27 +88,43 @@ public class LoanResponseDataDto {
         this.loanStatusDesc = loanStatusDesc;
     }
 
-    public Double getInvestedMoney() {
+    public String getRatePercent() {
+        return ratePercent;
+    }
+
+    public void setRatePercent(String ratePercent) {
+        this.ratePercent = ratePercent;
+    }
+
+    public String getLoanMoney() {
+        return loanMoney;
+    }
+
+    public void setLoanMoney(String loanMoney) {
+        this.loanMoney = loanMoney;
+    }
+
+    public String getInvestedMoney() {
         return investedMoney;
     }
 
-    public void setInvestedMoney(Double investedMoney) {
+    public void setInvestedMoney(String investedMoney) {
         this.investedMoney = investedMoney;
     }
 
-    public Double getBaseRatePercent() {
+    public String getBaseRatePercent() {
         return baseRatePercent;
     }
 
-    public void setBaseRatePercent(Double baseRatePercent) {
+    public void setBaseRatePercent(String baseRatePercent) {
         this.baseRatePercent = baseRatePercent;
     }
 
-    public Double getActivityRatePercent() {
+    public String getActivityRatePercent() {
         return activityRatePercent;
     }
 
-    public void setActivityRatePercent(Double activityRatePercent) {
+    public void setActivityRatePercent(String activityRatePercent) {
         this.activityRatePercent = activityRatePercent;
     }
 }

@@ -2,7 +2,7 @@ package com.ttsd.api.dto;
 public class InvestRecordResponseDataDto {
     private String userName;
     private String investTime;
-    private Double investMoney;
+    private String investMoney;
 
     public String getUserName() {
         return userName;
@@ -20,11 +20,11 @@ public class InvestRecordResponseDataDto {
         this.investTime = investTime;
     }
 
-    public Double getInvestMoney() {
+    public String getInvestMoney() {
         return investMoney;
     }
 
-    public void setInvestMoney(Double investMoney) {
+    public void setInvestMoney(String investMoney) {
         this.investMoney = investMoney;
     }
 }
