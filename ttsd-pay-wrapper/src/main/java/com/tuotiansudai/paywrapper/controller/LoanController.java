@@ -48,7 +48,7 @@ public class LoanController extends BaseController{
         return loanService.getActivityType();
     }
 
-    @RequestMapping(value = "get/Allcontracts",method = RequestMethod.GET)
+    @RequestMapping(value = "get/AllContracts",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllContracts(){
         List contracts = new ArrayList();
