@@ -93,7 +93,7 @@ public class UmPayNormalRepayOperation extends
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
 	public void recommendedIncome(String loanId){
-		log.info("begin referrer reward after make loan "+ loanId);
+		log.debug("begin referrer reward after make loan " + loanId);
 		Loan loan = ht.get(Loan.class, loanId);
 		String sql = "select role_id from user_role where user_id = ''{0}''";
 		//找到该笔借款的投资明细
@@ -101,10 +101,10 @@ public class UmPayNormalRepayOperation extends
 				"from Invest i where i.loan.id=? and i.status not in (?,?)",
 				new String[] { loanId, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
-			log.info("find invest "+ invest.getId());
+			log.debug("find invest " + invest.getId());
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
-				log.info("referrer is" + referrerRelation.getReferrerId());
+				log.debug("referrer is" + referrerRelation.getReferrerId());
 				Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sql,referrerRelation.getReferrerId())).
 						setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 				List<Map<String, Object>> mapList = query.list();
@@ -120,17 +120,17 @@ public class UmPayNormalRepayOperation extends
 				}else{
 					roleId = "MEMBER";
 				}
-				log.info("roleId="+roleId);
+				log.debug("roleId=" + roleId);
 				double bonus = calculateBonus(invest, referrerRelation, loan, roleId);
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
-				log.info("user_id="+referrerRelation.getReferrerId());
+				log.debug("user_id=" + referrerRelation.getReferrerId());
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
 				String errorMessage = "";
-				log.info("particUserId="+particUserId);
+				log.debug("particUserId=" + particUserId);
 				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
 				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
 
@@ -142,7 +142,7 @@ public class UmPayNormalRepayOperation extends
 						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
 					} catch (ReqDataException | RetDataException e) {
 						log.error(e.getLocalizedMessage(), e);
-						log.info("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
+						log.debug("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
 						continue;
 					}
 					if(returnMsg.split("\\|")[0].equals("0000")){

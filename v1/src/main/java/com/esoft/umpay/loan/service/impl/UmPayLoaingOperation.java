@@ -10,7 +10,6 @@ import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.exception.BorrowedMoneyTooLittle;
-import com.esoft.jdp2p.loan.exception.ExistWaitAffirmInvests;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanService;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
@@ -234,7 +233,11 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule())
 				.startAt(threeMinutesLater).build();
 		try {
-			scheduler.scheduleJob(jobDetail, trigger);
+			if (trigger == null) {
+				scheduler.scheduleJob(jobDetail, trigger);
+			} else {
+				scheduler.rescheduleJob(trigger.getKey(), trigger);
+			}
 		} catch (SchedulerException e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
