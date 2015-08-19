@@ -1,7 +1,7 @@
 require(['jquery'], function ($) {
     $(function () {
         //select bank
-        var _bank = $('.banking li');
+        var _bank = $('.banking ol li');
         _bank.click(function(){
             var text = $(this).find('input').attr('data-name');
             $('.jq-bank').val(text);
@@ -30,7 +30,7 @@ require(['jquery'], function ($) {
         });
 
         //tab切换
-        var _li = $('.banking li');
+        var _li = $('.banking ul li');
         _li.click(function(){
             var _this = $(this);
             var index = _this.index();

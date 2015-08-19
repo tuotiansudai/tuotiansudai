@@ -100,6 +100,7 @@
 
                 <ol class="fast-pay">
                     <li>
+                        <#--用户尚未绑定银行卡快捷支付-->
                         <form action="">
                             <div class="item-block">
                                 <span class="name">真实姓名：皮冬</span>
@@ -109,12 +110,15 @@
                             </div>
                             <div class="item-block">
                                 <span class="name">银行卡：</span>
-                                <input class="bank-card" type="text" value=""/>
+                                <input class="input-bankcard" type="text" value=""/>
                             </div>
                             <div class="item-block">
-                                <button type="submit">确认绑定</button>
+                                <button class="btn-ok" type="submit">确认绑定</button>
                             </div>
                         </form>
+                        <#--用户尚未绑定银行卡快捷支付-->
+
+
                     </li>
 
                 </ol>

@@ -397,3 +397,25 @@
     border-radius: 3px;
   }
 }
+.item-block{
+  margin-left: 50px;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%!important;
+  & .name{
+    float: left;}
+  & .input-bankcard{
+    width: 200px!important;
+    height: 20px!important;
+    margin: 0!important;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+  & .btn-ok{
+    padding: 10px 15px;
+    background: #ff7a2a;
+    border: 1px solid #ff7a2a;
+    cursor: pointer;
+    color: #fff;
+  }
+}

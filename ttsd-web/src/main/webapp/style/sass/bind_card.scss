@@ -1,0 +1,72 @@
+//bind－card
+.main{
+  width: 998px;
+  height: auto;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.email-nav {
+  width: 168px;
+  height: auto;
+  overflow: hidden;
+  border: #dadada 1px solid;
+  border-radius: 3px;
+  float: left;
+  background: #fff;
+}
+
+.email-nav li {
+  border-bottom: #dadada 1px solid;
+}
+
+.email-nav a {
+  display: block;
+  height: 41px;
+  line-height: 41px;
+  text-align: center;
+  color: #ffac2a;
+}
+
+.email-nav a:hover {
+  background: #ffac2a;
+  color: #fff;
+}
+
+.bind-card{
+  width: 820px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  float: right;
+  overflow: hidden;
+  & .hd-bind-card{
+    height: 50px;
+    border-bottom: 2px solid #d5d5d5;;
+    & span{
+      padding-left: 20px;
+      color: #ff9933;
+      font-size: 16px;
+      border-bottom: #e06b0c 2px solid;
+      display: inline-block;
+      line-height: 50px;
+      position: relative;
+      bottom: 0px;
+    }
+  }
+
+  & .card-list{
+    padding: 10px 20px;
+    overflow: hidden;
+    & .card-box{
+      width: 260px;
+      background-color: #fdfefe;
+      border-radius: 5px;
+    }
+
+  }
+
+
+
+
+
+}
