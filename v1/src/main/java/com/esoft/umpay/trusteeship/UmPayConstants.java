@@ -79,7 +79,7 @@ public class UmPayConstants {
 
 		public static final String MER_BIND_CARD_NOTIFY = "mer_bind_card_notify";
 		/** 签约协议 */
-		public static final String MER_BIND_AGREEMENT = "mer_bind_agreement";
+		public static final String PTP_MER_BIND_AGREEMENT = "ptp_mer_bind_agreement";
 		/** 个人账户充值 */
 		public static final String MER_RECHARGE_PERSON = "mer_recharge_person";
 		/** 个人账户提现 */

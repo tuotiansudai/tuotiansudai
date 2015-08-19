@@ -94,7 +94,7 @@ public class TrusteeshipHome {
 			return this.overdueRepay();
 		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
 			return this.replaceBankCardWeb();
-		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			return this.bindingAgreementWeb();
 		}
 		return "404";
@@ -133,7 +133,7 @@ public class TrusteeshipHome {
 			this.S2S(umPayOverdueRepayOperation);
 		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
 			this.S2S(umPayReplaceBankCardOperation);
-		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			this.S2S(umPayBindingAgreementOperation);
 		}
 	}
