@@ -105,7 +105,7 @@ public class UmPayNormalRepayOperation extends
 				List<Map<String, Object>> mapList = query.list();
 				List<String> list = new ArrayList<String>();
 				for (int i=0;i<mapList.size();i++) {
-					list.add(mapList.get(i).get("user_role").toString());
+					list.add(mapList.get(i).get("role_id").toString());
 				}
 				String roleId = "";
 				if(list.contains("ROLE_MERCHANDISER")){
