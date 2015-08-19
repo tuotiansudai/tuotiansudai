@@ -2,9 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.security.CaptchaVerifier;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.utils.CaptchaVerifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

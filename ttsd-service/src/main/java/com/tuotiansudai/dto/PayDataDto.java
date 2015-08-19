@@ -1,6 +1,6 @@
 package com.tuotiansudai.dto;
 
-public class PayDataDto extends BaseDataDto{
+public class PayDataDto extends BaseDataDto {
     private String code;
 
     private String message;

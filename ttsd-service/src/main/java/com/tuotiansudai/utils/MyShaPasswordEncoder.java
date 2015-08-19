@@ -1,9 +1,7 @@
-package com.tuotiansudai.security;
+package com.tuotiansudai.utils;
 
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 public class MyShaPasswordEncoder extends ShaPasswordEncoder {
@@ -15,6 +13,6 @@ public class MyShaPasswordEncoder extends ShaPasswordEncoder {
     }
 
     public String generateSalt() {
-        return UUID.randomUUID().toString().replace("-", "");
+        return UUIDGenerator.generate();
     }
 }

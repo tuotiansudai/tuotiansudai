@@ -1,6 +1,6 @@
-task newAASql << {
+task newUMPSql << {
     def rootPath = parent.getProjectDir().getPath()
-    def migrationFolder = "$rootPath/db_migration/aa"
+    def migrationFolder = "$rootPath/db_migration/ump_operations"
     def console = System.console()
     if (console) {
         def fileName = console.readLine('\n> Please enter your new SQL script name: ')

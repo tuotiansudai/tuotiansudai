@@ -5,11 +5,11 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.BaseMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
-import com.tuotiansudai.paywrapper.util.SpringContextUtil;
+import com.tuotiansudai.paywrapper.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
@@ -26,17 +26,18 @@ import java.util.Map;
 
 
 @Component
-public class PayClient {
+public class PaySyncClient {
 
-    static Logger logger = Logger.getLogger(PayClient.class);
+    static Logger logger = Logger.getLogger(PaySyncClient.class);
 
     @Autowired
     private OkHttpClient httpClient;
 
-    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
+    public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
             reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
+            requestModel.setSign(reqData.getSign());
             requestModel.setRequestData(reqData.getField().toString());
             requestModel.setRequestUrl(reqData.getUrl());
             logger.debug(reqData.getField());
@@ -73,25 +74,25 @@ public class PayClient {
     }
 
     @Transactional(value = "payTransactionManager")
-     private void createRequest(Class<? extends BaseMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
-        BaseMapper mapper = this.getMapperByClass(baseMapperClass);
+     private void createRequest(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
+        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.createRequest(requestModel);
     }
 
     @Transactional(value = "payTransactionManager")
-    private void updateRequestStatus(Class<? extends BaseMapper> baseMapperClass,
+    private void updateRequestStatus(Class<? extends BaseSyncMapper> baseMapperClass,
                                      Long id,
                                      RequestStatus status) {
-        BaseMapper mapper = this.getMapperByClass(baseMapperClass);
+        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.updateRequestStatus(id, status);
     }
 
     @Transactional(value = "payTransactionManager")
-    private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseMapper> baseMapperClass,
+    private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseSyncMapper> baseMapperClass,
                                                            Map<String, String> resData,
                                                            Class<T> responseModelClass,
                                                            Long requestId) throws IllegalAccessException, InstantiationException {
-        BaseMapper mapper = this.getMapperByClass(baseMapperClass);
+        BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         T responseModel = responseModelClass.newInstance();
         responseModel.setRequestId(requestId);
         responseModel.initializeModel(resData);
@@ -99,13 +100,13 @@ public class PayClient {
         return responseModel;
     }
 
-    private BaseMapper getMapperByClass(Class clazz) {
+    private BaseSyncMapper getMapperByClass(Class clazz) {
         String fullName = clazz.getName();
         String[] strings = fullName.split("\\.");
 
         String beanName = Introspector.decapitalize(strings[strings.length - 1]);
 
-        return (BaseMapper) SpringContextUtil.getBeanByName(beanName);
+        return (BaseSyncMapper) SpringContextUtil.getBeanByName(beanName);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.tuotiansudai.util;
+package com.tuotiansudai.utils;
 
 import com.google.common.collect.Lists;
 import nl.captcha.Captcha;
@@ -8,9 +8,6 @@ import nl.captcha.text.renderer.DefaultWordRenderer;
 
 import java.awt.*;
 
-/**
- * Created by Administrator on 2015/8/13.
- */
 public class CaptchaGenerator {
 
     public static Captcha generate(int captchaWidth, int captchaHeight) {

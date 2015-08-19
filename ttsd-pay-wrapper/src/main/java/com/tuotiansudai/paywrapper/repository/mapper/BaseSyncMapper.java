@@ -5,7 +5,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import org.apache.ibatis.annotations.Param;
 
-public interface BaseMapper {
+public interface BaseSyncMapper {
 
     BaseSyncRequestModel findRequestById(Long id);
 

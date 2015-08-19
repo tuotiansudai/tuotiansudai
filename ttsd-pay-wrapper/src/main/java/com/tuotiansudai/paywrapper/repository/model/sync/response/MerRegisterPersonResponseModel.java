@@ -4,40 +4,40 @@ import java.util.Map;
 
 public class MerRegisterPersonResponseModel extends BaseSyncResponseModel {
 
-    private String registerDate;
+    private String regDate;
 
-    private String umpUserId;
+    private String userId;
 
-    private String umpAccountId;
+    private String accountId;
 
     @Override
     public void initializeModel(Map<String, String> resData) {
         super.initializeModel(resData);
-        this.umpUserId = resData.get("user_id");
-        this.umpAccountId = resData.get("account_id");
+        this.userId = resData.get("user_id");
+        this.accountId = resData.get("account_id");
     }
 
-    public String getRegisterDate() {
-        return registerDate;
+    public String getRegDate() {
+        return regDate;
     }
 
-    public void setRegisterDate(String registerDate) {
-        this.registerDate = registerDate;
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
     }
 
-    public String getUmpUserId() {
-        return umpUserId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUmpUserId(String umpUserId) {
-        this.umpUserId = umpUserId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getUmpAccountId() {
-        return umpAccountId;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setUmpAccountId(String umpAccountId) {
-        this.umpAccountId = umpAccountId;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 }

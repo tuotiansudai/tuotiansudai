@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.paywrapper.client.PayClient;
+import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
@@ -32,7 +32,7 @@ public class RegisterServiceImpl implements RegisterService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private PayClient payClient;
+    private PaySyncClient paySyncClient;
 
     @Transactional
     public BaseDto register(RegisterAccountDto dto) {
@@ -45,7 +45,7 @@ public class RegisterServiceImpl implements RegisterService {
         PayDataDto dataDto = new PayDataDto();
 
         try {
-            MerRegisterPersonResponseModel responseModel = payClient.send(MerRegisterPersonMapper.class,
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
                     requestModel,
                     MerRegisterPersonResponseModel.class);
 
@@ -55,15 +55,15 @@ public class RegisterServiceImpl implements RegisterService {
                 AccountModel accountModel = new AccountModel(userModel.getLoginName(),
                         dto.getUserName(),
                         dto.getIdentityNumber(),
-                        responseModel.getUmpUserId(),
-                        responseModel.getUmpAccountId(),
+                        responseModel.getUserId(),
+                        responseModel.getAccountId(),
                         new Date());
                 accountMapper.create(accountModel);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
-            dataDto.setCode(responseModel.getReturnCode());
-            dataDto.setMessage(responseModel.getReturnMessage());
+            dataDto.setCode(responseModel.getRetCode());
+            dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
         }

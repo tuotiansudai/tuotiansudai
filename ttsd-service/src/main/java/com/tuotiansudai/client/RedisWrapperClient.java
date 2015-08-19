@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Created by Administrator on 2015/8/7.
- */
 @Component
 public class RedisWrapperClient {
 
@@ -120,7 +117,7 @@ public class RedisWrapperClient {
         if (jedisException instanceof JedisConnectionException) {
             logger.error(jedisException.getLocalizedMessage(), jedisException);
         } else if (jedisException instanceof JedisDataException) {
-            if ((jedisException.getMessage() != null) && (jedisException.getMessage().indexOf("READONLY") != -1)) {
+            if ((jedisException.getMessage() != null) && (jedisException.getMessage().contains("READONLY"))) {
                 logger.error(jedisException.getLocalizedMessage(), jedisException);
             } else {
                 return false;
@@ -131,9 +128,9 @@ public class RedisWrapperClient {
         return true;
     }
 
-    protected void closeResource(Jedis jedis, boolean conectionBroken) {
+    protected void closeResource(Jedis jedis, boolean connectionBroken) {
         try {
-            if (conectionBroken) {
+            if (connectionBroken) {
                 jedisPool.returnBrokenResource(jedis);
             } else {
                 jedisPool.returnResource(jedis);
