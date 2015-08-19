@@ -1,45 +1,23 @@
 package com.esoft.umpay.repay.service.impl;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.util.*;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import com.esoft.archer.user.model.*;
-import com.esoft.jdp2p.invest.InvestConstants;
-import com.esoft.jdp2p.invest.model.InvestUserReferrer;
-import com.esoft.jdp2p.loan.model.Loan;
-import com.esoft.jdp2p.risk.service.SystemBillService;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.user.service.impl.UserBillBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.ArithUtil;
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.GsonUtil;
-import com.esoft.core.util.HttpClientUtil;
+import com.esoft.core.util.*;
+import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.LoanConstants.RepayStatus;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanService;
 import com.esoft.jdp2p.repay.exception.NormalRepayException;
 import com.esoft.jdp2p.repay.model.InvestRepay;
 import com.esoft.jdp2p.repay.model.LoanRepay;
 import com.esoft.jdp2p.repay.service.RepayService;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
@@ -49,12 +27,30 @@ import com.esoft.umpay.loan.service.impl.UmPayLoanStatusService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.transform.Transformers;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * Description :正常还款
@@ -105,13 +101,12 @@ public class UmPayNormalRepayOperation extends
 		for (Invest invest : investList) {
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
-				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
-				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
-					@Override
-					public String apply(Role role) {
-						return role.getId();
-					}
-				});
+				Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery("select role_id from user_role where user_id = ''"+referrerRelation.getReferrer().getId()+"''").setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				List<Map<String, Object>> mapList = query.list();
+				List<String> list = new ArrayList<String>();
+				for (int i=0;i<mapList.size();i++) {
+					list.add(mapList.get(i).get("user_role").toString());
+				}
 				String roleId = "";
 				if(list.contains("ROLE_MERCHANDISER")){
 					roleId = "ROLE_MERCHANDISER";
