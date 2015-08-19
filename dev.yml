@@ -1,23 +1,23 @@
 web:
   image: "leoshi/ttsd-tomcat6"
   ports:
-    - "30002:8080"
+    - "20002:8080"
   volumes:
-    - "/workspace/tuotian/ttsd-web/war:/usr/share/tomcat6/webapps"
+    - "./ttsd-web/war:/usr/share/tomcat6/webapps"
   links:
     - "pay-wrapper"
     - "sms-wrapper"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat6"
   ports:
-    - "30003:8080"
+    - "20003:8080"
   volumes:
-    - "/workspace/tuotian/ttsd-pay-wrapper/war:/usr/share/tomcat6/webapps"
+    - "./ttsd-pay-wrapper/war:/usr/share/tomcat6/webapps"
   links:
       - "sms-wrapper"
 sms-wrapper:
   image: "leoshi/ttsd-tomcat6"
   ports:
-    - "30004:8080"
+    - "20004:8080"
   volumes:
-    - "/workspace/tuotian/ttsd-sms-wrapper/war:/usr/share/tomcat6/webapps"
+    - "./ttsd-sms-wrapper/war:/usr/share/tomcat6/webapps"
