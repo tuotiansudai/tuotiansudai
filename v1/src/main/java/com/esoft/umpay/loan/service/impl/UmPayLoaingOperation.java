@@ -234,12 +234,12 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				.startAt(threeMinutesLater).build();
 		try {
 			scheduler.scheduleJob(jobDetail, trigger);
+			log.debug("add make loan notify job,loan_id = " + loan.getId());
 		} catch (SchedulerException e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
 		if (log.isDebugEnabled()) {
 			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");
-			log.debug("add make loan notify job,loan_id = " + loan.getId());
 		}
 	}
 	
