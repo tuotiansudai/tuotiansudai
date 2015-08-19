@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.LoanMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.TitleMapper;
@@ -12,18 +13,18 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectR
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.List;
-
+@Service
 public class LoanServiceImpl implements LoanService {
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
 

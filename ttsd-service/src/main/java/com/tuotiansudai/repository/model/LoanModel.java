@@ -6,9 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by tuotian on 15/8/17.
- */
 public class LoanModel {
     private String id;
     /***借款项目名称***/
