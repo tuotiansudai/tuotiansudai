@@ -23,4 +23,7 @@
         select * from account where login_name = #{loginName}
     </select>
 
+    <select id="findAllLoanLoginNamesByLike" resultMap="accountResultMap">
+        select loginName from account where login_name like #{loginName}
+    </select>
 </mapper>

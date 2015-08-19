@@ -1,91 +1,105 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.dto;
 
-import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanType;
+import org.hibernate.validator.constraints.NotEmpty;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
-/**
- * Created by tuotian on 15/8/17.
- */
-public class LoanModel {
-    private String id;
-    /***借款项目名称***/
-    private String name;
+public class LoanDto {
+
+    /***标的名称***/
+    @NotEmpty
+    private String projectName;
+
+    /***标的金额***/
+    @NotEmpty
+    private String projectAmount;
+
     /***代理人***/
+    @NotEmpty
     private String agentLoginName;
+
     /***借款用户***/
+    @NotEmpty
     private String loanLoginName;
+
     /***标的类型***/
+    @NotEmpty
     private LoanType type;
+
     /***借款期限***/
+    @NotEmpty
     private String periods;
+
     /***项目描述（纯文本）***/
+    @NotEmpty
     private String descriptionText;
+
     /***项目描述（带html标签）***/
+    @NotEmpty
     private String descriptionHtml;
-    /***借款金额***/
-    private String loanAmount;
+
     /***投资手续费比例***/
+    @NotEmpty
     private String investFeeRate;
+
     /***最小投资金额***/
+    @NotEmpty
     private String minInvestAmount;
+
     /***投资递增金额***/
+    @NotEmpty
     private String investIncreasingAmount;
+
     /***单笔最大投资金额***/
+    @NotEmpty
     private String maxInvestAmount;
+
     /***活动类型***/
+    @NotEmpty
     private ActivityType activityType;
+
     /***活动利率***/
+    @NotEmpty
     private String activityRate;
+
     /***合同***/
+    @NotEmpty
     private String contractId;
+
     /***筹款开始时间***/
-    private Date fundraisingStartTime;
+    @NotEmpty
+    private String fundraisingStartTime;
+
     /***筹款截止时间***/
-    private Date fundraisingEndTime;
+    @NotEmpty
+    private String fundraisingEndTime;
+
     /***是否显示在首页true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
 
-    public LoanModel(){}
+    /***借款金额***/
+    private String loanAmount;
 
-    public LoanModel(LoanDto loanDto) throws ParseException {
-        this.name =loanDto.getProjectName();
-        this.activityRate = loanDto.getActivityRate();
-        this.activityType = loanDto.getActivityType();
-        this.agentLoginName = loanDto.getAgentLoginName();
-        this.loanLoginName = loanDto.getLoanLoginName();
-        this.contractId = loanDto.getContractId();
-        this.descriptionHtml = loanDto.getDescriptionHtml();
-        this.descriptionText = loanDto.getDescriptionText();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
-        this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
-        this.investFeeRate = loanDto.getInvestFeeRate();
-        this.investIncreasingAmount = loanDto.getInvestIncreasingAmount();
-        this.maxInvestAmount = loanDto.getMaxInvestAmount();
-        this.minInvestAmount = loanDto.getMinInvestAmount();
-        this.periods = loanDto.getPeriods();
-        this.showOnHome = loanDto.isShowOnHome();
-        this.type = loanDto.getType();
-        this.loanAmount = loanDto.getLoanAmount();
+    /***申请材料***/
+    private List<LoanTitleModel> loanTitles;
+
+    public String getProjectName() {
+        return projectName;
     }
 
-    public String getId() {
-        return id;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getProjectAmount() {
+        return projectAmount;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setProjectAmount(String projectAmount) {
+        this.projectAmount = projectAmount;
     }
 
     public String getAgentLoginName() {
@@ -134,14 +148,6 @@ public class LoanModel {
 
     public void setDescriptionHtml(String descriptionHtml) {
         this.descriptionHtml = descriptionHtml;
-    }
-
-    public String getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(String loanAmount) {
-        this.loanAmount = loanAmount;
     }
 
     public String getInvestFeeRate() {
@@ -200,19 +206,19 @@ public class LoanModel {
         this.contractId = contractId;
     }
 
-    public Date getFundraisingStartTime() {
+    public String getFundraisingStartTime() {
         return fundraisingStartTime;
     }
 
-    public void setFundraisingStartTime(Date fundraisingStartTime) {
+    public void setFundraisingStartTime(String fundraisingStartTime) {
         this.fundraisingStartTime = fundraisingStartTime;
     }
 
-    public Date getFundraisingEndTime() {
+    public String getFundraisingEndTime() {
         return fundraisingEndTime;
     }
 
-    public void setFundraisingEndTime(Date fundraisingEndTime) {
+    public void setFundraisingEndTime(String fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
     }
 
@@ -222,5 +228,21 @@ public class LoanModel {
 
     public void setShowOnHome(boolean showOnHome) {
         this.showOnHome = showOnHome;
+    }
+
+    public String getLoanAmount() {
+        return loanAmount;
+    }
+
+    public void setLoanAmount(String loanAmount) {
+        this.loanAmount = loanAmount;
+    }
+
+    public List<LoanTitleModel> getLoanTitles() {
+        return loanTitles;
+    }
+
+    public void setLoanTitles(List<LoanTitleModel> loanTitles) {
+        this.loanTitles = loanTitles;
     }
 }

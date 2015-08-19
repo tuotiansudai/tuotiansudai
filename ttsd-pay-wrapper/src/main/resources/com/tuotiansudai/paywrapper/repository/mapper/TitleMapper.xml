@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.TitleMapper">
+
+    <resultMap id="titleResultMap" type="LoanModel">
+        <id column="id" property="id"></id>
+        <result column="type" property="type"></result>
+        <result column="title" property="title"></result>
+    </resultMap>
+
+    <insert id="createTitle" parameterType="com.tuotiansudai.repository.model.TitleModel" useGeneratedKeys="true" keyProperty="id">
+        insert into loan_title(type,title)VALUES (#{type},#{title})
+    </insert>
+</mapper>

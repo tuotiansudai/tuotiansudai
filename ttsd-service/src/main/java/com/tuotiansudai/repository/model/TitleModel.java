@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 /**
  * Created by tuotian on 15/8/17.
  */
-public class Title {
+public class TitleModel {
     private String id;
     /***标题类型base:基础标题，new:新增标题***/
     private String type;

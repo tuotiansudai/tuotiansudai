@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 /**
  * Created by tuotian on 15/8/17.
  */
-public class LoanTitle {
+public class LoanTitleModel {
     private String id;
     private String loanId;/***借款标的***/
     private String titleId;/***申请材料标题***/
