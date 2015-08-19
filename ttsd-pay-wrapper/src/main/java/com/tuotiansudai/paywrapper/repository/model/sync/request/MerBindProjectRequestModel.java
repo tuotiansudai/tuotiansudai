@@ -5,9 +5,6 @@ import com.google.common.collect.Maps;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * Created by tuotian on 15/8/17.
- */
 public class MerBindProjectRequestModel extends BaseSyncRequestModel{
     private String projectId;
     private String projectName;
