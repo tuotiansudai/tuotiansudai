@@ -61,7 +61,7 @@ CREATE TABLE `${ump_operations}`.`recharge_notify_response` (
   `response_time` DATETIME     NOT NULL,
   `response_data` TEXT         NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FR_RECHARGE_NOTIFY_RESPONSE_REF_RECHARGE_NOTIFY_REQUEST FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`recharge_notify_request` (`id`)
+  CONSTRAINT FR_RECHARGE_NOTIFY_RESPONSE_REF_RECHARGE_NOTIFY_REQUEST FOREIGN KEY (`request_id`) REFERENCES `${ump_operations}`.`recharge_notify_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

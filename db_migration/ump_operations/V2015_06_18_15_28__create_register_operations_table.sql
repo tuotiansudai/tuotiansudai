@@ -36,7 +36,7 @@ CREATE TABLE `${ump_operations}`.`mer_register_person_response` (
   `response_time` DATETIME     NOT NULL,
   `response_data` TEXT         NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FR_MER_REGISTER_RESPONSE_REF_MER_REGISTER_REQUEST FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_register_person_request` (`id`)
+  CONSTRAINT FR_MER_REGISTER_RESPONSE_REF_MER_REGISTER_REQUEST FOREIGN KEY (`request_id`) REFERENCES `${ump_operations}`.`mer_register_person_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
