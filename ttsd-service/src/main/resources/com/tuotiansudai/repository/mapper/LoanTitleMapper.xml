@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.LoanTitleMapper">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanTitleMapper">
 
-    <resultMap id="loanTitleResultMap" type="LoanModel">
+    <resultMap id="loanTitleResultMap" type="LoanTitleModel">
         <id column="id" property="id"></id>
         <result column="loan_id" property="name"></result>
         <result column="title_id" property="titleId"></result>

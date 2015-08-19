@@ -5,17 +5,15 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
-import com.tuotiansudai.paywrapper.repository.mapper.LoanMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
-import com.tuotiansudai.paywrapper.repository.mapper.TitleMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.TitleMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class LoanServiceImpl implements LoanService {
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
@@ -43,8 +45,6 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
-    @Autowired
-    private IdGenerator idGenerator;
     /**
      * @param loanDto
      * @return
@@ -64,8 +64,9 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         MerBindProjectRequestModel requestModel = new MerBindProjectRequestModel();
-        requestModel.setLoanUserId(loanDto.getProjectAmount());
+        requestModel.setLoanUserId(loanDto.getLoanAmount());
         requestModel.setProjectAmount(loanUserId);
+        IdGenerator idGenerator = new IdGenerator();
         String projectId = String.valueOf(idGenerator.generate());/****标的号****/
         requestModel.setProjectId(projectId);
         requestModel.setProjectName(loanDto.getProjectName());
@@ -82,7 +83,12 @@ public class LoanServiceImpl implements LoanService {
                 }
                 loanModel.setId(projectId);
                 loanMapper.createLoan(loanModel);
-                loanTitleMapper.createLoanTitle(loanDto.getLoanTitles());
+                List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
+                for (LoanTitleModel loanTitleModel : loanDto.getLoanTitles()){
+                    loanTitleModel.setLoanId(projectId);
+                    loanTitleModelList.add(loanTitleModel);
+                }
+                loanTitleMapper.createLoanTitle(loanTitleModelList);
                 dataDto.setStatus(responseModel.isSuccess());
                 dataDto.setCode(responseModel.getRetCode());
                 dataDto.setMessage(responseModel.getRetMsg());
@@ -117,5 +123,29 @@ public class LoanServiceImpl implements LoanService {
 
     public List<TitleModel> findAllTitles(){
         return titleMapper.findAllTitles();
+    }
+
+    @Override
+    public List<Map<String,String>> getLoanType() {
+        List<Map<String,String>> loanTypes = new ArrayList<Map<String,String>>();
+        for (LoanType loanType:LoanType.values()){
+            Map<String,String> map = new HashMap<String,String>();
+            map.put("name",loanType.getName());
+            map.put("interestType",loanType.getInterestType());
+            map.put("repayTimeUnit",loanType.getRepayTimeUnit());
+            loanTypes.add(map);
+        }
+        return loanTypes;
+    }
+
+    @Override
+    public List<Map<String,String>> getActivityType() {
+        List<Map<String,String>> activityTypes = new ArrayList<Map<String,String>>();
+        for (ActivityType activityType:ActivityType.values()){
+            Map<String,String> map = new HashMap<String,String>();
+            map.put(activityType.getActivityTypeCode(),activityType.getActivityTypeName());
+            activityTypes.add(map);
+        }
+        return activityTypes;
     }
 }

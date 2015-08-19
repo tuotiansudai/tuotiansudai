@@ -15,7 +15,7 @@ public enum ActivityType {
 
     private String activityTypeCode;
     private String activityTypeName;
-    ActivityType(String activityTypeCode,String activityTypeName){
+    private ActivityType(String activityTypeCode,String activityTypeName){
         this.activityTypeCode = activityTypeCode;
         this.activityTypeName = activityTypeName;
     }

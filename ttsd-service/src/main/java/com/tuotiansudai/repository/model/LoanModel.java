@@ -15,7 +15,7 @@ public class LoanModel {
     /***借款用户***/
     private String loanLoginName;
     /***标的类型***/
-    private LoanType type;
+    private String type;
     /***借款期限***/
     private String periods;
     /***项目描述（纯文本）***/
@@ -23,19 +23,21 @@ public class LoanModel {
     /***项目描述（带html标签）***/
     private String descriptionHtml;
     /***借款金额***/
-    private String loanAmount;
+    private Long loanAmount;
     /***投资手续费比例***/
-    private String investFeeRate;
+    private double investFeeRate;
     /***最小投资金额***/
-    private String minInvestAmount;
+    private Long minInvestAmount;
     /***投资递增金额***/
-    private String investIncreasingAmount;
+    private Long investIncreasingAmount;
     /***单笔最大投资金额***/
-    private String maxInvestAmount;
+    private Long maxInvestAmount;
     /***活动类型***/
-    private ActivityType activityType;
+    private String activityType;
     /***活动利率***/
-    private String activityRate;
+    private double activityRate;
+    /***基本利率***/
+    private double basicRate;
     /***合同***/
     private String contractId;
     /***筹款开始时间***/
@@ -49,8 +51,8 @@ public class LoanModel {
 
     public LoanModel(LoanDto loanDto) throws ParseException {
         this.name =loanDto.getProjectName();
-        this.activityRate = loanDto.getActivityRate();
-        this.activityType = loanDto.getActivityType();
+        this.activityRate = Double.parseDouble(loanDto.getActivityRate());
+        this.activityType = loanDto.getActivityType().getActivityTypeCode();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanLoginName = loanDto.getLoanLoginName();
         this.contractId = loanDto.getContractId();
@@ -59,14 +61,22 @@ public class LoanModel {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
         this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
-        this.investFeeRate = loanDto.getInvestFeeRate();
-        this.investIncreasingAmount = loanDto.getInvestIncreasingAmount();
-        this.maxInvestAmount = loanDto.getMaxInvestAmount();
-        this.minInvestAmount = loanDto.getMinInvestAmount();
+        this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
+        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
-        this.type = loanDto.getType();
-        this.loanAmount = loanDto.getLoanAmount();
+        LoanType loanType = loanDto.getType();
+        this.type = loanType.getId()+","
+                +loanType.getInterestPoint()+","
+                +loanType.getInterestType()+","
+                +loanType.getName()+","
+                +loanType.getRepayTimePeriod()+","
+                +loanType.getRepayTimeUnit()+","
+                +loanType.getRepayType()+","
+                +loanType.getDescription();
+        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
     }
 
     public String getId() {
@@ -101,11 +111,11 @@ public class LoanModel {
         this.loanLoginName = loanLoginName;
     }
 
-    public LoanType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(LoanType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -133,60 +143,68 @@ public class LoanModel {
         this.descriptionHtml = descriptionHtml;
     }
 
-    public String getLoanAmount() {
+    public Long getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(String loanAmount) {
+    public void setLoanAmount(Long loanAmount) {
         this.loanAmount = loanAmount;
     }
 
-    public String getInvestFeeRate() {
+    public double getInvestFeeRate() {
         return investFeeRate;
     }
 
-    public void setInvestFeeRate(String investFeeRate) {
+    public void setInvestFeeRate(double investFeeRate) {
         this.investFeeRate = investFeeRate;
     }
 
-    public String getMinInvestAmount() {
+    public Long getMinInvestAmount() {
         return minInvestAmount;
     }
 
-    public void setMinInvestAmount(String minInvestAmount) {
+    public void setMinInvestAmount(Long minInvestAmount) {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public String getInvestIncreasingAmount() {
+    public Long getInvestIncreasingAmount() {
         return investIncreasingAmount;
     }
 
-    public void setInvestIncreasingAmount(String investIncreasingAmount) {
+    public void setInvestIncreasingAmount(Long investIncreasingAmount) {
         this.investIncreasingAmount = investIncreasingAmount;
     }
 
-    public String getMaxInvestAmount() {
+    public Long getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
-    public void setMaxInvestAmount(String maxInvestAmount) {
+    public void setMaxInvestAmount(Long maxInvestAmount) {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public ActivityType getActivityType() {
+    public String getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(ActivityType activityType) {
+    public void setActivityType(String activityType) {
         this.activityType = activityType;
     }
 
-    public String getActivityRate() {
+    public double getActivityRate() {
         return activityRate;
     }
 
-    public void setActivityRate(String activityRate) {
+    public void setActivityRate(double activityRate) {
         this.activityRate = activityRate;
+    }
+
+    public double getBasicRate() {
+        return basicRate;
+    }
+
+    public void setBasicRate(double basicRate) {
+        this.basicRate = basicRate;
     }
 
     public String getContractId() {

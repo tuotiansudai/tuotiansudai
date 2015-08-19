@@ -13,10 +13,6 @@ public class LoanDto {
     @NotEmpty
     private String projectName;
 
-    /***标的金额***/
-    @NotEmpty
-    private String projectAmount;
-
     /***代理人***/
     @NotEmpty
     private String agentLoginName;
@@ -92,14 +88,6 @@ public class LoanDto {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getProjectAmount() {
-        return projectAmount;
-    }
-
-    public void setProjectAmount(String projectAmount) {
-        this.projectAmount = projectAmount;
     }
 
     public String getAgentLoginName() {

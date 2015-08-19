@@ -2,9 +2,12 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
+import java.util.Map;
 
 public interface LoanService {
     /**
@@ -32,4 +35,8 @@ public interface LoanService {
      * @return
      */
     List<TitleModel> findAllTitles();
+
+    List<Map<String,String>> getLoanType();
+
+    List<Map<String,String>> getActivityType();
 }

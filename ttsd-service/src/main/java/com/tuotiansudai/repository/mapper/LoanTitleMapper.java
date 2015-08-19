@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.repository.mapper;
+package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanTitleModel;
 

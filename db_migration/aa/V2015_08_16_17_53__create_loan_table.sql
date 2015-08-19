@@ -12,8 +12,9 @@ CREATE TABLE `${aa}`.`loan` (
   `min_invest_amount`           BIGINT UNSIGNED     NOT NULL,/***最小投资金额***/
   `invest_increasing_amount`    BIGINT UNSIGNED     NOT NULL,/***投资递增金额***/
   `max_invest_amount`           BIGINT UNSIGNED     NOT NULL,/***单笔最大投资金额***/
-  `activity_type`               VARCHAR (1000)       NOT NULL,/***活动类型***/
+  `activity_type`               VARCHAR (500)      NOT NULL,/***活动类型***/
   `activity_rate`               DOUBLE              DEFAULT 0,/***活动利率***/
+  `base_rate`                   DOUBLE              DEFAULT 0,/***基本利率***/
   `contract_id`                 BIGINT UNSIGNED     NOT NULL ,/***合同***/
   `fundraising_start_time`      DATETIME            NOT NULL,/***筹款开始时间***/
   `fundraising_end_time`        DATETIME            NOT NULL,/***筹款截止时间***/
