@@ -2,7 +2,6 @@ package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.google.common.collect.Maps;
 
-import java.util.Date;
 import java.util.Map;
 
 public class MerBindProjectRequestModel extends BaseSyncRequestModel{
