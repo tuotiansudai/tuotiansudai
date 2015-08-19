@@ -63,7 +63,7 @@
             });
             // Autocomplete
             var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
-            $("#tags").autocomplete({
+            $("#tags,#tags_1").autocomplete({
                 source: availableTags
             });
 
@@ -72,7 +72,6 @@
     <script id="upload" type="text/html">
         <div class="form-group">
             <label for="project" class="col-sm-2 control-label"></label>
-
             <div class="col-sm-10">
                 <div class="row col-file-box">
                     <div class="select-box">
@@ -177,14 +176,7 @@
                         <label for="project" class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" placeholder="请输入内容">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="project" class="col-sm-2 control-label">自动补全: </label>
-
-                        <div class="col-sm-4">
-                            <input type="text" id="tags" class="form-control ui-autocomplete-input" autocomplete="off"
+                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" autocomplete="off"
                                    placeholder="请输入内容">
                         </div>
                     </div>
@@ -192,7 +184,15 @@
                         <label for="project" class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" placeholder="请输入内容">
+                            <input type="text" id="tags" class="form-control ui-autocomplete-input" autocomplete="off"
+                                   placeholder="请输入内容">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">账户余额: </label>
+
+                        <div class="col-sm-4">
+                            <div class="form-control-static">¥ 0.00</div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -207,6 +207,16 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">借款期限:	 </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="">
+
+                        </div>
+                        <div class="col-sm-3"><div class="form-control-static">(单位：1天)</div></div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="project" class="col-sm-2 control-label">项目描述: </label>
 
                         <div class="col-sm-10">
@@ -214,13 +224,86 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="project" class="col-sm-2 control-label">上传资料: </label>
+                        <label for="project" class="col-sm-2 control-label">申请材料: </label>
 
                         <div class="col-sm-10">
                             <button type="button" class="btn-upload btn btn-info">＋</button>
                         </div>
                     </div>
                     <div class="upload-box"></div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">预计出借金额（元）: </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="请输入内容">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">投资手续费比例(%): </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="请输入内容">
+                        </div>
+                        <div class="col-sm-6"><div class="form-control-static"> 还款时收取所得利息的百分比。</div></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">最小投资金额（元）: </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="50.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">投资递增金额（元）: </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="50.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="999,999,999">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">活动类型: </label>
+
+                        <div class="col-sm-4">
+                            <select class="selectpicker ">
+                                <option>普通</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">活动利率(%): </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="请输入内容">
+                        </div>
+                        <div class="col-sm-6"><div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。 </div></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">基本利率(%): </label>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="project" class="form-control" placeholder="请输入内容">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project" class="col-sm-2 control-label">合同: </label>
+
+                        <div class="col-sm-4">
+                            <select class="selectpicker ">
+                                <option>四方合同</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group input-append">
                         <label for="project" class="col-sm-2 control-label">筹款启动时间: </label>
 
@@ -246,20 +329,20 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="project" class="col-sm-2 control-label">初审是否通过: </label>
+                    <!--<div class="form-group">-->
+                        <!--<label for="project" class="col-sm-2 control-label">初审是否通过: </label>-->
 
-                        <div class="col-sm-4">
-                            <span class="label label-success "> 是</span>
-                        </div>
-                    </div>
+                        <!--<div class="col-sm-4">-->
+                            <!--<span class="label label-success "> 是</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group">
                         <label for="project" class="col-sm-2 control-label">属性: </label>
 
                         <div class="col-sm-4">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" value="">
+                                    <input type="checkbox" value="" checked>
                                     首页
                                 </label>
                             </div>
