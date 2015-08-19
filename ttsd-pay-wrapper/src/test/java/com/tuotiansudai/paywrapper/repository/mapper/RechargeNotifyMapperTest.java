@@ -28,18 +28,6 @@ public class RechargeNotifyMapperTest {
         assertNotNull(fakeRequest.getId());
     }
 
-    @Test
-    public void shouldCreateRechargeNotifyResponse() throws Exception {
-        RechargeNotifyRequestModel fakeRequest = this.getFakeRequest();
-        rechargeNotifyMapper.createRequest(fakeRequest);
-
-        BaseCallbackResponseModel responseModel = new BaseCallbackResponseModel(fakeRequest.getId(), fakeRequest.getOrderId(), fakeRequest.getMerDate());
-        responseModel.setResponseData("responseData");
-
-        rechargeNotifyMapper.createResponse(responseModel);
-
-    }
-
     private RechargeNotifyRequestModel getFakeRequest() {
         RechargeNotifyRequestModel model = new RechargeNotifyRequestModel();
         model.setService("service");
