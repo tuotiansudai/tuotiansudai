@@ -4,5 +4,5 @@ import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.NodeListRequestDto;
 
 public interface MobileAppNodeListService {
-    BaseResponseDto generateNodeList(NodeListRequestDto nodeListRequestDto);
+    BaseResponseDto generateNodeList(NodeListRequestDto nodeListRequestDto, String baseUrl);
 }

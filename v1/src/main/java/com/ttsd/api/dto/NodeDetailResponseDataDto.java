@@ -9,19 +9,30 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     private String title;
     private String desc;
     private String content;
+    private String baseUrl;
     private String time;
 
     public NodeDetailResponseDataDto(){
 
     }
 
-    public NodeDetailResponseDataDto(Node node, boolean includeContent){
+    public NodeDetailResponseDataDto(Node node, String baseUrl, boolean includeContent){
+        this.baseUrl = baseUrl;
         this.nodeId = node.getId();
         this.title = node.getTitle();
         this.desc = node.getDescription();
         this.time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(node.getUpdateTime()).toString();
         if(includeContent){
-            this.content = node.getNodeBody().getBody();
+            StringBuffer sb = new StringBuffer();
+            sb.append("<h1>");
+            sb.append(node.getTitle());
+            sb.append("</h1>");
+            sb.append("<span style='font-size:14px;color:#666;'>时间：");
+            sb.append(this.time);
+            sb.append("</span>");
+            sb.append("<hr/>");
+            sb.append(node.getNodeBody().getBody());
+            this.content = sb.toString();
         }
     }
 
@@ -55,6 +66,14 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     public String getTime() {

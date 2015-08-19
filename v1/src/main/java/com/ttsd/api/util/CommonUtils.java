@@ -4,12 +4,13 @@ package com.ttsd.api.util;
 import com.google.common.base.Joiner;
 import org.apache.commons.lang.StringUtils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CommonUtils {
 
@@ -70,5 +71,17 @@ public class CommonUtils {
         }
         return formData;
     }
-    
+
+    public static String getRequestBaseUrl(HttpServletRequest request) {
+        int port = request.getServerPort();
+        String host = request.getServerName();
+        StringBuffer sb = new StringBuffer();
+        sb.append("http://");
+        sb.append(host);
+        if (port != 80) {
+            sb.append(":" + port);
+        }
+        return sb.toString();
+    }
+
 }
