@@ -66,14 +66,15 @@ public class LoanServiceImpl implements LoanService {
         }
         MerBindProjectRequestModel requestModel = new MerBindProjectRequestModel();
         requestModel.setLoanUserId(loanDto.getLoanAmount());
-        requestModel.setProjectAmount(loanUserId);
+        requestModel.setProjectAmount(loanDto.getLoanAmount());
         IdGenerator idGenerator = new IdGenerator();
         String projectId = String.valueOf(idGenerator.generate());/****标的号****/
         requestModel.setProjectId(projectId);
         requestModel.setProjectName(loanDto.getProjectName());
-        MerBindProjectResponseModel responseModel = null;
         try {
-            responseModel = paySyncClient.send(MerBindProjectMapper.class, requestModel, MerBindProjectResponseModel.class);
+            MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
+                    requestModel,
+                    MerBindProjectResponseModel.class);
             if (responseModel.isSuccess()) {
                 LoanModel loanModel = null;
                 try {

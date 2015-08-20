@@ -1,20 +1,22 @@
 package com.tuotiansudai.repository.model;
 
+import java.math.BigInteger;
+
 /**
  * Created by tuotian on 15/8/17.
  */
 public class TitleModel {
-    private String id;
+    private BigInteger id;
     /***标题类型base:基础标题，new:新增标题***/
     private String type;
     /***标题名称***/
     private String title;
 
-    public String getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 

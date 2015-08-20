@@ -1,10 +1,10 @@
-package com.tuotiansudai.paywrapper.repository.mapper;
+package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.TitleMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,25 +14,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional(value = "payTransactionManager",rollbackFor = Exception.class)
-public class LoanMapperTest {
+@Transactional(rollbackFor = Exception.class)
+public class LoanServiceTest {
     @Autowired
-    private LoanMapper loanMapper;
-
-    @Autowired
-    private LoanTitleMapper loanTitleMapper;
-
-    @Autowired
-    private TitleMapper titleMapper;
+    private LoanService loanService;
 
     @Test
-    public void createLoanTest(){
+    public void createTitleTest(){
+        IdGenerator idGenerator = new IdGenerator();
+        String id = String.valueOf(idGenerator.generate());
+        TitleModel titleModel = new TitleModel();
+        titleModel.setId(new BigInteger(id));
+        titleModel.setTitle("");
+        titleModel.setType("base");
+        loanService.createTitle(titleModel);
+    }
+
+    @Test
+    public void createLoanServiceTest(){
         LoanDto loanDto = new LoanDto();
         IdGenerator idGenerator = new IdGenerator();
         loanDto.setLoanLoginName("xiangjie");
@@ -47,8 +51,8 @@ public class LoanMapperTest {
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setFundraisingEndTime("2015-11-22");
-        loanDto.setFundraisingStartTime("2015-8-12");
+        loanDto.setFundraisingEndTime("2015-11-28");
+        loanDto.setFundraisingStartTime("2015-8-19");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
@@ -65,27 +69,6 @@ public class LoanMapperTest {
             loanTitleModelList.add(loanTitleModel);
         }
         loanDto.setLoanTitles(loanTitleModelList);
-        try {
-            LoanModel loanModel = new LoanModel(loanDto);
-            loanMapper.createLoan(loanModel);
-            loanTitleMapper.createLoanTitle(loanDto.getLoanTitles());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        loanService.createLoan(loanDto);
     }
-    @Test
-    public void createTitleTest(){
-        TitleModel titleModel = new TitleModel();
-        IdGenerator idGenerator = new IdGenerator();
-        titleModel.setId(new BigInteger(String.valueOf(idGenerator.generate())));
-        titleModel.setType("base");
-        titleModel.setTitle("房产证");
-        titleMapper.createTitle(titleModel);
-    }
-
-    @Test
-    public void findAlltitles(){
-        List<TitleModel> titleModels = titleMapper.findAllTitles();
-    }
-
 }

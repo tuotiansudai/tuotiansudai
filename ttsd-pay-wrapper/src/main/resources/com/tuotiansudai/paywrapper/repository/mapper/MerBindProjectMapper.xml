@@ -7,19 +7,18 @@
     <resultMap id="requestMap" type="MerBindProjectRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
-        <result property="loginName" column="mer_cust_id"/>
-        <result property="userName" column="mer_cust_name"/>
-        <result property="identityType" column="identity_type"/>
-        <result property="identityNumber" column="identity_code"/>
-        <result property="mobile" column="mobile_id"/>
-        <result property="requestTime" column="request_time"/>
-        <result property="requestUrl" column="request_url"/>
-        <result property="requestData" column="request_data"/>
+        <result property="signType" column="sign_type"/>
         <result property="sign" column="sign"/>
-        <result property="projectId" column="project_Id"/>
+        <result property="charset" column="charset"/>
+        <result property="merId" column="merchant_id"/>
+        <result property="version" column="version"/>
+        <result property="projectId" column="project_id"/>
         <result property="projectName" column="project_name"/>
         <result property="projectAmount" column="project_amount"/>
         <result property="loanUserId" column="loan_user_id"/>
+        <result property="requestUrl" column="request_url"/>
+        <result property="requestData" column="request_data"/>
+        <result property="requestTime" column="request_time"/>
         <result property="status" column="status"/>
     </resultMap>
 

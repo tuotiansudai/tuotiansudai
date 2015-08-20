@@ -17,6 +17,7 @@ CREATE TABLE ${ump_operations}.`mer_bind_project_request` (
   PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB
+AUTO_INCREMENT = 100001
 DEFAULT CHARSET=utf8;
 
 CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
@@ -37,4 +38,5 @@ CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
   CONSTRAINT FK_response_request_id_ref_request_id FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_bind_project_request` (`id`)
 )
 ENGINE=InnoDB
+AUTO_INCREMENT = 100001
 DEFAULT CHARSET=utf8;
