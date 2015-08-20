@@ -147,7 +147,7 @@
 							<p class="color1">
 								项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 							</p>
-							<p class="color2">
+							<p id="loan-status-a-#{loan.id}" class="color2">
 								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 									投标进行中
 								</ui:fragment>
@@ -173,8 +173,9 @@
 							</ui:fragment>
 
 							<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
-								<p class="clearfix" rel="invest-time-countdown" loan-id="a-#{loan.id}"
-								   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+								<p class="clearfix" rel="invest-time-countdown" count-down-id="a-#{loan.id}"
+								   on-begin="onCountDownBegin" on-over="onCountDownOver"
+								   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 								   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 								   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 									<h:outputText value="#{loan.investBeginTime}">
@@ -269,7 +270,7 @@
 								<p class="color1">
 									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 								</p>
-								<p class="color2">
+								<p id="loan-status-b-#{loan.id}" class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
 							        </ui:fragment>
@@ -295,8 +296,8 @@
 								</ui:fragment>
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
-									<p class="clearfix" rel="invest-time-countdown" loan-id="b-#{loan.id}"
-									   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									<p class="clearfix" rel="invest-time-countdown" count-down-id="b-#{loan.id}"
+									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 										<h:outputText value="#{loan.investBeginTime}">
@@ -380,7 +381,7 @@
 								<p class="color1">
 									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 								</p>
-								<p class="color2">
+								<p id="loan-status-c-#{loan.id}" class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
 							        </ui:fragment>
@@ -406,8 +407,8 @@
 								</ui:fragment>
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
-									<p class="clearfix" rel="invest-time-countdown" loan-id="c-#{loan.id}"
-									   count-down-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									<p class="clearfix" rel="invest-time-countdown" count-down-id="c-#{loan.id}"
+									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
 										<h:outputText value="#{loan.investBeginTime}">
@@ -689,7 +690,30 @@
 						}
 					//]]>
 				</script>
-			    
+			    <script type="text/javascript">
+					function onCountDownBegin(countDownId){
+						var btn = $('#loan-btn-'+countDownId);
+						btn.attr('ori-text',btn.html())
+								.html('预热中')
+								.addClass('tz-btn-waiting');
+						var sts = $('#loan-status-'+countDownId);
+						sts.attr('ori-text',sts.html())
+								.html('<br/>');
+					}
+
+					function onCountDownOver(countDownId, elem){
+						var btn = $('#loan-btn-' + countDownId);
+						btn.html(btn.attr('ori-text'))
+								.removeClass('tz-btn-waiting');
+
+						var countDownOverMessage = elem.attr('count-down-over-message');
+						if(!countDownOverMessage){countDownOverMessage='';}
+						elem.html(countDownOverMessage);
+
+						var sts = $('#loan-status-'+countDownId);
+						sts.html(sts.attr('ori-text'));
+					}
+				</script>
 			</div>
 			<!--media-end-->
 		</div>

@@ -99,6 +99,12 @@ public class UmPayLoanHome extends LoanHome {
 					+ "未实名认证，不能发起借款！");
 			return  null;
 		}
+		if(loan.getInvestBeginTime()!=null
+				&& loan.getExpectTime()!=null
+				&& loan.getInvestBeginTime().after(loan.getExpectTime())){
+			FacesUtil.addInfoMessage("起投时间不能晚于预计执行时间");
+			return null;
+		}
 		// 创建一个标的操作
 		try {
 			umPayCreateLoanOperation.createOperation(loan,
@@ -161,6 +167,13 @@ public class UmPayLoanHome extends LoanHome {
 		if (getIspass()) {
 			if (this.getInstance().getExpectTime() == null) {
 				FacesUtil.addErrorMessage("请填写预计执行时间。");
+				setIspass(false);
+				return null;
+			}
+			if(this.getInstance().getInvestBeginTime()!=null
+					&& this.getInstance().getExpectTime()!=null
+					&& this.getInstance().getInvestBeginTime().after(this.getInstance().getExpectTime())){
+				FacesUtil.addInfoMessage("起投时间不能晚于预计执行时间");
 				setIspass(false);
 				return null;
 			}

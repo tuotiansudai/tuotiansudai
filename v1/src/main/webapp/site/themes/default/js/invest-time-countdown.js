@@ -1,11 +1,18 @@
+/**
+ * onCountDownBegin(String countDownId);
+ * onCountDownOver(String countDownId, jqueryElement countdownElement);
+ */
 (function($){
+    var _noop = function(s){};
+    var logger = (typeof console != 'undefined') ? {log:_noop,warn:_noop,error:_noop} : console;
     var countDownTriggerThreshold  = 30 * 60 * 1000; // 30 minutes
     // nowTime是服务器当前时间
-    var countDown = function(el, loanId, targetTime, nowTime){
+    var countDown = function(el, countDownId, targetTime, nowTime, overHandle){
         this.el = el;
-        this.loanId = loanId;
+        this.countDownId = countDownId;
         this.targetTime = targetTime;
         this.nowTime = nowTime;
+        this.overHandle = overHandle;
         this.clientStartTime = new Date();
         this.remain = this.targetTime - this.nowTime;
         this.windowIntervalHandle = 0;
@@ -13,7 +20,6 @@
 
     countDown.prototype = {
         countdown:function(){
-            this.onCountDownBegin();
             this.cancel();
             this.windowIntervalHandle = window.setInterval(this.tickDelegate(),1000);
         },
@@ -33,7 +39,7 @@
             var n = new Date();
             var passed = n - this.clientStartTime;
             var remain = parseInt((this.remain - passed) / 1000);
-            if (remain < 0) {
+            if (remain <= 0) {
                 this.cancel();
                 this.onCountDownOver();
             } else {
@@ -45,54 +51,36 @@
                 this.el.html(cdString);
             }
         },
-        onCountDownBegin:function(){
-        },
         onCountDownOver:function(){
-            var countDownOverMessage = this.el.attr('count-down-message');
-            if(!countDownOverMessage){countDownOverMessage='';}
-            this.el.html(countDownOverMessage);
-
-            // for index page
-            var btn = $('#loan-btn-' + this.loanId);
-            btn.html(btn.attr('ori-text'))
-                .removeClass('tz-btn-waiting');
-
-            // for detail page
-            var btn4detail = $('.sure-btn');
-            btn4detail.html(btn4detail.attr('ori-text'))
-                .attr('onclick',btn4detail.attr('ori-onclick'))
-                .attr('href',btn4detail.attr('ori-href'))
-                .removeClass('btn-waiting');
+            var onOverHandle = window[this.overHandle];
+            if(typeof onOverHandle === 'function'){
+                try {
+                    onOverHandle(this.countDownId, this.el);
+                }catch(e){logger.error(e);}
+            }
         }
     }
 
     $(function() {
         $("[rel='invest-time-countdown']").each(function(){
             var cdEl = $(this);
-            var loanId = cdEl.attr('loan-id');
+            var countDownId = cdEl.attr('count-down-id');
             var beginTimeString = cdEl.attr('invest-begin-time');
             var beginTime = new Date(Date.parse(beginTimeString));
             var serverTimeString = cdEl.attr('server-now-time');
             var serverTime = new Date(Date.parse(serverTimeString));
+            var beginHandle = cdEl.attr('on-begin');
+            var overHandle = cdEl.attr('on-over');
             if(beginTime > serverTime){
-                // for index page
-                var btn = $('#loan-btn-'+loanId);
-                btn.attr('ori-text',btn.html())
-                    .html('预热中')
-                    .addClass('tz-btn-waiting');
-
-                // for detail page
-                var btn4detail = $('.sure-btn');
-                btn4detail.attr('ori-text',btn4detail.html())
-                    .attr('ori-onclick',btn4detail.attr('onclick'))
-                    .attr('ori-href',btn4detail.attr('href'))
-                    .html('预热中')
-                    .addClass('btn-waiting')
-                    .attr('onclick','return false;');
-
+                var onBeginHandle = window[beginHandle];
+                if(typeof onBeginHandle === 'function'){
+                    try {
+                        onBeginHandle(countDownId);
+                    }catch(e){logger.error(e);}
+                }
             }
             if(beginTime - serverTime < countDownTriggerThreshold) {
-                var cd = new countDown(cdEl, loanId, beginTime, serverTime);
+                var cd = new countDown(cdEl, countDownId, beginTime, serverTime, overHandle);
                 cd.countdown();
             }
         });

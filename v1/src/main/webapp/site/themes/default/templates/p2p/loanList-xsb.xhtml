@@ -1,19 +1,41 @@
 <ui:composition template="../page.xhtml"
-	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pm="http://primefaces.org/mobile"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:o="http://omnifaces.org/ui"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pm="http://primefaces.org/mobile"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:o="http://omnifaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:sec="http://www.springframework.org/security/facelets/tags"
+				xmlns:of="http://omnifaces.org/functions">
 
 	<ui:define name="content">
 
 		<link type="text/css" rel="stylesheet"
 			href="#{tplVars.themeStylePath}/content.css" />
+
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/invest-time-countdown.js"></script>
+		<script type="text/javascript">
+			function onCountDownBegin(countDownId){
+				var btn = $('#loan-btn-'+countDownId);
+				btn.attr('ori-text',btn.html())
+						.html('预热中')
+						.addClass('btn-waiting');
+			}
+
+			function onCountDownOver(countDownId, elem){
+				var btn = $('#loan-btn-' + countDownId);
+				btn.html(btn.attr('ori-text'))
+						.removeClass('btn-waiting');
+
+				var countDownOverMessage = elem.attr('count-down-over-message');
+				if(!countDownOverMessage){countDownOverMessage='';}
+				elem.html(countDownOverMessage);
+			}
+		</script>
+
 		<h:form>
 		<div class="guide-div01">
 			<div class="guide clearfix">
@@ -234,7 +256,20 @@
 							<p>投资进度:<em><b style="width:#{cr}%"></b></em><i>#{cr}%</i></p>
 							<span class="color6"><i class="cf33735">#{loanCalculator.countSuccessInvest(loan.id)}</i>人投资此项目</span><br/>
 							<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
-								<span class="color6">项目正在火热投标中</span>
+								<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
+									<span class="color6">项目正在火热投标中</span>
+								</ui:fragment>
+								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+                                    <span class="color6" rel="invest-time-countdown" count-down-id="#{loan.id}"
+										  on-begin="onCountDownBegin" on-over="onCountDownOver"
+										  count-down-over-message="项目正在火热投标中"
+										  invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+										  server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+                                        <h:outputText value="#{loan.investBeginTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
+										</h:outputText> 放标
+                                    </span>
+								</ui:fragment>
 							</ui:fragment>
 							<ui:fragment rendered="#{loan.status == LoanStatus.COMPLETE}">
 								<span class="color6">项目已经完成</span>
@@ -246,11 +281,8 @@
 								<span class="color6">项目正在等待复核</span>
 							</ui:fragment>
 							<p>
-								<ui:fragment rendered="#{((not empty loan.investBeginTime) and loan.investBeginTime gt now) and loan.status == LoanStatus.RAISING}">
-									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn01 btn-waiting">预热中</a>
-								</ui:fragment>
-								<ui:fragment rendered="#{((empty loan.investBeginTime) or loan.investBeginTime lt now) and loan.status == LoanStatus.RAISING}">
-									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn01">新手可投</a>
+								<ui:fragment rendered="#{loan.status == LoanStatus.RAISING}">
+									<a id="loan-btn-#{loan.id}" href="#{path}/loan/#{loan.id}" class="btn01">立即投资</a>
 								</ui:fragment>
 								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
 									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="btn02">查看详情</a>
