@@ -39,12 +39,12 @@ flyway {
     if (new File(productionFlywayConfig).exists()) {
         Properties properties = new Properties()
         properties.load(new FileInputStream(productionFlywayConfig))
-        def schema = properties.getProperty('jdbc.scheam', 'sms_operations')
+        def schema = properties.getProperty('jdbc.schema', 'sms_operations')
         user = properties.getProperty('jdbc.username', user)
         password = properties.getProperty('jdbc.password', password)
-        url = properties.getProperty('flyway.url', url)
+        url = properties.getProperty('jdbc.url', url)
         locations = ["filesystem:db_migration/$schema"]
-        placeholders = ['sms_operations': "$schema"]
-        schemas = ["$schema"]
+        placeholders = ['sms_operations': schema]
+        schemas = [schema]
     }
 }
