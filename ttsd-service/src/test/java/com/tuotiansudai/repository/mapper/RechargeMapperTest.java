@@ -33,7 +33,6 @@ public class RechargeMapperTest {
     @Autowired
     private IdGenerator idGenerator;
 
-
     @Test
     public void shouldCreateRecharge() throws Exception {
         UserModel fakeUserModel = this.getFakeUserModel();
