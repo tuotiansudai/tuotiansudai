@@ -11,10 +11,10 @@
         <result column="apply_metarial_url" property="applyMetarialUrl"></result>
     </resultMap>
 
-    <insert id="createLoanTitle" parameterType="com.tuotiansudai.repository.model.LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loan(loan_id,title_id,apply_metarial_url) values
-        <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.loan_id},#{item.title_id},#{item.apply_metarial_url})
+    <insert id="createLoanTitle" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
+        insert into loan_title (id,loan_id,title_id,apply_metarial_url) values
+        <foreach collection="loanTitleModels" item="item" index="index" separator=",">
+            (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})
         </foreach>
     </insert>
 

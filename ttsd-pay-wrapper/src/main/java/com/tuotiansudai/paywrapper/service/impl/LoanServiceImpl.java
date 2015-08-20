@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +86,7 @@ public class LoanServiceImpl implements LoanService {
                 loanMapper.createLoan(loanModel);
                 List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
                 for (LoanTitleModel loanTitleModel : loanDto.getLoanTitles()){
-                    loanTitleModel.setLoanId(projectId);
+                    loanTitleModel.setLoanId(new BigInteger(projectId));
                     loanTitleModelList.add(loanTitleModel);
                 }
                 loanTitleMapper.createLoanTitle(loanTitleModelList);

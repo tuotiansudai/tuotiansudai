@@ -2,10 +2,12 @@ package com.tuotiansudai.paywrapper.repository.mapper;
 
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +15,31 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional(value = "payTransactionManager")
+@Transactional(value = "payTransactionManager",rollbackFor = Exception.class)
 public class LoanMapperTest {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private LoanTitleMapper loanTitleMapper;
+
     @Test
     public void createLoanTest(){
         LoanDto loanDto = new LoanDto();
-        loanDto.setActivityRate("12");
+        IdGenerator idGenerator = new IdGenerator();
+        loanDto.setLoanLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
+        String id = String.valueOf(idGenerator.generate());
+        loanDto.setId(id);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
         loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
@@ -41,25 +52,29 @@ public class LoanMapperTest {
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
         loanDto.setType(LoanType.loan_type_1);
-        loanDto.setMaxInvestAmount("100000000000000");
+        loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
         for(int i=0;i<5;i++){
             LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setLoanId("123123");
-            loanTitleModel.setTitleId("12341234");
+            loanTitleModel.setId(new BigInteger(String.valueOf(idGenerator.generate())));
+            loanTitleModel.setLoanId(new BigInteger(id));
+            loanTitleModel.setTitleId(new BigInteger("1234567890"));
             loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleModelList.add(loanTitleModel);
         }
         loanDto.setLoanTitles(loanTitleModelList);
         try {
             LoanModel loanModel = new LoanModel(loanDto);
-            loanModel.setId("1234567890");
-            loanModel.setLoanLoginName("asdfas");
-            loanModel.setName("asdfas");
-           loanMapper.createLoan(loanModel);
+            loanMapper.createLoan(loanModel);
+            loanTitleMapper.createLoanTitle(loanDto.getLoanTitles());
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+
+        @Test
+        public void createTitle(){
+
         }
     }
 

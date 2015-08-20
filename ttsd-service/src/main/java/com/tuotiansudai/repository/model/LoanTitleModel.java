@@ -1,37 +1,39 @@
 package com.tuotiansudai.repository.model;
 
-/**
- * Created by tuotian on 15/8/17.
- */
-public class LoanTitleModel {
-    private String id;
-    private String loanId;/***借款标的***/
-    private String titleId;/***申请材料标题***/
-    private String applyMetarialUrl;/***申请材料存放路径***/
+import java.math.BigInteger;
 
-    public String getId() {
+public class LoanTitleModel {
+    private BigInteger id;
+    private BigInteger loanId;/***借款标的***/
+    private BigInteger titleId;/***申请材料标题***/
+    private String applyMetarialUrl;
+
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
-    public String getLoanId() {
+    public BigInteger getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(String loanId) {
+    public void setLoanId(BigInteger loanId) {
         this.loanId = loanId;
     }
 
-    public String getTitleId() {
+    public BigInteger getTitleId() {
         return titleId;
     }
 
-    public void setTitleId(String titleId) {
+    public void setTitleId(BigInteger titleId) {
         this.titleId = titleId;
     }
+
+    /***申请材料存放路径***/
+
 
     public String getApplyMetarialUrl() {
         return applyMetarialUrl;

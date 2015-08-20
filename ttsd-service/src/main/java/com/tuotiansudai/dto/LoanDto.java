@@ -10,6 +10,8 @@ import java.util.List;
 
 public class LoanDto {
 
+    private String id;
+
     /***标的名称***/
     @NotEmpty
     private String projectName;
@@ -89,6 +91,14 @@ public class LoanDto {
 
     /***申请材料***/
     private List<LoanTitleModel> loanTitles;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getProjectName() {
         return projectName;

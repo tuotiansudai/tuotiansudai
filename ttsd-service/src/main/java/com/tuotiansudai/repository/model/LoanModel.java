@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoanModel {
+    /***标的号***/
     private String id;
     /***借款项目名称***/
     private String name;
@@ -50,6 +51,7 @@ public class LoanModel {
     public LoanModel(){}
 
     public LoanModel(LoanDto loanDto) throws ParseException {
+        this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
         this.activityType = loanDto.getActivityType().name();
