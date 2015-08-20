@@ -2,9 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.security.CaptchaVerifier;
+import com.tuotiansudai.utils.CaptchaVerifier;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.util.CaptchaGenerator;
+import com.tuotiansudai.utils.CaptchaGenerator;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
@@ -54,7 +54,7 @@ public class LoginController {
     @ResponseBody
     public BaseDto captchaVerify(@PathVariable String captcha) {
         boolean result = this.captchaVerifier.loginCaptchaVerify(captcha);
-        BaseDto baseDto = new BaseDto();
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);
         baseDto.setData(dataDto);

@@ -2,9 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.dto.RegisterUserDto;
-import com.tuotiansudai.security.CaptchaVerifier;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.utils.CaptchaVerifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +55,6 @@ public class RegisterControllerTest {
                 .setViewResolvers(viewResolver)
                 .build();
     }
-
 
     @Test
     public void shouldMobileIsExist() throws Exception {
@@ -145,7 +144,7 @@ public class RegisterControllerTest {
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
         when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
-        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/12345/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
@@ -155,7 +154,7 @@ public class RegisterControllerTest {
     public void shouldSendRegisterCaptchaFailed() throws Exception {
         when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(false);
-        this.mockMvc.perform(get("/register/mobile/13900000000/123456/sendregistercaptcha")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/12345/sendregistercaptcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
@@ -166,9 +165,9 @@ public class RegisterControllerTest {
     public void shouldPhotoCaptchaVerify() throws Exception {
         when(captchaVerifier.registerPhotoCaptchaVerify(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/photo/captcha/123456/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
+        this.mockMvc.perform(get("/register/captcha/12345/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(false));
+                .andExpect(jsonPath("$.data.status").value(true));
     }
 
     @Test

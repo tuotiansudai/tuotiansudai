@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<#import "global_macro.ftl" as global/>
-<@global.head title='注册' pageCss='${css.register}'>
-</@global.head >
+<#import "macro/global.ftl" as global>
+<@global.head title="注册" pageCss="${css.register}">
+</@global.head>
 <body>
 <#include "header.ftl" />
 <div class="register">
@@ -128,12 +128,7 @@
     <button class="complete grey" disabled="disabled">完成</button>
 </div>
 <#include "footer.ftl">
-
-<@global.javascript pageJs='${js.register}'>
+<@global.javascript pageJavascript="${js.register}">
 </@global.javascript>
-
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer async="true"
-        data-main="${requestContext.getContextPath()}/js/dest/${js.register}"></script>
 </body>
 </html>

@@ -2,9 +2,9 @@
              xmlns:beans="http://www.springframework.org/schema/beans"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
-		   http://www.springframework.org/schema/beans/spring-beans.xsd
+		   http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 		   http://www.springframework.org/schema/security
-		   http://www.springframework.org/schema/security/spring-security.xsd">
+		   http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
     <beans:bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
         <beans:property name="userPropertyToUse" value="salt"/>
@@ -35,6 +35,8 @@
 
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
+        <intercept-url pattern="/recharge" access="permitAll()"/>
+        <intercept-url pattern="/bind-card" access="permitAll()"/>
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/register/**" access="isAnonymous()"/>
 

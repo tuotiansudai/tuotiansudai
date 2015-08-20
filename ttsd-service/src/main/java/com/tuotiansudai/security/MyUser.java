@@ -10,6 +10,7 @@ public class MyUser extends User {
 
     private String mobile;
 
+    private String umpUserId;
 
     public MyUser(String username,
                   String password,
@@ -19,9 +20,11 @@ public class MyUser extends User {
                   boolean accountNonLocked,
                   List<GrantedAuthority> authorities,
                   String mobile,
+                  String umpUserId,
                   String salt) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.mobile = mobile;
+        this.umpUserId = umpUserId;
         this.salt = salt;
     }
 
@@ -39,5 +42,13 @@ public class MyUser extends User {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getUmpUserId() {
+        return umpUserId;
+    }
+
+    public void setUmpUserId(String umpUserId) {
+        this.umpUserId = umpUserId;
     }
 }

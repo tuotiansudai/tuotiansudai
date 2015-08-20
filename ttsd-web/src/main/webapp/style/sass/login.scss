@@ -101,6 +101,10 @@
       a.login-now.grey{
         background: #ccc;
       }
+      a.login-now.loading{
+        background: url("/images/login/loading.gif") no-repeat center center!important;
+        text-indent: -9999px;
+      }
     }
     & b {
       margin: 0px 0px 0px 10px;
