@@ -2,19 +2,18 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.RechargeDto;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.UUIDGenerator;
 
 import java.util.Date;
 
 public class RechargeModel {
 
-    private String id;
+    private long id;
 
     private String loginName;
 
-    private int amount;
+    private long amount;
 
-    private int fee;
+    private long fee;
 
     private String bank;
 
@@ -27,34 +26,33 @@ public class RechargeModel {
     }
 
     public RechargeModel(RechargeDto dto) {
-        this.id = UUIDGenerator.generate();
         this.amount = AmountUtil.convertStringToCent(dto.getAmount());
         this.bank = dto.getBank();
         this.loginName = dto.getLoginName();
         this.status = RechargeStatus.WAIT_PAY;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 
-    public int getFee() {
+    public long getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(long fee) {
         this.fee = fee;
     }
 

@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.UUIDGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ public class RechargeMapperTest {
     @Autowired
     private RechargeMapper rechargeMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Test
     public void shouldCreateRecharge() throws Exception {
@@ -36,7 +39,7 @@ public class RechargeMapperTest {
         userMapper.create(fakeUserModel);
 
         RechargeModel model = new RechargeModel();
-        model.setId(UUIDGenerator.generate());
+        model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
         model.setBank("bank");
         model.setStatus(RechargeStatus.WAIT_PAY);
