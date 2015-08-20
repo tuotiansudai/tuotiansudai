@@ -10,5 +10,5 @@ public interface RechargeService {
 
     BaseDto<PayFormDataDto> recharge(RechargeDto dto);
 
-    void rechargeCallback(Map<String, String> paramsMap, String queryString);
+    String rechargeCallback(Map<String, String> paramsMap, String queryString);
 }

@@ -26,16 +26,6 @@ public class LoginUserInfo {
         return null;
     }
 
-    public static String getUmpUserId() {
-        Object principal = LoginUserInfo.getPrincipal();
-
-        if (principal instanceof MyUser) {
-            return ((MyUser) principal).getUmpUserId();
-        }
-
-        return null;
-    }
-
     private static Object getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getPrincipal();

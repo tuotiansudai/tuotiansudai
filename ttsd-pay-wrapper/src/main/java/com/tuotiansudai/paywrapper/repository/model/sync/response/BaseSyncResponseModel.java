@@ -27,6 +27,10 @@ public class BaseSyncResponseModel {
 
     private Date responseTime = new Date();
 
+    public boolean isSuccess() {
+        return SUCCESS_CODE.equals(retCode);
+    }
+
     public void initializeModel(Map<String, String> resData) {
         this.responseData = resData.toString();
         this.signType = resData.get("sign_type");
@@ -133,7 +137,5 @@ public class BaseSyncResponseModel {
         return id.hashCode();
     }
 
-    public boolean isSuccess() {
-        return SUCCESS_CODE.equals(retCode);
-    }
+
 }
