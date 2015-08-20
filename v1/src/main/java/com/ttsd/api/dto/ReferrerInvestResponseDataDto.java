@@ -3,6 +3,7 @@ package com.ttsd.api.dto;
 public class ReferrerInvestResponseDataDto {
     private String userId;
     private String level;
+    private String loanId;
     private String loanName;
     private String investMoney;
     private String deadline;
@@ -72,5 +73,13 @@ public class ReferrerInvestResponseDataDto {
 
     public void setRewardTime(String rewardTime) {
         this.rewardTime = rewardTime;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
     }
 }
