@@ -45,6 +45,7 @@ public class MobileAppReferrerInvestListDaoImpl implements MobileAppReferrerInve
             referrerInvestResponseDataDto.setInvestMoney(result.get(i).get("investMoney").toString());
             referrerInvestResponseDataDto.setInvestTime(new SimpleDateFormat("yyyy-MM-dd").format(result.get(i).get("investTime")));
             referrerInvestResponseDataDto.setRewardMoney(result.get(i).get("rewardMoney").toString());
+            referrerInvestResponseDataDto.setLoanId(result.get(i).get("loanId").toString());
             referrerInvestResponseDataDto.setLoanName(result.get(i).get("loanName").toString());
             referrerInvestResponseDataDto.setRewardTime(new SimpleDateFormat("yyyy-MM-dd").format(result.get(i).get("rewardTime")));
             referrerInvestResponseDataDto.setDeadline(result.get(i).get("deadLine").toString());
