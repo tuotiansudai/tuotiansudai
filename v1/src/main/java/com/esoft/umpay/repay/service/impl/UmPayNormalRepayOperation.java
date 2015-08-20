@@ -62,7 +62,7 @@ import java.util.*;
 public class UmPayNormalRepayOperation extends
 		UmPayOperationServiceAbs<LoanRepay> {
 
-	public static final String NOT_BIND_CARD = "未在联动优势绑定借记卡,交易失败";
+	public static final String NOT_BIND_CARD = "未在联动优势开通账户,交易失败";
 	@Resource
 	HibernateTemplate ht;
 
