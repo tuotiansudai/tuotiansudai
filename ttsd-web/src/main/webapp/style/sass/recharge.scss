@@ -25,17 +25,23 @@
   }
   .banking {
     width: 800px;
-    height: 330px;
     margin: 10px 4px 0px;
     position: relative;
-
-    & ul{
+    overflow: hidden;
+    & ul {
       position: relative;
       height: 50px;
+      border-bottom: #dddddd 1px solid;
     }
-    & ul li.active{
+    & ul li.active {
       border-bottom: #fff 1px solid;
       border-top: #e06b0c 1px solid;
+    }
+    & .hot-pay {
+      position: absolute;
+      z-index: 8;
+      right: 3px;
+      top: -14px;
     }
     & ul li {
       width: 114px;
@@ -52,15 +58,21 @@
       position: relative;
       bottom: -1px;
     }
-    & ol.fast-pay li{
+    & .tab-box {
+      border: #dddddd 1px solid;
+      border-top: none;
+      overflow: hidden;
+      padding-bottom: 20px;
+    }
+    & ol.fast-pay li {
       width: auto;
     }
     & ol {
-      width: 800px;
-      height: 322px;
-      border: #dddddd 1px solid;
-      display: none;
+      width: 798px;
       z-index: 1;
+      float: left;
+      overflow: hidden;
+      padding: 10px 0;
       & p {
         width: 764px;
         height: 56px;
@@ -75,6 +87,7 @@
         line-height: 38px;
         width: 145px;
         margin: 10px 56px 0px 10px;
+        cursor: pointer;
         &.m-right-0 {
           margin: 10px 0px 0px 4px;
         }
@@ -94,6 +107,7 @@
             width: 123px;
             height: 36px;
             border: #dddddd 1px solid;
+            cursor: pointer;
           }
         }
       }
@@ -101,8 +115,10 @@
   }
   & .recharge-bank {
     width: 800px;
-    height: 230px;
     margin: 50px 4px 0;
+    float: left;
+    padding: 0 0 20px 0;
+    overflow: hidden;
     & p {
       height: 34px;
       line-height: 34px;
@@ -344,7 +360,8 @@
     }
   }
 }
-.bind-card {
+
+.bind-card-layer {
   width: 540px;
   height: 244px;
   position: fixed;
@@ -353,18 +370,19 @@
   margin-left: -270px;
   margin-top: -122px;
   background: #f2f3f5;
-  z-index: 3;
+  z-index: 9999;
+  border: 1px solid #ccc;
   display: none;
   & span {
     width: 26px;
     height: 26px;
     display: block;
     cursor: pointer;
-    background: rgba(0, 0, 0, .43);
+    background: rgba(0, 0, 0, 1);
     border-radius: 50%;
     position: absolute;
-    right: -19px;
-    top: -20px;
+    right: -10px;
+    top: -13px;
     text-align: center;
     line-height: 26px;
     color: #fff;
@@ -382,37 +400,47 @@
     height: 120px;
     width: 100%;
     line-height: 120px;
+    background: url("/images/cash/tan.jpg") no-repeat 64px center #fff;
     text-align: center;
-    background: url("/images/cash/tan.jpg") no-repeat 84px center #fff;
+  }
+  & .btn-box-layer {
+    text-align: center;
   }
   & a {
     width: 158px;
     height: 36px;
-    display: block;
+    display: inline-block;
     text-align: center;
     line-height: 36px;
     color: #fff;
     background: #ff6c00;
-    margin: 20px 0px 20px 190px;
+    margin: 20px 10px;
     border-radius: 3px;
   }
 }
-.item-block{
-  margin-left: 50px;
+
+.item-block {
+  margin-left: 300px;
   display: inline-block;
   overflow: hidden;
-  width: 100%!important;
-  & .name{
-    float: left;}
-  & .input-bankcard{
-    width: 200px!important;
-    height: 20px!important;
-    margin: 0!important;
+  width: 100%;
+  line-height: 40px;
+  &.box-user {
+    padding-top: 30px;
+  }
+  & .name {
+    float: left;
+  }
+  & .input-bankcard {
+    width: 200px;
+    height: 20px;
+    margin: 0;
     border: 1px solid #ccc;
     padding: 5px;
   }
-  & .btn-ok{
+  & .btn-ok {
     padding: 10px 15px;
+    margin: 10px 0 0 0;
     background: #ff7a2a;
     border: 1px solid #ff7a2a;
     cursor: pointer;

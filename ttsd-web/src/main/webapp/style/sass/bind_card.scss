@@ -1,5 +1,5 @@
 //bind－card
-.main{
+.main {
   width: 998px;
   height: auto;
   margin: 20px auto;
@@ -33,16 +33,16 @@
   color: #fff;
 }
 
-.bind-card{
+.bind-card {
   width: 820px;
   border-radius: 5px;
   border: 1px solid #ccc;
   float: right;
   overflow: hidden;
-  & .hd-bind-card{
+  & .hd-bind-card {
     height: 50px;
     border-bottom: 2px solid #d5d5d5;;
-    & span{
+    & span {
       padding-left: 20px;
       color: #ff9933;
       font-size: 16px;
@@ -53,20 +53,85 @@
       bottom: 0px;
     }
   }
-
-  & .card-list{
-    padding: 10px 20px;
+  & .card-list {
+    padding: 20px;
     overflow: hidden;
-    & .card-box{
+    & .card-box {
       width: 260px;
       background-color: #fdfefe;
       border-radius: 5px;
+      border: 1px solid #ccc;
+      overflow: hidden;
     }
+    & .hd-card {
+      border-bottom: 1px solid #ccc;
+      height: 38px;
 
+      & .logo-card {
+        width: 140px;
+        height: 38px;
+        float: left;
+      }
+      & .user {
+        float: right;
+        padding-right: 20px;
+        line-height: 38px;
+        font-size: 14px;
+      }
+    }
+    & .card-num {
+      line-height: 60px;
+      text-align: center;
+    }
+    & .options {
+      line-height: 30px;
+      background: #cdcdcd;
+      font-size: 12px;
+      overflow: hidden;
+      & .cart-edit {
+        float: left;
+        padding-left: 10px;
+        color: #ff0606;
+      }
+      & .open-fast-pay {
+        float: right;
+        padding-right: 10px;
+        color: #ff0606;
+      }
+    }
   }
-
-
-
-
-
+  & .tips {
+    padding: 30px 20px;
+    & h3 {
+      padding: 20px 0;
+    }
+    & p {
+      line-height: 24px;
+    }
+  }
+  .item-block {
+    margin-left: 50px;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    line-height: 40px;
+    & .name {
+      float: left;
+    }
+    & .input-bankcard {
+      width: 200px;
+      height: 20px;
+      margin: 0;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    & .btn-ok {
+      padding: 10px 15px;
+      margin: 30px 0 0 0;
+      background: #ff7a2a;
+      border: 1px solid #ff7a2a;
+      cursor: pointer;
+      color: #fff;
+    }
+  }
 }
