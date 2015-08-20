@@ -11,14 +11,21 @@ module.exports = function (grunt) {
             baseJsMinPath: 'src/main/webapp/js/dest'
         },
         clean: {
-            dist: {
+            css: {
                 files: [{
                     dot: true,
                     src: [
-                        //'<%= meta.baseCssPath %>/*.css',
-                        //'<%= meta.baseCssPath %>/*.map',
-                        //'<%= meta.baseCssMinPath %>/*',
-                        //'<%= meta.baseJsMinPath %>/*'
+                        '<%= meta.baseCssPath %>/*.css',
+                        '<%= meta.baseCssPath %>/*.map',
+                        '<%= meta.baseCssMinPath %>/*'
+                    ]
+                }]
+            },
+            js: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
             }
@@ -77,7 +84,7 @@ module.exports = function (grunt) {
                  files: [
                      '<%= meta.baseSassPath %>/*.scss'
                  ],
-                 tasks: ['sass']
+                 tasks: ['clean:css','sass']
              },
              cssmin:{
                  files:[
@@ -89,7 +96,7 @@ module.exports = function (grunt) {
                  files:[
                      ['<%= meta.baseJsPath %>/*.js']
                  ],
-                 tasks: ['uglify']
+                 tasks: ['clean:js','uglify']
              }
          },
     });
