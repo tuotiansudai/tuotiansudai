@@ -20,6 +20,7 @@ import com.esoft.archer.user.exception.UserNotFoundException;
 import com.esoft.archer.user.exception.UserRegisterException;
 import com.esoft.archer.user.model.Role;
 import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.service.ReferGradePtSysService;
 import com.esoft.archer.user.service.UserInfoLogService;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
@@ -34,6 +35,8 @@ import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -94,6 +97,9 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
     @Resource
     private AuthInfoBO authInfoBO;
+
+    @Resource
+    ReferGradePtSysService referGradePtSysService;
 
     @Resource
     ValidationService vdtService;
@@ -510,6 +516,17 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         return getSaveView();
     }
 
+    public List<String> queryUsersByUserName(String username){
+        List<User> users = userService.searchUserByUserName(username);
+        List<String> userNameList = new ArrayList<>();
+        if(users!=null){
+            for(User u: users){
+                userNameList.add(u.getUsername());
+            }
+        }
+        return userNameList;
+    }
+
     /**
      * 后台保存用户
      */
@@ -517,36 +534,16 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     @Transactional(readOnly = false)
     public String save() {
         // FIXME:放在service中
-        StringBuffer logMessage = new StringBuffer();
-
         if (StringUtils.isEmpty(getInstance().getId())) {
             getInstance().setId(getInstance().getUsername());
             getInstance().setPassword(HashCrypt.getDigestHash("123abc"));
             FacesUtil.addInfoMessage("用户创建成功，初始密码为123abc，请及时通知用户修改密码！");
             getInstance().setRegisterTime(new Date());
-            logMessage.append("创建了用户：");
-        } else {
-            logMessage.append("修改了用户信息：");
         }
-
 
         setUpdateView(FacesUtil.redirect("/admin/user/userList"));
-        String viewName = null;
 
-        String userString = userInfoLogService.generateUserInfoString(getInstance());
-        logMessage.append(userString);
-
-        try {
-            viewName = super.save();
-
-            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), true);
-        } catch (Exception e) {
-            userInfoLogService.logUserOperation(getInstance().getUsername(), logMessage.toString(), false);
-            e.printStackTrace();
-            throw e;
-        }
-
-        return viewName;
+        return super.save();
     }
 
     /**
@@ -576,13 +573,58 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             FacesUtil.addErrorMessage("有推荐人的用户不允许添加业务员角色！");
             return null;
         }
-        getBaseService().merge(getInstance());
+        // 获取修改后的用户信息
+        User userInfo = getInstance();
+        // 添加 trimUser userInfo
+        String userReferrer = userInfo.getReferrer();
+        if(userReferrer != null){
+            userInfo.setReferrer(userReferrer.trim());
+        }
+
+        if(userBO.getUserByUsername(userInfo.getReferrer()) == null){
+            FacesUtil.addErrorMessage("设置的推荐人不存在");
+            return null;
+        }
+
+        if(userService.hasDiffReferrerRelation(userInfo.getId(),userInfo.getReferrer())){
+            FacesUtil.addErrorMessage("设置的推荐人与本用户存在间接推荐关系，不能设置为本用户的推荐人");
+            return null;
+        }
+        // 获取原始用户信息
+        User oldUserInfo = userBO.getUserByUsernameFromDb(getInstance().getUsername());
+
+        // 修改用户信息
+        getBaseService().merge(userInfo);
+
+        // 修改推荐人关系
+        if(!equalsIgnoreCaseIgnoreBlank(userInfo.getReferrer(), oldUserInfo.getReferrer())) {
+            rebuildUserReferRelation(userInfo.getId(), oldUserInfo.getReferrer(), userInfo.getReferrer());
+        }
+
         FacesUtil.addInfoMessage("用户信息修改成功！");
 
-        String userString = userInfoLogService.generateUserInfoString(getInstance());
+        String userString = userInfoLogService.generateUserInfoString(userInfo, oldUserInfo);
         userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
 
         return FacesUtil.redirect("/admin/user/userList");
+    }
+
+    private boolean equalsIgnoreCaseIgnoreBlank(String str1, String str2){
+        if(StringUtils.isBlank(str1) && StringUtils.isBlank(str2)){
+            return true;
+        }
+        return StringUtils.equalsIgnoreCase(str1,str2);
+    }
+
+    private void rebuildUserReferRelation(String userId, String oldReferrer, String newReferrer) {
+        // 计算最大影响的推荐人层级
+        Integer effectiveLevelMerchandiser = referGradePtSysService.getMerchandiserMaxGrade();
+        Integer effectiveLevelInvestor = referGradePtSysService.getInvestMaxGrade();
+        int maxLevel = 0;
+        if(effectiveLevelInvestor!=null){maxLevel = effectiveLevelInvestor.intValue();}
+        if(effectiveLevelMerchandiser!=null){maxLevel = Math.max(effectiveLevelMerchandiser.intValue(),maxLevel);}
+
+        userService.updateUserReferrerRelation(userId, oldReferrer, newReferrer, maxLevel);
     }
 
     /**

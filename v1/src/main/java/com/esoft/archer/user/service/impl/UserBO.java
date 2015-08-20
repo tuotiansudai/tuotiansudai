@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -83,6 +85,23 @@ public class UserBO {
 	public void update(User user) {
 		validateField(user);
 		ht.update(user);
+	}
+
+	/**
+	 * 使用新session从数据库获取用户的当前信息
+	 * @param username
+	 * @return
+	 */
+	public User getUserByUsernameFromDb(String username){
+		Session session = ht.getSessionFactory().openSession();
+		Query query = session.createQuery("from User user where user.username=:userName");
+		query.setParameter("userName",username);
+		List<User> users = query.list();
+		if(users!=null && users.size() > 0){
+			return users.get(0);
+		}else{
+			return null;
+		}
 	}
 
 	public User getUserByUsername(String username) {
