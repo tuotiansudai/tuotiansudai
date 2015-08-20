@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 public class LoanDto {
@@ -27,6 +28,7 @@ public class LoanDto {
 
     /***借款期限***/
     @NotEmpty
+    @Pattern(regexp = "^\\d+$")
     private String periods;
 
     /***项目描述（纯文本）***/
@@ -39,18 +41,22 @@ public class LoanDto {
 
     /***投资手续费比例***/
     @NotEmpty
+    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String investFeeRate;
 
     /***最小投资金额***/
     @NotEmpty
+    @Pattern(regexp = "^\\d+$")
     private String minInvestAmount;
 
     /***投资递增金额***/
     @NotEmpty
+    @Pattern(regexp = "^\\d+$")
     private String investIncreasingAmount;
 
     /***单笔最大投资金额***/
     @NotEmpty
+    @Pattern(regexp = "^\\d+$")
     private String maxInvestAmount;
 
     /***活动类型***/
@@ -59,6 +65,7 @@ public class LoanDto {
 
     /***活动利率***/
     @NotEmpty
+    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String activityRate;
 
     /***合同***/
@@ -77,6 +84,7 @@ public class LoanDto {
     private boolean showOnHome;
 
     /***借款金额***/
+    @Pattern(regexp = "^\\d+$")
     private String loanAmount;
 
     /***申请材料***/
