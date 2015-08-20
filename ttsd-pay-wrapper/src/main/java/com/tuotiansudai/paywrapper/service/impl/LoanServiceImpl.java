@@ -130,8 +130,8 @@ public class LoanServiceImpl implements LoanService {
         List<Map<String,String>> loanTypes = new ArrayList<Map<String,String>>();
         for (LoanType loanType:LoanType.values()){
             Map<String,String> map = new HashMap<String,String>();
+            map.put("loanType",loanType.name());
             map.put("name",loanType.getName());
-            map.put("interestType",loanType.getInterestType());
             map.put("repayTimeUnit",loanType.getRepayTimeUnit());
             loanTypes.add(map);
         }

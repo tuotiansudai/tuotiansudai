@@ -52,7 +52,7 @@ public class LoanModel {
     public LoanModel(LoanDto loanDto) throws ParseException {
         this.name =loanDto.getProjectName();
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.activityType = loanDto.getActivityType().getActivityTypeCode();
+        this.activityType = loanDto.getActivityType().name();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanLoginName = loanDto.getLoanLoginName();
         this.contractId = loanDto.getContractId();
@@ -68,14 +68,7 @@ public class LoanModel {
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
         LoanType loanType = loanDto.getType();
-        this.type = loanType.getId()+","
-                +loanType.getInterestPoint()+","
-                +loanType.getInterestType()+","
-                +loanType.getName()+","
-                +loanType.getRepayTimePeriod()+","
-                +loanType.getRepayTimeUnit()+","
-                +loanType.getRepayType()+","
-                +loanType.getDescription();
+        this.type = loanType.name();
         this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
     }
 
