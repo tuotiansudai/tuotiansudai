@@ -74,16 +74,15 @@
 .gabby-right p span >span{width:auto;}
 .gabby-right p{line-height: 44px;}
 .gabby-right p a{color:#909090}
-.gabby-right p a.loanContract{padding-left: 10px;}
+/*.gabby-right p a.loanContract{padding-left: 10px;}*/
 /* .gabby-right p input{padding:10px 0px;width: 98px;padding-left: 10px;outline: none;margin-right: 10px;margin-bottom: 20px;} *//* 调整宽度 */
 .gabby-right p input{
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
     margin-right: 10px;
     outline: medium none;
     padding: 6px 0 6px 6px;
     width: 99px;}/* 调整宽度 */
-.sure-btn{display: inline-block;width: 244px;height: 46px;text-align: center;line-height: 46px;color: #fff;background: #f33735;font-size: 18px;border-radius: 4px; margin-left:28px;}
-
+.sure-btn{display: inline-block;width: 244px;height: 46px;text-align: center;line-height: 46px;color: #fff!important;background: #f33735;font-size: 18px;border-radius: 4px; margin-left:28px;}
 .nsure-btn { /* 颜色修改 */
 	background: none repeat scroll 0 0 #bfbfbf;
 	display: inline-block;
@@ -97,6 +96,10 @@
 }
 
 .sure-btn:hover{background: #CD110F}
+
+.btn-waiting{background-color:#ff8888;!important;}
+.btn-waiting:hover{background:#ff8888;!important;}
+
 .tabs{border-bottom: 2px solid #e8e8e8;padding-top: 50px;height: 40px;line-height: 40px;margin-bottom: 20px;margin-left: 20px;margin-right: 20px;}
 .tabs ul li{float: left;font-size: 20px;color: #3e3e3e;cursor: pointer;margin-right: 60px;}
 .current-tab{font-weight: bold;color: #f33735 !important;border-bottom: 2px solid #f33735;padding: 0px 10px}
