@@ -16,6 +16,7 @@
 		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/index.css" />
 		<link type="text/css" rel="stylesheet" href="#{tplVars.themeStylePath}/qq.css" />
         <script type="text/javascript" src="#{tplVars.themeJSPath}/back-to-top.js"></script>
+		<script type="text/javascript" src="#{tplVars.themeJSPath}/invest-time-countdown.js"></script>
 
 		<!-- banner start -->
 		<div id="banner">
@@ -146,7 +147,7 @@
 							<p class="color1">
 								项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 							</p>
-							<p class="color2">
+							<p id="loan-status-a-#{loan.id}" class="color2">
 								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 									投标进行中
 								</ui:fragment>
@@ -167,7 +168,21 @@
 										</h:outputText>元
 									</span>
 							</p>
-							<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+							<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
+								<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+							</ui:fragment>
+
+							<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+								<p class="clearfix" rel="invest-time-countdown" count-down-id="a-#{loan.id}"
+								   on-begin="onCountDownBegin" on-over="onCountDownOver"
+								   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+								   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+								   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+									<h:outputText value="#{loan.investBeginTime}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
+									</h:outputText> 放标
+								</p>
+							</ui:fragment>
 							<p class="time">
 								<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 								<ui:fragment rendered="#{cr == 100}">
@@ -175,16 +190,16 @@
 								</ui:fragment>
 							</p>
 							<ui:fragment rendered="#{loan.loanActivityType == 'xs'}">
-								<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
+								<a id="loan-btn-a-#{loan.id}" href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
 							</ui:fragment>
 							<ui:fragment rendered="#{loan.loanActivityType == 'pt'}">
-								<a href="#{path}/p2p_loan/#{loan.id}" class="tz-btn" >普通可投</a>
+								<a id="loan-btn-a-#{loan.id}" href="#{path}/p2p_loan/#{loan.id}" class="tz-btn" >普通可投</a>
 							</ui:fragment>
 							<ui:fragment rendered="#{loan.loanActivityType == 'jx'}">
-								<a href="#{path}/p2p_loan_jxb/#{loan.id}" class="tz-btn" >加息可投</a>
+								<a id="loan-btn-a-#{loan.id}" href="#{path}/p2p_loan_jxb/#{loan.id}" class="tz-btn" >加息可投</a>
 							</ui:fragment>
 							<ui:fragment rendered="#{loan.loanActivityType == 'dx'}">
-								<a href="#{path}/p2p_loan_dxb/#{loan.id}" class="tz-btn" >定向可投</a>
+								<a id="loan-btn-a-#{loan.id}" href="#{path}/p2p_loan_dxb/#{loan.id}" class="tz-btn" >定向可投</a>
 							</ui:fragment>
 
 						</div>
@@ -255,7 +270,7 @@
 								<p class="color1">
 									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 								</p>
-								<p class="color2">
+								<p id="loan-status-b-#{loan.id}" class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
 							        </ui:fragment>
@@ -276,7 +291,20 @@
 										</h:outputText>元
 									</span>
 								</p>
-								<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
+									<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								</ui:fragment>
+
+								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+									<p class="clearfix" rel="invest-time-countdown" count-down-id="b-#{loan.id}"
+									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+										<h:outputText value="#{loan.investBeginTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
+										</h:outputText> 放标
+									</p>
+								</ui:fragment>
 								<p class="time">
 									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 									<ui:fragment rendered="#{cr == 100}">
@@ -284,7 +312,7 @@
 									</ui:fragment>
 								</p>
 								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
-									<a href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
+									<a id="loan-btn-b-#{loan.id}" href="#{path}/p2p_loan_xsb/#{loan.id}" class="tz-btn" >新手可投</a>
 								</ui:fragment>
 								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
 									<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">#{dictUtil.getValue('LOAN',loan.status)}</a>
@@ -353,7 +381,7 @@
 								<p class="color1">
 									项目期数：#{loan.deadline*loan.type.repayTimePeriod}#{dictUtil.getValue('repay_unit',loan.type.repayTimeUnit)}
 								</p>
-								<p class="color2">
+								<p id="loan-status-c-#{loan.id}" class="color2">
 									<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
 							        	投标进行中
 							        </ui:fragment>
@@ -374,15 +402,30 @@
 										</h:outputText>元
 									</span>
 								</p>
-								<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								<ui:fragment rendered="#{(empty loan.investBeginTime) or loan.investBeginTime lt now}">
+									<P class="clearfix"><span>期限：#{loanCalculator.calculateRemainTime(loan.id)}</span></P>
+								</ui:fragment>
+
+								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
+									<p class="clearfix" rel="invest-time-countdown" count-down-id="c-#{loan.id}"
+									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
+									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
+									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
+										<h:outputText value="#{loan.investBeginTime}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH时mm分" timeZone="GMT+8"></f:convertDateTime>
+										</h:outputText> 放标
+									</p>
+								</ui:fragment>
+
 								<p class="time">
 									<ui:param name="cr" value="#{loanCalculator.calculateRaiseCompletedRate(loan.id)}"></ui:param>
 									<ui:fragment rendered="#{cr == 100}">
 										<i></i>#{loanCalculator.calculateRemainTime(loan.id)}
 									</ui:fragment>
 								</p>
+
 								<ui:fragment rendered="#{loan.status ==LoanStatus.RAISING}">
-									<a href="#{path}/loan/#{loan.id}" class="tz-btn" >立即投标</a>
+									<a id="loan-btn-c-#{loan.id}" href="#{path}/loan/#{loan.id}" class="tz-btn" >立即投标</a>
 								</ui:fragment>
 								<ui:fragment rendered="#{loan.status !=LoanStatus.RAISING}">
 									<a href="javascript:void(0);" class="ntz-btn" style="background-color: gray;">#{dictUtil.getValue('LOAN',loan.status)}</a>
@@ -647,7 +690,30 @@
 						}
 					//]]>
 				</script>
-			    
+			    <script type="text/javascript">
+					function onCountDownBegin(countDownId){
+						var btn = $('#loan-btn-'+countDownId);
+						btn.attr('ori-text',btn.html())
+								.html('预热中')
+								.addClass('tz-btn-waiting');
+						var sts = $('#loan-status-'+countDownId);
+						sts.attr('ori-text',sts.html())
+								.html('<br/>');
+					}
+
+					function onCountDownOver(countDownId, elem){
+						var btn = $('#loan-btn-' + countDownId);
+						btn.html(btn.attr('ori-text'))
+								.removeClass('tz-btn-waiting');
+
+						var countDownOverMessage = elem.attr('count-down-over-message');
+						if(!countDownOverMessage){countDownOverMessage='';}
+						elem.html(countDownOverMessage);
+
+						var sts = $('#loan-status-'+countDownId);
+						sts.html(sts.attr('ori-text'));
+					}
+				</script>
 			</div>
 			<!--media-end-->
 		</div>

@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +22,7 @@ public class RechargeNotifyMapperTest {
     public void shouldCreateRechargeNotifyRequest() {
         RechargeNotifyRequestModel fakeRequest = this.getFakeRequest();
 
-        rechargeNotifyMapper.createRequest(fakeRequest);
+        rechargeNotifyMapper.create(fakeRequest);
 
         assertNotNull(fakeRequest.getId());
     }

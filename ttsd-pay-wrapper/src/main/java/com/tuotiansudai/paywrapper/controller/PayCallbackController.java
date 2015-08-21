@@ -25,20 +25,13 @@ public class PayCallbackController {
     static Logger logger = Logger.getLogger(PayCallbackController.class);
 
     @Autowired
-    private PayAsyncClient payAsyncClient;
-
-    @Autowired
     private RechargeService rechargeService;
 
     @RequestMapping(value = "/mer_recharge_person", method = RequestMethod.GET)
     public ModelAndView recharge(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-
-        this.rechargeService.rechargeCallback(paramsMap, request.getQueryString());
-
-
-
-        return new ModelAndView("/callback_response", "content", null);
+        String responseData = this.rechargeService.rechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {

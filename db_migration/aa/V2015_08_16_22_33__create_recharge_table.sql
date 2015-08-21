@@ -1,5 +1,5 @@
 CREATE TABLE `${aa}`.`recharge` (
-  `id`           VARCHAR(32)     NOT NULL,
+  `id`           BIGINT UNSIGNED NOT NULL,
   `login_name`   VARCHAR(25)     NOT NULL,
   `amount`       BIGINT UNSIGNED NOT NULL,
   `fee`          BIGINT UNSIGNED NOT NULL,
