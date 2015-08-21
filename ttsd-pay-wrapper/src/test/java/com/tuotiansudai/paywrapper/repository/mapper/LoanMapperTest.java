@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.TitleMapper;
+import com.tuotiansudai.repository.mapper.TitleMapperTest;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;

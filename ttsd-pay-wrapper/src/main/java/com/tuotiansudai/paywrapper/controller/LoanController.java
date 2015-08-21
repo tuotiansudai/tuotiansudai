@@ -29,38 +29,4 @@ public class LoanController{
         return loanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "findloginnames",method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> getLoginNames(@Valid @RequestParam String loginName){
-        return loanService.getLoginNames(loginName);
-    }
-
-    @RequestMapping(value = "findallLoantypes",method = RequestMethod.GET)
-    @ResponseBody
-    public List<Map<String,String>> getAllLoanTypes(){
-        return loanService.getLoanType();
-    }
-
-    @RequestMapping(value = "findallactivitytypes",method = RequestMethod.GET)
-    @ResponseBody
-    public List<Map<String,String>> getAllActivityTypes(){
-        return loanService.getActivityType();
-    }
-
-    @RequestMapping(value = "findallcontracts",method = RequestMethod.GET)
-    @ResponseBody
-    public List<Map<String,String>> getAllContracts(){
-        List contracts = new ArrayList();
-        Map<String,String> contract = new HashMap<>();
-        contract.put("id","squareContract");
-        contract.put("contractName", "四方合同");
-        contracts.add(contract);
-        return contracts;
-    }
-
-    @RequestMapping(value = "findallTitles",method = RequestMethod.GET)
-    @ResponseBody
-    public List<TitleModel> findAllTitles(){
-        return loanService.findAllTitles();
-    }
 }

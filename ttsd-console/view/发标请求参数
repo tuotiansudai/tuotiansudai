@@ -75,7 +75,8 @@
         }
     ]
 
-6.借款用户，代理用户自动提示数据类型：
+6.借款用户，代理用户自动提示URL：${requestContext.getContextPath()}/findloginnames
+借款用户，代理用户自动提示数据类型：
 [
     "caomengde",
     "zhugeliang",

@@ -29,7 +29,7 @@ public interface CreateLoanBidService {
     Map<String,List<TitleModel>> findAllTitles();
 
     /**
-     * @function 获取所有的标的类型
+     * @function 获取所有的标类型
      * @return
      */
     List<Map<String,String>> getLoanType();

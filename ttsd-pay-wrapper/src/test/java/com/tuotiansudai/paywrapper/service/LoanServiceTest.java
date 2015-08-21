@@ -25,17 +25,6 @@ public class LoanServiceTest {
     private LoanService loanService;
 
     @Test
-    public void createTitleTest(){
-        IdGenerator idGenerator = new IdGenerator();
-        String id = String.valueOf(idGenerator.generate());
-        TitleModel titleModel = new TitleModel();
-        titleModel.setId(new BigInteger(id));
-        titleModel.setTitle("");
-        titleModel.setType("base");
-        loanService.createTitle(titleModel);
-    }
-
-    @Test
     public void createLoanServiceTest(){
         LoanDto loanDto = new LoanDto();
         IdGenerator idGenerator = new IdGenerator();

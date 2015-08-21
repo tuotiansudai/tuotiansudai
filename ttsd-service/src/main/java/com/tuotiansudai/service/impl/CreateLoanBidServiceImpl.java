@@ -5,12 +5,12 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.TitleMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.service.CreateLoanBidService;
+import com.tuotiansudai.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +30,8 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private IdGenerator idGenerator;
     /**
      * @param titleModel
      * @function 创建标题

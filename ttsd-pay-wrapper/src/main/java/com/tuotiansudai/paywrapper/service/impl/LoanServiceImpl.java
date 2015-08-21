@@ -12,8 +12,9 @@ import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.TitleMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -41,11 +40,10 @@ public class LoanServiceImpl implements LoanService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private TitleMapper titleMapper;
-
-    @Autowired
     private LoanTitleMapper loanTitleMapper;
 
+    @Autowired
+    IdGenerator idGenerator;
     /**
      * @param loanDto
      * @return
@@ -67,7 +65,6 @@ public class LoanServiceImpl implements LoanService {
         MerBindProjectRequestModel requestModel = new MerBindProjectRequestModel();
         requestModel.setLoanUserId(loanDto.getLoanAmount());
         requestModel.setProjectAmount(loanDto.getLoanAmount());
-        IdGenerator idGenerator = new IdGenerator();
         String projectId = String.valueOf(idGenerator.generate());/****标的号****/
         requestModel.setProjectId(projectId);
         requestModel.setProjectName(loanDto.getProjectName());
@@ -100,55 +97,5 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setStatus(false);
         }
         return baseDto;
-    }
-
-    /**
-     * @param titleModel
-     * @function 创建标题
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void createTitle(TitleModel titleModel) {
-        titleModel.setType("new");
-        titleMapper.createTitle(titleModel);
-    }
-
-    /**
-     * @param loginName
-     * @return
-     * @function 获取成功注册过资金托管账户的用户登录名
-     */
-    @Override
-    public List<String> getLoginNames(String loginName) {
-        return accountMapper.findAllLoginNamesByLike("%"+loginName+"%");
-    }
-
-    public List<TitleModel> findAllTitles(){
-        return titleMapper.findAllTitles();
-    }
-
-    @Override
-    public List<Map<String,String>> getLoanType() {
-        List<Map<String,String>> loanTypes = new ArrayList<Map<String,String>>();
-        for (LoanType loanType:LoanType.values()){
-            Map<String,String> map = new HashMap<String,String>();
-            map.put("loanTypeName",loanType.name());
-            map.put("name",loanType.getName());
-            map.put("repayTimeUnit",loanType.getRepayTimeUnit());
-            map.put("repayTimePeriod",loanType.getRepayTimePeriod());
-            loanTypes.add(map);
-        }
-        return loanTypes;
-    }
-
-    @Override
-    public List<Map<String,String>> getActivityType() {
-        List<Map<String,String>> activityTypes = new ArrayList<Map<String,String>>();
-        for (ActivityType activityType:ActivityType.values()){
-            Map<String,String> map = new HashMap<String,String>();
-            map.put(activityType.getActivityTypeCode(),activityType.getActivityTypeName());
-            activityTypes.add(map);
-        }
-        return activityTypes;
     }
 }
