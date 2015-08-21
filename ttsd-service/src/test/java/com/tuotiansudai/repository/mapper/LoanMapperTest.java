@@ -1,9 +1,8 @@
-package com.tuotiansudai.paywrapper.service;
+package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanTitleModel;
-import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
@@ -14,18 +13,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional(rollbackFor = Exception.class)
-public class LoanServiceTest {
+@Transactional
+public class LoanMapperTest {
     @Autowired
-    private LoanService loanService;
+    private LoanMapper loanMapper;
 
     @Test
-    public void createLoanServiceTest(){
+    public void createLoanTest(){
         LoanDto loanDto = new LoanDto();
         IdGenerator idGenerator = new IdGenerator();
         loanDto.setLoanLoginName("xiangjie");
@@ -40,8 +39,8 @@ public class LoanServiceTest {
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setFundraisingEndTime("2015-11-28");
-        loanDto.setFundraisingStartTime("2015-8-19");
+        loanDto.setFundraisingEndTime("2015-11-22");
+        loanDto.setFundraisingStartTime("2015-8-12");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
@@ -58,6 +57,11 @@ public class LoanServiceTest {
             loanTitleModelList.add(loanTitleModel);
         }
         loanDto.setLoanTitles(loanTitleModelList);
-        loanService.createLoan(loanDto);
+        try {
+            LoanModel loanModel = new LoanModel(loanDto);
+            loanMapper.createLoan(loanModel);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

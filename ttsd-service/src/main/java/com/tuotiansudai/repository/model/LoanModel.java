@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,7 +54,10 @@ public class LoanModel {
     public LoanModel(LoanDto loanDto) throws ParseException {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
-        this.activityRate = Double.parseDouble(loanDto.getActivityRate());
+        BigDecimal bigDecimalActivityRate = new BigDecimal(loanDto.getActivityRate());
+        this.activityRate = bigDecimalActivityRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        BigDecimal bigDecimalBasicRate = new BigDecimal(loanDto.getBasicRate());
+        this.basicRate = bigDecimalBasicRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanLoginName = loanDto.getLoanLoginName();
@@ -63,14 +67,20 @@ public class LoanModel {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
         this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
-        this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
-        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
-        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
-        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
+        BigDecimal bigDecimalInvestFeeRate = new BigDecimal(loanDto.getInvestFeeRate());
+        this.investFeeRate = bigDecimalInvestFeeRate.divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount())*100;
+        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount())*100;
+        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount())*100;
         this.periods = loanDto.getPeriods();
-        this.showOnHome = loanDto.isShowOnHome();
+        if ("1".equals(showOnHome)){
+            this.showOnHome = true;
+        }else {
+            this.showOnHome = false;
+        }
+
         this.type = loanDto.getType();
-        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
+        this.loanAmount = Long.parseLong(loanDto.getLoanAmount())*100;
     }
 
     public String getId() {

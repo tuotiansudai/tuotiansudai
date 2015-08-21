@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,16 +55,18 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
-        AccountModel accountModel = accountMapper.findByLoginName(loanDto.getLoanLoginName());
-        String loanUserId = null;
-        if (accountModel != null) {
-            loanUserId = accountModel.getPayUserId();
-        } else {
+        String loanUserId = getLoginName(loanDto);
+        if (loanUserId == null) {
+            dataDto.setStatus(false);
+            return baseDto;
+        }
+        String loanAgentId = getLoginName(loanDto);
+        if (loanAgentId != null){
             dataDto.setStatus(false);
             return baseDto;
         }
         MerBindProjectRequestModel requestModel = new MerBindProjectRequestModel();
-        requestModel.setLoanUserId(loanDto.getLoanAmount());
+        requestModel.setLoanUserId(loanUserId);
         requestModel.setProjectAmount(loanDto.getLoanAmount());
         String projectId = String.valueOf(idGenerator.generate());/****标的号****/
         requestModel.setProjectId(projectId);
@@ -97,5 +100,14 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setStatus(false);
         }
         return baseDto;
+    }
+
+    public String getLoginName(LoanDto loanDto){
+        AccountModel accountModel = accountMapper.findByLoginName(loanDto.getLoanLoginName());
+        String loanUserId = null;
+        if (accountModel != null) {
+            loanUserId = accountModel.getPayUserId();
+        }
+        return loanUserId;
     }
 }

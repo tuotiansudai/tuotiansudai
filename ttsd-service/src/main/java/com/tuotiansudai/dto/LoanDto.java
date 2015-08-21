@@ -70,6 +70,11 @@ public class LoanDto {
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String activityRate;
 
+    /***基本利率***/
+    @NotEmpty
+    @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
+    private double basicRate;
+
     /***合同***/
     @NotEmpty
     private String contractId;
@@ -82,8 +87,8 @@ public class LoanDto {
     @NotEmpty
     private String fundraisingEndTime;
 
-    /***是否显示在首页true:显示在首页，false:不显示在首页***/
-    private boolean showOnHome;
+    /***是否显示在首页1:显示在首页，0:不显示在首页***/
+    private String showOnHome;
 
     /***借款金额***/
     @Pattern(regexp = "^\\d+$")
@@ -204,6 +209,14 @@ public class LoanDto {
         this.activityRate = activityRate;
     }
 
+    public double getBasicRate() {
+        return basicRate;
+    }
+
+    public void setBasicRate(double basicRate) {
+        this.basicRate = basicRate;
+    }
+
     public String getContractId() {
         return contractId;
     }
@@ -228,11 +241,11 @@ public class LoanDto {
         this.fundraisingEndTime = fundraisingEndTime;
     }
 
-    public boolean isShowOnHome() {
+    public String getShowOnHome() {
         return showOnHome;
     }
 
-    public void setShowOnHome(boolean showOnHome) {
+    public void setShowOnHome(String showOnHome) {
         this.showOnHome = showOnHome;
     }
 

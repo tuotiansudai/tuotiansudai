@@ -4,6 +4,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.TitleDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.TitleMapper;
 import com.tuotiansudai.repository.model.ActivityType;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +35,19 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
     @Autowired
     private IdGenerator idGenerator;
     /**
-     * @param titleModel
+     * @param titleDto
      * @function 创建标题
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createTitle(TitleModel titleModel) {
+    public TitleModel createTitle(TitleDto titleDto) {
+        TitleModel titleModel = new TitleModel();
+        BigInteger id = new BigInteger(String.valueOf(idGenerator.generate()));
+        titleModel.setId(id);
+        titleModel.setTitle(titleDto.getTitle());
         titleModel.setType("new");
         titleMapper.createTitle(titleModel);
+        return titleModel;
     }
 
     /**

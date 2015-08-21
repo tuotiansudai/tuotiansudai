@@ -51,11 +51,8 @@ public class CreateLoanBidController {
 
     @RequestMapping(value = "/addtitle",method = RequestMethod.POST)
     @ResponseBody
-    public void addTitle(@RequestBody TitleDto titleDto){
-        TitleModel titleModel = new TitleModel();
-        titleModel.setType("new");
-        titleModel.setTitle(titleModel.getTitle());
-        createLoanBidService.createTitle(titleModel);
+    public TitleModel addTitle(@RequestBody TitleDto titleDto){
+        return createLoanBidService.createTitle(titleDto);
     }
 
     @RequestMapping(value = "/createloanbid",method = RequestMethod.POST)
