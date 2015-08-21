@@ -1,5 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
@@ -23,9 +26,23 @@ public interface CreateLoanBidService {
      * @function 获取所有的标题
      * @return
      */
-    List<TitleModel> findAllTitles();
+    Map<String,List<TitleModel>> findAllTitles();
 
+    /**
+     * @function 获取所有的标的类型
+     * @return
+     */
     List<Map<String,String>> getLoanType();
 
+    /**
+     * @function 获取所有的活动类型
+     * @return
+     */
     List<Map<String,String>> getActivityType();
+
+    /**
+     * @function 创建标的
+     * @return
+     */
+    BaseDto<PayFormDataDto> createLoanBid(LoanDto loanDto);
 }

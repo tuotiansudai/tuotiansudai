@@ -5,39 +5,81 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
-a {color: #000;text-decoration: none;}
-a:hover{ color: #cc9900;}
-.navbar { background: #eee url(../images/header_bg.jpg) no-repeat right top; margin-bottom: 10px;}
-.navbar-brand{ padding: 0 15px; height: auto;}
-.navbar-collapse { border-bottom: 1px solid #ccc; background: url(../images/nav_bg.jpg) repeat-x;}
-@media (min-width: 768px){
-	.navbar-nav>li>a {
-		padding: 10px 15px;
-	}
+a {
+    color: #000;
+    text-decoration: none;
 }
-.navbar-nav>li>a:hover,.navbar-nav>li.active>a{ background: #666666; color: #fff; text-shadow:none;}
-.bs-docs-sidenav{ background: #f1f1f1;}
-.bs-docs-sidenav li.active>a{ color:#cc9900 }
 
+a:hover {
+    color: #cc9900;
+}
 
-.table-bordered>thead>tr>td, .table-bordered>thead>tr>th{ font-size: 12px;}
+.navbar {
+    background: #eee url(../images/header_bg.jpg) no-repeat right top;
+    margin-bottom: 10px;
+}
+
+.navbar-brand {
+    padding: 0 15px;
+    height: auto;
+}
+
+.navbar-collapse {
+    border-bottom: 1px solid #ccc;
+    background: url(../images/nav_bg.jpg) repeat-x;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav > li > a {
+        padding: 10px 15px;
+    }
+}
+
+.navbar-nav > li > a:hover, .navbar-nav > li.active > a {
+    background: #666666;
+    color: #fff;
+    text-shadow: none;
+}
+
+.bs-docs-sidenav {
+    background: #f1f1f1;
+}
+
+.bs-docs-sidenav li.active > a {
+    color: #cc9900
+}
+
+.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    font-size: 12px;
+}
+
+.file-input {
+    margin-bottom: 10px;
+}
 
 /*登录*/
 .login-bg{ background: #eee;}
 .login {
-	width: 500px;
-	height: 420px;
-	margin: -250px 0 0 -250px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	padding:20px 30px;
-	background: #c1bebe;
-	border-radius: 5px;
-	z-index: 9999;
+    width: 500px;
+    height: 400px;
+    margin: -250px 0 0 -250px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    padding:20px 30px;
+    background: #c1bebe;
+    border-radius: 5px;
+    z-index: 9999;
 }
 .captcha-img{
-	height: 34px;
-	background: #ccc;
-	width: 38.66666%;
+    height: 34px;
+    background: #ccc;
+    width: 38.66666%;
 }
+
+/*下拉框*/
+.files-input{ width: 30%;
+    display: inline-block;}
+.col-file-box{ margin-bottom: 10px;}
+.select-box{
+    display: inline;}

@@ -189,20 +189,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="project" class="col-sm-2 control-label">账户余额: </label>
-
-                        <div class="col-sm-4">
-                            <div class="form-control-static">¥ 0.00</div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="project" class="col-sm-2 control-label">标的类型: </label>
-
                         <div class="col-sm-4">
                             <select class="selectpicker">
-                                <option>Mustard</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
+                                    <#list loanTypes as loanType>
+                                        <option value="${loanType.loanTypeName}" data-repayTimeUnit="${loanType.repayTimeUnit}" data-repayTimePeriod="${loanType.repayTimePeriod}">
+                                            ${loanType.name}
+                                        </option>
+                                    </#list>
                             </select>
                         </div>
                     </div>
@@ -213,7 +207,13 @@
                             <input type="text" id="project" class="form-control" placeholder="">
 
                         </div>
-                        <div class="col-sm-3"><div class="form-control-static">(单位：1天)</div></div>
+                        <div class="col-sm-3">
+                            <div class="form-control-static">(单位：
+                                <label>1</label>
+                                <label>天</label>
+                                )
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -272,9 +272,11 @@
 
                         <div class="col-sm-4">
                             <select class="selectpicker ">
-                                <option>普通</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
+                                <#list activityTypes as activityType>
+                                    <option value="${activityType.activityTypeCode}">
+                                        ${activityType.activityTypeName}
+                                    </option>
+                                </#list>
                             </select>
                         </div>
                     </div>
@@ -298,9 +300,11 @@
 
                         <div class="col-sm-4">
                             <select class="selectpicker ">
-                                <option>四方合同</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
+                                <#list contracts as contract>
+                                    <option value="${contract.id}">
+                                    ${contract.contractName}
+                                    </option>
+                                </#list>
                             </select>
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.paywrapper.service.LoanService;
@@ -22,31 +23,31 @@ public class LoanController{
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/post/createLoan",method = RequestMethod.POST)
+    @RequestMapping(value = "loan",method = RequestMethod.POST)
     @ResponseBody
     public BaseDto createLoan(@Valid @RequestBody LoanDto loanDto){
         return loanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "/get/loginNames",method = RequestMethod.GET)
+    @RequestMapping(value = "findloginnames",method = RequestMethod.GET)
     @ResponseBody
     public List<String> getLoginNames(@Valid @RequestParam String loginName){
         return loanService.getLoginNames(loginName);
     }
 
-    @RequestMapping(value = "get/allLoanTypes",method = RequestMethod.GET)
+    @RequestMapping(value = "findallLoantypes",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllLoanTypes(){
         return loanService.getLoanType();
     }
 
-    @RequestMapping(value = "/get/allActivityTypes",method = RequestMethod.GET)
+    @RequestMapping(value = "findallactivitytypes",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllActivityTypes(){
         return loanService.getActivityType();
     }
 
-    @RequestMapping(value = "get/AllContracts",method = RequestMethod.GET)
+    @RequestMapping(value = "findallcontracts",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllContracts(){
         List contracts = new ArrayList();
@@ -57,7 +58,7 @@ public class LoanController{
         return contracts;
     }
 
-    @RequestMapping(value = "get/allTitles",method = RequestMethod.GET)
+    @RequestMapping(value = "findallTitles",method = RequestMethod.GET)
     @ResponseBody
     public List<TitleModel> findAllTitles(){
         return loanService.findAllTitles();

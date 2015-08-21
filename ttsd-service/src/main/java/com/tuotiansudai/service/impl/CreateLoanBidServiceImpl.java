@@ -1,5 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.TitleMapper;
@@ -24,7 +28,7 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
     private TitleMapper titleMapper;
 
     @Autowired
-    private LoanTitleMapper loanTitleMapper;
+    private PayWrapperClient payWrapperClient;
 
     /**
      * @param titleModel
@@ -47,8 +51,10 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
         return accountMapper.findAllLoginNamesByLike("%"+loginName+"%");
     }
 
-    public List<TitleModel> findAllTitles(){
-        return titleMapper.findAllTitles();
+    public Map<String,List<TitleModel>> findAllTitles(){
+        Map<String,List<TitleModel>> map = new HashMap<>();
+        map.put("titles",titleMapper.findAllTitles());
+        return map;
     }
 
     @Override
@@ -56,9 +62,10 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
         List<Map<String,String>> loanTypes = new ArrayList<Map<String,String>>();
         for (LoanType loanType:LoanType.values()){
             Map<String,String> map = new HashMap<String,String>();
-            map.put("loanType",loanType.name());
+            map.put("loanTypeName",loanType.name());
             map.put("name",loanType.getName());
             map.put("repayTimeUnit",loanType.getRepayTimeUnit());
+            map.put("repayTimePeriod",loanType.getRepayTimePeriod());
             loanTypes.add(map);
         }
         return loanTypes;
@@ -69,9 +76,15 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
         List<Map<String,String>> activityTypes = new ArrayList<Map<String,String>>();
         for (ActivityType activityType:ActivityType.values()){
             Map<String,String> map = new HashMap<String,String>();
-            map.put(activityType.getActivityTypeCode(),activityType.getActivityTypeName());
+            map.put("activityTypeCode",activityType.getActivityTypeCode());
+            map.put("activityTypeName",activityType.getActivityTypeName());
             activityTypes.add(map);
         }
         return activityTypes;
+    }
+
+    @Override
+    public BaseDto<PayFormDataDto> createLoanBid(LoanDto loanDto) {
+        return payWrapperClient.loan(loanDto);
     }
 }

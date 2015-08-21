@@ -111,3 +111,4 @@ function clearLocalData () {
     UE.getEditor('editor').execCommand( "clearlocaldata" );
     alert("已清空草稿箱")
 }
+

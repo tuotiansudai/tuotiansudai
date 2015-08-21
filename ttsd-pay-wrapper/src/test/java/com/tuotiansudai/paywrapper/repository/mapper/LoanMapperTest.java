@@ -43,7 +43,7 @@ public class LoanMapperTest {
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
-        loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
+        loanDto.setActivityType("DIRECTIONAL_INVEST");
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -52,7 +52,7 @@ public class LoanMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.loan_type_1);
+        loanDto.setType("loan_type_1");
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();

@@ -26,7 +26,7 @@ public class LoanDto {
 
     /***标的类型***/
     @NotEmpty
-    private LoanType type;
+    private String type;
 
     /***借款期限***/
     @NotEmpty
@@ -63,7 +63,7 @@ public class LoanDto {
 
     /***活动类型***/
     @NotEmpty
-    private ActivityType activityType;
+    private String activityType;
 
     /***活动利率***/
     @NotEmpty
@@ -124,11 +124,11 @@ public class LoanDto {
         this.loanLoginName = loanLoginName;
     }
 
-    public LoanType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(LoanType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -188,11 +188,11 @@ public class LoanDto {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public ActivityType getActivityType() {
+    public String getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(ActivityType activityType) {
+    public void setActivityType(String activityType) {
         this.activityType = activityType;
     }
 

@@ -54,13 +54,13 @@ public class LoanModel {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.activityType = loanDto.getActivityType().name();
+        this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanLoginName = loanDto.getLoanLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
         this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
         this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
@@ -69,8 +69,7 @@ public class LoanModel {
         this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
-        LoanType loanType = loanDto.getType();
-        this.type = loanType.name();
+        this.type = loanDto.getType();
         this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
     }
 
