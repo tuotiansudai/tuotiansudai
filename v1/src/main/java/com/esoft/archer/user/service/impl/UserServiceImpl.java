@@ -1066,7 +1066,6 @@ public class UserServiceImpl implements UserService {
 		List<ReferrerRelation> list = query.list();
 		for (ReferrerRelation relation : list) {
 			saveUserReferrerRelationSQL(relation.getReferrerId(), userId, relation.getLevel()+1, session);
-			throw new NullPointerException("s");
 		}
 	}
 
