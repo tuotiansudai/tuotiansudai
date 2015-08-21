@@ -68,9 +68,9 @@ public class UmPayCreateLoanOperation extends UmPayOperationServiceAbs<Loan> {
 			log.debug("发标解析请求回调数据失败!标号"+loan.getId());
 			throw new UmPayOperationException("发标解析请求回调数据失败!标号"+loan.getId());
 		} catch (InvalidExpectTimeException e1) {
-			throw new UmPayOperationException("余额不足，无法支付借款保证金");
-		} catch (InsufficientBalance e1) {
 			throw new UmPayOperationException("预计执行时间必须在当前时间之后");
+		} catch (InsufficientBalance e1) {
+			throw new UmPayOperationException("余额不足，无法支付借款保证金");
 		}
 		return null;
 	}
