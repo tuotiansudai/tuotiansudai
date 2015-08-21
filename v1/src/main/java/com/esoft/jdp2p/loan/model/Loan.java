@@ -255,6 +255,10 @@ public class Loan implements java.io.Serializable, Cloneable {
 	//代理人
 	private String agent ;
 
+	/**
+	 * 起投时间
+	 */
+	private Date investBeginTime;
 
 	@Column(name = "agent", length = 20)
 	public String getAgent() {
@@ -1001,6 +1005,15 @@ public class Loan implements java.io.Serializable, Cloneable {
 		this.rate = ArithUtil.div(ratePercent
 				+ (getHdRatePercent() == null ? 0.0 : getHdRatePercent()), 100,
 				4);
+	}
+
+	@Column(name = "invest_begin_time", nullable = false)
+	public Date getInvestBeginTime() {
+		return investBeginTime;
+	}
+
+	public void setInvestBeginTime(Date investBeginTime) {
+		this.investBeginTime = investBeginTime;
 	}
 
 	/**
