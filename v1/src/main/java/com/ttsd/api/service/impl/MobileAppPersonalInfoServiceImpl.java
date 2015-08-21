@@ -118,8 +118,8 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
 
     @Override
     public boolean isOpenFastPayment(BankCard bankCard) {
-
-        return "1".equals(bankCard.getIsOpenFastPayment());
+        
+        return bankCard.getIsOpenFastPayment();
     }
 
 
