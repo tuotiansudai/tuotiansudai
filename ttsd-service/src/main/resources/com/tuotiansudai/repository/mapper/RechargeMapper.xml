@@ -14,12 +14,12 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.RechargeModel">
+    <insert id="create" parameterType="RechargeModel">
         insert into recharge (id, login_name, amount, fee, bank, status, created_time)
         value(#{id}, #{loginName}, #{amount}, #{fee}, #{bank}, #{status}, #{createdTime})
     </insert>
 
-    <select id="findById" resultType="java.lang.String" resultMap="rechargeResultMap">
+    <select id="findById" resultType="java.lang.Long" resultMap="rechargeResultMap">
         select * from recharge where id = #{id}
     </select>
 

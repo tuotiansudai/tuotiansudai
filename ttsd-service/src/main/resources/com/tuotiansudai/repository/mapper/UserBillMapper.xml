@@ -16,7 +16,7 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.UserBillModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="UserBillModel" useGeneratedKeys="true" keyProperty="id">
         insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, created_time)
         value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{createdTime})
     </insert>

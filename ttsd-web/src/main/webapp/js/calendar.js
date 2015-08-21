@@ -1,6 +1,3 @@
-/**
- * Created by zhaoshuai on 2015/6/18.
- */
 require.config({
     baseUrl: "../js",//此处存放文件路径
     paths: {

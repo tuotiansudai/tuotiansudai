@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
+public class MerRechargePersonModel extends BaseAsyncModel {
 
     private String orderId;
 
@@ -18,13 +18,14 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     private String gateId;
 
-    public MerRechargePersonRequestModel() {
+    public MerRechargePersonModel() {
     }
 
-    public MerRechargePersonRequestModel(String orderId, String userId, String amount, String gateId) {
+    public MerRechargePersonModel(String orderId, String userId, String amount, String gateId) {
         super();
         this.service = "mer_recharge_person";
-        this.setNotifyUrl("http://121.43.71.173:13002/trusteeship_return_s2s/mer_recharge_person");
+        this.retUrl = "retUrl";
+        this.notifyUrl = "http://121.43.71.173:13002/trusteeship_return_s2s/mer_recharge_person";
         this.orderId = orderId;
         this.userId = userId;
         this.amount = amount;

@@ -1,4 +1,4 @@
-CREATE TABLE `${aa}`.`user` (
+CREATE TABLE `aa`.`user` (
   `id`                 INT(32)      NOT NULL AUTO_INCREMENT,
   `login_name`         VARCHAR(25)  NOT NULL,
   `password`           VARCHAR(100) NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE `${aa}`.`user` (
   `status`             VARCHAR(20)  NOT NULL,
   `salt`               VARCHAR(32)  NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_USER_REFERRER_REF_USER_LOGIN_NAME FOREIGN KEY (`referrer`) REFERENCES `${aa}`.`user` (`login_name`),
-  CONSTRAINT FK_USER_LAST_MODIFIED_USER_REF_USER_LOGIN_NAME FOREIGN KEY (`last_modified_user`) REFERENCES `${aa}`.`user` (`login_name`),
+  CONSTRAINT FK_USER_REFERRER_REF_USER_LOGIN_NAME FOREIGN KEY (`referrer`) REFERENCES `aa`.`user` (`login_name`),
+  CONSTRAINT FK_USER_LAST_MODIFIED_USER_REF_USER_LOGIN_NAME FOREIGN KEY (`last_modified_user`) REFERENCES `aa`.`user` (`login_name`),
   UNIQUE KEY UNIQUE_USER_LOGIN_NAME (`login_name`),
   UNIQUE KEY UNIQUE_USER_MOBILE (`mobile`),
   INDEX INDEX_USER_EMAIL (`email`)
@@ -23,7 +23,7 @@ CREATE TABLE `${aa}`.`user` (
   AUTO_INCREMENT = 100001
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE `${aa}`.`account` (
+CREATE TABLE `aa`.`account` (
   `id`              INT(32)          NOT NULL AUTO_INCREMENT,
   `login_name`      VARCHAR(50)      NOT NULL,
   `user_name`       VARCHAR(50)      NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `${aa}`.`account` (
   `freeze`          BIGINT  UNSIGNED NOT NULL DEFAULT 0,
   `register_time`   DATETIME         NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `${aa}`.`user` (`login_name`)
+  CONSTRAINT FK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

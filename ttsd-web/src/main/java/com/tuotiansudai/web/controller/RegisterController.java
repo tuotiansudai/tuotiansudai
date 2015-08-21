@@ -57,7 +57,7 @@ public class RegisterController extends BaseController {
         return this.userService.registerAccount(registerAccountDto);
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/isexist", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -69,7 +69,7 @@ public class RegisterController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
+    @RequestMapping(value = "/login-name/{loginName}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
@@ -80,13 +80,13 @@ public class RegisterController extends BaseController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^[a-zA-Z0-9]{5}$}/sendregistercaptcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-register-captcha", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
+    public BaseDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        boolean result = this.captchaVerifier.registerPhotoCaptchaVerify(captcha);
+        boolean result = this.captchaVerifier.registerImageCaptchaVerify(imageCaptcha);
         if (result) {
             dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile));
         }
@@ -105,7 +105,7 @@ public class RegisterController extends BaseController {
 
     }
 
-    @RequestMapping(value = "/captcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
     public void registerCaptcha(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
         int captchaWidth = 80;
@@ -116,10 +116,10 @@ public class RegisterController extends BaseController {
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
     }
 
-    @RequestMapping(value = "/captcha/{captcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
+    @RequestMapping(value = "/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto imageCaptchaVerify(@PathVariable String captcha) {
-        boolean result = this.captchaVerifier.registerPhotoCaptchaVerify(captcha);
+    public BaseDto imageCaptchaVerify(@PathVariable String imageCaptcha) {
+        boolean result = this.captchaVerifier.registerImageCaptchaVerify(imageCaptcha);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);

@@ -14,12 +14,12 @@
         <result column="captcha_type" property="captchaType"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="SmsCaptchaModel" useGeneratedKeys="true" keyProperty="id">
           insert into sms_captcha(captcha, mobile, expired_time, created_time, captcha_type)
           value(#{captcha}, #{mobile}, #{expiredTime}, #{createdTime}, #{captchaType})
     </insert>
 
-    <update id="update" parameterType="com.tuotiansudai.repository.model.SmsCaptchaModel">
+    <update id="update" parameterType="SmsCaptchaModel">
           update sms_captcha set captcha = #{captcha}, expired_time = #{expiredTime}, created_time = #{createdTime} where id = #{id}
     </update>
 

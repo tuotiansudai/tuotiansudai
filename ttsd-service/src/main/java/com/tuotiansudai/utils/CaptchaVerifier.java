@@ -32,13 +32,9 @@ public class CaptchaVerifier {
         return existingCaptcha != null && captcha.equalsIgnoreCase((String) existingCaptcha);
     }
 
-    public boolean registerPhotoCaptchaVerify(String captcha) {
+    public boolean registerImageCaptchaVerify(String imageCaptcha) {
         String jSessionId = this.getJSessionId(httpServletRequest);
-        if (redisWrapperClient.exists(jSessionId)) {
-            return redisWrapperClient.get(jSessionId).equals(captcha);
-        } else {
-            return false;
-        }
+        return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equals(imageCaptcha);
     }
 
     private String getJSessionId(HttpServletRequest request) {

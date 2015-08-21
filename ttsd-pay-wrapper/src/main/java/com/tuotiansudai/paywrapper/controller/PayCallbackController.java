@@ -1,9 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class PayCallbackController {
         while (parameterNames.hasMoreElements()) {
             String name = parameterNames.nextElement();
             String parameter = request.getParameter(name);
-            parameter = new String(parameter.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+//            parameter = new String(parameter.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             paramsMap.put(name, parameter);
         }
         return paramsMap;

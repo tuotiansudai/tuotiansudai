@@ -30,4 +30,4 @@ require(['jquery'], function ($) {
         });
         //
     });
-})
+});
