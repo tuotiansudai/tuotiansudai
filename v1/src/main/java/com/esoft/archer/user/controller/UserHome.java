@@ -581,7 +581,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             userInfo.setReferrer(userReferrer.trim());
         }
 
-        if(userBO.getUserByUsername(userInfo.getReferrer()) == null){
+        if(userInfo.getReferrer() != null && userBO.getUserByUsername(userInfo.getReferrer()) == null){
             FacesUtil.addErrorMessage("设置的推荐人不存在");
             return null;
         }

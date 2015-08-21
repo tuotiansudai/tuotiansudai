@@ -37,6 +37,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -803,44 +805,26 @@ public class UserServiceImpl implements UserService {
 		String referrerId = user.getReferrer();
 		if (Strings.isNullOrEmpty(referrerId)) return;
 		String userId = user.getId();
-		buildReferrerRelationChain(referrerId, userId, ht.getSessionFactory().getCurrentSession());
-	}
-
-
-	/**
-	 * 构建用户的推荐关系链
-	 *
-	 * @param referrerId
-	 * @param userId
-	 */
-	private void buildReferrerRelationChain(String referrerId, String userId, Session session) {
-		if (StringUtils.isBlank(referrerId) || StringUtils.isBlank(userId)) {
-			return;
-		}
-
 		ReferrerRelation referrerRelation = new ReferrerRelation();
 		referrerRelation.setUserId(userId);
 		referrerRelation.setReferrerId(referrerId.trim());
 		referrerRelation.setLevel(1);
-		session.save(referrerRelation);
+		ht.save(referrerRelation);
 
-		String hqlTemplate = "from ReferrerRelation where userId=:userId";
-		Query query = session.createQuery(hqlTemplate);
-		query.setParameter("userId",referrerId);
-		List<ReferrerRelation> list = query.list();
+		String hqlTemplate = "from ReferrerRelation where userId=''{0}''";
+		List<ReferrerRelation> list = ht.find(MessageFormat.format(hqlTemplate, referrerId));
 		for (ReferrerRelation relation : list) {
 			ReferrerRelation upperRelation = new ReferrerRelation();
 			upperRelation.setUserId(userId);
 			upperRelation.setReferrerId(relation.getReferrerId());
 			upperRelation.setLevel(relation.getLevel() + 1);
-			session.save(upperRelation);
+			ht.save(upperRelation);
 		}
-		session.flush();
 	}
 
 	/**
 	 * 保存注册时候的推荐人信息
-	 * 
+	 *
 	 * @param user
 	 * @param referrer
 	 */
@@ -1019,18 +1003,6 @@ public class UserServiceImpl implements UserService {
 		return effectiveUserIdList;
 	}
 
-	/**
-	 * 删除用户作为被推荐人的推荐链（所有推荐该用户的记录）
-	 *
-	 * @param userId
-	 */
-	private void removeUserReferrerChain(String userId, Session session) {
-		String hql = "delete from ReferrerRelation rr where rr.userId = :userId";
-		Query query = session.createQuery(hql);
-		query.setParameter("userId", userId);
-		query.executeUpdate();
-		session.flush();
-	}
 
 	/**
 	 * 判断用户是否存在非直接的推荐关系
@@ -1059,7 +1031,47 @@ public class UserServiceImpl implements UserService {
 		return (n1>0 || n2>0);
 	}
 
+	/**
+	 * 删除用户作为被推荐人的推荐链（所有推荐该用户的记录）
+	 *
+	 * @param userId
+	 */
+	private void removeUserReferrerChainSQL(String userId, Session session) {
+		String sql = "delete from referrer_relation where user_id = :user_id";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter("user_id", userId);
+		query.executeUpdate();
+	}
+
+	private void saveUserReferrerRelationSQL(String referrerId, String userId, int level, Session session){
+		String sql = "insert into referrer_relation(user_id, referrer_id, level) values(:user_id,:referrer_id,:level)";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter("user_id", userId);
+		query.setParameter("referrer_id", referrerId);
+		query.setParameter("level", level);
+		query.executeUpdate();
+	}
+
+	private void buildReferrerRelationChainSQL(String referrerId, String userId, Session session) {
+		if (StringUtils.isBlank(referrerId) || StringUtils.isBlank(userId)) {
+			return;
+		}
+
+		saveUserReferrerRelationSQL(referrerId, userId, 1, session);
+
+		String hqlTemplate = "select * from referrer_relation where user_id=:user_id";
+		SQLQuery query = session.createSQLQuery(hqlTemplate);
+		query.setParameter("user_id",referrerId);
+		query.addEntity(ReferrerRelation.class);
+		List<ReferrerRelation> list = query.list();
+		for (ReferrerRelation relation : list) {
+			saveUserReferrerRelationSQL(relation.getReferrerId(), userId, relation.getLevel()+1, session);
+			throw new NullPointerException("s");
+		}
+	}
+
 	@Override
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void updateUserReferrerRelation(String userId, String oldReferrer, String newReferrer, int effectiveLevel) {
 		// 由于后续重新构建用户的推荐关系，因此这个map的顺序十分重要，
 		// 所以查询数据库时根据level进行排序，并在实现上使用了 LinkedHashMap 以确保顺序不乱
@@ -1070,17 +1082,22 @@ public class UserServiceImpl implements UserService {
 
 		// 使用当前会话会导致重复主键异常，因此此处不得不使用新会话处理用户推荐关系 zzg 20150820
 		Session session = ht.getSessionFactory().openSession();
-
-		// 清除这些用户的推荐关系
-		for (String uId : effectiveUserReferrerMap.keySet()) {
-			removeUserReferrerChain(uId, session);
+		Transaction transaction = session.beginTransaction();
+		try {
+			// 清除这些用户的推荐关系
+			for (String uId : effectiveUserReferrerMap.keySet()) {
+				removeUserReferrerChainSQL(uId, session);
+			}
+			// 重新构建这些用户的的推荐关系
+			for (String uId : effectiveUserReferrerMap.keySet()) {
+				buildReferrerRelationChainSQL(effectiveUserReferrerMap.get(uId), uId, session);
+			}
+			transaction.commit();
+		}catch (Exception e){
+			transaction.rollback();
+			log.error("update user refeere relation exception", e);
+			throw e;
 		}
-
-		// 重新构建这些用户的的推荐关系
-		for (String uId : effectiveUserReferrerMap.keySet()) {
-			buildReferrerRelationChain(effectiveUserReferrerMap.get(uId), uId, session);
-		}
-
 		session.close();
 	}
 }
