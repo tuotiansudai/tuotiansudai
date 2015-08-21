@@ -19,6 +19,7 @@
      * 因此，UEditor提供了针对不同页面的编辑器可单独配置的根路径，具体来说，在需要实例化编辑器的页面最顶部写上如下代码即可。当然，需要令此处的URL等于对应的配置。
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
+    var PROJECT_NAME = window.CONTEXT_PATH;
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
 
     /**
@@ -29,6 +30,12 @@
         //为编辑器实例添加一个路径，这个不能被注释
         UEDITOR_HOME_URL: URL
 
+        ,imageUrl:PROJECT_NAME + "/ImageUpload"
+        ,imagePath:PROJECT_NAME + "/"
+        ,savePath: [ 'upload' ]
+
+        ,wordImageUrl : PROJECT_NAME + "/ImageUpload"
+        ,wordImagePath : PROJECT_NAME + "/"
         // 服务器统一请求接口路径
         , serverUrl: URL + "jsp/controller.jsp"
 
