@@ -7,10 +7,6 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     <!-- link bootstrap css and js -->
     <link href="../../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
@@ -52,6 +48,9 @@
     <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
     <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <!--自动补全-->
+    <#--当前页面js-->
+    <script src="../../js/createLoan.js"></script>
+    <#--当前页面js end-->
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker6').datetimepicker();
