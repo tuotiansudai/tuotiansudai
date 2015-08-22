@@ -1,10 +1,7 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +16,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional(rollbackFor = Exception.class)
+@Transactional
 public class LoanServiceTest {
     @Autowired
     private LoanService loanService;

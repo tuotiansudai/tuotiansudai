@@ -92,7 +92,7 @@ public class PayWrapperClient {
             return baseDto;
         }
 
-        String responseJson = this.post(rechargePath, requestJson);
+        String responseJson = this.post(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payFormDataDto.setStatus(false);
             return baseDto;

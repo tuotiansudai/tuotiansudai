@@ -73,7 +73,7 @@ public class LoanDto {
     /***基本利率***/
     @NotEmpty
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
-    private double basicRate;
+    private String basicRate;
 
     /***合同***/
     @NotEmpty
@@ -209,11 +209,11 @@ public class LoanDto {
         this.activityRate = activityRate;
     }
 
-    public double getBasicRate() {
+    public String getBasicRate() {
         return basicRate;
     }
 
-    public void setBasicRate(double basicRate) {
+    public void setBasicRate(String basicRate) {
         this.basicRate = basicRate;
     }
 

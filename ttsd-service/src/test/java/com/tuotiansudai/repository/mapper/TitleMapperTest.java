@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional
 public class TitleMapperTest {
     @Autowired
     private TitleMapper titleMapper;
@@ -34,7 +33,7 @@ public class TitleMapperTest {
     }
 
     @Test
-    public void findAlltitles(){
+    public void findAllTitlesTest(){
         List<TitleModel> titleModels = titleMapper.findAllTitles();
         assertTrue(titleModels.size() >= 0);
     }

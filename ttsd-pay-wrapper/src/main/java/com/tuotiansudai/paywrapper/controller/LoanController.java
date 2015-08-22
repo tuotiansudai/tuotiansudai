@@ -23,9 +23,9 @@ public class LoanController{
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "loan",method = RequestMethod.POST)
+    @RequestMapping(value = "/loan",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto createLoan(@Valid @RequestBody LoanDto loanDto){
+    public BaseDto createLoan(@RequestBody LoanDto loanDto){
         return loanService.createLoan(loanDto);
     }
 

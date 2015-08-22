@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
@@ -23,10 +25,12 @@ public class LoanMapperTest {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Test
     public void createLoanTest(){
         LoanDto loanDto = new LoanDto();
-        IdGenerator idGenerator = new IdGenerator();
         loanDto.setLoanLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
         String id = String.valueOf(idGenerator.generate());
@@ -39,8 +43,8 @@ public class LoanMapperTest {
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setFundraisingEndTime("2015-11-22");
-        loanDto.setFundraisingStartTime("2015-8-12");
+        loanDto.setFundraisingEndTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        loanDto.setFundraisingStartTime("2015-8-13 13:26:36");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");

@@ -57,7 +57,7 @@ public class CreateLoanBidController {
 
     @RequestMapping(value = "/createloanbid",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> createLoanBid(LoanDto loanDto){
+    public BaseDto<PayFormDataDto> createLoanBid(@RequestBody LoanDto loanDto){
         return createLoanBidService.createLoanBid(loanDto);
     }
 
