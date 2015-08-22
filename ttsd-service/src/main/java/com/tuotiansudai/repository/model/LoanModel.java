@@ -68,10 +68,16 @@ public class LoanModel {
         this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
         this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
         BigDecimal bigDecimalInvestFeeRate = new BigDecimal(loanDto.getInvestFeeRate());
-        this.investFeeRate = bigDecimalInvestFeeRate.divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount())*100;
-        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount())*100;
-        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount())*100;
+        this.investFeeRate = bigDecimalInvestFeeRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.investIncreasingAmount = new BigDecimal(loanDto.getInvestIncreasingAmount())
+                .multiply(new BigDecimal(100))
+                .longValue();
+        this.maxInvestAmount = new BigDecimal(loanDto.getMaxInvestAmount())
+                .multiply(new BigDecimal(100))
+                .longValue();
+        this.minInvestAmount = new BigDecimal(loanDto.getMinInvestAmount())
+                .multiply(new BigDecimal(100))
+                .longValue();
         this.periods = loanDto.getPeriods();
         if ("1".equals(showOnHome)){
             this.showOnHome = true;
@@ -80,7 +86,9 @@ public class LoanModel {
         }
 
         this.type = loanDto.getType();
-        this.loanAmount = Long.parseLong(loanDto.getLoanAmount())*100;
+        this.loanAmount = new BigDecimal(loanDto.getLoanAmount())
+                .multiply(new BigDecimal(100))
+                .longValue();
     }
 
     public String getId() {

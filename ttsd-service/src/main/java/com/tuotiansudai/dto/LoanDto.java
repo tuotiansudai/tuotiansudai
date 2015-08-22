@@ -48,17 +48,17 @@ public class LoanDto {
 
     /***最小投资金额***/
     @NotEmpty
-    @Pattern(regexp = "^\\d+$")
+    @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String minInvestAmount;
 
     /***投资递增金额***/
     @NotEmpty
-    @Pattern(regexp = "^\\d+$")
+    @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String investIncreasingAmount;
 
     /***单笔最大投资金额***/
     @NotEmpty
-    @Pattern(regexp = "^\\d+$")
+    @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String maxInvestAmount;
 
     /***活动类型***/
@@ -91,7 +91,7 @@ public class LoanDto {
     private String showOnHome;
 
     /***借款金额***/
-    @Pattern(regexp = "^\\d+$")
+    @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String loanAmount;
 
     /***申请材料***/
