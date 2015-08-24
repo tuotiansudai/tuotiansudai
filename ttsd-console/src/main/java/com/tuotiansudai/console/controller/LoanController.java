@@ -57,18 +57,8 @@ public class LoanController {
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> createLoanBid(@RequestBody LoanDto loanDto){
+    public BaseDto<PayFormDataDto> createLoan(@RequestBody LoanDto loanDto){
         return createLoanBidService.createLoanBid(loanDto);
     }
 
-    @RequestMapping(value = "contracts",method = RequestMethod.GET)
-    @ResponseBody
-    public List<Map<String,String>> getAllContracts(){
-        List contracts = new ArrayList();
-        Map<String,String> contract = new HashMap<>();
-        contract.put("id","8907456");
-        contract.put("contractName", "四方合同");
-        contracts.add(contract);
-        return contracts;
-    }
 }
