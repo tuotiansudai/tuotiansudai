@@ -71,7 +71,7 @@ public class TrusteeshipHome {
 		if (log.isDebugEnabled()) {
 			log.debug("POST call back: " + this.operationType);
 		}
-		if (UmPayConstants.OperationType.MER_BIND_CARD
+		if (UmPayConstants.OperationType.PTP_MER_BIND_CARD
 				.equals(this.operationType)) {
 			return this.bindinBankCradWeb();
 		} else if (UmPayConstants.OperationType.MER_RECHARGE_PERSON
@@ -92,9 +92,9 @@ public class TrusteeshipHome {
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_OVERDUE_REPAY
 				.equals(this.operationType)) {
 			return this.overdueRepay();
-		} else if (UmPayConstants.OperationType.MER_REPLACE_CARD.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
 			return this.replaceBankCardWeb();
-		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			return this.bindingAgreementWeb();
 		}
 		return "404";
@@ -104,7 +104,7 @@ public class TrusteeshipHome {
 		if (log.isDebugEnabled()) {
 			log.debug("S2S call back: " + this.operationType);
 		}
-		if (UmPayConstants.OperationType.MER_BIND_CARD
+		if (UmPayConstants.OperationType.PTP_MER_BIND_CARD
 				.equals(this.operationType)) {
 			this.S2S(umPayBindingBankCardOperation);
 		} else if (UmPayConstants.OperationType.MER_RECHARGE_PERSON
@@ -131,9 +131,9 @@ public class TrusteeshipHome {
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_OVERDUE_REPAY
 				.equals(this.operationType)) {
 			this.S2S(umPayOverdueRepayOperation);
-		} else if (UmPayConstants.OperationType.MER_REPLACE_CARD.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
 			this.S2S(umPayReplaceBankCardOperation);
-		} else if (UmPayConstants.OperationType.MER_BIND_AGREEMENT.equals(this.operationType)) {
+		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			this.S2S(umPayBindingAgreementOperation);
 		}
 	}
