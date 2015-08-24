@@ -30,4 +30,14 @@ public class DateCompare {
         }
         return result;
     }
+
+    public static Integer compareDate(Date firstDate,Date secondDate){
+        Integer result = null;
+        Calendar firstCalendar = Calendar.getInstance();
+        Calendar secondCalendar = Calendar.getInstance();
+        firstCalendar.setTime(firstDate);
+        secondCalendar.setTime(secondDate);
+        result = firstCalendar.compareTo(secondCalendar);
+        return result;
+    }
 }

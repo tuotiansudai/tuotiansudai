@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.List;
 
 public class LoanDto {
@@ -81,14 +82,14 @@ public class LoanDto {
 
     /***筹款开始时间***/
     @NotEmpty
-    private String fundraisingStartTime;
+    private Date fundraisingStartTime;
 
     /***筹款截止时间***/
     @NotEmpty
-    private String fundraisingEndTime;
+    private Date fundraisingEndTime;
 
     /***是否显示在首页1:显示在首页，0:不显示在首页***/
-    private String showOnHome;
+    private boolean showOnHome;
 
     /***借款金额***/
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
@@ -225,27 +226,27 @@ public class LoanDto {
         this.contractId = contractId;
     }
 
-    public String getFundraisingStartTime() {
+    public Date getFundraisingStartTime() {
         return fundraisingStartTime;
     }
 
-    public void setFundraisingStartTime(String fundraisingStartTime) {
+    public void setFundraisingStartTime(Date fundraisingStartTime) {
         this.fundraisingStartTime = fundraisingStartTime;
     }
 
-    public String getFundraisingEndTime() {
+    public Date getFundraisingEndTime() {
         return fundraisingEndTime;
     }
 
-    public void setFundraisingEndTime(String fundraisingEndTime) {
+    public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
     }
 
-    public String getShowOnHome() {
+    public boolean isShowOnHome() {
         return showOnHome;
     }
 
-    public void setShowOnHome(String showOnHome) {
+    public void setShowOnHome(boolean showOnHome) {
         this.showOnHome = showOnHome;
     }
 

@@ -3,32 +3,32 @@ package com.tuotiansudai.repository.model;
 import java.math.BigInteger;
 
 public class LoanTitleModel {
-    private BigInteger id;
-    private BigInteger loanId;/***借款标的***/
-    private BigInteger titleId;/***申请材料标题***/
+    private long id;
+    private long loanId;/***借款标的***/
+    private long titleId;/***申请材料标题***/
     private String applyMetarialUrl;
 
-    public BigInteger getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public BigInteger getLoanId() {
+    public long getLoanId() {
         return loanId;
     }
 
-    public void setLoanId(BigInteger loanId) {
+    public void setLoanId(long loanId) {
         this.loanId = loanId;
     }
 
-    public BigInteger getTitleId() {
+    public long getTitleId() {
         return titleId;
     }
 
-    public void setTitleId(BigInteger titleId) {
+    public void setTitleId(long titleId) {
         this.titleId = titleId;
     }
 

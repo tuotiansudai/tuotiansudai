@@ -51,39 +51,26 @@ public class LoanModel {
 
     public LoanModel(){}
 
-    public LoanModel(LoanDto loanDto) throws ParseException {
+    public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
         BigDecimal bigDecimalActivityRate = new BigDecimal(loanDto.getActivityRate());
-        this.activityRate = bigDecimalActivityRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        BigDecimal bigDecimalBasicRate = new BigDecimal(loanDto.getBasicRate());
-        this.basicRate = bigDecimalBasicRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.activityRate = Double.parseDouble(loanDto.getActivityRate());
+        this.basicRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanLoginName = loanDto.getLoanLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
-        this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
-        BigDecimal bigDecimalInvestFeeRate = new BigDecimal(loanDto.getInvestFeeRate());
-        this.investFeeRate = bigDecimalInvestFeeRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        this.investIncreasingAmount = new BigDecimal(loanDto.getInvestIncreasingAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
-        this.maxInvestAmount = new BigDecimal(loanDto.getMaxInvestAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
-        this.minInvestAmount = new BigDecimal(loanDto.getMinInvestAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
+        this.fundraisingStartTime = loanDto.getFundraisingStartTime();
+        this.fundraisingEndTime = loanDto.getFundraisingEndTime();
+        this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
+        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
-        if ("1".equals(showOnHome)){
-            this.showOnHome = true;
-        }else {
-            this.showOnHome = false;
-        }
+        this.showOnHome = loanDto.isShowOnHome();
 
         this.type = loanDto.getType();
         this.loanAmount = new BigDecimal(loanDto.getLoanAmount())

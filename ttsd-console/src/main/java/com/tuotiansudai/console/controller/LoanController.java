@@ -1,11 +1,8 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.TitleDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.TitleModel;
-import com.tuotiansudai.service.CreateLoanBidService;
+import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,43 +19,43 @@ import java.util.Map;
 public class LoanController {
 
     @Autowired
-    private CreateLoanBidService createLoanBidService;
+    private LoanService loanService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan(HttpServletRequest request){
         List contracts = new ArrayList();
         Map<String,String> contract = new HashMap<>();
-        contract.put("id", "squareContract");
+        contract.put("id", "789098123");
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         ModelAndView modelAndView = new ModelAndView("/create-loan");
-        modelAndView.addObject("activityTypes",createLoanBidService.getActivityType());
-        modelAndView.addObject("loanTypes", createLoanBidService.getLoanType());
+        modelAndView.addObject("activityTypes", loanService.getActivityType());
+        modelAndView.addObject("loanTypes", loanService.getLoanType());
         modelAndView.addObject("contracts",contracts);
         return modelAndView;
     }
     @RequestMapping(value = "/loaner", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@RequestParam(value = "loginName")String loginName) {
-        return createLoanBidService.getLoginNames(loginName);
+        return loanService.getLoginNames(loginName);
     }
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public Map<String,List<TitleModel>> findAllTitles(){
-        return createLoanBidService.findAllTitles();
+        return loanService.findAllTitles();
     }
 
     @RequestMapping(value = "/title",method = RequestMethod.POST)
     @ResponseBody
     public TitleModel addTitle(@RequestBody TitleDto titleDto){
-        return createLoanBidService.createTitle(titleDto);
+        return loanService.createTitle(titleDto);
     }
 
     @RequestMapping(value = "/",method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> createLoan(@RequestBody LoanDto loanDto){
-        return createLoanBidService.createLoanBid(loanDto);
+    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto){
+        return loanService.createLoanBid(loanDto);
     }
 
 }

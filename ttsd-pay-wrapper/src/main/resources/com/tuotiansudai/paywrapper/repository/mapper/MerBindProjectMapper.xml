@@ -27,8 +27,8 @@
     </select>
 
     <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectRequestModel">
-        insert into mer_bind_project_request (service, sign_type, sign, charset, merchant_id, version, project_id,project_name,project_amount,loan_user_id, request_url, request_data,request_time,status)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{projectId}, #{projectName}, #{projectAmount}, #{loanUserId}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
+        insert into mer_bind_project_request (id,service, sign_type, sign, charset, merchant_id, version, project_id,project_name,project_amount,loan_user_id, request_url, request_data,request_time,status)
+        values (#{id},#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{projectId}, #{projectName}, #{projectAmount}, #{loanUserId}, #{requestUrl}, #{requestData}, #{requestTime}, #{status})
     </insert>
 
     <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
@@ -36,8 +36,8 @@
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectResponseModel">
-        insert into mer_bind_project_response (request_id, sign_type, sign, merchant_id, version, project_account_id, project_state, mer_check_date,ret_code,ret_msg,response_data,response_time)
-        values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{projectAccountId}, #{projectState}, #{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
+        insert into mer_bind_project_response (id,request_id, sign_type, sign, merchant_id, version, project_account_id, project_state, mer_check_date,ret_code,ret_msg,response_data,response_time)
+        values (#{id},#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{projectAccountId}, #{projectState}, #{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
     </insert>
 
 </mapper>

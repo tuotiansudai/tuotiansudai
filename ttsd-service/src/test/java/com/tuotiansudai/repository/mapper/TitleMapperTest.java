@@ -25,11 +25,11 @@ public class TitleMapperTest {
     public void createTitleTest(){
         TitleModel titleModel = new TitleModel();
         long id = idGenerator.generate();
-        titleModel.setId(new BigInteger(String.valueOf(id)));
+        titleModel.setId(id);
         titleModel.setType("base");
         titleModel.setTitle("房产证");
         titleMapper.createTitle(titleModel);
-        assertTrue(titleModel.getId().equals(id));
+        assertTrue(titleModel.getId()==id);
     }
 
     @Test

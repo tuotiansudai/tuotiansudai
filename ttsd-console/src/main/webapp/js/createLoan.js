@@ -186,6 +186,13 @@ $(function () {
         //    tiptype: 0,
         //});
         indexPic();
+        var startTime = $('.jq-star-date').val();
+        var endTime = $('.jq-end-date').val();
+        var showOnHomeInputVal = $('.jq-index').val();
+        var showOnHome = true;
+        if(showOnHomeInputVal == '0'){
+            showOnHome = false;
+        }
         var dataForm = JSON.stringify({
             "projectName": $('.jq-user').val(),
             "agentLoginName": $('#tags_1').val(),
@@ -202,9 +209,9 @@ $(function () {
             "activityRate": $('.jq-percent').val(),
             "contractId": $('.jq-pact').val(),
             "basicRate": $('.jq-base-percent').val(),
-            "fundraisingStartTime": $('.jq-star-date').val(),
-            "fundraisingEndTime": $('.jq-end-date').val(),
-            "showOnHome": $('.jq-index').val(),
+            "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g,   "/"))),
+            "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g,   "/"))),
+            "showOnHome": showOnHome,
             "loanAmount": $('.jq-pay').val(),
             "loanTitles": uploadFile,
         });

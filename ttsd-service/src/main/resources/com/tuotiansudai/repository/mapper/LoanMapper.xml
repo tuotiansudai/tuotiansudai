@@ -30,4 +30,8 @@
         insert into loan(id,name,agent_login_name,loan_login_name,type,periods,description_text,description_html,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home)
         values(#{id},#{name},#{agentLoginName},#{loanLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome})
     </insert>
+    
+    <select id="findLoanByLoanId" parameterType="long" resultMap="loanResultMap">
+        select * from loan where id = #{id}
+    </select>
 </mapper>

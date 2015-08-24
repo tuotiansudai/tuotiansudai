@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.service;
+package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.LoanTitleModel;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -20,25 +21,26 @@ import java.util.List;
 public class LoanServiceTest {
     @Autowired
     private LoanService loanService;
-
+    @Autowired
+    private IdGenerator idGenerator;
     @Test
     public void createLoanServiceTest(){
         LoanDto loanDto = new LoanDto();
-        IdGenerator idGenerator = new IdGenerator();
         loanDto.setLoanLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
-        String id = String.valueOf(idGenerator.generate());
-        loanDto.setId(id);
+        long id = idGenerator.generate();
+        String idStr = String.valueOf(id);
+        loanDto.setId(idStr);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
-        loanDto.setShowOnHome("1");
+        loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
         loanDto.setActivityType("DIRECTIONAL_INVEST");
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
-        loanDto.setFundraisingEndTime("2015-11-28");
-        loanDto.setFundraisingStartTime("2015-8-19");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
@@ -48,13 +50,14 @@ public class LoanServiceTest {
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
         for(int i=0;i<5;i++){
             LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setId(new BigInteger(String.valueOf(idGenerator.generate())));
-            loanTitleModel.setLoanId(new BigInteger(id));
-            loanTitleModel.setTitleId(new BigInteger("1234567890"));
+            loanTitleModel.setId(idGenerator.generate());
+            loanTitleModel.setLoanId(id);
+            loanTitleModel.setTitleId(Long.parseLong("1234567890"));
             loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleModelList.add(loanTitleModel);
         }
         loanDto.setLoanTitles(loanTitleModelList);
-        loanService.createLoan(loanDto);
+        loanService.createLoanBid(loanDto);
+
     }
 }

@@ -1,15 +1,12 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.TitleDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
 import java.util.Map;
 
-public interface CreateLoanBidService {
+public interface LoanService {
     /**
      * @function 新增title
      * @param titleDto
@@ -45,5 +42,5 @@ public interface CreateLoanBidService {
      * @function 创建标的
      * @return
      */
-    BaseDto<PayFormDataDto> createLoanBid(LoanDto loanDto);
+    BaseDto<PayDataDto> createLoanBid(LoanDto loanDto);
 }

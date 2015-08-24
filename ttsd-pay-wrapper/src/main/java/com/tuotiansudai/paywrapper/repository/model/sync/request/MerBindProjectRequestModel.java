@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
         this.service = "mer_bind_project";
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectAmount = String.valueOf(new BigDecimal(loanAmount).multiply(new BigDecimal(100)).longValue());
+        this.projectAmount = projectAmount;
         this.loanUserId = loanUserId;
     }
     public Map<String, String> generatePayRequestData() {
