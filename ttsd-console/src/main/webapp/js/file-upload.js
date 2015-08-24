@@ -96,31 +96,8 @@ $(function () {
     });
 
 
-    // 循环上传图片分配对应位置
-    var indexPic = function () {
-        var _parent = $('.upload-box');
-        var formGroup = _parent.find('.form-group');
-        formGroup.each(function (index) {
-            var str = [];
-            var arr = formGroup.eq(index).find('.jq-src');
-            if (formGroup.eq(index).find('.file-preview-frame').index()) {
-                arr.val('');
-                console.log(index + ':' + arr.val())
-            } else {
-                formGroup.eq(index).find('.file-preview-frame').each(function (i) {
-                    var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
-                    str.push(_img);
-                    arr.val(str);
-                    console.log(index + ':' + arr.val())
-                });
-            }
-        });
-    };
-    $('.jq-btn-form').click(function () {
-        indexPic();
-        var result = $('.form-horizontal').serialize();
-        $.post(API_SELECT, result);
-    })
+
+
 
 
 })
