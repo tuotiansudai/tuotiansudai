@@ -19,54 +19,54 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan")
-public class CreateLoanBidController {
+public class LoanController {
 
     @Autowired
     private CreateLoanBidService createLoanBidService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView loan(HttpServletRequest request){
+    public ModelAndView createLoan(HttpServletRequest request){
         List contracts = new ArrayList();
         Map<String,String> contract = new HashMap<>();
         contract.put("id", "squareContract");
         contract.put("contractName", "四方合同");
         contracts.add(contract);
-        ModelAndView modelAndView = new ModelAndView("/createLoan");
+        ModelAndView modelAndView = new ModelAndView("/create-loan");
         modelAndView.addObject("activityTypes",createLoanBidService.getActivityType());
         modelAndView.addObject("loanTypes", createLoanBidService.getLoanType());
         modelAndView.addObject("contracts",contracts);
         return modelAndView;
     }
-    @RequestMapping(value = "/findloginnames", method = RequestMethod.GET)
+    @RequestMapping(value = "/loaner", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@RequestParam(value = "loginName")String loginName) {
         return createLoanBidService.getLoginNames(loginName);
     }
 
-    @RequestMapping(value = "/findalltitles", method = RequestMethod.GET)
+    @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public Map<String,List<TitleModel>> findAllTitles(){
         return createLoanBidService.findAllTitles();
     }
 
-    @RequestMapping(value = "/addtitle",method = RequestMethod.POST)
+    @RequestMapping(value = "/title",method = RequestMethod.POST)
     @ResponseBody
     public TitleModel addTitle(@RequestBody TitleDto titleDto){
         return createLoanBidService.createTitle(titleDto);
     }
 
-    @RequestMapping(value = "/createloanbid",method = RequestMethod.POST)
+    @RequestMapping(value = "/",method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> createLoanBid(@RequestBody LoanDto loanDto){
         return createLoanBidService.createLoanBid(loanDto);
     }
 
-    @RequestMapping(value = "findallcontracts",method = RequestMethod.GET)
+    @RequestMapping(value = "contracts",method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String,String>> getAllContracts(){
         List contracts = new ArrayList();
         Map<String,String> contract = new HashMap<>();
-        contract.put("id","squareContract");
+        contract.put("id","8907456");
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         return contracts;

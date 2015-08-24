@@ -34,7 +34,7 @@
     "repayTimeUnit":""
     }
 
-3.获取所有标题url地址：${requestContext.getContextPath()}/loan/findalltitles
+3.获取所有标题url地址：${requestContext.getContextPath()}/loan/titles
   标题数据格式：
     {
     "titles":[
@@ -51,7 +51,7 @@
         ]
     }
 
-4.添加标题url地址：${requestContext.getContextPath()}/loan/addtitle
+4.添加标题url地址：${requestContext.getContextPath()}/loan/title
     {
     "title":""
     }
@@ -80,7 +80,7 @@
         }
     ]
 
-6.借款用户，代理用户自动提示URL：${requestContext.getContextPath()}/findloginnames
+6.借款用户，代理用户自动提示URL：${requestContext.getContextPath()}/loaner
 借款用户，代理用户自动提示数据类型：
     [
         "caomengde",
