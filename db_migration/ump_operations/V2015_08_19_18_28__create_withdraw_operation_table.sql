@@ -1,5 +1,5 @@
 CREATE TABLE `ump_operations`.`cust_withdrawals_request` (
-  `id`                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`                BIGINT UNSIGNED NOT NULL,
   `service`           VARCHAR(32)     NOT NULL,
   `sign_type`         VARCHAR(8)      NOT NULL,
   `sign`              VARCHAR(256)    NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE `ump_operations`.`cust_withdrawals_request` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE `ump_operations`.`withdraw_apply_notify_request` (
-  `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id`            BIGINT UNSIGNED NOT NULL,
   `service`       VARCHAR(32)     NOT NULL,
   `sign_type`     VARCHAR(8)      NOT NULL,
   `sign`          VARCHAR(256)    NOT NULL,
