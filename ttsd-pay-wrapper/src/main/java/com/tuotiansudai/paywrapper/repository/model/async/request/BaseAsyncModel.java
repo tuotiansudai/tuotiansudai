@@ -2,11 +2,11 @@ package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 
-public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel{
+public abstract class BaseAsyncModel extends BaseSyncRequestModel{
 
-    private String retUrl;
+    protected String retUrl;
 
-    private String notifyUrl;
+    protected String notifyUrl;
 
     public String getRetUrl() {
         return retUrl;

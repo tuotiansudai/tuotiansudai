@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.model;
 public enum UserBillBusinessType {
     RECHARGE_SUCCESS("充值成功"),
     WITHDRAW_SUCCESS("提现成功"),
+    WITHDRAW_FAIL("提现失败"),
     INVEST_SUCCESS("投资成功"),
     LOAN_SUCCESS("借款成功"),
     LOAN_CANCEL("借款取消"),

@@ -41,7 +41,7 @@ public class RegisterServiceImpl implements RegisterService {
                 dto.getIdentityNumber(),
                 dto.getMobile());
 
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
 
         try {
