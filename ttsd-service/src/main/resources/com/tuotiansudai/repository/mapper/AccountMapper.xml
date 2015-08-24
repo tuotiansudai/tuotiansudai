@@ -21,11 +21,11 @@
         value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{registerTime})
     </insert>
 
-    <select id="findByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName}
     </select>
 
-    <select id="lockByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
+    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>
 

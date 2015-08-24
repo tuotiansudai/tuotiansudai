@@ -49,6 +49,25 @@ public class WithdrawMapperTest {
         assertNotNull(withdrawMapper.findById(withdrawModel.getId()));
     }
 
+    @Test
+    public void shouldUpdateWithdraw() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+
+        WithdrawModel withdrawModel = new WithdrawModel();
+        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setLoginName(fakeUserModel.getLoginName());
+        withdrawModel.setAmount(1L);
+        withdrawModel.setFee(1L);
+        withdrawModel.setStatus(WithdrawStatus.WAIT_VERIFY);
+        withdrawModel.setCreatedTime(new Date());
+        withdrawMapper.create(withdrawModel);
+
+        withdrawModel.setRecheckMessage("recheck message");
+        withdrawMapper.update(withdrawModel);
+
+        assertNotNull(withdrawMapper.findById(withdrawModel.getId()).getRecheckMessage());
+    }
 
     public UserModel getFakeUserModel() {
         UserModel userModelTest = new UserModel();

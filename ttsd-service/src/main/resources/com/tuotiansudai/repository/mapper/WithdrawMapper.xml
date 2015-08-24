@@ -22,12 +22,20 @@
         value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{createdTime})
     </insert>
 
-    <select id="findById" resultType="java.lang.Long" resultMap="withdrawResultMap">
+    <select id="findById" parameterType="long" resultMap="withdrawResultMap">
         select * from withdraw where id = #{id}
     </select>
 
-    <update id="update" parameterType="map">
-        update withdraw set status = #{status} where id = #{id}
+    <update id="update" parameterType="WithdrawModel">
+        update withdraw
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="verifyTime != null">verify_time = #{verifyTime},</if>
+            <if test="verifyMessage != null">verify_message = #{verifyMessage},</if>
+            <if test="recheckTime != null">recheck_time = #{recheckTime},</if>
+            <if test="recheckMessage != null">recheck_message = #{recheckMessage}</if>
+        </set>
+        where id = #{id}
     </update>
 
 </mapper>

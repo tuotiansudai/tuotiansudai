@@ -31,14 +31,14 @@ public class UserBillServiceImpl implements UserBillService {
         long freeze = accountModel.getFreeze();
         if (balance < amount) {
             String template = "Freeze Failed (orderId = {0}): {1} balance {2} is less than amount {3}";
-            throw new AmountTransferException(MessageFormat.format(template, orderId, loginName, String.valueOf(balance), String.valueOf(amount)));
+            throw new AmountTransferException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
         }
 
         balance -= amount;
         freeze += amount;
 
         accountModel.setBalance(balance);
-        accountModel.setFreeze(balance);
+        accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
         UserBillModel userBillModel = new UserBillModel();
@@ -61,7 +61,7 @@ public class UserBillServiceImpl implements UserBillService {
         long freeze = accountModel.getFreeze();
         if (freeze < amount) {
             String template = "Unfreeze Failed (orderId = {0}): {1} freeze {2} is less than amount {3}";
-            throw new AmountTransferException(MessageFormat.format(template, orderId, loginName, String.valueOf(balance), String.valueOf(amount)));
+            throw new AmountTransferException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
         }
 
         balance += amount;
@@ -69,7 +69,7 @@ public class UserBillServiceImpl implements UserBillService {
 
 
         accountModel.setBalance(balance);
-        accountModel.setFreeze(balance);
+        accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
         UserBillModel userBillModel = new UserBillModel();
@@ -94,7 +94,7 @@ public class UserBillServiceImpl implements UserBillService {
         balance += amount;
 
         accountModel.setBalance(balance);
-        accountModel.setFreeze(balance);
+        accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
         UserBillModel userBillModel = new UserBillModel();
@@ -118,13 +118,13 @@ public class UserBillServiceImpl implements UserBillService {
 
         if (balance < amount) {
             String template = "Transfer Out Balance Failed (orderId = {0}): {1} balance {2} is less than amount {3}";
-            throw new AmountTransferException(MessageFormat.format(template, orderId, loginName, String.valueOf(balance), String.valueOf(amount)));
+            throw new AmountTransferException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(balance), String.valueOf(amount)));
         }
 
         balance -= amount;
 
         accountModel.setBalance(balance);
-        accountModel.setFreeze(balance);
+        accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
         UserBillModel userBillModel = new UserBillModel();
@@ -139,16 +139,22 @@ public class UserBillServiceImpl implements UserBillService {
         userBillMapper.create(userBillModel);
     }
 
+    @Override
     @Transactional
-    public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType) {
+    public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         long balance = accountModel.getBalance();
         long freeze = accountModel.getFreeze();
 
+        if (freeze < amount) {
+            String template = "Transfer Out Freeze Failed (orderId = {0}): {1} freeze {2} is less than amount {3}";
+            throw new AmountTransferException(MessageFormat.format(template, String.valueOf(orderId), loginName, String.valueOf(freeze), String.valueOf(amount)));
+        }
+
         freeze -= amount;
 
         accountModel.setBalance(balance);
-        accountModel.setFreeze(balance);
+        accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
         UserBillModel userBillModel = new UserBillModel();

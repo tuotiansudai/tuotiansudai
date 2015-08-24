@@ -5,7 +5,11 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 public interface WithdrawService {
-    @Transactional
+
     BaseDto<PayFormDataDto> withdraw(WithdrawDto dto);
+
+    String withdrawCallback(Map<String, String> paramsMap, String originalQueryString);
 }

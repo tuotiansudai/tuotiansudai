@@ -19,7 +19,7 @@
         value(#{id}, #{loginName}, #{amount}, #{fee}, #{bank}, #{status}, #{createdTime})
     </insert>
 
-    <select id="findById" resultType="java.lang.Long" resultMap="rechargeResultMap">
+    <select id="findById" parameterType="long" resultMap="rechargeResultMap">
         select * from recharge where id = #{id}
     </select>
 

@@ -24,8 +24,8 @@ public class MerRechargePersonModel extends BaseAsyncModel {
     public MerRechargePersonModel(String orderId, String userId, String amount, String gateId) {
         super();
         this.service = "mer_recharge_person";
-        this.retUrl = "retUrl";
-        this.notifyUrl = "http://121.43.71.173:13002/trusteeship_return_s2s/mer_recharge_person";
+        this.retUrl = "http://localhost:8080";
+        this.notifyUrl = "http://121.43.71.173:13002/trusteeship_return_s2s/recharge_notify";
         this.orderId = orderId;
         this.userId = userId;
         this.amount = amount;
