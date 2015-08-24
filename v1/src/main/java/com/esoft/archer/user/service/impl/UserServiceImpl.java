@@ -1014,21 +1014,29 @@ public class UserServiceImpl implements UserService {
 		Session session = ht.getSessionFactory().getCurrentSession();
 
 		// 检查是否有间接推荐关系
+		/* 不用检查正向推荐关系
 		String hql1 = "select count(*) from ReferrerRelation rr where rr.userId=:userId and rr.referrerId=:referrerId and rr.level>1";
 		Query query = session.createQuery(hql1);
 		query.setParameter("userId",userId);
 		query.setParameter("referrerId", referrerId);
 		int n1 = ((Number) query.uniqueResult()).intValue();
+		if(n1>0){
+			return true;
+		}
+		*/
 
-		// 检查是否有反向推荐关系
+		// 检查是否有反向推荐关系，避免出现推荐环
 		String hql2 = "select count(*) from ReferrerRelation rr where rr.userId=:userId and rr.referrerId=:referrerId";
 		Query query2 = session.createQuery(hql2);
 		query2.setParameter("userId",referrerId);
 		query2.setParameter("referrerId", userId);
 		int n2 = ((Number) query2.uniqueResult()).intValue();
+		if(n2>0){
+			return true;
+		}
 
-		// 当用户互相不存在推荐关系时才返回 false
-		return (n1>0 || n2>0);
+		// 当用户不存在推荐关系时才返回 false
+		return false;
 	}
 
 	/**
