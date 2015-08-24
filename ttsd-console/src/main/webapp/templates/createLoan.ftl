@@ -68,7 +68,7 @@
             $("#tags,#tags_1").autocomplete({
                 source: function(query,process){
                     var matchCount = this.options.items;//返回结果集最大数量
-                    var api_url = '../../js/autocomepelete.json';
+                    var api_url = '${requestContext.getContextPath()}/findloginnames';
                     $.post(api_url,{"matchInfo":query,"matchCount":matchCount},function(respData){
                         return process(respData.respData);
                     });
@@ -87,14 +87,15 @@
                     <div class="select-box">
                         <select class="selectpicker col-sm-5">
                             {{each titles }}
-                            <option role="{{$value.id}}">{{$value.title}}</option>
+                            <option value="{{$value.id}}">{{$value.title}}</option>
                             {{/each}}
                         </select>
+
+                        <input type="hidden" class="jq-txt" value="{{titles[0]['id']}}" />
                     </div>
                     <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
                     <button type="button" class="btn btn-default jq-add">添加</button>
-                    <input type="hidden" class="jq-txt" name="idcard" value="身份证"/>
-                    <input type="hidden" class="jq-src" name="idcard_src" value="">
+
                 </div>
                 <input type="file" multiple=true class="file-loading">
             </div>
@@ -103,7 +104,7 @@
     <script id="select" type="text/html">
         <select class="selectpicker col-sm-5">
             {{each titles }}
-            <option role="{{$value.id}}">{{$value.title}}</option>
+            <option value="{{$value.id}}">{{$value.title}}</option>
             {{/each}}
         </select>
     </script>
@@ -177,7 +178,6 @@
                 <form class="form-horizontal jq-form">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款项目名称: </label>
-
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-user" placeholder="请输入内容" datatype="*" errormsg="请输入名称">
                         </div>
@@ -210,7 +210,7 @@
                                 </option>
                             </#list>
                             </select>
-                            <input type="hidden" class="jq-mark-type"/>
+                            <input type="hidden" class="jq-mark-type" value="" />
                         </div>
                     </div>
                     <div class="form-group">

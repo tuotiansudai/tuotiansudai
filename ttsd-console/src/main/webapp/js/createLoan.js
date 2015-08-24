@@ -11,6 +11,17 @@ $(function () {
         //data = data;
         _html = template('upload', data);
     });
+
+    function initSelect(){
+        var _selectAll = $('.jq-form select');
+        var _selectOption = $('select option');
+        _selectAll.each(function(m){
+            var _optionTxt = $(this).find('option').eq(0).attr('value');
+            $(this).siblings('[type="hidden"]').val(_optionTxt);
+        });
+    };
+    initSelect();
+
     $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
     $('#datetimepicker7').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
     $('.selectpicker').selectpicker({
@@ -100,6 +111,8 @@ $(function () {
             }
         })
     });
+
+    //$('.selectpicker').
 
     // 循环上传图片分配对应位置
     var uploadFile = []; //存放上传资料
