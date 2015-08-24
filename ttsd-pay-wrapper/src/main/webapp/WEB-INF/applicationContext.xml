@@ -24,7 +24,7 @@
 
     <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.pay.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}"/>
+        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}${jdbc.pay.setencoding}"/>
         <property name="username" value="${jdbc.pay.username}"/>
         <property name="password" value="${jdbc.pay.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
