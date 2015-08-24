@@ -1,5 +1,5 @@
 CREATE TABLE ${ump_operations}.`mer_bind_project_request` (
-  `id`                  INT             NOT NULL AUTO_INCREMENT,/******/
+  `id`                  BIGINT UNSIGED  NOT NULL,/******/
   `service`             VARCHAR(32)     NOT NULL,/***接口名称***/
   `sign_type`           VARCHAR(8)      NOT NULL,/***签名方式***/
   `sign`                VARCHAR(256)    NOT NULL,/***签名***/
