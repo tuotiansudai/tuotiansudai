@@ -57,7 +57,7 @@ public class CreateLoanBidServiceImpl implements CreateLoanBidService{
      */
     @Override
     public List<String> getLoginNames(String loginName) {
-        return accountMapper.findAllLoginNamesByLike("%"+loginName+"%");
+        return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
     public Map<String,List<TitleModel>> findAllTitles(){
