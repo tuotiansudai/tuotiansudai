@@ -19,7 +19,6 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
     private String gateId;
 
     public MerRechargePersonRequestModel() {
-
     }
 
     public MerRechargePersonRequestModel(String orderId, String userId, String amount, String gateId) {

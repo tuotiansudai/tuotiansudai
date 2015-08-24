@@ -6,6 +6,7 @@ CREATE TABLE `${ump_operations}`.`mer_recharge_person_request` (
   `charset`      VARCHAR(16)     NOT NULL,
   `mer_id`       VARCHAR(8)      NOT NULL,
   `version`      VARCHAR(3)      NOT NULL,
+  `ret_url`      VARCHAR(128)    NOT NULL,
   `notify_url`   VARCHAR(128)    NOT NULL,
   `order_id`     VARCHAR(32)     NOT NULL,
   `mer_date`     VARCHAR(8)      NOT NULL,
@@ -18,7 +19,7 @@ CREATE TABLE `${ump_operations}`.`mer_recharge_person_request` (
   `request_data` TEXT            NOT NULL,
   `status`       VARCHAR(10),
   PRIMARY KEY (`id`),
-  UNIQUE KEY UNIQUE_MER_RECHARGE_PERSON_REQUEST_ORDER_I (`order_id`)
+  UNIQUE KEY UNIQUE_MER_RECHARGE_PERSON_REQUEST_ORDER_ID (`order_id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
@@ -46,24 +47,6 @@ CREATE TABLE `${ump_operations}`.`recharge_notify_request` (
   `response_data`  TEXT,
   PRIMARY KEY (`id`),
   UNIQUE KEY UNIQUE_MER_RECHARGE_PERSON_REQUEST_ORDER_ID (`order_id`)
-)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 100001
-  DEFAULT CHARSET = utf8;
-
-CREATE TABLE `${ump_operations}`.`recharge_notify_response` (
-  `id`            INT(32)      NOT NULL AUTO_INCREMENT,
-  `request_id`    INT(32)      NOT NULL,
-  `sign_type`     VARCHAR(8)   NOT NULL,
-  `mer_id`        VARCHAR(8)   NOT NULL,
-  `version`       VARCHAR(3)   NOT NULL,
-  `order_id`      VARCHAR(32)  NOT NULL,
-  `mer_date`      VARCHAR(8)   NOT NULL,
-  `ret_code`      VARCHAR(16)  NOT NULL,
-  `response_time` DATETIME     NOT NULL,
-  `response_data` TEXT         NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT FR_RECHARGE_NOTIFY_RESPONSE_REF_RECHARGE_NOTIFY_REQUEST FOREIGN KEY (`request_id`) REFERENCES `${ump_operations}`.`recharge_notify_request` (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

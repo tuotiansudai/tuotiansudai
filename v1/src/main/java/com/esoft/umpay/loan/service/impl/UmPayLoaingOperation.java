@@ -10,7 +10,6 @@ import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.exception.BorrowedMoneyTooLittle;
-import com.esoft.jdp2p.loan.exception.ExistWaitAffirmInvests;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanService;
 import com.esoft.jdp2p.schedule.ScheduleConstants;
@@ -235,11 +234,13 @@ public class UmPayLoaingOperation extends UmPayOperationServiceAbs<Loan> {
 				.startAt(threeMinutesLater).build();
 		try {
 			scheduler.scheduleJob(jobDetail, trigger);
+			log.debug("add make loan notify job,loan_id = " + loan.getId());
 		} catch (SchedulerException e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
-		if (log.isDebugEnabled())
+		if (log.isDebugEnabled()) {
 			log.debug("添加[标的放款通知]调度成功，项目编号[" + loan.getId() + "]");
+		}
 	}
 	
 

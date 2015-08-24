@@ -4,8 +4,7 @@ public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
     private String merCheckDate;
     private String balance;
     private String comAmt;
-    private String retCode;
-    private String retMsg;
+
 
     public String getMerCheckDate() {
         return merCheckDate;
@@ -29,21 +28,5 @@ public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
 
     public void setComAmt(String comAmt) {
         this.comAmt = comAmt;
-    }
-
-    public String getRetCode() {
-        return retCode;
-    }
-
-    public void setRetCode(String retCode) {
-        this.retCode = retCode;
-    }
-
-    public String getRetMsg() {
-        return retMsg;
-    }
-
-    public void setRetMsg(String retMsg) {
-        this.retMsg = retMsg;
     }
 }

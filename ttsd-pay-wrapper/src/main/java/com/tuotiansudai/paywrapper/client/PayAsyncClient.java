@@ -3,12 +3,12 @@ package com.tuotiansudai.paywrapper.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseAsyncMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseCallbackMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 import com.tuotiansudai.paywrapper.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Introspector;
 import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -30,7 +32,8 @@ public class PayAsyncClient {
 
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
-    public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass, BaseAsyncRequestModel requestModel) throws PayException {
+    public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
+                                                    BaseAsyncRequestModel requestModel) throws PayException {
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
@@ -52,10 +55,10 @@ public class PayAsyncClient {
         }
     }
 
-    public void createCallbackRequest(Map<String, String> paramsMap,
-                                      String originalQueryString,
-                                      Class<? extends BaseCallbackMapper> baseMapperClass,
-                                      Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
+    public BaseCallbackRequestModel parseCallbackRequest(Map<String, String> paramsMap,
+                                                         String originalQueryString,
+                                                         Class<? extends BaseCallbackMapper> baseMapperClass,
+                                                         Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> platNotifyData = Plat2Mer_v40.getPlatNotifyData(paramsMap);
@@ -74,34 +77,32 @@ public class PayAsyncClient {
 
             BaseCallbackRequestModel model = objectMapper.readValue(json, callbackRequestModel);
             model.setRequestData(originalQueryString);
-            this.createCallbackRequest(baseMapperClass, model);
-        } catch (VerifyException  | IOException e) {
+
+            return this.createCallbackRequest(baseMapperClass, model);
+        } catch (VerifyException | IOException e) {
+            logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));
             logger.error(e.getLocalizedMessage(), e);
         }
+        return null;
     }
 
     @Transactional(value = "payTransactionManager")
-    private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass, BaseAsyncRequestModel requestModel) {
+    private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
+                               BaseAsyncRequestModel requestModel) {
         BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
         mapper.createRequest(requestModel);
     }
 
     @Transactional(value = "payTransactionManager")
-    private void createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass, BaseCallbackRequestModel requestModel) {
+    private BaseCallbackRequestModel createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass,
+                                                    BaseCallbackRequestModel requestModel) {
         BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
-        mapper.createRequest(requestModel);
-    }
-
-    @Transactional(value = "payTransactionManager")
-    private BaseCallbackResponseModel createCallbackResponse(Class<? extends BaseCallbackMapper> baseMapperClass,
-                                                               BaseCallbackRequestModel callbackRequestModel) throws IllegalAccessException, InstantiationException {
-        BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
-        BaseCallbackResponseModel callbackResponseModel = new BaseCallbackResponseModel(callbackRequestModel.getId(), callbackRequestModel.getOrderId(), callbackRequestModel.getMerDate());
-        Map<String, String> map = callbackResponseModel.generatePayResponseData();
-        String notifyResData = Mer2Plat_v40.merNotifyResData(map);
-        callbackResponseModel.setResponseData(notifyResData);
-        mapper.createResponse(callbackResponseModel);
-        return callbackResponseModel;
+        requestModel.setResponseTime(new Date());
+        Map<String, String> map1 = requestModel.generatePayResponseData();
+        String notifyResData = Mer2Plat_v40.merNotifyResData(map1);
+        requestModel.setResponseData(notifyResData);
+        mapper.create(requestModel);
+        return requestModel;
     }
 
     private Object getMapperByClass(Class clazz) {

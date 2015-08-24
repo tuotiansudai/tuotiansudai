@@ -7,7 +7,7 @@ subprojects {
     //Put instructions for each sub project
     apply plugin: "java"
     repositories {
-        mavenCentral()
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
     }
 
     dependencies {

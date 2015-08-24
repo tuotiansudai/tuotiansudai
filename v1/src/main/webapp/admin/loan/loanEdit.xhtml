@@ -290,6 +290,15 @@
 							var="node" itemLabel="#{node.title}" itemValue="#{node.id}" />
 					</h:selectOneMenu>
 
+					<h:outputLabel value="起投时间"></h:outputLabel>
+					<ui:fragment>
+						<p:calendar value="#{loanHome.instance.investBeginTime}" required="true"
+									label="起投时间" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8"
+									navigator="true" showButtonPanel="true">
+						</p:calendar>
+					</ui:fragment>
+
+					<!--
 					<h:outputLabel value="开始计息时间"></h:outputLabel>
 					<ui:fragment>
 						<h:outputText value="#{loanHome.instance.interestBeginTime}">
@@ -297,6 +306,7 @@
 						</h:outputText>
 						即为还款日。如不填写，则默认放款当天；如果在放款之前计算预计利息，则该值取预计执行时间。
 					</ui:fragment>
+					-->
 
 					<h:outputLabel value="预计执行时间"></h:outputLabel>
 					<h:outputText value="#{loanHome.instance.expectTime}">

@@ -39,7 +39,7 @@ public class RechargeMapperTest {
         userMapper.create(fakeUserModel);
 
         RechargeModel model = new RechargeModel();
-        model.setId(UUIDGenerator.generate());
+        model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
         model.setBank("bank");
         model.setStatus(RechargeStatus.WAIT_PAY);
