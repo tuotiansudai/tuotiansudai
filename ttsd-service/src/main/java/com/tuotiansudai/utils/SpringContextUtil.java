@@ -1,4 +1,4 @@
-package com.tuotiansudai.paywrapper.utils;
+package com.tuotiansudai.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

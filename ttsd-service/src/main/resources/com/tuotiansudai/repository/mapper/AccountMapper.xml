@@ -25,6 +25,10 @@
         select * from account where login_name = #{loginName}
     </select>
 
+    <select id="findAllLoginNamesByLike" resultMap="accountResultMap">
+        select login_name from account where login_name like #{loginName}
+    </select>
+
     <select id="lockByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>

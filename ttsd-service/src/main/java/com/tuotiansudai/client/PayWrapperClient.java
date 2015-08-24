@@ -27,6 +27,9 @@ public class PayWrapperClient {
     @Value("${paywrapper.recharge}")
     private String rechargePath;
 
+    @Value("${paywrapper.loan}")
+    private String loanPath;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -69,6 +72,27 @@ public class PayWrapperClient {
         }
 
         String responseJson = this.post(rechargePath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayFormJson(responseJson);
+    }
+
+    public BaseDto<PayFormDataDto> loan(LoanDto dto) {
+        String requestJson;
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payFormDataDto.setStatus(false);
             return baseDto;
