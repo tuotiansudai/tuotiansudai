@@ -1,5 +1,6 @@
 package com.esoft.archer.user.service.impl;
 
+import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -93,14 +94,27 @@ public class UserBO {
 	 * @return
 	 */
 	public User getUserByUsernameFromDb(String username){
-		Session session = ht.getSessionFactory().openSession();
-		Query query = session.createQuery("from User user where user.username=:userName");
-		query.setParameter("userName",username);
-		List<User> users = query.list();
-		if(users!=null && users.size() > 0){
-			return users.get(0);
-		}else{
-			return null;
+		Session session=null;
+		try {
+			session = ht.getSessionFactory().openSession();
+			Query query = session.createQuery("from User user where user.username=:userName");
+			query.setParameter("userName", username);
+			List<User> users = query.list();
+			if (users != null && users.size() > 0) {
+				User u = users.get(0);
+				// 因为 role 是懒加载，如果 session 关闭的话，此字段将查询不出来，为了后续还能够使用此字段，特此对该数据进行一次使用。
+				List<Role> roles = u.getRoles();
+				for(Role r : roles){
+					r.setId(r.getId());
+				}
+				return u;
+			} else {
+				return null;
+			}
+		}finally {
+			if(session!=null){
+				session.close();
+			}
 		}
 	}
 

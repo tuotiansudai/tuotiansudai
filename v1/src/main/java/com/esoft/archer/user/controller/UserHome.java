@@ -586,6 +586,11 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return null;
         }
 
+        if(userInfo.getUsername().equalsIgnoreCase(userInfo.getReferrer())){
+            FacesUtil.addErrorMessage("不能将推荐人设置为自已");
+            return null;
+        }
+
         if(userService.hasDiffReferrerRelation(userInfo.getId(),userInfo.getReferrer())){
             FacesUtil.addErrorMessage("设置的推荐人与本用户存在间接推荐关系，不能设置为本用户的推荐人");
             return null;
@@ -598,7 +603,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
 
         // 修改推荐人关系
         if(!equalsIgnoreCaseIgnoreBlank(userInfo.getReferrer(), oldUserInfo.getReferrer())) {
-            rebuildUserReferRelation(userInfo.getId(), oldUserInfo.getReferrer(), userInfo.getReferrer());
+            userService.updateUserReferrerRelation(userInfo.getId(), oldUserInfo.getReferrer(), userInfo.getReferrer());
         }
 
         FacesUtil.addInfoMessage("用户信息修改成功！");
@@ -614,17 +619,6 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return true;
         }
         return StringUtils.equalsIgnoreCase(str1,str2);
-    }
-
-    private void rebuildUserReferRelation(String userId, String oldReferrer, String newReferrer) {
-        // 计算最大影响的推荐人层级
-        Integer effectiveLevelMerchandiser = referGradePtSysService.getMerchandiserMaxGrade();
-        Integer effectiveLevelInvestor = referGradePtSysService.getInvestMaxGrade();
-        int maxLevel = 0;
-        if(effectiveLevelInvestor!=null){maxLevel = effectiveLevelInvestor.intValue();}
-        if(effectiveLevelMerchandiser!=null){maxLevel = Math.max(effectiveLevelMerchandiser.intValue(),maxLevel);}
-
-        userService.updateUserReferrerRelation(userId, oldReferrer, newReferrer, maxLevel);
     }
 
     /**

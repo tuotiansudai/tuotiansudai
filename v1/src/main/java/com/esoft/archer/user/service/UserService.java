@@ -474,7 +474,6 @@ public interface UserService {
 	 * @param userId 直接相关的用户Id
 	 * @param oldReferrer 修改前的推荐人
 	 * @param newReferrer 修改后的推荐人
-	 * @param effectiveLevel 需要修改的层级范围
 	 */
-	public void updateUserReferrerRelation(String userId, String oldReferrer, String newReferrer, int effectiveLevel);
+	public void updateUserReferrerRelation(String userId, String oldReferrer, String newReferrer);
 }
