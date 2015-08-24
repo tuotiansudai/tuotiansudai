@@ -6,7 +6,7 @@ $(function () {
     var data = '';
     //初始化校验
     $(".jq-form").Validform({
-        tiptype:0,
+        tiptype: 0,
     });
     //初始化数据
     $.get(API_SELECT, function (data) {
@@ -14,10 +14,10 @@ $(function () {
         _html = template('upload', data);
     });
 
-    function initSelect(){
+    function initSelect() {
         var _selectAll = $('.jq-form select');
         var _selectOption = $('select option');
-        _selectAll.each(function(m){
+        _selectAll.each(function (m) {
             var _optionTxt = $(this).find('option').eq(0).attr('value');
             $(this).siblings('[type="hidden"]').val(_optionTxt);
         });
@@ -71,7 +71,6 @@ $(function () {
     });
 
 
-
     // 渲染页面 slect ajax
     var ajaxGet = function (url, ele) {
         var url = url;
@@ -123,7 +122,7 @@ $(function () {
     var uploadFile = []; //存放上传资料
     // 循环上传图片分配对应位置
     var indexPic = function () {
-        uploadFile=[];
+        uploadFile = [];
         var _url = '';
         var _parent = $('.upload-box');
         var formGroup = _parent.find('.form-group');
@@ -136,8 +135,8 @@ $(function () {
             } else {
                 formGroup.eq(index).find('.file-preview-frame').each(function (i) {
                     var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
-                    str+=_img+',';
-                    _url = str.substring(0,str.lastIndexOf(','));
+                    str += _img + ',';
+                    _url = str.substring(0, str.lastIndexOf(','));
 
                 });
                 obj.applyMetarialUrl = _url;
@@ -154,9 +153,9 @@ $(function () {
     });
     //自动完成提示
     $("#tags,#tags_1").autocomplete({
-        source: function(query,process){
+        source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get(api_url,{"loginName": query.term},function(respData){
+            $.get(api_url, {"loginName": query.term}, function (respData) {
                 return process(respData.respData);
             });
         }
@@ -167,16 +166,16 @@ $(function () {
     var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
     var rep_point1 = /^[0-9]+\.[0-9]$/;
     $('.jq-money').blur(function () {
-        var  _this = $(this)
-        var  text = _this.val();
-        var  num = text.replace(rep_point,"$1");
-        if(rep.test(text)){
-            _this.val(text+'.00').removeClass('Validform_error');
-        }else if(rep_point.test(text)){
+        var _this = $(this)
+        var text = _this.val();
+        var num = text.replace(rep_point, "$1");
+        if (rep.test(text)) {
+            _this.val(text + '.00').removeClass('Validform_error');
+        } else if (rep_point.test(text)) {
             _this.val(num).removeClass('Validform_error');
-        }else if(rep_point1.test(text)){
-            _this.val(text+'0').removeClass('Validform_error');
-        }else{
+        } else if (rep_point1.test(text)) {
+            _this.val(text + '0').removeClass('Validform_error');
+        } else {
             _this.val('').addClass('Validform_error');
         }
     });
@@ -200,13 +199,28 @@ $(function () {
             "activityRate": $('.jq-percent').val(),
             "contractId": $('.jq-pact').val(),
             "basicRate": $('.jq-base-percent').val(),
-            "fundraisingStartTime": $('.jq-star-date').val() + ':00',//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
-            "fundraisingEndTime": $('.jq-end-date').val() + ':00',//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
-            "showOnHome": $('.jq-index').val(), //1选中
+            "fundraisingStartTime": $('.jq-star-date').val(),
+            "fundraisingEndTime": $('.jq-end-date').val(),
+            "showOnHome": $('.jq-index').val(),
             "loanAmount": $('.jq-pay').val(),
-            "loanTitles": uploadFile
+            "loanTitles": uploadFile,
         });
-        console.log(dataForm)
-        $.post(API_FORM, dataForm);
-    })
+        $.ajax({
+            url: API_FORM,
+            type: 'POST',
+            dataType: 'json',
+            data:dataForm,
+            contentType: 'application/json; charset=UTF-8',
+        })
+            .done(function() {
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+
+    });
 });
