@@ -182,6 +182,9 @@ $(function () {
 
     //提交表单
     $('.jq-btn-form').click(function () {
+        //$(".jq-form").Validform({
+        //    tiptype: 0,
+        //});
         indexPic();
         var dataForm = JSON.stringify({
             "projectName": $('.jq-user').val(),

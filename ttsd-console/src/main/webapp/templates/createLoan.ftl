@@ -368,8 +368,8 @@
 </body>
 </html>
 <script>
-    var API_SELECT = '${requestContext.getContextPath()}/loan/findalltitles';  // 申请资料标题url
-    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/addtitle';
-    var API_FORM = '${requestContext.getContextPath()}/loan/createloanbid';
-    var api_url = '${requestContext.getContextPath()}/loan/findloginnames';
+    var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
+    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
+    var API_FORM = '${requestContext.getContextPath()}/loan/';
+    var api_url = '${requestContext.getContextPath()}/loan/loaner';
 </script>
