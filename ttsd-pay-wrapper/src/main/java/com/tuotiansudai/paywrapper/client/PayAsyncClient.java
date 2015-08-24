@@ -3,14 +3,13 @@ package com.tuotiansudai.paywrapper.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseAsyncMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseCallbackMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
-import com.tuotiansudai.paywrapper.utils.SpringContextUtil;
+import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncModel;
+import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -33,7 +32,7 @@ public class PayAsyncClient {
     static Logger logger = Logger.getLogger(PaySyncClient.class);
 
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
-                                                    BaseAsyncRequestModel requestModel) throws PayException {
+                                                    BaseAsyncModel requestModel) throws PayException {
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
@@ -88,9 +87,9 @@ public class PayAsyncClient {
 
     @Transactional(value = "payTransactionManager")
     private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
-                               BaseAsyncRequestModel requestModel) {
+                               BaseAsyncModel requestModel) {
         BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
-        mapper.createRequest(requestModel);
+        mapper.create(requestModel);
     }
 
     @Transactional(value = "payTransactionManager")
@@ -98,8 +97,8 @@ public class PayAsyncClient {
                                                     BaseCallbackRequestModel requestModel) {
         BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
         requestModel.setResponseTime(new Date());
-        Map<String, String> map1 = requestModel.generatePayResponseData();
-        String notifyResData = Mer2Plat_v40.merNotifyResData(map1);
+        Map<String, String> map = requestModel.generatePayResponseData();
+        String notifyResData = Mer2Plat_v40.merNotifyResData(map);
         requestModel.setResponseData(notifyResData);
         mapper.create(requestModel);
         return requestModel;

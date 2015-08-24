@@ -37,7 +37,7 @@ public abstract class BaseSyncRequestModel {
 
     private String requestUrl;
 
-    private RequestStatus status = RequestStatus.READY;
+    private SyncRequestStatus status = SyncRequestStatus.READY;
 
     static {
         if (props.isEmpty()) {
@@ -136,11 +136,11 @@ public abstract class BaseSyncRequestModel {
         this.requestUrl = requestUrl;
     }
 
-    public RequestStatus getStatus() {
+    public SyncRequestStatus getStatus() {
         return status;
     }
 
-    public void setStatus(RequestStatus status) {
+    public void setStatus(SyncRequestStatus status) {
         this.status = status;
     }
 

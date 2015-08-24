@@ -32,7 +32,6 @@ public class SmsCaptchaMapperTest {
         assertNotNull(actualModel);
     }
 
-
     @Test
     @Transactional
     public void shouldModifySmsCaptcha() {

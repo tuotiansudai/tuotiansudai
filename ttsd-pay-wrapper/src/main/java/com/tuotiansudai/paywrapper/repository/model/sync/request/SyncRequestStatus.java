@@ -1,6 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
-public enum RequestStatus {
+public enum SyncRequestStatus {
     READY,
     SUCCESS,
     FAILED
