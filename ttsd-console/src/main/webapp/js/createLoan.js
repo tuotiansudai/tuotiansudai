@@ -5,7 +5,9 @@ $(function () {
     var _html = '';
     var data = '';
     //初始化校验
-    $(".jq-form").Validform();
+    $(".jq-form").Validform({
+        tiptype:0,
+    });
     //初始化数据
     $.get(API_SELECT, function (data) {
         //data = data;
@@ -63,6 +65,12 @@ $(function () {
         })
     });
 
+    // 删除添加资料
+    $('body').on('click', '.jq-delete', function () {
+        $(this).closest('.form-group').remove();
+    });
+
+
 
     // 渲染页面 slect ajax
     var ajaxGet = function (url, ele) {
@@ -112,30 +120,27 @@ $(function () {
         })
     });
 
-    //$('.selectpicker').
-
-    // 循环上传图片分配对应位置
     var uploadFile = []; //存放上传资料
+    // 循环上传图片分配对应位置
     var indexPic = function () {
+        uploadFile=[];
+        var _url = '';
         var _parent = $('.upload-box');
         var formGroup = _parent.find('.form-group');
         formGroup.each(function (index) {
-            var str = [];
+            var str = '';
             var obj = {};
-            var arr = formGroup.eq(index).find('.jq-src');
-            obj.titleId = index;
+            obj.titleId = formGroup.eq(index).find('.jq-txt').val();
             if (formGroup.eq(index).find('.file-preview-frame').index()) {
-                arr.val('');
                 obj.applyMetarialUrl = '';
-                console.log(index + ':' + arr.val());
             } else {
                 formGroup.eq(index).find('.file-preview-frame').each(function (i) {
                     var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
-                    str.push(_img);
-                    arr.val(str);
-                    obj.applyMetarialUrl = str;
-                    console.log(index + ':' + arr.val())
+                    str+=_img+',';
+                    _url = str.substring(0,str.lastIndexOf(','));
+
                 });
+                obj.applyMetarialUrl = _url;
             }
             uploadFile.push(obj);
         });
@@ -147,7 +152,34 @@ $(function () {
             $('.jq-index').val('0');
         }
     });
+    //自动完成提示
+    $("#tags,#tags_1").autocomplete({
+        source: function(query,process){
+            //var matchCount = this.options.items;//返回结果集最大数量
+            $.get(api_url,{"loginName": query.term},function(respData){
+                return process(respData.respData);
+            });
+        }
+    });
 
+    // 充值金额保留小数点后2位
+    var rep = /^\d+$/;
+    var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
+    var rep_point1 = /^[0-9]+\.[0-9]$/;
+    $('.jq-money').blur(function () {
+        var  _this = $(this)
+        var  text = _this.val();
+        var  num = text.replace(rep_point,"$1");
+        if(rep.test(text)){
+            _this.val(text+'.00').removeClass('Validform_error');
+        }else if(rep_point.test(text)){
+            _this.val(num).removeClass('Validform_error');
+        }else if(rep_point1.test(text)){
+            _this.val(text+'0').removeClass('Validform_error');
+        }else{
+            _this.val('').addClass('Validform_error');
+        }
+    });
 
     //提交表单
     $('.jq-btn-form').click(function () {

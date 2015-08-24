@@ -56,28 +56,6 @@
 <#--当前页面js-->
     <script src="../../js/createLoan.js"></script>
 <#--当前页面js end-->
-    <script type="text/javascript">
-        $(function () {
-
-            // Autocomplete
-//            var availableTags = ["ActionScript", "AppleScript", "Asp", "BASIC", "C", "C++", "Clojure", "COBOL", "ColdFusion", "Erlang", "Fortran", "Groovy", "Haskell", "Java", "JavaScript", "Lisp", "Perl", "PHP", "Python", "Ruby", "Scala", "Scheme"];
-//            $("#tags,#tags_1").autocomplete({
-//                source: availableTags
-//
-//            });
-            $("#tags,#tags_1").autocomplete({
-                source: function(query,process){
-                    var matchCount = this.options.items;//返回结果集最大数量
-                    var api_url = '${requestContext.getContextPath()}/findloginnames';
-                    $.post(api_url,{"matchInfo":query,"matchCount":matchCount},function(respData){
-                        return process(respData.respData);
-                    });
-                }
-            });
-
-
-        });
-    </script>
     <script id="upload" type="text/html">
         <div class="form-group">
             <label class="col-sm-2 control-label"></label>
@@ -95,7 +73,7 @@
                     </div>
                     <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
                     <button type="button" class="btn btn-default jq-add">添加</button>
-
+                    <button type="button" class="btn btn-danger jq-delete">删除</button>
                 </div>
                 <input type="file" multiple=true class="file-loading">
             </div>
@@ -248,14 +226,14 @@
                         <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-pay" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-pay jq-money" placeholder="请输入内容" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资手续费比例(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-fee" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-fee jq-money" placeholder="请输入内容" datatype="money_fl">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
@@ -265,21 +243,21 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay" placeholder="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-min-pay jq-money" placeholder="50.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-add-pay" placeholder="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-add-pay jq-money" placeholder="50.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-max-pay" placeholder="999,999,999" datatype="money_fl">
+                            <input type="text" class="form-control jq-max-pay jq-money" placeholder="999999.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
@@ -300,7 +278,7 @@
                         <label class="col-sm-2 control-label">活动利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-percent" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-percent jq-money" placeholder="请输入内容" datatype="money_fl">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
@@ -310,7 +288,7 @@
                         <label class="col-sm-2 control-label">基本利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-base-percent" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="请输入内容" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
@@ -393,4 +371,5 @@
     var API_SELECT = '${requestContext.getContextPath()}/loan/findalltitles';  // 申请资料标题url
     var API_POST_TITLE = '${requestContext.getContextPath()}/loan/addtitle';
     var API_FORM = '${requestContext.getContextPath()}/loan/createloanbid';
+    var api_url = '${requestContext.getContextPath()}/loan/findloginnames';
 </script>
