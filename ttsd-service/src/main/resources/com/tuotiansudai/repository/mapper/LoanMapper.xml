@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanMapper">
+
+    <resultMap id="loanResultMap" type="LoanModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="agent" property="agentLoginName"></result>
+        <result column="loaner" property="loanLoginName"></result>
+        <result column="type" property="type"></result>
+        <result column="periods" property="periods"></result>
+        <result column="description_text" property="descriptionText"></result>
+        <result column="description_html" property="descriptionHtml"></result>
+        <result column="loan_amount" property="loanAmount"></result>
+        <result column="invest_fee_rate" property="investFeeRate"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="activity_type" property="activityType"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="contract_id" property="contractId"></result>
+        <result column="fundraising_start_time" property="fundraisingStartTime"></result>
+        <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+        <result column="show_on_home" property="showOnHome"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <insert id="createLoan" parameterType="com.tuotiansudai.repository.model.LoanModel" useGeneratedKeys="true" keyProperty="id">
+        insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
+        values(#{id},#{name},#{agentLoginName},#{loanLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
+    </insert>
+    
+    <select id="findLoanByLoanId" parameterType="long" resultMap="loanResultMap">
+        select * from loan where id = #{loanId}
+    </select>
+</mapper>
