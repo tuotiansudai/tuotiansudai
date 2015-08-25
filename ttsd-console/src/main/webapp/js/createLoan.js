@@ -10,7 +10,9 @@ $(function () {
     });
     //初始化数据
     $.get(API_SELECT, function (data) {
-        _html = template('upload', data);
+         //data = data;
+        var dataTPL = {_data:data};
+        _html = template('upload', dataTPL);
 
     });
 
@@ -76,8 +78,9 @@ $(function () {
         var url = url;
         var ele = ele;
         $.get(url, function (res) {
+            var res = {_data:res};
             var ret = template('select', res);
-            ele.siblings('.select-box').children().remove();
+            ele.siblings('.select-box').children().not('[type="hidden"]').remove();
             ele.siblings('.select-box').append(ret);
             $('.selectpicker').selectpicker({
                 style: 'btn-default',

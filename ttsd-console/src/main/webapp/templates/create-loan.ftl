@@ -64,12 +64,12 @@
                 <div class="row col-file-box">
                     <div class="select-box">
                         <select class="selectpicker col-sm-5">
-                            {{each}}
+                            {{each _data}}
                             <option value="{{$value.id}}">{{$value.title}}</option>
                             {{/each}}
                         </select>
 
-                        <input type="hidden" class="jq-txt" value="" />
+                        <input type="hidden" class="jq-txt" value="{{_data[0]['id']}}" />
                     </div>
                     <input type="text" name="file-name[]" class="files-input form-control" placeholder="请输入资料名称"/>
                     <button type="button" class="btn btn-default jq-add">添加</button>
@@ -81,7 +81,7 @@
     </script>
     <script id="select" type="text/html">
         <select class="selectpicker col-sm-5">
-            {{each}}
+            {{each _data}}
             <option value="{{$value.id}}">{{$value.title}}</option>
             {{/each}}
         </select>
