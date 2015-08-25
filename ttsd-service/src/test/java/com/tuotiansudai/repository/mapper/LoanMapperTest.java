@@ -18,6 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
 @Transactional
@@ -25,6 +29,7 @@ public class LoanMapperTest {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired LoanTitleMapper loanTitleMapper;
     @Autowired
     private IdGenerator idGenerator;
 
@@ -64,5 +69,8 @@ public class LoanMapperTest {
         loanDto.setLoanTitles(loanTitleModelList);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.createLoan(loanModel);
+        loanTitleMapper.createLoanTitle(loanTitleModelList);
+        assertNotNull(loanMapper.findLoanByLoanId(id));
+        assertTrue(loanTitleMapper.findLoanTitleByLoanId(id).size()>0);
 }
 }

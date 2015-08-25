@@ -17,4 +17,8 @@
     <select id="findAllTitles" resultMap="titleResultMap">
         select * from title
     </select>
+
+    <select id="findTitleById" parameterType="long" resultMap="titleResultMap">
+        select * from title where id = #{id}
+    </select>
 </mapper>

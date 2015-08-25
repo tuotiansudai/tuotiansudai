@@ -1,4 +1,6 @@
-1.请求地址：${requestContext.getContextPath()}/loan/createloanbid
+1.
+    请求method：post
+    请求地址：${requestContext.getContextPath()}/loan/
     {
     "projectName":"",
     "agentLoginName":"",
@@ -31,27 +33,28 @@
     {
     "loanType":"",//上面的请求参数中的type需要取这个值
     "name":"",
-    "repayTimeUnit":""
+    "repayTimeUnit":"",
+    "repayTimePeriod":""
     }
 
 3.获取所有标题url地址：${requestContext.getContextPath()}/loan/titles
   标题数据格式：
-    {
-    "titles":[
-            {
-            "id":"",
-            "type":"",
-            "title":""
-            },
-            {
-            "id":"",
-            "type":"",
-            "title":""
-            }
-        ]
-    }
+    [
+       {
+        "id":"",
+        "type":"",
+        "title":""
+        },
+        {
+        "id":"",
+        "type":"",
+        "title":""
+        }
+    ]
 
-4.添加标题url地址：${requestContext.getContextPath()}/loan/title
+4.
+    请求method：post
+    添加标题url地址：${requestContext.getContextPath()}/loan/title
     {
     "title":""
     }

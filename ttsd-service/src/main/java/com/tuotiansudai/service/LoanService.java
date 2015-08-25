@@ -24,19 +24,19 @@ public interface LoanService {
      * @function 获取所有的标题
      * @return
      */
-    Map<String,List<TitleModel>> findAllTitles();
+    List<TitleModel> findAllTitles();
 
     /**
      * @function 获取所有的标类型
      * @return
      */
-    List<Map<String,String>> getLoanType();
+    List<LoanTypeDto> getLoanType();
 
     /**
      * @function 获取所有的活动类型
      * @return
      */
-    List<Map<String,String>> getActivityType();
+    List<ActivityTypeDto> getActivityType();
 
     /**
      * @function 创建标的

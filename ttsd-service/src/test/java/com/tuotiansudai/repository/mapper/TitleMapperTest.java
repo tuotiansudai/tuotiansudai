@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,7 +30,7 @@ public class TitleMapperTest {
         titleModel.setType("base");
         titleModel.setTitle("房产证");
         titleMapper.createTitle(titleModel);
-        assertTrue(titleModel.getId()==id);
+        assertNotNull(titleMapper.findTitleById(id));
     }
 
     @Test

@@ -10,8 +10,8 @@ $(function () {
     });
     //初始化数据
     $.get(API_SELECT, function (data) {
-        //data = data;
         _html = template('upload', data);
+
     });
 
     function initSelect() {

@@ -63,34 +63,26 @@ public class LoanServiceImpl implements LoanService {
         return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
-    public Map<String,List<TitleModel>> findAllTitles(){
-        Map<String,List<TitleModel>> map = new HashMap<>();
-        map.put("titles", titleMapper.findAllTitles());
-        return map;
+    public List<TitleModel> findAllTitles(){
+        return titleMapper.findAllTitles();
     }
 
     @Override
-    public List<Map<String,String>> getLoanType() {
-        List<Map<String,String>> loanTypes = new ArrayList<Map<String,String>>();
+    public List<LoanTypeDto> getLoanType() {
+        List<LoanTypeDto> loanTypes = new ArrayList<LoanTypeDto>();
         for (LoanType loanType:LoanType.values()){
-            Map<String,String> map = new HashMap<String,String>();
-            map.put("loanTypeName",loanType.name());
-            map.put("name",loanType.getName());
-            map.put("repayTimeUnit",loanType.getRepayTimeUnit());
-            map.put("repayTimePeriod",loanType.getRepayTimePeriod());
-            loanTypes.add(map);
+            LoanTypeDto loanTypeDto = new LoanTypeDto(loanType.getName(),loanType.name(),loanType.getRepayTimeUnit(),loanType.getRepayTimePeriod());
+            loanTypes.add(loanTypeDto);
         }
         return loanTypes;
     }
 
     @Override
-    public List<Map<String,String>> getActivityType() {
-        List<Map<String,String>> activityTypes = new ArrayList<Map<String,String>>();
+    public List<ActivityTypeDto> getActivityType() {
+        List<ActivityTypeDto> activityTypes = new ArrayList<ActivityTypeDto>();
         for (ActivityType activityType:ActivityType.values()){
-            Map<String,String> map = new HashMap<String,String>();
-            map.put("activityTypeCode",activityType.getActivityTypeCode());
-            map.put("activityTypeName",activityType.getActivityTypeName());
-            activityTypes.add(map);
+            ActivityTypeDto activityTypeDto = new ActivityTypeDto(activityType.getActivityTypeCode(),activityType.getActivityTypeName());
+            activityTypes.add(activityTypeDto);
         }
         return activityTypes;
     }

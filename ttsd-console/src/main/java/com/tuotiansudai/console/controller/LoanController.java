@@ -42,7 +42,7 @@ public class LoanController {
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String,List<TitleModel>> findAllTitles(){
+    public List<TitleModel> findAllTitles(){
         return loanService.findAllTitles();
     }
 

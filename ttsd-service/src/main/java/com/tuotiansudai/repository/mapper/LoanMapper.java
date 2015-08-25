@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface LoanMapper {
     void createLoan(LoanModel loanModel);
-    LoanModel findLoanByLoanId(@Param(value = "loanId")String loanId);
+    LoanModel findLoanByLoanId(@Param(value = "loanId")long loanId);
 }
