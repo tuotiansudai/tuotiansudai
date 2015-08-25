@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.SystemBillMapper">
+
+    <resultMap id="SystemBillResultMap" type="SystemBillModel">
+        <id column="id" property="id"></id>
+        <result column="created_time" property="createdTime"></result>
+        <result column="bill_type" property="billType"></result>
+        <result column="money" property="money"></result>
+        <result column="balance" property="balance"></result>
+        <result column="detail" property="detail"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.SystemBillModel" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into system_bill ( money, balance, detail, bill_type, created_time)
+        value( #{money}, #{balance}, #{detail}, #{billType}, #{createdTime})
+    </insert>
+    <select id="getLastestSystemBill"  resultMap="SystemBillResultMap">
+        select * from system_bill ORDER by createdTime desc
+    </select>
+
+</mapper>
