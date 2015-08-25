@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
@@ -30,13 +32,13 @@ public interface LoanService {
      * @function 获取所有的标类型
      * @return
      */
-    List<LoanTypeDto> getLoanType();
+    List<LoanType> getLoanType();
 
     /**
      * @function 获取所有的活动类型
      * @return
      */
-    List<ActivityTypeDto> getActivityType();
+    List<ActivityType> getActivityType();
 
     /**
      * @function 创建标的

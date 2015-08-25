@@ -1,7 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +39,7 @@ public class LoanServiceTest {
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
-        loanDto.setActivityType("DIRECTIONAL_INVEST");
+        loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -45,9 +48,11 @@ public class LoanServiceTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType("loan_type_1");
+        loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
         for(int i=0;i<5;i++){
             LoanTitleModel loanTitleModel = new LoanTitleModel();

@@ -1,8 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +42,7 @@ public class LoanMapperTest {
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
-        loanDto.setActivityType("DIRECTIONAL_INVEST");
+        loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
         loanDto.setContractId("123");
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -52,9 +51,11 @@ public class LoanMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType("loan_type_1");
+        loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
         loanDto.setLoanTitles(loanTitleModelList);
         LoanModel loanModel = new LoanModel(loanDto);

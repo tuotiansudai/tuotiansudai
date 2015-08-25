@@ -17,7 +17,7 @@ public class LoanModel {
     /***借款用户***/
     private String loanLoginName;
     /***标的类型***/
-    private String type;
+    private LoanType type;
     /***借款期限***/
     private String periods;
     /***项目描述（纯文本）***/
@@ -35,7 +35,7 @@ public class LoanModel {
     /***单笔最大投资金额***/
     private Long maxInvestAmount;
     /***活动类型***/
-    private String activityType;
+    private ActivityType activityType;
     /***活动利率***/
     private double activityRate;
     /***基本利率***/
@@ -48,6 +48,10 @@ public class LoanModel {
     private Date fundraisingEndTime;
     /***是否显示在首页true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
+    /***建标时间***/
+    private Date createdTime;
+    /***标的状态***/
+    private LoanStatus status;
 
     public LoanModel(){}
 
@@ -70,11 +74,10 @@ public class LoanModel {
         this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
-
         this.type = loanDto.getType();
-        this.loanAmount = new BigDecimal(loanDto.getLoanAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
+        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
+        this.createdTime = loanDto.getCreatedTime();
+        this.status = loanDto.getStatus();
     }
 
     public String getId() {
@@ -109,11 +112,11 @@ public class LoanModel {
         this.loanLoginName = loanLoginName;
     }
 
-    public String getType() {
+    public LoanType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LoanType type) {
         this.type = type;
     }
 
@@ -181,11 +184,11 @@ public class LoanModel {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public String getActivityType() {
+    public ActivityType getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(String activityType) {
+    public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
 
@@ -235,5 +238,21 @@ public class LoanModel {
 
     public void setShowOnHome(boolean showOnHome) {
         this.showOnHome = showOnHome;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 }

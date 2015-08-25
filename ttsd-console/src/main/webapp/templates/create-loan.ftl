@@ -80,7 +80,7 @@
         </div>
     </script>
     <script id="select" type="text/html">
-        <select class="selectpicker col-sm-5">
+        <select class="selectpicker col-s _datam-5">
             {{each _data}}
             <option value="{{$value.id}}">{{$value.title}}</option>
             {{/each}}
@@ -182,9 +182,9 @@
                         <div class="col-sm-4">
                             <select class="selectpicker jq-b-type">
                             <#list loanTypes as loanType>
-                                <option value="${loanType.loanTypeName}" data-repayTimeUnit="${loanType.repayTimeUnit}"
-                                        data-repayTimePeriod="${loanType.repayTimePeriod}">
-                                ${loanType.name}
+                                <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getRepayTimeUnit()}"
+                                        data-repayTimePeriod="${loanType.getRepayTimePeriod()}">
+                                ${loanType.getName()}
                                 </option>
                             </#list>
                             </select>
@@ -266,8 +266,8 @@
                         <div class="col-sm-4">
                             <select class="selectpicker ">
                             <#list activityTypes as activityType>
-                                <option value="${activityType.activityTypeCode}">
-                                ${activityType.activityTypeName}
+                                <option value="${activityType.name()}">
+                                ${activityType.getActivityTypeName()}
                                 </option>
                             </#list>
                             </select>

@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -27,7 +28,7 @@ public class LoanDto {
 
     /***标的类型***/
     @NotEmpty
-    private String type;
+    private LoanType type;
 
     /***借款期限***/
     @NotEmpty
@@ -64,7 +65,7 @@ public class LoanDto {
 
     /***活动类型***/
     @NotEmpty
-    private String activityType;
+    private ActivityType activityType;
 
     /***活动利率***/
     @NotEmpty
@@ -94,6 +95,12 @@ public class LoanDto {
     /***借款金额***/
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String loanAmount;
+
+    /***建标时间***/
+    private Date createdTime;
+
+    /***标的状态***/
+    private LoanStatus status;
 
     /***申请材料***/
     private List<LoanTitleModel> loanTitles;
@@ -130,11 +137,11 @@ public class LoanDto {
         this.loanLoginName = loanLoginName;
     }
 
-    public String getType() {
+    public LoanType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LoanType type) {
         this.type = type;
     }
 
@@ -194,11 +201,11 @@ public class LoanDto {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public String getActivityType() {
+    public ActivityType getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(String activityType) {
+    public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
 
@@ -256,6 +263,22 @@ public class LoanDto {
 
     public void setLoanAmount(String loanAmount) {
         this.loanAmount = loanAmount;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 
     public List<LoanTitleModel> getLoanTitles() {

@@ -16,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 @Service
 public class LoanServiceImpl implements LoanService {
 
@@ -68,21 +66,19 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanTypeDto> getLoanType() {
-        List<LoanTypeDto> loanTypes = new ArrayList<LoanTypeDto>();
+    public List<LoanType> getLoanType() {
+        List<LoanType> loanTypes = new ArrayList<LoanType>();
         for (LoanType loanType:LoanType.values()){
-            LoanTypeDto loanTypeDto = new LoanTypeDto(loanType.getName(),loanType.name(),loanType.getRepayTimeUnit(),loanType.getRepayTimePeriod());
-            loanTypes.add(loanTypeDto);
+            loanTypes.add(loanType);
         }
         return loanTypes;
     }
 
     @Override
-    public List<ActivityTypeDto> getActivityType() {
-        List<ActivityTypeDto> activityTypes = new ArrayList<ActivityTypeDto>();
+    public List<ActivityType> getActivityType() {
+        List<ActivityType> activityTypes = new ArrayList<ActivityType>();
         for (ActivityType activityType:ActivityType.values()){
-            ActivityTypeDto activityTypeDto = new ActivityTypeDto(activityType.getActivityTypeCode(),activityType.getActivityTypeName());
-            activityTypes.add(activityTypeDto);
+            activityTypes.add(activityType);
         }
         return activityTypes;
     }
@@ -129,6 +125,9 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
         loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
+
+        loanDto.setCreatedTime(new Date());
+        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.createLoan(new LoanModel(loanDto));
         List<LoanTitleModel> loanTitleModelList = loanDto.getLoanTitles();
         for (LoanTitleModel loanTitleModel : loanDto.getLoanTitles()){
