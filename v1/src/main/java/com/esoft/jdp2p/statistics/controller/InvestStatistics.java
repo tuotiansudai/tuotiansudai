@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.esoft.core.annotations.Logger;
+import org.apache.commons.logging.Log;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -30,6 +32,9 @@ import com.esoft.jdp2p.invest.model.InvestPulished;
 @Component
 @Scope(ScopeType.REQUEST)
 public class InvestStatistics {
+
+	@Logger
+	static Log log;
 
 	@Resource
 	private HibernateTemplate ht;
@@ -201,7 +206,7 @@ public class InvestStatistics {
 		if (o == null) {
 			return BigDecimal.valueOf(0);
 		}
-		return BigDecimal.valueOf(o);
+		return new BigDecimal(o);
 	}
 
 	public BigDecimal getAllRepayingAndCompleteLoanMoney() {
@@ -211,7 +216,10 @@ public class InvestStatistics {
 		if (o == null) {
 			return BigDecimal.valueOf(0);
 		}
-		return BigDecimal.valueOf(o);
+
+		log.info("累计交易金额: " + new BigDecimal(o));
+
+		return new BigDecimal(o);
 	}
 
 	/**
