@@ -60,7 +60,7 @@ public class BaseCallbackRequestModel {
         payRequestData.put("version", props.getProperty("version"));
         payRequestData.put("order_id", this.orderId);
         payRequestData.put("mer_date", this.merDate);
-        payRequestData.put("ret_code", "0000");
+        payRequestData.put("ret_code", SUCCESS_CODE);
         return payRequestData;
     }
 

@@ -19,7 +19,7 @@ public class RechargeModel {
 
     private RechargeStatus status;
 
-    private Date createdTime = new Date();
+    private Date createdTime;
 
     public RechargeModel() {
 
@@ -30,6 +30,7 @@ public class RechargeModel {
         this.bank = dto.getBank();
         this.loginName = dto.getLoginName();
         this.status = RechargeStatus.WAIT_PAY;
+        this.createdTime = new Date();
     }
 
     public long getId() {
@@ -82,5 +83,9 @@ public class RechargeModel {
 
     public Date getCreatedTime() {
         return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }

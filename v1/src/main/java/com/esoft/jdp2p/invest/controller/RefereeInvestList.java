@@ -54,7 +54,7 @@ public class RefereeInvestList implements java.io.Serializable {
                 @Override
                 public List<InvestItem> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
                     Session currentSession = ht.getSessionFactory().getCurrentSession();
-                    String sql = generateQuery() + MessageFormat.format(" limit {0}, {1}", first, pageSize);
+                    String sql = generateQuery() + MessageFormat.format(" limit {0}, {1}", String.valueOf(first), String.valueOf(pageSize));
                     List<InvestItem> investItems = Lists.newArrayList();
                     List<Map<String, Object>> results = currentSession.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
                     for (Map<String, Object> result : results) {

@@ -25,31 +25,54 @@
   }
   .banking {
     width: 800px;
-    height: 330px;
     margin: 10px 4px 0px;
     position: relative;
-    & h5 {
+    overflow: hidden;
+    & ul {
+      position: relative;
+      height: 50px;
+      border-bottom: #dddddd 1px solid;
+    }
+    & ul li.active {
+      border-bottom: #fff 1px solid;
+      border-top: #e06b0c 1px solid;
+    }
+    & .hot-pay {
+      position: absolute;
+      z-index: 8;
+      right: 3px;
+      top: -14px;
+    }
+    & ul li {
       width: 114px;
       height: 48px;
       text-align: center;
       line-height: 48px;
       border: #dddddd 1px solid;
-      border-top: #e06b0c 1px solid;
-      border-bottom: #fff 1px solid;
-      z-index: 6;
-      position: absolute;
-      left: 0px;
-      top: -49px;
       font-size: 17px;
       color: #353535;
       font-weight: normal;
+      float: left;
+      margin-right: 10px;
+      cursor: pointer;
+      position: relative;
+      bottom: -1px;
+    }
+    & .tab-box {
+      border: #dddddd 1px solid;
+      border-top: none;
+      overflow: hidden;
+      padding-bottom: 20px;
+    }
+    & ol.fast-pay li {
+      width: auto;
     }
     & ol {
-      width: 800px;
-      height: 322px;
-      margin: 60px 0px;
-      border: #dddddd 1px solid;
+      width: 798px;
       z-index: 1;
+      float: left;
+      overflow: hidden;
+      padding: 10px 0;
       & p {
         width: 764px;
         height: 56px;
@@ -64,6 +87,7 @@
         line-height: 38px;
         width: 145px;
         margin: 10px 56px 0px 10px;
+        cursor: pointer;
         &.m-right-0 {
           margin: 10px 0px 0px 4px;
         }
@@ -83,6 +107,7 @@
             width: 123px;
             height: 36px;
             border: #dddddd 1px solid;
+            cursor: pointer;
           }
         }
       }
@@ -90,8 +115,10 @@
   }
   & .recharge-bank {
     width: 800px;
-    height: 230px;
-    margin: 0px 4px;
+    margin: 50px 4px 0;
+    float: left;
+    padding: 0 0 20px 0;
+    overflow: hidden;
     & p {
       height: 34px;
       line-height: 34px;
@@ -333,7 +360,8 @@
     }
   }
 }
-.bind-card {
+
+.bind-card-layer {
   width: 540px;
   height: 244px;
   position: fixed;
@@ -342,18 +370,19 @@
   margin-left: -270px;
   margin-top: -122px;
   background: #f2f3f5;
-  z-index: 3;
+  z-index: 9999;
+  border: 1px solid #ccc;
   display: none;
   & span {
     width: 26px;
     height: 26px;
     display: block;
     cursor: pointer;
-    background: rgba(0, 0, 0, .43);
+    background: rgba(0, 0, 0, 1);
     border-radius: 50%;
     position: absolute;
-    right: -19px;
-    top: -20px;
+    right: -10px;
+    top: -13px;
     text-align: center;
     line-height: 26px;
     color: #fff;
@@ -371,18 +400,302 @@
     height: 120px;
     width: 100%;
     line-height: 120px;
+    background: url("/images/cash/tan.jpg") no-repeat 64px center #fff;
     text-align: center;
-    background: url("/images/cash/tan.jpg") no-repeat 84px center #fff;
+  }
+  & .btn-box-layer {
+    text-align: center;
   }
   & a {
     width: 158px;
     height: 36px;
-    display: block;
+    display: inline-block;
     text-align: center;
     line-height: 36px;
     color: #fff;
     background: #ff6c00;
-    margin: 20px 0px 20px 190px;
+    margin: 20px 10px;
     border-radius: 3px;
   }
+}
+
+.item-block {
+  margin-left: 300px;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+  line-height: 40px;
+  &.box-user {
+    padding-top: 30px;
+  }
+  & .name {
+    float: left;
+  }
+  & .input-bankcard {
+    width: 200px;
+    height: 20px;
+    margin: 0;
+    border: 1px solid #ccc;
+    padding: 5px;
+  }
+  & .btn-ok {
+    padding: 10px 15px;
+    margin: 10px 0 0 0;
+    background: #ff7a2a;
+    border: 1px solid #ff7a2a;
+    cursor: pointer;
+    color: #fff;
+  }
+}
+
+.ecope-overlay {
+  background: #333;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+}
+
+.ecope-dialog {
+  background: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: fixed;
+  z-index: 10000;
+  top: 50%;
+  left: 50%;
+  margin: -130px 0 0 -280px;
+  height: 260px;
+  width: 560px;
+  display: none;
+}
+
+.ecope-dialog .dg_wrapper {
+  position: relative;
+  margin: 8px;
+  padding: 10px;
+  border: 1px solid #7a7a7a;
+  font-size: 14px;
+  height: 220px;
+  width: 522px;
+  background: #fff;
+}
+
+.ecope-dialog .btn {
+  display: block;
+  border: none;
+  height: 36px;
+  line-height: 36px;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+  width: 212px;
+  background: #ff7575;
+  letter-spacing: 1px;
+  text-indent: 1px;
+  outline: none;
+  text-align: center;
+}
+
+.ecope-dialog .btn:hover {
+  opacity: 0.8;
+}
+
+.ecope-dialog .btn-4 {
+  background: #fc6;
+}
+
+.ecope-dialog .hd {
+  height: 40px;
+  border-bottom: 1px solid #ccc;
+}
+
+.ecope-dialog .hd h3 {
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #333;
+  text-indent: 10px;
+  margin: 0;
+  font-weight: normal;
+}
+
+.ecope-dialog .close {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: url('/images/recharge/spr.png') no-repeat 0 -100px;
+  text-indent: -999em;
+}
+
+.ecope-dialog .close:hover {
+  background-position: 0 -143px;
+}
+
+.ecope-dialog .bd {
+  margin: 10px;
+}
+
+.ecope-dialog .ret {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.ecope-dialog .ret p {
+  color: #666;
+  margin: 20px 0;
+}
+
+.ecope-dialog .ret .btn {
+  height: 36px;
+  line-height: 36px;
+  width: 120px;
+  font-size: 14px;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+.ecope-dialog .ret .help {
+  color: #999;
+  font-size: 12px;
+}
+
+.ecope-dialog .ret a:hover {
+  text-decoration: underline;
+}
+
+.ecope-dialog .bd .btns {
+  margin: 40px 0 20px;
+}
+
+.ecope-dialog .dialog-chongzhi {
+  background:#fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
+}
+
+.ecope-dialog .dialog-2 {
+  width: 630px;
+  height: 260px;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.dialog-2 .dg_header {
+  font-size: 24px;
+  color: #fff;
+  height: 52px;
+  line-height: 52px;
+  background: #fc762b;
+  text-indent: 30px;
+}
+
+.dialog-2 .dg_content {
+  font-size: 18px;
+  color: #4c4b4b;
+}
+
+.dialog-2 .dg_content p {
+  margin: 40px 0 0 160px;
+}
+
+.dialog-2 .dg_footer {
+  margin: 20px 0 0 160px;
+}
+
+.dialog-2 .dg_footer a {
+  display: block;
+  float: left;
+  width: 144px;
+  height: 46px;
+  line-height: 46px;
+  text-align: center;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.dialog-2 .dg_footer .dg_btn_no {
+  margin-right: 40px;
+  background: #f96;
+}
+
+.dialog-2 .dg_footer .dg_btn_yes {
+  margin-right: 40px;
+  background: #f66;
+}
+
+.g-btn {
+  display: block;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.g-btn:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.g-btn-large-major {
+  height: 48px;
+  font-size: 20px;
+  line-height: 2.4;
+  background: #f63;
+  letter-spacing: 3px;
+  text-indent: 3px;
+}
+
+.g-btn-large-minor {
+  height: 48px;
+  font-size: 20px;
+  line-height: 2.4;
+  background: #f93;
+  letter-spacing: 3px;
+  text-indent: 3px;
+}
+
+.g-btn-medium-major {
+  height: 36px;
+  font-size: 16px;
+  line-height: 2.25;
+  background: #f63;
+  letter-spacing: 1px;
+  text-indent: 1px;
+}
+
+.g-btn-medium-minor {
+  height: 36px;
+  font-size: 16px;
+  line-height: 2.25;
+  background: #f93;
+  letter-spacing: 1px;
+  text-indent: 1px;
+}
+
+.g-btn-small-major {
+  height: 30px;
+  font-size: 14px;
+  line-height: 2.142857143;
+  background: #f63;
+}
+
+.g-btn-small-minor {
+  height: 30px;
+  font-size: 14px;
+  line-height: 2.142857143;
+  background: #f93;
+}
+
+.g-btn-medium-major, .g-btn-medium-minor {
+  display: inline-block;
+  width: 100px;
 }

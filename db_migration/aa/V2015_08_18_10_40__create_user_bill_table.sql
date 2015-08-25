@@ -1,4 +1,4 @@
-CREATE TABLE `${aa}`.`user_bill` (
+CREATE TABLE `aa`.`user_bill` (
   `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`     VARCHAR(25)     NOT NULL,
   `order_id`       VARCHAR(32),
@@ -9,7 +9,7 @@ CREATE TABLE `${aa}`.`user_bill` (
   `business_type`  VARCHAR(32)     NOT NULL,
   `created_time`   DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_USER_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `${aa}`.`user` (`login_name`)
+  CONSTRAINT FK_USER_BILL_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001

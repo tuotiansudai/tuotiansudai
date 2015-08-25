@@ -1,6 +1,7 @@
 package com.esoft.umpay.invest.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,10 @@ public class UmPayInvestHome extends InvestHome {
 		try {
 			Loan loan = getBaseService().get(Loan.class,
 					getInstance().getLoan().getId());
+			if(loan.getInvestBeginTime()!=null && new Date().before(loan.getInvestBeginTime())){
+				FacesUtil.addInfoMessage("暂未开标！");
+				return null;
+			}
 			if (loan.getUser().getId().equals(loginUserInfo.getLoginUserId())) {
 				FacesUtil.addInfoMessage("你不能投自己的项目！");
 				return null;
@@ -79,6 +84,10 @@ public class UmPayInvestHome extends InvestHome {
 		try {
 			Loan loan = (Loan) getBaseService().get(Loan.class,
 					((Invest) getInstance()).getLoan().getId());
+			if(loan.getInvestBeginTime()!=null && new Date().before(loan.getInvestBeginTime())){
+				FacesUtil.addInfoMessage("暂未开标！");
+				return null;
+			}
 			if (loan.getUser().getId()
 					.equals(this.loginUserInfo.getLoginUserId())) {
 				FacesUtil.addInfoMessage("您不能投自己的项目！");

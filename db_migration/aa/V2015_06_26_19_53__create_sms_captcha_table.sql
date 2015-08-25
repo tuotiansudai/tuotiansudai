@@ -1,4 +1,4 @@
-CREATE TABLE `${aa}`.`sms_captcha` (
+CREATE TABLE `aa`.`sms_captcha` (
   `id`           INT(32)      NOT NULL AUTO_INCREMENT,
   `mobile`       VARCHAR(11)  NOT NULL,
   `captcha`      VARCHAR(20)  NOT NULL,

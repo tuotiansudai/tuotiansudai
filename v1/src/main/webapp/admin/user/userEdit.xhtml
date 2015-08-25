@@ -92,6 +92,11 @@
 							itemLabel="#{role.name}[#{role.id}]" itemValue="#{role}"></f:selectItems>
 					</h:selectManyCheckbox>
 
+					<h:outputLabel value="#{userMsg.referrerName}"></h:outputLabel>
+					<p:autoComplete value="#{userHome.instance.referrer}" maxlength="50" minQueryLength="2"
+									completeMethod="#{userHome.queryUsersByUserName}" forceSelection="true"
+									var="u" itemLabel="#{u}" itemValue="#{u}"></p:autoComplete>
+
 					<h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
 					<ui:fragment>
 						<h:inputHidden value="#{userHome.instance.id}"></h:inputHidden>

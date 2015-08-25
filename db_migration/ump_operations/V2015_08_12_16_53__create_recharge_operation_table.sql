@@ -1,4 +1,4 @@
-CREATE TABLE `${ump_operations}`.`mer_recharge_person_request` (
+CREATE TABLE `ump_operations`.`mer_recharge_person_request` (
   `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `service`      VARCHAR(32)     NOT NULL,
   `sign_type`    VARCHAR(8)      NOT NULL,
@@ -17,16 +17,14 @@ CREATE TABLE `${ump_operations}`.`mer_recharge_person_request` (
   `request_time` DATETIME        NOT NULL,
   `request_url`  VARCHAR(2048)   NOT NULL,
   `request_data` TEXT            NOT NULL,
-  `status`       VARCHAR(10),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY UNIQUE_MER_RECHARGE_PERSON_REQUEST_ORDER_ID (`order_id`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
   DEFAULT CHARSET = utf8;
 
 
-CREATE TABLE `${ump_operations}`.`recharge_notify_request` (
+CREATE TABLE `ump_operations`.`recharge_notify_request` (
   `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `service`        VARCHAR(32)     NOT NULL,
   `sign_type`      VARCHAR(8)      NOT NULL,
@@ -37,16 +35,15 @@ CREATE TABLE `${ump_operations}`.`recharge_notify_request` (
   `mer_date`       VARCHAR(8)      NOT NULL,
   `trade_no`       VARCHAR(16)     NOT NULL,
   `mer_check_date` VARCHAR(8),
-  `balance`        VARCHAR(13),
-  `com_amt`        VARCHAR(13),
+  `balance`        VARCHAR(14),
+  `com_amt`        VARCHAR(14),
   `ret_code`       VARCHAR(4),
   `ret_msg`        VARCHAR(128),
   `request_time`   DATETIME        NOT NULL,
   `response_time`  DATETIME,
   `request_data`   TEXT            NOT NULL,
   `response_data`  TEXT,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY UNIQUE_MER_RECHARGE_PERSON_REQUEST_ORDER_ID (`order_id`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 100001
