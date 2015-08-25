@@ -5,10 +5,12 @@ package com.tuotiansudai.dto;
  */
 public class LoanListDto {
 
-    private String loan;
+    private String id;
 
-    private String loanName;
+    private String projectName;
 
     private String status;
+
+    private String 
 
 }
