@@ -54,7 +54,6 @@ public class LoanModel {
     public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
-        BigDecimal bigDecimalActivityRate = new BigDecimal(loanDto.getActivityRate());
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
         this.basicRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();

@@ -33,6 +33,7 @@ public class LoanServiceTest {
         loanDto.setId(idStr);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
+        loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
         loanDto.setActivityType("DIRECTIONAL_INVEST");

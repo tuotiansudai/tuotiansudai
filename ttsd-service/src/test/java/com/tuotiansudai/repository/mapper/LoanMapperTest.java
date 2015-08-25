@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanTitleModel;
-import com.tuotiansudai.repository.model.TitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,32 +11,31 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class LoanMapperTest {
     @Autowired
     private LoanMapper loanMapper;
 
-    @Autowired LoanTitleMapper loanTitleMapper;
+    @Autowired
+    LoanTitleMapper loanTitleMapper;
     @Autowired
     private IdGenerator idGenerator;
 
     @Test
-    public void createLoanTest(){
+    public void createLoanTest() {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
+        loanDto.setBasicRate("16.00");
         long id = idGenerator.generate();
         String idStr = String.valueOf(id);
         loanDto.setId(idStr);
@@ -58,19 +56,9 @@ public class LoanMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
-        for(int i=0;i<5;i++){
-            LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setId(idGenerator.generate());
-            loanTitleModel.setLoanId(id);
-            loanTitleModel.setTitleId(Long.parseLong("1234567890"));
-            loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleModelList.add(loanTitleModel);
-        }
         loanDto.setLoanTitles(loanTitleModelList);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.createLoan(loanModel);
-        loanTitleMapper.createLoanTitle(loanTitleModelList);
         assertNotNull(loanMapper.findLoanByLoanId(id));
-        assertTrue(loanTitleMapper.findLoanTitleByLoanId(id).size()>0);
-}
+    }
 }

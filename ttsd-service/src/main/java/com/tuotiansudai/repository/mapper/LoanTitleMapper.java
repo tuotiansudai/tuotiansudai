@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface LoanTitleMapper {
     void createLoanTitle(@Param("loanTitleModels")List<LoanTitleModel> loanTitleModels);
-    List<LoanTitleMapper> findLoanTitleByLoanId(@Param("loanId")long loanId);
+    List<LoanTitleModel> findLoanTitleByLoanId(@Param("loanId")long loanId);
 }

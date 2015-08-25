@@ -6,7 +6,7 @@
 
     <resultMap id="loanTitleResultMap" type="LoanTitleModel">
         <id column="id" property="id"></id>
-        <result column="loan_id" property="name"></result>
+        <result column="loan_id" property="loanId"></result>
         <result column="title_id" property="titleId"></result>
         <result column="apply_metarial_url" property="applyMetarialUrl"></result>
     </resultMap>
