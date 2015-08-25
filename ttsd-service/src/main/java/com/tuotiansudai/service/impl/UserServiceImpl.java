@@ -3,11 +3,12 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.security.MyShaPasswordEncoder;
+import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
@@ -70,8 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean registerAccount(RegisterAccountDto dto) {
-        BaseDto baseDto = payWrapperClient.register(dto);
-        return baseDto.getData().getStatus();
+    public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
+        return payWrapperClient.register(dto);
     }
 }

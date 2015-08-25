@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class UserModel {
 
-    private Long id;
+    private long id;
 
     private String loginName;
 
@@ -39,11 +39,11 @@ public class UserModel {
         this.salt = salt;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -146,12 +146,12 @@ public class UserModel {
 
         UserModel userModel = (UserModel) o;
 
-        return id.equals(userModel.id);
+        return id == userModel.id;
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return (int) (id ^ (id >>> 32));
     }
 }

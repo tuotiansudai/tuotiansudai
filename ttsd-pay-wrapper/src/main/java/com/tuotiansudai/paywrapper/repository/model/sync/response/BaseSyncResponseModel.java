@@ -11,18 +11,34 @@ public class BaseSyncResponseModel {
 
     private Long requestId;
 
-    private String returnCode;
+    private String signType;
 
-    private String returnMessage;
+    private String sign;
+
+    private String merId;
+
+    private String version;
+
+    private String retCode;
+
+    private String retMsg;
 
     private String responseData;
 
     private Date responseTime = new Date();
 
+    public boolean isSuccess() {
+        return SUCCESS_CODE.equals(retCode);
+    }
+
     public void initializeModel(Map<String, String> resData) {
         this.responseData = resData.toString();
-        this.returnCode = resData.get("ret_code");
-        this.returnMessage = resData.get("ret_msg");
+        this.signType = resData.get("sign_type");
+        this.sign = resData.get("sign");
+        this.merId = resData.get("mer_id");
+        this.version = resData.get("version");
+        this.retCode = resData.get("ret_code");
+        this.retMsg = resData.get("ret_msg");
     }
 
     public Long getId() {
@@ -41,20 +57,52 @@ public class BaseSyncResponseModel {
         this.requestId = requestId;
     }
 
-    public String getReturnCode() {
-        return returnCode;
+    public String getSignType() {
+        return signType;
     }
 
-    public void setReturnCode(String returnCode) {
-        this.returnCode = returnCode;
+    public void setSignType(String signType) {
+        this.signType = signType;
     }
 
-    public String getReturnMessage() {
-        return returnMessage;
+    public String getSign() {
+        return sign;
     }
 
-    public void setReturnMessage(String returnMessage) {
-        this.returnMessage = returnMessage;
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getMerId() {
+        return merId;
+    }
+
+    public void setMerId(String merId) {
+        this.merId = merId;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getRetCode() {
+        return retCode;
+    }
+
+    public void setRetCode(String retCode) {
+        this.retCode = retCode;
+    }
+
+    public String getRetMsg() {
+        return retMsg;
+    }
+
+    public void setRetMsg(String retMsg) {
+        this.retMsg = retMsg;
     }
 
     public String getResponseData() {
@@ -89,7 +137,5 @@ public class BaseSyncResponseModel {
         return id.hashCode();
     }
 
-    public boolean isSuccess() {
-        return SUCCESS_CODE.equals(returnCode);
-    }
+
 }

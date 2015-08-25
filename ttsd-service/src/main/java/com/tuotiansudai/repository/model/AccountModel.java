@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 import java.util.Date;
 
 public class AccountModel {
-    private Long id;
+    private long id;
 
     private String loginName;
 
@@ -14,6 +14,10 @@ public class AccountModel {
     private String payUserId;
 
     private String payAccountId;
+
+    private long balance;
+
+    private long freeze;
 
     private Date registerTime;
 
@@ -29,7 +33,7 @@ public class AccountModel {
         this.registerTime = registerTime;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -53,6 +57,22 @@ public class AccountModel {
         return payAccountId;
     }
 
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
+    public long getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(long freeze) {
+        this.freeze = freeze;
+    }
+
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -64,12 +84,12 @@ public class AccountModel {
 
         AccountModel that = (AccountModel) o;
 
-        return id.equals(that.id);
+        return id == that.id;
 
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return (int) (id ^ (id >>> 32));
     }
 }

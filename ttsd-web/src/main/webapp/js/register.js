@@ -1,26 +1,81 @@
-require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
 
     var registerUserForm = $("#register-user-form");
     var registerAccountForm = $("#register-account-form");
 
-    $('.register .fetch-captcha').click(function () {
-        var validate = registerUserForm.validate();
-        var isMobileValid = validate.check('.register .mobile');
-        if (isMobileValid) {
-            var mobile = $('.register .mobile').val();
-            $.ajax({
-                url: '/register/mobile/' + mobile + '/sendregistercaptcha',
-                type: 'get',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                success: function (response) {
-                    console.log(response);
+    $(function() {
+        $('.fetch-captcha').on('click', function () {
+            var clientH = $(window).height();
+            $('.verification-code').css({'height': clientH, 'display': 'block'});
+            $('.verification-code-main').show();
+            refreshCaptcha();
+        });
+        $('.close').on('click', function () {
+            $('.verification-code,.verification-code-main').hide();
+        });
+        $('.mobile').blur(function () {
+            var _this = $(this);
+            if(_this.val()=='' || _this.hasClass('error')){
+                $('.fetch-captcha').addClass('grey').attr('disabled','disabled');
+            }else{
+                $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
+            }
+        });
+        $('.complete').click(function () {
+            var phone = $('.mobile').val();
+            var captcha = $('.verification-code-text').val();
+            var num = 30;
+            // 倒计时
+            function countdown() {
+                $('.fetch-captcha').html(num + '秒后重新发送').css({'background': '#666', 'pointer-events': 'none'});
+                if (num == 0) {
+                    clearInterval(count);
+                    $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
                 }
-            });
-        } else {
-            validate.showErrors();
-        }
+                num--;
+            }
+            var count = setInterval(countdown, 1000);
+            $('.verification-code,.verification-code-main').hide();
+            $.get('/register/mobile/' + phone + '/image-captcha/' + captcha + '/send-register-captcha');
+        });
+
+        // 刷新验证码
+        var refreshCaptcha = function () {
+            var captcha = $('.verification-code-img');
+            captcha.attr('src', '/register/image-captcha?' + new Date().toTimeString());
+        };
+
+        $('.verification-code-img').click(function () {
+            refreshCaptcha();
+        });
+
+        // 弹出框验证码
+        $('.verification-code-text').blur(function () {
+            var _this = $(this);
+            var _value = _this.val();
+            if (_value.length < 5) {
+                $('.verification-code-main b').css('display', 'inline-block');
+            } else {
+                $.ajax({
+                    url: '/register/image-captcha/' + _value + '/verify',
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (response) {
+                    if (response.data.status) {
+                        $('.verification-code-main b').hide();
+                        $('.complete').removeClass('grey').removeAttr('disabled');
+                    } else {
+                        $('.verification-code-main b').css('display', 'inline-block');
+                        $('.complete').addClass('grey').attr('disabled');
+                        refreshCaptcha();
+                    }
+                });
+            }
+        });
+
     });
+
 
     $.validator.addMethod(
         "regex",
@@ -202,7 +257,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             contentType: 'application/json; charset=UTF-8',
             success: function (response) {
                 if (response.data.status) {
-
+                    window.location.href = "/";
                 } else {
                     var validate = registerAccountForm.validate();
                     validate.resetForm();
@@ -286,13 +341,13 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 required: true,
                 regex: "^[a-zA-Z0-9]+$",
                 rangelength: [5, 25],
-                isExist: "/register/loginName/{0}/isexist"
+                isExist: "/register/login-name/{0}/is-exist"
             },
             mobile: {
                 required: true,
                 digits: true,
                 rangelength: [11, 11],
-                isExist: "/register/mobile/{0}/isexist"
+                isExist: "/register/mobile/{0}/is-exist"
             },
             password: {
                 required: true,
@@ -310,7 +365,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 }
             },
             referrer: {
-                isNotExist: "/register/loginName/{0}/isExist"
+                isNotExist: "/register/login-Name/{0}/is-exist"
             }
         },
         messages: {

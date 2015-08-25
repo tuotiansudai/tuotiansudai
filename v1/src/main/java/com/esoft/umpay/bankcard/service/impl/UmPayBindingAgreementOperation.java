@@ -1,6 +1,5 @@
 package com.esoft.umpay.bankcard.service.impl;
 
-import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.GsonUtil;
@@ -53,18 +52,18 @@ public class UmPayBindingAgreementOperation extends
         TrusteeshipAccount ta = getTrusteeshipAccount(userId);
         String hql = "from BankCard where user.id =? and (isOpenFastPayment <> ? or isOpenFastPayment is null) and status = ?";
 
-        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true,"passed"});
+        List<BankCard> userBankCard = ht.find(hql, new Object[]{userId, true, "passed"});
         if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
-        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
         // 同步地址
         sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-                + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+                + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
         // 后台地址
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-                        + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+                        + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
         sendMap.put("user_id", ta.getId());
         sendMap.put("account_id", ta.getAccountId());
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
@@ -76,7 +75,7 @@ public class UmPayBindingAgreementOperation extends
             // 保存操作记录
             to = createTrusteeshipOperation(ta.getId(), reqData.getUrl(),
                     userId,
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                    UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
             // 发送请求
             sendOperation(to, facesContext);
@@ -101,7 +100,7 @@ public class UmPayBindingAgreementOperation extends
             TrusteeshipAccount trusteeshipAccount = ht.get(TrusteeshipAccount.class,user_id);
             // 操作记录
             TrusteeshipOperation to = trusteeshipOperationBO.get(
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, trusteeshipAccount.getUser().getId(),
+                    UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT, user_id, trusteeshipAccount.getUser().getId(),
                     UmPayConstants.OperationType.UMPAY);
 
 

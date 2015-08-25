@@ -8,18 +8,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
-@TransactionConfiguration(defaultRollback = true)
 public class AccountMapperTest {
 
     @Autowired
@@ -39,6 +39,26 @@ public class AccountMapperTest {
         AccountModel savedAccount = accountMapper.findByLoginName(fakeUser.getLoginName());
 
         assertNotNull(savedAccount);
+    }
+
+    @Test
+    public void shouldUpdateAccount() throws Exception {
+        UserModel fakeUser = createFakeUser();
+
+        AccountModel model = new AccountModel(fakeUser.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+
+        accountMapper.create(model);
+
+        model.setBalance(1);
+        model.setFreeze(1);
+
+        accountMapper.update(model);
+
+        AccountModel updatedAccount = accountMapper.findByLoginName(fakeUser.getLoginName());
+
+        assertThat(updatedAccount.getBalance(), is(1L));
+        assertThat(updatedAccount.getFreeze(), is(1L));
+
     }
 
     private UserModel createFakeUser() {

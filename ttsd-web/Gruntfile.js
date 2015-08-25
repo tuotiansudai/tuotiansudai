@@ -11,13 +11,20 @@ module.exports = function (grunt) {
             baseJsMinPath: 'src/main/webapp/js/dest'
         },
         clean: {
-            dist: {
+            css: {
                 files: [{
                     dot: true,
                     src: [
                         '<%= meta.baseCssPath %>/*.css',
                         '<%= meta.baseCssPath %>/*.map',
-                        '<%= meta.baseCssMinPath %>/*',
+                        '<%= meta.baseCssMinPath %>/*'
+                    ]
+                }]
+            },
+            js: {
+                files: [{
+                    dot: true,
+                    src: [
                         '<%= meta.baseJsMinPath %>/*'
                     ]
                 }]
@@ -71,22 +78,33 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        }
-        // watch: {
-        //     scripts: {
-        //         files: [
-        //             '<%= meta.baseCss %>/*.scss'
-        //         ],
-        //         tasks: ['sass']
-        //     }
-        // },
-        // Task clean
+        },
+         watch: {
+             sass: {
+                 files: [
+                     '<%= meta.baseSassPath %>/*.scss'
+                 ],
+                 tasks: ['clean:css','sass']
+             },
+             cssmin:{
+                 files:[
+                     ['<%= meta.baseCssPath %>/*.css']
+                 ],
+                 tasks: ['cssmin']
+             },
+             uglify:{
+                 files:[
+                     ['<%= meta.baseJsPath %>/*.js']
+                 ],
+                 tasks: ['clean:js','uglify']
+             }
+         },
     });
 
     // load all grunt tasks
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
     // 默认被执行的任务列表。
-    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin']);
+    grunt.registerTask('default', ['clean', 'uglify', 'sass', 'cssmin','watch']);
 
 };

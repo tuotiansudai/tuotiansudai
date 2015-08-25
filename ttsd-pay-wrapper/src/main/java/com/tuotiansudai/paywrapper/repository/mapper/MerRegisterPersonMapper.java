@@ -1,5 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-public interface MerRegisterPersonMapper extends BaseMapper {
+public interface MerRegisterPersonMapper extends BaseSyncMapper {
 
 }
