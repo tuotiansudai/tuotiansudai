@@ -1,5 +1,6 @@
 package com.esoft.jdp2p.statistics.controller;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -188,7 +189,7 @@ public class InvestStatistics {
 	 * 
 	 * @return
 	 */
-	public double getAllInvestsInterest() {
+	public BigDecimal getAllInvestsInterest() {
 		String hql = "Select sum(investRepay.interest+investRepay.defaultInterest-investRepay.fee) from InvestRepay investRepay join investRepay.invest invest where invest.status not in (?,?,?,?)";
 		List<Object> oos = ht.find(hql,new String[]{
 			InvestConstants.InvestStatus.UNFINISHED,
@@ -196,21 +197,21 @@ public class InvestStatistics {
 			InvestConstants.InvestStatus.WAIT_AFFIRM,
 			InvestConstants.InvestStatus.CANCEL
 		});
-		Object o = oos.get(0);
+		Double o = (Double) oos.get(0);
 		if (o == null) {
-			return 0;
+			return BigDecimal.valueOf(0);
 		}
-		return (Double) o;
+		return BigDecimal.valueOf(o);
 	}
 
-	public double getAllRepayingAndCompleteLoanMoney() {
+	public BigDecimal getAllRepayingAndCompleteLoanMoney() {
 		String hql = "Select sum(money) from Loan t where t.status in ('repaying','complete')";
-		List<Object> oos = ht.find(hql);
-		Object o = oos.get(0);
+		List<Double> oos = ht.find(hql);
+		Double o = oos.get(0);
 		if (o == null) {
-			return 0;
+			return BigDecimal.valueOf(0);
 		}
-		return (Double) o;
+		return BigDecimal.valueOf(o);
 	}
 
 	/**
