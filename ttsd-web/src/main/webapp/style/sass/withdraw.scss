@@ -172,6 +172,7 @@
       font-size: 14px;
       color: #979797;
       margin-left: 132px;
+      margin-top: 5px;
       & span {
         margin-right: 34px;
       }
@@ -180,7 +181,7 @@
       }
     }
     & .recharge-qr {
-      margin: 40px 0px 0px 162px;
+      margin: 20px 0px 0px 162px;
       width: 190px;
       height: 36px;
       background: #cc0000;
@@ -197,7 +198,7 @@
       color: #fff;
     }
     & .error{
-      display: inline-block;
+      display: none;
       & img{ vertical-align: middle; margin-left: 10px; margin-right: 5px;}
     }
   }

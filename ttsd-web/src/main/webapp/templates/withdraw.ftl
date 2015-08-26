@@ -28,11 +28,12 @@
             <form action="/withdraw" method="post" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="recharge-bank">
-                    <p>可提现额度:<i>0.00</i>元</p>
+                    <p>可提现额度:<i class="jq-total">900.00</i>元</p>
                     <p>输入提现金额：<input name="amount" type="text" value="" class="recharge-cz" placeholder="0.00">元
-                        <span class="error"><img src="${requestContext.getContextPath()}/images/error.jpg" alt=""/>你最大可提现金额i<i>0.00</i>元</span>
+                        <span class="error"><img src="${requestContext.getContextPath()}/images/error.jpg" alt=""/>你最大可提现金额:<i>0.00</i>元</span>
                     </p>
                     <p class="p-h"><span>提现费用：<em>3.00</em> 元</span></p>
+                    <p class="p-h jq-sj"><span>实际到账：<em>0.00</em> 元</span></p>
                     <button type="submit" class="recharge-qr grey" disabled="disabled">确认提现</button>
                 </div>
             </form>
