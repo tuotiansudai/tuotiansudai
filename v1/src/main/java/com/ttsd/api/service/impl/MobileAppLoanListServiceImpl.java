@@ -74,6 +74,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setLoanMoney("" + loan.getLoanMoney());
             loanResponseDataDto.setLoanStatus(loan.getStatus());
             loanResponseDataDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
+            loanResponseDataDto.setMinInvestMoney("" + loan.getMinInvestMoney());
+            loanResponseDataDto.setMaxInvestMoney("" + loan.getMaxInvestMoney());
+            loanResponseDataDto.setCardinalNumber("" + loan.getCardinalNumber());
             try {
                 loanResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
             } catch (NoMatchingObjectsException e) {
