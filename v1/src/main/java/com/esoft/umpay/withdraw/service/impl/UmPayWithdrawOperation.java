@@ -100,6 +100,8 @@ public class UmPayWithdrawOperation extends
 		if(isMobileRequest){
 			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
 					+ UmPayConstants.OperationType.CUST_WITHDRAWALS);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		} else {
 			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 					+ UmPayConstants.OperationType.CUST_WITHDRAWALS);

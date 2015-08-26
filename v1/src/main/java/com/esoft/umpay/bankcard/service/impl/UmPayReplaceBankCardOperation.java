@@ -104,6 +104,8 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		if(isMobileRequest) {
 			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
 					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		}else{
 			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
 					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
