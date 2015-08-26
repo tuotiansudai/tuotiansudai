@@ -9,6 +9,6 @@ import java.util.List;
  * Created by tuotian on 15/8/18.
  */
 public interface LoanTitleMapper {
-    void createLoanTitle(@Param("loanTitleModels")List<LoanTitleModel> loanTitleModels);
+    void create(@Param("loanTitleModels") List<LoanTitleModel> loanTitleModels);
     List<LoanTitleModel> findLoanTitleByLoanId(@Param("loanId")long loanId);
 }

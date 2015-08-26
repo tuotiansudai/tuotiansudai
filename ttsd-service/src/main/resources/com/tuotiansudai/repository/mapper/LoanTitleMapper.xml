@@ -11,7 +11,7 @@
         <result column="apply_metarial_url" property="applyMetarialUrl"></result>
     </resultMap>
 
-    <insert id="createLoanTitle" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
         insert into loan_title (id,loan_id,title_id,apply_metarial_url) values
         <foreach collection="loanTitleModels" item="item" index="index" separator=",">
             (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})

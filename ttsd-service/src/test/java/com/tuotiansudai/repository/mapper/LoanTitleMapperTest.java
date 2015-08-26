@@ -35,7 +35,7 @@ public class LoanTitleMapperTest {
             loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleModelList.add(loanTitleModel);
         }
-        loanTitleMapper.createLoanTitle(loanTitleModelList);
+        loanTitleMapper.create(loanTitleModelList);
         assertTrue(loanTitleMapper.findLoanTitleByLoanId(loanId).size() > 0);
     }
 

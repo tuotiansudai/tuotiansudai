@@ -133,7 +133,7 @@ public class LoanServiceImpl implements LoanService {
             loanTitleModel.setId(idGenerator.generate());
             loanTitleModel.setLoanId(projectId);
         }
-        loanTitleMapper.createLoanTitle(loanTitleModelList);
+        loanTitleMapper.create(loanTitleModelList);
         dataDto.setStatus(true);
         baseDto.setData(dataDto);
         return baseDto;
