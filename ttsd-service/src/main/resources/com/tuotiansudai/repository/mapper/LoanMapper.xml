@@ -28,7 +28,7 @@
         <result column="status" property="status"></result>
     </resultMap>
 
-    <insert id="createLoan" parameterType="com.tuotiansudai.repository.model.LoanModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel" useGeneratedKeys="true" keyProperty="id">
         insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
         values(#{id},#{name},#{agentLoginName},#{loanLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
     </insert>

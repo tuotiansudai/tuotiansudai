@@ -127,7 +127,7 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        loanMapper.createLoan(new LoanModel(loanDto));
+        loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleModel> loanTitleModelList = loanDto.getLoanTitles();
         for (LoanTitleModel loanTitleModel : loanDto.getLoanTitles()){
             loanTitleModel.setId(idGenerator.generate());

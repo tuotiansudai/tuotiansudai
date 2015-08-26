@@ -58,7 +58,7 @@ public class LoanMapperTest {
         List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
         loanDto.setLoanTitles(loanTitleModelList);
         LoanModel loanModel = new LoanModel(loanDto);
-        loanMapper.createLoan(loanModel);
+        loanMapper.create(loanModel);
         assertNotNull(loanMapper.findLoanByLoanId(id));
     }
 }
