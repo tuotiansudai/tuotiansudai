@@ -5,9 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by tuotian on 15/8/23.
- */
 public class DateCompare {
     public static final String YEAR_MONTH_DAY_HOUR_MINUTE="yyyy-MM-dd HH:mm";
     public static final String YEAR_MONTH_DAY_HOUR_MINUTE_SECOND="yyyy-MM-dd HH:mm:ss";

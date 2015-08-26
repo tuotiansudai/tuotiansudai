@@ -159,7 +159,7 @@ $(function () {
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
             $.get(api_url+'/'+query.term, function (respData) {
-                return process(respData.respData);
+                return process(respData);
             });
         }
     });
@@ -199,7 +199,7 @@ $(function () {
         var dataForm = JSON.stringify({
             "projectName": $('.jq-user').val(),
             "agentLoginName": $('#tags_1').val(),
-            "loanLoginName": $('#tags').val(),
+            "loanerLoginName": $('#tags').val(),
             "type": $('.jq-mark-type').val(),
             "periods": $('.jq-timer').val(),
             "descriptionText": getContentTxt(),

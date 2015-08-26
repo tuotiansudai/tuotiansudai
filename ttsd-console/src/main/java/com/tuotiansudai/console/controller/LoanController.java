@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ public class LoanController {
         modelAndView.addObject("contracts",contracts);
         return modelAndView;
     }
-    @RequestMapping(value = "/loaner/{loaner:^[A-Za-z0-9]$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/loaner/{loaner}", method = RequestMethod.GET)
     @ResponseBody
     public List<String> findLoginNames(@PathVariable String loaner) {
         return loanService.getLoginNames(loaner);

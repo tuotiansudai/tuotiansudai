@@ -6,6 +6,7 @@ import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ public class LoanDto {
 
     /***借款用户***/
     @NotEmpty
+    @NotNull
     private String loanerLoginName;
 
     /***标的类型***/
@@ -89,7 +91,7 @@ public class LoanDto {
     @NotEmpty
     private Date fundraisingEndTime;
 
-    /***是否显示在首页1:显示在首页，0:不显示在首页***/
+    /***是否显示在首页 true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
 
     /***借款金额***/

@@ -92,25 +92,34 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> createLoanBid(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
+        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null){
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());;
         if (maxInvestAmount < minInvestAmount){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         Integer result = DateCompare.compareDate(loanDto.getFundraisingStartTime(), loanDto.getFundraisingEndTime());
         if (result == null || result == 1){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         long projectId = idGenerator.generate();/****标的号****/
