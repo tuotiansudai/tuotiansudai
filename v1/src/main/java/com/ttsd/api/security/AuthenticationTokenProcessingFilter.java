@@ -6,7 +6,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.redis.RedisClient;
 import org.apache.commons.logging.Log;
@@ -26,7 +26,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
@@ -39,81 +41,103 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     @Autowired
     private RedisClient redisClient;
 
-    private String loginUrl;
-    private String appRequestUrlPrefix;
-    private List<String> excludedUrls = Lists.newArrayList();
+    private Map<String, String> headers = Maps.newHashMap();
+
+    private String loginUrl = "/login";
+
+    private String refreshTokenUrl = "/refresh-token";
+
+    private int tokenExpiredSeconds = 300;
+
+    private String tokenName = "token";
+
+
+
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        final String uri = httpServletRequest.getRequestURI();
 
-        Optional<String> tryFindExcludedUrl = Iterators.tryFind(excludedUrls.iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply(String excludedUrl) {
-                return uri.equalsIgnoreCase(excludedUrl);
-            }
-        });
-        if (tryFindExcludedUrl.isPresent()) {
+        if (!this.isContainsAppHeader(httpServletRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        String uri = httpServletRequest.getRequestURI();
+
+        if (loginUrl.equalsIgnoreCase(uri)) {
             chain.doFilter(httpServletRequest, httpServletResponse);
-            return;
-        }
-
-        if (uri.startsWith(appRequestUrlPrefix) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
-            BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
-            String token = this.getToken(bufferedRequest);
-            String loginName = this.getTokenLoginName(token);
-            if (Strings.isNullOrEmpty(loginName)) {
-                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Authentication token was either missing or invalid.");
-                return;
-            }
-            this.authenticateToken(loginName);
-            chain.doFilter(bufferedRequest, response);
-            return;
-        }
-
-        if (Strings.isNullOrEmpty(httpServletRequest.getParameter("source")) && loginUrl.equalsIgnoreCase(uri) && httpServletRequest.getMethod().equalsIgnoreCase("post")) {
-            chain.doFilter(httpServletRequest, httpServletResponse);
-            this.generateLoginResponse(httpServletResponse);
-            return;
-        }
-
-        chain.doFilter(httpServletRequest, httpServletResponse);
-    }
-
-    private void generateLoginResponse(HttpServletResponse httpServletResponse) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        httpServletResponse.setContentType("application/json; charset=UTF-8");
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        try (PrintWriter out = httpServletResponse.getWriter()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             JSONObject root = new JSONObject();
-            if (authentication != null && authentication.isAuthenticated()) {
-                String token = this.generateToken(authentication);
+            try {
+                if (authentication != null && authentication.isAuthenticated()) {
+                    String token = this.generateToken(authentication.getName());
+                    JSONObject data = new JSONObject();
+                    root.put("code", ReturnMessage.SUCCESS.getCode());
+                    root.put("message", ReturnMessage.SUCCESS.getMsg());
+                    data.put(tokenName, token);
+                    root.put("data", data);
+                } else {
+                    root.put("code", ReturnMessage.LOGIN_FAILED.getCode());
+                    root.put("message", ReturnMessage.LOGIN_FAILED.getMsg());
+                }
+                this.generateJsonResponse(httpServletResponse, root);
+            } catch (JSONException e) {
+                log.error(e.getLocalizedMessage(), e);
+            }
+            return;
+        }
+
+        BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
+        String token = this.getToken(bufferedRequest);
+        String loginName = this.getTokenLoginName(token);
+        if (Strings.isNullOrEmpty(loginName)) {
+            try {
+                JSONObject root = new JSONObject();
+                root.put("code", ReturnMessage.UNAUTHORIZED.getCode());
+                root.put("message", ReturnMessage.UNAUTHORIZED.getMsg());
+                this.generateJsonResponse(httpServletResponse, root);
+            } catch (JSONException e) {
+                log.error(e.getLocalizedMessage(), e);
+            }
+            return;
+        }
+
+        if (refreshTokenUrl.equalsIgnoreCase(uri)) {
+            String newToken = this.generateToken(loginName);
+            try {
+                JSONObject root = new JSONObject();
+                JSONObject data = new JSONObject();
                 root.put("code", ReturnMessage.SUCCESS.getCode());
                 root.put("message", ReturnMessage.SUCCESS.getMsg());
-                JSONObject data = new JSONObject();
-                data.put("token", token);
+                data.put(tokenName, newToken);
                 root.put("data", data);
-            } else {
-                root.put("code", ReturnMessage.LOGIN_FAILED.getCode());
-                root.put("message", ReturnMessage.LOGIN_FAILED.getMsg());
+                this.generateJsonResponse(httpServletResponse, root);
+                return;
+            } catch (JSONException e) {
+                logger.error(e.getLocalizedMessage(), e);
             }
-            out.print(root);
-        } catch (JSONException e) {
-            log.error(e.getLocalizedMessage(), e);
+        }
+
+
+        this.authenticateToken(loginName);
+        chain.doFilter(bufferedRequest, response);
+    }
+
+
+    private void generateJsonResponse(HttpServletResponse httpServletResponse, JSONObject jsonObject) throws IOException {
+        httpServletResponse.setContentType("application/json; charset=UTF-8");
+        httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        try (PrintWriter out = httpServletResponse.getWriter()) {
+            out.print(jsonObject);
         }
     }
 
     private String getTokenLoginName(String token) {
-        if (Strings.isNullOrEmpty(token)) {
+        if (Strings.isNullOrEmpty(token) || Strings.isNullOrEmpty(redisClient.get(token))) {
             return null;
         }
-        String loginName = redisClient.get(token);
-        if (Strings.isNullOrEmpty(loginName)) {
-            return null;
-        }
-
-        return loginName;
+        return redisClient.get(token);
     }
 
     private void authenticateToken(String loginName) {
@@ -133,33 +157,53 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             while ((count = inputStream.read(data, 0, bufferSize)) != -1) {
                 outStream.write(data, 0, count);
             }
-            String json = new String(outStream.toByteArray(), "UTF-8");
+            String json = new String(outStream.toByteArray(), StandardCharsets.UTF_8);
             JSONObject root = new JSONObject(json);
             JSONObject baseParam = (JSONObject) root.get("baseParam");
-            return (String) baseParam.get("token");
+            return (String) baseParam.get(tokenName);
         } catch (IOException | JSONException e) {
             log.error(e.getLocalizedMessage(), e);
         }
         return null;
     }
 
-    private String generateToken(Authentication authentication) {
+    private String generateToken(String loginName) {
         //TODO: generate token
+//        String tokenTemplate = "app-token:{0}:{1}";
+//        String token = MessageFormat.format(tokenTemplate, authentication.getName(), UUID.randomUUID().toString());
         String token = "test";
-        int expiredSeconds = 300;
-        this.redisClient.setex(token, authentication.getName(), expiredSeconds);
+        this.redisClient.setex(token, loginName, this.tokenExpiredSeconds);
         return token;
     }
 
-    public void setExcludedUrls(List<String> excludedUrls) {
-        this.excludedUrls = excludedUrls;
-    }
+    private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
+        if (!httpServletRequest.getMethod().equalsIgnoreCase("post")) {
+            return false;
+        }
 
-    public void setAppRequestUrlPrefix(String appRequestUrlPrefix) {
-        this.appRequestUrlPrefix = appRequestUrlPrefix;
+        Optional<Map.Entry<String, String>> optional = Iterators.tryFind(headers.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
+            @Override
+            public boolean apply(Map.Entry<String, String> entry) {
+                return entry.getValue().equals(httpServletRequest.getHeader(entry.getKey()));
+            }
+        });
+
+        return optional.isPresent();
     }
 
     public void setLoginUrl(String loginUrl) {
         this.loginUrl = loginUrl;
+    }
+
+    public void setRefreshTokenUrl(String refreshTokenUrl) {
+        this.refreshTokenUrl = refreshTokenUrl;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
+        this.tokenExpiredSeconds = tokenExpiredSeconds;
     }
 }
