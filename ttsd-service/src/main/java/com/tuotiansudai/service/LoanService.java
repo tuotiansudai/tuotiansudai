@@ -6,14 +6,13 @@ import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
-import java.util.Map;
 
 public interface LoanService {
     /**
      * @function 新增title
-     * @param titleDto
+     * @param loanTitleDto
      */
-    TitleModel createTitle(TitleDto titleDto);
+    TitleModel createTitle(LoanTitleDto loanTitleDto);
 
     /**
      * @function 获取借款人或代理人

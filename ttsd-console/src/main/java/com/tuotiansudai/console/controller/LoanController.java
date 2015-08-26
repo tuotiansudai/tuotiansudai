@@ -49,8 +49,8 @@ public class LoanController {
 
     @RequestMapping(value = "/title",method = RequestMethod.POST)
     @ResponseBody
-    public TitleModel addTitle(@RequestBody TitleDto titleDto){
-        return loanService.createTitle(titleDto);
+    public TitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto){
+        return loanService.createTitle(loanTitleDto);
     }
 
     @RequestMapping(value = "/",method = RequestMethod.POST)

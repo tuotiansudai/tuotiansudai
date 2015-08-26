@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import java.math.BigInteger;
 
-public class TitleDto {
+public class LoanTitleDto {
     private BigInteger id;
     /***标题类型base:基础标题，new:新增标题***/
     private String type;

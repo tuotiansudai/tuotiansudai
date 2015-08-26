@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.*;
 
 @Service
@@ -36,16 +35,16 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     IdGenerator idGenerator;
     /**
-     * @param titleDto
+     * @param loanTitleDto
      * @function 创建标题
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TitleModel createTitle(TitleDto titleDto) {
+    public TitleModel createTitle(LoanTitleDto loanTitleDto) {
         TitleModel titleModel = new TitleModel();
         long id = idGenerator.generate();
         titleModel.setId(id);
-        titleModel.setTitle(titleDto.getTitle());
+        titleModel.setTitle(loanTitleDto.getTitle());
         titleModel.setType("new");
         titleMapper.createTitle(titleModel);
         return titleModel;
