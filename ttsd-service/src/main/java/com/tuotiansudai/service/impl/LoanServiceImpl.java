@@ -100,7 +100,6 @@ public class LoanServiceImpl implements LoanService {
         }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
-        ;
         if (maxInvestAmount < minInvestAmount) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
