@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LoanDto {
 
-    private String id;
+    private long id;
 
     /***标的名称***/
     @NotEmpty
@@ -79,7 +79,7 @@ public class LoanDto {
 
     /***合同***/
     @NotEmpty
-    private String contractId;
+    private long contractId;
 
     /***筹款开始时间***/
     @NotEmpty
@@ -105,11 +105,11 @@ public class LoanDto {
     /***申请材料***/
     private List<LoanTitleModel> loanTitles;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -225,11 +225,11 @@ public class LoanDto {
         this.basicRate = basicRate;
     }
 
-    public String getContractId() {
+    public long getContractId() {
         return contractId;
     }
 
-    public void setContractId(String contractId) {
+    public void setContractId(long contractId) {
         this.contractId = contractId;
     }
 

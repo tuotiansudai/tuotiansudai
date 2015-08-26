@@ -115,7 +115,7 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(String.valueOf(projectId));
+        loanDto.setId(projectId);
 
         loanDto.setLoanAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getLoanAmount())));
         loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));

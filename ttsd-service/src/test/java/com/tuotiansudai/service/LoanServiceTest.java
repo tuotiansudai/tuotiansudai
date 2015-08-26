@@ -32,15 +32,14 @@ public class LoanServiceTest {
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
         long id = idGenerator.generate();
-        String idStr = String.valueOf(id);
-        loanDto.setId(idStr);
+        loanDto.setId(id);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
         loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
-        loanDto.setContractId("123");
+        loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
