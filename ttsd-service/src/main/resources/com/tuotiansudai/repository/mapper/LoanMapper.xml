@@ -37,5 +37,48 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="#{status} != null and #{status} != ''">
+                t.status = #{status}
+            </if>
+            <if test="#{loanId} != null and #{loanId} != ''">
+                and t.id = #{loanId}
+            </if>
+            <if test="#{loanName} != null and #{loanName} != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and t.created_time <= #{endTime}
+            </if>
+        </where>
+        order by t.created_time desc
+        limit (#{currentPageNo} - 1) * 10 , 10
+    </select>
+
+    <select id="findLoanList" parameterType="map" resultMap="int">
+        select count(*) from loan t
+        <where>
+            <if test="#{status} != null and #{status} != ''">
+                t.status = #{status}
+            </if>
+            <if test="#{loanId} != null and #{loanId} != ''">
+                and t.id = #{loanId}
+            </if>
+            <if test="#{loanName} != null and #{loanName} != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and t.created_time <= #{endTime}
+            </if>
+        </where>
+    </select>
 
 </mapper>

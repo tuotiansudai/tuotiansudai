@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2015/8/25.
  */
-public class LoanListDto extends PageDto{
+public class LoanListDto{
 
     private String id;
 
@@ -25,7 +26,7 @@ public class LoanListDto extends PageDto{
 
     private String activityRate;
 
-    private String status;
+    private LoanStatus status;
 
     private Date createdTime;
 
@@ -93,11 +94,11 @@ public class LoanListDto extends PageDto{
         this.activityRate = activityRate;
     }
 
-    public String getStatus() {
+    public LoanStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(LoanStatus status) {
         this.status = status;
     }
 
