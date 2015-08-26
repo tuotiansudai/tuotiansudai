@@ -77,11 +77,6 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
-<<<<<<< HEAD
-    <bean class="com.tuotiansudai.utils.SpringContextUtil" />
-=======
-    <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
->>>>>>> origin/master
 
 </beans>
