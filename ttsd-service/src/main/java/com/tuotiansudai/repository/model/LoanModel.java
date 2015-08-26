@@ -25,15 +25,15 @@ public class LoanModel {
     /***项目描述（带html标签）***/
     private String descriptionHtml;
     /***借款金额***/
-    private Long loanAmount;
+    private long loanAmount;
     /***投资手续费比例***/
     private double investFeeRate;
     /***最小投资金额***/
-    private Long minInvestAmount;
+    private long minInvestAmount;
     /***投资递增金额***/
-    private Long investIncreasingAmount;
+    private long investIncreasingAmount;
     /***单笔最大投资金额***/
-    private Long maxInvestAmount;
+    private long maxInvestAmount;
     /***活动类型***/
     private ActivityType activityType;
     /***活动利率***/
