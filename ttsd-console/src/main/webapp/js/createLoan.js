@@ -159,10 +159,22 @@ $(function () {
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
             $.get(api_url+'/'+query.term, function (respData) {
-                return process(respData.respData);
+                return process(respData);
             });
         }
     });
+    $("#tags,#tags_1").blur(function () {
+        if($(this).val()== autoValue){
+            $(this).removeClass('Validform_error');
+        }else{
+            $(this).addClass('Validform_error');
+        }
+    });
+    var autoValue = '';
+    $('body').on('click','.ui-autocomplete li',function(){
+        autoValue = $(this).text();
+    });
+    
 
     // 充值金额保留小数点后2位
     var rep = /^\d+$/;
