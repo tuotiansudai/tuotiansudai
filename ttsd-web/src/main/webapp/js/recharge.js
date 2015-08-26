@@ -1,4 +1,4 @@
-require(['jquery'], function ($) {
+require(['jquery', 'csrf'], function ($) {
     $(function () {
         //select bank
         var _bank = $('.banking ol li');
@@ -78,5 +78,14 @@ require(['jquery'], function ($) {
         $('.close2,.cancel').click(function(){
             $('.bind-card-layer').hide();
         });
+
+        // 充值弹出页面
+        $('.ecope-dialog .close').click(function(){
+            $('.ecope-overlay,.ecope-dialog').hide();
+        });
+        //充值提交
+        $('.recharge-qr').click(function(){
+            $('.ecope-overlay,.ecope-dialog').show();
+        });
     });
-})
+});

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserBillService {
 
@@ -12,4 +13,6 @@ public interface UserBillService {
     void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType);
 
     void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType) throws AmountTransferException;
+
+    void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType) throws AmountTransferException;
 }

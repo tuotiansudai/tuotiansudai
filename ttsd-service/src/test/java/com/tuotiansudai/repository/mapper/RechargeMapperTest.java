@@ -6,7 +6,6 @@ import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.UUIDGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -42,12 +43,34 @@ public class RechargeMapperTest {
         model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
         model.setBank("bank");
+        model.setCreatedTime(new Date());
         model.setStatus(RechargeStatus.WAIT_PAY);
 
         rechargeMapper.create(model);
 
         assertNotNull(rechargeMapper.findById(model.getId()));
 
+    }
+
+    @Test
+    public void shouldUpdateRecharge() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+
+        RechargeModel model = new RechargeModel();
+        model.setId(idGenerator.generate());
+        model.setLoginName(fakeUserModel.getLoginName());
+        model.setBank("bank");
+        model.setCreatedTime(new Date());
+        model.setStatus(RechargeStatus.WAIT_PAY);
+
+        rechargeMapper.create(model);
+
+        model.setStatus(RechargeStatus.SUCCESS);
+
+        rechargeMapper.update(model.getId(), RechargeStatus.SUCCESS);
+
+        assertThat(rechargeMapper.findById(model.getId()).getStatus(), is(RechargeStatus.SUCCESS));
     }
 
     public UserModel getFakeUserModel() {

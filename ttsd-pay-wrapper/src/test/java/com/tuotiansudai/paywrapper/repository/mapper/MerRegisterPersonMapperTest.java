@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPersonResponseModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,11 +48,11 @@ public class MerRegisterPersonMapperTest {
 
         merRegisterPersonMapper.createRequest(model);
 
-        merRegisterPersonMapper.updateRequestStatus(model.getId(), RequestStatus.SUCCESS);
+        merRegisterPersonMapper.updateRequestStatus(model.getId(), SyncRequestStatus.SUCCESS);
 
         BaseSyncRequestModel updatedModel = merRegisterPersonMapper.findRequestById(model.getId());
 
-        assertThat(updatedModel.getStatus(), is(RequestStatus.SUCCESS));
+        assertThat(updatedModel.getStatus(), is(SyncRequestStatus.SUCCESS));
     }
 
     @Test
