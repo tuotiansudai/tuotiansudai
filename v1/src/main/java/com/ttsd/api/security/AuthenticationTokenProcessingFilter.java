@@ -60,7 +60,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
         final String uri = httpServletRequest.getRequestURI();
 
-        if (!loginUrl.equalsIgnoreCase(uri) && !Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
+        if (!loginUrl.equalsIgnoreCase(uri) && !refreshTokenUrl.equalsIgnoreCase(uri) &&
+                !Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
             @Override
             public boolean apply(String uriPrefix) {
                 return uri.startsWith(uriPrefix);
