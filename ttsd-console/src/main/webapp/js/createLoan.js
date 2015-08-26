@@ -225,7 +225,7 @@ $(function () {
             var dataForm = JSON.stringify({
                 "projectName": $('.jq-user').val(),
                 "agentLoginName": $('#tags_1').val(),
-                "loanLoginName": $('#tags').val(),
+                "loanerLoginName": $('#tags').val(),
                 "type": $('.jq-mark-type').val(),
                 "periods": $('.jq-timer').val(),
                 "descriptionText": getContentTxt(),
