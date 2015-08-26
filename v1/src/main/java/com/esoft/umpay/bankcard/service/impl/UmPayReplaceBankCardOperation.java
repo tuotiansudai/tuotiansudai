@@ -74,7 +74,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		TrusteeshipOperation to = null;
 		try{
 			String orderId = generateReplaceCardOrderId(bankCard);
-			ReqData reqData = buildReqData(bankCard, orderId);
+			ReqData reqData = buildReqData(bankCard, orderId, false);
 			log.debug("换卡发送数据:" + reqData);
 			to = createTrusteeshipOperation(orderId, reqData.getUrl(),
 					bankCard.getUser().getId(),
@@ -92,7 +92,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		return System.currentTimeMillis() + bankCard.getCardNo();
 	}
 
-	public ReqData buildReqData(BankCard bankCard, String orderId){
+	public ReqData buildReqData(BankCard bankCard, String orderId, boolean isMobileRequest){
 		TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		if(trusteeshipAccount==null){
@@ -101,14 +101,20 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
 
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+		if(isMobileRequest) {
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		}else{
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+		}
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
 
 						+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
-		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
-		sendMap.put("order_id", order_id);
+		sendMap.put("order_id", orderId);
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		sendMap.put("user_id", trusteeshipAccount.getId());
 		sendMap.put("card_id", bankCard.getCardNo());

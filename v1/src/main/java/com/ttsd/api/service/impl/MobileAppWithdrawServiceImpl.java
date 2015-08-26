@@ -110,7 +110,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         withdrawCashService.applyWithdrawCash(withdrawCash);
 
         // build request form
-        ReqData reqData = umPayWithdrawOperation.buildReqData(withdrawCash);
+        ReqData reqData = umPayWithdrawOperation.buildReqData(withdrawCash, true);
 
         // build api response data
         WithdrawOperateResponseDataDto responseDataDto = new WithdrawOperateResponseDataDto();

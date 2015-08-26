@@ -73,19 +73,19 @@ public class TrusteeshipHome {
 		}
 		if (UmPayConstants.OperationType.PTP_MER_BIND_CARD
 				.equals(this.operationType)) {
-			return this.bindinBankCradWeb();
+			return this.bindinBankCradWeb(false);
 		} else if (UmPayConstants.OperationType.MER_RECHARGE_PERSON
 				.equals(this.operationType)) {
-			return this.rechargePersonWeb();
+			return this.rechargePersonWeb(false);
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST
 				.equals(this.operationType)) {
-			return this.investWeb();
+			return this.investWeb(false);
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_NORMAL_REPAY
 				.equals(this.operationType)) {
 			return this.normalRepayWeb();
 		} else if (UmPayConstants.OperationType.CUST_WITHDRAWALS
 				.equals(this.operationType)) {
-			return this.custWithdrawWeb();
+			return this.custWithdrawWeb(false);
 		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_ADVANCE_REPAY
 				.equals(this.operationType)) {
 			return this.advanceRepay();
@@ -93,9 +93,38 @@ public class TrusteeshipHome {
 				.equals(this.operationType)) {
 			return this.overdueRepay();
 		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
-			return this.replaceBankCardWeb();
+			return this.replaceBankCardWeb(false);
 		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
-			return this.bindingAgreementWeb();
+			return this.bindingAgreementWeb(false);
+		}
+		return "404";
+	}
+
+	/**
+	 * 移动端联动优势的回调
+	 * 只有六种情况：绑卡 换卡 投资 充值 签约 取现
+	 * @return
+	 */
+	public String handleMobReturn() {
+		if (log.isDebugEnabled()) {
+			log.debug("POST call back: " + this.operationType);
+		}
+		if (UmPayConstants.OperationType.PTP_MER_BIND_CARD
+				.equals(this.operationType)) {
+			return this.bindinBankCradWeb(true);
+		} else if (UmPayConstants.OperationType.MER_RECHARGE_PERSON
+				.equals(this.operationType)) {
+			return this.rechargePersonWeb(true);
+		} else if (UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST
+				.equals(this.operationType)) {
+			return this.investWeb(true);
+		} else if (UmPayConstants.OperationType.CUST_WITHDRAWALS
+				.equals(this.operationType)) {
+			return this.custWithdrawWeb(true);
+		} else if (UmPayConstants.OperationType.PTP_MER_REPLACE_CARD.equals(this.operationType)) {
+			return this.replaceBankCardWeb(true);
+		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
+			return this.bindingAgreementWeb(true);
 		}
 		return "404";
 	}
@@ -143,79 +172,108 @@ public class TrusteeshipHome {
 	 * 
 	 * @return
 	 */
-	public String bindinBankCradWeb() {
+	public String bindinBankCradWeb(boolean onMobile) {
 		try {
 			umPayBindingBankCardOperation
 					.receiveOperationPostCallback(FacesUtil
 							.getHttpServletRequest());
 			FacesUtil.addInfoMessage("您需要绑定的银行卡信息已经提交至联动优势,请等待审核!");
 			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-			return "pretty:bankCardList";
+			if(onMobile){
+				return "/mobile/templates/bindcard.xhtml";
+			}else {
+				return "pretty:bankCardList";
+			}
 		} catch (TrusteeshipReturnException e) {
 			log.debug(e);
-			FacesUtil.addErrorMessage(e.getMessage());
+			FacesUtil.addErrorMessage("绑卡失败: " + e.getMessage());
 		}
-		return null;
+		if(onMobile){
+			return "/mobile/templates/bindcard.xhtml";
+		}else {
+			return null;
+		}
 	}
 
-	public String replaceBankCardWeb() {
+	public String replaceBankCardWeb(boolean onMobile) {
 		try {
 			this.umPayReplaceBankCardOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
 			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
 			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-			return "pretty:bankCardList";
+			if(onMobile){
+				return "/mobile/templates/changecard.xhtml";
+			}else {
+				return "pretty:bankCardList";
+			}
 		} catch (TrusteeshipReturnException e) {
 			log.error(e.getLocalizedMessage(), e);
-			FacesUtil.addErrorMessage(e.getMessage());
+			FacesUtil.addErrorMessage("换卡失败: " + e.getMessage());
 		}
-		return  null;
+		if(onMobile){
+			return "/mobile/templates/changecard.xhtml";
+		}else {
+			return null;
+		}
 	}
 
-	public String bindingAgreementWeb() {
+	public String bindingAgreementWeb(boolean onMobile) {
 		try {
 			umPayBindingAgreementOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
 			FacesUtil.addInfoMessage("签约协议成功");
 		} catch (TrusteeshipReturnException e) {
 			log.error(e.getLocalizedMessage(), e);
-			FacesUtil.addErrorMessage(e.getMessage());
+			FacesUtil.addErrorMessage("签约失败: " + e.getMessage());
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
-			FacesUtil.addErrorMessage(e.getMessage());
+			FacesUtil.addErrorMessage("签约失败: " + e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-		return "pretty:bankCardList";
+		if(onMobile){
+			return "/mobile/templates/sign.xhtml";
+		}else {
+			return "pretty:bankCardList";
+		}
 	}
 
 	/**
 	 * WEB通知-个人账户充值
 	 */
-	public String rechargePersonWeb() {
+	public String rechargePersonWeb(boolean onMobile) {
 		try {
 			umPayRechargeOteration.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
 			FacesUtil.addInfoMessage("充值成功");
 		} catch (TrusteeshipReturnException e) {
-			FacesUtil.addErrorMessage("充值失败：" + e.getMessage());
+			FacesUtil.addErrorMessage("充值失败: " + e.getMessage());
 			log.debug(e);
 			e.printStackTrace();
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-		return "pretty:userCenter";
+		if(onMobile){
+			return "/mobile/templates/recharge.xhtml";
+		}else {
+			return "pretty:userCenter";
+		}
 	}
 
 	/**
 	 * WEB-投标
 	 */
-	public String investWeb() {
+	public String investWeb(boolean onMobile) {
 		try {
 			umPayInvestOeration.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
+			FacesUtil.addInfoMessage("投资成功");
 		} catch (TrusteeshipReturnException e) {
 			e.printStackTrace();
-			FacesUtil.addInfoMessage(e.getMessage());
+			FacesUtil.addErrorMessage("投资失败: " + e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-		return "pretty:userCenter";
+		if(onMobile){
+			return "/mobile/templates/invest.xhtml";
+		}else {
+			return "pretty:userCenter";
+		}
 	}
 
 	/**
@@ -278,16 +336,20 @@ public class TrusteeshipHome {
 	/**
 	 * 提现
 	 */
-	public String custWithdrawWeb() {
+	public String custWithdrawWeb(boolean onMobile) {
 		try {
 			umPayWithdrawOperation.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
 			FacesUtil.addInfoMessage("银行已经接受您的请求!");
 		} catch (TrusteeshipReturnException e) {
-			FacesUtil.addInfoMessage("提现操作失败！");
+			FacesUtil.addErrorMessage("提现失败: " + e.getLocalizedMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
-		return "pretty:userCenter";
+		if(onMobile){
+			return "/mobile/templates/withdraw.xhtml";
+		}else {
+			return "pretty:userCenter";
+		}
 	}
 
 	/**
