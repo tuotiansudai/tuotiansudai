@@ -29,7 +29,13 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
 		<beans:property name="loginUrl" value="/login" />
-		<beans:property name="appRequestUrlPrefix" value="/v1.0/" />
+		<beans:property name="refreshTokenUrl" value="/refresh-token" />
+		<beans:property name="headers">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+		<beans:property name="tokenExpiredSeconds" value="3000" />
 	</beans:bean>
 
 	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"

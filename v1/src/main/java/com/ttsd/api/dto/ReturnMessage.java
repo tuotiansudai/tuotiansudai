@@ -86,7 +86,10 @@ public enum ReturnMessage {
     UMPAY_OPERATION_EXCEPTION("0044","联动优势处理失败"),
 
     /******未开通快捷支付******/
-    NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付");
+    NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
+
+
+    UNAUTHORIZED("0401", "未授权");
 
     private String code;
     private String msg;
