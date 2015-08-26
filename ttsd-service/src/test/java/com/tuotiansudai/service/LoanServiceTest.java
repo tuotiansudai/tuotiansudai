@@ -1,10 +1,8 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
@@ -63,5 +64,12 @@ public class LoanServiceTest {
         loanDto.setLoanTitles(loanTitleRelationModelList);
         loanService.createLoanBid(loanDto);
 
+    }
+
+    @Test
+    public void findLoanListServiceTest() {
+        List<LoanListDto> loanListDtos = loanService.findLoanList("complete", "", "", "", "", "0");
+        int loanListCount = loanService.findLoanListCount("complete","","","","");
+        assertThat(loanListDtos.size(), is(loanListCount));
     }
 }

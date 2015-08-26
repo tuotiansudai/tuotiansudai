@@ -31,6 +31,7 @@ public class LoanListController {
         ModelAndView modelAndView = new ModelAndView("/loanList");
         modelAndView.addObject("loanListCount",loanListCount);
         modelAndView.addObject("loanListDtos",loanListDtos);
+        modelAndView.addObject("currentPageNo",currentPageNo);
         return modelAndView;
     }
 
