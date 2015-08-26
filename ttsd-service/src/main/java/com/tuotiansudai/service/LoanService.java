@@ -6,7 +6,6 @@ import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.TitleModel;
 
 import java.util.List;
-import java.util.Map;
 
 public interface LoanService {
     /**
@@ -45,4 +44,6 @@ public interface LoanService {
      * @return
      */
     BaseDto<PayDataDto> createLoanBid(LoanDto loanDto);
+
+    public List<LoanListDto> findLoanList();
 }

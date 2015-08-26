@@ -153,4 +153,9 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
         return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
     }
+
+    @Override
+    public List<LoanListDto> findLoanList() {
+
+    }
 }

@@ -36,4 +36,6 @@
     <select id="findLoanByLoanId" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
+
+
 </mapper>
