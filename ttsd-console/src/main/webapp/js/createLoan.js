@@ -158,7 +158,7 @@ $(function () {
     $("#tags,#tags_1").autocomplete({
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
-            $.get(api_url, {"loginName": query.term}, function (respData) {
+            $.get(api_url+'/'+query.term, function (respData) {
                 return process(respData.respData);
             });
         }

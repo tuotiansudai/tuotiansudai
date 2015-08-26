@@ -3,8 +3,8 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.TitleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -21,7 +21,7 @@ import java.util.*;
 public class LoanServiceImpl implements LoanService {
 
     @Autowired
-    private TitleMapper titleMapper;
+    private LoanTitleMapper loanTitleMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -30,7 +30,7 @@ public class LoanServiceImpl implements LoanService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private LoanTitleMapper loanTitleMapper;
+    private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
     IdGenerator idGenerator;
@@ -46,7 +46,7 @@ public class LoanServiceImpl implements LoanService {
         loanTitleModel.setId(id);
         loanTitleModel.setTitle(loanTitleDto.getTitle());
         loanTitleModel.setType("new");
-        titleMapper.create(loanTitleModel);
+        loanTitleMapper.create(loanTitleModel);
         return loanTitleModel;
     }
 
@@ -61,7 +61,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     public List<LoanTitleModel> findAllTitles(){
-        return titleMapper.find();
+        return loanTitleMapper.find();
     }
 
     @Override
@@ -128,12 +128,12 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
-        List<LoanTitleRelation> loanTitleRelationList = loanDto.getLoanTitles();
-        for (LoanTitleRelation loanTitleRelation : loanDto.getLoanTitles()){
-            loanTitleRelation.setId(idGenerator.generate());
-            loanTitleRelation.setLoanId(projectId);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
+        for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()){
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(projectId);
         }
-        loanTitleMapper.create(loanTitleRelationList);
+        loanTitleRelationMapper.create(loanTitleRelationModelList);
         dataDto.setStatus(true);
         baseDto.setData(dataDto);
         return baseDto;

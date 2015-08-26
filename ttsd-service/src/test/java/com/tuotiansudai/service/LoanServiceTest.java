@@ -3,7 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelation;
+import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
@@ -51,16 +51,16 @@ public class LoanServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleRelation> loanTitleRelationList = new ArrayList<LoanTitleRelation>();
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         for(int i=0;i<5;i++){
-            LoanTitleRelation loanTitleRelation = new LoanTitleRelation();
-            loanTitleRelation.setId(idGenerator.generate());
-            loanTitleRelation.setLoanId(id);
-            loanTitleRelation.setTitleId(Long.parseLong("1234567890"));
-            loanTitleRelation.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleRelationList.add(loanTitleRelation);
+            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(id);
+            loanTitleRelationModel.setTitleId(Long.parseLong("1234567890"));
+            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModelList.add(loanTitleRelationModel);
         }
-        loanDto.setLoanTitles(loanTitleRelationList);
+        loanDto.setLoanTitles(loanTitleRelationModelList);
         loanService.createLoanBid(loanDto);
 
     }

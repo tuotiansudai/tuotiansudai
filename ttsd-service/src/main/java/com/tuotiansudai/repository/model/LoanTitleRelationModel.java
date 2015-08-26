@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.model;
 
-public class LoanTitleRelation {
+public class LoanTitleRelationModel {
     private long id;
     private long loanId;/***借款标的***/
     private long titleId;/***申请材料标题***/

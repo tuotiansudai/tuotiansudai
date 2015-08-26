@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelation;
+import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -103,7 +103,7 @@ public class LoanDto {
     private LoanStatus status;
 
     /***申请材料***/
-    private List<LoanTitleRelation> loanTitles;
+    private List<LoanTitleRelationModel> loanTitles;
 
     public long getId() {
         return id;
@@ -281,11 +281,11 @@ public class LoanDto {
         this.status = status;
     }
 
-    public List<LoanTitleRelation> getLoanTitles() {
+    public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
 
-    public void setLoanTitles(List<LoanTitleRelation> loanTitles) {
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
     }
 }

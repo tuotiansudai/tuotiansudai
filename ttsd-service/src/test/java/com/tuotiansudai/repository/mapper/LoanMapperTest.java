@@ -25,7 +25,7 @@ public class LoanMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    LoanTitleMapper loanTitleMapper;
+    LoanTitleRelationMapper loanTitleRelationMapper;
     @Autowired
     private IdGenerator idGenerator;
 
@@ -55,8 +55,8 @@ public class LoanMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleRelation> loanTitleRelationList = new ArrayList<LoanTitleRelation>();
-        loanDto.setLoanTitles(loanTitleRelationList);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        loanDto.setLoanTitles(loanTitleRelationModelList);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         assertNotNull(loanMapper.findLoanByLoanId(id));
