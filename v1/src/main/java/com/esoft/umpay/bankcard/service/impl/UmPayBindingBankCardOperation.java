@@ -83,7 +83,7 @@ public class UmPayBindingBankCardOperation extends
 			// 保存操作记录
 			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
 					bankCard.getUser().getId(),
-					UmPayConstants.OperationType.MER_BIND_CARD,
+					UmPayConstants.OperationType.PTP_MER_BIND_CARD,
 					GsonUtil.fromMap2Json(reqData.getField()));
 			// 发送请求
 			sendOperation(to, facesContext);
@@ -103,14 +103,14 @@ public class UmPayBindingBankCardOperation extends
 
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_CARD);
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_CARD);
 		// 同步地址
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.MER_BIND_CARD);
+				+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
 		// 后台地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-						+ UmPayConstants.OperationType.MER_BIND_CARD);
+						+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
 		// 流水号(时间戳)
 		sendMap.put("order_id", order_id);
 		// 时间
@@ -161,7 +161,7 @@ public class UmPayBindingBankCardOperation extends
 			// 保存操作记录
 			createTrusteeshipOperation(order_id, reqData.getUrl(),
 					bankCard.getUser().getId(),
-					UmPayConstants.OperationType.MER_BIND_CARD,
+					UmPayConstants.OperationType.PTP_MER_BIND_CARD,
 					requestData);
 			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
 			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -201,7 +201,7 @@ public class UmPayBindingBankCardOperation extends
 			String order_id = paramMap.get("order_id");
 			// 操作记录
 			TrusteeshipOperation to = trusteeshipOperationBO.get(
-					UmPayConstants.OperationType.MER_BIND_CARD, order_id, ta
+					UmPayConstants.OperationType.PTP_MER_BIND_CARD, order_id, ta
 							.getUser().getId(),
 					UmPayConstants.OperationType.UMPAY);
 			String ret_code = paramMap.get("ret_code");
@@ -275,13 +275,15 @@ public class UmPayBindingBankCardOperation extends
 									bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 									ht.update(bankCard);
 								}
-								String detailTemplate = "用户{0}绑定{1}银行卡";
-								try {
-									this.systemBillService.transferOut(0.01,"binding_card", MessageFormat.format(detailTemplate,
-											userWillBindingBankCard.get(0).getUser().getId(),
-											this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
-								} catch (InsufficientBalance insufficientBalance) {
-									log.error(insufficientBalance);
+								if (paramMap.get("gate_id").equals("CMB")) {
+									String detailTemplate = "用户{0}绑定{1}银行卡";
+									try {
+										this.systemBillService.transferOut(0.01, "binding_card", MessageFormat.format(detailTemplate,
+												userWillBindingBankCard.get(0).getUser().getId(),
+												this.rechargeService.getBankNameByNo(paramMap.get("gate_id"))));
+									} catch (InsufficientBalance insufficientBalance) {
+										log.error(insufficientBalance);
+									}
 								}
 							}
 

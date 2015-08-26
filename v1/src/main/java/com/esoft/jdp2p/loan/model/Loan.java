@@ -276,6 +276,10 @@ public class Loan implements java.io.Serializable, Cloneable {
     //代理人
     private String agent;
 
+    /**
+     * 起投时间
+     */
+    private Date investBeginTime;
 
     @Column(name = "agent", length = 20)
     public String getAgent() {
@@ -1033,6 +1037,15 @@ public class Loan implements java.io.Serializable, Cloneable {
                 4);
     }
 
+    @Column(name = "invest_begin_time", nullable = false)
+    public Date getInvestBeginTime() {
+        return investBeginTime;
+    }
+
+    public void setInvestBeginTime(Date investBeginTime) {
+        this.investBeginTime = investBeginTime;
+    }
+
     /**
      * 还款路标（待还、已还金额之类）
      */
@@ -1110,18 +1123,22 @@ public class Loan implements java.io.Serializable, Cloneable {
         }
         return this.repayRoadmap;
     }
+
     @Transient
     public boolean isLoanDx() {
         return "dx".equals(this.loanActivityType);
     }
+
     @Transient
     public boolean isLoanPt() {
         return "pt".equals(this.loanActivityType);
     }
+
     @Transient
     public boolean isLoanXs() {
         return "xs".equals(this.loanActivityType);
     }
+
     @Transient
     public boolean isLoanJx() {
         return "jx".equals(this.loanActivityType);

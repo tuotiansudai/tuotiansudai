@@ -90,6 +90,7 @@ flyway {
     user = 'root'
     password = ''
     outOfOrder = true
+    validateOnMigrate = false
     url = 'jdbc:mysql://192.168.33.10:3306/tuotiansudai?useUnicode=true&characterEncoding=utf8'
     if (new File(productionFlywayConfig).exists()) {
         Properties properties = new Properties()
