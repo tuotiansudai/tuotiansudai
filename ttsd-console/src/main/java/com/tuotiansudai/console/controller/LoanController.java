@@ -24,8 +24,8 @@ public class LoanController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan(HttpServletRequest request){
         List contracts = new ArrayList();
-        Map<String,String> contract = new HashMap<>();
         //TODO 合同需要从数据库中获取
+        Map<String,String> contract = new HashMap<>();
         contract.put("id", "789098123");
         contract.put("contractName", "四方合同");
         contracts.add(contract);
