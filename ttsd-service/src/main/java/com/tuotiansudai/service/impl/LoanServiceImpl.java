@@ -46,7 +46,7 @@ public class LoanServiceImpl implements LoanService {
         titleModel.setId(id);
         titleModel.setTitle(loanTitleDto.getTitle());
         titleModel.setType("new");
-        titleMapper.createTitle(titleModel);
+        titleMapper.create(titleModel);
         return titleModel;
     }
 

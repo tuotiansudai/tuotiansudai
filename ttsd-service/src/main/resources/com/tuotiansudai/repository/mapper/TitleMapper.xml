@@ -10,7 +10,7 @@
         <result column="title" property="title"></result>
     </resultMap>
 
-    <insert id="createTitle" parameterType="com.tuotiansudai.repository.model.TitleModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.TitleModel" useGeneratedKeys="true" keyProperty="id">
         insert into title(id,type,title)VALUES (#{id},#{type},#{title})
     </insert>
 
