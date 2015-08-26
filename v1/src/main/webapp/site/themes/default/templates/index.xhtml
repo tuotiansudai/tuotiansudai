@@ -293,6 +293,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" count-down-id="b-#{loan.id}"
+									   on-begin="onCountDownBegin" on-over="onCountDownOver"
 									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
@@ -402,6 +403,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" count-down-id="c-#{loan.id}"
+									   on-begin="onCountDownBegin" on-over="onCountDownOver"
 									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
