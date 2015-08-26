@@ -35,6 +35,11 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 				<beans:entry key="MobileApp" value="YES" />
 			</beans:map>
 		</beans:property>
+		<beans:property name="uriPrefixes">
+			<beans:list value-type="java.lang.String">
+				<beans:value>/v1.0</beans:value>
+			</beans:list>
+		</beans:property>
 		<beans:property name="tokenExpiredSeconds" value="3000" />
 	</beans:bean>
 

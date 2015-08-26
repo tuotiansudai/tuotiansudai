@@ -89,6 +89,7 @@ public enum ReturnMessage {
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
 
+    BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
 
     private String code;

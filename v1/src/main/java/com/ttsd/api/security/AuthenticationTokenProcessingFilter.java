@@ -6,6 +6,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.redis.RedisClient;
@@ -45,25 +46,44 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     private String loginUrl = "/login";
 
+    private List<String> uriPrefixes = Lists.newArrayList("/v1.0");
+
     private String refreshTokenUrl = "/refresh-token";
 
     private int tokenExpiredSeconds = 300;
 
     private String tokenName = "token";
 
-
-
-
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        if (!this.isContainsAppHeader(httpServletRequest)) {
+        final String uri = httpServletRequest.getRequestURI();
+
+        if (!loginUrl.equalsIgnoreCase(uri) && !Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String uriPrefix) {
+                return uri.startsWith(uriPrefix);
+            }
+        })) {
             chain.doFilter(request, response);
             return;
         }
 
-        String uri = httpServletRequest.getRequestURI();
+        if (!this.isContainsAppHeader(httpServletRequest)) {
+            try {
+                JSONObject root = new JSONObject();
+                root.put("code", ReturnMessage.BAD_REQUEST.getCode());
+                root.put("message", ReturnMessage.BAD_REQUEST.getMsg());
+                this.generateJsonResponse(httpServletResponse, root);
+                return;
+            } catch (JSONException e) {
+                log.error(e.getLocalizedMessage(), e);
+            }
+            chain.doFilter(request, response);
+            return;
+        }
+
 
         if (loginUrl.equalsIgnoreCase(uri)) {
             chain.doFilter(httpServletRequest, httpServletResponse);
@@ -205,5 +225,9 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;
+    }
+
+    public void setUriPrefixes(List<String> uriPrefixes) {
+        this.uriPrefixes = uriPrefixes;
     }
 }
