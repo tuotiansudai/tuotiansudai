@@ -1,5 +1,5 @@
 CREATE TABLE ump_operations.`mer_bind_project_request` (
-  `id`                  BIGINT UNSIGED  NOT NULL AUTO_INCREMENT,/******/
+  `id`                  BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,/******/
   `service`             VARCHAR(32)     NOT NULL,/***接口名称***/
   `sign_type`           VARCHAR(8)      NOT NULL,/***签名方式***/
   `sign`                VARCHAR(256)    NOT NULL,/***签名***/
@@ -21,8 +21,8 @@ AUTO_INCREMENT = 100001
 DEFAULT CHARSET=utf8;
 
 CREATE TABLE ump_operations.`mer_bind_project_response` (
-  `id`                            BIGINT UNSIGED  NOT NULL AUTO_INCREMENT,/******/
-  `request_id`                    BIGINT UNSIGED  NOT NULL,/***请求ID***/
+  `id`                            BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT,/******/
+  `request_id`                    BIGINT UNSIGNED  NOT NULL,/***请求ID***/
   `sign_type`                     varchar(8)      NOT NULL,/***签名方式***/
   `sign`                          varchar(256)    DEFAULT NULL,/***签名***/
   `merchant_id`                   varchar(8)      DEFAULT NULL,/***商户编号***/
