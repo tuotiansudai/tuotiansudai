@@ -6,6 +6,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.redis.RedisClient;
@@ -45,7 +46,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     private String loginUrl = "/login";
 
-    private String uriPrefix = "/v1.0";
+    private List<String> uriPrefixes = Lists.newArrayList("/v1.0");
 
     private String refreshTokenUrl = "/refresh-token";
 
@@ -57,9 +58,14 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        String uri = httpServletRequest.getRequestURI();
+        final String uri = httpServletRequest.getRequestURI();
 
-        if (!loginUrl.equalsIgnoreCase(uri) && !uri.startsWith(uriPrefix)) {
+        if (!loginUrl.equalsIgnoreCase(uri) && !Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String uriPrefix) {
+                return uri.startsWith(uriPrefix);
+            }
+        })) {
             chain.doFilter(request, response);
             return;
         }
@@ -219,5 +225,9 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
         this.tokenExpiredSeconds = tokenExpiredSeconds;
+    }
+
+    public void setUriPrefixes(List<String> uriPrefixes) {
+        this.uriPrefixes = uriPrefixes;
     }
 }
