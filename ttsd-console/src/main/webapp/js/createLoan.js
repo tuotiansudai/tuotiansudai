@@ -5,9 +5,9 @@ $(function () {
     var _html = '';
     var data = '';
     //初始化校验
-    $(".jq-form").Validform({
-        tiptype: 0,
-    });
+    //$(".jq-form").Validform({
+    //    tiptype: 0,
+    //});
     //初始化数据
     $.get(API_SELECT, function (data) {
          //data = data;
@@ -155,14 +155,30 @@ $(function () {
         }
     });
     //自动完成提示
+    var autoValue = '';
     $("#tags,#tags_1").autocomplete({
         source: function (query, process) {
             //var matchCount = this.options.items;//返回结果集最大数量
             $.get(api_url+'/'+query.term, function (respData) {
+                autoValue = respData;
                 return process(respData);
             });
         }
     });
+    $("#tags,#tags_1").blur(function () {
+        for(var i = 0; i< autoValue.length; i++){
+            if($(this).val()== autoValue[i]){
+                $(this).removeClass('Validform_error');
+                return false;
+            }else{
+                $(this).addClass('Validform_error');
+            }
+
+        }
+
+    });
+
+    
 
     // 充值金额保留小数点后2位
     var rep = /^\d+$/;
@@ -183,57 +199,76 @@ $(function () {
         }
     });
 
+    var formFlag =false;
+    $(".jq-form").Validform({
+        btnSubmit:'.jq-btn-form',
+        tiptype: 0,
+        callback:function(form){
+            formFlag = true;
+            return false;
+        }
+    });
     //提交表单
     $('.jq-btn-form').click(function () {
         //$(".jq-form").Validform({
         //    tiptype: 0,
         //});
-        indexPic();
-        var startTime = $('.jq-star-date').val();
-        var endTime = $('.jq-end-date').val();
-        var showOnHomeInputVal = $('.jq-index').val();
-        var showOnHome = true;
-        if(showOnHomeInputVal == '0'){
-            showOnHome = false;
-        }
-        var dataForm = JSON.stringify({
-            "projectName": $('.jq-user').val(),
-            "agentLoginName": $('#tags_1').val(),
-            "loanerLoginName": $('#tags').val(),
-            "type": $('.jq-mark-type').val(),
-            "periods": $('.jq-timer').val(),
-            "descriptionText": getContentTxt(),
-            "descriptionHtml": getContent(),
-            "investFeeRate": $('.jq-fee').val(),
-            "minInvestAmount": $('.jq-min-pay').val(),
-            "maxInvestAmount": $('.jq-max-pay').val(),
-            "investIncreasingAmount": $('.jq-add-pay').val(),
-            "activityType": $('.jq-impact-type').val(),
-            "activityRate": $('.jq-percent').val(),
-            "contractId": $('.jq-pact').val(),
-            "basicRate": $('.jq-base-percent').val(),
-            "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g,   "/"))),
-            "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g,   "/"))),
-            "showOnHome": showOnHome,
-            "loanAmount": $('.jq-pay').val(),
-            "loanTitles": uploadFile,
-        });
-        $.ajax({
-            url: API_FORM,
-            type: 'POST',
-            dataType: 'json',
-            data:dataForm,
-            contentType: 'application/json; charset=UTF-8',
-        })
-            .done(function() {
-                console.log("success");
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
+        if(formFlag) {
+            indexPic();
+            var startTime = $('.jq-star-date').val();
+            var endTime = $('.jq-end-date').val();
+            var showOnHomeInputVal = $('.jq-index').val();
+            var showOnHome = true;
+            if (showOnHomeInputVal == '0') {
+                showOnHome = false;
+            }
+            var dataForm = JSON.stringify({
+                "projectName": $('.jq-user').val(),
+                "agentLoginName": $('#tags_1').val(),
+                "loanLoginName": $('#tags').val(),
+                "type": $('.jq-mark-type').val(),
+                "periods": $('.jq-timer').val(),
+                "descriptionText": getContentTxt(),
+                "descriptionHtml": getContent(),
+                "investFeeRate": $('.jq-fee').val(),
+                "minInvestAmount": $('.jq-min-pay').val(),
+                "maxInvestAmount": $('.jq-max-pay').val(),
+                "investIncreasingAmount": $('.jq-add-pay').val(),
+                "activityType": $('.jq-impact-type').val(),
+                "activityRate": $('.jq-percent').val(),
+                "contractId": $('.jq-pact').val(),
+                "basicRate": $('.jq-base-percent').val(),
+                "fundraisingStartTime": new Date(Date.parse(startTime.replace(/-/g, "/"))),
+                "fundraisingEndTime": new Date(Date.parse(endTime.replace(/-/g, "/"))),
+                "showOnHome": showOnHome,
+                "loanAmount": $('.jq-pay').val(),
+                "loanTitles": uploadFile,
             });
-
+            $.ajax({
+                url: API_FORM,
+                type: 'POST',
+                dataType: 'json',
+                data: dataForm,
+                contentType: 'application/json; charset=UTF-8',
+            })
+                .done(function (res) {
+                    if(res.data=null){
+                        formFlag =false;
+                    }else{
+                        console.log(res.data)
+                        if(res.data.status){
+                            formFlag =true;
+                        }else{
+                            formFlag =false;
+                        }
+                    }
+                })
+                .fail(function () {
+                    console.log("error");
+                })
+                .always(function () {
+                    console.log("complete");
+                });
+        }
     });
 });

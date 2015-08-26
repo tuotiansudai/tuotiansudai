@@ -157,23 +157,23 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款项目名称: </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-user" placeholder="请输入内容" datatype="*" errormsg="请输入名称">
+                            <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="请输入名称">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" autocomplete="off"
-                                   placeholder="请输入内容">
+                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                                   placeholder="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags" class="form-control ui-autocomplete-input" autocomplete="off"
-                                   placeholder="请输入内容">
+                            <input type="text" id="tags" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                                   placeholder="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -226,14 +226,14 @@
                         <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-pay jq-money" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资手续费比例(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-fee jq-money" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
@@ -243,21 +243,21 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay jq-money" placeholder="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-min-pay jq-money" value="50.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-add-pay jq-money" placeholder="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-add-pay jq-money" value="50.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-max-pay jq-money" placeholder="999999.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
@@ -278,7 +278,7 @@
                         <label class="col-sm-2 control-label">活动利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-percent jq-money" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
@@ -288,7 +288,7 @@
                         <label class="col-sm-2 control-label">基本利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="请输入内容" datatype="money_fl">
+                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl">
                         </div>
                     </div>
                     <div class="form-group">
@@ -350,11 +350,17 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-4 form-error">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
 
-                            <button type="button" class="btn jq-btn-form btn-primary">保存</button>
+                            <button type="button" class="btn jq-btn-form btn-primary" >保存</button>
                         </div>
                     </div>
                 </form>
