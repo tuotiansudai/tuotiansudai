@@ -9,15 +9,13 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     private String title;
     private String desc;
     private String content;
-    private String baseUrl;
     private String time;
 
     public NodeDetailResponseDataDto(){
 
     }
 
-    public NodeDetailResponseDataDto(Node node, String baseUrl, boolean includeContent){
-        this.baseUrl = baseUrl;
+    public NodeDetailResponseDataDto(Node node, boolean includeContent){
         this.nodeId = node.getId();
         this.title = node.getTitle();
         this.desc = node.getDescription();
@@ -66,14 +64,6 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     public String getTime() {

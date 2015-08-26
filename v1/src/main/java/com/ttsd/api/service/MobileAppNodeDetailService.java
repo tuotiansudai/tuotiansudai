@@ -4,5 +4,5 @@ import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.NodeDetailRequestDto;
 
 public interface MobileAppNodeDetailService {
-    BaseResponseDto generateNodeDetail(NodeDetailRequestDto requestDto, String baseUrl);
+    BaseResponseDto generateNodeDetail(NodeDetailRequestDto requestDto);
 }
