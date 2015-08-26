@@ -60,7 +60,7 @@
         limit (#{currentPageNo} - 1) * 10 , 10
     </select>
 
-    <select id="findLoanList" parameterType="map" resultMap="int">
+    <select id="findLoanListCount" parameterType="map" resultMap="int">
         select count(*) from loan t
         <where>
             <if test="#{status} != null and #{status} != ''">
