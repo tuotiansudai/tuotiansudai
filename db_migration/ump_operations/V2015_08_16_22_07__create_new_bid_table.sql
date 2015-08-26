@@ -1,5 +1,5 @@
-CREATE TABLE ${ump_operations}.`mer_bind_project_request` (
-  `id`                  BIGINT UNSIGED  NOT NULL,/******/
+CREATE TABLE ump_operations.`mer_bind_project_request` (
+  `id`                  BIGINT UNSIGED  NOT NULL AUTO_INCREMENT,/******/
   `service`             VARCHAR(32)     NOT NULL,/***接口名称***/
   `sign_type`           VARCHAR(8)      NOT NULL,/***签名方式***/
   `sign`                VARCHAR(256)    NOT NULL,/***签名***/
@@ -20,9 +20,9 @@ ENGINE=InnoDB
 AUTO_INCREMENT = 100001
 DEFAULT CHARSET=utf8;
 
-CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
-  `id`                            INT             NOT NULL AUTO_INCREMENT,/******/
-  `request_id`                    INT             NOT NULL,/***请求ID***/
+CREATE TABLE ump_operations.`mer_bind_project_response` (
+  `id`                            BIGINT UNSIGED  NOT NULL AUTO_INCREMENT,/******/
+  `request_id`                    BIGINT UNSIGED  NOT NULL,/***请求ID***/
   `sign_type`                     varchar(8)      NOT NULL,/***签名方式***/
   `sign`                          varchar(256)    DEFAULT NULL,/***签名***/
   `merchant_id`                   varchar(8)      DEFAULT NULL,/***商户编号***/
@@ -35,7 +35,7 @@ CREATE TABLE ${ump_operations}.`mer_bind_project_response` (
   `response_data`                 TEXT            NOT NULL,/***请求数据***/
   `response_time`                 DATETIME        NOT NULL,/***请求时间***/
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_RESPONSE_REQUEST_ID_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES ${ump_operations}.`mer_bind_project_request` (`id`)
+  CONSTRAINT FK_RESPONSE_REQUEST_ID_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES ump_operations.`mer_bind_project_request` (`id`)
 )
 ENGINE=InnoDB
 AUTO_INCREMENT = 100001

@@ -7,36 +7,34 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
+@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
 public class LoanTitleMapperTest {
     @Autowired
-    LoanTitleMapper loanTitleMapper;
+    private LoanTitleMapper loanTitleMapper;
     @Autowired
     private IdGenerator idGenerator;
 
     @Test
-    public void createLoanTitleTest(){
-        List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
-        long loanId = 186598028689408l;
-        for (int i = 0; i < 1; i++) {
-            LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setId(idGenerator.generate());
-            loanTitleModel.setLoanId(loanId);
-            loanTitleModel.setTitleId(Long.parseLong("1234567890"));
-            loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleModelList.add(loanTitleModel);
-        }
-        loanTitleMapper.createLoanTitle(loanTitleModelList);
-        assertTrue(loanTitleMapper.findLoanTitleByLoanId(loanId).size() > 0);
+    public void createTitleTest(){
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
+        long id = idGenerator.generate();
+        loanTitleModel.setId(id);
+        loanTitleModel.setType("base");
+        loanTitleModel.setTitle("房产证");
+        loanTitleMapper.create(loanTitleModel);
+        assertNotNull(loanTitleMapper.findTitleById(id));
     }
 
+    @Test
+    public void findAllTitlesTest(){
+        List<LoanTitleModel> loanTitleModels = loanTitleMapper.find();
+        assertTrue(loanTitleModels.size() >= 0);
+    }
 }

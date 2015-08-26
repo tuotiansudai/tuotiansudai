@@ -5,10 +5,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * Created by tuotian on 15/8/18.
- */
 public interface LoanTitleMapper {
-    void createLoanTitle(@Param("loanTitleModels")List<LoanTitleModel> loanTitleModels);
-    List<LoanTitleModel> findLoanTitleByLoanId(@Param("loanId")long loanId);
+    void create(LoanTitleModel title);
+    List<LoanTitleModel> find();
+    LoanTitleModel findTitleById(@Param(value = "id") long id);
 }

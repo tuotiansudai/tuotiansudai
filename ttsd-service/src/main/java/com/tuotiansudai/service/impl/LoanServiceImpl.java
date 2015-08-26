@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.TitleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -19,12 +19,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
 
     @Autowired
-    private TitleMapper titleMapper;
+    private LoanTitleMapper loanTitleMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -33,24 +34,24 @@ public class LoanServiceImpl implements LoanService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private LoanTitleMapper loanTitleMapper;
+    private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
     IdGenerator idGenerator;
     /**
-     * @param titleDto
+     * @param loanTitleDto
      * @function 创建标题
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TitleModel createTitle(TitleDto titleDto) {
-        TitleModel titleModel = new TitleModel();
+    public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
         long id = idGenerator.generate();
-        titleModel.setId(id);
-        titleModel.setTitle(titleDto.getTitle());
-        titleModel.setType("new");
-        titleMapper.createTitle(titleModel);
-        return titleModel;
+        loanTitleModel.setId(id);
+        loanTitleModel.setTitle(loanTitleDto.getTitle());
+        loanTitleModel.setType("new");
+        loanTitleMapper.create(loanTitleModel);
+        return loanTitleModel;
     }
 
     /**
@@ -63,8 +64,8 @@ public class LoanServiceImpl implements LoanService {
         return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
-    public List<TitleModel> findAllTitles(){
-        return titleMapper.findAllTitles();
+    public List<LoanTitleModel> findAllTitles(){
+        return loanTitleMapper.find();
     }
 
     @Override
@@ -95,29 +96,38 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> createLoanBid(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
+        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null){
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());;
         if (maxInvestAmount < minInvestAmount){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         Integer result = DateCompare.compareDate(loanDto.getFundraisingStartTime(), loanDto.getFundraisingEndTime());
         if (result == null || result == 1){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
-        String loanUserId = getLoginName(loanDto.getLoanLoginName());
+        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null){
             dataDto.setStatus(false);
+            baseDto.setData(dataDto);
             return baseDto;
         }
         long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(String.valueOf(projectId));
+        loanDto.setId(projectId);
 
         loanDto.setLoanAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getLoanAmount())));
         loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
@@ -130,13 +140,13 @@ public class LoanServiceImpl implements LoanService {
 
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        loanMapper.createLoan(new LoanModel(loanDto));
-        List<LoanTitleModel> loanTitleModelList = loanDto.getLoanTitles();
-        for (LoanTitleModel loanTitleModel : loanDto.getLoanTitles()){
-            loanTitleModel.setId(idGenerator.generate());
-            loanTitleModel.setLoanId(projectId);
+        loanMapper.create(new LoanModel(loanDto));
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
+        for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()){
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(projectId);
         }
-        loanTitleMapper.createLoanTitle(loanTitleModelList);
+        loanTitleRelationMapper.create(loanTitleRelationModelList);
         dataDto.setStatus(true);
         baseDto.setData(dataDto);
         return baseDto;

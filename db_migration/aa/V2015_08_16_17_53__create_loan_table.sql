@@ -1,4 +1,4 @@
-CREATE TABLE `${aa}`.`loan` (
+CREATE TABLE `aa`.`loan` (
   `id`                       BIGINT UNSIGNED NOT NULL,
   `name`                     VARCHAR(255)    NOT NULL, /***借款项目名称***/
   `agent`                    VARCHAR(32)     NOT NULL, /***代理人***/

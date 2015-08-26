@@ -1,22 +1,22 @@
-package com.tuotiansudai.repository.model;
+package com.tuotiansudai.dto;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.math.BigInteger;
 
-/**
- * Created by tuotian on 15/8/17.
- */
-public class TitleModel {
-    private long id;
+public class LoanTitleDto {
+    private BigInteger id;
     /***标题类型base:基础标题，new:新增标题***/
     private String type;
     /***标题名称***/
+    @NotEmpty
     private String title;
 
-    public long getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface LoanMapper {
-    void createLoan(LoanModel loanModel);
+    void create(LoanModel loanModel);
     LoanModel findLoanByLoanId(@Param(value = "loanId")long loanId);
 
     public List<LoanModel> findLoanList(@Param(value = "status") String status,@Param(value = "loanId") String loanId,@Param(value = "loanName") String loanName,

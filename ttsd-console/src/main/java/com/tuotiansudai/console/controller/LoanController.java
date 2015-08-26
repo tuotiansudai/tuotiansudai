@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan(HttpServletRequest request){
+        //TODO 合同需要从数据库中获取
         List contracts = new ArrayList();
         Map<String,String> contract = new HashMap<>();
         contract.put("id", "789098123");
@@ -34,22 +36,22 @@ public class LoanController {
         modelAndView.addObject("contracts",contracts);
         return modelAndView;
     }
-    @RequestMapping(value = "/loaner", method = RequestMethod.GET)
+    @RequestMapping(value = "/loaner/{loaner}", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> findLoginNames(@RequestParam(value = "loginName")String loginName) {
-        return loanService.getLoginNames(loginName);
+    public List<String> findLoginNames(@PathVariable String loaner) {
+        return loanService.getLoginNames(loaner);
     }
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
-    public List<TitleModel> findAllTitles(){
+    public List<LoanTitleModel> findAllTitles(){
         return loanService.findAllTitles();
     }
 
     @RequestMapping(value = "/title",method = RequestMethod.POST)
     @ResponseBody
-    public TitleModel addTitle(@RequestBody TitleDto titleDto){
-        return loanService.createTitle(titleDto);
+    public LoanTitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto){
+        return loanService.createTitle(loanTitleDto);
     }
 
     @RequestMapping(value = "/",method = RequestMethod.POST)

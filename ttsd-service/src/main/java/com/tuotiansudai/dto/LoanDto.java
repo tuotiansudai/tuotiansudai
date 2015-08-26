@@ -2,17 +2,18 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
 public class LoanDto {
 
-    private String id;
+    private long id;
 
     /***标的名称***/
     @NotEmpty
@@ -24,7 +25,8 @@ public class LoanDto {
 
     /***借款用户***/
     @NotEmpty
-    private String loanLoginName;
+    @NotNull
+    private String loanerLoginName;
 
     /***标的类型***/
     @NotEmpty
@@ -79,7 +81,7 @@ public class LoanDto {
 
     /***合同***/
     @NotEmpty
-    private String contractId;
+    private long contractId;
 
     /***筹款开始时间***/
     @NotEmpty
@@ -89,7 +91,7 @@ public class LoanDto {
     @NotEmpty
     private Date fundraisingEndTime;
 
-    /***是否显示在首页1:显示在首页，0:不显示在首页***/
+    /***是否显示在首页 true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
 
     /***借款金额***/
@@ -103,13 +105,13 @@ public class LoanDto {
     private LoanStatus status;
 
     /***申请材料***/
-    private List<LoanTitleModel> loanTitles;
+    private List<LoanTitleRelationModel> loanTitles;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -129,12 +131,12 @@ public class LoanDto {
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanLoginName() {
-        return loanLoginName;
+    public String getLoanerLoginName() {
+        return loanerLoginName;
     }
 
-    public void setLoanLoginName(String loanLoginName) {
-        this.loanLoginName = loanLoginName;
+    public void setLoanerLoginName(String loanerLoginName) {
+        this.loanerLoginName = loanerLoginName;
     }
 
     public LoanType getType() {
@@ -225,11 +227,11 @@ public class LoanDto {
         this.basicRate = basicRate;
     }
 
-    public String getContractId() {
+    public long getContractId() {
         return contractId;
     }
 
-    public void setContractId(String contractId) {
+    public void setContractId(long contractId) {
         this.contractId = contractId;
     }
 
@@ -281,11 +283,11 @@ public class LoanDto {
         this.status = status;
     }
 
-    public List<LoanTitleModel> getLoanTitles() {
+    public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
 
-    public void setLoanTitles(List<LoanTitleModel> loanTitles) {
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
     }
 }

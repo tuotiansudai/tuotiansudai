@@ -2,14 +2,11 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoanModel {
     /***标的号***/
-    private String id;
+    private long id;
     /***借款项目名称***/
     private String name;
     /***代理人***/
@@ -25,15 +22,15 @@ public class LoanModel {
     /***项目描述（带html标签）***/
     private String descriptionHtml;
     /***借款金额***/
-    private Long loanAmount;
+    private long loanAmount;
     /***投资手续费比例***/
     private double investFeeRate;
     /***最小投资金额***/
-    private Long minInvestAmount;
+    private long minInvestAmount;
     /***投资递增金额***/
-    private Long investIncreasingAmount;
+    private long investIncreasingAmount;
     /***单笔最大投资金额***/
-    private Long maxInvestAmount;
+    private long maxInvestAmount;
     /***活动类型***/
     private ActivityType activityType;
     /***活动利率***/
@@ -41,7 +38,7 @@ public class LoanModel {
     /***基本利率***/
     private double basicRate;
     /***合同***/
-    private String contractId;
+    private long contractId;
     /***筹款开始时间***/
     private Date fundraisingStartTime;
     /***筹款截止时间***/
@@ -62,7 +59,7 @@ public class LoanModel {
         this.basicRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
-        this.loanLoginName = loanDto.getLoanLoginName();
+        this.loanLoginName = loanDto.getLoanerLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
@@ -80,11 +77,11 @@ public class LoanModel {
         this.status = loanDto.getStatus();
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -208,11 +205,11 @@ public class LoanModel {
         this.basicRate = basicRate;
     }
 
-    public String getContractId() {
+    public long getContractId() {
         return contractId;
     }
 
-    public void setContractId(String contractId) {
+    public void setContractId(long contractId) {
         this.contractId = contractId;
     }
 

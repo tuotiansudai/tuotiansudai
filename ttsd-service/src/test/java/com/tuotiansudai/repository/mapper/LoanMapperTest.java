@@ -25,25 +25,24 @@ public class LoanMapperTest {
     private LoanMapper loanMapper;
 
     @Autowired
-    LoanTitleMapper loanTitleMapper;
+    LoanTitleRelationMapper loanTitleRelationMapper;
     @Autowired
     private IdGenerator idGenerator;
 
     @Test
     public void createLoanTest() {
         LoanDto loanDto = new LoanDto();
-        loanDto.setLoanLoginName("xiangjie");
+        loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
         long id = idGenerator.generate();
-        String idStr = String.valueOf(id);
-        loanDto.setId(idStr);
+        loanDto.setId(id);
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods("30");
         loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
-        loanDto.setContractId("123");
+        loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
         loanDto.setFundraisingEndTime(new Date());
@@ -56,10 +55,10 @@ public class LoanMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
-        loanDto.setLoanTitles(loanTitleModelList);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        loanDto.setLoanTitles(loanTitleRelationModelList);
         LoanModel loanModel = new LoanModel(loanDto);
-        loanMapper.createLoan(loanModel);
+        loanMapper.create(loanModel);
         assertNotNull(loanMapper.findLoanByLoanId(id));
     }
 }
