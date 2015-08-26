@@ -35,10 +35,10 @@ public class LoanController {
         modelAndView.addObject("contracts",contracts);
         return modelAndView;
     }
-    @RequestMapping(value = "/loaner", method = RequestMethod.GET)
+    @RequestMapping(value = "/loaner/{loaner:^[A-Za-z0-9]$}", method = RequestMethod.GET)
     @ResponseBody
-    public List<String> findLoginNames(@RequestParam(value = "loginName")String loginName) {
-        return loanService.getLoginNames(loginName);
+    public List<String> findLoginNames(@PathVariable String loaner) {
+        return loanService.getLoginNames(loaner);
     }
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
