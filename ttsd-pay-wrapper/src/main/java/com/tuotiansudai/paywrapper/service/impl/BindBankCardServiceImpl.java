@@ -10,7 +10,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindCardRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBankCardRequestModel;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -49,7 +49,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         bankCardModel.setStatus(BankCardStatus.UNCHECK);
 
 
-        PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
+        PtpMerBankCardRequestModel requestModel = new PtpMerBankCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
                 accountModel.getUserName(), accountModel.getIdentityNumber());

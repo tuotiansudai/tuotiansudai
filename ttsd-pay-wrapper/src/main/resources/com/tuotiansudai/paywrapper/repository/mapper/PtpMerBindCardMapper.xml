@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper">
 
-    <resultMap id="requestMap" type="PtpMerBindCardRequestModel">
+    <resultMap id="requestMap" type="PtpMerBankCardRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
         <result property="signType" column="sign_type"/>
@@ -32,7 +32,7 @@
         select * from ptp_mer_bind_card_request where id = #{id}
     </select>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="PtpMerBindCardRequestModel">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="PtpMerBankCardRequestModel">
         insert into ptp_mer_bind_card_request (service, sign_type, sign, charset, mer_Id, version, ret_url,notify_url, order_id, mer_date,user_id, card_id, account_name, identity_type, identity_code,is_open_fastPayment,request_time,request_url, request_data, status)
         values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version},#{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{userId}, #{cardId}, #{accountName}, #{identityType},#{identityCode},#{isOpenFastPayment},#{requestTime}, #{requestUrl}, #{requestData}, #{status})
     </insert>

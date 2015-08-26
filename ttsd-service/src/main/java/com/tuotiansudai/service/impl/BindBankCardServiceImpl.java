@@ -21,6 +21,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     @Override
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         String loginName = LoginUserInfo.getLoginName();
+        loginName = "zhuyanyan";
         dto.setLoginName(loginName);
         return payWrapperClient.bindBankCard(dto);
     }
