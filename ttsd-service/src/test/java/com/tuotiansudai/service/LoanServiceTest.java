@@ -29,7 +29,7 @@ public class LoanServiceTest {
     @Test
     public void createLoanServiceTest(){
         LoanDto loanDto = new LoanDto();
-        loanDto.setLoanLoginName("xiangjie");
+        loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
         long id = idGenerator.generate();
         String idStr = String.valueOf(id);

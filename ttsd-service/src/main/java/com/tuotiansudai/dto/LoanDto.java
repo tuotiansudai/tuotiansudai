@@ -24,7 +24,7 @@ public class LoanDto {
 
     /***借款用户***/
     @NotEmpty
-    private String loanLoginName;
+    private String loanerLoginName;
 
     /***标的类型***/
     @NotEmpty
@@ -129,12 +129,12 @@ public class LoanDto {
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanLoginName() {
-        return loanLoginName;
+    public String getLoanerLoginName() {
+        return loanerLoginName;
     }
 
-    public void setLoanLoginName(String loanLoginName) {
-        this.loanLoginName = loanLoginName;
+    public void setLoanerLoginName(String loanerLoginName) {
+        this.loanerLoginName = loanerLoginName;
     }
 
     public LoanType getType() {

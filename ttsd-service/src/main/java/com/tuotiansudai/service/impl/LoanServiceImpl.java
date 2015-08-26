@@ -104,7 +104,7 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setStatus(false);
             return baseDto;
         }
-        String loanUserId = getLoginName(loanDto.getLoanLoginName());
+        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
             return baseDto;

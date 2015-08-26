@@ -62,7 +62,7 @@ public class LoanModel {
         this.basicRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
-        this.loanLoginName = loanDto.getLoanLoginName();
+        this.loanLoginName = loanDto.getLoanerLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();

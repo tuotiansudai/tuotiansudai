@@ -32,7 +32,7 @@ public class LoanMapperTest {
     @Test
     public void createLoanTest() {
         LoanDto loanDto = new LoanDto();
-        loanDto.setLoanLoginName("xiangjie");
+        loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setBasicRate("16.00");
         long id = idGenerator.generate();
