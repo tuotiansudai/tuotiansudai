@@ -61,7 +61,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     public List<TitleModel> findAllTitles(){
-        return titleMapper.findAllTitles();
+        return titleMapper.find();
     }
 
     @Override

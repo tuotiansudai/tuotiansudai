@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TitleMapper {
     void create(TitleModel title);
-    List<TitleModel> findAllTitles();
+    List<TitleModel> find();
     TitleModel findTitleById(@Param(value = "id") long id);
 }

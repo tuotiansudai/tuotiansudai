@@ -34,7 +34,7 @@ public class TitleMapperTest {
 
     @Test
     public void findAllTitlesTest(){
-        List<TitleModel> titleModels = titleMapper.findAllTitles();
+        List<TitleModel> titleModels = titleMapper.find();
         assertTrue(titleModels.size() >= 0);
     }
 }
