@@ -128,7 +128,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         bankCard.setIsOpenFastPayment(false);
 
         String orderId = umPayReplaceBankCardOperation.generateReplaceCardOrderId(bankCard);
-        ReqData reqData = umPayReplaceBankCardOperation.buildReqData(bankCard, orderId);
+        ReqData reqData = umPayReplaceBankCardOperation.buildReqData(bankCard, orderId, true);
         BankCardReplaceResponseDataDto responseDataDto = new BankCardReplaceResponseDataDto();
         try {
             responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(), true));

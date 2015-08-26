@@ -74,7 +74,7 @@ public class UmPayBindingBankCardOperation extends
 			FacesContext facesContext) throws IOException {
 		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
 		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
-		Map<String, String> sendMap = assembleSendMap(bankCard,order_id);
+		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,false);
 		TrusteeshipOperation to = null;
 		try {
 			// 加密参数
@@ -99,14 +99,20 @@ public class UmPayBindingBankCardOperation extends
 	 * @param order_id
 	 * @return
 	 */
-	public Map<String,String> assembleSendMap(BankCard bankCard,String order_id){
+	public Map<String,String> assembleSendMap(BankCard bankCard, String order_id, boolean isMobileRequest){
 
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_CARD);
-		// 同步地址
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		if(isMobileRequest) {
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		}else{
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		}
 		// 后台地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -147,7 +153,7 @@ public class UmPayBindingBankCardOperation extends
 	public BaseResponseDto createOperation(BankCard bankCard) throws IOException {
 		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
 		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
-		Map<String, String> sendMap = assembleSendMap(bankCard,order_id);
+		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,true);
 		//配置此项，表示使用H5页面
 		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
 		// 同步地址

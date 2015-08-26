@@ -39,11 +39,19 @@ public class UmPayConstants {
 	}
 
 	/**
-	 * 同步回调地址前缀
+	 * 同步回调地址前缀（PC端）
 	 */
 	public static final class ResponseWebUrl {
 		public static final String PRE_RESPONSE_URL = props
 				.getProperty("resopnse.webUrl");
+	}
+
+	/**
+	 * 同步回调地址前缀（移动端）
+	 */
+	public static final class ResponseMobUrl {
+		public static final String PRE_RESPONSE_URL = props
+				.getProperty("resopnse.mobUrl");
 	}
 
 	/**

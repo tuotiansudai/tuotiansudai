@@ -59,7 +59,7 @@ public class UmPayBindingAgreementOperation extends
         if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
-        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
+        Map<String, String> sendMap = assembleSendMap(userId, trusteeshipAccount, false);
         TrusteeshipOperation trusteeshipOperation = null;
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
@@ -94,12 +94,18 @@ public class UmPayBindingAgreementOperation extends
      * @param userId 用户ID
      * @return Map<String,String>
      */
-    public Map<String,String> assembleSendMap(String userId,TrusteeshipAccount trusteeshipAccount){
+    public Map<String,String> assembleSendMap(String userId,TrusteeshipAccount trusteeshipAccount, boolean isMobileRequest){
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
 
-        // 同步地址
-        sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-                + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+        if(isMobileRequest) {
+            // 同步地址
+            sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+                    + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+        }else{
+            // 同步地址
+            sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+                    + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+        }
         // 后台地址
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -127,7 +133,7 @@ public class UmPayBindingAgreementOperation extends
             baseResponseDto.setMessage(ReturnMessage.NOT_BIND_CARD.getMsg());
             return baseResponseDto;
         }
-        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
+        Map<String, String> sendMap = assembleSendMap(userId, trusteeshipAccount, true);
         //配置此项，表示使用H5页面
         sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
         // 同步地址
