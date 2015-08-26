@@ -1,12 +1,12 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface TitleMapper {
-    void create(TitleModel title);
-    List<TitleModel> find();
-    TitleModel findTitleById(@Param(value = "id") long id);
+    void create(LoanTitleModel title);
+    List<LoanTitleModel> find();
+    LoanTitleModel findTitleById(@Param(value = "id") long id);
 }

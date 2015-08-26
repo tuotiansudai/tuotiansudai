@@ -40,14 +40,14 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TitleModel createTitle(LoanTitleDto loanTitleDto) {
-        TitleModel titleModel = new TitleModel();
+    public LoanTitleModel createTitle(LoanTitleDto loanTitleDto) {
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
         long id = idGenerator.generate();
-        titleModel.setId(id);
-        titleModel.setTitle(loanTitleDto.getTitle());
-        titleModel.setType("new");
-        titleMapper.create(titleModel);
-        return titleModel;
+        loanTitleModel.setId(id);
+        loanTitleModel.setTitle(loanTitleDto.getTitle());
+        loanTitleModel.setType("new");
+        titleMapper.create(loanTitleModel);
+        return loanTitleModel;
     }
 
     /**
@@ -60,7 +60,7 @@ public class LoanServiceImpl implements LoanService {
         return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
-    public List<TitleModel> findAllTitles(){
+    public List<LoanTitleModel> findAllTitles(){
         return titleMapper.find();
     }
 

@@ -1,7 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,13 +43,13 @@ public class LoanController {
 
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
-    public List<TitleModel> findAllTitles(){
+    public List<LoanTitleModel> findAllTitles(){
         return loanService.findAllTitles();
     }
 
     @RequestMapping(value = "/title",method = RequestMethod.POST)
     @ResponseBody
-    public TitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto){
+    public LoanTitleModel addTitle(@RequestBody LoanTitleDto loanTitleDto){
         return loanService.createTitle(loanTitleDto);
     }
 

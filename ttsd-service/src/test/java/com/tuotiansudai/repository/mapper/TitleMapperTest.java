@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.TitleModel;
+import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,18 +23,18 @@ public class TitleMapperTest {
 
     @Test
     public void createTitleTest(){
-        TitleModel titleModel = new TitleModel();
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
         long id = idGenerator.generate();
-        titleModel.setId(id);
-        titleModel.setType("base");
-        titleModel.setTitle("房产证");
-        titleMapper.create(titleModel);
+        loanTitleModel.setId(id);
+        loanTitleModel.setType("base");
+        loanTitleModel.setTitle("房产证");
+        titleMapper.create(loanTitleModel);
         assertNotNull(titleMapper.findTitleById(id));
     }
 
     @Test
     public void findAllTitlesTest(){
-        List<TitleModel> titleModels = titleMapper.find();
-        assertTrue(titleModels.size() >= 0);
+        List<LoanTitleModel> loanTitleModels = titleMapper.find();
+        assertTrue(loanTitleModels.size() >= 0);
     }
 }
