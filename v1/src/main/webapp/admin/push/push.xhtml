@@ -1,0 +1,31 @@
+<ui:composition template="/admin/templates/ui.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <div class="entry">
+            <p:toolbar styleClass="admin-nav-toolbar">
+                <p:toolbarGroup>
+                    <h:outputLabel value="#{commonMsg.currentPositionLabel} 消息推送"></h:outputLabel>
+                </p:toolbarGroup>
+            </p:toolbar>
+            <p:spacer></p:spacer>
+            <h:form id="form">
+                <h:panelGrid columns="2"  columnClasses="col1,col2" id="panel">
+                    <h:outputLabel value="消息内容"></h:outputLabel>
+                    <h:inputTextarea value="#{pushHome.pushHistory.notification}" style="width:600px;height:100px;"></h:inputTextarea>
+
+                    <h:outputLabel value="#{commonMsg.actionLabel}"></h:outputLabel>
+                    <ui:fragment>
+                        <p:commandButton action="#{pushHome.push}" update="@form"
+                                         value="推送" id="saveBtn"></p:commandButton>
+                        <p:commandButton type="reset" value="#{commonMsg.resetLabel}"></p:commandButton>
+                        <p:blockUI block="panel" trigger="saveBtn"></p:blockUI>
+                    </ui:fragment>
+                </h:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+

@@ -139,7 +139,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             }
         }
 
-
         this.authenticateToken(loginName);
         chain.doFilter(bufferedRequest, response);
     }
