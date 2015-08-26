@@ -17,7 +17,7 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
         this.service = "mer_bind_project";
         this.projectId = projectId;
         this.projectName = projectName;
-        this.projectAmount = projectAmount;
+        this.projectAmount = loanAmount;
         this.loanUserId = loanUserId;
     }
     public Map<String, String> generatePayRequestData() {
