@@ -19,7 +19,7 @@ public class BindBankCardController {
     @Autowired
     private BindBankCardService bindBankCardService;
 
-    @RequestMapping(value = "/bank-card", method = RequestMethod.POST)
+    @RequestMapping(value = "/bind-card", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> bindBankCard(@Valid @RequestBody BindBankCardDto dto) {
 

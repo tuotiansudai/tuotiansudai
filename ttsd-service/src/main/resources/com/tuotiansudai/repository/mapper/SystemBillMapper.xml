@@ -15,8 +15,8 @@
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.SystemBillModel" useGeneratedKeys="true"
             keyProperty="id">
-        insert into system_bill ( money, balance, detail, bill_type, created_time)
-        value( #{money}, #{balance}, #{detail}, #{billType}, #{createdTime})
+        insert into system_bill ( money, detail, bill_type, created_time)
+        value( #{money}, #{detail}, #{billType}, #{createdTime})
     </insert>
     <select id="getLastestSystemBill"  resultMap="SystemBillResultMap">
         select * from system_bill ORDER by createdTime desc

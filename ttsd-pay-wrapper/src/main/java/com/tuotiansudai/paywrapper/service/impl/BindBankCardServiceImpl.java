@@ -11,7 +11,6 @@ import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindCardRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;

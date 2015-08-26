@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping(value = "/bank-card")
+@RequestMapping(value = "/bind-card")
 public class BindBankCardController {
 
     @Autowired
@@ -20,12 +20,12 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
-        return new ModelAndView("/bank-card");
+        return new ModelAndView("/bind-card");
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView bindBankCard(@Valid @RequestBody BindBankCardDto bindBankCardDto) {
+    public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);

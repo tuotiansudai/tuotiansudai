@@ -27,7 +27,7 @@ public class PayWrapperClient {
     @Value("${paywrapper.recharge}")
     private String rechargePath;
 
-    @Value("${paywrapper.bank-card}")
+    @Value("${paywrapper.bind-card}")
     private String bindBankCardPath;
     @Value("${paywrapper.withdraw}")
     private String withdrawPath;

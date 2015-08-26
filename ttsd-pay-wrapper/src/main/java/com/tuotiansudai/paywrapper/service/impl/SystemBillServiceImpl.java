@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,21 +22,12 @@ public class SystemBillServiceImpl implements SystemBillService {
     @Override
     @Transactional
     public void transferOut(long money,String detail,String reason) throws AmountTransferException{
-        SystemBillModel lastestSystemBill = getLastestSystemBill();
-        long balance = 0L;
-        if(lastestSystemBill != null){
-            long lastBalance = lastestSystemBill.getBalance();
-            if(lastBalance < money){
-
-                throw new AmountTransferException("Insufficient system account balance");
-            }
-            balance = lastestSystemBill.getBalance() - money;
-        }
         SystemBillModel systemBillModel = new SystemBillModel();
         systemBillModel.setBillType(SystemBillType.OUT);
         systemBillModel.setMoney(money);
-        systemBillModel.setBalance(balance);
         systemBillModel.setReason(reason);
+        systemBillModel.setDetail(detail);
+        systemBillModel.setCreatedTime(new Date());
         systemBillMapper.create(systemBillModel);
 
     }

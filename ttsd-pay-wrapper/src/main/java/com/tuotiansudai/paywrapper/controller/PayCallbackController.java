@@ -1,9 +1,6 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper;
-import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
@@ -33,7 +30,7 @@ public class PayCallbackController {
     @Autowired
     private WithdrawService withdrawService;
 
-    
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -41,7 +38,7 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/ptp_mer_bind_card", method = RequestMethod.GET)
+    @RequestMapping(value = "/mer_bind_card_notify", method = RequestMethod.GET)
     public ModelAndView bindBankCard(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
@@ -61,7 +58,6 @@ public class PayCallbackController {
         while (parameterNames.hasMoreElements()) {
             String name = parameterNames.nextElement();
             String parameter = request.getParameter(name);
-//            parameter = new String(parameter.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             paramsMap.put(name, parameter);
         }
         return paramsMap;
