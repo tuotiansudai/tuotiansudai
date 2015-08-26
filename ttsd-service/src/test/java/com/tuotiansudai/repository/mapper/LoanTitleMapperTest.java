@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanTitleRelation;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,17 +25,17 @@ public class LoanTitleMapperTest {
 
     @Test
     public void createLoanTitleTest(){
-        List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
+        List<LoanTitleRelation> loanTitleRelationList = new ArrayList<LoanTitleRelation>();
         long loanId = 186598028689408l;
         for (int i = 0; i < 1; i++) {
-            LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setId(idGenerator.generate());
-            loanTitleModel.setLoanId(loanId);
-            loanTitleModel.setTitleId(Long.parseLong("1234567890"));
-            loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleModelList.add(loanTitleModel);
+            LoanTitleRelation loanTitleRelation = new LoanTitleRelation();
+            loanTitleRelation.setId(idGenerator.generate());
+            loanTitleRelation.setLoanId(loanId);
+            loanTitleRelation.setTitleId(Long.parseLong("1234567890"));
+            loanTitleRelation.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationList.add(loanTitleRelation);
         }
-        loanTitleMapper.create(loanTitleModelList);
+        loanTitleMapper.create(loanTitleRelationList);
         assertTrue(loanTitleMapper.findLoanTitleByLoanId(loanId).size() > 0);
     }
 

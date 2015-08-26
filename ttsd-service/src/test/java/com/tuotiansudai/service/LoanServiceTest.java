@@ -3,7 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanTitleRelation;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,16 +51,16 @@ public class LoanServiceTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
+        List<LoanTitleRelation> loanTitleRelationList = new ArrayList<LoanTitleRelation>();
         for(int i=0;i<5;i++){
-            LoanTitleModel loanTitleModel = new LoanTitleModel();
-            loanTitleModel.setId(idGenerator.generate());
-            loanTitleModel.setLoanId(id);
-            loanTitleModel.setTitleId(Long.parseLong("1234567890"));
-            loanTitleModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
-            loanTitleModelList.add(loanTitleModel);
+            LoanTitleRelation loanTitleRelation = new LoanTitleRelation();
+            loanTitleRelation.setId(idGenerator.generate());
+            loanTitleRelation.setLoanId(id);
+            loanTitleRelation.setTitleId(Long.parseLong("1234567890"));
+            loanTitleRelation.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationList.add(loanTitleRelation);
         }
-        loanDto.setLoanTitles(loanTitleModelList);
+        loanDto.setLoanTitles(loanTitleRelationList);
         loanService.createLoanBid(loanDto);
 
     }

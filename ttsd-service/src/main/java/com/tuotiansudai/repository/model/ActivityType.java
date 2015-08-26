@@ -1,11 +1,5 @@
 package com.tuotiansudai.repository.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Created by tuotian on 15/8/18.
- */
 public enum ActivityType {
     /***默认值***/
     NORMAL_INVEST("NORMAL","普通投资"),

@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.model;
 
-import java.math.BigInteger;
-
-public class LoanTitleModel {
+public class LoanTitleRelation {
     private long id;
     private long loanId;/***借款标的***/
     private long titleId;/***申请材料标题***/

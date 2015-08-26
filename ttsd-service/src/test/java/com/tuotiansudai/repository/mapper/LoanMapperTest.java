@@ -55,8 +55,8 @@ public class LoanMapperTest {
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleModel> loanTitleModelList = new ArrayList<LoanTitleModel>();
-        loanDto.setLoanTitles(loanTitleModelList);
+        List<LoanTitleRelation> loanTitleRelationList = new ArrayList<LoanTitleRelation>();
+        loanDto.setLoanTitles(loanTitleRelationList);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         assertNotNull(loanMapper.findLoanByLoanId(id));
