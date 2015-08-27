@@ -100,7 +100,13 @@ public class LoanServiceImpl implements LoanService {
         }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         if (maxInvestAmount < minInvestAmount) {
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount){
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
@@ -126,7 +132,7 @@ public class LoanServiceImpl implements LoanService {
         long projectId = idGenerator.generate();/****标的号****/
         loanDto.setId(projectId);
 
-        loanDto.setLoanAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getLoanAmount())));
+        loanDto.setLoanAmount(String.valueOf(loanAmount));
         loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
         loanDto.setMinInvestAmount(String.valueOf(minInvestAmount));
         loanDto.setInvestIncreasingAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount())));

@@ -2,9 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
 
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoanModel {
@@ -15,7 +12,7 @@ public class LoanModel {
     /***代理人***/
     private String agentLoginName;
     /***借款用户***/
-    private String loanLoginName;
+    private String loanerLoginName;
     /***标的类型***/
     private LoanType type;
     /***借款期限***/
@@ -62,7 +59,7 @@ public class LoanModel {
         this.basicRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
-        this.loanLoginName = loanDto.getLoanerLoginName();
+        this.loanerLoginName = loanDto.getLoanerLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
@@ -104,12 +101,12 @@ public class LoanModel {
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanLoginName() {
-        return loanLoginName;
+    public String getLoanerLoginName() {
+        return loanerLoginName;
     }
 
-    public void setLoanLoginName(String loanLoginName) {
-        this.loanLoginName = loanLoginName;
+    public void setLoanerLoginName(String loanerLoginName) {
+        this.loanerLoginName = loanerLoginName;
     }
 
     public LoanType getType() {

@@ -36,7 +36,7 @@ public class LoanTitleRelationMapperTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);
-        assertTrue(loanTitleRelationMapper.findLoanTitleByLoanId(loanId).size() > 0);
+        assertTrue(loanTitleRelationMapper.findByLoanId(loanId).size() > 0);
     }
 
 }
