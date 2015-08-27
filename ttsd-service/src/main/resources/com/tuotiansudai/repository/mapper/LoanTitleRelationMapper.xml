@@ -18,7 +18,7 @@
         </foreach>
     </insert>
 
-    <select id="findLoanTitleByLoanId" parameterType="long" resultMap="loanTitleResultMap">
+    <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
         select * from loan_title_relation where loan_id = #{loanId}
     </select>
 </mapper>

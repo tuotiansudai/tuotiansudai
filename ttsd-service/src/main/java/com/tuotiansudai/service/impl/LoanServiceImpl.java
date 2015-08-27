@@ -62,7 +62,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     public List<LoanTitleModel> findAllTitles() {
-        return loanTitleMapper.find();
+        return loanTitleMapper.findAll();
     }
 
     @Override

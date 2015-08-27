@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface LoanTitleMapper {
     void create(LoanTitleModel title);
-    List<LoanTitleModel> find();
-    LoanTitleModel findTitleById(@Param(value = "id") long id);
+    List<LoanTitleModel> findAll();
+    LoanTitleModel findById(@Param(value = "id") long id);
 }

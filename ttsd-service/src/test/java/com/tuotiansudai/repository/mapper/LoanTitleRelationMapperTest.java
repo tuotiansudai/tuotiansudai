@@ -26,12 +26,12 @@ public class LoanTitleRelationMapperTest {
     @Test
     public void createLoanTitleTest(){
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
-        long loanId = 186598028689408l;
+        long loanId = 192832676724736L;
         for (int i = 0; i < 1; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
-            loanTitleRelationModel.setTitleId(Long.parseLong("1234567890"));
+            loanTitleRelationModel.setTitleId(Long.parseLong("12312312312"));
             loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }

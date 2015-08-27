@@ -14,11 +14,11 @@
         insert into loan_title(id,type,title)VALUES (#{id},#{type},#{title})
     </insert>
 
-    <select id="find" resultMap="titleResultMap">
+    <select id="findAll" resultMap="titleResultMap">
         select * from loan_title
     </select>
 
-    <select id="findTitleById" parameterType="long" resultMap="titleResultMap">
+    <select id="findById" parameterType="long" resultMap="titleResultMap">
         select * from loan_title where id = #{id}
     </select>
 </mapper>
