@@ -26,7 +26,7 @@ public class InvestmentTopDaoImpl implements InvestmentTopDao {
             "   group by invest.user_id" +
             " ) stat" +
             " inner join user u on u.id = stat.user_id" +
-            " order by stat.corpus desc";
+            " order by stat.interest desc";
 
     @Override
     public List<InvestTopItem> StatInvestmentTop(Date beginTime, Date endTime){
