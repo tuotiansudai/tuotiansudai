@@ -1,6 +1,8 @@
 package com.ttsd.special.dto;
 
-public class InvestTopItem {
+import java.io.Serializable;
+
+public class InvestTopItem implements Serializable{
     private String userId;
     private String phoneNumber;
     private Double corpus;

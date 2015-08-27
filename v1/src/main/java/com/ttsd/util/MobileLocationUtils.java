@@ -50,7 +50,7 @@ public class MobileLocationUtils {
 //            String Baifubao = locateMobileNumberBaifubao(rndPhoneNumber);
 //            String Shouji360 = locateMobileNumber360(rndPhoneNumber);
             String province = locateMobileNumber(rndPhoneNumber);
-            String area = ProvinceUtils.getAreaByProvince(province);
+            ChinaArea area = ProvinceUtils.getAreaByProvince(province);
             System.out.println(
                     String.format("%4d \t", i + 1)
                             + rndPhoneNumber + " : "
