@@ -32,44 +32,6 @@ public class MobileLocationUtils {
             Provider.BaiduApiStore
     };
 
-    public static void main(String[] args) {
-        int[] phonePrefixArray = new int[]{
-                133, 153, 180, 189, 130, 131, 132, 155, 156,
-                185, 186, 134, 135, 136, 137, 138, 139, 150,
-                151, 152, 157, 158, 159, 187, 188
-        };
-        int testCount = 1000;
-        int prefixCount = phonePrefixArray.length;
-        SimpleDateFormat sdf = new SimpleDateFormat("\tHH:mm:ss");
-        for (int i = 0; i < testCount; i++) {
-            int rndPrefix = phonePrefixArray[i % prefixCount];
-            String rndPhoneNumber = rndPrefix + RandomStringUtils.randomNumeric(8);
-//            String baiduApiStore = locateMobileNumberBaiduApiStore(rndPhoneNumber);
-//            String Taobao = locateMobileNumberTaobao(rndPhoneNumber);
-//            String PaiPai = locateMobileNumberPaiPai(rndPhoneNumber);
-//            String Baifubao = locateMobileNumberBaifubao(rndPhoneNumber);
-//            String Shouji360 = locateMobileNumber360(rndPhoneNumber);
-            String province = locateMobileNumber(rndPhoneNumber);
-            ChinaArea area = ProvinceUtils.getAreaByProvince(province);
-            System.out.println(
-                    String.format("%4d \t", i + 1)
-                            + rndPhoneNumber + " : "
-                            + area
-                            + " "
-                            + province
-                            + String.format(sdf.format(new Date()))
-
-//                    String.format("%4d \t", i + 1)
-//                            + rndPhoneNumber + " : "
-//                            + "\t"
-//                            + Taobao
-//                            + "\t"
-//                            + Shouji360
-//                            + String.format(sdf.format(new Date()))
-            );
-        }
-    }
-
     public static String locateMobileNumber(String phoneNumber) {
         for (Provider p: PROVIDER_PRIORITY){
             try{
