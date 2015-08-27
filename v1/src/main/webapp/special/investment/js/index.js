@@ -82,13 +82,6 @@ $(function () {
         $('.nav li').removeClass('active').eq(0).addClass('active');
         $('.area-table').find('tbody').remove();
         $.post(API_URL, {period: _thisValue}, function (data) {
-            /*optional stuff to do after success */
-            //var _chinaArr = data.areaInvestments.CHINA;
-            //var _china = _chinaArr.length;
-            //tmpChina(_china, 9, _chinaArr, '.china-table');
-            //jqDate.find('.dataStar').text(data.beginTime);
-            //jqDate.find('.dataEnd').text(data.endTime);
-            //jqDate.find('.newsdata i').text(data.updateTime);
             allData(data);
         });
     });
