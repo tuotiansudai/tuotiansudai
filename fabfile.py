@@ -1,4 +1,5 @@
 from __future__ import with_statement
+import os
 from fabric.api import *
 
 
@@ -59,3 +60,8 @@ def migrate():
     with cd('/workspace/tuotian/v1'):
         run('/opt/gradle/latest/bin/gradle clean')
         run('/opt/gradle/latest/bin/gradle flywayMigrate')
+
+ROOT = os.path.abspath(os.path.dirname(__file__))
+fab_local_file = os.path.join(ROOT, "fab_local.py")
+if os.path.exists(fab_local_file):
+    execfile(fab_local_file)

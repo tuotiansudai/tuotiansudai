@@ -152,6 +152,21 @@ def devdeploy():
     Deploy to dev/test environment
     """
 
+@task
+def cideploy():
+    """
+    Deploy to PROD from CI
+    """
+    from paver.shell import sh
+
+    try:
+        ci_file = open('/workspace/ci/abc', 'rb')
+        pwd = ci_file.readline().strip()
+        sh("fab deploy -p {0} --show=debug".format(pwd))
+        ci_file.close()
+    except Exception as e:
+        print e
+
 
 def generate_git_log_file():
     from paver.shell import sh
@@ -177,6 +192,7 @@ def versioning_min_files(path):
             new_name = '.'.join(new_name_parts)
             new_file_full_path = os.path.join('/'.join(full_path_parts[:-1]), new_name)
             shutil.copyfile(original_file_path, new_file_full_path)
+    log_file.close()
 
 
 @task
