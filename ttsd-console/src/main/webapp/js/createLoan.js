@@ -208,12 +208,17 @@ $(function () {
             return false;
         }
     });
+    //关闭警告提示
+    $('body').on('click','[aria-hidden="true"]',function(){
+        $('.jq-btn-form').removeAttr('disabled');
+    });
     //提交表单
     $('.jq-btn-form').click(function () {
         //$(".jq-form").Validform({
         //    tiptype: 0,
         //});
         if(formFlag) {
+            $(this).attr('disabled','disabled');
             indexPic();
             var startTime = $('.jq-star-date').val();
             var endTime = $('.jq-end-date').val();
@@ -252,15 +257,16 @@ $(function () {
                 contentType: 'application/json; charset=UTF-8',
             })
                 .done(function (res) {
-                    if(res.data=null){
-                        formFlag =false;
+                    if(res.data.status){
+                        formFlag =true;
+                        var htm = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">亲，恭喜您建标成功！</span></div>';
+                        $('.form-error').append(htm);
                     }else{
-                        console.log(res.data)
-                        if(res.data.status){
-                            formFlag =true;
-                        }else{
-                            formFlag =false;
-                        }
+                        formFlag =false;
+                        var htm = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">亲，建标失败啦！</span></div>';
+                        $('.form-error .txt').text('亲，建标失败啦！')
+                        $('.form-error').append(htm);
+
                     }
                 })
                 .fail(function () {

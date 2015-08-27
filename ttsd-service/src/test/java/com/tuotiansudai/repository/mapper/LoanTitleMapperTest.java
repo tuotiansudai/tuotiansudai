@@ -29,12 +29,12 @@ public class LoanTitleMapperTest {
         loanTitleModel.setType("base");
         loanTitleModel.setTitle("房产证");
         loanTitleMapper.create(loanTitleModel);
-        assertNotNull(loanTitleMapper.findTitleById(id));
+        assertNotNull(loanTitleMapper.findById(id));
     }
 
     @Test
     public void findAllTitlesTest(){
-        List<LoanTitleModel> loanTitleModels = loanTitleMapper.find();
+        List<LoanTitleModel> loanTitleModels = loanTitleMapper.findAll();
         assertTrue(loanTitleModels.size() >= 0);
     }
 }
