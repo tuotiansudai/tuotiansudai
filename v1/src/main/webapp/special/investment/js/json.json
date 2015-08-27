@@ -1,0 +1,3521 @@
+{
+  "updateTime": "2015-08-27 02:59:59",
+  "beginTime": "2014-12-31",
+  "endTime": "2015-12-30",
+  "areaInvestments": {
+    "CHINA_SOUTHMIDDLE": [
+      {
+        "userId": "PzuPtDJ",
+        "corpus": "100613.14",
+        "interest": "902.69"
+      },
+      {
+        "userId": "XJusZVm",
+        "corpus": "99226.27",
+        "interest": "829.14"
+      },
+      {
+        "userId": "RHPQOpp",
+        "corpus": "98203.33",
+        "interest": "753.53"
+      },
+      {
+        "userId": "fTXYHGy",
+        "corpus": "97922.62",
+        "interest": "943.26"
+      },
+      {
+        "userId": "zvuJsIX",
+        "corpus": "96537.59",
+        "interest": "214.29"
+      },
+      {
+        "userId": "vsdUNly",
+        "corpus": "95425.70",
+        "interest": "56.36"
+      },
+      {
+        "userId": "LlCRxyJ",
+        "corpus": "94509.43",
+        "interest": "540.87"
+      },
+      {
+        "userId": "FYMytoU",
+        "corpus": "93995.72",
+        "interest": "504.14"
+      },
+      {
+        "userId": "IbKOjmO",
+        "corpus": "92335.35",
+        "interest": "374.16"
+      },
+      {
+        "userId": "qbbccIE",
+        "corpus": "91146.82",
+        "interest": "632.22"
+      },
+      {
+        "userId": "xlCxMxJ",
+        "corpus": "90197.56",
+        "interest": "342.44"
+      },
+      {
+        "userId": "zDYOluq",
+        "corpus": "89275.99",
+        "interest": "405.12"
+      },
+      {
+        "userId": "KenoMpv",
+        "corpus": "88420.97",
+        "interest": "295.93"
+      },
+      {
+        "userId": "XiHNDdw",
+        "corpus": "87767.48",
+        "interest": "535.65"
+      },
+      {
+        "userId": "aeFWuYi",
+        "corpus": "86500.96",
+        "interest": "127.92"
+      },
+      {
+        "userId": "BPJlDZk",
+        "corpus": "85636.22",
+        "interest": "730.44"
+      },
+      {
+        "userId": "PcLHoyj",
+        "corpus": "84612.25",
+        "interest": "552.31"
+      },
+      {
+        "userId": "IeMHdIP",
+        "corpus": "83852.41",
+        "interest": "453.01"
+      },
+      {
+        "userId": "dmyUOKS",
+        "corpus": "82323.68",
+        "interest": "653.48"
+      },
+      {
+        "userId": "caOUiJu",
+        "corpus": "81850.07",
+        "interest": "942.60"
+      },
+      {
+        "userId": "jSdGqTq",
+        "corpus": "80119.73",
+        "interest": "501.91"
+      },
+      {
+        "userId": "IzKGfpf",
+        "corpus": "79363.91",
+        "interest": "95.44"
+      },
+      {
+        "userId": "rgBoAZq",
+        "corpus": "78986.97",
+        "interest": "637.85"
+      },
+      {
+        "userId": "DToYsaV",
+        "corpus": "77661.59",
+        "interest": "214.11"
+      },
+      {
+        "userId": "LTufoSM",
+        "corpus": "76761.88",
+        "interest": "765.42"
+      },
+      {
+        "userId": "TOXzuPV",
+        "corpus": "75442.78",
+        "interest": "561.71"
+      },
+      {
+        "userId": "VevTzIB",
+        "corpus": "74156.44",
+        "interest": "570.65"
+      },
+      {
+        "userId": "MZBBUie",
+        "corpus": "73161.46",
+        "interest": "119.27"
+      },
+      {
+        "userId": "rxOjZnq",
+        "corpus": "72378.63",
+        "interest": "179.72"
+      },
+      {
+        "userId": "NEDJjnT",
+        "corpus": "71294.90",
+        "interest": "937.93"
+      },
+      {
+        "userId": "UERgZTM",
+        "corpus": "70047.54",
+        "interest": "407.13"
+      },
+      {
+        "userId": "zEjhtBf",
+        "corpus": "69130.14",
+        "interest": "2.15"
+      },
+      {
+        "userId": "LzgiVsS",
+        "corpus": "68665.78",
+        "interest": "609.09"
+      },
+      {
+        "userId": "EJyygvG",
+        "corpus": "67968.43",
+        "interest": "575.46"
+      },
+      {
+        "userId": "VMEkKIf",
+        "corpus": "66257.15",
+        "interest": "653.02"
+      },
+      {
+        "userId": "XXlXWTs",
+        "corpus": "65257.93",
+        "interest": "587.43"
+      },
+      {
+        "userId": "caUtfPq",
+        "corpus": "64903.07",
+        "interest": "242.29"
+      },
+      {
+        "userId": "hIumKpQ",
+        "corpus": "63056.87",
+        "interest": "738.70"
+      },
+      {
+        "userId": "LVoeycu",
+        "corpus": "62818.78",
+        "interest": "593.54"
+      },
+      {
+        "userId": "tMSfNln",
+        "corpus": "61402.28",
+        "interest": "650.26"
+      },
+      {
+        "userId": "PdujfNm",
+        "corpus": "60298.56",
+        "interest": "254.41"
+      },
+      {
+        "userId": "dUqHzrO",
+        "corpus": "59613.10",
+        "interest": "563.77"
+      },
+      {
+        "userId": "wFfYRjz",
+        "corpus": "58329.22",
+        "interest": "670.39"
+      },
+      {
+        "userId": "VnoENHe",
+        "corpus": "57292.41",
+        "interest": "811.78"
+      },
+      {
+        "userId": "uIUdJoE",
+        "corpus": "56921.85",
+        "interest": "962.48"
+      },
+      {
+        "userId": "qMDqDAo",
+        "corpus": "55809.60",
+        "interest": "519.81"
+      },
+      {
+        "userId": "IBQrIPo",
+        "corpus": "54244.10",
+        "interest": "260.67"
+      },
+      {
+        "userId": "lSdsMvy",
+        "corpus": "53341.42",
+        "interest": "776.52"
+      },
+      {
+        "userId": "ljexAPH",
+        "corpus": "52448.93",
+        "interest": "853.71"
+      },
+      {
+        "userId": "UXLfXIU",
+        "corpus": "51129.98",
+        "interest": "814.19"
+      },
+      {
+        "userId": "IBofJSU",
+        "corpus": "50690.15",
+        "interest": "361.63"
+      },
+      {
+        "userId": "SAgoUom",
+        "corpus": "49475.96",
+        "interest": "578.22"
+      },
+      {
+        "userId": "tcoHyha",
+        "corpus": "48191.32",
+        "interest": "115.18"
+      },
+      {
+        "userId": "nEDHaSv",
+        "corpus": "47126.97",
+        "interest": "432.98"
+      },
+      {
+        "userId": "nLmoYZj",
+        "corpus": "46391.81",
+        "interest": "935.09"
+      },
+      {
+        "userId": "IqDcObs",
+        "corpus": "45143.86",
+        "interest": "650.34"
+      },
+      {
+        "userId": "nZELqdD",
+        "corpus": "44132.02",
+        "interest": "544.05"
+      },
+      {
+        "userId": "TPaWFDp",
+        "corpus": "43032.01",
+        "interest": "758.17"
+      },
+      {
+        "userId": "xCaxqws",
+        "corpus": "42559.81",
+        "interest": "915.64"
+      },
+      {
+        "userId": "PtHZiCF",
+        "corpus": "41909.53",
+        "interest": "787.84"
+      },
+      {
+        "userId": "xvlwmvn",
+        "corpus": "40941.04",
+        "interest": "967.07"
+      },
+      {
+        "userId": "TfZMFjR",
+        "corpus": "39751.66",
+        "interest": "953.02"
+      },
+      {
+        "userId": "vJCSTbn",
+        "corpus": "38839.27",
+        "interest": "136.17"
+      },
+      {
+        "userId": "IGJUxaT",
+        "corpus": "37297.59",
+        "interest": "316.46"
+      },
+      {
+        "userId": "yqKJYMC",
+        "corpus": "36193.20",
+        "interest": "548.30"
+      },
+      {
+        "userId": "BpkKrUX",
+        "corpus": "35035.94",
+        "interest": "556.97"
+      },
+      {
+        "userId": "sYSSgPr",
+        "corpus": "34665.29",
+        "interest": "675.04"
+      },
+      {
+        "userId": "ttejmPy",
+        "corpus": "33794.72",
+        "interest": "36.04"
+      },
+      {
+        "userId": "FhDUaaS",
+        "corpus": "32260.70",
+        "interest": "614.08"
+      },
+      {
+        "userId": "vjkibTx",
+        "corpus": "31853.72",
+        "interest": "981.39"
+      },
+      {
+        "userId": "LrCLCUq",
+        "corpus": "30623.27",
+        "interest": "378.52"
+      },
+      {
+        "userId": "bYiQtUJ",
+        "corpus": "29169.91",
+        "interest": "754.21"
+      },
+      {
+        "userId": "iHtxfyG",
+        "corpus": "28603.29",
+        "interest": "873.92"
+      },
+      {
+        "userId": "HsSnhvj",
+        "corpus": "27260.42",
+        "interest": "847.82"
+      },
+      {
+        "userId": "YLKjzoc",
+        "corpus": "26662.03",
+        "interest": "562.45"
+      },
+      {
+        "userId": "PqOCUcq",
+        "corpus": "25523.37",
+        "interest": "476.86"
+      },
+      {
+        "userId": "DQiTypF",
+        "corpus": "24428.57",
+        "interest": "166.48"
+      },
+      {
+        "userId": "sMDVMnW",
+        "corpus": "23293.05",
+        "interest": "359.84"
+      },
+      {
+        "userId": "vlEtpoP",
+        "corpus": "22256.99",
+        "interest": "147.17"
+      },
+      {
+        "userId": "TQYOCsG",
+        "corpus": "21724.04",
+        "interest": "571.85"
+      },
+      {
+        "userId": "PTATFEM",
+        "corpus": "20945.15",
+        "interest": "109.34"
+      },
+      {
+        "userId": "VTYWjIp",
+        "corpus": "19677.87",
+        "interest": "150.18"
+      },
+      {
+        "userId": "EFSLIuI",
+        "corpus": "18871.42",
+        "interest": "729.43"
+      },
+      {
+        "userId": "BeaokhR",
+        "corpus": "17146.14",
+        "interest": "472.34"
+      },
+      {
+        "userId": "sZktywn",
+        "corpus": "16681.27",
+        "interest": "281.60"
+      },
+      {
+        "userId": "vgUoQdJ",
+        "corpus": "15385.76",
+        "interest": "294.33"
+      },
+      {
+        "userId": "cytOevi",
+        "corpus": "14313.19",
+        "interest": "345.32"
+      },
+      {
+        "userId": "ropAFoz",
+        "corpus": "13864.63",
+        "interest": "736.09"
+      },
+      {
+        "userId": "vCEuDID",
+        "corpus": "12591.65",
+        "interest": "818.09"
+      },
+      {
+        "userId": "PEXVwpB",
+        "corpus": "11320.38",
+        "interest": "432.19"
+      },
+      {
+        "userId": "yZXOfyv",
+        "corpus": "10834.76",
+        "interest": "928.10"
+      },
+      {
+        "userId": "OQwWIus",
+        "corpus": "9719.95",
+        "interest": "527.22"
+      },
+      {
+        "userId": "YiebTKr",
+        "corpus": "8925.02",
+        "interest": "544.26"
+      },
+      {
+        "userId": "OoKIVOD",
+        "corpus": "7674.51",
+        "interest": "189.02"
+      },
+      {
+        "userId": "FyMPMlJ",
+        "corpus": "6074.01",
+        "interest": "714.77"
+      },
+      {
+        "userId": "cCtCyXi",
+        "corpus": "5912.12",
+        "interest": "836.79"
+      },
+      {
+        "userId": "bMProFC",
+        "corpus": "4075.18",
+        "interest": "30.48"
+      },
+      {
+        "userId": "FnUKfJW",
+        "corpus": "3739.42",
+        "interest": "337.26"
+      },
+      {
+        "userId": "mRJqLOz",
+        "corpus": "2183.68",
+        "interest": "105.42"
+      },
+      {
+        "userId": "GBCbkAL",
+        "corpus": "1034.29",
+        "interest": "8.63"
+      }
+    ],
+    "CHINA_NORTHWEST": [
+      {
+        "userId": "MccwCGH",
+        "corpus": "100888.20",
+        "interest": "194.81"
+      },
+      {
+        "userId": "EcdHUiN",
+        "corpus": "99202.69",
+        "interest": "390.45"
+      },
+      {
+        "userId": "nAjcfKu",
+        "corpus": "98746.95",
+        "interest": "729.07"
+      },
+      {
+        "userId": "sBQmKuV",
+        "corpus": "97706.05",
+        "interest": "386.78"
+      },
+      {
+        "userId": "LIfNHOY",
+        "corpus": "96148.36",
+        "interest": "333.01"
+      },
+      {
+        "userId": "hQYvsCo",
+        "corpus": "95219.49",
+        "interest": "570.82"
+      },
+      {
+        "userId": "zdmiBiw",
+        "corpus": "94326.91",
+        "interest": "720.12"
+      },
+      {
+        "userId": "lLXkEYm",
+        "corpus": "93216.50",
+        "interest": "151.01"
+      },
+      {
+        "userId": "wPrbmGn",
+        "corpus": "92215.46",
+        "interest": "704.84"
+      },
+      {
+        "userId": "pGpgEIZ",
+        "corpus": "91792.51",
+        "interest": "341.84"
+      },
+      {
+        "userId": "qSNABTt",
+        "corpus": "90747.47",
+        "interest": "459.19"
+      },
+      {
+        "userId": "EUyPEYm",
+        "corpus": "89837.31",
+        "interest": "656.83"
+      },
+      {
+        "userId": "MccXTcR",
+        "corpus": "88036.35",
+        "interest": "55.41"
+      },
+      {
+        "userId": "VMxYIix",
+        "corpus": "87245.71",
+        "interest": "947.21"
+      },
+      {
+        "userId": "YTOsefO",
+        "corpus": "86453.52",
+        "interest": "282.26"
+      },
+      {
+        "userId": "taXOaOr",
+        "corpus": "85715.94",
+        "interest": "846.23"
+      },
+      {
+        "userId": "ijsESjY",
+        "corpus": "84003.07",
+        "interest": "700.58"
+      },
+      {
+        "userId": "YVNuUBZ",
+        "corpus": "83827.04",
+        "interest": "647.61"
+      },
+      {
+        "userId": "GACfZGK",
+        "corpus": "82547.84",
+        "interest": "912.03"
+      },
+      {
+        "userId": "PoxoaVf",
+        "corpus": "81509.18",
+        "interest": "545.85"
+      },
+      {
+        "userId": "GvhHRCW",
+        "corpus": "80380.46",
+        "interest": "55.33"
+      },
+      {
+        "userId": "upWMYVL",
+        "corpus": "79725.27",
+        "interest": "596.77"
+      },
+      {
+        "userId": "RpBKOeb",
+        "corpus": "78352.50",
+        "interest": "615.47"
+      },
+      {
+        "userId": "MNldQFI",
+        "corpus": "77167.06",
+        "interest": "718.73"
+      },
+      {
+        "userId": "OQafIpS",
+        "corpus": "76275.80",
+        "interest": "733.89"
+      },
+      {
+        "userId": "GyxuVJY",
+        "corpus": "75036.11",
+        "interest": "548.02"
+      },
+      {
+        "userId": "jbllsMP",
+        "corpus": "74592.44",
+        "interest": "341.38"
+      },
+      {
+        "userId": "bDhRCvA",
+        "corpus": "73527.43",
+        "interest": "986.16"
+      },
+      {
+        "userId": "EMnEXGq",
+        "corpus": "72373.16",
+        "interest": "600.70"
+      },
+      {
+        "userId": "vAeRJdA",
+        "corpus": "71462.79",
+        "interest": "833.03"
+      },
+      {
+        "userId": "jjmIzLw",
+        "corpus": "70548.77",
+        "interest": "341.87"
+      },
+      {
+        "userId": "IcSqDcT",
+        "corpus": "69631.32",
+        "interest": "986.00"
+      },
+      {
+        "userId": "SQivKKX",
+        "corpus": "68905.15",
+        "interest": "400.96"
+      },
+      {
+        "userId": "AERpBWn",
+        "corpus": "67786.16",
+        "interest": "303.91"
+      },
+      {
+        "userId": "RFJHeow",
+        "corpus": "66779.55",
+        "interest": "31.74"
+      },
+      {
+        "userId": "TaVWjeq",
+        "corpus": "65919.18",
+        "interest": "383.94"
+      },
+      {
+        "userId": "wPKgtQE",
+        "corpus": "64584.59",
+        "interest": "849.75"
+      },
+      {
+        "userId": "NLmCLBH",
+        "corpus": "63389.63",
+        "interest": "180.11"
+      },
+      {
+        "userId": "kDlCGIj",
+        "corpus": "62255.66",
+        "interest": "89.59"
+      },
+      {
+        "userId": "hLMJqbn",
+        "corpus": "61718.16",
+        "interest": "604.03"
+      },
+      {
+        "userId": "agUGxKF",
+        "corpus": "60469.00",
+        "interest": "308.65"
+      },
+      {
+        "userId": "smYAwCu",
+        "corpus": "59373.94",
+        "interest": "991.72"
+      },
+      {
+        "userId": "RWkRNRF",
+        "corpus": "58009.41",
+        "interest": "54.62"
+      },
+      {
+        "userId": "sxVkvxe",
+        "corpus": "57680.76",
+        "interest": "594.88"
+      },
+      {
+        "userId": "gSmEhCl",
+        "corpus": "56980.33",
+        "interest": "428.67"
+      },
+      {
+        "userId": "EASWsWN",
+        "corpus": "55047.03",
+        "interest": "60.24"
+      },
+      {
+        "userId": "nmenlzf",
+        "corpus": "54643.65",
+        "interest": "922.99"
+      },
+      {
+        "userId": "WsLdZTD",
+        "corpus": "53084.71",
+        "interest": "198.06"
+      },
+      {
+        "userId": "yjLmnMw",
+        "corpus": "52552.69",
+        "interest": "388.49"
+      },
+      {
+        "userId": "sJFaqye",
+        "corpus": "51824.15",
+        "interest": "208.58"
+      },
+      {
+        "userId": "avEkewc",
+        "corpus": "50298.79",
+        "interest": "497.63"
+      },
+      {
+        "userId": "OpCJXiy",
+        "corpus": "49154.49",
+        "interest": "934.92"
+      },
+      {
+        "userId": "ZxlOjWg",
+        "corpus": "48630.74",
+        "interest": "606.92"
+      },
+      {
+        "userId": "ynshsmO",
+        "corpus": "47823.26",
+        "interest": "641.42"
+      },
+      {
+        "userId": "fhtHyAD",
+        "corpus": "46925.69",
+        "interest": "495.51"
+      },
+      {
+        "userId": "SewNqiC",
+        "corpus": "45814.52",
+        "interest": "278.41"
+      },
+      {
+        "userId": "TAZgavo",
+        "corpus": "44991.42",
+        "interest": "58.32"
+      },
+      {
+        "userId": "bALpels",
+        "corpus": "43691.03",
+        "interest": "187.54"
+      },
+      {
+        "userId": "sLCJaMe",
+        "corpus": "42961.89",
+        "interest": "666.13"
+      },
+      {
+        "userId": "CmxFCnp",
+        "corpus": "41534.23",
+        "interest": "726.20"
+      },
+      {
+        "userId": "KpvPZgX",
+        "corpus": "40611.58",
+        "interest": "570.22"
+      },
+      {
+        "userId": "RJFVTcE",
+        "corpus": "39444.54",
+        "interest": "345.31"
+      },
+      {
+        "userId": "BakgVYI",
+        "corpus": "38758.81",
+        "interest": "425.23"
+      },
+      {
+        "userId": "vNPqkPf",
+        "corpus": "37175.14",
+        "interest": "241.51"
+      },
+      {
+        "userId": "ToxQzCB",
+        "corpus": "36554.21",
+        "interest": "731.60"
+      },
+      {
+        "userId": "YTbiIJW",
+        "corpus": "35363.76",
+        "interest": "823.03"
+      },
+      {
+        "userId": "zJDKOsl",
+        "corpus": "34357.74",
+        "interest": "757.61"
+      },
+      {
+        "userId": "OnXCILL",
+        "corpus": "33000.04",
+        "interest": "878.14"
+      },
+      {
+        "userId": "LsujMwv",
+        "corpus": "32596.08",
+        "interest": "291.20"
+      },
+      {
+        "userId": "eWBLBbh",
+        "corpus": "31220.03",
+        "interest": "515.21"
+      },
+      {
+        "userId": "vzkKgtY",
+        "corpus": "30462.13",
+        "interest": "392.98"
+      },
+      {
+        "userId": "puvyRzr",
+        "corpus": "29254.65",
+        "interest": "656.01"
+      },
+      {
+        "userId": "NjWxTDL",
+        "corpus": "28569.09",
+        "interest": "174.38"
+      },
+      {
+        "userId": "rEYynYM",
+        "corpus": "27375.82",
+        "interest": "106.44"
+      },
+      {
+        "userId": "LKEhLnL",
+        "corpus": "26703.90",
+        "interest": "508.68"
+      },
+      {
+        "userId": "IpipwgV",
+        "corpus": "25981.57",
+        "interest": "3.68"
+      },
+      {
+        "userId": "PmUmiCF",
+        "corpus": "24638.44",
+        "interest": "497.69"
+      },
+      {
+        "userId": "enqvwii",
+        "corpus": "23540.58",
+        "interest": "744.19"
+      },
+      {
+        "userId": "LYPwxCt",
+        "corpus": "22551.39",
+        "interest": "463.23"
+      },
+      {
+        "userId": "YwJEGKA",
+        "corpus": "21977.04",
+        "interest": "334.17"
+      },
+      {
+        "userId": "PuajyvL",
+        "corpus": "20989.82",
+        "interest": "209.92"
+      },
+      {
+        "userId": "DqZFgvY",
+        "corpus": "19218.28",
+        "interest": "471.82"
+      },
+      {
+        "userId": "leYexIs",
+        "corpus": "18456.65",
+        "interest": "314.70"
+      },
+      {
+        "userId": "VelGTfs",
+        "corpus": "17050.42",
+        "interest": "570.67"
+      },
+      {
+        "userId": "wiLcyFh",
+        "corpus": "16648.70",
+        "interest": "238.62"
+      },
+      {
+        "userId": "QWHxtHS",
+        "corpus": "15131.45",
+        "interest": "363.44"
+      },
+      {
+        "userId": "NGhfSVy",
+        "corpus": "14089.74",
+        "interest": "127.54"
+      },
+      {
+        "userId": "qofAFdy",
+        "corpus": "13996.57",
+        "interest": "688.28"
+      },
+      {
+        "userId": "LVvyTcZ",
+        "corpus": "12403.98",
+        "interest": "270.95"
+      },
+      {
+        "userId": "dNPIDDy",
+        "corpus": "11156.98",
+        "interest": "551.80"
+      },
+      {
+        "userId": "INgpFBw",
+        "corpus": "10757.55",
+        "interest": "322.15"
+      },
+      {
+        "userId": "jonlytd",
+        "corpus": "9941.45",
+        "interest": "588.44"
+      },
+      {
+        "userId": "OVQgrNr",
+        "corpus": "8059.03",
+        "interest": "547.71"
+      },
+      {
+        "userId": "swkQsIL",
+        "corpus": "7558.96",
+        "interest": "590.73"
+      },
+      {
+        "userId": "tBjHdjb",
+        "corpus": "6355.04",
+        "interest": "570.72"
+      },
+      {
+        "userId": "bfVRrAY",
+        "corpus": "5970.93",
+        "interest": "872.30"
+      },
+      {
+        "userId": "LqMJqpx",
+        "corpus": "4482.45",
+        "interest": "299.64"
+      },
+      {
+        "userId": "CtoakiX",
+        "corpus": "3553.53",
+        "interest": "843.60"
+      },
+      {
+        "userId": "HCOxtaO",
+        "corpus": "2446.37",
+        "interest": "993.57"
+      },
+      {
+        "userId": "oqATsZy",
+        "corpus": "1202.96",
+        "interest": "329.50"
+      }
+    ],
+    "CHINA_NORTH": [
+      {
+        "userId": "admin",
+        "corpus": "204999.99",
+        "interest": "10480.16"
+      },
+      {
+        "userId": "mleoshi",
+        "corpus": "285.00",
+        "interest": "2.02"
+      },
+      {
+        "userId": "sidneygao",
+        "corpus": "280.00",
+        "interest": "1.88"
+      },
+      {
+        "userId": "wll001",
+        "corpus": "195.00",
+        "interest": "22.60"
+      },
+      {
+        "userId": "zhengcong",
+        "corpus": "140.00",
+        "interest": "11.44"
+      },
+      {
+        "userId": "jdsb1",
+        "corpus": "7.00",
+        "interest": "0.13"
+      },
+      {
+        "userId": "TkyDchL",
+        "corpus": "94181.44",
+        "interest": "704.65"
+      },
+      {
+        "userId": "pxtlzHD",
+        "corpus": "93491.01",
+        "interest": "839.00"
+      },
+      {
+        "userId": "Bfpvrxc",
+        "corpus": "92323.56",
+        "interest": "659.63"
+      },
+      {
+        "userId": "PfACwMK",
+        "corpus": "91713.44",
+        "interest": "208.70"
+      },
+      {
+        "userId": "hqhdNct",
+        "corpus": "90370.31",
+        "interest": "495.14"
+      },
+      {
+        "userId": "kTkhBcB",
+        "corpus": "89190.39",
+        "interest": "785.29"
+      },
+      {
+        "userId": "xRDYIUb",
+        "corpus": "88140.53",
+        "interest": "645.18"
+      },
+      {
+        "userId": "UwLAeoj",
+        "corpus": "87975.72",
+        "interest": "586.41"
+      },
+      {
+        "userId": "mHBkbnE",
+        "corpus": "86756.86",
+        "interest": "594.07"
+      },
+      {
+        "userId": "bMBuMHi",
+        "corpus": "85211.49",
+        "interest": "685.19"
+      },
+      {
+        "userId": "ulxkUSe",
+        "corpus": "84469.99",
+        "interest": "154.63"
+      },
+      {
+        "userId": "jBHlVxY",
+        "corpus": "83724.04",
+        "interest": "400.33"
+      },
+      {
+        "userId": "BKzswEB",
+        "corpus": "82519.17",
+        "interest": "408.88"
+      },
+      {
+        "userId": "MyfjOXe",
+        "corpus": "81099.69",
+        "interest": "742.09"
+      },
+      {
+        "userId": "IPeNzRV",
+        "corpus": "80880.85",
+        "interest": "457.21"
+      },
+      {
+        "userId": "bLPlimI",
+        "corpus": "79401.01",
+        "interest": "963.80"
+      },
+      {
+        "userId": "aVwKzQj",
+        "corpus": "78195.66",
+        "interest": "662.08"
+      },
+      {
+        "userId": "YPanwKH",
+        "corpus": "77888.66",
+        "interest": "999.15"
+      },
+      {
+        "userId": "dFarJoC",
+        "corpus": "76383.98",
+        "interest": "643.69"
+      },
+      {
+        "userId": "VoereJg",
+        "corpus": "75599.25",
+        "interest": "27.57"
+      },
+      {
+        "userId": "JqlznMl",
+        "corpus": "74460.85",
+        "interest": "887.42"
+      },
+      {
+        "userId": "fjXXAlM",
+        "corpus": "73396.05",
+        "interest": "402.94"
+      },
+      {
+        "userId": "VdwlAZw",
+        "corpus": "72843.72",
+        "interest": "456.77"
+      },
+      {
+        "userId": "oJNcddZ",
+        "corpus": "71157.49",
+        "interest": "705.54"
+      },
+      {
+        "userId": "tWYdWVp",
+        "corpus": "70009.59",
+        "interest": "970.53"
+      },
+      {
+        "userId": "asNTStM",
+        "corpus": "69097.37",
+        "interest": "732.73"
+      },
+      {
+        "userId": "yceBwmV",
+        "corpus": "68703.02",
+        "interest": "699.18"
+      },
+      {
+        "userId": "avtrtmx",
+        "corpus": "67821.02",
+        "interest": "830.58"
+      },
+      {
+        "userId": "OPVmLYy",
+        "corpus": "66022.50",
+        "interest": "363.03"
+      },
+      {
+        "userId": "oKjtHrV",
+        "corpus": "65613.27",
+        "interest": "87.11"
+      },
+      {
+        "userId": "sHbqJPg",
+        "corpus": "64619.73",
+        "interest": "973.50"
+      },
+      {
+        "userId": "LUwYULy",
+        "corpus": "63627.01",
+        "interest": "557.11"
+      },
+      {
+        "userId": "aMwfovr",
+        "corpus": "62935.05",
+        "interest": "848.87"
+      },
+      {
+        "userId": "qfmlIpu",
+        "corpus": "61095.22",
+        "interest": "869.04"
+      },
+      {
+        "userId": "KUxrWKx",
+        "corpus": "60861.74",
+        "interest": "757.28"
+      },
+      {
+        "userId": "lrxZHvK",
+        "corpus": "59424.47",
+        "interest": "276.68"
+      },
+      {
+        "userId": "VugtDPt",
+        "corpus": "58483.16",
+        "interest": "991.93"
+      },
+      {
+        "userId": "IUDVswI",
+        "corpus": "57044.94",
+        "interest": "461.07"
+      },
+      {
+        "userId": "NsnXkdO",
+        "corpus": "56558.65",
+        "interest": "67.81"
+      },
+      {
+        "userId": "RJMRwOk",
+        "corpus": "55189.33",
+        "interest": "163.03"
+      },
+      {
+        "userId": "arWDbsF",
+        "corpus": "54247.85",
+        "interest": "643.72"
+      },
+      {
+        "userId": "syYkIKM",
+        "corpus": "53352.61",
+        "interest": "31.85"
+      },
+      {
+        "userId": "uNKmJbs",
+        "corpus": "52157.59",
+        "interest": "220.04"
+      },
+      {
+        "userId": "xQGPPaK",
+        "corpus": "51044.57",
+        "interest": "912.97"
+      },
+      {
+        "userId": "MeISfrk",
+        "corpus": "50171.65",
+        "interest": "140.11"
+      },
+      {
+        "userId": "DSstIIv",
+        "corpus": "49588.98",
+        "interest": "165.48"
+      },
+      {
+        "userId": "HCYSBCN",
+        "corpus": "48680.85",
+        "interest": "431.80"
+      },
+      {
+        "userId": "ZNbcfgm",
+        "corpus": "47145.71",
+        "interest": "499.58"
+      },
+      {
+        "userId": "nKFFOlU",
+        "corpus": "46769.37",
+        "interest": "66.02"
+      },
+      {
+        "userId": "EuoCbwE",
+        "corpus": "45836.73",
+        "interest": "255.15"
+      },
+      {
+        "userId": "nrMtwab",
+        "corpus": "44632.99",
+        "interest": "280.16"
+      },
+      {
+        "userId": "roFthyY",
+        "corpus": "43841.70",
+        "interest": "4.04"
+      },
+      {
+        "userId": "sDhJYke",
+        "corpus": "42005.94",
+        "interest": "716.89"
+      },
+      {
+        "userId": "pbCxCES",
+        "corpus": "41596.00",
+        "interest": "852.29"
+      },
+      {
+        "userId": "CJJUrRB",
+        "corpus": "40655.10",
+        "interest": "262.79"
+      },
+      {
+        "userId": "KmXsEJf",
+        "corpus": "39771.46",
+        "interest": "842.55"
+      },
+      {
+        "userId": "dxNbgRq",
+        "corpus": "38064.03",
+        "interest": "635.95"
+      },
+      {
+        "userId": "XGmOyiL",
+        "corpus": "37549.42",
+        "interest": "412.87"
+      },
+      {
+        "userId": "ErSkrGr",
+        "corpus": "36273.82",
+        "interest": "968.35"
+      },
+      {
+        "userId": "enaOVzR",
+        "corpus": "35806.13",
+        "interest": "954.81"
+      },
+      {
+        "userId": "szjUQBV",
+        "corpus": "34473.87",
+        "interest": "856.10"
+      },
+      {
+        "userId": "eEPbBks",
+        "corpus": "33221.69",
+        "interest": "132.07"
+      },
+      {
+        "userId": "BvFDWwT",
+        "corpus": "32342.80",
+        "interest": "609.59"
+      },
+      {
+        "userId": "vvCUSno",
+        "corpus": "31997.32",
+        "interest": "770.23"
+      },
+      {
+        "userId": "jbvkaTp",
+        "corpus": "30328.29",
+        "interest": "725.39"
+      },
+      {
+        "userId": "XbyLBUc",
+        "corpus": "29818.95",
+        "interest": "808.78"
+      },
+      {
+        "userId": "LJKcMfU",
+        "corpus": "28024.33",
+        "interest": "923.39"
+      },
+      {
+        "userId": "frxBNMH",
+        "corpus": "27941.37",
+        "interest": "18.63"
+      },
+      {
+        "userId": "qNZUzLP",
+        "corpus": "26555.29",
+        "interest": "444.91"
+      },
+      {
+        "userId": "pMuoiZR",
+        "corpus": "25783.01",
+        "interest": "931.44"
+      },
+      {
+        "userId": "BUKJqDK",
+        "corpus": "24408.60",
+        "interest": "691.33"
+      },
+      {
+        "userId": "OvTkUxp",
+        "corpus": "23219.85",
+        "interest": "701.49"
+      },
+      {
+        "userId": "vBfyVpk",
+        "corpus": "22471.01",
+        "interest": "698.10"
+      },
+      {
+        "userId": "FQtOwdy",
+        "corpus": "21845.69",
+        "interest": "426.46"
+      },
+      {
+        "userId": "twZnLwR",
+        "corpus": "20118.52",
+        "interest": "384.86"
+      },
+      {
+        "userId": "ESKytNN",
+        "corpus": "19826.50",
+        "interest": "790.43"
+      },
+      {
+        "userId": "gSVhkhr",
+        "corpus": "18085.67",
+        "interest": "0.31"
+      },
+      {
+        "userId": "cppzjXa",
+        "corpus": "17618.33",
+        "interest": "760.71"
+      },
+      {
+        "userId": "PWmZLkC",
+        "corpus": "16497.45",
+        "interest": "689.02"
+      },
+      {
+        "userId": "acuEpEN",
+        "corpus": "15740.65",
+        "interest": "469.11"
+      },
+      {
+        "userId": "HmkNwxN",
+        "corpus": "14885.17",
+        "interest": "647.56"
+      },
+      {
+        "userId": "YByRBjm",
+        "corpus": "13001.71",
+        "interest": "339.54"
+      },
+      {
+        "userId": "RZAqCCD",
+        "corpus": "12227.82",
+        "interest": "908.46"
+      },
+      {
+        "userId": "sfWVKKK",
+        "corpus": "11057.35",
+        "interest": "985.12"
+      },
+      {
+        "userId": "QUVnRsL",
+        "corpus": "10060.99",
+        "interest": "393.32"
+      },
+      {
+        "userId": "zKCAIUx",
+        "corpus": "9951.49",
+        "interest": "391.61"
+      },
+      {
+        "userId": "uzdlLqX",
+        "corpus": "8478.00",
+        "interest": "509.77"
+      },
+      {
+        "userId": "LVAOvbZ",
+        "corpus": "7334.46",
+        "interest": "428.16"
+      },
+      {
+        "userId": "byqoRmv",
+        "corpus": "6411.06",
+        "interest": "232.42"
+      },
+      {
+        "userId": "MVzHusO",
+        "corpus": "5384.31",
+        "interest": "782.03"
+      },
+      {
+        "userId": "nYvFKau",
+        "corpus": "4925.28",
+        "interest": "304.06"
+      },
+      {
+        "userId": "AwcRzal",
+        "corpus": "3066.58",
+        "interest": "1.01"
+      },
+      {
+        "userId": "dKQhPkm",
+        "corpus": "2384.17",
+        "interest": "920.73"
+      },
+      {
+        "userId": "vLaPlao",
+        "corpus": "1259.76",
+        "interest": "445.22"
+      }
+    ],
+    "CHINA_NORTHEAST": [
+      {
+        "userId": "fVPqsUT",
+        "corpus": "100252.49",
+        "interest": "23.57"
+      },
+      {
+        "userId": "AJyGjSZ",
+        "corpus": "99446.30",
+        "interest": "599.59"
+      },
+      {
+        "userId": "CSbpSMR",
+        "corpus": "98990.83",
+        "interest": "109.69"
+      },
+      {
+        "userId": "TJEYtGX",
+        "corpus": "97123.36",
+        "interest": "378.81"
+      },
+      {
+        "userId": "SiUcLBC",
+        "corpus": "96966.07",
+        "interest": "296.35"
+      },
+      {
+        "userId": "oDdKMhk",
+        "corpus": "95822.69",
+        "interest": "768.58"
+      },
+      {
+        "userId": "euvRvvf",
+        "corpus": "94552.81",
+        "interest": "224.60"
+      },
+      {
+        "userId": "dDrXmue",
+        "corpus": "93645.66",
+        "interest": "390.08"
+      },
+      {
+        "userId": "CxdQszC",
+        "corpus": "92632.98",
+        "interest": "272.84"
+      },
+      {
+        "userId": "fLOgWsQ",
+        "corpus": "91517.34",
+        "interest": "349.02"
+      },
+      {
+        "userId": "yWkHOCF",
+        "corpus": "90514.50",
+        "interest": "465.46"
+      },
+      {
+        "userId": "CWtwlAG",
+        "corpus": "89942.67",
+        "interest": "36.30"
+      },
+      {
+        "userId": "XOtuPJG",
+        "corpus": "88884.47",
+        "interest": "408.21"
+      },
+      {
+        "userId": "uCZuCNq",
+        "corpus": "87907.96",
+        "interest": "384.23"
+      },
+      {
+        "userId": "fjpyWIt",
+        "corpus": "86788.36",
+        "interest": "559.37"
+      },
+      {
+        "userId": "KkBwsFr",
+        "corpus": "85712.76",
+        "interest": "450.37"
+      },
+      {
+        "userId": "HcoQAvm",
+        "corpus": "84783.99",
+        "interest": "154.58"
+      },
+      {
+        "userId": "VnEjLnV",
+        "corpus": "83939.83",
+        "interest": "100.56"
+      },
+      {
+        "userId": "WMaTLRT",
+        "corpus": "82357.33",
+        "interest": "143.39"
+      },
+      {
+        "userId": "FAVNXPx",
+        "corpus": "81475.16",
+        "interest": "993.23"
+      },
+      {
+        "userId": "trNHAbE",
+        "corpus": "80407.22",
+        "interest": "566.67"
+      },
+      {
+        "userId": "akzdnJA",
+        "corpus": "79475.22",
+        "interest": "29.25"
+      },
+      {
+        "userId": "cKmsqoW",
+        "corpus": "78106.76",
+        "interest": "906.65"
+      },
+      {
+        "userId": "esGkgEp",
+        "corpus": "77445.31",
+        "interest": "924.34"
+      },
+      {
+        "userId": "VecKFxe",
+        "corpus": "76731.61",
+        "interest": "75.19"
+      },
+      {
+        "userId": "YeqHaNb",
+        "corpus": "75140.83",
+        "interest": "585.92"
+      },
+      {
+        "userId": "DLXRFUK",
+        "corpus": "74108.60",
+        "interest": "870.82"
+      },
+      {
+        "userId": "WMkfpUz",
+        "corpus": "73832.03",
+        "interest": "531.69"
+      },
+      {
+        "userId": "kuOZIVL",
+        "corpus": "72183.29",
+        "interest": "931.54"
+      },
+      {
+        "userId": "CNeDEhb",
+        "corpus": "71583.61",
+        "interest": "674.01"
+      },
+      {
+        "userId": "EoGmhwT",
+        "corpus": "70830.39",
+        "interest": "437.64"
+      },
+      {
+        "userId": "oTeazMH",
+        "corpus": "69591.87",
+        "interest": "412.83"
+      },
+      {
+        "userId": "oejNhdS",
+        "corpus": "68438.91",
+        "interest": "77.93"
+      },
+      {
+        "userId": "IPdtOiI",
+        "corpus": "67294.90",
+        "interest": "128.63"
+      },
+      {
+        "userId": "gDDyryp",
+        "corpus": "66991.82",
+        "interest": "82.52"
+      },
+      {
+        "userId": "hOwQXpG",
+        "corpus": "65925.72",
+        "interest": "848.16"
+      },
+      {
+        "userId": "JcGxhJX",
+        "corpus": "64330.04",
+        "interest": "446.74"
+      },
+      {
+        "userId": "cjlMyNm",
+        "corpus": "63413.21",
+        "interest": "67.20"
+      },
+      {
+        "userId": "MFtATDg",
+        "corpus": "62041.45",
+        "interest": "823.20"
+      },
+      {
+        "userId": "JQOfnYp",
+        "corpus": "61052.74",
+        "interest": "458.00"
+      },
+      {
+        "userId": "tGuOqws",
+        "corpus": "60947.87",
+        "interest": "943.05"
+      },
+      {
+        "userId": "BeKojwD",
+        "corpus": "59165.70",
+        "interest": "463.33"
+      },
+      {
+        "userId": "wpqEQlX",
+        "corpus": "58476.31",
+        "interest": "842.10"
+      },
+      {
+        "userId": "XKMRFgK",
+        "corpus": "57046.92",
+        "interest": "584.85"
+      },
+      {
+        "userId": "cHNgPbH",
+        "corpus": "56295.81",
+        "interest": "614.24"
+      },
+      {
+        "userId": "BZjXtVC",
+        "corpus": "55858.57",
+        "interest": "510.28"
+      },
+      {
+        "userId": "GinRzXx",
+        "corpus": "54476.85",
+        "interest": "891.65"
+      },
+      {
+        "userId": "fifmRnn",
+        "corpus": "53771.37",
+        "interest": "92.17"
+      },
+      {
+        "userId": "ZEDAkUB",
+        "corpus": "52087.64",
+        "interest": "760.58"
+      },
+      {
+        "userId": "IDuNDKx",
+        "corpus": "51576.46",
+        "interest": "590.40"
+      },
+      {
+        "userId": "mWRkwJP",
+        "corpus": "50580.24",
+        "interest": "361.10"
+      },
+      {
+        "userId": "VjbRKOR",
+        "corpus": "49195.38",
+        "interest": "521.15"
+      },
+      {
+        "userId": "FcLEkNP",
+        "corpus": "48538.91",
+        "interest": "990.69"
+      },
+      {
+        "userId": "gTtgFtn",
+        "corpus": "47001.11",
+        "interest": "917.10"
+      },
+      {
+        "userId": "dSAhCPt",
+        "corpus": "46364.31",
+        "interest": "134.11"
+      },
+      {
+        "userId": "orpZjkW",
+        "corpus": "45629.65",
+        "interest": "796.84"
+      },
+      {
+        "userId": "HtvPGDt",
+        "corpus": "44249.22",
+        "interest": "475.78"
+      },
+      {
+        "userId": "ceIMEcZ",
+        "corpus": "43009.36",
+        "interest": "165.55"
+      },
+      {
+        "userId": "yadlFRD",
+        "corpus": "42365.04",
+        "interest": "615.70"
+      },
+      {
+        "userId": "CDpMfXg",
+        "corpus": "41664.62",
+        "interest": "925.15"
+      },
+      {
+        "userId": "EUchEXZ",
+        "corpus": "40523.01",
+        "interest": "906.65"
+      },
+      {
+        "userId": "geomHua",
+        "corpus": "39960.56",
+        "interest": "658.65"
+      },
+      {
+        "userId": "orIZoIn",
+        "corpus": "38700.09",
+        "interest": "557.62"
+      },
+      {
+        "userId": "AdEyUUb",
+        "corpus": "37847.13",
+        "interest": "371.86"
+      },
+      {
+        "userId": "BjhHPOx",
+        "corpus": "36726.57",
+        "interest": "907.21"
+      },
+      {
+        "userId": "eVpwerC",
+        "corpus": "35833.87",
+        "interest": "924.69"
+      },
+      {
+        "userId": "GToZpxa",
+        "corpus": "34121.19",
+        "interest": "561.11"
+      },
+      {
+        "userId": "WHERfba",
+        "corpus": "33380.65",
+        "interest": "65.45"
+      },
+      {
+        "userId": "ilZMVbm",
+        "corpus": "32528.92",
+        "interest": "908.57"
+      },
+      {
+        "userId": "VwRThrL",
+        "corpus": "31625.13",
+        "interest": "692.96"
+      },
+      {
+        "userId": "HOvsdZx",
+        "corpus": "30467.91",
+        "interest": "385.78"
+      },
+      {
+        "userId": "mFhWUgj",
+        "corpus": "29384.10",
+        "interest": "214.75"
+      },
+      {
+        "userId": "bkNIrLi",
+        "corpus": "28124.11",
+        "interest": "737.51"
+      },
+      {
+        "userId": "UFeheHu",
+        "corpus": "27663.94",
+        "interest": "643.93"
+      },
+      {
+        "userId": "ptTnJNc",
+        "corpus": "26745.50",
+        "interest": "443.65"
+      },
+      {
+        "userId": "QhzELjB",
+        "corpus": "25494.49",
+        "interest": "383.08"
+      },
+      {
+        "userId": "YNrSJPB",
+        "corpus": "24782.81",
+        "interest": "423.32"
+      },
+      {
+        "userId": "LfdVHtC",
+        "corpus": "23760.72",
+        "interest": "480.19"
+      },
+      {
+        "userId": "tVwMgSY",
+        "corpus": "22299.48",
+        "interest": "107.19"
+      },
+      {
+        "userId": "VmOkxox",
+        "corpus": "21848.59",
+        "interest": "510.20"
+      },
+      {
+        "userId": "SWXYujw",
+        "corpus": "20330.61",
+        "interest": "976.80"
+      },
+      {
+        "userId": "wpEHqMT",
+        "corpus": "19344.12",
+        "interest": "134.72"
+      },
+      {
+        "userId": "bVpHHMz",
+        "corpus": "18809.68",
+        "interest": "710.38"
+      },
+      {
+        "userId": "mWHnzZr",
+        "corpus": "17728.64",
+        "interest": "823.48"
+      },
+      {
+        "userId": "rgjhLVB",
+        "corpus": "16400.84",
+        "interest": "145.46"
+      },
+      {
+        "userId": "AEGkAlO",
+        "corpus": "15998.95",
+        "interest": "182.82"
+      },
+      {
+        "userId": "oBSbWyH",
+        "corpus": "14076.25",
+        "interest": "371.45"
+      },
+      {
+        "userId": "XIcJmbm",
+        "corpus": "13407.36",
+        "interest": "829.69"
+      },
+      {
+        "userId": "TjrzXId",
+        "corpus": "12559.53",
+        "interest": "398.74"
+      },
+      {
+        "userId": "nHILQVW",
+        "corpus": "11064.56",
+        "interest": "774.13"
+      },
+      {
+        "userId": "hMOTDdf",
+        "corpus": "10820.44",
+        "interest": "16.52"
+      },
+      {
+        "userId": "cMqusvi",
+        "corpus": "9977.45",
+        "interest": "828.81"
+      },
+      {
+        "userId": "pNZJfBF",
+        "corpus": "8650.13",
+        "interest": "647.13"
+      },
+      {
+        "userId": "vhykMcb",
+        "corpus": "7204.18",
+        "interest": "651.09"
+      },
+      {
+        "userId": "eKMjZlG",
+        "corpus": "6972.71",
+        "interest": "232.81"
+      },
+      {
+        "userId": "iJrdreE",
+        "corpus": "5200.62",
+        "interest": "641.31"
+      },
+      {
+        "userId": "JSWhpkL",
+        "corpus": "4955.72",
+        "interest": "449.24"
+      },
+      {
+        "userId": "piUubOy",
+        "corpus": "3104.97",
+        "interest": "70.36"
+      },
+      {
+        "userId": "AlTGWBT",
+        "corpus": "2170.90",
+        "interest": "830.41"
+      },
+      {
+        "userId": "sWmTtjW",
+        "corpus": "1661.42",
+        "interest": "490.26"
+      }
+    ],
+    "CHINA_SOUTHWEST": [
+      {
+        "userId": "OFAuXgH",
+        "corpus": "100026.23",
+        "interest": "710.56"
+      },
+      {
+        "userId": "rkzQsxb",
+        "corpus": "99719.35",
+        "interest": "693.49"
+      },
+      {
+        "userId": "xQtTjRX",
+        "corpus": "98441.03",
+        "interest": "241.56"
+      },
+      {
+        "userId": "gLveZsh",
+        "corpus": "97760.88",
+        "interest": "229.70"
+      },
+      {
+        "userId": "kZpxVtQ",
+        "corpus": "96268.55",
+        "interest": "127.89"
+      },
+      {
+        "userId": "AxLDbxo",
+        "corpus": "95707.42",
+        "interest": "763.31"
+      },
+      {
+        "userId": "bNjMAGQ",
+        "corpus": "94283.47",
+        "interest": "136.23"
+      },
+      {
+        "userId": "LzxSzAD",
+        "corpus": "93335.35",
+        "interest": "360.63"
+      },
+      {
+        "userId": "pRukXfa",
+        "corpus": "92646.91",
+        "interest": "883.35"
+      },
+      {
+        "userId": "IiheGlE",
+        "corpus": "91990.80",
+        "interest": "132.46"
+      },
+      {
+        "userId": "clTxbtk",
+        "corpus": "90637.09",
+        "interest": "883.02"
+      },
+      {
+        "userId": "EOnqKMM",
+        "corpus": "89935.46",
+        "interest": "526.14"
+      },
+      {
+        "userId": "IrKyhwf",
+        "corpus": "88091.44",
+        "interest": "341.92"
+      },
+      {
+        "userId": "MdLVOvz",
+        "corpus": "87578.09",
+        "interest": "960.38"
+      },
+      {
+        "userId": "YPOLYFO",
+        "corpus": "86444.07",
+        "interest": "734.27"
+      },
+      {
+        "userId": "tbHLqRt",
+        "corpus": "85050.47",
+        "interest": "426.95"
+      },
+      {
+        "userId": "aTGbOnL",
+        "corpus": "84462.42",
+        "interest": "756.28"
+      },
+      {
+        "userId": "mCSbjdL",
+        "corpus": "83071.93",
+        "interest": "145.27"
+      },
+      {
+        "userId": "xpZohKz",
+        "corpus": "82787.97",
+        "interest": "864.16"
+      },
+      {
+        "userId": "ewmYcXP",
+        "corpus": "81813.16",
+        "interest": "348.86"
+      },
+      {
+        "userId": "QlbsSXl",
+        "corpus": "80167.84",
+        "interest": "232.97"
+      },
+      {
+        "userId": "jdGzlVZ",
+        "corpus": "79517.96",
+        "interest": "807.38"
+      },
+      {
+        "userId": "AOdITJd",
+        "corpus": "78827.83",
+        "interest": "638.93"
+      },
+      {
+        "userId": "AQllIQj",
+        "corpus": "77970.42",
+        "interest": "743.42"
+      },
+      {
+        "userId": "GpttAhr",
+        "corpus": "76782.13",
+        "interest": "463.82"
+      },
+      {
+        "userId": "DlCJXTU",
+        "corpus": "75505.81",
+        "interest": "390.00"
+      },
+      {
+        "userId": "sHtqCVb",
+        "corpus": "74000.81",
+        "interest": "747.91"
+      },
+      {
+        "userId": "iupTXzG",
+        "corpus": "73154.63",
+        "interest": "553.40"
+      },
+      {
+        "userId": "wfqphlH",
+        "corpus": "72263.49",
+        "interest": "976.37"
+      },
+      {
+        "userId": "IEDTukW",
+        "corpus": "71682.27",
+        "interest": "194.64"
+      },
+      {
+        "userId": "mvIojMr",
+        "corpus": "70216.16",
+        "interest": "74.38"
+      },
+      {
+        "userId": "WNmFDyJ",
+        "corpus": "69741.12",
+        "interest": "224.29"
+      },
+      {
+        "userId": "dZdoMTZ",
+        "corpus": "68617.58",
+        "interest": "907.36"
+      },
+      {
+        "userId": "CAOyUTg",
+        "corpus": "67086.71",
+        "interest": "416.72"
+      },
+      {
+        "userId": "qrDasCl",
+        "corpus": "66013.08",
+        "interest": "435.16"
+      },
+      {
+        "userId": "ItUIDrs",
+        "corpus": "65826.73",
+        "interest": "593.26"
+      },
+      {
+        "userId": "qxYGRjj",
+        "corpus": "64105.25",
+        "interest": "553.16"
+      },
+      {
+        "userId": "sTUVSfJ",
+        "corpus": "63969.08",
+        "interest": "998.23"
+      },
+      {
+        "userId": "UFlRKby",
+        "corpus": "62905.19",
+        "interest": "567.82"
+      },
+      {
+        "userId": "tHIreSO",
+        "corpus": "61114.65",
+        "interest": "97.13"
+      },
+      {
+        "userId": "pxiPtwE",
+        "corpus": "60341.92",
+        "interest": "200.97"
+      },
+      {
+        "userId": "MJuLeog",
+        "corpus": "59000.47",
+        "interest": "863.77"
+      },
+      {
+        "userId": "nysmNCW",
+        "corpus": "58384.25",
+        "interest": "994.36"
+      },
+      {
+        "userId": "OEsrepT",
+        "corpus": "57740.83",
+        "interest": "990.57"
+      },
+      {
+        "userId": "BPotMxX",
+        "corpus": "56886.23",
+        "interest": "994.79"
+      },
+      {
+        "userId": "xFZxZmg",
+        "corpus": "55036.55",
+        "interest": "356.35"
+      },
+      {
+        "userId": "GgMujsI",
+        "corpus": "54305.72",
+        "interest": "640.43"
+      },
+      {
+        "userId": "iZRxZmO",
+        "corpus": "53326.90",
+        "interest": "516.07"
+      },
+      {
+        "userId": "hVEEkSu",
+        "corpus": "52165.77",
+        "interest": "839.97"
+      },
+      {
+        "userId": "OWgvjBM",
+        "corpus": "51843.85",
+        "interest": "939.31"
+      },
+      {
+        "userId": "WzaEOsS",
+        "corpus": "50628.93",
+        "interest": "338.78"
+      },
+      {
+        "userId": "StUHpFv",
+        "corpus": "49794.96",
+        "interest": "217.01"
+      },
+      {
+        "userId": "EBHAOzx",
+        "corpus": "48837.33",
+        "interest": "600.38"
+      },
+      {
+        "userId": "GGnJNAh",
+        "corpus": "47449.26",
+        "interest": "480.92"
+      },
+      {
+        "userId": "TBIsWFJ",
+        "corpus": "46734.44",
+        "interest": "596.01"
+      },
+      {
+        "userId": "ZgBwPUj",
+        "corpus": "45729.23",
+        "interest": "835.29"
+      },
+      {
+        "userId": "tMiAQlT",
+        "corpus": "44929.51",
+        "interest": "91.98"
+      },
+      {
+        "userId": "IOBqCgZ",
+        "corpus": "43022.72",
+        "interest": "687.88"
+      },
+      {
+        "userId": "xWGKrWq",
+        "corpus": "42791.28",
+        "interest": "251.47"
+      },
+      {
+        "userId": "FFAEzFo",
+        "corpus": "41319.88",
+        "interest": "484.86"
+      },
+      {
+        "userId": "HONrnte",
+        "corpus": "40365.24",
+        "interest": "626.73"
+      },
+      {
+        "userId": "PtpHlwh",
+        "corpus": "39453.38",
+        "interest": "504.26"
+      },
+      {
+        "userId": "sSdFcGr",
+        "corpus": "38896.68",
+        "interest": "907.20"
+      },
+      {
+        "userId": "csAkpCU",
+        "corpus": "37174.00",
+        "interest": "42.64"
+      },
+      {
+        "userId": "eDmcnNn",
+        "corpus": "36711.93",
+        "interest": "110.80"
+      },
+      {
+        "userId": "zxmSdJL",
+        "corpus": "35029.25",
+        "interest": "542.22"
+      },
+      {
+        "userId": "ugBLeoL",
+        "corpus": "34960.99",
+        "interest": "257.83"
+      },
+      {
+        "userId": "SkJWRtM",
+        "corpus": "33529.08",
+        "interest": "948.18"
+      },
+      {
+        "userId": "BmxQfNZ",
+        "corpus": "32256.82",
+        "interest": "950.92"
+      },
+      {
+        "userId": "WhYYMnP",
+        "corpus": "31880.73",
+        "interest": "860.95"
+      },
+      {
+        "userId": "xtxbwtx",
+        "corpus": "30560.47",
+        "interest": "699.40"
+      },
+      {
+        "userId": "ayYLmnL",
+        "corpus": "29653.97",
+        "interest": "853.43"
+      },
+      {
+        "userId": "rhLkNiM",
+        "corpus": "28755.33",
+        "interest": "272.83"
+      },
+      {
+        "userId": "ofEAhDn",
+        "corpus": "27097.88",
+        "interest": "660.22"
+      },
+      {
+        "userId": "BJVFsOo",
+        "corpus": "26230.52",
+        "interest": "845.88"
+      },
+      {
+        "userId": "mRfMCNO",
+        "corpus": "25472.63",
+        "interest": "814.18"
+      },
+      {
+        "userId": "FmkoFpU",
+        "corpus": "24449.87",
+        "interest": "205.64"
+      },
+      {
+        "userId": "aJGvxXv",
+        "corpus": "23681.82",
+        "interest": "704.91"
+      },
+      {
+        "userId": "AcdSbDS",
+        "corpus": "22922.08",
+        "interest": "832.39"
+      },
+      {
+        "userId": "inKBuyI",
+        "corpus": "21695.67",
+        "interest": "964.36"
+      },
+      {
+        "userId": "fdIzixZ",
+        "corpus": "20206.98",
+        "interest": "236.18"
+      },
+      {
+        "userId": "UHtSClT",
+        "corpus": "19740.30",
+        "interest": "547.01"
+      },
+      {
+        "userId": "YhVZvqC",
+        "corpus": "18593.86",
+        "interest": "534.11"
+      },
+      {
+        "userId": "cuehsoI",
+        "corpus": "17995.02",
+        "interest": "864.77"
+      },
+      {
+        "userId": "sokbduO",
+        "corpus": "16870.29",
+        "interest": "887.06"
+      },
+      {
+        "userId": "jqNUlgZ",
+        "corpus": "15587.66",
+        "interest": "861.48"
+      },
+      {
+        "userId": "htgxedt",
+        "corpus": "14162.95",
+        "interest": "79.50"
+      },
+      {
+        "userId": "aZMswlT",
+        "corpus": "13006.66",
+        "interest": "967.60"
+      },
+      {
+        "userId": "pOjrYeX",
+        "corpus": "12177.04",
+        "interest": "222.46"
+      },
+      {
+        "userId": "zfRayUc",
+        "corpus": "11659.28",
+        "interest": "462.23"
+      },
+      {
+        "userId": "zENvdFs",
+        "corpus": "10286.64",
+        "interest": "287.11"
+      },
+      {
+        "userId": "hPNzEuW",
+        "corpus": "9196.84",
+        "interest": "888.15"
+      },
+      {
+        "userId": "DuNJuIL",
+        "corpus": "8835.74",
+        "interest": "935.50"
+      },
+      {
+        "userId": "cAlRmyF",
+        "corpus": "7400.67",
+        "interest": "814.86"
+      },
+      {
+        "userId": "mTCKSmJ",
+        "corpus": "6697.95",
+        "interest": "904.54"
+      },
+      {
+        "userId": "ZGvLtuV",
+        "corpus": "5876.65",
+        "interest": "425.08"
+      },
+      {
+        "userId": "QAWikeX",
+        "corpus": "4612.82",
+        "interest": "21.17"
+      },
+      {
+        "userId": "mGJXPuh",
+        "corpus": "3541.45",
+        "interest": "112.40"
+      },
+      {
+        "userId": "OruRRAw",
+        "corpus": "2067.62",
+        "interest": "778.72"
+      },
+      {
+        "userId": "RHTHReb",
+        "corpus": "1900.37",
+        "interest": "520.73"
+      }
+    ],
+    "CHINA": [
+      {
+        "userId": "admin",
+        "corpus": "204999.99",
+        "interest": "10480.16"
+      },
+      {
+        "userId": "tuotian",
+        "corpus": "5000.00",
+        "interest": "287.71"
+      },
+      {
+        "userId": "mleoshi",
+        "corpus": "285.00",
+        "interest": "2.02"
+      },
+      {
+        "userId": "sidneygao",
+        "corpus": "280.00",
+        "interest": "1.88"
+      },
+      {
+        "userId": "wll001",
+        "corpus": "195.00",
+        "interest": "22.60"
+      },
+      {
+        "userId": "zhengcong",
+        "corpus": "140.00",
+        "interest": "11.44"
+      },
+      {
+        "userId": "jdsb1",
+        "corpus": "7.00",
+        "interest": "0.13"
+      },
+      {
+        "userId": "fGcSZHC",
+        "corpus": "93525.59",
+        "interest": "288.62"
+      },
+      {
+        "userId": "xgUMlGQ",
+        "corpus": "92414.29",
+        "interest": "230.52"
+      },
+      {
+        "userId": "KGQGNdg",
+        "corpus": "91615.16",
+        "interest": "336.30"
+      },
+      {
+        "userId": "UyzvTDx",
+        "corpus": "90832.57",
+        "interest": "602.83"
+      },
+      {
+        "userId": "FnVoWTl",
+        "corpus": "89489.53",
+        "interest": "216.82"
+      },
+      {
+        "userId": "NgpUTEU",
+        "corpus": "88228.95",
+        "interest": "128.57"
+      },
+      {
+        "userId": "rCTcaAO",
+        "corpus": "87941.67",
+        "interest": "2.95"
+      },
+      {
+        "userId": "wnUIwFA",
+        "corpus": "86619.14",
+        "interest": "999.03"
+      },
+      {
+        "userId": "xhYFjsS",
+        "corpus": "85017.33",
+        "interest": "907.39"
+      },
+      {
+        "userId": "geDTXtB",
+        "corpus": "84461.66",
+        "interest": "512.91"
+      },
+      {
+        "userId": "srovGvK",
+        "corpus": "83807.00",
+        "interest": "440.79"
+      },
+      {
+        "userId": "WSpmMGp",
+        "corpus": "82047.54",
+        "interest": "365.62"
+      },
+      {
+        "userId": "ujdNktE",
+        "corpus": "81817.37",
+        "interest": "138.64"
+      },
+      {
+        "userId": "YkHgsaW",
+        "corpus": "80769.96",
+        "interest": "828.95"
+      },
+      {
+        "userId": "CdSguCg",
+        "corpus": "79824.06",
+        "interest": "732.46"
+      },
+      {
+        "userId": "YFTVVWl",
+        "corpus": "78531.28",
+        "interest": "321.90"
+      },
+      {
+        "userId": "BsHXFgO",
+        "corpus": "77389.42",
+        "interest": "774.60"
+      },
+      {
+        "userId": "NTxzhrK",
+        "corpus": "76093.10",
+        "interest": "898.20"
+      },
+      {
+        "userId": "ybcJxMS",
+        "corpus": "75292.74",
+        "interest": "891.08"
+      },
+      {
+        "userId": "FSEgAxo",
+        "corpus": "74003.77",
+        "interest": "731.60"
+      },
+      {
+        "userId": "ApyyqZx",
+        "corpus": "73965.03",
+        "interest": "33.00"
+      },
+      {
+        "userId": "TgyiYkX",
+        "corpus": "72848.25",
+        "interest": "766.87"
+      },
+      {
+        "userId": "pgnWvNc",
+        "corpus": "71646.25",
+        "interest": "324.78"
+      },
+      {
+        "userId": "yCmaLTP",
+        "corpus": "70956.91",
+        "interest": "322.74"
+      },
+      {
+        "userId": "voYrtIg",
+        "corpus": "69390.46",
+        "interest": "366.13"
+      },
+      {
+        "userId": "BlRxlGp",
+        "corpus": "68382.58",
+        "interest": "582.31"
+      },
+      {
+        "userId": "LXDYYzz",
+        "corpus": "67232.48",
+        "interest": "134.81"
+      },
+      {
+        "userId": "jimvMPn",
+        "corpus": "66909.28",
+        "interest": "587.25"
+      },
+      {
+        "userId": "gbAerqD",
+        "corpus": "65799.64",
+        "interest": "958.43"
+      },
+      {
+        "userId": "vdqrakq",
+        "corpus": "64091.49",
+        "interest": "563.79"
+      },
+      {
+        "userId": "yDNxqYw",
+        "corpus": "63403.01",
+        "interest": "376.13"
+      },
+      {
+        "userId": "IVJmftw",
+        "corpus": "62839.34",
+        "interest": "152.00"
+      },
+      {
+        "userId": "mRWJOdi",
+        "corpus": "61174.88",
+        "interest": "94.78"
+      },
+      {
+        "userId": "buoZRwn",
+        "corpus": "60863.00",
+        "interest": "383.97"
+      },
+      {
+        "userId": "BoBUkoK",
+        "corpus": "59132.49",
+        "interest": "659.34"
+      },
+      {
+        "userId": "rLMYTIe",
+        "corpus": "58368.63",
+        "interest": "62.34"
+      },
+      {
+        "userId": "TWMDYKV",
+        "corpus": "57143.07",
+        "interest": "903.33"
+      },
+      {
+        "userId": "jmHPbGL",
+        "corpus": "56758.58",
+        "interest": "527.48"
+      },
+      {
+        "userId": "vRHiRgJ",
+        "corpus": "55640.97",
+        "interest": "722.92"
+      },
+      {
+        "userId": "tdjUgmA",
+        "corpus": "54730.22",
+        "interest": "669.79"
+      },
+      {
+        "userId": "HhKUslu",
+        "corpus": "53604.89",
+        "interest": "226.85"
+      },
+      {
+        "userId": "rjssptm",
+        "corpus": "52090.48",
+        "interest": "443.02"
+      },
+      {
+        "userId": "HTusjTe",
+        "corpus": "51741.95",
+        "interest": "854.61"
+      },
+      {
+        "userId": "ilPBhpE",
+        "corpus": "50807.50",
+        "interest": "65.17"
+      },
+      {
+        "userId": "TVhUgzp",
+        "corpus": "49044.72",
+        "interest": "626.38"
+      },
+      {
+        "userId": "jKFpiec",
+        "corpus": "48305.82",
+        "interest": "555.39"
+      },
+      {
+        "userId": "xCMqdgL",
+        "corpus": "47888.61",
+        "interest": "290.91"
+      },
+      {
+        "userId": "sihPRPb",
+        "corpus": "46778.56",
+        "interest": "248.62"
+      },
+      {
+        "userId": "RHgQfWB",
+        "corpus": "45619.00",
+        "interest": "771.30"
+      },
+      {
+        "userId": "wJlbawk",
+        "corpus": "44337.47",
+        "interest": "453.84"
+      },
+      {
+        "userId": "AOyjlwV",
+        "corpus": "43141.15",
+        "interest": "973.58"
+      },
+      {
+        "userId": "ZFvhYfl",
+        "corpus": "42151.18",
+        "interest": "477.88"
+      },
+      {
+        "userId": "uWPfYUm",
+        "corpus": "41370.58",
+        "interest": "719.48"
+      },
+      {
+        "userId": "TTLaLQe",
+        "corpus": "40332.02",
+        "interest": "823.16"
+      },
+      {
+        "userId": "JYrbEvJ",
+        "corpus": "39527.60",
+        "interest": "292.01"
+      },
+      {
+        "userId": "pqwLyzn",
+        "corpus": "38223.71",
+        "interest": "486.32"
+      },
+      {
+        "userId": "uJUCwXH",
+        "corpus": "37166.80",
+        "interest": "841.61"
+      },
+      {
+        "userId": "PkAZIIl",
+        "corpus": "36914.82",
+        "interest": "933.92"
+      },
+      {
+        "userId": "KkhcQxn",
+        "corpus": "35521.04",
+        "interest": "690.41"
+      },
+      {
+        "userId": "WCwBhAp",
+        "corpus": "34256.97",
+        "interest": "511.97"
+      },
+      {
+        "userId": "hlVEuTY",
+        "corpus": "33208.86",
+        "interest": "393.49"
+      },
+      {
+        "userId": "DxLVqut",
+        "corpus": "32402.48",
+        "interest": "758.25"
+      },
+      {
+        "userId": "JFwGLRl",
+        "corpus": "31605.60",
+        "interest": "268.73"
+      },
+      {
+        "userId": "ukcnTmf",
+        "corpus": "30892.22",
+        "interest": "329.15"
+      },
+      {
+        "userId": "QcwdrBs",
+        "corpus": "29210.27",
+        "interest": "990.28"
+      },
+      {
+        "userId": "WooIgCn",
+        "corpus": "28622.73",
+        "interest": "27.60"
+      },
+      {
+        "userId": "qhvqvgO",
+        "corpus": "27154.21",
+        "interest": "756.19"
+      },
+      {
+        "userId": "PuryitA",
+        "corpus": "26600.53",
+        "interest": "723.95"
+      },
+      {
+        "userId": "EHpGkbK",
+        "corpus": "25591.90",
+        "interest": "486.54"
+      },
+      {
+        "userId": "oWYbniq",
+        "corpus": "24251.96",
+        "interest": "798.81"
+      },
+      {
+        "userId": "pAbDFtM",
+        "corpus": "23090.43",
+        "interest": "486.33"
+      },
+      {
+        "userId": "qxIxMRD",
+        "corpus": "22198.56",
+        "interest": "105.01"
+      },
+      {
+        "userId": "HquhxQL",
+        "corpus": "21291.38",
+        "interest": "16.00"
+      },
+      {
+        "userId": "VuHsnIC",
+        "corpus": "20830.62",
+        "interest": "345.01"
+      },
+      {
+        "userId": "tafLXJK",
+        "corpus": "19057.29",
+        "interest": "252.47"
+      },
+      {
+        "userId": "DjkyhaS",
+        "corpus": "18716.02",
+        "interest": "191.13"
+      },
+      {
+        "userId": "GFtBhEd",
+        "corpus": "17034.51",
+        "interest": "194.99"
+      },
+      {
+        "userId": "qUFevqA",
+        "corpus": "16866.44",
+        "interest": "437.62"
+      },
+      {
+        "userId": "hAxHlCr",
+        "corpus": "15065.63",
+        "interest": "172.57"
+      },
+      {
+        "userId": "uILJkSJ",
+        "corpus": "14149.83",
+        "interest": "966.83"
+      },
+      {
+        "userId": "WsYwxxJ",
+        "corpus": "13166.21",
+        "interest": "743.43"
+      },
+      {
+        "userId": "BHRQaRG",
+        "corpus": "12685.90",
+        "interest": "336.05"
+      },
+      {
+        "userId": "ngfmwan",
+        "corpus": "11844.70",
+        "interest": "942.28"
+      },
+      {
+        "userId": "biOXznH",
+        "corpus": "10890.30",
+        "interest": "347.62"
+      },
+      {
+        "userId": "qpmILWx",
+        "corpus": "9388.81",
+        "interest": "27.14"
+      },
+      {
+        "userId": "sUILwXX",
+        "corpus": "8943.85",
+        "interest": "51.24"
+      },
+      {
+        "userId": "jAFXGYM",
+        "corpus": "7367.52",
+        "interest": "105.16"
+      },
+      {
+        "userId": "HiBKhhE",
+        "corpus": "6854.33",
+        "interest": "246.11"
+      },
+      {
+        "userId": "LbzUSua",
+        "corpus": "5005.35",
+        "interest": "275.72"
+      },
+      {
+        "userId": "jXhjkeB",
+        "corpus": "4951.64",
+        "interest": "699.68"
+      },
+      {
+        "userId": "goNMQFD",
+        "corpus": "3273.90",
+        "interest": "218.96"
+      },
+      {
+        "userId": "xOvbQxR",
+        "corpus": "2610.92",
+        "interest": "980.46"
+      },
+      {
+        "userId": "dOYDZpP",
+        "corpus": "1515.33",
+        "interest": "479.46"
+      }
+    ],
+    "CHINA_EAST": [
+      {
+        "userId": "jqjiRXW",
+        "corpus": "100233.74",
+        "interest": "14.26"
+      },
+      {
+        "userId": "knPMoaO",
+        "corpus": "99163.52",
+        "interest": "46.86"
+      },
+      {
+        "userId": "KkzqHrU",
+        "corpus": "98034.03",
+        "interest": "216.64"
+      },
+      {
+        "userId": "ZfSOVxf",
+        "corpus": "97660.85",
+        "interest": "219.61"
+      },
+      {
+        "userId": "SkMPVyj",
+        "corpus": "96973.17",
+        "interest": "328.23"
+      },
+      {
+        "userId": "UjyUzjT",
+        "corpus": "95981.94",
+        "interest": "152.55"
+      },
+      {
+        "userId": "wJQuNVO",
+        "corpus": "94268.05",
+        "interest": "885.84"
+      },
+      {
+        "userId": "dbPQBIS",
+        "corpus": "93270.61",
+        "interest": "935.58"
+      },
+      {
+        "userId": "upKQeUu",
+        "corpus": "92255.78",
+        "interest": "598.82"
+      },
+      {
+        "userId": "AMwXmOj",
+        "corpus": "91972.02",
+        "interest": "528.17"
+      },
+      {
+        "userId": "qpgBCQW",
+        "corpus": "90040.95",
+        "interest": "768.36"
+      },
+      {
+        "userId": "awlwyBV",
+        "corpus": "89499.46",
+        "interest": "383.21"
+      },
+      {
+        "userId": "faCeKIm",
+        "corpus": "88273.55",
+        "interest": "286.93"
+      },
+      {
+        "userId": "asKcIQy",
+        "corpus": "87913.53",
+        "interest": "133.83"
+      },
+      {
+        "userId": "fgEEDkF",
+        "corpus": "86610.33",
+        "interest": "685.61"
+      },
+      {
+        "userId": "kGCwREr",
+        "corpus": "85311.22",
+        "interest": "287.90"
+      },
+      {
+        "userId": "hNMTpuL",
+        "corpus": "84897.20",
+        "interest": "159.13"
+      },
+      {
+        "userId": "uRXJiYA",
+        "corpus": "83623.56",
+        "interest": "477.80"
+      },
+      {
+        "userId": "dVTDIgf",
+        "corpus": "82877.47",
+        "interest": "491.36"
+      },
+      {
+        "userId": "rUcHQsG",
+        "corpus": "81302.34",
+        "interest": "446.48"
+      },
+      {
+        "userId": "PAeVWgL",
+        "corpus": "80277.98",
+        "interest": "328.62"
+      },
+      {
+        "userId": "SwaYMxe",
+        "corpus": "79940.39",
+        "interest": "616.12"
+      },
+      {
+        "userId": "BhoYgRc",
+        "corpus": "78454.62",
+        "interest": "303.84"
+      },
+      {
+        "userId": "aspOKbO",
+        "corpus": "77214.12",
+        "interest": "781.86"
+      },
+      {
+        "userId": "htshFWo",
+        "corpus": "76389.17",
+        "interest": "101.29"
+      },
+      {
+        "userId": "WTuXBik",
+        "corpus": "75663.45",
+        "interest": "200.69"
+      },
+      {
+        "userId": "ZEaEhTv",
+        "corpus": "74720.56",
+        "interest": "670.04"
+      },
+      {
+        "userId": "QNSQZjh",
+        "corpus": "73731.12",
+        "interest": "104.25"
+      },
+      {
+        "userId": "UfhvJrl",
+        "corpus": "72667.08",
+        "interest": "443.56"
+      },
+      {
+        "userId": "TOwcDYo",
+        "corpus": "71172.10",
+        "interest": "454.60"
+      },
+      {
+        "userId": "rcTbzzM",
+        "corpus": "70149.68",
+        "interest": "603.56"
+      },
+      {
+        "userId": "zOByePq",
+        "corpus": "69413.44",
+        "interest": "582.87"
+      },
+      {
+        "userId": "axnOwwx",
+        "corpus": "68162.03",
+        "interest": "138.15"
+      },
+      {
+        "userId": "HjmCuix",
+        "corpus": "67695.80",
+        "interest": "203.73"
+      },
+      {
+        "userId": "ryxNoNo",
+        "corpus": "66449.80",
+        "interest": "687.48"
+      },
+      {
+        "userId": "iWgEuDw",
+        "corpus": "65860.44",
+        "interest": "182.07"
+      },
+      {
+        "userId": "QWgMlLX",
+        "corpus": "64859.14",
+        "interest": "944.42"
+      },
+      {
+        "userId": "sdnmdnA",
+        "corpus": "63458.36",
+        "interest": "343.41"
+      },
+      {
+        "userId": "FgHwtsI",
+        "corpus": "62293.66",
+        "interest": "683.67"
+      },
+      {
+        "userId": "GsRlXCf",
+        "corpus": "61453.72",
+        "interest": "565.86"
+      },
+      {
+        "userId": "CuxcbYZ",
+        "corpus": "60079.46",
+        "interest": "329.43"
+      },
+      {
+        "userId": "dmhxtxb",
+        "corpus": "59168.97",
+        "interest": "369.14"
+      },
+      {
+        "userId": "CDOTGbq",
+        "corpus": "58679.48",
+        "interest": "339.88"
+      },
+      {
+        "userId": "QwWJODi",
+        "corpus": "57276.84",
+        "interest": "224.54"
+      },
+      {
+        "userId": "cUbvCYi",
+        "corpus": "56121.19",
+        "interest": "586.43"
+      },
+      {
+        "userId": "utislkD",
+        "corpus": "55582.57",
+        "interest": "850.28"
+      },
+      {
+        "userId": "mjLlLGP",
+        "corpus": "54205.63",
+        "interest": "336.03"
+      },
+      {
+        "userId": "hCcVuMY",
+        "corpus": "53059.53",
+        "interest": "827.57"
+      },
+      {
+        "userId": "VBBaLXD",
+        "corpus": "52551.54",
+        "interest": "406.90"
+      },
+      {
+        "userId": "rXQefmy",
+        "corpus": "51102.36",
+        "interest": "975.48"
+      },
+      {
+        "userId": "AtycjkK",
+        "corpus": "50794.49",
+        "interest": "561.22"
+      },
+      {
+        "userId": "wWIZoBX",
+        "corpus": "49244.07",
+        "interest": "56.41"
+      },
+      {
+        "userId": "NiKMDhP",
+        "corpus": "48809.04",
+        "interest": "222.71"
+      },
+      {
+        "userId": "YKJTQRK",
+        "corpus": "47646.90",
+        "interest": "548.96"
+      },
+      {
+        "userId": "GcZYTOm",
+        "corpus": "46650.92",
+        "interest": "162.64"
+      },
+      {
+        "userId": "DiGIrqC",
+        "corpus": "45521.43",
+        "interest": "421.39"
+      },
+      {
+        "userId": "aFoVasp",
+        "corpus": "44026.74",
+        "interest": "884.80"
+      },
+      {
+        "userId": "QmercTG",
+        "corpus": "43254.69",
+        "interest": "66.35"
+      },
+      {
+        "userId": "powSgjl",
+        "corpus": "42490.13",
+        "interest": "58.06"
+      },
+      {
+        "userId": "XSAWNwO",
+        "corpus": "41434.83",
+        "interest": "816.31"
+      },
+      {
+        "userId": "wlGkkVD",
+        "corpus": "40236.22",
+        "interest": "494.69"
+      },
+      {
+        "userId": "JDeSZzd",
+        "corpus": "39148.72",
+        "interest": "749.18"
+      },
+      {
+        "userId": "KYiEydc",
+        "corpus": "38320.43",
+        "interest": "853.04"
+      },
+      {
+        "userId": "nbaZqRE",
+        "corpus": "37898.45",
+        "interest": "814.95"
+      },
+      {
+        "userId": "yAKczLH",
+        "corpus": "36362.79",
+        "interest": "455.36"
+      },
+      {
+        "userId": "imOMLCE",
+        "corpus": "35233.66",
+        "interest": "666.72"
+      },
+      {
+        "userId": "WOLgmaW",
+        "corpus": "34315.84",
+        "interest": "354.49"
+      },
+      {
+        "userId": "xDiIYkS",
+        "corpus": "33728.86",
+        "interest": "963.10"
+      },
+      {
+        "userId": "XduywDQ",
+        "corpus": "32671.79",
+        "interest": "57.75"
+      },
+      {
+        "userId": "EtLCZpj",
+        "corpus": "31248.48",
+        "interest": "324.32"
+      },
+      {
+        "userId": "qqtbZTK",
+        "corpus": "30563.77",
+        "interest": "121.82"
+      },
+      {
+        "userId": "JjtqNlt",
+        "corpus": "29536.89",
+        "interest": "570.30"
+      },
+      {
+        "userId": "wBVMsxZ",
+        "corpus": "28576.45",
+        "interest": "169.48"
+      },
+      {
+        "userId": "JBiavis",
+        "corpus": "27046.97",
+        "interest": "346.91"
+      },
+      {
+        "userId": "qWqERkD",
+        "corpus": "26722.87",
+        "interest": "747.21"
+      },
+      {
+        "userId": "CACMtdG",
+        "corpus": "25577.53",
+        "interest": "754.93"
+      },
+      {
+        "userId": "OycYpSw",
+        "corpus": "24967.09",
+        "interest": "841.98"
+      },
+      {
+        "userId": "Uebjpdc",
+        "corpus": "23728.95",
+        "interest": "136.76"
+      },
+      {
+        "userId": "EafoPFz",
+        "corpus": "22876.38",
+        "interest": "806.32"
+      },
+      {
+        "userId": "guMkING",
+        "corpus": "21405.57",
+        "interest": "746.80"
+      },
+      {
+        "userId": "XRzUrXV",
+        "corpus": "20472.23",
+        "interest": "902.63"
+      },
+      {
+        "userId": "SqUJjYh",
+        "corpus": "19594.79",
+        "interest": "634.28"
+      },
+      {
+        "userId": "wUzWpjZ",
+        "corpus": "18115.81",
+        "interest": "670.86"
+      },
+      {
+        "userId": "hXqerPY",
+        "corpus": "17434.69",
+        "interest": "700.93"
+      },
+      {
+        "userId": "inXDfph",
+        "corpus": "16311.39",
+        "interest": "848.14"
+      },
+      {
+        "userId": "jRvGCjd",
+        "corpus": "15145.87",
+        "interest": "560.85"
+      },
+      {
+        "userId": "wdNLHIp",
+        "corpus": "14640.53",
+        "interest": "624.48"
+      },
+      {
+        "userId": "UsKoRKx",
+        "corpus": "13747.46",
+        "interest": "526.60"
+      },
+      {
+        "userId": "bqXzmhD",
+        "corpus": "12649.99",
+        "interest": "605.78"
+      },
+      {
+        "userId": "cTDzQmn",
+        "corpus": "11603.66",
+        "interest": "772.52"
+      },
+      {
+        "userId": "BXxoTiL",
+        "corpus": "10408.01",
+        "interest": "973.36"
+      },
+      {
+        "userId": "OzIKIPJ",
+        "corpus": "9754.12",
+        "interest": "485.51"
+      },
+      {
+        "userId": "cGdoycQ",
+        "corpus": "8616.42",
+        "interest": "978.68"
+      },
+      {
+        "userId": "KnSzFWK",
+        "corpus": "7670.06",
+        "interest": "603.53"
+      },
+      {
+        "userId": "UoAFzDN",
+        "corpus": "6620.21",
+        "interest": "92.82"
+      },
+      {
+        "userId": "cBUcNqH",
+        "corpus": "5547.72",
+        "interest": "562.87"
+      },
+      {
+        "userId": "gzuJMNz",
+        "corpus": "4391.41",
+        "interest": "841.66"
+      },
+      {
+        "userId": "iWSaJDp",
+        "corpus": "3501.73",
+        "interest": "328.57"
+      },
+      {
+        "userId": "eMPxYzc",
+        "corpus": "2580.99",
+        "interest": "601.55"
+      },
+      {
+        "userId": "tMmwkAl",
+        "corpus": "1053.20",
+        "interest": "865.46"
+      }
+    ]
+  }
+}
