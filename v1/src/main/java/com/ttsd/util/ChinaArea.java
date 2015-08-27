@@ -22,11 +22,7 @@ public enum ChinaArea {
      */
     CHINA_EAST,
     /**
-     * 中南
+     * 华南
      */
-    CHINA_SOUTHMIDDLE,
-    /**
-     * 西南
-     */
-    CHINA_SOUTHWEST,
+    CHINA_SOUTH
 }
