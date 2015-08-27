@@ -177,6 +177,7 @@ public class TrusteeshipHome {
 			umPayBindingBankCardOperation
 					.receiveOperationPostCallback(FacesUtil
 							.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("您需要绑定的银行卡信息已经提交至联动优势,请等待审核!");
 			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
 			if(onMobile){
@@ -186,6 +187,7 @@ public class TrusteeshipHome {
 			}
 		} catch (TrusteeshipReturnException e) {
 			log.debug(e);
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("绑卡失败: " + e.getMessage());
 		}
 		if(onMobile){
@@ -198,6 +200,7 @@ public class TrusteeshipHome {
 	public String replaceBankCardWeb(boolean onMobile) {
 		try {
 			this.umPayReplaceBankCardOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("您需要更换的银行卡信息已经提交至联动优势,请等待审核!");
 			FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
 			if(onMobile){
@@ -207,6 +210,7 @@ public class TrusteeshipHome {
 			}
 		} catch (TrusteeshipReturnException e) {
 			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("换卡失败: " + e.getMessage());
 		}
 		if(onMobile){
@@ -219,12 +223,15 @@ public class TrusteeshipHome {
 	public String bindingAgreementWeb(boolean onMobile) {
 		try {
 			umPayBindingAgreementOperation.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("签约协议成功");
 		} catch (TrusteeshipReturnException e) {
 			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("签约失败: " + e.getMessage());
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("签约失败: " + e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
@@ -242,8 +249,10 @@ public class TrusteeshipHome {
 		try {
 			umPayRechargeOteration.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("充值成功");
 		} catch (TrusteeshipReturnException e) {
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("充值失败: " + e.getMessage());
 			log.debug(e);
 			e.printStackTrace();
@@ -263,9 +272,11 @@ public class TrusteeshipHome {
 		try {
 			umPayInvestOeration.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("投资成功");
 		} catch (TrusteeshipReturnException e) {
 			e.printStackTrace();
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("投资失败: " + e.getMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
@@ -340,8 +351,10 @@ public class TrusteeshipHome {
 		try {
 			umPayWithdrawOperation.receiveOperationPostCallback(FacesUtil
 					.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
 			FacesUtil.addInfoMessage("银行已经接受您的请求!");
 		} catch (TrusteeshipReturnException e) {
+			FacesUtil.setRequestAttribute("callback_status","fail");
 			FacesUtil.addErrorMessage("提现失败: " + e.getLocalizedMessage());
 		}
 		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());

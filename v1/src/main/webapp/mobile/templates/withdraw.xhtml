@@ -7,7 +7,7 @@
                 <img src="#{request.contextPath}/mobile/images/withdraw-success.png" alt=""/>
             </div>
             <div class="info"> <h:messages></h:messages> </div>
-            <a href="tuotian://withdraw" class="btn-success">确认</a>
+            <a href="tuotian://withdraw/${requestScope['callback_status']}" class="btn-success">确认</a>
         </div>
     </ui:define>
 </ui:composition>
