@@ -4,11 +4,12 @@
 $(function () {
     //初始化渲染
     var jqDate = $('#jq-date');
-    var _data = {};
     $.post(API_URL, {period: 'week'}, function (data) {
         /*optional stuff to do after success */
+        allData(data);
+    });
+    var allData = function(data){
         //渲染全国数据
-        _data = data;
         var _chinaArr = data.areaInvestments.CHINA;
         var _china = _chinaArr.length;
 
@@ -41,7 +42,7 @@ $(function () {
         jqDate.find('.dataStar').text(data.beginTime);
         jqDate.find('.dataEnd').text(data.endTime);
         jqDate.find('.newsdata i').text(data.updateTime);
-    });
+    };
     var tmpChina = function (length, n, data, tableName) {
         var str = '';
         for (var i = 0; i < length; i++) {
@@ -82,14 +83,17 @@ $(function () {
     //活动排行按 周 月 季 年
     jqDate.find('select').change(function () {
         var _thisValue = $(this).val();
+        $('.nav li').removeClass('active').eq(0).addClass('active');
+        $('.area-table').find('tbody').remove();
         $.post(API_URL, {period: _thisValue}, function (data) {
             /*optional stuff to do after success */
-            var _chinaArr = data.areaInvestments.CHINA;
-            var _china = _chinaArr.length;
-            tmpChina(_china, 9, _chinaArr, '.china-table');
-            jqDate.find('.dataStar').text(data.beginTime);
-            jqDate.find('.dataEnd').text(data.endTime);
-            jqDate.find('.newsdata i').text(data.updateTime);
+            //var _chinaArr = data.areaInvestments.CHINA;
+            //var _china = _chinaArr.length;
+            //tmpChina(_china, 9, _chinaArr, '.china-table');
+            //jqDate.find('.dataStar').text(data.beginTime);
+            //jqDate.find('.dataEnd').text(data.endTime);
+            //jqDate.find('.newsdata i').text(data.updateTime);
+            allData(data);
         });
     });
 

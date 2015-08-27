@@ -32,6 +32,7 @@ public class InvestmentTopController {
         }
 
         InvestTopResponse resp = topService.queryInvestTopResponse(period);
+        mockData(resp);
         return resp;
     }
 
