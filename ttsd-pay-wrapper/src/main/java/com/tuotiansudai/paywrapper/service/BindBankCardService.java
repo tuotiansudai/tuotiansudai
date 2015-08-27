@@ -11,5 +11,4 @@ public interface BindBankCardService {
 
     String bindBankCardCallback(Map<String, String> paramsMap, String queryString);
 
-    boolean isCardNoBound(String id);
 }

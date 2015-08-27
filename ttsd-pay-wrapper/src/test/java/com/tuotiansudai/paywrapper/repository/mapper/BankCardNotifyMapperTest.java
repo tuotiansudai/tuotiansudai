@@ -24,15 +24,15 @@ public class BankCardNotifyMapperTest {
     @Test
     public void shouldCreate() throws Exception {
         BankCardNotifyRequestModel model = new BankCardNotifyRequestModel();
-        model.setUserId("userid");
+        model.setUserId("userId");
         model.setLastFourCardid("1234");
         model.setGateId("ICBC");
         model.setService("mer_bind_card_notify");
         model.setSignType("RSA");
         model.setSign("sign");
-        model.setMerId("merid");
+        model.setMerId("merId");
         model.setVersion("4");
-        model.setOrderId("orderid");
+        model.setOrderId("orderId");
         model.setMerDate("20150505");
         model.setRetCode("0000");
         model.setCharset("utf-8");

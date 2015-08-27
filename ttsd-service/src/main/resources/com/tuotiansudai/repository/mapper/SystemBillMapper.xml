@@ -7,19 +7,17 @@
     <resultMap id="SystemBillResultMap" type="SystemBillModel">
         <id column="id" property="id"></id>
         <result column="created_time" property="createdTime"></result>
-        <result column="bill_type" property="billType"></result>
-        <result column="money" property="money"></result>
-        <result column="balance" property="balance"></result>
+        <result column="type" property="type"></result>
+        <result column="amount" property="amount"></result>
         <result column="detail" property="detail"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="order_id" property="orderId"></result>
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.SystemBillModel" useGeneratedKeys="true"
             keyProperty="id">
-        insert into system_bill ( money, detail, bill_type, created_time)
-        value( #{money}, #{detail}, #{billType}, #{createdTime})
+        insert into system_bill ( amount, detail, type, created_time,order_id,business_type)
+        value( #{amount}, #{detail}, #{type}, #{createdTime},#{orderId},#{businessType})
     </insert>
-    <select id="getLastestSystemBill"  resultMap="SystemBillResultMap">
-        select * from system_bill ORDER by createdTime desc
-    </select>
 
 </mapper>

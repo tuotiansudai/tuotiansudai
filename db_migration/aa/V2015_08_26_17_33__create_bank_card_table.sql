@@ -7,7 +7,7 @@ CREATE TABLE `aa`.`bank_card`(
   `login_name` varchar(32) ,
   `is_open_fastPayment` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  CONSTRAINT `FK_BANK_BARD_LOGIN_NAME_REF_USER_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
+  CONSTRAINT `FK_BANK_CARD_REF_USER_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
 ENGINE=InnoDB
 AUTO_INCREMENT = 100001

@@ -8,15 +8,15 @@ public class SystemBillModel {
 
     private Date createdTime = new Date();
 
-    private SystemBillType billType;
+    private SystemBillType Type;
 
-    private long money;
+    private long amount;
 
     private String detail;
 
-    private long balance;
+    private String orderId;
 
-    private String reason;
+    private SystemBillBusinessType businessType;
 
     public long getId() {
         return id;
@@ -34,20 +34,20 @@ public class SystemBillModel {
         this.createdTime = createdTime;
     }
 
-    public SystemBillType getBillType() {
-        return billType;
+    public SystemBillType getType() {
+        return Type;
     }
 
-    public void setBillType(SystemBillType billType) {
-        this.billType = billType;
+    public void setType(SystemBillType type) {
+        Type = type;
     }
 
-    public long getMoney() {
-        return money;
+    public long getAmount() {
+        return amount;
     }
 
-    public void setMoney(long money) {
-        this.money = money;
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
     public String getDetail() {
@@ -58,19 +58,19 @@ public class SystemBillModel {
         this.detail = detail;
     }
 
-    public long getBalance() {
-        return balance;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setBalance(long balance) {
-        this.balance = balance;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public String getReason() {
-        return reason;
+    public SystemBillBusinessType getBusinessType() {
+        return businessType;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
+    public void setBusinessType(SystemBillBusinessType businessType) {
+        this.businessType = businessType;
     }
 }

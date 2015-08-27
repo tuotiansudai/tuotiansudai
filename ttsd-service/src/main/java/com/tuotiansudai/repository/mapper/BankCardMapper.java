@@ -12,7 +12,5 @@ public interface BankCardMapper {
 
     BankCardModel findById(long id);
 
-    Integer findBankCardIsExistById(long id);
-
     void updateBankCard(BankCardModel bankCardModel);
 }

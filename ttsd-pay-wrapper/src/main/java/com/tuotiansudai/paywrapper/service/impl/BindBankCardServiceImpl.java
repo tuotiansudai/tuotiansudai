@@ -80,7 +80,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         try {
             this.postBankCardCallback(callbackRequest, paramsMap);
         } catch (AmountTransferException e) {
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         }
 
         return callbackRequest.getResponseData();
@@ -90,7 +90,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, Map<String, String> paramsMa) throws AmountTransferException {
 
 
-        if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId()) && !isCardNoBound(callbackRequestModel.getOrderId())) {
+        if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId())) {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
             if (callbackRequestModel.isSuccess()) {
@@ -98,25 +98,21 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                     bankCardModel.setStatus(BankCardStatus.PASSED);
                     bankCardModel.setBankNumber(paramsMa.get("gate_id"));
                     bankCardMapper.updateBankCard(bankCardModel);
-                    //TODO 招商银行扣一分钱
-                    if("CMB".equals(paramsMa.get("gate_id"))){
+                    if ("CMB".equals(paramsMa.get("gate_id"))) {
                         String detailTemplate = "用户{0}绑定{1}银行卡";
-                        systemBillService.transferOut(1L, MessageFormat.format(detailTemplate,bankCardModel.getLoginName(),bankCardModel.getCardNumber()),"binding_card");
+                        systemBillService.transferOut(1L, MessageFormat.format(detailTemplate, bankCardModel.getLoginName(),
+                                bankCardModel.getCardNumber()), SystemBillBusinessType.BINDING_CARD,callbackRequestModel.getOrderId());
                     }
                 }
 
 
             } else {
-                bankCardMapper.update(orderId,BankCardStatus.FAIL);
+                bankCardMapper.update(orderId, BankCardStatus.FAIL);
             }
 
 
         }
     }
 
-    @Override
-    public boolean isCardNoBound(String id) {
-        return bankCardMapper.findBankCardIsExistById(Long.parseLong(id)) > 0;
-    }
 
 }
