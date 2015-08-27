@@ -208,12 +208,17 @@ $(function () {
             return false;
         }
     });
+    //关闭警告提示
+    $('body').on('click','[aria-hidden="true"]',function(){
+        $('.jq-btn-form').removeAttr('disabled');
+    });
     //提交表单
     $('.jq-btn-form').click(function () {
         //$(".jq-form").Validform({
         //    tiptype: 0,
         //});
         if(formFlag) {
+            $(this).attr('disabled','disabled');
             indexPic();
             var startTime = $('.jq-star-date').val();
             var endTime = $('.jq-end-date').val();
