@@ -26,19 +26,15 @@ $(function () {
         var CHINA_NORTHEAST_Arr = data.areaInvestments.CHINA_NORTHEAST;
         var _CHINA_NORTHEAST = CHINA_NORTHEAST_Arr.length;
 
-        var CHINA_SOUTHWEST_Arr = data.areaInvestments.CHINA_SOUTHWEST;
-        var _CHINA_SOUTHWEST = CHINA_SOUTHWEST_Arr.length;
-
-        var CHINA_SOUTHMIDDLE_Arr = data.areaInvestments.CHINA_SOUTHMIDDLE;
-        var _CHINA_SOUTHMIDDLE = CHINA_SOUTHMIDDLE_Arr.length;
+        var CHINA_SOUTH_Arr = data.areaInvestments.CHINA_SOUTH;
+        var _CHINA_SOUTH = CHINA_SOUTH_Arr.length;
 
         tmpChina(_china, 9, _chinaArr, '.china-table');
         tmpTable(_CHINA_NORTH, 9, CHINA_NORTH_Arr, '.area-table', 1);
         tmpTable(_CHINA_EAST, 9, CHINA_EAST_Arr, '.area-table', 0);
         tmpTable(_CHINA_NORTHWEST, 9, CHINA_NORTHWEST_Arr, '.area-table', 0);
         tmpTable(_CHINA_NORTHEAST, 9, CHINA_NORTHEAST_Arr, '.area-table', 0);
-        tmpTable(_CHINA_SOUTHWEST, 9, CHINA_SOUTHWEST_Arr, '.area-table', 0);
-        tmpTable(_CHINA_SOUTHMIDDLE, 9, CHINA_SOUTHMIDDLE_Arr, '.area-table', 0);
+        tmpTable(_CHINA_SOUTH, 9, CHINA_SOUTH_Arr, '.area-table', 0);
         jqDate.find('.dataStar').text(data.beginTime);
         jqDate.find('.dataEnd').text(data.endTime);
         jqDate.find('.newsdata i').text(data.updateTime);
@@ -47,9 +43,9 @@ $(function () {
         var str = '';
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["corpus"] + '</span> 元</td><td><span class="gain">' + data[i]["interest"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["corpus"] + '</span> 元</td><td><span class="gain">' + data[i]["interest"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
@@ -68,9 +64,9 @@ $(function () {
 
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["corpus"] + '</span> 元</td><td><span class="gain">' + data[i]["interest"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["corpus"] + '</span> 元</td><td><span class="gain">' + data[i]["interest"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' +data[i]["interest"] + '</span> 元</td><td><span class="gain">' +  data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
