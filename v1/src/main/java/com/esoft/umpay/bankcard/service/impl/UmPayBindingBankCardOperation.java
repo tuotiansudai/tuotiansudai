@@ -247,7 +247,7 @@ public class UmPayBindingBankCardOperation extends
 			Map<String, String> paramMap = UmPaySignUtil
 					.getMapDataByRequest(request);
 			log.debug("绑卡-后台-通知:" + paramMap.toString());
-			if (null != paramMap) {
+			if (null != paramMap && paramMap.get("service").equals(UmPayConstants.OperationType.MER_BIND_CARD_NOTIFY)) {
 				String ret_code = paramMap.get("ret_code");
 				String order_id = paramMap.get("order_id");
 				if (order_id == null){
