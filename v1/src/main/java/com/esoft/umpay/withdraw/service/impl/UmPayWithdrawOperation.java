@@ -91,7 +91,17 @@ public class UmPayWithdrawOperation extends
 		return to;
 	}
 
-	public ReqData buildReqData(WithdrawCash withdrawCash, boolean isMobileRequest) throws ReqDataException {
+	@Transactional(rollbackFor = Exception.class)
+	public ReqData createOperation_mobile(WithdrawCash withdrawCash) throws ReqDataException {
+		ReqData reqData;
+        reqData = buildReqData(withdrawCash, true);
+        createTrusteeshipOperation(withdrawCash.getId(), reqData.getUrl(),
+                withdrawCash.getId(), UmPayConstants.OperationType.CUST_WITHDRAWALS,
+                GsonUtil.fromMap2Json(reqData.getField()));
+		return reqData;
+	}
+
+	private ReqData buildReqData(WithdrawCash withdrawCash, boolean isMobileRequest) throws ReqDataException {
 		// 得到一个提现订单
 		WithdrawCash wc = ht.get(WithdrawCash.class, withdrawCash.getId());
 		DecimalFormat currentNumberFormat = new DecimalFormat("#");
