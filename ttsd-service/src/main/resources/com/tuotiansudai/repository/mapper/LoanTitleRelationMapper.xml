@@ -12,13 +12,13 @@
     </resultMap>
 
     <insert id="create" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loan_title (id,loan_id,title_id,apply_metarial_url) values
+        insert into loan_title_relation (id,loan_id,title_id,apply_metarial_url) values
         <foreach collection="loanTitleModels" item="item" index="index" separator=",">
             (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})
         </foreach>
     </insert>
 
     <select id="findLoanTitleByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select * from loan_title where loan_id = #{loanId}
+        select * from loan_title_relation where loan_id = #{loanId}
     </select>
 </mapper>
