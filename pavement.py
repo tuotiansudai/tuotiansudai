@@ -162,7 +162,7 @@ def cideploy():
     try:
         ci_file = open('/workspace/ci/abc', 'rb')
         pwd = ci_file.readline().strip()
-        sh("fab deploy -p {0} --show=debug".format(pwd))
+        sh("/usr/local/bin/fab deploy -p {0} --show=debug".format(pwd))
         ci_file.close()
     except Exception as e:
         print e
