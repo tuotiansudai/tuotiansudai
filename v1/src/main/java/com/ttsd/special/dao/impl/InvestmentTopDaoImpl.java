@@ -39,8 +39,8 @@ public class InvestmentTopDaoImpl implements InvestmentTopDao {
             InvestTopItem item = new InvestTopItem();
             item.setUserId(String.valueOf(items[0]));
             item.setPhoneNumber(String.valueOf(items[1]));
-            item.setCorpus((Double) items[2]);
-            item.setInterest((Double) items[2]);
+            item.setCorpus(String.format("%.2f",items[2]));
+            item.setInterest(String.format("%.2f",items[3]));
             returnList.add(item);
         }
         return returnList;

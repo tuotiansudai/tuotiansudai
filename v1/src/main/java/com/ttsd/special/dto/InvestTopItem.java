@@ -1,13 +1,16 @@
 package com.ttsd.special.dto;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 public class InvestTopItem implements Serializable{
     private String userId;
+    @JsonIgnore
     private String phoneNumber;
-    private Double corpus;
-    private Double interest;
-    private String region;
+    private String corpus;
+    private String interest;
 
     public String getUserId() {
         return userId;
@@ -25,27 +28,19 @@ public class InvestTopItem implements Serializable{
         this.phoneNumber = phoneNumber;
     }
 
-    public Double getCorpus() {
+    public String getCorpus() {
         return corpus;
     }
 
-    public void setCorpus(Double corpus) {
+    public void setCorpus(String corpus) {
         this.corpus = corpus;
     }
 
-    public Double getInterest() {
+    public String getInterest() {
         return interest;
     }
 
-    public void setInterest(Double interest) {
+    public void setInterest(String interest) {
         this.interest = interest;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 }

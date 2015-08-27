@@ -1,15 +1,20 @@
 package com.ttsd.special.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ttsd.util.ChinaArea;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class InvestTopResponse implements Serializable{
-    private Date  updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
+    private Date updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date beginTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date endTime;
     private Map<ChinaArea,List<InvestTopItem>> areaInvestments;
 

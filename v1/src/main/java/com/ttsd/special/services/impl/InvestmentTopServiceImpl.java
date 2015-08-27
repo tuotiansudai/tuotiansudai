@@ -9,6 +9,7 @@ import com.ttsd.special.services.CachedMobileLocationService;
 import com.ttsd.special.services.InvestmentTopService;
 import com.ttsd.util.ChinaArea;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,7 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
                 return resp;
             }
         }
-        // 此处可以异步处理，不过暂时可以先看看效果
-        // 除此之外，重新查询数据
+        // 除此之外，重新查询数据 (此处可以异步处理，不过暂时可以先看看效果)
         resp = queryInvestTopResponseNoCache(period);
         // 并缓存
         cacheInvestTopResponse(resp, period);
@@ -76,9 +76,9 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
         Map<ChinaArea, List<InvestTopItem>> investMap = distributeTopList(d, TopLimit);
         InvestTopResponse resp = new InvestTopResponse();
 
+        // 数据填充
         resp.setBeginTime(beginTime);
-        resp.setEndTime(endTime);
-        // 标记更新时间
+        resp.setEndTime(DateUtils.addDays(endTime,-1));//endTime实际上是次日的零点，所以在输出时应该减一天
         resp.setUpdateTime(new Date());
         resp.setAreaInvestments(investMap);
         return resp;
@@ -174,30 +174,4 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
 
         return dates;
     }
-
-
-    public static void main(String[] args) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E");
-        Date[] dates = null;
-
-        dates = buildStartAndEndTime(InvestTopStatPeriod.Week);
-        System.out.println(sdf.format(dates[0]));
-        System.out.println(sdf.format(dates[1]));
-        System.out.println("");
-
-        dates = buildStartAndEndTime(InvestTopStatPeriod.Month);
-        System.out.println(sdf.format(dates[0]));
-        System.out.println(sdf.format(dates[1]));
-        System.out.println("");
-
-        dates = buildStartAndEndTime(InvestTopStatPeriod.Quarter);
-        System.out.println(sdf.format(dates[0]));
-        System.out.println(sdf.format(dates[1]));
-        System.out.println("");
-
-        dates = buildStartAndEndTime(InvestTopStatPeriod.Year);
-        System.out.println(sdf.format(dates[0]));
-        System.out.println(sdf.format(dates[1]));
-    }
-
 }
