@@ -152,7 +152,6 @@ public class UmPayBindingBankCardOperation extends
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResponseDto createOperation(BankCard bankCard) throws IOException {
-		ht.save(bankCard);
 		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
 		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
 		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,true);

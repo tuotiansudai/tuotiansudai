@@ -22,6 +22,7 @@ import com.umpay.api.exception.ReqDataException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +50,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     @Autowired
     private BillStatistics billStatistics;
 
+    @Autowired
+    HibernateTemplate hibernateTemplate;
     /**
      * @param userId 绑卡或签约用户ID
      * @return boolean
@@ -118,6 +121,11 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         return dto;
     }
 
+    @Override
+    public void save(BankCard bankCard) {
+        hibernateTemplate.save(bankCard);
+    }
+
     private BankCardReplaceResponseDataDto getBankCardReplaceResponseDataDto(String newCardNo, User user) {
         BankCard bankCard = new BankCard();
         bankCard.setCardNo(newCardNo);
@@ -139,4 +147,6 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         responseDataDto.setUrl(reqData.getUrl());
         return responseDataDto;
     }
+
+
 }

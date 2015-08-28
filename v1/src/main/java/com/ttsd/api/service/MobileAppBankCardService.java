@@ -1,5 +1,6 @@
 package com.ttsd.api.service;
 
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.ttsd.api.dto.BankCardReplaceRequestDto;
 import com.ttsd.api.dto.BaseResponseDto;
 
@@ -15,4 +16,6 @@ public interface MobileAppBankCardService {
     boolean queryBindAndSginStatus(String userId,String operationType);
 
     BaseResponseDto generateBankCardResponse(BankCardReplaceRequestDto requestDto);
+
+    void save(BankCard bankCard);
 }
