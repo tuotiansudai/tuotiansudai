@@ -27,7 +27,7 @@ import static junit.framework.TestCase.assertNull;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class LoanServiceTest {
     @Autowired
@@ -45,7 +45,7 @@ public class LoanServiceTest {
      * 正常建标
      */
     @Test
-    public void createLoanServiceTest_1(){
+    public void createLoanServiceTest_1() {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
@@ -66,7 +66,7 @@ public class LoanServiceTest {
      * 建标时，起投时间晚于结束时间
      */
     @Test
-    public void createLoanServiceTest_2(){
+    public void createLoanServiceTest_2() {
         LoanDto loanDto = new LoanDto();
         long id = idGenerator.generate();
         loanDto.setId(id);
@@ -74,8 +74,8 @@ public class LoanServiceTest {
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setMaxInvestAmount("100000000000.00");
         loanDto.setMinInvestAmount("1.00");
-        loanDto.setLoanAmount("10000.00");
-        loanDto.setFundraisingStartTime(new Date(System.currentTimeMillis() + 100));
+        loanDto.setLoanAmount("100000000000.00");
+        loanDto.setFundraisingStartTime(new Date(System.currentTimeMillis() + 1000));
         loanDto.setFundraisingEndTime(new Date(System.currentTimeMillis()));
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertFalse(baseDto.getData().getStatus());
@@ -87,7 +87,7 @@ public class LoanServiceTest {
      * 投资最大金额小于投资最小金额
      */
     @Test
-    public void createLoanServiceTest_3(){
+    public void createLoanServiceTest_3() {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
@@ -103,10 +103,10 @@ public class LoanServiceTest {
     }
 
     /**
-     *  投资金额小于投资最大金额
+     * 投资金额小于投资最大金额
      */
     @Test
-    public void createLoanServiceTest_4(){
+    public void createLoanServiceTest_4() {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
@@ -125,7 +125,7 @@ public class LoanServiceTest {
      * 借款人不存在
      */
     @Test
-    public void createLoanServiceTest_5(){
+    public void createLoanServiceTest_5() {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("liming");
         loanDto.setAgentLoginName("xiangjie");
@@ -141,10 +141,10 @@ public class LoanServiceTest {
     }
 
     /**
-     *  代理人不存在
+     * 代理人不存在
      */
     @Test
-    public void createLoanServiceTest_6(){
+    public void createLoanServiceTest_6() {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("liming");
@@ -159,7 +159,7 @@ public class LoanServiceTest {
         assertNull(loanMapper.findById(loanDto.getId()));
     }
 
-    public BaseDto<PayDataDto> creteLoan(LoanDto loanDto){
+    public BaseDto<PayDataDto> creteLoan(LoanDto loanDto) {
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
@@ -175,7 +175,7 @@ public class LoanServiceTest {
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
-        for(int i=0;i<5;i++){
+        for (int i = 0; i < 5; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());

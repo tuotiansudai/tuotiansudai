@@ -110,7 +110,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (loanDto.getFundraisingStartTime().before(loanDto.getFundraisingEndTime())) {
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
