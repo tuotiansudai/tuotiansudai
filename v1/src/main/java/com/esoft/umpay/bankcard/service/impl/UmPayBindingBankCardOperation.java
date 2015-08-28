@@ -292,11 +292,15 @@ public class UmPayBindingBankCardOperation extends
 									}
 								}
 							}
+							if (userWillBindingBankCard.size() > 0){
+								log.debug(("用户:"
+										+ userWillBindingBankCard.get(0).getUser()
+										.getId() + "绑定"
+										+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+							}else {
+								log.debug("********************************************bind card fail***********************************************");
+							}
 
-							log.debug(("用户:"
-									+ userWillBindingBankCard.get(0).getUser()
-									.getId() + "绑定"
-									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 						} else {
 							log.debug(bankCardId + "已经被绑定！！！！");
 						}
