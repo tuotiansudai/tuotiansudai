@@ -3,6 +3,7 @@
  */
 $(function () {
     //初始化渲染
+    document.getElementById("jq-selected").selectedIndex = 0;
     var jqDate = $('#jq-date');
     $.post(API_URL, {period: 'week'}, function (data) {
         /*optional stuff to do after success */
@@ -31,9 +32,9 @@ $(function () {
 
         tmpChina(_china, 9, _chinaArr, '.china-table');
         tmpTable(_CHINA_NORTH, 9, CHINA_NORTH_Arr, '.area-table', 1);
+        tmpTable(_CHINA_NORTHEAST, 9, CHINA_NORTHEAST_Arr, '.area-table', 0);
         tmpTable(_CHINA_EAST, 9, CHINA_EAST_Arr, '.area-table', 0);
         tmpTable(_CHINA_NORTHWEST, 9, CHINA_NORTHWEST_Arr, '.area-table', 0);
-        tmpTable(_CHINA_NORTHEAST, 9, CHINA_NORTHEAST_Arr, '.area-table', 0);
         tmpTable(_CHINA_SOUTH, 9, CHINA_SOUTH_Arr, '.area-table', 0);
         jqDate.find('.dataStar').text(data.beginTime);
         jqDate.find('.dataEnd').text(data.endTime);
