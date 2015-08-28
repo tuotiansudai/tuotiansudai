@@ -8,7 +8,6 @@ import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.DateCompare;
 import com.tuotiansudai.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
