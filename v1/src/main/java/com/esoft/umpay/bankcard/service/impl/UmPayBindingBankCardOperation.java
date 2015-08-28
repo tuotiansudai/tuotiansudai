@@ -6,6 +6,7 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
+import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
@@ -151,6 +152,7 @@ public class UmPayBindingBankCardOperation extends
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResponseDto createOperation(BankCard bankCard) throws IOException {
+		ht.save(bankCard);
 		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
 		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
 		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,true);
@@ -226,7 +228,7 @@ public class UmPayBindingBankCardOperation extends
 						ret_code + ":" + paramMap.get("ret_msg")));
 			}
 		} catch (VerifyException e) {
-			log.error(e.getLocalizedMessage(),e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new TrusteeshipReturnException("验签失败");
 		} catch (DuplicateKeyException e) {
 			log.error(e.getLocalizedMessage(),e);
@@ -314,11 +316,11 @@ public class UmPayBindingBankCardOperation extends
 					response.getWriter().print(responseData);
 					FacesUtil.getCurrentInstance().responseComplete();
 				} catch (IOException e) {
-					log.error(e.getLocalizedMessage(),e);
+					log.error(e.getLocalizedMessage(), e);
 				}
 			}
 		} catch (VerifyException e) {
-			log.error(e.getLocalizedMessage(),e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 }
