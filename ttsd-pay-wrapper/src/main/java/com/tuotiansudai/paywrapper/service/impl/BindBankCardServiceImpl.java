@@ -8,6 +8,7 @@ import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.AsyncServiceType;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBankCardRequestModel;
@@ -78,7 +79,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         }
 
         try {
-            this.postBankCardCallback(callbackRequest, paramsMap);
+            String service = callbackRequest.getService();
+            if(AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)){
+                this.postBankCardCallback(callbackRequest, paramsMap);
+            }
         } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
