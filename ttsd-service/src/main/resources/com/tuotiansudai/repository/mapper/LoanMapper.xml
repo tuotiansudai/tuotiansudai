@@ -13,7 +13,7 @@
         <result column="periods" property="periods"></result>
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
-        <result column="basic_rate" property="basicRate"></result>
+        <result column="base_rate" property="baseRate"></result>
         <result column="invest_fee_rate" property="investFeeRate"></result>
         <result column="min_invest_amount" property="minInvestAmount"></result>
         <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
@@ -29,8 +29,8 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,basic_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
-        values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{basicRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
+        insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
+        values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{baseRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
     </insert>
     
     <select id="findById" parameterType="long" resultMap="loanResultMap">

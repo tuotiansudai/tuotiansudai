@@ -37,7 +37,7 @@ public class LoanModel {
     /***活动利率***/
     private double activityRate;
     /***基本利率***/
-    private double basicRate;
+    private double baseRate;
     /***合同***/
     private long contractId;
     /***筹款开始时间***/
@@ -57,7 +57,7 @@ public class LoanModel {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.basicRate = Double.parseDouble(loanDto.getBasicRate());
+        this.baseRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
@@ -198,12 +198,12 @@ public class LoanModel {
         this.activityRate = activityRate;
     }
 
-    public double getBasicRate() {
-        return basicRate;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public void setBasicRate(double basicRate) {
-        this.basicRate = basicRate;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
     public long getContractId() {
