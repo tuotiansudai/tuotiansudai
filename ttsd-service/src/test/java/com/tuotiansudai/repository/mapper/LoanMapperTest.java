@@ -40,7 +40,7 @@ public class LoanMapperTest {
         loanDto.setProjectName("店铺资金周转");
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
-        loanDto.setPeriods("30");
+        loanDto.setPeriods(30);
         loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");

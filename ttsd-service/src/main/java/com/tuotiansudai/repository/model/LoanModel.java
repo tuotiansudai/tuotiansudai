@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 
@@ -67,12 +68,12 @@ public class LoanModel {
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
         this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
         this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
-        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
-        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
-        this.periods = Long.parseLong(loanDto.getPeriods());
+        this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
-        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
+        this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.createdTime = loanDto.getCreatedTime();
         this.status = loanDto.getStatus();
     }
