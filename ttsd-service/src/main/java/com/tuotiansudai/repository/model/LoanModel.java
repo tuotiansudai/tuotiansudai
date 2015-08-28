@@ -75,7 +75,6 @@ public class LoanModel {
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
-        this.status = loanDto.getStatus();
     }
 
     public long getId() {
