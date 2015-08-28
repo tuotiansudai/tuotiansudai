@@ -1,10 +1,6 @@
 package com.tuotiansudai.repository.model;
 
-/**
- * Created by tuotian on 15/8/18.
- */
 public enum LoanType {
-    /***默认值***/
     LOAN_TYPE_1("interest_begin_on_invest","day","先付利息后还本金，按天计息，即投即生息","1","month","rfcl","先付利息后还本金，按天计息，即投即生息"),
     LOAN_TYPE_2("interest_begin_on_invest","day","付利息后还本金，按天计息，放款后生息","1","month","rfcl","付利息后还本金，按天计息，放款后生息"),
     LOAN_TYPE_3("interest_begin_on_invest","day","到期还本付息，按天计息，放款后生息","1","day","rlio","到期还本付息，按天计息，放款后生息"),
