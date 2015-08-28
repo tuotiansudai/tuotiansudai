@@ -17,7 +17,7 @@ public class LoanListWebDto {
 
     private String activityRate;
 
-    private String periods;
+    private long periods;
 
     private LoanType type;
 
@@ -59,11 +59,11 @@ public class LoanListWebDto {
         this.activityRate = activityRate;
     }
 
-    public String getPeriods() {
+    public long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(long periods) {
         this.periods = periods;
     }
 

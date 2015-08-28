@@ -20,7 +20,7 @@ public class LoanListDto{
 
     private String loanAmount;
 
-    private String periods;
+    private long periods;
 
     private String basicRate;
 
@@ -70,11 +70,11 @@ public class LoanListDto{
         this.loanAmount = loanAmount;
     }
 
-    public String getPeriods() {
+    public long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(long periods) {
         this.periods = periods;
     }
 

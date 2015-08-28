@@ -35,7 +35,7 @@ public class LoanDto {
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private String periods;
+    private long periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -147,11 +147,11 @@ public class LoanDto {
         this.type = type;
     }
 
-    public String getPeriods() {
+    public long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(long periods) {
         this.periods = periods;
     }
 

@@ -37,7 +37,7 @@ public class LoanServiceTest {
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
-        loanDto.setPeriods("30");
+        loanDto.setPeriods(30);
         loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
@@ -62,7 +62,7 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        loanService.createLoanBid(loanDto);
+        loanService.createLoan(loanDto);
 
     }
 

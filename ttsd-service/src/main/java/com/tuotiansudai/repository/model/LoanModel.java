@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class LoanModel {
     /***标的类型***/
     private LoanType type;
     /***借款期限***/
-    private String periods;
+    private Long periods;
     /***项目描述（纯文本）***/
     private String descriptionText;
     /***项目描述（带html标签）***/
@@ -66,13 +67,13 @@ public class LoanModel {
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
         this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
-        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
-        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
-        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
+        this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
-        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
+        this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.createdTime = loanDto.getCreatedTime();
         this.status = loanDto.getStatus();
     }
@@ -117,11 +118,11 @@ public class LoanModel {
         this.type = type;
     }
 
-    public String getPeriods() {
+    public Long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(Long periods) {
         this.periods = periods;
     }
 
@@ -141,11 +142,11 @@ public class LoanModel {
         this.descriptionHtml = descriptionHtml;
     }
 
-    public Long getLoanAmount() {
+    public long getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(Long loanAmount) {
+    public void setLoanAmount(long loanAmount) {
         this.loanAmount = loanAmount;
     }
 
@@ -157,27 +158,27 @@ public class LoanModel {
         this.investFeeRate = investFeeRate;
     }
 
-    public Long getMinInvestAmount() {
+    public long getMinInvestAmount() {
         return minInvestAmount;
     }
 
-    public void setMinInvestAmount(Long minInvestAmount) {
+    public void setMinInvestAmount(long minInvestAmount) {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public Long getInvestIncreasingAmount() {
+    public long getInvestIncreasingAmount() {
         return investIncreasingAmount;
     }
 
-    public void setInvestIncreasingAmount(Long investIncreasingAmount) {
+    public void setInvestIncreasingAmount(long investIncreasingAmount) {
         this.investIncreasingAmount = investIncreasingAmount;
     }
 
-    public Long getMaxInvestAmount() {
+    public long getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
-    public void setMaxInvestAmount(Long maxInvestAmount) {
+    public void setMaxInvestAmount(long maxInvestAmount) {
         this.maxInvestAmount = maxInvestAmount;
     }
 
