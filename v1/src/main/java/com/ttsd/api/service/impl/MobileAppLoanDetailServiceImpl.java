@@ -90,7 +90,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if(loan.getInvestBeginTime() != null){
             loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getInvestBeginTime()));
         }
-        loanDetailResponseDataDto.setInvestBeginSeconds(calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
+        loanDetailResponseDataDto.setInvestBeginSeconds(com.ttsd.api.util.CommonUtils.calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
 
         try {
             loanDetailResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
@@ -142,18 +142,5 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
         }
         return imageUrls;
-    }
-
-    private String calculatorInvestBeginSeconds(Date investBeginTime){
-        if(investBeginTime == null){
-            return "0";
-        }
-        Long time = (investBeginTime.getTime() - System
-                .currentTimeMillis()) / 1000;
-        if(time < 0){
-            return "0";
-        }
-        return time.toString();
-
     }
 }
