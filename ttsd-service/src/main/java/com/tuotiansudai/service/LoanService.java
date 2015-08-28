@@ -44,4 +44,6 @@ public interface LoanService {
      * @return
      */
     BaseDto<PayDataDto> createLoanBid(LoanDto loanDto);
+
+    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 }

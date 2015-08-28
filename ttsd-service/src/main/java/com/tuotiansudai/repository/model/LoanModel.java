@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDto;
 
 import java.util.Date;
+import java.util.List;
 
 public class LoanModel {
     /***标的号***/
@@ -49,6 +50,9 @@ public class LoanModel {
     private Date createdTime;
     /***标的状态***/
     private LoanStatus status;
+
+    /***申请材料***/
+    private List<LoanTitleRelationModel> loanTitles;
 
     public LoanModel(){}
 
@@ -141,11 +145,11 @@ public class LoanModel {
         this.descriptionHtml = descriptionHtml;
     }
 
-    public Long getLoanAmount() {
+    public long getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(Long loanAmount) {
+    public void setLoanAmount(long loanAmount) {
         this.loanAmount = loanAmount;
     }
 
@@ -157,27 +161,27 @@ public class LoanModel {
         this.investFeeRate = investFeeRate;
     }
 
-    public Long getMinInvestAmount() {
+    public long getMinInvestAmount() {
         return minInvestAmount;
     }
 
-    public void setMinInvestAmount(Long minInvestAmount) {
+    public void setMinInvestAmount(long minInvestAmount) {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public Long getInvestIncreasingAmount() {
+    public long getInvestIncreasingAmount() {
         return investIncreasingAmount;
     }
 
-    public void setInvestIncreasingAmount(Long investIncreasingAmount) {
+    public void setInvestIncreasingAmount(long investIncreasingAmount) {
         this.investIncreasingAmount = investIncreasingAmount;
     }
 
-    public Long getMaxInvestAmount() {
+    public long getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
-    public void setMaxInvestAmount(Long maxInvestAmount) {
+    public void setMaxInvestAmount(long maxInvestAmount) {
         this.maxInvestAmount = maxInvestAmount;
     }
 
@@ -251,5 +255,13 @@ public class LoanModel {
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public List<LoanTitleRelationModel> getLoanTitles() {
+        return loanTitles;
+    }
+
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
+        this.loanTitles = loanTitles;
     }
 }

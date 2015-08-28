@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,4 +40,18 @@ public class LoanTitleRelationMapperTest {
         assertTrue(loanTitleRelationMapper.findByLoanId(loanId).size() > 0);
     }
 
+    @Test
+    public void findLoanTitlesTest(){
+        long loanId = 192832676724736l;
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findByLoanId(loanId);
+        assertNotNull(loanTitleRelationModels);
+        assertNotNull(loanTitleRelationModels.get(0).getTitle());
+    }
+
+    @Test
+    public void deleteTest(){
+        long loanId = 192832676724736l;
+        loanTitleRelationMapper.delete(loanId);
+        assertTrue(loanTitleRelationMapper.findByLoanId(loanId).size()>0);
+    }
 }

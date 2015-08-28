@@ -170,4 +170,76 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
         return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto();
+        PayDataDto dataDto = new PayDataDto();
+        Map<String,Object> resultMap = validateAndAssembleLoanParam(loanDto);
+        if (!(boolean)resultMap.get("result")){
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.update(loanModel);
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
+        loanTitleRelationMapper.delete(loanDto.getId());
+        loanTitleRelationMapper.create(loanTitleRelationModels);
+        dataDto.setStatus(true);
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+    public Map<String,Object> validateAndAssembleLoanParam(LoanDto loanDto){
+        Map<String,Object> resultMap = new HashMap<String, Object>();
+        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
+            resultMap.put("result",false);
+            return resultMap;
+        }
+        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        if (maxInvestAmount < minInvestAmount) {
+            resultMap.put("result", false);
+            return resultMap;
+        }
+        if (maxInvestAmount > loanAmount){
+            resultMap.put("result", false);
+            return resultMap;
+        }
+        Integer result = DateCompare.compareDate(loanDto.getFundraisingStartTime(), loanDto.getFundraisingEndTime());
+        if (result == null || result == 1) {
+            resultMap.put("result", false);
+            return resultMap;
+        }
+        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
+        if (loanUserId == null) {
+            resultMap.put("result", false);
+            return resultMap;
+        }
+        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
+        if (loanAgentId == null) {
+            resultMap.put("result", false);
+            return resultMap;
+        }
+        long projectId = idGenerator.generate();/****标的号****/
+        loanDto.setId(projectId);
+
+        loanDto.setLoanAmount(String.valueOf(loanAmount));
+        loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
+        loanDto.setMinInvestAmount(String.valueOf(minInvestAmount));
+        loanDto.setInvestIncreasingAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount())));
+
+        loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
+        loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
+        loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
+
+        loanDto.setCreatedTime(new Date());
+        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        resultMap.put("result", true);
+        resultMap.put("loanParam",loanDto);
+        return resultMap;
+    }
 }

@@ -21,4 +21,5 @@
     <select id="findById" parameterType="long" resultMap="titleResultMap">
         select * from loan_title where id = #{id}
     </select>
+
 </mapper>

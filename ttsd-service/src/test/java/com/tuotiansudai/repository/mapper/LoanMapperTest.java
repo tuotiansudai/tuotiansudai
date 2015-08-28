@@ -61,4 +61,37 @@ public class LoanMapperTest {
         loanMapper.create(loanModel);
         assertNotNull(loanMapper.findById(id));
     }
+
+    @Test
+    public void updateLoanTest(){
+        long id = 192832676724736l;
+        LoanDto loanDto = new LoanDto();
+        loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setAgentLoginName("xiangjie");
+        loanDto.setBasicRate("16.00");
+        loanDto.setId(id);
+        loanDto.setProjectName("店铺资金周转");
+        loanDto.setActivityRate("12");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods("30");
+        loanDto.setActivityType(ActivityType.DIRECTIONAL_INVEST);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setLoanAmount("10000");
+        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setMaxInvestAmount("100000000000");
+        loanDto.setMinInvestAmount("0");
+        loanDto.setCreatedTime(new Date());
+        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        loanDto.setLoanTitles(loanTitleRelationModelList);
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.update(loanModel);
+        assertTrue(loanDto.getDescriptionText().equals(loanMapper.findById(id).getDescriptionText()));
+    }
 }
