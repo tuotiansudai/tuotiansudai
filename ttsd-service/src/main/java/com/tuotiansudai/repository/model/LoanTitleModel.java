@@ -7,9 +7,13 @@ import java.math.BigInteger;
  */
 public class LoanTitleModel {
     private long id;
-    /***标题类型base:基础标题，new:新增标题***/
-    private String type;
-    /***标题名称***/
+    /***
+     * 标题类型
+     ***/
+    private LoanTitleType type;
+    /***
+     * 标题名称
+     ***/
     private String title;
 
     public long getId() {
@@ -20,11 +24,11 @@ public class LoanTitleModel {
         this.id = id;
     }
 
-    public String getType() {
+    public LoanTitleType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LoanTitleType type) {
         this.type = type;
     }
 

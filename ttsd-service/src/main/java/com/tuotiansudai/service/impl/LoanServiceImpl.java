@@ -46,7 +46,7 @@ public class LoanServiceImpl implements LoanService {
         long id = idGenerator.generate();
         loanTitleModel.setId(id);
         loanTitleModel.setTitle(loanTitleDto.getTitle());
-        loanTitleModel.setType("new");
+        loanTitleModel.setType(LoanTitleType.NEW_TITLE_TYPE);
         loanTitleMapper.create(loanTitleModel);
         return loanTitleModel;
     }
@@ -130,16 +130,9 @@ public class LoanServiceImpl implements LoanService {
         }
         long projectId = idGenerator.generate();/****标的号****/
         loanDto.setId(projectId);
-
-        loanDto.setLoanAmount(String.valueOf(loanAmount));
-        loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
-        loanDto.setMinInvestAmount(String.valueOf(minInvestAmount));
-        loanDto.setInvestIncreasingAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount())));
-
         loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
         loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-
         loanDto.setCreatedTime(new Date());
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
