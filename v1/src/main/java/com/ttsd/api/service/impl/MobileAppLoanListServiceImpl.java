@@ -9,10 +9,12 @@ import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.ttsd.api.dao.MobileAppLoanListDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppLoanListService;
+import com.ttsd.api.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,10 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setMinInvestMoney("" + loan.getMinInvestMoney());
             loanResponseDataDto.setMaxInvestMoney("" + loan.getMaxInvestMoney());
             loanResponseDataDto.setCardinalNumber("" + loan.getCardinalNumber());
+            if(loan.getInvestBeginTime() != null){
+                loanResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getInvestBeginTime()));
+            }
+            loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
             try {
                 loanResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
             } catch (NoMatchingObjectsException e) {
