@@ -132,8 +132,6 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
         loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-        loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
         if (loanTitleRelationModelList.size() > 0) {
@@ -157,8 +155,8 @@ public class LoanServiceImpl implements LoanService {
         return loanUserId;
     }
 
-    public String rateStrDivideOneHundred(String rate) {
+    private String rateStrDivideOneHundred(String rate) {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
     }
 }

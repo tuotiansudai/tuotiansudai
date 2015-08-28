@@ -47,7 +47,7 @@ public class LoanModel {
     /***是否显示在首页true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
     /***建标时间***/
-    private Date createdTime;
+    private Date createdTime = new Date();
     /***标的状态***/
     private LoanStatus status;
 
@@ -74,7 +74,7 @@ public class LoanModel {
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        this.createdTime = loanDto.getCreatedTime();
+        this.status = LoanStatus.WAITING_VERIFY;
         this.status = loanDto.getStatus();
     }
 
