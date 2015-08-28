@@ -83,4 +83,29 @@
         </where>
     </select>
 
+    <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="#{activityType} !=null and #{activityType} != ''">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="#{status} != null and #{status} != ''">
+                and t.status = #{status}
+            </if>
+            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
+                and t.periods <= #{periodsEnd}
+            </if>
+            <if test="#{rateStart} > 0">
+                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="#{rateEnd} > 0">
+                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            </if>
+
+        </where>
+    </select>
+
 </mapper>

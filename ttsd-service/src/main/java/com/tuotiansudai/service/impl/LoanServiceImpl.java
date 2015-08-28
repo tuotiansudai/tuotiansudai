@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -185,10 +184,10 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setName(loanModels.get(i).getName());
             loanListDto.setType(loanModels.get(i).getType());
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
-            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount().toString());
+            loanListDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(rateStrDivideOneHundred(String.valueOf(loanModels.get(i).getBasicRate())));
-            loanListDto.setActivityRate(rateStrDivideOneHundred(String.valueOf(loanModels.get(i).getActivityRate())));
+            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBasicRate()*100)+"%");
+            loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100+"%"));
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
             loanListDtos.add(loanListDto);
@@ -200,4 +199,36 @@ public class LoanServiceImpl implements LoanService {
     public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime) {
         return loanMapper.findLoanListCount(status,loanId,loanName,startTime,endTime);
     }
+
+    @Override
+    public List<LoanListWebDto> findLoanListWeb(String activityType, String status, String periodsStart, String periodsEnd, String rateStart, String rateEnd, String currentPageNo) {
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,divide(Double.valueOf(rateStart),100,2),
+                divide(Double.valueOf(rateEnd),100,2),Integer.valueOf(currentPageNo));
+        List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
+        for (int i=0;i<loanModels.size();i++) {
+            LoanListWebDto loanListWebDto = new LoanListWebDto();
+            loanListWebDto.setId(loanModels.get(i).getId());
+            loanListWebDto.setName(loanModels.get(i).getName());
+            loanListWebDto.setBasicRate(String.valueOf(loanModels.get(i).getBasicRate()*100)+"%");
+            loanListWebDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100+"%"));
+            loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
+            loanListWebDto.setType(loanModels.get(i).getType());
+            loanListWebDto.setStatus(loanModels.get(i).getStatus());
+            loanListWebDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
+            loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
+        }
+        return loanListWebDtos;
+    }
+
+    @Override
+    public int findLoanListCountWeb(String activityType, String status, String periodsStart, String periodsEnd, String rateStart, String rateEnd) {
+        return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,divide(Double.valueOf(rateStart),100,2),divide(Double.valueOf(rateEnd),100,2));
+    }
+
+    private double divide(double divisor, double dividend, int digits){
+        BigDecimal divisorBigDecimal = new BigDecimal(divisor);
+        BigDecimal dividendBigDecimal = new BigDecimal(dividend);
+        return divisorBigDecimal.divide(dividendBigDecimal, digits, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
 }

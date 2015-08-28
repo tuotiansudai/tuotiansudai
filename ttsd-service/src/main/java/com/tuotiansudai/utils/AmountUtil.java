@@ -1,5 +1,6 @@
 package com.tuotiansudai.utils;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,4 +17,15 @@ public class AmountUtil {
         }
         return 0;
     }
+
+    public static String convertCentToString(long amount) {
+        int MULTIPLIER = 100;
+        Pattern pattern = Pattern.compile("^[1-9][0-9]*{1}");
+        Matcher matcher = pattern.matcher(String.valueOf(amount));
+        if (matcher.matches()) {
+            return new BigDecimal(String.valueOf(amount)).divide(new BigDecimal(MULTIPLIER)).setScale(2).toString();
+        }
+        return "0";
+    }
+
 }

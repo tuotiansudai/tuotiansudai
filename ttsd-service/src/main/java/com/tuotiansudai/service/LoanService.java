@@ -48,4 +48,9 @@ public interface LoanService {
     public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo);
 
     public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime);
+
+    public List<LoanListWebDto> findLoanListWeb(String activityType,String status,String periodsStart,String periodsEnd,String rateStart,String rateEnd,String currentPageNo);
+
+    public int findLoanListCountWeb(String activityType,String status,String periodsStart,String periodsEnd,String rateStart,String rateEnd);
+
 }
