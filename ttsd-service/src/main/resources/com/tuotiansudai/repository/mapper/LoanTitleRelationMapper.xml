@@ -12,7 +12,7 @@
         <result column="titile" property="title"></result>
     </resultMap>
 
-    <insert id="create" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="LoanTitleModel">
         insert into loan_title_relation (id,loan_id,title_id,apply_metarial_url) values
         <foreach collection="loanTitleModels" item="item" index="index" separator=",">
             (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})

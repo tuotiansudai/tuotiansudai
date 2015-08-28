@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ public class LoanModel {
     /***标的类型***/
     private LoanType type;
     /***借款期限***/
-    private String periods;
+    private Long periods;
     /***项目描述（纯文本）***/
     private String descriptionText;
     /***项目描述（带html标签）***/
@@ -37,7 +38,7 @@ public class LoanModel {
     /***活动利率***/
     private double activityRate;
     /***基本利率***/
-    private double basicRate;
+    private double baseRate;
     /***合同***/
     private long contractId;
     /***筹款开始时间***/
@@ -47,7 +48,7 @@ public class LoanModel {
     /***是否显示在首页true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
     /***建标时间***/
-    private Date createdTime;
+    private Date createdTime = new Date();
     /***标的状态***/
     private LoanStatus status;
 
@@ -60,7 +61,7 @@ public class LoanModel {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
         this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.basicRate = Double.parseDouble(loanDto.getBasicRate());
+        this.baseRate = Double.parseDouble(loanDto.getBasicRate());
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
@@ -70,15 +71,14 @@ public class LoanModel {
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
         this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
-        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
-        this.maxInvestAmount = Long.parseLong(loanDto.getMaxInvestAmount());
-        this.minInvestAmount = Long.parseLong(loanDto.getMinInvestAmount());
+        this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
-        this.loanAmount = Long.parseLong(loanDto.getLoanAmount());
-        this.createdTime = loanDto.getCreatedTime();
-        this.status = loanDto.getStatus();
+        this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        this.status = LoanStatus.WAITING_VERIFY;
     }
 
     public long getId() {
@@ -121,11 +121,11 @@ public class LoanModel {
         this.type = type;
     }
 
-    public String getPeriods() {
+    public Long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(Long periods) {
         this.periods = periods;
     }
 
@@ -201,12 +201,12 @@ public class LoanModel {
         this.activityRate = activityRate;
     }
 
-    public double getBasicRate() {
-        return basicRate;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public void setBasicRate(double basicRate) {
-        this.basicRate = basicRate;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
     public long getContractId() {
