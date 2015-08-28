@@ -43,5 +43,5 @@ public interface LoanService {
      * @function 创建标的
      * @return
      */
-    BaseDto<PayDataDto> createLoanBid(LoanDto loanDto);
+    BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 }

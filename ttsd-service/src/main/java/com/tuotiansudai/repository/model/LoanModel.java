@@ -67,7 +67,7 @@ public class LoanModel {
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
         this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
-        this.investIncreasingAmount = Long.parseLong(loanDto.getInvestIncreasingAmount());
+        this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();

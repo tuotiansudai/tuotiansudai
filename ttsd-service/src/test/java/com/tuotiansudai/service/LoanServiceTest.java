@@ -61,7 +61,7 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        loanService.createLoanBid(loanDto);
+        loanService.createLoan(loanDto);
 
     }
 }

@@ -90,7 +90,7 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> createLoanBid(LoanDto loanDto) {
+    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
         if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
@@ -111,8 +111,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        Integer result = DateCompare.compareDate(loanDto.getFundraisingStartTime(), loanDto.getFundraisingEndTime());
-        if (result == null || result == 1) {
+        if (loanDto.getFundraisingStartTime().before(loanDto.getFundraisingEndTime())) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
