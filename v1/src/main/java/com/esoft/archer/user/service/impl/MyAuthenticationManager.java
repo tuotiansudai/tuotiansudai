@@ -15,7 +15,10 @@ import com.esoft.archer.user.model.UserLoginLog;
 import com.esoft.archer.user.schedule.EnableUserJob;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.*;
+import com.esoft.core.util.DateUtil;
+import com.esoft.core.util.IdGenerator;
+import com.esoft.core.util.SpringBeanUtil;
+import com.esoft.core.util.StringManager;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.quartz.*;
@@ -173,12 +176,16 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
 		userService.save(user);
 
-		if (loginFailLimit <= loginFailTime && "web".equalsIgnoreCase(request.getParameter("source"))) {
+		if (loginFailLimit <= loginFailTime && !isContainsAppHeader(request)) {
 			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, true);
 		}
 
 		handleUserState(user);
 		addUserLoginLog(user, request, UserConstants.UserLoginLog.FAIL);
+	}
+
+	private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
+		return "YES".equalsIgnoreCase(httpServletRequest.getHeader("MobileApp"));
 	}
 
 	/**

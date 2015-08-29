@@ -184,12 +184,16 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="filterProcessesUrl" value="/login" />
 	</beans:bean>
 
-	<beans:bean id="failureHandler"
-		class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
+	<beans:bean id="failureHandler" class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
 		<!-- FIXME:登录失败以后的url就变了，如果用户直接访问这个登录失败的url，会提示 Authentication method not 
 			supported: GET -->
 		<beans:property name="useForward" value="true" />
 		<beans:property name="defaultFailureUrl" value="/memberLoginPage?error=true" />
+		<beans:property name="headers">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
 	</beans:bean>
 
 	<beans:bean id="successHandler"
