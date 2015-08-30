@@ -49,6 +49,10 @@ public class LoanModel {
     private boolean showOnHome;
     /***建标时间***/
     private Date createdTime = new Date();
+    /***初审时间***/
+    private Date firstTrialTime;
+    /***复审时间***/
+    private Date rehearTime;
     /***标的状态***/
     private LoanStatus status;
 
@@ -79,6 +83,8 @@ public class LoanModel {
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
+        this.firstTrialTime = loanDto.getFirstTrialTime();
+        this.rehearTime = loanDto.getRehearTime();
     }
 
     public long getId() {
@@ -247,6 +253,22 @@ public class LoanModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Date getFirstTrialTime() {
+        return firstTrialTime;
+    }
+
+    public void setFirstTrialTime(Date firstTrialTime) {
+        this.firstTrialTime = firstTrialTime;
+    }
+
+    public Date getRehearTime() {
+        return rehearTime;
+    }
+
+    public void setRehearTime(Date rehearTime) {
+        this.rehearTime = rehearTime;
     }
 
     public LoanStatus getStatus() {

@@ -94,4 +94,10 @@ public class LoanMapperTest {
         loanMapper.update(loanModel);
         assertTrue(loanDto.getDescriptionText().equals(loanMapper.findById(id).getDescriptionText()));
     }
+
+    @Test
+    public void findByIdTest(){
+        long loanId = 194989993639936l;
+        assertNotNull(loanMapper.findById(loanId));
+    }
 }

@@ -35,8 +35,8 @@ public class LoanServiceImpl implements LoanService {
     IdGenerator idGenerator;
 
     /**
-     * @param loanTitleDto
      * @function 创建标题
+     * @param loanTitleDto
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -51,19 +51,27 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
+     * @function 获取成功注册过资金托管账户的用户登录名
      * @param loginName
      * @return
-     * @function 获取成功注册过资金托管账户的用户登录名
      */
     @Override
     public List<String> getLoginNames(String loginName) {
         return accountMapper.findAllLoginNamesByLike(loginName);
     }
 
+    /**
+     * @function 获取所有标题
+     * @return
+     */
     public List<LoanTitleModel> findAllTitles() {
         return loanTitleMapper.findAll();
     }
 
+    /**
+     * @function 获取所有标的类型
+     * @return List<LoanType>
+     */
     @Override
     public List<LoanType> getLoanType() {
         List<LoanType> loanTypes = new ArrayList<LoanType>();
@@ -73,6 +81,10 @@ public class LoanServiceImpl implements LoanService {
         return loanTypes;
     }
 
+    /**
+     * @function 获取所有活动类型
+     * @return List<ActivityType>
+     */
     @Override
     public List<ActivityType> getActivityType() {
         List<ActivityType> activityTypes = new ArrayList<ActivityType>();
@@ -83,9 +95,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @param loanDto
-     * @return
      * @function 创建标的
+     * @param loanDto
+     * @return BaseDto<PayDataDto>
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -162,72 +174,34 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
-        PayDataDto dataDto = new PayDataDto();
-        Map<String,Object> resultMap = validateAndAssembleLoanParam(loanDto);
-        if (!(boolean)resultMap.get("result")){
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
+    public BaseDto<PayFormDataDto> updateLoan(LoanDto loanDto) {
+        BaseDto<PayFormDataDto> baseDto = new BaseDto();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        LoanModel loanModel = new LoanModel(loanDto);
+        if (loanMapper.findById(loanDto.getId()) == null){
+            payFormDataDto.setStatus(false);
+            baseDto.setData(payFormDataDto);
             return baseDto;
         }
-        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanDto.getStatus());
         loanMapper.update(loanModel);
+        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
+            loanTitleRelationMapper.delete(loanDto.getId());
+        }
         List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
-        loanTitleRelationMapper.delete(loanDto.getId());
-        loanTitleRelationMapper.create(loanTitleRelationModels);
-        dataDto.setStatus(true);
-        baseDto.setData(dataDto);
+        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
+            loanTitleRelationMapper.create(loanTitleRelationModels);
+        }
+        payFormDataDto.setStatus(true);
+        baseDto.setData(payFormDataDto);
         return baseDto;
     }
 
-    public Map<String,Object> validateAndAssembleLoanParam(LoanDto loanDto){
-        Map<String,Object> resultMap = new HashMap<String, Object>();
-        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
-            resultMap.put("result",false);
-            return resultMap;
-        }
-        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
-        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
-        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        if (maxInvestAmount < minInvestAmount) {
-            resultMap.put("result", false);
-            return resultMap;
-        }
-        if (maxInvestAmount > loanAmount){
-            resultMap.put("result", false);
-            return resultMap;
-        }
-        if (loanDto.getFundraisingStartTime().after(loanDto.getFundraisingEndTime())) {
-            resultMap.put("result", false);
-            return resultMap;
-        }
-        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
-        if (loanUserId == null) {
-            resultMap.put("result", false);
-            return resultMap;
-        }
-        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
-        if (loanAgentId == null) {
-            resultMap.put("result", false);
-            return resultMap;
-        }
-        long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(projectId);
-
-        loanDto.setLoanAmount(String.valueOf(loanAmount));
-        loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
-        loanDto.setMinInvestAmount(String.valueOf(minInvestAmount));
-        loanDto.setInvestIncreasingAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount())));
-
-        loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
-        loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
-        loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-
-        loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
-        resultMap.put("result", true);
-        resultMap.put("loanParam",loanDto);
-        return resultMap;
+    @Override
+    public LoanModel findLoanById(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
+        loanModel.setLoanTitles(loanTitleRelationModelList);
+        return loanModel;
     }
 }

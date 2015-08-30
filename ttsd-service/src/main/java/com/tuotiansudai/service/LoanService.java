@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
@@ -50,5 +51,7 @@ public interface LoanService {
      * @param loanDto
      * @return
      */
-    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
+    BaseDto<PayFormDataDto> updateLoan(LoanDto loanDto);
+
+    LoanModel findLoanById(long loanId);
 }

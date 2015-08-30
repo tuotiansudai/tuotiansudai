@@ -94,8 +94,11 @@
             <if test="showOnHome !=null">
                 show_on_home = #{showOnHome},
             </if>
-            <if test="createdTime !=null">
-                created_time = #{createdTime},
+            <if test="firstTrialTime !=null">
+                first_trial_time = #{firstTrialTime},
+            </if>
+            <if test="rehearTime !=null">
+                rehear_time = #{rehearTime},
             </if>
             <if test="status !=null">
                 status = #{status}

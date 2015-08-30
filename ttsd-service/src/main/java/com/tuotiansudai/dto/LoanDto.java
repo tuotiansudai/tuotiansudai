@@ -101,6 +101,12 @@ public class LoanDto {
     /***建标时间***/
     private Date createdTime;
 
+    /***初审时间***/
+    private Date firstTrialTime;
+
+    /***复审时间***/
+    private Date rehearTime;
+
     /***标的状态***/
     private LoanStatus status;
 
@@ -273,6 +279,22 @@ public class LoanDto {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Date getFirstTrialTime() {
+        return firstTrialTime;
+    }
+
+    public void setFirstTrialTime(Date firstTrialTime) {
+        this.firstTrialTime = firstTrialTime;
+    }
+
+    public Date getRehearTime() {
+        return rehearTime;
+    }
+
+    public void setRehearTime(Date rehearTime) {
+        this.rehearTime = rehearTime;
     }
 
     public LoanStatus getStatus() {

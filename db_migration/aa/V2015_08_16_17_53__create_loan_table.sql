@@ -19,6 +19,8 @@ CREATE TABLE `aa`.`loan` (
   `fundraising_start_time`   DATETIME        NOT NULL, /***筹款开始时间***/
   `fundraising_end_time`     DATETIME        NOT NULL, /***筹款截止时间***/
   `created_time`             DATETIME        NOT NULL, /***标的创建时间***/
+  `first_trial_time`         DATETIME, /***初审时间***/
+  `rehear_time`              DATETIME, /***复审时间***/
   `status`                   VARCHAR(50)     NOT NULL, /***标的状态***/
   `show_on_home`             BOOLEAN DEFAULT TRUE, /***是否显示在首页true:显示在首页，false:不显示在首页***/
   PRIMARY KEY (`id`)
