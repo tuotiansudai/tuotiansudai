@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoanServiceImpl implements LoanService{
+public class LoanServiceImpl implements LoanService {
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
     @Autowired
     private PaySyncClient paySyncClient;
@@ -35,7 +35,7 @@ public class LoanServiceImpl implements LoanService{
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
                     merBindProjectRequestModel,
                     MerBindProjectResponseModel.class);
-            if (responseModel.isSuccess()){
+            if (responseModel.isSuccess()) {
                 loanService.updateLoan(loanDto);
             }
             dataDto.setStatus(responseModel.isSuccess());
@@ -43,7 +43,7 @@ public class LoanServiceImpl implements LoanService{
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         }
         baseDto.setData(dataDto);
         return baseDto;

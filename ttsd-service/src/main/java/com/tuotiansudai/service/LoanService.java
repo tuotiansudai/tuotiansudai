@@ -51,7 +51,7 @@ public interface LoanService {
      * @param loanDto
      * @return
      */
-    BaseDto<PayFormDataDto> updateLoan(LoanDto loanDto);
+    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
     LoanModel findLoanById(long loanId);
 }

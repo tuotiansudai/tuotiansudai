@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CreateLoanController {
     @Autowired
     private LoanService loanService;
+
     @RequestMapping(method = RequestMethod.POST)
-    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto){
+    public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
         return loanService.createLoan(loanDto);
     }
 }

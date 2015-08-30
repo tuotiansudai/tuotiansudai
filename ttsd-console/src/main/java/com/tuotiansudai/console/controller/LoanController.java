@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.tuotiansudai.console.service.ConsoleLoanService;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.service.LoanService;
@@ -20,6 +21,9 @@ public class LoanController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private ConsoleLoanService consoleLoanService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan(HttpServletRequest request){
@@ -76,4 +80,21 @@ public class LoanController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/edit-loan",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> editLoan(@RequestBody LoanDto loanDto){
+        return consoleLoanService.editLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/first-trial-passed",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> firstTrialPassed(@RequestBody LoanDto loanDto){
+        return consoleLoanService.editLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/first-trial-refused",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> firstTrialRefused(@RequestBody LoanDto loanDto){
+        return consoleLoanService.editLoan(loanDto);
+    }
 }

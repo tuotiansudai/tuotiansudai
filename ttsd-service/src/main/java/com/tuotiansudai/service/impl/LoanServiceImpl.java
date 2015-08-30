@@ -174,13 +174,13 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayFormDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayFormDataDto> baseDto = new BaseDto();
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
+    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto();
+        PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = new LoanModel(loanDto);
         if (loanMapper.findById(loanDto.getId()) == null){
-            payFormDataDto.setStatus(false);
-            baseDto.setData(payFormDataDto);
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
             return baseDto;
         }
         loanModel.setStatus(loanDto.getStatus());
@@ -192,8 +192,8 @@ public class LoanServiceImpl implements LoanService {
         if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
             loanTitleRelationMapper.create(loanTitleRelationModels);
         }
-        payFormDataDto.setStatus(true);
-        baseDto.setData(payFormDataDto);
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
         return baseDto;
     }
 
