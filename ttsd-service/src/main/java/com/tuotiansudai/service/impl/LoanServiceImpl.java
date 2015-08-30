@@ -4,12 +4,11 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.DateCompare;
 import com.tuotiansudai.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -50,7 +47,7 @@ public class LoanServiceImpl implements LoanService {
         long id = idGenerator.generate();
         loanTitleModel.setId(id);
         loanTitleModel.setTitle(loanTitleDto.getTitle());
-        loanTitleModel.setType("new");
+        loanTitleModel.setType(LoanTitleType.NEW_TITLE_TYPE);
         loanTitleMapper.create(loanTitleModel);
         return loanTitleModel;
     }
@@ -94,7 +91,7 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> createLoanBid(LoanDto loanDto) {
+    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
         if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
@@ -115,8 +112,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        Integer result = DateCompare.compareDate(loanDto.getFundraisingStartTime(), loanDto.getFundraisingEndTime());
-        if (result == null || result == 1) {
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
@@ -135,18 +131,9 @@ public class LoanServiceImpl implements LoanService {
         }
         long projectId = idGenerator.generate();/****标的号****/
         loanDto.setId(projectId);
-
-        loanDto.setLoanAmount(String.valueOf(loanAmount));
-        loanDto.setMaxInvestAmount(String.valueOf(maxInvestAmount));
-        loanDto.setMinInvestAmount(String.valueOf(minInvestAmount));
-        loanDto.setInvestIncreasingAmount(String.valueOf(AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount())));
-
         loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
         loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-
-        loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
         if (loanTitleRelationModelList.size() > 0) {
@@ -170,9 +157,9 @@ public class LoanServiceImpl implements LoanService {
         return loanUserId;
     }
 
-    public String rateStrDivideOneHundred(String rate) {
+    private String rateStrDivideOneHundred(String rate) {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
     }
 
     @Override
@@ -185,9 +172,9 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setName(loanModels.get(i).getName());
             loanListDto.setType(loanModels.get(i).getType());
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
-            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount().toString());
+            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(rateStrDivideOneHundred(String.valueOf(loanModels.get(i).getBasicRate())));
+            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
             loanListDto.setActivityRate(rateStrDivideOneHundred(String.valueOf(loanModels.get(i).getActivityRate())));
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());

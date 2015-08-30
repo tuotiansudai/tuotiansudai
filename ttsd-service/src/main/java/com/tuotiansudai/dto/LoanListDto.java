@@ -18,9 +18,9 @@ public class LoanListDto{
 
     private String agentLoginName;
 
-    private String loanAmount;
+    private long loanAmount;
 
-    private String periods;
+    private long periods;
 
     private String basicRate;
 
@@ -62,19 +62,19 @@ public class LoanListDto{
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanAmount() {
+    public long getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(String loanAmount) {
+    public void setLoanAmount(long loanAmount) {
         this.loanAmount = loanAmount;
     }
 
-    public String getPeriods() {
+    public long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(long periods) {
         this.periods = periods;
     }
 
