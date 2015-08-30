@@ -1,10 +1,10 @@
 package com.tuotiansudai.repository.model;
 
 public enum ActivityType {
-    NORMAL_INVEST("普通投资"),
-    NOVICE_INVEST("新手投资"),
-    DIRECTIONAL_INVEST("定向投资"),
-    INCREASE_INTEREST_INVEST("加息投资");
+    NORMAL("普通投资"),
+    NOVICE("新手投资"),
+    EXCLUSIVE("定向投资"),
+    PROMOTION("加息投资");
 
     private String activityTypeName;
     private ActivityType(String activityTypeName){

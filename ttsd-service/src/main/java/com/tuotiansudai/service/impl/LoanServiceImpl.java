@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -113,7 +112,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (loanDto.getFundraisingStartTime().before(loanDto.getFundraisingEndTime())) {
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
@@ -135,8 +134,6 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
         loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-        loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
         if (loanTitleRelationModelList.size() > 0) {
@@ -160,9 +157,9 @@ public class LoanServiceImpl implements LoanService {
         return loanUserId;
     }
 
-    public String rateStrDivideOneHundred(String rate) {
+    private String rateStrDivideOneHundred(String rate) {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
     }
 
     @Override
@@ -177,7 +174,7 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
             loanListDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBasicRate()*100)+"%");
+            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
             loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100+"%"));
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
@@ -200,7 +197,7 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBasicRate(String.valueOf(loanModels.get(i).getBasicRate()*100)+"%");
+            loanListWebDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
             loanListWebDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100+"%"));
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());

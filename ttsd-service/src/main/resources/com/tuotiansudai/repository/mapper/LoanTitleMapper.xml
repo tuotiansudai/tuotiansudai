@@ -10,7 +10,7 @@
         <result column="title" property="title"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanTitleModel">
         insert into loan_title(id,type,title)VALUES (#{id},#{type},#{title})
     </insert>
 
