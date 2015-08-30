@@ -104,7 +104,34 @@
             <if test="#{rateEnd} > 0">
                 and (t.basic_rate + t.activity_rate) <= #{rateEnd}
             </if>
+            order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
+            <if test="#{currentPageNo} > 0">
+                limit (#{currentPageNo} - 1) * 10 , 10
+            </if>
+        </where>
+    </select>
 
+    <select id="findLoanListCountWeb" parameterType="map" resultMap="int">
+        select count(*) from loan t
+        <where>
+            <if test="#{activityType} !=null and #{activityType} != ''">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="#{status} != null and #{status} != ''">
+                and t.status = #{status}
+            </if>
+            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
+                and t.periods <= #{periodsEnd}
+            </if>
+            <if test="#{rateStart} > 0">
+                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="#{rateEnd} > 0">
+                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            </if>
         </where>
     </select>
 
