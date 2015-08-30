@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
 
     var registerUserForm = $("#register-user-form");
     var registerAccountForm = $("#register-account-form");
@@ -20,7 +20,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             }else{
                 $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
             }
-        })
+        });
         $('.complete').click(function () {
             var phone = $('.mobile').val();
             var captcha = $('.verification-code-text').val();
@@ -36,14 +36,15 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             }
             var count = setInterval(countdown, 1000);
             $('.verification-code,.verification-code-main').hide();
-            $.get('/register/mobile/' + phone + '/captcha/' + captcha + '/sendregistercaptcha');
+            $.get('/register/mobile/' + phone + '/image-captcha/' + captcha + '/send-register-captcha');
         });
 
         // 刷新验证码
         var refreshCaptcha = function () {
             var captcha = $('.verification-code-img');
-            captcha.attr('src', '/register/captcha?' + new Date().toTimeString());
+            captcha.attr('src', '/register/image-captcha?' + new Date().toTimeString());
         };
+
         $('.verification-code-img').click(function () {
             refreshCaptcha();
         });
@@ -56,7 +57,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 $('.verification-code-main b').css('display', 'inline-block');
             } else {
                 $.ajax({
-                    url: '/register/captcha/' + _value + '/verify',
+                    url: '/register/image-captcha/' + _value + '/verify',
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
@@ -73,7 +74,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             }
         });
 
-    })
+    });
 
 
     $.validator.addMethod(
@@ -256,7 +257,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
             contentType: 'application/json; charset=UTF-8',
             success: function (response) {
                 if (response.data.status) {
-
+                    window.location.href = "/";
                 } else {
                     var validate = registerAccountForm.validate();
                     validate.resetForm();
@@ -340,13 +341,13 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 required: true,
                 regex: "^[a-zA-Z0-9]+$",
                 rangelength: [5, 25],
-                isExist: "/register/loginName/{0}/isexist"
+                isExist: "/register/login-name/{0}/is-exist"
             },
             mobile: {
                 required: true,
                 digits: true,
                 rangelength: [11, 11],
-                isExist: "/register/mobile/{0}/isexist"
+                isExist: "/register/mobile/{0}/is-exist"
             },
             password: {
                 required: true,
@@ -364,7 +365,7 @@ require(['underscore', 'jquery', 'jquery.validate'], function (_, $) {
                 }
             },
             referrer: {
-                isNotExist: "/register/loginName/{0}/isExist"
+                isNotExist: "/register/login-Name/{0}/is-exist"
             }
         },
         messages: {

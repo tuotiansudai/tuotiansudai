@@ -16,12 +16,12 @@
         <result column="register_time" property="registerTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.AccountModel" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
         insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, register_time)
         value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{registerTime})
     </insert>
 
-    <select id="findByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
+    <select id="findByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName}
     </select>
 
@@ -29,11 +29,11 @@
         select login_name from account where login_name like #{loginName}
     </select>
 
-    <select id="lockByLoginName" resultType="java.lang.String" resultMap="accountResultMap">
+    <select id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where login_name = #{loginName} for update
     </select>
 
-    <update id="update" parameterType="com.tuotiansudai.repository.model.AccountModel">
+    <update id="update" parameterType="AccountModel">
         update account set
           balance = #{balance},
           freeze = #{freeze}

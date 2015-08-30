@@ -1,10 +1,12 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
 public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
-    private String merCheckDate;
-    private String balance;
-    private String comAmt;
 
+    private String merCheckDate;
+
+    private String balance;
+
+    private String comAmt;
 
     public String getMerCheckDate() {
         return merCheckDate;

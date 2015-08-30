@@ -172,7 +172,7 @@ public class TrusteeshipOperationBO {
 		}
 		List<TrusteeshipOperation> tos = ht.findByCriteria(criteria);
 
-		if (tos.size() > 1 && !type.equals(UmPayConstants.OperationType.MER_BIND_AGREEMENT)) {
+		if (tos.size() > 1 && !type.equals(UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT)) {
 			throw new DuplicateKeyException("type:" + type + " markId:"
 					+ markId + " operator:" + operator + " trusteeship:"
 					+ trusteeship + "  duplication!");

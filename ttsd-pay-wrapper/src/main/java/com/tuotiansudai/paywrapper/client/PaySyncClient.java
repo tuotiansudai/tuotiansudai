@@ -7,7 +7,7 @@ import com.squareup.okhttp.Response;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseSyncMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.BaseSyncRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.RequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.BaseSyncResponseModel;
 import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
@@ -59,7 +59,7 @@ public class PaySyncClient {
         try {
             Response response = httpClient.newCall(request).execute();
             responseBodyString = response.body().string();
-            updateRequestStatus(baseMapperClass, requestModel.getId(), RequestStatus.SUCCESS);
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
             Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyString);
             logger.debug(resData);
             return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
@@ -68,7 +68,7 @@ public class PaySyncClient {
             throw new PayException(e);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
-            updateRequestStatus(baseMapperClass, requestModel.getId(), RequestStatus.FAILED);
+            updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.FAILED);
             throw new PayException(e);
         }
     }
@@ -82,7 +82,7 @@ public class PaySyncClient {
     @Transactional(value = "payTransactionManager")
     private void updateRequestStatus(Class<? extends BaseSyncMapper> baseMapperClass,
                                      Long id,
-                                     RequestStatus status) {
+                                     SyncRequestStatus status) {
         BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.updateRequestStatus(id, status);
     }

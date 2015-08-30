@@ -1,12 +1,13 @@
 package com.esoft.archer.user.service.impl;
 
-import com.esoft.archer.system.controller.LoginUserInfo;
-import com.esoft.archer.user.model.*;
+import com.esoft.archer.user.model.Role;
+import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.model.UserInfoLog;
 import com.esoft.archer.user.service.UserInfoLogService;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.IdGenerator;
-import com.esoft.core.util.SpringBeanUtil;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,12 +16,10 @@ import javax.annotation.Resource;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by zzg on 15/8/4.
- */
 @Service(value = "userInfoLogService")
 public class UserInfoLogServiceImpl implements UserInfoLogService {
 
@@ -28,25 +27,31 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
     private HibernateTemplate ht;
 
     @Override
-    public String generateUserInfoString(User user) {
+    public String generateUserInfoString(User user, User oldUserInfo) {
         StringBuffer sb = new StringBuffer();
         sb.append("UserId:"+user.getId()+"; ");
-        sb.append("UserName:"+user.getUsername()+"; ");
-        sb.append("RealName:"+user.getRealname()+"; ");
-        sb.append("Email:"+user.getEmail()+"; ");
-        sb.append("Sex:"+user.getSex()+"; ");
-        if("0".equalsIgnoreCase(user.getStatus())) {
-            sb.append("Status:禁用; ");
-        }else{
-            sb.append("Status:正常; ");
-        }
-        sb.append("MobileNumber:"+user.getMobileNumber()+"; ");
-        sb.append("BindIp:"+user.getBindIP()+"; ");
-        sb.append("IdCard:"+user.getIdCard()+"; ");
-        sb.append("CurrAddress:"+user.getCurrentAddress()+"; ");
-        sb.append("NickName:" + user.getNickname() + "; ");
-        sb.append("Roles:" + getRoleNames(user.getRoles()));
+        sb.append(buildDiffInfo("RealName",user.getRealname(),oldUserInfo.getRealname()));
+        sb.append(buildDiffInfo("Email", user.getEmail(), oldUserInfo.getEmail()));
+        sb.append(buildDiffInfo("Sex", user.getSex(), oldUserInfo.getSex()));
+        sb.append(buildDiffInfo("Status", user.getStatus(), oldUserInfo.getStatus()).replace("0", "禁用").replace("1", "正常"));
+        sb.append(buildDiffInfo("MobileNumber", user.getMobileNumber(), oldUserInfo.getMobileNumber()));
+        sb.append(buildDiffInfo("BindIp",user.getBindIP(), oldUserInfo.getBindIP()));
+        sb.append(buildDiffInfo("IdCard",user.getIdCard(), oldUserInfo.getIdCard()));
+        sb.append(buildDiffInfo("CurrAddress", user.getCurrentAddress(), oldUserInfo.getCurrentAddress()));
+        sb.append(buildDiffInfo("NickName",user.getNickname(), oldUserInfo.getNickname()));
+        sb.append(buildDiffInfo("Roles",getRoleNames(user.getRoles()), getRoleNames(oldUserInfo.getRoles())));
+        sb.append(buildDiffInfo("Referrer",user.getReferrer(), oldUserInfo.getReferrer()));
         return sb.toString();
+    }
+
+    private String buildDiffInfo(String label, String newValue, String oldValue){
+        if(StringUtils.isBlank(newValue)){ newValue = ""; }
+        if(StringUtils.isBlank(oldValue)){ oldValue = ""; }
+        if(!StringUtils.equalsIgnoreCase(newValue, oldValue)) {
+            return MessageFormat.format("{0}: {1} => {2};",label, oldValue, newValue);
+        } else {
+            return "";
+        }
     }
 
     private String getRoleNames(List<Role> roles){

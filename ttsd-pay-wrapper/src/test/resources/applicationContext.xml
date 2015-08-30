@@ -79,4 +79,6 @@
 
     <bean class="com.tuotiansudai.utils.SpringContextUtil" />
 
+    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
+
 </beans>

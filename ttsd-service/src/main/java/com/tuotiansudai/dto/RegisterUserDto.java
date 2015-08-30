@@ -18,7 +18,7 @@ public class RegisterUserDto {
     private String mobile;
 
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-z0-9]{6}$")
+    @Pattern(regexp = "^[0-9]{6}$")
     private String captcha;
 
     @NotEmpty
