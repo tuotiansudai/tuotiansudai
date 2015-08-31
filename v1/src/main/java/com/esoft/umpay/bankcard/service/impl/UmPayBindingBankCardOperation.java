@@ -6,6 +6,7 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
+import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
@@ -226,7 +227,7 @@ public class UmPayBindingBankCardOperation extends
 						ret_code + ":" + paramMap.get("ret_msg")));
 			}
 		} catch (VerifyException e) {
-			log.error(e.getLocalizedMessage(),e);
+			log.error(e.getLocalizedMessage(), e);
 			throw new TrusteeshipReturnException("验签失败");
 		} catch (DuplicateKeyException e) {
 			log.error(e.getLocalizedMessage(),e);
@@ -292,11 +293,15 @@ public class UmPayBindingBankCardOperation extends
 									}
 								}
 							}
+							if (userWillBindingBankCard.size() > 0){
+								log.debug(("用户:"
+										+ userWillBindingBankCard.get(0).getUser()
+										.getId() + "绑定"
+										+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+							}else {
+								log.debug("********************************************bind card fail***********************************************");
+							}
 
-							log.debug(("用户:"
-									+ userWillBindingBankCard.get(0).getUser()
-									.getId() + "绑定"
-									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 						} else {
 							log.debug(bankCardId + "已经被绑定！！！！");
 						}
@@ -310,11 +315,11 @@ public class UmPayBindingBankCardOperation extends
 					response.getWriter().print(responseData);
 					FacesUtil.getCurrentInstance().responseComplete();
 				} catch (IOException e) {
-					log.error(e.getLocalizedMessage(),e);
+					log.error(e.getLocalizedMessage(), e);
 				}
 			}
 		} catch (VerifyException e) {
-			log.error(e.getLocalizedMessage(),e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 }
