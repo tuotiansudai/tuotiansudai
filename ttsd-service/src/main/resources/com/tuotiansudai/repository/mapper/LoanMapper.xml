@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanMapper">
+
+    <resultMap id="loanResultMap" type="LoanModel">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="agent" property="agentLoginName"></result>
+        <result column="loaner" property="loanerLoginName"></result>
+        <result column="type" property="type"></result>
+        <result column="periods" property="periods"></result>
+        <result column="description_text" property="descriptionText"></result>
+        <result column="description_html" property="descriptionHtml"></result>
+        <result column="base_rate" property="baseRate"></result>
+        <result column="invest_fee_rate" property="investFeeRate"></result>
+        <result column="min_invest_amount" property="minInvestAmount"></result>
+        <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
+        <result column="max_invest_amount" property="maxInvestAmount"></result>
+        <result column="activity_type" property="activityType"></result>
+        <result column="activity_rate" property="activityRate"></result>
+        <result column="contract_id" property="contractId"></result>
+        <result column="fundraising_start_time" property="fundraisingStartTime"></result>
+        <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+        <result column="show_on_home" property="showOnHome"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
+        insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
+        values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{baseRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
+    </insert>
+    
+    <select id="findById" parameterType="long" resultMap="loanResultMap">
+        select * from loan where id = #{loanId}
+    </select>
+
+    <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="#{status} != null and #{status} != ''">
+                t.status = #{status}
+            </if>
+            <if test="#{loanId} != null and #{loanId} != ''">
+                and t.id = #{loanId}
+            </if>
+            <if test="#{loanName} != null and #{loanName} != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and t.created_time <= #{endTime}
+            </if>
+        </where>
+        order by t.created_time desc
+        <if test="#{currentPageNo} > 0">
+            limit (#{currentPageNo} - 1) * 10 , 10
+        </if>
+    </select>
+
+    <select id="findLoanListCount" parameterType="map" resultMap="int">
+        select count(*) from loan t
+        <where>
+            <if test="#{status} != null and #{status} != ''">
+                t.status = #{status}
+            </if>
+            <if test="#{loanId} != null and #{loanId} != ''">
+                and t.id = #{loanId}
+            </if>
+            <if test="#{loanName} != null and #{loanName} != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and t.created_time <= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="#{activityType} !=null and #{activityType} != ''">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="#{status} != null and #{status} != ''">
+                and t.status = #{status}
+            </if>
+            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
+                and t.periods <= #{periodsEnd}
+            </if>
+            <if test="#{rateStart} > 0">
+                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="#{rateEnd} > 0">
+                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            </if>
+            order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
+            <if test="#{currentPageNo} > 0">
+                limit (#{currentPageNo} - 1) * 10 , 10
+            </if>
+        </where>
+    </select>
+
+    <select id="findLoanListCountWeb" parameterType="map" resultMap="int">
+        select count(*) from loan t
+        <where>
+            <if test="#{activityType} !=null and #{activityType} != ''">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="#{status} != null and #{status} != ''">
+                and t.status = #{status}
+            </if>
+            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
+                and t.periods <= #{periodsEnd}
+            </if>
+            <if test="#{rateStart} > 0">
+                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="#{rateEnd} > 0">
+                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            </if>
+        </where>
+    </select>
+
+</mapper>

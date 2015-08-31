@@ -1,0 +1,93 @@
+1.
+    请求method：post
+    请求地址：${requestContext.getContextPath()}/loan/
+    {
+    "projectName":"",
+    "agentLoginName":"",
+    "loanerLoginName":"",
+    "type":"",
+    "periods":"",
+    "descriptionText":"",
+    "descriptionHtml":"",
+    "investFeeRate":"",
+    "minInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "maxInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "investIncreasingAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "activityType":"",
+    "activityRate":"",
+    "basicRate":"",
+    "contractId":"",
+    "fundraisingStartTime":"",//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
+    "fundraisingEndTime":"",//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
+    "showOnHome":"",
+    "loanAmount":""//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "loanTitles":[
+        {
+        "titleId":"",
+        "applyMetarialUrl":""
+        }
+      ]
+    }
+
+2.标的类型数据格式：
+    {
+    "loanType":"",//上面的请求参数中的type需要取这个值
+    "name":"",
+    "repayTimeUnit":"",
+    "repayTimePeriod":""
+    }
+
+3.获取所有标题url地址：${requestContext.getContextPath()}/loan/titles
+  标题数据格式：
+    [
+       {
+        "id":"",
+        "type":"",
+        "title":""
+        },
+        {
+        "id":"",
+        "type":"",
+        "title":""
+        }
+    ]
+
+4.
+    请求method：post
+    添加标题url地址：${requestContext.getContextPath()}/loan/title
+    {
+    "title":""
+    }
+
+4.活动类型数据格式：
+    [
+        {
+        "activityTypeCode":"",
+        "activityTypeName":""
+        },
+        {
+        "activityTypeCode":"",
+        "activityTypeName":""
+        }
+    ]
+
+5.合同数据类型：
+    [
+        {
+        "id":"",
+        "contractName":""
+        },
+        {
+        "id":"",
+        "contractName":""
+        }
+    ]
+
+6.借款用户，代理用户自动提示URL：${requestContext.getContextPath()}/loaner
+借款用户，代理用户自动提示数据类型：
+    [
+        "caomengde",
+        "zhugeliang",
+        "liubei"
+    ]
+
