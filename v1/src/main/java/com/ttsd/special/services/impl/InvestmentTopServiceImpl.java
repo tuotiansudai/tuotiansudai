@@ -27,7 +27,7 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
     /**
      * 缓存有效期（毫秒）  默认1小时
      */
-    private static final int INVEST_TOP_SPECIAL_CACHE_EXPIRE = 1000*60;//*60;
+    private static final int INVEST_TOP_SPECIAL_CACHE_EXPIRE = 1000*60*60;
     /**
      * 排行榜的最大容量
      */
