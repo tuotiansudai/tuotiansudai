@@ -89,12 +89,12 @@ public class LoanController {
     @RequestMapping(value = "/first-trial-passed",method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> firstTrialPassed(@RequestBody LoanDto loanDto){
-        return consoleLoanService.editLoan(loanDto);
+        return consoleLoanService.firstTrialPassed(loanDto);
     }
 
     @RequestMapping(value = "/first-trial-refused",method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> firstTrialRefused(@RequestBody LoanDto loanDto){
-        return consoleLoanService.editLoan(loanDto);
+        return consoleLoanService.firstTrialRefused(loanDto);
     }
 }
