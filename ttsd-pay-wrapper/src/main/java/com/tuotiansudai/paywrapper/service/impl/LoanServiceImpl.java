@@ -12,8 +12,10 @@ import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanTitleRelationModel;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class LoanServiceImpl implements LoanService {
     private LoanTitleRelationMapper loanTitleRelationMapper;
     @Autowired
     private PaySyncClient paySyncClient;
+    @Autowired
+    private UserMapper userMapper;
 
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -40,17 +44,18 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
+        long loanerId = userMapper.findByLoginName(loanDto.getLoanerLoginName()).getId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
-                loanDto.getLoanerLoginName(),
-                loanDto.getLoanAmount(),
-                String.valueOf(loanDto.getId()),
+                loanDto.getId(),
+                loanerId,
+                AmountUtil.convertStringToCent(loanDto.getLoanAmount()),
                 loanDto.getProjectName()
         );
         try {
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
                     merBindProjectRequestModel,
                     MerBindProjectResponseModel.class);
-            if (responseModel.isSuccess()) {
+            if (!responseModel.isSuccess()) {
                 LoanModel loanModel = new LoanModel(loanDto);
                 loanModel.setStatus(loanDto.getStatus());
                 loanMapper.update(loanModel);
