@@ -6,9 +6,7 @@
 <body>
 <#include "header.ftl" />
 
-
 <div class="main">
-
     <ul class="email-nav">
         <li><a href="javascript:;">账户总览</a></li>
         <li><a href="javascript:;">投资记录</a></li>
@@ -20,7 +18,6 @@
         <li><a href="javascript:;">推荐管理</a></li>
     </ul>
 
-
     <div class="bind-card">
         <h2 class="hd-bind-card"><span>我要提现</span></h2>
 
@@ -28,7 +25,7 @@
             <form action="/withdraw" method="post" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="recharge-bank">
-                    <p>可提现额度:<i class="jq-total">900.00</i>元</p>
+                    <p>可提现额度:<i class="jq-total">${balance?string("0.00")}</i>元</p>
                     <p>输入提现金额：<input name="amount" type="text" value="" class="recharge-cz" placeholder="0.00">元
                         <span class="error"><img src="${requestContext.getContextPath()}/images/error.jpg" alt=""/>你最大可提现金额:<i>0.00</i>元</span>
                     </p>
