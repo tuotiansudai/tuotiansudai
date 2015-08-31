@@ -53,5 +53,10 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
+    /**
+     * @function 通过id查找标的
+     * @param loanId
+     * @return
+     */
     LoanModel findLoanById(long loanId);
 }

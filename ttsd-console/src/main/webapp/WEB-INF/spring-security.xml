@@ -31,12 +31,12 @@
                     login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-
-        <intercept-url pattern="/login" access="isAnonymous()"/>
-        <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
-        <intercept-url pattern="/" access="permitAll()"/>
-        <intercept-url pattern="/*" access="hasRole('USER')"/>
-        <csrf/>
+        <intercept-url pattern="/*" access="isAnonymous()"/>
+        <!--<intercept-url pattern="/login" access="isAnonymous()"/>-->
+        <!--<intercept-url pattern="/loginHandler" access="isAnonymous()"/>-->
+        <!--<intercept-url pattern="/" access="permitAll()"/>-->
+        <!--<intercept-url pattern="/*" access="hasRole('USER')"/>-->
+        <csrf disabled="true"/>
     </http>
 
     <authentication-manager alias="authenticationManager">
