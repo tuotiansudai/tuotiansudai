@@ -148,7 +148,6 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
 
     public List<CreditorRepayPlan> searchDetail(String repayTime){
         StringBuffer sbDetailSql = getDetailStringBuffer(repayTime);
-        System.out.println("sbDetailSql====" + sbDetailSql);
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(sbDetailSql.toString()).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> list = query.list();
         List<CreditorRepayPlan> returnList = new ArrayList<CreditorRepayPlan>();
