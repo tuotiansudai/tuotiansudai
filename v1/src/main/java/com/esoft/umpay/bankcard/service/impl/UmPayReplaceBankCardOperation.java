@@ -1,5 +1,6 @@
 package com.esoft.umpay.bankcard.service.impl;
 
+import com.cfca.util.pki.ocsp.Req;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -88,11 +89,23 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		return to;
 	}
 
-	public String generateReplaceCardOrderId(BankCard bankCard) {
+	@Transactional(rollbackFor = Exception.class)
+	public ReqData createOperation_mobile(BankCard bankCard) throws ReqDataException{
+        String orderId = generateReplaceCardOrderId(bankCard);
+        ReqData reqData = buildReqData(bankCard, orderId, true);
+        log.debug("换卡发送数据:" + reqData);
+        createTrusteeshipOperation(orderId, reqData.getUrl(),
+                bankCard.getUser().getId(),
+                UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
+                GsonUtil.fromMap2Json(reqData.getField()));
+        return reqData;
+	}
+
+	private String generateReplaceCardOrderId(BankCard bankCard) {
 		return System.currentTimeMillis() + bankCard.getCardNo();
 	}
 
-	public ReqData buildReqData(BankCard bankCard, String orderId, boolean isMobileRequest){
+	private ReqData buildReqData(BankCard bankCard, String orderId, boolean isMobileRequest){
 		TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		if(trusteeshipAccount==null){
