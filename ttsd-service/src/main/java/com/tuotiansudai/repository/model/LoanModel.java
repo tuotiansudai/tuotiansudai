@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.utils.AmountUtil;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class LoanModel {
@@ -56,8 +57,9 @@ public class LoanModel {
     public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
-        this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.baseRate = Double.parseDouble(loanDto.getBasicRate());
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getActivityRate()));
+        this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
@@ -66,7 +68,6 @@ public class LoanModel {
         this.descriptionText = loanDto.getDescriptionText();
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
-        this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
         this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
@@ -251,5 +252,10 @@ public class LoanModel {
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    private String rateStrDivideOneHundred(String rate) {
+        BigDecimal rateBigDecimal = new BigDecimal(rate);
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
     }
 }

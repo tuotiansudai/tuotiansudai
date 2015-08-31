@@ -129,9 +129,6 @@ public class LoanServiceImpl implements LoanService {
         }
         long projectId = idGenerator.generate();/****标的号****/
         loanDto.setId(projectId);
-        loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
-        loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
-        loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
         loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
         if (loanTitleRelationModelList.size() > 0) {
@@ -146,17 +143,11 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    public String getLoginName(String loginName) {
+    private String getLoginName(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        String loanUserId = null;
         if (accountModel != null) {
-            loanUserId = accountModel.getPayUserId();
+            return accountModel.getPayUserId();
         }
-        return loanUserId;
-    }
-
-    private String rateStrDivideOneHundred(String rate) {
-        BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
+        return null;
     }
 }
