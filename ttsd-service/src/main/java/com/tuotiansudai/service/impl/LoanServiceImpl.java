@@ -110,7 +110,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (loanDto.getFundraisingStartTime().before(loanDto.getFundraisingEndTime())) {
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
@@ -129,11 +129,6 @@ public class LoanServiceImpl implements LoanService {
         }
         long projectId = idGenerator.generate();/****标的号****/
         loanDto.setId(projectId);
-        loanDto.setActivityRate(rateStrDivideOneHundred(loanDto.getActivityRate()));
-        loanDto.setInvestFeeRate(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
-        loanDto.setBasicRate(rateStrDivideOneHundred(loanDto.getBasicRate()));
-        loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         loanMapper.create(new LoanModel(loanDto));
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
         if (loanTitleRelationModelList.size() > 0) {
@@ -148,17 +143,11 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    public String getLoginName(String loginName) {
+    private String getLoginName(String loginName) {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        String loanUserId = null;
         if (accountModel != null) {
-            loanUserId = accountModel.getPayUserId();
+            return accountModel.getPayUserId();
         }
-        return loanUserId;
-    }
-
-    public String rateStrDivideOneHundred(String rate) {
-        BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        return null;
     }
 }
