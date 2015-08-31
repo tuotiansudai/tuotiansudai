@@ -12,6 +12,4 @@ public interface LoanDetailService {
 
     InvestRecordResponseDto getInvests(InvestRecordRequestDto dto);
 
-
-
 }
