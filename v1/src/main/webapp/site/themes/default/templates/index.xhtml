@@ -97,8 +97,6 @@
 			<ui:param name="orderColumn"
 					  value="#{'(case loan.loanActivityType when \'xs\' then 1 when \'pt\' then 2 when \'jx\' then 3 else 4 end)'}"></ui:param>
 			<f:event type="preRenderComponent"
-					 listener="#{loanListRaising.addRestriction('attr.id=\'index\'')}"></f:event>
-			<f:event type="preRenderComponent"
 					 listener="#{loanListRaising.addOrder(orderColumn, 'asc')}"></f:event>
 			<f:event type="preRenderComponent"
 					 listener="#{loanListRaising.addOrder('loan.verifyTime','desc')}"></f:event>
@@ -233,8 +231,6 @@
 
 				<ui:param name="orderColumn"
 					value="#{'(case loan.status when \''}#{LoanStatus.RAISING}#{'\' then 1 when \''}#{LoanStatus.RECHECK}#{'\' then 2 when \''}#{LoanStatus.REPAYING}#{'\' then 3 else 4 end)'}"></ui:param>
-				<f:event type="preRenderComponent"
-						 listener="#{loanList2.addRestriction('attr.id=\'index\'')}"></f:event>
 				<f:event type="preRenderComponent"
 					listener="#{loanList2.addOrder(orderColumn, 'asc')}"></f:event>
 				<f:event type="preRenderComponent"
