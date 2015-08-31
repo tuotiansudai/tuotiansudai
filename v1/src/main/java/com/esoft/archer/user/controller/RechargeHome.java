@@ -23,6 +23,8 @@ import com.esoft.core.util.SpringBeanUtil;
 import com.esoft.jdp2p.loan.model.Recharge;
 import com.esoft.jdp2p.user.service.RechargeService;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,15 @@ public class RechargeHome extends EntityHome<Recharge> {
 		double fee = rechargeService.calculateFee(this.getInstance()
 				.getActualMoney());
 		this.getInstance().setFee(fee);
+	}
+	public BigDecimal formatActualMoney(Double actualMoney,Double fee){
+		actualMoney = actualMoney == null?0.00D:actualMoney;
+		fee = fee == null?0.00D:fee;
+		BigDecimal bigDecimal1 = new BigDecimal(actualMoney);
+		BigDecimal bigDecimal2 = new BigDecimal(fee);
+
+		BigDecimal d = bigDecimal1.add(bigDecimal2);
+		return  d;
 	}
 
 	public String offlineRecharge() {
