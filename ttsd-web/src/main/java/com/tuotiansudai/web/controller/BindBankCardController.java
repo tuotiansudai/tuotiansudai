@@ -4,6 +4,8 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,13 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
-        return new ModelAndView("/bind-card");
+        String loginName = LoginUserInfo.getLoginName();
+        if(StringUtils.isNotEmpty(loginName) && loginName.length() > 0){
+            loginName = loginName.substring(0,1) + "***";
+        }
+        ModelAndView view = new ModelAndView("/bind-card");
+        view.addObject("loginName",loginName);
+        return view;
     }
 
     @RequestMapping(method = RequestMethod.POST)

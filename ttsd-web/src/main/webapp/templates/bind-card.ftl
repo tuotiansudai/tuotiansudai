@@ -26,7 +26,7 @@
         <#--用户尚未绑定银行卡快捷支付-->
             <form action="" style="display: block" method="post" target="_blank">
                 <div class="item-block">
-                    <span class="name">真实姓名：皮**</span>
+                    <span class="name">真实姓名：${loginName}</span>
                 </div>
                 <div class="item-block">
                     <ol class="select-bank">
@@ -105,7 +105,8 @@
                 </div>
                 <div class="item-block">
                     <span class="name">银行卡：</span>
-                    <input class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
+                    <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 </div>
                 <div class="item-block">
                     <button class="btn-ok grey" type="submit" disabled="disabled">确认绑定</button>
