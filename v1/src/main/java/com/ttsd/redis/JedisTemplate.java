@@ -13,6 +13,10 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 @Service
 public class JedisTemplate {
     @Logger
@@ -206,5 +210,68 @@ public class JedisTemplate {
         });
     }
 
+
+    public void hmset(final String key, final Map map) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hmset(key, map);
+            }
+        });
+    }
+
+    public void hset(final String key, final String hkey, final String value) {
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.hset(key, hkey, value);
+            }
+        });
+    }
+
+    public Long hdel(final String key, final String... hkeys) {
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hdel(key, hkeys);
+            }
+        });
+    }
+
+    public int hlen(final String key) {
+        return Integer.valueOf(execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.hlen(key);
+            }
+        }).toString());
+    }
+
+    public Set hkeys(final String key) {
+        return execute(new JedisAction<Set>() {
+            @Override
+            public Set action(Jedis jedis) {
+                return jedis.hkeys(key);
+            }
+        });
+    }
+
+    public List hmget(final String key, final String... hkey) {
+        return execute(new JedisAction<List>() {
+            @Override
+            public List action(Jedis jedis) {
+                return jedis.hmget(key, hkey);
+            }
+        });
+    }
+
+    public String hget(final String key, final String hkey) {
+        return execute(new JedisAction<String>() {
+            @Override
+            public String action(Jedis jedis) {
+                return jedis.hget(key, hkey);
+            }
+        });
+    }
 
 }
