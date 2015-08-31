@@ -1,6 +1,5 @@
 package com.esoft.umpay.bankcard.service.impl;
 
-import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.GsonUtil;
@@ -60,7 +59,7 @@ public class UmPayBindingAgreementOperation extends
         if (userBankCard == null || userBankCard.size() == 0) {
             return null;
         }
-        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
+        Map<String, String> sendMap = assembleSendMap(userId, trusteeshipAccount, false);
         TrusteeshipOperation trusteeshipOperation = null;
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
@@ -68,7 +67,7 @@ public class UmPayBindingAgreementOperation extends
             // 保存操作记录
             trusteeshipOperation = createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
                     userId,
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                    UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
             // 发送请求
             sendOperation(trusteeshipOperation, facesContext);
@@ -95,17 +94,25 @@ public class UmPayBindingAgreementOperation extends
      * @param userId 用户ID
      * @return Map<String,String>
      */
-    public Map<String,String> assembleSendMap(String userId,TrusteeshipAccount trusteeshipAccount){
-        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_BIND_AGREEMENT);
-        // 同步地址
-        sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-                + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+    public Map<String,String> assembleSendMap(String userId,TrusteeshipAccount trusteeshipAccount, boolean isMobileRequest){
+        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+
+        if(isMobileRequest) {
+            // 同步地址
+            sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+                    + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+        }else{
+            // 同步地址
+            sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+                    + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
+        }
         // 后台地址
         sendMap.put("notify_url",
                 UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-                        + UmPayConstants.OperationType.MER_BIND_AGREEMENT);
+                        + UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT);
         sendMap.put("user_id", trusteeshipAccount.getId());
         sendMap.put("account_id", trusteeshipAccount.getAccountId());
+
         sendMap.put("user_bind_agreement_list", "ZKJP0700");
         return sendMap;
     }
@@ -126,7 +133,7 @@ public class UmPayBindingAgreementOperation extends
             baseResponseDto.setMessage(ReturnMessage.NOT_BIND_CARD.getMsg());
             return baseResponseDto;
         }
-        Map<String, String> sendMap = assembleSendMap(userId,trusteeshipAccount);
+        Map<String, String> sendMap = assembleSendMap(userId, trusteeshipAccount, true);
         //配置此项，表示使用H5页面
         sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
         // 同步地址
@@ -137,7 +144,7 @@ public class UmPayBindingAgreementOperation extends
             // 保存操作记录
             createTrusteeshipOperation(trusteeshipAccount.getId(), reqData.getUrl(),
                     userId,
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT,
+                    UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT,
                     GsonUtil.fromMap2Json(reqData.getField()));
             baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
             baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -172,7 +179,7 @@ public class UmPayBindingAgreementOperation extends
             TrusteeshipAccount trusteeshipAccount = ht.get(TrusteeshipAccount.class,user_id);
             // 操作记录
             TrusteeshipOperation to = trusteeshipOperationBO.get(
-                    UmPayConstants.OperationType.MER_BIND_AGREEMENT, user_id, trusteeshipAccount.getUser().getId(),
+                    UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT, user_id, trusteeshipAccount.getUser().getId(),
                     UmPayConstants.OperationType.UMPAY);
 
 

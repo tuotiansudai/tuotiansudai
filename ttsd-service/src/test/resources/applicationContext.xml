@@ -19,7 +19,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository,com.tuotiansudai.client" />
+    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.utils" />
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
@@ -52,6 +52,9 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.tuotiansudai.repository.mapper" />
     </bean>
+
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
+    <!--for test-->
+    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 </beans>

@@ -6,10 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class CommonUtils {
 
@@ -69,6 +66,19 @@ public class CommonUtils {
             formData = Joiner.on("&").withKeyValueSeparator("=").join(mapCopy);
         }
         return formData;
+    }
+
+    public static String  calculatorInvestBeginSeconds(Date investBeginTime){
+        if(investBeginTime == null){
+            return "0";
+        }
+        Long time = (investBeginTime.getTime() - System
+                .currentTimeMillis()) / 1000;
+        if(time < 0){
+            return "0";
+        }
+        return time.toString();
+
     }
     
 }

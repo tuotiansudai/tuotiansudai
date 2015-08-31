@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,8 +110,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         withdrawCash.setBankCard(bankCard);
         withdrawCashService.applyWithdrawCash(withdrawCash);
 
-        // build request form
-        ReqData reqData = umPayWithdrawOperation.buildReqData(withdrawCash);
+        ReqData reqData = umPayWithdrawOperation.createOperation_mobile(withdrawCash);
 
         // build api response data
         WithdrawOperateResponseDataDto responseDataDto = new WithdrawOperateResponseDataDto();

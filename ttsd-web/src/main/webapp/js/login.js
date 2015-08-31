@@ -1,8 +1,8 @@
-require(['jquery'], function ($) {
+require(['jquery', 'csrf'], function ($) {
     $(function () {
         var errorElement = $('.error');
 
-        var refreshCaptcha = function() {
+        var refreshCaptcha = function () {
             var captcha = $('.login .img-captcha img');
             captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
         };
@@ -86,17 +86,22 @@ require(['jquery'], function ($) {
             }
             var data = $('.form-login').serialize();
             $.ajax({
-                url: '/loginHandler',
+                url: '/login-handler',
                 type: 'post',
-                data: data
+                data: data,
+                beforeSend: function () {
+                    self.addClass('loading');
+                }
             }).done(function (response) {
                 if (response.data.status) {
                     window.location.href = '/';
+                    console.log('success');
                 } else {
                     refreshCaptcha();
                     $('.captcha').addClass('unlock').removeClass('lock').val('');
                     $('.error').addClass('wrong').text('用户名或密码错误');
                 }
+                self.removeClass('loading');
             });
         })
     });

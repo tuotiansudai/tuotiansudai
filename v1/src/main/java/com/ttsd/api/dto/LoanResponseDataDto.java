@@ -15,6 +15,11 @@ public class LoanResponseDataDto {
     private String investedMoney;
     private String baseRatePercent;
     private String activityRatePercent;
+    private String minInvestMoney;
+    private String cardinalNumber;
+    private String maxInvestMoney;
+    private String investBeginTime;
+    private String investBeginSeconds;
 
     public String getLoanId() {
         return loanId;
@@ -126,5 +131,45 @@ public class LoanResponseDataDto {
 
     public void setActivityRatePercent(String activityRatePercent) {
         this.activityRatePercent = activityRatePercent;
+    }
+
+    public String getMinInvestMoney() {
+        return minInvestMoney;
+    }
+
+    public void setMinInvestMoney(String minInvestMoney) {
+        this.minInvestMoney = minInvestMoney;
+    }
+
+    public String getCardinalNumber() {
+        return cardinalNumber;
+    }
+
+    public void setCardinalNumber(String cardinalNumber) {
+        this.cardinalNumber = cardinalNumber;
+    }
+
+    public String getMaxInvestMoney() {
+        return maxInvestMoney;
+    }
+
+    public void setMaxInvestMoney(String maxInvestMoney) {
+        this.maxInvestMoney = maxInvestMoney;
+    }
+
+    public String getInvestBeginTime() {
+        return investBeginTime;
+    }
+
+    public void setInvestBeginTime(String investBeginTime) {
+        this.investBeginTime = investBeginTime;
+    }
+
+    public String getInvestBeginSeconds() {
+        return investBeginSeconds;
+    }
+
+    public void setInvestBeginSeconds(String investBeginSeconds) {
+        this.investBeginSeconds = investBeginSeconds;
     }
 }

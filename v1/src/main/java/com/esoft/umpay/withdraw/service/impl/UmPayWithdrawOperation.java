@@ -79,7 +79,7 @@ public class UmPayWithdrawOperation extends
 			FacesContext facesContext) throws IOException {
 		TrusteeshipOperation to;
 		try {
-			ReqData reqData = buildReqData(withdrawCash);
+			ReqData reqData = buildReqData(withdrawCash, false);
 			to = createTrusteeshipOperation(withdrawCash.getId(), reqData.getUrl(),
 					withdrawCash.getId(), UmPayConstants.OperationType.CUST_WITHDRAWALS,
 					GsonUtil.fromMap2Json(reqData.getField()));
@@ -91,14 +91,31 @@ public class UmPayWithdrawOperation extends
 		return to;
 	}
 
-	public ReqData buildReqData(WithdrawCash withdrawCash) throws ReqDataException {
+	@Transactional(rollbackFor = Exception.class)
+	public ReqData createOperation_mobile(WithdrawCash withdrawCash) throws ReqDataException {
+		ReqData reqData;
+        reqData = buildReqData(withdrawCash, true);
+        createTrusteeshipOperation(withdrawCash.getId(), reqData.getUrl(),
+                withdrawCash.getId(), UmPayConstants.OperationType.CUST_WITHDRAWALS,
+                GsonUtil.fromMap2Json(reqData.getField()));
+		return reqData;
+	}
+
+	private ReqData buildReqData(WithdrawCash withdrawCash, boolean isMobileRequest) throws ReqDataException {
 		// 得到一个提现订单
 		WithdrawCash wc = ht.get(WithdrawCash.class, withdrawCash.getId());
 		DecimalFormat currentNumberFormat = new DecimalFormat("#");
 		Map<String, String> sendMap = UmPaySignUtil
 				.getSendMapDate(UmPayConstants.OperationType.CUST_WITHDRAWALS);
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.CUST_WITHDRAWALS);
+		if(isMobileRequest){
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.CUST_WITHDRAWALS);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		} else {
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.CUST_WITHDRAWALS);
+		}
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
 						+ UmPayConstants.OperationType.CUST_WITHDRAWALS);

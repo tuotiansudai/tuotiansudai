@@ -1,45 +1,23 @@
 package com.esoft.umpay.repay.service.impl;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.util.*;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import com.esoft.archer.user.model.*;
-import com.esoft.jdp2p.invest.InvestConstants;
-import com.esoft.jdp2p.invest.model.InvestUserReferrer;
-import com.esoft.jdp2p.loan.model.Loan;
-import com.esoft.jdp2p.risk.service.SystemBillService;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import org.apache.commons.logging.Log;
-import org.hibernate.LockMode;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.user.service.impl.UserBillBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.ArithUtil;
-import com.esoft.core.util.DateStyle;
-import com.esoft.core.util.DateUtil;
-import com.esoft.core.util.GsonUtil;
-import com.esoft.core.util.HttpClientUtil;
+import com.esoft.core.util.*;
+import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.LoanConstants.RepayStatus;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
+import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanService;
 import com.esoft.jdp2p.repay.exception.NormalRepayException;
 import com.esoft.jdp2p.repay.model.InvestRepay;
 import com.esoft.jdp2p.repay.model.LoanRepay;
 import com.esoft.jdp2p.repay.service.RepayService;
+import com.esoft.jdp2p.risk.service.SystemBillService;
 import com.esoft.jdp2p.trusteeship.TrusteeshipConstants;
 import com.esoft.jdp2p.trusteeship.exception.TrusteeshipReturnException;
 import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
@@ -49,12 +27,30 @@ import com.esoft.umpay.loan.service.impl.UmPayLoanStatusService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.transform.Transformers;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.util.*;
 
 /**
  * Description :正常还款
@@ -66,7 +62,7 @@ import com.umpay.api.paygate.v40.Plat2Mer_v40;
 public class UmPayNormalRepayOperation extends
 		UmPayOperationServiceAbs<LoanRepay> {
 
-	public static final String NOT_BIND_CARD = "未在联动优势绑定借记卡,交易失败";
+	public static final String NOT_BIND_CARD = "未在联动优势开通账户,交易失败";
 	@Resource
 	HibernateTemplate ht;
 
@@ -97,21 +93,25 @@ public class UmPayNormalRepayOperation extends
 	@SuppressWarnings("unchecked")
 	@Transactional(rollbackFor = Exception.class)
 	public void recommendedIncome(String loanId){
+		log.debug("begin referrer reward after make loan " + loanId);
 		Loan loan = ht.get(Loan.class, loanId);
+		String sql = "select role_id from user_role where user_id = ''{0}''";
 		//找到该笔借款的投资明细
 		List<Invest> investList = ht.find(
 				"from Invest i where i.loan.id=? and i.status not in (?,?)",
 				new String[] { loanId, InvestConstants.InvestStatus.CANCEL, InvestConstants.InvestStatus.UNFINISHED });
 		for (Invest invest : investList) {
+			log.debug("find invest " + invest.getId());
 			List<ReferrerRelation> referrerRelationList = ht.find("from ReferrerRelation t where t.userId = ?", new String[]{invest.getUser().getId()});
 			for(ReferrerRelation referrerRelation : referrerRelationList){
-				List<Role> userRoleList = referrerRelation.getReferrer().getRoles();
-				List<String> list = Lists.transform(userRoleList, new Function<Role, String>() {
-					@Override
-					public String apply(Role role) {
-						return role.getId();
-					}
-				});
+				log.debug("referrer is" + referrerRelation.getReferrerId());
+				Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(MessageFormat.format(sql,referrerRelation.getReferrerId())).
+						setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+				List<Map<String, Object>> mapList = query.list();
+				List<String> list = new ArrayList<String>();
+				for (int i=0;i<mapList.size();i++) {
+					list.add(mapList.get(i).get("role_id").toString());
+				}
 				String roleId = "";
 				if(list.contains("ROLE_MERCHANDISER")){
 					roleId = "ROLE_MERCHANDISER";
@@ -120,15 +120,17 @@ public class UmPayNormalRepayOperation extends
 				}else{
 					roleId = "MEMBER";
 				}
+				log.debug("roleId=" + roleId);
 				double bonus = calculateBonus(invest, referrerRelation, loan, roleId);
 				String orderId = invest.getId() + System.currentTimeMillis();
 				String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 				String transAction = UmPayConstants.TransferProjectStatus.TRANS_ACTION_OUT;
+				log.debug("user_id=" + referrerRelation.getReferrerId());
 				String particUserId = getTrusteeshipAccount(referrerRelation.getReferrerId())!=null?getTrusteeshipAccount(referrerRelation.getReferrerId()).getId():"";
 				Date nowdate = new Date();
 				String status = InvestUserReferrer.FAIL;
 				String errorMessage = "";
-
+				log.debug("particUserId=" + particUserId);
 				String transferOutDetailFormat = "推荐人奖励，标的:{0}, 投资:{1}, 投资人:{2}, 投资金额:{3}, 订单:{4}, 推荐人:{5}";
 				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
 
@@ -140,7 +142,7 @@ public class UmPayNormalRepayOperation extends
 						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
 					} catch (ReqDataException | RetDataException e) {
 						log.error(e.getLocalizedMessage(), e);
-						log.info("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
+						log.debug("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
 						continue;
 					}
 					if(returnMsg.split("\\|")[0].equals("0000")){

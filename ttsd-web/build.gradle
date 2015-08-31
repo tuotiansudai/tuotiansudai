@@ -3,20 +3,8 @@ apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
-    def springVersion = '4.1.7.RELEASE'
-    def freemarkerVersion = '2.3.23'
-    def jacksonVersion = '2.5.4'
-    compile "org.springframework:spring-webmvc:$springVersion",
-            "org.springframework:spring-context-support:$springVersion",
-            "org.freemarker:freemarker:$freemarkerVersion",
-            "com.fasterxml.jackson.core:jackson-core:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion",
-            "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
-
-
-    compile project(':ttsd-service')
-
-    compile fileTree(dir: 'libs', include: '**/*.jar')
+    compile project(':ttsd-service'),
+            fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
@@ -45,18 +33,13 @@ flyway {
     user = 'root'
     password = ''
     outOfOrder = true
-    placeholders = ['aa': 'aa']
     schemas = ['aa']
     url = 'jdbc:mysql://192.168.33.10:3306/'
     if (new File(productionFlywayConfig).exists()) {
         Properties properties = new Properties()
         properties.load(new FileInputStream(productionFlywayConfig))
-        def schema = properties.getProperty('jdbc.scheam', 'aa')
-        user = properties.getProperty('jdbc.username', user)
-        password = properties.getProperty('jdbc.password', password)
-        url = properties.getProperty('flyway.url', url)
-        locations = ["filesystem:db_migration/$schema"]
-        placeholders = ['aa': "$schema"]
-        schemas = ["$schema"]
+        url = properties.getProperty('jdbc.aa.url', url)
+        user = properties.getProperty('jdbc.aa.username', user)
+        password = properties.getProperty('jdbc.aa.password', password)
     }
 }

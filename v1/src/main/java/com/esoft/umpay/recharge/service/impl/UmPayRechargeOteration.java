@@ -74,7 +74,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(Recharge recharge,
 			FacesContext facesContext,boolean isOpenFastPayment) throws IOException {
-		Map<String,String> sendMap = assembleSendMap(recharge, isOpenFastPayment, null);
+		Map<String,String> sendMap = assembleSendMap(recharge, isOpenFastPayment, null, false);
 		// 保存操作记录
 		TrusteeshipOperation trusteeshipOperation = null;
 		try {
@@ -101,7 +101,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public Map<String,String> assembleSendMap(Recharge recharge, boolean isOpenFastPayment, HttpServletRequest request){
+	public Map<String,String> assembleSendMap(Recharge recharge, boolean isOpenFastPayment, HttpServletRequest request, boolean isMobileRequest){
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser()
 				.getId());
 		if(isOpenFastPayment){
@@ -125,9 +125,15 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 获取拼装map
 		Map<String, String> sendMap = UmPaySignUtil
 				.getSendMapDate(UmPayConstants.OperationType.MER_RECHARGE_PERSON);
-		// 同步地址
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		if(isMobileRequest) {
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		}else{
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		}
 		// 异步地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -180,7 +186,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	@Transactional(rollbackFor = Exception.class)
 	public BaseResponseDto createOperation(Recharge recharge,HttpServletRequest request) throws IOException {
 		BaseResponseDto baseResponseDto = new BaseResponseDto();
-		Map<String,String> sendMap = assembleSendMap(recharge, true, request);
+		Map<String,String> sendMap = assembleSendMap(recharge, true, request, true);
 
 		if (sendMap == null){
 			baseResponseDto.setCode(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode());

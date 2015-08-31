@@ -2,12 +2,14 @@ package com.ttsd.api.controller;
 
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
+import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingAgreementOperation;
 import com.esoft.umpay.bankcard.service.impl.UmPayBindingBankCardOperation;
 import com.google.common.base.Strings;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppBankCardService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by tuotian on 15/8/7.
@@ -46,13 +49,16 @@ public class MobileAppBankCardController {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         try {
             BankCard bankCard = new BankCard();
+            bankCard.setId(IdGenerator.randomUUID());
             bankCard.setCardNo(bankCardRequestDto.getCardNo());
-            bankCard.setIsOpenFastPayment(bankCardRequestDto.isOpenFastPayment());
             User user = new User();
             user.setId(bankCardRequestDto.getUserId());
             user.setRealname(bankCardRequestDto.getRealName());
             user.setIdCard(bankCardRequestDto.getIdCard());
-            bankCard.setUser(user);
+            bankCard.setStatus("uncheck");
+            bankCard.setTime(new Date());
+            bankCard.setIsOpenFastPayment(false);
+            mobileAppBankCardService.save(bankCard);
             BaseResponseDto operation = umPayBindingBankCardOperation.createOperation(bankCard);
             return operation;
         } catch (IOException e) {

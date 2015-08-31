@@ -94,6 +94,25 @@ public class LoanCalculatorImpl implements LoanCalculator {
 
 		return days + "天" + hours + "时" + minutes + "分";
 	}
+	@Override
+	public String calculateRemainTimeSeconds(String loanId) {
+		Loan loan = ht.get(Loan.class, loanId);
+		if (loan == null) {
+			return "0";
+		}
+		if (loan.getExpectTime() == null) {
+			return "0";
+		}
+		Long time = (loan.getExpectTime().getTime() - System
+				.currentTimeMillis()) / 1000;
+
+		if (time < 0 || !loan.getStatus().equals(LoanStatus.RAISING)) {
+			return "0";
+		}
+
+
+		return time.toString();
+	}
 
 	@Override
 	public Double calculateMoneyNeedRaised(String loanId)
@@ -107,7 +126,7 @@ public class LoanCalculatorImpl implements LoanCalculator {
 		// 统计所有的此借款的投资信息，求和做减法，得出尚未募集到的金额。
 		// FIXME:记得，不用通过loan.invests取。为什么？
 		List investMoney = ht
-				.find("select sum(invest.investMoney) from Invest invest where invest.loan.id=? and invest.status not in (?,?)",
+				.find("select round(sum(invest.investMoney), 2) from Invest invest where invest.loan.id=? and invest.status not in (?,?)",
 						new String[]{loanId, InvestStatus.CANCEL, InvestStatus.WAIT_AFFIRM});
 
 		double sumMoney = investMoney.get(0) == null ? 0D

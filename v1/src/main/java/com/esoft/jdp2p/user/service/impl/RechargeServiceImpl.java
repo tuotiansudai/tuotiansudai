@@ -221,7 +221,7 @@ public class RechargeServiceImpl implements RechargeService {
 		bcs.add(new RechargeBankCardImpl("BOC", "中国银行"));
 		bcs.add(new RechargeBankCardImpl("CEB", "光大银行"));
 		bcs.add(new RechargeBankCardImpl("CIB", "兴业银行"));
-		bcs.add(new RechargeBankCardImpl("SDB", "深圳发展银行"));
+		bcs.add(new RechargeBankCardImpl("CMBC", "中国民生银行"));
 		return bcs;
 	}
 
@@ -319,7 +319,7 @@ public class RechargeServiceImpl implements RechargeService {
 
 		String hql = "from BankCard where user.id =? and isOpenFastPayment =? and status=?";
 
-		List<BankCard> bankCard= ht.find(hql, new Object[]{userId, true,"passed"});
+		List<BankCard> bankCard= ht.find(hql, new Object[]{userId, true, "passed"});
 
 		if(bankCard != null&& bankCard.size() > 0){
 			return bankCard.get(0).getBankNo();

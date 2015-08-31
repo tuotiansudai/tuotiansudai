@@ -74,11 +74,11 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		TrusteeshipOperation to = null;
 		try{
 			String orderId = generateReplaceCardOrderId(bankCard);
-			ReqData reqData = buildReqData(bankCard, orderId);
+			ReqData reqData = buildReqData(bankCard, orderId, false);
 			log.debug("换卡发送数据:" + reqData);
 			to = createTrusteeshipOperation(orderId, reqData.getUrl(),
 					bankCard.getUser().getId(),
-					UmPayConstants.OperationType.MER_REPLACE_CARD,
+					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
 					GsonUtil.fromMap2Json(reqData.getField()));
 			sendOperation(to, facesContext);
 		}catch (UmPayOperationException e) {
@@ -92,18 +92,28 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		return System.currentTimeMillis() + bankCard.getCardNo();
 	}
 
-	public ReqData buildReqData(BankCard bankCard, String orderId){
+	public ReqData buildReqData(BankCard bankCard, String orderId, boolean isMobileRequest){
 		TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		if(trusteeshipAccount==null){
 			throw new UmPayOperationException("该用户没有实名认证");
 		}
-		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_REPLACE_CARD);
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.MER_REPLACE_CARD);
+
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+
+		if(isMobileRequest) {
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		}else{
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+		}
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-						+ UmPayConstants.OperationType.MER_REPLACE_CARD);
+
+						+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
 		sendMap.put("order_id", orderId);
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		sendMap.put("user_id", trusteeshipAccount.getId());
@@ -111,10 +121,12 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 		sendMap.put("account_name", bankCard.getUser().getRealname());
 		sendMap.put("identity_type", "IDENTITY_CARD");
 		sendMap.put("identity_code", bankCard.getUser().getIdCard());
+
 		try {
 			return Mer2Plat_v40.makeReqDataByPost(sendMap);
 		} catch (ReqDataException e) {
 			throw new UmPayOperationException("加密失败",e);
+
 		}
 	}
 
@@ -131,7 +143,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 					paramMap.get("user_id"));
 			String order_id = paramMap.get("order_id");
 			TrusteeshipOperation to = trusteeshipOperationBO.get(
-					UmPayConstants.OperationType.MER_REPLACE_CARD, order_id, trusteeshipAccount
+					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD, order_id, trusteeshipAccount
 							.getUser().getId(),
 					UmPayConstants.OperationType.UMPAY);
 			String ret_code = paramMap.get("ret_code");
@@ -192,7 +204,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 								ht.update(bankCard);
 							}
-							if (!this.rechargeService.isRealNameBank(paramMap.get("gate_id"))){
+							if (paramMap.get("gate_id").equals("CMB")){
 								String detailTemplate = "用户{0}更换{1}银行卡";
 								try {
 									this.systemBillService.transferOut(0.01,"replace_card", MessageFormat.format(detailTemplate,

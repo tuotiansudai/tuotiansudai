@@ -20,7 +20,9 @@ import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,6 +83,15 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setLoanStatus(loan.getStatus());
         loanDetailResponseDataDto.setLoanStatusDesc(StandardStatus.getMessageByCode(loan.getStatus()));
         loanDetailResponseDataDto.setInvestedCount(loanCalculator.countSuccessInvest(loan.getId()));
+        loanDetailResponseDataDto.setAgent(loan.getUser().getId());
+        loanDetailResponseDataDto.setLoaner(loan.getAgent());
+        loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
+        loanDetailResponseDataDto.setRemainTime(loanCalculator.calculateRemainTimeSeconds(loan.getId()));
+        if(loan.getInvestBeginTime() != null){
+            loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getInvestBeginTime()));
+        }
+        loanDetailResponseDataDto.setInvestBeginSeconds(com.ttsd.api.util.CommonUtils.calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
+
         try {
             loanDetailResponseDataDto.setInvestedMoney("" + ArithUtil.sub(loan.getLoanMoney(), loanCalculator.calculateMoneyNeedRaised(loan.getId())));
         } catch (NoMatchingObjectsException e) {

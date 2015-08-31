@@ -104,7 +104,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             /*investService.create(invest);*/
             //获取invest对象,保存至operation里面然后,等回调成功的时候讲对象取出来然后再进行保存,避免资金冻结情况的发生
             invest = investUnFreeze(invest);
-            Map<String, String> sendMap = assembleSendMap(invest);
+            Map<String, String> sendMap = assembleSendMap(invest, false);
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             // 保存操作记录(将对象直接转换成XML保存至operator里面,投资成功后取出)
             /*String xml = new XStream().toXML(invest);
@@ -148,7 +148,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             investResponseDataDto = new InvestResponseDataDto();
             invest = investUnFreeze(invest);
 
-            Map<String, String> sendMap = assembleSendMap(invest);
+            Map<String, String> sendMap = assembleSendMap(invest, true);
 
             sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
             //sendMap.put("ret_url", "");
@@ -188,10 +188,14 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, String> assembleSendMap(Invest invest) {
+    public Map<String, String> assembleSendMap(Invest invest, boolean isMobileRequest) {
         DecimalFormat currentNumberFormat = new DecimalFormat("#");
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
-        sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        if(isMobileRequest) {
+            sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        }else {
+            sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        }
         sendMap.put("notify_url", UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
         sendMap.put("order_id", invest.getId());
         sendMap.put("mer_date", DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));

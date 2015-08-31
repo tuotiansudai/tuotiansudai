@@ -8,4 +8,8 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
+    AccountModel lockByLoginName(String loginName);
+
+    void update(AccountModel model);
+
 }

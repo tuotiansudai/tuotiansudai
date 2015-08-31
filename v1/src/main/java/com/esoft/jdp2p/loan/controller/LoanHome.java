@@ -222,6 +222,12 @@ public class LoanHome extends EntityHome<Loan> implements Serializable {
 	 * 更新借款，只能更新不影响流程的字段
 	 */
 	public String update() {
+		if(getInstance().getInvestBeginTime()!=null
+				&& getInstance().getExpectTime()!=null
+				&& getInstance().getInvestBeginTime().after(getInstance().getExpectTime())){
+			FacesUtil.addInfoMessage("起投时间不能晚于预计执行时间");
+			return null;
+		}
 		loanService.update(getInstance());
 		FacesUtil.addInfoMessage("项目修改成功！");
 		return FacesUtil.redirect(loanListUrl);

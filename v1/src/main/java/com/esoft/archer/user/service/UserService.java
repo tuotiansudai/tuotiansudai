@@ -6,9 +6,13 @@ import com.esoft.archer.common.exception.InputRuleMatchingException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.UserConstants;
 import com.esoft.archer.user.exception.*;
+import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.archer.user.model.User;
 
 import java.util.Date;
+
+import java.util.List;
+
 
 /**
  * Description: 用户service<br/>
@@ -458,5 +462,21 @@ public interface UserService {
 
 	public boolean idCardIsExists(String idCard);
 
+	public List<User> searchUserByUserName(String userName);
 
+	/**
+	 * 判断用户是否存在非直接的推荐关系
+	 * @param userId
+	 * @param referrerId
+	 * @return
+	 */
+	public boolean hasDiffReferrerRelation(String userId, String referrerId);
+
+	/**
+	 * 修改用户的推荐人链
+	 * @param userId 直接相关的用户Id
+	 * @param oldReferrer 修改前的推荐人
+	 * @param newReferrer 修改后的推荐人
+	 */
+	public void updateUserReferrerRelation(String userId, String oldReferrer, String newReferrer);
 }
