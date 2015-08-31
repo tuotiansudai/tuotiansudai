@@ -138,6 +138,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         bankCard.setStatus("uncheck");
         bankCard.setTime(new Date());
         bankCard.setIsOpenFastPayment(false);
+        save(bankCard);
 
         ReqData reqData = umPayReplaceBankCardOperation.createOperation_mobile(bankCard);
         BankCardReplaceResponseDataDto responseDataDto = new BankCardReplaceResponseDataDto();
