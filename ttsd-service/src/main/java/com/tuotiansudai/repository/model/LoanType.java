@@ -34,6 +34,16 @@ public enum LoanType {
         this.description = description;
     }
 
+    public static LoanType getLoantype(String id){
+        for(LoanType loanType:LoanType.values()){
+            if (loanType.id.equalsIgnoreCase(id)){
+                return loanType;
+            }
+        }
+        return null;
+
+    }
+
     public String getId() {
         return id;
     }
