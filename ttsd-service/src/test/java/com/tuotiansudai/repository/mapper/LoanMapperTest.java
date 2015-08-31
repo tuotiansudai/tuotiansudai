@@ -64,7 +64,7 @@ public class LoanMapperTest {
 
     @Test
     public void updateLoanTest(){
-        long id = 192832676724736l;
+        long id = idGenerator.generate();
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
