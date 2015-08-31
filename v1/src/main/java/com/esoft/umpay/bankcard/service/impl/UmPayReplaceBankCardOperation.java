@@ -91,6 +91,8 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 
 	@Transactional(rollbackFor = Exception.class)
 	public ReqData createOperation_mobile(BankCard bankCard) throws ReqDataException{
+		// 与桌面端不同，桌面端在UmPayBankCardHome里，保存了此记录，移动端将保存逻辑放到这里了。
+		ht.save(bankCard);
         String orderId = generateReplaceCardOrderId(bankCard);
         ReqData reqData = buildReqData(bankCard, orderId, true);
         log.debug("换卡发送数据:" + reqData);
