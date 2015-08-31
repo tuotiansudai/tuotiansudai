@@ -2,6 +2,8 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertNull;
@@ -185,5 +189,12 @@ public class LoanServiceTest {
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
         return loanService.createLoan(loanDto);
+    }
+
+    @Test
+    public void findLoanListServiceTest() {
+        List<LoanListDto> loanListDtos = loanService.findLoanList("complete", "", "", "", "", "0");
+        int loanListCount = loanService.findLoanListCount("complete","","","","");
+        assertThat(loanListDtos.size(), is(loanListCount));
     }
 }

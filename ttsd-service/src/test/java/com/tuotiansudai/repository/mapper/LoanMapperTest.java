@@ -16,6 +16,8 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -61,4 +63,12 @@ public class LoanMapperTest {
         loanMapper.create(loanModel);
         assertNotNull(loanMapper.findById(id));
     }
+
+    @Test
+    public void findLoanListTest() {
+        List<LoanModel> loanModels = loanMapper.findLoanList("complete","","","","",0);
+        int loanListCount = loanMapper.findLoanListCount("complete","","","","");
+        assertThat(loanModels.size(), is(loanListCount));
+    }
+
 }

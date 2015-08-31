@@ -1,10 +1,11 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -149,5 +151,31 @@ public class LoanServiceImpl implements LoanService {
             return accountModel.getPayUserId();
         }
         return null;
+    }
+
+    @Override
+    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo) {
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,Integer.parseInt(currentPageNo));
+        List<LoanListDto> loanListDtos = Lists.newArrayList();
+        for (int i=0;i<loanModels.size();i++) {
+            LoanListDto loanListDto = new LoanListDto();
+            loanListDto.setId(loanModels.get(i).getId());
+            loanListDto.setName(loanModels.get(i).getName());
+            loanListDto.setType(loanModels.get(i).getType());
+            loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
+            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
+            loanListDto.setPeriods(loanModels.get(i).getPeriods());
+            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
+            loanListDto.setActivityRate(rateStrDivideOneHundred(String.valueOf(loanModels.get(i).getActivityRate())));
+            loanListDto.setStatus(loanModels.get(i).getStatus());
+            loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
+            loanListDtos.add(loanListDto);
+        }
+        return loanListDtos;
+    }
+
+    @Override
+    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime) {
+        return loanMapper.findLoanListCount(status,loanId,loanName,startTime,endTime);
     }
 }

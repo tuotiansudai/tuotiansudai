@@ -44,4 +44,9 @@ public interface LoanService {
      * @return
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
+
+    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo);
+
+    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime);
+
 }
