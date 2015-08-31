@@ -35,7 +35,7 @@ CREATE TABLE ump_operations.`mer_bind_project_response` (
   `response_data`                 TEXT            NOT NULL,/***请求数据***/
   `response_time`                 DATETIME        NOT NULL,/***请求时间***/
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_RESPONSE_REQUEST_ID_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES ump_operations.`mer_bind_project_request` (`id`)
+  CONSTRAINT FK_MER_BIND_PROJECT_RESPONSE_REQUEST_ID_REF_REQUEST_ID FOREIGN KEY (`request_id`) REFERENCES ump_operations.`mer_bind_project_request` (`id`)
 )
 ENGINE=InnoDB
 AUTO_INCREMENT = 100001

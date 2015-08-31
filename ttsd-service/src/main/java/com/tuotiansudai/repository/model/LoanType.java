@@ -1,17 +1,11 @@
 package com.tuotiansudai.repository.model;
 
-/**
- * Created by tuotian on 15/8/18.
- */
 public enum LoanType {
-    /***默认值***/
-    LOAN_TYPE_1("loan_type_1","interest_begin_on_invest","day","先付利息后还本金，按天计息，即投即生息","1","month","rfcl","先付利息后还本金，按天计息，即投即生息"),
-    LOAN_TYPE_2("loan_type_2","interest_begin_on_loan","month","等额本息，按月计息，按月还款，放款后生息","1","month","cpm","等额本息，按月计息，按月还款，放款后生息"),
-    LOAN_TYPE_3("loan_type_3","interest_begin_on_invest","day","付利息后还本金，按天计息，放款后生息","1","month","rfcl","付利息后还本金，按天计息，放款后生息"),
-    LOAN_TYPE_4("loan_type_4","interest_begin_on_invest","day","到期还本付息，按天计息，放款后生息","1","day","rlio","到期还本付息，按天计息，放款后生息"),
-    LOAN_TYPE_5("loan_type_5","interest_begin_on_invest","day","到期还本付息，按天计息，即投即生息","1","day","rlio","到期还本付息，按天计息，即投即生息");
+    LOAN_TYPE_1("interest_begin_on_invest","day","先付利息后还本金，按天计息，即投即生息","1","month","rfcl","先付利息后还本金，按天计息，即投即生息"),
+    LOAN_TYPE_2("interest_begin_on_invest","day","付利息后还本金，按天计息，放款后生息","1","month","rfcl","付利息后还本金，按天计息，放款后生息"),
+    LOAN_TYPE_3("interest_begin_on_invest","day","到期还本付息，按天计息，放款后生息","1","day","rlio","到期还本付息，按天计息，放款后生息"),
+    LOAN_TYPE_4("interest_begin_on_invest","day","到期还本付息，按天计息，即投即生息","1","day","rlio","到期还本付息，按天计息，即投即生息");
 
-    private String id;
     private String interestPoint;
     private String interestType;
     private String name;
@@ -20,11 +14,10 @@ public enum LoanType {
     private String repayType;
     private String description;
 
-    LoanType(String id,String interestPoint,
+    LoanType(String interestPoint,
              String interestType,String name,
              String repayTimePeriod,String repayTimeUnit,
              String repayType,String description){
-        this.id = id;
         this.interestPoint = interestPoint;
         this.interestType = interestType;
         this.name = name;
@@ -33,47 +26,59 @@ public enum LoanType {
         this.repayType = repayType;
         this.description = description;
     }
-
-    public static LoanType getLoantype(String id){
-        for(LoanType loanType:LoanType.values()){
-            if (loanType.id.equalsIgnoreCase(id)){
-                return loanType;
-            }
-        }
-        return null;
-
-    }
-    
-
-    public String getId() {
-        return id;
-    }
-
     public String getInterestPoint() {
         return interestPoint;
+    }
+
+    public void setInterestPoint(String interestPoint) {
+        this.interestPoint = interestPoint;
     }
 
     public String getInterestType() {
         return interestType;
     }
 
+    public void setInterestType(String interestType) {
+        this.interestType = interestType;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getRepayTimePeriod() {
         return repayTimePeriod;
     }
 
+    public void setRepayTimePeriod(String repayTimePeriod) {
+        this.repayTimePeriod = repayTimePeriod;
+    }
+
     public String getRepayTimeUnit() {
         return repayTimeUnit;
+    }
+
+    public void setRepayTimeUnit(String repayTimeUnit) {
+        this.repayTimeUnit = repayTimeUnit;
     }
 
     public String getRepayType() {
         return repayType;
     }
 
+    public void setRepayType(String repayType) {
+        this.repayType = repayType;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
