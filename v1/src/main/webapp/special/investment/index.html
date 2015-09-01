@@ -12,8 +12,11 @@
             margin: 0px;
             padding: 0px;
         }
-        strong{
-            font-weight: bold!important;}
+
+        strong {
+            font-weight: bold !important;
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-size: 100%;
         }
@@ -247,6 +250,71 @@
         .hidden {
             display: none;
         }
+
+        .pic-list {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .pic-list li {
+            width: 150px;
+            height: 100px;
+            float: left;
+            margin-right: 15px;
+        }
+
+        .pic-list li img {
+            width: 150px;
+            height: 100px;
+        }
+
+        .layer-box {
+            display: none;
+        }
+
+        .layer-box .layer-wrapper {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(0, 0, 0, .5);
+            z-index: 888;
+        }
+
+        .layer-box .content {
+            width: 760px;
+            height: 450px;
+            position: fixed;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 900;
+            left: 50%;
+            top: 50%;
+            margin: -275px 0 0 -380px;
+        }
+
+        .btn-next,
+        .btn-prev {
+            width: 53px;
+            height: 53px;
+            position: absolute;
+            background: url("images/pic-btn.png") no-repeat;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        .btn-next {
+            right: 40px;
+            top: 220px;
+            background-position: -79px 0;
+        }
+
+        .btn-prev {
+            left: 40px;
+            top: 220px;
+
+        }
     </style>
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/index.js"></script>
@@ -327,6 +395,7 @@
         <p>
             <strong>活动规则：</strong>自9月1日00:00起，用户只要在拓天速贷投资任意标的物，均会计算年化投资收益金额，并记录在排行榜，用户可以根据自己投资收益金额，查看排行榜前100名投资金额收益，寻找自己排名情况，最终奖励发放将根据排行榜真实显示为准，用户投资金额不限，标的物类型不限，并且本次活动跟其他活动可重叠计算，互不冲突，一份投资多份奖励。
         </p>
+
         <p><strong>区域划分：</strong>本次用户区域划分，以用户注册手机号归属地，作为用户区域划分规则。</p>
 
     </div>
@@ -334,25 +403,53 @@
         <h2><strong>活动奖励</strong></h2>
 
         <p>全国排行榜第一名：北京某地房产一套；</p>
-
+        <ul class="house-list pic-list">
+            <li><img src="images/house-1.jpg" alt=""/></li>
+            <li><img src="images/house-2.jpg" alt=""/></li>
+            <li><img src="images/house-3.jpg" alt=""/></li>
+            <li><img src="images/house-4.jpg" alt=""/></li>
+            <li><img src="images/house-5.jpg" alt=""/></li>
+        </ul>
         <p>各大区排行榜第一名：价值30万元高端汽车一辆；</p>
-
+        <ul class="cars-list pic-list">
+            <li><img src="images/cars-1.jpg" alt=""/></li>
+            <li><img src="images/cars-2.jpg" alt=""/></li>
+            <li><img src="images/cars-3.jpg" alt=""/></li>
+            <!--<li><img src="images/cars-4.jpg" alt=""/></li>-->
+            <!--<li><img src="images/cars-5.jpg" alt=""/></li>-->
+        </ul>
         <p>得奖用户只能领取一份奖励，全国排名第一名，其大区第二名将获取车辆奖励。</p>
 
         <p><strong>奖励发放：</strong>预计在12月5日大会当天现场发放，届时将有800位用户共同见证，并有国家级公正人员现场进行交割，保证所有奖励的真实有效。<strong>奖励较大用户需自己缴纳个人所得税及其他税款，拓天速贷不承担任何奖励税点。</strong>
         </p>
+
         <p><strong>参会人员标准：</strong>个大区投资收益排名前100位可收到邀约，并参与大会。</p>
+
         <p><strong>颁奖大会流程：</strong></p>
-            <p>12月1日-12月3日：针对获奖用户，进行电话通知、确认、安排行程、住宿等各项事宜；</p>
+
+        <p>12月1日-12月3日：针对获奖用户，进行电话通知、确认、安排行程、住宿等各项事宜；</p>
+
         <p>12月4日：用户抵京；</p>
+
         <p>12月5日：颁奖大会；</p>
+
         <p>12月6日：用户离京。</p>
+
         <p><strong>注：</strong><br/>
             活动邀请为单人邀请，如用户想携带家人或朋友，费用需自行承担，并不能携带他人参与外出游玩活动，如需携带则只能自行活动；
             如遇到用户临时不能前往，则视为自动放弃本次活动奖励；
             活动外出期间如遇到天气因素不能外出，则会另行安排室内活动；
             本次活动用户往返交通工具以飞机为主，北京2小时以内车程以高铁为主，用户需自行前往酒店入住。
         </p>
+    </div>
+
+</div>
+<div class="layer-box">
+    <div class="layer-wrapper"></div>
+    <div class="content">
+        <a class="btn-next" href="###"></a>
+        <a class="btn-prev" href="###"></a>
+        <img src="images/house-1.jpg" alt="" width="760" height="450"/>
     </div>
 </div>
 </body>

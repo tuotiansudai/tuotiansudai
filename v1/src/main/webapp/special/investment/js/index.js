@@ -99,4 +99,24 @@ $(function () {
         $(this).closest('tr').siblings('.hidden').removeClass('hidden');
         $(this).closest('tr').remove();
     });
+
+
+    //big picture
+    $('.house-list li').click(function(){
+        var _img = $(this).find('img').attr('src');
+       $(this).addClass('on').siblings().removeClass('on');
+        $('.layer-box .content img').attr('src',_img);
+        $('.layer-box').show();
+
+        return false;
+    });
+    $('.btn-next').click(function(){
+        return false;
+    });
+    $('.btn-prev').click(function(){
+        return false;
+    });
+    $('body').click(function(){
+        $('.layer-box').hide();
+    })
 })
