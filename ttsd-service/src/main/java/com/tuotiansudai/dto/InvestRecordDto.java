@@ -1,9 +1,11 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.InvestSource;
+
 public class InvestRecordDto {
     private String loginName;
     private String amount;
-    private String source;
+    private InvestSource source;
     private String expectedRate;
     private String successTime;
 
@@ -23,11 +25,11 @@ public class InvestRecordDto {
         this.amount = amount;
     }
 
-    public String getSource() {
+    public InvestSource getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(InvestSource source) {
         this.source = source;
     }
 
