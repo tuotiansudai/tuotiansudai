@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BankCardMapper">
+
+    <resultMap id="BankCardResultMap" type="BankCardModel">
+        <id column="id" property="id"></id>
+        <result column="bank_number" property="bankNumber"></result>
+        <result column="card_number" property="cardNumber"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="status" property="status"></result>
+        <result column="login_name" property="loginName"></result>
+        <result column="is_open_fastPayment" property="isOpenFastPayment"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        insert into bank_card (id, bank_number, card_number, created_time, status, login_name, is_open_fastPayment)
+        value(#{id}, #{bankNumber}, #{cardNumber}, #{createdTime}, #{status}, #{loginName}, #{isOpenFastPayment})
+    </insert>
+
+    <select id="findById" parameterType="java.lang.Long" resultMap="BankCardResultMap">
+        select * from bank_card where id = #{id}
+    </select>
+
+    <update id="update" parameterType="map">
+        update bank_card set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateBankCard" parameterType="com.tuotiansudai.repository.model.BankCardModel">
+        update bank_card set bank_number=#{bankNumber},card_number=#{cardNumber}, status = #{status},
+         login_name=#{loginName},is_open_fastPayment=#{isOpenFastPayment} where id = #{id}
+    </update>
+
+</mapper>
