@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
 import org.apache.log4j.Logger;
@@ -25,12 +26,22 @@ public class PayCallbackController {
     private RechargeService rechargeService;
 
     @Autowired
+    private BindBankCardService bindBankCardService;
+    @Autowired
     private WithdrawService withdrawService;
+
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.rechargeService.rechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/mer_bind_card_notify", method = RequestMethod.GET)
+    public ModelAndView bindBankCard(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -47,9 +58,10 @@ public class PayCallbackController {
         while (parameterNames.hasMoreElements()) {
             String name = parameterNames.nextElement();
             String parameter = request.getParameter(name);
-//            parameter = new String(parameter.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             paramsMap.put(name, parameter);
         }
         return paramsMap;
     }
+
+
 }

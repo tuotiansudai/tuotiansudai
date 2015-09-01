@@ -20,7 +20,7 @@
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time, success_time
     </sql>
 
-    <insert id="create" parameterType="investModel">
+    <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
         value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime}, #{successTime})
     </insert>
@@ -74,6 +74,5 @@
         and status = ${status}
         limit (#{index} - 1) * #{pageSize},#{pageSize}
     </select>
-
 
 </mapper>

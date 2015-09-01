@@ -19,6 +19,8 @@ public class CreditorRepayPlan implements Serializable {
     private String userId;
     private String status;
 
+    private String actualDay;
+
     public String getRepayTime() {
         return repayTime;
     }
@@ -81,5 +83,13 @@ public class CreditorRepayPlan implements Serializable {
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
+    }
+
+    public String getActualDay() {
+        return actualDay;
+    }
+
+    public void setActualDay(String actualDay) {
+        this.actualDay = actualDay;
     }
 }

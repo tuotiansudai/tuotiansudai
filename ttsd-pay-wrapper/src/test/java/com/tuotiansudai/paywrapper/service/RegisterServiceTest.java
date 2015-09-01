@@ -11,8 +11,11 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.impl.RegisterServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +48,9 @@ public class RegisterServiceTest {
     @Mock
     private AccountMapper accountMapper;
 
+    @Mock
+    private UserRoleMapper userRoleMapper;
+
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -72,6 +78,9 @@ public class RegisterServiceTest {
         ArgumentCaptor<AccountModel> accountModelArgumentCaptor = ArgumentCaptor.forClass(AccountModel.class);
         verify(accountMapper, times(1)).create(accountModelArgumentCaptor.capture());
         AccountModel accountModel = accountModelArgumentCaptor.getValue();
+        ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
+        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.INVESTOR));
         assertThat(accountModel.getLoginName(), is("loginName"));
         assertThat(accountModel.getUserName(), is("userName"));
         assertThat(accountModel.getIdentityNumber(), is("identityNumber"));

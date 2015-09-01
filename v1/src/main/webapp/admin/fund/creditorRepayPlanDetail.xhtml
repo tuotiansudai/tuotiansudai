@@ -28,7 +28,7 @@
 
                     <p:column style="text-align:center;">
                         <f:facet name="header">
-                            <h:outputText value="还款日期"></h:outputText>
+                            <h:outputText value="应还日期"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{creditorRepayPlan.repayDay}"></h:outputText>
                     </p:column>
@@ -59,6 +59,13 @@
                             <h:outputText value="还款状态"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{creditorRepayPlan.status}"></h:outputText>
+                    </p:column>
+
+                    <p:column style="text-align:center;">
+                        <f:facet name="header">
+                            <h:outputText value="还款日期"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{creditorRepayPlan.actualDay}"></h:outputText>
                     </p:column>
 
                 </p:dataTable>

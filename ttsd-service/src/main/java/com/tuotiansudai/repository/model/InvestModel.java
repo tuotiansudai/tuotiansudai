@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.utils.AmountUtil;
-
 import java.util.Date;
 
 public class InvestModel {

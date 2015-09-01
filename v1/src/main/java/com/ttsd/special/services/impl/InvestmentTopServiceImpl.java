@@ -27,7 +27,7 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
     /**
      * 缓存有效期（毫秒）  默认1小时
      */
-    private static final int INVEST_TOP_SPECIAL_CACHE_EXPIRE = 1000*60;//*60;
+    private static final int INVEST_TOP_SPECIAL_CACHE_EXPIRE = 1000*60*60;
     /**
      * 排行榜的最大容量
      */
@@ -118,13 +118,17 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
         }
 
         for(InvestTopItem item:itemList){
-            if(areaInvestUserCountMap.get(ChinaArea.CHINA) < limit){
+            Integer areaCount = areaInvestUserCountMap.get(ChinaArea.CHINA);
+            if(areaCount < limit){
                 areaInvestTopMap.get(ChinaArea.CHINA).add(item);
+                areaInvestUserCountMap.put(ChinaArea.CHINA, areaCount+1);
             }
             ChinaArea area = mobileLocationService.getAreaByPhoneNumber(item.getPhoneNumber());
             if(area != ChinaArea.CHINA){
-                if(areaInvestUserCountMap.get(area) < limit){
+                areaCount = areaInvestUserCountMap.get(area);
+                if(areaCount < limit){
                     areaInvestTopMap.get(area).add(item);
+                    areaInvestUserCountMap.put(area, areaCount+1);
                 }
             }
         }
