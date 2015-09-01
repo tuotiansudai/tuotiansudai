@@ -138,42 +138,52 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
     private static Date[] buildStartAndEndTime(InvestTopStatPeriod period){
         Date[] dates = new Date[2];
 
+        // 初始化日期
         Calendar cal = Calendar.getInstance();
 
+        // 获得现在的年月日
+        int year = 2015;
+        int month = cal.get(Calendar.MONTH);
+        int weekofyear = cal.get(Calendar.WEEK_OF_YEAR);
+
+        // 去掉时分秒
         cal.set(Calendar.HOUR_OF_DAY,0);
         cal.set(Calendar.MINUTE,0);
         cal.set(Calendar.SECOND,0);
         cal.set(Calendar.MILLISECOND,0);
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int weekofyear = cal.get(Calendar.WEEK_OF_YEAR);
 
-        if(period == InvestTopStatPeriod.Week){
-            cal.setWeekDate(year,weekofyear, 2);
-            dates[0] = cal.getTime();
-            cal.setWeekDate(year,weekofyear+1, 2);
-            dates[1] = cal.getTime();
-        }
+        // 设置全局时间范围（2015/9/1-2015/11/30）
+        cal.set(year,8,1);  // 2015-9-1  java中month是从0开始的
+        Date beginDate = cal.getTime();
+        cal.set(year,11,1); // 2015-12-1
+        Date endDate = cal.getTime();
 
-        if(period == InvestTopStatPeriod.Month){
-            cal.set(year, month, 1);
-            dates[0] = cal.getTime();
-            cal.set(year, month + 1, 1);
-            dates[1] = cal.getTime();
-        }
+        // 如果是季的话，则计算活动总时间
+        if(period == InvestTopStatPeriod.Quarter) {
+            dates[0] = beginDate;
+            dates[1] = endDate;
+        }else{
 
-        if(period == InvestTopStatPeriod.Quarter){
-            cal.set(year, (month/3)*3, 1);
-            dates[0] = cal.getTime();
-            cal.add(Calendar.MONTH, 3);
-            dates[1] = cal.getTime();
-        }
+            if(period == InvestTopStatPeriod.Week){
+                cal.setWeekDate(year, weekofyear, 2); // 2表示周一
+                dates[0] = cal.getTime();
+                cal.setWeekDate(year, weekofyear + 1, 2);
+                dates[1] = cal.getTime();
+            }
 
-        if(period == InvestTopStatPeriod.Year){
-            cal.set(year, 0, 1);
-            dates[0] = cal.getTime();
-            cal.set(year+1, 0, 1);
-            dates[1] = cal.getTime();
+            if(period == InvestTopStatPeriod.Month){
+                cal.set(year, month, 1);
+                dates[0] = cal.getTime();
+                cal.set(year, month + 1, 1);
+                dates[1] = cal.getTime();
+            }
+
+            if(beginDate.after(dates[0])){
+                dates[0] = beginDate;
+            }
+            if(endDate.before(dates[1])){
+                dates[1] = endDate;
+            }
         }
 
         return dates;
