@@ -14,7 +14,8 @@
         <result property="retUrl" column="ret_url"/>
         <result property="notifyUrl" column="notify_url"/>
         <result property="orderId" column="order_id"/>
-        <result property="loanId" column="loan_id"/>
+        <result property="merDate" column="mer_date"/>
+        <result property="projectId" column="project_id"/>
         <result property="userId" column="user_id"/>
         <result property="amount" column="amount"/>
         <result property="requestTime" column="request_time"/>
@@ -27,8 +28,8 @@
     </select>
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsModel">
-        insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, loan_id, user_id, amount, request_time, request_url, request_data)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{loanId}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
+        insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, project_id, user_id, amount, request_time, request_url, request_data)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{projectId}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
     </insert>
 
 </mapper>

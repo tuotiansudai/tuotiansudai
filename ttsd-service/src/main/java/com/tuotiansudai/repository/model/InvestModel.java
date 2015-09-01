@@ -43,10 +43,15 @@ public class InvestModel {
     private Date successTime;
 
 
+    public InvestModel(){
+
+    }
+
     public InvestModel(InvestDto dto){
         this.loginName = dto.getLoginName();
         this.amount = AmountUtil.convertStringToCent(dto.getAmount());
         this.loanId = Long.parseLong(dto.getLoanId());
+        this.source = dto.getInvestSource();
     }
 
     public long getId() {

@@ -38,6 +38,13 @@
         where id = #{id}
     </update>
 
+    <update id="updateStatus" parameterType="map">
+        update invest SET
+        status = #{status},
+        success_time = #{successTime}
+        where id = #{id}
+    </update>
+
     <select id="findById" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest

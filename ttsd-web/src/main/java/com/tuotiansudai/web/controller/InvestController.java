@@ -31,7 +31,8 @@ public class InvestController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
-        BaseDto<PayFormDataDto> baseDto = investService.invest(investDto.getLoanId(), investDto.getAmount(), InvestSource.PC);
+        investDto.setInvestSource(InvestSource.WEB);
+        BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
 }

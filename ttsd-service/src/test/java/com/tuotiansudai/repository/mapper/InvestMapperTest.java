@@ -80,6 +80,21 @@ public class InvestMapperTest {
     }
 
     @Test
+    public void shouldUpdateInvestStatus(){
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setStatus(InvestStatus.WAITING);
+        investMapper.create(investModel);
+
+        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS, new Date());
+        InvestModel investModel1 = investMapper.findById(investModel.getId());
+        assertEquals(investModel1.getStatus(), InvestStatus.SUCCESS);
+
+        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL, new Date());
+        InvestModel investModel2 = investMapper.findById(investModel.getId());
+        assertEquals(investModel1.getStatus(), InvestStatus.FAIL);
+    }
+
+    @Test
     public void shouldFindByCorrectSortStyle(){
         createTestInvests();
 

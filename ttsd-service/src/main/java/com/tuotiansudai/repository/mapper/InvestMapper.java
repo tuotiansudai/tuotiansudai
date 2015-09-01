@@ -1,29 +1,22 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestModel;
-<<<<<<< HEAD
 import com.tuotiansudai.repository.model.InvestStatus;
-=======
->>>>>>> new_version_master
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InvestMapper {
     /**
-<<<<<<< HEAD
      * 创建投资记录
-=======
-     * 创建投资
->>>>>>> new_version_master
      *
      * @param investModel
      */
     void create(InvestModel investModel);
 
     /**
-<<<<<<< HEAD
      * 修改投资记录
      *
      * @param investModel
@@ -31,8 +24,16 @@ public interface InvestMapper {
     void update(InvestModel investModel);
 
     /**
-=======
->>>>>>> new_version_master
+     * 更新投资记录的状态
+     * @param id
+     * @param status
+     * @param successTime
+     */
+    void updateStatus(@Param(value = "id") long id,
+                      @Param(value = "status") InvestStatus status,
+                      @Param(value = "successTime") Date successTime);
+
+    /**
      * 根据ID查找对应的投资
      *
      * @param id
@@ -57,7 +58,6 @@ public interface InvestMapper {
      * @param loanId
      * @return
      */
-<<<<<<< HEAD
     List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") long loanId,
                                               @Param(value = "sortStyle") SortStyle sortStyle);
 
@@ -74,9 +74,4 @@ public interface InvestMapper {
                                  @Param(value = "pageSize") Integer pageSize,
                                  @Param(value = "status") InvestStatus status);
 
-
-=======
-    List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") String loanId,
-                                              @Param(value = "sortStyle") SortStyle sortStyle);
->>>>>>> new_version_master
 }
