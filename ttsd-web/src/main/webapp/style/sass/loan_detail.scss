@@ -1,0 +1,137 @@
+.main {
+  width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  & .item-block {
+    display: block;
+    background: #fff;
+    &.bg-loan {
+      border: 1px solid #ccc;
+      overflow: hidden;
+      margin: 20px 0 0;
+    }
+    & .news-share {
+      width: 620px;
+      float: left;
+      border-right: 1px solid #ccc;
+      & .hd {
+        margin: 0 10px;
+        position: relative;
+        line-height: 55px;
+        padding-left: 60px;
+        border-bottom: 2px solid #ccc;
+        font-size: 14px;
+        & .hot {
+          width: 55px;
+          height: 55px;
+          position: absolute;
+          left: -10px;
+          top: 0;
+          z-index: 99;
+          background: url("../../images/loan/hot.png") no-repeat;
+        }
+      }
+      & .chart-box {
+        width: 200px;
+        height: 200px;
+        margin: 20px 60px;
+        border-collapse: collapse;
+        border-radius: 50%;
+        border: 1px solid #f24712;
+        float: left;
+        display: inline-block;
+        & .box {
+          width: 180px;
+          height: 180px;
+          position: relative;
+          margin: 10px;
+          & .sub-percent {
+            color: #f24712;
+            font-size: 12px;
+            right: 23px;
+            top: 76px;
+            position: absolute;
+            z-index: 33;
+          }
+          & .title {
+            color: #000;
+            font-size: 16px;
+            right: 0;
+            width: 180px;
+            top: 120px;
+            position: absolute;
+            z-index: 33;
+            text-align: center;
+          }
+          & div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            height: 160px;
+            width: 160px;
+            -webkit-transition: all .2s ease-in-out;
+            -moz-transition: all .2s ease-in-out;
+          }
+          & .bg {
+            border: #ccc 10px solid
+          }
+          & .bg2 {
+            border: #ccc 10px solid;
+            clip: rect(0, 90px, 180px, 0);
+          }
+          & .rount {
+            border: #f24712 10px solid;
+            clip: rect(0, 90px, 180px, 0);
+            -webkit-transform: rotate(0deg);
+          }
+          & .rount2 {
+            border: #f24712 10px solid;
+            clip: rect(0, 180px, 180px, 90px);
+            -webkit-transform: rotate(0deg);
+            display: none
+          }
+          & .num {
+            font: bold 18px/180px tahoma;
+            text-align: center;
+            color: #f24712;
+            top: 10px;
+            left: 10px;
+            z-index: 9;
+          }
+
+        }
+      }
+      & .chart-info{
+        width: 290px;
+        float: right;
+        color: #a4a4a4;
+        & .point{
+          color: #000;
+        }
+        & p{
+          line-height: 26px;
+          padding: 8px 0 0;
+        }
+        & a{
+          margin-top: 10px;
+          color: #f24712;
+          display: block;
+        }
+      }
+    }
+
+    & .account-info {
+      width: 376px;
+      float: left;
+      & .ttsd-tips{
+        text-align: center;
+        font-size: 14px;
+        color: #949494;
+        display: block;
+        line-height: 55px;
+      }
+    }
+  }
+
+}
