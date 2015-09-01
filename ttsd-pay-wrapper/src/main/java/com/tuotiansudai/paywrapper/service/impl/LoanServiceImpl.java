@@ -6,8 +6,11 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -37,7 +41,16 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private UserMapper userMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = noticeUMPCreateLoan(loanDto);
+        if (baseDto.getData().getStatus()){
+            baseDto = noticeUMPUpdateLoan(loanDto);
+        }
+        return baseDto;
+    }
+
+    private BaseDto<PayDataDto> noticeUMPCreateLoan(LoanDto loanDto){
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         long loanerId = userMapper.findByLoginName(loanDto.getLoanerLoginName()).getId();
@@ -53,7 +66,6 @@ public class LoanServiceImpl implements LoanService {
                     MerBindProjectResponseModel.class);
             if (responseModel.isSuccess()) {
                 LoanModel loanModel = new LoanModel(loanDto);
-                loanModel.setStatus(LoanStatus.PREHEAT);
                 loanMapper.update(loanModel);
                 if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
                     loanTitleRelationMapper.delete(loanDto.getId());
@@ -62,6 +74,36 @@ public class LoanServiceImpl implements LoanService {
                 if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
                     loanTitleRelationMapper.create(loanTitleRelationModels);
                 }
+            }
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            payDataDto.setStatus(false);
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    private BaseDto<PayDataDto> noticeUMPUpdateLoan(LoanDto loanDto){
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(
+                AmountUtil.convertStringToCent(loanDto.getLoanAmount()),
+                loanDto.getId(),
+                loanDto.getProjectName(),
+                new SimpleDateFormat("yyyyMMdd").format(loanDto.getFundraisingEndTime())
+        );
+        try {
+            MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
+                    merUpdateProjectRequestModel,
+                    MerUpdateProjectResponseModel.class);
+            if (responseModel.isSuccess()) {
+                LoanModel loanModel = new LoanModel();
+                loanModel.setId(loanDto.getId());
+                loanModel.setStatus(LoanStatus.PREHEAT);
+                loanMapper.update(loanModel);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());

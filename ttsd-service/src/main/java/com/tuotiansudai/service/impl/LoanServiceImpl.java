@@ -39,8 +39,8 @@ public class LoanServiceImpl implements LoanService {
     private PayWrapperClient payWrapperClient;
 
     /**
-     * @function 创建标题
      * @param loanTitleDto
+     * @function 创建标题
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -55,9 +55,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @function 获取成功注册过资金托管账户的用户登录名
      * @param loginName
      * @return
+     * @function 获取成功注册过资金托管账户的用户登录名
      */
     @Override
     public List<String> getLoginNames(String loginName) {
@@ -65,16 +65,16 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @function 获取所有标题
      * @return
+     * @function 获取所有标题
      */
     public List<LoanTitleModel> findAllTitles() {
         return loanTitleMapper.findAll();
     }
 
     /**
-     * @function 获取所有标的类型
      * @return List<LoanType>
+     * @function 获取所有标的类型
      */
     @Override
     public List<LoanType> getLoanType() {
@@ -86,8 +86,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @function 获取所有活动类型
      * @return List<ActivityType>
+     * @function 获取所有活动类型
      */
     @Override
     public List<ActivityType> getActivityType() {
@@ -99,9 +99,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @function 创建标的
      * @param loanDto
      * @return BaseDto<PayDataDto>
+     * @function 创建标的
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -121,7 +121,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (maxInvestAmount > loanAmount){
+        if (maxInvestAmount > loanAmount) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
@@ -172,21 +172,21 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
-        if (baseDto.getData().getStatus()) {
+        if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        if (loanMapper.findById(loanDto.getId()) == null){
+        if (loanMapper.findById(loanDto.getId()) == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        if (LoanStatus.WAITING_VERIFY.name().equals(loanDto.getStatus())){
+        if (LoanStatus.WAITING_VERIFY == loanDto.getStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-        }else if (LoanStatus.VERIFY_FAIL.name().equals(loanDto.getStatus())){
+        } else if (LoanStatus.VERIFY_FAIL == loanDto.getStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-        }else if (LoanStatus.PREHEAT.name().equals(loanDto.getStatus())){
+        } else if (LoanStatus.PREHEAT == loanDto.getStatus()) {
             payWrapperClient.loan(loanDto);
-        }else {
+        } else {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
@@ -204,7 +204,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public boolean loanIsExist(long loanId) {
-        if (findLoanById(loanId) != null){
+        if (findLoanById(loanId) != null) {
             return true;
         }
         return false;
@@ -253,15 +253,15 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    private void updateLoanAndLoanTitleRelation(LoanDto loanDto){
+    private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getStatus());
         loanMapper.update(loanModel);
-        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
+        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0) {
             loanTitleRelationMapper.delete(loanDto.getId());
         }
         List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
-        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
+        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0) {
             loanTitleRelationMapper.create(loanTitleRelationModels);
         }
     }

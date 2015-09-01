@@ -14,16 +14,14 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
     public MerUpdateProjectRequestModel(long loanAmount,
                                         long projectId,
                                         String projectName,
-                                        String changeType,
-                                        String projectState,
                                         String projectExpireDate) {
         super();
         this.service = "mer_update_project";
         this.projectId = projectId;
         this.projectName = projectName;
         this.projectAmount = loanAmount;
-        this.changeType = changeType;
-        this.projectState = projectState;
+        this.changeType = "01";//更新标的
+        this.projectState = "0";//开标
         this.projectExpireDate = projectExpireDate;
     }
 
