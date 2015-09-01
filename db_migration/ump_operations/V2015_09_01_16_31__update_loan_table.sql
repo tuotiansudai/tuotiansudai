@@ -9,7 +9,7 @@ CREATE TABLE `ump_operations`.`mer_update_project_request` (
   `project_id`          VARCHAR(32)     NOT NULL, /***标的号***/
   `change_type`         VARCHAR(2)      NOT NULL, /***标的更新类型***/
   `project_state`       VARCHAR(1)               DEFAULT NULL, /***标的状态***/
-  `project_expire_date` DATETIME        NOT NULL, /***标的有效期***/
+  `project_expire_date` VARCHAR(16)        NOT NULL, /***标的有效期***/
   `project_name`        VARCHAR(32)     NOT NULL, /***标的名称***/
   `project_amount`      VARCHAR(13)     NOT NULL, /***标的金额***/
   `request_url`         VARCHAR(2048)   NOT NULL, /***请求地址***/
