@@ -1,16 +1,19 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.repository.model.LoanType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.List;
 
 public class LoanDto {
 
-    private String id;
+    private long id;
 
     /***标的名称***/
     @NotEmpty
@@ -22,16 +25,17 @@ public class LoanDto {
 
     /***借款用户***/
     @NotEmpty
-    private String loanLoginName;
+    @NotNull
+    private String loanerLoginName;
 
     /***标的类型***/
     @NotEmpty
-    private String type;
+    private LoanType type;
 
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private String periods;
+    private long periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -63,7 +67,7 @@ public class LoanDto {
 
     /***活动类型***/
     @NotEmpty
-    private String activityType;
+    private ActivityType activityType;
 
     /***活动利率***/
     @NotEmpty
@@ -77,31 +81,37 @@ public class LoanDto {
 
     /***合同***/
     @NotEmpty
-    private String contractId;
+    private long contractId;
 
     /***筹款开始时间***/
     @NotEmpty
-    private String fundraisingStartTime;
+    private Date fundraisingStartTime;
 
     /***筹款截止时间***/
     @NotEmpty
-    private String fundraisingEndTime;
+    private Date fundraisingEndTime;
 
-    /***是否显示在首页1:显示在首页，0:不显示在首页***/
-    private String showOnHome;
+    /***是否显示在首页 true:显示在首页，false:不显示在首页***/
+    private boolean showOnHome;
 
     /***借款金额***/
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String loanAmount;
 
-    /***申请材料***/
-    private List<LoanTitleModel> loanTitles;
+    /***建标时间***/
+    private Date createdTime;
 
-    public String getId() {
+    /***标的状态***/
+    private LoanStatus status;
+
+    /***申请材料***/
+    private List<LoanTitleRelationModel> loanTitles;
+
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -121,27 +131,27 @@ public class LoanDto {
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanLoginName() {
-        return loanLoginName;
+    public String getLoanerLoginName() {
+        return loanerLoginName;
     }
 
-    public void setLoanLoginName(String loanLoginName) {
-        this.loanLoginName = loanLoginName;
+    public void setLoanerLoginName(String loanerLoginName) {
+        this.loanerLoginName = loanerLoginName;
     }
 
-    public String getType() {
+    public LoanType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LoanType type) {
         this.type = type;
     }
 
-    public String getPeriods() {
+    public long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(long periods) {
         this.periods = periods;
     }
 
@@ -193,11 +203,11 @@ public class LoanDto {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public String getActivityType() {
+    public ActivityType getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(String activityType) {
+    public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
 
@@ -217,35 +227,35 @@ public class LoanDto {
         this.basicRate = basicRate;
     }
 
-    public String getContractId() {
+    public long getContractId() {
         return contractId;
     }
 
-    public void setContractId(String contractId) {
+    public void setContractId(long contractId) {
         this.contractId = contractId;
     }
 
-    public String getFundraisingStartTime() {
+    public Date getFundraisingStartTime() {
         return fundraisingStartTime;
     }
 
-    public void setFundraisingStartTime(String fundraisingStartTime) {
+    public void setFundraisingStartTime(Date fundraisingStartTime) {
         this.fundraisingStartTime = fundraisingStartTime;
     }
 
-    public String getFundraisingEndTime() {
+    public Date getFundraisingEndTime() {
         return fundraisingEndTime;
     }
 
-    public void setFundraisingEndTime(String fundraisingEndTime) {
+    public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
     }
 
-    public String getShowOnHome() {
+    public boolean isShowOnHome() {
         return showOnHome;
     }
 
-    public void setShowOnHome(String showOnHome) {
+    public void setShowOnHome(boolean showOnHome) {
         this.showOnHome = showOnHome;
     }
 
@@ -257,11 +267,27 @@ public class LoanDto {
         this.loanAmount = loanAmount;
     }
 
-    public List<LoanTitleModel> getLoanTitles() {
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
+
+    public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
 
-    public void setLoanTitles(List<LoanTitleModel> loanTitles) {
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
     }
 }

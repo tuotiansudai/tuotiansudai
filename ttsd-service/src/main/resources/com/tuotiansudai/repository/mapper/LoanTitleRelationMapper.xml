@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanTitleRelationMapper">
+
+    <resultMap id="loanTitleResultMap" type="LoanTitleRelationModel">
+        <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
+        <result column="title_id" property="titleId"></result>
+        <result column="apply_metarial_url" property="applyMetarialUrl"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="LoanTitleModel">
+        insert into loan_title_relation (id,loan_id,title_id,apply_metarial_url) values
+        <foreach collection="loanTitleModels" item="item" index="index" separator=",">
+            (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})
+        </foreach>
+    </insert>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
+        select * from loan_title_relation where loan_id = #{loanId}
+    </select>
+</mapper>

@@ -2,44 +2,41 @@ package com.tuotiansudai.repository.model;
 
 import java.math.BigInteger;
 
+/**
+ * Created by tuotian on 15/8/17.
+ */
 public class LoanTitleModel {
-    private BigInteger id;
-    private BigInteger loanId;/***借款标的***/
-    private BigInteger titleId;/***申请材料标题***/
-    private String applyMetarialUrl;
+    private long id;
+    /***
+     * 标题类型
+     ***/
+    private LoanTitleType type;
+    /***
+     * 标题名称
+     ***/
+    private String title;
 
-    public BigInteger getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public BigInteger getLoanId() {
-        return loanId;
+    public LoanTitleType getType() {
+        return type;
     }
 
-    public void setLoanId(BigInteger loanId) {
-        this.loanId = loanId;
+    public void setType(LoanTitleType type) {
+        this.type = type;
     }
 
-    public BigInteger getTitleId() {
-        return titleId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTitleId(BigInteger titleId) {
-        this.titleId = titleId;
-    }
-
-    /***申请材料存放路径***/
-
-
-    public String getApplyMetarialUrl() {
-        return applyMetarialUrl;
-    }
-
-    public void setApplyMetarialUrl(String applyMetarialUrl) {
-        this.applyMetarialUrl = applyMetarialUrl;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

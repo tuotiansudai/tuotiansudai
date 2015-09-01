@@ -1,101 +1,88 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LoanModel {
     /***标的号***/
-    private String id;
+    private long id;
     /***借款项目名称***/
     private String name;
     /***代理人***/
     private String agentLoginName;
     /***借款用户***/
-    private String loanLoginName;
+    private String loanerLoginName;
     /***标的类型***/
-    private String type;
+    private LoanType type;
     /***借款期限***/
-    private String periods;
+    private Long periods;
     /***项目描述（纯文本）***/
     private String descriptionText;
     /***项目描述（带html标签）***/
     private String descriptionHtml;
     /***借款金额***/
-    private Long loanAmount;
+    private long loanAmount;
     /***投资手续费比例***/
     private double investFeeRate;
     /***最小投资金额***/
-    private Long minInvestAmount;
+    private long minInvestAmount;
     /***投资递增金额***/
-    private Long investIncreasingAmount;
+    private long investIncreasingAmount;
     /***单笔最大投资金额***/
-    private Long maxInvestAmount;
+    private long maxInvestAmount;
     /***活动类型***/
-    private String activityType;
+    private ActivityType activityType;
     /***活动利率***/
     private double activityRate;
     /***基本利率***/
-    private double basicRate;
+    private double baseRate;
     /***合同***/
-    private String contractId;
+    private long contractId;
     /***筹款开始时间***/
     private Date fundraisingStartTime;
     /***筹款截止时间***/
     private Date fundraisingEndTime;
     /***是否显示在首页true:显示在首页，false:不显示在首页***/
     private boolean showOnHome;
+    /***建标时间***/
+    private Date createdTime = new Date();
+    /***标的状态***/
+    private LoanStatus status;
 
     public LoanModel(){}
 
-    public LoanModel(LoanDto loanDto) throws ParseException {
+    public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
         this.name =loanDto.getProjectName();
-        BigDecimal bigDecimalActivityRate = new BigDecimal(loanDto.getActivityRate());
-        this.activityRate = bigDecimalActivityRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        BigDecimal bigDecimalBasicRate = new BigDecimal(loanDto.getBasicRate());
-        this.basicRate = bigDecimalBasicRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getActivityRate()));
+        this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
-        this.loanLoginName = loanDto.getLoanLoginName();
+        this.loanerLoginName = loanDto.getLoanerLoginName();
         this.contractId = loanDto.getContractId();
         this.descriptionHtml = loanDto.getDescriptionHtml();
         this.descriptionText = loanDto.getDescriptionText();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.fundraisingStartTime = sdf.parse(loanDto.getFundraisingStartTime());
-        this.fundraisingEndTime = sdf.parse(loanDto.getFundraisingEndTime());
-        BigDecimal bigDecimalInvestFeeRate = new BigDecimal(loanDto.getInvestFeeRate());
-        this.investFeeRate = bigDecimalInvestFeeRate.divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        this.investIncreasingAmount = new BigDecimal(loanDto.getInvestIncreasingAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
-        this.maxInvestAmount = new BigDecimal(loanDto.getMaxInvestAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
-        this.minInvestAmount = new BigDecimal(loanDto.getMinInvestAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
+        this.fundraisingStartTime = loanDto.getFundraisingStartTime();
+        this.fundraisingEndTime = loanDto.getFundraisingEndTime();
+        this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
-        if ("1".equals(showOnHome)){
-            this.showOnHome = true;
-        }else {
-            this.showOnHome = false;
-        }
-
+        this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
-        this.loanAmount = new BigDecimal(loanDto.getLoanAmount())
-                .multiply(new BigDecimal(100))
-                .longValue();
+        this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        this.status = LoanStatus.WAITING_VERIFY;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -115,27 +102,27 @@ public class LoanModel {
         this.agentLoginName = agentLoginName;
     }
 
-    public String getLoanLoginName() {
-        return loanLoginName;
+    public String getLoanerLoginName() {
+        return loanerLoginName;
     }
 
-    public void setLoanLoginName(String loanLoginName) {
-        this.loanLoginName = loanLoginName;
+    public void setLoanerLoginName(String loanerLoginName) {
+        this.loanerLoginName = loanerLoginName;
     }
 
-    public String getType() {
+    public LoanType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LoanType type) {
         this.type = type;
     }
 
-    public String getPeriods() {
+    public Long getPeriods() {
         return periods;
     }
 
-    public void setPeriods(String periods) {
+    public void setPeriods(Long periods) {
         this.periods = periods;
     }
 
@@ -155,11 +142,11 @@ public class LoanModel {
         this.descriptionHtml = descriptionHtml;
     }
 
-    public Long getLoanAmount() {
+    public long getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(Long loanAmount) {
+    public void setLoanAmount(long loanAmount) {
         this.loanAmount = loanAmount;
     }
 
@@ -171,35 +158,35 @@ public class LoanModel {
         this.investFeeRate = investFeeRate;
     }
 
-    public Long getMinInvestAmount() {
+    public long getMinInvestAmount() {
         return minInvestAmount;
     }
 
-    public void setMinInvestAmount(Long minInvestAmount) {
+    public void setMinInvestAmount(long minInvestAmount) {
         this.minInvestAmount = minInvestAmount;
     }
 
-    public Long getInvestIncreasingAmount() {
+    public long getInvestIncreasingAmount() {
         return investIncreasingAmount;
     }
 
-    public void setInvestIncreasingAmount(Long investIncreasingAmount) {
+    public void setInvestIncreasingAmount(long investIncreasingAmount) {
         this.investIncreasingAmount = investIncreasingAmount;
     }
 
-    public Long getMaxInvestAmount() {
+    public long getMaxInvestAmount() {
         return maxInvestAmount;
     }
 
-    public void setMaxInvestAmount(Long maxInvestAmount) {
+    public void setMaxInvestAmount(long maxInvestAmount) {
         this.maxInvestAmount = maxInvestAmount;
     }
 
-    public String getActivityType() {
+    public ActivityType getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(String activityType) {
+    public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
     }
 
@@ -211,19 +198,19 @@ public class LoanModel {
         this.activityRate = activityRate;
     }
 
-    public double getBasicRate() {
-        return basicRate;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public void setBasicRate(double basicRate) {
-        this.basicRate = basicRate;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
-    public String getContractId() {
+    public long getContractId() {
         return contractId;
     }
 
-    public void setContractId(String contractId) {
+    public void setContractId(long contractId) {
         this.contractId = contractId;
     }
 
@@ -249,5 +236,26 @@ public class LoanModel {
 
     public void setShowOnHome(boolean showOnHome) {
         this.showOnHome = showOnHome;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
+
+    private String rateStrDivideOneHundred(String rate) {
+        BigDecimal rateBigDecimal = new BigDecimal(rate);
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
     }
 }

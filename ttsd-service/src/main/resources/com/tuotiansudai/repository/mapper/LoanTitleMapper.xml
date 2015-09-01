@@ -4,18 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.LoanTitleMapper">
 
-    <resultMap id="loanTitleResultMap" type="LoanTitleModel">
+    <resultMap id="titleResultMap" type="LoanTitleModel">
         <id column="id" property="id"></id>
-        <result column="loan_id" property="name"></result>
-        <result column="title_id" property="titleId"></result>
-        <result column="apply_metarial_url" property="applyMetarialUrl"></result>
+        <result column="type" property="type"></result>
+        <result column="title" property="title"></result>
     </resultMap>
 
-    <insert id="createLoanTitle" parameterType="LoanTitleModel" useGeneratedKeys="true" keyProperty="id">
-        insert into loan_title (id,loan_id,title_id,apply_metarial_url) values
-        <foreach collection="loanTitleModels" item="item" index="index" separator=",">
-            (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})
-        </foreach>
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanTitleModel">
+        insert into loan_title(id,type,title)VALUES (#{id},#{type},#{title})
     </insert>
 
+    <select id="findAll" resultMap="titleResultMap">
+        select * from loan_title
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="titleResultMap">
+        select * from loan_title where id = #{id}
+    </select>
 </mapper>
