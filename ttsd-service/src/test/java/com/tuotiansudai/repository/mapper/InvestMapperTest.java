@@ -91,7 +91,7 @@ public class InvestMapperTest {
 
         investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL, new Date());
         InvestModel investModel2 = investMapper.findById(investModel.getId());
-        assertEquals(investModel1.getStatus(), InvestStatus.FAIL);
+        assertEquals(investModel2.getStatus(), InvestStatus.FAIL);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class InvestMapperTest {
         model.setLoginName(User_ID);
         model.setLoanId(Loan_ID);
         model.setSource(InvestSource.ANDROID);
-        model.setStatus(InvestStatus.WAITING);
+        model.setStatus(InvestStatus.SUCCESS);
         //model.setSuccessTime(null);
         return model;
     }

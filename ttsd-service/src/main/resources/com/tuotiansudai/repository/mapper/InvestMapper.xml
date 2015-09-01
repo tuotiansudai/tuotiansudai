@@ -68,13 +68,13 @@
     </select>
 
     <select id="sumSuccessInvestAmount" parameterType="long" resultType="long">
-        select sum(amount)
+        select COALESCE(sum(amount),0)
         from invest
         where loan_id = #{loanId}
         and status not in ('WAITING','FAIL')
     </select>
 
-    <select id="getInvests" parameterType="map" resultType="investResultMap">
+    <select id="getInvests" parameterType="map" resultMap="investResultMap">
         select *
         from invest
         where loan_id = #{loanId}

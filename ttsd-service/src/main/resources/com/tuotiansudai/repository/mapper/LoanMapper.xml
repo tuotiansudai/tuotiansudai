@@ -36,4 +36,8 @@
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
+
+    <update id="updateStatus" parameterType="map">
+        update loan set status = #{status} where id = #{loanId}
+    </update>
 </mapper>

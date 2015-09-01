@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
@@ -11,13 +12,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.text.MessageFormat;
 import java.util.Map;
 
@@ -48,6 +48,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private UserBillService userBillService;
+
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
@@ -60,7 +63,7 @@ public class InvestServiceImpl implements InvestService {
                 accountModel.getPayUserId(),
                 String.valueOf(investModel.getAmount()));
         try {
-            checkLoanRemainAmount(dto);
+            checkLoanInvestAccountAmount(dto);
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
             investMapper.create(investModel);
             return baseDto;
@@ -73,8 +76,17 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private void checkLoanRemainAmount(InvestDto dto) throws PayException {
+    private void checkLoanInvestAccountAmount(InvestDto dto) throws PayException {
+        String loginName = dto.getLoginName();
+        long investRequestAmount = AmountUtil.convertStringToCent(dto.getAmount());
         long loanId = Long.parseLong(dto.getLoanId());
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if(accountModel.getBalance() < investRequestAmount + 3){
+            // TODO : 手续费定义
+            logger.error("投资失败，投资金额["+investRequestAmount+"]超过用户["+loginName+"]账户余额["+accountModel.getBalance()+"]");
+            throw new PayException("账户余额不足");
+        }
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
             logger.error("投资失败，查找不到指定的标的[" + dto.getLoanId() + "]");
@@ -82,16 +94,15 @@ public class InvestServiceImpl implements InvestService {
         }
         long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         long remainAmount = loan.getLoanAmount() - successInvestAmount;
-        long investRequestAmount = AmountUtil.convertStringToCent(dto.getAmount());
 
-        if(remainAmount<investRequestAmount){
-            logger.error("投资失败，投资金额["+investRequestAmount+"]超过标的[" + dto.getLoanId() + "]可投金额["+remainAmount+"]");
+        if (remainAmount < investRequestAmount) {
+            logger.error("投资失败，投资金额[" + investRequestAmount + "]超过标的[" + dto.getLoanId() + "]可投金额[" + remainAmount + "]");
             throw new PayException("投资金额超过标的可投金额");
         }
     }
 
     @Override
-    public String investCallback(Map<String, String> paramsMap, String originalQueryString){
+    public String investCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
@@ -108,35 +119,35 @@ public class InvestServiceImpl implements InvestService {
 
     @Transactional
     private void postInvestCallback(BaseCallbackRequestModel callbackRequestModel) {
-        try {
-            // freeze
-            // 改invest 本身状态
-
-            // 满标，改标的状态 RECHECK
-            // TODO:超投
-
-            // 失败的话：改invest本身状态
-            long orderId = Long.parseLong(callbackRequestModel.getOrderId());
-            InvestModel investMode = investMapper.findById(orderId);
-            if (investMode == null) {
-                logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
-                return;
-            }
-
-            String loginName = rechargeModel.getLoginName();
-            long amount = rechargeModel.getAmount();
-            if (callbackRequestModel.isSuccess()) {
-                rechargeMapper.update(orderId, RechargeStatus1.SUCCESS);
-                userBillService.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS);
-                //TODO update system bill
-            } else {
-                rechargeMapper.update(orderId, RechargeStatus1.FAIL);
-            }
-        } catch (NumberFormatException e) {
-            logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
-            logger.error(e.getLocalizedMessage());
+        long orderId = Long.parseLong(callbackRequestModel.getOrderId());
+        InvestModel investMode = investMapper.findById(orderId);
+        if (investMode == null) {
+            logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
+            return;
         }
 
+        String loginName = investMode.getLoginName();
+        if (callbackRequestModel.isSuccess()) {
+            long loanId = investMode.getLoanId();
+            // freeze
+            try {
+                userBillService.freeze(loginName, orderId, investMode.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
+            } catch (AmountTransferException e) {
+                // TODO: 用户余额不足
+            }
+            // 改invest 本身状态
+            investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS, new Date());
+            LoanModel loanModel = loanMapper.findById(loanId);
+            long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
+            // 满标，改标的状态 RECHECK
+            if (successInvestAmountTotal == loanModel.getLoanAmount()) {
+                loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+            } else if (successInvestAmountTotal > loanModel.getLoanAmount()) {
+                // TODO:超投
+            }
+        } else {
+            // 失败的话：改invest本身状态
+            investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL, new Date());
+        }
     }
-
 }
