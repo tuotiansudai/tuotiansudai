@@ -23,15 +23,15 @@ CREATE TABLE ump_operations.`mer_bind_project_request` (
 CREATE TABLE ump_operations.`mer_bind_project_response` (
   `id`                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, /******/
   `request_id`         BIGINT UNSIGNED NOT NULL, /***请求ID***/
-  `sign_type`          VARCHAR(8)               DEFAULT NULL, /***签名方式***/
-  `sign`               VARCHAR(256)             DEFAULT NULL, /***签名***/
-  `merchant_id`        VARCHAR(8)               DEFAULT NULL, /***商户编号***/
-  `version`            VARCHAR(3)               DEFAULT NULL, /***版本号***/
-  `project_account_id` VARCHAR(15)              DEFAULT NULL, /***标的账户号***/
-  `project_state`      VARCHAR(2)               DEFAULT NULL, /***标的账户状态***/
-  `mer_check_date`     VARCHAR(8)               DEFAULT NULL, /***商户对账日期***/
-  `ret_code`           VARCHAR(8)               DEFAULT NULL, /***返回码***/
-  `ret_msg`            VARCHAR(128)             DEFAULT NULL, /***返回信息***/
+  `sign_type`          VARCHAR(16)               DEFAULT NULL, /***签名方式***/
+  `sign`               VARCHAR(512)             DEFAULT NULL, /***签名***/
+  `merchant_id`        VARCHAR(16)               DEFAULT NULL, /***商户编号***/
+  `version`            VARCHAR(6)               DEFAULT NULL, /***版本号***/
+  `project_account_id` VARCHAR(30)              DEFAULT NULL, /***标的账户号***/
+  `project_state`      VARCHAR(4)               DEFAULT NULL, /***标的账户状态***/
+  `mer_check_date`     VARCHAR(16)               DEFAULT NULL, /***商户对账日期***/
+  `ret_code`           VARCHAR(16)               DEFAULT NULL, /***返回码***/
+  `ret_msg`            VARCHAR(256)             DEFAULT NULL, /***返回信息***/
   `response_data`      TEXT            NOT NULL, /***请求数据***/
   `response_time`      DATETIME        NOT NULL, /***请求时间***/
   PRIMARY KEY (`id`),
