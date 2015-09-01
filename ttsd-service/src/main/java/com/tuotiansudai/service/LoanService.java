@@ -59,4 +59,6 @@ public interface LoanService {
      * @return
      */
     LoanModel findLoanById(long loanId);
+
+    boolean loanIsExist(long loanId);
 }

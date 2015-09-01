@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -32,7 +33,10 @@ public class LoanServiceImpl implements LoanService {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
-    IdGenerator idGenerator;
+    private IdGenerator idGenerator;
+
+    @Autowired
+    private PayWrapperClient payWrapperClient;
 
     /**
      * @function 创建标题
@@ -166,25 +170,27 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
-        LoanModel loanModel = new LoanModel(loanDto);
+        if (baseDto.getData().getStatus()) {
+            return baseDto;
+        }
         if (loanMapper.findById(loanDto.getId()) == null){
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        loanModel.setStatus(loanDto.getStatus());
-        loanMapper.update(loanModel);
-        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
-            loanTitleRelationMapper.delete(loanDto.getId());
+        if (LoanStatus.WAITING_VERIFY.name().equals(loanDto.getStatus())){
+            updateLoanAndLoanTitleRelation(loanDto);
+        }else if (LoanStatus.VERIFY_FAIL.name().equals(loanDto.getStatus())){
+            updateLoanAndLoanTitleRelation(loanDto);
+        }else if (LoanStatus.PREHEAT.name().equals(loanDto.getStatus())){
+            payWrapperClient.loan(loanDto);
+        }else {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
         }
-        List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
-        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
-            loanTitleRelationMapper.create(loanTitleRelationModels);
-        }
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
         return baseDto;
     }
 
@@ -194,5 +200,69 @@ public class LoanServiceImpl implements LoanService {
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
         loanModel.setLoanTitles(loanTitleRelationModelList);
         return loanModel;
+    }
+
+    @Override
+    public boolean loanIsExist(long loanId) {
+        if (findLoanById(loanId) != null){
+            return true;
+        }
+        return false;
+    }
+
+    private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto();
+        PayDataDto payDataDto = new PayDataDto();
+        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        if (maxInvestAmount < minInvestAmount) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
+        if (loanUserId == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
+        if (loanAgentId == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    private void updateLoanAndLoanTitleRelation(LoanDto loanDto){
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanDto.getStatus());
+        loanMapper.update(loanModel);
+        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
+            loanTitleRelationMapper.delete(loanDto.getId());
+        }
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
+        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
+            loanTitleRelationMapper.create(loanTitleRelationModels);
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
@@ -39,11 +40,6 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
-        if (loanMapper.findById(loanDto.getId()) == null){
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
         long loanerId = userMapper.findByLoginName(loanDto.getLoanerLoginName()).getId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
                 loanDto.getId(),
@@ -55,9 +51,9 @@ public class LoanServiceImpl implements LoanService {
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
                     merBindProjectRequestModel,
                     MerBindProjectResponseModel.class);
-            if (!responseModel.isSuccess()) {
+            if (responseModel.isSuccess()) {
                 LoanModel loanModel = new LoanModel(loanDto);
-                loanModel.setStatus(loanDto.getStatus());
+                loanModel.setStatus(LoanStatus.PREHEAT);
                 loanMapper.update(loanModel);
                 if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
                     loanTitleRelationMapper.delete(loanDto.getId());
