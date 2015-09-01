@@ -1,13 +1,12 @@
 package com.tuotiansudai.client;
 
-import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -72,17 +71,17 @@ public class OssWrapperClient{
      * 阿里云ACCESS_KEYID
      */
     @Value("${plat.oss.access_keyid}")
-    private String ACCESS_KEYID;
+    private static String ACCESS_KEYID;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
     @Value("${plat.oss.access_keysecret}")
-    private String ACCESS_KEYSECRET;
+    private static String ACCESS_KEYSECRET;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
     @Value("${plat.oss.oss_endpoint}")
-    private String OSS_ENDPOINT;
+    private static String OSS_ENDPOINT;
 
     /**
      * 阿里云BUCKET_NAME  OSS
@@ -91,9 +90,9 @@ public class OssWrapperClient{
     private String BUCKET_NAME;
 
     @Value("${plat.sitePath}")
-    private String SITEPATH;
+    private  String SITEPATH;
 
-    private OSSClient getOSSClient(){
+    private static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
     }
@@ -112,7 +111,7 @@ public class OssWrapperClient{
             return;
         }
         this.fileName = this.getName(this.originalName);
-        this.type = this.getFileExt(this.fileName);
+        this.type = FilenameUtils.getExtension(this.fileName);
         this.url = savePath  + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
@@ -138,15 +137,6 @@ public class OssWrapperClient{
     }
 
     /**
-     * 获取文件扩展名
-     *
-     * @return string
-     */
-    private String getFileExt(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
-
-    /**
      * 依据原始文件名生成新文件名
      *
      * @return
@@ -154,7 +144,7 @@ public class OssWrapperClient{
     private String getName(String fileName) {
         Random random = new Random();
         return this.fileName = "" + random.nextInt(10000)
-                + System.currentTimeMillis() + this.getFileExt(fileName);
+                + System.currentTimeMillis() + FilenameUtils.getExtension(fileName);
     }
 
     /**
@@ -178,21 +168,32 @@ public class OssWrapperClient{
         return path;
     }
 
-    private String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath)
-            throws OSSException, ClientException, FileNotFoundException,IOException {
-        ObjectMetadata objectMeta = new ObjectMetadata();
-        String waterPath = rootPath + File.separator+"images"+File.separator+"watermark.png";
-        ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath,inputStream,0,0).toByteArray());
-        objectMeta.setContentLength(in.available());
-        objectMeta.setContentType("image/jpeg");
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String sitePath = SITEPATH + format.format(new Date())+File.separator;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-        fileName = sdf.format(new Date()) + getFileExt(fileName);
-        String filePath = sitePath+ fileName;
-        OSSClient client = getOSSClient();
-        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
-        logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
+    private String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath) {
+        ByteArrayInputStream in = null;
+        String filePath = "";
+        try {
+            ObjectMetadata objectMeta = new ObjectMetadata();
+            String waterPath = rootPath + File.separator + "images" + File.separator + "watermark.png";
+            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
+            objectMeta.setContentLength(in.available());
+            objectMeta.setContentType("image/jpeg");
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+            String sitePath = SITEPATH + format.format(new Date()) + File.separator;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+            fileName = sdf.format(new Date()) + FilenameUtils.getExtension(fileName);
+            filePath = sitePath + fileName;
+            OSSClient client = getOSSClient();
+            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
         return filePath;
     }
 
@@ -222,6 +223,12 @@ public class OssWrapperClient{
         } catch (Exception e) {
             logger.error("upload oss fail ");
             e.printStackTrace();
+        } finally {
+            try {
+                swapStream.close();
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
         }
         return swapStream;
     }

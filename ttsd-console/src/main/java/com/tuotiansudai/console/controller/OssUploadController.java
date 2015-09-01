@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 
 /**
  * Created by Administrator on 2015/8/21.
@@ -23,18 +25,24 @@ public class OssUploadController {
     @Autowired
     private OssWrapperClient ossWrapperClient;
 
+    private String uploadImage = "{'original':'{0}','url':'{1}','title':'{2}','state':'{3}'}";
+
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
     public void uploadimage(HttpServletRequest request,  HttpServletResponse response){
         String action = request.getParameter("action");
         if (action.equals("uploadimage")) {
             try {
-                request.setCharacterEncoding("UTF-8");
-                response.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 ossWrapperClient.upload(request);
-                response.getWriter().print("{'original':'" + ossWrapperClient.getOriginalName() + "','url':'" + ossWrapperClient.getUrl() +
-                        "','title':'" + ossWrapperClient.getTitle() + "','state':'" + ossWrapperClient.getState()+"'}");
+                response.getWriter().print(MessageFormat.format(uploadImage,ossWrapperClient.getOriginalName(),ossWrapperClient.getUrl(),ossWrapperClient.getTitle(),ossWrapperClient.getState()));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
+            } finally {
+                try {
+                    response.getWriter().close();
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
             }
         }
     }
@@ -42,6 +50,7 @@ public class OssUploadController {
     @RequestMapping(value = "/ueditor", method = RequestMethod.GET)
     public void config(HttpServletRequest request,  HttpServletResponse response) {
         String action = request.getParameter("action");
+        PrintWriter writer = null;
         if (action.equals("config")) {
             response.setContentType("application/json");
             try {
@@ -49,12 +58,13 @@ public class OssUploadController {
                         "\"imageAllowFiles\": [\".png\", \".jpg\", \".jpeg\", \".gif\", \".bmp\"]," +
                         "\"imageCompressEnable\": true,\"imageCompressBorder\": 1600,\"imageInsertAlign\": \"none\"," +
                         "\"imageUrlPrefix\": \"/upload\",\"imagePathFormat\": \"/upload/{yyyy}{mm}{dd}/{time}{rand:6}\"}";
-                PrintWriter writer = response.getWriter();
+                writer = response.getWriter();
                 writer.write(exec);
                 writer.flush();
-                writer.close();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
+            } finally {
+                writer.close();
             }
         }
     }
