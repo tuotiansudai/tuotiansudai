@@ -107,25 +107,24 @@ public class PayWrapperClient {
     }
 
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
-//        String requestJson;
-//        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-//        PayFormDataDto payFormDataDto = new PayFormDataDto();
-//        baseDto.setData(payFormDataDto);
-//        try {
-//            requestJson = objectMapper.writeValueAsString(dto);
-//        } catch (JsonProcessingException e) {
-//            logger.error(e.getLocalizedMessage(), e);
-//            payFormDataDto.setStatus(false);
-//            return baseDto;
-//        }
-//
-//        String responseJson = this.post(withdrawPath, requestJson);
-//        if (Strings.isNullOrEmpty(responseJson)) {
-//            payFormDataDto.setStatus(false);
-//            return baseDto;
-//        }
-//        return this.parsePayFormJson(responseJson);
-        return  null;
+        String requestJson;
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(investPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayFormJson(responseJson);
     }
 
     public BaseDto<PayFormDataDto> loan(LoanDto dto) {

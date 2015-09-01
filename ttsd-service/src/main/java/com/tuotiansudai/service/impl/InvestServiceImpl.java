@@ -1,5 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InsufficientBalanceException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
@@ -24,47 +28,15 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private InvestMapper mapper;
 
+    @Autowired
+    private PayWrapperClient payWrapperClient;
+
     @Override
-    public long doInvest(long loanId, long amount, InvestSource source) {
-        // TODO: 查找对应标的
-        //LoanDetailDto loanDetailDto = loanService.getLoanDetail(loanId);
-        //if (loanDetailDto == null) {
-        //    throw new LoanNotFoundException("查找不到对应的标的信息:" + loanId);
-        //}
-
-        // 检查标的可投余额
-        // 已投金额
-        long investedAmount = getSuccessInvestedAmountByLoanId(loanId);
-        // TODO: 剩余可投金额
-        //long remainInvestableAmount = loanDetailDto.getLoanAmount() - investedAmount;
-        long remainInvestableAmount = 100;
-        if(remainInvestableAmount < amount){
-            throw new InsufficientBalanceException(String.format("投资金额超过了该标的的可投金额",amount,remainInvestableAmount));
-        }
-
-        // 创建投资记录
-        long investId = createInvestRecord(loanId, amount, source);
-
-        // 发联动优势
-
-
-        return investId;
-    }
-
-    private long createInvestRecord(long loanId, long amount, InvestSource source) {
-        long investId = idGenerator.generate();
+    public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
         String loginName = LoginUserInfo.getLoginName();
-        InvestModel invest = new InvestModel();
-        invest.setId(investId);
-        invest.setLoanId(loanId);
-        invest.setLoginName(loginName);
-        invest.setAmount(amount);
-        invest.setStatus(InvestStatus.WAITING);
-        invest.setIsAutoInvest(false);
-        invest.setSource(source);
-        invest.setCreatedTime(new Date());
-        mapper.create(invest);
-        return investId;
+        investDto.setLoginName(loginName);
+        investDto.setInvestSource(InvestSource.WEB);
+        return payWrapperClient.invest(investDto);
     }
 
     @Override

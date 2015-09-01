@@ -1,5 +1,8 @@
 package com.tuotiansudai.service;
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestSource;
 
@@ -9,11 +12,9 @@ public interface InvestService {
 
     /**
      * 进行一次投资
-     * @param loanId
-     * @param amount
-     * @param source
+     * @param investDto
      */
-    long doInvest(long loanId, long amount, InvestSource source);
+    BaseDto<PayFormDataDto> invest(InvestDto investDto);
 
     /**
      * 获取标的的已投资总额

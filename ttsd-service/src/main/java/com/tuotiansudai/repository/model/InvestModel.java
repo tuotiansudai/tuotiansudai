@@ -1,5 +1,8 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.utils.AmountUtil;
+
 import java.util.Date;
 
 public class InvestModel {
@@ -40,6 +43,12 @@ public class InvestModel {
      */
     private Date successTime;
 
+
+    public InvestModel(InvestDto dto){
+        this.loginName = dto.getLoginName();
+        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.loanId = Long.parseLong(dto.getLoanId());
+    }
 
     public long getId() {
         return id;

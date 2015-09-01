@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper">
+    <resultMap id="requestMap" type="ProjectTransferModel">
+        <id property="id" column="id" />
+        <result property="service" column="service"/>
+        <result property="signType" column="sign_type"/>
+        <result property="sign" column="sign"/>
+        <result property="charset" column="charset"/>
+        <result property="version" column="version"/>
+        <result property="merId" column="mer_id"/>
+        <result property="retUrl" column="ret_url"/>
+        <result property="notifyUrl" column="notify_url"/>
+        <result property="orderId" column="order_id"/>
+        <result property="loanId" column="loan_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="amount" column="amount"/>
+        <result property="requestTime" column="request_time"/>
+        <result property="requestUrl" column="request_url"/>
+        <result property="requestData" column="request_data"/>
+    </resultMap>
+
+    <select id="findById" resultMap="requestMap" parameterType="java.lang.Long">
+        select * from project_transfer_request where id = #{id}
+    </select>
+
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsModel">
+        insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, loan_id, user_id, amount, request_time, request_url, request_data)
+        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{loanId}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
+    </insert>
+
+</mapper>

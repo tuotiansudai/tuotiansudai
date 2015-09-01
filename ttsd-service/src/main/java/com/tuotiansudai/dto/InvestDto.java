@@ -1,11 +1,12 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.InvestSource;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-public class InvestDto implements Serializable{
+public class InvestDto implements Serializable {
 
     private String loginName;
 
@@ -14,8 +15,10 @@ public class InvestDto implements Serializable{
     private String amount;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+\\.\\d{2}$")
+    @Pattern(regexp = "^\\d+$")
     private String loanId;
+
+    private InvestSource investSource;
 
     public String getLoginName() {
         return loginName;
@@ -39,5 +42,13 @@ public class InvestDto implements Serializable{
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
+    }
+
+    public InvestSource getInvestSource() {
+        return investSource;
+    }
+
+    public void setInvestSource(InvestSource investSource) {
+        this.investSource = investSource;
     }
 }
