@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="投资纪录" pageCss="${css.investrecord}">
+<@global.head title="投资记录" pageCss="${css.investrecord}">
 </@global.head>
 <body>
 <#include "header.ftl" />
@@ -36,64 +36,7 @@
             <span class="jq-n" data-value="REPAYING">正在回款</span>
             <span class="jq-n" data-value="COMPLETE">回款完毕</span>
         </div>
-        <table class="invest-list">
-            <thead>
-            <tr>
-                <th>交易时间</th>
-                <th>交易详情</th>
-                <th>交易状态</th>
-                <th>下次回款</th>
-                <th>投资项目</th>
-                <th>状态</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>2015-06-11</td>
-                <td>投资成功</td>
-                <td>投资成功</td>
-                <td>0.00元</td>
-                <td>生意周转</td>
-                <td>回款中</td>
-            </tr>
-            <tr>
-                <td>2015-06-11</td>
-                <td>投资成功</td>
-                <td>投资成功</td>
-                <td>0.00元</td>
-                <td>生意周转</td>
-                <td>回款中</td>
-            </tr>
-            <tr>
-                <td>2015-06-11</td>
-                <td>投资成功</td>
-                <td>投资成功</td>
-                <td>0.00元</td>
-                <td>生意周转</td>
-                <td>回款中</td>
-            </tr>
-            <tr>
-                <td>2015-06-11</td>
-                <td>投资成功</td>
-                <td>投资成功</td>
-                <td>0.00元</td>
-                <td>生意周转</td>
-                <td>回款中</td>
-            </tr>
-
-            <tr>
-                <td colspan="6" class="txtc">暂时没有投资纪录</td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <span class="total">共 <span class="subTotal">20</span>条,当前第 <span class="index-page">1</span>页</span>
-            <span class="prev">上一页</span>
-            <a class="current" href="">1</a>
-            <a href="">2</a>
-            <a href="">20</a>
-            <span class="next">下一页</span>
-        </div>
+        <div id="tpl"></div>
     </div>
 
 </div>
@@ -102,7 +45,9 @@
 </@global.javascript>
 </body>
 </html>
-
+<#--<script src="../js/libs/moment-2.10.6.min.js"></script>-->
 <script>
     var API_AJAX  = "query_invests";
+//    var dd = moment();
+//    console.log(dd.subtract(10, 'days').format("YYYY-MM-DD"));
 </script>

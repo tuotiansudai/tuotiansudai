@@ -96,23 +96,23 @@
     & th {
       line-height: 30px;
       background: #e1e1e1;
-      &:first-child{
+      &:first-child {
         padding-left: 20px;
         text-align: left;
-        width: 13%;
+        width: 18%;
       }
     }
-    & tr:nth-child(even){
+    & tr:nth-child(even) {
       background: #e1e1e1;
     }
-    & td{
+    & td {
       line-height: 30px;
       color: #999;
-      &:first-child{
+      &:first-child {
         padding-left: 20px;
         text-align: left;
       }
-      &.txtc{
+      &.txtc {
         text-align: center;
         line-height: 100px;
       }
@@ -120,6 +120,8 @@
   }
 
 }
+.red{
+  color: #cc0000;}
 
 //日历css
 .date-picker {
@@ -517,19 +519,27 @@
 }
 
 .pagination {
-  width: 100%;
-  margin: 10px 0;
-  display: block;
-  text-align: center;
-  & a {
-    color: #777777;
-    padding: 2px 8px;
-  }
-  & a.current {
-    background: #f24712;
-    color: #fff;
-  }
-  & .next, & .prev {
-    cursor: pointer;
-  }
+  padding: 15px 20px;
+  text-align: left;
+  color: #ccc;
 }
+
+.pagination a {
+  display: inline-block;
+  color: #428bca;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  margin: 0 2px;
+  font-size: 12px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.pagination a:hover {
+  text-decoration: none;
+  border: 1px solid #428bca;
+}
+
