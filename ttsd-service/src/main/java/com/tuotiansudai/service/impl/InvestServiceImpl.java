@@ -1,8 +1,6 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.dto.LoanDetailDto;
 import com.tuotiansudai.exception.InsufficientBalanceException;
-import com.tuotiansudai.exception.LoanNotFoundException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestSource;
@@ -28,21 +26,27 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public long doInvest(long loanId, long amount, InvestSource source) {
-        // 查找对应标的
-        LoanDetailDto loanDetailDto = loanService.getLoanDetail(loanId);
-        if (loanDetailDto == null) {
-            throw new LoanNotFoundException("查找不到对应的标的信息:" + loanId);
-        }
+        // TODO: 查找对应标的
+        //LoanDetailDto loanDetailDto = loanService.getLoanDetail(loanId);
+        //if (loanDetailDto == null) {
+        //    throw new LoanNotFoundException("查找不到对应的标的信息:" + loanId);
+        //}
 
         // 检查标的可投余额
+        // 已投金额
         long investedAmount = getSuccessInvestedAmountByLoanId(loanId);
-        long remainInvestableAmount = loanDetailDto.getLoanAmount() - investedAmount;
-
+        // TODO: 剩余可投金额
+        //long remainInvestableAmount = loanDetailDto.getLoanAmount() - investedAmount;
+        long remainInvestableAmount = 100;
         if(remainInvestableAmount < amount){
             throw new InsufficientBalanceException(String.format("投资金额超过了该标的的可投金额",amount,remainInvestableAmount));
         }
 
+        // 创建投资记录
         long investId = createInvestRecord(loanId, amount, source);
+
+        // 发联动优势
+
 
         return investId;
     }
