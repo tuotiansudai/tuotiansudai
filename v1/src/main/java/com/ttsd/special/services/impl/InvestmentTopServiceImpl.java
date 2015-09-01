@@ -123,7 +123,7 @@ public class InvestmentTopServiceImpl implements InvestmentTopService {
                 areaInvestTopMap.get(ChinaArea.CHINA).add(item);
                 areaInvestUserCountMap.put(ChinaArea.CHINA, areaCount+1);
             }
-            ChinaArea area = mobileLocationService.getAreaByPhoneNumber(item.getPhoneNumber());
+            ChinaArea area = mobileLocationService.getAreaByPhoneNumber(item.getRealPhone());
             if(area != ChinaArea.CHINA){
                 areaCount = areaInvestUserCountMap.get(area);
                 if(areaCount < limit){

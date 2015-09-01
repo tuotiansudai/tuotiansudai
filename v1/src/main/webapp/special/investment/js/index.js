@@ -44,13 +44,13 @@ $(function () {
         var str = '';
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
-            str += '<tr><td colspan="3"><button type="button" class="btn-more yellow">更多</button></td></tr>';
+            str += '<tr><td colspan="3" style="text-align: center; padding: 0;"><button type="button" class="btn-more yellow">更多</button></td></tr>';
         }
         $(tableName).find('tbody tr').remove();
         $(tableName).find('tbody').append(str);
@@ -65,13 +65,13 @@ $(function () {
 
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' +data[i]["interest"] + '</span> 元</td><td><span class="gain">' +  data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' +data[i]["interest"] + '</span> 元</td><td><span class="gain">' +  data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
-            str += '<tr><td colspan="3"><button type="button" class="btn-more orange">更多</button></td></tr>';
+            str += '<tr><td colspan="3" style="text-align: center; padding: 0;"><button type="button" class="btn-more orange">更多</button></td></tr>';
         }
         str += '</tbody' >
             $(tableName).append(str);

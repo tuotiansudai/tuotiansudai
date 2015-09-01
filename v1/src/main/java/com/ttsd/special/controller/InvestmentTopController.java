@@ -30,7 +30,6 @@ public class InvestmentTopController {
         if(StringUtils.isNoneBlank(periodString)){
             period = InvestTopStatPeriod.fromValue(periodString);
         }
-
         InvestTopResponse resp = topService.queryInvestTopResponse(period);
         return resp;
     }
@@ -40,7 +39,7 @@ public class InvestmentTopController {
             List<InvestTopItem> list = resp.getAreaInvestments().get(area);
             for(int i=list.size();i<100;i++){
                 InvestTopItem mockItem = new InvestTopItem();
-                mockItem.setPhoneNumber("1"+ RandomStringUtils.randomNumeric(10));
+                mockItem.setPhone("1"+ RandomStringUtils.randomNumeric(10));
                 mockItem.setUserId(RandomStringUtils.randomAlphabetic(7));
                 mockItem.setCorpus(String.format("%.2f",(100-i)*1000+Math.random()*1000));
                 mockItem.setInterest(String.format("%.2f",Math.random()*1000));
