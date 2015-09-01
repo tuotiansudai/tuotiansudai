@@ -1,8 +1,13 @@
 package com.tuotiansudai.console.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.LoanTitleRelationModel;
+import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Before;
@@ -24,13 +29,9 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml"})
@@ -63,31 +64,14 @@ public class LoanControllerTest {
 
     @Test
     public void shouldEditLoan() throws Exception {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(post("/loan/edit-loan").contentType("application/json; charset=UTF-8").content(json))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
-    }
-
-    @Test
-    public void shouldFirstTrialPassed() throws Exception {
-        LoanDto loanDto = assembleLoanParam();
-        String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(post("/loan/first-trial-passed").contentType("application/json; charset=UTF-8").content(json))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
-    }
-
-    @Test
-    public void shouldFirstTrialRefused() throws Exception {
-        LoanDto loanDto = assembleLoanParam();
-        String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(post("/loan/first-trial-refused").contentType("application/json; charset=UTF-8").content(json))
+        this.mockMvc.perform(put("/loan").contentType("application/json; charset=UTF-8").content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -121,8 +105,6 @@ public class LoanControllerTest {
         loanDto.setStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        loanService.createLoan(loanDto);
-        loanDto.setLoanAmount("9999999999");
         return loanDto;
     }
 }
