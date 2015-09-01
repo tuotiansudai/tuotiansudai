@@ -7,18 +7,12 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadBase;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
-import org.primefaces.webapp.MultipartRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -110,90 +104,20 @@ public class OssWrapperClient{
             this.state = this.errorInfo.get("NOFILE");
             return;
         }
-        if (request instanceof MultipartRequest) {
-            Boolean switchBlur = request.getParameter("switchBlur")!=null;
-            DiskFileItem dfi = (DiskFileItem) ((MultipartRequest) request).getFileItem("upfile");
-            this.originalName = dfi.getName().substring(dfi.getName().lastIndexOf(System.getProperty("file.separator")) + 1);
-            if (!this.checkFileType(this.originalName)) {
-                this.state = this.errorInfo.get("TYPE");
-                return;
-            }
-            this.fileName = this.getName(this.originalName);
-            this.type = this.getFileExt(this.fileName);
-            //add line mkdir
-            this.url = savePath  + "/" + this.fileName;
-            String rootPath = request.getSession().getServletContext().getRealPath("/");
-            if(switchBlur){
-                this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
-            }else{
-                this.url = uploadFile(fileName, dfi.getInputStream());
-            }
-            this.title = url;
-            this.state = this.errorInfo.get("SUCCESS");
-        } else {
-            DiskFileItemFactory dff = new DiskFileItemFactory();
-            String savePath = this.getFolder(request, this.savePath);
-            dff.setRepository(new File(savePath));
-            try {
-                ServletFileUpload sfu = new ServletFileUpload(dff);
-                sfu.setSizeMax(this.maxSize * 1024);
-                sfu.setHeaderEncoding("UTF-8");
-                FileItemIterator fii = sfu.getItemIterator(request);
-                while (fii.hasNext()) {
-                    FileItemStream fis = fii.next();
-                    if (!fis.isFormField()) {
-                        this.originalName = fis
-                                .getName()
-                                .substring(
-                                        fis.getName()
-                                                .lastIndexOf(
-                                                        System.getProperty("file.separator")) + 1);
-                        if (!this.checkFileType(this.originalName)) {
-                            this.state = this.errorInfo.get("TYPE");
-                            continue;
-                        }
-                        this.fileName = this.getName(this.originalName);
-                        this.type = this.getFileExt(this.fileName);
-                        this.url = savePath + "/" + this.fileName;
-                        BufferedInputStream in = new BufferedInputStream(
-                                fis.openStream());
-                        FileOutputStream out = new FileOutputStream(new File(
-                                this.getPhysicalPath(request, this.url)));
-                        BufferedOutputStream output = new BufferedOutputStream(
-                                out);
-                        Streams.copy(in, output, true);
-                        this.state = this.errorInfo.get("SUCCESS");
-                        // UE中只会处理单张上传，完成后即退出
-                        break;
-                    } else {
-                        String fname = fis.getFieldName();
-                        // 只处理title，其余表单请自行处理
-                        if (!fname.equals("pictitle")) {
-                            continue;
-                        }
-                        BufferedInputStream in = new BufferedInputStream(
-                                fis.openStream());
-                        BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(in));
-                        StringBuffer result = new StringBuffer();
-                        while (reader.ready()) {
-                            result.append((char) reader.read());
-                        }
-                        this.title = new String(result.toString().getBytes(),
-                                "utf-8");
-                        reader.close();
-                    }
-                }
-            } catch (FileUploadBase.SizeLimitExceededException e) {
-                this.state = this.errorInfo.get("SIZE");
-            } catch (FileUploadBase.InvalidContentTypeException e) {
-                this.state = this.errorInfo.get("ENTYPE");
-            } catch (FileUploadException e) {
-                this.state = this.errorInfo.get("REQUEST");
-            } catch (Exception e) {
-                this.state = this.errorInfo.get("UNKNOWN");
-            }
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+        MultipartFile dfi = multiRequest.getFile("upfile");
+        this.originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
+        if (!this.checkFileType(this.originalName)) {
+            this.state = this.errorInfo.get("TYPE");
+            return;
         }
+        this.fileName = this.getName(this.originalName);
+        this.type = this.getFileExt(this.fileName);
+        this.url = savePath  + "/" + this.fileName;
+        String rootPath = request.getSession().getServletContext().getRealPath("/");
+        this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
+        this.title = url;
+        this.state = this.errorInfo.get("SUCCESS");
     }
 
     /**
@@ -254,27 +178,8 @@ public class OssWrapperClient{
         return path;
     }
 
-    /**
-     * add method by lance
-     * mkdir
-     * @param path
-     */
-    private String mkdir(final String path) {
-
-        File dir = new File(path);
-        if (!dir.exists()) {
-            try {
-                dir.mkdirs();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return path;
-    }
-
     private String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath)
             throws OSSException, ClientException, FileNotFoundException,IOException {
-        OSSClient client = getOSSClient();
         ObjectMetadata objectMeta = new ObjectMetadata();
         String waterPath = rootPath + "/images/watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath,inputStream,0,0).toByteArray());
@@ -285,24 +190,9 @@ public class OssWrapperClient{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + getFileExt(fileName);
         String filePath = sitePath+ fileName;
+        OSSClient client = getOSSClient();
         PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
         logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
-        return filePath;
-    }
-
-    private String uploadFile(String fileName ,InputStream input )
-            throws OSSException, ClientException, FileNotFoundException ,IOException{
-        OSSClient client = getOSSClient();
-        ObjectMetadata objectMeta = new ObjectMetadata();
-        objectMeta.setContentLength(input.available());
-        objectMeta.setContentType("image/jpeg");
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String sitePath = SITEPATH + format.format(new Date())+"/";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-        fileName = sdf.format(new Date()) + getFileExt(fileName);
-        String filePath = sitePath+ fileName;
-        PutObjectResult result = client.putObject(BUCKET_NAME, fileName, input, objectMeta);
-        logger.debug("result etag :" + result.getETag() + "filepath:" + filePath);
         return filePath;
     }
 
