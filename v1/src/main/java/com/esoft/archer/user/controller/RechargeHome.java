@@ -58,11 +58,9 @@ public class RechargeHome extends EntityHome<Recharge> {
 	public BigDecimal formatActualMoney(Double actualMoney,Double fee){
 		actualMoney = actualMoney == null?0.00D:actualMoney;
 		fee = fee == null?0.00D:fee;
-		BigDecimal bigDecimal1 = new BigDecimal(actualMoney);
-		BigDecimal bigDecimal2 = new BigDecimal(fee);
-
-		BigDecimal d = bigDecimal1.add(bigDecimal2);
-		return  d;
+		BigDecimal actualMoneyTemp = new BigDecimal(actualMoney);
+		BigDecimal feeTemp = new BigDecimal(fee);
+		return  actualMoneyTemp.add(feeTemp);
 	}
 
 	public String offlineRecharge() {
