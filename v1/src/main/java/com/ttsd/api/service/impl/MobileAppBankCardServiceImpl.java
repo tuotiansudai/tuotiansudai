@@ -117,6 +117,10 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             dto.setCode(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getCode());
             dto.setMessage(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getMsg() + ":" + e.getLocalizedMessage());
             log.warn(ReturnMessage.UMPAY_OPERATION_EXCEPTION.getMsg(), e);
+        } catch (ReqDataException e) {
+            dto.setCode(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
+            dto.setMessage(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+            log.warn(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg(), e);
         }
         return dto;
     }
@@ -126,7 +130,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         hibernateTemplate.save(bankCard);
     }
 
-    private BankCardReplaceResponseDataDto getBankCardReplaceResponseDataDto(String newCardNo, User user) {
+    private BankCardReplaceResponseDataDto getBankCardReplaceResponseDataDto(String newCardNo, User user) throws ReqDataException{
         BankCard bankCard = new BankCard();
         bankCard.setCardNo(newCardNo);
         bankCard.setId(IdGenerator.randomUUID());
@@ -135,8 +139,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         bankCard.setTime(new Date());
         bankCard.setIsOpenFastPayment(false);
 
-        String orderId = umPayReplaceBankCardOperation.generateReplaceCardOrderId(bankCard);
-        ReqData reqData = umPayReplaceBankCardOperation.buildReqData(bankCard, orderId, true);
+        ReqData reqData = umPayReplaceBankCardOperation.createOperation_mobile(bankCard);
         BankCardReplaceResponseDataDto responseDataDto = new BankCardReplaceResponseDataDto();
         try {
             responseDataDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(), true));
@@ -147,6 +150,5 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         responseDataDto.setUrl(reqData.getUrl());
         return responseDataDto;
     }
-
 
 }
