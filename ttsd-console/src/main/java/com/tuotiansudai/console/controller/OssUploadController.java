@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,6 @@ import java.io.PrintWriter;
  * Created by Administrator on 2015/8/21.
  */
 @Controller
-
 public class OssUploadController {
 
     static Logger logger = Logger.getLogger(OssUploadController.class);
@@ -23,7 +23,23 @@ public class OssUploadController {
     @Autowired
     private OssWrapperClient ossWrapperClient;
 
-    @RequestMapping(value = "/ueditor")
+    @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
+    public void uploadimage(HttpServletRequest request,  HttpServletResponse response){
+        String action = request.getParameter("action");
+        if (action.equals("uploadimage")) {
+            try {
+                request.setCharacterEncoding("UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                ossWrapperClient.upload(request);
+                response.getWriter().print("{'original':'" + ossWrapperClient.getOriginalName() + "','url':'" + ossWrapperClient.getUrl() +
+                        "','title':'" + ossWrapperClient.getTitle() + "','state':'" + ossWrapperClient.getState()+"'}");
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+    }
+
+    @RequestMapping(value = "/ueditor", method = RequestMethod.GET)
     public void config(HttpServletRequest request,  HttpServletResponse response) {
         String action = request.getParameter("action");
         if (action.equals("config")) {
@@ -40,16 +56,7 @@ public class OssUploadController {
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
-        } else if (action.equals("uploadimage")) {
-            try {
-                request.setCharacterEncoding("UTF-8");
-                response.setCharacterEncoding("UTF-8");
-                ossWrapperClient.upload(request);
-                response.getWriter().print("{'original':'" + ossWrapperClient.getOriginalName() + "','url':'" + ossWrapperClient.getUrl() +
-                    "','title':'" + ossWrapperClient.getTitle() + "','state':'" + ossWrapperClient.getState()+"'}");
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
         }
     }
+
 }

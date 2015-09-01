@@ -113,7 +113,7 @@ public class OssWrapperClient{
         }
         this.fileName = this.getName(this.originalName);
         this.type = this.getFileExt(this.fileName);
-        this.url = savePath  + "/" + this.fileName;
+        this.url = savePath  + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
         this.title = url;
@@ -165,7 +165,7 @@ public class OssWrapperClient{
      */
     private String getFolder(HttpServletRequest request, String path) {
         SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
-        path += "/" + formater.format(new Date());
+        path += File.separator + formater.format(new Date());
         File dir = new File(this.getPhysicalPath(request, path));
         if (!dir.exists()) {
             try {
@@ -181,12 +181,12 @@ public class OssWrapperClient{
     private String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath)
             throws OSSException, ClientException, FileNotFoundException,IOException {
         ObjectMetadata objectMeta = new ObjectMetadata();
-        String waterPath = rootPath + "/images/watermark.png";
+        String waterPath = rootPath + File.separator+"images"+File.separator+"watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath,inputStream,0,0).toByteArray());
         objectMeta.setContentLength(in.available());
         objectMeta.setContentType("image/jpeg");
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String sitePath = SITEPATH + format.format(new Date())+"/";
+        String sitePath = SITEPATH + format.format(new Date())+File.separator;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
         fileName = sdf.format(new Date()) + getFileExt(fileName);
         String filePath = sitePath+ fileName;
@@ -235,7 +235,7 @@ public class OssWrapperClient{
     private String getPhysicalPath(HttpServletRequest request, String path) {
         String servletPath = request.getServletPath();
         String realPath = request.getSession().getServletContext().getRealPath("") + servletPath;
-        return new File(realPath).getParent() + "/" + path;
+        return new File(realPath).getParent() + File.separator + path;
     }
 
     public void setSavePath(String savePath) {
