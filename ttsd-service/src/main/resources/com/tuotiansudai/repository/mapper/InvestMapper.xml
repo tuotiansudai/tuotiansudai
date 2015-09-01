@@ -64,6 +64,16 @@
         select sum(amount)
         from invest
         where loan_id = #{loanId}
+        and status not in ('WAITING','FAIL')
     </select>
+
+    <select id="getInvests" parameterType="map" resultType="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId}
+        and status = ${status}
+        limit (#{index} - 1) * #{pageSize},#{pageSize}
+    </select>
+
 
 </mapper>

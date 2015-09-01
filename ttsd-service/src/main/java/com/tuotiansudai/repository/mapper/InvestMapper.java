@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
 
@@ -51,8 +52,16 @@ public interface InvestMapper {
 
     /**
      * 计算标的的投资总额
+     *
      * @param loanId
      * @return
      */
     long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
+                                 @Param(value = "index") Integer index,
+                                 @Param(value = "pageSize") Integer pageSize,
+                                 @Param(value = "status") InvestStatus status);
+
+
 }
