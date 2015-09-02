@@ -17,15 +17,14 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -63,7 +62,7 @@ public class InvestServiceImpl implements InvestService {
                 accountModel.getPayUserId(),
                 String.valueOf(investModel.getAmount()));
         try {
-            checkLoanInvestAccountAmount(dto);
+            checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
             investMapper.create(investModel);
             return baseDto;
@@ -76,27 +75,22 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private void checkLoanInvestAccountAmount(InvestDto dto) throws PayException {
-        String loginName = dto.getLoginName();
-        long investRequestAmount = AmountUtil.convertStringToCent(dto.getAmount());
-        long loanId = Long.parseLong(dto.getLoanId());
-
+    private void checkLoanInvestAccountAmount(String loginName, long loanId, long investAmount) throws PayException {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        if(accountModel.getBalance() < investRequestAmount + 3){
-            // TODO : 手续费定义
-            logger.error("投资失败，投资金额["+investRequestAmount+"]超过用户["+loginName+"]账户余额["+accountModel.getBalance()+"]");
+        if (accountModel.getBalance() < investAmount) {
+            logger.error("投资失败，投资金额[" + investAmount + "]超过用户[" + loginName + "]账户余额[" + accountModel.getBalance() + "]");
             throw new PayException("账户余额不足");
         }
         LoanModel loan = loanMapper.findById(loanId);
         if (loan == null) {
-            logger.error("投资失败，查找不到指定的标的[" + dto.getLoanId() + "]");
+            logger.error("投资失败，查找不到指定的标的[" + loanId + "]");
             throw new PayException("标的不存在");
         }
         long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         long remainAmount = loan.getLoanAmount() - successInvestAmount;
 
-        if (remainAmount < investRequestAmount) {
-            logger.error("投资失败，投资金额[" + investRequestAmount + "]超过标的[" + dto.getLoanId() + "]可投金额[" + remainAmount + "]");
+        if (remainAmount < investAmount) {
+            logger.error("投资失败，投资金额[" + investAmount + "]超过标的[" + loanId + "]可投金额[" + remainAmount + "]");
             throw new PayException("投资金额超过标的可投金额");
         }
     }
@@ -133,7 +127,7 @@ public class InvestServiceImpl implements InvestService {
             try {
                 userBillService.freeze(loginName, orderId, investMode.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
             } catch (AmountTransferException e) {
-                // TODO: 用户余额不足
+                logger.error("投资成功，但资金冻结失败", e);
             }
             // 改invest 本身状态
             investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS, new Date());

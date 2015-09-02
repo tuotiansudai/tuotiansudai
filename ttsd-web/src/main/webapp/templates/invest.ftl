@@ -12,7 +12,5 @@
     <input type="submit"/>
 </form>
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.invest}">
-</@global.javascript>
 </body>
 </html>
