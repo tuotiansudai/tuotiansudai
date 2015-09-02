@@ -19,7 +19,7 @@ public class LoanController {
     @RequestMapping(value = "/{loanId}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         BaseDto dto = loanService.getLoanDetail(loanId);
-        return new ModelAndView("/loan-detail", "baseDto", dto);
+        return new ModelAndView("/loan", "baseDto", dto);
     }
 
     @RequestMapping(value = "/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
@@ -30,9 +30,9 @@ public class LoanController {
 
     @RequestMapping(value = "/{loanId}/index/{index}/pagesize/{pagesize}", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
+    public ModelAndView getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
         BaseDto dto = loanService.getInvests(loanId, index, pagesize);
-        return dto;
+        return new ModelAndView("/loan", "baseDto", dto);
     }
 
 
