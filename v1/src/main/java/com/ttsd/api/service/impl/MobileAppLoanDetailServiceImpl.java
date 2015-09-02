@@ -105,6 +105,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if (CollectionUtils.isNotEmpty(loan.getInvests())) {
             loanDetailResponseDataDto.setInvestRecord(convertInvestRecordDtoFromInvest(mobileAppInvestListDao.getInvestList(1,5,loan.getId())));
         }
+        loanDetailResponseDataDto.setMinInvestMoney("" + loan.getMinInvestMoney());
+        loanDetailResponseDataDto.setMaxInvestMoney("" + loan.getMaxInvestMoney());
+        loanDetailResponseDataDto.setCardinalNumber("" + loan.getCardinalNumber());
         return loanDetailResponseDataDto;
     }
 
