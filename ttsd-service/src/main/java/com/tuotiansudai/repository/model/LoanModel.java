@@ -53,7 +53,7 @@ public class LoanModel {
     /***初审时间***/
     private Date firstTrialTime;
     /***复审时间***/
-    private Date rehearTime;
+    private Date recheckTime;
     /***标的状态***/
     private LoanStatus status;
 
@@ -85,7 +85,7 @@ public class LoanModel {
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
         this.firstTrialTime = loanDto.getFirstTrialTime();
-        this.rehearTime = loanDto.getRehearTime();
+        this.recheckTime = loanDto.getRecheckTime();
     }
 
     public long getId() {
@@ -264,12 +264,12 @@ public class LoanModel {
         this.firstTrialTime = firstTrialTime;
     }
 
-    public Date getRehearTime() {
-        return rehearTime;
+    public Date getRecheckTime() {
+        return recheckTime;
     }
 
-    public void setRehearTime(Date rehearTime) {
-        this.rehearTime = rehearTime;
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
     }
 
     public LoanStatus getStatus() {

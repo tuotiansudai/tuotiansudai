@@ -105,7 +105,7 @@ public class LoanDto {
     private Date firstTrialTime;
 
     /***复审时间***/
-    private Date rehearTime;
+    private Date recheckTime;
 
     /***标的状态***/
     private LoanStatus loanStatus;
@@ -289,12 +289,12 @@ public class LoanDto {
         this.firstTrialTime = firstTrialTime;
     }
 
-    public Date getRehearTime() {
-        return rehearTime;
+    public Date getRecheckTime() {
+        return recheckTime;
     }
 
-    public void setRehearTime(Date rehearTime) {
-        this.rehearTime = rehearTime;
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
     }
 
     public LoanStatus getLoanStatus() {
