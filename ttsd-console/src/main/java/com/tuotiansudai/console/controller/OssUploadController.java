@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.OssWrapperClient;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2015/8/21.
@@ -24,6 +27,21 @@ public class OssUploadController {
 
     @Autowired
     private OssWrapperClient ossWrapperClient;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    private final static Map<String, Object> ueditorConfig = new HashMap<>();
+    static {
+        ueditorConfig.put("imageActionName","uploadimage");
+        ueditorConfig.put("imageFieldName","upfile");
+        ueditorConfig.put("imageMaxSize",2048000);
+        ueditorConfig.put("imageAllowFiles",new String[]{".png", ".jpg", ".jpeg", ".gif", ".bmp"});
+        ueditorConfig.put("imageCompressEnable",true);
+        ueditorConfig.put("imageCompressBorder",1600);
+        ueditorConfig.put("imageInsertAlign","none");
+        ueditorConfig.put("imageUrlPrefix","/upload");
+        ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}/{time}{rand:6}");
+    }
 
     private String uploadImage = "{'original':'{0}','url':'{1}','title':'{2}','state':'{3}'}";
 
@@ -54,10 +72,7 @@ public class OssUploadController {
         if (action.equals("config")) {
             response.setContentType("application/json");
             try {
-                String exec = "{\"imageActionName\":\"uploadimage\",\"imageFieldName\": \"upfile\",\"imageMaxSize\": 2048000," +
-                        "\"imageAllowFiles\": [\".png\", \".jpg\", \".jpeg\", \".gif\", \".bmp\"]," +
-                        "\"imageCompressEnable\": true,\"imageCompressBorder\": 1600,\"imageInsertAlign\": \"none\"," +
-                        "\"imageUrlPrefix\": \"/upload\",\"imagePathFormat\": \"/upload/{yyyy}{mm}{dd}/{time}{rand:6}\"}";
+                String exec = objectMapper.writeValueAsString(ueditorConfig);;
                 writer = response.getWriter();
                 writer.write(exec);
                 writer.flush();

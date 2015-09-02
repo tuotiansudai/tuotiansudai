@@ -1,6 +1,8 @@
 package com.tuotiansudai.security;
 
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,10 +27,11 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
 
     @Override
     public boolean matches(HttpServletRequest request) {
+        PathMatcher matcher = new AntPathMatcher();
         if (execludeUrls != null && execludeUrls.size() > 0) {
             String servletPath = request.getRequestURI();
             for (String url : execludeUrls) {
-                if (servletPath.contains(url)) {
+                if (matcher.match(url, servletPath)) {
                     return false;
                 }
             }

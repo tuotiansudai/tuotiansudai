@@ -103,7 +103,7 @@ public class OssWrapperClient{
             this.state = this.errorInfo.get("NOFILE");
             return;
         }
-        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest)request;
+        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile dfi = multiRequest.getFile("upfile");
         this.originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
         if (!this.checkFileType(this.originalName)) {
@@ -112,7 +112,7 @@ public class OssWrapperClient{
         }
         this.fileName = this.getName(this.originalName);
         this.type = FilenameUtils.getExtension(this.fileName);
-        this.url = savePath  + File.separator + this.fileName;
+        this.url = savePath + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
         this.title = url;

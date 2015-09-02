@@ -46,7 +46,7 @@
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
         <beans:property name="execludeUrls">
             <beans:list>
-                <beans:value>/ueditor</beans:value>
+                <beans:value>/ueditor/**</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
