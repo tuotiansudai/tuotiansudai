@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.utils.AmountUtil;
 import java.util.Date;
 
 public class InvestModel {
@@ -35,11 +37,20 @@ public class InvestModel {
      * 创建时间
      */
     private Date createdTime;
-    /**
-     * 投资成功时间（联动优势划款成功）
-     */
-    private Date successTime;
 
+    public InvestModel(){
+
+    }
+
+    public InvestModel(InvestDto dto){
+        this.loginName = dto.getLoginName();
+        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.loanId = Long.parseLong(dto.getLoanId());
+        this.source = dto.getInvestSource();
+        this.status = InvestStatus.WAITING;
+        this.isAutoInvest = false;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -103,13 +114,5 @@ public class InvestModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public Date getSuccessTime() {
-        return successTime;
-    }
-
-    public void setSuccessTime(Date successTime) {
-        this.successTime = successTime;
     }
 }
