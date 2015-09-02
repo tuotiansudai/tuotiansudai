@@ -28,6 +28,8 @@ public class ScheduleConstants {
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
 
+		public static final String AUTO_REFERRER_REWARD = "auto_referrer_reward";
+
 
 	}
 
@@ -74,6 +76,8 @@ public class ScheduleConstants {
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
 
+		public static final String AUTO_REFERRER_REWARD = "auto_referrer_reward";
+
 	}
 
 	/**
@@ -100,6 +104,7 @@ public class ScheduleConstants {
 		 * 自动发放活动奖励
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
+		public static final String AUTO_REFERRER_REWARD = "auto_referrer_reward";
 	}
 
 	/**
@@ -142,6 +147,7 @@ public class ScheduleConstants {
 		 * 自动发放活动奖励
 		 */
 		public static final String AUTO_ACTIVITY_REWARD = "auto_activity_reward";
+		public static final String AUTO_REFERRER_REWARD = "auto_referrer_reward";
 
 		/**
 		 * 注册邮箱验证
