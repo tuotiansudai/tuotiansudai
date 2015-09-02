@@ -109,9 +109,9 @@ public class LoanDto extends BaseDataDto{
 
     private long preheatSeconds;
 
-    private long amountNeedRaised;
+    private double amountNeedRaised;
 
-    private long balance;
+    private double balance;
 
     private double raiseCompletedRate;
 
@@ -301,19 +301,19 @@ public class LoanDto extends BaseDataDto{
         this.preheatSeconds = preheatSeconds;
     }
 
-    public long getAmountNeedRaised() {
+    public double getAmountNeedRaised() {
         return amountNeedRaised;
     }
 
-    public void setAmountNeedRaised(long amountNeedRaised) {
+    public void setAmountNeedRaised(double amountNeedRaised) {
         this.amountNeedRaised = amountNeedRaised;
     }
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

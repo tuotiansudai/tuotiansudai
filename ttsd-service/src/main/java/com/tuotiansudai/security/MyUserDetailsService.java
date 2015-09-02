@@ -1,13 +1,17 @@
 package com.tuotiansudai.security;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
     private UserMapper userMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private UserRoleMapper userRoleMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,11 +45,15 @@ public class MyUserDetailsService implements UserDetailsService {
         boolean enabled = userModel.isActive();
         String salt = userModel.getSalt();
 
-        AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        String umpUserId = accountModel != null ? accountModel.getPayUserId() : null;
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
 
-        List<GrantedAuthority> authorities = Lists.newArrayList();
+        List<GrantedAuthority> grantedAuthorities = Lists.transform(userRoleModels, new Function<UserRoleModel, GrantedAuthority>() {
+            @Override
+            public GrantedAuthority apply(UserRoleModel userRoleModel) {
+                return new SimpleGrantedAuthority(userRoleModel.getRole().name());
+            }
+        });
 
-        return new MyUser(loginName, password, enabled, true, true, true, authorities, mobile, umpUserId, salt);
+        return new MyUser(loginName, password, enabled, true, true, true, grantedAuthorities, mobile, salt);
     }
 }

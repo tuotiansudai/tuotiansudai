@@ -30,6 +30,8 @@ public class BaseCallbackRequestModel {
     private String tradeNo;
     private String retCode;
     private String retMsg;
+    private String charset;
+
     private Date requestTime = new Date();
     private Date responseTime;
     private String requestData;
@@ -181,4 +183,12 @@ public class BaseCallbackRequestModel {
     public void setResponseData(String responseData) {
         this.responseData = responseData;
     }
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
 }

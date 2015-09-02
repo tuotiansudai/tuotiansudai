@@ -13,29 +13,31 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="created_time" property="createdTime"></result>
-        <result column="success_time" property="successTime"></result>
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time, success_time
+        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
 
-    <insert id="create" parameterType="investModel">
+    <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime}, #{successTime})
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="investModel">
-        update invest SET
+        update invest set
         login_name = #{loginName},
         loan_id = #{loanId},
         amount = #{amount},
         status = #{status},
         source = #{source},
         is_auto_invest = #{isAutoInvest},
-        created_time = #{createdTime},
-        success_time = #{successTime}
+        created_time = #{createdTime}
         where id = #{id}
+    </update>
+
+    <update id="updateStatus" parameterType="map">
+        update invest set status = #{status} where id = #{id}
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
@@ -59,21 +61,26 @@
         order by created_time
         ${sortStyle}
     </select>
-
-    <select id="sumSuccessInvestAmount" parameterType="long" resultType="long">
-        select sum(amount)
+    <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId}
-        and status not in ('WAITING','FAIL')
+        and status not in ('${waiting}','${fail}')
     </select>
 
-    <select id="getInvests" parameterType="map" resultType="investResultMap">
+    <select id="getInvests" parameterType="map" resultMap="investResultMap">
         select *
         from invest
         where loan_id = #{loanId}
-        and status = ${status}
-        limit (#{index} - 1) * #{pageSize},#{pageSize}
+        and status = '${status}'
+        limit #{index},#{pageSize}
     </select>
 
+    <select id="getTotalCount" parameterType="map" resultType="int">
+        select count(1)
+        from invest
+        where loan_id = #{loanId}
+        and status = '${status}'
+    </select>
 
 </mapper>

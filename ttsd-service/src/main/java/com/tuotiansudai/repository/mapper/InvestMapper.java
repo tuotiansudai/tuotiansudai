@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InvestMapper {
@@ -21,6 +22,14 @@ public interface InvestMapper {
      * @param investModel
      */
     void update(InvestModel investModel);
+
+    /**
+     * 更新投资记录的状态
+     * @param id
+     * @param status
+     */
+    void updateStatus(@Param(value = "id") long id,
+                      @Param(value = "status") InvestStatus status);
 
     /**
      * 根据ID查找对应的投资
@@ -56,12 +65,16 @@ public interface InvestMapper {
      * @param loanId
      * @return
      */
-    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
+    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId,
+                                @Param(value = "waiting") InvestStatus waiting,
+                                @Param(value = "fail") InvestStatus fail);
 
     List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
                                  @Param(value = "index") Integer index,
                                  @Param(value = "pageSize") Integer pageSize,
                                  @Param(value = "status") InvestStatus status);
 
+    int getTotalCount(@Param(value = "loanId") long loanId,
+                                    @Param(value = "status") InvestStatus status);
 
 }
