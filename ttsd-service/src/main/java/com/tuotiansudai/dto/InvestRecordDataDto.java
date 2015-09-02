@@ -17,7 +17,11 @@ public class InvestRecordDataDto extends BaseDataDto {
         this.index = index;
         this.pageSize = pageSize;
         this.totalCount = totalCount;
-        this.totalPages = totalCount/pageSize + 1;
+        if(totalCount % pageSize > 0){
+            this.totalPages = totalCount/pageSize + 1;
+        }else{
+            this.totalPages = totalCount/pageSize;
+        }
         this.isHasNextPage();
         this.isHasPreviousPage();
     }
@@ -77,11 +81,11 @@ public class InvestRecordDataDto extends BaseDataDto {
     }
 
     public boolean isHasNextPage() {
-        hasPreviousPage = false;
+        hasNextPage = false;
         if(this.index >= 1 && this.index < this.totalPages){
-            hasPreviousPage =  true;
+            hasNextPage =  true;
         }
-        return hasPreviousPage;
+        return hasNextPage;
     }
 
     public void setHasNextPage(boolean hasNextPage) {

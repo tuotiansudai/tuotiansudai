@@ -45,7 +45,7 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
-    BaseDto<LoanDto> getLoanDetail(String loanId);
+    BaseDto<LoanDto> getLoanDetail(long loanId);
 
     String getExpectedTotalIncome(long loanId, double investAmount);
 

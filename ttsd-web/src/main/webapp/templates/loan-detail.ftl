@@ -6,8 +6,5 @@
 </head>
 <body>
     loan-detail
-    <#list loan >
-
-    </#list>
 </body>
 </html>

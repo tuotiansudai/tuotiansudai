@@ -4,6 +4,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
+import junit.framework.Assert;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -83,7 +84,7 @@ public class InvestMapperTest {
     public void shouldFindByCorrectSortStyle(){
         createTestInvests();
 
-        List<InvestModel> investModels1 = investMapper.findByLoanIdOrderByTime(Loan_ID2,SortStyle.Asc);
+        List<InvestModel> investModels1 = investMapper.findByLoanIdOrderByTime(Loan_ID2, SortStyle.Asc);
         assertEquals(investModels1.size(), 5);
         assert investModels1.get(0).getCreatedTime().before(investModels1.get(1).getCreatedTime());
 
@@ -93,12 +94,6 @@ public class InvestMapperTest {
         assert investModels2.get(4).getCreatedTime().before(investModels2.get(2).getCreatedTime());
     }
 
-    @Test
-    public void shouldGetCorrectAmountTotal(){
-        createTestInvests();
-        long amountTotal = investMapper.sumSuccessInvestAmount(Loan_ID);
-        assertEquals(amountTotal, 1000000*5);
-    }
 
     private void createTestInvests(){
         for(int i=0;i<10;i++) {
@@ -132,8 +127,8 @@ public class InvestMapperTest {
 
     @Before
     public void createLoan() {
-        createLoanByUserId(User_ID,Loan_ID);
-        createLoanByUserId(User_ID2,Loan_ID2);
+        createLoanByUserId(User_ID, Loan_ID);
+        createLoanByUserId(User_ID2, Loan_ID2);
         assertNotNull(loanMapper.findById(Loan_ID));
     }
 
@@ -184,5 +179,25 @@ public class InvestMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
+    }
+    @Test
+    public void shouldSumSuccessInvestAmount(){
+        InvestModel investModel1 = getFakeInvestModel();
+        investModel1.setStatus(InvestStatus.SUCCESS);
+        InvestModel investModel2 = getFakeInvestModel();
+        investModel2.setStatus(InvestStatus.FAIL);
+
+        InvestModel investModel3 = getFakeInvestModel();
+        investModel3.setStatus(InvestStatus.WAITING);
+
+        investMapper.create(investModel1);
+        investMapper.create(investModel2);
+        investMapper.create(investModel3);
+
+        long result = investMapper.sumSuccessInvestAmount(Loan_ID,InvestStatus.WAITING,InvestStatus.FAIL);
+
+        assertEquals(1000000l,result);
+
+
     }
 }

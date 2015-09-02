@@ -19,9 +19,9 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayFormDataDto> invest(@Valid @RequestBody WithdrawDto dto) {
-        return investService.invest(dto);
-    }
+//    @RequestMapping(value = "/invest", method = RequestMethod.POST)
+//    @ResponseBody
+//    public BaseDto<PayFormDataDto> invest(@Valid @RequestBody WithdrawDto dto) {
+//        return investService.invest(dto);
+//    }
 }

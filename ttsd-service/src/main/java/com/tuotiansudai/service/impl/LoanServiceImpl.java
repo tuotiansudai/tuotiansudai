@@ -154,11 +154,11 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<LoanDto> getLoanDetail(String loanId) {
+    public BaseDto<LoanDto> getLoanDetail(long loanId) {
         BaseDto dto = new BaseDto();
         String loginName = LoginUserInfo.getLoginName();
         LoanDto loanDto = new LoanDto();
-        LoanModel loanModel = loanMapper.findById(Long.parseLong(loanId));
+        LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
             dto.setSuccess(true);
             loanDto.setStatus(false);
@@ -166,7 +166,7 @@ public class LoanServiceImpl implements LoanService {
         }
         loanDto = convertModelToDto(loanModel, loginName);
         loanDto.setStatus(true);
-
+        dto.setData(loanDto);
         return dto;
     }
 
@@ -191,9 +191,9 @@ public class LoanServiceImpl implements LoanService {
             loanDto.setBalance(accountModel.getBalance());
         }
         loanDto.setPreheatSeconds(Long.parseLong(this.calculatorPreheatSeconds(loanModel.getFundraisingStartTime())));
-        long amountNeedRaised = investMapper.sumSuccessInvestAmount(loanModel.getId());
-        loanDto.setAmountNeedRaised(amountNeedRaised);
-        loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(amountNeedRaised, loanModel.getLoanAmount()));
+        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId(),InvestStatus.WAITING,InvestStatus.FAIL);
+        loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount,loanModel.getLoanAmount()));
+        loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         return loanDto;
     }
@@ -207,10 +207,18 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public BaseDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize) {
         BaseDto baseDto = new BaseDto();
-        List<InvestModel> investModels = investMapper.getInvests(loanId, index, pageSize, InvestStatus.SUCCESS);
+        if(index <= 0 || pageSize <= 0){
+            InvestRecordDataDto investRecordDataDto = new InvestRecordDataDto();
+            baseDto.setSuccess(true);
+            investRecordDataDto.setStatus(false);
+            baseDto.setData(investRecordDataDto);
+            return baseDto;
+        }
+        int totalCount = investMapper.getTotalCount(loanId,InvestStatus.SUCCESS);
+        List<InvestModel> investModels = investMapper.getInvests(loanId, (index-1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestRecordDto>  investRecordDtos = convertInvestModelToDto(investModels);
-        InvestRecordDataDto investRecordDataDto = new InvestRecordDataDto(index,pageSize,investRecordDtos.size());
-
+        InvestRecordDataDto investRecordDataDto = new InvestRecordDataDto(index,pageSize,totalCount);
+        investRecordDataDto.setInvestRecordDtoList(investRecordDtos);
         baseDto.setSuccess(true);
         investRecordDataDto.setStatus(true);
         baseDto.setData(investRecordDataDto);
@@ -227,7 +235,7 @@ public class LoanServiceImpl implements LoanService {
             investRecordDto.setSource(investModel.getSource());
             //TODO:预期利息
             investRecordDto.setExpectedRate("1.0");
-            investRecordDto.setSuccessTime(new SimpleDateFormat("yyyy-MM-dd").format(investModel.getSuccessTime()));
+            investRecordDto.setSuccessTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(investModel.getSuccessTime()));
             investRecordDtos.add(investRecordDto);
         }
         return investRecordDtos;
@@ -247,10 +255,18 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
-    private double calculateRaiseCompletedRate(long amountNeedRaised, long loanAmount) {
+    private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
         BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        double raiseCompletedRate = loanAmountBig.subtract(amountNeedRaisedBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        return raiseCompletedRate;
+        double amountNeedRaisedDouble = loanAmountBig.subtract(amountNeedRaisedBig)
+                                                 .divide(new BigDecimal(100d))
+                                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return amountNeedRaisedDouble;
+    }
+
+    private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
+        BigDecimal investedAmountBig = new BigDecimal(investedAmount);
+        BigDecimal loanAmountBig = new BigDecimal(loanAmount);
+        return  investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }

@@ -56,12 +56,19 @@ public interface InvestMapper {
      * @param loanId
      * @return
      */
-    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
+    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId,
+                                @Param(value = "waiting") InvestStatus waiting,
+                                @Param(value = "fail") InvestStatus fail);
 
     List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
                                  @Param(value = "index") Integer index,
                                  @Param(value = "pageSize") Integer pageSize,
                                  @Param(value = "status") InvestStatus status);
+
+    int getTotalCount(@Param(value = "loanId") long loanId,
+                                    @Param(value = "status") InvestStatus status);
+
+
 
 
 }

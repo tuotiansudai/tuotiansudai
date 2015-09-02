@@ -26,6 +26,8 @@
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="status" property="status"></result>
+        <result column="loan_amount" property="loanAmount"></result>
+
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
