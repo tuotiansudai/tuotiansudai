@@ -18,6 +18,8 @@ public class LoanResponseDataDto {
     private String minInvestMoney;
     private String cardinalNumber;
     private String maxInvestMoney;
+    private String investBeginTime;
+    private String investBeginSeconds;
 
     public String getLoanId() {
         return loanId;
@@ -153,5 +155,21 @@ public class LoanResponseDataDto {
 
     public void setMaxInvestMoney(String maxInvestMoney) {
         this.maxInvestMoney = maxInvestMoney;
+    }
+
+    public String getInvestBeginTime() {
+        return investBeginTime;
+    }
+
+    public void setInvestBeginTime(String investBeginTime) {
+        this.investBeginTime = investBeginTime;
+    }
+
+    public String getInvestBeginSeconds() {
+        return investBeginSeconds;
+    }
+
+    public void setInvestBeginSeconds(String investBeginSeconds) {
+        this.investBeginSeconds = investBeginSeconds;
     }
 }

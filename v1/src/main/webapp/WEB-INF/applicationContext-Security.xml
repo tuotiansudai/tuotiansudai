@@ -227,14 +227,20 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="defaultTargetUrl" value="/admin/index.htm" />
 	</beans:bean>
 
+	<beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.ttsd.api.security.MySimpleUrlLogoutSuccessHandler" >
+		<beans:property name="headers">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
 	<!-- 注销过滤器，完成前台用户注销时的定向功能 -->
-	<beans:bean id="logoutFilter"
-		class="org.springframework.security.web.authentication.logout.LogoutFilter">
-		<beans:constructor-arg value="/" />
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg ref="mySimpleUrlLogoutSuccessHandler"/>
 		<beans:constructor-arg>
 			<beans:list>
-				<beans:bean
-					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
 				<beans:ref bean="rememberMeServices" />
 			</beans:list>
 		</beans:constructor-arg>

@@ -60,13 +60,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
         final String uri = httpServletRequest.getRequestURI();
 
-        if (!loginUrl.equalsIgnoreCase(uri) && !refreshTokenUrl.equalsIgnoreCase(uri) &&
-                !Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
-            @Override
-            public boolean apply(String uriPrefix) {
-                return uri.startsWith(uriPrefix);
-            }
-        })) {
+        if (!isHandleCurrentRequest(httpServletRequest)) {
             chain.doFilter(request, response);
             return;
         }
@@ -77,14 +71,11 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                 root.put("code", ReturnMessage.BAD_REQUEST.getCode());
                 root.put("message", ReturnMessage.BAD_REQUEST.getMsg());
                 this.generateJsonResponse(httpServletResponse, root);
-                return;
             } catch (JSONException e) {
                 log.error(e.getLocalizedMessage(), e);
             }
-            chain.doFilter(request, response);
             return;
         }
-
 
         if (loginUrl.equalsIgnoreCase(uri)) {
             chain.doFilter(httpServletRequest, httpServletResponse);
@@ -140,9 +131,19 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             }
         }
 
-
         this.authenticateToken(loginName);
         chain.doFilter(bufferedRequest, response);
+    }
+
+    private boolean isHandleCurrentRequest(HttpServletRequest httpServletRequest) {
+        final String uri = httpServletRequest.getRequestURI();
+        return (loginUrl.equalsIgnoreCase(uri) && this.isContainsAppHeader(httpServletRequest)) || refreshTokenUrl.equalsIgnoreCase(uri) ||
+                    Iterators.any(uriPrefixes.iterator(), new Predicate<String>() {
+                        @Override
+                        public boolean apply(String uriPrefix) {
+                            return uri.startsWith(uriPrefix);
+                        }
+                    });
     }
 
 
@@ -198,10 +199,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     }
 
     private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
-        if (!httpServletRequest.getMethod().equalsIgnoreCase("post")) {
-            return false;
-        }
-
         Optional<Map.Entry<String, String>> optional = Iterators.tryFind(headers.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
             @Override
             public boolean apply(Map.Entry<String, String> entry) {
@@ -209,7 +206,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             }
         });
 
-        return optional.isPresent();
+        return httpServletRequest.getMethod().equalsIgnoreCase("post") && optional.isPresent();
     }
 
     public void setLoginUrl(String loginUrl) {
