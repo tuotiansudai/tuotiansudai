@@ -7,7 +7,10 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -23,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private SmsCaptchaService smsCaptchaService;
@@ -67,6 +73,11 @@ public class UserServiceImpl implements UserService {
         userModel.setSalt(salt);
         userModel.setPassword(encodePassword);
         this.userMapper.create(userModel);
+
+        UserRoleModel userRoleModel = new UserRoleModel();
+        userRoleModel.setLoginName(dto.getLoginName());
+        userRoleModel.setRole(Role.USER);
+        this.userRoleMapper.create(userRoleModel);
         return true;
     }
 
