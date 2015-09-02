@@ -49,7 +49,8 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
             "    t.`status` = 'complete'," +
             "    t.`time`," +
             "    t.`repay_day`" +
-            "  ),'%Y-%m-%d') AS repayDay," +
+            "  ),'%Y-%m-%d') AS actualDay," +
+            "  DATE_FORMAT(t.`repay_day`,'%Y-%m-%d') AS repayDay," +
             "  ROUND(" +
             "    (" +
             "      t.`corpus` + t.`default_interest` + t.`interest` + t.`fee`" +
@@ -92,11 +93,7 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
         sbSql.append(detailSql);
         if (repayTime != null) {
             sbSql.append("WHERE DATE_FORMAT( " +
-                    "    IF(" +
-                    "      t.`status` = 'complete'," +
-                    "      t.`time`," +
-                    "      t.`repay_day`" +
-                    "    )," +
+                    "   t.`repay_day`,"+
                     "    '%Y-%m'" +
                     "  ) = '"+repayTime+"'");
         }
@@ -162,6 +159,7 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
             creditorRepayPlan.setLoanId(list.get(i).get("loanId").toString());
             creditorRepayPlan.setUserId(list.get(i).get("userId").toString());
             creditorRepayPlan.setStatus(list.get(i).get("repayStatus").toString());
+            creditorRepayPlan.setActualDay(list.get(i).get("actualDay").toString());
             returnList.add(creditorRepayPlan);
         }
         return returnList;
