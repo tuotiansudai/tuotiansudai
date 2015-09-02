@@ -3,8 +3,63 @@
   margin: 0 auto;
   overflow: hidden;
   & .item-block {
+    padding: 3px 0 0;
     display: block;
     background: #fff;
+    & .btn-pay {
+      background: #f24712;
+      border: none;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      width: 340px;
+      height: 34px;
+      display: inline-block;
+      margin-left: 20px;
+      cursor: pointer;
+    }
+    & .text-input {
+      float: left;
+      width: 225px;
+      border: 1px solid #ccc;
+      height: 32px;
+      color: #ccc;
+      display: inline-block;
+      margin-left: 20px;
+    }
+    & .bg-yellow {
+      width: 100px;
+      height: 32px;
+      line-height: 32px;
+      font-size: 12px;
+      color: #fff;
+      text-align: center;
+      background: #f49578;
+      border: 1px solid #ff752a;
+      display: inline-block;
+    }
+    & .sub-hd {
+      line-height: 26px;
+      color: #a4a4a4;
+      padding-left: 20px;
+      display: inline-block;
+      width: 100px;
+    }
+    & .num {
+      line-height: 34px;
+      text-align: right;
+      padding-right: 10px;
+      width: 235px;
+      display: inline-block;
+    }
+    & .num i {
+      color: #010101;
+      font-style: normal;
+    }
+    & .num i.red {
+      color: #f27532;
+      font-style: normal;
+    }
     &.bg-loan {
       border: 1px solid #ccc;
       overflow: hidden;
@@ -15,10 +70,10 @@
       float: left;
       border-right: 1px solid #ccc;
       & .hd {
-        margin: 0 10px;
+        margin: -3px 10px 0;
         position: relative;
         line-height: 55px;
-        padding-left: 60px;
+        padding-left: 40px;
         border-bottom: 2px solid #ccc;
         font-size: 14px;
         & .hot {
@@ -49,7 +104,7 @@
             color: #f24712;
             font-size: 12px;
             right: 23px;
-            top: 76px;
+            top: 66px;
             position: absolute;
             z-index: 33;
           }
@@ -92,28 +147,28 @@
             display: none
           }
           & .num {
-            font: bold 18px/180px tahoma;
+            font: bold 20px/180px tahoma;
             text-align: center;
             color: #f24712;
-            top: 10px;
+            top: 5px;
             left: 10px;
             z-index: 9;
           }
 
         }
       }
-      & .chart-info{
+      & .chart-info {
         width: 290px;
         float: right;
         color: #a4a4a4;
-        & .point{
+        & .point {
           color: #000;
         }
-        & p{
+        & p {
           line-height: 26px;
           padding: 8px 0 0;
         }
-        & a{
+        & a {
           margin-top: 10px;
           color: #f24712;
           display: block;
@@ -124,14 +179,178 @@
     & .account-info {
       width: 376px;
       float: left;
-      & .ttsd-tips{
+      & .ttsd-tips {
         text-align: center;
         font-size: 14px;
         color: #949494;
         display: block;
         line-height: 55px;
+
       }
     }
   }
+  .loan-box {
+    & .nav {
+      height: 50px;
+      border-bottom: 1px solid #ccc;
+      & li {
+        float: left;
+        width: 130px;
+        height: 50px;
+        & span {
+          float: left;
+          width: 130px;
+          border-right: 1px solid #ccc;
+          margin: 5px 0;
+          color: #8c8c8c;
+          text-align: center;
+          line-height: 38px;
+          cursor: pointer;
+        }
+        &.current {
+          background: url("../../images/loan/nav_bg.png") left bottom no-repeat;
+          color: #ed9c30;
+        }
+      }
+    }
+    & .loan-list {
+      & .loan-list-con {
+        display: none;
+        & .loan-detail {
+          margin: 10px;
+          padding: 10px;
+          border: 1px solid #ccc;
 
+          & h3 {
+            color: #000;
+            font-size: 14px;
+            padding-bottom: 10px;
+          }
+          & p {
+            line-height: 26px;
+            color: #7c7c7c;
+            font-size: 12px;
+          }
+        }
+        & .loan-material {
+          margin: 10px;
+          & h3 {
+            padding: 10px;
+            background: #eaeaea;
+            color: #ed9c30;
+            font-size: 14px;
+          }
+          & .title {
+            padding-top: 10px;
+            line-height: 36px;
+          }
+          & .pic-list {
+            & .img-list {
+              display: block;
+              overflow: hidden;
+            }
+            & li {
+              width: 175px;
+              height: 95px;
+              float: left;
+              margin: 5px 10px 5px 0;
+              cursor: pointer;
+
+            }
+          }
+        }
+        & .table-list {
+          margin: 10px;
+          border-collapse: collapse;
+          text-align: center;
+          line-height: 30px;
+          display: block;
+          float: left;
+          width: 980px;
+          & .icon-loan-ie, & .icon-loan-ios,
+          & .icon-loan-Android {
+            width: 18px;
+            height: 18px;
+            background: url("../../images/loan/ico_loan.png") no-repeat;
+            display: inline-block;
+            margin-bottom: -2px;
+          }
+          & .icon-loan-ios {
+            height: 22px;
+            background-position: 0 -61px;
+          }
+          & .icon-loan-Android {
+            height: 22px;
+            background-position: 0 -30px;
+          }
+          & th:first-child, & td:first-child {
+            width: 80px;
+          }
+          & th {
+            width: 180px;
+            background-color: #acacac;
+            border-right: 1px solid #ccc;
+          }
+          & td {
+            width: 180px;
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+          }
+          & td:nth-child(even) {
+
+          }
+          & td:nth-child(odd) {
+            background: #f0f0f0;
+          }
+        }
+        & .pagination{
+          width: 100%;
+          margin: 10px 0;
+          display: block;
+          text-align: center;
+          & a{
+            color: #777777;
+            padding:2px 8px;
+          }
+          & a.current{
+            background: #f24712;
+            color: #fff;
+          }
+          & .next,& .prev{
+            cursor: pointer;
+          }
+        }
+
+      }
+
+    }
+
+  }
+}
+
+.layer-box {
+  display: none;
+}
+
+.layer-box .layer-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: rgba(0, 0, 0, .6);
+  z-index: 888;
+  top: 0;
+  left: 0;
+}
+
+.layer-box .content {
+  width: 760px;
+  height: 450px;
+  position: fixed;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 900;
+  left: 50%;
+  top: 50%;
+  margin: -275px 0 0 -380px;
 }
