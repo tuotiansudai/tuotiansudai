@@ -73,7 +73,15 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Override
     public BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto) {
         String userId = requestDto.getBaseParam().getUserId();
-        String[] status = new String[]{};
+        String[] status = new String[]{
+                InvestStatus.WAIT_AFFIRM.getCode(),
+                InvestStatus.BID_SUCCESS.getCode(),
+                InvestStatus.CANCEL.getCode(),
+                InvestStatus.REPAYING.getCode(),
+                InvestStatus.OVERDUE.getCode(),
+                InvestStatus.COMPLETE.getCode(),
+                InvestStatus.UNFINISHED.getCode()
+        };
         return generateUserInvestListEx(requestDto, userId, status);
     }
 
