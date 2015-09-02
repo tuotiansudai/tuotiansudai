@@ -12,22 +12,18 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjec
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -42,39 +38,21 @@ public class LoanServiceImpl implements LoanService {
     private UserMapper userMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = noticeUMPCreateLoan(loanDto);
-        if (baseDto.getData().getStatus()){
-            baseDto = noticeUMPUpdateLoan(loanDto);
-        }
-        return baseDto;
-    }
-
-    private BaseDto<PayDataDto> noticeUMPCreateLoan(LoanDto loanDto){
+    public BaseDto<PayDataDto> createLoan(long loanId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
-        long loanerId = userMapper.findByLoginName(loanDto.getLoanerLoginName()).getId();
+        LoanModel loanModel = loanMapper.findById(loanId);
+        long loanerId = userMapper.findByLoginName(loanModel.getLoanerLoginName()).getId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
-                loanDto.getId(),
+                loanModel.getId(),
                 loanerId,
-                AmountUtil.convertStringToCent(loanDto.getLoanAmount()),
-                loanDto.getProjectName()
+                loanModel.getLoanAmount(),
+                loanModel.getName()
         );
         try {
             MerBindProjectResponseModel responseModel = paySyncClient.send(MerBindProjectMapper.class,
                     merBindProjectRequestModel,
                     MerBindProjectResponseModel.class);
-            if (responseModel.isSuccess()) {
-                LoanModel loanModel = new LoanModel(loanDto);
-                loanMapper.update(loanModel);
-                if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0){
-                    loanTitleRelationMapper.delete(loanDto.getId());
-                }
-                List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
-                if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0){
-                    loanTitleRelationMapper.create(loanTitleRelationModels);
-                }
-            }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
@@ -86,24 +64,27 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-    private BaseDto<PayDataDto> noticeUMPUpdateLoan(LoanDto loanDto){
+
+    public BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus){
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
+        LoanModel loanModel = loanMapper.findById(loanId);
         MerUpdateProjectRequestModel merUpdateProjectRequestModel = new MerUpdateProjectRequestModel(
-                AmountUtil.convertStringToCent(loanDto.getLoanAmount()),
-                loanDto.getId(),
-                loanDto.getProjectName(),
-                new SimpleDateFormat("yyyyMMdd").format(loanDto.getFundraisingEndTime())
+                loanModel.getLoanAmount(),
+                loanModel.getId(),
+                loanModel.getName(),
+                loanStatus.getCode(),
+                new SimpleDateFormat("yyyyMMdd").format(loanModel.getFundraisingEndTime())
         );
         try {
             MerUpdateProjectResponseModel responseModel = paySyncClient.send(MerUpdateProjectMapper.class,
                     merUpdateProjectRequestModel,
                     MerUpdateProjectResponseModel.class);
             if (responseModel.isSuccess()) {
-                LoanModel loanModel = new LoanModel();
-                loanModel.setId(loanDto.getId());
-                loanModel.setStatus(LoanStatus.PREHEAT);
-                loanMapper.update(loanModel);
+                LoanModel loan = new LoanModel();
+                loanModel.setId(loanId);
+                loanModel.setStatus(loanStatus);
+                loanMapper.update(loan);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());

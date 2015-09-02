@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.tuotiansudai.repository.model.LoanStatus;
+
 import java.util.Map;
 
 public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
@@ -14,6 +16,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
     public MerUpdateProjectRequestModel(long loanAmount,
                                         long projectId,
                                         String projectName,
+                                        String projectState,
                                         String projectExpireDate) {
         super();
         this.service = "mer_update_project";
@@ -21,7 +24,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         this.projectName = projectName;
         this.projectAmount = loanAmount;
         this.changeType = "01";//更新标的
-        this.projectState = "0";//开标
+        this.projectState = projectState;
         this.projectExpireDate = projectExpireDate;
     }
 

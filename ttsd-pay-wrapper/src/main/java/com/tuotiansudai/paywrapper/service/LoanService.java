@@ -4,13 +4,22 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.LoanStatus;
 
 public interface LoanService {
 
     /**
      * @function 创建标的
-     * @param loanDto
+     * @param loanId
      * @return
      */
-    BaseDto<PayDataDto> createLoan(LoanDto loanDto);
+    BaseDto<PayDataDto> createLoan(long loanId);
+
+    /**
+     * @function 更新标的
+     * @param loanId
+     * @param loanStatus
+     * @return
+     */
+    BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus);
 }
