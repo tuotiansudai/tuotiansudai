@@ -13,7 +13,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath:jdbc.properties, classpath:sms_wrapper_client.properties,classpath:redis_wrapper_client.properties,classpath:pay_wrapper_client.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties, classpath*:sms_wrapper_client.properties,classpath*:redis_wrapper_client.properties,classpath*:pay_wrapper_client.properties,classpath*:oss_wrapper_client.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
@@ -76,6 +76,8 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean class="com.tuotiansudai.utils.SpringContextUtil" />
 
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 

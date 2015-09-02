@@ -14,16 +14,13 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-<<<<<<< HEAD
-
-    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
-=======
-    <context:property-placeholder location="classpath:jdbc.properties, classpath*:sms_wrapper_client.properties,classpath*:redis_wrapper_client.properties,classpath*:pay_wrapper_client.properties" />
->>>>>>> master
+    <context:property-placeholder location="classpath:jdbc.properties, classpath*:sms_wrapper_client.properties,classpath*:redis_wrapper_client.properties,classpath*:pay_wrapper_client.properties,classpath*:oss_wrapper_client.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
 
+    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
+    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
@@ -83,5 +80,7 @@
     </bean>
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean class="com.tuotiansudai.utils.SpringContextUtil" />
 
 </beans>

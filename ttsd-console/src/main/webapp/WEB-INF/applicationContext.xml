@@ -15,7 +15,7 @@
     <context:annotation-config/>
 
 
-    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
+    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties, classpath*:oss_wrapper_client.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
@@ -24,7 +24,7 @@
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.aa.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}${jdbc.aa.encoding}"/>
+        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}"/>
         <property name="username" value="${jdbc.aa.username}"/>
         <property name="password" value="${jdbc.aa.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
@@ -55,4 +55,6 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 </beans>
