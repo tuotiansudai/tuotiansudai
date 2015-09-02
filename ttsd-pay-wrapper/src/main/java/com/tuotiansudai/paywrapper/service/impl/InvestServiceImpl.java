@@ -130,7 +130,7 @@ public class InvestServiceImpl implements InvestService {
                 logger.error("投资成功，但资金冻结失败", e);
             }
             // 改invest 本身状态
-            investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS, new Date());
+            investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS);
             LoanModel loanModel = loanMapper.findById(loanId);
             long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
             // 满标，改标的状态 RECHECK
@@ -141,7 +141,7 @@ public class InvestServiceImpl implements InvestService {
             }
         } else {
             // 失败的话：改invest本身状态
-            investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL, new Date());
+            investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL);
         }
     }
 }

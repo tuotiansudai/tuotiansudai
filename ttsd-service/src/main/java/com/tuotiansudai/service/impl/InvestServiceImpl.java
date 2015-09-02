@@ -10,7 +10,9 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class InvestServiceImpl implements InvestService {
     @Autowired
     private IdGenerator idGenerator;

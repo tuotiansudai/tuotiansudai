@@ -1,9 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
-import com.tuotiansudai.paywrapper.repository.model.UmPayParticType;
-import com.tuotiansudai.paywrapper.repository.model.UmPayServType;
-import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
+import com.tuotiansudai.paywrapper.repository.model.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,6 +11,7 @@ public class ProjectTransferModel extends BaseAsyncModel {
     private String orderId;
     private String userId;
     private String amount;
+    private String merDate;
 
     public ProjectTransferModel() {
 
@@ -21,13 +19,14 @@ public class ProjectTransferModel extends BaseAsyncModel {
 
     public ProjectTransferModel(String projectId, String orderId, String userId, String amount) {
         super();
-        this.service = "project_transfer_invest";
+        this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
         this.retUrl = "/";
         this.notifyUrl = "http://121.43.71.173:13002/paywrapper/callback/invest_notify";
         this.orderId = orderId;
         this.projectId = projectId;
         this.userId = userId;
         this.amount = amount;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
     }
 
     public Map<String, String> generatePayRequestData() {
@@ -36,7 +35,7 @@ public class ProjectTransferModel extends BaseAsyncModel {
         payRequestData.put("notify_url", notifyUrl);
         payRequestData.put("order_id", orderId);
         payRequestData.put("project_id", projectId);
-        payRequestData.put("mer_date", new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        payRequestData.put("mer_date", merDate);
         payRequestData.put("serv_type", UmPayServType.TRANSFER_IN_INVEST.getCode());
         payRequestData.put("trans_action", UmPayTransAction.IN.getCode());
         payRequestData.put("partic_type", UmPayParticType.INVESTOR.getCode());

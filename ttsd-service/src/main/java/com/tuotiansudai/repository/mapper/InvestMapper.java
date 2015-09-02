@@ -27,11 +27,9 @@ public interface InvestMapper {
      * 更新投资记录的状态
      * @param id
      * @param status
-     * @param successTime
      */
     void updateStatus(@Param(value = "id") long id,
-                      @Param(value = "status") InvestStatus status,
-                      @Param(value = "successTime") Date successTime);
+                      @Param(value = "status") InvestStatus status);
 
     /**
      * 根据ID查找对应的投资

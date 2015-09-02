@@ -227,7 +227,7 @@ public class LoanServiceImpl implements LoanService {
             investRecordDto.setSource(investModel.getSource());
             //TODO:预期利息
             investRecordDto.setExpectedRate("1.0");
-            investRecordDto.setSuccessTime(new SimpleDateFormat("yyyy-MM-dd").format(investModel.getSuccessTime()));
+            investRecordDto.setCreatedTime(new SimpleDateFormat("yyyy-MM-dd").format(investModel.getCreatedTime()));
             investRecordDtos.add(investRecordDto);
         }
         return investRecordDtos;

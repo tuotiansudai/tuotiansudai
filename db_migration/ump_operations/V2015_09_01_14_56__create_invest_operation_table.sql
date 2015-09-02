@@ -10,7 +10,7 @@ CREATE TABLE `ump_operations`.`project_transfer_request` (
   `notify_url`   VARCHAR(128)    NOT NULL,
   `order_id`     VARCHAR(32)     NOT NULL,
   `mer_date`     VARCHAR(8)     NOT NULL,
-  `project_id`   VARCHAR(8)     NOT NULL,
+  `project_id`   VARCHAR(32)     NOT NULL,
   `user_id`      VARCHAR(32)     NOT NULL,
   `amount`       VARCHAR(13)     NOT NULL,
   `request_time` DATETIME        NOT NULL,

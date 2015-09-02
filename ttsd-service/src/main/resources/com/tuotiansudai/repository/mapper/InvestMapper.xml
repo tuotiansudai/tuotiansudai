@@ -13,36 +13,31 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="created_time" property="createdTime"></result>
-        <result column="success_time" property="successTime"></result>
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time, success_time
+        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime}, #{successTime})
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
 
     <update id="update" parameterType="investModel">
-        update invest SET
+        update invest set
         login_name = #{loginName},
         loan_id = #{loanId},
         amount = #{amount},
         status = #{status},
         source = #{source},
         is_auto_invest = #{isAutoInvest},
-        created_time = #{createdTime},
-        success_time = #{successTime}
+        created_time = #{createdTime}
         where id = #{id}
     </update>
 
     <update id="updateStatus" parameterType="map">
-        update invest SET
-        status = #{status},
-        success_time = #{successTime}
-        where id = #{id}
+        update invest set status = #{status} where id = #{id}
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">

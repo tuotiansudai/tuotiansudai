@@ -64,19 +64,16 @@ public class InvestMapperTest {
         assertNotNull(dbModel);
         assertEquals(dbModel.getAmount(), investModel.getAmount());
         assertEquals(dbModel.getStatus(), investModel.getStatus());
-        assertNull(dbModel.getSuccessTime());
 
 
         investModel.setStatus(InvestStatus.SUCCESS);
         investModel.setAmount(111111111L);
-        investModel.setSuccessTime(new Date());
 
         investMapper.update(investModel);
         InvestModel dbModel2 = investMapper.findById(investModel.getId());
 
         assertEquals(dbModel2.getStatus(), InvestStatus.SUCCESS);
         assertEquals(dbModel2.getAmount(), 111111111L);
-        assertNotNull(dbModel2.getSuccessTime());
     }
 
     @Test
@@ -85,11 +82,11 @@ public class InvestMapperTest {
         investModel.setStatus(InvestStatus.WAITING);
         investMapper.create(investModel);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS, new Date());
+        investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
         InvestModel investModel1 = investMapper.findById(investModel.getId());
         assertEquals(investModel1.getStatus(), InvestStatus.SUCCESS);
 
-        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL, new Date());
+        investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
         InvestModel investModel2 = investMapper.findById(investModel.getId());
         assertEquals(investModel2.getStatus(), InvestStatus.FAIL);
     }
@@ -141,7 +138,6 @@ public class InvestMapperTest {
         model.setLoanId(Loan_ID);
         model.setSource(InvestSource.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
-        //model.setSuccessTime(null);
         return model;
     }
 
