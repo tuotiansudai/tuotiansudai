@@ -26,6 +26,9 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String remainTime;
     private String investBeginTime;
     private String investBeginSeconds;
+    private String minInvestMoney;
+    private String cardinalNumber;
+    private String maxInvestMoney;
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -232,4 +235,27 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
         this.investBeginSeconds = investBeginSeconds;
     }
 
+    public String getMinInvestMoney() {
+        return minInvestMoney;
+    }
+
+    public void setMinInvestMoney(String minInvestMoney) {
+        this.minInvestMoney = minInvestMoney;
+    }
+
+    public String getCardinalNumber() {
+        return cardinalNumber;
+    }
+
+    public void setCardinalNumber(String cardinalNumber) {
+        this.cardinalNumber = cardinalNumber;
+    }
+
+    public String getMaxInvestMoney() {
+        return maxInvestMoney;
+    }
+
+    public void setMaxInvestMoney(String maxInvestMoney) {
+        this.maxInvestMoney = maxInvestMoney;
+    }
 }
