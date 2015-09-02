@@ -53,7 +53,7 @@ public class LoanServiceTest {
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
-        loanDto.setLoanAmount("10000.00");
+        loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
@@ -160,7 +160,7 @@ public class LoanServiceTest {
     }
 
     public BaseDto<PayDataDto> creteLoan(LoanDto loanDto) {
-        loanDto.setProjectName("店铺资金周转");
+        loanDto.setProjectName("just for a test");
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
@@ -179,7 +179,7 @@ public class LoanServiceTest {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());
-            loanTitleRelationModel.setTitleId(Long.parseLong("12312312312"));
+            loanTitleRelationModel.setTitleId(Long.parseLong("67568913209"));
             loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
