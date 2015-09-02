@@ -14,17 +14,23 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
+<<<<<<< HEAD
+
     <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
+=======
+    <context:property-placeholder location="classpath:jdbc.properties, classpath*:sms_wrapper_client.properties,classpath*:redis_wrapper_client.properties,classpath*:pay_wrapper_client.properties" />
+>>>>>>> master
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.client, com.tuotiansudai.utils"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
+
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
     <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.pay.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}"/>
+        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}${jdbc.pay.setencoding}"/>
         <property name="username" value="${jdbc.pay.username}"/>
         <property name="password" value="${jdbc.pay.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>

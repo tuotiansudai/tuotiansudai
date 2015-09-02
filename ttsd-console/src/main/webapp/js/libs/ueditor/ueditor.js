@@ -26,11 +26,14 @@ function getAllHtml() {
     alert(UE.getEditor('editor').getAllHtml())
 }
 function getContent() {
-    var arr = [];
-    arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-    arr.push("内容为：");
-    arr.push(UE.getEditor('editor').getContent());
-    alert(arr.join("\n"));
+    var arr = '';
+    //arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+    //arr.push("内容为：");
+    arr+=(UE.getEditor('editor').getContent());
+    return arr;
+    //$('.jq-uedit-y').val(arr);
+
+    //alert(arr.join("\n"));
 }
 function getPlainTxt() {
     var arr = [];
@@ -64,11 +67,13 @@ function getText() {
 }
 
 function getContentTxt() {
-    var arr = [];
-    arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-    arr.push("编辑器的纯文本内容为：");
-    arr.push(UE.getEditor('editor').getContentTxt());
-    alert(arr.join("\n"));
+    var arr = '';
+    //arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+    //arr.push("编辑器的纯文本内容为：");
+    arr+=(UE.getEditor('editor').getContentTxt());
+    //$('.jq-uedit').val(arr);
+    //alert(arr.join("\n"));
+    return arr;
 }
 function hasContent() {
     var arr = [];
@@ -111,3 +116,4 @@ function clearLocalData () {
     UE.getEditor('editor').execCommand( "clearlocaldata" );
     alert("已清空草稿箱")
 }
+

@@ -139,7 +139,6 @@ public class RechargeServiceImpl implements RechargeService {
 	public String createRechargeOrder(Recharge recharge, HttpServletRequest request) {
 		// 往recharge中插入值。
 		recharge.setId(generateId());
-		recharge.setFee(calculateFee(recharge.getActualMoney()));
 		// 用rechargeWay进行判断，判断是要跳转到银行卡还是支付平台
 		// recharge.setRechargeWay("借记卡");
 

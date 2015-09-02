@@ -382,6 +382,7 @@
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/mobile/*</url-pattern>
+        <url-pattern>/special/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>appDispatcher</servlet-name>
