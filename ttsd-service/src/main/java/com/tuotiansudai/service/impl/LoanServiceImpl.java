@@ -180,11 +180,11 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        if (LoanStatus.WAITING_VERIFY == loanDto.getStatus()) {
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-        } else if (LoanStatus.VERIFY_FAIL == loanDto.getStatus()) {
+        } else if (LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-        } else if (LoanStatus.PREHEAT == loanDto.getStatus()) {
+        } else if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
             payWrapperClient.loan(loanDto);
         } else {
             payDataDto.setStatus(false);
@@ -255,7 +255,7 @@ public class LoanServiceImpl implements LoanService {
 
     private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
         LoanModel loanModel = new LoanModel(loanDto);
-        loanModel.setStatus(loanDto.getStatus());
+        loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
         if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0) {
             loanTitleRelationMapper.delete(loanDto.getId());

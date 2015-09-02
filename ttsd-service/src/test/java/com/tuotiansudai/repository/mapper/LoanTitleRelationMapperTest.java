@@ -63,7 +63,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();
@@ -110,7 +110,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();
@@ -159,7 +159,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
         List<LoanTitleRelationModel> loanTitleRelationModels = new ArrayList<LoanTitleRelationModel>();

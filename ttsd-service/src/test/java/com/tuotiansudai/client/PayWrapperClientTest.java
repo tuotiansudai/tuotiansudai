@@ -110,7 +110,7 @@ public class PayWrapperClientTest {
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.RECHECK);
+        loanDto.setLoanStatus(LoanStatus.RECHECK);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
 

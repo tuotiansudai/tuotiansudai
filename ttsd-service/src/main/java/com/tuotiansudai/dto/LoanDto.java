@@ -108,7 +108,7 @@ public class LoanDto {
     private Date rehearTime;
 
     /***标的状态***/
-    private LoanStatus status;
+    private LoanStatus loanStatus;
 
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
@@ -297,12 +297,12 @@ public class LoanDto {
         this.rehearTime = rehearTime;
     }
 
-    public LoanStatus getStatus() {
-        return status;
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
     }
 
-    public void setStatus(LoanStatus status) {
-        this.status = status;
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {
