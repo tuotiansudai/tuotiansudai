@@ -7,7 +7,7 @@ public class InvestRecordDto {
     private String amount;
     private InvestSource source;
     private String expectedRate;
-    private String successTime;
+    private String createdTime;
 
     public String getLoginName() {
         return loginName;
@@ -41,11 +41,11 @@ public class InvestRecordDto {
         this.expectedRate = expectedRate;
     }
 
-    public String getSuccessTime() {
-        return successTime;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
-    public void setSuccessTime(String successTime) {
-        this.successTime = successTime;
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 }

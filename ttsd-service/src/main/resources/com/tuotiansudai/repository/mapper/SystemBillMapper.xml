@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.SystemBillMapper">
+
+    <resultMap id="SystemBillResultMap" type="SystemBillModel">
+        <id column="id" property="id"></id>
+        <result column="created_time" property="createdTime"></result>
+        <result column="type" property="type"></result>
+        <result column="amount" property="amount"></result>
+        <result column="detail" property="detail"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="order_id" property="orderId"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.tuotiansudai.repository.model.SystemBillModel" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into system_bill ( amount, detail, type, created_time,order_id,business_type)
+        value( #{amount}, #{detail}, #{type}, #{createdTime},#{orderId},#{businessType})
+    </insert>
+
+</mapper>

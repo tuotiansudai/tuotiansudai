@@ -311,7 +311,7 @@ public class LoanServiceTest {
         model.setLoanId(loanId);
         model.setSource(InvestSource.ANDROID);
         model.setStatus(InvestStatus.WAITING);
-        model.setSuccessTime(new Date());
+        model.setCreatedTime(new Date());
         return model;
     }
 }

@@ -2,23 +2,31 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.impl.UserServiceImpl;
+import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.internal.matchers.CapturesArguments;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -31,7 +39,13 @@ public class UserServiceTest {
     private UserMapper userMapper;
 
     @Mock
+    private UserRoleMapper userRoleMapper;
+
+    @Mock
     private SmsCaptchaService smsCaptchaService;
+
+    @Mock
+    private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Before
     public void init() {
@@ -117,9 +131,13 @@ public class UserServiceTest {
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha)).thenReturn(true);
+        when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
 
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
+        ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
+        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.USER));
     }
 }

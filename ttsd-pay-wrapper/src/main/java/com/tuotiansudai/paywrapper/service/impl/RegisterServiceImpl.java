@@ -11,8 +11,11 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.RegisterService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -59,6 +65,10 @@ public class RegisterServiceImpl implements RegisterService {
                         responseModel.getAccountId(),
                         new Date());
                 accountMapper.create(accountModel);
+                UserRoleModel userRoleModel = new UserRoleModel();
+                userRoleModel.setLoginName(dto.getLoginName());
+                userRoleModel.setRole(Role.INVESTOR);
+                userRoleMapper.create(userRoleModel);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
