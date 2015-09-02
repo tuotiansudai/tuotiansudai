@@ -26,6 +26,8 @@
         <result column="fundraising_end_time" property="fundraisingEndTime"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="first_trial_time" property="firstTrialTime"></result>
+        <result column="rehear_time" property="rehearTime"></result>
         <result column="status" property="status"></result>
     </resultMap>
 
@@ -38,6 +40,9 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <select id="findByStatus" resultMap="loanResultMap">
+        select * from loan where status = #{status}
+    </select>
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
         update loan
         <trim prefix="set" suffixOverrides=",">
