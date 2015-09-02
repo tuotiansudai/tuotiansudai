@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
 import org.apache.log4j.Logger;
@@ -30,6 +31,8 @@ public class PayCallbackController {
     @Autowired
     private WithdrawService withdrawService;
 
+    @Autowired
+    private InvestService investService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -49,6 +52,13 @@ public class PayCallbackController {
     public ModelAndView rechargeApplyNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.withdrawService.withdrawCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/invest_notify", method = RequestMethod.GET)
+    public ModelAndView investNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investService.investCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

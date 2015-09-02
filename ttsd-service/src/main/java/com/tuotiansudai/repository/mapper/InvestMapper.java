@@ -1,18 +1,35 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InvestMapper {
     /**
-     * 创建投资
+     * 创建投资记录
      *
      * @param investModel
      */
     void create(InvestModel investModel);
+
+    /**
+     * 修改投资记录
+     *
+     * @param investModel
+     */
+    void update(InvestModel investModel);
+
+    /**
+     * 更新投资记录的状态
+     * @param id
+     * @param status
+     */
+    void updateStatus(@Param(value = "id") long id,
+                      @Param(value = "status") InvestStatus status);
 
     /**
      * 根据ID查找对应的投资
@@ -39,6 +56,20 @@ public interface InvestMapper {
      * @param loanId
      * @return
      */
-    List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") String loanId,
+    List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") long loanId,
                                               @Param(value = "sortStyle") SortStyle sortStyle);
+
+    /**
+     * 计算标的的投资总额
+     *
+     * @param loanId
+     * @return
+     */
+    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
+
+    List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
+                                 @Param(value = "index") Integer index,
+                                 @Param(value = "pageSize") Integer pageSize,
+                                 @Param(value = "status") InvestStatus status);
+
 }

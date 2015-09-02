@@ -54,7 +54,7 @@ public class LoanMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         loanDto.setLoanTitles(loanTitleRelationModelList);
         LoanModel loanModel = new LoanModel(loanDto);
