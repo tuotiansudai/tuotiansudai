@@ -53,7 +53,7 @@ public class LoanServiceTest {
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
-        loanDto.setLoanAmount("10000.00");
+        loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
@@ -160,7 +160,7 @@ public class LoanServiceTest {
     }
 
     public BaseDto<PayDataDto> creteLoan(LoanDto loanDto) {
-        loanDto.setProjectName("店铺资金周转");
+        loanDto.setProjectName("just for a test");
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
@@ -173,17 +173,59 @@ public class LoanServiceTest {
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        for (int i = 0; i < 5; i++) {
+            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(loanDto.getId());
+            loanTitleRelationModel.setTitleId(Long.parseLong("67568913209"));
+            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModelList.add(loanTitleRelationModel);
+        }
+        loanDto.setLoanTitles(loanTitleRelationModelList);
+        return loanService.createLoan(loanDto);
+    }
+
+    @Test
+    public void updateLoanTest(){
+        long loanId = 194989993639936l;
+        LoanDto loanDto = new LoanDto();
+        loanDto.setId(loanId);
+        loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setAgentLoginName("liming");
+        loanDto.setLoanAmount("5000.00");
+        loanDto.setMaxInvestAmount("999.00");
+        loanDto.setMinInvestAmount("1.00");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setProjectName("店铺资金周转更新");
+        loanDto.setActivityRate("12.00");
+        loanDto.setBasicRate("16.00");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(30);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.VERIFY_FAIL);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 5; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());
             loanTitleRelationModel.setTitleId(Long.parseLong("12312312312"));
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        return loanService.createLoan(loanDto);
+        loanService.updateLoan(loanDto);
+        assertTrue(LoanStatus.VERIFY_FAIL == loanMapper.findById(loanId).getStatus());
+        List<LoanTitleRelationModel> loanTitleRelationModels = loanTitleRelationMapper.findByLoanId(loanId);
+        assertTrue(loanTitleRelationModels.size() == loanTitleRelationModelList.size());
     }
 }

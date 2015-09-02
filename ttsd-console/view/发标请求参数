@@ -20,7 +20,7 @@
     "fundraisingStartTime":"",//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
     "fundraisingEndTime":"",//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
     "showOnHome":"",
-    "loanAmount":""//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "loanAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
     "loanTitles":[
         {
         "titleId":"",
@@ -91,3 +91,102 @@
         "liubei"
     ]
 
+
+7.标的编辑
+    请求method：post
+    请求地址：${requestContext.getContextPath()}/edit-loan
+    {
+    "id":"",
+    "projectName":"",
+    "agentLoginName":"",
+    "loanerLoginName":"",
+    "type":"",
+    "periods":"",
+    "descriptionText":"",
+    "descriptionHtml":"",
+    "investFeeRate":"",
+    "minInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "maxInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "investIncreasingAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "activityType":"",
+    "activityRate":"",
+    "basicRate":"",
+    "contractId":"",
+    "fundraisingStartTime":"",//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
+    "fundraisingEndTime":"",//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
+    "showOnHome":"",
+    "loanAmount":""//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+    "loanTitles":[
+        {
+        "titleId":"",
+        "applyMetarialUrl":""
+        }
+      ]
+    }
+
+    8.标的审核通过
+        请求method：post
+        请求地址：${requestContext.getContextPath()}/first-trial-passed
+        {
+        "id":"",
+        "projectName":"",
+        "agentLoginName":"",
+        "loanerLoginName":"",
+        "type":"",
+        "periods":"",
+        "descriptionText":"",
+        "descriptionHtml":"",
+        "investFeeRate":"",
+        "minInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "maxInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "investIncreasingAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "activityType":"",
+        "activityRate":"",
+        "basicRate":"",
+        "contractId":"",
+        "fundraisingStartTime":"",//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
+        "fundraisingEndTime":"",//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
+        "showOnHome":"",
+        "loanAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "status":"RECHECK",
+        "loanTitles":[
+            {
+            "titleId":"",
+            "applyMetarialUrl":""
+            }
+          ]
+        }
+
+
+    9.标的审核未通过
+        请求method：post
+        请求地址：${requestContext.getContextPath()}/first-trial-refused
+        {
+        "id":"",
+        "projectName":"",
+        "agentLoginName":"",
+        "loanerLoginName":"",
+        "type":"",
+        "periods":"",
+        "descriptionText":"",
+        "descriptionHtml":"",
+        "investFeeRate":"",
+        "minInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "maxInvestAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "investIncreasingAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "activityType":"",
+        "activityRate":"",
+        "basicRate":"",
+        "contractId":"",
+        "fundraisingStartTime":"",//筹款启动时间类型为：yyyy-MM-dd HH:mm:ss
+        "fundraisingEndTime":"",//筹款截止时间类型为：yyyy-MM-dd HH:mm:ss
+        "showOnHome":"",
+        "loanAmount":"",//带两位小数，若用户输入10，则传入10.00，若用户输入10.1，则传入10.10
+        "status":"VERIFY_FAIL",
+        "loanTitles":[
+            {
+            "titleId":"",
+            "applyMetarialUrl":""
+            }
+          ]
+        }

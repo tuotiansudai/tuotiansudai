@@ -101,8 +101,14 @@ public class LoanDto {
     /***建标时间***/
     private Date createdTime;
 
+    /***初审时间***/
+    private Date firstTrialTime;
+
+    /***复审时间***/
+    private Date rehearTime;
+
     /***标的状态***/
-    private LoanStatus status;
+    private LoanStatus loanStatus;
 
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
@@ -275,12 +281,28 @@ public class LoanDto {
         this.createdTime = createdTime;
     }
 
-    public LoanStatus getStatus() {
-        return status;
+    public Date getFirstTrialTime() {
+        return firstTrialTime;
     }
 
-    public void setStatus(LoanStatus status) {
-        this.status = status;
+    public void setFirstTrialTime(Date firstTrialTime) {
+        this.firstTrialTime = firstTrialTime;
+    }
+
+    public Date getRehearTime() {
+        return rehearTime;
+    }
+
+    public void setRehearTime(Date rehearTime) {
+        this.rehearTime = rehearTime;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {

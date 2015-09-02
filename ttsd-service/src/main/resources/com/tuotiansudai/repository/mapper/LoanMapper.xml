@@ -14,6 +14,7 @@
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
+        <result column="loan_amount" property="loanAmount"></result>
         <result column="invest_fee_rate" property="investFeeRate"></result>
         <result column="min_invest_amount" property="minInvestAmount"></result>
         <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
@@ -36,4 +37,74 @@
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
+
+    <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
+        update loan
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="agentLoginName !=null and agentLoginName!=''">
+                agent = #{agentLoginName},
+            </if>
+            <if test="loanerLoginName !=null and loanerLoginName!=''">
+                loaner = #{loanerLoginName},
+            </if>
+            <if test="type !=null">
+                type = #{type},
+            </if>
+            <if test="periods !=null and periods!=''">
+                periods = #{periods},
+            </if>
+            <if test="descriptionText !=null and descriptionText!=''">
+                description_text = #{descriptionText},
+            </if>
+            <if test="descriptionHtml !=null and descriptionHtml!=''">
+                description_html = #{descriptionHtml},
+            </if>
+            <if test="loanAmount !=null and loanAmount!=''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="investFeeRate !=null and investFeeRate!=''">
+                invest_fee_rate = #{investFeeRate},
+            </if>
+            <if test="minInvestAmount !=null and minInvestAmount!=''">
+                min_invest_amount = #{minInvestAmount},
+            </if>
+            <if test="investIncreasingAmount !=null and investIncreasingAmount!=''">
+                invest_increasing_amount = #{investIncreasingAmount},
+            </if>
+            <if test="maxInvestAmount !=null and maxInvestAmount!=''">
+                max_invest_amount = #{maxInvestAmount},
+            </if>
+            <if test="activityType !=null">
+                activity_type = #{activityType},
+            </if>
+            <if test="activityRate !=null and activityRate!=''">
+                activity_rate = #{activityRate},
+            </if>
+            <if test="contractId !=null and contractId!=''">
+                contract_id = #{contractId},
+            </if>
+            <if test="fundraisingStartTime !=null">
+                fundraising_start_time = #{fundraisingStartTime},
+            </if>
+            <if test="fundraisingEndTime !=null">
+                fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="showOnHome !=null">
+                show_on_home = #{showOnHome},
+            </if>
+            <if test="firstTrialTime !=null">
+                first_trial_time = #{firstTrialTime},
+            </if>
+            <if test="rehearTime !=null">
+                rehear_time = #{rehearTime},
+            </if>
+            <if test="status !=null">
+                status = #{status}
+            </if>
+        </trim>
+    </update>
+
 </mapper>

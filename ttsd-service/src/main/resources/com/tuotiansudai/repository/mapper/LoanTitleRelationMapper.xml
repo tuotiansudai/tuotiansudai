@@ -9,6 +9,7 @@
         <result column="loan_id" property="loanId"></result>
         <result column="title_id" property="titleId"></result>
         <result column="apply_metarial_url" property="applyMetarialUrl"></result>
+        <result column="titile" property="title"></result>
     </resultMap>
 
     <insert id="create" parameterType="LoanTitleModel">
@@ -19,6 +20,12 @@
     </insert>
 
     <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select * from loan_title_relation where loan_id = #{loanId}
+        select ltr.apply_metarial_url as apply_metarial_url ,lt.title as titile,lt.id as title_id from
+        (select title_id,apply_metarial_url from loan_title_relation  where loan_id = #{loanId})
+        as ltr left join loan_title as lt on ltr.title_id = lt.id
     </select>
+
+    <delete id="delete" parameterType="long">
+        delete from loan_title_relation where loan_id = #{loanId};
+    </delete>
 </mapper>

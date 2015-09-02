@@ -125,25 +125,25 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
-    public BaseDto<PayFormDataDto> loan(LoanDto dto) {
+    public BaseDto<PayDataDto> loan(LoanDto dto) {
         String requestJson;
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        baseDto.setData(payFormDataDto);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
         try {
             requestJson = objectMapper.writeValueAsString(dto);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
+            payDataDto.setStatus(false);
             return baseDto;
         }
 
         String responseJson = this.post(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
+            payDataDto.setStatus(false);
             return baseDto;
         }
-        return this.parsePayFormJson(responseJson);
+        return this.parsePayResponseJson(responseJson);
     }
 
     private String get(String url) {

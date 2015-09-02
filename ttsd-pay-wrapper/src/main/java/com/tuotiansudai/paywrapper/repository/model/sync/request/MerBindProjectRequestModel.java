@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class MerBindProjectRequestModel extends BaseSyncRequestModel{
-    private String projectId;
+    private long projectId;
     private String projectName;
-    private String projectAmount;
-    private String loanUserId;
+    private long projectAmount;
+    private long loanUserId;
 
-    public MerBindProjectRequestModel(String loanUserId,String loanAmount,String projectId,String projectName){
+    public MerBindProjectRequestModel(long loanUserId,long loanAmount,long projectId,String projectName){
         super();
         this.service = "mer_bind_project";
         this.projectId = projectId;
@@ -23,18 +23,18 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
         payRequestData.put("service", this.service);
-        payRequestData.put("project_id", this.projectId);
+        payRequestData.put("project_id", String.valueOf(this.projectId));
         payRequestData.put("project_name", this.projectName);
-        payRequestData.put("project_amount", this.projectAmount);
-        payRequestData.put("loan_user_id", this.loanUserId);
+        payRequestData.put("project_amount", String.valueOf(this.projectAmount));
+        payRequestData.put("loan_user_id", String.valueOf(this.loanUserId));
         return payRequestData;
     }
 
-    public String getProjectId() {
+    public long getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(String projectId) {
+    public void setProjectId(long projectId) {
         this.projectId = projectId;
     }
 
@@ -46,19 +46,19 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
         this.projectName = projectName;
     }
 
-    public String getProjectAmount() {
+    public long getProjectAmount() {
         return projectAmount;
     }
 
-    public void setProjectAmount(String projectAmount) {
+    public void setProjectAmount(long projectAmount) {
         this.projectAmount = projectAmount;
     }
 
-    public String getLoanUserId() {
+    public long getLoanUserId() {
         return loanUserId;
     }
 
-    public void setLoanUserId(String loanUserId) {
+    public void setLoanUserId(long loanUserId) {
         this.loanUserId = loanUserId;
     }
 }

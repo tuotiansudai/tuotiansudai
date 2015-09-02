@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+    <!-- enable autowire -->
+    <context:annotation-config/>
+
+
+    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
+    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.utils,com.tuotiansudai.console.service"/>
+
+    <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.aa.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}"/>
+        <property name="username" value="${jdbc.aa.username}"/>
+        <property name="password" value="${jdbc.aa.password}"/>
+        <property name="maxConnectionsPerPartition" value="30"/>
+        <property name="minConnectionsPerPartition" value="10"/>
+        <property name="partitionCount" value="3"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <!-- transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="boneCPDataSource"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="boneCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+    </bean>
+
+    <!-- define the SqlSessionFactory -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- scan for mappers and let them be autowired -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+    </bean>
+
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <!--for test-->
+    <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
+</beans>
