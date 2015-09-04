@@ -13,6 +13,7 @@ import com.tuotiansudai.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -108,11 +109,6 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto dataDto = new PayDataDto();
-        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
@@ -180,17 +176,25 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus() || LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-        } else if (LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-        } else if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
-            payWrapperClient.loan(loanDto);
-        } else {
-            payDataDto.setStatus(false);
+            payDataDto.setStatus(true);
             baseDto.setData(payDataDto);
             return baseDto;
         }
+        if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
+            updateLoanAndLoanTitleRelation(loanDto);
+            baseDto = payWrapperClient.createLoan(loanDto.getId());
+            if (baseDto.getData().getStatus()) {
+                return payWrapperClient.updateLoan(loanDto.getId(), LoanStatus.RECHECK);
+            }
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+
+        }
+        payDataDto.setStatus(false);
+        baseDto.setData(payDataDto);
         return baseDto;
     }
 
@@ -257,12 +261,13 @@ public class LoanServiceImpl implements LoanService {
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
-        if (loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0) {
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
+        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.delete(loanDto.getId());
         }
-        List<LoanTitleRelationModel> loanTitleRelationModels = loanDto.getLoanTitles();
-        if (loanTitleRelationModels != null && loanTitleRelationModels.size() > 0) {
-            loanTitleRelationMapper.create(loanTitleRelationModels);
+        loanTitleRelationModelList = loanDto.getLoanTitles();
+        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+            loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
 }

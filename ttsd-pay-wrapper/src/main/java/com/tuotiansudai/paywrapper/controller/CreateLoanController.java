@@ -23,7 +23,7 @@ public class CreateLoanController {
         return loanService.createLoan(loanId);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PUT)
     public BaseDto<PayDataDto> updateLoan(@RequestParam long loanId,@RequestParam LoanStatus loanStatus) {
         return loanService.updateLoan(loanId,loanStatus);
     }

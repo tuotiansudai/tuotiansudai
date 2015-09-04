@@ -81,7 +81,7 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public BaseDto<PayDataDto> editLoan(@RequestBody LoanDto loanDto){
+    public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto){
         return loanService.updateLoan(loanDto);
     }
 }

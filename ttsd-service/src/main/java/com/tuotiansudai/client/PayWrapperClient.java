@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -125,20 +126,26 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
-    public BaseDto<PayDataDto> loan(LoanDto dto) {
-        String requestJson;
+    public BaseDto<PayDataDto> createLoan(long loanId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        String requestJson = "loanId:"+loanId;
+        String responseJson = this.post(loanPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
             return baseDto;
         }
+        return this.parsePayResponseJson(responseJson);
+    }
 
-        String responseJson = this.post(loanPath, requestJson);
+    public BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        String requestJson = "loanId:"+loanId+",loanStatus:"+loanStatus.getCode();
+
+        String responseJson = this.put(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
             return baseDto;
@@ -167,6 +174,22 @@ public class PayWrapperClient {
         String url = host + path;
         RequestBody body = RequestBody.create(JSON, requestJson);
         Request request = new Request.Builder().url(url).post(body).build();
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    public String put(String path, String requestJson){
+        String url = host + path;
+        RequestBody body = RequestBody.create(JSON, requestJson);
+        Request request = new Request.Builder().url(url).put(body).build();
 
         try {
             Response response = okHttpClient.newCall(request).execute();
