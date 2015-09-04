@@ -208,20 +208,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public boolean loanIsExist(long loanId) {
-        if (findLoanById(loanId) != null) {
-            return true;
-        }
-        return false;
+        return findLoanById(loanId) != null;
     }
 
     private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto payDataDto = new PayDataDto();
-        if (loanDto.getFundraisingStartTime() == null || loanDto.getFundraisingEndTime() == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
