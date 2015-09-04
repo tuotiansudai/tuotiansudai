@@ -3,12 +3,10 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +38,11 @@ public class LoanServiceTest {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
+
+
 
     /**
      * 正常建标
@@ -173,7 +176,7 @@ public class LoanServiceTest {
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         for (int i = 0; i < 5; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
@@ -186,4 +189,49 @@ public class LoanServiceTest {
         loanDto.setLoanTitles(loanTitleRelationModelList);
         return loanService.createLoan(loanDto);
     }
+
+    @Test
+    public void shouldNotifyInvestorsLoanOutSuccessfulByEmail() {
+        LoanModel model = new LoanModel();
+        long id = idGenerator.generate();
+        model.setId(id);
+        model.setName("hourglass");
+        model.setLoanerLoginName("loaner");
+        model.setAgentLoginName("agent");
+        model.setType(LoanType.LOAN_TYPE_1);
+        model.setPeriods(3l);
+        model.setLoanAmount(1000l);
+        model.setInvestFeeRate(1.0);
+        model.setActivityType(ActivityType.EXCLUSIVE);
+        model.setBaseRate(1.0);
+        model.setContractId(123);
+        model.setDescriptionText("text");
+        model.setDescriptionHtml("html");
+        model.setFundraisingStartTime(new Date());
+        model.setFundraisingEndTime(new Date());
+        model.setCreatedTime(new Date());
+        model.setStatus(LoanStatus.RAISING);
+        loanMapper.create(model);
+
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setLoginName("zhuyanyan");
+        investModel.setLoanId(id);
+        investModel.setAmount(100);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        investModel.setSource(InvestSource.ANDROID);
+        investModel.setIsAutoInvest(true);
+        investModel.setSuccessTime(new Date());
+        investModel.setCreatedTime(new Date());
+        investMapper.create(investModel);
+
+        loanService.notifyInvestorsLoanOutSuccessfulByEmail(model);
+
+
+
+
+
+
+    }
+
 }

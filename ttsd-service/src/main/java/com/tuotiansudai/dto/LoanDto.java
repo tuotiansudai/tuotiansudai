@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
-public class LoanDto {
+public class LoanDto extends BaseDataDto{
 
     private long id;
 
@@ -102,10 +102,20 @@ public class LoanDto {
     private Date createdTime;
 
     /***标的状态***/
-    private LoanStatus status;
+    private LoanStatus loanStatus;
 
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
+
+    private long preheatSeconds;
+
+    private long amountNeedRaised;
+
+    private long balance;
+
+    private double raiseCompletedRate;
+
+    private long expectedTotalIncome;
 
     public long getId() {
         return id;
@@ -275,19 +285,59 @@ public class LoanDto {
         this.createdTime = createdTime;
     }
 
-    public LoanStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(LoanStatus status) {
-        this.status = status;
-    }
-
     public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
 
     public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
+    }
+
+    public long getAmountNeedRaised() {
+        return amountNeedRaised;
+    }
+
+    public void setAmountNeedRaised(long amountNeedRaised) {
+        this.amountNeedRaised = amountNeedRaised;
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
+    public double getRaiseCompletedRate() {
+        return raiseCompletedRate;
+    }
+
+    public void setRaiseCompletedRate(double raiseCompletedRate) {
+        this.raiseCompletedRate = raiseCompletedRate;
+    }
+
+    public long getExpectedTotalIncome() {
+        return expectedTotalIncome;
+    }
+
+    public void setExpectedTotalIncome(long expectedTotalIncome) {
+        this.expectedTotalIncome = expectedTotalIncome;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 }
