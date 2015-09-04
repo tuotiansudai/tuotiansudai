@@ -135,7 +135,7 @@ public class PayWrapperClientTest {
         server.enqueue(mockResponse);
         URL url = server.getUrl("/loan");
         this.payWrapperClient.setHost("http://" + url.getAuthority());
-        BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto.getId());
+        BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto);
 
         assertTrue(actualBaseDto.isSuccess());
         assertTrue(actualBaseDto.getData().getStatus());

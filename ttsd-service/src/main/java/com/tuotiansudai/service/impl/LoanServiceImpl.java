@@ -184,14 +184,11 @@ public class LoanServiceImpl implements LoanService {
         }
         if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
-            baseDto = payWrapperClient.createLoan(loanDto.getId());
+            baseDto = payWrapperClient.createLoan(loanDto);
             if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto.getId(), LoanStatus.RECHECK);
+                return payWrapperClient.updateLoan(loanDto);
             }
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
             return baseDto;
-
         }
         payDataDto.setStatus(false);
         baseDto.setData(payDataDto);

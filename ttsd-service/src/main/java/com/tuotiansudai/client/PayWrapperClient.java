@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class PayWrapperClient {
@@ -126,11 +128,18 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
-    public BaseDto<PayDataDto> createLoan(long loanId) {
+    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
+        String requestJson;
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
-        String requestJson = "loanId:"+loanId;
+        try {
+            requestJson = objectMapper.writeValueAsString(loanDto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
         String responseJson = this.post(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
@@ -139,12 +148,18 @@ public class PayWrapperClient {
         return this.parsePayResponseJson(responseJson);
     }
 
-    public BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus) {
+    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        String requestJson;
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
-        String requestJson = "loanId:"+loanId+",loanStatus:"+loanStatus.getCode();
-
+        try {
+            requestJson = objectMapper.writeValueAsString(loanDto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
         String responseJson = this.put(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
