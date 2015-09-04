@@ -205,7 +205,7 @@ public class InvestMapperTest {
         investMapper.create(investModel2);
         investMapper.create(investModel3);
 
-        long result = investMapper.sumSuccessInvestAmount(Loan_ID,InvestStatus.WAITING,InvestStatus.FAIL);
+        long result = investMapper.sumSuccessInvestAmount(Loan_ID);
 
         assertEquals(1000000l,result);
 

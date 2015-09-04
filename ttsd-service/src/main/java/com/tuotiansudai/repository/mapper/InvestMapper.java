@@ -16,6 +16,7 @@ public interface InvestMapper {
      */
     void create(InvestModel investModel);
 
+
     /**
      * 修改投资记录
      *
@@ -65,9 +66,7 @@ public interface InvestMapper {
      * @param loanId
      * @return
      */
-    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId,
-                                @Param(value = "waiting") InvestStatus waiting,
-                                @Param(value = "fail") InvestStatus fail);
+    long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
 
     List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
                                  @Param(value = "index") Integer index,

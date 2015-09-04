@@ -65,7 +65,7 @@
         select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId}
-        and status not in ('${waiting}','${fail}')
+        and status = 'SUCCESS')
     </select>
 
     <select id="getInvests" parameterType="map" resultMap="investResultMap">

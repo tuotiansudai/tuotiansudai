@@ -1,96 +1,53 @@
 package com.tuotiansudai.dto;
 
-import java.util.List;
+import com.tuotiansudai.repository.model.InvestSource;
 
-public class InvestRecordDataDto extends BaseDataDto {
-    private Integer index;
-    private Integer pageSize;
-    private Integer totalCount;
-    private Integer totalPages;
-    private boolean hasPreviousPage;
-    private boolean hasNextPage;
+import java.util.Date;
 
-    public InvestRecordDataDto(){
+public class InvestRecordDataDto extends BaseRecordDataDto{
+    private String loginName;
+    private double amount;
+    private InvestSource source;
+    private double expectedRate;
+    private Date createdTime;
 
-    }
-    public InvestRecordDataDto(int index,int pageSize,int totalCount){
-        this.index = index;
-        this.pageSize = pageSize;
-        this.totalCount = totalCount;
-        if(totalCount % pageSize > 0){
-            this.totalPages = totalCount/pageSize + 1;
-        }else{
-            this.totalPages = totalCount/pageSize;
-        }
-        this.isHasNextPage();
-        this.isHasPreviousPage();
+    public String getLoginName() {
+        return loginName;
     }
 
-    private List<InvestRecordDto> investRecordDtoList;
-
-    public Integer getIndex() {
-        return index;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public double getAmount() {
+        return amount;
     }
 
-    public Integer getPageSize() {
-        return pageSize;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    public InvestSource getSource() {
+        return source;
     }
 
-    public Integer getTotalCount() {
-        return totalCount;
+    public void setSource(InvestSource source) {
+        this.source = source;
     }
 
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
+    public double getExpectedRate() {
+        return expectedRate;
     }
 
-    public List<InvestRecordDto> getInvestRecordDtoList() {
-        return investRecordDtoList;
+    public void setExpectedRate(double expectedRate) {
+        this.expectedRate = expectedRate;
     }
 
-    public void setInvestRecordDtoList(List<InvestRecordDto> investRecordDtoList) {
-        this.investRecordDtoList = investRecordDtoList;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public Integer getTotalPages() {
-        return totalPages;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public boolean isHasPreviousPage() {
-        hasPreviousPage = false;
-        if(this.index > 1 ){
-            hasPreviousPage = true;
-        }
-        return hasPreviousPage;
-    }
-
-    public void setHasPreviousPage(boolean hasPreviousPage) {
-        this.hasPreviousPage = hasPreviousPage;
-    }
-
-    public boolean isHasNextPage() {
-        hasNextPage = false;
-        if(this.index >= 1 && this.index < this.totalPages){
-            hasNextPage =  true;
-        }
-        return hasNextPage;
-    }
-
-    public void setHasNextPage(boolean hasNextPage) {
-        this.hasNextPage = hasNextPage;
-    }
-
-
 }

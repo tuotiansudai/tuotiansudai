@@ -49,5 +49,5 @@ public interface LoanService {
 
     String getExpectedTotalIncome(long loanId, double investAmount);
 
-    BaseDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize);
+    BaseRecordDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize);
 }

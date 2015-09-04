@@ -107,8 +107,6 @@ public class LoanDto extends BaseDataDto{
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
-    private long preheatSeconds;
-
     private double amountNeedRaised;
 
     private double balance;
@@ -291,14 +289,6 @@ public class LoanDto extends BaseDataDto{
 
     public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
-    }
-
-    public long getPreheatSeconds() {
-        return preheatSeconds;
-    }
-
-    public void setPreheatSeconds(long preheatSeconds) {
-        this.preheatSeconds = preheatSeconds;
     }
 
     public double getAmountNeedRaised() {
