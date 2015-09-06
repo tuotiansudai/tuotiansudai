@@ -18,6 +18,7 @@ public interface InvestMapper {
 
     /**
      * 更新投资记录的状态
+     *
      * @param id
      * @param status
      */
@@ -43,16 +44,6 @@ public interface InvestMapper {
                                                  @Param(value = "sortStyle") SortStyle sortStyle);
 
     /**
-     * 查找标的的所有投资情况
-     * 如果有分页插件的话，需要修改此返回类型
-     *
-     * @param loanId
-     * @return
-     */
-    List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") long loanId,
-                                              @Param(value = "sortStyle") SortStyle sortStyle);
-
-    /**
      * 计算标的的投资总额
      *
      * @param loanId
@@ -60,12 +51,53 @@ public interface InvestMapper {
      */
     long sumSuccessInvestAmount(@Param(value = "loanId") long loanId);
 
-    List<InvestModel> getInvests(@Param(value = "loanId") long loanId,
-                                 @Param(value = "index") Integer index,
-                                 @Param(value = "pageSize") Integer pageSize,
-                                 @Param(value = "status") InvestStatus status);
+    /**
+     * 分页获取投资记录
+     *
+     * @param loanId
+     * @param index
+     * @param pageSize
+     * @param status
+     * @return
+     */
+    List<InvestModel> findByStatus(@Param(value = "loanId") long loanId,
+                                   @Param(value = "index") Integer index,
+                                   @Param(value = "pageSize") Integer pageSize,
+                                   @Param(value = "status") InvestStatus status);
 
-    int getTotalCount(@Param(value = "loanId") long loanId,
-                                    @Param(value = "status") InvestStatus status);
+    /**
+     * 获取标的的投资记录数
+     * @param loanId
+     * @param status
+     * @return
+     */
+    int findCountByStatus(@Param(value = "loanId") long loanId,
+                      @Param(value = "status") InvestStatus status);
+
+    /**
+     * 获取所有投资成功的记录
+     *
+     * @param loanId
+     * @return
+     */
+    List<InvestModel> findSuccessInvests(@Param(value = "loanId") long loanId);
+
+    /**
+     * 将指定时间前创建的，目前仍处于waiting状态的投资记录标记为失败
+     * @param loanId
+     * @param beforeTime
+     */
+    void cleanWaitingInvestBefore(@Param(value = "id") long loanId,
+                                  @Param(value = "beforeTime") Date beforeTime);
+
+    /**
+     * 获取标的是否存在在指定时间后创建，目前仍处于waiting状态的投资记录
+     * @param loanId
+     * @param afterTime
+     * @return
+     */
+    int findWaitingInvestCountAfter(@Param(value = "id") long loanId,
+                                   @Param(value = "afterTime") Date afterTime);
+
 
 }

@@ -1,6 +1,8 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.ExistWaitAffirmInvestsException;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
@@ -12,11 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
-
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
@@ -187,7 +191,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanStatus(loanModel.getStatus());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
@@ -203,15 +207,15 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseRecordDto<InvestRecordDataDto>  getInvests(long loanId, int index, int pageSize) {
+    public BaseRecordDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
             index = 1;
         }
         if (pageSize <= 0) {
             pageSize = 10;
         }
-        int totalCount = investMapper.getTotalCount(loanId, InvestStatus.SUCCESS);
-        List<InvestModel> investModels = investMapper.getInvests(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
+        int totalCount = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
+        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestRecordDataDto> investRecordDtos = convertInvestModelToDto(investModels);
         BaseRecordDto dto = new BaseRecordDto(index, pageSize, totalCount);
         dto.setRecordDtoList(investRecordDtos);
@@ -262,5 +266,105 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    @Override
+    public void loanOut(long loanId) throws TTSDException {
+        // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
+        Date validInvestTime = cal.getTime();
+
+        // 检查是否存在未处理完成的投资记录
+        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanId, validInvestTime);
+        if (waitingInvestCount > 0) {
+            throw new ExistWaitAffirmInvestsException("存在等待第三方资金托管确认的投资(标的ID:" + loanId + ")");
+        }
+        // 将已失效的投资记录状态置为失败
+        cancelExpiredWaitingInvest(loanId, validInvestTime);
+        // 查找所有投资成功的记录
+        List<InvestModel> successInvestList = investMapper.findSuccessInvests(loanId);
+        // 计算投资总金额
+        long investAmountTotal = computeInvestAmountTotal(successInvestList);
+        // 发起放款申请[联动优势]
+        boolean success = processLoanOutRequest(loanId, investAmountTotal);
+        // 放款成功
+        if (success) {
+            // 处理该标的的所有投资信息
+            processInvestForLoanOut(successInvestList);
+            // 处理该标的的借款信息
+            processLoanForLoanOut(loanId, investAmountTotal);
+            // 处理该标的帐务
+            processLoanUmpayForLoanOut(loanId);
+            // 处理该标的手续费[联动优势]
+            processLoanGuranteeFeeForLoanOut(loanId);
+            // 生成还款计划
+            // TODO:生成还款计划
+            // 异步处理推荐人奖励[联动优势]
+            processRecommandIncomeForLoanOut(loanId);
+            // 异步处理短信和邮件通知
+            processNotifyForLoanOut(loanId);
+        }
+    }
+
+    private void cancelExpiredWaitingInvest(long loanId, Date validInvestTime) {
+        investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
+    }
+
+    private long computeInvestAmountTotal(List<InvestModel> investList) {
+        long amount = 0L;
+        for (InvestModel investModel : investList) {
+            amount += investModel.getAmount();
+        }
+        return amount;
+    }
+
+    private boolean processLoanOutRequest(long loanId, long investAmountTotal) {
+        throw new RuntimeException("");
+    }
+
+    private void processInvestForLoanOut(List<InvestModel> investList) {
+        // 合计所有的投资金额
+        // 是否需要考虑代金券
+        // 将冻结的金额转走
+        // 将投资状态改为投资成功（什么时候会失败）
+        throw new RuntimeException("");
+    }
+
+    private void processLoanForLoanOut(long loanId, long investAmountTotal) {
+        // 实际借款额不足以支付手续费的异常
+        // 更改标的状态
+        // 设置放款日期
+        // 设置计息日期
+        loanMapper.updateStatus(loanId, LoanStatus.REPAYING);
+        // 设置实际借款额
+    }
+
+    private void processLoanUmpayForLoanOut(long loanId) {
+        // 把借款转给借款人账户
+        // userBill 解冻借款保证金
+        // sysBill 记账
+    }
+
+    private void processLoanGuranteeFeeForLoanOut(long loanId) {
+        // 收取手续费[联动优势]
+        // 记帐
+    }
+
+    private void processRecommandIncomeForLoanOut(long loanId) {
+        // TODO : @zhanglong 这个方法本身只需要写成同步的，我会在job里进行调用而实现异步处理
+    }
+
+    private void processNotifyForLoanOut(long loanId) {
+        processSMSNotifyForLoanOut(loanId);
+        processEmailNotifyForLoanOut(loanId);
+    }
+
+    private void processSMSNotifyForLoanOut(long loanId) {
+
+    }
+
+    private void processEmailNotifyForLoanOut(long loanId) {
+        // TODO : @zhanglong 这个方法本身只需要写成同步的，我会在job里进行调用而实现异步处理
     }
 }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
@@ -50,4 +51,10 @@ public interface LoanService {
     String getExpectedTotalIncome(long loanId, double investAmount);
 
     BaseRecordDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize);
+
+    /**
+     * 标的放款
+     * @param loanId
+     */
+    void loanOut(long loanId) throws TTSDException;
 }
