@@ -278,10 +278,9 @@ public class LoanServiceImpl implements LoanService {
                     .put("loanName", loan.getName())
                     .put("money", String.valueOf(investModel.getAmount() / 100d))
                     .build());
-            String content = SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(emailParameters);
             UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
             if (userModel != null && StringUtils.isNotEmpty(userModel.getEmail())){
-                sendCloudMailService.sendMail(userModel.getEmail(),SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(),content);
+                sendCloudMailService.sendMailByLoanOut(userModel.getEmail(),emailParameters);
             }
 
 

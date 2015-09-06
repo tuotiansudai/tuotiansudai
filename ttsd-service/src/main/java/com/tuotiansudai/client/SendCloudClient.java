@@ -1,6 +1,7 @@
 package com.tuotiansudai.client;
 
 import com.sun.mail.smtp.SMTPTransport;
+import com.tuotiansudai.dto.SendCloudType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class SendCloudClient {
 
     }
 
-    public void sendMailBySendCloud(String toAddress, String title, String content,String type) throws MessagingException, UnsupportedEncodingException {
+    public void sendMailBySendCloud(String toAddress, String title, String content,SendCloudType type) throws MessagingException, UnsupportedEncodingException {
         Session mailSession = getMailSession();
         SMTPTransport transport = null;
 
@@ -63,7 +64,7 @@ public class SendCloudClient {
         BodyPart contentPart = new MimeBodyPart();
         contentPart.setHeader("Content-Type", "text/html;charset=UTF-8");
         contentPart.setHeader("Content-Transfer-Encoding", "base64");
-        if ("text".equals(type)){
+        if (SendCloudType.TEXT.equals(type)){
             contentPart.setText(content);
         }else{
             contentPart.setContent(content, "text/html;charset=UTF-8");

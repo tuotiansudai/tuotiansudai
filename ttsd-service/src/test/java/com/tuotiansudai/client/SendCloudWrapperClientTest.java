@@ -1,5 +1,6 @@
 package com.tuotiansudai.client;
 
+import com.tuotiansudai.dto.SendCloudType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class SendCloudWrapperClientTest {
     @Test
     public void shouldSendCloudIsOk() {
         try {
-            sendCloudClient.sendMailBySendCloud("zhanglong@tuotiansudai.com","标的放款成功邮件提醒","绑定邮箱，认证码：%authCode%","text");
+            sendCloudClient.sendMailBySendCloud("zhanglong@tuotiansudai.com","标的放款成功邮件提醒","绑定邮箱，认证码：%authCode%", SendCloudType.CONTENT);
         } catch (MessagingException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {

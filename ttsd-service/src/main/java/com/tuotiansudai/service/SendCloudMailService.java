@@ -1,8 +1,10 @@
 package com.tuotiansudai.service;
 
+import java.util.Map;
+
 public interface SendCloudMailService {
 
 
-    boolean sendMail(String toAddress, String title,
-                     String content);
+    boolean sendMailByLoanOut(String toAddress,
+                              Map<String, String> map);
 }

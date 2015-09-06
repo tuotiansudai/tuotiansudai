@@ -1,31 +1,37 @@
 package com.tuotiansudai.service.impl;
+
 import com.tuotiansudai.client.SendCloudClient;
+import com.tuotiansudai.dto.SendCloudType;
 import com.tuotiansudai.service.SendCloudMailService;
+import com.tuotiansudai.utils.SendCloudTemplate;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
-@Service("sendCloudMailService")
+@Service
 public class SendCloudMailServiceImpl implements SendCloudMailService {
     static Logger logger = Logger.getLogger(UserServiceImpl.class);
-    @Resource
+    @Autowired
     SendCloudClient sendCloudClient;
 
 
     @Override
-    public boolean sendMail(String toAddress, String title, String content) {
+    public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {
 
         try {
-            sendCloudClient.sendMailBySendCloud(toAddress,title,content,"content");
+            String content = SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(map);
+            sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
         } catch (MessagingException e) {
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         }
         return false;
     }
