@@ -20,10 +20,24 @@
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time, success_time
     </sql>
 
-    <insert id="create" parameterType="InvestModel">
+
+    <insert id="create" parameterType="investModel">
         insert into invest ( <include refid="columns"></include> )
         value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime}, #{successTime})
     </insert>
+
+    <update id="update" parameterType="investModel">
+        update invest SET
+        login_name = #{loginName},
+        loan_id = #{loanId},
+        amount = #{amount},
+        status = #{status},
+        source = #{source},
+        is_auto_invest = #{isAutoInvest},
+        created_time = #{createdTime},
+        success_time = #{successTime}
+        where id = #{id}
+    </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
@@ -31,20 +45,40 @@
         where id = #{id}
     </select>
 
-    <select id="findByLoginNameOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoginNameOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{map.loginName}
+        where login_name = #{loginName}
         order by created_time
-        #{map.orderStyle}
+        ${sortStyle}
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{map.loanId}
+        where loan_id = #{loanId}
         order by created_time
-        #{map.orderStyle}
+        ${sortStyle}
     </select>
 
+    <select id="sumSuccessInvestAmount" parameterType="long" resultType="long">
+        select sum(amount)
+        from invest
+        where loan_id = #{loanId}
+        and status not in ('WAITING','FAIL')
+    </select>
+
+    <select id="getInvests" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId}
+        and status = ${status}
+        limit (#{index} - 1) * #{pageSize},#{pageSize}
+    </select>
+    <select id="getSuccessInvests" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId}
+        and status = 'SUCCESS'
+    </select>
 </mapper>
