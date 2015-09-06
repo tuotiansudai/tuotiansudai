@@ -62,7 +62,7 @@ public class LoanServiceImpl implements LoanService {
         return baseDto;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
