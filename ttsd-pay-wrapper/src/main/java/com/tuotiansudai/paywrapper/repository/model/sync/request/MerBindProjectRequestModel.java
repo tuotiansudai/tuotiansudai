@@ -7,18 +7,18 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 public class MerBindProjectRequestModel extends BaseSyncRequestModel{
-    private long projectId;
+    private String projectId;
     private String projectName;
-    private long projectAmount;
-    private long loanUserId;
+    private String projectAmount;
+    private String loanUserId;
 
     public MerBindProjectRequestModel(long loanUserId,long loanAmount,long projectId,String projectName){
         super();
         this.service = "mer_bind_project";
-        this.projectId = projectId;
+        this.projectId = String.valueOf(projectId);
         this.projectName = projectName;
-        this.projectAmount = loanAmount;
-        this.loanUserId = loanUserId;
+        this.projectAmount = String.valueOf(loanAmount);
+        this.loanUserId = String.valueOf(loanUserId);
     }
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
@@ -30,11 +30,11 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
         return payRequestData;
     }
 
-    public long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
@@ -46,19 +46,19 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
         this.projectName = projectName;
     }
 
-    public long getProjectAmount() {
+    public String getProjectAmount() {
         return projectAmount;
     }
 
-    public void setProjectAmount(long projectAmount) {
+    public void setProjectAmount(String projectAmount) {
         this.projectAmount = projectAmount;
     }
 
-    public long getLoanUserId() {
+    public String getLoanUserId() {
         return loanUserId;
     }
 
-    public void setLoanUserId(long loanUserId) {
+    public void setLoanUserId(String loanUserId) {
         this.loanUserId = loanUserId;
     }
 }

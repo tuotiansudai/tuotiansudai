@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan")
-public class CreateLoanController {
+public class LoanController {
     @Autowired
     private LoanService loanService;
 
