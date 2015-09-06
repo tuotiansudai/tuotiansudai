@@ -43,6 +43,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
+        log.debug("================generateLoanDetail==================");
         String resultCode = ReturnMessage.SUCCESS.getCode();
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
         String loanId = loanDetailRequestDto.getLoanId();
