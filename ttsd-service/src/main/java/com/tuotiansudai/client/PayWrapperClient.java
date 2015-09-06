@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class PayWrapperClient {
@@ -149,25 +152,44 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
-    public BaseDto<PayFormDataDto> loan(LoanDto dto) {
+    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         String requestJson;
-        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-        PayFormDataDto payFormDataDto = new PayFormDataDto();
-        baseDto.setData(payFormDataDto);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
         try {
-            requestJson = objectMapper.writeValueAsString(dto);
+            requestJson = objectMapper.writeValueAsString(loanDto);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
+            payDataDto.setStatus(false);
             return baseDto;
         }
-
         String responseJson = this.post(loanPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
+            payDataDto.setStatus(false);
             return baseDto;
         }
-        return this.parsePayFormJson(responseJson);
+        return this.parsePayResponseJson(responseJson);
+    }
+
+    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        String requestJson;
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(loanDto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        String responseJson = this.put(loanPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayResponseJson(responseJson);
     }
 
     private String get(String url) {
@@ -191,6 +213,22 @@ public class PayWrapperClient {
         String url = host + path;
         RequestBody body = RequestBody.create(JSON, requestJson);
         Request request = new Request.Builder().url(url).post(body).build();
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
+    private String put(String path, String requestJson){
+        String url = host + path;
+        RequestBody body = RequestBody.create(JSON, requestJson);
+        Request request = new Request.Builder().url(url).put(body).build();
 
         try {
             Response response = okHttpClient.newCall(request).execute();

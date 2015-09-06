@@ -74,12 +74,6 @@ public class InvestMapperTest {
     @Test
     public void shouldFindByCorrectSortStyle(){
         createTestInvests();
-
-        List<InvestModel> investModels1 = investMapper.findByLoanIdOrderByTime(Loan_ID2, SortStyle.Asc);
-        assertEquals(investModels1.size(), 5);
-        assert investModels1.get(0).getCreatedTime().before(investModels1.get(1).getCreatedTime());
-
-
         List<InvestModel> investModels2 = investMapper.findByLoginNameOrderByTime(User_ID2, SortStyle.Desc);
         assertEquals(investModels2.size(), 5);
         assert investModels2.get(4).getCreatedTime().before(investModels2.get(2).getCreatedTime());

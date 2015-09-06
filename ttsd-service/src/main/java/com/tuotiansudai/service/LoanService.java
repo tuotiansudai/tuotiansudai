@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
@@ -51,6 +52,22 @@ public interface LoanService {
     String getExpectedTotalIncome(long loanId, double investAmount);
 
     BaseRecordDto<InvestRecordDataDto> getInvests(long loanId, int index, int pageSize);
+
+    /**
+     * @function 标的编辑
+     * @param loanDto
+     * @return
+     */
+    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
+
+    /**
+     * @function 通过id查找标的
+     * @param loanId
+     * @return
+     */
+    LoanModel findLoanById(long loanId);
+
+    boolean loanIsExist(long loanId);
 
     /**
      * 标的放款

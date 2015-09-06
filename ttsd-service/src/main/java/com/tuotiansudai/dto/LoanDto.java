@@ -101,6 +101,12 @@ public class LoanDto extends BaseDataDto{
     /***建标时间***/
     private Date createdTime;
 
+    /***初审时间***/
+    private Date verifyTime;
+
+    /***复审时间***/
+    private Date recheckTime;
+
     /***标的状态***/
     private LoanStatus loanStatus;
 
@@ -281,6 +287,22 @@ public class LoanDto extends BaseDataDto{
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Date getVerifyTime() {
+        return verifyTime;
+    }
+
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
+    }
+
+    public Date getRecheckTime() {
+        return recheckTime;
+    }
+
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {

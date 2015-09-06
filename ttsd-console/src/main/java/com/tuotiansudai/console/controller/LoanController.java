@@ -59,4 +59,29 @@ public class LoanController {
         return loanService.createLoan(loanDto);
     }
 
+    @RequestMapping(value = "/{loanId:^[0-9]{15}$}",method = RequestMethod.GET)
+    @ResponseBody
+    public ModelAndView loanInfo(@PathVariable long loanId){
+        if (!loanService.loanIsExist(loanId)){
+            return new ModelAndView("/");
+        }
+        //TODO 合同需要从数据库中获取
+        List contracts = new ArrayList();
+        Map<String,String> contract = new HashMap<>();
+        contract.put("id", "789098123");
+        contract.put("contractName", "四方合同");
+        contracts.add(contract);
+        ModelAndView modelAndView = new ModelAndView("/edit-loan");
+        modelAndView.addObject("activityTypes", loanService.getActivityType());
+        modelAndView.addObject("loanTypes", loanService.getLoanType());
+        modelAndView.addObject("contracts",contracts);
+        modelAndView.addObject("loanInfo",loanService.findLoanById(loanId));
+        return modelAndView;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto){
+        return loanService.updateLoan(loanDto);
+    }
 }

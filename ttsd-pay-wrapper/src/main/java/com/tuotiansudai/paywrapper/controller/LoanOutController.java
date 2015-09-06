@@ -1,9 +1,9 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.paywrapper.service.RechargeService;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 @Controller
-public class RechargeController {
+public class LoanOutController {
 
     @Autowired
-    private RechargeService rechargeService;
+    private InvestService investService;
 
-
-    @RequestMapping(value = "/recharge", method = RequestMethod.POST)
+    @RequestMapping(value = "/invest", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayFormDataDto> recharge(@Valid @RequestBody RechargeDto dto) {
-        return rechargeService.recharge(dto);
+    public BaseDto<PayFormDataDto> invest(@Valid @RequestBody InvestDto dto) {
+        return investService.invest(dto);
     }
 }

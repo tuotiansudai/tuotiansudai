@@ -46,4 +46,5 @@ public class LoanTitleMapperTest {
         List<LoanTitleModel> loanTitleModels = loanTitleMapper.findAll();
         assertTrue(loanTitleModels.size() >= 0);
     }
+
 }
