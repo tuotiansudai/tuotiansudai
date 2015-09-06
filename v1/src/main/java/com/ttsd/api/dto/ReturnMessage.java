@@ -88,6 +88,7 @@ public enum ReturnMessage {
     /******未开通快捷支付******/
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
+    USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");

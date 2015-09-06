@@ -14,8 +14,10 @@ import org.apache.commons.logging.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -90,8 +92,14 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
                     data.put(tokenName, token);
                     root.put("data", data);
                 } else {
-                    root.put("code", ReturnMessage.LOGIN_FAILED.getCode());
-                    root.put("message", ReturnMessage.LOGIN_FAILED.getMsg());
+                    AuthenticationException springSecurityLastException = (AuthenticationException) httpServletRequest.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+                    if (springSecurityLastException instanceof DisabledException) {
+                        root.put("code", ReturnMessage.USER_IS_DISABLED.getCode());
+                        root.put("message", ReturnMessage.USER_IS_DISABLED.getMsg());
+                    } else {
+                        root.put("code", ReturnMessage.LOGIN_FAILED.getCode());
+                        root.put("message", ReturnMessage.LOGIN_FAILED.getMsg());
+                    }
                 }
                 this.generateJsonResponse(httpServletResponse, root);
             } catch (JSONException e) {
