@@ -227,11 +227,6 @@ public class LoanServiceTest {
 
         loanService.notifyInvestorsLoanOutSuccessfulByEmail(model);
 
-
-
-
-
-
     }
 
 }

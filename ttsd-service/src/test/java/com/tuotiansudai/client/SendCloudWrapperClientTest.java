@@ -28,7 +28,7 @@ public class SendCloudWrapperClientTest {
     @Test
     public void shouldSendCloud() {
         try {
-            sendCloudClient.sendMailBySendCloud("zhanglong@tuotiansudai.com","tuotiansudai","你太棒了！你已成功的从SendCloud发送了一封测试邮件，接下来快登录前台去完善账户信息吧","text");
+            sendCloudClient.sendMailBySendCloud("zhanglong@tuotiansudai.com","tuotiansudai","绑定邮箱，认证码：%authCode%","text");
         } catch (MessagingException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
