@@ -203,7 +203,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseRecordDto<InvestRecordDataDto>  getInvests(long loanId, int index, int pageSize) {
+    public BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
             index = 1;
         }
@@ -212,18 +212,18 @@ public class LoanServiceImpl implements LoanService {
         }
         int totalCount = investMapper.getTotalCount(loanId, InvestStatus.SUCCESS);
         List<InvestModel> investModels = investMapper.getInvests(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
-        List<InvestRecordDataDto> investRecordDtos = convertInvestModelToDto(investModels);
-        BaseRecordDto dto = new BaseRecordDto(index, pageSize, totalCount);
+        List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels);
+        BasePaginationDto dto = new BasePaginationDto(index, pageSize, totalCount);
         dto.setRecordDtoList(investRecordDtos);
         dto.setStatus(true);
         return dto;
     }
 
-    private List<InvestRecordDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
-        List<InvestRecordDataDto> investRecordDtos = new ArrayList<>();
-        InvestRecordDataDto investRecordDto = null;
+    private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
+        List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
+        InvestPaginationDataDto investRecordDto = null;
         for (InvestModel investModel : investModels) {
-            investRecordDto = new InvestRecordDataDto();
+            investRecordDto = new InvestPaginationDataDto();
             investRecordDto.setLoginName(investModel.getLoginName());
             investRecordDto.setAmount(investModel.getAmount() / 100d);
             investRecordDto.setSource(investModel.getSource());
