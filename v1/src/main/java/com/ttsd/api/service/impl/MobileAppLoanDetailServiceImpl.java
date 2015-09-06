@@ -67,7 +67,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             LoanDetailResponseDataDto loanDetailResponseDataDto = convertLoanDetailFromLoan(loan, evidences);
             dto.setData(loanDetailResponseDataDto);
         }
-        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setCode(resultCode);
         dto.setMessage(ReturnMessage.getErrorMsgByCode(resultCode));
         return dto;
     }
