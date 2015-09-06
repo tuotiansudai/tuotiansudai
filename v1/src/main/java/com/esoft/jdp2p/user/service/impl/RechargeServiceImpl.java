@@ -141,7 +141,9 @@ public class RechargeServiceImpl implements RechargeService {
 		recharge.setId(generateId());
 		// 用rechargeWay进行判断，判断是要跳转到银行卡还是支付平台
 		// recharge.setRechargeWay("借记卡");
-
+		if (StringUtils.isEmpty(recharge.getFee())){
+			recharge.setFee(0.00l);
+		}
 		if (recharge.getCoupon() != null) {
 			// 优惠券
 			if (StringUtils.isEmpty(recharge.getCoupon().getId())) {
