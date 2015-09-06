@@ -100,20 +100,19 @@ public class UserServiceImpl implements UserService {
         return payWrapperClient.register(dto);
     }
 
-    @Override
     @Transactional
-    public void saveReferrerRelations(String referrerId, String loginName) {
+    public void saveReferrerRelations(String referrerLoginName, String loginName) {
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setReferrerId(referrerId);
+        referrerRelationModel.setReferrerLoginName(referrerLoginName);
         referrerRelationModel.setLoginName(loginName);
         referrerRelationModel.setLevel(1);
         referrerRelationMapper.create(referrerRelationModel);
 
-        List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerId);
+        List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerLoginName);
 
         for (ReferrerRelationModel model : list ){
             ReferrerRelationModel upperRelation = new ReferrerRelationModel();
-            upperRelation.setReferrerId(model.getReferrerId());
+            upperRelation.setReferrerLoginName(model.getReferrerLoginName());
             upperRelation.setLoginName(loginName);
             upperRelation.setLevel(model.getLevel() + 1);
             referrerRelationMapper.create(upperRelation);

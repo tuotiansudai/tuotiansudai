@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -55,7 +56,7 @@ public class ReferrerRelationMapperTest {
         user2.setSalt("123");
         userMapper.create(user2);
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setReferrerId("test1");
+        referrerRelationModel.setReferrerLoginName("test1");
         referrerRelationModel.setLoginName("test2");
         referrerRelationModel.setLevel(1);
 

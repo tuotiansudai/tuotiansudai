@@ -1,17 +1,9 @@
 package com.tuotiansudai.repository.model;
 
 public class ReferrerRelationModel {
-    private String referrerId;
+    private String referrerLoginName;
     private String loginName;
     private int level;
-
-    public String getReferrerId() {
-        return referrerId;
-    }
-
-    public void setReferrerId(String referrerId) {
-        this.referrerId = referrerId;
-    }
 
     public String getLoginName() {
         return loginName;
@@ -27,5 +19,13 @@ public class ReferrerRelationModel {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public String getReferrerLoginName() {
+        return referrerLoginName;
+    }
+
+    public void setReferrerLoginName(String referrerLoginName) {
+        this.referrerLoginName = referrerLoginName;
     }
 }

@@ -5,13 +5,13 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.ReferrerRelationMapper">
 
     <resultMap id="referrerRelationResultMap" type="ReferrerRelationModel">
-        <result column="referrer_id" property="referrerId"/>
+        <result column="referrer_login_name" property="referrerLoginName"/>
         <result column="login_name" property="loginName"/>
         <result column="level" property="level"/>
     </resultMap>
 
     <insert id="create" parameterType="ReferrerRelationModel" >
-        insert into referrer_relation(referrer_id,login_name,level) values(#{referrerId},#{loginName},#{level});
+        insert into referrer_relation(referrer_login_name,login_name,level) values(#{referrerLoginName},#{loginName},#{level});
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="referrerRelationResultMap">
