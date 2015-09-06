@@ -6,16 +6,20 @@ import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,8 @@ public class LoanServiceImpl implements LoanService {
     private PaySyncClient paySyncClient;
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -81,6 +87,29 @@ public class LoanServiceImpl implements LoanService {
             if (responseModel.isSuccess()) {
                 loanMapper.updateStatus(loanId, loanStatus);
             }
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            payDataDto.setStatus(false);
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> loanOut(String loanId, String loginName, String amount) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        String loanerId = accountMapper.findByLoginName(loginName).getPayUserId();
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
+                loanId, "01" + loanId, loanerId, amount);
+        try {
+            ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class,
+                    requestModel,
+                    ProjectTransferResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());

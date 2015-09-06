@@ -13,23 +13,65 @@
         <result property="merId" column="mer_id"/>
         <result property="retUrl" column="ret_url"/>
         <result property="notifyUrl" column="notify_url"/>
+
         <result property="orderId" column="order_id"/>
         <result property="merDate" column="mer_date"/>
         <result property="projectId" column="project_id"/>
-        <result property="userId" column="user_id"/>
+        <result property="servType" column="serv_type"/>
+        <result property="transAction" column="trans_action"/>
+        <result property="particType" column="partic_type"/>
+        <result property="particAccType" column="partic_acc_type"/>
+
+        <result property="userId" column="partic_user_id"/>
         <result property="amount" column="amount"/>
         <result property="requestTime" column="request_time"/>
         <result property="requestUrl" column="request_url"/>
         <result property="requestData" column="request_data"/>
     </resultMap>
 
-    <select id="findById" resultMap="requestMap" parameterType="java.lang.Long">
+    <sql id="sqlFindById">
         select * from project_transfer_request where id = #{id}
+    </sql>
+
+    <sql id="sqlCreate">
+        insert into project_transfer_request (
+            service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url,
+            order_id, mer_date, project_id, serv_type, trans_action, partic_type, partic_acc_type,
+            user_id, amount, request_time, request_url, request_data
+        ) values (
+            #{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl},
+            #{orderId}, #{merDate}, #{projectId}, #{servType}, #{transAction}, #{particType}, #{particAccType},
+            #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData}
+        )
+    </sql>
+
+    <!-- 异步方法 开始 -->
+    <select id="findById" resultMap="requestMap" parameterType="long">
+        <include refid="sqlFindById"></include>
     </select>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsModel">
-        insert into project_transfer_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, project_id, user_id, amount, request_time, request_url, request_data)
-        values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{projectId}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="ProjectTransferModel">
+        <include refid="sqlCreate"></include>
     </insert>
+    <!-- 异步方法 结束 -->
+
+    <!-- 同步方法 开始 -->
+    <select id="findRequestById" resultMap="requestMap" parameterType="long">
+        <include refid="sqlFindById"></include>
+    </select>
+
+    <insert id="createRequest" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectRequestModel">
+        <include refid="sqlCreate"></include>
+    </insert>
+
+    <update id="updateRequestStatus" keyColumn="id" keyProperty="id" parameterType="map">
+        update mer_bind_project_request set status = #{status} where id = #{id}
+    </update>
+
+    <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectResponseModel">
+        insert into mer_bind_project_response (request_id, sign_type, sign, merchant_id, version, project_account_id, project_state, mer_check_date,ret_code,ret_msg,response_data,response_time)
+        values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{projectAccountId}, #{projectState}, #{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
+    </insert>
+    <!-- 同步方法 结束 -->
 
 </mapper>
