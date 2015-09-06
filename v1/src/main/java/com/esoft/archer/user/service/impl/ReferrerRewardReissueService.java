@@ -45,7 +45,7 @@ public class ReferrerRewardReissueService {
             "  invest_userReferrer t " +
             "  JOIN trusteeship_account m " +
             "    ON t.`referrer_id` = m.`user_id` " +
-            " WHERE t.`status` = 'fail' ;";
+            " WHERE t.`status` = 'fail' and t.`bonus` > 0 limit 0,3 ";
 
     private static final String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 
