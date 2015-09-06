@@ -3,7 +3,7 @@ package com.tuotiansudai.utils;
 import java.util.Map;
 
 public enum SendCloudTemplate {
-    LOAN_OUT_SUCCESSFUL_EMAIL("标的放款成功邮件提醒","尊敬的拓天速贷客户，您在平台的项目借款 “#{loanName}” 已成功放款，您的投资金额为#{money}元。【拓天速贷】");
+    LOAN_OUT_SUCCESSFUL_EMAIL("标的放款成功邮件提醒","尊敬的拓天速贷客户，您在平台的项目借款 “{loanName}” 已成功放款，您的投资金额为{money}元。【拓天速贷】");
     private String title;
     private String template;
 
