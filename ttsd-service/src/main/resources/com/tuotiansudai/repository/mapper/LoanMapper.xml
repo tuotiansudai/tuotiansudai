@@ -112,7 +112,7 @@
         </trim>
     </update>
 
-    <update id="updateStatus" parameterType="java.util.Map">
+    <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>
 
