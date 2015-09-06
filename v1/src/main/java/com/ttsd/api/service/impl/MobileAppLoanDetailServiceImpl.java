@@ -57,6 +57,10 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
             if (StringUtils.isNotEmpty(loan.getGuaranteeCompanyDescription())) {
                 evidenceResponseDataDto.setImageUrl(getImageUrl(loan.getGuaranteeCompanyDescription()));
+                //test
+                for(String test:evidenceResponseDataDto.getImageUrl()){
+                    System.out.println("test===debug===" +test);
+                }
             }
             evidences.add(evidenceResponseDataDto);
             LoanDetailResponseDataDto loanDetailResponseDataDto = convertLoanDetailFromLoan(loan, evidences);
@@ -133,13 +137,16 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         } else {
             urlPattern = PropertiesUtils.getPro("dev.imageUrl.pattern");
         }
+        System.out.println("urlPattern=debug="+urlPattern);
 
         Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
         List<String> imageUrls = new ArrayList<String>();
         String[] imageUrlsTemp = guaranteeCompanyDescription.split("title");
         for (String str : imageUrlsTemp) {
+            System.out.println("str===debug===" + str);
             Matcher matcher = pattern.matcher(str);
             while (matcher.find()) {
+                System.out.println("str===debug===" + matcher.group());
                 imageUrls.add(matcher.group());
             }
 
