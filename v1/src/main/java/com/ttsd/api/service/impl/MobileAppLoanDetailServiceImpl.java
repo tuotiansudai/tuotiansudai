@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 @Service
 public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailService {
     @Logger
-    static Log log;
+    private Log log;
     @Resource
     private MobileAppLoanDetailDao mobileAppLoanDetailDao;
     @Resource
@@ -43,7 +43,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
+
         log.debug("================generateLoanDetail==================");
+        System.out.print("================generateLoanDetail==================");
         String resultCode = ReturnMessage.SUCCESS.getCode();
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
         String loanId = loanDetailRequestDto.getLoanId();
@@ -56,6 +58,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if (ReturnMessage.SUCCESS.getCode().equals(resultCode)) {
             List<EvidenceResponseDataDto> evidences = new ArrayList<EvidenceResponseDataDto>();
             EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
+            log.debug("================getGuaranteeCompanyDescription==================" + loan.getGuaranteeCompanyDescription());
+            System.out.print("================getGuaranteeCompanyDescription==================" + loan.getGuaranteeCompanyDescription());
             if (StringUtils.isNotEmpty(loan.getGuaranteeCompanyDescription())) {
                 evidenceResponseDataDto.setImageUrl(getImageUrl(loan.getGuaranteeCompanyDescription()));
                 //test
