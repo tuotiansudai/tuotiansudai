@@ -41,4 +41,6 @@ public interface InvestMapper {
      */
     List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") String loanId,
                                               @Param(value = "sortStyle") SortStyle sortStyle);
+
+    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
 }
