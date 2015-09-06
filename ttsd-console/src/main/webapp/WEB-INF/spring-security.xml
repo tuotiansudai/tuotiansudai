@@ -31,7 +31,6 @@
                     login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
         <intercept-url pattern="/" access="permitAll()"/>

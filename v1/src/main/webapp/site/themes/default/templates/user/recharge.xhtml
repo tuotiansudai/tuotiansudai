@@ -151,7 +151,7 @@
 									<f:convertNumber maxFractionDigits="0" minIntegerDigits="1" />
 									<archer:validateNumber precision="0" />
 									<f:ajax render="fee allMoney" event="change"
-										listener="#{rechargeHome.calculateFee}"></f:ajax>
+										></f:ajax>
 								</h:inputText>
 								元
 							</div>
@@ -172,7 +172,7 @@
 							<div class="txczje_l">实际支付金额：</div>
 							<div class="txczje_r">
 								<span> <h:outputLabel
-										value="#{rechargeHome.instance.actualMoney+rechargeHome.instance.fee}"
+										value="#{rechargeHome.formatActualMoney(rechargeHome.instance.actualMoney,rechargeHome.instance.fee)}"
 										id="allMoney"></h:outputLabel>
 								</span>元
 							</div>
