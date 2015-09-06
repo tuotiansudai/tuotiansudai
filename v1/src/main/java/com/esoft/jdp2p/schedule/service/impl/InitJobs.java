@@ -163,7 +163,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 
 				this.initAutoActivityRewardJob();
-				initAutoReferrerRewardReissueJob();
+//				initAutoReferrerRewardReissueJob();
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
