@@ -12,13 +12,13 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
     private String projectAmount;
     private String loanUserId;
 
-    public MerBindProjectRequestModel(long loanUserId,long loanAmount,long projectId,String projectName){
+    public MerBindProjectRequestModel(String loanUserId,String loanAmount,String projectId,String projectName){
         super();
         this.service = "mer_bind_project";
-        this.projectId = String.valueOf(projectId);
+        this.projectId = projectId;
         this.projectName = projectName;
-        this.projectAmount = String.valueOf(loanAmount);
-        this.loanUserId = String.valueOf(loanUserId);
+        this.projectAmount = loanAmount;
+        this.loanUserId = loanUserId;
     }
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();

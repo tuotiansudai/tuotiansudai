@@ -11,9 +11,9 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjec
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
@@ -33,18 +33,18 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PaySyncClient paySyncClient;
     @Autowired
-    private UserMapper userMapper;
+    private AccountMapper accountMapper;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
-        long loanerId = userMapper.findByLoginName(loanModel.getLoanerLoginName()).getId();
+        String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayAccountId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
-                loanModel.getId(),
+                String.valueOf(loanModel.getId()),
                 loanerId,
-                loanModel.getLoanAmount(),
+                String.valueOf(loanModel.getLoanAmount()),
                 loanModel.getName()
         );
         try {
@@ -63,7 +63,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
 
-    public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus){
+    public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
