@@ -44,7 +44,7 @@ public class RepayServiceImpl implements RepayService{
                 investRepayModel.setActualFee(0);
                 investRepayModel.setInvestId(investModel.getId());
                 investRepayModel.setPeriod(1);
-                investRepayModel.setRepayDate();
+                investRepayModel.setRepayDate(DateUtil.addDay(loanModel.getRecheckTime(),loanModel.getPeriods().intValue()));
                 investRepayModel.setStatus(RepayStatus.REPAYING);
             } else if (("LOAN_TYPE_4").equals(loanType.name())){
                 investRepayModel.setId(idGenerator.generate());
@@ -56,7 +56,7 @@ public class RepayServiceImpl implements RepayService{
                 investRepayModel.setActualFee(0);
                 investRepayModel.setInvestId(investModel.getId());
                 investRepayModel.setPeriod(1);
-                investRepayModel.setRepayDate(DateUtil.addDay(loanModel.getFundraisingStartTime(),loanModel.getPeriods()));
+                investRepayModel.setRepayDate(DateUtil.addDay(loanModel.getRecheckTime(),loanModel.getPeriods().intValue()));
                 investRepayModel.setStatus(RepayStatus.REPAYING);
             } else if (("LOAN_TYPE_3").equals(loanType.name())) {
 
