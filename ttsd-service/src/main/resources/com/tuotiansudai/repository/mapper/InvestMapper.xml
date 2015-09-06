@@ -24,18 +24,6 @@
         value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
 
-    <update id="update" parameterType="investModel">
-        update invest set
-        login_name = #{loginName},
-        loan_id = #{loanId},
-        amount = #{amount},
-        status = #{status},
-        source = #{source},
-        is_auto_invest = #{isAutoInvest},
-        created_time = #{createdTime}
-        where id = #{id}
-    </update>
-
     <update id="updateStatus" parameterType="map">
         update invest set status = #{status} where id = #{id}
     </update>
@@ -65,7 +53,7 @@
         select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId}
-        and status = 'SUCCESS')
+        and status = 'SUCCESS'
     </select>
 
     <select id="getInvests" parameterType="map" resultMap="investResultMap">

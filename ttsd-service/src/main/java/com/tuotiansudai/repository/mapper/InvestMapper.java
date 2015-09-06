@@ -16,14 +16,6 @@ public interface InvestMapper {
      */
     void create(InvestModel investModel);
 
-
-    /**
-     * 修改投资记录
-     *
-     * @param investModel
-     */
-    void update(InvestModel investModel);
-
     /**
      * 更新投资记录的状态
      * @param id
