@@ -26,7 +26,7 @@
         <result column="fundraising_end_time" property="fundraisingEndTime"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
-        <result column="first_trial_time" property="firstTrialTime"></result>
+        <result column="verify_time" property="verifyTime"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
     </resultMap>
@@ -100,8 +100,8 @@
             <if test="showOnHome !=null">
                 show_on_home = #{showOnHome},
             </if>
-            <if test="firstTrialTime !=null">
-                first_trial_time = #{firstTrialTime},
+            <if test="verifyTime !=null">
+                verify_time = #{verifyTime},
             </if>
             <if test="recheckTime !=null">
                 recheck_time = #{recheckTime},
@@ -110,6 +110,10 @@
                 status = #{status}
             </if>
         </trim>
+    </update>
+
+    <update id="updateStatus" parameterType="java.util.Map">
+        update loan set status = #{status} where id = #{loanId}
     </update>
 
 </mapper>

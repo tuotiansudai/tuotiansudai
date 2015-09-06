@@ -51,7 +51,7 @@ public class LoanModel {
     /***建标时间***/
     private Date createdTime = new Date();
     /***初审时间***/
-    private Date firstTrialTime;
+    private Date verifyTime;
     /***复审时间***/
     private Date recheckTime;
     /***标的状态***/
@@ -84,7 +84,7 @@ public class LoanModel {
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
-        this.firstTrialTime = loanDto.getFirstTrialTime();
+        this.verifyTime = loanDto.getVerifyTime();
         this.recheckTime = loanDto.getRecheckTime();
     }
 
@@ -256,12 +256,12 @@ public class LoanModel {
         this.createdTime = createdTime;
     }
 
-    public Date getFirstTrialTime() {
-        return firstTrialTime;
+    public Date getVerifyTime() {
+        return verifyTime;
     }
 
-    public void setFirstTrialTime(Date firstTrialTime) {
-        this.firstTrialTime = firstTrialTime;
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
     }
 
     public Date getRecheckTime() {

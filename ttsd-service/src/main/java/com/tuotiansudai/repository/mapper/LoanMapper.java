@@ -11,4 +11,5 @@ public interface LoanMapper {
     LoanModel findById(@Param(value = "loanId") long loanId);
     void update(LoanModel loanModel);
     List<LoanModel> findByStatus(@Param(value = "status")LoanStatus status);
+    void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 }

@@ -81,10 +81,7 @@ public class LoanServiceImpl implements LoanService {
                     merUpdateProjectRequestModel,
                     MerUpdateProjectResponseModel.class);
             if (responseModel.isSuccess()) {
-                LoanModel loan = new LoanModel();
-                loanModel.setId(loanId);
-                loanModel.setStatus(loanStatus);
-                loanMapper.update(loan);
+                loanMapper.updateStatus(loanId,loanStatus);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());

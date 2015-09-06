@@ -102,7 +102,7 @@ public class LoanDto {
     private Date createdTime;
 
     /***初审时间***/
-    private Date firstTrialTime;
+    private Date verifyTime;
 
     /***复审时间***/
     private Date recheckTime;
@@ -281,12 +281,12 @@ public class LoanDto {
         this.createdTime = createdTime;
     }
 
-    public Date getFirstTrialTime() {
-        return firstTrialTime;
+    public Date getVerifyTime() {
+        return verifyTime;
     }
 
-    public void setFirstTrialTime(Date firstTrialTime) {
-        this.firstTrialTime = firstTrialTime;
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
     }
 
     public Date getRecheckTime() {
