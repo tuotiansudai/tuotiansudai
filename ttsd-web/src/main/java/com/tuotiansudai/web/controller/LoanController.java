@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BaseRecordDto;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ public class LoanController {
     @RequestMapping(value = "/{loanId}/index/{index}/pagesize/{pagesize}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
-        BaseDto dto = loanService.getInvests(loanId, index, pagesize);
+        BaseRecordDto dto = loanService.getInvests(loanId, index, pagesize);
         return new ModelAndView("/loan", "baseDto", dto);
     }
 
