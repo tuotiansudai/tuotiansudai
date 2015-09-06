@@ -201,7 +201,7 @@ public class PayWrapperClient {
         return null;
     }
 
-    public String put(String path, String requestJson){
+    private String put(String path, String requestJson){
         String url = host + path;
         RequestBody body = RequestBody.create(JSON, requestJson);
         Request request = new Request.Builder().url(url).put(body).build();

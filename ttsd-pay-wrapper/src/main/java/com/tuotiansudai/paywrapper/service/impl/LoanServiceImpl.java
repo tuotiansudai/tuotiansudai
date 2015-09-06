@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -17,7 +16,6 @@ import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.utils.AmountUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +63,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
 
-    public BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus){
+    public BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus){
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -81,7 +79,7 @@ public class LoanServiceImpl implements LoanService {
                     merUpdateProjectRequestModel,
                     MerUpdateProjectResponseModel.class);
             if (responseModel.isSuccess()) {
-                loanMapper.updateStatus(loanId,loanStatus);
+                loanMapper.updateStatus(loanId, loanStatus);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());

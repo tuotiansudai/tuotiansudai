@@ -16,10 +16,10 @@ public interface LoanService {
     BaseDto<PayDataDto> createLoan(long loanId);
 
     /**
-     * @function 更新标的
+     * @function 更新标的状态
      * @param loanId
      * @param loanStatus
      * @return
      */
-    BaseDto<PayDataDto> updateLoan(long loanId,LoanStatus loanStatus);
+    BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus);
 }
