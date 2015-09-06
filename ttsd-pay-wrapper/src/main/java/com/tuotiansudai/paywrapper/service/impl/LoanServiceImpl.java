@@ -40,7 +40,7 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
-        String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayAccountId();
+        String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayUserId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
                 String.valueOf(loanModel.getId()),
                 loanerId,
