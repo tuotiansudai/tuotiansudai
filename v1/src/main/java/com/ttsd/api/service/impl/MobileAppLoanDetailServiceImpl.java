@@ -44,8 +44,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
 
-        log.debug("================generateLoanDetail==================");
-        System.out.print("================generateLoanDetail==================");
         String resultCode = ReturnMessage.SUCCESS.getCode();
         BaseResponseDto<LoanDetailResponseDataDto> dto = new BaseResponseDto<LoanDetailResponseDataDto>();
         String loanId = loanDetailRequestDto.getLoanId();
@@ -58,14 +56,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         if (ReturnMessage.SUCCESS.getCode().equals(resultCode)) {
             List<EvidenceResponseDataDto> evidences = new ArrayList<EvidenceResponseDataDto>();
             EvidenceResponseDataDto evidenceResponseDataDto = new EvidenceResponseDataDto();
-            log.debug("================getGuaranteeCompanyDescription==================" + loan.getGuaranteeCompanyDescription());
-            System.out.print("================getGuaranteeCompanyDescription==================" + loan.getGuaranteeCompanyDescription());
             if (StringUtils.isNotEmpty(loan.getGuaranteeCompanyDescription())) {
                 evidenceResponseDataDto.setImageUrl(getImageUrl(loan.getGuaranteeCompanyDescription()));
-                //test
-                for(String test:evidenceResponseDataDto.getImageUrl()){
-                    log.debug("test===debug===" +test);
-                }
+
             }
             evidences.add(evidenceResponseDataDto);
             LoanDetailResponseDataDto loanDetailResponseDataDto = convertLoanDetailFromLoan(loan, evidences);
@@ -142,16 +135,13 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         } else {
             urlPattern = PropertiesUtils.getPro("dev.imageUrl.pattern");
         }
-        log.debug("urlPattern=debug="+urlPattern);
 
         Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
         List<String> imageUrls = new ArrayList<String>();
         String[] imageUrlsTemp = guaranteeCompanyDescription.split("title");
         for (String str : imageUrlsTemp) {
-            log.debug("str===debug===" + str);
             Matcher matcher = pattern.matcher(str);
             while (matcher.find()) {
-                log.debug("str===debug===" + matcher.group());
                 imageUrls.add(matcher.group());
             }
 
