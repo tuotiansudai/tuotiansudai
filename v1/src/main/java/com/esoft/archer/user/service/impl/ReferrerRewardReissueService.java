@@ -58,10 +58,12 @@ public class ReferrerRewardReissueService {
     @Transactional
     public void reward(){
         log.debug("start referrer reward:");
+        System.out.println("start referrer reward:");
         System.out.println(needReward);
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(needReward).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String, Object>> resultNeedReward = query.list();
         log.debug("need deal with count:"+resultNeedReward.size());
+        System.out.println("need deal with count:" + resultNeedReward.size());
         for (int i=0;i<resultNeedReward.size();i++) {
             String orderId = resultNeedReward.get(i).get("invest_id").toString() + System.currentTimeMillis();
             double bonus = Double.parseDouble(resultNeedReward.get(i).get("bonus").toString());
@@ -71,12 +73,15 @@ public class ReferrerRewardReissueService {
                 if(returnMsg.split("\\|")[0].equals("0000")){
                     userBillBO.transferIntoBalance(resultNeedReward.get(i).get("referrer_id").toString(),bonus,"referrer_reward",transferOutDetail);
                     this.updateInvestUserReferrer(resultNeedReward.get(i).get("id").toString());
-                    log.debug("No."+(i+1)+"deal success");
+                    log.debug("No." + (i + 1) + "deal success");
+                    System.out.println("No." + (i + 1) + "deal success");
                 } else {
                     log.debug("No."+(i+1)+"deal failed reason umpay return");
+                    System.out.println("No." + (i + 1) + "deal failed reason umpay return");
                 }
             } catch (ReqDataException | RetDataException e) {
                 log.debug("No."+(i+1)+"deal failed reason exception");
+                System.out.println("No." + (i + 1) + "deal failed reason exception");
                 log.error(e.getLocalizedMessage(), e);
                 continue;
             }
