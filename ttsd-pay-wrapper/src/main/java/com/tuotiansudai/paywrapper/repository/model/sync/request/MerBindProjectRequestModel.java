@@ -23,10 +23,10 @@ public class MerBindProjectRequestModel extends BaseSyncRequestModel{
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
         payRequestData.put("service", this.service);
-        payRequestData.put("project_id", this.projectId);
+        payRequestData.put("project_id", String.valueOf(this.projectId));
         payRequestData.put("project_name", this.projectName);
-        payRequestData.put("project_amount", this.projectAmount);
-        payRequestData.put("loan_user_id", this.loanUserId);
+        payRequestData.put("project_amount", String.valueOf(this.projectAmount));
+        payRequestData.put("loan_user_id", String.valueOf(this.loanUserId));
         return payRequestData;
     }
 
