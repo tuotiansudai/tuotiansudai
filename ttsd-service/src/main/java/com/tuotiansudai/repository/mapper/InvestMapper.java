@@ -67,5 +67,6 @@ public interface InvestMapper {
 
     int getTotalCount(@Param(value = "loanId") long loanId,
                                     @Param(value = "status") InvestStatus status);
+    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
 
 }

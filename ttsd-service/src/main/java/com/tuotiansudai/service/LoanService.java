@@ -69,4 +69,7 @@ public interface LoanService {
     BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
     void recommendedIncome(LoanModel loanModel);
+
+
+    void notifyInvestorsLoanOutSuccessfulByEmail(LoanModel loan);
 }

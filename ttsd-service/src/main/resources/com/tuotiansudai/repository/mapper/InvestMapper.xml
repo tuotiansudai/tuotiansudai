@@ -20,12 +20,25 @@
     </sql>
 
     <insert id="create" parameterType="InvestModel">
+
         insert into invest ( <include refid="columns"></include> )
         value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
 
     <update id="updateStatus" parameterType="map">
         update invest set status = #{status} where id = #{id}
+    </update>
+    <update id="update" parameterType="investModel">
+        update invest SET
+        login_name = #{loginName},
+        loan_id = #{loanId},
+        amount = #{amount},
+        status = #{status},
+        source = #{source},
+        is_auto_invest = #{isAutoInvest},
+        created_time = #{createdTime},
+        success_time = #{successTime}
+        where id = #{id}
     </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
@@ -63,12 +76,16 @@
         and status = '${status}'
         limit #{index},#{pageSize}
     </select>
-
     <select id="getTotalCount" parameterType="map" resultType="int">
         select count(1)
         from invest
         where loan_id = #{loanId}
         and status = '${status}'
     </select>
-
+    <select id="getSuccessInvests" parameterType="map" resultMap="investResultMap">
+        select *
+        from invest
+        where loan_id = #{loanId}
+        and status = 'SUCCESS'
+    </select>
 </mapper>

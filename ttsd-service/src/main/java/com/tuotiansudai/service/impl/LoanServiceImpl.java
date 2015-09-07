@@ -1,13 +1,22 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.PayWrapperClient;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.SendCloudMailService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+
+import com.tuotiansudai.utils.SendCloudTemplate;
+import org.apache.commons.lang3.StringUtils;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+
 import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -40,7 +54,13 @@ public class LoanServiceImpl implements LoanService {
 
     private InvestMapper investMapper;
 
-    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private SendCloudMailService sendCloudMailService;
+    @Autowired
+    private 
 
     /**
      * @param loanTitleDto
@@ -210,6 +230,7 @@ public class LoanServiceImpl implements LoanService {
     public boolean loanIsExist(long loanId) {
         return findLoanById(loanId) != null;
     }
+
     private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto payDataDto = new PayDataDto();
@@ -296,7 +317,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanStatus(loanModel.getStatus());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
@@ -372,11 +393,39 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void recommendedIncome(LoanModel loanModel) {
-        logger.debug("begin referrer reward after make loan " + loanModel.getId());
+        long loanId = loanModel.getId();
+        logger.debug("begin referrer reward after make loan " + loanId);
+
+        List<InvestModel> investModels = investMapper.getSuccessInvests(loanId);
+
+        for (InvestModel invest : investModels) {
+            logger.debug("find invest " + invest.getId());
 
 
+        }
 
+
+    }
+
+    public void notifyInvestorsLoanOutSuccessfulByEmail(LoanModel loan) {
+
+        List<InvestModel> investModels = investMapper.getSuccessInvests(loan.getId());
+        logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loan.getId()));
+        for (InvestModel investModel : investModels) {
+            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                    .put("loanName", loan.getName())
+                    .put("money", String.valueOf(investModel.getAmount() / 100d))
+                    .build());
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            if (userModel != null && StringUtils.isNotEmpty(userModel.getEmail())) {
+                sendCloudMailService.sendMailByLoanOut(userModel.getEmail(), emailParameters);
+            }
+
+
+        }
     }
 }
