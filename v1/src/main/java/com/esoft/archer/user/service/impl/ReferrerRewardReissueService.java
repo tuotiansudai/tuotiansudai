@@ -11,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/9/2.
  */
+@Service
 public class ReferrerRewardReissueService {
 
     @Logger
@@ -35,7 +37,7 @@ public class ReferrerRewardReissueService {
     @Resource
     private UmPayLoanMoneyService umPayLoanMoneyService;
 
-    private static final String needReward = "SELECT" +
+    private String needReward = "SELECT" +
             "  t.`referrer_id`," +
             "  t.`bonus`," +
             "  t.`id`, " +
@@ -53,8 +55,10 @@ public class ReferrerRewardReissueService {
 
     private static final String transferOutDetailFormat = "推荐人奖励补发，投资:{0}, 订单:{1}, 推荐人:{2}";
 
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
     public void reward(){
         log.debug("start referrer reward:");
+        System.out.println(needReward);
         Query query = ht.getSessionFactory().getCurrentSession().createSQLQuery(needReward).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String, Object>> resultNeedReward = query.list();
         log.debug("need deal with count:"+resultNeedReward.size());

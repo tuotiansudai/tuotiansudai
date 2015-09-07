@@ -270,21 +270,21 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initAutoReferrerRewardReissueJob() throws SchedulerException {
-		Date triggerTime = new DateTime(2015, 9, 6, 19, 03, 0).toDate();
+		Date triggerTime = new DateTime(2015, 9, 7, 11, 45, 0).toDate();
 
 		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler
 				.getTrigger(TriggerKey
 						.triggerKey(
-								ScheduleConstants.TriggerName.AUTO_REFERRER_REWARD,
-								ScheduleConstants.TriggerGroup.AUTO_REFERRER_REWARD));
+								ScheduleConstants.TriggerName.AUTO_REFERRER_FAIL_REWARD,
+								ScheduleConstants.TriggerGroup.AUTO_REFERRER_FAIL_REWARD));
 
 		if (existedTrigger == null && triggerTime.after(new Date())) {
 			JobDetail jobDetail = JobBuilder.newJob(AutoReferrerRewardReissueJob.class)
-					.withIdentity(ScheduleConstants.JobName.AUTO_REFERRER_REWARD, ScheduleConstants.JobGroup.AUTO_REFERRER_REWARD)
+					.withIdentity(ScheduleConstants.JobName.AUTO_REFERRER_FAIL_REWARD, ScheduleConstants.JobGroup.AUTO_REFERRER_FAIL_REWARD)
 					.build();
 
 			SimpleTrigger trigger = TriggerBuilder.newTrigger()
-					.withIdentity(ScheduleConstants.TriggerName.AUTO_REFERRER_REWARD, ScheduleConstants.TriggerGroup.AUTO_REFERRER_REWARD)
+					.withIdentity(ScheduleConstants.TriggerName.AUTO_REFERRER_FAIL_REWARD, ScheduleConstants.TriggerGroup.AUTO_REFERRER_FAIL_REWARD)
 					.forJob(jobDetail)
 					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
 					.startAt(triggerTime)
