@@ -31,20 +31,20 @@
         where id = #{id}
     </select>
 
-    <select id="findByLoginNameOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoginNameOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{map.loginName}
+        where login_name = #{loginName}
         order by created_time
-        #{map.orderStyle}
+        ${orderStyle}
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{map.loanId}
+        where login_name = #{loanId}
         order by created_time
-        #{map.orderStyle}
+        ${orderStyle}
     </select>
 
 </mapper>
