@@ -17,6 +17,7 @@ import com.ttsd.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,6 +39,11 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Resource
     private LoanCalculator loanCalculator;
+    @Value("${mobile.app.imageUrl.pattern}")
+    private String urlPattern;
+    @Value("${domain}")
+    private String domainName;
+
 
 
 
@@ -129,8 +135,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Override
     public List<String> getImageUrl(String guaranteeCompanyDescription) {
-        String urlPattern = PropertiesUtils.getPro("mobile.app.imageUrl.pattern");
-        String domainName = PropertiesUtils.getPro("domain");
 
         Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
         List<String> imageUrls = new ArrayList<String>();
