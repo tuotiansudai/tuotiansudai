@@ -10,39 +10,39 @@ import java.util.List;
 
 public interface LoanService {
     /**
-     * @function 新增title
      * @param loanTitleDto
+     * @function 新增title
      */
     LoanTitleModel createTitle(LoanTitleDto loanTitleDto);
 
     /**
-     * @function 获取借款人或代理人
      * @param loginName
      * @return
+     * @function 获取借款人或代理人
      */
     List<String> getLoginNames(String loginName);
 
     /**
-     * @function 获取所有的标题
      * @return
+     * @function 获取所有的标题
      */
     List<LoanTitleModel> findAllTitles();
 
     /**
-     * @function 获取所有的标类型
      * @return
+     * @function 获取所有的标类型
      */
     List<LoanType> getLoanType();
 
     /**
-     * @function 获取所有的活动类型
      * @return
+     * @function 获取所有的活动类型
      */
     List<ActivityType> getActivityType();
 
     /**
-     * @function 创建标的
      * @return
+     * @function 创建标的
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
@@ -61,4 +61,11 @@ public interface LoanService {
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
+
+    BaseDto<LoanDto> getLoanDetail(long loanId);
+
+    String getExpectedTotalIncome(long loanId, double investAmount);
+
+    BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
+
 }

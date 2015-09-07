@@ -26,7 +26,6 @@ public enum LoanType {
         this.repayType = repayType;
         this.description = description;
     }
-
     public String getInterestPoint() {
         return interestPoint;
     }
