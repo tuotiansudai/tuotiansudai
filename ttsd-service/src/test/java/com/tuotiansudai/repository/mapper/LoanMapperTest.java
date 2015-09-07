@@ -31,6 +31,25 @@ public class LoanMapperTest {
 
     @Test
     public void createLoanTest() {
+        LoanModel loanModel = createLoan();
+        assertNotNull(loanMapper.findById(loanModel.getId()));
+    }
+
+    @Test
+    public void updateLoanTest(){
+        LoanModel loanModel = createLoan();
+        loanModel.setDescriptionText("just for a test");
+        loanMapper.update(loanModel);
+        assertTrue(loanModel.getDescriptionText().equals(loanMapper.findById(loanModel.getId()).getDescriptionText()));
+    }
+
+    @Test
+    public void findByIdTest(){
+        LoanModel loanModel = createLoan();
+        assertNotNull(loanMapper.findById(loanModel.getId()));
+    }
+
+    private LoanModel createLoan(){
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("xiangjie");
         loanDto.setAgentLoginName("xiangjie");
@@ -54,11 +73,11 @@ public class LoanMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setStatus(LoanStatus.WAITING_VERIFY);
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
         loanDto.setLoanTitles(loanTitleRelationModelList);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
-        assertNotNull(loanMapper.findById(id));
+        return loanModel;
     }
 }

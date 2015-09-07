@@ -5,6 +5,7 @@ import com.tuotiansudai.utils.AmountUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class LoanModel {
     /***标的号***/
@@ -49,8 +50,15 @@ public class LoanModel {
     private boolean showOnHome;
     /***建标时间***/
     private Date createdTime = new Date();
+    /***初审时间***/
+    private Date verifyTime;
+    /***复审时间***/
+    private Date recheckTime;
     /***标的状态***/
     private LoanStatus status;
+
+    /***申请材料***/
+    private List<LoanTitleRelationModel> loanTitles;
 
     public LoanModel(){}
 
@@ -76,6 +84,8 @@ public class LoanModel {
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
+        this.verifyTime = loanDto.getVerifyTime();
+        this.recheckTime = loanDto.getRecheckTime();
     }
 
     public long getId() {
@@ -246,12 +256,36 @@ public class LoanModel {
         this.createdTime = createdTime;
     }
 
+    public Date getVerifyTime() {
+        return verifyTime;
+    }
+
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
+    }
+
+    public Date getRecheckTime() {
+        return recheckTime;
+    }
+
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
+    }
+
     public LoanStatus getStatus() {
         return status;
     }
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public List<LoanTitleRelationModel> getLoanTitles() {
+        return loanTitles;
+    }
+
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
+        this.loanTitles = loanTitles;
     }
 
     private String rateStrDivideOneHundred(String rate) {
