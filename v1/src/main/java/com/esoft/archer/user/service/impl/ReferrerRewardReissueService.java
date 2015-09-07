@@ -47,7 +47,7 @@ public class ReferrerRewardReissueService {
             "  invest_userReferrer t " +
             "  JOIN trusteeship_account m " +
             "    ON t.`referrer_id` = m.`user_id` " +
-            " WHERE t.`status` = 'fail' and t.`bonus` > 0 limit 0,3 ";
+            " WHERE t.`status` = 'fail' and t.`bonus` > 0 and t.`referrer_id` = 'hourglasskoala' ";
 
     private static final String particAccType = UmPayConstants.TransferProjectStatus.PARTIC_ACC_TYPE_PERSON;
 
@@ -55,7 +55,7 @@ public class ReferrerRewardReissueService {
 
     private static final String transferOutDetailFormat = "推荐人奖励补发，投资:{0}, 订单:{1}, 推荐人:{2}";
 
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Transactional
     public void reward(){
         log.debug("start referrer reward:");
         System.out.println(needReward);
