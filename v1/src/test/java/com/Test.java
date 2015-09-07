@@ -40,7 +40,7 @@ public class Test {
 
     @org.junit.Test
     public void getDate() {
-        String temp = "1441703280000";
+        String temp = "1441678080000";
         Date d = new Date(Long.parseLong(temp));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(sdf.format(d));
