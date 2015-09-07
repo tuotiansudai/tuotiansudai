@@ -58,7 +58,7 @@ public class MobileAppBankCardController {
             bankCard.setUser(user);
             bankCard.setStatus("uncheck");
             bankCard.setTime(new Date());
-            bankCard.setIsOpenFastPayment(false);
+            bankCard.setIsOpenFastPayment(bankCardRequestDto.isOpenFastPayment());
             mobileAppBankCardService.save(bankCard);
             BaseResponseDto operation = umPayBindingBankCardOperation.createOperation(bankCard);
             return operation;
