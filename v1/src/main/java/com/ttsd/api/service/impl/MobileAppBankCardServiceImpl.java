@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
@@ -126,6 +127,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(BankCard bankCard) {
         hibernateTemplate.save(bankCard);
     }

@@ -55,6 +55,7 @@ public class MobileAppBankCardController {
             user.setId(bankCardRequestDto.getUserId());
             user.setRealname(bankCardRequestDto.getRealName());
             user.setIdCard(bankCardRequestDto.getIdCard());
+            bankCard.setUser(user);
             bankCard.setStatus("uncheck");
             bankCard.setTime(new Date());
             bankCard.setIsOpenFastPayment(false);
