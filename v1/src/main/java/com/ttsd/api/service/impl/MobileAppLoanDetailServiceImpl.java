@@ -129,11 +129,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     @Override
     public List<String> getImageUrl(String guaranteeCompanyDescription) {
-        String urlPattern = null;
+        String urlPattern = PropertiesUtils.getPro("imageUrl.pattern");
+        String urlPath = null;
         if (!CommonUtils.isDevEnvironment("environment")) {
-            urlPattern = PropertiesUtils.getPro("production.imageUrl.pattern");
+            urlPath = PropertiesUtils.getPro("production.urlPath");
         } else {
-            urlPattern = PropertiesUtils.getPro("dev.imageUrl.pattern");
+            urlPath = PropertiesUtils.getPro("dev.urlPath");
         }
 
         Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
@@ -142,7 +143,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         for (String str : imageUrlsTemp) {
             Matcher matcher = pattern.matcher(str);
             while (matcher.find()) {
-                imageUrls.add(matcher.group());
+                String imagePath = urlPath + matcher.group();
+                imageUrls.add(imagePath);
             }
 
         }
