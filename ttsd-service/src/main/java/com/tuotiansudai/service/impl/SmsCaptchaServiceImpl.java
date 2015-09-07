@@ -2,7 +2,8 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.client.dto.ResultDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
@@ -11,7 +12,6 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.Date;
 import java.util.Random;
@@ -29,7 +29,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     public boolean sendRegisterCaptcha(String mobile) {
         String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            ResultDto resultDto = smsWrapperClient.sendSms(mobile, captcha);
+            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha);
             return resultDto.getData().getStatus();
         }
 

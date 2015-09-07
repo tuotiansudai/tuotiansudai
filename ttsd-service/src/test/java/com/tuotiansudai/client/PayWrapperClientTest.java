@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.MonitorDataDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import org.junit.After;
@@ -54,8 +55,9 @@ public class PayWrapperClientTest {
 
         mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
         server.enqueue(mockResponse);
-        URL url = server.getUrl("/register");
-        this.payWrapperClient.setHost("http://" + url.getAuthority());
+        payWrapperClient.setHost(server.getHostName());
+        payWrapperClient.setPort(String.valueOf(server.getPort()));
+        payWrapperClient.setContext("");
 
         RegisterAccountDto dto = new RegisterAccountDto();
         dto.setLoginName("loginName");
@@ -68,5 +70,29 @@ public class PayWrapperClientTest {
         assertTrue(actualBaseDto.getData().getStatus());
         assertThat(actualBaseDto.getData().getCode(), is(dataDto.getCode()));
         assertThat(actualBaseDto.getData().getMessage(), is(dataDto.getMessage()));
+    }
+
+    @Test
+    public void shouldMonitor() throws Exception {
+        MockResponse mockResponse = new MockResponse();
+        BaseDto<MonitorDataDto> baseDto = new BaseDto<>();
+        MonitorDataDto dataDto = new MonitorDataDto();
+        dataDto.setStatus(true);
+        dataDto.setDatabaseStatus(true);
+        dataDto.setRedisStatus(true);
+        baseDto.setData(dataDto);
+
+        mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
+        server.enqueue(mockResponse);
+        payWrapperClient.setHost(server.getHostName());
+        payWrapperClient.setPort(String.valueOf(server.getPort()));
+        payWrapperClient.setContext("");
+
+        BaseDto<MonitorDataDto> actualBaseDto = payWrapperClient.monitor();
+
+        assertTrue(actualBaseDto.isSuccess());
+        assertTrue(actualBaseDto.getData().getStatus());
+        assertTrue(actualBaseDto.getData().isDatabaseStatus());
+        assertTrue(actualBaseDto.getData().isRedisStatus());
     }
 }

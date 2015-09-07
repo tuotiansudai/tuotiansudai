@@ -1,5 +1,4 @@
 apply plugin: 'war'
-apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
@@ -9,37 +8,10 @@ dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
-    }
-}
-
 war {
     archiveName "ttsd-web.war"
     destinationDir = file("war")
     from('/workspace/new_version_config/ttsd-web/') {
         into 'WEB-INF/classes/'
-    }
-}
-
-flyway {
-    def productionFlywayConfig = '/workspace/new_version_config/ttsd-web/jdbc.properties'
-    locations = ['filesystem:db_migration/aa']
-    user = 'root'
-    password = ''
-    outOfOrder = true
-    schemas = ['aa']
-    url = 'jdbc:mysql://192.168.33.10:3306/'
-    if (new File(productionFlywayConfig).exists()) {
-        Properties properties = new Properties()
-        properties.load(new FileInputStream(productionFlywayConfig))
-        url = properties.getProperty('jdbc.aa.url', url)
-        user = properties.getProperty('jdbc.aa.username', user)
-        password = properties.getProperty('jdbc.aa.password', password)
     }
 }

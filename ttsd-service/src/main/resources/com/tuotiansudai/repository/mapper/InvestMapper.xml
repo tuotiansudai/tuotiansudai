@@ -31,7 +31,7 @@
         where id = #{id}
     </select>
 
-    <select id="findByLoginNameOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoginNameOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
         where login_name = #{map.loginName}
@@ -39,7 +39,7 @@
         #{map.orderStyle}
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterMap="map" resultMap="investResultMap">
+    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
         where login_name = #{map.loanId}

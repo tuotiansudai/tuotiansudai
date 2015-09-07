@@ -18,22 +18,26 @@ public class PayWrapperClient {
 
     static Logger logger = Logger.getLogger(PayWrapperClient.class);
 
+    private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
+
     @Value("${paywrapper.host}")
     private String host;
 
-    @Value("${paywrapper.register}")
-    private String registerPath;
+    @Value("${paywrapper.port}")
+    private String port;
 
-    @Value("${paywrapper.recharge}")
-    private String rechargePath;
+    @Value("${paywrapper.context}")
+    private String context;
 
-    @Value("${paywrapper.bind-card}")
-    private String bindBankCardPath;
-    @Value("${paywrapper.loan}")
-    private String loanPath;
+    private String registerPath = "/register";
 
-    @Value("${paywrapper.withdraw}")
-    private String withdrawPath;
+    private String rechargePath = "/recharge";
+
+    private String bindCardPath = "/bind-card";
+
+    private String loanPath = "/loan";
+
+    private String withdrawPath = "/withdraw";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -76,7 +80,7 @@ public class PayWrapperClient {
             return baseDto;
         }
 
-        String responseJson = this.post(withdrawPath, requestJson);
+        String responseJson = this.post(rechargePath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payFormDataDto.setStatus(false);
             return baseDto;
@@ -117,7 +121,7 @@ public class PayWrapperClient {
             return baseDto;
         }
 
-        String responseJson = this.post(bindBankCardPath, requestJson);
+        String responseJson = this.post(bindCardPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payFormDataDto.setStatus(false);
             return baseDto;
@@ -146,10 +150,30 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
-    private String get(String url) {
+    public BaseDto<MonitorDataDto> monitor() {
+        String responseJson = this.get("/monitor");
+        if (!Strings.isNullOrEmpty(responseJson)) {
+            try {
+                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<MonitorDataDto>>(){});
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
+        MonitorDataDto dataDto = new MonitorDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
+        return resultDto;
+    }
+
+    private String get(String path) {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
+
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Accept", "application/json; charset=utf-8")
+                .addHeader("Content-Type", "application/json; charset=UTF-8")
                 .build();
 
         try {
@@ -164,7 +188,7 @@ public class PayWrapperClient {
     }
 
     private String post(String path, String requestJson) {
-        String url = host + path;
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
         RequestBody body = RequestBody.create(JSON, requestJson);
         Request request = new Request.Builder().url(url).post(body).build();
 
@@ -207,4 +231,11 @@ public class PayWrapperClient {
         this.host = host;
     }
 
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
 }
