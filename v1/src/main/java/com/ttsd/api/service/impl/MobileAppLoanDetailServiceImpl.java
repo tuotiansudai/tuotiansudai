@@ -130,9 +130,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     @Override
     public List<String> getImageUrl(String guaranteeCompanyDescription) {
         String urlPattern = PropertiesUtils.getPro("mobile.app.imageUrl.pattern");
-        String urlPath = null;
-
-        urlPath = PropertiesUtils.getPro("mobile.app.urlPath");
+        String domainName = PropertiesUtils.getPro("domain");
 
         Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
         List<String> imageUrls = new ArrayList<String>();
@@ -140,7 +138,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         for (String str : imageUrlsTemp) {
             Matcher matcher = pattern.matcher(str);
             while (matcher.find()) {
-                String imagePath = urlPath + matcher.group();
+                String imagePath = domainName + matcher.group();
                 imageUrls.add(imagePath);
             }
 
