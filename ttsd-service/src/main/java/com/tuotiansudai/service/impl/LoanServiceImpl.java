@@ -8,6 +8,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,7 @@ public class LoanServiceImpl implements LoanService {
 
     private InvestMapper investMapper;
 
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     /**
      * @param loanTitleDto
@@ -208,7 +210,6 @@ public class LoanServiceImpl implements LoanService {
     public boolean loanIsExist(long loanId) {
         return findLoanById(loanId) != null;
     }
-
     private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto();
         PayDataDto payDataDto = new PayDataDto();
@@ -370,5 +371,12 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+    @Override
+    public void recommendedIncome(LoanModel loanModel) {
+        logger.debug("begin referrer reward after make loan " + loanModel.getId());
+
+
+
     }
 }
