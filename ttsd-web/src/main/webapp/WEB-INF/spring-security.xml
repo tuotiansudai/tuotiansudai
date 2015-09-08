@@ -34,6 +34,10 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
 
         <intercept-url pattern="/" access="permitAll()"/>
+
+        <intercept-url pattern="/mobile-retrieve-password" access="isAnonymous()"/>
+        <intercept-url pattern="/mobile-retrieve-password/*" access="isAnonymous()"/>
+
         <intercept-url pattern="/register" access="isAnonymous()"/>
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>

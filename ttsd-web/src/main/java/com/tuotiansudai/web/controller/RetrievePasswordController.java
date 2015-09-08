@@ -3,8 +3,6 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -13,16 +11,19 @@ import com.tuotiansudai.utils.CaptchaVerifier;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
+@Controller
 @RequestMapping(value = "/mobile-retrieve-password")
-public class RetrievePasswordController {
+public class RetrievePasswordController extends BaseController {
     @Autowired
     private UserService userService;
     @Autowired
@@ -36,7 +37,7 @@ public class RetrievePasswordController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/input-retrieve-password-info");
+        return new ModelAndView("/retrieve");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
