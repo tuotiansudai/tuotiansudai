@@ -4,7 +4,7 @@ import com.tuotiansudai.repository.model.InvestSource;
 
 import java.util.Date;
 
-public class InvestRecordDataDto extends BaseRecordDataDto{
+public class InvestPaginationDataDto extends BasePaginationDataDto {
     private String loginName;
     private double amount;
     private InvestSource source;

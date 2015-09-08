@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 import java.util.List;
 
-public class BaseRecordDto<T extends BaseRecordDataDto> extends BaseDataDto{
+public class BasePaginationDto<T extends BasePaginationDataDto> extends BaseDataDto{
     private int index;
     private int pageSize;
     private int totalCount;
@@ -12,10 +12,10 @@ public class BaseRecordDto<T extends BaseRecordDataDto> extends BaseDataDto{
 
     private List<T> recordDtoList;
 
-    public BaseRecordDto(){
+    public BasePaginationDto(){
 
     }
-    public BaseRecordDto(int index, int pageSize, int totalCount){
+    public BasePaginationDto(int index, int pageSize, int totalCount){
         this.index = index;
         this.pageSize = pageSize;
         this.totalCount = totalCount;
