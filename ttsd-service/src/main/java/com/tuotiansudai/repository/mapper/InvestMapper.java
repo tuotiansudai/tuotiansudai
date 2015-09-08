@@ -3,9 +3,10 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface InvestMapper {
     /**
      * 创建投资

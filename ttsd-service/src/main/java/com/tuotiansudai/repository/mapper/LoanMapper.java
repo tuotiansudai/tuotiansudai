@@ -3,9 +3,10 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface LoanMapper {
     void create(LoanModel loanModel);
     LoanModel findById(@Param(value = "loanId") long loanId);
