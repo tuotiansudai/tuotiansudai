@@ -7,7 +7,6 @@ import com.tuotiansudai.repository.model.LoanModel;
  */
 public interface RepayService {
 
-    public void generateLoanRepay(LoanModel loanModel);
-
     public void generateInvestRepay(LoanModel loanModel);
+
 }

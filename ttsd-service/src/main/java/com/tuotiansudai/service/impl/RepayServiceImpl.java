@@ -33,19 +33,53 @@ public class RepayServiceImpl implements RepayService{
     @Autowired
     private LoanRepayMapper loanRepayMapper;
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public void generateLoanRepay(LoanModel loanModel) {
-
+    private void generateLoanRepay(LoanModel loanModel,List<List<InvestRepayModel>> allInvestRepays) {
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        for (int i=1;i<=loanModel.getPeriods();i++) {
+            LoanRepayModel loanRepayModel = new LoanRepayModel();
+            loanRepayModel.setId(idGenerator.generate());
+            loanRepayModel.setDefaultInterest(0);
+            loanRepayModel.setActualInterest(0);
+            loanRepayModel.setPeriod(i);
+            loanRepayModel.setStatus(RepayStatus.REPAYING);
+            loanRepayModel.setLoanId(loanModel.getId());
+            loanRepayModels.add(loanRepayModel);
+            if (("LOAN_TYPE_5").equals(loanModel.getType().name()) || ("LOAN_TYPE_4").equals(loanModel.getType().name())) {
+                loanRepayModel.setRepayDate(DateUtil.addDay(loanModel.getRecheckTime(), loanModel.getPeriods().intValue()));
+                break;
+            } else {
+                loanRepayModel.setRepayDate(DateUtil.addMonth(loanModel.getRecheckTime(), i));
+            }
+        }
+        for (List<InvestRepayModel> irs : allInvestRepays) {
+            for (InvestRepayModel ir : irs) {
+                loanRepayModels.get(Integer.parseInt(String.valueOf(ir.getPeriod())) - 1).setCorpus(loanRepayModels.get(Integer.parseInt(String.valueOf(ir.getPeriod())) - 1).getCorpus() + ir.getCorpus());
+                loanRepayModels.get(Integer.parseInt(String.valueOf(ir.getPeriod())) - 1).setExpectInterest(loanRepayModels.get(Integer.parseInt(String.valueOf(ir.getPeriod())) - 1).getExpectInterest() + ir.getExpectInterest());
+            }
+        }
+        if (loanRepayModels.size() > 0) {
+            loanRepayMapper.insertLoanRepay(loanRepayModels);
+        }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void generateInvestRepay(LoanModel loanModel) {
-        int year = DateUtil.judgeYear(new Date());
         List<InvestModel> invests = investMapper.getSuccessInvests(loanModel.getId());
-        LoanType loanType = loanModel.getType();
+        List<List<InvestRepayModel>> allInvestRepays = Lists.newArrayList();
+        List<InvestRepayModel> investRepayModels = this.getInvestRepayModels(loanModel, invests);
+        if (investRepayModels.size() > 0) {
+            investRepayMapper.insertInvestRepay(investRepayModels);
+            allInvestRepays.add(investRepayModels);
+        }
+        this.generateLoanRepay(loanModel,allInvestRepays);
+    }
+
+    public List<InvestRepayModel> getInvestRepayModels(LoanModel loanModel, List<InvestModel> invests) {
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
+        LoanType loanType = loanModel.getType();
+        int year = DateUtil.judgeYear(new Date());
         for (InvestModel investModel : invests) {
             if (("LOAN_TYPE_5").equals(loanType.name())) {
                 InvestRepayModel investRepayModel = new InvestRepayModel();
@@ -129,9 +163,7 @@ public class RepayServiceImpl implements RepayService{
                 }
             }
         }
-        if (investRepayModels.size() > 0) {
-            investRepayMapper.insertInvestRepay(investRepayModels);
-        }
+        return investRepayModels;
     }
 
 }
