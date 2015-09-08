@@ -69,6 +69,47 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
     }
 
+    @Override
+    public boolean sendMobileCaptcha(String mobile) {
+        String captcha = this.createMobileCaptcha(mobile);
+        if (!Strings.isNullOrEmpty(captcha)) {
+            ResultDto resultDto = smsWrapperClient.sendCellphoneRetrievePasswordSms(mobile, captcha);
+            return resultDto.getData().getStatus();
+        }
+        return false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private String createMobileCaptcha(String mobile) {
+        Date now = new Date();
+        Date tenMinuteLater = new DateTime(now).plusMinutes(10).toDate();
+        String captcha = createRandomCaptcha(6);
+        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.MOBILE_CAPTCHA);
+        if (existingCaptcha != null) {
+            existingCaptcha.setCaptcha(captcha);
+            existingCaptcha.setExpiredTime(tenMinuteLater);
+            existingCaptcha.setCreatedTime(now);
+            smsCaptchaMapper.update(existingCaptcha);
+        } else {
+            SmsCaptchaModel newSmsCaptchaModel = new SmsCaptchaModel();
+            newSmsCaptchaModel.setCaptcha(captcha);
+            newSmsCaptchaModel.setMobile(mobile);
+            newSmsCaptchaModel.setCreatedTime(now);
+            newSmsCaptchaModel.setExpiredTime(tenMinuteLater);
+            newSmsCaptchaModel.setCaptchaType(CaptchaType.MOBILE_CAPTCHA);
+            smsCaptchaMapper.create(newSmsCaptchaModel);
+        }
+
+        return captcha;
+    }
+
+    @Override
+    public boolean verifyMobileCaptcha(String mobile, String captcha) {
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.MOBILE_CAPTCHA);
+        Date now = new Date();
+        return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
+    }
+
     private String createRandomCaptcha(int captchaLength) {
         int min = 0;
         int max = 9;

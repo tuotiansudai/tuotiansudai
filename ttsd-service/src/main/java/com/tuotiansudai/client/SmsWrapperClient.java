@@ -22,12 +22,39 @@ public class SmsWrapperClient {
     private String host;
 
     private final String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}/register";
+    private final String CELLPHONE_RETRIEVE_PASSWORD_URI = "/sms/mobile/{mobile}/captcha/{captcha}/retrieve";
 
     @Autowired
     private OkHttpClient okHttpClient;
 
     public ResultDto sendSms(String mobile, String code) {
         String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+
+        Request request = new Request.Builder().url(url).get().build();
+
+        ResultDto resultDto;
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                resultDto = this.jsonConvertToObject(jsonData);
+                return resultDto;
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        resultDto = new ResultDto();
+        ResultDataDto dataDto = new ResultDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
+        return resultDto;
+    }
+
+    public ResultDto sendCellphoneRetrievePasswordSms(String mobile, String code) {
+        String url = this.host + CELLPHONE_RETRIEVE_PASSWORD_URI.replace("{mobile}", mobile).replace("{captcha}", code);
 
         Request request = new Request.Builder().url(url).get().build();
 
