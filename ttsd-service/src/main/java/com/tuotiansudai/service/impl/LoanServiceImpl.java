@@ -425,7 +425,9 @@ public class LoanServiceImpl implements LoanService {
         loan4update.setId(loanId);
         loan4update.setRecheckTime(nowTime);
         loan4update.setStatus(LoanStatus.REPAYING);
-        loan4update.setFundraisingEndTime(fundraisingEndTime);
+        if(fundraisingEndTime!=null) {
+            loan4update.setFundraisingEndTime(fundraisingEndTime);
+        }
         loan4update.setMinInvestAmount(minInvestAmount);
         loanMapper.update(loan4update);
     }

@@ -113,12 +113,16 @@ public class LoanDto extends BaseDataDto{
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    /**可投金额**/
     private double amountNeedRaised;
 
+    /**当前登录用户的个人账户余额**/
     private double balance;
 
+    /**完成比例**/
     private double raiseCompletedRate;
 
+    /**预计总收益**/
     private long expectedTotalIncome;
 
     public long getId() {
