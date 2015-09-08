@@ -9,7 +9,7 @@ dependencies {
 }
 
 war {
-    archiveName "ttsd-web.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
     from('/workspace/new_version_config/ttsd-web/') {
         into 'WEB-INF/classes/'
