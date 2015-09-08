@@ -27,10 +27,10 @@ public class LoanController {
         return loanService.updateLoanStatus(loanDto.getId(), loanDto.getLoanStatus());
     }
 
-    // 放款
+    // 放款，只用传入loanId
     @ResponseBody
     @RequestMapping(value = "/loanout", method = RequestMethod.POST)
     public BaseDto<PayDataDto> loanOut(@RequestBody LoanOutDto loanOutDto){
-        return loanService.loanOut(loanOutDto.getLoanId(), loanOutDto.getLoginName(), loanOutDto.getAmount());
+        return loanService.loanOut(loanOutDto.getLoanIdLong());
     }
 }

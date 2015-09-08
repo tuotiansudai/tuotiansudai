@@ -87,7 +87,7 @@ public interface InvestMapper {
      * @param loanId
      * @param beforeTime
      */
-    void cleanWaitingInvestBefore(@Param(value = "id") long loanId,
+    void cleanWaitingInvestBefore(@Param(value = "loanId") long loanId,
                                   @Param(value = "beforeTime") Date beforeTime);
 
     /**
@@ -96,7 +96,7 @@ public interface InvestMapper {
      * @param afterTime
      * @return
      */
-    int findWaitingInvestCountAfter(@Param(value = "id") long loanId,
+    int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                    @Param(value = "afterTime") Date afterTime);
 
 

@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
+import java.util.Date;
 import java.util.List;
 
 public interface LoanService {
@@ -72,6 +73,9 @@ public interface LoanService {
     /**
      * 标的放款
      * @param loanId
+     * @param minInvestAmount
+     * @param fundraisingEndTime
+     * @throws TTSDException
      */
-    void loanOut(long loanId) throws TTSDException;
+    void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException;
 }

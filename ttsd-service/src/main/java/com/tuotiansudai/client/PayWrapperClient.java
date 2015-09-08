@@ -32,8 +32,12 @@ public class PayWrapperClient {
 
     @Value("${paywrapper.bind-card}")
     private String bindBankCardPath;
+
     @Value("${paywrapper.loan}")
     private String loanPath;
+
+    @Value("${paywrapper.loan.loanout}")
+    private String loanOutPath;
 
     @Value("${paywrapper.withdraw}")
     private String withdrawPath;
@@ -185,6 +189,26 @@ public class PayWrapperClient {
             return baseDto;
         }
         String responseJson = this.put(loanPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayResponseJson(responseJson);
+    }
+
+    public BaseDto<PayDataDto> loanOut(LoanOutDto loanOutDto) {
+        String requestJson;
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(loanOutDto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        String responseJson = this.post(loanOutPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
             return baseDto;

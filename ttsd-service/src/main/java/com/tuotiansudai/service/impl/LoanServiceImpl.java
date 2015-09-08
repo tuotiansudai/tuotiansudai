@@ -10,6 +10,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,9 @@ import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+
+    static Logger logger = Logger.getLogger(UserServiceImpl.class);
+
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
@@ -377,10 +381,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOut(long loanId) throws TTSDException {
+    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
         // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
+        cal.add(Calendar.SECOND, - UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
         Date validInvestTime = cal.getTime();
 
         // 检查是否存在未处理完成的投资记录
@@ -389,78 +393,45 @@ public class LoanServiceImpl implements LoanService {
             throw new ExistWaitAffirmInvestsException("存在等待第三方资金托管确认的投资(标的ID:" + loanId + ")");
         }
         // 将已失效的投资记录状态置为失败
-        cancelExpiredWaitingInvest(loanId, validInvestTime);
-        // 查找所有投资成功的记录
-        List<InvestModel> successInvestList = investMapper.findSuccessInvests(loanId);
-        // 计算投资总金额
-        long investAmountTotal = computeInvestAmountTotal(successInvestList);
-        // 发起放款申请[联动优势]
-        boolean success = processLoanOutRequest(loanId, investAmountTotal);
-        // 放款成功
-        if (success) {
-            // 处理该标的的所有投资信息
-            processInvestForLoanOut(successInvestList);
-            // 处理该标的的借款信息
-            processLoanForLoanOut(loanId, investAmountTotal);
-            // 处理该标的帐务
-            processLoanUmpayForLoanOut(loanId);
-            // 处理该标的手续费[联动优势]
-            processLoanGuranteeFeeForLoanOut(loanId);
-            // 生成还款计划
-            // TODO:生成还款计划
-            // 异步处理推荐人奖励[联动优势]
-            processRecommandIncomeForLoanOut(loanId);
-            // 异步处理短信和邮件通知
-            processNotifyForLoanOut(loanId);
-        }
-    }
-
-    private void cancelExpiredWaitingInvest(long loanId, Date validInvestTime) {
         investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
+        // 放款并记账
+        processLoanOutPayRequest(loanId);
+        // 处理该标的的借款信息
+        processLoanStatusForLoanOut(loanId, minInvestAmount, fundraisingEndTime);
+        // 生成还款计划
+        // TODO:生成还款计划
+        // 处理推荐人奖励[联动优势]
+        processRecommandIncomeForLoanOut(loanId);
+        // 处理短信和邮件通知
+        processNotifyForLoanOut(loanId);
     }
 
-    private long computeInvestAmountTotal(List<InvestModel> investList) {
-        long amount = 0L;
-        for (InvestModel investModel : investList) {
-            amount += investModel.getAmount();
+    private void processLoanOutPayRequest(long loanId) throws TTSDException {
+        LoanOutDto loanOutDto = new LoanOutDto();
+        loanOutDto.setLoanId(String.valueOf(loanId));
+        BaseDto<PayDataDto> resp = payWrapperClient.loanOut(loanOutDto);
+        if (resp.isSuccess()) {
+            PayDataDto data = resp.getData();
+            if (!data.getStatus()) {
+                logger.error("放款失败:" + resp.getData().getMessage());
+                throw new TTSDException("放款失败");
+            }
         }
-        return amount;
     }
 
-    private boolean processLoanOutRequest(long loanId, long investAmountTotal) {
-        throw new RuntimeException("");
-    }
-
-    private void processInvestForLoanOut(List<InvestModel> investList) {
-        // 合计所有的投资金额
-        // 是否需要考虑代金券
-        // 将冻结的金额转走
-        // 将投资状态改为投资成功（什么时候会失败）
-        throw new RuntimeException("");
-    }
-
-    private void processLoanForLoanOut(long loanId, long investAmountTotal) {
-        // 实际借款额不足以支付手续费的异常
-        // 更改标的状态
-        // 设置放款日期
-        // 设置计息日期
-        loanMapper.updateStatus(loanId, LoanStatus.REPAYING);
-        // 设置实际借款额
-    }
-
-    private void processLoanUmpayForLoanOut(long loanId) {
-        // 把借款转给借款人账户
-        // userBill 解冻借款保证金
-        // sysBill 记账
-    }
-
-    private void processLoanGuranteeFeeForLoanOut(long loanId) {
-        // 收取手续费[联动优势]
-        // 记帐
+    private void processLoanStatusForLoanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) {
+        Date nowTime = new Date();
+        LoanModel loan4update = new LoanModel();
+        loan4update.setId(loanId);
+        loan4update.setRecheckTime(nowTime);
+        loan4update.setStatus(LoanStatus.REPAYING);
+        loan4update.setFundraisingEndTime(fundraisingEndTime);
+        loan4update.setMinInvestAmount(minInvestAmount);
+        loanMapper.update(loan4update);
     }
 
     private void processRecommandIncomeForLoanOut(long loanId) {
-        // TODO : @zhanglong 这个方法本身只需要写成同步的，我会在job里进行调用而实现异步处理
+        // TODO : @zhanglong 这个方法本身只需要写成同步的
     }
 
     private void processNotifyForLoanOut(long loanId) {
@@ -473,6 +444,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processEmailNotifyForLoanOut(long loanId) {
-        // TODO : @zhanglong 这个方法本身只需要写成同步的，我会在job里进行调用而实现异步处理
+        // TODO : @zhanglong 这个方法本身只需要写成同步的
     }
 }

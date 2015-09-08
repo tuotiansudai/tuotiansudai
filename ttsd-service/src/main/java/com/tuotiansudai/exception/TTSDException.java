@@ -3,7 +3,7 @@ package com.tuotiansudai.exception;
 /**
  * 异常的基类，便于Controller统一catch
  */
-public abstract class TTSDException extends Exception {
+public class TTSDException extends Exception {
     public TTSDException() {
     }
 

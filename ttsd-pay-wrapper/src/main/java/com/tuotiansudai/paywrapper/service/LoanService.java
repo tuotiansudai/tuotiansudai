@@ -28,5 +28,5 @@ public interface LoanService {
      * @param loanId
      * @return
      */
-    BaseDto<PayDataDto> loanOut(String loanId, String loginName, String amount);
+    BaseDto<PayDataDto> loanOut(long loanId);
 }

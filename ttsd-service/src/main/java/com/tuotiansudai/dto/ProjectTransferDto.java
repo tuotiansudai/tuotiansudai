@@ -37,6 +37,10 @@ public abstract class ProjectTransferDto implements Serializable {
         return loanId;
     }
 
+    public long getLoanIdLong() {
+        return Long.parseLong(loanId);
+    }
+
     public void setLoanId(String loanId) {
         this.loanId = loanId;
     }

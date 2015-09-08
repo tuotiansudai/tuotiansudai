@@ -34,6 +34,8 @@ public class ProjectTransferRequestModel extends BaseAsyncModel {
 
     public static ProjectTransferRequestModel newLoanOutRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
+        model.retUrl = "/";
+        model.notifyUrl = "/";
         model.servType = UmPayServType.TRANSFER_OUT_GIVE_MONEY_TO_BORROWER.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
         model.particType = UmPayParticType.LOANER.getCode();
