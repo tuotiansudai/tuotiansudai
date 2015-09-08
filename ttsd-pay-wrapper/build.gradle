@@ -20,7 +20,7 @@ buildscript {
 }
 
 war {
-    archiveName "ttsd-pay-wrapper.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
     from('/workspace/new_version_config/ttsd-pay-wrapper/') {
         into 'WEB-INF/classes/'
