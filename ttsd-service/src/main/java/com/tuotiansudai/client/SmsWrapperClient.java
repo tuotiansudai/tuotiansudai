@@ -1,11 +1,13 @@
 package com.tuotiansudai.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-import com.tuotiansudai.client.dto.ResultDataDto;
-import com.tuotiansudai.client.dto.ResultDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.MonitorDataDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,48 +20,68 @@ public class SmsWrapperClient {
 
     static Logger logger = Logger.getLogger(SmsWrapperClient.class);
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Value("${smswrapper.host}")
     private String host;
 
-    private final String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}/register";
+    @Value("${smswrapper.port}")
+    private String port;
+
+    @Value("${smswrapper.context}")
+    private String context;
+
+    private final static String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}/register";
 
     @Autowired
     private OkHttpClient okHttpClient;
 
-    public ResultDto sendSms(String mobile, String code) {
-        String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+    private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
+
+    public BaseDto<BaseDataDto> sendSms(String mobile, String code) {
+        String uri = REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", uri);
 
         Request request = new Request.Builder().url(url).get().build();
-
-        ResultDto resultDto;
 
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
                 String jsonData = response.body().string();
-                resultDto = this.jsonConvertToObject(jsonData);
-                return resultDto;
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<BaseDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        resultDto = new ResultDto();
-        ResultDataDto dataDto = new ResultDataDto();
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        MonitorDataDto dataDto = new MonitorDataDto();
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
 
         return resultDto;
     }
 
-    public ResultDto jsonConvertToObject(String jsonString) {
-        ObjectMapper mapper = new ObjectMapper();
-        ResultDto resultDto = null;
+    public BaseDto<MonitorDataDto> monitor() {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", "/monitor");
+
+        Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
+
         try {
-            resultDto = mapper.readValue(jsonString, ResultDto.class);
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<MonitorDataDto>>(){});
+            }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
+        MonitorDataDto dataDto = new MonitorDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
         return resultDto;
     }
 
@@ -67,4 +89,11 @@ public class SmsWrapperClient {
         this.host = host;
     }
 
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
 }

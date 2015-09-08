@@ -9,8 +9,12 @@ import java.util.List;
 @Repository
 public interface LoanMapper {
     void create(LoanModel loanModel);
+
     LoanModel findById(@Param(value = "loanId") long loanId);
+
     void update(LoanModel loanModel);
-    List<LoanModel> findByStatus(@Param(value = "status")LoanStatus status);
+
+    List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
+
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 }
