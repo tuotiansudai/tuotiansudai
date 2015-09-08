@@ -270,7 +270,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initAutoReferrerRewardReissueJob() throws SchedulerException {
-		Date triggerTime = new DateTime(2015, 9, 7, 12, 40, 0).toDate();
+		Date triggerTime = new DateTime(2015, 9, 8, 3, 25, 0).toDate();
 
 		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler
 				.getTrigger(TriggerKey
