@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.DateUtil;
@@ -24,6 +25,9 @@ public class RepayServiceImpl implements RepayService{
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -121,20 +125,9 @@ public class RepayServiceImpl implements RepayService{
                 }
             }
         }
-        
-
-
-
-
-
-
-
-
-
-
-
-
+        if (investRepayModels.size() > 0) {
+            investRepayMapper.insertInvestRepay(investRepayModels);
+        }
     }
-
 
 }
