@@ -99,7 +99,6 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
             newSmsCaptchaModel.setCaptchaType(CaptchaType.MOBILE_CAPTCHA);
             smsCaptchaMapper.create(newSmsCaptchaModel);
         }
-
         return captcha;
     }
 
