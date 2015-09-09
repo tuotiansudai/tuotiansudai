@@ -10,17 +10,17 @@
         <div class="hd">
             通过认证手机找回密码
         </div>
-        <form action="">
+        <form class="retrieve-form" action="">
             <div class="item-block">
                 <label for="">手机号：</label>
-                <input class="phone-txt error" name="phone" type="text" placeholder="请输入手机号"/>
+                <input class="phone-txt" name="mobile" type="text" maxlength="11" placeholder="请输入手机号"/>
             </div>
             <div class="item-block">
                 <label for="">验证码：</label>
 
-                <div class="yzm error">
+                <div class="yzm">
                     <input type="text" name="captcha" class="yzm-txt" placeholder="请输入验证码"/>
-                    <button type="button" class="send-yzm fetch-captcha">获取验证码</button>
+                    <button type="button" class="send-yzm fetch-captcha grey" disabled="disabled">获取验证码</button>
                 </div>
             </div>
             <div class="item-block">
@@ -40,7 +40,7 @@
 
         <p>
             <input type="text" class="verification-code-text" maxlength="5" placeholder="请输入图形验证码"/>
-            <img src="/register/image-captcha" alt="" class="verification-code-img"/>
+            <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
         </p>
         <b>验证码输入错误</b>
         <button class="complete grey" disabled="disabled">完成</button>

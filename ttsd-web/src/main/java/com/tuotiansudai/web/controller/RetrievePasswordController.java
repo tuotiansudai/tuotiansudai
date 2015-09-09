@@ -39,6 +39,14 @@ public class RetrievePasswordController extends BaseController {
         return new ModelAndView("/retrieve");
     }
 
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page",method = RequestMethod.GET)
+    public ModelAndView inputPassword(@RequestParam String mobile,@RequestParam String captcha) {
+//        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
+//            return new ModelAndView("/input-password");
+//        }
+        return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
+    }
+
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileIsExist(@PathVariable String mobile) {
@@ -65,9 +73,10 @@ public class RetrievePasswordController extends BaseController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
-            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
-        }
+//        if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
+//            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
+//        }
+        dataDto.setStatus(true);
         return baseDto;
     }
 
@@ -87,28 +96,22 @@ public class RetrievePasswordController extends BaseController {
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDto baseDto = new BaseDto();
         BaseDataDto baseDataDto = new BaseDataDto();
-        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
-            baseDataDto.setStatus(true);
-            baseDto.setData(baseDataDto);
-            return baseDto;
-        }
-        baseDataDto.setStatus(false);
+//        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
+//            baseDataDto.setStatus(true);
+//            baseDto.setData(baseDataDto);
+//            return baseDto;
+//        }
+        baseDataDto.setStatus(true);
         baseDto.setData(baseDataDto);
         return baseDto;
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<BaseDataDto> mobileRetrievePassword(@RequestBody RetrievePasswordDto retrievePasswordDto) {
-        BaseDto baseDto = new BaseDto();
-        BaseDataDto baseDataDto = new BaseDataDto();
+    public ModelAndView mobileRetrievePassword(@RequestBody RetrievePasswordDto retrievePasswordDto) {
         if (retrievePasswordService.mobileRetrievePassword(retrievePasswordDto)) {
-            baseDataDto.setStatus(true);
-            baseDto.setData(baseDataDto);
-            return baseDto;
+            return new ModelAndView("/login");
         }
-        baseDataDto.setStatus(false);
-        baseDto.setData(baseDataDto);
-        return baseDto;
+        return null;
     }
 }
