@@ -66,7 +66,7 @@ public class RepayServiceImpl implements RepayService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void generateInvestRepay(LoanModel loanModel) {
-        List<InvestModel> invests = investMapper.getSuccessInvests(loanModel.getId());
+        List<InvestModel> invests = investMapper.findSuccessInvests(loanModel.getId());
         List<List<InvestRepayModel>> allInvestRepays = Lists.newArrayList();
         List<InvestRepayModel> investRepayModels = this.getInvestRepayModels(loanModel, invests);
         if (investRepayModels.size() > 0) {
