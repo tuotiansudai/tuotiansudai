@@ -19,7 +19,7 @@
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
 
-    <insert id="create" parameterType="InvestModel">
+    <insert id="create" parameterType="investModel">
         insert into invest ( <include refid="columns"></include> )
         value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
@@ -40,12 +40,6 @@
         where login_name = #{loginName}
         order by created_time
         ${sortStyle}
-    </select>
-
-    <select id="findByLoanId" parameterType="map" resultMap="investResultMap">
-        select <include refid="columns"></include>
-        from invest
-        where loan_id = #{loanId}
     </select>
 
     <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">

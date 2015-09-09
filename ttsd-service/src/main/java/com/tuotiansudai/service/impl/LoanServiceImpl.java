@@ -1,5 +1,7 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ExistWaitAffirmInvestsException;
@@ -7,9 +9,11 @@ import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.SendCloudMailService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -47,6 +49,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private SendCloudMailService sendCloudMailService;
 
     /**
      * @param loanTitleDto
@@ -447,5 +455,22 @@ public class LoanServiceImpl implements LoanService {
 
     private void processEmailNotifyForLoanOut(long loanId) {
         // TODO : @zhanglong 这个方法本身只需要写成同步的
+    }
+
+    public void notifyInvestorsLoanOutSuccessfulByEmail(LoanModel loan) {
+        List<InvestModel> investModels = investMapper.findSuccessInvests(loan.getId());
+        logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loan.getId()));
+        for (InvestModel investModel : investModels) {
+            Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                    .put("loanName", loan.getName())
+                    .put("money", String.valueOf(investModel.getAmount() / 100d))
+                    .build());
+            UserModel userModel = userMapper.findByLoginName(investModel.getLoginName());
+            if (userModel != null && StringUtils.isNotEmpty(userModel.getEmail())){
+                sendCloudMailService.sendMailByLoanOut(userModel.getEmail(),emailParameters);
+            }
+
+
+        }
     }
 }

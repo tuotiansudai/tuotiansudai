@@ -78,4 +78,6 @@ public interface LoanService {
      * @throws TTSDException
      */
     void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException;
+
+    void notifyInvestorsLoanOutSuccessfulByEmail(LoanModel loan);
 }
