@@ -95,28 +95,8 @@ public class LoanController {
 
     @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
     public ModelAndView recheck(@PathVariable long loanId) {
-        BaseDto<LoanDto> dto;// = loanService.getLoanDetail(loanId);
-        dto = fakeLoanDto(loanId);
+        BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
         return new ModelAndView("/recheck", "loan", dto.getData());
-    }
-
-    private BaseDto<LoanDto> fakeLoanDto(long loanId){
-        BaseDto<LoanDto> dto = new BaseDto<>();
-        LoanDto loanDto = new LoanDto();
-        dto.setData(loanDto);
-        loanDto.setId(loanId);
-        loanDto.setProjectName("这是一个fake标的");
-        loanDto.setLoanerLoginName("loannerLoginName");
-        loanDto.setAgentLoginName("agentLoginName");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
-        loanDto.setLoanAmount(RandomStringUtils.randomNumeric(7));
-        loanDto.setAmountNeedRaised(new Random().nextDouble());
-        loanDto.setBasicRate("13");
-        loanDto.setActivityRate("1");
-        loanDto.setPeriods(3);
-        loanDto.setFundraisingEndTime(new Date());
-        loanDto.setMinInvestAmount("100");
-        return dto;
     }
 
     @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.POST)
