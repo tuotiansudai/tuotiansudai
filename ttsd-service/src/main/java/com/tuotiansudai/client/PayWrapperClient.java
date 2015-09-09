@@ -42,6 +42,11 @@ public class PayWrapperClient {
 
     private String withdrawPath = "/withdraw";
 
+    private String referrerRewardPath = "/referrer-reward";
+
+    @Value("${paywrapper.invest}")
+    private String investPath;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -63,6 +68,27 @@ public class PayWrapperClient {
         }
 
         String responseJson = this.post(registerPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayResponseJson(responseJson);
+    }
+
+    public BaseDto<PayDataDto> referrerReward(ReferrerRewardDto dto) {
+        String requestJson;
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(referrerRewardPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
             return baseDto;
@@ -132,7 +158,29 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
+    public BaseDto<PayFormDataDto> invest(InvestDto dto) {
+        String requestJson;
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(investPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayFormJson(responseJson);
+    }
+
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
+
         String requestJson;
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
