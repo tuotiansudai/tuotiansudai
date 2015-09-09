@@ -10,11 +10,8 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.SendCloudMailService;
-import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.utils.*;
 
-import com.tuotiansudai.utils.SendCloudTemplate;
 import org.apache.commons.lang3.StringUtils;
 
 import org.apache.log4j.Logger;
@@ -25,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
@@ -51,7 +49,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
-
+    @Autowired
     private InvestMapper investMapper;
 
     @Autowired
@@ -60,7 +58,11 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private SendCloudMailService sendCloudMailService;
     @Autowired
-    private 
+    private ReferrerRelationMapper referrerRelationMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+    @Autowired
+    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     /**
      * @param loanTitleDto
@@ -404,12 +406,127 @@ public class LoanServiceImpl implements LoanService {
 
         for (InvestModel invest : investModels) {
             logger.debug("find invest " + invest.getId());
+            List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
+            for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
+                logger.debug("referrer is" + referrerRelationModel.getReferrerLoginName());
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
+                Role role = JudgeRole(userRoleModels);
+                AccountModel accountModel = accountMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
+                String payUserId = accountModel == null ? "" : accountModel.getPayUserId();
+                long id = idGenerator.generate();
+                ReferrerRewardStatus status = ReferrerRewardStatus.FAIL;
+                String bonus = calculateBonus(invest.getAmount(), referrerRelationModel, loanModel, payUserId, role);
+                if (Double.valueOf(bonus) == -1) {
+                    logger.debug("role is" + role + ": level is " + referrerRelationModel.getLevel() + ",该层级不存在对于奖励比例!");
+                    continue;
+                }
+                logger.debug("payUserId is" + payUserId + ": bonus is " + bonus);
+                if ((role.equals(Role.INVESTOR) || role.equals(Role.MERCHANDISER)) && !"".equals(payUserId) && Double.valueOf(bonus) > 0.00) {
+                    ReferrerRewardDto referrerRewardDto = new ReferrerRewardDto(payUserId, bonus, referrerRelationModel.getReferrerLoginName(),id);
+                    BaseDto<PayDataDto> baseDto = payWrapperClient.referrerReward(referrerRewardDto);
+                    if (baseDto.getData().getStatus()) {
+                        if ("0000".equals(baseDto.getData().getCode())) {
+                            status = ReferrerRewardStatus.SUCCESS;
+                        }
+                    } else {
+                        logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + "奖励失败！原因:" + baseDto.getData().getMessage());
+                    }
 
+                }
+
+                if (role.equals(Role.USER)) {
+                    logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + ReferrerRewardMessageTemplate.NOT_BIND_CARD.getDescription());
+                }
+                createInvestReferrerReward(invest, bonus, referrerRelationModel, role, id, status);
+
+            }
 
         }
+    }
 
+    @Transactional(rollbackFor = Exception.class)
+    private void createInvestReferrerReward(InvestModel investModel, String bonus, ReferrerRelationModel referrerRelationModel, Role role, long id, ReferrerRewardStatus status) {
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
+        investReferrerRewardModel.setId(id);
+        investReferrerRewardModel.setInvestId(investModel.getId());
+        investReferrerRewardModel.setReferrerLoginName(referrerRelationModel.getReferrerLoginName());
+        long bonusCent = AmountUtil.convertStringToCent(bonus);
+        investReferrerRewardModel.setBonus(bonusCent);
+        investReferrerRewardModel.setRoleName(role);
+        investReferrerRewardModel.setStatus(status);
+        investReferrerRewardModel.setTime(new Date());
+
+        investReferrerRewardMapper.create(investReferrerRewardModel);
 
     }
+
+    private Role JudgeRole(List<UserRoleModel> userRoleModels) {
+        List<String> userRoles = new ArrayList<>();
+        for (UserRoleModel userRoleModel : userRoleModels) {
+            userRoles.add(userRoleModel.getRole().name());
+        }
+        if (userRoles.contains(Role.MERCHANDISER.name())) {
+            return Role.MERCHANDISER;
+        } else if (userRoles.contains(Role.INVESTOR.name()) && !userRoles.contains(Role.MERCHANDISER.name())) {
+            return Role.INVESTOR;
+        } else {
+            return Role.USER;
+        }
+    }
+
+    private String calculateBonus(long amount, ReferrerRelationModel referrerRelationModel,
+                                  LoanModel loanModel, String payUserId, Role role) {
+        double bonus = 0.00;
+        DecimalFormat df = new DecimalFormat("######0.00");
+        BigDecimal big100 = new BigDecimal(100);
+        String repayTimeUnit = loanModel.getType().getRepayTimeUnit();
+        long periods = loanModel.getPeriods();
+        //TODO:从数据库中获取奖励比例
+        Map<Integer, Double> merchandiserMap = new HashMap<>();
+        merchandiserMap.put(1, 0.4);
+        merchandiserMap.put(2, 0.3);
+        merchandiserMap.put(3, 0.2);
+        merchandiserMap.put(4, 0.1);
+
+        Map<Integer, Double> investorMap = new HashMap<>();
+        investorMap.put(1, 0.4);
+        investorMap.put(2, 0.3);
+        int daysOrMonthByYear = 1;
+        if ("month".equals(repayTimeUnit)) {
+            daysOrMonthByYear = 12;
+        } else if ("day".equals(repayTimeUnit)) {
+            daysOrMonthByYear = DateUtil.judgeYear(new Date());
+        }
+        if (StringUtils.isEmpty(payUserId) || Role.INVESTOR.equals(role)) {
+            if (investorMap.get(referrerRelationModel.getLevel()) != null) {
+                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100).setScale(6,BigDecimal.ROUND_HALF_UP);
+                BigDecimal amountBig = new BigDecimal(amount / 100d);
+                BigDecimal periodsBig = new BigDecimal(periods);
+                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
+
+                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
+                        .divide(daysOrMonthByYearBig,2).doubleValue();
+            } else {
+                bonus = -1;
+            }
+
+        } else {
+            if (merchandiserMap.get(referrerRelationModel.getLevel()) != null) {
+                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100);
+                BigDecimal amountBig = new BigDecimal(amount / 100d);
+                BigDecimal periodsBig = new BigDecimal(periods);
+                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
+
+                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
+                        .divide(daysOrMonthByYearBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            } else {
+                bonus = -1;
+            }
+
+        }
+        return df.format(bonus);
+    }
+
 
     public void notifyInvestorsLoanOutSuccessfulByEmail(LoanModel loan) {
 

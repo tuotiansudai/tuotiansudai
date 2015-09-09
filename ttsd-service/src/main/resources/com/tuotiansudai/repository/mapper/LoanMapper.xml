@@ -118,8 +118,4 @@
     <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>
-
-    <update id="updateStatus" parameterType="map">
-        update loan set status = #{status} where id = #{loanId}
-    </update>
 </mapper>

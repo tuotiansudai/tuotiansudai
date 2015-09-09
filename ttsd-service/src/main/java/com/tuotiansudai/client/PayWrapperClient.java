@@ -40,6 +40,8 @@ public class PayWrapperClient {
 
     @Value("${paywrapper.invest}")
     private String investPath;
+    @Value("${paywrapper.referrer-reward}")
+    private String referrerRewardPath;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -62,6 +64,27 @@ public class PayWrapperClient {
         }
 
         String responseJson = this.post(registerPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayResponseJson(responseJson);
+    }
+
+    public BaseDto<PayDataDto> referrerReward(ReferrerRewardDto dto) {
+        String requestJson;
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(referrerRewardPath, requestJson);
         if (Strings.isNullOrEmpty(responseJson)) {
             payDataDto.setStatus(false);
             return baseDto;
