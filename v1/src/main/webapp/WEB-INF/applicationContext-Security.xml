@@ -216,7 +216,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 			ref="adminFailureHandler" />
 		<beans:property name="authenticationSuccessHandler"
 			ref="adminSuccessHandler" />
-		<beans:property name="filterProcessesUrl" value="/login" />
+		<beans:property name="filterProcessesUrl" value="/admin-login" />
 	</beans:bean>
 
 	<beans:bean id="adminFailureHandler"
