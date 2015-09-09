@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
-import com.tuotiansudai.repository.model.LoanStatus;
-
 import java.util.Map;
 
 public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
