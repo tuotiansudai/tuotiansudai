@@ -2,10 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -80,5 +77,7 @@ public interface LoanService {
     BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
     void recommendedIncome(LoanModel loanModel);
+
+    void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos);
 
 }

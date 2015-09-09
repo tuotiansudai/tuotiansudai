@@ -565,7 +565,7 @@ public class LoanServiceImpl implements LoanService {
         // 生成还款计划
         repayService.generateInvestRepay(loanModel);
         // 处理推荐人奖励[联动优势]
-        processRecommandIncomeForLoanOut(loanId);
+        recommendedIncome(loanModel);
         // 处理短信和邮件通知
         processNotifyForLoanOut(loanId);
     }
@@ -596,10 +596,6 @@ public class LoanServiceImpl implements LoanService {
         loanMapper.update(loan4update);
     }
 
-    private void processRecommandIncomeForLoanOut(long loanId) {
-        // TODO : @zhanglong 这个方法本身只需要写成同步的
-    }
-
     private void processNotifyForLoanOut(long loanId) {
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
         logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
@@ -615,7 +611,7 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
+    public void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
         for (InvestNotifyInfo notifyInfo : notifyInfos) {
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                     .put("loanName", notifyInfo.getLoanName())

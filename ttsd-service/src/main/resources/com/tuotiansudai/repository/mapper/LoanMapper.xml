@@ -42,7 +42,7 @@
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
-    :
+
     <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>
@@ -50,6 +50,7 @@
     <select id="findByStatus" resultMap="loanResultMap">
         select * from loan where status = #{status}
     </select>
+
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
         update loan
         <trim prefix="set" suffixOverrides=",">

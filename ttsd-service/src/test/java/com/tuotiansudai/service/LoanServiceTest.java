@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.time.DateUtils;
@@ -43,6 +44,9 @@ public class LoanServiceTest {
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
+    @Autowired
+    private LoanTitleRelationMapper loanTitleRelationMapper;
+
     @Before
     public void createLoanTitle(){
         LoanTitleModel loanTitleModel = new LoanTitleModel();
@@ -52,8 +56,6 @@ public class LoanServiceTest {
         loanTitleMapper.create(loanTitleModel);
     }
 
-
-<<<<<<< HEAD
     @Test
     public void shouldGetLoanDetailTest(){
         long id = createLoanService();
@@ -248,7 +250,8 @@ public class LoanServiceTest {
         investModel.setCreatedTime(new Date());
         investMapper.create(investModel);
 
-        loanService.notifyInvestorsLoanOutSuccessfulByEmail(model);
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(id);
+        loanService.notifyInvestorsLoanOutSuccessfulByEmail(notifyInfos);
 
     }
 }
