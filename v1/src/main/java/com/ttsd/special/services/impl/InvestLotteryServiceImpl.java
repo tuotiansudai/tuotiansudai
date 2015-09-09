@@ -1,5 +1,6 @@
 package com.ttsd.special.services.impl;
 
+import com.esoft.core.util.ArithUtil;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
@@ -86,8 +87,7 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         switch (index) {
             case 0:
                 investLottery.setPrizeType(InvestLotteryPrizeType.G);
-                //TODO calculate money
-                investLottery.setAmount(0L);
+                investLottery.setAmount(calculateMoney(investMoney, investLottery));
             case 1:
                 investLottery.setPrizeType(InvestLotteryPrizeType.F);
                 investLottery.setAmount(0L);
@@ -113,6 +113,20 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
             }
         }
         return result;
+    }
+
+    private long calculateMoney(double investMoney,InvestLottery investLottery) {
+        Loan loan = investLottery.getInvest().getLoan();
+        String repayTimeUnit = loan.getType().getRepayTimeUnit();
+        int deadLine = loan.getDeadline();
+        int repayWay = 1;
+        if(repayTimeUnit.equals("month")){
+            repayWay = 12;
+        }else if(repayTimeUnit.equals("day")){
+            repayWay = 365;
+        }
+        double money = ArithUtil.div(ArithUtil.mul(ArithUtil.mul(investMoney,0.01), deadLine), repayWay, 2);
+        return (long) (money*100);
     }
 
 }
