@@ -29,15 +29,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class SmsControllerTest {
 
+    private MockMvc mockMvc;
+
+    private MockWebServer server;
+
     @Autowired
     private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
-
     @Autowired
     private SmsClient smsClient;
-
-    private MockWebServer server;
 
     @Before
     public void setUp() throws Exception {
@@ -62,10 +62,11 @@ public class SmsControllerTest {
         this.smsClient.setUrl(url.toString());
 
         String mobile = "13900000000";
-        String content = "content";
+        String captcha = "123456";
 
-        String urlTemplate = "/sms/mobile/{0}/captcha/{1}";
-        this.mockMvc.perform(get(MessageFormat.format(urlTemplate, mobile, content)).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        String urlTemplate = "/sms/mobile/{0}/captcha/{1}/register";
+        this.mockMvc.perform(get(MessageFormat.format(urlTemplate, mobile, captcha))
+                .contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
