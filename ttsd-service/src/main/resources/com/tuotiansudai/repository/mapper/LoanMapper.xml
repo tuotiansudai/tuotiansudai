@@ -11,6 +11,7 @@
         <result column="loaner" property="loanerLoginName"></result>
         <result column="type" property="type"></result>
         <result column="periods" property="periods"></result>
+        <result column="loan_amount" property="loanAmount"></result>
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
@@ -29,6 +30,8 @@
         <result column="verify_time" property="verifyTime"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
+        <result column="loan_amount" property="loanAmount"></result>
+
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
@@ -39,6 +42,10 @@
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
+
+    <update id="updateStatus" parameterType="map">
+        update loan set status = #{status} where id = #{loanId}
+    </update>
 
     <select id="findByStatus" resultMap="loanResultMap">
         select * from loan where status = #{status}
@@ -111,9 +118,4 @@
             </if>
         </trim>
     </update>
-
-    <update id="updateStatus" parameterType="map">
-        update loan set status = #{status} where id = #{loanId}
-    </update>
-
 </mapper>
