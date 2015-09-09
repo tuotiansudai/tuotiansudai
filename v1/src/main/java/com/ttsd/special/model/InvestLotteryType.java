@@ -1,13 +1,13 @@
 package com.ttsd.special.model;
 
-public enum InvestLuckyDrawType {
+public enum InvestLotteryType {
 
     /**
      * 新手标
      */
-    XS,
+    NOVICE,
     /**
      * 普通标
      */
-    PT
+    NORMAL
 }

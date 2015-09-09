@@ -1,6 +1,6 @@
 package com.ttsd.special.model;
 
-public enum InvestLuckyDrawPrizeLevel {
+public enum InvestLotteryPrizeType {
     A("1000元礼品"),
     B("500元礼品"),
     C("300元礼品"),
@@ -11,7 +11,7 @@ public enum InvestLuckyDrawPrizeLevel {
 
     private final String desc;
 
-    InvestLuckyDrawPrizeLevel(String desc) {
+    InvestLotteryPrizeType (String desc) {
         this.desc = desc;
     }
 

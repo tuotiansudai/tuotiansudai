@@ -8,22 +8,22 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "special_invest_lucky_draw")
-public class InvestLuckyDraw implements java.io.Serializable {
+@Table(name = "invest_lottery")
+public class InvestLottery implements java.io.Serializable {
 
     // Fields
 
     private String id;
     private User user;
     private Invest invest;
-    private InvestLuckyDrawType type;
+    private InvestLotteryType type;
     private Date createdTime;
-    private InvestLuckyDrawPrizeLevel prizeLevel;
-    private Double amount;
+    private InvestLotteryPrizeType prizeType;
+    private Long amount;
     private Date awardTime;
-    private boolean isValid;
+    private Boolean valid;
 
-    public InvestLuckyDraw() {
+    public InvestLottery() {
     }
 
     @Id
@@ -58,11 +58,11 @@ public class InvestLuckyDraw implements java.io.Serializable {
 
     @Column(name = "type", nullable = false, length = 16)
     @Enumerated (EnumType.STRING)
-    public InvestLuckyDrawType getType() {
+    public InvestLotteryType getType() {
         return this.type;
     }
 
-    public void setType(InvestLuckyDrawType type) {
+    public void setType(InvestLotteryType type) {
         this.type = type;
     }
 
@@ -75,27 +75,27 @@ public class InvestLuckyDraw implements java.io.Serializable {
         this.createdTime = createdTime;
     }
 
-    @Column(name = "prize_level", nullable = false, length = 100)
+    @Column(name = "prize_type", nullable = false)
     @Enumerated (EnumType.STRING)
-    public InvestLuckyDrawPrizeLevel getPrizeLevel() {
-        return prizeLevel;
+    public InvestLotteryPrizeType getPrizeType() {
+        return prizeType;
     }
 
-    public void setPrizeLevel(InvestLuckyDrawPrizeLevel prizeLevel) {
-        this.prizeLevel = prizeLevel;
+    public void setPrizeType(InvestLotteryPrizeType prizeType) {
+        this.prizeType = prizeType;
     }
 
 
-    @Column(name = "amount", nullable = false, precision = 22, scale = 0)
-    public Double getAmount() {
+    @Column(name = "amount")
+    public Long getAmount() {
         return this.amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 
-    @Column(name = "award_time", length = 19)
+    @Column(name = "award_time")
     public Date getAwardTime() {
         return this.awardTime;
     }
@@ -106,11 +106,11 @@ public class InvestLuckyDraw implements java.io.Serializable {
 
     @Column(name = "is_valid",columnDefinition = "TINYINT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    public boolean IsValid() {
-        return this.isValid;
+    public Boolean getValid() {
+        return this.valid;
     }
 
-    public void setIsValid(boolean isValid) {
-        this.isValid= isValid;
+    public void setValid(Boolean valid) {
+        this.valid= valid;
     }
 }

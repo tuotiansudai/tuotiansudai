@@ -2,9 +2,9 @@ package com;
 
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.invest.model.Invest;
-import com.ttsd.special.model.InvestLuckyDraw;
-import com.ttsd.special.model.InvestLuckyDrawPrizeLevel;
-import com.ttsd.special.model.InvestLuckyDrawType;
+import com.ttsd.special.model.InvestLottery;
+import com.ttsd.special.model.InvestLotteryPrizeType;
+import com.ttsd.special.model.InvestLotteryType;
 import org.junit.runner.RunWith;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,12 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
-public class InvestLuckyDrawTest {
+public class InvestLotteryTest{
 
     @Resource
     HibernateTemplate ht;
@@ -30,21 +31,21 @@ public class InvestLuckyDrawTest {
 
         String rndId = IdGenerator.randomUUID();
 
-        InvestLuckyDraw ild = new InvestLuckyDraw();
+        InvestLottery ild = new InvestLottery();
         ild.setId(rndId);
-        ild.setAmount(0D);
-        ild.setAwardTime(new Date());
+        ild.setAmount(3289439L);
         ild.setCreatedTime(new Date());
         ild.setInvest(invest);
-        ild.setIsValid(true);
-        ild.setPrizeLevel(InvestLuckyDrawPrizeLevel.A);
-        ild.setType(InvestLuckyDrawType.PT);
+        ild.setValid(true);
+        ild.setPrizeType(InvestLotteryPrizeType.A);
+        ild.setType(InvestLotteryType.NOVICE);
         ild.setUser(invest.getUser());
 
         ht.save(ild);
 
-        InvestLuckyDraw ild1 = ht.get(InvestLuckyDraw.class,rndId);
-        assert ild1.getPrizeLevel() == InvestLuckyDrawPrizeLevel.A;
+        InvestLottery ild1 = ht.get(InvestLottery.class,rndId);
+        assert ild1.getPrizeType() == InvestLotteryPrizeType.A;
+
 
         ht.delete(ild1);
     }
