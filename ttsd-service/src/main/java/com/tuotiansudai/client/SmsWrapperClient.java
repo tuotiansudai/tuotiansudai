@@ -1,12 +1,13 @@
 package com.tuotiansudai.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.google.common.base.Strings;
+import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.MonitorDataDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class SmsWrapperClient {
     @Autowired
     private OkHttpClient okHttpClient;
 
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
 
     public BaseDto<BaseDataDto> sendSms(String mobile, String code) {
@@ -60,6 +63,27 @@ public class SmsWrapperClient {
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
 
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
+        String path = "/sms/invest_notify";
+
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        resultDto.setData(dataDto);
+
+        String requestJson;
+        try {
+            requestJson = mapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            dataDto.setStatus(false);
+            return resultDto;
+        }
+        String responseString = post(path, requestJson);
+
+        dataDto.setStatus(true);
         return resultDto;
     }
 
@@ -95,5 +119,21 @@ public class SmsWrapperClient {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    private String post(String path, String requestJson) {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
+        RequestBody body = RequestBody.create(JSON, requestJson);
+        Request request = new Request.Builder().url(url).post(body).build();
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return null;
     }
 }

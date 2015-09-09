@@ -15,6 +15,13 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
+    <resultMap id="investSMSNotifyInfoMap" type="InvestNotifyInfo">
+        <result column="loan_name" property="loanName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="email" property="email"></result>
+        <result column="amount" property="amount"></result>
+    </resultMap>
+
     <sql id="columns">
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
@@ -85,5 +92,14 @@
         where loan_id = #{loanId}
         and status = 'WAITING'
         and created_time &gt;= #{afterTime}
+    </select>
+
+    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="InvestSMSNotifyInfo">
+        select loan.name as loan_name, u.mobile, u.email, invest.amount
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        where loan.id = #{loanId}
+        and invest.status = 'SUCCESS'
     </select>
 </mapper>
