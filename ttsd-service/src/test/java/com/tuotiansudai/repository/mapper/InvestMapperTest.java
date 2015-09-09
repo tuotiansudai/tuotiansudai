@@ -57,27 +57,6 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldUpdateInvest() throws Exception{
-        InvestModel investModel = this.getFakeInvestModel();
-        investMapper.create(investModel);
-
-        InvestModel dbModel = investMapper.findById(investModel.getId());
-        assertNotNull(dbModel);
-        assertEquals(dbModel.getAmount(), investModel.getAmount());
-        assertEquals(dbModel.getStatus(), investModel.getStatus());
-
-
-        investModel.setStatus(InvestStatus.SUCCESS);
-        investModel.setAmount(111111111L);
-
-        investMapper.update(investModel);
-        InvestModel dbModel2 = investMapper.findById(investModel.getId());
-
-        assertEquals(dbModel2.getStatus(), InvestStatus.SUCCESS);
-        assertEquals(dbModel2.getAmount(), 111111111L);
-    }
-
-    @Test
     public void shouldUpdateInvestStatus(){
         InvestModel investModel = this.getFakeInvestModel();
         investModel.setStatus(InvestStatus.WAITING);
@@ -205,7 +184,7 @@ public class InvestMapperTest {
         investMapper.create(investModel2);
         investMapper.create(investModel3);
 
-        long result = investMapper.sumSuccessInvestAmount(Loan_ID,InvestStatus.WAITING,InvestStatus.FAIL);
+        long result = investMapper.sumSuccessInvestAmount(Loan_ID);
 
         assertEquals(1000000l,result);
 

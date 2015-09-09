@@ -1,16 +1,12 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestRecordDataDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
-import junit.framework.TestCase;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -205,24 +201,24 @@ public class LoanServiceTest {
         Assert.assertNotNull(baseDto.getData().getId());
         Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.01,baseDto.getData().getRaiseCompletedRate());
+        assertEquals(0.01, baseDto.getData().getRaiseCompletedRate());
     }
     @Test
     public void shouldGetTheInvests(){
         createTestInvests();
-        BaseDto<InvestRecordDataDto> baseDto = loanService.getInvests(1,1,5);
-        assertEquals(5, baseDto.getData().getInvestRecordDtoList().size());
-        assertEquals(true,baseDto.getData().isHasNextPage());
-        assertEquals(false,baseDto.getData().isHasPreviousPage());
+        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 1, 5);
+        assertEquals(5, dto.getRecordDtoList().size());
+        assertEquals(true, dto.isHasNextPage());
+        assertEquals(false, dto.isHasPreviousPage());
     }
 
     @Test
     public void shouldGetTheInvestsAndNextPagePreviousPage(){
         createTestInvests();
-        BaseDto<InvestRecordDataDto> baseDto = loanService.getInvests(1,4,3);
-        assertEquals(1, baseDto.getData().getInvestRecordDtoList().size());
-        assertEquals(false,baseDto.getData().isHasNextPage());
-        assertEquals(true,baseDto.getData().isHasPreviousPage());
+        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 4, 3);
+        assertEquals(1, dto.getRecordDtoList().size());
+        assertEquals(false, dto.isHasNextPage());
+        assertEquals(true, dto.isHasPreviousPage());
     }
     private void createTestInvests(){
 

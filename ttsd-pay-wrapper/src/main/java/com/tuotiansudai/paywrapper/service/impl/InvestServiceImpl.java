@@ -86,7 +86,7 @@ public class InvestServiceImpl implements InvestService {
             logger.error("投资失败，查找不到指定的标的[" + loanId + "]");
             throw new PayException("标的不存在");
         }
-        long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId,InvestStatus.WAITING,InvestStatus.FAIL);
+        long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         long remainAmount = loan.getLoanAmount() - successInvestAmount;
 
         if (remainAmount < investAmount) {
@@ -132,7 +132,7 @@ public class InvestServiceImpl implements InvestService {
             // 改invest 本身状态
             investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS);
             LoanModel loanModel = loanMapper.findById(loanId);
-            long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId,InvestStatus.WAITING,InvestStatus.FAIL);
+            long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
             // 满标，改标的状态 RECHECK
             if (successInvestAmountTotal == loanModel.getLoanAmount()) {
                 loanMapper.updateStatus(loanId, LoanStatus.RECHECK);

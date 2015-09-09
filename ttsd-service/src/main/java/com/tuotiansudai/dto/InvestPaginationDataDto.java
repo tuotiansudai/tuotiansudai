@@ -2,12 +2,14 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.InvestSource;
 
-public class InvestRecordDto {
+import java.util.Date;
+
+public class InvestPaginationDataDto extends BasePaginationDataDto {
     private String loginName;
-    private String amount;
+    private double amount;
     private InvestSource source;
-    private String expectedRate;
-    private String createdTime;
+    private double expectedRate;
+    private Date createdTime;
 
     public String getLoginName() {
         return loginName;
@@ -17,11 +19,11 @@ public class InvestRecordDto {
         this.loginName = loginName;
     }
 
-    public String getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -33,19 +35,19 @@ public class InvestRecordDto {
         this.source = source;
     }
 
-    public String getExpectedRate() {
+    public double getExpectedRate() {
         return expectedRate;
     }
 
-    public void setExpectedRate(String expectedRate) {
+    public void setExpectedRate(double expectedRate) {
         this.expectedRate = expectedRate;
     }
 
-    public String getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 }
