@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 public class MyUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	private boolean useModalBox;
 
-	private Map<String, String> headers = Maps.newHashMap();
+	private Map<String, String> appHeaders = Maps.newHashMap();
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -50,7 +50,7 @@ public class MyUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFa
 	}
 
 	private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
-		Optional<Map.Entry<String, String>> optional = Iterators.tryFind(headers.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
+		Optional<Map.Entry<String, String>> optional = Iterators.tryFind(appHeaders.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
 			@Override
 			public boolean apply(Map.Entry<String, String> entry) {
 				return entry.getValue().equals(httpServletRequest.getHeader(entry.getKey()));
@@ -60,8 +60,8 @@ public class MyUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFa
 		return optional.isPresent();
 	}
 
-	public void setHeaders(Map<String, String> headers) {
-		this.headers = headers;
+	public void setAppHeaders(Map<String, String> appHeaders) {
+		this.appHeaders = appHeaders;
 	}
 
 	public boolean isUseModalBox() {
