@@ -30,8 +30,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
@@ -52,7 +54,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     private String refreshTokenUrl = "/refresh-token";
 
-    private int tokenExpiredSeconds = 300;
+    private int tokenExpiredSeconds = 3600;
 
     private String tokenName = "token";
 
@@ -198,10 +200,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     }
 
     private String generateToken(String loginName) {
-        //TODO: generate token
-//        String tokenTemplate = "app-token:{0}:{1}";
-//        String token = MessageFormat.format(tokenTemplate, authentication.getName(), UUID.randomUUID().toString());
-        String token = "test";
+        String tokenTemplate = "app-token:{0}:{1}";
+        String token = MessageFormat.format(tokenTemplate, loginName, UUID.randomUUID().toString());
         this.redisClient.setex(token, loginName, this.tokenExpiredSeconds);
         return token;
     }
