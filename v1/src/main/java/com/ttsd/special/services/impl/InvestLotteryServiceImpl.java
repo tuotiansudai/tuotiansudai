@@ -41,8 +41,6 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
             total = 1;
         } else if (invest.getInvestMoney() >= 1500) {
             total = 3;
-        } else {
-            return;
         }
         int nowTotal = investLotteryList.size();
         List<InvestLottery> investLotterys = Lists.newArrayList();
@@ -62,7 +60,6 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
 
     private InvestLottery getInvestLottery(Invest invest,InvestLotteryType investLotteryType ) {
         InvestLottery investLottery = new InvestLottery();
-        investLottery.setId(IdGenerator.randomUUID());
         investLottery.setInvest(invest);
         investLottery.setUser(invest.getUser());
         investLottery.setType(investLotteryType);
@@ -72,7 +69,7 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
     }
 
     private InvestLottery luckyDrawRules(double investMoney, InvestLottery investLottery) {
-        int random = new Random().nextInt(100);
+        int random = new Random(System.currentTimeMillis()).nextInt(100);
         int[] lotteryScale = null;
         if (investMoney >= 1 && investMoney < 10) {
             lotteryScale = InvestLotteryProbabilityType.ONE.getIntScale();

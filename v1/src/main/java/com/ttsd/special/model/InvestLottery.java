@@ -13,7 +13,7 @@ public class InvestLottery implements java.io.Serializable {
 
     // Fields
 
-    private String id;
+    private long id;
     private User user;
     private Invest invest;
     private InvestLotteryType type;
@@ -28,11 +28,12 @@ public class InvestLottery implements java.io.Serializable {
 
     @Id
     @Column(name = "id", unique = true, nullable = false, length = 32)
-    public String getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

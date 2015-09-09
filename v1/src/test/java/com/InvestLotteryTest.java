@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -27,12 +26,9 @@ public class InvestLotteryTest{
 
     @org.junit.Test
     public void ReadAndWrite() {
-        Invest invest = ht.get(Invest.class, "20150605000001");
-
-        String rndId = IdGenerator.randomUUID();
+        Invest invest = ht.get(Invest.class, "20150727000006");
 
         InvestLottery ild = new InvestLottery();
-        ild.setId(rndId);
         ild.setAmount(3289439L);
         ild.setCreatedTime(new Date());
         ild.setInvest(invest);
@@ -43,11 +39,6 @@ public class InvestLotteryTest{
 
         ht.save(ild);
 
-        InvestLottery ild1 = ht.get(InvestLottery.class,rndId);
-        assert ild1.getPrizeType() == InvestLotteryPrizeType.A;
-
-
-        ht.delete(ild1);
     }
 
 }
