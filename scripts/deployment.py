@@ -38,5 +38,5 @@ class NewVersionDeployment(object):
         sh('sudo /usr/local/bin/docker-compose -f dev.yml rm -f')
 
     def _start_new_container(self):
-        sh('sudo /usr/local/bin/docker-compose -f dev.yml up')
+        sh('sudo /usr/local/bin/docker-compose -f dev.yml up -d')
 

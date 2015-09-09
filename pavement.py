@@ -1,5 +1,7 @@
 import os
+import sys
 
+sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 from paver.tasks import task, needs, cmdopts
 
 
@@ -153,12 +155,14 @@ def deploy():
     Deploy to production environment
     """
 
+
 @task
 @needs('migrate', 'deploy')
 def devdeploy():
     """
     Deploy to dev/test environment
     """
+
 
 @task
 def cideploy():
