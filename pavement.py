@@ -139,16 +139,10 @@ def deploy_to_docker(options):
 
 
 @task
-@cmdopts([
-    ('webport=', 'w', 'Web Local port which is mapped to containers 8080'),
-    ('smsport=', 's', 'SMS Local port which is mapped to containers 8080'),
-    ('payport=', 'p', 'Payment Local port which is mapped to containers 8080'),
-    ('consoleport=', 'c', 'Local port which is mapped to containers 8080'),
-])
-def v2deploy(options):
+def v2deploy():
     from scripts.deployment import NewVersionDeployment
 
-    v2 = NewVersionDeployment(options.webport, options.smsport, options.payport, options.consoleport)
+    v2 = NewVersionDeployment()
     v2.deploy()
 
 
