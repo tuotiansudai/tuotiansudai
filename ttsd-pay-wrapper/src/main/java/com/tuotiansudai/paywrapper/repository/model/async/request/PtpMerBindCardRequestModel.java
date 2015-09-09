@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class PtpMerBankCardRequestModel extends BaseAsyncModel {
+public class PtpMerBindCardRequestModel extends BaseAsyncModel {
 
     private String orderId;
 
@@ -22,21 +22,18 @@ public class PtpMerBankCardRequestModel extends BaseAsyncModel {
 
     private String isOpenFastPayment = "0";
 
-    public PtpMerBankCardRequestModel() {
+    public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBankCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
         super();
         this.service = "ptp_mer_bind_card";
-        this.setNotifyUrl("http://121.43.71.173:13003/trusteeship_return_s2s/ptp_mer_bind_card");
-        this.setRetUrl("http://121.43.71.173:13003/trusteeship_return_web/ptp_mer_bind_card");
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.cardId = cardNumber;
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-
     }
 
     @Override
