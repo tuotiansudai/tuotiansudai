@@ -423,13 +423,18 @@ public class LoanServiceImpl implements LoanService {
                 logger.debug("payUserId is" + payUserId + ": bonus is " + bonus);
                 if ((role.equals(Role.INVESTOR) || role.equals(Role.MERCHANDISER)) && !"".equals(payUserId) && Double.valueOf(bonus) > 0.00) {
                     ReferrerRewardDto referrerRewardDto = new ReferrerRewardDto(payUserId, bonus, referrerRelationModel.getReferrerLoginName(),id);
-                    BaseDto<PayDataDto> baseDto = payWrapperClient.referrerReward(referrerRewardDto);
-                    if (baseDto.getData().getStatus()) {
-                        if ("0000".equals(baseDto.getData().getCode())) {
-                            status = ReferrerRewardStatus.SUCCESS;
+                    try {
+                        BaseDto<PayDataDto> baseDto = payWrapperClient.referrerReward(referrerRewardDto);
+                        if (baseDto.getData().getStatus()) {
+                            if ("0000".equals(baseDto.getData().getCode())) {
+                                status = ReferrerRewardStatus.SUCCESS;
+                            }
+                        } else {
+                            logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + "奖励失败！原因:" + baseDto.getData().getMessage());
                         }
-                    } else {
-                        logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + "奖励失败！原因:" + baseDto.getData().getMessage());
+
+                    }catch (Exception e){
+                        logger.debug(e.getLocalizedMessage(),e);
                     }
 
                 }
