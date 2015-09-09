@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class MySimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-    private Map<String, String> headers = Maps.newHashMap();
+    private Map<String, String> appHeaders = Maps.newHashMap();
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -43,7 +43,7 @@ public class MySimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
     }
 
     private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
-        Optional<Map.Entry<String, String>> optional = Iterators.tryFind(headers.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
+        Optional<Map.Entry<String, String>> optional = Iterators.tryFind(appHeaders.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
             @Override
             public boolean apply(Map.Entry<String, String> entry) {
                 return entry.getValue().equals(httpServletRequest.getHeader(entry.getKey()));
@@ -53,7 +53,7 @@ public class MySimpleUrlLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandl
         return optional.isPresent();
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public void setAppHeaders(Map<String, String> appHeaders) {
+        this.appHeaders = appHeaders;
     }
 }

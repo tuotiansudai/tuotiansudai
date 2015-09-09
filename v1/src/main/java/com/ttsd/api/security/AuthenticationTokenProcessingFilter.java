@@ -44,7 +44,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     @Autowired
     private RedisClient redisClient;
 
-    private Map<String, String> headers = Maps.newHashMap();
+    private Map<String, String> appHeaders = Maps.newHashMap();
 
     private String loginUrl = "/login";
 
@@ -207,7 +207,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     }
 
     private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
-        Optional<Map.Entry<String, String>> optional = Iterators.tryFind(headers.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
+        Optional<Map.Entry<String, String>> optional = Iterators.tryFind(appHeaders.entrySet().iterator(), new Predicate<Map.Entry<String, String>>() {
             @Override
             public boolean apply(Map.Entry<String, String> entry) {
                 return entry.getValue().equals(httpServletRequest.getHeader(entry.getKey()));
@@ -225,8 +225,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         this.refreshTokenUrl = refreshTokenUrl;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public void setAppHeaders(Map<String, String> appHeaders) {
+        this.appHeaders = appHeaders;
     }
 
     public void setTokenExpiredSeconds(int tokenExpiredSeconds) {
