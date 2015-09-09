@@ -1,45 +1,17 @@
 apply plugin: 'war'
-apply plugin: 'org.flywaydb.flyway'
 apply from: 'db_migration.gradle'
 
 dependencies {
-
-    compile fileTree(dir: 'libs', include: '**/*.jar')
+    compile project(':ttsd-service'),
+            fileTree(dir: 'libs', include: '**/*.jar')
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
-    }
-}
-
 war {
-    archiveName "ttsd-sms-wrapper.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
     from('/workspace/new_version_config/ttsd-sms-wrapper/') {
         into 'WEB-INF/classes/'
-    }
-}
-
-flyway {
-    def productionFlywayConfig = '/workspace/new_version_config/ttsd-sms-wrapper/jdbc.properties'
-    locations = ['filesystem:db_migration/sms_operations']
-    user = 'root'
-    password = ''
-    outOfOrder = true
-    schemas = ['sms_operations']
-    url = 'jdbc:mysql://192.168.33.10:3306/'
-    if (new File(productionFlywayConfig).exists()) {
-        Properties properties = new Properties()
-        properties.load(new FileInputStream(productionFlywayConfig))
-        user = properties.getProperty('jdbc.username', user)
-        password = properties.getProperty('jdbc.password', password)
-        url = properties.getProperty('jdbc.url', url)
     }
 }

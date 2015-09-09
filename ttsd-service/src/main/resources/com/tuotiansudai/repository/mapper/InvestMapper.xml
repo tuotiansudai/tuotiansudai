@@ -58,6 +58,7 @@
     <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
+
         where loan_id = #{loanId}
         order by created_time
         ${sortStyle}
