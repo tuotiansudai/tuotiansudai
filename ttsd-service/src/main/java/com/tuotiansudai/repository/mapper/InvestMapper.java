@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestNotifyInfo;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
@@ -99,5 +100,10 @@ public interface InvestMapper {
     int findWaitingInvestCountAfter(@Param(value = "loanId") long loanId,
                                    @Param(value = "afterTime") Date afterTime);
 
-
+    /**
+     * 查找成功投资的用户的手机号、金额以及标的名称
+     * @param loanId
+     * @return
+     */
+    List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
 }

@@ -1,6 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.ExistWaitAffirmInvestsException;
 import com.tuotiansudai.exception.TTSDException;
@@ -17,10 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -47,6 +48,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     /**
      * @param loanTitleDto
@@ -384,7 +388,7 @@ public class LoanServiceImpl implements LoanService {
     public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
         // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, - UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
+        cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
         Date validInvestTime = cal.getTime();
 
         // 检查是否存在未处理完成的投资记录
@@ -425,7 +429,7 @@ public class LoanServiceImpl implements LoanService {
         loan4update.setId(loanId);
         loan4update.setRecheckTime(nowTime);
         loan4update.setStatus(LoanStatus.REPAYING);
-        if(fundraisingEndTime!=null) {
+        if (fundraisingEndTime != null) {
             loan4update.setFundraisingEndTime(fundraisingEndTime);
         }
         loan4update.setMinInvestAmount(minInvestAmount);
@@ -437,15 +441,21 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processNotifyForLoanOut(long loanId) {
-        processSMSNotifyForLoanOut(loanId);
-        processEmailNotifyForLoanOut(loanId);
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        logger.debug(MessageFormat.format("标的: {0} 放款短信通知", loanId));
+        notifyInvestorsLoanOutSuccessfulBySMS(notifyInfos);
+        logger.debug(MessageFormat.format("标的: {0} 放款邮件通知", loanId));
+        notifyInvestorsLoanOutSuccessfulByEmail(notifyInfos);
     }
 
-    private void processSMSNotifyForLoanOut(long loanId) {
-
+    private void notifyInvestorsLoanOutSuccessfulBySMS(List<InvestNotifyInfo> notifyInfos) {
+        for (InvestNotifyInfo notifyInfo : notifyInfos) {
+            InvestSmsNotifyDto dto = new InvestSmsNotifyDto(notifyInfo);
+            smsWrapperClient.sendInvestNotify(dto);
+        }
     }
 
-    private void processEmailNotifyForLoanOut(long loanId) {
+    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
         // TODO : @zhanglong 这个方法本身只需要写成同步的
     }
 }
