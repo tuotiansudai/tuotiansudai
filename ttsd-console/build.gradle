@@ -8,7 +8,7 @@ dependencies {
 }
 
 war {
-    archiveName "ttsd-console.war"
+    archiveName "ROOT.war"
     destinationDir = file("war")
     from('/workspace/new_version_config/ttsd-console/') {
         into 'WEB-INF/classes/'
