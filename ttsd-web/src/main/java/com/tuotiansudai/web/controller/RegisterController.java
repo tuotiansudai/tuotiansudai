@@ -80,7 +80,7 @@ public class RegisterController extends BaseController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-register-captcha", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();

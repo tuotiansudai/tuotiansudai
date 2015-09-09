@@ -21,11 +21,11 @@ public class SmsController extends BaseController{
         return new SmsResultDto(data);
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/forget", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/retrieve", method = RequestMethod.GET)
     @ResponseBody
     public SmsResultDto sendCellphoneCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
         SmsResultDataDto data = new SmsResultDataDto();
-        data.setStatus(smsService.sendCellphoneCaptcha(mobile, captcha));
+        data.setStatus(smsService.sendMobileCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
 }

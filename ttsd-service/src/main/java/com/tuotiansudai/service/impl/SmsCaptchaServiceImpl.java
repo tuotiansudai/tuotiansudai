@@ -73,7 +73,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     public boolean sendMobileCaptcha(String mobile) {
         String captcha = this.createMobileCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            ResultDto resultDto = smsWrapperClient.sendCellphoneRetrievePasswordSms(mobile, captcha);
+            ResultDto resultDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha);
             return resultDto.getData().getStatus();
         }
         return false;

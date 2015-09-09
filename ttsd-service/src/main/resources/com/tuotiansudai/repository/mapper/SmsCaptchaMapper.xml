@@ -28,6 +28,6 @@
     </select>
 
     <select id="findByMobileAndCaptchaType" resultMap="smsCaptchaModelResultMap">
-        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaTypa}
+        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType}
     </select>
 </mapper>

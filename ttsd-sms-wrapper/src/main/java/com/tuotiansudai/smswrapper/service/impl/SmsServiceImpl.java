@@ -26,7 +26,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public boolean sendCellphoneCaptcha(String mobile, String captcha) {
+    public boolean sendMobileCaptcha(String mobile, String captcha) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(MobileCaptchaMapper.class, mobile, content);

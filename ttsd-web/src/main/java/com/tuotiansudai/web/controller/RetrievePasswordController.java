@@ -51,13 +51,25 @@ public class RetrievePasswordController extends BaseController {
     }
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
-    public void retrievePasswordCaptcha(HttpServletRequest request, HttpServletResponse response) {
+    public void imageCaptcha(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
         int captchaWidth = 80;
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
+    }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> mobileCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
+            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
+        }
+        return baseDto;
     }
 
     @RequestMapping(value = "/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
@@ -86,7 +98,7 @@ public class RetrievePasswordController extends BaseController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/{password}/retrieve-password", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/{mobile:^\\\\d{11}$}/captcha/{captcha:^\\\\d{6}$}/{password}/retrieve-password", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> registerAccount(@PathVariable String mobile, @PathVariable String captcha,@PathVariable String password) {
         BaseDto baseDto = new BaseDto();
