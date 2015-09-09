@@ -48,12 +48,6 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
-    BaseDto<LoanDto> getLoanDetail(long loanId);
-
-    String getExpectedTotalIncome(long loanId, double investAmount);
-
-    BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
-
     /**
      * @function 标的编辑
      * @param loanDto
@@ -78,4 +72,13 @@ public interface LoanService {
      * @throws TTSDException
      */
     void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException;
+
+    BaseDto<LoanDto> getLoanDetail(long loanId);
+
+    String getExpectedTotalIncome(long loanId, double investAmount);
+
+    BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
+
+    void recommendedIncome(LoanModel loanModel);
+
 }

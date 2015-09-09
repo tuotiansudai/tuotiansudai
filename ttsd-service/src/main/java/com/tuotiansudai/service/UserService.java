@@ -16,4 +16,7 @@ public interface UserService {
     boolean loginNameIsExist(String loginName);
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
+
+    void saveReferrerRelations(String referrerLoginName, String loginName);
+
 }

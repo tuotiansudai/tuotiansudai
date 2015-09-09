@@ -23,6 +23,7 @@ public class SendCloudMailServiceImpl implements SendCloudMailService {
     public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {
 
         try {
+
             String content = SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;

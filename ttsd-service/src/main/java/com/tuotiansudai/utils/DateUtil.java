@@ -7,9 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by Administrator on 2015/9/6.
- */
 public class DateUtil {
 
     static Logger logger = Logger.getLogger(DateUtil.class);

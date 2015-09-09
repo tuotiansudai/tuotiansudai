@@ -6,18 +6,23 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
 
     public static String SHA = "SHA";
 
@@ -78,11 +86,38 @@ public class UserServiceImpl implements UserService {
         userRoleModel.setLoginName(dto.getLoginName());
         userRoleModel.setRole(Role.USER);
         this.userRoleMapper.create(userRoleModel);
+
+        String referrerId = dto.getReferrer();
+        if(StringUtils.isNotEmpty(referrerId)){
+            saveReferrerRelations(referrerId,dto.getLoginName());
+        }
+
         return true;
     }
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
         return payWrapperClient.register(dto);
+    }
+
+    @Transactional
+    public void saveReferrerRelations(String referrerLoginName, String loginName) {
+        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
+        referrerRelationModel.setReferrerLoginName(referrerLoginName);
+        referrerRelationModel.setLoginName(loginName);
+        referrerRelationModel.setLevel(1);
+        referrerRelationMapper.create(referrerRelationModel);
+
+        List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerLoginName);
+
+        for (ReferrerRelationModel model : list ){
+            ReferrerRelationModel upperRelation = new ReferrerRelationModel();
+            upperRelation.setReferrerLoginName(model.getReferrerLoginName());
+            upperRelation.setLoginName(loginName);
+            upperRelation.setLevel(model.getLevel() + 1);
+            referrerRelationMapper.create(upperRelation);
+        }
+
+
     }
 }

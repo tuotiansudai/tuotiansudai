@@ -13,6 +13,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.service.SendCloudMailService;
 import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -57,6 +59,15 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private SendCloudMailService sendCloudMailService;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -189,6 +200,102 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        if (loanMapper.findById(loanDto.getId()) == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus() || LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
+            updateLoanAndLoanTitleRelation(loanDto);
+            payDataDto.setStatus(true);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
+            updateLoanAndLoanTitleRelation(loanDto);
+            baseDto = payWrapperClient.createLoan(loanDto);
+            if (baseDto.getData().getStatus()) {
+                return payWrapperClient.updateLoan(loanDto);
+            }
+            return baseDto;
+        }
+        payDataDto.setStatus(false);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Override
+    public LoanModel findLoanById(long loanId) {
+        LoanModel loanModel = loanMapper.findById(loanId);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
+        loanModel.setLoanTitles(loanTitleRelationModelList);
+        return loanModel;
+    }
+
+    @Override
+    public boolean loanIsExist(long loanId) {
+        return findLoanById(loanId) != null;
+    }
+
+    private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto();
+        PayDataDto payDataDto = new PayDataDto();
+        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        if (maxInvestAmount < minInvestAmount) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
+        if (loanUserId == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
+        if (loanAgentId == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanDto.getLoanStatus());
+        loanMapper.update(loanModel);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
+        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+            loanTitleRelationMapper.delete(loanDto.getId());
+        }
+        loanTitleRelationModelList = loanDto.getLoanTitles();
+        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+            loanTitleRelationMapper.create(loanTitleRelationModelList);
+        }
+    }
+
     public BaseDto<LoanDto> getLoanDetail(long loanId) {
         BaseDto dto = new BaseDto();
         LoanDto loanDto = new LoanDto();
@@ -300,100 +407,139 @@ public class LoanServiceImpl implements LoanService {
         return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
-        PayDataDto payDataDto = new PayDataDto();
-        if (!baseDto.getData().getStatus()) {
-            return baseDto;
-        }
-        if (loanMapper.findById(loanDto.getId()) == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus() || LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-            payDataDto.setStatus(true);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-            baseDto = payWrapperClient.createLoan(loanDto);
-            if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto);
+    public void recommendedIncome(LoanModel loanModel) {
+        long loanId = loanModel.getId();
+        logger.debug("begin referrer reward after make loan " + loanId);
+
+        List<InvestModel> investModels = investMapper.findSuccessInvests(loanId);
+
+        for (InvestModel invest : investModels) {
+            logger.debug("find invest " + invest.getId());
+            List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
+            for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
+                logger.debug("referrer is" + referrerRelationModel.getReferrerLoginName());
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
+                Role role = JudgeRole(userRoleModels);
+                AccountModel accountModel = accountMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
+                String payUserId = accountModel == null ? "" : accountModel.getPayUserId();
+                long id = idGenerator.generate();
+                ReferrerRewardStatus status = ReferrerRewardStatus.FAIL;
+                String bonus = calculateBonus(invest.getAmount(), referrerRelationModel, loanModel, payUserId, role);
+                if (Double.valueOf(bonus) == -1) {
+                    logger.debug("role is" + role + ": level is " + referrerRelationModel.getLevel() + ",该层级不存在对于奖励比例!");
+                    continue;
+                }
+                logger.debug("payUserId is" + payUserId + ": bonus is " + bonus);
+                if ((role.equals(Role.INVESTOR) || role.equals(Role.MERCHANDISER)) && !"".equals(payUserId) && Double.valueOf(bonus) > 0.00) {
+                    ReferrerRewardDto referrerRewardDto = new ReferrerRewardDto(payUserId, bonus, referrerRelationModel.getReferrerLoginName(),id);
+                    try {
+                        BaseDto<PayDataDto> baseDto = payWrapperClient.referrerReward(referrerRewardDto);
+                        if (baseDto.getData().getStatus()) {
+                            if ("0000".equals(baseDto.getData().getCode())) {
+                                status = ReferrerRewardStatus.SUCCESS;
+                            }
+                        } else {
+                            logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + "奖励失败！原因:" + baseDto.getData().getMessage());
+                        }
+
+                    }catch (Exception e){
+                        logger.debug(e.getLocalizedMessage(),e);
+                    }
+
+                }
+
+                if (role.equals(Role.USER)) {
+                    logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + ReferrerRewardMessageTemplate.NOT_BIND_CARD.getDescription());
+                }
+                createInvestReferrerReward(invest, bonus, referrerRelationModel, role, id, status);
+
             }
-            return baseDto;
         }
-        payDataDto.setStatus(false);
-        baseDto.setData(payDataDto);
-        return baseDto;
     }
 
-    @Override
-    public LoanModel findLoanById(long loanId) {
-        LoanModel loanModel = loanMapper.findById(loanId);
-        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
-        loanModel.setLoanTitles(loanTitleRelationModelList);
-        return loanModel;
+    @Transactional(rollbackFor = Exception.class)
+    private void createInvestReferrerReward(InvestModel investModel, String bonus, ReferrerRelationModel referrerRelationModel, Role role, long id, ReferrerRewardStatus status) {
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
+        investReferrerRewardModel.setId(id);
+        investReferrerRewardModel.setInvestId(investModel.getId());
+        investReferrerRewardModel.setReferrerLoginName(referrerRelationModel.getReferrerLoginName());
+        long bonusCent = AmountUtil.convertStringToCent(bonus);
+        investReferrerRewardModel.setBonus(bonusCent);
+        investReferrerRewardModel.setRoleName(role);
+        investReferrerRewardModel.setStatus(status);
+        investReferrerRewardModel.setTime(new Date());
+
+        investReferrerRewardMapper.create(investReferrerRewardModel);
+
     }
 
-    @Override
-    public boolean loanIsExist(long loanId) {
-        return findLoanById(loanId) != null;
+    private Role JudgeRole(List<UserRoleModel> userRoleModels) {
+        List<String> userRoles = new ArrayList<>();
+        for (UserRoleModel userRoleModel : userRoleModels) {
+            userRoles.add(userRoleModel.getRole().name());
+        }
+        if (userRoles.contains(Role.MERCHANDISER.name())) {
+            return Role.MERCHANDISER;
+        } else if (userRoles.contains(Role.INVESTOR.name()) && !userRoles.contains(Role.MERCHANDISER.name())) {
+            return Role.INVESTOR;
+        } else {
+            return Role.USER;
+        }
     }
 
-    private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
-        PayDataDto payDataDto = new PayDataDto();
-        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
-        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
-        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        if (maxInvestAmount < minInvestAmount) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (maxInvestAmount > loanAmount) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
-        if (loanUserId == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
-        if (loanAgentId == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        payDataDto.setStatus(true);
-        baseDto.setData(payDataDto);
-        return baseDto;
-    }
+    private String calculateBonus(long amount, ReferrerRelationModel referrerRelationModel,
+                                  LoanModel loanModel, String payUserId, Role role) {
+        double bonus = 0.00;
+        DecimalFormat df = new DecimalFormat("######0.00");
+        BigDecimal big100 = new BigDecimal(100);
+        String repayTimeUnit = loanModel.getType().getRepayTimeUnit();
+        long periods = loanModel.getPeriods();
+        //TODO:从数据库中获取奖励比例
+        Map<Integer, Double> merchandiserMap = new HashMap<>();
+        merchandiserMap.put(1, 0.4);
+        merchandiserMap.put(2, 0.3);
+        merchandiserMap.put(3, 0.2);
+        merchandiserMap.put(4, 0.1);
 
-    private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
-        LoanModel loanModel = new LoanModel(loanDto);
-        loanModel.setStatus(loanDto.getLoanStatus());
-        loanMapper.update(loanModel);
-        List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanDto.getId());
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
-            loanTitleRelationMapper.delete(loanDto.getId());
+        Map<Integer, Double> investorMap = new HashMap<>();
+        investorMap.put(1, 0.4);
+        investorMap.put(2, 0.3);
+        int daysOrMonthByYear = 1;
+        if ("month".equals(repayTimeUnit)) {
+            daysOrMonthByYear = 12;
+        } else if ("day".equals(repayTimeUnit)) {
+            daysOrMonthByYear = DateUtil.judgeYear(new Date());
         }
-        loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
-            loanTitleRelationMapper.create(loanTitleRelationModelList);
+        if (StringUtils.isEmpty(payUserId) || Role.INVESTOR.equals(role)) {
+            if (investorMap.get(referrerRelationModel.getLevel()) != null) {
+                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100).setScale(6,BigDecimal.ROUND_HALF_UP);
+                BigDecimal amountBig = new BigDecimal(amount / 100d);
+                BigDecimal periodsBig = new BigDecimal(periods);
+                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
+
+                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
+                        .divide(daysOrMonthByYearBig,2).doubleValue();
+            } else {
+                bonus = -1;
+            }
+
+        } else {
+            if (merchandiserMap.get(referrerRelationModel.getLevel()) != null) {
+                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100);
+                BigDecimal amountBig = new BigDecimal(amount / 100d);
+                BigDecimal periodsBig = new BigDecimal(periods);
+                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
+
+                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
+                        .divide(daysOrMonthByYearBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            } else {
+                bonus = -1;
+            }
+
         }
+        return df.format(bonus);
     }
 
     @Override

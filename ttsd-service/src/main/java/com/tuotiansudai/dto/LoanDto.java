@@ -309,6 +309,14 @@ public class LoanDto extends BaseDataDto{
         this.recheckTime = recheckTime;
     }
 
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
     public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
@@ -349,11 +357,4 @@ public class LoanDto extends BaseDataDto{
         this.expectedTotalIncome = expectedTotalIncome;
     }
 
-    public LoanStatus getLoanStatus() {
-        return loanStatus;
-    }
-
-    public void setLoanStatus(LoanStatus loanStatus) {
-        this.loanStatus = loanStatus;
-    }
 }
