@@ -30,7 +30,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
 		<beans:property name="loginUrl" value="/login" />
 		<beans:property name="refreshTokenUrl" value="/refresh-token" />
-		<beans:property name="headers">
+		<beans:property name="appHeaders">
 			<beans:map key-type="java.lang.String" value-type="java.lang.String">
 				<beans:entry key="MobileApp" value="YES" />
 			</beans:map>
@@ -189,16 +189,20 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 			supported: GET -->
 		<beans:property name="useForward" value="true" />
 		<beans:property name="defaultFailureUrl" value="/memberLoginPage?error=true" />
-		<beans:property name="headers">
+		<beans:property name="appHeaders">
 			<beans:map key-type="java.lang.String" value-type="java.lang.String">
 				<beans:entry key="MobileApp" value="YES" />
 			</beans:map>
 		</beans:property>
 	</beans:bean>
 
-	<beans:bean id="successHandler"
-		class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
+	<beans:bean id="successHandler" class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
 	</beans:bean>
 
 	<!-- 登录过滤器，验证后台用户 -->
@@ -232,7 +236,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 	</beans:bean>
 
 	<beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.ttsd.api.security.MySimpleUrlLogoutSuccessHandler" >
-		<beans:property name="headers">
+		<beans:property name="appHeaders">
 			<beans:map key-type="java.lang.String" value-type="java.lang.String">
 				<beans:entry key="MobileApp" value="YES" />
 			</beans:map>
