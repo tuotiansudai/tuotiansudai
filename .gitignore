@@ -11,7 +11,7 @@ spike.py
 **/.DS_Store
 **/*.key.p8
 **/war/
-**/.gradle
+.gradle
 **/gradlew.bat
 **/gradlew
 **/gradle/
