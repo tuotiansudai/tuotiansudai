@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -12,15 +13,13 @@ import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping(value = "/mobile-retrieve-password")
 public class RetrievePasswordController extends BaseController {
@@ -88,7 +87,7 @@ public class RetrievePasswordController extends BaseController {
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDto baseDto = new BaseDto();
         BaseDataDto baseDataDto = new BaseDataDto();
-        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)){
+        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
             baseDataDto.setStatus(true);
             baseDto.setData(baseDataDto);
             return baseDto;
@@ -98,12 +97,12 @@ public class RetrievePasswordController extends BaseController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\\\d{11}$}/captcha/{captcha:^\\\\d{6}$}/{password}/retrieve-password", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
-    public BaseDto<BaseDataDto> registerAccount(@PathVariable String mobile, @PathVariable String captcha,@PathVariable String password) {
+    public BaseDto<BaseDataDto> mobileRetrievePassword(@RequestBody RetrievePasswordDto retrievePasswordDto) {
         BaseDto baseDto = new BaseDto();
         BaseDataDto baseDataDto = new BaseDataDto();
-        if (retrievePasswordService.mobileRetrievePassword(mobile,captcha,password)){
+        if (retrievePasswordService.mobileRetrievePassword(retrievePasswordDto)) {
             baseDataDto.setStatus(true);
             baseDto.setData(baseDataDto);
             return baseDto;

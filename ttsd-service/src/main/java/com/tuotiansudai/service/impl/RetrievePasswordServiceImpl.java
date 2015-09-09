@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -20,7 +19,10 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService{
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Override
-    public boolean mobileRetrievePassword(String mobile, String captcha, String password) {
+    public boolean mobileRetrievePassword(RetrievePasswordDto retrievePasswordDto) {
+        String mobile = retrievePasswordDto.getMobile();
+        String captcha = retrievePasswordDto.getCaptcha();
+        String password = retrievePasswordDto.getPassword();
         if (userService.mobileIsExist(mobile) && smsCaptchaService.verifyMobileCaptcha(mobile,captcha)){
             String salt = myShaPasswordEncoder.generateSalt();
             String encodePassword = myShaPasswordEncoder.encodePassword(password, salt);
