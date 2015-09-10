@@ -33,6 +33,8 @@ public class SmsWrapperClient {
 
     private final static String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}/register";
 
+    private final String MOBILE_RETRIEVE_PASSWORD_URI = "/sms/mobile/{mobile}/captcha/{captcha}/retrieve";
+
     @Autowired
     private OkHttpClient okHttpClient;
 
@@ -43,7 +45,7 @@ public class SmsWrapperClient {
 
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", uri);
 
-        Request request = new Request.Builder().url(url).get().build();
+        Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
 
         try {
             Response response = okHttpClient.newCall(request).execute();
@@ -61,6 +63,31 @@ public class SmsWrapperClient {
         resultDto.setData(dataDto);
 
         return resultDto;
+    }
+
+    public BaseDto sendMobileRetrievePasswordSms(String mobile, String code) {
+        String uri = MOBILE_RETRIEVE_PASSWORD_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", uri);
+        Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
+
+        BaseDto baseDto;
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        baseDto = new BaseDto();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(false);
+        baseDto.setData(dataDto);
+
+        return baseDto;
     }
 
     public BaseDto<MonitorDataDto> monitor() {

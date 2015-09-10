@@ -85,4 +85,9 @@ public class UserServiceImpl implements UserService {
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
         return payWrapperClient.register(dto);
     }
+
+    @Override
+    public void updatePassword(String mobile, String password) {
+        userMapper.updatePassword(mobile,password);
+    }
 }
