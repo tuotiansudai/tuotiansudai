@@ -4,7 +4,7 @@ CREATE TABLE ump_operations.`mer_bind_project_request` (
   `sign_type`      VARCHAR(8)      NOT NULL, /***签名方式***/
   `sign`           VARCHAR(256)    NOT NULL, /***签名***/
   `charset`        VARCHAR(16)     NOT NULL, /***参数字符编码集***/
-  `merchant_id`    VARCHAR(8)      NOT NULL, /***商户编号***/
+  `mer_id`         VARCHAR(8)      NOT NULL, /***商户编号***/
   `version`        VARCHAR(3)      NOT NULL, /***版本号***/
   `project_id`     VARCHAR(32)     NOT NULL, /***标的号***/
   `project_name`   VARCHAR(32)     NOT NULL, /***标的名称***/
@@ -23,15 +23,15 @@ CREATE TABLE ump_operations.`mer_bind_project_request` (
 CREATE TABLE ump_operations.`mer_bind_project_response` (
   `id`                 BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, /******/
   `request_id`         BIGINT UNSIGNED NOT NULL, /***请求ID***/
-  `sign_type`          VARCHAR(16)               DEFAULT NULL, /***签名方式***/
-  `sign`               VARCHAR(512)             DEFAULT NULL, /***签名***/
-  `merchant_id`        VARCHAR(16)               DEFAULT NULL, /***商户编号***/
-  `version`            VARCHAR(6)               DEFAULT NULL, /***版本号***/
-  `project_account_id` VARCHAR(30)              DEFAULT NULL, /***标的账户号***/
-  `project_state`      VARCHAR(4)               DEFAULT NULL, /***标的账户状态***/
-  `mer_check_date`     VARCHAR(16)               DEFAULT NULL, /***商户对账日期***/
-  `ret_code`           VARCHAR(16)               DEFAULT NULL, /***返回码***/
-  `ret_msg`            VARCHAR(256)             DEFAULT NULL, /***返回信息***/
+  `sign_type`          VARCHAR(16), /***签名方式***/
+  `sign`               VARCHAR(512)    NOT NULL, /***签名***/
+  `mer_id`             VARCHAR(16), /***商户编号***/
+  `version`            VARCHAR(6), /***版本号***/
+  `project_account_id` VARCHAR(30), /***标的账户号***/
+  `project_state`      VARCHAR(4), /***标的账户状态***/
+  `mer_check_date`     VARCHAR(16), /***商户对账日期***/
+  `ret_code`           VARCHAR(16)     NOT NULL, /***返回码***/
+  `ret_msg`            VARCHAR(256), /***返回信息***/
   `response_data`      TEXT            NOT NULL, /***请求数据***/
   `response_time`      DATETIME        NOT NULL, /***请求时间***/
   PRIMARY KEY (`id`),

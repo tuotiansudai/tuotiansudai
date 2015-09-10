@@ -11,7 +11,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:property-placeholder location="classpath*:sms_wrapper_client.properties,classpath*:pay_wrapper_client.properties,classpath*:redis_wrapper_client.properties" />
+    <context:property-placeholder location="classpath:ttsd-service.properties" />
 
     <!-- enable autowire -->
     <context:annotation-config />
@@ -23,9 +23,9 @@
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://192.168.33.10:3306/aa" />
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>

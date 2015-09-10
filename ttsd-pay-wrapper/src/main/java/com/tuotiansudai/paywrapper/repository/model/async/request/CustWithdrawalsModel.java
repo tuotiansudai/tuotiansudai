@@ -23,8 +23,6 @@ public class CustWithdrawalsModel extends BaseAsyncModel {
         super();
         this.service = "cust_withdrawals";
         this.applyNotifyFlag = "1";
-        this.retUrl = "http://localhost:8080";
-        this.notifyUrl = "http://121.43.71.173:13002/trusteeship_return_s2s/withdraw_notify";
         this.orderId = orderId;
         this.userId = userId;
         this.amount = amount;

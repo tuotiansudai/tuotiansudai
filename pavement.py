@@ -1,5 +1,7 @@
 import os
+import sys
 
+sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 from paver.tasks import task, needs, cmdopts
 
 
@@ -139,11 +141,20 @@ def deploy_to_docker(options):
 
 
 @task
+def v2deploy():
+    from scripts.deployment import NewVersionDeployment
+
+    v2 = NewVersionDeployment()
+    v2.deploy()
+
+
+@task
 @needs('mkwar', 'deploy_tomcat')
 def deploy():
     """
     Deploy to production environment
     """
+
 
 @task
 @needs('migrate', 'deploy')
@@ -151,6 +162,7 @@ def devdeploy():
     """
     Deploy to dev/test environment
     """
+
 
 @task
 def cideploy():
