@@ -55,6 +55,7 @@ public enum ReturnMessage {
     USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
     NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
+    NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
 
     /******手机端投资******/
 
