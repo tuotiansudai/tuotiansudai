@@ -57,6 +57,7 @@ public class InvestRepayRecordResponseDataDto{
 
     public InvestRepayRecordResponseDataDto(InvestRepay investRepay){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdfDay = new SimpleDateFormat("yyyy-MM-dd");
         Invest invest = investRepay.getInvest();
         Loan loan = invest.getLoan();
         this.loanId = loan.getId();
@@ -64,7 +65,7 @@ public class InvestRepayRecordResponseDataDto{
         this.investId = invest.getId();
         this.investMoney = String.format("%.2f", invest.getInvestMoney());
         this.investTime = sdf.format(invest.getTime()).toString();
-        this.repayDay = sdf.format(investRepay.getRepayDay()).toString();
+        this.repayDay = sdfDay.format(investRepay.getRepayDay()).toString();
         this.status = investRepay.getStatus();
         this.statusDesc = InvestRepayStatus.getMessageByCode(investRepay.getStatus());
         if(investRepay.getTime()!=null) {
