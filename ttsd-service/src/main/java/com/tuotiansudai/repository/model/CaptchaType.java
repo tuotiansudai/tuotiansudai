@@ -3,5 +3,5 @@ package com.tuotiansudai.repository.model;
 
 public enum CaptchaType {
     REGISTER_CAPTCHA,
-    MOBILE_CAPTCHA
+    RETRIEVE_PASSWORD_CAPTCHA
 }

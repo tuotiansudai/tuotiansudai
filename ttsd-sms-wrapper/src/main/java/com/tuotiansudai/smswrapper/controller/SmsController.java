@@ -23,9 +23,9 @@ public class SmsController {
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/retrieve", method = RequestMethod.GET)
     @ResponseBody
-    public SmsResultDto sendCellphoneCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
+    public SmsResultDto sendRetrievePasswordCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
         SmsResultDataDto data = new SmsResultDataDto();
-        data.setStatus(smsService.sendMobileCaptcha(mobile, captcha));
+        data.setStatus(smsService.sendRetrievePasswordCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
 }

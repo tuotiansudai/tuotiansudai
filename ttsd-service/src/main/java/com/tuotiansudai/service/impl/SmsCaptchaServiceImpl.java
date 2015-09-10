@@ -84,7 +84,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
         Date now = new Date();
         Date tenMinuteLater = new DateTime(now).plusMinutes(10).toDate();
         String captcha = createRandomCaptcha(6);
-        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.MOBILE_CAPTCHA);
+        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
         if (existingCaptcha != null) {
             existingCaptcha.setCaptcha(captcha);
             existingCaptcha.setExpiredTime(tenMinuteLater);
@@ -96,7 +96,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
             newSmsCaptchaModel.setMobile(mobile);
             newSmsCaptchaModel.setCreatedTime(now);
             newSmsCaptchaModel.setExpiredTime(tenMinuteLater);
-            newSmsCaptchaModel.setCaptchaType(CaptchaType.MOBILE_CAPTCHA);
+            newSmsCaptchaModel.setCaptchaType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
             smsCaptchaMapper.create(newSmsCaptchaModel);
         }
         return captcha;
@@ -104,7 +104,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     public boolean verifyMobileCaptcha(String mobile, String captcha) {
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.MOBILE_CAPTCHA);
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
         Date now = new Date();
         return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
     }
