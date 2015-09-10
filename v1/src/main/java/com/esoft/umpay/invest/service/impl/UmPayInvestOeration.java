@@ -34,6 +34,7 @@ import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
+import com.ttsd.special.services.InvestLotteryService;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -41,6 +42,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,11 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     UserBillBO ubs;
+	@Autowired
+	private InvestLotteryService investLotteryService;
+
+	@Logger
+	Log log;
 
     @Resource
     LoanCalculator loanCalculator;
@@ -88,8 +95,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
     @Resource
     HibernateTemplate ht;
 
-    @Logger
-    Log log;
 
 
     /**
@@ -211,41 +216,43 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
     }
 
 
-    /**
-     * 处理前台通知的投标
-     */
-    @SuppressWarnings({"unchecked", "deprecation"})
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void receiveOperationPostCallback(ServletRequest request)
-            throws TrusteeshipReturnException {
-        Map<String, String> paramMap = null;
-        try {
-            paramMap = UmPaySignUtil.getMapDataByRequest(request);
-            log.debug("投资前台验签通过数据:" + paramMap);
-            String ret_code = paramMap.get("ret_code");
-            String order_id = paramMap.get("order_id");
-            TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, order_id, order_id, UmPayConstants.OperationType.UMPAY);
-            if ("0000".equals(ret_code)) {
-                to.setResponseData(paramMap.toString());
-                to.setResponseTime(new Date());
-                //处理投资成功修改状态
-                Invest invest = InvestSuccess(to);
-                ht.update(invest);
-            } else {
-                fail(to);
-                log.error("投资失败:" + paramMap.toString());
-                throw new UmPayOperationException("投资失败:错误信息:" + paramMap.get("ret_msg"));
-            }
-            ht.update(to);
-        } catch (VerifyException e) {
-            log.error(e.getLocalizedMessage(), e);
-            throw new UmPayOperationException("接收信息时出错!");
-        } catch (InsufficientBalance e) {
-            log.error(e.getLocalizedMessage(), e);
-            throw new UmPayOperationException("余额不足!");
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getLocalizedMessage(), e);
+
+	/**
+	 * 处理前台通知的投标
+	 */
+	@SuppressWarnings({ "unchecked", "deprecation"})
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void receiveOperationPostCallback(ServletRequest request)
+			throws TrusteeshipReturnException {
+		Map<String,String> paramMap = null;
+		try {
+			paramMap = UmPaySignUtil.getMapDataByRequest(request);
+			log.debug("投资前台验签通过数据:" + paramMap);
+			String ret_code = paramMap.get("ret_code");
+			String order_id = paramMap.get("order_id");
+			TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, order_id , order_id , UmPayConstants.OperationType.UMPAY);
+			if("0000".equals(ret_code)){
+				to.setResponseData(paramMap.toString());
+				to.setResponseTime(new Date());
+				//处理投资成功修改状态
+				Invest invest = InvestSuccess(to);
+				ht.update(invest);
+				investLotteryService.insertIntoInvestLottery(order_id);
+			}else{
+				fail(to);
+				log.error("投资失败:"+paramMap.toString());
+				throw new UmPayOperationException("投资失败:错误信息:"+paramMap.get("ret_msg"));
+			}
+			ht.update(to);
+		} catch (VerifyException e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("接收信息时出错!");
+		} catch (InsufficientBalance e) {
+			log.error(e.getLocalizedMessage(), e);
+			throw new UmPayOperationException("余额不足!");
+		} catch (NoMatchingObjectsException e) {
+			log.error(e.getLocalizedMessage(), e);
 		} catch (DuplicateKeyException e) {
 			log.error(e.getLocalizedMessage(),e);
 			throw new TrusteeshipReturnException("duplication");
