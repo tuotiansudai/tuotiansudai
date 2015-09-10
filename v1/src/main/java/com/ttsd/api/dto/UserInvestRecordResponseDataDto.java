@@ -69,17 +69,6 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatus = invest.getStatus();
         this.investStatusDesc = InvestStatus.getMessageByCode(invest.getStatus());
         this.investRate = String.format("%.1f", invest.getRatePercent());
-        this.investInterest = String.format("%.2f", calcInvestInterest(invest));
-    }
-
-    private Double calcInvestInterest(Invest invest){
-        BigDecimal total = new BigDecimal(0);
-        List<InvestRepay> repays = invest.getInvestRepays();
-        for(InvestRepay repay : repays){
-            BigDecimal interest = new BigDecimal(Double.toString(repay.getInterest()));
-            total = total.add(interest);
-        }
-        return total.doubleValue();
     }
 
     public String getLoanId() {
