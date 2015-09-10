@@ -6,10 +6,12 @@ import java.util.Date;
 
 public class InvestPaginationDataDto extends BasePaginationDataDto {
     private String loginName;
-    private double amount;
+    private String amount;
     private InvestSource source;
-    private double expectedRate;
-    private Date createdTime;
+    private String expectedRate;
+    private String createdTime;
+    private boolean autoInvest;
+
 
     public String getLoginName() {
         return loginName;
@@ -19,11 +21,11 @@ public class InvestPaginationDataDto extends BasePaginationDataDto {
         this.loginName = loginName;
     }
 
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -35,19 +37,27 @@ public class InvestPaginationDataDto extends BasePaginationDataDto {
         this.source = source;
     }
 
-    public double getExpectedRate() {
+    public String getExpectedRate() {
         return expectedRate;
     }
 
-    public void setExpectedRate(double expectedRate) {
+    public void setExpectedRate(String expectedRate) {
         this.expectedRate = expectedRate;
     }
 
-    public Date getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public boolean isAutoInvest() {
+        return autoInvest;
+    }
+
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
     }
 }

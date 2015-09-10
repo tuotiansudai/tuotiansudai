@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -107,6 +104,8 @@ public class LoanDto extends BaseDataDto{
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    private List<LoanTitleModel> loanTitleDto;
+
     private double amountNeedRaised;
 
     private double balance;
@@ -114,6 +113,8 @@ public class LoanDto extends BaseDataDto{
     private double raiseCompletedRate;
 
     private long expectedTotalIncome;
+
+    private BasePaginationDto basePaginationDto;
 
     public long getId() {
         return id;
@@ -329,5 +330,21 @@ public class LoanDto extends BaseDataDto{
 
     public void setLoanStatus(LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
+    }
+
+    public List<LoanTitleModel> getLoanTitleDto() {
+        return loanTitleDto;
+    }
+
+    public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
+        this.loanTitleDto = loanTitleDto;
+    }
+
+    public BasePaginationDto getBasePaginationDto() {
+        return basePaginationDto;
+    }
+
+    public void setBasePaginationDto(BasePaginationDto basePaginationDto) {
+        this.basePaginationDto = basePaginationDto;
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#assign loan = baseDto.data>
 <#import "macro/global.ftl" as global>
 <@global.head title="标的详情" pageCss="${css.loan_detail}">
 </@global.head>
@@ -9,8 +10,12 @@
     <div class="item-block bg-loan">
         <div class="news-share">
             <h2 class="hd">
-                <span class="hot"></span>
-                【活动标：逢十有礼】个人资金周转4.8万 一个月标aa
+
+                <#if loan.activityType == "NOVICE">
+                    <span class="hot"></span>
+                </#if>
+                ${loan.projectName}
+                <input class="jq-loan-user" type="hidden" value="${loan.id}">
             </h2>
 
             <div class="chart-box">
@@ -19,24 +24,25 @@
                     <div class="rount"></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
-                    <span class="sub-percent">+1.00%</span>
+                    <span class="sub-percent">+${loan.activityRate}%</span>
 
-                    <div id="num" class="num">15.00%</div>
+                    <div id="num" class="num">${loan.basicRate}%</div>
                     <span class="title">年化收益率</span>
                 </div>
             </div>
             <div class="chart-info">
-                <p>已投：<span class="point">45%</span></p>
+                <p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>
 
-                <p>代理人： zhaozf132228</p>
+                <p>代理人： ${loan.agentLoginName}</p>
 
-                <p>借款人：hxanze</p>
-
-                <p>项目期限：270天 </p>
-
-                <p>还款方式：按月付息，到期还本</p>
-
-                <p>起息时间：投资次日起息</p>
+                <p>借款人：${loan.loanerLoginName}</p>
+                <#if loan.type.getRepayTimeUnit() == "month">
+                    <p>项目期限：${loan.periods}天 </p>
+                </#if>
+                <#if loan.type.getRepayTimeUnit() == "day">
+                    <p>项目期限：${loan.periods}天 </p>
+                </#if>
+                <p>还款方式：${loan.type.getDescription()}</p>
                 <a href="">借款协议样本</a>
             </div>
         </div>
@@ -44,15 +50,15 @@
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>600000</i>元</span>
+                <span class="num"><i>${loan.loanAmount}</i>元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num">600000元</span>
+                <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num"><i class="red">600000</i>元</span>
+                <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block clearfix">
                 <input type="text" value="" class="text-input"/>
@@ -79,45 +85,26 @@
             <div class="loan-list-con" style="display: block;">
                 <div class="loan-detail">
                     <h3>借款详情：</h3>
-
-                    <p>1、借款人介绍：</p>
-
-                    <p>1.1 借款人在京和朋友合伙经营某石业有限公司（大理石），经公司风控人员上门
-                        实地考察；</p>
-
-                    <p>1.2 核实客户年流水2100万；</p>
-
-                    <p>1.3 核实客户月收入35万；</p>
-
-                    <p>2、借款用途：短期资金周转</p>
-
-                    <p>3、借款金额： 续借，230万；</p>
+                    ${loan.descriptionText}
                 </div>
 
                 <div class="loan-material">
                     <h3>申请材料：</h3>
 
                     <div class="pic-list">
-                        <div class="title">身份证：</div>
-                        <ul class="img-list">
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                        </ul>
+                        <#list loan.loanTitleDto as loanTitle>
+                            <div class="title">${loanTitle.title}：</div>
 
-                        <div class="title">房屋资料：</div>
-                        <ul class="img-list">
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                        </ul>
+                                <ul class="img-list">
+                                    <#list loan.loanTitles as loanTitleRelation >
+                                        <#if loanTitle.id == loanTitleRelation.titleId>
+                                            <li><img src="${loanTitleRelation.applyMetarialUrl}" alt="${loanTitle.title}"/></li>
+                                        </#if>
+                                    </#list>
+                                </ul>
 
-                        <div class="title">身份证：</div>
-                        <ul class="img-list">
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                            <li><img src="../../images/loan/tpl-1.jpg" alt=""/></li>
-                        </ul>
+
+                        </#list>
                     </div>
                 </div>
             </div>
@@ -134,48 +121,42 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>ya**</td>
-                        <td>8200.00</td>
-                        <td>手动 <span class="icon-loan-ie"></span></td>
-                        <td>738.00</td>
-                        <td>2015-08-08 15:30:00</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>ya**</td>
-                        <td>8200.00</td>
-                        <td>手动 <span class="icon-loan-Android"></span></td>
-                        <td>738.00</td>
-                        <td>2015-08-08 15:30:00</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>ya**</td>
-                        <td>8200.00</td>
-                        <td>手动 <span class="icon-loan-ios"></span></td>
-                        <td>738.00</td>
-                        <td>2015-08-08 15:30:00</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>ya**</td>
-                        <td>8200.00</td>
-                        <td>手动 <span class="icon-loan-Android"></span></td>
-                        <td>738.00</td>
-                        <td>2015-08-08 15:30:00</td>
-                    </tr>
+                    <#list loan.basePaginationDto.recordDtoList as investPaginationDataDto>
+                        <tr>
+                            <td>1</td>
+                            <td>${investPaginationDataDto.loginName}</td>
+                            <td>${investPaginationDataDto.amount?string("0.00")}</td>
+                            <td>
+                                <#if investPaginationDataDto.autoInvest>
+                                    自动
+                                </#if>
+                                <#if !investPaginationDataDto.autoInvest>
+                                   手动
+                                </#if>
+
+                                <span class="icon-loan-ie"></span>
+
+                            </td>
+                            <td>${investPaginationDataDto.expectedRate?string("0.00")}</td>
+                            <td>${investPaginationDataDto.createdTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+                        </tr>
+                    </#list>
                     </tbody>
                 </table>
 
                 <div class="pagination">
-                    <span class="total">共 <span class="subTotal">20</span>条,当前第 <span class="index-page">1</span>页</span>
-                    <span class="prev">上一页</span>
-                    <a class="current" href="">1</a>
+                    <span class="total">共 <span class="subTotal">${loan.basePaginationDto.totalCount}</span>条,当前第 <span class="index-page">${loan.basePaginationDto.index}</span>页</span>
+                    <#if loan.basePaginationDto.hasPreviousPage>
+                        <span class="prev">上一页</span>
+                    </#if>
+
+                    <a role = '1'  class="current" href="">1</a>
                     <a href="">2</a>
                     <a href="">20</a>
-                    <span class="next">下一页</span>
+                    <#if loan.basePaginationDto.hasNextPage>
+                        <span class="next">下一页</span>
+                    </#if>
+
                 </div>
             </div>
 
@@ -195,3 +176,6 @@
 </@global.javascript>
 </body>
 </html>
+<script>
+    var java_point = ${loan.amountNeedRaised}; //后台传递数据
+</script>

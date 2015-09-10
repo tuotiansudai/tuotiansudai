@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -170,7 +172,7 @@ public class LoanServiceImpl implements LoanService {
 
     private LoanDto convertModelToDto(LoanModel loanModel) {
         String loginName = LoginUserInfo.getLoginName();
-
+        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanModel.getId());
         loanDto.setProjectName(loanModel.getName());
@@ -179,20 +181,26 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount("" + loanModel.getLoanAmount());
+        loanDto.setLoanAmount(decimalFormat.format(loanModel.getLoanAmount() / 100d));
         loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
         loanDto.setActivityType(loanModel.getActivityType());
-        loanDto.setActivityRate("" + loanModel.getActivityRate());
-        loanDto.setBasicRate("" + loanModel.getBaseRate());
+        loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
+        loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate()));
         loanDto.setLoanStatus(loanModel.getStatus());
+        loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
             loanDto.setBalance(accountModel.getBalance()/100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
+
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
         loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
+        loanDto.setLoanTitleDto(loanTitleMapper.findAll());
+
+        loanDto.setBasePaginationDto(getInvests(loanModel.getId(),1,2));
+
         return loanDto;
     }
 
@@ -221,15 +229,18 @@ public class LoanServiceImpl implements LoanService {
 
     private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
         List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
+        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InvestPaginationDataDto investRecordDto = null;
         for (InvestModel investModel : investModels) {
             investRecordDto = new InvestPaginationDataDto();
             investRecordDto.setLoginName(investModel.getLoginName());
-            investRecordDto.setAmount(investModel.getAmount() / 100d);
+            investRecordDto.setAmount(decimalFormat.format(investModel.getAmount() / 100d));
             investRecordDto.setSource(investModel.getSource());
+            investRecordDto.setAutoInvest(investModel.isAutoInvest());
             //TODO:预期利息
-            investRecordDto.setExpectedRate(1.0);
-            investRecordDto.setCreatedTime(investModel.getCreatedTime());
+            investRecordDto.setExpectedRate(decimalFormat.format(1.0));
+            investRecordDto.setCreatedTime(simpleDateFormat.format(investModel.getCreatedTime()));
 
             investRecordDtos.add(investRecordDto);
         }
@@ -254,13 +265,16 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         double amountNeedRaisedDouble = loanAmountBig.subtract(amountNeedRaisedBig)
-                .divide(new BigDecimal(100d)).doubleValue();
+                .divide(new BigDecimal(100d))
+                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         return amountNeedRaisedDouble;
     }
 
     private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return investedAmountBig.divide(loanAmountBig)
+                .multiply(new BigDecimal(100))
+                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
