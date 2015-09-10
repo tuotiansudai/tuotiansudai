@@ -1,5 +1,6 @@
 package com.tuotiansudai.smswrapper.controller;
 
+import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.smswrapper.dto.SmsResultDataDto;
 import com.tuotiansudai.smswrapper.dto.SmsResultDto;
 import com.tuotiansudai.smswrapper.service.SmsService;
@@ -18,6 +19,13 @@ public class SmsController {
     public SmsResultDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
         SmsResultDataDto data = new SmsResultDataDto();
         data.setStatus(smsService.sendRegisterCaptcha(mobile, captcha));
+        return new SmsResultDto(data);
+    }
+
+    @RequestMapping(value = "/invest_notify", method = RequestMethod.POST)
+    public SmsResultDto sendInvestNotify(@RequestBody InvestSmsNotifyDto dto){
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendInvestNotify(dto));
         return new SmsResultDto(data);
     }
 }

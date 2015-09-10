@@ -40,7 +40,11 @@ public class PayWrapperClient {
 
     private String loanPath = "/loan";
 
+    private String loanOutPath = "/loan/loanout";
+
     private String withdrawPath = "/withdraw";
+
+    private String investPath = "/invest";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -132,6 +136,27 @@ public class PayWrapperClient {
         return this.parsePayFormJson(responseJson);
     }
 
+    public BaseDto<PayFormDataDto> invest(InvestDto dto) {
+        String requestJson;
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(investPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayFormJson(responseJson);
+    }
+
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         String requestJson;
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -172,6 +197,26 @@ public class PayWrapperClient {
         return this.parsePayResponseJson(responseJson);
     }
 
+    public BaseDto<PayDataDto> loanOut(LoanOutDto loanOutDto) {
+        String requestJson;
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(loanOutDto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        String responseJson = this.post(loanOutPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayResponseJson(responseJson);
+    }
+
     public BaseDto<MonitorDataDto> monitor() {
         String responseJson = this.get("/monitor");
         if (!Strings.isNullOrEmpty(responseJson)) {
@@ -192,7 +237,6 @@ public class PayWrapperClient {
 
     private String get(String path) {
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
-
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Content-Type", "application/json; charset=UTF-8")

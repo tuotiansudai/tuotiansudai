@@ -22,4 +22,11 @@ public interface LoanService {
      * @return
      */
     BaseDto<PayDataDto> updateLoanStatus(long loanId, LoanStatus loanStatus);
+
+    /**
+     * 放款
+     * @param loanId
+     * @return
+     */
+    BaseDto<PayDataDto> loanOut(long loanId);
 }

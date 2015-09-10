@@ -16,4 +16,8 @@ public class AmountUtil {
         }
         return 0;
     }
+
+    public static String convertCentToString(long amount) {
+        return String.format("%.2f",amount/100D);
+    }
 }

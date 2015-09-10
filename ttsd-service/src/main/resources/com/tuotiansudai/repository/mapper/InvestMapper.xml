@@ -13,17 +13,27 @@
         <result column="source" property="source"></result>
         <result column="is_auto_invest" property="isAutoInvest"></result>
         <result column="created_time" property="createdTime"></result>
-        <result column="success_time" property="successTime"></result>
+    </resultMap>
+
+    <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
+        <result column="loan_name" property="loanName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="email" property="email"></result>
+        <result column="amount" property="amount"></result>
     </resultMap>
 
     <sql id="columns">
-        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time, success_time
+        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
 
     <insert id="create" parameterType="InvestModel">
         insert into invest ( <include refid="columns"></include> )
-        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime}, #{successTime})
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
     </insert>
+
+    <update id="updateStatus" parameterType="map">
+        update invest set status = #{status} where id = #{id}
+    </update>
 
     <select id="findById" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
@@ -36,15 +46,66 @@
         from invest
         where login_name = #{loginName}
         order by created_time
-        ${orderStyle}
+        ${sortStyle}
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
+    <select id="findByLoanId" parameterType="map" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
-        where login_name = #{loanId}
-        order by created_time
-        ${orderStyle}
+        where loan_id = #{loanId}
     </select>
 
+    <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
+        from invest
+        where loan_id = #{loanId}
+        and status = 'SUCCESS'
+    </select>
+
+    <select id="findByStatus" parameterType="map" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId}
+        and status = '${status}'
+        order by created_time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findCountByStatus" parameterType="map" resultType="int">
+        select count(1)
+        from invest
+        where loan_id = #{loanId}
+        and status = '${status}'
+    </select>
+
+    <select id="findSuccessInvests" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId}
+        and status = 'SUCCESS'
+    </select>
+
+    <update id="cleanWaitingInvestBefore" parameterType="map">
+        update invest set status = 'FAIL'
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &lt; #{beforeTime}
+    </update>
+
+    <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
+        select count(*)
+        from invest
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &gt;= #{afterTime}
+    </select>
+
+    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
+        select loan.name as loan_name, u.mobile, u.email, invest.amount
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        where loan.id = #{loanId}
+        and invest.status = 'SUCCESS'
+    </select>
 </mapper>
