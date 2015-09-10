@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/mobile-retrieve-password")
@@ -36,15 +37,15 @@ public class RetrievePasswordController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/retrieve");
+        return new ModelAndView("/retrieve").addObject("mobile","");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page",method = RequestMethod.GET)
-    public ModelAndView inputPassword(@RequestParam String mobile,@RequestParam String captcha) {
-//        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
-//            return new ModelAndView("/input-password");
-//        }
-        return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
+    public ModelAndView inputPassword(@PathVariable String mobile,@PathVariable String captcha) {
+        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
+            return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
+        }
+        return new ModelAndView("/retrieve").addObject("mobile",mobile);
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
@@ -73,10 +74,10 @@ public class RetrievePasswordController extends BaseController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-//        if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
-//            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
-//        }
-        dataDto.setStatus(true);
+        if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
+            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
+        }
+        dataDto.setStatus(false);
         return baseDto;
     }
 
@@ -96,22 +97,22 @@ public class RetrievePasswordController extends BaseController {
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDto baseDto = new BaseDto();
         BaseDataDto baseDataDto = new BaseDataDto();
-//        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
-//            baseDataDto.setStatus(true);
-//            baseDto.setData(baseDataDto);
-//            return baseDto;
-//        }
-        baseDataDto.setStatus(true);
+        if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
+            baseDataDto.setStatus(true);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
+        baseDataDto.setStatus(false);
         baseDto.setData(baseDataDto);
         return baseDto;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView mobileRetrievePassword(@RequestBody RetrievePasswordDto retrievePasswordDto) {
+    public ModelAndView mobileRetrievePassword(@Valid @ModelAttribute RetrievePasswordDto retrievePasswordDto) {
         if (retrievePasswordService.mobileRetrievePassword(retrievePasswordDto)) {
-            return new ModelAndView("/login");
+            return new ModelAndView("redirect:/login");
         }
-        return null;
+        return new ModelAndView("/input-password").addObject("mobile",retrievePasswordDto.getMobile()).addObject("captcha",retrievePasswordDto.getCaptcha());
     }
 }

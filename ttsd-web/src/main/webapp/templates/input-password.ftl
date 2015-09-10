@@ -15,6 +15,7 @@
                 <label for="">新的密码：</label>
                 <input type="hidden" name="mobile" value="${mobile}">
                 <input type="hidden" name="captcha" value="${captcha}">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input class="phone-txt jq-ps-1" name="password" type="password" placeholder="请输入密码"/>
             </div>
             <div class="item-block">

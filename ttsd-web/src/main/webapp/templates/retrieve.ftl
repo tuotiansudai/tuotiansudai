@@ -13,7 +13,7 @@
         <form class="retrieve-form" action="">
             <div class="item-block">
                 <label for="">手机号：</label>
-                <input class="phone-txt" name="mobile" type="text" maxlength="11" placeholder="请输入手机号"/>
+                <input class="phone-txt" name="mobile" type="text" maxlength="11" value="${mobile}" placeholder="请输入手机号"/>
             </div>
             <div class="item-block">
                 <label for="">验证码：</label>

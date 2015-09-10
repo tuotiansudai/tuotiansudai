@@ -126,9 +126,7 @@ require(['jquery', 'csrf'], function ($) {
         $('.btn-send-form').click(function () {
             var _mobile = $('.phone-txt').val();
             var _captcha = $('.yzm-txt').val();
-            $('.retrieve-form').attr("method","get");
-            $('.retrieve-form').attr("action",'/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page');
-            $('.retrieve-form').submit();
+            window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
         });
 
 
