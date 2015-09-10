@@ -1,4 +1,4 @@
-CREATE TABLE `sms_operations`.`mobile_captcha` (
+CREATE TABLE `sms_operations`.`retrieve_password_captcha` (
   `id`          INT(32)      NOT NULL AUTO_INCREMENT,
   `mobile`      VARCHAR(11)  NOT NULL,
   `content`     VARCHAR(200) NOT NULL,
