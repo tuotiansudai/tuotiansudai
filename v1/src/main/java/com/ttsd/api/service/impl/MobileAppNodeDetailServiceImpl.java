@@ -7,6 +7,7 @@ import com.ttsd.api.dto.NodeDetailRequestDto;
 import com.ttsd.api.dto.NodeDetailResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.service.MobileAppNodeDetailService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +16,11 @@ import javax.annotation.Resource;
 public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailService {
     @Resource
     private MobileAppNodeDetailDao mobileAppNodeDetailDao;
+
+    @Value("${mobile.app.imageUrl.pattern}")
+    private String urlPattern;
+    @Value("${announcement.image.domain}")
+    private String domainName;
 
     @Override
     public BaseResponseDto generateNodeDetail(NodeDetailRequestDto requestDto) {
@@ -27,7 +33,9 @@ public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailServic
         }else {
             dto.setCode(ReturnMessage.SUCCESS.getCode());
             dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-            dto.setData(new NodeDetailResponseDataDto(node,true));
+            NodeDetailResponseDataDto dataDto = new NodeDetailResponseDataDto(node,true);
+            dataDto.addDomainNameToImageUrl(urlPattern, domainName);
+            dto.setData(dataDto);
         }
         return dto;
     }

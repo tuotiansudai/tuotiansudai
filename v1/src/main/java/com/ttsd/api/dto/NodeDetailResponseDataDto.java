@@ -1,8 +1,11 @@
 package com.ttsd.api.dto;
 
 import com.esoft.archer.node.model.Node;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     private String nodeId;
@@ -32,6 +35,17 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
             sb.append(node.getNodeBody().getBody());
             this.content = sb.toString();
         }
+    }
+
+    public void addDomainNameToImageUrl(String urlPattern, String domain){
+        String text = this.content;
+        if(StringUtils.isEmpty(text)){
+            return;
+        }
+        Pattern pattern = Pattern.compile(urlPattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        text = matcher.replaceAll(domain+"$0");
+        this.content = text;
     }
 
     public String getNodeId() {
