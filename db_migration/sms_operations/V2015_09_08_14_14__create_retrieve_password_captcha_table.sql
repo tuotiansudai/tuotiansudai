@@ -8,7 +8,7 @@ CREATE TABLE `sms_operations`.`retrieve_password_captcha` (
   `send_time`   DATETIME     NOT NULL,
   `result_code` VARCHAR(100) NOT NULL,
   PRIMARY KEY (id),
-  INDEX INDEX_CELLPHONE_CAPTCHA_MOBILE (`mobile`)
+  INDEX INDEX_RETRIEVE_PASSWORD_CAPTCHA_MOBILE (`mobile`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 1
