@@ -122,6 +122,8 @@ public class LoanDto extends BaseDataDto{
 
     private BasePaginationDto basePaginationDto;
 
+    private long preheatSeconds;
+
     public long getId() {
         return id;
     }
@@ -368,5 +370,13 @@ public class LoanDto extends BaseDataDto{
 
     public void setBasePaginationDto(BasePaginationDto basePaginationDto) {
         this.basePaginationDto = basePaginationDto;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
     }
 }

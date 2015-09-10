@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
@@ -37,11 +38,13 @@ public class LoanServiceImpl implements LoanService {
     private InvestMapper investMapper;
 
     @Autowired
-    IdGenerator idGenerator;
     private IdGenerator idGenerator;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private RepayService repayService;
 
     /**
      * @param loanTitleDto
@@ -211,7 +214,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
-
+        loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
         loanDto.setBasePaginationDto(getInvests(loanModel.getId(),1,2));
 
         return loanDto;
@@ -219,6 +222,10 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public String getExpectedTotalIncome(long loanId, double investAmount) {
+//        LoanModel loanModel = loanMapper.findById(loanId);
+//        InvestModel investModel = new InvestModel();
+//        investModel.setAmount((investAmount * 100));
+//        investModel.setCreatedTime(new Date());
 
         return null;
     }
@@ -261,16 +268,16 @@ public class LoanServiceImpl implements LoanService {
     }
 
 
-    private String calculatorPreheatSeconds(Date fundraisingStartTime) {
+    private long calculatorPreheatSeconds(Date fundraisingStartTime) {
         if (fundraisingStartTime == null) {
-            return "0";
+            return 0l;
         }
-        Long time = (fundraisingStartTime.getTime() - System
+        long time = (fundraisingStartTime.getTime() - System
                 .currentTimeMillis()) / 1000;
         if (time < 0) {
-            return "0";
+            return 0l;
         }
-        return time.toString();
+        return time;
 
     }
 
