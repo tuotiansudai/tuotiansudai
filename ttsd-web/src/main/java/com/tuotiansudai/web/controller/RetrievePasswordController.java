@@ -45,7 +45,7 @@ public class RetrievePasswordController extends BaseController {
         if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
             return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
         }
-        return new ModelAndView("/retrieve").addObject("mobile",mobile);
+        return new ModelAndView("redirect:/mobile-retrieve-password");
     }
 
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/is-exist", method = RequestMethod.GET)
