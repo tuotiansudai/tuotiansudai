@@ -98,6 +98,12 @@ public class LoanDto extends BaseDataDto{
     /***建标时间***/
     private Date createdTime;
 
+    /***初审时间***/
+    private Date verifyTime;
+
+    /***复审时间***/
+    private Date recheckTime;
+
     /***标的状态***/
     private LoanStatus loanStatus;
 
@@ -284,6 +290,30 @@ public class LoanDto extends BaseDataDto{
         this.createdTime = createdTime;
     }
 
+    public Date getVerifyTime() {
+        return verifyTime;
+    }
+
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
+    }
+
+    public Date getRecheckTime() {
+        return recheckTime;
+    }
+
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
     public List<LoanTitleRelationModel> getLoanTitles() {
         return loanTitles;
     }
@@ -322,14 +352,6 @@ public class LoanDto extends BaseDataDto{
 
     public void setExpectedTotalIncome(long expectedTotalIncome) {
         this.expectedTotalIncome = expectedTotalIncome;
-    }
-
-    public LoanStatus getLoanStatus() {
-        return loanStatus;
-    }
-
-    public void setLoanStatus(LoanStatus loanStatus) {
-        this.loanStatus = loanStatus;
     }
 
     public List<LoanTitleModel> getLoanTitleDto() {
