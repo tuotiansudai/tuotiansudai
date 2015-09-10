@@ -14,4 +14,8 @@ public interface MobileAppInvestListDao {
     Integer getUserInvestTotalCount(String userId, String[] status);
 
     List<Invest> getUserInvestList(Integer index, Integer pageSize, String userId, String[] status);
+
+    int getInvestCount(String userId);
+
+    int getConfigIntValue(String configId) ;
 }
