@@ -15,7 +15,7 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <resultMap id="investSMSNotifyInfoMap" type="InvestNotifyInfo">
+    <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
         <result column="loan_name" property="loanName"></result>
         <result column="mobile" property="mobile"></result>
         <result column="email" property="email"></result>
@@ -100,7 +100,7 @@
         and created_time &gt;= #{afterTime}
     </select>
 
-    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="InvestSMSNotifyInfo">
+    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
         select loan.name as loan_name, u.mobile, u.email, invest.amount
         from invest
         inner join loan on invest.loan_id = loan.id
