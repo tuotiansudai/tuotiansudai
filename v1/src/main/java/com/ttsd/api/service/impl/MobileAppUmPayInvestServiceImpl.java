@@ -5,6 +5,7 @@ import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.invest.service.InvestService;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.umpay.invest.service.impl.UmPayInvestOeration;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
@@ -35,6 +36,9 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
 
     @Autowired
     MobileAppInvestListDao mobileAppInvestListDao;
+
+    @Autowired
+    private InvestService investService;
 
     @Resource
     UserBO userBO;
@@ -72,7 +76,7 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         }
 
         if(loan.isLoanXs()){
-            int investedCount = mobileAppInvestListDao.getInvestCount(userId) + 1;
+            long investedCount = investService.getUserInvestXSCount(userId) + 1;
             int defaultCount = mobileAppInvestListDao.getConfigIntValue("sprog_invest_count");
             if(investedCount > defaultCount){
                 return ReturnMessage.NO_MATCH_XS_INVEST_CONDITION.getCode();

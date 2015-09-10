@@ -89,13 +89,6 @@ public class MobileAppInvestListDaoImpl implements MobileAppInvestListDao {
         return sb.toString();
     }
     @Override
-    public int getInvestCount(String userId) {
-        String hql = "select count(*) from invest where user_id=? ";
-        SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(hql);
-        sqlQuery.setParameter(0, userId);
-        return ((Number) sqlQuery.uniqueResult()).intValue();
-    }
-    @Override
     public int getConfigIntValue(String configId) {
         Config config = ht.get(Config.class, configId);
 
