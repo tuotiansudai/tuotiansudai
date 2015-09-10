@@ -2,8 +2,11 @@ package com.ttsd.api.dto;
 
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.repay.model.InvestRepay;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
@@ -46,6 +49,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
      * 投资利率
      */
     private String investRate;
+    /**
+     * 投资总收益
+     */
+    private String investInterest;
 
     public UserInvestRecordResponseDataDto(){
     }
@@ -62,6 +69,17 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.investStatus = invest.getStatus();
         this.investStatusDesc = InvestStatus.getMessageByCode(invest.getStatus());
         this.investRate = String.format("%.1f", invest.getRatePercent());
+        this.investInterest = String.format("%.2f", calcInvestInterest(invest));
+    }
+
+    private Double calcInvestInterest(Invest invest){
+        BigDecimal total = new BigDecimal(0);
+        List<InvestRepay> repays = invest.getInvestRepays();
+        for(InvestRepay repay : repays){
+            BigDecimal interest = new BigDecimal(Double.toString(repay.getInterest()));
+            total = total.add(interest);
+        }
+        return total.doubleValue();
     }
 
     public String getLoanId() {
@@ -142,5 +160,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestRate(String investRate) {
         this.investRate = investRate;
+    }
+
+    public String getInvestInterest() {
+        return investInterest;
+    }
+
+    public void setInvestInterest(String investInterest) {
+        this.investInterest = investInterest;
     }
 }
