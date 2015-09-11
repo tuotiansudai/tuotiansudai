@@ -5,6 +5,7 @@ import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.model.ReferGradeProfitSys;
 import com.esoft.archer.user.model.ReferrerInvest;
 import com.esoft.archer.user.model.User;
+import com.esoft.archer.user.model.UserBill;
 import com.esoft.core.annotations.ScopeType;
 import com.google.common.collect.Lists;
 import com.ttsd.special.model.InvestLottery;
@@ -38,6 +39,7 @@ public class InvestLotteryList extends EntityQuery<InvestLottery> implements Ser
 				"awardTime <= #{investLotteryList.endTime}"};
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
+
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -53,6 +55,12 @@ public class InvestLotteryList extends EntityQuery<InvestLottery> implements Ser
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+//	@Override
+//	protected void initExample() {
+//		InvestLottery example = new InvestLottery();
+//		example.setUser(new User());
+//		setExample(example);
+//	}
 
 //	public List<InvestLottery> getInvestLotteryList(boolean flag){
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

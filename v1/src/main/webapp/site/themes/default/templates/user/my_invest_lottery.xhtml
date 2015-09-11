@@ -31,7 +31,8 @@
 			});
 		</script>
 
-
+		<f:event type="preRenderComponent"
+				 listener="#{investLotteryList.example.user.setId(loginUserInfo.loginUserId)}"></f:event>
 		<div class="center_right">
 			<div class="center_box01">
 				<ui:include src="userCenterTop.xhtml"></ui:include>
@@ -131,7 +132,9 @@
 													<td align="center" class="tab02"></td>
 													<td align="center" class="tab02"></td>
 													<td align="center" class="tab02"></td>
-													<td align="center" class="tab02"><h:outputText  value="否"></h:outputText></td>
+													<td align="center" class="tab02">
+														<h:outputLink value="" target="_blank">抽奖</h:outputLink>
+													</td>
 												</ui:fragment>
 											</tr>
 										</ui:repeat>
