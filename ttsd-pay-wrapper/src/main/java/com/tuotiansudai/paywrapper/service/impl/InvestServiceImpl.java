@@ -50,7 +50,9 @@ public class InvestServiceImpl implements InvestService {
     private UserBillService userBillService;
 
     @Override
+    @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
+        // TODO : 这个方法里的事务如何处理
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         InvestModel investModel = new InvestModel(dto);
@@ -95,6 +97,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    @Transactional
     public String investCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -110,7 +113,6 @@ public class InvestServiceImpl implements InvestService {
         return respData;
     }
 
-    @Transactional
     private void postInvestCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
         InvestModel investMode = investMapper.findById(orderId);
