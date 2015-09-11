@@ -1,0 +1,168 @@
+<ui:composition template="center.xhtml"
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pm="http://primefaces.org/mobile"
+				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:param name="activeCenterMenuUrl" value="/user/my-presentee"></ui:param>
+	<ui:define name="center_right">
+		<script type="text/javascript"
+				src="#{tplVars.themeJSPath}/ZeroClipboard.min.js"></script>
+		<script>
+			/**初始化时间选择控件*/
+			function initDatepicker() {
+				$(".datepicker").datepicker({
+					changeMonth : true,
+					changeYear : true
+				});
+			}
+			/**清除筛选条件*/
+			function clearFilters() {
+				$(".datepicker").val('');
+				$("#dataTable1\\:typeInfoFilter").val('');
+				$("#dataTable2\\:typeInfoFilter").val('');
+			}
+			$(function() {
+				initDatepicker();
+			});
+		</script>
+
+
+		<div class="center_right">
+			<div class="center_box01">
+				<ui:include src="userCenterTop.xhtml"></ui:include>
+			</div>
+			<h:form id="form">
+				<div class="date dateOne" style="margin-left: 23px;">
+					<span>抽奖时间：</span>
+					<h:inputText id="startTime" value="#{investLotteryList.startTime}" style="width: 70px;"
+								 label="起止日期" styleClass="date_txt date_txt02 datepicker">
+						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+										   locale="zh_CN" />
+					</h:inputText>
+					<span class="date_span">-</span>
+					<h:inputText id="endTime" value="#{investLotteryList.endTime}" style="width: 70px;"
+								 label="结束日期" styleClass="date_txt date_txt02 datepicker">
+						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"
+										   locale="zh_CN" />
+					</h:inputText>
+					<h:selectOneMenu value="#{investLotteryList.example.valid}">
+						<f:selectItem itemValue="" itemLabel="是否已抽奖" />
+						<f:selectItem itemValue="true" itemLabel="是" />
+						<f:selectItem itemValue="false" itemLabel="否" />
+					</h:selectOneMenu>
+					<p:watermark for="startTime" value="抽奖时间&gt;="></p:watermark>
+					<p:watermark for="endTime" value="=&lt;抽奖时间"></p:watermark>
+					<div class="grzx_r02" style="padding-left: 15px;">
+						<h:commandLink styleClass="cx" value="查询">
+							<p:ajax process="@form" update="dataTable"
+									oncomplete="initDatepicker()"></p:ajax>
+							<f:setPropertyActionListener value="1" target="#{investLotteryList.currentPage}" />
+						</h:commandLink>
+						<a href="javascript:void(0)" onclick="location.reload();"
+						   class="cx cx02">重置</a>
+					</div>
+				</div>
+				<div>
+					<div class="hd">
+						<ul class="slidings">
+							<li class="hover referrerList"><a href="javascript:void(0)">我的抽奖列表</a></li>
+						</ul>
+						<div class="bd">
+							<div class="slidnr referrerTable">
+								<h:panelGroup id="dataTable">
+									<table width="786" border="0" cellspacing="0" cellpadding="0"
+										   class="tab tab_01" >
+										<tr>
+											<td align="center" class="tab01">标的名称</td>
+											<td align="center" class="tab01">投资ID</td>
+											<td align="center" class="tab01">投资时间</td>
+											<td align="center" class="tab01">奖励类型</td>
+											<td align="center" class="tab01">奖品类型</td>
+											<td align="center" class="tab01">奖金</td>
+											<td align="center" class="tab01">抽奖时间</td>
+											<td align="center" class="tab01">是否已抽奖</td>
+										</tr>
+										<ui:repeat var="investLottery" value="#{investLotteryList.lazyModelData}">
+											<tr class="tab02bg">
+												<td align="center" class="tab02">
+													<ui:fragment rendered="#{investLottery.invest.loan.loanActivityType == 'xs'}">
+														<h:outputLink value="/p2p_loan_xsb/#{investLottery.invest.loan.id}" target="_blank">#{investLottery.invest.loan.name}</h:outputLink>
+													</ui:fragment>
+													<ui:fragment rendered="#{investLottery.invest.loan.loanActivityType == 'pt'}">
+														<h:outputLink value="/p2p_loan/#{investLottery.invest.loan.id}" target="_blank">#{investLottery.invest.loan.name}</h:outputLink>
+													</ui:fragment>
+													<ui:fragment rendered="#{investLottery.invest.loan.loanActivityType == 'jx'}">
+														<h:outputLink value="/p2p_loan_jxb/#{investLottery.invest.loan.id}" target="_blank">#{investLottery.invest.loan.name}</h:outputLink>
+													</ui:fragment>
+													<ui:fragment rendered="#{investLottery.invest.loan.loanActivityType == 'dx'}">
+														<h:outputLink value="/p2p_loan_dxb/#{investLottery.invest.loan.id}" target="_blank">#{investLottery.invest.loan.name}</h:outputLink>
+													</ui:fragment>
+
+												</td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{investLottery.invest.id}">
+												</h:outputText></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{investLottery.invest.time}">
+													<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"  timeZone="GMT+8"/>
+												</h:outputText></td>
+												<td align="center" class="tab02"><h:outputText
+														value="#{investLottery.type.getDesc()}">
+												</h:outputText></td>
+												<ui:fragment rendered="#{investLottery.valid == 'true'}">
+													<td align="center" class="tab02"><h:outputText
+															value="#{investLottery.prizeType.getDesc()}">
+													</h:outputText></td>
+													<td align="center" class="tab02"><h:outputText
+															value="#{investLottery.amountPercent}">
+													</h:outputText></td>
+													<td align="center" class="tab02"><h:outputText
+															value="#{investLottery.awardTime}">
+														<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"  timeZone="GMT+8"/>
+													</h:outputText></td>
+													<td align="center" class="tab02"><h:outputText  value="是"></h:outputText></td>
+												</ui:fragment>
+												<ui:fragment rendered="#{investLottery.valid == 'false'}">
+													<td align="center" class="tab02"></td>
+													<td align="center" class="tab02"></td>
+													<td align="center" class="tab02"></td>
+													<td align="center" class="tab02"><h:outputText  value="否"></h:outputText></td>
+												</ui:fragment>
+											</tr>
+										</ui:repeat>
+									</table>
+									<div class="page_box">
+										<div class="page_r">
+											<ui:include src="InvestLottery.xhtml"></ui:include>
+										</div>
+									</div>
+								</h:panelGroup>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<div class="clear"></div>
+
+		<script>
+			//复制
+			ZeroClipboard.config({
+				swfPath : "#{tplVars.themeJSPath}/ZeroClipboard.swf"
+			});
+			var client = new ZeroClipboard($(".copy"));
+
+			client.on("ready", function(readyEvent) {
+				client.on("aftercopy", function(event) {
+					$.dialog.alert('复制成功！', function() {
+					});
+				});
+			});
+		</script>
+	</ui:define>
+</ui:composition>
