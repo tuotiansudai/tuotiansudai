@@ -23,9 +23,18 @@ public class SmsController {
     }
 
     @RequestMapping(value = "/invest_notify", method = RequestMethod.POST)
-    public SmsResultDto sendInvestNotify(@RequestBody InvestSmsNotifyDto dto){
+    @ResponseBody
+    public SmsResultDto sendInvestNotify(@RequestBody InvestSmsNotifyDto dto) {
         SmsResultDataDto data = new SmsResultDataDto();
         data.setStatus(smsService.sendInvestNotify(dto));
+        return new SmsResultDto(data);
+    }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/retrieve", method = RequestMethod.GET)
+    @ResponseBody
+    public SmsResultDto sendRetrievePasswordCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendRetrievePasswordCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
 }

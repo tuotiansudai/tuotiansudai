@@ -37,6 +37,11 @@ public class CaptchaVerifier {
         return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equals(imageCaptcha);
     }
 
+    public boolean mobileRetrievePasswordImageCaptchaVerify(String imageCaptcha) {
+        String jSessionId = this.getJSessionId(httpServletRequest);
+        return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equals(imageCaptcha);
+    }
+
     private String getJSessionId(HttpServletRequest request) {
         List<Cookie> cookies = Arrays.asList(request.getCookies());
         Optional<Cookie> cookieOptional = Iterators.tryFind(cookies.iterator(), new Predicate<Cookie>() {

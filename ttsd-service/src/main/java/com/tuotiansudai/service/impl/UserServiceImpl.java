@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
         return payWrapperClient.register(dto);
     }
 
+    @Override
     @Transactional
     public void saveReferrerRelations(String referrerLoginName, String loginName) {
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
@@ -110,14 +111,17 @@ public class UserServiceImpl implements UserService {
 
         List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerLoginName);
 
-        for (ReferrerRelationModel model : list ){
+        for (ReferrerRelationModel model : list) {
             ReferrerRelationModel upperRelation = new ReferrerRelationModel();
             upperRelation.setReferrerLoginName(model.getReferrerLoginName());
             upperRelation.setLoginName(loginName);
             upperRelation.setLevel(model.getLevel() + 1);
             referrerRelationMapper.create(upperRelation);
         }
+    }
 
-
+    @Override
+    public void updatePassword(String mobile, String password) {
+        userMapper.updatePassword(mobile,password);
     }
 }

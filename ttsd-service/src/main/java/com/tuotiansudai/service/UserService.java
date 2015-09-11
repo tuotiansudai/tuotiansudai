@@ -19,4 +19,5 @@ public interface UserService {
 
     void saveReferrerRelations(String referrerLoginName, String loginName);
 
+    void updatePassword(String mobile, String password);
 }

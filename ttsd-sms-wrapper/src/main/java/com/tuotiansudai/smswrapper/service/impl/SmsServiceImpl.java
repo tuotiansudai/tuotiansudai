@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.InvestNotifyMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.RetrievePasswordCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,12 @@ public class SmsServiceImpl implements SmsService {
                 .build();
         String content = SmsTemplate.SMS_INVEST_NOTIFY_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(InvestNotifyMapper.class, dto.getMobile(), content);
+    }
+
+    @Override
+    public boolean sendRetrievePasswordCaptcha(String mobile, String captcha) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
+        String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
+        return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content);
     }
 }
