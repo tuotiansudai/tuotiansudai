@@ -75,9 +75,4 @@ public interface LoanService {
     String getExpectedTotalIncome(long loanId, double investAmount);
 
     BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
-
-    void recommendedIncome(LoanModel loanModel);
-
-    void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos);
-
 }

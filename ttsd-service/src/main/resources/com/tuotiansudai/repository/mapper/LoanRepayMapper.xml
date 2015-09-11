@@ -25,7 +25,7 @@
         insert into loan_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.corpus},#{item.defaultInterest},#{item.expectInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.status},#{item.time},#{item.loan_id})
+            (#{item.id},#{item.corpus},#{item.defaultInterest},#{item.expectInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.status},#{item.time},#{item.loanId})
         </foreach>
     </insert>
 

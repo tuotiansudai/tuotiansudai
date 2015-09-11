@@ -1,8 +1,8 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.paywrapper.service.impl;
 
 import com.tuotiansudai.client.SendCloudClient;
 import com.tuotiansudai.dto.SendCloudType;
-import com.tuotiansudai.service.SendCloudMailService;
+import com.tuotiansudai.paywrapper.service.SendCloudMailService;
 import com.tuotiansudai.utils.SendCloudTemplate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class SendCloudMailServiceImpl implements SendCloudMailService {
-    static Logger logger = Logger.getLogger(UserServiceImpl.class);
+    static Logger logger = Logger.getLogger(SendCloudMailServiceImpl.class);
     @Autowired
     SendCloudClient sendCloudClient;
 

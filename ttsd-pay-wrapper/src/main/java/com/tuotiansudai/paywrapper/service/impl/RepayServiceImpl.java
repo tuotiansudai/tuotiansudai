@@ -1,11 +1,11 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.paywrapper.service.RepayService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Administrator on 2015/9/6.
- */
 @Service
-public class RepayServiceImpl implements RepayService{
+public class RepayServiceImpl implements RepayService {
 
     @Autowired
     private InvestMapper investMapper;
@@ -65,8 +62,7 @@ public class RepayServiceImpl implements RepayService{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void generateInvestRepay(LoanModel loanModel) {
-        List<InvestModel> invests = investMapper.findSuccessInvests(loanModel.getId());
+    public void generateInvestRepay(LoanModel loanModel, List<InvestModel> invests) {
         List<List<InvestRepayModel>> allInvestRepays = Lists.newArrayList();
         List<InvestRepayModel> investRepayModels = this.getInvestRepayModels(loanModel, invests);
         if (investRepayModels.size() > 0) {

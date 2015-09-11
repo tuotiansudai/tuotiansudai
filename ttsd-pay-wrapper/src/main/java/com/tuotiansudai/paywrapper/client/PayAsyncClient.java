@@ -13,10 +13,9 @@ import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
-import com.umpay.api.paygate.v40.Mer2Plat_v40;
-import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +37,13 @@ public class PayAsyncClient {
     @Value(value = "${ump.callback.back.host}")
     private String backCallback;
 
+    @Autowired
+    PayGateWrapper payGateWrapper;
+
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
                                                     BaseAsyncModel requestModel) throws PayException {
         try {
-            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
+            ReqData reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
             requestModel.setRetUrl(MessageFormat.format("{0}/callback/{1}", webCallback, requestModel.getService()));
             requestModel.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", backCallback, requestModel.getService()));
@@ -69,7 +71,7 @@ public class PayAsyncClient {
                                                          Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> platNotifyData = Plat2Mer_v40.getPlatNotifyData(paramsMap);
+            Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
             Map<String, String> newPlatNotifyData = Maps.newHashMap();
             for (String key : platNotifyData.keySet()) {
                 StringBuilder newKeyBuilder = new StringBuilder();
@@ -103,11 +105,11 @@ public class PayAsyncClient {
 
     @Transactional(value = "payTransactionManager")
     private BaseCallbackRequestModel createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass,
-                                                    BaseCallbackRequestModel requestModel) {
+                                                           BaseCallbackRequestModel requestModel) {
         BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
         requestModel.setResponseTime(new Date());
         Map<String, String> map = requestModel.generatePayResponseData();
-        String notifyResData = Mer2Plat_v40.merNotifyResData(map);
+        String notifyResData = payGateWrapper.merNotifyResData(map);
         requestModel.setResponseData(notifyResData);
         mapper.create(requestModel);
         return requestModel;
