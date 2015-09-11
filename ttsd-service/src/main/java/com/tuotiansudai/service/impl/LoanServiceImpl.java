@@ -215,17 +215,13 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
-        loanDto.setBasePaginationDto(getInvests(loanModel.getId(),1,2));
+        loanDto.setBasePaginationDto(getInvests(loanModel.getId(),1,10));
 
         return loanDto;
     }
 
     @Override
     public String getExpectedTotalIncome(long loanId, double investAmount) {
-//        LoanModel loanModel = loanMapper.findById(loanId);
-//        InvestModel investModel = new InvestModel();
-//        investModel.setAmount((investAmount * 100));
-//        investModel.setCreatedTime(new Date());
 
         return null;
     }
@@ -239,31 +235,36 @@ public class LoanServiceImpl implements LoanService {
             pageSize = 10;
         }
         int totalCount = investMapper.getTotalCount(loanId, InvestStatus.SUCCESS);
-        List<InvestModel> investModels = investMapper.getInvests(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
-        List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels);
+        int serialNoBegin = (index - 1) * pageSize;
+        List<InvestModel> investModels = investMapper.getInvests(loanId, serialNoBegin, pageSize, InvestStatus.SUCCESS);
+        List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels,serialNoBegin);
         BasePaginationDto dto = new BasePaginationDto(index, pageSize, totalCount);
         dto.setRecordDtoList(investRecordDtos);
         dto.setStatus(true);
         return dto;
     }
 
-    private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
+    private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
+
         List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InvestPaginationDataDto investRecordDto = null;
-        for (InvestModel investModel : investModels) {
+        for (int i = 0;investModels!=null&&i < investModels.size();i++){
+            InvestModel investModel = investModels.get(i);
             investRecordDto = new InvestPaginationDataDto();
             investRecordDto.setLoginName(investModel.getLoginName());
             investRecordDto.setAmount(decimalFormat.format(investModel.getAmount() / 100d));
             investRecordDto.setSource(investModel.getSource());
             investRecordDto.setAutoInvest(investModel.isAutoInvest());
+            investRecordDto.setSerialNo(serialNoBegin + i + 1);
             //TODO:预期利息
             investRecordDto.setExpectedRate(decimalFormat.format(1.0));
             investRecordDto.setCreatedTime(simpleDateFormat.format(investModel.getCreatedTime()));
 
             investRecordDtos.add(investRecordDto);
         }
+
         return investRecordDtos;
     }
 

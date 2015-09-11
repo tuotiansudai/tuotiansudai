@@ -43,11 +43,6 @@
         select * from loan where id = #{loanId}
     </select>
 
-<<<<<<< HEAD
-    <update id="updateStatus" parameterType="map">
-        update loan set status = #{status} where id = #{loanId}
-    </update>
-=======
     <select id="findByStatus" resultMap="loanResultMap">
         select * from loan where status = #{status}
     </select>
@@ -124,5 +119,4 @@
         update loan set status = #{status} where id = #{loanId}
     </update>
 
->>>>>>> cc4d29254524f974f8a5e7103c976d8ebc269bc5
 </mapper>

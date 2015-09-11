@@ -1,10 +1,64 @@
 /**
  * Created by belen on 15/8/19.
  */
-require(['jquery', 'csrf'], function ($) {
+require(['jquery', 'jqueryPage', 'csrf'], function ($) {
     $(function () {
+
+
+        var pagesize = 10; //每页显示条数
+        var loanId = $('.jq-loan-user').val();
+        $(".pagination").createPage({
+            pageCount: pageTotal,
+            current: 1,
+            backFn: function (pageCurrent) {
+                //单击回调方法，p是当前页码
+              var  API_LOAN_INVEST = '/loan/' + loanId + '/index/' + pageCurrent  + '/pagesize/' + pagesize;
+                pageAjax(API_LOAN_INVEST);
+
+            }
+        });
+
+
+        function pageAjax(url) {
+            $.get(url, function (data) {
+                if (data.status) {
+                    var _result = data.recordDtoList;
+                    var str = '';
+                    for (var i = 0; i < _result.length; i++) {
+                        var txtStatus ='';
+                        if(_result[i]['autoInvest']){
+                            txtStatus+='自动';
+                            if(_result[i]['source']=='WEB'){
+                                txtStatus +='<span class="icon-loan-ie"></span>';
+                            }else if(_result[i]['source']=='IOS'){
+                                txtStatus +='<span class="icon-loan-ios"></span>';
+                            }else{
+                                txtStatus +='<span class="icon-loan-Android"></span>';
+                            }
+                        }else{
+                            txtStatus+='手动';
+                            if(_result[i]['source']=='WEB'){
+                                txtStatus +='<span class="icon-loan-ie"></span>';
+                            }else if(_result[i]['source']=='IOS'){
+                                txtStatus +='<span class="icon-loan-ios"></span>';
+                            }else{
+                                txtStatus +='<span class="icon-loan-Android"></span>';
+                            }
+                        }
+
+                        str += '<tr><td>' + _result[i]['serialNo'] + '</td><td>' + _result[i]['loginName'] + '</td><td>' + _result[i]['amount'] + '</td><td>' + txtStatus + '</td><td>' + _result[i]['expectedRate'] + '</td><td>' + _result[i]['createdTime'] + '</td></tr>';
+                    }
+                    $('.table-list tbody').find('tr').remove();
+                    $('.table-list tbody').append(str);
+                }
+            });
+
+        }
+
+        //pageCount：总页数
+        //current：当前页
         //初始化标的比例（进度条）
-        //var java_point = 15; //后台传递数据
+        var java_point = 15; //后台传递数据
         if (java_point <= 50) {
             $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * java_point + "deg)");
             $('.chart-box .rount2').hide();
@@ -31,34 +85,33 @@ require(['jquery', 'csrf'], function ($) {
             $('.layer-box').hide();
         })
 
-
-        // page
-        var btn_next = $('.pagination').find('.next');
-        var btn_prev = $('.pagination').find('.prev');
-        var loanId = $('.jq-loan-user').val();
-        var pagesize = 2;
-        var API_LOAN_INVEST = '';
-        var AUTO ='auto';
-        btn_next.click(function () {
-            var index = $('.index-page').text();
-            index++;
-            API_LOAN_INVEST = '/loan/' + loanId + '/index/' + index + '/pagesize/' + pagesize;
-            pageAjax(API_LOAN_INVEST);
-        });
-        function pageAjax(url) {
-            $.get(url, function (data) {
-                if (data.status) {
-                    var _result = data.recordDtoList;
-                    var str = '';
-                    for (var i = 0; i < _result.length; i++) {
-                        str += '<tr><td>' + (i + 1) + '</td><td>' + _result[i]['loginName'] + '</td><td>' + _result[i]['amount'] + '</td><td>' + AUTO + '</td><td>' + _result[i]['expectedRate'] + '</td><td>' + _result[i]['createdTime'] + '</td></tr>';
-                    }
-                    $('.table-list tbody').find('tr').remove();
-                    $('.table-list tbody').append(str);
+        function timer(intDiff) {
+            window.setInterval(function () {
+                var day = 0,
+                    hour = 0,
+                    minute = 0,
+                    second = 0;//时间默认值
+                if (intDiff > 0) {
+                // day = Math.floor(intDiff / (60 * 60 * 24));
+                // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                    minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                    second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                }else{
+                    $('.btn-pay').removeClass('grey').removeAttr('disabled').html('可投资');
                 }
-            });
-
+                if (minute <= 9) minute = '0' + minute;
+                if (second <= 9) second = '0' + second;
+                // $('#day_show').html(day+"天");
+                // $('#hour_show').html('<s id="h"></s>'+hour+'时');
+                $('#minute_show').html('<s></s>' + minute + '分');
+                $('#second_show').html('<s></s>' + second + '秒');
+                intDiff--;
+            }, 1000);
         }
+
+        $(function () {
+            timer(intDiff);
+        });
 
 
     });

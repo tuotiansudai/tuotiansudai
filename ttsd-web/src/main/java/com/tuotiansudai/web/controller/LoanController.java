@@ -31,7 +31,7 @@ public class LoanController {
         return expectedTotalIncome;
     }
 
-    @RequestMapping(value = "/{loanId}/index/{index}/pagesize/{pagesize}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId}/index/{index:^\\d+$}/pagesize/{pagesize:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
         BasePaginationDto dto = loanService.getInvests(loanId, index, pagesize);

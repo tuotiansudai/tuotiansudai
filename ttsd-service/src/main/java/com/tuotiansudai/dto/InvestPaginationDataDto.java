@@ -11,6 +11,7 @@ public class InvestPaginationDataDto extends BasePaginationDataDto {
     private String expectedRate;
     private String createdTime;
     private boolean autoInvest;
+    private int serialNo;
 
 
     public String getLoginName() {
@@ -59,5 +60,13 @@ public class InvestPaginationDataDto extends BasePaginationDataDto {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public int getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(int serialNo) {
+        this.serialNo = serialNo;
     }
 }

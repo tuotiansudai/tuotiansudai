@@ -42,8 +42,7 @@ public class PayWrapperClient {
 
     private String withdrawPath = "/withdraw";
 
-    @Value("${paywrapper.invest}")
-    private String investPath;
+    private String investPath = "/invest";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
