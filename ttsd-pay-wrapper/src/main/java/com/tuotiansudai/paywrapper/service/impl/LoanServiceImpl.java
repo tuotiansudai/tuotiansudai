@@ -170,6 +170,7 @@ public class LoanServiceImpl implements LoanService {
         ProjectTransferResponseModel resp = doUmpayRequest(loanId, loanerId, investAmountTotal);
 
         if (resp.isSuccess()) {
+            //TODO : 如果下面这些方法有任何一个出现异常，如何记录？
             logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
             processLoanStatusForLoanOut(loan);
 
@@ -285,7 +286,7 @@ public class LoanServiceImpl implements LoanService {
                         }
 
                     } catch (Exception e) {
-                        logger.debug(e.getLocalizedMessage(), e);
+                        logger.error(e.getLocalizedMessage(), e);
                     }
 
                 }
@@ -365,7 +366,6 @@ public class LoanServiceImpl implements LoanService {
         return df.format(bonus);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     private void createInvestReferrerReward(InvestModel investModel, String bonus, ReferrerRelationModel referrerRelationModel, Role role, long id, ReferrerRewardStatus status) {
         InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
         investReferrerRewardModel.setId(id);
@@ -395,7 +395,7 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    public void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
+    private void notifyInvestorsLoanOutSuccessfulByEmail(List<InvestNotifyInfo> notifyInfos) {
         for (InvestNotifyInfo notifyInfo : notifyInfos) {
             Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                     .put("loanName", notifyInfo.getLoanName())
