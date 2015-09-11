@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -55,41 +57,17 @@ public class InvestLotteryList extends EntityQuery<InvestLottery> implements Ser
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-//	@Override
-//	protected void initExample() {
-//		InvestLottery example = new InvestLottery();
-//		example.setUser(new User());
-//		setExample(example);
-//	}
+	@Override
+	protected void initExample() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String url = request.getRequestURL().toString();
+		if(url.indexOf("admin") > -1){
+			super.initExample();
+		}else{
+			InvestLottery example = new InvestLottery();
+			setExample(example);
+			example.setUser(new User());
+		}
+	}
 
-//	public List<InvestLottery> getInvestLotteryList(boolean flag){
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		List<InvestLottery> listResult = Lists.newArrayList();
-//		String sql = " select `invest_id` AS `investId` ,"
-//				+ "`user_id` AS userId,`type` AS `type`,"
-//				+ "`created_time` AS `createdTime`,"
-//				+ "`prize_type` AS `prizeType`, "
-//				+ " `amount` AS `amount`,"
-//				+ " `award_time` AS `awardTime`,"
-//				+ "`in_valid` AS `valid` "
-//				+ " from `invest_lottery` where 1=1  ";
-//				if (startTime != null) {
-//					sql += " AND `award_time` >= ''"+simpleDateFormat.format(startTime)+"'' ";
-//				}
-//				if (endTime != null) {
-//					sql += " AND `award_time` <= ''"+simpleDateFormat.format(endTime)+"'' ";
-//				}
-//				if(flag){
-//					sql +=  " LIMIT " + (index - 1) * 10 + "," + investLotteryPageSize;
-//				}
-//				sql += " ORDER BY created_time desc";
-//
-//		Query query = getHt().getSessionFactory().getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-//		List<Map<String, Object>> result = query.list();
-//		for (int i=0;i<result.size();i++) {
-//
-//
-//		}
-//		return listResult;
-//	}
 }
