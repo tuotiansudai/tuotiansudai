@@ -37,7 +37,7 @@ dependencies {
 processResources.outputs.upToDateWhen{ false }
 
 processResources {
-    from('/Users/xdgao/workspace/new_version_config/ttsd-service') {
+    from('/workspace/new_version_config/ttsd-service') {
         filter { String line ->
             if (line.startsWith("jdbc.host=") && project.hasProperty("dbhost")) {
                 return "jdbc.host=${dbhost}"

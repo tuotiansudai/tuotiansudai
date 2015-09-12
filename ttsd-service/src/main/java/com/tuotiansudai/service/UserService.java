@@ -16,4 +16,6 @@ public interface UserService {
     boolean loginNameIsExist(String loginName);
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
+
+    void updatePassword(String mobile, String password);
 }
