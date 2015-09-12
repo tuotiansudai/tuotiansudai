@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -83,5 +81,24 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto){
         return loanService.updateLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/loanout", method = RequestMethod.GET)
+    public ModelAndView loanOut() {
+        long loanId = 0L;
+        BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
+        return new ModelAndView("/loanout", "baseDto", dto);
+    }
+
+    @RequestMapping(value = "/loanout", method = RequestMethod.POST)
+    public ModelAndView doLoanOut() {
+        long loanId = 20150929444285L;
+        try {
+            loanService.loanOut(loanId,1,new Date());
+            return new ModelAndView("/loanout");
+        } catch (TTSDException e) {
+            e.printStackTrace();
+        }
+        return loanOut();
     }
 }
