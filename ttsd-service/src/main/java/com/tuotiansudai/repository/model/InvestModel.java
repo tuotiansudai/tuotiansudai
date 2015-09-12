@@ -119,4 +119,12 @@ public class InvestModel {
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
+    public Date getSuccessTime() {
+        return successTime;
+    }
+
+    public void setSuccessTime(Date successTime) {
+        this.successTime = successTime;
+    }
 }

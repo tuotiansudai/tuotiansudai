@@ -27,30 +27,4 @@ public class RepayServiceTest {
     @Autowired
     private RepayService repayService;
 
-
-
-    @Test
-    public void shouldName1() throws Exception {
-        LoanModel loanModel = new LoanModel();
-        loanModel.setType(LoanType.LOAN_TYPE_1);
-        loanModel.setRecheckTime(new Date());
-        loanModel.setPeriods(3);
-        loanModel.setBaseRate(0.1);
-        loanModel.setActivityRate(0.01);
-        loanModel.setInvestFeeRate(0.1);
-
-        InvestModel investModel = new InvestModel();
-        investModel.setAmount(100);
-
-        List<InvestRepayModel> investRepayModels = repayService.generateInvestRepay(loanModel, investModel);
-
-        assertTrue(true);
-
-    }
-
-    @Test
-    public void shouldName() throws Exception {
-        System.out.println(Days.daysBetween(new DateTime().withDate(2015, 1, 1).withTimeAtStartOfDay(), new DateTime().withDate(2015, 1, 31).withTimeAtStartOfDay()).getDays());
-
-    }
 }
