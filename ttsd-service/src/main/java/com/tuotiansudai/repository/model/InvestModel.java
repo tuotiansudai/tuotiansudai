@@ -34,7 +34,7 @@ public class InvestModel {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private Date createdTime = new Date();
     /**
      * 投资成功时间（联动优势划款成功）
      */

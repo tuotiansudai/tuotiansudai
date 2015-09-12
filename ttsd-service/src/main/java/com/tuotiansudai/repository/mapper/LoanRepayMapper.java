@@ -5,12 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2015/9/8.
- */
 @Repository
 public interface LoanRepayMapper {
 
-    public void insertLoanRepay(List<LoanRepayModel> loanRepayModels);
+    void create(List<LoanRepayModel> loanRepayModels);
 
+    List<LoanRepayModel> findByLoanId(long loanId);
 }

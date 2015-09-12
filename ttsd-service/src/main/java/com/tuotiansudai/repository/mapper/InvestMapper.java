@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface InvestMapper {
     /**
@@ -43,5 +44,5 @@ public interface InvestMapper {
     List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") String loanId,
                                               @Param(value = "sortStyle") SortStyle sortStyle);
 
-    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
+    List<InvestModel> findSuccessInvestsByLoanId(@Param(value = "loanId") long loanId);
 }

@@ -2,9 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-/**
- * Created by Administrator on 2015/9/8.
- */
 public class LoanRepayModel {
 
     private long id;
@@ -13,17 +10,19 @@ public class LoanRepayModel {
 
     private long defaultInterest;
 
-    private long expectInterest;
+    private long expectedInterest;
 
     private long actualInterest;
 
-    private long period;
+    private int period;
 
     private Date repayDate;
 
+    private Date actualRepayDate;
+
     private RepayStatus status;
 
-    private Date time;
+    private Date createdTime = new Date();
 
     private long loanId;
 
@@ -51,12 +50,12 @@ public class LoanRepayModel {
         this.defaultInterest = defaultInterest;
     }
 
-    public long getExpectInterest() {
-        return expectInterest;
+    public long getExpectedInterest() {
+        return expectedInterest;
     }
 
-    public void setExpectInterest(long expectInterest) {
-        this.expectInterest = expectInterest;
+    public void setExpectedInterest(long expectedInterest) {
+        this.expectedInterest = expectedInterest;
     }
 
     public long getActualInterest() {
@@ -67,11 +66,11 @@ public class LoanRepayModel {
         this.actualInterest = actualInterest;
     }
 
-    public long getPeriod() {
+    public int getPeriod() {
         return period;
     }
 
-    public void setPeriod(long period) {
+    public void setPeriod(int period) {
         this.period = period;
     }
 
@@ -83,6 +82,14 @@ public class LoanRepayModel {
         this.repayDate = repayDate;
     }
 
+    public Date getActualRepayDate() {
+        return actualRepayDate;
+    }
+
+    public void setActualRepayDate(Date actualRepayDate) {
+        this.actualRepayDate = actualRepayDate;
+    }
+
     public RepayStatus getStatus() {
         return status;
     }
@@ -91,12 +98,12 @@ public class LoanRepayModel {
         this.status = status;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     public long getLoanId() {

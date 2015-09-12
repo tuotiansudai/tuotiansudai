@@ -47,4 +47,10 @@
         ${orderStyle}
     </select>
 
+    <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS'
+    </select>
+
 </mapper>

@@ -6,27 +6,32 @@
 
     <resultMap id="loanRepayResultMap" type="LoanRepayModel">
         <id column="id" property="id"></id>
+        <result column="loan_id" property="loanId"></result>
         <result column="corpus" property="corpus"></result>
-        <result column="default_interest" property="defaultInterest"></result>
-        <result column="expect_interest" property="expectInterest"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
         <result column="actual_interest" property="actualInterest"></result>
+        <result column="default_interest" property="defaultInterest"></result>
         <result column="period" property="period"></result>
         <result column="repay_date" property="repayDate"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
         <result column="status" property="status"></result>
-        <result column="time" property="time"></result>
-        <result column="loan_id" property="loanId"></result>
+        <result column="createdTime" property="createdTime"></result>
     </resultMap>
 
     <sql id="columns">
-        id,corpus,default_interest,expect_interest,actual_interest,period,repay_date,status,time,loan_id
+        id, loan_id, corpus, default_interest, expected_interest, actual_interest, period, repay_date, actual_repay_date, status, created_time
     </sql>
 
-    <insert id="insertLoanRepay" parameterType = "java.util.List">
+    <insert id="create" parameterType = "java.util.List">
         insert into loan_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.corpus},#{item.defaultInterest},#{item.expectInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.status},#{item.time},#{item.loan_id})
+            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime})
         </foreach>
     </insert>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId}
+    </select>
 
 </mapper>

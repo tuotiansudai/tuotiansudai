@@ -2,9 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-/**
- * Created by Administrator on 2015/9/6.
- */
 public class InvestRepayModel {
 
     private long id;
@@ -13,21 +10,25 @@ public class InvestRepayModel {
 
     private long defaultInterest;
 
-    private long expectInterest;
+    private long expectedInterest;
 
     private long actualInterest;
 
-    private long expectFee;
+    private long expectedFee;
 
     private long actualFee;
 
     private long investId;
 
-    private long period;
+    private int period;
 
     private Date repayDate;
 
+    private Date actualRepayDate;
+
     private RepayStatus status;
+
+    private Date createdTime = new Date();
 
     public long getId() {
         return id;
@@ -53,12 +54,12 @@ public class InvestRepayModel {
         this.defaultInterest = defaultInterest;
     }
 
-    public long getExpectInterest() {
-        return expectInterest;
+    public long getExpectedInterest() {
+        return expectedInterest;
     }
 
-    public void setExpectInterest(long expectInterest) {
-        this.expectInterest = expectInterest;
+    public void setExpectedInterest(long expectedInterest) {
+        this.expectedInterest = expectedInterest;
     }
 
     public long getActualInterest() {
@@ -77,11 +78,11 @@ public class InvestRepayModel {
         this.investId = investId;
     }
 
-    public long getPeriod() {
+    public int getPeriod() {
         return period;
     }
 
-    public void setPeriod(long period) {
+    public void setPeriod(int period) {
         this.period = period;
     }
 
@@ -93,6 +94,14 @@ public class InvestRepayModel {
         this.repayDate = repayDate;
     }
 
+    public Date getActualRepayDate() {
+        return actualRepayDate;
+    }
+
+    public void setActualRepayDate(Date actualRepayDate) {
+        this.actualRepayDate = actualRepayDate;
+    }
+
     public RepayStatus getStatus() {
         return status;
     }
@@ -101,12 +110,12 @@ public class InvestRepayModel {
         this.status = status;
     }
 
-    public long getExpectFee() {
-        return expectFee;
+    public long getExpectedFee() {
+        return expectedFee;
     }
 
-    public void setExpectFee(long expectFee) {
-        this.expectFee = expectFee;
+    public void setExpectedFee(long expectedFee) {
+        this.expectedFee = expectedFee;
     }
 
     public long getActualFee() {
@@ -115,5 +124,13 @@ public class InvestRepayModel {
 
     public void setActualFee(long actualFee) {
         this.actualFee = actualFee;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }
