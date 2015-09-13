@@ -25,4 +25,38 @@
         select * from user_bill where login_name = #{loginName}
     </select>
 
+    <select id="findUserBillsCount" parameterType="map" resultMap="int">
+        select count(*) from user_bill
+        <where>
+            <if test="#{userBillBusinessType} != null and #{userBillBusinessType} != ''">
+                business_type = #{userBillBusinessType}
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and created_time >= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="findUserBills" parameterType="map" resultMap="list">
+        select * from user_bill
+        <where>
+            <if test="#{userBillBusinessType} != null and #{userBillBusinessType} != ''">
+                business_type = #{userBillBusinessType}
+            </if>
+            <if test="#{startTime} != null and #{startTime} != ''">
+                and created_time >= #{startTime}
+            </if>
+            <if test="#{endTime} != null and #{endTime} != ''">
+                and created_time >= #{endTime}
+            </if>
+        </where>
+        order by created_time desc
+        <if test="#{currentPage} != null and #{currentPage} != ''">
+            limit (#{currentPage} - 1) * 10 , 10
+        </if>
+    </select>
+
 </mapper>
