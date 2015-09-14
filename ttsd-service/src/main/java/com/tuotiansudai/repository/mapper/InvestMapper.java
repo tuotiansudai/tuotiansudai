@@ -3,9 +3,10 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.SortStyle;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface InvestMapper {
     /**
      * 创建投资
@@ -41,4 +42,6 @@ public interface InvestMapper {
      */
     List<InvestModel> findByLoanIdOrderByTime(@Param(value = "loanId") String loanId,
                                               @Param(value = "sortStyle") SortStyle sortStyle);
+
+    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
 }
