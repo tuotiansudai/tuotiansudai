@@ -1,13 +1,12 @@
 package com.tuotiansudai.repository.model;
 
-/**
- * Created by Administrator on 2015/9/6.
- */
 public enum RepayStatus {
 
-    COMPLETE("等待确认"),
-    REPAYING("投资成功"),
-    OVERDUE("投资失败");
+    REPAYING("正在还款"),
+
+    COMPLETE("还款完成"),
+
+    OVERDUE("逾期");
 
     private final String description;
 

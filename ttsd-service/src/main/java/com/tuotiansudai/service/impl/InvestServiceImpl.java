@@ -14,14 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InvestServiceImpl implements InvestService {
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
-    private LoanService loanService;
-
-    @Autowired
-    private InvestMapper mapper;
 
     @Autowired
     private PayWrapperClient payWrapperClient;

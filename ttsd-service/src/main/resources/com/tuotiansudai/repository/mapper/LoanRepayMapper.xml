@@ -31,7 +31,15 @@
     </insert>
 
     <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select * from loan_repay where loan_id = #{loanId}
+        select * from loan_repay where id = #{id}
+    </select>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} order by period asc
+    </select>
+
+    <select id="findByLoanIdAndPeriod" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
 </mapper>

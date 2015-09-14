@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/mobile-retrieve-password")
-public class RetrievePasswordController extends BaseController {
+public class RetrievePasswordController {
     @Autowired
     private UserService userService;
     @Autowired

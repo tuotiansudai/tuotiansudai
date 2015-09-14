@@ -20,8 +20,6 @@ public class ProjectTransferModel extends BaseAsyncModel {
     public ProjectTransferModel(String projectId, String orderId, String userId, String amount) {
         super();
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
-        this.retUrl = "/";
-        this.notifyUrl = "http://121.43.71.173:13002/paywrapper/callback/invest_notify";
         this.orderId = orderId;
         this.projectId = projectId;
         this.userId = userId;
@@ -41,7 +39,7 @@ public class ProjectTransferModel extends BaseAsyncModel {
         payRequestData.put("partic_type", UmPayParticType.INVESTOR.getCode());
         payRequestData.put("partic_acc_type", UmPayParticAccType.PERSON.getCode());
         payRequestData.put("partic_user_id", userId);
-        payRequestData.put("amount",amount);
+        payRequestData.put("amount", amount);
         return payRequestData;
     }
 }
