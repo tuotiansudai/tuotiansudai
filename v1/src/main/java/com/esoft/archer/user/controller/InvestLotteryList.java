@@ -7,6 +7,7 @@ import com.esoft.archer.user.model.ReferrerInvest;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.core.annotations.ScopeType;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.ttsd.special.model.InvestLottery;
 import org.hibernate.Query;
@@ -61,7 +62,7 @@ public class InvestLotteryList extends EntityQuery<InvestLottery> implements Ser
 	protected void initExample() {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String url = request.getRequestURL().toString();
-		if(url.indexOf("admin") > -1){
+		if(Strings.isNullOrEmpty(url) && url.indexOf("admin") > -1){
 			super.initExample();
 		}else{
 			InvestLottery example = new InvestLottery();
