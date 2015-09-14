@@ -53,7 +53,7 @@
                 <td>10000.00</td>
                 <td>1.00</td>
                 <td>2015-08-24 17:56:23</td>
-                <td>还款中 <span class="plan">还款计划合同</span></td>
+                <td>还款中 <span class="plan" data-loan="../js/fast-pay.json">还款计划合同</span></td>
             </tr>
             <tr>
                 <td>test</td>
@@ -130,9 +130,9 @@
                 <tr>
                     <th>期数</th>
                     <th>本金</th>
-                    <th>利息</th>
+                    <th>预计利息</th>
+                    <th>实际利息</th>
                     <th>罚息</th>
-                    <th>手续费</th>
                     <th>总额</th>
                     <th>还款日</th>
                     <th>还款时间</th>
@@ -334,6 +334,3 @@
 </body>
 </html>
 
-<script>
-    var api_list = "../js/fast-pay.json";
-</script>

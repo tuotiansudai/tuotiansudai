@@ -71,7 +71,7 @@ require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
                     _today = oToday;
 
                 }else{
-
+                    _month = oMonth+1;
                     _today = oToday - _days;
 
                 }
@@ -121,14 +121,19 @@ require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
 
     //还款计划
     $('.plan').click(function () {
+        var dataLoan = $(this).attr('data-loan');
         var str = '';
-        $.get(api_list,function(res){
+        $.get(dataLoan,function(res){
             if(res.status){
                 var _res = res.data;
                 for(var i = 0; i< _res.length;i++){
-                    str+="<tr><td></td><td>"+
-                        _res[i]['loanRepayId']
-                        +"</td><td>"+
+                    if(_res[i]['isEnabled']){
+                        var txt = '<a href = "">待还款</a>';
+                    }else{
+                        var txt = '';
+                    }
+                   var total =  _res[i]['corpus'] +_res[i]['actualInterest']+_res[i]['expectedInterest']+_res[i]['defaultInterest'];
+                    str+="<tr><td>"+
                         _res[i]['period']
                         +"</td><td>"+
                         _res[i]['corpus']
@@ -139,12 +144,15 @@ require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
                         + "</td> <td>"+
                         _res[i]['defaultInterest']
                         +"</td> <td>"+
+                        total
+                        +"</td> <td>"+
                         _res[i]['repayDate']
                         +"</td> <td>"+
                         _res[i]['actualRepayDate']
                         +"</td><td>"+
                         _res[i]['status']
-                        +"</td></tr>"
+                        +"</td><td>"+ txt+"</td></tr>";
+
                 }
                 $('.table-list tbody').find('tr').remove();
                 $('.table-list tbody').append(str);

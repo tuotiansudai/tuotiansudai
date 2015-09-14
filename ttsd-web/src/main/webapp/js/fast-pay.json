@@ -23,7 +23,7 @@
       "repayDate": "2015-02-01",
       "actualRepayDate": "2015-02-01",
       "status": "完成",
-      "isEnabled": true
+      "isEnabled": false
     }
   ]
 }
