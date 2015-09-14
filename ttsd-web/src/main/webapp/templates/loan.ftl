@@ -48,6 +48,7 @@
         </div>
         <div class="account-info">
         <#if loan.loanStatus == "RAISING">
+            <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">项目金额：</span>
@@ -62,7 +63,8 @@
                 <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" value="" class="text-input"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input type="text" name="amount" value="" class="text-input"/>
                 <span class="bg-yellow">最大可投金额</span>
             </div>
             <div class="item-block">
@@ -70,8 +72,10 @@
                 <span class="num">600000元</span>
             </div>
             <div class="item-block">
-                <button class="btn-pay" type="button">马上投资</button>
+                <input type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                <button class="btn-pay" type="submit">马上投资</button>
             </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "PREHEAT">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
