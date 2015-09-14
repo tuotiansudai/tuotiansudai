@@ -14,8 +14,6 @@ public class RepayDto {
     @Pattern(regexp = "^\\d+$")
     private int period;
 
-    private long curpos
-
     public long getLoanId() {
         return loanId;
     }

@@ -112,9 +112,8 @@ public class RepayServiceImpl implements RepayService {
 
     @Override
     @Transactional
-    public void generateRepay(long loanId) {
+    public void generateRepay(long loanId, List<InvestModel> successInvestModels) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<InvestModel> successInvestModels = investMapper.findSuccessInvestsByLoanId(loanId);
         List<LoanRepayModel> loanRepayModels = this.generateLoanRepay(loanModel, successInvestModels);
 
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();

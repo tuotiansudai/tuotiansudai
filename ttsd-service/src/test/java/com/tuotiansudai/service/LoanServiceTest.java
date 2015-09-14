@@ -19,10 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 import java.util.List;
 
-import static org.junit.Assert.*;
-
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -35,16 +39,16 @@ public class LoanServiceTest {
     private IdGenerator idGenerator;
 
     @Autowired
-    private LoanTitleRelationMapper loanTitleRelationMapper;
+    private LoanMapper loanMapper;
 
     @Autowired
-    private LoanMapper loanMapper;
+    private InvestMapper investMapper;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
     @Autowired
-    private InvestMapper investMapper;
+    private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Before
     public void createLoanTitle(){
@@ -350,7 +354,7 @@ public class LoanServiceTest {
         InvestModel model = new InvestModel();
         model.setAmount(50);
         // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime()/1000)*1000);
+        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
         model.setCreatedTime(currentDate);
         model.setId(idGenerator.generate());
         model.setIsAutoInvest(false);

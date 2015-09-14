@@ -42,9 +42,13 @@ public class PayWrapperClient {
 
     private String loanPath = "/loan";
 
+    private String loanOutPath = "/loan/loanout";
+
     private String withdrawPath = "/withdraw";
 
     private String investPath = "/invest";
+
+    private String referrerRewardPath = "/referrer-reward";
 
     private String repayPath = "/repay";
 
@@ -54,6 +58,22 @@ public class PayWrapperClient {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseJson = this.post(registerPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
+    }
+
+    public BaseDto<PayDataDto> referrerReward(ReferrerRewardDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(referrerRewardPath, requestJson);
             return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -178,6 +198,22 @@ public class PayWrapperClient {
         return baseDto;
     }
 
+    public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(loanOutPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
+    }
+
     public BaseDto<MonitorDataDto> monitor() {
         String responseJson = this.get("/monitor");
         if (!Strings.isNullOrEmpty(responseJson)) {
@@ -198,7 +234,6 @@ public class PayWrapperClient {
 
     private String get(String path) {
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
-
         Request request = new Request.Builder()
                 .get()
                 .url(url)

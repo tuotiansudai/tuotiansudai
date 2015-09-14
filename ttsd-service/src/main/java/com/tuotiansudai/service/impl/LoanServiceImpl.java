@@ -1,23 +1,32 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.ExistWaitAffirmInvestsException;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+
+    static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -32,13 +41,13 @@ public class LoanServiceImpl implements LoanService {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @Autowired
+    private InvestMapper investMapper;
+
+    @Autowired
     private IdGenerator idGenerator;
 
     @Autowired
     private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private InvestMapper investMapper;
 
     /**
      * @param loanTitleDto
@@ -80,7 +89,7 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     public List<LoanType> getLoanType() {
-        List<LoanType> loanTypes = new ArrayList<LoanType>();
+        List<LoanType> loanTypes = Lists.newArrayList();
         for (LoanType loanType : LoanType.values()) {
             loanTypes.add(loanType);
         }
@@ -93,7 +102,7 @@ public class LoanServiceImpl implements LoanService {
      */
     @Override
     public List<ActivityType> getActivityType() {
-        List<ActivityType> activityTypes = new ArrayList<ActivityType>();
+        List<ActivityType> activityTypes = Lists.newArrayList();
         for (ActivityType activityType : ActivityType.values()) {
             activityTypes.add(activityType);
         }
@@ -210,7 +219,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
@@ -287,15 +296,15 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount("" + loanModel.getLoanAmount());
-        loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
+        loanDto.setLoanAmount(String.valueOf(loanModel.getLoanAmount()));
+        loanDto.setInvestIncreasingAmount(String.valueOf(loanModel.getInvestIncreasingAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
-        loanDto.setActivityRate("" + loanModel.getActivityRate());
-        loanDto.setBasicRate("" + loanModel.getBaseRate());
+        loanDto.setActivityRate(String.valueOf(loanModel.getActivityRate()));
+        loanDto.setBasicRate(String.valueOf(loanModel.getBaseRate()));
         loanDto.setLoanStatus(loanModel.getStatus());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
@@ -318,8 +327,8 @@ public class LoanServiceImpl implements LoanService {
         if (pageSize <= 0) {
             pageSize = 10;
         }
-        int totalCount = investMapper.getTotalCount(loanId, InvestStatus.SUCCESS);
-        List<InvestModel> investModels = investMapper.getInvests(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
+        int totalCount = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
+        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels);
         BasePaginationDto dto = new BasePaginationDto(index, pageSize, totalCount);
         dto.setRecordDtoList(investRecordDtos);
@@ -329,7 +338,7 @@ public class LoanServiceImpl implements LoanService {
 
     private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
         List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
-        InvestPaginationDataDto investRecordDto = null;
+        InvestPaginationDataDto investRecordDto;
         for (InvestModel investModel : investModels) {
             investRecordDto = new InvestPaginationDataDto();
             investRecordDto.setLoginName(investModel.getLoginName());
@@ -344,6 +353,11 @@ public class LoanServiceImpl implements LoanService {
         return investRecordDtos;
     }
 
+    private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
+        BigDecimal investedAmountBig = new BigDecimal(investedAmount);
+        BigDecimal loanAmountBig = new BigDecimal(loanAmount);
+        return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
 
     private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
         BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
@@ -352,9 +366,36 @@ public class LoanServiceImpl implements LoanService {
                 .divide(new BigDecimal(100d)).doubleValue();
     }
 
-    private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
-        BigDecimal investedAmountBig = new BigDecimal(investedAmount);
-        BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return investedAmountBig.divide(loanAmountBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    @Override
+    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
+        // 修改标的的最小投资金额和投资截止时间
+        updateLoanInfo(loanId, minInvestAmount, fundraisingEndTime);
+
+        // 如果存在未处理完成的记录，则不允许放款
+        // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
+        processLoanOutPayRequest(loanId);
+    }
+
+    private void updateLoanInfo(long loanId, long minInvestAmount, Date fundraisingEndTime) {
+        LoanModel loan4update = new LoanModel();
+        loan4update.setId(loanId);
+        if (fundraisingEndTime != null) {
+            loan4update.setFundraisingEndTime(fundraisingEndTime);
+        }
+        loan4update.setMinInvestAmount(minInvestAmount);
+        loanMapper.update(loan4update);
+    }
+
+    private void processLoanOutPayRequest(long loanId) throws TTSDException {
+        LoanOutDto loanOutDto = new LoanOutDto();
+        loanOutDto.setLoanId(String.valueOf(loanId));
+        BaseDto<PayDataDto> resp = payWrapperClient.loanOut(loanOutDto);
+        if (resp.isSuccess()) {
+            PayDataDto data = resp.getData();
+            if (!data.getStatus()) {
+                logger.error("放款失败:" + resp.getData().getMessage());
+                throw new TTSDException("放款失败");
+            }
+        }
     }
 }

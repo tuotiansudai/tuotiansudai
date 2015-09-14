@@ -1,6 +1,5 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 
 import com.tuotiansudai.repository.mapper.SystemBillMapper;
@@ -20,7 +19,7 @@ public class SystemBillServiceImpl implements SystemBillService {
 
     @Override
     @Transactional
-    public void transferOut(long amount,String detail,SystemBillBusinessType businessType,String orderId) throws AmountTransferException{
+    public void transferOut(long amount,String detail,SystemBillBusinessType businessType,String orderId) {
         SystemBillModel systemBillModel = new SystemBillModel();
         systemBillModel.setType(SystemBillType.OUT);
         systemBillModel.setAmount(amount);

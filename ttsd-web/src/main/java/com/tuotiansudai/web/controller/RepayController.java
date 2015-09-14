@@ -17,7 +17,6 @@ import javax.validation.Valid;
 @RequestMapping(value = "/repay")
 public class RepayController {
 
-    @Autowired
     private RepayService repayService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -25,7 +24,7 @@ public class RepayController {
         return new ModelAndView("/repay");
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public ModelAndView repay(@Valid @ModelAttribute RepayDto repayDto) {
         BaseDto<PayFormDataDto> baseDto = repayService.repay(repayDto);
         return new ModelAndView("/pay", "pay", baseDto);

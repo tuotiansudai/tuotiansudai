@@ -10,7 +10,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -51,12 +50,14 @@ public class InvestServiceImpl implements InvestService {
     private UserBillService userBillService;
 
     @Override
+    @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
+        // TODO : 这个方法里的事务如何处理
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         InvestModel investModel = new InvestModel(dto);
         investModel.setId(idGenerator.generate());
-        ProjectTransferModel requestModel = new ProjectTransferModel(
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newInvestRequest(
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
@@ -96,6 +97,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    @Transactional
     public String investCallback(Map<String, String> paramsMap, String originalQueryString) {
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -111,7 +113,6 @@ public class InvestServiceImpl implements InvestService {
         return respData;
     }
 
-    @Transactional
     private void postInvestCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
         InvestModel investMode = investMapper.findById(orderId);

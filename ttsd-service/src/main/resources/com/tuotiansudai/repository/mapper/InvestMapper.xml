@@ -15,6 +15,13 @@
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
+    <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
+        <result column="loan_name" property="loanName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="email" property="email"></result>
+        <result column="amount" property="amount"></result>
+    </resultMap>
+
     <sql id="columns">
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
@@ -54,6 +61,7 @@
         where loan_id = #{loanId} and status = 'SUCCESS'
         order by created_time ${sortStyle}
     </select>
+
     <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
         from invest
@@ -61,19 +69,43 @@
         and status = 'SUCCESS'
     </select>
 
-    <select id="getInvests" parameterType="map" resultMap="investResultMap">
-        select *
+    <select id="findByStatus" parameterType="map" resultMap="investResultMap">
+        select <include refid="columns"></include>
         from invest
         where loan_id = #{loanId}
         and status = '${status}'
+        order by created_time desc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="getTotalCount" parameterType="map" resultType="int">
+    <select id="findCountByStatus" parameterType="map" resultType="int">
         select count(1)
         from invest
         where loan_id = #{loanId}
         and status = '${status}'
     </select>
 
+    <update id="cleanWaitingInvestBefore" parameterType="map">
+        update invest set status = 'FAIL'
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &lt; #{beforeTime}
+    </update>
+
+    <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
+        select count(*)
+        from invest
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &gt;= #{afterTime}
+    </select>
+
+    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
+        select loan.name as loan_name, u.mobile, u.email, invest.amount
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        where loan.id = #{loanId}
+        and invest.status = 'SUCCESS'
+    </select>
 </mapper>

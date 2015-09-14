@@ -105,7 +105,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                     if ("CMB".equals(paramsMa.get("gate_id"))) {
                         String detailTemplate = "用户{0}绑定{1}银行卡";
                         systemBillService.transferOut(1L, MessageFormat.format(detailTemplate, bankCardModel.getLoginName(),
-                                bankCardModel.getCardNumber()), SystemBillBusinessType.BINDING_CARD,callbackRequestModel.getOrderId());
+                                bankCardModel.getCardNumber()), SystemBillBusinessType.BIND_CARD,callbackRequestModel.getOrderId());
                     }
                 }
 

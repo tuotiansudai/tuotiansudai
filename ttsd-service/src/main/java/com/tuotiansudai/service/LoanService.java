@@ -1,11 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.repository.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface LoanService {
@@ -47,20 +46,30 @@ public interface LoanService {
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
     /**
-     * @function 标的编辑
      * @param loanDto
      * @return
+     * @function 标的编辑
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
     /**
-     * @function 通过id查找标的
      * @param loanId
      * @return
+     * @function 通过id查找标的
      */
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
+
+    /**
+     * 标的放款
+     *
+     * @param loanId
+     * @param minInvestAmount
+     * @param fundraisingEndTime
+     * @throws TTSDException
+     */
+    void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException;
 
     BaseDto<LoanDto> getLoanDetail(long loanId);
 
