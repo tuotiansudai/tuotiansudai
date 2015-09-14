@@ -88,6 +88,7 @@ require(['jquery', 'csrf'], function ($) {
                     clearInterval(count);
                     $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
                     $('.complete').addClass('grey').attr('disabled','disabled');
+                    $('.verification-code-text').val('');
                 }
                 num--;
             }
