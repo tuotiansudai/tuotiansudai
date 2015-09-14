@@ -62,6 +62,7 @@ require(['jquery', 'csrf'], function ($) {
 
 
         $('.fetch-captcha').on('click', function () {
+            $('.verification-code-text').val('');
             $('.layer-box').show();
             refreshCaptcha();
         });
@@ -83,10 +84,10 @@ require(['jquery', 'csrf'], function ($) {
             var num = 30;
             // 倒计时
             function countdown() {
-                $('.fetch-captcha').html(num + '秒后重新发送').css({'background': '#666', 'pointer-events': 'none'});
+                $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
                 if (num == 0) {
                     clearInterval(count);
-                    $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
+                    $('.fetch-captcha').html('重新发送').removeClass('grey');
                     $('.complete').addClass('grey').attr('disabled','disabled');
                     $('.verification-code-text').val('');
                 }
