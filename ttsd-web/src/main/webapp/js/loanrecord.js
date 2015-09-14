@@ -18,12 +18,12 @@ require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
         //$(".query_type strong").css("opacity", '1');
         var rec_typestr = '';
         if (selectedType) {
-            rec_typestr = "&type=" + selectedType;
+            rec_typestr = "&status=" + selectedType;
         }
         if (startDay == '' || startDay == 'undefined') {
-            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?page=" + page + rec_typestr;
+            var url = "/loan?" + page + rec_typestr;
         } else {
-            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?startday=" + startDay + "&endday=" + endDay + "&page=" + page + rec_typestr;
+            var url = "/loan?"+"startDay=" + startDay + "&endday=" + endDay + "&page=" + page + rec_typestr;
         }
         $.get(url, function (res) {
             if (res.status === 'success') {
