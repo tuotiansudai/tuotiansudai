@@ -113,7 +113,7 @@ require(['jquery', 'csrf'], function ($) {
             var _value = _this.val();
             if (_value.length < 5) {
                 $('.verification-code-main b').css('display', 'inline-block');
-                $('.complete').removeClass('grey').removeAttr('disabled');
+                $('.complete').addClass('grey').attr('disabled','disabled');
             } else {
                 $.ajax({
                     url: '/register/image-captcha/' + _value + '/verify',
