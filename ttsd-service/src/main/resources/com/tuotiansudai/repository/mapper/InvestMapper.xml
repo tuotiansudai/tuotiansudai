@@ -22,6 +22,13 @@
         <result column="amount" property="amount"></result>
     </resultMap>
 
+    <resultMap id="investDetailMap" type="InvestDetailModel" extends="investResultMap">
+        <result column="loan_name" property="loanName"></result>
+        <result column="loan_type" property="loanType"></result>
+        <result column="loan_status" property="loanStatus"></result>
+        <result column="user_referrer" property="userReferrer"></result>
+    </resultMap>
+
     <sql id="columns">
         id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
     </sql>
@@ -107,5 +114,55 @@
         inner join user u on u.login_name = invest.login_name
         where loan.id = #{loanId}
         and invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findByPage" parameterType="map" resultMap="investDetailMap">
+        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status,
+        invest.source, invest.is_auto_invest, invest.created_time,
+        loan.name as loan_name, loan.type as loan_type, loan.status as loan_status,
+        u.referrer as user_referrer
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        where 1=1
+        <if test="loanId != null">
+            and invest.loan_id = #{loanId}
+        </if>
+        <if test="loginName != null and loginName != ''">
+            and invest.login_name = #{loginName}
+        </if>
+        <if test="endTime != null">
+            and invest.created_time &lt; #{endTime}
+        </if>
+        <if test="beginTime != null">
+            and invest.created_time &gt;= #{beginTime}
+        </if>
+        <if test="loanStatus != null">
+            and loan.status = #{loanStatus}
+        </if>
+        order by invest.created_time desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="findCount" parameterType="map" resultType="int">
+        select count(*)
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        where 1=1
+        <if test="loanId != null">
+            and invest.loan_id = #{loanId}
+        </if>
+        <if test="loginName != null and loginName != ''">
+            and invest.login_name = #{loginName}
+        </if>
+        <if test="endTime != null">
+            and invest.created_time &lt; #{endTime}
+        </if>
+        <if test="beginTime != null">
+            and invest.created_time &gt;= #{beginTime}
+        </if>
+        <if test="loanStatus != null">
+            and loan.status = #{loanStatus}
+        </if>
     </select>
 </mapper>

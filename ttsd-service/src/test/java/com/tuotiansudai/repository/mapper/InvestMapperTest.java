@@ -180,8 +180,21 @@ public class InvestMapperTest {
 
         long result = investMapper.sumSuccessInvestAmount(Loan_ID);
 
-        assertEquals(1000000l,result);
+        assertEquals(1000000l, result);
+    }
 
 
+    @Test
+    public void shouldFindByPage(){
+        int c = 101;
+        int limit = 3;
+        int offset = 6;
+        for(int i=0;i<c;i++){
+            investMapper.create(getFakeInvestModel());
+        }
+
+        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,offset,limit);
+
+        assert investDetailModels.size() == limit;
     }
 }

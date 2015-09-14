@@ -1,8 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 
 public interface InvestService {
 
@@ -11,4 +9,11 @@ public interface InvestService {
      * @param investDto
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto);
+
+    /**
+     * 查找投资记录
+     * @param queryDto
+     * @return
+     */
+    BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto);
 }
