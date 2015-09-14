@@ -38,7 +38,7 @@ public class FundManagementController {
     @Autowired
     private WithdrawService withdrawService;
 
-    @RequestMapping(value = "/userBillBusinessType/{userBillBusinessType}/currentPage/{currentPage}/startTime{startTime}/endTime/{endTime}", method = RequestMethod.GET)
+    @RequestMapping(value = "/userBillBusinessType/{userBillBusinessType}/currentPage/{currentPage}/startTime/{startTime}/endTime/{endTime}", method = RequestMethod.GET)
     public ModelAndView fundManagement(@PathVariable String userBillBusinessType,@PathVariable int currentPage,@PathVariable String startTime,@PathVariable String endTime) {
         ModelAndView modelAndView = new ModelAndView("/fundManagement");
         List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessType,currentPage,startTime,endTime);
@@ -47,6 +47,10 @@ public class FundManagementController {
         modelAndView.addObject("accountModel",accountModel);
         int countNum = userBillService.findUserBillsCount(userBillBusinessType,startTime,endTime);
         modelAndView.addObject("countNum",countNum);
+        String sumRecharge = rechargeService.findSumRechargeByLoginName(LoginUserInfo.getLoginName());
+        modelAndView.addObject("sumRecharge",sumRecharge);
+        String sumWithdraw = withdrawService.findSumWithdrawByLoginName(LoginUserInfo.getLoginName());
+        modelAndView.addObject("sumWithdraw",sumWithdraw);
         return modelAndView;
     }
 
