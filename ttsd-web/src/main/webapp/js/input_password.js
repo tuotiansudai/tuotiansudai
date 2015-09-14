@@ -30,7 +30,6 @@ require(['jquery', 'csrf'], function ($) {
                         $('.btn-send-form').removeClass('grey').removeAttr('disabled');
                     }
                 }
-                $('.error').html('');
             }else{
                 $('.error').html('密码输入不一致');
                 $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
