@@ -20,22 +20,20 @@
     <div class="invest-box">
         <h2 class="hd"><span class="line">借款纪录</span></h2>
 
-        <div class="item-block">
+        <div class="item-block start-end">
             <span class="sub-hd">起止时间:</span>
-            <input type="text" id="daterangepicker" class="starttime filter" size="35"/>
-            <a href="">今天</a>
-            <a href="">最近一周</a>
-            <a href="">一个月</a>
-            <a href="">六个月</a>
-            <a class="current" href="">全部</a>
+            <input type="text" id="daterangepicker" class="starttime filter" size="35" />
+            <span class="jq-n rec-today current" day="1">今天</span>
+            <span class="jq-n rec-week" day="7">最近一周</span>
+            <span class="jq-n rec-month " day="30">一个月</span>
+            <span class="jq-n rec-sixmonth" day="180">六个月</span>
         </div>
-        <div class="item-block">
+        <div class="item-block query-type">
             <span class="sub-hd">交易状态:</span>
-            <a class="current" href="">全部</a>
-            <a href="">还还款中</a>
-            <a href="">招募中</a>
-            <a href="">已结清</a>
-            <a href="">流标</a>
+            <span class="current jq-n" data-value="refund">全部</span>
+            <span class="jq-n" data-value="refund">还款中</span>
+            <span class="jq-n" data-value="refund">招募中</span>
+            <span class="jq-n" data-value="refund">已结清</span>
         </div>
         <table class="invest-list">
             <thead>
@@ -335,3 +333,7 @@
 </@global.javascript>
 </body>
 </html>
+
+<script>
+    var api_list = "../js/fast-pay.json";
+</script>
