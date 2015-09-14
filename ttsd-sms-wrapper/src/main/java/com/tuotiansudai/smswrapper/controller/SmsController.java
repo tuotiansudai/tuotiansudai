@@ -20,4 +20,12 @@ public class SmsController {
         data.setStatus(smsService.sendRegisterCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/retrieve", method = RequestMethod.GET)
+    @ResponseBody
+    public SmsResultDto sendRetrievePasswordCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendRetrievePasswordCaptcha(mobile, captcha));
+        return new SmsResultDto(data);
+    }
 }
