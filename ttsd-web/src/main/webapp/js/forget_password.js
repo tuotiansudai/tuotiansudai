@@ -87,6 +87,7 @@ require(['jquery', 'csrf'], function ($) {
                 if (num == 0) {
                     clearInterval(count);
                     $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
+                    $('.complete').addClass('grey').attr('disabled','disabled');
                 }
                 num--;
             }
@@ -112,6 +113,7 @@ require(['jquery', 'csrf'], function ($) {
             var _value = _this.val();
             if (_value.length < 5) {
                 $('.verification-code-main b').css('display', 'inline-block');
+                $('.complete').removeClass('grey').removeAttr('disabled');
             } else {
                 $.ajax({
                     url: '/register/image-captcha/' + _value + '/verify',
