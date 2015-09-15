@@ -64,11 +64,21 @@
     & .sub-hd {
       padding-left: 20px;
     }
-    & a {
+    & .btn {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+      padding: 8px 10px;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+    & .jq-n {
       display: inline-block;
       padding: 0 10px;
       margin-left: 10px;
       color: #333;
+      cursor: pointer;
       &.current {
         background: #ffac2a;
         color: #fff;
@@ -504,4 +514,22 @@
   margin-left: 10px;
   padding-left: 10px;
   width: 180px;
+}
+
+.pagination {
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+  text-align: center;
+  & a {
+    color: #777777;
+    padding: 2px 8px;
+  }
+  & a.current {
+    background: #f24712;
+    color: #fff;
+  }
+  & .next, & .prev {
+    cursor: pointer;
+  }
 }
