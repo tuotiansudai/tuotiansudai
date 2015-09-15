@@ -66,7 +66,7 @@ public class RepayServiceImpl implements RepayService {
             for (InvestModel successInvest : successInvests) {
                 int days;
                 if (InterestInitiateType.INTEREST_START_AT_INVEST == loanType.getInterestInitiateType()) {
-                    DateTime investDate = new DateTime(successInvest.getSuccessTime()).withTimeAtStartOfDay();
+                    DateTime investDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay();
                     days = Days.daysBetween(investDate, today).getDays() + 1;
                 } else {
                     days = Days.daysBetween(loanDate, today).getDays() + 1;
@@ -158,7 +158,7 @@ public class RepayServiceImpl implements RepayService {
                 if (isFirstPeriod) {
                     periodStartDate = loanDate;
                     if (InterestInitiateType.INTEREST_START_AT_INVEST == interestInitiateType) {
-                        periodStartDate = new DateTime(successInvest.getSuccessTime()).withTimeAtStartOfDay();
+                        periodStartDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay();
                     }
                 } else {
                     periodStartDate = new DateTime(loanRepayModels.get(index - 1).getRepayDate()).plusDays(1);
@@ -212,7 +212,7 @@ public class RepayServiceImpl implements RepayService {
             if (isFirstPeriod) {
                 DateTime periodStartDate = loanTime;
                 if (InterestInitiateType.INTEREST_START_AT_INVEST == interestInitiateType) {
-                    periodStartDate = new DateTime(investModel.getSuccessTime()).withTimeAtStartOfDay();
+                    periodStartDate = new DateTime(investModel.getCreatedTime()).withTimeAtStartOfDay();
                 }
                 int daysOfPeriod = LoanPeriodUnit.DAY == loanModel.getType().getLoanPeriodUnit() ?
                         loanModel.getPeriods() : loanTime.dayOfMonth().getMaximumValue();
