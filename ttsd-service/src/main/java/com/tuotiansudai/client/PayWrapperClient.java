@@ -6,15 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class PayWrapperClient {
@@ -41,6 +38,8 @@ public class PayWrapperClient {
     private String loanPath = "/loan";
 
     private String withdrawPath = "/withdraw";
+
+    private String agreementPath = "/agreement";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -111,6 +110,28 @@ public class PayWrapperClient {
         }
         return this.parsePayFormJson(responseJson);
     }
+
+    public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
+        String requestJson;
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+
+        String responseJson = this.post(agreementPath, requestJson);
+        if (Strings.isNullOrEmpty(responseJson)) {
+            payFormDataDto.setStatus(false);
+            return baseDto;
+        }
+        return this.parsePayFormJson(responseJson);
+    }
+
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         String requestJson;
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
