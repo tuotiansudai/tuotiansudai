@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by Administrator on 2015/9/8.
  */
@@ -63,6 +65,32 @@ public class RepayMapperTest {
         loanRepayModel.setExpectInterest(0);
         loanRepayModels.add(loanRepayModel);
         loanRepayMapper.insertLoanRepay(loanRepayModels);
+    }
+
+    @Test
+    public void shouldLoanRepayPaginationIsOk(){
+        UserModel userModel = this.getUserModelTest();
+        userMapper.create(userModel);
+        LoanDto loanDto = this.getLoanModel();
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        LoanRepayModel loanRepayModel = new LoanRepayModel();
+        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setDefaultInterest(0);
+        loanRepayModel.setActualInterest(0);
+        loanRepayModel.setPeriod(1);
+        loanRepayModel.setStatus(RepayStatus.REPAYING);
+        loanRepayModel.setLoanId(loanModel.getId());
+        loanRepayModel.setRepayDate(new Date());
+        loanRepayModel.setCorpus(0);
+        loanRepayModel.setExpectInterest(0);
+        loanRepayModels.add(loanRepayModel);
+        loanRepayMapper.insertLoanRepay(loanRepayModels);
+
+        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, null, null);
+        assertNotNull(models);
+        assertNotNull(models.get(0).getLoan().getLoanerLoginName());
     }
 
     private LoanDto getLoanModel(){

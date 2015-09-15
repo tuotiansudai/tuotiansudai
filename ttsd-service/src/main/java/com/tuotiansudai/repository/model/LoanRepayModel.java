@@ -27,6 +27,8 @@ public class LoanRepayModel {
 
     private long loanId;
 
+    private LoanModel loan;
+
     public long getId() {
         return id;
     }
@@ -107,4 +109,11 @@ public class LoanRepayModel {
         this.loanId = loanId;
     }
 
+    public LoanModel getLoan() {
+        return loan;
+    }
+
+    public void setLoan(LoanModel loan) {
+        this.loan = loan;
+    }
 }

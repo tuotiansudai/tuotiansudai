@@ -15,6 +15,35 @@
         <result column="status" property="status"></result>
         <result column="time" property="time"></result>
         <result column="loan_id" property="loanId"></result>
+        <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
+            <id property="id" column="id"/>
+            <result column="name" property="name"></result>
+            <result column="agent" property="agentLoginName"></result>
+            <result column="loaner" property="loanerLoginName"></result>
+            <result column="type" property="type"></result>
+            <result column="periods" property="periods"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="description_text" property="descriptionText"></result>
+            <result column="description_html" property="descriptionHtml"></result>
+            <result column="base_rate" property="baseRate"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="invest_fee_rate" property="investFeeRate"></result>
+            <result column="min_invest_amount" property="minInvestAmount"></result>
+            <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
+            <result column="max_invest_amount" property="maxInvestAmount"></result>
+            <result column="activity_type" property="activityType"></result>
+            <result column="activity_rate" property="activityRate"></result>
+            <result column="contract_id" property="contractId"></result>
+            <result column="fundraising_start_time" property="fundraisingStartTime"></result>
+            <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+            <result column="show_on_home" property="showOnHome"></result>
+            <result column="created_time" property="createdTime"></result>
+            <result column="verify_time" property="verifyTime"></result>
+            <result column="recheck_time" property="recheckTime"></result>
+            <result column="status" property="status"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+
+        </association>
     </resultMap>
 
     <sql id="columns">
@@ -25,8 +54,54 @@
         insert into loan_repay ( <include refid="columns"></include> )
         values
         <foreach collection="list" item="item" index="index" separator=",">
-            (#{item.id},#{item.corpus},#{item.defaultInterest},#{item.expectInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.status},#{item.time},#{item.loan_id})
+            (#{item.id},#{item.corpus},#{item.defaultInterest},#{item.expectInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.status},#{item.time},#{item.loanId})
         </foreach>
     </insert>
+
+    <select id="findLoanRepayPagination" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay a join loan b on a.loan_id = b.id
+        <where>
+            <if test="loanId !=null  ">
+              a.loan_id = #{loanId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+               and b.loaner = #{loginName}
+            </if>
+            <if test="repayStartDate !=null and repayStartDate !=''" >
+                and a.repay_date >= #{repayStartDate}
+            </if>
+            <if test="repayEndDate !=null and repayEndDate !='' ">
+                and a.repay_date &lt;= #{repayEndDate}
+            </if>
+
+            <if test="repayStatus !=null">
+                and a.status  = #{repayStatus}
+            </if>
+        </where>
+        order by a.time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findLoanRepayCount" parameterType="map" resultType="int">
+        select count(1) from loan_repay a join loan b on a.loan_id = b.id
+        <where>
+            <if test="loanId !=null ">
+                a.loan_id = #{loanId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                and b.loaner = #{loginName}
+            </if>
+            <if test="repayStartDate !=null and repayStartDate !=''" >
+                and a.repay_date >= #{repayStartDate}
+            </if>
+            <if test="repayEndDate !=null and repayEndDate !='' ">
+                and a.repay_date &lt;= #{repayEndDate}
+            </if>
+
+            <if test="repayStatus !=null">
+                and a.status  = #{repayStatus}
+            </if>
+        </where>
+    </select>
 
 </mapper>

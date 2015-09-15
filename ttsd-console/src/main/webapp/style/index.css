@@ -121,3 +121,10 @@ a:hover {
 #Validform_msg .Validform_info{padding:8px;border:1px solid #bbb; border-top:none; text-align:left;}
 .form-error{ color: #cc0000; font-size: 12px;
     display: block;}
+
+.select-box{
+    display: inline;}
+.query-build{padding-bottom: 20px;}
+.query-build .form-group{
+    margin: 10px 20px 10px 0;
+}
