@@ -106,3 +106,7 @@ a:hover {
 .table-bordered th {
     text-align: center
 }
+.form-horizontal span.form-control{
+    border: none;
+    box-shadow: none;
+}

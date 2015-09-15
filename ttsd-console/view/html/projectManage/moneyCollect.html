@@ -14,11 +14,22 @@
     <!-- link bootstrap css and js -->
     <link href="../../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="../../js/jquery-1.10.1.min.js"></script> <!-- jquery -->
-    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/libs/jquery-1.10.1.min.js"></script>
+    <!-- jquery -->
+    <script src="../../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
-
+    <!-- 日历插件 -->
+    <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
     <link rel="stylesheet" href="../../style/index.css">
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
+        });
+    </script>
 </head>
 <body>
 <!-- header begin -->
