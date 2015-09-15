@@ -4,6 +4,12 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.AgreementNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindAgreementRequestMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.AgreementNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindAgreementRequestModel;
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -12,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 /**
@@ -32,13 +39,39 @@ public class AgreementServiceImpl implements AgreementService{
     @Transactional
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-
-        return null;
+        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(),dto.getAgreementType());
+        try {
+            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class,ptpMerBindAgreementRequestModel);
+            return baseDto;
+        } catch (PayException e) {
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+            PayFormDataDto payFormDataDto = new PayFormDataDto();
+            payFormDataDto.setStatus(false);
+            baseDto.setData(payFormDataDto);
+            return baseDto;
+        }
     }
 
     @Override
     public String agreementCallback(Map<String, String> paramsMap, String queryString) {
-        return null;
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, queryString, AgreementNotifyMapper.class, AgreementNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
+        }
+        this.postAgreementCallback(callbackRequest);
+        return callbackRequest.getResponseData();
+    }
+
+    @Transactional
+    private void postAgreementCallback(BaseCallbackRequestModel callbackRequestModel){
+        AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel)callbackRequestModel;
+        AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
+        if (accountModel != null && callbackRequestModel.isSuccess()) {
+            accountModel.setAutoInvest(true);
+            accountMapper.update(accountModel);
+        } else {
+            logger.error(MessageFormat.format("Agreement callback failed (userId = {0})", ((AgreementNotifyRequestModel) callbackRequestModel).getUserId()));
+        }
     }
 
 }

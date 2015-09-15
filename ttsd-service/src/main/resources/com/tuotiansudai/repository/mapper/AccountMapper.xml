@@ -25,6 +25,10 @@
         select * from account where login_name = #{loginName}
     </select>
 
+    <select id="findByPayUserId" parameterType="java.lang.String" resultMap="accountResultMap">
+        select * from account where pay_user_id = #{payUserId}
+    </select>
+
     <select id="findAllLoginNamesByLike" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from account where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
