@@ -14,6 +14,7 @@
         <result column="balance" property="balance"></result>
         <result column="freeze" property="freeze"></result>
         <result column="register_time" property="registerTime"></result>
+        <result column="auto_invest" property="autoInvest"></result>
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
@@ -40,7 +41,8 @@
     <update id="update" parameterType="AccountModel">
         update account set
           balance = #{balance},
-          freeze = #{freeze}
+          freeze = #{freeze},
+          auto_invest = #{autoInvest}
         where login_name = #{loginName}
     </update>
 
