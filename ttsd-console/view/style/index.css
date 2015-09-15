@@ -83,3 +83,7 @@ a:hover {
 .col-file-box{ margin-bottom: 10px;}
 .select-box{
     display: inline;}
+.query-build{padding-bottom: 20px;}
+.query-build .form-group{
+    margin: 10px 20px 10px 0;
+}
