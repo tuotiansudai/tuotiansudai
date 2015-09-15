@@ -27,8 +27,8 @@
         update recharge set status = #{status} where id = #{id}
     </update>
 
-    <select id="findSumRechargeByLoginName" parameterType="java.lang.String" resultMap="long">
-        select sum(amount) from recharge where status = 'SUCCESS' and login_name = #{loginName}
+    <select id="findSumRechargeByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName}
     </select>
 
 </mapper>

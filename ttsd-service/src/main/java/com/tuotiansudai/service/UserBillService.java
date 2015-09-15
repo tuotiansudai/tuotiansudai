@@ -1,7 +1,9 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.UserBillDto;
+import com.tuotiansudai.repository.model.UserBillBusinessType;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public interface UserBillService {
 
-    List<UserBillDto> findUserBills(String userBillBusinessType,int currentPage,String startTime,String endTime);
+    List<UserBillDto> findUserBills(List<UserBillBusinessType> userBillBusinessType,int currentPage,Date startTime,Date endTime);
 
-    int findUserBillsCount(String userBillBusinessType,String startTime,String endTime);
+    int findUserBillsCount(List<UserBillBusinessType> userBillBusinessType,Date startTime,Date endTime);
 }

@@ -21,21 +21,21 @@
         <h2 class="hd"><span class="line">资金管理</span></h2>
         <div class="money-box">
             <div class="balance">
-                您点可用余额：0.00
+                您的可用余额：${accountModelBalance}
             </div>
             <div class="item-block">
                 <a class="bt-pay" href="">充值</a>
                 <a class="bt-invest" href="">投资</a>
                 <a class="bt-withdraw" href="">提现</a>
             </div>
-            <p>累计充值： ￥0.00</p>
-            <p>累计提现： ￥0.00</p>
+            <p>累计充值： ￥${sumRecharge}</p>
+            <p>累计提现： ￥${sumWithdraw}</p>
         </div>
         <div class="item-block start-end">
             <span class="sub-hd">起止时间:</span>
             <input type="text" id="daterangepicker" class="starttime filter" size="35" />
-            <span class="jq-n rec-today current" day="1">今天</span>
-            <span class="jq-n rec-week" day="7">最近一周</span>
+            <span class="jq-n rec-today" day="1">今天</span>
+            <span class="jq-n rec-week current" day="7">最近一周</span>
             <span class="jq-n rec-month active" day="30">一个月</span>
             <span class="jq-n rec-sixmonth" day="180">六个月</span>
         </div>
@@ -61,77 +61,37 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-            <tr>
-                <td>test</td>
-                <td>2015-08-24 17:56:23</td>
-                <td>test</td>
-                <td>10000.00</td>
-                <td>1.00</td>
-                <td>2015-08-24 17:56:23</td>
-                <td> 编号：20150611        00000064</td>
-            </tr>
-
-            <#--空白纪录-->
-            <tr>
-                <td colspan="7" class="txtc">暂时没有借款纪录</td>
-            </tr>
-            <#--空白纪录 end-->
+            <#if userBillDtos?? >
+                <#list userBillDtos as userBillDto>
+                    <tr>
+                        <td>${userBillDto.createdTime}<td>
+                        <td>${userBillDto.businessType}<td>
+                        <td>${userBillDto.income}<td>
+                        <td>${userBillDto.expenditure}<td>
+                        <td>${userBillDto.freeze}<td>
+                        <td>${userBillDto.balance}<td>
+                        <td>${userBillDto.id}<td>
+                    </tr>
+                </#list>
+                <div class="pagination">
+                    <span class="total">共 <span class="subTotal">${countNum}</span>条,当前第 <span class="index-page">${currentPage}</span>页</span>
+                    <span class="prev">上一页</span>
+                    <a class="current" href="">1</a>
+                    <a href="">2</a>
+                    <a href="">20</a>
+                    <span class="next">下一页</span>
+                </div>
+            <#else>
+                <#--空白纪录-->
+                <tr>
+                    <td colspan="7" class="txtc">暂时没有资金纪录</td>
+                </tr>
+                <#--空白纪录 end-->
+            </#if>
             </tbody>
         </table>
 
-        <div class="pagination">
-            <span class="total">共 <span class="subTotal">20</span>条,当前第 <span class="index-page">1</span>页</span>
-            <span class="prev">上一页</span>
-            <a class="current" href="">1</a>
-            <a href="">2</a>
-            <a href="">20</a>
-            <span class="next">下一页</span>
-        </div>
+
     </div>
 </div>
 
