@@ -20,17 +20,17 @@ public class RedisWrapperClient {
 
     static Logger logger = Logger.getLogger(RedisWrapperClient.class);
 
-    @Value("${redis.ip}")
-    private String redisIp;
+    @Value("${redis.host}")
+    private String redisHost;
 
     @Value("${redis.port}")
-    private Integer redisPort;
+    private int redisPort;
 
     @Value("${redis.password}")
     private String redisPassword;
 
     @Value("${redis.db}")
-    private Integer redisDb;
+    private int redisDb;
 
     private JedisPool jedisPool;
 
@@ -48,24 +48,24 @@ public class RedisWrapperClient {
     private JedisPool getPool() {
         if (pool == null) {
             JedisPoolConfig config = new JedisPoolConfig();
-            pool = new JedisPool(config, redisIp, redisPort);
+            pool = new JedisPool(config, redisHost, redisPort);
         }
         return pool;
     }
 
-    public String getRedisIp() {
-        return redisIp;
+    public String getRedisHost() {
+        return redisHost;
     }
 
-    public void setRedisIp(String redisIp) {
-        this.redisIp = redisIp;
+    public void setRedisHost(String redisHost) {
+        this.redisHost = redisHost;
     }
 
-    public Integer getRedisPort() {
+    public int getRedisPort() {
         return redisPort;
     }
 
-    public void setRedisPort(Integer redisPort) {
+    public void setRedisPort(int redisPort) {
         this.redisPort = redisPort;
     }
 

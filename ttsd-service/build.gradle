@@ -46,6 +46,14 @@ processResources {
             if (line.startsWith("jdbc.port=") && project.hasProperty("dbport")) {
                 return "jdbc.port=${dbport}"
             }
+
+            if (line.startsWith("redis.host=") && project.hasProperty("redishost")) {
+                return "redis.host=${redishost}"
+            }
+
+            if (line.startsWith("redis.port=") && project.hasProperty("redisport")) {
+                return "redis.port=${redisport}"
+            }
             line
         }
     }
