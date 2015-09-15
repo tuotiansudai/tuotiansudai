@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>筹款编辑</title>
+    <title>复审借款</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,116 +91,156 @@
                     <li class="active"><a href="../index.html">所有借款</a></li>
                     <li><a href="firstTrial.html">初审的借款</a></li>
                     <li><a href="moneyCollect.html">筹款中借款</a></li>
+                    <li><a href="twoTrial.html">复审借款</a></li>
+                    <li><a href="Drain.html">还款中的借款</a></li>
                     <li><a href="finishRefund.html">完成还款的借款</a></li>
-                    <li><a href="Drain.html">已经流标的借款</a></li>
+                    <li> <a href="check.html">已流标等借款</a></li>
                     <li><a href="overdue.html">逾期借款</a></li>
                     <li><a href="star.html">发起借款</a></li>
-                    <li><a href="twoTrial.html">复审借款</a></li>
-                    <li><a href="recheck.html">复审核借款</a></li>
-                    <li><a href="check.html">审核借款</a></li>
-                    <li><a href="fundsEdit.html">复审借款</a></li>
                 </ul>
             </div>
             <!-- menu sidebar end -->
 
             <!-- content area begin -->
             <div class="col-md-10">
-                <form class="form-horizontal">
+                <form action="" class="form-inline query-build">
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">借款项目名称: </label>
-
-                        <div class="col-sm-4">
-                            <span class="form-control">aaaa什么事</span>
-                        </div>
+                        <label for="">编号</label>
+                        <input type="text" class="form-control" id="" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">代理用户: </label>
-
-                        <div class="col-sm-4">
-                            <span class="form-control">aaaa什么事</span>
-                        </div>
+                        <label for="">项目名称</label>
+                        <input type="text" class="form-control" id="" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label  class="col-sm-2 control-label">借款用户: </label>
+                        <label for="">日期</label>
 
-                        <div class="col-sm-4">
-                            <span class="form-control">aaaa什么事</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">标的类型: </label>
-
-                        <div class="col-sm-4">
-                            <span class="form-control">先付利息后还本金，按天计息，即投即生息</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">审核信息:	  </label>
-                        <div class="col-sm-4">
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group input-append">
-                        <label  class="col-sm-2 control-label">筹款启动时间: </label>
-
-                        <div class="col-sm-4">
-                            <div class='input-group date' id='datetimepicker6'>
-                                <input type='text' class="form-control"/>
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
-                            </div>
                         </div>
-                    </div>
-                    <div class="form-group input-append">
-                        <label  class="col-sm-2 control-label">筹款截止时间: </label>
-
-                        <div class="col-sm-4">
-                            <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' class="form-control"/>
+                        -
+                        <div class='input-group date' id='datetimepicker2'>
+                            <input type='text' class="form-control"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
-                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">风险等级: </label>
 
-                        <div class="col-sm-4">
-                            <span class="form-control"> AAA</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">初审是否通过: </label>
-
-                        <div class="col-sm-4">
-                            <span class="label label-success "> 是</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">属性: </label>
-
-                        <div class="col-sm-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    首页
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 control-label">操作: </label>
-
-                        <div class="col-sm-4">
-
-                            <button type="submit" class="btn btn-primary">放款</button>
-                            <button type="submit" class="btn btn-primary">延期</button>
-                            <button type="submit" class="btn btn-primary">流标</button>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-sm btn-primary">查询</button>
                 </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>项目名称</th>
+                            <th>项目类型</th>
+                            <th>借款人</th>
+                            <th>借款金额</th>
+                            <th>借款期限</th>
+                            <th>年化/活动(利率)</th>
+                            <th>项目状态</th>
+                            <th>发起时间</th>
+                            <th>投资/还款记录</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td><a href="">编辑</a></td>
+                        </tr>
+                        <tr>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                        </tr>
+                        <tr>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                        </tr>
+                        <tr>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                        </tr>
+                        <tr>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                            <td>20150714000141</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- pagination  -->
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- pagination -->
             </div>
             <!-- content area end -->
         </div>
