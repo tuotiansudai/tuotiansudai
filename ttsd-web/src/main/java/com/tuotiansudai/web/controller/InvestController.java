@@ -105,8 +105,8 @@ public class InvestController {
             dto.setLoanId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
             dto.setLoanStatus(LoanStatus.COMPLETE);
             InvestJsonDetailDto jsonDto = new InvestJsonDetailDto(dto);
-            jsonDto.setRepayDay("2015-10-09");
-            jsonDto.setRepayAmount("20.15");
+            jsonDto.setNextRepayDay("2015-10-09");
+            jsonDto.setNextRepayAmount("20.15");
             list.add(jsonDto);
         }
         paginationList.setRecordDtoList(list);
@@ -114,23 +114,23 @@ public class InvestController {
     }
 
     public static class InvestJsonDetailDto extends InvestDetailDto {
-        private String repayAmount;
-        private String repayDay;
+        private String nextRepayAmount;
+        private String nextRepayDay;
 
-        public String getRepayAmount() {
-            return repayAmount;
+        public String getNextRepayAmount() {
+            return nextRepayAmount;
         }
 
-        public void setRepayAmount(String repayAmount) {
-            this.repayAmount = repayAmount;
+        public void setNextRepayAmount(String nextRepayAmount) {
+            this.nextRepayAmount = nextRepayAmount;
         }
 
-        public String getRepayDay() {
-            return repayDay;
+        public String getNextRepayDay() {
+            return nextRepayDay;
         }
 
-        public void setRepayDay(String repayDay) {
-            this.repayDay = repayDay;
+        public void setNextRepayDay(String nextRepayDay) {
+            this.nextRepayDay = nextRepayDay;
         }
 
         public String getLoanStatusDesc() {
