@@ -46,7 +46,7 @@ public class InvestController {
             queryDto.setPageSize(pageSize);
         }
 
-        BasePaginationDto<InvestDetailDto> paginationList = investService.queryInvests(queryDto);
+        BasePaginationDto<InvestDetailDto> paginationList = investService.queryInvests(queryDto, false);
 
         List<InvestDetailDto> invests = paginationList.getRecordDtoList();
 
