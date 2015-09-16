@@ -127,6 +127,7 @@ public interface InvestMapper {
                                        @Param(value = "beginTime") Date beginTime,
                                        @Param(value = "endTime") Date endTime,
                                        @Param(value = "loanStatus") LoanStatus loanStatus,
+                                       @Param(value = "investStatus") InvestStatus investStatus,
                                        @Param(value = "offset") int offset,
                                        @Param(value = "limit") int limit);
 
@@ -144,6 +145,7 @@ public interface InvestMapper {
                   @Param(value = "loginName") String loginName,
                   @Param(value = "beginTime") Date beginTime,
                   @Param(value = "endTime") Date endTime,
-                  @Param(value = "loanStatus") LoanStatus loanStatus);
+                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                  @Param(value = "investStatus") InvestStatus investStatus);
 
 }
