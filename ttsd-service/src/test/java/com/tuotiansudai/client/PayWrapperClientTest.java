@@ -1,6 +1,7 @@
 package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.*;
@@ -124,6 +125,7 @@ public class PayWrapperClientTest {
         loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
         loanTitleModel.setTitle("房产证");
         loanTitleMapper.create(loanTitleModel);
+
         LoanDto loanDto = new LoanDto();
         loanDto.setId(idGenerator.generate());
         loanDto.setLoanerLoginName("xiangjie");
@@ -149,7 +151,7 @@ public class PayWrapperClientTest {
         loanDto.setLoanStatus(LoanStatus.RECHECK);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
-        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
@@ -168,7 +170,6 @@ public class PayWrapperClientTest {
         baseDto.setData(dataDto);
         mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
         server.enqueue(mockResponse);
-        URL url = server.getUrl("/loan");
         payWrapperClient.setHost(server.getHostName());
         payWrapperClient.setPort(String.valueOf(server.getPort()));
         payWrapperClient.setContext("");

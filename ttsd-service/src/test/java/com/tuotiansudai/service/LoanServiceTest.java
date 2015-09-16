@@ -3,11 +3,8 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -45,6 +43,12 @@ public class LoanServiceTest {
     @Autowired
     private LoanTitleMapper loanTitleMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Before
     public void createLoanTitle(){
         LoanTitleModel loanTitleModel = new LoanTitleModel();
@@ -59,19 +63,24 @@ public class LoanServiceTest {
      */
     @Test
     public void createLoanServiceTest_1() {
-        LoanDto loanDto = getLoanDto();
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertTrue(baseDto.getData().getStatus());
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
     }
 
-    private LoanDto getLoanDto() {
+    private LoanDto getLoanDto(UserModel userModel) {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("xiangjie");
+        loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setAgentLoginName(userModel.getLoginName());
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
         loanDto.setLoanAmount("1000000.00");
@@ -205,55 +214,23 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        return this.createLoan(loanDto);
-    }
-
-    private BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
-        PayDataDto dataDto = new PayDataDto();
-        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
-        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
-        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        if (maxInvestAmount < minInvestAmount) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (maxInvestAmount > loanAmount) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        long projectId = idGenerator.generate();/****标的号****/
-        loanDto.setId(projectId);
-        loanMapper.create(new LoanModel(loanDto));
-        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
-        if (loanTitleRelationModelList.size() > 0) {
-            for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
-                loanTitleRelationModel.setId(idGenerator.generate());
-                loanTitleRelationModel.setLoanId(projectId);
-            }
-            loanTitleRelationMapper.create(loanTitleRelationModelList);
-        }
-        dataDto.setStatus(true);
-        baseDto.setData(dataDto);
-        return baseDto;
+        return this.loanService.createLoan(loanDto);
     }
 
     @Test
     public void updateLoanTest() {
-        this.creteLoan(getLoanDto());
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        this.creteLoan(getLoanDto(fakeUser));
         List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
         long loanId = loanModelList.get(0).getId();
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("liming");
+        loanDto.setLoanerLoginName(fakeUser.getLoginName());
+        loanDto.setAgentLoginName(fakeUser.getLoginName());
         loanDto.setLoanAmount("5000.00");
         loanDto.setMaxInvestAmount("999.00");
         loanDto.setMinInvestAmount("1.00");
@@ -289,4 +266,17 @@ public class LoanServiceTest {
         loanService.updateLoan(loanDto);
         assertTrue(LoanStatus.WAITING_VERIFY == loanMapper.findById(loanId).getStatus());
     }
+
+    public UserModel getFakeUser() {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("loginName");
+        userModelTest.setPassword("password");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
 }
