@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.InvestSource;
@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -86,7 +87,7 @@ public class InvestController {
             } else {
                 queryDto.setPageSize(pageSize);
             }
-            paginationList = investService.queryInvests(queryDto);
+            paginationList = investService.queryInvests(queryDto,true);
             List<InvestDetailDto> dtoList = paginationList.getRecordDtoList();
             List<InvestDetailDto> jsonDtoList = new ArrayList<>(dtoList.size());
             for (InvestDetailDto dto : dtoList) {
@@ -119,9 +120,9 @@ public class InvestController {
             dto.setIsAutoInvest(false);
             dto.setLoanId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
             dto.setLoanStatus(LoanStatus.COMPLETE);
+            dto.setNextRepayDate(new Date());
+            dto.setNextRepayAmount(3248);
             InvestJsonDetailDto jsonDto = new InvestJsonDetailDto(dto);
-            jsonDto.setNextRepayDay("2015-10-09");
-            jsonDto.setNextRepayAmount("20.15");
             list.add(jsonDto);
         }
         paginationList.setRecordDtoList(list);
@@ -129,23 +130,26 @@ public class InvestController {
     }
 
     public static class InvestJsonDetailDto extends InvestDetailDto {
-        private String nextRepayAmount;
-        private String nextRepayDay;
-
-        public String getNextRepayAmount() {
-            return nextRepayAmount;
+        @JsonProperty("nextRepayAmount")
+        public String getNextRepayAmountString() {
+            return AmountUtil.convertCentToString(super.getNextRepayAmount());
         }
 
-        public void setNextRepayAmount(String nextRepayAmount) {
-            this.nextRepayAmount = nextRepayAmount;
+        @JsonIgnore
+        @Override
+        public long getNextRepayAmount() {
+            return super.getNextRepayAmount();
         }
 
-        public String getNextRepayDay() {
-            return nextRepayDay;
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        public Date getNextRepayDay() {
+            return super.getNextRepayDate();
         }
 
-        public void setNextRepayDay(String nextRepayDay) {
-            this.nextRepayDay = nextRepayDay;
+        @JsonIgnore
+        @Override
+        public Date getNextRepayDate() {
+            return super.getNextRepayDate();
         }
 
         public String getLoanStatusDesc() {
@@ -206,6 +210,8 @@ public class InvestController {
             this.setSource(dto.getSource());
             this.setStatus(dto.getStatus());
             this.setUserReferrer(dto.getUserReferrer());
+            this.setNextRepayAmount(dto.getNextRepayAmount());
+            this.setNextRepayDate(dto.getNextRepayDate());
         }
     }
 }
