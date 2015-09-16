@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import java.util.Date;
+
 public class InvestDetailModel extends InvestModel{
     /**
      * 标的名称
@@ -17,6 +19,14 @@ public class InvestDetailModel extends InvestModel{
      * 投资人的推荐人
      */
     private String userReferrer;
+    /**
+     * 下个还款日
+     */
+    private Date nextRepayDay;
+    /**
+     * 下次还款金额
+     */
+    private long nextRepayAmount;
 
     public String getLoanName() {
         return loanName;
@@ -48,5 +58,21 @@ public class InvestDetailModel extends InvestModel{
 
     public void setUserReferrer(String userReferrer) {
         this.userReferrer = userReferrer;
+    }
+
+    public Date getNextRepayDay() {
+        return nextRepayDay;
+    }
+
+    public void setNextRepayDay(Date nextRepayDay) {
+        this.nextRepayDay = nextRepayDay;
+    }
+
+    public long getNextRepayAmount() {
+        return nextRepayAmount;
+    }
+
+    public void setNextRepayAmount(long nextRepayAmount) {
+        this.nextRepayAmount = nextRepayAmount;
     }
 }

@@ -84,7 +84,7 @@ public class InvestServiceTest {
     private void createInvests(String loginName, long loanId) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, -98);
-        for(int i=10000000;i<10099000;i+=1000) {
+        for (int i = 10000000; i < 10099000; i += 1000) {
             cal.add(Calendar.SECOND, 1);
             InvestModel model = new InvestModel();
             model.setAmount(1000000);
@@ -108,19 +108,19 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void testPaginationInvestQuery(){
+    public void testPaginationInvestQuery() {
         InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
         queryDto.setLoginName("testuser");
         queryDto.setPageIndex(1);
         queryDto.setPageSize(10);
-        BasePaginationDto<InvestDetailDto> paginationDto = investService.queryInvests(queryDto);
+        BasePaginationDto<InvestDetailDto> paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 99;
         InvestDetailDto dto = paginationDto.getRecordDtoList().get(0);
         assert dto.getId() == 10098000;
 
         queryDto.setPageIndex(3);
         queryDto.setPageSize(20);
-        paginationDto = investService.queryInvests(queryDto);
+        paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 99;
         dto = paginationDto.getRecordDtoList().get(0);
         assert dto.getId() == 10058000;
@@ -129,16 +129,16 @@ public class InvestServiceTest {
         assert dto.getLoanType() == LoanType.LOAN_TYPE_1;
 
         queryDto.setInvestStatus(InvestStatus.FAIL);
-        paginationDto = investService.queryInvests(queryDto);
+        paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 0;
 
         queryDto.setInvestStatus(InvestStatus.SUCCESS);
         queryDto.setLoanStatus(LoanStatus.CANCEL);
-        paginationDto = investService.queryInvests(queryDto);
+        paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 0;
 
         queryDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
-        paginationDto = investService.queryInvests(queryDto);
+        paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 99;
 
         Calendar cal = Calendar.getInstance();
@@ -146,7 +146,7 @@ public class InvestServiceTest {
         queryDto.setBeginTime(cal.getTime());
         cal.add(Calendar.SECOND, 5);
         queryDto.setEndTime(cal.getTime());
-        paginationDto = investService.queryInvests(queryDto);
+        paginationDto = investService.queryInvests(queryDto, false);
         assert paginationDto.getTotalCount() == 5;
     }
 }

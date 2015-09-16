@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,9 @@ public class InvestMapperTest {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     private String User_ID = "helloworld";
     private String User_ID2 = "testuser";
@@ -107,6 +111,35 @@ public class InvestMapperTest {
         model.setSource(InvestSource.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
+    }
+
+    private List<InvestRepayModel> getFakeInvestRepayModel(long investId){
+        List<InvestRepayModel> list = new ArrayList<>();
+        InvestRepayModel model = new InvestRepayModel();
+        model.setId(idGenerator.generate());
+        model.setCreatedTime(new Date());
+        model.setCorpus(100);
+        model.setDefaultInterest(1);
+        model.setExpectedInterest(10);
+        model.setExpectedFee(3);
+        model.setInvestId(investId);
+        model.setPeriod(1);
+        model.setRepayDate(new Date());
+        model.setStatus(RepayStatus.REPAYING);
+        list.add(model);
+        InvestRepayModel model2 = new InvestRepayModel();
+        model2.setId(idGenerator.generate());
+        model2.setCreatedTime(new Date());
+        model2.setCorpus(1000);
+        model2.setDefaultInterest(1);
+        model2.setExpectedInterest(10);
+        model2.setExpectedFee(3);
+        model2.setInvestId(investId);
+        model2.setPeriod(1);
+        model2.setRepayDate(new Date());
+        model2.setStatus(RepayStatus.COMPLETE);
+        list.add(model2);
+        return list;
     }
 
     @Before
@@ -190,11 +223,17 @@ public class InvestMapperTest {
         int limit = 3;
         int offset = 6;
         for(int i=0;i<c;i++){
-            investMapper.create(getFakeInvestModel());
+            InvestModel investModel = getFakeInvestModel();
+            investMapper.create(investModel);
+            investRepayMapper.create(getFakeInvestRepayModel(investModel.getId()));
         }
 
-        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,null,offset,limit);
+        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,null,true,offset,limit);
 
         assert investDetailModels.size() == limit;
+        assert investDetailModels.get(0).getNextRepayAmount() == 108;
+
+        investDetailModels = investMapper.findByPage(null,null,null,null,null,null,false,offset,limit);
+        assert investDetailModels.get(0).getNextRepayAmount() == 0;
     }
 }
