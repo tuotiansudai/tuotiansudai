@@ -13,7 +13,8 @@ public interface InvestService {
     /**
      * 查找投资记录
      * @param queryDto
+     * @param includeNextRepay 是否同时查询下次还款情况
      * @return
      */
-    BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto);
+    BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay);
 }
