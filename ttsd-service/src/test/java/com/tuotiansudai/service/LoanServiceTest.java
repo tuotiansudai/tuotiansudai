@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +59,14 @@ public class LoanServiceTest {
      */
     @Test
     public void createLoanServiceTest_1() {
+        LoanDto loanDto = getLoanDto();
+        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertNotNull(loanMapper.findById(loanDto.getId()));
+        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private LoanDto getLoanDto() {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
@@ -68,10 +77,7 @@ public class LoanServiceTest {
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
-        assertTrue(baseDto.getData().getStatus());
-        assertNotNull(loanMapper.findById(loanDto.getId()));
-        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+        return loanDto;
     }
 
     /**
@@ -199,13 +205,51 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        return loanService.createLoan(loanDto);
+        return this.createLoan(loanDto);
+    }
+
+    private BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto();
+        PayDataDto dataDto = new PayDataDto();
+        long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
+        long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        if (maxInvestAmount < minInvestAmount) {
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount) {
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        long projectId = idGenerator.generate();/****标的号****/
+        loanDto.setId(projectId);
+        loanMapper.create(new LoanModel(loanDto));
+        List<LoanTitleRelationModel> loanTitleRelationModelList = loanDto.getLoanTitles();
+        if (loanTitleRelationModelList.size() > 0) {
+            for (LoanTitleRelationModel loanTitleRelationModel : loanDto.getLoanTitles()) {
+                loanTitleRelationModel.setId(idGenerator.generate());
+                loanTitleRelationModel.setLoanId(projectId);
+            }
+            loanTitleRelationMapper.create(loanTitleRelationModelList);
+        }
+        dataDto.setStatus(true);
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 
     @Test
     public void updateLoanTest() {
-        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.VERIFY_FAIL);
-        long loanId = loanModelList.get(0).getId();;
+        this.creteLoan(getLoanDto());
+        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
+        long loanId = loanModelList.get(0).getId();
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanId);
         loanDto.setLoanerLoginName("xiangjie");
@@ -243,6 +287,6 @@ public class LoanServiceTest {
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
         loanService.updateLoan(loanDto);
-        assertTrue(LoanStatus.VERIFY_FAIL == loanMapper.findById(loanId).getStatus());
+        assertTrue(LoanStatus.WAITING_VERIFY == loanMapper.findById(loanId).getStatus());
     }
 }
