@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/invest")
 public class InvestController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class InvestController {
         return new ModelAndView("/pay", "pay", baseDto);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/investor/invests", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDto<InvestDetailDto> queryUserInvest(
             Long loanId,
@@ -47,14 +47,16 @@ public class InvestController {
             LoanStatus loanStatus, InvestStatus investStatus,
             Integer pageIndex, Integer pageSize
     ) {
+        String loginName = LoginUserInfo.getLoginName();
         BasePaginationDto<InvestDetailDto> paginationList = null;
-        if (StringUtils.isBlank(LoginUserInfo.getLoginName())) {
+        if (StringUtils.isBlank(loginName)) {
             paginationList = new BasePaginationDto<>();
             paginationList.setRecordDtoList(new ArrayList<InvestDetailDto>());
+            paginationList = fakeData(pageIndex,pageSize);
         } else {
             InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
             queryDto.setLoanId(loanId);
-            queryDto.setLoginName(LoginUserInfo.getLoginName());
+            queryDto.setLoginName(loginName);
             queryDto.setBeginTime(beginTime);
             queryDto.setEndTime(endTime);
             queryDto.setLoanStatus(loanStatus);
@@ -77,6 +79,37 @@ public class InvestController {
             }
             paginationList.setRecordDtoList(jsonDtoList);
         }
+        return paginationList;
+    }
+
+    private BasePaginationDto<InvestDetailDto> fakeData(Integer pageIndex, Integer pageSize) {
+        if (pageIndex == null || pageIndex <= 0) {
+            pageIndex = 1;
+        }
+        if (pageSize == null || pageSize <= 0) {
+            pageSize = 10;
+        }
+        BasePaginationDto<InvestDetailDto> paginationList = new BasePaginationDto<>(pageIndex, pageSize, 327);
+        List<InvestDetailDto> list = new ArrayList<>();
+        for(int i=0;i<pageSize;i++){
+            InvestDetailDto dto = new InvestDetailDto();
+            dto.setSource(InvestSource.WEB);
+            dto.setUserReferrer("admin");
+            dto.setLoanType(LoanType.LOAN_TYPE_1);
+            dto.setStatus(InvestStatus.SUCCESS);
+            dto.setLoanName("这是测试的标的");
+            dto.setAmount("32.12");
+            dto.setCreatedTime(new Date());
+            dto.setId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
+            dto.setIsAutoInvest(false);
+            dto.setLoanId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
+            dto.setLoanStatus(LoanStatus.COMPLETE);
+            InvestJsonDetailDto jsonDto = new InvestJsonDetailDto(dto);
+            jsonDto.setRepayDay("2015-10-09");
+            jsonDto.setRepayAmount("20.15");
+            list.add(jsonDto);
+        }
+        paginationList.setRecordDtoList(list);
         return paginationList;
     }
 
