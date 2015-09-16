@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -39,6 +40,12 @@ public class InvestController {
     }
 
     @RequestMapping(value = "/investor/invests", method = RequestMethod.GET)
+    public ModelAndView userInvest(){
+        ModelAndView mv = new ModelAndView("/investrecord");
+        return mv;
+    }
+
+    @RequestMapping(value = "/investor/query_invests", method = RequestMethod.GET)
     @ResponseBody
     public BasePaginationDto<InvestDetailDto> queryUserInvest(
             Long loanId,
