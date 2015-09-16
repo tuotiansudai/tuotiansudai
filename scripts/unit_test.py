@@ -43,5 +43,5 @@ class NewVersionUnitTest(object):
 
     def run_test(self):
         print "Starting test..."
-        sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} ttsd-service:flywayMigrate'.format(self.db_host, self.db_port, self.redis_host, self.redis_port))
+        sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} test'.format(self.db_host, self.db_port, self.redis_host, self.redis_port))
 
