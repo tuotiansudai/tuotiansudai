@@ -12,6 +12,7 @@ import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,8 +51,8 @@ public class InvestController {
     @ResponseBody
     public BasePaginationDto<InvestDetailDto> queryUserInvest(
             Long loanId,
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             LoanStatus loanStatus, InvestStatus investStatus,
             Integer pageIndex, Integer pageSize
     ) {
@@ -65,6 +67,12 @@ public class InvestController {
             queryDto.setLoanId(loanId);
             queryDto.setLoginName(loginName);
             queryDto.setBeginTime(beginTime);
+            if(endTime!=null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(endTime);
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                endTime = calendar.getTime();
+            }
             queryDto.setEndTime(endTime);
             queryDto.setLoanStatus(loanStatus);
             queryDto.setInvestStatus(investStatus);
