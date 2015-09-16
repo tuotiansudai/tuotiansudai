@@ -11,8 +11,8 @@ class NewVersionUnitTest(object):
     def test(self):
         self.clean()
         self.compile()
-        self.migrate()
         self.init_docker()
+        self.migrate()
         self.run_test()
 
     def clean(self):
