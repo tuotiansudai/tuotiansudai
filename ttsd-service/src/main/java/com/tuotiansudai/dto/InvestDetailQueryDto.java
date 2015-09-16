@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public class InvestDetailQueryDto implements Serializable{
     private Date beginTime;
     private Date endTime;
     private LoanStatus loanStatus;
+    private InvestStatus investStatus;
     private int pageIndex;
     private int pageSize;
 
@@ -52,6 +54,14 @@ public class InvestDetailQueryDto implements Serializable{
 
     public void setLoanStatus(LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
+    }
+
+    public InvestStatus getInvestStatus() {
+        return investStatus;
+    }
+
+    public void setInvestStatus(InvestStatus investStatus) {
+        this.investStatus = investStatus;
     }
 
     public int getPageIndex() {

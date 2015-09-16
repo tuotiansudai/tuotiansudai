@@ -137,6 +137,9 @@
         <if test="beginTime != null">
             and invest.created_time &gt;= #{beginTime}
         </if>
+        <if test="investStatus != null">
+            and invest.status = #{investStatus}
+        </if>
         <if test="loanStatus != null">
             and loan.status = #{loanStatus}
         </if>
@@ -163,6 +166,9 @@
         </if>
         <if test="loanStatus != null">
             and loan.status = #{loanStatus}
+        </if>
+        <if test="investStatus != null">
+            and invest.status = #{investStatus}
         </if>
     </select>
 </mapper>

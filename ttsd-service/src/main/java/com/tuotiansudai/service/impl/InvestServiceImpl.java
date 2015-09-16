@@ -38,6 +38,7 @@ public class InvestServiceImpl implements InvestService {
                 queryDto.getBeginTime(),
                 queryDto.getEndTime(),
                 queryDto.getLoanStatus(),
+                queryDto.getInvestStatus(),
                 offset,
                 limit
         );
@@ -46,7 +47,8 @@ public class InvestServiceImpl implements InvestService {
                 queryDto.getLoginName(),
                 queryDto.getBeginTime(),
                 queryDto.getEndTime(),
-                queryDto.getLoanStatus()
+                queryDto.getLoanStatus(),
+                queryDto.getInvestStatus()
         );
 
         BasePaginationDto<InvestDetailDto> paginationDto = new BasePaginationDto<>(

@@ -193,7 +193,7 @@ public class InvestMapperTest {
             investMapper.create(getFakeInvestModel());
         }
 
-        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,offset,limit);
+        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,null,offset,limit);
 
         assert investDetailModels.size() == limit;
     }
