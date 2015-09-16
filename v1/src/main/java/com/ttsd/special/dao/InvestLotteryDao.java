@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface InvestLotteryDao {
      List<InvestLottery> findInvestLotteryByType(InvestLotteryType type);
+
+     void updateInvestLottery(InvestLottery investLottery);
 }

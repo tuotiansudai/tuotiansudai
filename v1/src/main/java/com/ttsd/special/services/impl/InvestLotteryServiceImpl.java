@@ -5,6 +5,8 @@ import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.google.common.collect.Lists;
+import com.ttsd.special.dao.InvestLotteryDao;
+import com.ttsd.special.dto.LotteryPrizeResponseDto;
 import com.ttsd.special.model.InvestLottery;
 import com.ttsd.special.model.InvestLotteryPrizeType;
 import com.ttsd.special.model.InvestLotteryProbabilityType;
@@ -25,6 +27,8 @@ import java.util.Random;
  */
 @Service
 public class InvestLotteryServiceImpl implements InvestLotteryService{
+    @Autowired
+    private InvestLotteryDao investLotteryDao;
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
@@ -57,6 +61,34 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         for (InvestLottery investLottery:investLotterys) {
             hibernateTemplate.save(investLottery);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public LotteryPrizeResponseDto getLotteryPrize(InvestLotteryType investLotteryType) {
+        LotteryPrizeResponseDto dto = new LotteryPrizeResponseDto();
+        List<InvestLottery> investLotteries = investLotteryDao.findInvestLotteryByType(investLotteryType);
+        InvestLottery investLottery = null;
+        int remainingTimes = 0;
+        if(investLotteries.size() > 0){
+            investLottery = investLotteries.get(0);
+            investLotteries.remove(0);
+            remainingTimes = investLotteries.size();
+        }
+        if (investLottery != null){
+            investLottery.setAwardTime(new Date());
+            investLottery.setValid(true);
+            dto.setRemainingTimes(remainingTimes);
+            dto.setInvestLotteryPrizeType(investLottery.getPrizeType());
+            if(InvestLotteryPrizeType.G.equals(investLottery.getPrizeType())){
+                dto.setPrizeDesc("" + investLottery.getAmount());
+            }else{
+                dto.setPrizeDesc(investLottery.getPrizeType().getDesc());
+            }
+            investLotteryDao.updateInvestLottery(investLottery);
+        }
+        return dto;
+
     }
 
     private InvestLottery getInvestLottery(Invest invest,InvestLotteryType investLotteryType ) {

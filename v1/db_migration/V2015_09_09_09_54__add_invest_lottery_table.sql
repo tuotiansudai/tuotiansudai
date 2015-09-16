@@ -6,7 +6,7 @@ CREATE TABLE `invest_lottery` (
 `created_time` DATE NOT NULL,
 `prize_type` VARCHAR(8) NOT NULL,
 `amount` bigint NULL,
-`award_time` DATE NULL,
+`award_time` datetime NULL,
 `is_valid` boolean,
 
 PRIMARY KEY (`id`),
