@@ -29,7 +29,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto) {
+    public BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay) {
         int offset = (queryDto.getPageIndex() - 1) * queryDto.getPageSize();
         int limit = queryDto.getPageSize();
         List<InvestDetailModel> investModelList = investMapper.findByPage(
@@ -39,6 +39,7 @@ public class InvestServiceImpl implements InvestService {
                 queryDto.getEndTime(),
                 queryDto.getLoanStatus(),
                 queryDto.getInvestStatus(),
+                includeNextRepay,
                 offset,
                 limit
         );

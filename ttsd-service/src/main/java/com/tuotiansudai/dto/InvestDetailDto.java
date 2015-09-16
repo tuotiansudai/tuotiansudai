@@ -54,6 +54,14 @@ public class InvestDetailDto extends BasePaginationDataDto {
      * 投资人的推荐人
      */
     private String userReferrer;
+    /**
+     * 下次还款时间
+     */
+    private Date nextRepayDate;
+    /**
+     * 下次还款金额
+     */
+    private long nextRepayAmount;
 
     public InvestDetailDto(){
 
@@ -72,6 +80,8 @@ public class InvestDetailDto extends BasePaginationDataDto {
         this.status = model.getStatus();
         this.userReferrer = model.getUserReferrer();
         this.createdTime = model.getCreatedTime();
+        this.nextRepayAmount = model.getNextRepayAmount();
+        this.nextRepayDate = model.getNextRepayDate();
     }
 
     public long getId() {
@@ -168,6 +178,22 @@ public class InvestDetailDto extends BasePaginationDataDto {
 
     public void setUserReferrer(String userReferrer) {
         this.userReferrer = userReferrer;
+    }
+
+    public Date getNextRepayDate() {
+        return nextRepayDate;
+    }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public long getNextRepayAmount() {
+        return nextRepayAmount;
+    }
+
+    public void setNextRepayAmount(long nextRepayAmount) {
+        this.nextRepayAmount = nextRepayAmount;
     }
 }
 

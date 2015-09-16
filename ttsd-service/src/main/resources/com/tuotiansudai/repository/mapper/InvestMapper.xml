@@ -27,6 +27,8 @@
         <result column="loan_type" property="loanType"></result>
         <result column="loan_status" property="loanStatus"></result>
         <result column="user_referrer" property="userReferrer"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
     </resultMap>
 
     <sql id="columns">
@@ -117,13 +119,31 @@
     </select>
 
     <select id="findByPage" parameterType="map" resultMap="investDetailMap">
-        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status,
-        invest.source, invest.is_auto_invest, invest.created_time,
-        loan.name as loan_name, loan.type as loan_type, loan.status as loan_status,
-        u.referrer as user_referrer
+        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status
+        , invest.source, invest.is_auto_invest, invest.created_time
+        , loan.name as loan_name, loan.type as loan_type, loan.status as loan_status
+        , u.referrer as user_referrer
+        <if test="includeRepay">
+            , repay.corpus+repay.default_interest+repay.expected_interest-repay.expected_fee as next_repay_amount
+            , repay.repay_date as next_repay_date
+        </if>
+        <if test="!includeRepay">
+            , '0' as next_repay_amount, '1900-1-1' as next_repay_date
+        </if>
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name
+        <if test="includeRepay">
+            left outer join invest_repay repay
+            on repay.id = (
+                select id
+                from invest_repay
+                where invest_repay.invest_id = invest.id
+                and invest_repay.status &lt;&gt; 'COMPLETE'
+                order by repay_date
+                asc
+                limit 1 )
+        </if>
         where 1=1
         <if test="loanId != null">
             and invest.loan_id = #{loanId}
