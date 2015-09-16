@@ -25,12 +25,40 @@
     <script src="js/libs/moment-with-locales.js"></script>
     <script src="js/libs/bootstrap-datetimepicker.js"></script>
     <script src="js/libs/bootstrap-select.js"></script>
+    <!--自动补全-->
+    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+    <!--自动补全-->
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
             $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
             $('form button[type="reset"]').click(function () {
                 location.href = "invests";
+            });
+            //自动完成提示
+            var autoValue = '';
+            var api_url = '${requestContext.getContextPath()}/loan/loaner';
+            $("#tags").autocomplete({
+                source: function (query, process) {
+                    //var matchCount = this.options.items;//返回结果集最大数量
+                    $.get(api_url+'/'+query.term, function (respData) {
+                        autoValue = respData;
+                        return process(respData);
+                    });
+                }
+            });
+            $("#tags").blur(function () {
+                for(var i = 0; i< autoValue.length; i++){
+                    if($(this).val()== autoValue[i]){
+                        $(this).removeClass('Validform_error');
+                        return false;
+                    }else{
+                        $(this).addClass('Validform_error');
+                    }
+
+                }
+
             });
         });
     </script>
@@ -111,8 +139,7 @@
                     </div>
                     <div class="form-group">
                         <label for="number">投资人</label>
-                        <input type="text" class="form-control" name="loginName" placeholder=""
-                               value="${query.loginName!}">
+                        <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${query.loginName!}" />
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
