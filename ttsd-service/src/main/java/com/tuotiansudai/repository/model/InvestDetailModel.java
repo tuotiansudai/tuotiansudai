@@ -22,7 +22,7 @@ public class InvestDetailModel extends InvestModel{
     /**
      * 下个还款日
      */
-    private Date nextRepayDay;
+    private Date nextRepayDate;
     /**
      * 下次还款金额
      */
@@ -60,12 +60,12 @@ public class InvestDetailModel extends InvestModel{
         this.userReferrer = userReferrer;
     }
 
-    public Date getNextRepayDay() {
-        return nextRepayDay;
+    public Date getNextRepayDate() {
+        return nextRepayDate;
     }
 
-    public void setNextRepayDay(Date nextRepayDay) {
-        this.nextRepayDay = nextRepayDay;
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
     }
 
     public long getNextRepayAmount() {

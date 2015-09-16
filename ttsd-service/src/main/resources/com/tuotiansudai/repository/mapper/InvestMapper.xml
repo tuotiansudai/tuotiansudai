@@ -28,7 +28,7 @@
         <result column="loan_status" property="loanStatus"></result>
         <result column="user_referrer" property="userReferrer"></result>
         <result column="next_repay_amount" property="nextRepayAmount"></result>
-        <result column="next_repay_date" property="nextRepayDay"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
     </resultMap>
 
     <sql id="columns">
