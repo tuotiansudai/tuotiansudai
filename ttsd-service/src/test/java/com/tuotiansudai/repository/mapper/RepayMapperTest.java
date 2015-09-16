@@ -12,10 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -69,6 +67,9 @@ public class RepayMapperTest {
 
     @Test
     public void shouldLoanRepayPaginationIsOk(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
         UserModel userModel = this.getUserModelTest();
         userMapper.create(userModel);
         LoanDto loanDto = this.getLoanModel();
@@ -86,9 +87,25 @@ public class RepayMapperTest {
         loanRepayModel.setCorpus(0);
         loanRepayModel.setExpectInterest(0);
         loanRepayModels.add(loanRepayModel);
+        LoanRepayModel loanRepayModel1 = new LoanRepayModel();
+        loanRepayModel1.setId(idGenerator.generate());
+        loanRepayModel1.setDefaultInterest(0);
+        loanRepayModel1.setActualInterest(0);
+        loanRepayModel1.setPeriod(1);
+        loanRepayModel1.setStatus(RepayStatus.REPAYING);
+        loanRepayModel1.setLoanId(loanModel.getId());
+        loanRepayModel1.setRepayDate(new Date());
+        loanRepayModel1.setCorpus(0);
+        loanRepayModel1.setExpectInterest(0);
+        loanRepayModels.add(loanRepayModel1);
         loanRepayMapper.insertLoanRepay(loanRepayModels);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cal.add(Calendar.DATE,-1);
+        String startDate = sdf.format(cal.getTime());
+        cal.add(Calendar.DATE,2);
+        String endDate = sdf.format(cal.getTime());
 
-        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, null, null);
+        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, startDate, endDate);
         assertNotNull(models);
         assertNotNull(models.get(0).getLoan().getLoanerLoginName());
     }

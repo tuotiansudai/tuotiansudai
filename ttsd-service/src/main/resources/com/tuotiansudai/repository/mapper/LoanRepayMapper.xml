@@ -65,7 +65,7 @@
               a.loan_id = #{loanId}
             </if>
             <if test="loginName !=null and loginName != '' ">
-               and b.loaner = #{loginName}
+                <![CDATA[and b.loaner like '${loginName}%']]>
             </if>
             <if test="repayStartDate !=null and repayStartDate !=''" >
                 and a.repay_date >= #{repayStartDate}
@@ -89,7 +89,7 @@
                 a.loan_id = #{loanId}
             </if>
             <if test="loginName !=null and loginName != '' ">
-                and b.loaner = #{loginName}
+                <![CDATA[and b.loaner like '${loginName}%']]>
             </if>
             <if test="repayStartDate !=null and repayStartDate !=''" >
                 and a.repay_date >= #{repayStartDate}

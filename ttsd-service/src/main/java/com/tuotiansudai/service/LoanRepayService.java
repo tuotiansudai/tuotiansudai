@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface LoanRepayService {
 
-    BasePaginationDto findLoanRepayPagination(LoanRepayDto requestDto);
-
-    List<RepayStatus> findAllRepayStatus();
+    public BasePaginationDto findLoanRepayPagination(int index,int pageSize,String loanId,
+                                                     String loginName,String repayStartDate,String repayEndDate,RepayStatus repayStatus);
 
 }

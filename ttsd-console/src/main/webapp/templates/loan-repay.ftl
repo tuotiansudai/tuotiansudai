@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <#assign loanRepays = baseDto>
-<#assign loanDtos = loanRepayDto>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -34,7 +33,6 @@
             $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
             function pageinationView(e){
                 var index = $(e.target).attr("pageIndex");
-                alert(index);
                 var loanId =  $('#loanId').val();
                 var loginName =  $('#loginName').val();
                 var repayStartDate =  $('#repayStartDate').val();
@@ -128,17 +126,17 @@
                 <form action="${requestContext.getContextPath()}/loan-repay" method="post" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">项目编号:</label>
-                        <input type="text" class="form-control" id="loanId" placeholder="" value="${loanDtos.loanId}">
+                        <input type="text" class="form-control" id="loanId" placeholder="" value="${loanId}">
                     </div>
                     <div class="form-group">
                         <label for="number">用户名:</label>
-                        <input type="text" class="form-control" id="loginName" placeholder="" value="${loanDtos.loginName}">
+                        <input type="text" class="form-control" id="loginName" placeholder="" value="${loginName}">
                     </div>
                     <div class="form-group">
                         <label for="number">开始时间:</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" id="repayStartDate" value="${loanDtos.repayStartDate}"/>
+                            <input type='text' class="form-control" id="repayStartDate" value="${repayStartDate}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -146,7 +144,7 @@
 
                         <label for="number">结束时间:</label>
                         <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" id="repayEndDate" value="${loanDtos.repayEndDate}"/>
+                            <input type='text' class="form-control" id="repayEndDate" value="${repayEndDate}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -157,25 +155,25 @@
                         <label for="" >标的类型: </label>
 
                             <select class="selectpicker " id="repayStatus">
-                                <#if loanDtos.repayStatus?? >
-                                    <#list repayStatusList as repayStatus>
-                                        <#if loanDtos.repayStatus == repayStatus>
-                                            <option value="${repayStatus.name()}" selected>
-                                            ${repayStatus.getDescription()}
+                                <#if repayStatus?? >
+                                    <#list repayStatusList as rs>
+                                        <#if repayStatus == rs>
+                                            <option value="${rs.name()}" selected>
+                                            ${rs.getDescription()}
                                             </option>
                                         <#else >
-                                            <option value="${repayStatus.name()}">
-                                            ${repayStatus.getDescription()}
+                                            <option value="${rs.name()}">
+                                            ${rs.getDescription()}
                                             </option>
                                         </#if>
 
                                     </#list>
                                 <#else >
                                     <option value="">请选择</option>
-                                    <#list repayStatusList as repayStatus>
+                                    <#list repayStatusList as rs>
 
-                                        <option value="${repayStatus.name()}">
-                                        ${repayStatus.getDescription()}
+                                        <option value="${rs.name()}">
+                                        ${rs.getDescription()}
                                         </option>
                                     </#list>
                                 </#if>

@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDto;
 import com.tuotiansudai.dto.LoanRepayDto;
 import com.tuotiansudai.repository.model.RepayStatus;
@@ -20,13 +21,22 @@ public class LoanRepayController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView findLoanRepayPagination(@Valid @ModelAttribute LoanRepayDto loanRepayDto){
+    public ModelAndView findLoanRepayPagination(int index,int pageSize,String loanId,
+                                                String loginName,String repayStartDate,String repayEndDate,RepayStatus repayStatus){
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
-        BasePaginationDto baseDto = loanRepayService.findLoanRepayPagination(loanRepayDto);
-        List<RepayStatus> repayStatusList = loanRepayService.findAllRepayStatus();
+        BasePaginationDto baseDto = loanRepayService.findLoanRepayPagination(index,pageSize,
+                                                                                loanId,loginName,repayStartDate,repayEndDate,repayStatus);
+        List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto",baseDto);
-        modelAndView.addObject("loanRepayDto",loanRepayDto);
         modelAndView.addObject("repayStatusList",repayStatusList);
+        modelAndView.addObject("index",index);
+        modelAndView.addObject("pageSize",pageSize);
+        modelAndView.addObject("loanId",loanId);
+        modelAndView.addObject("loginName",loginName);
+        modelAndView.addObject("repayStartDate",repayStartDate);
+        modelAndView.addObject("repayEndDate",repayEndDate);
+        modelAndView.addObject("repayStatus",repayStatus);
+
         return modelAndView;
     }
 

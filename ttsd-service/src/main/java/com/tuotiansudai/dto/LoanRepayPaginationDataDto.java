@@ -1,7 +1,10 @@
 package com.tuotiansudai.dto;
 
 
+import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
+
+import java.text.SimpleDateFormat;
 
 
 public class LoanRepayPaginationDataDto extends BasePaginationDataDto {
@@ -14,6 +17,19 @@ public class LoanRepayPaginationDataDto extends BasePaginationDataDto {
     private double interest;
     private double totalAmount;
     private RepayStatus repayStatus;
+
+    public LoanRepayPaginationDataDto(LoanRepayModel loanRepayModel){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.setLoginName(loanRepayModel.getLoan().getLoanerLoginName());
+        this.setProjectName(loanRepayModel.getLoan().getName());
+        this.setCorpus(loanRepayModel.getCorpus());
+        this.setInterest(loanRepayModel.getActualInterest());
+        this.setRepayDay(sdf.format(loanRepayModel.getRepayDate()));
+        this.setPeriod(loanRepayModel.getPeriod());
+        this.setTotalAmount(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest());
+        this.setRepayStatus(loanRepayModel.getStatus());
+        this.setLoanId("" + loanRepayModel.getLoanId());
+    }
 
     public String getLoanId() {
         return loanId;
