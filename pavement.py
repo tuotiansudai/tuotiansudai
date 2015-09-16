@@ -147,6 +147,19 @@ def v2deploy():
     v2 = NewVersionDeployment()
     v2.deploy()
 
+@task
+@cmdopts([
+    ('dbhost=', '', 'database host'),
+    ('dbport=', '', 'database port'),
+    ('redishost=', '', 'redis host'),
+    ('redisport=', '', 'redis port'),
+])
+def v2unittest(options):
+    from scripts.unit_test import NewVersionUnitTest
+
+
+    v2 = NewVersionUnitTest(options.dbhost, options.dbport, options.redishost, options.redisport)
+    v2.test()
 
 @task
 @needs('mkwar', 'deploy_tomcat')
