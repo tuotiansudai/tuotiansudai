@@ -30,11 +30,11 @@
         </div>
         <div class="item-block query-type">
             <span class="sub-hd">交易状态:</span>
-            <span class="current jq-n" data-value="refund">全部</span>
-            <span class="jq-n" data-value="refund">正在招募</span>
-            <span class="jq-n" data-value="refund">招募成功</span>
-            <span class="jq-n" data-value="refund">正在回款</span>
-            <span class="jq-n" data-value="refund">回款完毕</span>
+            <span class="current jq-n" data-value="">全部</span>
+            <span class="jq-n" data-value="RAISING">正在招募</span>
+            <span class="jq-n" data-value="RECHECK">招募成功</span>
+            <span class="jq-n" data-value="REPAYING">正在回款</span>
+            <span class="jq-n" data-value="COMPLETE">回款完毕</span>
         </div>
         <table class="invest-list">
             <thead>
@@ -102,3 +102,7 @@
 </@global.javascript>
 </body>
 </html>
+
+<script>
+    var API_AJAX  = "query_invests";
+</script>

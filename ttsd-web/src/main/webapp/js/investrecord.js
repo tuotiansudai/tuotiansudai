@@ -1,4 +1,4 @@
-require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
+    require(['jquery', 'mustache', 'text', 'daterangepicker','moment'], function ($, Mustache, dealtableTpl) {
 
     //初始化页面
     var oDate = new Date();
@@ -19,22 +19,22 @@ require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
         //$(".query_type strong").css("opacity", '1');
         var rec_typestr = '';
         if (selectedType) {
-            rec_typestr = "&type=" + selectedType;
+            rec_typestr = "&loanStatus=" + selectedType;
         }
         if (startDay == '' || startDay == 'undefined') {
-            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?page=" + page + rec_typestr;
+            var url = API_AJAX+"?pageIndex=" + page + rec_typestr;
         } else {
-            var url = "/tuotian/ttsd-web/design/static/jsons/table.json?startday=" + startDay + "&endday=" + endDay + "&page=" + page + rec_typestr;
+            var url = API_AJAX+"?beginTime=" + startDay + "&endTime=" + endDay + "&pageIndex=" + page + rec_typestr;
         }
         $.get(url, function (res) {
             if (res.status === 'success') {
-                //$(".query-type strong").css("display", 'none');
-                //var ret = Mustache.render(dealtableTpl, res.data);
-                //$('.result').html(ret);
-                //_page = res.data['currentPage'];
-                //_hasNextPage = res.data['hasNextPage'];
-                //_hasPreviousPage = res.data['hasPreviousPage'];
-                //console.log('分页'+ _page);
+                $(".query-type strong").css("display", 'none');
+                var ret = Mustache.render(dealtableTpl, res.data);
+                $('.result').html(ret);
+                _page = res.data['currentPage'];
+                _hasNextPage = res.data['hasNextPage'];
+                _hasPreviousPage = res.data['hasPreviousPage'];
+                console.log('分页'+ _page);
             }
         });
     }
