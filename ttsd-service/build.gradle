@@ -34,44 +34,77 @@ dependencies {
     compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
-processResources.outputs.upToDateWhen{ false }
+processResources.outputs.upToDateWhen { false }
 
 processResources {
-    from('/workspace/new_version_config/ttsd-service') {
+    def configFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
+    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service')
+    if (outerConfigFile.isFile()) {
+        configFilePath = outerConfigFile.getPath()
+    }
+    from(configFilePath) {
         filter { String line ->
-            if (line.startsWith("jdbc.host=") && project.hasProperty("dbhost")) {
+            if (project.hasProperty("dbhost") && line.startsWith("jdbc.host=")) {
                 return "jdbc.host=${dbhost}"
             }
 
-            if (line.startsWith("jdbc.port=") && project.hasProperty("dbport")) {
+            if (project.hasProperty("dbport") && line.startsWith("jdbc.port=")) {
                 return "jdbc.port=${dbport}"
             }
 
-            if (line.startsWith("redis.host=") && project.hasProperty("redishost")) {
+            if (project.hasProperty("redishost") && line.startsWith("redis.host=")) {
                 return "redis.host=${redishost}"
             }
 
-            if (line.startsWith("redis.port=") && project.hasProperty("redisport")) {
+            if (project.hasProperty("redisport") && line.startsWith("redis.port=")) {
                 return "redis.port=${redisport}"
             }
             line
         }
+        into '/'
     }
-    into '/'
 }
 
+/**
+ * parameter: dbhost dbport database
+ * dbhost default value: ttsd-service.properties jdbc.host
+ * dbport default value: ttsd-service.properties jdbc.port
+ * database default value: aa
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-service:flywayMigrate
+ *
+ */
 flyway {
-    if (project.hasProperty('database')) {
-        outOfOrder = true
-        locations = ["filesystem:db_migration/${database}"]
-        schemas = ["${database}"]
-        def propertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-service.properties"
-        def properties = new Properties()
-        properties.load(new FileInputStream(propertiesFilePath))
-        def host = properties.getProperty("jdbc.host")
-        def port = properties.getProperty("jdbc.port")
-        url = "jdbc:mysql://${host}:${port}"
-        user = properties.getProperty("jdbc.username")
-        password = properties.getProperty("jdbc.password")
+    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
+    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-service.properties"
+    def properties = new Properties()
+
+    def sourceFile = new File(sourcePropertiesFilePath)
+    if (sourceFile.isFile()) {
+        properties.load(new FileInputStream(sourceFile))
     }
+
+    def buildFile = new File(buildPropertiesFilePath)
+    if (buildFile.isFile()) {
+        properties.load(new FileInputStream(buildFile))
+    }
+
+    def defaultDatabase = 'aa'
+    def defaultHost = properties.getProperty("jdbc.host")
+    def defaultPort = properties.getProperty("jdbc.port")
+    if (project.hasProperty('database')) {
+        defaultDatabase = database;
+    }
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    outOfOrder = true
+    locations = ["filesystem:db_migration/${defaultDatabase}"]
+    schemas = ["${defaultDatabase}"]
+
+    url = "jdbc:mysql://${defaultHost}:${defaultPort}"
+    user = properties.getProperty("jdbc.username")
+    password = properties.getProperty("jdbc.password")
 }
