@@ -162,7 +162,7 @@
                     </div>
                     <div class="form-group">
                         <label for="project">投资状态</label>
-                        <select class="form-control" name="investStatus">
+                        <select class="selectpicker" name="investStatus">
                             <option value="">全部</option>
                             <#list investStatusList as status>
                             <option value="${status}"
