@@ -63,7 +63,7 @@
 				hibernate.cache.use_query_cache=false
 			</value>
 		</property>
-		<property name="packagesToScan" value="com.esoft.*.*.model">
+		<property name="packagesToScan" value="com.esoft.*.*.model,com.ttsd.*.model">
 
 		</property>
 	</bean>
