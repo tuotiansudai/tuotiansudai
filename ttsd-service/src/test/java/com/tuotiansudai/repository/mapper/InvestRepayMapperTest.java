@@ -96,7 +96,6 @@ public class InvestRepayMapperTest {
         fakeInvestModel.setLoanId(fakeLoanModel.getId());
         fakeInvestModel.setSource(InvestSource.WEB);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
-        fakeInvestModel.setSuccessTime(new Date());
         return fakeInvestModel;
     }
     

@@ -75,7 +75,7 @@ public interface InvestMapper {
      * @param status
      * @return
      */
-    int findCountByStatus(@Param(value = "loanId") long loanId,
+    long findCountByStatus(@Param(value = "loanId") long loanId,
                           @Param(value = "status") InvestStatus status);
 
     /**

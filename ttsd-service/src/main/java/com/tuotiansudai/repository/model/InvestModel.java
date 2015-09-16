@@ -37,10 +37,6 @@ public class InvestModel {
      * 创建时间
      */
     private Date createdTime = new Date();
-    /**
-     * 投资成功时间（联动优势划款成功）
-     */
-    private Date successTime;
 
     public InvestModel(){
 
@@ -118,13 +114,5 @@ public class InvestModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public Date getSuccessTime() {
-        return successTime;
-    }
-
-    public void setSuccessTime(Date successTime) {
-        this.successTime = successTime;
     }
 }

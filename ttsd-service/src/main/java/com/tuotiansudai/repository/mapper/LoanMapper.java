@@ -18,4 +18,20 @@ public interface LoanMapper {
     List<LoanModel> findByStatus(@Param(value = "status") LoanStatus status);
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
+
+    List<LoanModel> findRepayingPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
+                                                            @Param(value = "index") int index,
+                                                            @Param(value = "pageSize") int pageSize);
+
+    List<LoanModel> findCompletedPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
+                                                             @Param(value = "index") int index,
+                                                             @Param(value = "pageSize") int pageSize);
+
+    List<LoanModel> findCanceledPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
+                                                            @Param(value = "index") int index,
+                                                            @Param(value = "pageSize") int pageSize);
+
+    long findCountByLoanerLoginNameAndStatus(@Param(value = "loanerLoginName") String loanerLoginName,
+                                             @Param(value = "status") LoanStatus status);
+
 }

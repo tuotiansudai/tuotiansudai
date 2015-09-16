@@ -264,19 +264,20 @@ public class LoanServiceTest {
     @Test
     public void shouldGetTheInvests(){
         createTestInvests();
-        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 1, 5);
-        assertEquals(5, dto.getRecordDtoList().size());
-        assertEquals(true, dto.isHasNextPage());
-        assertEquals(false, dto.isHasPreviousPage());
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 1, 5);
+        assertEquals(5, baseDto.getData().getRecords().size());
+        assertEquals(true, baseDto.getData().isHasNextPage());
+        assertEquals(false, baseDto.getData().isHasPreviousPage());
     }
 
     @Test
     public void shouldGetTheInvestsAndNextPagePreviousPage(){
         createTestInvests();
-        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 4, 3);
-        assertEquals(1, dto.getRecordDtoList().size());
-        assertEquals(false, dto.isHasNextPage());
-        assertEquals(true, dto.isHasPreviousPage());
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 4, 3);
+        BasePaginationDataDto data = baseDto.getData();
+        assertEquals(1, data.getRecords().size());
+        assertEquals(false, data.isHasNextPage());
+        assertEquals(true, data.isHasPreviousPage());
     }
     private void createTestInvests(){
 

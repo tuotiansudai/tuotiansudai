@@ -1,9 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.ExistWaitAffirmInvestsException;
 import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -19,7 +19,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -79,34 +78,9 @@ public class LoanServiceImpl implements LoanService {
      * @return
      * @function 获取所有标题
      */
+    @Override
     public List<LoanTitleModel> findAllTitles() {
         return loanTitleMapper.findAll();
-    }
-
-    /**
-     * @return List<LoanType>
-     * @function 获取所有标的类型
-     */
-    @Override
-    public List<LoanType> getLoanType() {
-        List<LoanType> loanTypes = Lists.newArrayList();
-        for (LoanType loanType : LoanType.values()) {
-            loanTypes.add(loanType);
-        }
-        return loanTypes;
-    }
-
-    /**
-     * @return List<ActivityType>
-     * @function 获取所有活动类型
-     */
-    @Override
-    public List<ActivityType> getActivityType() {
-        List<ActivityType> activityTypes = Lists.newArrayList();
-        for (ActivityType activityType : ActivityType.values()) {
-            activityTypes.add(activityType);
-        }
-        return activityTypes;
     }
 
     /**
@@ -117,7 +91,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
@@ -207,6 +181,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public LoanModel findLoanById(long loanId) {
+        // TODO: 重构 Mybatis 直接查询关联关系
         LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
         loanModel.setLoanTitles(loanTitleRelationModelList);
@@ -270,18 +245,18 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
+    @Override
     public BaseDto<LoanDto> getLoanDetail(long loanId) {
-        BaseDto dto = new BaseDto();
+        BaseDto<LoanDto> dto = new BaseDto<>();
         LoanDto loanDto = new LoanDto();
+        dto.setData(loanDto);
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
-            dto.setSuccess(true);
             loanDto.setStatus(false);
             return dto;
         }
         loanDto = convertModelToDto(loanModel);
         loanDto.setStatus(true);
-        dto.setData(loanDto);
         return dto;
     }
 
@@ -320,27 +295,45 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
             index = 1;
         }
         if (pageSize <= 0) {
             pageSize = 10;
         }
-        int totalCount = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
+        long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
-        List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels);
-        BasePaginationDto dto = new BasePaginationDto(index, pageSize, totalCount);
-        dto.setRecordDtoList(investRecordDtos);
-        dto.setStatus(true);
-        return dto;
+        List<InvestPaginationItemDto> investRecords = convertInvestModelToDto(investModels);
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BasePaginationDataDto<InvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, investRecords);
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
+        return baseDto;
     }
 
-    private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels) {
-        List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
-        InvestPaginationDataDto investRecordDto;
+    @Override
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, Date startDate, Date endDate, Date date, LoanStatus status) {
+//        String loginName = LoginUserInfo.getLoginName();
+//        List<LoanModel> loanModels = loanMapper.findPaginationByLoanerLoginNameAndStatus(loginName, index, pageSize, status);
+//        List<LoanerLoanPaginationItemDto> record = Lists.transform(loanModels, new Function<LoanModel, LoanerLoanPaginationItemDto>() {
+//            @Override
+//            public LoanerLoanPaginationItemDto apply(LoanModel loanModel) {
+//                return new LoanerLoanPaginationItemDto(loanModel);
+//            }
+//        });
+//
+//        long count = loanMapper.findCountByLoanerLoginNameAndStatus(loginName, status);
+//
+//        new
+        return null;
+    }
+
+    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels) {
+        List<InvestPaginationItemDto> investRecordDtos = new ArrayList<>();
+        InvestPaginationItemDto investRecordDto;
         for (InvestModel investModel : investModels) {
-            investRecordDto = new InvestPaginationDataDto();
+            investRecordDto = new InvestPaginationItemDto();
             investRecordDto.setLoginName(investModel.getLoginName());
             investRecordDto.setAmount(investModel.getAmount() / 100d);
             investRecordDto.setSource(investModel.getSource());

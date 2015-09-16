@@ -2,9 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum RepayStatus {
 
-    REPAYING("正在还款"),
+    REPAYING("还款中"),
 
-    COMPLETE("还款完成"),
+    COMPLETE("完成"),
 
     OVERDUE("逾期");
 

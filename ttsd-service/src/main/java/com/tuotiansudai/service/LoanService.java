@@ -29,18 +29,6 @@ public interface LoanService {
 
     /**
      * @return
-     * @function 获取所有的标类型
-     */
-    List<LoanType> getLoanType();
-
-    /**
-     * @return
-     * @function 获取所有的活动类型
-     */
-    List<ActivityType> getActivityType();
-
-    /**
-     * @return
      * @function 创建标的
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
@@ -75,5 +63,7 @@ public interface LoanService {
 
     String getExpectedTotalIncome(long loanId, double investAmount);
 
-    BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
+    BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
+
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, Date startDate, Date endDate, Date date, LoanStatus status);
 }

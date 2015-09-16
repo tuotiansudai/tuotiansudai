@@ -30,6 +30,10 @@
         </foreach>
     </insert>
 
+    <select id="findById" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where id = #{id}
+    </select>
+
     <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} order by period asc
     </select>
@@ -37,5 +41,9 @@
     <select id="findByLoanIdAndPeriod" parameterType="map" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
+
+    <update id="update" parameterType="LoanRepayModel">
+        update loan_repay set corpus = #{corpus}, actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
+    </update>
 
 </mapper>

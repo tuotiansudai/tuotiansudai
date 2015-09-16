@@ -5,6 +5,7 @@ import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
+import com.tuotiansudai.paywrapper.service.RepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,9 @@ public class PayCallbackController {
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private RepayService repayService;
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
@@ -49,7 +53,7 @@ public class PayCallbackController {
     }
 
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
-    public ModelAndView rechargeApplyNotify(HttpServletRequest request) {
+    public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.withdrawService.withdrawCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
@@ -59,6 +63,13 @@ public class PayCallbackController {
     public ModelAndView investNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investService.investCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.repayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

@@ -78,7 +78,7 @@
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountByStatus" parameterType="map" resultType="int">
+    <select id="findCountByStatus" parameterType="map" resultType="long">
         select count(1)
         from invest
         where loan_id = #{loanId}
