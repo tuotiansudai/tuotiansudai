@@ -196,7 +196,7 @@
                     <ul class="pagination">
 
                         <li>
-                            <#if (query.pageIndex > 1) >
+                            <#if pagination.hasPreviousPage >
                             <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex-1}"
                                aria-label="Previous">
                             <#else>
@@ -207,7 +207,7 @@
                         </li>
                         <li><a>${pagination.index}</a></li>
                         <li>
-                            <#if (query.pageIndex < pagination.totalPages) >
+                            <#if pagination.hasNextPage >
                             <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex+1}"
                                aria-label="Next">
                             <#else>
