@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
+import com.tuotiansudai.repository.model.AgreementType;
+
 /**
  * Created by Administrator on 2015/9/15.
  */
@@ -24,4 +26,13 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
     public void setUserBindAgreementList(String userBindAgreementList) {
         this.userBindAgreementList = userBindAgreementList;
     }
+
+    public boolean isAutoInvest(){
+        if (this.getUserBindAgreementList().contains(AgreementType.ZTBB0G00.name())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }

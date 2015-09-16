@@ -40,7 +40,11 @@ public class AgreementServiceImpl implements AgreementService{
     @Transactional
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(),dto.getAgreementType());
+        AgreementType agreementType = null;
+        if (dto.isAutoInvest()) {
+            agreementType = AgreementType.ZTBB0G00;
+        }
+        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(),agreementType);
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class,ptpMerBindAgreementRequestModel);
             return baseDto;
@@ -68,7 +72,7 @@ public class AgreementServiceImpl implements AgreementService{
         AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel)callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
-            if (agreementNotifyRequestModel.getUserBindAgreementList().indexOf(AgreementType.ZTBB0G00.name()) != -1) {
+            if (agreementNotifyRequestModel.isAutoInvest()) {
                 accountModel.setAutoInvest(true);
             }
             accountMapper.update(accountModel);

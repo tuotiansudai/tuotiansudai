@@ -1,7 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.AgreementType;
-
 import java.io.Serializable;
 
 /**
@@ -11,7 +9,7 @@ public class AgreementDto implements Serializable {
 
     private String loginName;
 
-    private AgreementType agreementType;
+    private boolean autoInvest;
 
     public String getLoginName() {
         return loginName;
@@ -21,12 +19,11 @@ public class AgreementDto implements Serializable {
         this.loginName = loginName;
     }
 
-    public AgreementType getAgreementType() {
-        return agreementType;
+    public boolean isAutoInvest() {
+        return autoInvest;
     }
 
-    public void setAgreementType(AgreementType agreementType) {
-        this.agreementType = agreementType;
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
     }
-
 }

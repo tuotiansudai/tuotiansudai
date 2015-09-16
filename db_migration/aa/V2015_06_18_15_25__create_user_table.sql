@@ -33,7 +33,7 @@ CREATE TABLE `aa`.`account` (
   `balance`         BIGINT  UNSIGNED NOT NULL DEFAULT 0,
   `freeze`          BIGINT  UNSIGNED NOT NULL DEFAULT 0,
   `register_time`   DATETIME         NOT NULL,
-  `auto_invest`     tinyint(1)        DEFAULT 0,
+  `auto_invest`     tinyint(1)        DEFAULT FALSE,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_ACCOUNT_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )

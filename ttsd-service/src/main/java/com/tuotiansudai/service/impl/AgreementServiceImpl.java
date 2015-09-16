@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.service.AgreementService;
+import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,7 @@ public class AgreementServiceImpl implements AgreementService {
 
     @Override
     public BaseDto<PayFormDataDto> agreement(AgreementDto agreementDto) {
-//        agreementDto.setLoginName(LoginUserInfo.getLoginName());
-        agreementDto.setLoginName("yupeng");
+        agreementDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = payWrapperClient.agreement(agreementDto);
         return baseDto;
     }
