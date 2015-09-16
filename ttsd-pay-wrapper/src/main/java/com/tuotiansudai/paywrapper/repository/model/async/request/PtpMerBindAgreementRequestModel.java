@@ -20,6 +20,8 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncModel{
         super();
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
+        this.setNotifyUrl("http://121.43.71.173:13003/trusteeship_return_s2s/ptp_mer_bind_agreement");
+        this.setRetUrl("http://121.43.71.173:13003/trusteeship_return_web/ptp_mer_bind_agreement");
         this.userBindAgreementList = userBindAgreementList;
     }
 

@@ -13,6 +13,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindAgre
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.AgreementType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,9 @@ public class AgreementServiceImpl implements AgreementService{
         AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel)callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
-            accountModel.setAutoInvest(true);
+            if (agreementNotifyRequestModel.getUserBindAgreementList().indexOf(AgreementType.ZTBB0G00.name()) != -1) {
+                accountModel.setAutoInvest(true);
+            }
             accountMapper.update(accountModel);
         } else {
             logger.error(MessageFormat.format("Agreement callback failed (userId = {0})", ((AgreementNotifyRequestModel) callbackRequestModel).getUserId()));
