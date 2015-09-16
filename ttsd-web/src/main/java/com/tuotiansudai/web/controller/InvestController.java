@@ -1,19 +1,12 @@
 package com.tuotiansudai.web.controller;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -62,7 +55,6 @@ public class InvestController {
         if (StringUtils.isBlank(loginName)) {
             paginationList = new BasePaginationDto<>();
             paginationList.setRecordDtoList(new ArrayList<InvestDetailDto>());
-            paginationList = fakeData(pageIndex,pageSize);
         } else {
             InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
             queryDto.setLoanId(loanId);
@@ -96,122 +88,5 @@ public class InvestController {
             paginationList.setRecordDtoList(jsonDtoList);
         }
         return paginationList;
-    }
-
-    private BasePaginationDto<InvestDetailDto> fakeData(Integer pageIndex, Integer pageSize) {
-        if (pageIndex == null || pageIndex <= 0) {
-            pageIndex = 1;
-        }
-        if (pageSize == null || pageSize <= 0) {
-            pageSize = 10;
-        }
-        BasePaginationDto<InvestDetailDto> paginationList = new BasePaginationDto<>(pageIndex, pageSize, 327);
-        List<InvestDetailDto> list = new ArrayList<>();
-        for(int i=0;i<pageSize;i++){
-            InvestDetailDto dto = new InvestDetailDto();
-            dto.setSource(InvestSource.WEB);
-            dto.setUserReferrer("admin");
-            dto.setLoanType(LoanType.LOAN_TYPE_1);
-            dto.setStatus(InvestStatus.SUCCESS);
-            dto.setLoanName("这是测试的标的");
-            dto.setAmount("32.12");
-            dto.setCreatedTime(new Date());
-            dto.setId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
-            dto.setIsAutoInvest(false);
-            dto.setLoanId(Long.parseLong(RandomStringUtils.randomNumeric(8)));
-            dto.setLoanStatus(LoanStatus.COMPLETE);
-            dto.setNextRepayDate(new Date());
-            dto.setNextRepayAmount(3248);
-            InvestJsonDetailDto jsonDto = new InvestJsonDetailDto(dto);
-            list.add(jsonDto);
-        }
-        paginationList.setRecordDtoList(list);
-        return paginationList;
-    }
-
-    public static class InvestJsonDetailDto extends InvestDetailDto {
-        @JsonProperty("nextRepayAmount")
-        public String getNextRepayAmountString() {
-            return AmountUtil.convertCentToString(super.getNextRepayAmount());
-        }
-
-        @JsonIgnore
-        @Override
-        public long getNextRepayAmount() {
-            return super.getNextRepayAmount();
-        }
-
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        public Date getNextRepayDay() {
-            return super.getNextRepayDate();
-        }
-
-        @JsonIgnore
-        @Override
-        public Date getNextRepayDate() {
-            return super.getNextRepayDate();
-        }
-
-        public String getLoanStatusDesc() {
-            return this.getLoanStatus().getDescription();
-        }
-
-        public String getLoanTypeName() {
-            return this.getLoanType().getName();
-        }
-
-        public String getInvestStatus() {
-            return this.getStatus().getDescription();
-        }
-
-        @JsonIgnore
-        @Override
-        public InvestStatus getStatus() {
-            return super.getStatus();
-        }
-
-        @JsonIgnore
-        @Override
-        public LoanStatus getLoanStatus() {
-            return super.getLoanStatus();
-        }
-
-        @JsonIgnore
-        @Override
-        public LoanType getLoanType() {
-            return super.getLoanType();
-        }
-
-        @Override
-        public String getUserReferrer() {
-            if (StringUtils.isBlank(super.getUserReferrer())) {
-                return "";
-            } else {
-                return super.getUserReferrer();
-            }
-        }
-
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        @Override
-        public Date getCreatedTime() {
-            return super.getCreatedTime();
-        }
-
-        public InvestJsonDetailDto(InvestDetailDto dto) {
-            this.setLoanStatus(dto.getLoanStatus());
-            this.setLoginName(dto.getLoginName());
-            this.setAmount(dto.getAmount());
-            this.setCreatedTime(dto.getCreatedTime());
-            this.setId(dto.getId());
-            this.setIsAutoInvest(dto.isAutoInvest());
-            this.setLoanId(dto.getLoanId());
-            this.setLoanName(dto.getLoanName());
-            this.setLoanType(dto.getLoanType());
-            this.setSource(dto.getSource());
-            this.setStatus(dto.getStatus());
-            this.setUserReferrer(dto.getUserReferrer());
-            this.setNextRepayAmount(dto.getNextRepayAmount());
-            this.setNextRepayDate(dto.getNextRepayDate());
-        }
     }
 }
