@@ -22,6 +22,9 @@ public class InvestLottery implements java.io.Serializable {
     private Long amount;
     private Date awardTime;
     private Boolean valid;
+    private Double amountPercent;
+    private Date grantedTime;
+    private Boolean granted;
 
     public InvestLottery() {
     }
@@ -114,4 +117,30 @@ public class InvestLottery implements java.io.Serializable {
     public void setValid(Boolean valid) {
         this.valid= valid;
     }
+    @Column(name = "granted_time")
+    public Date getGrantedTime() {
+        return grantedTime;
+    }
+
+    public void setGrantedTime(Date grantedTime) {
+        this.grantedTime = grantedTime;
+    }
+    @Column(name = "is_granted",columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    public Boolean getGranted() {
+        return granted;
+    }
+
+    public void setGranted(Boolean granted) {
+        this.granted = granted;
+    }
+
+    @Transient
+    public double getAmountPercent() {
+        if (this.amountPercent == null && this.getAmount() != null) {
+            return this.amount/100d;
+        }
+        return amountPercent;
+    }
+
 }

@@ -7,4 +7,6 @@ public interface InvestLotteryService {
 
     public void insertIntoInvestLottery(String investId);
 
+    void updateInvestLotteryGranted(long id,boolean granted);
+
 }
