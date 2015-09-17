@@ -24,6 +24,8 @@ public class MerRechargePersonMapperTest {
     public void shouldCreateMerRegisterPersonModel() {
         MerRechargePersonRequestModel model = new MerRechargePersonRequestModel("orderId", "umpUserId", "amount", "gateId");
         model.setSign("sign");
+        model.setRetUrl("ret_url");
+        model.setNotifyUrl("notify_url");
         model.setRequestUrl("url");
         model.setRequestData("requestData");
 
