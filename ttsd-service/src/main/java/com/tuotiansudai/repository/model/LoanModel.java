@@ -8,63 +8,114 @@ import java.util.Date;
 import java.util.List;
 
 public class LoanModel {
-    /***标的号***/
+    /***
+     * 标的号
+     ***/
     private long id;
-    /***借款项目名称***/
+    /***
+     * 借款项目名称
+     ***/
     private String name;
-    /***代理人***/
+    /***
+     * 代理人
+     ***/
     private String agentLoginName;
-    /***借款用户***/
+    /***
+     * 借款用户
+     ***/
     private String loanerLoginName;
-    /***标的类型***/
+    /***
+     * 标的类型
+     ***/
     private LoanType type;
-    /***借款期限***/
-    private Long periods;
-    /***项目描述（纯文本）***/
+    /***
+     * 借款期限
+     ***/
+    private int periods;
+    /***
+     * 项目描述（纯文本）
+     ***/
     private String descriptionText;
-    /***项目描述（带html标签）***/
+    /***
+     * 项目描述（带html标签）
+     ***/
     private String descriptionHtml;
-    /***借款金额***/
+    /***
+     * 借款金额
+     ***/
     private long loanAmount;
-    /***投资手续费比例***/
+    /***
+     * 投资手续费比例
+     ***/
     private double investFeeRate;
-    /***最小投资金额***/
+    /***
+     * 最小投资金额
+     ***/
     private long minInvestAmount;
-    /***投资递增金额***/
+    /***
+     * 投资递增金额
+     ***/
     private long investIncreasingAmount;
-    /***单笔最大投资金额***/
+    /***
+     * 单笔最大投资金额
+     ***/
     private long maxInvestAmount;
-    /***活动类型***/
+    /***
+     * 活动类型
+     ***/
     private ActivityType activityType;
-    /***活动利率***/
+    /***
+     * 活动利率
+     ***/
     private double activityRate;
-    /***基本利率***/
+    /***
+     * 基本利率
+     ***/
     private double baseRate;
-    /***合同***/
+    /***
+     * 合同
+     ***/
     private long contractId;
-    /***筹款开始时间***/
+    /***
+     * 筹款开始时间
+     ***/
     private Date fundraisingStartTime;
-    /***筹款截止时间***/
+    /***
+     * 筹款截止时间
+     ***/
     private Date fundraisingEndTime;
-    /***是否显示在首页true:显示在首页，false:不显示在首页***/
+    /***
+     * 是否显示在首页true:显示在首页，false:不显示在首页
+     ***/
     private boolean showOnHome;
-    /***建标时间***/
+    /***
+     * 建标时间
+     ***/
     private Date createdTime = new Date();
-    /***初审时间***/
+    /***
+     * 初审时间
+     ***/
     private Date verifyTime;
-    /***复审时间***/
+    /***
+     * 复审时间
+     ***/
     private Date recheckTime;
-    /***标的状态***/
+    /***
+     * 标的状态
+     ***/
     private LoanStatus status;
 
-    /***申请材料***/
+    /***
+     * 申请材料
+     ***/
     private List<LoanTitleRelationModel> loanTitles;
 
-    public LoanModel(){}
+    public LoanModel() {
+    }
 
     public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
-        this.name =loanDto.getProjectName();
+        this.name = loanDto.getProjectName();
         this.activityRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getActivityRate()));
         this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
         this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
@@ -128,11 +179,11 @@ public class LoanModel {
         this.type = type;
     }
 
-    public Long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(Long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 

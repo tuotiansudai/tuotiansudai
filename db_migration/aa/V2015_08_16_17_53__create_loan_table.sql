@@ -1,8 +1,8 @@
 CREATE TABLE `aa`.`loan` (
   `id`                       BIGINT UNSIGNED NOT NULL,
   `name`                     VARCHAR(255)    NOT NULL, /***借款项目名称***/
-  `agent`                    VARCHAR(32)     NOT NULL, /***代理人***/
-  `loaner`                   VARCHAR(32)     NOT NULL, /***借款用户***/
+  `agent_login_name`         VARCHAR(32)     NOT NULL, /***代理人***/
+  `loaner_login_name`        VARCHAR(32)     NOT NULL, /***借款用户***/
   `type`                     VARCHAR(100)    NOT NULL, /***标的类型***/
   `periods`                  INT             NOT NULL, /***借款期限***/
   `description_text`         TEXT            NOT NULL, /***项目描述（纯文本）***/

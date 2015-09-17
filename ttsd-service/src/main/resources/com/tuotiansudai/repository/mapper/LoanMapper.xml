@@ -7,10 +7,11 @@
     <resultMap id="loanResultMap" type="LoanModel">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
-        <result column="agent" property="agentLoginName"></result>
-        <result column="loaner" property="loanerLoginName"></result>
+        <result column="agent_login_name" property="agentLoginName"></result>
+        <result column="loaner_login_name" property="loanerLoginName"></result>
         <result column="type" property="type"></result>
         <result column="periods" property="periods"></result>
+        <result column="loan_amount" property="loanAmount"></result>
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
@@ -29,10 +30,12 @@
         <result column="verify_time" property="verifyTime"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
+        <result column="loan_amount" property="loanAmount"></result>
+
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id,name,agent,loaner,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
+        insert into loan(id,name,agent_login_name,loaner_login_name,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
         values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{baseRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
     </insert>
     
@@ -40,9 +43,14 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <update id="updateStatus" parameterType="map">
+        update loan set status = #{status} where id = #{loanId}
+    </update>
+
     <select id="findByStatus" resultMap="loanResultMap">
         select * from loan where status = #{status}
     </select>
+
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
         update loan
         <trim prefix="set" suffixOverrides=",">
@@ -50,10 +58,10 @@
                 name = #{name},
             </if>
             <if test="agentLoginName !=null and agentLoginName!=''">
-                agent = #{agentLoginName},
+                agent_login_name = #{agentLoginName},
             </if>
             <if test="loanerLoginName !=null and loanerLoginName!=''">
-                loaner = #{loanerLoginName},
+                loaner_login_name = #{loanerLoginName},
             </if>
             <if test="type !=null">
                 type = #{type},
@@ -111,9 +119,4 @@
             </if>
         </trim>
     </update>
-
-    <update id="updateStatus" parameterType="map">
-        update loan set status = #{status} where id = #{loanId}
-    </update>
-
 </mapper>

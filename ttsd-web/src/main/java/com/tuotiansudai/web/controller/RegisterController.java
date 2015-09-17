@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/register")
-public class RegisterController extends BaseController {
+public class RegisterController {
 
     @Autowired
     private UserService userService;

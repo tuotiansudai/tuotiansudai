@@ -27,7 +27,7 @@ public class WithdrawController {
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView recharge(@Valid @ModelAttribute WithdrawDto withdrawDto) {
+    public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BaseDto<PayFormDataDto> baseDto = withdrawService.withdraw(withdrawDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
