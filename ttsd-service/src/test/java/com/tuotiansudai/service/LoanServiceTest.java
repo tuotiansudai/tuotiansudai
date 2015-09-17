@@ -5,6 +5,10 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.time.DateUtils;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
+import java.util.UUID;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -50,6 +55,12 @@ public class LoanServiceTest {
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Before
     public void createLoanTitle(){
         LoanTitleModel loanTitleModel = new LoanTitleModel();
@@ -64,20 +75,30 @@ public class LoanServiceTest {
      */
     @Test
     public void createLoanServiceTest_1() {
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        LoanDto loanDto = getLoanDto(fakeUser);
+        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertNotNull(loanMapper.findById(loanDto.getId()));
+        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private LoanDto getLoanDto(UserModel userModel) {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("xiangjie");
+        loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setAgentLoginName(userModel.getLoginName());
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
-        assertTrue(baseDto.getData().getStatus());
-        assertNotNull(loanMapper.findById(loanDto.getId()));
-        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+        return loanDto;
     }
 
     /**
@@ -205,17 +226,23 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        return loanService.createLoan(loanDto);
+        return this.loanService.createLoan(loanDto);
     }
 
     @Test
     public void updateLoanTest() {
-        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.VERIFY_FAIL);
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        this.creteLoan(getLoanDto(fakeUser));
+        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
         long loanId = loanModelList.get(0).getId();
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("liming");
+        loanDto.setLoanerLoginName(fakeUser.getLoginName());
+        loanDto.setAgentLoginName(fakeUser.getLoginName());
         loanDto.setLoanAmount("5000.00");
         loanDto.setMaxInvestAmount("999.00");
         loanDto.setMinInvestAmount("1.00");
@@ -249,7 +276,7 @@ public class LoanServiceTest {
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
         loanService.updateLoan(loanDto);
-        assertTrue(LoanStatus.VERIFY_FAIL == loanMapper.findById(loanId).getStatus());
+        assertTrue(LoanStatus.WAITING_VERIFY == loanMapper.findById(loanId).getStatus());
     }
 
     @Test
@@ -366,4 +393,17 @@ public class LoanServiceTest {
         model.setCreatedTime(new Date());
         return model;
     }
+
+    public UserModel getFakeUser() {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("loginName");
+        userModelTest.setPassword("password");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
 }

@@ -51,7 +51,9 @@ public class SmsCaptchaServiceTest {
         String jsonString = "{\"success\":true,\"data\":{\"status\":true}}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
-        smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
+        smsWrapperClient.setHost(server.getHostName());
+        smsWrapperClient.setPort(String.valueOf(server.getPort()));
+        smsWrapperClient.setContext("");
         boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
