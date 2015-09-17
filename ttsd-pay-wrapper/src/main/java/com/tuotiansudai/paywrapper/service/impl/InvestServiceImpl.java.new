@@ -72,8 +72,8 @@ public class InvestServiceImpl implements InvestService {
                 String.valueOf(investModel.getAmount()));
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
-            investMapper.create(investModel);
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+            investMapper.create(investModel);
             return baseDto;
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
@@ -94,9 +94,7 @@ public class InvestServiceImpl implements InvestService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
 
         InvestModel investModel = new InvestModel(dto);
-        investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
-        investMapper.create(investModel);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
@@ -163,15 +161,34 @@ public class InvestServiceImpl implements InvestService {
 
     private void postInvestCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
-        InvestModel investModel = investMapper.findById(orderId);
-        if (investModel == null) {
+        InvestModel investMode = investMapper.findById(orderId);
+        if (investMode == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
             return;
         }
+
+        String loginName = investMode.getLoginName();
         if (callbackRequestModel.isSuccess()) {
-            onInvestSuccess(investModel);
+            long loanId = investMode.getLoanId();
+            // freeze
+            try {
+                userBillService.freeze(loginName, orderId, investMode.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
+            } catch (AmountTransferException e) {
+                logger.error("投资成功，但资金冻结失败", e);
+            }
+            // 改invest 本身状态
+            investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS);
+            LoanModel loanModel = loanMapper.findById(loanId);
+            long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
+            // 满标，改标的状态 RECHECK
+            if (successInvestAmountTotal == loanModel.getLoanAmount()) {
+                loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+            } else if (successInvestAmountTotal > loanModel.getLoanAmount()) {
+                // TODO:超投
+            }
         } else {
-            onInvestFail(investModel);
+            // 失败的话：改invest本身状态
+            investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL);
         }
     }
 
