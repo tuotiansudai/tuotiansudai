@@ -6,8 +6,10 @@ CREATE TABLE `invest_lottery` (
 `created_time` DATE NOT NULL,
 `prize_type` VARCHAR(8) NOT NULL,
 `amount` bigint NULL,
-`award_time` DATE NULL,
+`award_time` datetime NULL,
 `is_valid` boolean,
+`granted_time` datetime NULL,
+`is_granted` boolean,
 
 PRIMARY KEY (`id`),
 CONSTRAINT FK_INVEST_LOTTERY_USER_ID_REF_USER_ID FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),

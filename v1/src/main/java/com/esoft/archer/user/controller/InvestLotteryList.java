@@ -62,7 +62,7 @@ public class InvestLotteryList extends EntityQuery<InvestLottery> implements Ser
 	protected void initExample() {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String url = request.getRequestURL().toString();
-		if(Strings.isNullOrEmpty(url) && url.indexOf("admin") > -1){
+		if(!Strings.isNullOrEmpty(url) && url.indexOf("admin") > -1){
 			super.initExample();
 		}else{
 			InvestLottery example = new InvestLottery();

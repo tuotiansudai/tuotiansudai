@@ -29,6 +29,7 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
     @Autowired
     private HibernateTemplate hibernateTemplate;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertIntoInvestLottery(String investId) {
@@ -57,6 +58,21 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         for (InvestLottery investLottery:investLotterys) {
             hibernateTemplate.save(investLottery);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateInvestLotteryGranted(long id, boolean granted) {
+        InvestLottery investLottery = hibernateTemplate.get(InvestLottery.class,id);
+        if(granted){
+            investLottery.setGranted(true);
+            investLottery.setGrantedTime(new Date());
+        }else {
+            investLottery.setGranted(false);
+            investLottery.setGrantedTime(null);
+        }
+        hibernateTemplate.update(investLottery);
+
     }
 
     private InvestLottery getInvestLottery(Invest invest,InvestLotteryType investLotteryType ) {
