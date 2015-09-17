@@ -8,7 +8,7 @@
 				xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 				xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<ui:param name="activeCenterMenuUrl" value="/user/my-presentee"></ui:param>
+	<ui:param name="activeCenterMenuUrl" value="/user/my_invest_lottery"></ui:param>
 	<ui:define name="center_right">
 		<script type="text/javascript"
 				src="#{tplVars.themeJSPath}/ZeroClipboard.min.js"></script>
@@ -192,20 +192,19 @@
 			</h:form>
 		</div>
 		<div class="clear"></div>
-
-		<script>
-			//复制
-			ZeroClipboard.config({
-				swfPath : "#{tplVars.themeJSPath}/ZeroClipboard.swf"
-			});
-			var client = new ZeroClipboard($(".copy"));
-
-			client.on("ready", function(readyEvent) {
-				client.on("aftercopy", function(event) {
-					$.dialog.alert('复制成功！', function() {
-					});
-				});
-			});
+		<script type="text/javascript">
+			$(
+					function() {
+						$(".zt01 a").click(
+								function() {
+									$(this).closest(".zt01").find(".hover")
+											.removeClass("hover");
+									$(this).addClass("hover");
+									//清除筛选对分页的影响
+									clearPage();
+								});
+					})
 		</script>
+
 	</ui:define>
 </ui:composition>

@@ -94,13 +94,7 @@
                         <f:facet name="header">
                             <h:outputText value="奖品类型"></h:outputText>
                         </f:facet>
-                        <h:outputText  value="#{investLottery.prizeType.getDesc()}"></h:outputText>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="奖金"></h:outputText>
-                        </f:facet>
-                        <h:outputText  value="#{investLottery.amountPercent}"></h:outputText>
+                        <h:outputText  value="#{investLottery.prizeType.name() == 'G'?investLottery.cashPrize:investLottery.prizeType.getDesc()}"></h:outputText>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
