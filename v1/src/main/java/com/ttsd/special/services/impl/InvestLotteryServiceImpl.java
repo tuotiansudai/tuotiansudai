@@ -1,5 +1,6 @@
 package com.ttsd.special.services.impl;
 
+import com.esoft.archer.user.model.User;
 import com.esoft.core.util.ArithUtil;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.invest.model.Invest;
@@ -10,12 +11,16 @@ import com.ttsd.special.model.InvestLotteryPrizeType;
 import com.ttsd.special.model.InvestLotteryProbabilityType;
 import com.ttsd.special.model.InvestLotteryType;
 import com.ttsd.special.services.InvestLotteryService;
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -129,4 +134,32 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         return (long) (money*100);
     }
 
+    @Override
+    public List<InvestLottery> findInvestLotteryTops(int limit) {
+        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query query = session.createQuery("from InvestLottery where valid = true order by awardTime desc");
+        query.setMaxResults(limit);
+        return query.list();
+    }
+
+    @Override
+    public int getRemainingTimes(String userName, InvestLotteryType type) {
+        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query query = session.createQuery("select count(*) from InvestLottery " +
+                " where valid = false" +
+                " and user.username = ?" +
+                " and type = ?" +
+                " and createdTime >= ? and createdTime < ?");
+        Calendar calendar = Calendar.getInstance();
+        query.setParameter(0, userName);
+        query.setParameter(1, type);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        query.setParameter(2, calendar.getTime());
+        calendar.add(Calendar.HOUR, 24);
+        query.setParameter(3, calendar.getTime());
+        return ((Number)query.uniqueResult()).intValue();
+    }
 }
