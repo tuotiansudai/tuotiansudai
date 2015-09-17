@@ -3,7 +3,6 @@ package com.esoft.jdp2p.user.service.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -33,16 +32,8 @@ import com.esoft.jdp2p.risk.FeeConfigConstants.FeePoint;
 import com.esoft.jdp2p.risk.FeeConfigConstants.FeeType;
 import com.esoft.jdp2p.risk.service.impl.FeeConfigBO;
 import com.esoft.jdp2p.user.service.RechargeService;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.LockMode;
-import org.hibernate.classic.Session;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,12 +136,14 @@ public class RechargeServiceImpl implements RechargeService {
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public String createRechargeOrder(Recharge recharge) {
+	public String createRechargeOrder(Recharge recharge, HttpServletRequest request) {
 		// 往recharge中插入值。
 		recharge.setId(generateId());
 		// 用rechargeWay进行判断，判断是要跳转到银行卡还是支付平台
 		// recharge.setRechargeWay("借记卡");
-
+		if (recharge.getFee() == null){
+			recharge.setFee(0.00);
+		}
 		if (recharge.getCoupon() != null) {
 			// 优惠券
 			if (StringUtils.isEmpty(recharge.getCoupon().getId())) {
@@ -166,8 +159,13 @@ public class RechargeServiceImpl implements RechargeService {
 		recharge.setTime(new Date());
 		recharge.setStatus(UserConstants.RechargeStatus.WAIT_PAY);
 		ht.save(recharge);
-		return FacesUtil.getHttpServletRequest().getContextPath()
-				+ "/to_recharge/" + recharge.getId();
+		String requestPath = "";
+		if (request != null){
+			requestPath = request.getRequestURI();
+		}else {
+			requestPath = FacesUtil.getHttpServletRequest().getContextPath();
+		}
+		return requestPath + "/to_recharge/" + recharge.getId();
 	}
 
 	@Override
@@ -331,6 +329,24 @@ public class RechargeServiceImpl implements RechargeService {
 		return null;
 
 
+	}
+
+	@Override
+	public List<Recharge> findUserRecharge(String userId, Integer offset, Integer limit) {
+		String hql = "from Recharge recharge where recharge.user.id=:userId order by recharge.time desc";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId", userId);
+		query.setMaxResults(limit);
+		query.setFirstResult(offset);
+		return query.list();
+	}
+
+	@Override
+	public Integer findUserRechargeCount(String userId) {
+		String hql = "select count(*) from Recharge recharge where recharge.user.id=:userId";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId",userId);
+		return ((Number)query.uniqueResult()).intValue();
 	}
 
 }

@@ -95,9 +95,16 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     public boolean getCreatedValidateCode(String phoneNumber,String remoteIp){
         if (regValidatePhoneNum(phoneNumber)) {
-            boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNumber, remoteIp);
-            if (!validateFlag){
-                log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
+            try {
+                boolean validateFlag = userService.sendSmsMobileNumber(phoneNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+                if (!validateFlag){
+                    log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
+                    return false;
+                }
+                log.info("已为手机号为："+phoneNumber+"的用户成功创建授权码！");
+            } catch (Exception e){
+                log.error("生成授权码异常！");
+                log.error(e.getLocalizedMessage(),e);
                 return false;
             }
             log.info("已为手机号为："+phoneNumber+"的用户成功创建授权码！");

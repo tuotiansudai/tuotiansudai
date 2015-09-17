@@ -31,11 +31,27 @@ public class UmPayConstants {
 	}
 
 	/**
-	 * 同步回调地址前缀
+	 * 用于前端展示的资源视图
+	 */
+	public static final class SourceViewType{
+		/** 手机页面资源视图 */
+		public static final String SOURCE_V = "HTML5";
+	}
+
+	/**
+	 * 同步回调地址前缀（PC端）
 	 */
 	public static final class ResponseWebUrl {
 		public static final String PRE_RESPONSE_URL = props
 				.getProperty("resopnse.webUrl");
+	}
+
+	/**
+	 * 同步回调地址前缀（移动端）
+	 */
+	public static final class ResponseMobUrl {
+		public static final String PRE_RESPONSE_URL = props
+				.getProperty("resopnse.mobUrl");
 	}
 
 	/**

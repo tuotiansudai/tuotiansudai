@@ -32,6 +32,9 @@ import com.esoft.umpay.trusteeship.UmPayConstants.TransferProjectStatus;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.special.services.InvestLotteryService;
+import com.ttsd.api.dto.InvestResponseDataDto;
+import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -50,143 +53,204 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.Map;
 
 
 /**
- * Description : 投标操作 
+ * Description : 投标操作
+ *
  * @author zt
  * @data 2015-3-11下午1:58:36
  */
 @Service("umPayInvestOeration")
-public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest>{
-	
+public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
-	@Resource
-	TrusteeshipOperationBO trusteeshipOperationBO;
 
-	@Resource
-	InvestService investService;
-	
-	@Resource
-	UserBillBO ubs;
-	
-	@Resource
-	LoanCalculator loanCalculator;
-	
-	@Resource
-	UserBillBO userBillBO;
+    @Resource
+    TrusteeshipOperationBO trusteeshipOperationBO;
 
-	@Resource
-	LoanService loanService;
-	
-	@Resource
-	HibernateTemplate ht;
+    @Resource
+    InvestService investService;
 
 	@Autowired
 	private InvestLotteryService investLotteryService;
 
-	@Logger
-	Log log;
+    @Resource
+    UserBillBO ubs;
 
-	
-	/**
-	 * 投资
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public TrusteeshipOperation createOperation(Invest invest,
-			FacesContext facesContext) throws IOException {
-		try {
-			/*investService.create(invest);*/
-			//获取invest对象,保存至operation里面然后,等回调成功的时候讲对象取出来然后再进行保存,避免资金冻结情况的发生
-			invest = investUnFreeze(invest);
-			DecimalFormat currentNumberFormat = new DecimalFormat("#");
-			Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
-		    sendMap.put("ret_url",UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL+UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
-		    sendMap.put("notify_url",UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL+UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
-		    sendMap.put("order_id",invest.getId());
-		    sendMap.put("mer_date",DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));
-		    sendMap.put("project_id",invest.getLoan().getId());
-		    sendMap.put("serv_type",TransferProjectStatus.SERV_TYPE_INVEST);
-		    sendMap.put("trans_action",TransferProjectStatus.TRANS_ACTION_IN);
-		    sendMap.put("partic_type",TransferProjectStatus.PARTIC_TYPE_INVESTOR);
-		    sendMap.put("partic_acc_type",TransferProjectStatus.PARTIC_ACC_TYPE_PERSON);
-		    sendMap.put("partic_user_id", getTrusteeshipAccount(invest.getUser().getId()).getId());
-		    sendMap.put("amount",currentNumberFormat.format(invest.getInvestMoney()*100));
-			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-			// 保存操作记录(将对象直接转换成XML保存至operator里面,投资成功后取出)
-			/*String xml = new XStream().toXML(invest);
-			JsonConfig jsonConfig = new JsonConfig();
+    @Resource
+    LoanCalculator loanCalculator;
+
+    @Resource
+    UserBillBO userBillBO;
+
+    @Resource
+    LoanService loanService;
+
+    @Resource
+    HibernateTemplate ht;
+
+    @Logger
+    Log log;
+
+
+    /**
+     * 投资
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public TrusteeshipOperation createOperation(Invest invest,
+                                                FacesContext facesContext) throws IOException {
+        try {
+            /*investService.create(invest);*/
+            //获取invest对象,保存至operation里面然后,等回调成功的时候讲对象取出来然后再进行保存,避免资金冻结情况的发生
+            invest = investUnFreeze(invest);
+            Map<String, String> sendMap = assembleSendMap(invest, false);
+            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            // 保存操作记录(将对象直接转换成XML保存至operator里面,投资成功后取出)
+            /*String xml = new XStream().toXML(invest);
+            JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.setIgnoreDefaultExcludes(false);
 			jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);//放置自包含
 			JSONObject jso = JSONObject.fromObject(invest ,jsonConfig);
 			String jsos = jso.toString();
 			log.debug("长度:"+jsos.length());
 			log.debug(jsos);*/
-			TrusteeshipOperation to = createTrusteeshipOperation(invest.getId(), reqData.getUrl(),invest.getId(),UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST,GsonUtil.fromMap2Json(reqData.getField()));
-			// 发送请求
-			sendOperation(to, facesContext);
-			return to;
-		} catch (ReqDataException e) {
-			throw new UmPayOperationException("请求第三方加密失败！");
-		} catch (InsufficientBalance e1) {
-			throw new UmPayOperationException("账户余额不足，请充值！");
-		} catch (ExceedMoneyNeedRaised e1) {
-			throw new UmPayOperationException("投资金额不能大于尚未募集的金额！");
-		} catch (ExceedDeadlineException e1) {
-			throw new UmPayOperationException("优惠券已过期！");
-		} catch (UnreachedMoneyLimitException e1) {
-			throw new UmPayOperationException("投资金额未到达优惠券使用条件！");
-		} catch (IllegalLoanStatusException e1) {
-			throw new UmPayOperationException("当前借款不可投资！");
-		} catch (NoMatchingObjectsException e) {
-			throw new UmPayOperationException("投资失败！");
-		}	
-		
-	}
-	
-	
+            TrusteeshipOperation to = createTrusteeshipOperation(invest.getId(), reqData.getUrl(), invest.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, GsonUtil.fromMap2Json(reqData.getField()));
+            // 发送请求
+            sendOperation(to, facesContext);
+            return to;
+        } catch (ReqDataException e) {
+            throw new UmPayOperationException("请求第三方加密失败！");
+        } catch (InsufficientBalance e1) {
+            throw new UmPayOperationException("账户余额不足，请充值！");
+        } catch (ExceedMoneyNeedRaised e1) {
+            throw new UmPayOperationException("投资金额不能大于尚未募集的金额！");
+        } catch (ExceedDeadlineException e1) {
+            throw new UmPayOperationException("优惠券已过期！");
+        } catch (UnreachedMoneyLimitException e1) {
+            throw new UmPayOperationException("投资金额未到达优惠券使用条件！");
+        } catch (IllegalLoanStatusException e1) {
+            throw new UmPayOperationException("当前借款不可投资！");
+        } catch (NoMatchingObjectsException e) {
+            throw new UmPayOperationException("投资失败！");
+        }
+    }
 
-	/**
-	 * 处理前台通知的投标
-	 */
-	@SuppressWarnings({ "unchecked", "deprecation"})
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public void receiveOperationPostCallback(ServletRequest request)
-			throws TrusteeshipReturnException {
-		Map<String,String> paramMap = null;
-		try {
-			paramMap = UmPaySignUtil.getMapDataByRequest(request);
-			log.debug("投资前台验签通过数据:" + paramMap);
-			String ret_code = paramMap.get("ret_code");
-			String order_id = paramMap.get("order_id");
-			TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, order_id , order_id , UmPayConstants.OperationType.UMPAY);
-			if("0000".equals(ret_code)){
-				to.setResponseData(paramMap.toString());
-				to.setResponseTime(new Date());
-				//处理投资成功修改状态
-				Invest invest = InvestSuccess(to);
-				ht.update(invest);
-				investLotteryService.insertIntoInvestLottery(order_id);
-			}else{
-				fail(to);
-				log.error("投资失败:"+paramMap.toString());
-				throw new UmPayOperationException("投资失败:错误信息:"+paramMap.get("ret_msg"));
-			}
-			ht.update(to);
-		} catch (VerifyException e) {
-			log.error(e.getLocalizedMessage(), e);
-			throw new UmPayOperationException("接收信息时出错!");
-		} catch (InsufficientBalance e) {
-			log.error(e.getLocalizedMessage(), e);
-			throw new UmPayOperationException("余额不足!");
-		} catch (NoMatchingObjectsException e) {
-			log.error(e.getLocalizedMessage(), e);
+    /**
+     * 投资
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional(rollbackFor = Exception.class)
+    public InvestResponseDataDto createOperation(Invest invest) {
+        InvestResponseDataDto investResponseDataDto = null;
+        try {
+            investResponseDataDto = new InvestResponseDataDto();
+            invest = investUnFreeze(invest);
+
+            Map<String, String> sendMap = assembleSendMap(invest, true);
+
+            sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+            //sendMap.put("ret_url", "");
+            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+            String requestData = CommonUtils.mapToFormData(reqData.getField(), true);
+
+            createTrusteeshipOperation(invest.getId(), reqData.getUrl(), invest.getId(), UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, GsonUtil.fromMap2Json(reqData.getField()));
+            investResponseDataDto.setUrl(reqData.getUrl());
+            investResponseDataDto.setRequestData(requestData);
+            return investResponseDataDto;
+        }catch (UnsupportedEncodingException e) {
+            log.error(e.getLocalizedMessage(), e);
+            throw new UmPayOperationException(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+        }catch (ReqDataException e) {
+            log.error(e.getLocalizedMessage(),e);
+            throw new UmPayOperationException(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode());
+        } catch (InsufficientBalance e1) {
+            log.error(e1.getLocalizedMessage(),e1);
+            throw new UmPayOperationException(ReturnMessage.INSUFFICIENT_BALANCE.getCode());
+        } catch (ExceedMoneyNeedRaised e1) {
+            log.error(e1.getLocalizedMessage(),e1);
+            throw new UmPayOperationException(ReturnMessage.EXCEED_MONEY_NEED_RAISED.getCode());
+        } catch (ExceedDeadlineException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
+            throw new UmPayOperationException(ReturnMessage.EXCEED_DEAD_LINE_EXCEPTION.getCode());
+        } catch (UnreachedMoneyLimitException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
+            throw new UmPayOperationException(ReturnMessage.UNREACHED_MONEY_LIMIT_EXCETPTION.getCode());
+        } catch (IllegalLoanStatusException e1) {
+            log.error(e1.getLocalizedMessage(),e1);
+            throw new UmPayOperationException(ReturnMessage.LLLEGAL_LOAN_STATUS_EXCEPTION.getCode());
+        } catch (NoMatchingObjectsException e) {
+            log.error(e.getLocalizedMessage(),e);
+            throw new UmPayOperationException(ReturnMessage.NO_MATCHING_OBJECTS_EXCEPTION.getCode());
+        }
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, String> assembleSendMap(Invest invest, boolean isMobileRequest) {
+        DecimalFormat currentNumberFormat = new DecimalFormat("#");
+        Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PROJECT_TRANSFER);
+        if(isMobileRequest) {
+            sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        }else {
+            sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        }
+        sendMap.put("notify_url", UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL + UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST);
+        sendMap.put("order_id", invest.getId());
+        sendMap.put("mer_date", DateUtil.DateToString(invest.getTime(), DateStyle.YYYYMMDD));
+        sendMap.put("project_id", invest.getLoan().getId());
+        sendMap.put("serv_type", TransferProjectStatus.SERV_TYPE_INVEST);
+        sendMap.put("trans_action", TransferProjectStatus.TRANS_ACTION_IN);
+        sendMap.put("partic_type", TransferProjectStatus.PARTIC_TYPE_INVESTOR);
+        sendMap.put("partic_acc_type", TransferProjectStatus.PARTIC_ACC_TYPE_PERSON);
+        sendMap.put("partic_user_id", getTrusteeshipAccount(invest.getUser().getId()).getId());
+        sendMap.put("amount", currentNumberFormat.format(invest.getInvestMoney() * 100));
+
+        return sendMap;
+    }
+
+
+    /**
+     * 处理前台通知的投标
+     */
+    @SuppressWarnings({"unchecked", "deprecation"})
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void receiveOperationPostCallback(ServletRequest request)
+            throws TrusteeshipReturnException {
+        Map<String, String> paramMap = null;
+        try {
+            paramMap = UmPaySignUtil.getMapDataByRequest(request);
+            log.debug("投资前台验签通过数据:" + paramMap);
+            String ret_code = paramMap.get("ret_code");
+            String order_id = paramMap.get("order_id");
+            TrusteeshipOperation to = trusteeshipOperationBO.get(UmPayConstants.ResponseUrlType.PROJECT_TRANSFER_INVEST, order_id, order_id, UmPayConstants.OperationType.UMPAY);
+            if ("0000".equals(ret_code)) {
+                to.setResponseData(paramMap.toString());
+                to.setResponseTime(new Date());
+                //处理投资成功修改状态
+                Invest invest = InvestSuccess(to);
+                ht.update(invest);
+                investLotteryService.insertIntoInvestLottery(order_id);
+            } else {
+                fail(to);
+                log.error("投资失败:" + paramMap.toString());
+                throw new UmPayOperationException("投资失败:错误信息:" + paramMap.get("ret_msg"));
+            }
+            ht.update(to);
+        } catch (VerifyException e) {
+            log.error(e.getLocalizedMessage(), e);
+            throw new UmPayOperationException("接收信息时出错!");
+        } catch (InsufficientBalance e) {
+            log.error(e.getLocalizedMessage(), e);
+            throw new UmPayOperationException("余额不足!");
+        } catch (NoMatchingObjectsException e) {
+            log.error(e.getLocalizedMessage(), e);
 		} catch (DuplicateKeyException e) {
 			log.error(e.getLocalizedMessage(),e);
 			throw new TrusteeshipReturnException("duplication");
@@ -288,154 +352,75 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest>{
 		return invest;
 	}
 
-	
-	/**
-	 * 处理投资成功
-	 * @throws NoMatchingObjectsException 
-	 * @throws InsufficientBalance 
-	 */
-	@SuppressWarnings("deprecation")
-	public Invest InvestSuccess(TrusteeshipOperation to) throws NoMatchingObjectsException, InsufficientBalance{
-		Invest invest = ht.get(Invest.class, to.getOperator() ,LockMode.UPGRADE);
-		//获取loan
-		Loan loan = ht.get(Loan.class, invest.getLoan().getId(), LockMode.UPGRADE);
-		if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM) || invest.getStatus().equals(InvestConstants.InvestStatus.CANCEL)) {
-			invest.setStatus(InvestConstants.InvestStatus.BID_SUCCESS);
-			to.setStatus(TrusteeshipConstants.Status.PASSED);
-			//判断是否募集完成
-			loanService.dealRaiseComplete(loan.getId());
-			ubs.freezeMoney(invest.getUser().getId(), invest.getMoney(), OperatorInfo.INVEST_SUCCESS,
-					"投资成功：冻结金额。借款ID:" + loan.getId() + "  投资id:" + invest.getId());
-		}
-		return invest;
-	}
-	/**
-	 * 处理投资失败
-	 * @param to
-	 */
-	@SuppressWarnings("deprecation")
-	@Transactional(rollbackFor = Exception.class)
-	public void fail(TrusteeshipOperation to) {
-		Invest invest = ht.get(Invest.class, to.getMarkId(), LockMode.UPGRADE);
-		if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM) || invest.getStatus().equals(InvestConstants.InvestStatus.CANCEL)) {
-			invest.setStatus(InvestConstants.InvestStatus.CANCEL);
-			ht.update(invest);
-			to.setStatus(TrusteeshipConstants.Status.REFUSED);
-			ht.update(to);
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * 暂时处理投资失败的那个标的状态
 
-	@Transactional(rollbackFor = Exception.class)
-	public void receiveOperationPostCallback(ServletRequest request)
-			throws TrusteeshipReturnException {
-		String order_id = request.getParameter("order_id");
-		Invest invest = ht.get(Invest.class, order_id);
-		if(invest.getStatus().equals(InvestConstants.InvestStatus.BID_SUCCESS) || invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)){
-			invest.setStatus(InvestConstants.InvestStatus.CANCEL);
-			ht.update(invest);
-		}
-		// 改项目状态，项目如果是等待复核的状态，改为募集中
-		if (invest.getLoan().getStatus()
-				.equals(LoanConstants.LoanStatus.RECHECK) && invest.getLoan().getExpectTime().after(new Date())) {
-			invest.getLoan().setStatus(LoanConstants.LoanStatus.RAISING);
-			ht.update(invest.getLoan());
-		}
-		// 解冻投资金额
-		try {
-			ubs.unfreezeMoney(invest.getUser().getId(),
-					invest.getMoney(), OperatorInfo.CANCEL_INVEST,
-					"投资：" + invest.getId() + "失败，解冻投资金额, 借款ID："
-							+ invest.getLoan().getId());
-		} catch (InsufficientBalance e) {
-			log.debug(e);
-			throw new UmPayOperationException("账户余额不足！");
-		}
-	}
-	 */
+    /**
+     * 处理投资成功
+     *
+     * @throws NoMatchingObjectsException
+     * @throws InsufficientBalance
+     */
+    @SuppressWarnings("deprecation")
+    public Invest InvestSuccess(TrusteeshipOperation to) throws NoMatchingObjectsException, InsufficientBalance {
+        Invest invest = ht.get(Invest.class, to.getOperator(), LockMode.UPGRADE);
+        //获取loan
+        Loan loan = ht.get(Loan.class, invest.getLoan().getId(), LockMode.UPGRADE);
+        if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM) || invest.getStatus().equals(InvestConstants.InvestStatus.CANCEL)) {
+            invest.setStatus(InvestConstants.InvestStatus.BID_SUCCESS);
+            to.setStatus(TrusteeshipConstants.Status.PASSED);
+            //判断是否募集完成
+            loanService.dealRaiseComplete(loan.getId());
+            ubs.freezeMoney(invest.getUser().getId(), invest.getMoney(), OperatorInfo.INVEST_SUCCESS,
+                    "投资成功：冻结金额。借款ID:" + loan.getId() + "  投资id:" + invest.getId());
+        }
+        return invest;
+    }
+
+    /**
+     * 处理投资失败
+     *
+     * @param to
+     */
+    @SuppressWarnings("deprecation")
+    @Transactional(rollbackFor = Exception.class)
+    public void fail(TrusteeshipOperation to) {
+        Invest invest = ht.get(Invest.class, to.getMarkId(), LockMode.UPGRADE);
+        if (invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM) || invest.getStatus().equals(InvestConstants.InvestStatus.CANCEL)) {
+            invest.setStatus(InvestConstants.InvestStatus.CANCEL);
+            ht.update(invest);
+            to.setStatus(TrusteeshipConstants.Status.REFUSED);
+            ht.update(to);
+        }
+    }
+
+
+    /**
+     * 暂时处理投资失败的那个标的状态
+
+     @Transactional(rollbackFor = Exception.class)
+     public void receiveOperationPostCallback(ServletRequest request)
+     throws TrusteeshipReturnException {
+     String order_id = request.getParameter("order_id");
+     Invest invest = ht.get(Invest.class, order_id);
+     if(invest.getStatus().equals(InvestConstants.InvestStatus.BID_SUCCESS) || invest.getStatus().equals(InvestConstants.InvestStatus.WAIT_AFFIRM)){
+     invest.setStatus(InvestConstants.InvestStatus.CANCEL);
+     ht.update(invest);
+     }
+     // 改项目状态，项目如果是等待复核的状态，改为募集中
+     if (invest.getLoan().getStatus()
+     .equals(LoanConstants.LoanStatus.RECHECK) && invest.getLoan().getExpectTime().after(new Date())) {
+     invest.getLoan().setStatus(LoanConstants.LoanStatus.RAISING);
+     ht.update(invest.getLoan());
+     }
+     // 解冻投资金额
+     try {
+     ubs.unfreezeMoney(invest.getUser().getId(),
+     invest.getMoney(), OperatorInfo.CANCEL_INVEST,
+     "投资：" + invest.getId() + "失败，解冻投资金额, 借款ID："
+     + invest.getLoan().getId());
+     } catch (InsufficientBalance e) {
+     log.debug(e);
+     throw new UmPayOperationException("账户余额不足！");
+     }
+     }
+     */
 }
