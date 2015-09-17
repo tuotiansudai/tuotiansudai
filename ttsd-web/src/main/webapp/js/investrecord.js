@@ -1,13 +1,12 @@
 require(['jquery', 'mustache', 'text!../../tpl/investrecordtable.tpl', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
     //初始化页面
-    var _moment = moment();
-    var _now_day = _moment.format("YYYY-MM-DD"); // 今天
-    var _week = _moment.subtract(6, 'days').format("YYYY-MM-DD");
-    var _month = _moment.subtract(30, 'days').format("YYYY-MM-DD");
-    var _sixMonth = _moment.subtract(180, 'days').format("YYYY-MM-DD");
+    var _now_day =  moment().format('YYYY-MM-DD'); // 今天
+    var _week =  moment().subtract(1, 'week').format('YYYY-MM-DD');
+    var _month =  moment().subtract(1, 'month').format('YYYY-MM-DD');
+    var _sixMonth =  moment().subtract(6, 'month').format('YYYY-MM-DD');
     var _page;  //define pages
 
-    console.log('今天：'+_now_day)
+    console.log('今天'+_now_day+'周：'+_week +'月：'+_month +'半年：'+_sixMonth)
     // 页面初始化日期 条件筛选1个月
     $('#daterangepicker')
         .dateRangePicker({separator: ' ~ '})
