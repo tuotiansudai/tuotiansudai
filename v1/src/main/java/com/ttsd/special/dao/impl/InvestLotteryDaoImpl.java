@@ -27,6 +27,7 @@ public class InvestLotteryDaoImpl implements InvestLotteryDao {
     public List<InvestLottery> findInvestLotteryByType(InvestLotteryType type) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
+        userId = "sidneygao";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String createdTime = simpleDateFormat.format(new Date());
         SQLQuery sqlQuery = ht.getSessionFactory().getCurrentSession().createSQLQuery(INVEST_LOTTERY_BY_TYPE_SQL);

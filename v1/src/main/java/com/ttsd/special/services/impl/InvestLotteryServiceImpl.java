@@ -1,9 +1,13 @@
 package com.ttsd.special.services.impl;
 
+import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.ArithUtil;
+import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.schedule.ScheduleConstants;
+import com.esoft.jdp2p.schedule.job.GrantCashPrizeJob;
 import com.google.common.collect.Lists;
 import com.ttsd.special.dao.InvestLotteryDao;
 import com.ttsd.special.dto.LotteryPrizeResponseDto;
@@ -12,11 +16,15 @@ import com.ttsd.special.model.InvestLotteryPrizeType;
 import com.ttsd.special.model.InvestLotteryProbabilityType;
 import com.ttsd.special.model.InvestLotteryType;
 import com.ttsd.special.services.InvestLotteryService;
+import org.apache.commons.logging.Log;
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +40,12 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
 
     @Autowired
     private HibernateTemplate hibernateTemplate;
+
+    @Resource
+    StdScheduler scheduler;
+
+    @Logger
+    Log log;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -86,9 +100,37 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
                 dto.setPrizeDesc(investLottery.getPrizeType().getDesc());
             }
             investLotteryDao.updateInvestLottery(investLottery);
+            if(InvestLotteryPrizeType.G.equals(investLottery.getPrizeType())){
+                this.addGrantCashPrizeJob(investLottery.getId(),investLottery.getUser().getId(),investLottery.getAmount());
+            }
         }
         return dto;
 
+    }
+
+    private void addGrantCashPrizeJob(long id,String userId,double amount){
+        Date now = new Date();
+        Date threeMinutesLater = DateUtil.addMinute(now,1);
+        JobDetail jobDetail = JobBuilder
+                .newJob(GrantCashPrizeJob.class)
+                .withIdentity("cash", ScheduleConstants.JobGroup.AUTO_GRANT_CASH_PRIZE)
+                .build();
+        jobDetail.getJobDataMap().put(GrantCashPrizeJob.LOAN_ID, "cash");
+        SimpleTrigger trigger = TriggerBuilder
+                .newTrigger()
+                .withIdentity("cash", ScheduleConstants.TriggerGroup.AUTO_GRANT_CASH_PRIZE)
+                .forJob(jobDetail)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule())
+                .startAt(threeMinutesLater).build();
+        try {
+            scheduler.scheduleJob(jobDetail, trigger);
+            log.debug("add make grant cash prize job,userId : " + userId +",id :" + id);
+        } catch (SchedulerException e) {
+            log.error(e.getLocalizedMessage(), e);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug( "id:"+id +"," + userId + ":抽奖现金奖品发放成功.");
+        }
     }
 
     private InvestLottery getInvestLottery(Invest invest,InvestLotteryType investLotteryType ) {
