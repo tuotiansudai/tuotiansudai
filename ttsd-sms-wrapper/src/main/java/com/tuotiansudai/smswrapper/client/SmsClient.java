@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.beans.Introspector;
 import java.io.IOException;
@@ -53,9 +51,8 @@ public class SmsClient {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public boolean sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, String content, boolean isSendInterval){
-        String sessionId = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getId();
-        if (isSendInterval && redisWrapperClient.exists(sessionId)){
+    public boolean sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, String content, boolean isSendInterval, String ip){
+        if (isSendInterval && redisWrapperClient.exists(ip)){
             return false;
         }
         String requestBody = this.generateRequestBody(mobile, content);
@@ -71,7 +68,7 @@ public class SmsClient {
                 String resultCode = this.parseResponse(responseBody);
                 this.createSmsModel(baseMapperClass, mobile, content, resultCode);
                 if (isSendInterval) {
-                    redisWrapperClient.setex(sessionId,second,mobile);
+                    redisWrapperClient.setex(ip,second,mobile);
                 }
                 return true;
             } catch (IOException e) {

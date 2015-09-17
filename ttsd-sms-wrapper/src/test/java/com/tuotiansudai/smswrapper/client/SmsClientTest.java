@@ -52,7 +52,7 @@ public class SmsClientTest {
 
         String mobile = "13900000000";
         String content = "content";
-        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,false);
+        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,false,"127.0.0.1");
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();

@@ -8,11 +8,13 @@ import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.utils.CommonUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
 
@@ -26,10 +28,10 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private SmsWrapperClient smsWrapperClient;
 
     @Override
-    public boolean sendRegisterCaptcha(String mobile) {
+    public boolean sendRegisterCaptcha(String mobile, HttpServletRequest request) {
         String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha);
+            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha, CommonUtil.getRequestIp(request));
             return resultDto.getData().getStatus();
         }
 
@@ -70,10 +72,10 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     }
 
     @Override
-    public boolean sendMobileCaptcha(String mobile) {
+    public boolean sendMobileCaptcha(String mobile, HttpServletRequest request) {
         String captcha = this.createMobileCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha);
+            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha, CommonUtil.getRequestIp(request));
             return baseDto.getData().getStatus();
         }
         return false;
