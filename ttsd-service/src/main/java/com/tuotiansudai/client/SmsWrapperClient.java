@@ -46,7 +46,7 @@ public class SmsWrapperClient {
 
     public BaseDto<BaseDataDto> sendSms(String mobile, String code, String ip) {
         BaseDto<BaseDataDto> resultDto = new BaseDto<>();
-        MonitorDataDto dataDto = new MonitorDataDto();
+        BaseDataDto dataDto = new BaseDataDto();
         String requestJson = "";
         try {
             requestJson = objectMapper.writeValueAsString(new SmsCaptchaDto(mobile, code, ip));

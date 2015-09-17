@@ -6,7 +6,7 @@ import java.net.InetAddress;
 /**
  * Created by Administrator on 2015/9/17.
  */
-public class CommonUtil {
+public class RequestIPParser {
 
     public static String getRequestIp(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");

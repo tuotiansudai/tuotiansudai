@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.utils.CommonUtil;
+import com.tuotiansudai.utils.RequestIPParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     public boolean sendRegisterCaptcha(String mobile, HttpServletRequest request) {
         String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha, CommonUtil.getRequestIp(request));
+            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha, RequestIPParser.getRequestIp(request));
             return resultDto.getData().getStatus();
         }
 
@@ -75,7 +75,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     public boolean sendMobileCaptcha(String mobile, HttpServletRequest request) {
         String captcha = this.createMobileCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha, CommonUtil.getRequestIp(request));
+            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha, RequestIPParser.getRequestIp(request));
             return baseDto.getData().getStatus();
         }
         return false;
