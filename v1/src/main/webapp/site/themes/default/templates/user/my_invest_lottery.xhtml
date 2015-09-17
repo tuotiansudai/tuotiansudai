@@ -149,7 +149,7 @@
 												</h:outputText></td>
 												<ui:fragment rendered="#{investLottery.valid == 'true'}">
 													<td align="center" class="tab02"><h:outputText
-															value="#{investLottery.prizeType.getDesc() + ('' +investLottery.amountPercent)}">
+															value="#{investLottery.prizeType.name() == 'G'?investLottery.cashPrize:investLottery.prizeType.getDesc()}">
 													</h:outputText></td>
 													<td align="center" class="tab02"><h:outputText  value="是"></h:outputText></td>
 													<td align="center" class="tab02"><h:outputText

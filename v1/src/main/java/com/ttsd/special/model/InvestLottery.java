@@ -23,7 +23,7 @@ public class InvestLottery implements java.io.Serializable {
     private Long amount;
     private Date awardTime;
     private Boolean valid;
-    private Double amountPercent;
+    private String cashPrize;
     private Date grantedTime;
     private Boolean granted;
 
@@ -135,14 +135,11 @@ public class InvestLottery implements java.io.Serializable {
     public void setGranted(Boolean granted) {
         this.granted = granted;
     }
-
     @Transient
-    public double getAmountPercent() {
-        if (this.amountPercent == null && this.getAmount() != null) {
-            return this.amount/100d;
+    public String getCashPrize() {
+        if (this.cashPrize == null && this.getAmount() != null) {
+            return  this.getPrizeType().getDesc()+this.amount/100d ;
         }
-        return amountPercent;
+        return cashPrize;
     }
-
-
 }
