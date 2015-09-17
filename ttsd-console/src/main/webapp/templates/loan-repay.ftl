@@ -25,12 +25,53 @@
     <!--下拉框-->
     <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!--自动补全-->
+    <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
+    <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
             $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+
+            //自动完成提示
+            var autoValue = '';
+            var api_url = '${requestContext.getContextPath()}/loan/loaner';
+            $("#loginName").autocomplete({
+                source: function (query, process) {
+                    //var matchCount = this.options.items;//返回结果集最大数量
+                    $.get(api_url+'/'+query.term, function (respData) {
+                        autoValue = respData;
+                        return process(respData);
+                    });
+                }
+            });
+            $("#loginName").blur(function () {
+                for(var i = 0; i< autoValue.length; i++){
+                    if($(this).val()== autoValue[i]){
+                        $(this).removeClass('Validform_error');
+                        return false;
+                    }else{
+                        $(this).addClass('Validform_error');
+                    }
+
+                }
+
+            });
+            $("#btnRepayReset").click(function(){
+
+                location.href="${requestContext.getContextPath()}/loan-repay?loanId="
+                                +"&loginName="
+                                +"&repayStartDate="
+                                +"&repayEndDate="
+                                +"&repayStatus="
+                                +"&index=1"
+                                +"&pageSize=10";
+            });
+
+
+
             function pageinationView(e){
                 var index = $(e.target).attr("pageIndex");
                 var loanId =  $('#loanId').val();
@@ -38,15 +79,15 @@
                 var repayStartDate =  $('#repayStartDate').val();
                 var repayEndDate =  $('#repayEndDate').val();
                 var repayStatus = $('#repayStatus').val()
-                var pageSize = 2;
+                var pageSize = 10;
 
                 location.href="${requestContext.getContextPath()}/loan-repay?loanId="+loanId
-                +"&loginName="+loginName
-                +"&repayStartDate="+repayStartDate
-                +"&repayEndDate="+repayEndDate
-                +"&repayStatus="+repayStatus
-                +"&index="+index
-                +"&pageSize="+pageSize;
+                            +"&loginName="+loginName
+                            +"&repayStartDate="+repayStartDate
+                            +"&repayEndDate="+repayEndDate
+                            +"&repayStatus="+repayStatus
+                            +"&index="+index
+                            +"&pageSize="+pageSize;
             }
             $('#btnRepayQuery').click(pageinationView);
             $('.Previous').click(pageinationView);
@@ -130,7 +171,7 @@
                     </div>
                     <div class="form-group">
                         <label for="number">用户名:</label>
-                        <input type="text" class="form-control" id="loginName" placeholder="" value="${loginName}">
+                        <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName}"/>
                     </div>
                     <div class="form-group">
                         <label for="number">开始时间:</label>
@@ -156,6 +197,7 @@
 
                             <select class="selectpicker " id="repayStatus">
                                 <#if repayStatus?? >
+                                    <option value="">全部</option>
                                     <#list repayStatusList as rs>
                                         <#if repayStatus == rs>
                                             <option value="${rs.name()}" selected>
@@ -169,7 +211,7 @@
 
                                     </#list>
                                 <#else >
-                                    <option value="">请选择</option>
+                                    <option value="">全部</option>
                                     <#list repayStatusList as rs>
 
                                         <option value="${rs.name()}">
@@ -180,8 +222,9 @@
 
                             </select>
                     </div>
-                    <button type="button" class="btn btn-sm btn-primary" id="btnRepayQuery" pageIndex="${loanRepays.index}">查询</button>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="button" class="btn btn-sm btn-primary" id="btnRepayQuery" pageIndex="1">查询</button>
+                    <button type="reset" class="btn btn-sm btn-default" id="btnRepayReset" ">重置</button>
+
                 </form>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
@@ -223,21 +266,35 @@
                 <nav>
 
                     <div>
-                        <span class="bordern">总共${loanRepays.totalCount}条</span>
+                        <span class="bordern">总共${loanRepays.totalCount}条,每页显示${loanRepays.pageSize}条</span>
                     </div>
                     <ul class="pagination">
 
                          <#if loanRepays.hasPreviousPage>
                             <li>
                                 <a href="#" aria-label="Previous">
-                                    <span class="Previous" aria-hidden="true" pageIndex="${loanRepays.index - 1}">&laquo;</span>
+                                    <span class="Previous" aria-hidden="true" pageIndex="${loanRepays.index - 1}">&laquo; Prev</span>
                                 </a>
                             </li>
+                         <#else >
+                             <li>
+                                 <a href="#" aria-label="Previous">
+                                     <span class="Previous" aria-hidden="true" pageIndex="${loanRepays.index}">&laquo; Prev</span>
+                                 </a>
+                             </li>
                         </#if>
+                             <li><a>${loanRepays.index}</a></li>
+
                         <#if loanRepays.hasNextPage>
                             <li>
                                 <a href="#" aria-label="Next">
-                                    <span class="Next" aria-hidden="true" pageIndex="${loanRepays.index + 1}">&raquo;</span>
+                                    <span class="Next" aria-hidden="true" pageIndex="${loanRepays.index + 1}">Next &raquo;</span>
+                                </a>
+                            </li>
+                        <#else >
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span class="Next" aria-hidden="true" pageIndex="${loanRepays.index}">Next &raquo;</span>
                                 </a>
                             </li>
                         </#if>

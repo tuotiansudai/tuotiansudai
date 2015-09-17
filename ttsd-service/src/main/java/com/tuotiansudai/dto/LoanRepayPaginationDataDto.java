@@ -23,10 +23,10 @@ public class LoanRepayPaginationDataDto extends BasePaginationDataDto {
         this.setLoginName(loanRepayModel.getLoan().getLoanerLoginName());
         this.setProjectName(loanRepayModel.getLoan().getName());
         this.setCorpus(loanRepayModel.getCorpus());
-        this.setInterest(loanRepayModel.getActualInterest());
+        this.setInterest(loanRepayModel.getExpectInterest());
         this.setRepayDay(sdf.format(loanRepayModel.getRepayDate()));
         this.setPeriod(loanRepayModel.getPeriod());
-        this.setTotalAmount(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest());
+        this.setTotalAmount(loanRepayModel.getCorpus() + loanRepayModel.getExpectInterest() + loanRepayModel.getDefaultInterest());
         this.setRepayStatus(loanRepayModel.getStatus());
         this.setLoanId("" + loanRepayModel.getLoanId());
     }
