@@ -17,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,7 +52,7 @@ public class SmsClientTest {
 
         String mobile = "13900000000";
         String content = "content";
-        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content);
+        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,false);
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();

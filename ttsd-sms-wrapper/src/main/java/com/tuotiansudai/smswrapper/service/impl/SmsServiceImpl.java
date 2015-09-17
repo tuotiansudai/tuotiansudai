@@ -22,13 +22,13 @@ public class SmsServiceImpl implements SmsService {
     public boolean sendRegisterCaptcha(String mobile, String captcha) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content);
+        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,true);
     }
 
     @Override
     public boolean sendRetrievePasswordCaptcha(String mobile, String captcha) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content);
+        return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content,true);
     }
 }

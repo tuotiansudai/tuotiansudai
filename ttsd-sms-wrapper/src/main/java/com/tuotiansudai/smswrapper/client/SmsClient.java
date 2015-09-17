@@ -2,6 +2,7 @@ package com.tuotiansudai.smswrapper.client;
 
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.smswrapper.repository.mapper.BaseMapper;
 import com.tuotiansudai.smswrapper.repository.model.SmsModel;
 import com.tuotiansudai.smswrapper.util.SpringContextUtil;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.beans.Introspector;
 import java.io.IOException;
@@ -41,12 +44,21 @@ public class SmsClient {
     @Value("${zucp.password}")
     private String password;
 
+    @Value("${sms.interval.second}")
+    private int second;
+
     @Autowired
     private OkHttpClient httpClient;
 
-    public boolean sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, String content){
-        String requestBody = this.generateRequestBody(mobile, content);
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
+    public boolean sendSMS(Class<? extends BaseMapper> baseMapperClass, String mobile, String content, boolean isSendInterval){
+        String sessionId = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().getId();
+        if (isSendInterval && redisWrapperClient.exists(sessionId)){
+            return false;
+        }
+        String requestBody = this.generateRequestBody(mobile, content);
         if (!Strings.isNullOrEmpty(requestBody)) {
             RequestBody okRequestBody = RequestBody.create(MEDIA_TYPE, requestBody);
             Request request = new Request.Builder()
@@ -58,6 +70,9 @@ public class SmsClient {
                 String responseBody = response.body().string();
                 String resultCode = this.parseResponse(responseBody);
                 this.createSmsModel(baseMapperClass, mobile, content, resultCode);
+                if (isSendInterval) {
+                    redisWrapperClient.setex(sessionId,second,mobile);
+                }
                 return true;
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
