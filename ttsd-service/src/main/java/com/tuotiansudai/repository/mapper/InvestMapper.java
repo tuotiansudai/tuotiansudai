@@ -128,6 +128,7 @@ public interface InvestMapper {
                                        @Param(value = "endTime") Date endTime,
                                        @Param(value = "loanStatus") LoanStatus loanStatus,
                                        @Param(value = "investStatus") InvestStatus investStatus,
+                                       @Param(value = "includeRepay") boolean includeRepay,
                                        @Param(value = "offset") int offset,
                                        @Param(value = "limit") int limit);
 
