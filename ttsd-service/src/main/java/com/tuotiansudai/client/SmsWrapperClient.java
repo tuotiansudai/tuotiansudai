@@ -58,7 +58,7 @@ public class SmsWrapperClient {
         }
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", REGISTER_SMS_URI);
         RequestBody body = RequestBody.create(JSON, requestJson);
-        Request request = new Request.Builder().url(url).patch(body).addHeader("Content-Type", "application/json; charset=UTF-8").build();
+        Request request = new Request.Builder().url(url).post(body).addHeader("Content-Type", "application/json; charset=UTF-8").build();
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
