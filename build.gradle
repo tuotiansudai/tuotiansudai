@@ -10,8 +10,13 @@ subprojects {
         maven { url 'http://maven.oschina.net/content/groups/public/' }
     }
 
+    gradle.startParameter.continueOnFailure = true
     test {
-        ignoreFailures = true
+        //ignoreFailures = true
+        outputs.upToDateWhen { false }
+        testLogging {
+            exceptionFormat "full" // default is "short"
+        }
     }
 
     dependencies {
