@@ -22,6 +22,8 @@ public class CustWithdrawalsMapperTest {
     public void shouldCreateCustWithdrawalsModel() throws Exception {
         CustWithdrawalsRequestModel model = new CustWithdrawalsRequestModel("orderId", "umpUserId", "amount");
         model.setSign("sign");
+        model.setRetUrl("ret_url");
+        model.setNotifyUrl("notify_url");
         model.setRequestUrl("url");
         model.setRequestData("requestData");
 
