@@ -32,7 +32,7 @@ public class UserPasswordChangeTest {
 
     @Test
     public void shouldChangePassword() throws Exception{
-        String mobile = "13699248263";
+        String mobile = "100000000";
         String loginName = "loginname";
         String password = "password";
         String newPassword = "password2";
