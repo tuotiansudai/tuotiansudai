@@ -1,6 +1,6 @@
 package com.tuotiansudai.console.controller;
 
-import com.tuotiansudai.dto.BasePaginationDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestDetailDto;
 import com.tuotiansudai.dto.InvestDetailQueryDto;
 import com.tuotiansudai.repository.model.InvestStatus;
@@ -46,9 +46,9 @@ public class InvestController {
             queryDto.setPageSize(pageSize);
         }
 
-        BasePaginationDto<InvestDetailDto> paginationList = investService.queryInvests(queryDto, false);
+        BasePaginationDataDto<InvestDetailDto> paginationList = investService.queryInvests(queryDto, false);
 
-        List<InvestDetailDto> invests = paginationList.getRecordDtoList();
+        List<InvestDetailDto> invests = paginationList.getRecords();
 
         ModelAndView mv = new ModelAndView("/invest-list");
         mv.addObject("pagination", paginationList);
