@@ -37,13 +37,13 @@ public class RetrievePasswordController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/retrieve").addObject("mobile","");
+        return new ModelAndView("/retrieve").addObject("mobile", "");
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page",method = RequestMethod.GET)
-    public ModelAndView inputPassword(@PathVariable String mobile,@PathVariable String captcha) {
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)
+    public ModelAndView inputPassword(@PathVariable String mobile, @PathVariable String captcha) {
         if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
-            return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
+            return new ModelAndView("/input-password").addObject("mobile", mobile).addObject("captcha", captcha);
         }
         return new ModelAndView("redirect:/mobile-retrieve-password");
     }
@@ -113,6 +113,6 @@ public class RetrievePasswordController {
         if (retrievePasswordService.mobileRetrievePassword(retrievePasswordDto)) {
             return new ModelAndView("redirect:/login");
         }
-        return new ModelAndView("/input-password").addObject("mobile",retrievePasswordDto.getMobile()).addObject("captcha",retrievePasswordDto.getCaptcha());
+        return new ModelAndView("/input-password").addObject("mobile", retrievePasswordDto.getMobile()).addObject("captcha", retrievePasswordDto.getCaptcha());
     }
 }

@@ -42,6 +42,16 @@ public class ProjectTransferRequestModel extends BaseAsyncModel {
         return model;
     }
 
+    public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
+        model.retUrl = "/";
+        model.notifyUrl = "/callback/repay_notify";
+        model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.LOANER.getCode();
+        return model;
+    }
+
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount) {
         super();
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
