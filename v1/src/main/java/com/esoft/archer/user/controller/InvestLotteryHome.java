@@ -5,6 +5,7 @@ import com.esoft.archer.common.controller.EntityHome;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.annotations.ScopeType;
 import com.ttsd.special.model.InvestLottery;
+import com.ttsd.special.model.ReceiveStatus;
 import com.ttsd.special.services.InvestLotteryService;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,17 @@ public class InvestLotteryHome extends EntityHome<InvestLottery> implements java
     @Logger
     static Log log;
 
-    public String updateInvestLotteryGranted(long id,boolean granted){
+    public String updateInvestLotteryGranted(long id,boolean receivedFlag){
 
-        investLotteryService.updateInvestLotteryGranted(id,granted);
+        if(receivedFlag){
+            investLotteryService.updateInvestLotteryGranted(id, ReceiveStatus.RECEIVED);
+            log.info("investLottery id: " + id + " ReceiveStatus from " + ReceiveStatus.NOT_RECEIVED + " to " + ReceiveStatus.RECEIVED);
+        }else{
 
-        log.info("investLottery id: "+ id +" is_granted from " + !granted + " to "+ granted);
+            investLotteryService.updateInvestLotteryGranted(id, ReceiveStatus.NOT_RECEIVED);
+            log.info("investLottery id: " + id + " ReceiveStatus from " + ReceiveStatus.RECEIVED + " to " + ReceiveStatus.NOT_RECEIVED);
+        }
+
         return getSaveView();
     }
 

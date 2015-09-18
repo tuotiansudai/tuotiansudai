@@ -112,7 +112,7 @@ public class UmPayLoanMoneyService {
      */
     @SuppressWarnings("unchecked")
     @Transactional(rollbackFor = Exception.class)
-    public String giveMoney2ParticUserId(String orderId, Double money, String particAccType, String transAction, String particUserId, String transferOutDetail) throws ReqDataException, RetDataException {
+    public String giveMoney2ParticUserId(String orderId, Double money, String particAccType, String transAction, String particUserId, String transferOutDetail, String reason) throws ReqDataException, RetDataException {
         DecimalFormat currentNumberFormat = new DecimalFormat("#");
         // 平台划账接口
         Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.TRANSFER);
@@ -137,7 +137,7 @@ public class UmPayLoanMoneyService {
             log.debug("普通转账免密(划账)-成功!");
             to.setStatus(TrusteeshipConstants.Status.PASSED);
             try {
-                systemBillService.transferOut(money, "referrer_reward", transferOutDetail);
+                systemBillService.transferOut(money, reason, transferOutDetail);
             } catch (InsufficientBalance insufficientBalance) {
                 log.error(insufficientBalance.getLocalizedMessage(), insufficientBalance);
             }

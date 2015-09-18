@@ -2,8 +2,11 @@ package com.ttsd.api.dto;
 
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.loan.model.Loan;
+import com.esoft.jdp2p.repay.model.InvestRepay;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
@@ -46,6 +49,10 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
      * 投资利率
      */
     private String investRate;
+    /**
+     * 投资总收益
+     */
+    private String investInterest;
 
     public UserInvestRecordResponseDataDto(){
     }
@@ -142,5 +149,13 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
 
     public void setInvestRate(String investRate) {
         this.investRate = investRate;
+    }
+
+    public String getInvestInterest() {
+        return investInterest;
+    }
+
+    public void setInvestInterest(String investInterest) {
+        this.investInterest = investInterest;
     }
 }

@@ -1,5 +1,6 @@
 package com.ttsd.api.dao.impl;
 
+import com.esoft.archer.config.model.Config;
 import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.ttsd.api.dao.MobileAppInvestListDao;
@@ -86,5 +87,15 @@ public class MobileAppInvestListDaoImpl implements MobileAppInvestListDao {
             sb.append(" order by invest.time desc");
         }
         return sb.toString();
+    }
+    @Override
+    public int getConfigIntValue(String configId) {
+        Config config = ht.get(Config.class, configId);
+
+        if (config != null) {
+            return Integer.parseInt(config.getValue());
+        }
+
+        return 0;
     }
 }

@@ -34,6 +34,12 @@
                         <f:selectItem itemValue="true" itemLabel="是" />
                         <f:selectItem itemValue="false" itemLabel="否" />
                     </h:selectOneMenu>
+                    <h:selectOneMenu value="#{investLotteryList.example.receiveStatus}">
+                        <f:selectItem itemValue="" itemLabel="是否已发放" />
+                        <f:selectItem itemValue="NOT_RECEIVED" itemLabel="未发放" />
+                        <f:selectItem itemValue="RECEIVED" itemLabel="已发放" />
+                        <f:selectItem itemValue="FAILED" itemLabel="发放失败" />
+                    </h:selectOneMenu>
                     <p:commandButton update="dataTable"
                                      process="filters" value="#{commonMsg.searchLabel}"></p:commandButton>
                     <p:button value="#{commonMsg.resetLabel}" onclick="location.reload();"></p:button>
@@ -114,13 +120,13 @@
                         <f:facet name="header">
                             <h:outputText value="发放状态"></h:outputText>
                         </f:facet>
-                        <h:outputText  value="#{investLottery.granted?'已发放':'未发放'}"></h:outputText>
+                        <h:outputText  value="#{investLottery.receiveStatus.getDesc()}"></h:outputText>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="发放时间"></h:outputText>
                         </f:facet>
-                        <h:outputText  value="#{investLottery.grantedTime == null?'' : investLottery.grantedTime}">
+                        <h:outputText  value="#{investLottery.receivedTime == null?'' : investLottery.receivedTime}">
                             <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"  timeZone="GMT+8"/>
                         </h:outputText>
 
@@ -129,13 +135,17 @@
                         <f:facet name="header">
                             <h:outputText value="操作"></h:outputText>
                         </f:facet>
-                        <p:commandLink actionListener="#{investLotteryHome.updateInvestLotteryGranted(investLottery.id,false)}"   update="dataTable"
-                                       value="取消发放" rendered="#{investLottery.granted == 'true'}" process="@this">
-                        </p:commandLink>
-                        <p:commandLink actionListener="#{investLotteryHome.updateInvestLotteryGranted(investLottery.id,true)}"  update="dataTable"
-                                       value="发放" rendered="#{investLottery.granted == 'false'}" process="@this">
-                        </p:commandLink>
+                        <ui:fragment rendered="#{investLottery.prizeType.name() != 'G'}">
+                            <p:commandLink actionListener="#{investLotteryHome.updateInvestLotteryGranted(investLottery.id,false)}"   update="dataTable"
+                                           value="取消发放" rendered="#{investLottery.receiveStatus.name() == 'RECEIVED'}" process="@this">
+                            </p:commandLink>
+                            <p:commandLink actionListener="#{investLotteryHome.updateInvestLotteryGranted(investLottery.id,true)}"  update="dataTable"
+                                           value="发放" rendered="#{investLottery.receiveStatus.name() == 'NOT_RECEIVED'}" process="@this">
+                            </p:commandLink>
+
+                        </ui:fragment>
                     </p:column>
+
                     <f:facet name="footer">
                         <p:commandButton value="导出Excel" ajax="false">
                             <p:dataExporter target="dataTable" type="xls" fileName="InvestLotteryList" pageOnly="false"></p:dataExporter>
@@ -146,3 +156,4 @@
         </div>
     </ui:define>
 </ui:composition>
+

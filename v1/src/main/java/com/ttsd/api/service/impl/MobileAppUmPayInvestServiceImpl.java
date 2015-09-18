@@ -1,12 +1,15 @@
 package com.ttsd.api.service.impl;
 
+import com.esoft.archer.config.model.Config;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.invest.service.InvestService;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.umpay.invest.service.impl.UmPayInvestOeration;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dao.MobileAppLoanDetailDao;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.InvestRequestDto;
@@ -30,6 +33,12 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
 
     @Resource
     MobileAppLoanDetailDao mobileAppLoanDetailDao;
+
+    @Autowired
+    MobileAppInvestListDao mobileAppInvestListDao;
+
+    @Autowired
+    private InvestService investService;
 
     @Resource
     UserBO userBO;
@@ -66,7 +75,13 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
             return ReturnMessage.INVESTOR_SAME_TO_LOANER.getCode();
         }
 
-
+        if(loan.isLoanXs()){
+            long investedCount = investService.getUserInvestXSCount(userId) + 1;
+            int defaultCount = mobileAppInvestListDao.getConfigIntValue("sprog_invest_count");
+            if(investedCount > defaultCount){
+                return ReturnMessage.NO_MATCH_XS_INVEST_CONDITION.getCode();
+            }
+        }
         if (loan.isLoanDx()) {
             if (StringUtils.isEmpty(investRequestDto.getPassword())) {
                 return ReturnMessage.INVEST_PASSWORD_IS_NULL.getCode();
@@ -100,5 +115,7 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         invest.setUser(user);
         return invest;
     }
+
+
 
 }

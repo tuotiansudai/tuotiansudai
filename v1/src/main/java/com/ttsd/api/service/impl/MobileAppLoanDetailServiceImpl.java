@@ -122,12 +122,12 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     @Override
     public List<InvestRecordResponseDataDto> convertInvestRecordDtoFromInvest(List<Invest> invests) {
         List<InvestRecordResponseDataDto> investRecordResponseDataDtos = new ArrayList<InvestRecordResponseDataDto>();
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (Invest invest:invests) {
             InvestRecordResponseDataDto investRecordResponseDataDto = new InvestRecordResponseDataDto();
             investRecordResponseDataDto.setUserName(com.ttsd.api.util.CommonUtils.encryptUserName(invest.getUser().getUsername()));
             investRecordResponseDataDto.setInvestMoney("" + invest.getInvestMoney());
-            investRecordResponseDataDto.setInvestTime(invest.getTime().toString());
+            investRecordResponseDataDto.setInvestTime(simpleDateFormat.format(invest.getTime()));
             investRecordResponseDataDtos.add(investRecordResponseDataDto);
         }
         return investRecordResponseDataDtos;

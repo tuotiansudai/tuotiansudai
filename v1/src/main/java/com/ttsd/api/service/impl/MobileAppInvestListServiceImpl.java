@@ -1,8 +1,8 @@
 package com.ttsd.api.service.impl;
 
 import com.esoft.core.annotations.Logger;
-import com.esoft.jdp2p.invest.InvestConstants;
 import com.esoft.jdp2p.invest.model.Invest;
+import com.esoft.jdp2p.repay.service.RepayCalculator;
 import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppInvestListService;
@@ -20,8 +20,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Logger
     static Log log;
+
     @Resource
     private MobileAppInvestListDao mobileAppInvestListDao;
+
+    @Resource
+    private RepayCalculator repayCalculator;
 
     @Override
     public BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto) {
@@ -114,7 +118,10 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         List<UserInvestRecordResponseDataDto> list = new ArrayList<>();
         if(investList != null){
             for(Invest invest:investList){
-                list.add(new UserInvestRecordResponseDataDto(invest));
+                UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(invest);
+                Double investInterest = repayCalculator.calculateAnticipatedInterest(invest.getMoney(),invest.getLoan().getId());
+                dto.setInvestInterest(String.format("%.2f", investInterest));
+                list.add(dto);
             }
         }
         return list;

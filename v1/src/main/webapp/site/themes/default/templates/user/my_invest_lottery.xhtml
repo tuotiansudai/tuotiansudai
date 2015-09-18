@@ -120,7 +120,7 @@
 											<td width="137" align="center" class="tab01">奖品<br/>类型</td>
 											<td width="137" align="center" class="tab01">是否已<br/>抽奖</td>
 											<td width="137" align="center" class="tab01">抽奖<br/>时间</td>
-											<td width="137" align="center" class="tab01">是否已<br/>发放</td>
+											<td width="137" align="center" class="tab01">奖品是否已<br/>发放</td>
 											<td width="137" align="center" class="tab01">发放<br/>时间</td>
 										</tr>
 										<ui:repeat var="investLottery" value="#{investLotteryList.lazyModelData}">
@@ -164,15 +164,15 @@
 													</td>
 													<td align="center" class="tab02"></td>
 												</ui:fragment>
-												<ui:fragment rendered="#{investLottery.granted == 'true'}">
-													<td align="center" class="tab02"><h:outputText  value="是"></h:outputText></td>
+												<ui:fragment rendered="#{investLottery.receiveStatus.name() != 'NOT_RECEIVED'}">
+													<td align="center" class="tab02"><h:outputText  value="#{investLottery.receiveStatus.getDesc()}"></h:outputText></td>
 													<td align="center" class="tab02"><h:outputText
-															value="#{investLottery.grantedTime}">
+															value="#{investLottery.receivedTime}">
 														<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"  timeZone="GMT+8"/>
 													</h:outputText></td>
 												</ui:fragment>
-												<ui:fragment rendered="#{investLottery.granted == 'false'}">
-													<td align="center" class="tab02"><h:outputText  value="否"></h:outputText></td>
+												<ui:fragment rendered="#{investLottery.receiveStatus.name() == 'NOT_RECEIVED'}">
+													<td align="center" class="tab02"><h:outputText  value="#{investLottery.receiveStatus.getDesc()}"></h:outputText></td>
 													<td align="center" class="tab02"></td>
 												</ui:fragment>
 
@@ -208,3 +208,4 @@
 
 	</ui:define>
 </ui:composition>
+

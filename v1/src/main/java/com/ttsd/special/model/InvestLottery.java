@@ -24,8 +24,8 @@ public class InvestLottery implements java.io.Serializable {
     private Date awardTime;
     private Boolean valid;
     private String cashPrize;
-    private Date grantedTime;
-    private Boolean granted;
+    private Date receivedTime;
+    private ReceiveStatus receiveStatus;
 
     public InvestLottery() {
     }
@@ -118,23 +118,7 @@ public class InvestLottery implements java.io.Serializable {
     public void setValid(Boolean valid) {
         this.valid= valid;
     }
-    @Column(name = "granted_time")
-    public Date getGrantedTime() {
-        return grantedTime;
-    }
 
-    public void setGrantedTime(Date grantedTime) {
-        this.grantedTime = grantedTime;
-    }
-    @Column(name = "is_granted",columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    public Boolean getGranted() {
-        return granted;
-    }
-
-    public void setGranted(Boolean granted) {
-        this.granted = granted;
-    }
     @Transient
     public String getCashPrize() {
         if (this.cashPrize == null && this.getAmount() != null) {
@@ -142,4 +126,22 @@ public class InvestLottery implements java.io.Serializable {
         }
         return cashPrize;
     }
+    @Column(name = "received_time")
+    public Date getReceivedTime() {
+        return receivedTime;
+    }
+
+    public void setReceivedTime(Date receivedTime) {
+        this.receivedTime = receivedTime;
+    }
+    @Column(name = "receive_status", nullable = false)
+    @Enumerated (EnumType.STRING)
+    public ReceiveStatus getReceiveStatus() {
+        return receiveStatus;
+    }
+
+    public void setReceiveStatus(ReceiveStatus receiveStatus) {
+        this.receiveStatus = receiveStatus;
+    }
+
 }

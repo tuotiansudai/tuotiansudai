@@ -135,11 +135,11 @@ public class UmPayNormalRepayOperation extends
 				String transferOutDetail = MessageFormat.format(transferOutDetailFormat, loan.getId(), invest.getId(), invest.getUser().getUsername(), invest.getInvestMoney(), orderId, referrerRelation.getReferrerId());
 
 
-				if(list.contains("INVESTOR") && !list.contains("ROLE_MERCHANDISER") && particUserId!="" && bonus > 0.00){
+				if(list.contains("INVESTOR") && particUserId!="" && bonus > 0.00){
 					//调用联动优势接口
 					String returnMsg = null;
 					try {
-						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
+						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail,"referrer_reward");
 					} catch (ReqDataException | RetDataException e) {
 						log.error(e.getLocalizedMessage(), e);
 						log.debug("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");
@@ -154,13 +154,10 @@ public class UmPayNormalRepayOperation extends
 				if(bonus == -1){
 					continue;
 				}
-				if (!roleId.equals("INVESTOR") && !roleId.equals("ROLE_MERCHANDISER")){
+				if (!list.contains("INVESTOR") || particUserId == "" || particUserId.equals("")){
 					errorMessage = NOT_BIND_CARD;
 				}
 				insertIntoInvestUserReferrer(invest, bonus, referrerRelation, list, orderId, nowdate, status);
-				if(list.contains("ROLE_MERCHANDISER")){
-					continue;
-				}
 				insertIntoUserBill(invest, bonus, referrerRelation, particUserId, nowdate, status, errorMessage, transferOutDetail);
 			}
 		}
