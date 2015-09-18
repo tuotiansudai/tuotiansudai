@@ -60,17 +60,16 @@ public class RepayServiceImpl implements RepayService {
     @Transactional
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
         long loanId = repayDto.getLoanId();
-        int period = repayDto.getPeriod();
+        LoanRepayModel enabledRepay = loanRepayMapper.findEnabledRepayByLoanId(loanId);
         LoanModel loanModel = loanMapper.findById(loanId);
-        LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanId, period);
 
-        long actualInterest = this.generateLoanRepayInterest(loanModel, period);
-        long corpus = this.generateLoanRepayCorpus(loanModel, period);
+        long actualInterest = this.generateLoanRepayInterest(loanModel, enabledRepay.getPeriod());
+        long corpus = this.generateLoanRepayCorpus(loanModel, enabledRepay.getPeriod());
 
         AccountModel accountModel = accountMapper.findByLoginName(loanModel.getLoanerLoginName());
 
         String orderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE,
-                String.valueOf(loanRepayModel.getId()),
+                String.valueOf(enabledRepay.getId()),
                 String.valueOf(new Date().getTime()));
 
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(
@@ -89,30 +88,28 @@ public class RepayServiceImpl implements RepayService {
     }
 
     private long generateLoanRepayInterest(LoanModel loanModel, int period) {
-        DateTime repayDay = new DateTime();
+        DateTime actualRepayDay = new DateTime();
         long loanId = loanModel.getId();
         DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         LoanType loanType = loanModel.getType();
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
-        DateTime repayDayDateTime = new DateTime(repayDay);
+
         boolean isFirstPeriod = period == 1;
 
         long corpusMultiplyPeriodDays = 0;
         if (isFirstPeriod) {
             for (InvestModel successInvest : successInvests) {
-                int days;
+                int days = Days.daysBetween(loanDate, actualRepayDay).getDays() + 1;
                 if (InterestInitiateType.INTEREST_START_AT_INVEST == loanType.getInterestInitiateType()) {
                     DateTime investDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay();
-                    days = Days.daysBetween(investDate, repayDayDateTime).getDays() + 1;
-                } else {
-                    days = Days.daysBetween(loanDate, repayDayDateTime).getDays() + 1;
+                    days = Days.daysBetween(investDate, actualRepayDay).getDays() + 1;
                 }
                 corpusMultiplyPeriodDays += successInvest.getAmount() * days;
             }
         } else {
             LoanRepayModel lastLoanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanId, period - 1);
             DateTime lastActualRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate()).withTimeAtStartOfDay();
-            int days = Days.daysBetween(lastActualRepayDate, repayDayDateTime).getDays() + 1;
+            int days = Days.daysBetween(lastActualRepayDate, actualRepayDay).getDays() + 1;
             for (InvestModel successInvest : successInvests) {
                 corpusMultiplyPeriodDays += successInvest.getAmount() * days;
             }
