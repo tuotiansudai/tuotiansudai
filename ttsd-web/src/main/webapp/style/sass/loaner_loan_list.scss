@@ -598,3 +598,27 @@
     }
   }
 }
+.pagination {
+  padding: 15px 20px;
+  text-align: left;
+  color: #ccc;
+}
+
+.pagination a {
+  display: inline-block;
+  color: #428bca;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  margin: 0 2px;
+  font-size: 12px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.pagination a:hover {
+  text-decoration: none;
+  border: 1px solid #428bca;
+}
