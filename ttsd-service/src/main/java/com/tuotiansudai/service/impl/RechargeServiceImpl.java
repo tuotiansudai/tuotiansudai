@@ -30,7 +30,7 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Override
     public String findSumRechargeByLoginName(String loginName) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         long sumRecharge = rechargeMapper.findSumRechargeByLoginName(loginName);
         return decimalFormat.format(sumRecharge / 100D);
     }

@@ -39,7 +39,7 @@ public class UserBillServiceImpl implements UserBillService {
         params.put("currentPage",(currentPage-1)*10);
         params.put("startTime",new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"));
         params.put("endTime",dateTime.toString("yyyy-MM-dd HH:mm:ss"));
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         List<UserBillDto> userBillDtos = Lists.newArrayList();
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(params);
         for (UserBillModel userBillModel:userBillModels) {

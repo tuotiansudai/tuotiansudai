@@ -30,7 +30,7 @@ public class WithdrawServiceImpl implements WithdrawService{
 
     @Override
     public String findSumWithdrawByLoginName(String loginName) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         long sumWithdraw = withdrawMapper.findSumWithdrawByLoginName(loginName);
         return decimalFormat.format(sumWithdraw / 100D);
     }

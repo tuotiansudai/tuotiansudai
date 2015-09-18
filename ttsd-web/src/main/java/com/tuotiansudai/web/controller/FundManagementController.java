@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.dto.FundManagementDto;
 import com.tuotiansudai.dto.UserBillDto;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -43,22 +44,21 @@ public class FundManagementController {
     private WithdrawService withdrawService;
 
     @RequestMapping(value = "/management", method = RequestMethod.GET)
-    public ModelAndView fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,@RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
+    @ResponseBody
+    public FundManagementDto fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,@RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
                                        @RequestParam("currentPage") int currentPage,@RequestParam("userBillBusinessType") List<UserBillBusinessType> userBillBusinessTypes) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        ModelAndView modelAndView = new ModelAndView("/fund");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes,currentPage,startTime,endTime);
-        modelAndView.addObject("userBillDtos",userBillDtos);
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        modelAndView.addObject("accountModelBalance",decimalFormat.format(accountModel!=null?accountModel.getBalance():0L/100D));
         int countNum = userBillService.findUserBillsCount(userBillBusinessTypes,startTime,endTime);
-        modelAndView.addObject("countNum",countNum);
         String sumRecharge = rechargeService.findSumRechargeByLoginName(LoginUserInfo.getLoginName());
-        modelAndView.addObject("sumRecharge",sumRecharge);
         String sumWithdraw = withdrawService.findSumWithdrawByLoginName(LoginUserInfo.getLoginName());
-        modelAndView.addObject("sumWithdraw",sumWithdraw);
-        modelAndView.addObject("currentPage",currentPage);
-        return modelAndView;
+        FundManagementDto fundManagementDto = new FundManagementDto(currentPage,10,countNum,userBillDtos);
+        fundManagementDto.setStatus(true);
+        fundManagementDto.setAccountModelBalance(decimalFormat.format(accountModel!=null?accountModel.getBalance():0L/100D));
+        fundManagementDto.setSumRecharge(sumRecharge);
+        fundManagementDto.setSumWithdraw(sumWithdraw);
+        return fundManagementDto;
     }
 
 }
