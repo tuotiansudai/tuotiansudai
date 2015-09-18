@@ -43,7 +43,7 @@ public class InvestController {
 
     @RequestMapping(value = "/investor/query_invests", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDto<InvestDetailDto> queryUserInvest(
+    public BasePaginationDataDto<InvestDetailDto> queryUserInvest(
             Long loanId,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
@@ -51,10 +51,9 @@ public class InvestController {
             Integer pageIndex, Integer pageSize
     ) {
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDto<InvestDetailDto> paginationList = null;
+        BasePaginationDataDto<InvestDetailDto> paginationList = null;
         if (StringUtils.isBlank(loginName)) {
-            paginationList = new BasePaginationDto<>();
-            paginationList.setRecordDtoList(new ArrayList<InvestDetailDto>());
+            paginationList = new BasePaginationDataDto<>(pageIndex,pageSize,0,new ArrayList<InvestDetailDto>());
         } else {
             InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
             queryDto.setLoanId(loanId);
@@ -80,12 +79,17 @@ public class InvestController {
                 queryDto.setPageSize(pageSize);
             }
             paginationList = investService.queryInvests(queryDto,true);
-            List<InvestDetailDto> dtoList = paginationList.getRecordDtoList();
+            List<InvestDetailDto> dtoList = paginationList.getRecords();
             List<InvestDetailDto> jsonDtoList = new ArrayList<>(dtoList.size());
             for (InvestDetailDto dto : dtoList) {
                 jsonDtoList.add(new InvestJsonDetailDto(dto));
             }
-            paginationList.setRecordDtoList(jsonDtoList);
+            paginationList = new BasePaginationDataDto<>(
+                    paginationList.getIndex(),
+                    paginationList.getPageSize(),
+                    paginationList.getCount(),
+                    jsonDtoList);
+            paginationList.setStatus(true);
         }
         return paginationList;
     }
