@@ -1,11 +1,14 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.LoanTitleDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -15,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -117,7 +120,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (maxInvestAmount > loanAmount) {
+        if (maxInvestAmount < loanAmount) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
