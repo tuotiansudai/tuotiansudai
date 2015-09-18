@@ -9,7 +9,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -34,12 +33,6 @@ public class Test {
         if (null != taList && taList.size() > 0) {
             ta = taList.get(0);
         }
-    }
-
-    @org.junit.Test
-    public void testNum(){
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        System.out.println(decimalFormat.format(5));
     }
 
 }
