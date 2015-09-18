@@ -1,6 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 
 import java.util.List;

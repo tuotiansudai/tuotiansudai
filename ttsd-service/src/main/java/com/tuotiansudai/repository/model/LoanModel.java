@@ -110,6 +110,31 @@ public class LoanModel {
      ***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    /**
+     * 还款日
+     */
+    private Date nextRepayDate;
+
+    /**
+     * 完成日期
+     */
+    private Date completedDate;
+
+    /**
+     * 应还总额
+     */
+    private long expectedRepayAmount;
+
+    /**
+     * 实还总额
+     */
+    private long actualRepayAmount;
+
+    /**
+     * 待还总额
+     */
+    private long unpaidAmount;
+
     public LoanModel() {
     }
 
@@ -337,6 +362,53 @@ public class LoanModel {
 
     public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
+    }
+
+    public Date getNextRepayDate() {
+        return nextRepayDate;
+    }
+
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public long getExpectedRepayAmount() {
+        return expectedRepayAmount;
+    }
+
+    public long getActualRepayAmount() {
+        return actualRepayAmount;
+    }
+
+    public long getUnpaidAmount() {
+        return unpaidAmount;
+    }
+
+    public Date getCanceledDate() {
+        if (LoanStatus.CANCEL == status) {
+            return recheckTime;
+        }
+        return null;
+    }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    public void setExpectedRepayAmount(long expectedRepayAmount) {
+        this.expectedRepayAmount = expectedRepayAmount;
+    }
+
+    public void setActualRepayAmount(long actualRepayAmount) {
+        this.actualRepayAmount = actualRepayAmount;
+    }
+
+    public void setUnpaidAmount(long unpaidAmount) {
+        this.unpaidAmount = unpaidAmount;
     }
 
     private String rateStrDivideOneHundred(String rate) {

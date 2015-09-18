@@ -29,7 +29,7 @@ public class LoanController {
 
     // 放款，只用传入loanId
     @ResponseBody
-    @RequestMapping(value = "/loanout", method = RequestMethod.POST)
+    @RequestMapping(value = "/loan-out", method = RequestMethod.POST)
     public BaseDto<PayDataDto> loanOut(@RequestBody LoanOutDto loanOutDto){
         return loanService.loanOut(loanOutDto.getLoanIdLong());
     }

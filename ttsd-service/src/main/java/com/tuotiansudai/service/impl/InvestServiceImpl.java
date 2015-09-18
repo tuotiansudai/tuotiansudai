@@ -29,7 +29,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay) {
+    public BasePaginationDataDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay) {
         int offset = (queryDto.getPageIndex() - 1) * queryDto.getPageSize();
         int limit = queryDto.getPageSize();
         List<InvestDetailModel> investModelList = investMapper.findByPage(
@@ -52,14 +52,13 @@ public class InvestServiceImpl implements InvestService {
                 queryDto.getInvestStatus()
         );
 
-        BasePaginationDto<InvestDetailDto> paginationDto = new BasePaginationDto<>(
-                queryDto.getPageIndex(), queryDto.getPageSize(), count
-        );
         List<InvestDetailDto> dtoList = Lists.newArrayList();
         for (InvestDetailModel model : investModelList) {
             dtoList.add(new InvestDetailDto(model));
         }
-        paginationDto.setRecordDtoList(dtoList);
+        BasePaginationDataDto<InvestDetailDto> paginationDto = new BasePaginationDataDto<>(
+                queryDto.getPageIndex(), queryDto.getPageSize(), count, dtoList
+        );
         return paginationDto;
     }
 }

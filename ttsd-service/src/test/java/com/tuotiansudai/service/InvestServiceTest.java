@@ -1,6 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BasePaginationDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestDetailDto;
 import com.tuotiansudai.dto.InvestDetailQueryDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -113,16 +113,16 @@ public class InvestServiceTest {
         queryDto.setLoginName("testuser");
         queryDto.setPageIndex(1);
         queryDto.setPageSize(10);
-        BasePaginationDto<InvestDetailDto> paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 99;
-        InvestDetailDto dto = paginationDto.getRecordDtoList().get(0);
+        BasePaginationDataDto<InvestDetailDto> paginationDto = investService.queryInvests(queryDto, false);
+        assert paginationDto.getCount() == 99;
+        InvestDetailDto dto = paginationDto.getRecords().get(0);
         assert dto.getId() == 10098000;
 
         queryDto.setPageIndex(3);
         queryDto.setPageSize(20);
         paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 99;
-        dto = paginationDto.getRecordDtoList().get(0);
+        assert paginationDto.getCount() == 99;
+        dto = paginationDto.getRecords().get(0);
         assert dto.getId() == 10058000;
         assert dto.getId() == 10058000;
 
@@ -130,16 +130,16 @@ public class InvestServiceTest {
 
         queryDto.setInvestStatus(InvestStatus.FAIL);
         paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 0;
+        assert paginationDto.getCount() == 0;
 
         queryDto.setInvestStatus(InvestStatus.SUCCESS);
         queryDto.setLoanStatus(LoanStatus.CANCEL);
         paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 0;
+        assert paginationDto.getCount() == 0;
 
         queryDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 99;
+        assert paginationDto.getCount() == 99;
 
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, -15);
@@ -147,6 +147,6 @@ public class InvestServiceTest {
         cal.add(Calendar.SECOND, 5);
         queryDto.setEndTime(cal.getTime());
         paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getTotalCount() == 5;
+        assert paginationDto.getCount() == 5;
     }
 }

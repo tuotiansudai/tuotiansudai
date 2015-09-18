@@ -17,6 +17,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "/repay")
 public class RepayController {
 
+    @Autowired
     private RepayService repayService;
 
     @RequestMapping(method = RequestMethod.GET)

@@ -6,6 +6,8 @@ public class LoanRepayModel {
 
     private long id;
 
+    private long loanId;
+
     private long corpus;
 
     private long defaultInterest;
@@ -23,8 +25,6 @@ public class LoanRepayModel {
     private RepayStatus status;
 
     private Date createdTime = new Date();
-
-    private long loanId;
 
     public long getId() {
         return id;
