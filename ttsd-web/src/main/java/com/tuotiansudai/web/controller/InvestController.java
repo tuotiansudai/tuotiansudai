@@ -45,20 +45,20 @@ public class InvestController {
     @ResponseBody
     public BasePaginationDataDto<InvestDetailDto> queryUserInvest(
             Long loanId,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
             LoanStatus loanStatus, InvestStatus investStatus,
-            Integer pageIndex, Integer pageSize
+            Integer index, Integer pageSize
     ) {
         String loginName = LoginUserInfo.getLoginName();
         BasePaginationDataDto<InvestDetailDto> paginationList = null;
         if (StringUtils.isBlank(loginName)) {
-            paginationList = new BasePaginationDataDto<>(pageIndex,pageSize,0,new ArrayList<InvestDetailDto>());
+            paginationList = new BasePaginationDataDto<>(index,pageSize,0,new ArrayList<InvestDetailDto>());
         } else {
             InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
             queryDto.setLoanId(loanId);
             queryDto.setLoginName(loginName);
-            queryDto.setBeginTime(beginTime);
+            queryDto.setBeginTime(startTime);
             if(endTime!=null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(endTime);
@@ -68,10 +68,10 @@ public class InvestController {
             queryDto.setEndTime(endTime);
             queryDto.setLoanStatus(loanStatus);
             queryDto.setInvestStatus(investStatus);
-            if (pageIndex == null || pageIndex <= 0) {
+            if (index == null || index <= 0) {
                 queryDto.setPageIndex(1);
             } else {
-                queryDto.setPageIndex(pageIndex);
+                queryDto.setPageIndex(index);
             }
             if (pageSize == null || pageSize <= 0) {
                 queryDto.setPageSize(10);
