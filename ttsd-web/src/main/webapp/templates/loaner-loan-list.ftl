@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="借款纪录" pageCss="${css.loanrecord}">
+<@global.head title="借款纪录" pageCss="${css.loaner_loan_list}">
 </@global.head>
 <body>
 <#include "header.ftl" />
@@ -329,7 +329,7 @@
 </div>
 <#--弹出层end-->
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.loanrecord}">
+<@global.javascript pageJavascript="${js.loaner_loan_list}">
 </@global.javascript>
 </body>
 </html>

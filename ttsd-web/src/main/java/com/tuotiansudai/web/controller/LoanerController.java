@@ -27,12 +27,12 @@ public class LoanerController {
     private LoanService loanService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView loanList(@RequestParam(name = "index") int index,
-                                       @RequestParam(name = "pageSize") int pageSize,
-                                       @RequestParam(name = "startDate") Date startDate,
-                                       @RequestParam(name = "endDate") Date endDate,
-                                       @RequestParam(name = "status") LoanStatus loanStatus) {
-        return new ModelAndView("/loan-list");
+    public ModelAndView loanList(@RequestParam(name = "index", defaultValue = "1", required = false) int index,
+                                 @RequestParam(name = "pageSize", defaultValue = "10",required = false) int pageSize,
+                                 @RequestParam(name = "startDate", required = false) Date startDate,
+                                 @RequestParam(name = "endDate", required = false) Date endDate,
+                                 @RequestParam(name = "status", required = false) LoanStatus loanStatus) {
+        return new ModelAndView("/loaner-loan-list");
     }
 
     @RequestMapping(path = "/loan-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
@@ -75,11 +75,13 @@ public class LoanerController {
         return baseDto;
     }
 
-    @RequestMapping(path = "/loan/{loanId}", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/loan-repay/{loanId}", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<LoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
         LoanRepayDataDto dataDto = new LoanRepayDataDto();
+        baseDto.setData(dataDto);
+
         dataDto.setStatus(true);
 
         LoanRepayModel loanRepayModel = new LoanRepayModel();
