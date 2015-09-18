@@ -139,7 +139,7 @@ public class UmPayNormalRepayOperation extends
 					//调用联动优势接口
 					String returnMsg = null;
 					try {
-						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail);
+						returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus,particAccType,transAction,particUserId,transferOutDetail,"referrer_reward");
 					} catch (ReqDataException | RetDataException e) {
 						log.error(e.getLocalizedMessage(), e);
 						log.debug("投资"+invest.getId()+",推荐人"+referrerRelation.getReferrerId()+"奖励失败！");

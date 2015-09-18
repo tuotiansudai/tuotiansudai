@@ -22,6 +22,9 @@ public class InvestLottery implements java.io.Serializable {
     private Long amount;
     private Date awardTime;
     private Boolean valid;
+    private Double amountPercent;
+    private Date receivedTime;
+    private ReceiveStatus receiveStatus;
 
     public InvestLottery() {
     }
@@ -114,4 +117,30 @@ public class InvestLottery implements java.io.Serializable {
     public void setValid(Boolean valid) {
         this.valid= valid;
     }
+    @Column(name = "received_time")
+    public Date getReceivedTime() {
+        return receivedTime;
+    }
+
+    public void setReceivedTime(Date receivedTime) {
+        this.receivedTime = receivedTime;
+    }
+    @Column(name = "receive_status", nullable = false)
+    @Enumerated (EnumType.STRING)
+    public ReceiveStatus getReceiveStatus() {
+        return receiveStatus;
+    }
+
+    public void setReceiveStatus(ReceiveStatus receiveStatus) {
+        this.receiveStatus = receiveStatus;
+    }
+
+    @Transient
+    public double getAmountPercent() {
+        if (this.amountPercent == null && this.getAmount() != null) {
+            return this.amount/100d;
+        }
+        return amountPercent;
+    }
+
 }
