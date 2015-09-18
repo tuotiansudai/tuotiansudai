@@ -31,8 +31,12 @@
     <!--自动补全-->
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
+            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
+            var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
+            $('#datetimepicker1').on('dp.change',function(e){
+                dpicker2.minDate(e.date);
+            });
             $('form button[type="reset"]').click(function () {
                 location.href = "invests";
             });
@@ -217,7 +221,7 @@
                 <!-- pagination  -->
                 <nav>
                     <div>
-                        <span class="bordern">总共${pagination.totalCount}条,每页显示${query.pageSize}条</span>
+                        <span class="bordern">总共${pagination.count}条,每页显示${query.pageSize}条</span>
                     </div>
                 <#if invests?has_content>
                     <ul class="pagination">
