@@ -35,6 +35,8 @@ public class SmsWrapperClient {
 
     private final String MOBILE_RETRIEVE_PASSWORD_URI = "/sms/mobile/{mobile}/captcha/{captcha}/retrieve";
 
+    private final String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/passwordchangednotify";
+
     @Autowired
     private OkHttpClient okHttpClient;
 
@@ -67,6 +69,31 @@ public class SmsWrapperClient {
 
     public BaseDto sendMobileRetrievePasswordSms(String mobile, String code) {
         String uri = MOBILE_RETRIEVE_PASSWORD_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", uri);
+        Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
+
+        BaseDto baseDto;
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        baseDto = new BaseDto();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(false);
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
+    public BaseDto sendPasswordChangedNotify(String mobile){
+        String uri = PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile);
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", uri);
         Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
 

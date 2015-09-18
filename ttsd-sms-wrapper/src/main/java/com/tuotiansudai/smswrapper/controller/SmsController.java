@@ -28,4 +28,12 @@ public class SmsController {
         data.setStatus(smsService.sendRetrievePasswordCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/passwordchangednotify", method = RequestMethod.GET)
+    @ResponseBody
+    public SmsResultDto sendPasswordChangedNotify(@PathVariable String mobile) {
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendPasswordChangedNotify(mobile));
+        return new SmsResultDto(data);
+    }
 }

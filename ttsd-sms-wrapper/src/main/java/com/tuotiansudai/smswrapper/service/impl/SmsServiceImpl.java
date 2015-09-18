@@ -6,10 +6,12 @@ import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.RetrievePasswordCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.UserPasswordChangedNotifyMapper;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -30,5 +32,11 @@ public class SmsServiceImpl implements SmsService {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
         return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content);
+    }
+
+    @Override
+    public boolean sendPasswordChangedNotify(String mobile) {
+        String content = SmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE.generateContent(new HashMap<String,String>(0));
+        return smsClient.sendSMS(UserPasswordChangedNotifyMapper.class, mobile, content);
     }
 }
