@@ -58,6 +58,18 @@ public class InvestJsonDetailDto extends InvestDetailDto {
         return super.getLoanStatus();
     }
 
+    @JsonProperty("hasContract")
+    public boolean hasContract() {
+        LoanStatus ls = super.getLoanStatus();
+        return (
+               ls != LoanStatus.WAITING_VERIFY
+            && ls != LoanStatus.VERIFY_FAIL
+            && ls != LoanStatus.PREHEAT
+            && ls != LoanStatus.RAISING
+            && ls != LoanStatus.CANCEL
+        );
+    }
+
     @JsonIgnore
     @Override
     public LoanType getLoanType() {
