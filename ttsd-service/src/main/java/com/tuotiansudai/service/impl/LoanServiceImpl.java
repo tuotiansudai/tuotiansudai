@@ -12,6 +12,7 @@ import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -313,19 +314,66 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, Date startDate, Date endDate, Date date, LoanStatus status) {
-//        String loginName = LoginUserInfo.getLoginName();
-//        List<LoanModel> loanModels = loanMapper.findPaginationByLoanerLoginNameAndStatus(loginName, index, pageSize, status);
-//        List<LoanerLoanPaginationItemDto> record = Lists.transform(loanModels, new Function<LoanModel, LoanerLoanPaginationItemDto>() {
-//            @Override
-//            public LoanerLoanPaginationItemDto apply(LoanModel loanModel) {
-//                return new LoanerLoanPaginationItemDto(loanModel);
-//            }
-//        });
-//
-//        long count = loanMapper.findCountByLoanerLoginNameAndStatus(loginName, status);
-//
-//        new
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startDate, Date endDate) {
+        String loginName = LoginUserInfo.getLoginName();
+        if (startDate == null) {
+            startDate = new DateTime(0).withTimeAtStartOfDay().toDate();
+        } else {
+            startDate = new DateTime(startDate).withTimeAtStartOfDay().toDate();
+        }
+
+        if (endDate == null) {
+            endDate = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        } else {
+            endDate = new DateTime(endDate).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+
+        List<LoanModel> loanModels = Lists.newArrayList();
+        long count = 0;
+        if (LoanStatus.REPAYING == status) {
+            count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startDate, endDate);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+            }
+        }
+
+        if (LoanStatus.COMPLETE == status) {
+            count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startDate, endDate);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+            }
+        }
+
+        if (LoanStatus.CANCEL == status) {
+            count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startDate, endDate);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+            }
+        }
+
+        List<LoanerLoanPaginationItemDataDto> records = Lists.transform(loanModels, new Function<LoanModel, LoanerLoanPaginationItemDataDto>() {
+            @Override
+            public LoanerLoanPaginationItemDataDto apply(LoanModel input) {
+                return new LoanerLoanPaginationItemDataDto(input);
+            }
+        });
+
+        BasePaginationDataDto<LoanerLoanPaginationItemDataDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
+        dataDto.setStatus(true);
+
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        dto.setData(dataDto);
+
+        return dto;
+    }
+
+    public LoanRepayDataDto getLoanerLoanData(long loanId) {
         return null;
     }
 

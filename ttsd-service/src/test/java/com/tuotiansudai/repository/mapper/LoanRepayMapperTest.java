@@ -40,7 +40,7 @@ public class LoanRepayMapperTest {
     @Test
     public void shouldCreateLoanRepayModel() throws Exception {
         UserModel userModel = this.getFakeUserModel();
-        LoanModel fakeLoanModel = this.getFakeLoanModel();
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.REPAYING);
         userMapper.create(userModel);
         loanMapper.create(fakeLoanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
@@ -65,7 +65,7 @@ public class LoanRepayMapperTest {
     @Test
     public void shouldUpdate() throws Exception {
         UserModel userModel = this.getFakeUserModel();
-        LoanModel fakeLoanModel = this.getFakeLoanModel();
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.REPAYING);
         userMapper.create(userModel);
         loanMapper.create(fakeLoanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
@@ -97,6 +97,21 @@ public class LoanRepayMapperTest {
         assertThat(actualLoanRepayModel.getStatus(), is(loanRepayModel.getStatus()));
     }
 
+    @Test
+    public void shouldFindEnabledRepayingLoanRepay() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.REPAYING);
+        loanMapper.create(fakeLoanModel);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.REPAYING, new DateTime().toDate(), null, 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.REPAYING, new DateTime().plusDays(1).toDate(), null, 0, 0, 0, 0);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2));
+
+        LoanRepayModel enabledRepay = loanRepayMapper.findEnabledRepayByLoanId(fakeLoanModel.getId());
+
+        assertThat(enabledRepay.getId(), is(fakeLoanRepayModel1.getId()));
+    }
+
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");
@@ -109,7 +124,7 @@ public class LoanRepayMapperTest {
         return fakeUserModel;
     }
 
-    private LoanModel getFakeLoanModel() {
+    private LoanModel getFakeLoanModel(LoanStatus loanStatus) {
         UserModel fakeUserModel = getFakeUserModel();
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
@@ -123,7 +138,31 @@ public class LoanRepayMapperTest {
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
-        fakeLoanModel.setStatus(LoanStatus.REPAYING);
+        fakeLoanModel.setStatus(loanStatus);
         return fakeLoanModel;
+    }
+
+    private LoanRepayModel getFakeLoanRepayModel(LoanModel fakeLoanModel,
+                                                 int period,
+                                                 RepayStatus repayStatus,
+                                                 Date repayDate,
+                                                 Date actualRepayDate,
+                                                 long corpus,
+                                                 long expectedInterest,
+                                                 long actualInterest,
+                                                 long defaultInterest
+    ) {
+        LoanRepayModel fakeLoanRepayModel = new LoanRepayModel();
+        fakeLoanRepayModel.setId(idGenerator.generate());
+        fakeLoanRepayModel.setPeriod(period);
+        fakeLoanRepayModel.setStatus(repayStatus);
+        fakeLoanRepayModel.setLoanId(fakeLoanModel.getId());
+        fakeLoanRepayModel.setRepayDate(repayDate);
+        fakeLoanRepayModel.setActualRepayDate(actualRepayDate);
+        fakeLoanRepayModel.setCorpus(corpus);
+        fakeLoanRepayModel.setExpectedInterest(expectedInterest);
+        fakeLoanRepayModel.setActualInterest(actualInterest);
+        fakeLoanRepayModel.setDefaultInterest(defaultInterest);
+        return fakeLoanRepayModel;
     }
 }

@@ -118,7 +118,7 @@ public class LoanModel {
     /**
      * 完成日期
      */
-    private Date completeRepayDate;
+    private Date completedDate;
 
     /**
      * 应还总额
@@ -368,8 +368,8 @@ public class LoanModel {
         return nextRepayDate;
     }
 
-    public Date getCompleteRepayDate() {
-        return completeRepayDate;
+    public Date getCompletedDate() {
+        return completedDate;
     }
 
     public long getExpectedRepayAmount() {
@@ -389,6 +389,26 @@ public class LoanModel {
             return recheckTime;
         }
         return null;
+    }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    public void setExpectedRepayAmount(long expectedRepayAmount) {
+        this.expectedRepayAmount = expectedRepayAmount;
+    }
+
+    public void setActualRepayAmount(long actualRepayAmount) {
+        this.actualRepayAmount = actualRepayAmount;
+    }
+
+    public void setUnpaidAmount(long unpaidAmount) {
+        this.unpaidAmount = unpaidAmount;
     }
 
     private String rateStrDivideOneHundred(String rate) {

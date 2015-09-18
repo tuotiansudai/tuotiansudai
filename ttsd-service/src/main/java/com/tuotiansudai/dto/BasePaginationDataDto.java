@@ -12,11 +12,12 @@ public class BasePaginationDataDto<T> extends BaseDataDto {
     private List<T> records;
 
     public BasePaginationDataDto(int index, int pageSize, long count, List<T> records) {
+        long totalPages = count / pageSize + (count % pageSize > 0 ? 1 : 0);
         this.index = index;
         this.pageSize = pageSize;
         this.count = count;
-        this.hasPreviousPage = this.index > 1;
-        this.hasNextPage = this.index >= 1 && this.index < count / pageSize + (count % pageSize > 0 ? 1 : 0);
+        this.hasPreviousPage = index > 1 && index <= totalPages;
+        this.hasNextPage = index < totalPages;
         this.records = records;
     }
 

@@ -65,5 +65,5 @@ public interface LoanService {
 
     BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
-    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, Date startDate, Date endDate, Date date, LoanStatus status);
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startDate, Date endDate);
 }
