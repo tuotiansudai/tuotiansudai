@@ -16,5 +16,5 @@ public interface InvestService {
      * @param includeNextRepay 是否同时查询下次还款情况
      * @return
      */
-    BasePaginationDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay);
+    BasePaginationDataDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay);
 }
