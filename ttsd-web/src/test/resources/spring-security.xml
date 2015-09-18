@@ -20,6 +20,13 @@
         </beans:property>
     </beans:bean>
 
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
+        <beans:property name="saltSource" ref="saltSource"/>
+        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
+    </beans:bean>
+
+    <!-- work around -->
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
@@ -45,13 +52,12 @@
         <intercept-url pattern="/recharge" access="hasAuthority('USER')"/>
         <intercept-url pattern="/withdraw" access="hasAuthority('USER')"/>
         <intercept-url pattern="/bind-card" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/loaner/*" access="isAnonymous()"/>
         <intercept-url pattern="/*" access="hasAuthority('USER')"/>
-        <csrf/>
+        <csrf disabled="true"/>
     </http>
 
     <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="myDaoAuthenticationProvider"/>
+        <authentication-provider ref="daoAuthenticationProvider"/>
     </authentication-manager>
 
 </beans:beans>

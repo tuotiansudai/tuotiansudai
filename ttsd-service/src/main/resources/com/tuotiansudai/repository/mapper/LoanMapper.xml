@@ -31,14 +31,18 @@
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
         <result column="loan_amount" property="loanAmount"></result>
-
+        <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="completed_date" property="completedDate"></result>
+        <result column="unpaid_amount" property="unpaidAmount"></result>
+        <result column="expected_repay_amount" property="expectedRepayAmount"></result>
+        <result column="actual_repay_amount" property="actualRepayAmount"></result>
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
         insert into loan(id,name,agent_login_name,loaner_login_name,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
         values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{baseRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
     </insert>
-    
+
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
     </select>
@@ -49,6 +53,63 @@
 
     <select id="findByStatus" resultMap="loanResultMap">
         select * from loan where status = #{status}
+    </select>
+
+    <select id="findRepayingPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+        select *,
+        (select min(loan_repay.repay_date)
+        from loan_repay
+        where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') as next_repay_date,
+        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
+        from loan_repay
+        where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
+        from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startDate} and #{endDate}
+        order by next_repay_date asc, id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountRepayingByLoanerLoginName" parameterType="map" resultType="long">
+        select count(1) from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startDate} and #{endDate}
+    </select>
+
+    <select id="findCompletedPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+        select *,
+        (select max(loan_repay.repay_date)
+        from loan_repay
+        where loan.id=loan_repay.loan_id) as completed_date,
+        (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest)
+        from loan_repay
+        where loan.id=loan_repay.loan_id) as expected_repay_amount,
+        (select sum(loan_repay.corpus) + sum(loan_repay.actual_interest) + sum(loan_repay.default_interest)
+        from loan_repay
+        where loan.id=loan_repay.loan_id) as actual_repay_amount
+        from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
+        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startDate} and #{endDate}
+        order by completed_date desc, id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountCompletedByLoanerLoginName" parameterType="map" resultType="long">
+        select count(1) from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
+        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startDate} and #{endDate}
+    </select>
+
+    <select id="findCanceledPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+        select * from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startDate} and #{endDate}
+        order by recheck_time desc, id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountCanceledByLoanerLoginName" parameterType="map" resultType="long">
+        select count(1) from loan
+        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startDate} and #{endDate}
     </select>
 
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
@@ -118,5 +179,6 @@
                 status = #{status}
             </if>
         </trim>
+        where id = #{id}
     </update>
 </mapper>

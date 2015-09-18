@@ -1,32 +1,39 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
+import com.sun.javafx.binding.StringFormatter;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RepayDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
+import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.service.RepayService;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanRepayMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class RepayServiceImpl implements RepayService {
+
+    static Logger logger = Logger.getLogger(RepayServiceImpl.class);
+
+    private static String REPAY_ORDER_ID_TEMPLATE = "{0}X{1}";
 
     @Autowired
     private IdGenerator idGenerator;
@@ -44,22 +51,51 @@ public class RepayServiceImpl implements RepayService {
     private LoanRepayMapper loanRepayMapper;
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private PayAsyncClient payAsyncClient;
 
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> repay(RepayDto repayDto) {
-        DateTime today = new DateTime().withTimeAtStartOfDay();
         long loanId = repayDto.getLoanId();
         int period = repayDto.getPeriod();
         LoanModel loanModel = loanMapper.findById(loanId);
+        LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanId, period);
+
+        long actualInterest = this.generateLoanRepayInterest(loanModel, period);
+        long corpus = this.generateLoanRepayCorpus(loanModel, period);
+
+        AccountModel accountModel = accountMapper.findByLoginName(loanModel.getLoanerLoginName());
+
+        String orderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE,
+                String.valueOf(loanRepayModel.getId()),
+                String.valueOf(new Date().getTime()));
+
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newRepayRequest(
+                String.valueOf(loanId),
+                orderId,
+                accountModel.getPayUserId(),
+                String.valueOf(actualInterest + corpus));
+        try {
+            return payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+        } catch (PayException e) {
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+            PayFormDataDto payFormDataDto = new PayFormDataDto();
+            baseDto.setData(payFormDataDto);
+            return baseDto;
+        }
+    }
+
+    private long generateLoanRepayInterest(LoanModel loanModel, int period) {
+        DateTime repayDay = new DateTime();
+        long loanId = loanModel.getId();
         DateTime loanDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay();
         LoanType loanType = loanModel.getType();
-        LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanId, period);
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+        DateTime repayDayDateTime = new DateTime(repayDay);
         boolean isFirstPeriod = period == 1;
-        boolean isLastPeriod = (LoanPeriodUnit.MONTH == loanType.getLoanPeriodUnit() && period == loanModel.getPeriods())
-                || (LoanPeriodUnit.DAY == loanType.getLoanPeriodUnit() && period == 1);
 
         long corpusMultiplyPeriodDays = 0;
         if (isFirstPeriod) {
@@ -67,23 +103,39 @@ public class RepayServiceImpl implements RepayService {
                 int days;
                 if (InterestInitiateType.INTEREST_START_AT_INVEST == loanType.getInterestInitiateType()) {
                     DateTime investDate = new DateTime(successInvest.getCreatedTime()).withTimeAtStartOfDay();
-                    days = Days.daysBetween(investDate, today).getDays() + 1;
+                    days = Days.daysBetween(investDate, repayDayDateTime).getDays() + 1;
                 } else {
-                    days = Days.daysBetween(loanDate, today).getDays() + 1;
+                    days = Days.daysBetween(loanDate, repayDayDateTime).getDays() + 1;
                 }
                 corpusMultiplyPeriodDays += successInvest.getAmount() * days;
             }
         } else {
             LoanRepayModel lastLoanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanId, period - 1);
             DateTime lastActualRepayDate = new DateTime(lastLoanRepayModel.getActualRepayDate()).withTimeAtStartOfDay();
-            int days = Days.daysBetween(lastActualRepayDate, today).getDays() + 1;
+            int days = Days.daysBetween(lastActualRepayDate, repayDayDateTime).getDays() + 1;
             for (InvestModel successInvest : successInvests) {
                 corpusMultiplyPeriodDays += successInvest.getAmount() * days;
             }
         }
-        long actualInterest = this.calculateInterest(loanModel, corpusMultiplyPeriodDays);
 
-        return null;
+        return this.calculateInterest(loanModel, corpusMultiplyPeriodDays);
+    }
+
+    private long generateLoanRepayCorpus(LoanModel loanModel, int period) {
+        long loanId = loanModel.getId();
+        LoanType loanType = loanModel.getType();
+        boolean isLastPeriod = (LoanPeriodUnit.MONTH == loanType.getLoanPeriodUnit() && period == loanModel.getPeriods())
+                || (LoanPeriodUnit.DAY == loanType.getLoanPeriodUnit() && period == 1);
+
+        List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanId);
+        long corpus = 0;
+        if (isLastPeriod) {
+            for (InvestModel successInvest : successInvests) {
+                corpus += successInvest.getAmount();
+            }
+        }
+
+        return corpus;
     }
 
     @Override
@@ -102,11 +154,27 @@ public class RepayServiceImpl implements RepayService {
     @Transactional
     private void postRepayCallback(BaseCallbackRequestModel callbackRequestModel) {
         try {
-            long orderId = Long.parseLong(callbackRequestModel.getOrderId());
-            LoanRepayModel loanRepayModel = loanRepayMapper.findById(orderId);
+            if (callbackRequestModel.isSuccess()) {
+                String orderId = callbackRequestModel.getOrderId();
+                long loanRepayId = Long.parseLong(orderId.split("X")[0]);
+                LoanRepayModel loanRepayModel = loanRepayMapper.findById(loanRepayId);
+                long loanId = loanRepayModel.getLoanId();
+                LoanModel loanModel = loanMapper.findById(loanId);
+                int period = loanRepayModel.getPeriod();
+                long loanRepayInterest = this.generateLoanRepayInterest(loanModel, period);
+                long corpus = this.generateLoanRepayCorpus(loanModel, period);
 
+                loanRepayModel.setCorpus(corpus);
+                loanRepayModel.setActualInterest(loanRepayInterest);
+                loanRepayModel.setActualRepayDate(new Date());
+                loanRepayModel.setStatus(RepayStatus.COMPLETE);
+                loanRepayMapper.update(loanRepayModel);
+
+                //TODO: 1.出借人返款 2.多余的钱返平台 3.最后一期更新标的状态
+
+            }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 

@@ -3,9 +3,10 @@ package com.tuotiansudai.dto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class InvestDetailDto extends BasePaginationDataDto {
+public class InvestDetailDto implements Serializable{
     /**
      * 投资ID
      */
