@@ -9,8 +9,15 @@
             <p>客服电话：400-169-1188<span>沟通时间：(9:00-18:00)</span></p>
             <ul>
                 <li><a href="javascript:">帮助中心</a></li>
-                <li><a href="javascript:">登陆</a></li>
-                <li>|<a href="javascript:">注册</a></li>
+            <@global.security.authorize access="isAuthenticated()">
+                <li><a href="/user-center"><@global.security.authentication property="principal.username" /></a></li>
+                <li><a href="/logout">退出</a></li>
+            </@global.security.authorize>
+
+            <@global.security.authorize access="! isAuthenticated()">
+                <li><a href="/register">免费注册</a></li>
+                <li><a href="/login">登录</a></li>
+            </@global.security.authorize>
             </ul>
         </div>
     </div>
@@ -19,9 +26,6 @@
             <a href="#" class="logo">
                 <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
             </a>
-
-            <#--<p>注册</p>-->
-            <#--<span>已有账号，请<a href="javascript:;">登陆</a></span>-->
         </div>
     </div>
 </div>

@@ -32,6 +32,7 @@
                     login-processing-url="/login-handler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+        <logout logout-url="/logout" logout-success-url="/" />
 
         <!--<intercept-url pattern="/*" access="isAnonymous()"/>-->
         <intercept-url pattern="/" access="permitAll()"/>
