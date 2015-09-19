@@ -11,7 +11,11 @@
                 <li><a href="javascript:">帮助中心</a></li>
             <@global.security.authorize access="isAuthenticated()">
                 <li><a href="/user-center"><@global.security.authentication property="principal.username" /></a></li>
-                <li><a href="/logout">退出</a></li>
+                <li><a class="logout" href="/logout">退出</a>
+                    <form class="logout-form" action="/logout" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </li>
             </@global.security.authorize>
 
             <@global.security.authorize access="! isAuthenticated()">

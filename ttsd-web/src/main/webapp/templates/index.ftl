@@ -7,5 +7,7 @@
 <#include "header.ftl" />
     Hello World!
 <#include "footer.ftl">
+<@global.javascript pageJavascript="${js.index}">
+</@global.javascript>
 </body>
 </html>
