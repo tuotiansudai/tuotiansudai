@@ -11,4 +11,6 @@ public interface InvestService {
      * @param investDto
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto);
+
+    long calculateExpectedInterest(long loanId, long amount);
 }

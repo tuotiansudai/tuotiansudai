@@ -29,9 +29,9 @@ public class LoanerController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView loanList(@RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @RequestParam(name = "pageSize", defaultValue = "10",required = false) int pageSize,
-                                 @RequestParam(name = "startDate", required = false) Date startDate,
-                                 @RequestParam(name = "endDate", required = false) Date endDate,
-                                 @RequestParam(name = "status", required = false) LoanStatus loanStatus) {
+                                 @RequestParam(name = "startTime", required = false) Date startTime,
+                                 @RequestParam(name = "endTime", required = false) Date endTime,
+                                 @RequestParam(name = "status", required = false) LoanStatus status) {
         return new ModelAndView("/loaner-loan-list");
     }
 
@@ -40,10 +40,10 @@ public class LoanerController {
     public BaseDto<BasePaginationDataDto> loanData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                    @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                    @RequestParam(name = "status", required = false) LoanStatus status,
-                                                   @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                                   @RequestParam(name = "endDate", required = false) Date endDate) {
+                                                   @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                                   @RequestParam(name = "endTime", required = false) Date endTime) {
 
-        return loanService.getLoanerLoanData(index, pageSize, status, startDate, endDate);
+        return loanService.getLoanerLoanData(index, pageSize, status, startTime, endTime);
     }
 
     @RequestMapping(path = "/fake-loan-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
@@ -51,8 +51,8 @@ public class LoanerController {
     public BaseDto<BasePaginationDataDto> fakeLoanData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                        @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                                        @RequestParam(name = "status", required = false) LoanStatus status,
-                                                       @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                                       @RequestParam(name = "endDate", required = false) Date endDate) {
+                                                       @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                                       @RequestParam(name = "endTime", required = false) Date endTime) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
 
         List<LoanerLoanPaginationItemDataDto> records = Lists.newArrayList();
