@@ -27,10 +27,12 @@ function getAllHtml() {
 }
 function getContent() {
     var arr = [];
-    arr.push("使用editor.getContent()方法可以获得编辑器的内容");
-    arr.push("内容为：");
+    //arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+    //arr.push("内容为：");
     arr.push(UE.getEditor('editor').getContent());
-    alert(arr.join("\n"));
+    $('.jq-uedit-y').val(arr);
+
+    //alert(arr.join("\n"));
 }
 function getPlainTxt() {
     var arr = [];
@@ -65,10 +67,11 @@ function getText() {
 
 function getContentTxt() {
     var arr = [];
-    arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
-    arr.push("编辑器的纯文本内容为：");
+    //arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+    //arr.push("编辑器的纯文本内容为：");
     arr.push(UE.getEditor('editor').getContentTxt());
-    alert(arr.join("\n"));
+    $('.jq-uedit').val(arr);
+    //alert(arr.join("\n"));
 }
 function hasContent() {
     var arr = [];

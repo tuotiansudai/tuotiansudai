@@ -17,6 +17,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +30,21 @@ import java.util.Map;
 @Component
 public class PayAsyncClient {
 
-    static Logger logger = Logger.getLogger(PaySyncClient.class);
+    static Logger logger = Logger.getLogger(PayAsyncClient.class);
+
+    @Value(value = "${ump.callback.web.host}")
+    private String webCallback;
+
+    @Value(value = "${ump.callback.back.host}")
+    private String backCallback;
 
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
                                                     BaseAsyncModel requestModel) throws PayException {
         try {
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
+            requestModel.setRetUrl(MessageFormat.format("{0}/callback/{1}", webCallback, requestModel.getService()));
+            requestModel.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", backCallback, requestModel.getService()));
             requestModel.setSign(reqData.getSign());
             requestModel.setRequestUrl(reqData.getUrl());
             requestModel.setRequestData(field.toString());

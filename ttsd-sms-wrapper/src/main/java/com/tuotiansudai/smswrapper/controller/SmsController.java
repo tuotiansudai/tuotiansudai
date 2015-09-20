@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/sms")
-public class SmsController extends BaseController{
+@RequestMapping(value = "/sms", consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+public class SmsController {
 
     @Autowired
     private SmsService smsService;
@@ -18,6 +18,14 @@ public class SmsController extends BaseController{
     public SmsResultDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
         SmsResultDataDto data = new SmsResultDataDto();
         data.setStatus(smsService.sendRegisterCaptcha(mobile, captcha));
+        return new SmsResultDto(data);
+    }
+
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/retrieve", method = RequestMethod.GET)
+    @ResponseBody
+    public SmsResultDto sendRetrievePasswordCaptcha(@PathVariable String mobile, @PathVariable String captcha) {
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendRetrievePasswordCaptcha(mobile, captcha));
         return new SmsResultDto(data);
     }
 }

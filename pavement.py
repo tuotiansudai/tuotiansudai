@@ -1,5 +1,7 @@
 import os
+import sys
 
+sys.path.insert(1, os.path.dirname(os.path.abspath(__file__)))
 from paver.tasks import task, needs, cmdopts
 
 
@@ -139,11 +141,33 @@ def deploy_to_docker(options):
 
 
 @task
+def v2deploy():
+    from scripts.deployment import NewVersionDeployment
+
+    v2 = NewVersionDeployment()
+    v2.deploy()
+
+@task
+@cmdopts([
+    ('dbhost=', '', 'database host'),
+    ('dbport=', '', 'database port'),
+    ('redishost=', '', 'redis host'),
+    ('redisport=', '', 'redis port'),
+])
+def v2unittest(options):
+    from scripts.unit_test import NewVersionUnitTest
+
+
+    v2 = NewVersionUnitTest(options.dbhost, options.dbport, options.redishost, options.redisport)
+    v2.test()
+
+@task
 @needs('mkwar', 'deploy_tomcat')
 def deploy():
     """
     Deploy to production environment
     """
+
 
 @task
 @needs('migrate', 'deploy')
@@ -151,6 +175,22 @@ def devdeploy():
     """
     Deploy to dev/test environment
     """
+
+
+@task
+def cideploy():
+    """
+    Deploy to PROD from CI
+    """
+    from paver.shell import sh
+
+    try:
+        ci_file = open('/workspace/ci/abc', 'rb')
+        pwd = ci_file.readline().strip()
+        sh("/usr/local/bin/fab deploy -p {0} --show=debug".format(pwd))
+        ci_file.close()
+    except IOError as e:
+        print e
 
 
 def generate_git_log_file():
@@ -177,6 +217,7 @@ def versioning_min_files(path):
             new_name = '.'.join(new_name_parts)
             new_file_full_path = os.path.join('/'.join(full_path_parts[:-1]), new_name)
             shutil.copyfile(original_file_path, new_file_full_path)
+    log_file.close()
 
 
 @task

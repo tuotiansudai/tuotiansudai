@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.text.MessageFormat;
@@ -42,6 +43,7 @@ public class SmsClientTest {
     }
 
     @Test
+    @Transactional
     public void shouldGetResultCode() throws Exception {
         MockResponse mockResponse = new MockResponse();
         String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";

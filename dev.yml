@@ -1,0 +1,47 @@
+web:
+  image: "leoshi/ttsd-tomcat8-java7"
+  ports:
+    - "20002:8080"
+  volumes:
+    - ./ttsd-web/war:/webapps
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+console:
+  image: "leoshi/ttsd-tomcat8-java7"
+  ports:
+    - "20003:8080"
+  volumes:
+    - ./ttsd-console/war:/webapps
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+pay-wrapper:
+  image: "leoshi/ttsd-tomcat8-java7"
+  ports:
+    - "20004:8080"
+  volumes:
+    - ./ttsd-pay-wrapper/war:/webapps
+  links:
+      - "sms-wrapper"
+      - "redis-server"
+sms-wrapper:
+  image: "leoshi/ttsd-tomcat8-java7"
+  ports:
+    - "20005:8080"
+  volumes:
+    - ./ttsd-sms-wrapper/war:/webapps
+redis-server:
+  image: "grokzen/redis-cluster"
+  ports:
+    - "20010:7000"
+    - "20011:7001"
+    - "20012:7002"
+    - "20013:7003"
+    - "20014:7004"
+    - "20015:7005"
+    - "20016:7006"
+    - "20017:7007"
+

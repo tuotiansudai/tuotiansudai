@@ -72,12 +72,12 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 			FacesContext facesContext) throws IOException {
 		TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
-		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.MER_REPLACE_CARD);
+		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
 		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.MER_REPLACE_CARD);
+				+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
-						+ UmPayConstants.OperationType.MER_REPLACE_CARD);
+						+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
 		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
 		sendMap.put("order_id", order_id);
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
@@ -92,7 +92,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 			log.debug("换卡发送数据:" + reqData);
 			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
 					bankCard.getUser().getId(),
-					UmPayConstants.OperationType.MER_REPLACE_CARD,
+					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
 					GsonUtil.fromMap2Json(reqData.getField()));
 			sendOperation(to, facesContext);
 		}catch (ReqDataException e) {
@@ -114,7 +114,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 					paramMap.get("user_id"));
 			String order_id = paramMap.get("order_id");
 			TrusteeshipOperation to = trusteeshipOperationBO.get(
-					UmPayConstants.OperationType.MER_REPLACE_CARD, order_id, trusteeshipAccount
+					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD, order_id, trusteeshipAccount
 							.getUser().getId(),
 					UmPayConstants.OperationType.UMPAY);
 			String ret_code = paramMap.get("ret_code");
@@ -175,7 +175,7 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 								bankCard.setBank(this.rechargeService.getBankNameByNo(paramMap.get("gate_id")));
 								ht.update(bankCard);
 							}
-							if (!this.rechargeService.isRealNameBank(paramMap.get("gate_id"))){
+							if (paramMap.get("gate_id").equals("CMB")){
 								String detailTemplate = "用户{0}更换{1}银行卡";
 								try {
 									this.systemBillService.transferOut(0.01,"replace_card", MessageFormat.format(detailTemplate,

@@ -16,14 +16,14 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <context:property-placeholder location="classpath:jdbc.properties,classpath:zucp.properties" />
+    <context:property-placeholder location="classpath:ttsd-service.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.smswrapper"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.url}${jdbc.schema}"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/sms_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
@@ -56,5 +56,4 @@
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
     <bean class="com.tuotiansudai.smswrapper.util.SpringContextUtil" />
-
 </beans>

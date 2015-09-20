@@ -99,9 +99,7 @@
 			<f:event type="preRenderComponent"
 					 listener="#{loanListRaising.addOrder(orderColumn, 'asc')}"></f:event>
 			<f:event type="preRenderComponent"
-					 listener="#{loanListRaising.addOrder('loan.seqNum','desc')}"></f:event>
-			<f:event type="preRenderComponent"
-					 listener="#{loanListRaising.addOrder('loan.commitTime','asc')}"></f:event>
+					 listener="#{loanListRaising.addOrder('loan.verifyTime','desc')}"></f:event>
 
 			<div class="list-div clearfix">
 				<ui:repeat var="loan" value="#{loanListRaising.lazyModelData}">
@@ -226,8 +224,6 @@
 				<f:event type="preRenderComponent"
 					listener="#{loanList2.setPageSize(4)}"></f:event>
 				<f:event type="preRenderComponent"
-					listener="#{loanList2.addOrder('loan.seqNum','desc')}"></f:event>
-				<f:event type="preRenderComponent"
 					listener="#{loanList2.example.setBusinessType('个人借款')}"></f:event>
 
 				<f:event type="preRenderComponent"
@@ -238,7 +234,7 @@
 				<f:event type="preRenderComponent"
 					listener="#{loanList2.addOrder(orderColumn, 'asc')}"></f:event>
 				<f:event type="preRenderComponent"
-					listener="#{loanList2.addOrder('loan.commitTime','asc')}"></f:event>
+					listener="#{loanList2.addOrder('loan.verifyTime','desc')}"></f:event>
 
 				<div class="list-div clearfix">
 					<ui:repeat var="loan" value="#{loanList2.lazyModelData}">
@@ -297,6 +293,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" count-down-id="b-#{loan.id}"
+									   on-begin="onCountDownBegin" on-over="onCountDownOver"
 									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
@@ -330,7 +327,7 @@
 					<span class="fl">个人借款<i>安心理财，安全收益</i></span>
 					<a href="#{path}/p2p_loan-list" class="fr more">更多</a>
 				</div>
-				
+
 				<ui:param name="restriction"
 					value="#{'(loan.status=\''}#{LoanStatus.RAISING}#{'\' or loan.status=\''}#{LoanStatus.REPAYING}#{'\' or loan.status=\''}#{LoanStatus.COMPLETE}#{'\' or loan.status=\''}#{LoanStatus.RECHECK}#{'\')'}"></ui:param>
 				<f:event type="preRenderComponent"
@@ -338,8 +335,6 @@
 
 				<f:event type="preRenderComponent"
 					listener="#{loanList.setPageSize(8)}"></f:event>
-				<f:event type="preRenderComponent"
-					listener="#{loanList.addOrder('loan.seqNum','desc')}"></f:event>
 				<f:event type="preRenderComponent"
 					listener="#{loanList.example.setBusinessType('个人借款')}"></f:event>
 
@@ -353,7 +348,7 @@
 				<f:event type="preRenderComponent"
 					listener="#{loanList.addOrder(orderColumn, 'asc')}"></f:event>
 				<f:event type="preRenderComponent"
-					listener="#{loanList.addOrder('loan.commitTime','asc')}"></f:event>
+					listener="#{loanList.addOrder('loan.verifyTime','desc')}"></f:event>
 
 				<div class="list-div clearfix">
 					<ui:param name="loanListSize" value="#{loanList.lazyModelData.size()}"></ui:param>
@@ -408,6 +403,7 @@
 
 								<ui:fragment rendered="#{(not empty loan.investBeginTime) and loan.investBeginTime gt now}">
 									<p class="clearfix" rel="invest-time-countdown" count-down-id="c-#{loan.id}"
+									   on-begin="onCountDownBegin" on-over="onCountDownOver"
 									   count-down-over-message="期限：#{loanCalculator.calculateRemainTime(loan.id)}"
 									   invest-begin-time="#{of:formatDate(loan.investBeginTime,'yyyy/MM/dd HH:mm:ss')}"
 									   server-now-time="#{of:formatDate(now, 'yyyy/MM/dd HH:mm:ss')}">
