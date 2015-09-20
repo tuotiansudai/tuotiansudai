@@ -73,7 +73,7 @@ public class RegisterController extends BaseController {
     @ResponseBody
     public BaseDto<BaseDataDto> loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(userService.loginNameIsExist(loginName));
+        dataDto.setStatus(userService.loginNameIsExist(loginName.toLowerCase()));
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 
