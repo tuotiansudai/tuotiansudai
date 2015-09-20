@@ -109,6 +109,13 @@
 
 					<p:column>
 						<f:facet name="header">
+							<h:outputText value="期数"></h:outputText>
+						</f:facet>
+						<h:outputText value="#{invest.loanDeadline}"></h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
 							<h:outputText value="投资人"></h:outputText>
 						</f:facet>
 						<h:outputText value="#{invest.investorId}"></h:outputText>
