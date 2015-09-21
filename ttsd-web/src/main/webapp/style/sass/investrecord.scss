@@ -64,11 +64,21 @@
     & .sub-hd {
       padding-left: 20px;
     }
-    & a {
+    & .btn {
+      background: #ffac2a;
+      color: #fff;
+      border-radius: 3px;
+      padding: 8px 10px;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+    & .jq-n {
       display: inline-block;
       padding: 0 10px;
       margin-left: 10px;
       color: #333;
+      cursor: pointer;
       &.current {
         background: #ffac2a;
         color: #fff;
@@ -86,23 +96,23 @@
     & th {
       line-height: 30px;
       background: #e1e1e1;
-      &:first-child{
+      &:first-child {
         padding-left: 20px;
         text-align: left;
-        width: 13%;
+        width: 18%;
       }
     }
-    & tr:nth-child(even){
+    & tr:nth-child(even) {
       background: #e1e1e1;
     }
-    & td{
+    & td {
       line-height: 30px;
       color: #999;
-      &:first-child{
+      &:first-child {
         padding-left: 20px;
         text-align: left;
       }
-      &.txtc{
+      &.txtc {
         text-align: center;
         line-height: 100px;
       }
@@ -110,6 +120,8 @@
   }
 
 }
+.red{
+  color: #cc0000;}
 
 //日历css
 .date-picker {
@@ -505,3 +517,29 @@
   padding-left: 10px;
   width: 180px;
 }
+
+.pagination {
+  padding: 15px 20px;
+  text-align: left;
+  color: #ccc;
+}
+
+.pagination a {
+  display: inline-block;
+  color: #428bca;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  margin: 0 2px;
+  font-size: 12px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.pagination a:hover {
+  text-decoration: none;
+  border: 1px solid #428bca;
+}
+
