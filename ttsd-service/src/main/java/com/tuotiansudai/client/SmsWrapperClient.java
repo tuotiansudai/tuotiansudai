@@ -35,7 +35,7 @@ public class SmsWrapperClient {
 
     private final String MOBILE_RETRIEVE_PASSWORD_URI = "/sms/mobile/{mobile}/captcha/{captcha}/retrieve";
 
-    private final String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/passwordchangednotify";
+    private final String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
     @Autowired
     private OkHttpClient okHttpClient;

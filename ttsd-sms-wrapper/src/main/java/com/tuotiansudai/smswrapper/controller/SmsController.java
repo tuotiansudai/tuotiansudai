@@ -29,7 +29,7 @@ public class SmsController {
         return new SmsResultDto(data);
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/passwordchangednotify", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/password-changed-notify", method = RequestMethod.GET)
     @ResponseBody
     public SmsResultDto sendPasswordChangedNotify(@PathVariable String mobile) {
         SmsResultDataDto data = new SmsResultDataDto();
