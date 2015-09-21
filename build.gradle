@@ -26,7 +26,7 @@ subprojects {
             applyTo run
         }
 
-        task applicationCodeCoverageReport(type:JacocoReport){
+        task applicationCodeCoverageReport(type: JacocoReport) {
             executionData run
             sourceSets sourceSets.main
         }
