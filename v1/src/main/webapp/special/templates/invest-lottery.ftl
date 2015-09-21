@@ -74,7 +74,7 @@
                                 <td>${item.user.username}</td>
                                 <td>
                                 <#if item.prizeType == 'G'>
-                                    ${(item.amount/100)?string('.00')} 元现金
+                                    ${(item.amount/100)?string('0.00')} 元现金
                                 <#else>
                                     ${item.prizeType.desc}
                                 </#if>
@@ -135,7 +135,7 @@
                                 <li class="draw-11">代金券</br>一张</li>
                                 <li class="draw-12">500元</br>礼品</li>
                             </ul>
-                            <button type="button" class="btn-draw">抽奖</button>
+                            <button type="button" class="btn-draw" id="novice">抽奖</button>
                         </div>
                     </div>
                     <div class="box">
@@ -156,7 +156,7 @@
                                 <li class="draw-11">代金券</br>一张</li>
                                 <li class="draw-12">500元</br>礼品</li>
                             </ul>
-                            <button type="button" class="btn-draw">抽奖</button>
+                            <button type="button" class="btn-draw" id="normal">抽奖</button>
                         </div>
                     </div>
                 </div>

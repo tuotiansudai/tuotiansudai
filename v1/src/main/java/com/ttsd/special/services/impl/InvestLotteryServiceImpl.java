@@ -106,7 +106,7 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
             hibernateTemplate.save(investLottery);
         }
     }
-
+    @Transactional(rollbackFor = Exception.class,readOnly = false)
     public LotteryPrizeResponseDto getLotteryPrize(InvestLotteryType investLotteryType) {
         LotteryPrizeResponseDto dto = new LotteryPrizeResponseDto();
         List<InvestLottery> investLotteries = investLotteryDao.findInvestLotteryByType(investLotteryType);
