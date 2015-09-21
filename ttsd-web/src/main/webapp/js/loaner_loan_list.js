@@ -32,10 +32,69 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
         }).done(function (res) {
-            res.step1 = true;
+            if (selectedType == 'REPAYING') {
+                res.step1 = true;
+            } else if (selectedType == 'COMPLETE') {
+                res.step2 = true;
+            } else {
+                res.step3 = true;
+            }
+
             var ret = Mustache.render(dealtableTpl, res);
             $('#tpl').html(ret);
             _page = res.data.index;
+            $('#tpl .plan').click(function () {
+                var dataLoan = $(this).attr('data-loan');
+                var str = '';
+                $.ajax({
+                    url: dataLoan,
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (res) {
+                    if (res.data.status) {
+                        var _res = res.data.records;
+                        for (var i = 0; i < _res.length; i++) {
+                            if (_res[i]['isEnabled']) {
+                                var txt = '<a class="re_plan" href = "">待还款</a>';
+                            } else {
+                                var txt = '';
+                            }
+                            console.log(txt)
+                            var total = parseInt(_res[i]['corpus']) + parseInt(_res[i]['actualInterest']) + parseInt(_res[i]['expectedInterest']) + parseInt(_res[i]['defaultInterest']);
+                            str += "<tr><td>" +
+                                _res[i]['period']
+                                + "</td><td>" +
+                                _res[i]['corpus']
+                                + "</td><td>" +
+                                _res[i]['expectedInterest']
+                                + "</td><td>" +
+                                _res[i]['actualInterest']
+                                + "</td> <td>" +
+                                _res[i]['defaultInterest']
+                                + "</td> <td>" +
+                                total
+                                + "</td> <td>" +
+                                _res[i]['repayDate']
+                                + "</td> <td>" +
+                                _res[i]['actualRepayDate']
+                                + "</td><td>" +
+                                _res[i]['loanRepayStatus']
+                                + "</td><td>" +
+                                 txt
+                                + "</td></tr>";
+
+                        }
+                        $('.table-list tbody').find('tr').remove();
+                        $('.table-list tbody').append(str);
+                        console.log(str)
+                    }
+
+                });
+                $('.layer-box').show();
+                return false;
+
+            })
         });
     }
 
@@ -46,7 +105,6 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
         $(this).addClass("current").siblings(".jq-n").removeClass("current");
         //$(".rec_type .jq-n").eq(0).addClass("current").siblings(".jq-n").removeClass("current");
         filterChanged();
-
     });
 
 // options
@@ -90,49 +148,7 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
         getAjax(_page);
     });
 //还款计划
-    $('.plan').click(function () {
-        var dataLoan = $(this).attr('data-loan');
-        var str = '';
-        $.get(dataLoan, function (res) {
-            if (res.status) {
-                var _res = res.data;
-                for (var i = 0; i < _res.length; i++) {
-                    if (_res[i]['isEnabled']) {
-                        var txt = '<a href = "">待还款</a>';
-                    } else {
-                        var txt = '';
-                    }
-                    var total = _res[i]['corpus'] + _res[i]['actualInterest'] + _res[i]['expectedInterest'] + _res[i]['defaultInterest'];
-                    str += "<tr><td>" +
-                        _res[i]['period']
-                        + "</td><td>" +
-                        _res[i]['corpus']
-                        + "</td><td>" +
-                        _res[i]['expectedInterest']
-                        + "</td><td>" +
-                        _res[i]['actualInterest']
-                        + "</td> <td>" +
-                        _res[i]['defaultInterest']
-                        + "</td> <td>" +
-                        total
-                        + "</td> <td>" +
-                        _res[i]['repayDate']
-                        + "</td> <td>" +
-                        _res[i]['actualRepayDate']
-                        + "</td><td>" +
-                        _res[i]['status']
-                        + "</td><td>" + txt + "</td></tr>";
 
-                }
-                $('.table-list tbody').find('tr').remove();
-                $('.table-list tbody').append(str);
-            }
-
-        });
-
-        $('.layer-box').show();
-        return false;
-    });
     $('.layer-box .close').click(function () {
         $('.layer-box').hide();
         return false;
@@ -142,5 +158,5 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
     });
 
 
-})
-;
+});
+

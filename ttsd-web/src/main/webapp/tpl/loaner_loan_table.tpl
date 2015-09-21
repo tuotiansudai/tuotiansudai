@@ -18,7 +18,7 @@
         <td>{{loanAmount}}</td>
         <td>{{unpaidAmount}}元</td>
         <td>{{nextRepayDate}}</td>
-        <td><a class="red" href="">还款计划合同</a></td>
+        <td><span class="plan" data-loan ='/loaner/loan-repay/{{loanId}}'>还款计划</span> | <a class="red" href="">合同</a></td>
     </tr>
     {{/data.records}}
     {{^data.records}}
@@ -31,23 +31,23 @@
     {{#step2}}
         <thead>
         <tr>
-            <th>nice</th>
-            <th>交易详情</th>
-            <th>交易状态</th>
-            <th>下次回款</th>
-            <th>我的投资</th>
+            <th>借款标题</th>
+            <th>放款时间</th>
+            <th>应还总额</th>
+            <th>实还总额</th>
+            <th>还款日期</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         {{#data.records}}
         <tr>
-            <td>{{createdTime}}</td>
-            <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
-            <td>{{investStatus}}</td>
-            <td>{{nextRepayDay}}/{{nextRepayAmount}}元</td>
-            <td>{{amount}}元</td>
-            <td><a class="red" href="">合同</a></td>
+            <td>{{loanName}}</td>
+            <td><a class="red" href="/loan/{{loanId}}">{{recheckTime}}</td>
+            <td>{{expectedRepayAmount}}</td>
+            <td>{{actualRepayAmount}}元</td>
+            <td>{{completedDate}}</td>
+            <td><span class="plan" data-loan ='/loaner/loan-repay/{{loanId}}'>还款计划</span> | <a class="red" href="">合同</a></td>
         </tr>
         {{/data.records}}
         {{^data.records}}
@@ -58,32 +58,25 @@
         </tbody>
         {{/step2}}
 
-
         {{#step3}}
                 <thead>
                 <tr>
-                    <th>哈哈</th>
-                    <th>交易详情</th>
-                    <th>交易状态</th>
-                    <th>下次回款</th>
-                    <th>我的投资</th>
-                    <th>操作</th>
+                    <th>借款标题</th>
+                    <th>借款金额</th>
+                    <th>流标时间</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{#data.records}}
                 <tr>
-                    <td>{{createdTime}}</td>
-                    <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
-                    <td>{{investStatus}}</td>
-                    <td>{{nextRepayDay}}/{{nextRepayAmount}}元</td>
-                    <td>{{amount}}元</td>
-                    <td><a class="red" href="">合同</a></td>
+                    <td>{{loanName}}</td>
+                    <td>{{loanAmount}}</td>
+                    <td>{{recheckTime}}</td>
                 </tr>
                 {{/data.records}}
                 {{^data.records}}
                 <tr>
-                <td colspan="6" class="txtc">暂时没有投资纪录</td>
+                <td colspan="3" class="txtc">暂时没有投资纪录</td>
                 </tr>
                 {{/data.records}}
                 </tbody>
