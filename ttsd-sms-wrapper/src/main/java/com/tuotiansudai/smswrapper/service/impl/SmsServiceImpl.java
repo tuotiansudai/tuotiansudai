@@ -6,8 +6,8 @@ import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import com.tuotiansudai.smswrapper.repository.mapper.InvestNotifyMapper;
-import com.tuotiansudai.smswrapper.repository.mapper.RetrievePasswordCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.RetrievePasswordCaptchaMapper;
 import com.tuotiansudai.smswrapper.repository.mapper.UserPasswordChangedNotifyMapper;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class SmsServiceImpl implements SmsService {
                 .put("amount", dto.getAmount())
                 .build();
         String content = SmsTemplate.SMS_INVEST_NOTIFY_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(InvestNotifyMapper.class, dto.getMobile(), content, false, null);
+        return smsClient.sendSMS(InvestNotifyMapper.class, dto.getMobile(), content, false, "");
     }
 
     @Override
@@ -49,6 +49,6 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public boolean sendPasswordChangedNotify(String mobile) {
         String content = SmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE.generateContent(new HashMap<String,String>(0));
-        return smsClient.sendSMS(UserPasswordChangedNotifyMapper.class, mobile, content, false, null);
+        return smsClient.sendSMS(UserPasswordChangedNotifyMapper.class, mobile, content, false, "");
     }
 }

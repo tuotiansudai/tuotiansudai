@@ -37,7 +37,7 @@ public class SmsController {
         return dto;
     }
 
-    @RequestMapping(value = "/invest_notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/loan-out-investor-notify", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> sendInvestNotify(@RequestBody InvestSmsNotifyDto investSmsNotifyDto) {
         BaseDto<BaseDataDto> dto = new BaseDto<>();

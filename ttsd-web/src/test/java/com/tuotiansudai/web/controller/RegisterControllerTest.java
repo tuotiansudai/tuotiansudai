@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
 public class RegisterControllerTest {
 
     private MockMvc mockMvc;
@@ -104,11 +104,11 @@ public class RegisterControllerTest {
     }
 
     @Test
-    public void shouldRegisterUser() throws Exception{
+    public void shouldRegisterUser() throws Exception {
         RegisterUserDto registerUserDto = new RegisterUserDto();
         registerUserDto.setLoginName("loginName");
         registerUserDto.setMobile("13900000000");
-        registerUserDto.setPassword("password");
+        registerUserDto.setPassword("password1");
         registerUserDto.setCaptcha("123456");
         registerUserDto.setAgreement(true);
         String json = objectMapper.writeValueAsString(registerUserDto);
@@ -145,8 +145,7 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(true);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
         this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -156,8 +155,7 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(true);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(false);
         this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -177,8 +175,7 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldNotFoundWhenMobileIsInvalid() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(false);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(false);
 
         this.mockMvc.perform(get("/register/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());

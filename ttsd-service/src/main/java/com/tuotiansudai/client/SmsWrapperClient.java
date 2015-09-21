@@ -1,15 +1,10 @@
 package com.tuotiansudai.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestSmsNotifyDto;
-import com.tuotiansudai.dto.MonitorDataDto;
-import com.tuotiansudai.dto.SmsCaptchaDto;
+import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +36,7 @@ public class SmsWrapperClient {
 
     private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-captcha";
 
-    private final static String INVEST_NOTIFY = "/sms/invest_notify";
+    private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
 
     private final static String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
@@ -75,7 +70,7 @@ public class SmsWrapperClient {
 
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
-            String responseString = post(INVEST_NOTIFY, requestJson);
+            String responseString = post(LOAN_OUT_INVESTOR_NOTIFY, requestJson);
             if (!Strings.isNullOrEmpty(responseString)) {
                 return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
             }
@@ -86,7 +81,7 @@ public class SmsWrapperClient {
         return resultDto;
     }
 
-    public BaseDto sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
+    public BaseDto<BaseDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
         BaseDto<BaseDataDto> resultDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         resultDto.setData(dataDto);
@@ -100,7 +95,6 @@ public class SmsWrapperClient {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-
         return resultDto;
     }
 

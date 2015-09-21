@@ -144,7 +144,6 @@ public class PayWrapperClient {
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
@@ -160,7 +159,6 @@ public class PayWrapperClient {
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
