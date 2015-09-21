@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean registerUser(RegisterUserDto dto) {
-        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
+        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyRegisterCaptcha(dto.getMobile(), dto.getCaptcha());
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(dto.getLoginName());
+        userRoleModel.setLoginName(dto.getLoginName().toLowerCase());
         userRoleModel.setRole(Role.USER);
         this.userRoleMapper.create(userRoleModel);
         return true;
