@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestNotifyInfo;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.SortStyle;
+import com.tuotiansudai.repository.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -112,4 +109,44 @@ public interface InvestMapper {
      * @return
      */
     List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
+
+    /**
+     * 按条件分页查询投资记录
+     *
+     * @param loanId
+     * @param loginName
+     * @param beginTime
+     * @param endTime
+     * @param loanStatus
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List<InvestDetailModel> findByPage(@Param(value = "loanId") Long loanId,
+                                       @Param(value = "loginName") String loginName,
+                                       @Param(value = "beginTime") Date beginTime,
+                                       @Param(value = "endTime") Date endTime,
+                                       @Param(value = "loanStatus") LoanStatus loanStatus,
+                                       @Param(value = "investStatus") InvestStatus investStatus,
+                                       @Param(value = "includeRepay") boolean includeRepay,
+                                       @Param(value = "offset") int offset,
+                                       @Param(value = "limit") int limit);
+
+    /**
+     * 查询投资记录总数
+     *
+     * @param loanId
+     * @param loginName
+     * @param beginTime
+     * @param endTime
+     * @param loanStatus
+     * @return
+     */
+    int findCount(@Param(value = "loanId") Long loanId,
+                  @Param(value = "loginName") String loginName,
+                  @Param(value = "beginTime") Date beginTime,
+                  @Param(value = "endTime") Date endTime,
+                  @Param(value = "loanStatus") LoanStatus loanStatus,
+                  @Param(value = "investStatus") InvestStatus investStatus);
+
 }

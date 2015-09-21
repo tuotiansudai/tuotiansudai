@@ -8,15 +8,15 @@ public class LoanRepayModel {
 
     private long loanId;
 
-    private long corpus;
+    private int period;
 
-    private long defaultInterest;
+    private long corpus;
 
     private long expectedInterest;
 
     private long actualInterest;
 
-    private int period;
+    private long defaultInterest;
 
     private Date repayDate;
 
@@ -25,6 +25,18 @@ public class LoanRepayModel {
     private RepayStatus status;
 
     private Date createdTime = new Date();
+
+    public LoanRepayModel() {
+    }
+
+    public LoanRepayModel(long id, long loanId, int period, long expectedInterest, Date repayDate, RepayStatus status) {
+        this.id = id;
+        this.loanId = loanId;
+        this.period = period;
+        this.expectedInterest = expectedInterest;
+        this.repayDate = repayDate;
+        this.status = status;
+    }
 
     public long getId() {
         return id;

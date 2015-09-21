@@ -14,6 +14,7 @@ var require = {
         'jquery.validate': {
             deps: ['jquery']
         }
+
     }
 };
 

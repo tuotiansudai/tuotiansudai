@@ -14,6 +14,7 @@ class NewVersionUnitTest(object):
         self.init_docker()
         self.migrate()
         self.run_test()
+        self.clean_env()
 
     def clean(self):
         print "Cleaning..."
@@ -44,4 +45,7 @@ class NewVersionUnitTest(object):
     def run_test(self):
         print "Starting test..."
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Predishost={2} -Predisport={3} test'.format(self.db_host, self.db_port, self.redis_host, self.redis_port))
+
+    def clean_env(self):
+        self._remove_old_container()
 

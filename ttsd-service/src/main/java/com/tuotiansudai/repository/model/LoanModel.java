@@ -413,6 +413,10 @@ public class LoanModel {
 
     private String rateStrDivideOneHundred(String rate) {
         BigDecimal rateBigDecimal = new BigDecimal(rate);
-        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100)).doubleValue());
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
+    }
+
+    public int calculateLoanRepayTimes() {
+        return LoanPeriodUnit.DAY == this.type.getLoanPeriodUnit() ? 1 : this.periods;
     }
 }

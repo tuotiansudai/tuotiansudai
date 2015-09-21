@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 public class RegisterUserDto {
 
     @NotEmpty
-    @Pattern(regexp = "^[A-Za-z0-9]{5,25}$")
+    @Pattern(regexp = "(?!^\\\\d+$)^([a-zA-Z0-9]{5,25})$")
     private String loginName;
 
     @NotEmpty
@@ -22,6 +22,7 @@ public class RegisterUserDto {
     private String captcha;
 
     @NotEmpty
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$")
     private String password;
 
     private String referrer;

@@ -48,6 +48,8 @@ public class PayWrapperClient {
 
     private String investPath = "/invest";
 
+    private String agreementPath = "/agreement";
+
     private String referrerRewardPath = "/referrer-reward";
 
     private String repayPath = "/repay";
@@ -142,7 +144,21 @@ public class PayWrapperClient {
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
 
+        return baseDto;
+    }
+
+    public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(agreementPath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);

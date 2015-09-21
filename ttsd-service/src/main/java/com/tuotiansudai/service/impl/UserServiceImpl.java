@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -42,6 +43,9 @@ public class UserServiceImpl implements UserService {
     private PayWrapperClient payWrapperClient;
 
     @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
@@ -67,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean registerUser(RegisterUserDto dto) {
-        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
+        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyRegisterCaptcha(dto.getMobile(), dto.getCaptcha());
@@ -83,13 +87,13 @@ public class UserServiceImpl implements UserService {
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(dto.getLoginName());
+        userRoleModel.setLoginName(dto.getLoginName().toLowerCase());
         userRoleModel.setRole(Role.USER);
         this.userRoleMapper.create(userRoleModel);
 
         String referrerId = dto.getReferrer();
-        if(StringUtils.isNotEmpty(referrerId)){
-            saveReferrerRelations(referrerId,dto.getLoginName());
+        if (StringUtils.isNotEmpty(referrerId)) {
+            saveReferrerRelations(referrerId, dto.getLoginName());
         }
 
         return true;
@@ -122,6 +126,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String mobile, String password) {
-        userMapper.updatePassword(mobile,password);
+        userMapper.updatePassword(mobile, password);
+    }
+
+    @Override
+    @Transactional
+    public boolean changePassword(String loginName, String oldPassword, String newPassword) {
+        if (StringUtils.isBlank(loginName)) {
+            return false;
+        }
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        if (userModel == null) {
+            return false;
+        }
+        String encOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
+        if (!StringUtils.equals(encOldPassword, userModel.getPassword())) {
+            return false;
+        }
+        String encNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
+        userMapper.updatePassword(userModel.getMobile(), encNewPassword);
+        smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
+        return true;
     }
 }

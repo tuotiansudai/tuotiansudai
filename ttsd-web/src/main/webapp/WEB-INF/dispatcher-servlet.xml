@@ -35,6 +35,7 @@
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
+
     <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.StaticResourceVersionMap">
         <property name="singleton" value="true"/>
         <property name="javascriptLocation" value="/js/dest"/>

@@ -9,11 +9,14 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
 import com.tuotiansudai.utils.CaptchaVerifier;
+import com.tuotiansudai.utils.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,11 +74,12 @@ public class RetrievePasswordController {
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
-            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
+            dataDto.setStatus(smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.getRequestIp(request)));
         }
         dataDto.setStatus(false);
         return baseDto;

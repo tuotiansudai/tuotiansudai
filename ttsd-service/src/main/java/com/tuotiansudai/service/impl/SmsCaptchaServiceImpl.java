@@ -4,15 +4,18 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsCaptchaDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
 import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.utils.RequestIPParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
 
@@ -26,10 +29,10 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     private SmsWrapperClient smsWrapperClient;
 
     @Override
-    public boolean sendRegisterCaptcha(String mobile) {
+    public boolean sendRegisterCaptcha(String mobile, String requestIP) {
         String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha);
+            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
             return resultDto.getData().getStatus();
         }
 
@@ -70,13 +73,13 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     }
 
     @Override
-    public boolean sendMobileCaptcha(String mobile) {
-        String captcha = this.createMobileCaptcha(mobile);
+    public boolean sendRetrievePasswordCaptcha(String mobile, String requestIP) {
+        String captcha = this.createRegisterCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha);
-            return baseDto.getData().getStatus();
+            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+            return resultDto.getData().getStatus();
         }
-        return false;
+        return  false;
     }
 
     @Transactional(rollbackFor = Exception.class)
