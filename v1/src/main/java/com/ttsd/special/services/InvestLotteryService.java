@@ -1,9 +1,11 @@
 package com.ttsd.special.services;
 
+import com.ttsd.special.model.InvestLottery;
+
+import java.util.List;
 import com.ttsd.special.model.InvestLotteryType;
 
 import com.ttsd.special.dto.LotteryPrizeResponseDto;
-import com.ttsd.special.model.InvestLotteryType;
 import com.ttsd.special.model.ReceiveStatus;
 
 /**
@@ -18,5 +20,9 @@ public interface InvestLotteryService {
     LotteryPrizeResponseDto getLotteryPrize(InvestLotteryType investLotteryType);
 
     boolean winningPersonIncome(String orderId, String money, String userId);
+
+    List<InvestLottery> findInvestLotteryTops(int limit);
+
+    int getRemainingTimes(String userName, InvestLotteryType type);
 
 }

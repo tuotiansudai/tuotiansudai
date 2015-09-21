@@ -1,6 +1,7 @@
 package com.ttsd.special.services.impl;
 
 import com.esoft.archer.user.model.User;
+
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.archer.user.service.impl.UserBillBO;
 import com.esoft.core.annotations.Logger;
@@ -22,6 +23,9 @@ import com.ttsd.special.dao.InvestLotteryDao;
 import com.ttsd.special.dto.LotteryPrizeResponseDto;
 import com.ttsd.special.model.*;
 import com.ttsd.special.services.InvestLotteryService;
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
+import org.joda.time.DateTime;
 import org.apache.commons.logging.Log;
 import org.quartz.*;
 import org.quartz.impl.StdScheduler;
@@ -36,6 +40,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -254,6 +259,34 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         return (long) (money*100);
     }
 
+    @Override
+    public List<InvestLottery> findInvestLotteryTops(int limit) {
+        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query query = session.createQuery("from InvestLottery where valid = true order by awardTime desc");
+        query.setMaxResults(limit);
+        return query.list();
+    }
+
+    @Override
+    public int getRemainingTimes(String userName, InvestLotteryType type) {
+        Session session = hibernateTemplate.getSessionFactory().getCurrentSession();
+        Query query = session.createQuery("select count(*) from InvestLottery " +
+                " where valid = false" +
+                " and user.username = ?" +
+                " and type = ?" +
+                " and createdTime >= ? and createdTime < ?");
+        Calendar calendar = Calendar.getInstance();
+        query.setParameter(0, userName);
+        query.setParameter(1, type);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        query.setParameter(2, calendar.getTime());
+        calendar.add(Calendar.HOUR, 24);
+        query.setParameter(3, calendar.getTime());
+        return ((Number)query.uniqueResult()).intValue();
+    }
     @Transactional(rollbackFor = Exception.class)
     public boolean winningPersonIncome(String lotteryId, String money, String userId) {
         User user = ht.get(User.class,userId);
