@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,8 +52,10 @@ public class SmsCaptchaServiceTest {
         String jsonString = "{\"success\":true,\"data\":{\"status\":true}}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
-        smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000");
+        smsWrapperClient.setHost(server.getHostName());
+        smsWrapperClient.setPort(String.valueOf(server.getPort()));
+        smsWrapperClient.setContext("");
+        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
@@ -68,7 +71,7 @@ public class SmsCaptchaServiceTest {
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000");
+        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
         assertFalse(result);

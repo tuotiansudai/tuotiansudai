@@ -1,17 +1,20 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.AccountModel;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface AccountMapper {
 
     void create(AccountModel model);
 
     AccountModel findByLoginName(String loginName);
 
-    List<String> findAllLoginNamesByLike(@Param("loginName")String loginName);
+    AccountModel findByPayUserId(String payUserId);
+
+    List<String> findAllLoginNamesByLike(String loginName);
 
     AccountModel lockByLoginName(String loginName);
 

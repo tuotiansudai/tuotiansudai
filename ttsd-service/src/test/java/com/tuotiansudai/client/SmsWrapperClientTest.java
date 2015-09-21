@@ -2,7 +2,10 @@ package com.tuotiansudai.client;
 
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.client.dto.ResultDto;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.MonitorDataDto;
+import com.tuotiansudai.dto.SmsCaptchaDto;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +15,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.net.URL;
+
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -37,29 +41,37 @@ public class SmsWrapperClientTest {
     }
 
     @Test
-    public void jsonConvertToObject() {
-        String jsonString = "{\"success\":true,\"data\":{\"status\":false}}";
-        ResultDto resultDto = smsWrapperClient.jsonConvertToObject(jsonString);
+    @Transactional
+    public void shouldSendCaptchaIsOk() throws Exception {
+        MockResponse mockResponse = new MockResponse();
+        String jsonString = "{\"success\":true,\"data\":{\"status\":true}}";
+        mockResponse.setBody(jsonString);
+        server.enqueue(mockResponse);
+        smsWrapperClient.setHost(server.getHostName());
+        smsWrapperClient.setPort(String.valueOf(server.getPort()));
+        smsWrapperClient.setContext("");
+        BaseDto<BaseDataDto> resultDto = this.smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto("13900000000", "1000", "127.0.0.1"));
 
         assertNotNull(resultDto);
-        assertEquals(false, resultDto.getData().getStatus());
-
+        assertTrue(resultDto.getData().getStatus());
     }
 
     @Test
     @Transactional
-    public void shouldSendCaptchaIsOk() throws Exception {
+    public void shouldMonitor() throws Exception {
         MockResponse mockResponse = new MockResponse();
-        String jsonString = "{\"success\":true,\"data\":{\"status\":false}}";
+        String jsonString = "{\"success\":true,\"data\":{\"status\":true, \"databaseStatus\":true, \"redisStatus\":true }}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
-        smsWrapperClient.setHost("http://"+server.getHostName()+":"+server.getPort());
-        String mobile = "13900000000";
-        String code = "1000";
-        ResultDto resultDto = this.smsWrapperClient.sendSms(mobile, code);
+        URL url = server.getUrl("/monitor");
+        smsWrapperClient.setHost(url.getHost());
+        smsWrapperClient.setPort(String.valueOf(url.getPort()));
+        smsWrapperClient.setContext("");
+        BaseDto<MonitorDataDto> resultDto = this.smsWrapperClient.monitor();
 
         assertNotNull(resultDto);
-        assertFalse(resultDto.getData().getStatus());
-
+        assertTrue(resultDto.getData().getStatus());
+        assertTrue(resultDto.getData().isDatabaseStatus());
+        assertTrue(resultDto.getData().isRedisStatus());
     }
 }

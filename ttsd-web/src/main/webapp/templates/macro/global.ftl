@@ -1,3 +1,5 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+
 <#macro head title pageCss>
 <head lang="en">
     <meta charset="UTF-8">

@@ -21,7 +21,7 @@ public class UserModel {
 
     private Date lastModifiedTime;
 
-    private Long lastModifiedUser;
+    private String lastModifiedUser;
 
     private String avatar;
 
@@ -103,11 +103,11 @@ public class UserModel {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Long getLastModifiedUser() {
+    public String getLastModifiedUser() {
         return lastModifiedUser;
     }
 
-    public void setLastModifiedUser(Long lastModifiedUser) {
+    public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
     }
 

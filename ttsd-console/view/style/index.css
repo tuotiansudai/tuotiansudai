@@ -82,7 +82,9 @@ a:hover {
 	margin: 10px 20px 10px 0;
 }
 .bordern{
-	border: none!important;}
+	border: none!important;
+    margin: 10px 20px 10px 0;
+}
 
 /*下拉框*/
 .files-input{ width: 30%;

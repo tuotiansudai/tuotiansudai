@@ -37,7 +37,14 @@ public class LoanTitleMapperTest {
 
     @Test
     public void findAllTitlesTest(){
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
+        long id = idGenerator.generate();
+        loanTitleModel.setId(id);
+        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
+        loanTitleModel.setTitle("房产证");
+        loanTitleMapper.create(loanTitleModel);
         List<LoanTitleModel> loanTitleModels = loanTitleMapper.findAll();
         assertTrue(loanTitleModels.size() >= 0);
     }
+
 }

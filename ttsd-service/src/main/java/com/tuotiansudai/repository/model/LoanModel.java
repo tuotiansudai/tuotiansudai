@@ -3,61 +3,147 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.utils.AmountUtil;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class LoanModel {
-    /***标的号***/
+    /***
+     * 标的号
+     ***/
     private long id;
-    /***借款项目名称***/
+    /***
+     * 借款项目名称
+     ***/
     private String name;
-    /***代理人***/
+    /***
+     * 代理人
+     ***/
     private String agentLoginName;
-    /***借款用户***/
+    /***
+     * 借款用户
+     ***/
     private String loanerLoginName;
-    /***标的类型***/
+    /***
+     * 标的类型
+     ***/
     private LoanType type;
-    /***借款期限***/
-    private Long periods;
-    /***项目描述（纯文本）***/
+    /***
+     * 借款期限
+     ***/
+    private int periods;
+    /***
+     * 项目描述（纯文本）
+     ***/
     private String descriptionText;
-    /***项目描述（带html标签）***/
+    /***
+     * 项目描述（带html标签）
+     ***/
     private String descriptionHtml;
-    /***借款金额***/
+    /***
+     * 借款金额
+     ***/
     private long loanAmount;
-    /***投资手续费比例***/
+    /***
+     * 投资手续费比例
+     ***/
     private double investFeeRate;
-    /***最小投资金额***/
+    /***
+     * 最小投资金额
+     ***/
     private long minInvestAmount;
-    /***投资递增金额***/
+    /***
+     * 投资递增金额
+     ***/
     private long investIncreasingAmount;
-    /***单笔最大投资金额***/
+    /***
+     * 单笔最大投资金额
+     ***/
     private long maxInvestAmount;
-    /***活动类型***/
+    /***
+     * 活动类型
+     ***/
     private ActivityType activityType;
-    /***活动利率***/
+    /***
+     * 活动利率
+     ***/
     private double activityRate;
-    /***基本利率***/
+    /***
+     * 基本利率
+     ***/
     private double baseRate;
-    /***合同***/
+    /***
+     * 合同
+     ***/
     private long contractId;
-    /***筹款开始时间***/
+    /***
+     * 筹款开始时间
+     ***/
     private Date fundraisingStartTime;
-    /***筹款截止时间***/
+    /***
+     * 筹款截止时间
+     ***/
     private Date fundraisingEndTime;
-    /***是否显示在首页true:显示在首页，false:不显示在首页***/
+    /***
+     * 是否显示在首页true:显示在首页，false:不显示在首页
+     ***/
     private boolean showOnHome;
-    /***建标时间***/
+    /***
+     * 建标时间
+     ***/
     private Date createdTime = new Date();
-    /***标的状态***/
+    /***
+     * 初审时间
+     ***/
+    private Date verifyTime;
+    /***
+     * 复审时间
+     ***/
+    private Date recheckTime;
+    /***
+     * 标的状态
+     ***/
     private LoanStatus status;
 
-    public LoanModel(){}
+    /***
+     * 申请材料
+     ***/
+    private List<LoanTitleRelationModel> loanTitles;
+
+    /**
+     * 还款日
+     */
+    private Date nextRepayDate;
+
+    /**
+     * 完成日期
+     */
+    private Date completedDate;
+
+    /**
+     * 应还总额
+     */
+    private long expectedRepayAmount;
+
+    /**
+     * 实还总额
+     */
+    private long actualRepayAmount;
+
+    /**
+     * 待还总额
+     */
+    private long unpaidAmount;
+
+    public LoanModel() {
+    }
 
     public LoanModel(LoanDto loanDto) {
         this.id = loanDto.getId();
-        this.name =loanDto.getProjectName();
-        this.activityRate = Double.parseDouble(loanDto.getActivityRate());
-        this.baseRate = Double.parseDouble(loanDto.getBasicRate());
+        this.name = loanDto.getProjectName();
+        this.activityRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getActivityRate()));
+        this.investFeeRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getInvestFeeRate()));
+        this.baseRate = Double.parseDouble(rateStrDivideOneHundred(loanDto.getBasicRate()));
         this.activityType = loanDto.getActivityType();
         this.agentLoginName = loanDto.getAgentLoginName();
         this.loanerLoginName = loanDto.getLoanerLoginName();
@@ -66,7 +152,6 @@ public class LoanModel {
         this.descriptionText = loanDto.getDescriptionText();
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
-        this.investFeeRate = Double.parseDouble(loanDto.getInvestFeeRate());
         this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
         this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
@@ -75,6 +160,8 @@ public class LoanModel {
         this.type = loanDto.getType();
         this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
+        this.verifyTime = loanDto.getVerifyTime();
+        this.recheckTime = loanDto.getRecheckTime();
     }
 
     public long getId() {
@@ -117,11 +204,11 @@ public class LoanModel {
         this.type = type;
     }
 
-    public Long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(Long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 
@@ -245,11 +332,91 @@ public class LoanModel {
         this.createdTime = createdTime;
     }
 
+    public Date getVerifyTime() {
+        return verifyTime;
+    }
+
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
+    }
+
+    public Date getRecheckTime() {
+        return recheckTime;
+    }
+
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
+    }
+
     public LoanStatus getStatus() {
         return status;
     }
 
     public void setStatus(LoanStatus status) {
         this.status = status;
+    }
+
+    public List<LoanTitleRelationModel> getLoanTitles() {
+        return loanTitles;
+    }
+
+    public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
+        this.loanTitles = loanTitles;
+    }
+
+    public Date getNextRepayDate() {
+        return nextRepayDate;
+    }
+
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public long getExpectedRepayAmount() {
+        return expectedRepayAmount;
+    }
+
+    public long getActualRepayAmount() {
+        return actualRepayAmount;
+    }
+
+    public long getUnpaidAmount() {
+        return unpaidAmount;
+    }
+
+    public Date getCanceledDate() {
+        if (LoanStatus.CANCEL == status) {
+            return recheckTime;
+        }
+        return null;
+    }
+
+    public void setNextRepayDate(Date nextRepayDate) {
+        this.nextRepayDate = nextRepayDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
+    }
+
+    public void setExpectedRepayAmount(long expectedRepayAmount) {
+        this.expectedRepayAmount = expectedRepayAmount;
+    }
+
+    public void setActualRepayAmount(long actualRepayAmount) {
+        this.actualRepayAmount = actualRepayAmount;
+    }
+
+    public void setUnpaidAmount(long unpaidAmount) {
+        this.unpaidAmount = unpaidAmount;
+    }
+
+    private String rateStrDivideOneHundred(String rate) {
+        BigDecimal rateBigDecimal = new BigDecimal(rate);
+        return String.valueOf(rateBigDecimal.divide(new BigDecimal(100), 4, BigDecimal.ROUND_DOWN).doubleValue());
+    }
+
+    public int calculateLoanRepayTimes() {
+        return LoanPeriodUnit.DAY == this.type.getLoanPeriodUnit() ? 1 : this.periods;
     }
 }

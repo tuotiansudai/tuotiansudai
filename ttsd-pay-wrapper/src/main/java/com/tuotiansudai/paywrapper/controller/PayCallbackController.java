@@ -1,8 +1,12 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.paywrapper.service.AgreementService;
+import com.tuotiansudai.paywrapper.service.BindBankCardService;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
+import com.tuotiansudai.paywrapper.service.RepayService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +29,20 @@ public class PayCallbackController {
     private RechargeService rechargeService;
 
     @Autowired
+    private BindBankCardService bindBankCardService;
+
+    @Autowired
     private WithdrawService withdrawService;
+
+    @Autowired
+    private InvestService investService;
+
+    @Autowired
+    private RepayService repayService;
+
+    @Autowired
+    private AgreementService agreementService;
+
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -34,10 +51,38 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/mer_bind_agreement_notify", method = RequestMethod.GET)
+    public ModelAndView agreementNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/mer_bind_card_notify", method = RequestMethod.GET)
+    public ModelAndView bindBankCard(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
-    public ModelAndView rechargeApplyNotify(HttpServletRequest request) {
+    public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.withdrawService.withdrawCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/invest_notify", method = RequestMethod.GET)
+    public ModelAndView investNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investService.investCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/repay_notify", method = RequestMethod.GET)
+    public ModelAndView repayNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.repayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
@@ -47,9 +92,10 @@ public class PayCallbackController {
         while (parameterNames.hasMoreElements()) {
             String name = parameterNames.nextElement();
             String parameter = request.getParameter(name);
-//            parameter = new String(parameter.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
             paramsMap.put(name, parameter);
         }
         return paramsMap;
     }
+
+
 }

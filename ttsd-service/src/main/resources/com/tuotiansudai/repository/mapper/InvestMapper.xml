@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.InvestMapper">
+
+    <resultMap id="investResultMap" type="InvestModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="loan_id" property="loanId"></result>
+        <result column="amount" property="amount"></result>
+        <result column="status" property="status"></result>
+        <result column="source" property="source"></result>
+        <result column="is_auto_invest" property="isAutoInvest"></result>
+        <result column="created_time" property="createdTime"></result>
+    </resultMap>
+
+    <resultMap id="investNotifyInfoMap" type="InvestNotifyInfo">
+        <result column="loan_name" property="loanName"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="email" property="email"></result>
+        <result column="amount" property="amount"></result>
+    </resultMap>
+
+    <resultMap id="investDetailMap" type="InvestDetailModel" extends="investResultMap">
+        <result column="loan_name" property="loanName"></result>
+        <result column="loan_type" property="loanType"></result>
+        <result column="loan_status" property="loanStatus"></result>
+        <result column="user_referrer" property="userReferrer"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="next_repay_date" property="nextRepayDate"></result>
+    </resultMap>
+
+    <sql id="columns">
+        id, login_name, loan_id, amount, status, source, is_auto_invest, created_time
+    </sql>
+
+    <insert id="create" parameterType="InvestModel">
+        insert into invest ( <include refid="columns"></include> )
+        value(#{id}, #{loginName}, #{loanId}, #{amount}, #{status}, #{source}, #{isAutoInvest}, #{createdTime})
+    </insert>
+
+    <update id="updateStatus" parameterType="map">
+        update invest set status = #{status} where id = #{id}
+    </update>
+
+    <select id="findById" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where id = #{id}
+    </select>
+
+    <select id="findByLoginNameOrderByTime" parameterType="map" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where login_name = #{loginName}
+        order by created_time ${sortStyle}
+    </select>
+
+    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where login_name = #{loanId}
+        order by created_time ${sortStyle}
+    </select>
+
+    <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS'
+        order by created_time ${sortStyle}
+    </select>
+
+    <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
+        from invest
+        where loan_id = #{loanId}
+        and status = 'SUCCESS'
+    </select>
+
+    <select id="findByStatus" parameterType="map" resultMap="investResultMap">
+        select <include refid="columns"></include>
+        from invest
+        where loan_id = #{loanId}
+        and status = '${status}'
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountByStatus" parameterType="map" resultType="long">
+        select count(1)
+        from invest
+        where loan_id = #{loanId}
+        and status = '${status}'
+    </select>
+
+    <update id="cleanWaitingInvestBefore" parameterType="map">
+        update invest set status = 'FAIL'
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &lt; #{beforeTime}
+    </update>
+
+    <select id="findWaitingInvestCountAfter" parameterType="map" resultType="int">
+        select count(*)
+        from invest
+        where loan_id = #{loanId}
+        and status = 'WAITING'
+        and created_time &gt;= #{afterTime}
+    </select>
+
+    <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
+        select loan.name as loan_name, u.mobile, u.email, invest.amount
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        where loan.id = #{loanId}
+        and invest.status = 'SUCCESS'
+    </select>
+
+    <select id="findByPage" parameterType="map" resultMap="investDetailMap">
+        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status
+        , invest.source, invest.is_auto_invest, invest.created_time
+        , loan.name as loan_name, loan.type as loan_type, loan.status as loan_status
+        , u.referrer as user_referrer
+        <if test="includeRepay">
+            , ifnull(repay.corpus,0)+ifnull(repay.default_interest,0)+ifnull(repay.expected_interest,0)-ifnull(repay.expected_fee,0) as next_repay_amount
+            , repay.repay_date as next_repay_date
+        </if>
+        <if test="!includeRepay">
+            , '0' as next_repay_amount, '1900-1-1' as next_repay_date
+        </if>
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        inner join user u on u.login_name = invest.login_name
+        <if test="includeRepay">
+            left outer join invest_repay repay
+            on repay.id = (
+                select id
+                from invest_repay
+                where invest_repay.invest_id = invest.id
+                and invest_repay.status &lt;&gt; 'COMPLETE'
+                order by repay_date
+                asc
+                limit 1 )
+        </if>
+        where 1=1
+        <if test="loanId != null">
+            and invest.loan_id = #{loanId}
+        </if>
+        <if test="loginName != null and loginName != ''">
+            and invest.login_name = #{loginName}
+        </if>
+        <if test="endTime != null">
+            and invest.created_time &lt; #{endTime}
+        </if>
+        <if test="beginTime != null">
+            and invest.created_time &gt;= #{beginTime}
+        </if>
+        <if test="investStatus != null">
+            and invest.status = #{investStatus}
+        </if>
+        <if test="loanStatus != null">
+            and loan.status = #{loanStatus}
+        </if>
+        order by invest.created_time desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="findCount" parameterType="map" resultType="int">
+        select count(*)
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        where 1=1
+        <if test="loanId != null">
+            and invest.loan_id = #{loanId}
+        </if>
+        <if test="loginName != null and loginName != ''">
+            and invest.login_name = #{loginName}
+        </if>
+        <if test="endTime != null">
+            and invest.created_time &lt; #{endTime}
+        </if>
+        <if test="beginTime != null">
+            and invest.created_time &gt;= #{beginTime}
+        </if>
+        <if test="loanStatus != null">
+            and loan.status = #{loanStatus}
+        </if>
+        <if test="investStatus != null">
+            and invest.status = #{investStatus}
+        </if>
+    </select>
+</mapper>
