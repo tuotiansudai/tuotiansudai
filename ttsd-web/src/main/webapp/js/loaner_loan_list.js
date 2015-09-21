@@ -34,8 +34,11 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
         }).done(function (res) {
             if (selectedType == 'REPAYING') {
                 res.step1 = true;
+                var _plan = '<a class="re_plan" href="">提前还款</a>';
+                $('.jq-re-plan').append(_plan);
             } else if (selectedType == 'COMPLETE') {
                 res.step2 = true;
+
             } else {
                 res.step3 = true;
             }
@@ -55,14 +58,22 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
                     if (res.data.status) {
                         var _res = res.data.records;
                         for (var i = 0; i < _res.length; i++) {
-                            if (_res[i]['isEnabled']) {
-                                var txt = '<a class="re_plan" href = "">待还款</a>';
-                            } else {
-                                var txt = '';
+                            if (selectedType == 'REPAYING') {
+                                if (_res[i]['isEnabled']) {
+                                    var txt = '<a class="re_plan" href = "">待还款</a>';
+                                } else {
+                                    var txt = '待还款';
+                                }
                             }
-                            console.log(txt)
-                            var total = parseFloat(_res[i]['corpus']) + parseFloat(_res[i]['expectedInterest']);
-                            var _total = parseInt(_res[i]['corpus']) + parseInt(_res[i]['actualInterest']) + parseInt(_res[i]['defaultInterest']);
+                            if (selectedType == 'COMPLETE') {
+                                var txt = '完成';
+                                $('.re_plan').remove();
+                            }
+                            if(_res[i]['actualRepayDate']==''||_res[i]['actualRepayDate']==null){
+                                var _actualRepayDate = '--';
+                            }else{
+                                var _actualRepayDate = _res[i]['actualRepayDate'];
+                            }
                             str += "<tr><td>" +
                                 _res[i]['period']
                                 + "</td><td>" +
@@ -78,7 +89,7 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
                                 + "</td> <td>" +
                                 _res[i]['actualInterest']
                                 + "</td> <td>" +
-                                _res[i]['actualRepayDate']
+                                _actualRepayDate
                                 + "</td><td>" +
                                 txt
                                 + "</td></tr>";

@@ -45,7 +45,7 @@
     <div class="layer-fix"></div>
     <div class="layer-con">
         <h2>
-            <span class="hd"><a class="re_plan" href="">提前还款</a>(本金:0.0;手续费:0.0;罚息:0.0)</span>
+            <span class="hd"><span class="jq-re-plan"></span>(本金:0.0;手续费:0.0;罚息:0.0)</span>
             <span class="close">x</span>
         </h2>
 

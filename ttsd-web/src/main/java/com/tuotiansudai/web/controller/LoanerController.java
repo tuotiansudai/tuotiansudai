@@ -100,12 +100,10 @@ public class LoanerController {
         loanRepayModel1.setPeriod(1);
         loanRepayModel1.setCorpus(10000);
         loanRepayModel1.setExpectedInterest(100);
-        loanRepayModel1.setActualInterest(100);
         loanRepayModel1.setDefaultInterest(100);
         loanRepayModel1.setRepayDate(new Date());
-        loanRepayModel1.setActualRepayDate(new Date());
         loanRepayModel1.setStatus(RepayStatus.REPAYING);
-        dataDto.setRecords(Lists.newArrayList(new LoanRepayDataItemDto(loanRepayModel, true), new LoanRepayDataItemDto(loanRepayModel1, true)));
+        dataDto.setRecords(Lists.newArrayList(new LoanRepayDataItemDto(loanRepayModel, true), new LoanRepayDataItemDto(loanRepayModel1, false)));
 
         return baseDto;
     }
