@@ -1,5 +1,6 @@
 package com.tuotiansudai.smswrapper.controller;
 
+import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsCaptchaDto;
 import com.tuotiansudai.smswrapper.dto.SmsResultDataDto;
 import com.tuotiansudai.smswrapper.dto.SmsResultDto;
@@ -29,6 +30,14 @@ public class SmsController {
     public SmsResultDto sendRetrievePasswordCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
         SmsResultDataDto data = new SmsResultDataDto();
         data.setStatus(smsService.sendRetrievePasswordCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp()));
+        return new SmsResultDto(data);
+    }
+
+    @RequestMapping(value = "/mobile/loan-out-investor-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public SmsResultDto sendInvestNotify(@RequestBody InvestSmsNotifyDto dto) {
+        SmsResultDataDto data = new SmsResultDataDto();
+        data.setStatus(smsService.sendInvestNotify(dto));
         return new SmsResultDto(data);
     }
 

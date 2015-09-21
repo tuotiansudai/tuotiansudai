@@ -9,7 +9,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.MerRechargePersonMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.RechargeNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonRequestModel;
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -53,7 +53,7 @@ public class RechargeServiceImpl implements RechargeService {
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         RechargeModel rechargeModel = new RechargeModel(dto);
         rechargeModel.setId(idGenerator.generate());
-        MerRechargePersonModel requestModel = new MerRechargePersonModel(String.valueOf(rechargeModel.getId()),
+        MerRechargePersonRequestModel requestModel = new MerRechargePersonRequestModel(String.valueOf(rechargeModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(rechargeModel.getAmount()),
                 rechargeModel.getBank());

@@ -13,8 +13,6 @@ import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
-import com.umpay.api.paygate.v40.Mer2Plat_v40;
-import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +22,6 @@ import java.beans.Introspector;
 import java.io.IOException;
 import java.util.Map;
 
-
 @Component
 public class PaySyncClient {
 
@@ -33,10 +30,13 @@ public class PaySyncClient {
     @Autowired
     private OkHttpClient httpClient;
 
+    @Autowired
+    PayGateWrapper payGateWrapper;
+
     public <T extends BaseSyncResponseModel> T send(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel, Class<T> responseModelClass) throws PayException {
         ReqData reqData;
         try {
-            reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
+            reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
             requestModel.setSign(reqData.getSign());
             requestModel.setRequestData(reqData.getField().toString());
             requestModel.setRequestUrl(reqData.getUrl());
@@ -60,7 +60,7 @@ public class PaySyncClient {
             Response response = httpClient.newCall(request).execute();
             responseBodyString = response.body().string();
             updateRequestStatus(baseMapperClass, requestModel.getId(), SyncRequestStatus.SUCCESS);
-            Map<String, String> resData = Plat2Mer_v40.getResData(responseBodyString);
+            Map<String, String> resData = payGateWrapper.getResData(responseBodyString);
             logger.debug(resData);
             return createResponse(baseMapperClass, resData, responseModelClass, requestModel.getId());
         } catch (RetDataException | InstantiationException | IllegalAccessException e) {
@@ -74,7 +74,7 @@ public class PaySyncClient {
     }
 
     @Transactional(value = "payTransactionManager")
-     private void createRequest(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
+    private void createRequest(Class<? extends BaseSyncMapper> baseMapperClass, BaseSyncRequestModel requestModel) {
         BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         mapper.createRequest(requestModel);
     }
@@ -89,9 +89,9 @@ public class PaySyncClient {
 
     @Transactional(value = "payTransactionManager")
     private <T extends BaseSyncResponseModel> T createResponse(Class<? extends BaseSyncMapper> baseMapperClass,
-                                                           Map<String, String> resData,
-                                                           Class<T> responseModelClass,
-                                                           Long requestId) throws IllegalAccessException, InstantiationException {
+                                                               Map<String, String> resData,
+                                                               Class<T> responseModelClass,
+                                                               Long requestId) throws IllegalAccessException, InstantiationException {
         BaseSyncMapper mapper = this.getMapperByClass(baseMapperClass);
         T responseModel = responseModelClass.newInstance();
         responseModel.setRequestId(requestId);

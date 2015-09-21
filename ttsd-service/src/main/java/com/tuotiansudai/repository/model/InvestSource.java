@@ -5,9 +5,9 @@ package com.tuotiansudai.repository.model;
  */
 public enum InvestSource {
     /**
-     * PC端投资
+     * WEB端投资
      */
-    PC,
+    WEB,
     /**
      * Android设备投资
      */

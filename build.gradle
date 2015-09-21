@@ -67,9 +67,8 @@ subprojects {
                 'log4j:log4j:1.2.17',
                 'joda-time:joda-time:2.8.1',
                 'org.joda:joda-money:0.10.0',
+                'javax.mail:mail:1.4.7',
                 'dom4j:dom4j:1.6.1'
-
-
 
         testCompile "junit:junit:4.12",
                 'org.mockito:mockito-all:1.10.19',

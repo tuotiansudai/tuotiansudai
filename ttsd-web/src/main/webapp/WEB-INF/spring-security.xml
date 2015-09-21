@@ -47,6 +47,7 @@
         <intercept-url pattern="/recharge" access="hasAuthority('USER')"/>
         <intercept-url pattern="/withdraw" access="hasAuthority('USER')"/>
         <intercept-url pattern="/bind-card" access="hasAuthority('USER')"/>
+        <intercept-url pattern="/loaner/*" access="isAnonymous()"/>
         <intercept-url pattern="/*" access="hasAuthority('USER')"/>
         <csrf/>
     </http>

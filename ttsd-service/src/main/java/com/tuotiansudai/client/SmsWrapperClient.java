@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.MonitorDataDto;
 import com.tuotiansudai.dto.SmsCaptchaDto;
 import org.apache.log4j.Logger;
@@ -38,6 +39,8 @@ public class SmsWrapperClient {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private final String LOANOUT_INVESTOR_NOTIFY_URL = "/sms/mobile/loan-out-investor-notify";
 
     private final String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
@@ -73,6 +76,35 @@ public class SmsWrapperClient {
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
         return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        String requestJson;
+        try {
+            requestJson = objectMapper.writeValueAsString(dto);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", LOANOUT_INVESTOR_NOTIFY_URL);
+        RequestBody body = RequestBody.create(JSON, requestJson);
+        Request request = new Request.Builder().url(url).post(body).addHeader("Content-Type", "application/json; charset=UTF-8").build();
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        dataDto.setStatus(false);
+        baseDto.setData(dataDto);
+        return baseDto;
     }
 
     public BaseDto sendMobileRetrievePasswordSms(String mobile, String code, String ip) {

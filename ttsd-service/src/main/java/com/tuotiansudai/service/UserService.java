@@ -17,6 +17,8 @@ public interface UserService {
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
+    void saveReferrerRelations(String referrerLoginName, String loginName);
+
     /**
      * 修改用户密码
      * @param mobile 用户手机号

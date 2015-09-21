@@ -121,3 +121,4 @@ a:hover {
 #Validform_msg .Validform_info{padding:8px;border:1px solid #bbb; border-top:none; text-align:left;}
 .form-error{ color: #cc0000; font-size: 12px;
     display: block;}
+span.form-control{ border: none; box-shadow: none}
