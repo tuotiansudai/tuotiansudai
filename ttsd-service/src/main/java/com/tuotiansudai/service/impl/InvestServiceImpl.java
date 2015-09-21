@@ -59,6 +59,7 @@ public class InvestServiceImpl implements InvestService {
         BasePaginationDataDto<InvestDetailDto> paginationDto = new BasePaginationDataDto<>(
                 queryDto.getPageIndex(), queryDto.getPageSize(), count, dtoList
         );
+        paginationDto.setStatus(true);
         return paginationDto;
     }
 }
