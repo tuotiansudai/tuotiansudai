@@ -2,10 +2,7 @@ package com.tuotiansudai.paywrapper.repository.model.sync.response;
 
 import java.util.Map;
 
-/**
- * Created by tuotian on 15/8/17.
- */
-public class MerBindProjectResponseModel extends BaseSyncResponseModel{
+public class MerBindProjectResponseModel extends BaseSyncResponseModel {
     private String projectAccountId;
     private String projectState;
     private String merCheckDate;

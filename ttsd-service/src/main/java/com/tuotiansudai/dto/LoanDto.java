@@ -101,8 +101,14 @@ public class LoanDto {
     /***建标时间***/
     private Date createdTime;
 
+    /***初审时间***/
+    private Date verifyTime;
+
+    /***复审时间***/
+    private Date recheckTime;
+
     /***标的状态***/
-    private LoanStatus status;
+    private LoanStatus loanStatus;
 
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
@@ -275,12 +281,28 @@ public class LoanDto {
         this.createdTime = createdTime;
     }
 
-    public LoanStatus getStatus() {
-        return status;
+    public Date getVerifyTime() {
+        return verifyTime;
     }
 
-    public void setStatus(LoanStatus status) {
-        this.status = status;
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
+    }
+
+    public Date getRecheckTime() {
+        return recheckTime;
+    }
+
+    public void setRecheckTime(Date recheckTime) {
+        this.recheckTime = recheckTime;
+    }
+
+    public LoanStatus getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatus loanStatus) {
+        this.loanStatus = loanStatus;
     }
 
     public List<LoanTitleRelationModel> getLoanTitles() {

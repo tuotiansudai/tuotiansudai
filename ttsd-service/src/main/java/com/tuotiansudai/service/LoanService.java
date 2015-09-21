@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 
@@ -49,4 +50,19 @@ public interface LoanService {
 
     public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime);
 
+    /**
+     * @function 标的编辑
+     * @param loanDto
+     * @return
+     */
+    BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
+
+    /**
+     * @function 通过id查找标的
+     * @param loanId
+     * @return
+     */
+    LoanModel findLoanById(long loanId);
+
+    boolean loanIsExist(long loanId);
 }

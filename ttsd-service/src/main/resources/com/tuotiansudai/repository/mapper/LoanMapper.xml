@@ -14,6 +14,7 @@
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
+        <result column="loan_amount" property="loanAmount"></result>
         <result column="invest_fee_rate" property="investFeeRate"></result>
         <result column="min_invest_amount" property="minInvestAmount"></result>
         <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
@@ -25,6 +26,8 @@
         <result column="fundraising_end_time" property="fundraisingEndTime"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="verify_time" property="verifyTime"></result>
+        <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
     </resultMap>
 
@@ -53,7 +56,7 @@
                 and t.created_time >= #{startTime}
             </if>
             <if test="#{endTime} != null and #{endTime} != ''">
-                and t.created_time <= #{endTime}
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>
         order by t.created_time desc
@@ -78,9 +81,86 @@
                 and t.created_time >= #{startTime}
             </if>
             <if test="#{endTime} != null and #{endTime} != ''">
-                and t.created_time <= #{endTime}
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>
     </select>
+
+    <select id="findByStatus" resultMap="loanResultMap">
+        select * from loan where status = #{status}
+    </select>
+
+    <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">
+        update loan
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name !=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="agentLoginName !=null and agentLoginName!=''">
+                agent = #{agentLoginName},
+            </if>
+            <if test="loanerLoginName !=null and loanerLoginName!=''">
+                loaner = #{loanerLoginName},
+            </if>
+            <if test="type !=null">
+                type = #{type},
+            </if>
+            <if test="periods !=null and periods!=''">
+                periods = #{periods},
+            </if>
+            <if test="descriptionText !=null and descriptionText!=''">
+                description_text = #{descriptionText},
+            </if>
+            <if test="descriptionHtml !=null and descriptionHtml!=''">
+                description_html = #{descriptionHtml},
+            </if>
+            <if test="loanAmount !=null and loanAmount!=''">
+                loan_amount = #{loanAmount},
+            </if>
+            <if test="investFeeRate !=null and investFeeRate!=''">
+                invest_fee_rate = #{investFeeRate},
+            </if>
+            <if test="minInvestAmount !=null and minInvestAmount!=''">
+                min_invest_amount = #{minInvestAmount},
+            </if>
+            <if test="investIncreasingAmount !=null and investIncreasingAmount!=''">
+                invest_increasing_amount = #{investIncreasingAmount},
+            </if>
+            <if test="maxInvestAmount !=null and maxInvestAmount!=''">
+                max_invest_amount = #{maxInvestAmount},
+            </if>
+            <if test="activityType !=null">
+                activity_type = #{activityType},
+            </if>
+            <if test="activityRate !=null and activityRate!=''">
+                activity_rate = #{activityRate},
+            </if>
+            <if test="contractId !=null and contractId!=''">
+                contract_id = #{contractId},
+            </if>
+            <if test="fundraisingStartTime !=null">
+                fundraising_start_time = #{fundraisingStartTime},
+            </if>
+            <if test="fundraisingEndTime !=null">
+                fundraising_end_time = #{fundraisingEndTime},
+            </if>
+            <if test="showOnHome !=null">
+                show_on_home = #{showOnHome},
+            </if>
+            <if test="verifyTime !=null">
+                verify_time = #{verifyTime},
+            </if>
+            <if test="recheckTime !=null">
+                recheck_time = #{recheckTime},
+            </if>
+            <if test="status !=null">
+                status = #{status}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateStatus" parameterType="map">
+        update loan set status = #{status} where id = #{loanId}
+    </update>
 
 </mapper>

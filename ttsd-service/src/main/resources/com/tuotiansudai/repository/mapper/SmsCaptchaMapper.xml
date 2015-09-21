@@ -27,4 +27,7 @@
           select * from sms_captcha where mobile = #{mobile} and captcha_type = 'REGISTER_CAPTCHA'
     </select>
 
+    <select id="findByMobileAndCaptchaType" resultMap="smsCaptchaModelResultMap">
+        select * from sms_captcha where mobile = #{mobile} and captcha_type = #{captchaType}
+    </select>
 </mapper>

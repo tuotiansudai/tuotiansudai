@@ -31,7 +31,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <context:component-scan base-package="com.ttsd.mobile.controller"/>
+    <context:component-scan base-package="com.ttsd.mobile.controller,com.ttsd.special.controller"/>
 
     <mvc:resources mapping="/mobile/style/**" location="/mobile/style/"/>
     <mvc:resources mapping="/mobile/images/**" location="/mobile/images/"/>
