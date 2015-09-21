@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.utils.AmountUtil;
 
@@ -21,6 +22,10 @@ public class LoanRepayDataItemDto {
 
     private String defaultInterest;
 
+    private String expectedRepayAmount;
+
+    private String actualRepayAmount;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
 
@@ -28,6 +33,7 @@ public class LoanRepayDataItemDto {
 
     private String loanRepayStatus;
 
+    @JsonProperty(value = "isEnabled")
     private boolean isEnabled;
 
     public LoanRepayDataItemDto(LoanRepayModel loanRepayModel, boolean isEnabled) {
@@ -37,8 +43,10 @@ public class LoanRepayDataItemDto {
         this.corpus = AmountUtil.convertCentToString(loanRepayModel.getCorpus());
         this.expectedInterest = AmountUtil.convertCentToString(loanRepayModel.getExpectedInterest());
         this.defaultInterest = AmountUtil.convertCentToString(loanRepayModel.getDefaultInterest());
+        this.expectedRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
+        this.actualRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.loanRepayStatus = loanRepayModel.getStatus().getDescription();
         this.isEnabled = isEnabled;
@@ -86,5 +94,13 @@ public class LoanRepayDataItemDto {
 
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public String getExpectedRepayAmount() {
+        return expectedRepayAmount;
+    }
+
+    public String getActualRepayAmount() {
+        return actualRepayAmount;
     }
 }
