@@ -35,7 +35,7 @@ public class LoanDto extends BaseDataDto{
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private long periods;
+    private int periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -165,11 +165,11 @@ public class LoanDto extends BaseDataDto{
         this.type = type;
     }
 
-    public long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 
@@ -356,5 +356,4 @@ public class LoanDto extends BaseDataDto{
     public void setExpectedTotalIncome(long expectedTotalIncome) {
         this.expectedTotalIncome = expectedTotalIncome;
     }
-
 }

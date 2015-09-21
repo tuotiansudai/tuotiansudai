@@ -29,33 +29,21 @@ public interface LoanService {
 
     /**
      * @return
-     * @function 获取所有的标类型
-     */
-    List<LoanType> getLoanType();
-
-    /**
-     * @return
-     * @function 获取所有的活动类型
-     */
-    List<ActivityType> getActivityType();
-
-    /**
-     * @return
      * @function 创建标的
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
     /**
-     * @function 标的编辑
      * @param loanDto
      * @return
+     * @function 标的编辑
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
     /**
-     * @function 通过id查找标的
      * @param loanId
      * @return
+     * @function 通过id查找标的
      */
     LoanModel findLoanById(long loanId);
 
@@ -63,6 +51,7 @@ public interface LoanService {
 
     /**
      * 标的放款
+     *
      * @param loanId
      * @param minInvestAmount
      * @param fundraisingEndTime
@@ -72,7 +61,7 @@ public interface LoanService {
 
     BaseDto<LoanDto> getLoanDetail(long loanId);
 
-    String getExpectedTotalIncome(long loanId, double investAmount);
+    BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
-    BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize);
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 }

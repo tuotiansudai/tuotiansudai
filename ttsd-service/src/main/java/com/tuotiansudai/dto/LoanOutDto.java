@@ -1,4 +1,4 @@
 package com.tuotiansudai.dto;
 
-public class LoanOutDto extends ProjectTransferDto{
+public class LoanOutDto extends ProjectTransferDto {
 }

@@ -6,15 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.LoanStatus;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class PayWrapperClient {
@@ -22,6 +19,11 @@ public class PayWrapperClient {
     static Logger logger = Logger.getLogger(PayWrapperClient.class);
 
     private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
+
+    private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    @Autowired
+    private OkHttpClient okHttpClient;
 
     @Value("${paywrapper.host}")
     private String host;
@@ -40,211 +42,199 @@ public class PayWrapperClient {
 
     private String loanPath = "/loan";
 
-    private String loanOutPath = "/loan/loanout";
+    private String loanOutPath = "/loan-out";
 
     private String withdrawPath = "/withdraw";
 
     private String investPath = "/invest";
 
+    private String agreementPath = "/agreement";
+
     private String referrerRewardPath = "/referrer-reward";
+
+    private String repayPath = "/repay";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    @Autowired
-    private OkHttpClient okHttpClient;
-
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
-        String requestJson;
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
         try {
-            requestJson = objectMapper.writeValueAsString(dto);
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(registerPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
-            return baseDto;
         }
 
-        String responseJson = this.post(registerPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayResponseJson(responseJson);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
     }
 
     public BaseDto<PayDataDto> referrerReward(ReferrerRewardDto dto) {
-        String requestJson;
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
         try {
-            requestJson = objectMapper.writeValueAsString(dto);
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(referrerRewardPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
-            return baseDto;
         }
 
-        String responseJson = this.post(referrerRewardPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayResponseJson(responseJson);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
     }
 
     public BaseDto<PayFormDataDto> recharge(RechargeDto dto) {
-        String requestJson;
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(rechargePath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
 
-        String responseJson = this.post(rechargePath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayFormJson(responseJson);
+        return baseDto;
     }
 
     public BaseDto<PayFormDataDto> withdraw(WithdrawDto dto) {
-        String requestJson;
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(withdrawPath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
 
-        String responseJson = this.post(withdrawPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayFormJson(responseJson);
+        return baseDto;
     }
+
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
-        String requestJson;
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(bindCardPath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
 
-        String responseJson = this.post(bindCardPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayFormJson(responseJson);
+        return baseDto;
     }
 
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
-        String requestJson;
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(investPath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
 
-        String responseJson = this.post(investPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayFormJson(responseJson);
+        return baseDto;
     }
 
-    public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        String requestJson;
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+    public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
         try {
-            requestJson = objectMapper.writeValueAsString(loanDto);
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(agreementPath, requestJson);
+            return this.parsePayFormJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
-            return baseDto;
         }
-        String responseJson = this.post(loanPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayResponseJson(responseJson);
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
     }
 
-    public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        String requestJson;
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+    public BaseDto<PayFormDataDto> repay(RepayDto dto) {
         try {
-            requestJson = objectMapper.writeValueAsString(loanDto);
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(repayPath, requestJson);
+            return this.parsePayFormJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
-            return baseDto;
         }
-        String responseJson = this.put(loanPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayResponseJson(responseJson);
+
+        BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        PayFormDataDto payFormDataDto = new PayFormDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
     }
 
-    public BaseDto<PayDataDto> loanOut(LoanOutDto loanOutDto) {
-        String requestJson;
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+    public BaseDto<PayDataDto> createLoan(LoanDto dto) {
         try {
-            requestJson = objectMapper.writeValueAsString(loanOutDto);
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(loanPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
-            return baseDto;
         }
-        String responseJson = this.post(loanOutPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payDataDto.setStatus(false);
-            return baseDto;
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
+    }
+
+    public BaseDto<PayDataDto> updateLoan(LoanDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.put(loanPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
         }
-        return this.parsePayResponseJson(responseJson);
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
+    }
+
+    public BaseDto<PayDataDto> loanOut(LoanOutDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(loanOutPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
     }
 
     public BaseDto<MonitorDataDto> monitor() {
         String responseJson = this.get("/monitor");
         if (!Strings.isNullOrEmpty(responseJson)) {
             try {
-                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<MonitorDataDto>>(){});
+                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<MonitorDataDto>>() {});
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -261,6 +251,7 @@ public class PayWrapperClient {
     private String get(String path) {
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
         Request request = new Request.Builder()
+                .get()
                 .url(url)
                 .addHeader("Content-Type", "application/json; charset=UTF-8")
                 .build();
@@ -292,8 +283,8 @@ public class PayWrapperClient {
         return null;
     }
 
-    private String put(String path, String requestJson){
-        String url = host + path;
+    private String put(String path, String requestJson) {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
         RequestBody body = RequestBody.create(JSON, requestJson);
         Request request = new Request.Builder().url(url).put(body).build();
 
@@ -310,21 +301,29 @@ public class PayWrapperClient {
 
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
+        if (Strings.isNullOrEmpty(json)) {
+            baseDto.setSuccess(false);
+            return baseDto;
+        }
+
         try {
-            baseDto  = objectMapper.readValue(json, new TypeReference<BaseDto<PayDataDto>>(){});
+            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<PayDataDto>>() {});
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
-            payDataDto.setStatus(false);
+            baseDto.setSuccess(false);
         }
         return baseDto;
     }
 
     private BaseDto<PayFormDataDto> parsePayFormJson(String json) {
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+        if (Strings.isNullOrEmpty(json)) {
+            baseDto.setSuccess(false);
+            return baseDto;
+        }
+
         try {
-            baseDto  = objectMapper.readValue(json, new TypeReference<BaseDto<PayFormDataDto>>(){});
+            baseDto = objectMapper.readValue(json, new TypeReference<BaseDto<PayFormDataDto>>() {});
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
             baseDto.setSuccess(false);
