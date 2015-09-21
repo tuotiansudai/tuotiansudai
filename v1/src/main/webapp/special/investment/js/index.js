@@ -9,7 +9,7 @@ $(function () {
         /*optional stuff to do after success */
         allData(data);
     });
-    var allData = function(data){
+    var allData = function (data) {
         //渲染全国数据
         var _chinaArr = data.areaInvestments.CHINA;
         var _china = _chinaArr.length;
@@ -44,13 +44,13 @@ $(function () {
         var str = '';
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
-            str += '<tr><td colspan="3"><button type="button" class="btn-more yellow">更多</button></td></tr>';
+            str += '<tr><td colspan="3" style="text-align: center; padding: 0;"><button type="button" class="btn-more yellow">更多</button></td></tr>';
         }
         $(tableName).find('tbody tr').remove();
         $(tableName).find('tbody').append(str);
@@ -65,13 +65,13 @@ $(function () {
 
         for (var i = 0; i < length; i++) {
             if (i > n) {
-                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr class="hidden"><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             } else {
-                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' +data[i]["interest"] + '</span> 元</td><td><span class="gain">' +  data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["userId"] + '</span></td> </tr>';
+                str += '<tr><td><span class="index">' + (i + 1) + '</span><span class="total">' + data[i]["interest"] + '</span> 元</td><td><span class="gain">' + data[i]["corpus"] + '</span> 元</td><td><span class="user">' + data[i]["phone"] + '</span></td> </tr>';
             }
         }
         if (i > n) {
-            str += '<tr><td colspan="3"><button type="button" class="btn-more orange">更多</button></td></tr>';
+            str += '<tr><td colspan="3" style="text-align: center; padding: 0;"><button type="button" class="btn-more orange">更多</button></td></tr>';
         }
         str += '</tbody' >
             $(tableName).append(str);
@@ -99,4 +99,52 @@ $(function () {
         $(this).closest('tr').siblings('.hidden').removeClass('hidden');
         $(this).closest('tr').remove();
     });
+
+
+    //big picture
+    var stage = '' ; //默认
+    $('.house-list li,.cars-list li').click(function () {
+        if($(this).closest('.pic-list').hasClass('house-list')){
+            stage = '.house-list';
+        }else{
+            stage = '.cars-list';
+        }
+        var _img = $(this).find('img').attr('src');
+        $(this).addClass('on').siblings().removeClass('on');
+        $('.layer-box .content img').attr('src', _img);
+        $('.layer-box').show();
+        return false;
+    });
+    $('.btn-next').click(function (ele) {
+        var index = $(stage+' li.on').next().index();
+        if (index > 0) {
+            var next_li = $(stage+' li.on').next();
+            var _next_src = next_li.find('img').attr('src');
+            $(stage+' li').removeClass('on');
+            next_li.addClass('on');
+            $('.layer-box .content img').attr('src', _next_src);
+        }else{
+        }
+        return false;
+    });
+    $('.btn-prev').click(function () {
+        var index = $(stage+' li.on').prev().index();
+        if (index >=0) {
+            var prev_li = $(stage+ ' li.on').prev();
+            var _prev_src = prev_li.find('img').attr('src');
+            $(stage +' li').removeClass('on');
+            prev_li.addClass('on');
+            $('.layer-box .content img').attr('src', _prev_src);
+        }else{
+
+        }
+        return false;
+    });
+
+
+
+
+    $('body').click(function () {
+        $('.layer-box').hide();
+    })
 })
