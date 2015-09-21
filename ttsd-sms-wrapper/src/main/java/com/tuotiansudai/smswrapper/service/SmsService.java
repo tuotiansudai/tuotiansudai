@@ -6,4 +6,6 @@ public interface SmsService {
 
     boolean sendRetrievePasswordCaptcha(String mobile, String captcha, String ip);
 
+    boolean sendPasswordChangedNotify(String mobile);
+
 }

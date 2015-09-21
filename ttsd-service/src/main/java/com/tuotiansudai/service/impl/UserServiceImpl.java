@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -14,6 +15,7 @@ import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
 
     @Autowired
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -89,5 +94,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(String mobile, String password) {
         userMapper.updatePassword(mobile,password);
+    }
+
+    @Override
+    @Transactional
+    public boolean changePassword(String loginName, String oldPassword, String newPassword) {
+        if(StringUtils.isBlank(loginName)){
+            return false;
+        }
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        if(userModel == null){
+            return false;
+        }
+        String encOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
+        if(!StringUtils.equals(encOldPassword, userModel.getPassword())){
+            return false;
+        }
+        String encNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
+        userMapper.updatePassword(userModel.getMobile(), encNewPassword);
+        smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
+        return true;
     }
 }
