@@ -1,12 +1,17 @@
 package com.ttsd.special.controller;
 
 import com.ttsd.special.dto.LotteryPrizeResponseDto;
+import com.ttsd.special.model.InvestLottery;
 import com.ttsd.special.model.InvestLotteryType;
 import com.ttsd.special.services.InvestLotteryService;
+import com.ttsd.util.SpringSecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 
 @Controller

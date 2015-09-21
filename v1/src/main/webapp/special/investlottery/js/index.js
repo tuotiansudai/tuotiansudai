@@ -31,4 +31,15 @@ $(function () {
             _this.closest('.draw-box').find('li').eq(_index).addClass('current');
         }, 50)
     });
+
+    $('#novice').click(function (e) {
+        $.ajax({
+            url: '/special/invest-lottery/novice',
+            type: 'GET',
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
 })
