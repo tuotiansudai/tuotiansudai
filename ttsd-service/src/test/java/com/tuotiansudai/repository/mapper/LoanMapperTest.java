@@ -85,8 +85,8 @@ public class LoanMapperTest {
 
     @Test
     public void findLoanListTest() {
-        List<LoanModel> loanModels = loanMapper.findLoanList("complete","","","","",0);
-        int loanListCount = loanMapper.findLoanListCount("complete","","","","");
+        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING,1,"","","",0);
+        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING,1,"","","");
         assertThat(loanModels.size(), is(loanListCount));
     }
 

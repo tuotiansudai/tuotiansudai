@@ -1,11 +1,9 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanType;
-import com.tuotiansudai.repository.model.LoanTitleModel;
+import com.tuotiansudai.repository.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface LoanService {
@@ -46,9 +44,9 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
-    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo);
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo);
 
-    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime);
+    public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime);
 
     /**
      * @function 标的编辑

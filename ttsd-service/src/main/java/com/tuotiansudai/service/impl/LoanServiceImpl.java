@@ -11,13 +11,14 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -263,8 +264,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo) {
-        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,Integer.parseInt(currentPageNo));
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo) {
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"),new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"),currentPageNo);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i=0;i<loanModels.size();i++) {
             LoanListDto loanListDto = new LoanListDto();
@@ -284,7 +285,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime) {
-        return loanMapper.findLoanListCount(status,loanId,loanName,startTime,endTime);
+    public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime) {
+        return loanMapper.findLoanListCount(status,loanId,loanName,new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"),new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"));
     }
 }
