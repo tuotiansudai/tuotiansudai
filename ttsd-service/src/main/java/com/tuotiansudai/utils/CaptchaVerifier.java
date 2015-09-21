@@ -34,7 +34,12 @@ public class CaptchaVerifier {
 
     public boolean registerImageCaptchaVerify(String imageCaptcha) {
         String jSessionId = this.getJSessionId(httpServletRequest);
-        return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equals(imageCaptcha);
+        return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equalsIgnoreCase(imageCaptcha);
+    }
+
+    public boolean mobileRetrievePasswordImageCaptchaVerify(String imageCaptcha) {
+        String jSessionId = this.getJSessionId(httpServletRequest);
+        return redisWrapperClient.exists(jSessionId) && redisWrapperClient.get(jSessionId).equalsIgnoreCase(imageCaptcha);
     }
 
     private String getJSessionId(HttpServletRequest request) {

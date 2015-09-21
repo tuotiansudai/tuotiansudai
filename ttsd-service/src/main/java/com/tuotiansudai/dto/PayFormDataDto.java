@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-public class PayFormDataDto extends BaseDataDto{
+public class PayFormDataDto extends BaseDataDto {
 
     private String url;
 

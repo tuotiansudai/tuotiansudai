@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.CustWithdrawalsMapper">
 
-    <resultMap id="requestMap" type="CustWithdrawalsModel">
+    <resultMap id="requestMap" type="CustWithdrawalsRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
         <result property="signType" column="sign_type"/>
@@ -28,7 +28,7 @@
         select * from cust_withdrawals_request where id = #{id}
     </select>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsModel">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="CustWithdrawalsRequestModel">
         insert into cust_withdrawals_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, apply_notify_flag,  order_id, mer_date, user_id, amount, request_time, request_url, request_data)
         values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{applyNotifyFlag}, #{orderId}, #{merDate}, #{userId}, #{amount}, #{requestTime}, #{requestUrl}, #{requestData})
     </insert>

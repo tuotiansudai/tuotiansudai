@@ -1,11 +1,10 @@
 package com.tuotiansudai.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.tuotiansudai.client.dto.ResultDataDto;
-import com.tuotiansudai.client.dto.ResultDto;
+import com.google.common.base.Strings;
+import com.squareup.okhttp.*;
+import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,53 +17,153 @@ public class SmsWrapperClient {
 
     static Logger logger = Logger.getLogger(SmsWrapperClient.class);
 
+    private ObjectMapper mapper = new ObjectMapper();
+
     @Value("${smswrapper.host}")
     private String host;
 
-    private final String REGISTER_SMS_URI = "/sms/mobile/{mobile}/captcha/{captcha}/register";
+    @Value("${smswrapper.port}")
+    private String port;
+
+    @Value("${smswrapper.context}")
+    private String context;
+
+    private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
+
+    private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private final static String REGISTER_CAPTCHA_SMS_URI = "/sms/register-captcha";
+
+    private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-captcha";
+
+    private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
+
+    private final static String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
     @Autowired
     private OkHttpClient okHttpClient;
 
-    public ResultDto sendSms(String mobile, String code) {
-        String url = this.host + REGISTER_SMS_URI.replace("{mobile}", mobile).replace("{captcha}", code);
+    private ObjectMapper objectMapper = new ObjectMapper();
 
-        Request request = new Request.Builder().url(url).get().build();
-
-        ResultDto resultDto;
+    public BaseDto<BaseDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        resultDto.setData(dataDto);
 
         try {
-            Response response = okHttpClient.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String jsonData = response.body().string();
-                resultDto = this.jsonConvertToObject(jsonData);
-                return resultDto;
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseString = post(REGISTER_CAPTCHA_SMS_URI, requestJson);
+            if (!Strings.isNullOrEmpty(responseString)) {
+                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        resultDto = new ResultDto();
-        ResultDataDto dataDto = new ResultDataDto();
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        resultDto.setData(dataDto);
+
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseString = post(LOAN_OUT_INVESTOR_NOTIFY, requestJson);
+            if (!Strings.isNullOrEmpty(responseString)) {
+                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        resultDto.setData(dataDto);
+
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseString = post(RETRIEVE_PASSWORD_CAPTCHA_URI, requestJson);
+            if (!Strings.isNullOrEmpty(responseString)) {
+                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> sendPasswordChangedNotify(String mobile){
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        resultDto.setData(dataDto);
+
+        try {
+            String responseString = post(PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile), "");
+            if (!Strings.isNullOrEmpty(responseString)) {
+                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return resultDto;
+    }
+
+    public BaseDto<MonitorDataDto> monitor() {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", "/monitor");
+
+        Request request = new Request.Builder().url(url).get().addHeader("Content-Type", "application/json; charset=UTF-8").build();
+
+        try {
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String jsonData = response.body().string();
+                return mapper.readValue(jsonData, new TypeReference<BaseDto<MonitorDataDto>>(){});
+            }
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
+        MonitorDataDto dataDto = new MonitorDataDto();
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
 
         return resultDto;
     }
 
-    public ResultDto jsonConvertToObject(String jsonString) {
-        ObjectMapper mapper = new ObjectMapper();
-        ResultDto resultDto = null;
+    private String post(String path, String requestJson) {
+        String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
+
+        RequestBody body = RequestBody.create(JSON, requestJson);
+
+        Request request = new Request.Builder().url(url).post(body).build();
+
         try {
-            resultDto = mapper.readValue(jsonString, ResultDto.class);
+            Response response = okHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return resultDto;
+        return null;
     }
 
     public void setHost(String host) {
         this.host = host;
     }
 
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
 }

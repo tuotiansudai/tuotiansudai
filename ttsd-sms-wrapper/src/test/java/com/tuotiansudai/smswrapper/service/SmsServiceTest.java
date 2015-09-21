@@ -26,7 +26,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
-@Transactional
 public class SmsServiceTest {
 
     private MockWebServer server;
@@ -52,6 +51,7 @@ public class SmsServiceTest {
     }
 
     @Test
+    @Transactional
     public void shouldSendRegisterCaptcha() throws Exception {
         MockResponse mockResponse = new MockResponse();
         String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
@@ -60,11 +60,10 @@ public class SmsServiceTest {
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
-
         String mobile = "13900000000";
         String captcha = "9999";
 
-        this.smsService.sendRegisterCaptcha(mobile, captcha);
+        this.smsService.sendRegisterCaptcha(mobile, captcha, "127.0.0.1");
 
         List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
 

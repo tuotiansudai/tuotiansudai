@@ -7,7 +7,8 @@ public enum ActivityType {
     PROMOTION("加息投资");
 
     private String activityTypeName;
-    private ActivityType(String activityTypeName){
+
+    ActivityType(String activityTypeName){
         this.activityTypeName = activityTypeName;
     }
 

@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -17,8 +20,10 @@ public class PaySyncClientTest {
     private PaySyncClient paySyncClient;
 
     @Test
-    public void testName() throws Exception {
-        MerRegisterPersonRequestModel registerRequestData = new MerRegisterPersonRequestModel("sidneygao", "高希端", "650102198104281210", "13810586920");
+    @Transactional
+    public void shouldRegisterPersonRequestFailed() throws Exception {
+        MerRegisterPersonRequestModel registerRequestData = new MerRegisterPersonRequestModel("fakeLoginName", "fakeName", "fakeID", "13900000000");
         MerRegisterPersonResponseModel response = paySyncClient.send(MerRegisterPersonMapper.class, registerRequestData, MerRegisterPersonResponseModel.class);
+        assertFalse(response.isSuccess());
     }
 }

@@ -13,19 +13,20 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath:jdbc.properties, classpath*:sms_wrapper_client.properties,classpath*:redis_wrapper_client.properties,classpath*:pay_wrapper_client.properties,classpath*:oss_wrapper_client.properties" />
+    <context:property-placeholder location="classpath*:oss_wrapper_client.properties" />
+    <context:property-placeholder location="classpath*:ttsd-service.properties" />
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
+    <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.utils, com.tuotiansudai.client"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
     <bean id="payBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.pay.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.pay.url}${jdbc.pay.schema}"/>
-        <property name="username" value="${jdbc.pay.username}"/>
-        <property name="password" value="${jdbc.pay.password}"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/ump_operations?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>
@@ -34,10 +35,10 @@
     </bean>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.aa.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}"/>
-        <property name="username" value="${jdbc.aa.username}"/>
-        <property name="password" value="${jdbc.aa.password}"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
         <property name="maxConnectionsPerPartition" value="30"/>
         <property name="minConnectionsPerPartition" value="10"/>
         <property name="partitionCount" value="3"/>
@@ -80,5 +81,4 @@
     <bean class="com.tuotiansudai.utils.SpringContextUtil" />
 
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
-
 </beans>
