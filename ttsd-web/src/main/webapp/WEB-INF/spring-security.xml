@@ -32,6 +32,7 @@
                     login-processing-url="/login-handler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
+        <logout logout-url="/logout" logout-success-url="/" />
 
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
@@ -44,6 +45,7 @@
 
         <intercept-url pattern="/login" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
+        <intercept-url pattern="/agreement" access="hasAuthority('USER')"/>
         <intercept-url pattern="/recharge" access="hasAuthority('USER')"/>
         <intercept-url pattern="/withdraw" access="hasAuthority('USER')"/>
         <intercept-url pattern="/bind-card" access="hasAuthority('USER')"/>

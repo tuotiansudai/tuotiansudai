@@ -13,7 +13,7 @@ public class InvestSmsNotifyDto implements Serializable {
     public InvestSmsNotifyDto() {
     }
 
-    public InvestSmsNotifyDto(InvestNotifyInfo notifyInfo){
+    public InvestSmsNotifyDto(InvestNotifyInfo notifyInfo) {
         this.loanName = notifyInfo.getLoanName();
         this.mobile = notifyInfo.getMobile();
         this.amount = AmountUtil.convertCentToString(notifyInfo.getAmount());
