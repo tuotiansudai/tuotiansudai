@@ -1,6 +1,7 @@
 package com.ttsd.special.model;
 
 import com.esoft.archer.user.model.User;
+import com.esoft.core.util.ArithUtil;
 import com.esoft.jdp2p.invest.model.Invest;
 import org.hibernate.annotations.Type;
 
@@ -22,7 +23,7 @@ public class InvestLottery implements java.io.Serializable {
     private Long amount;
     private Date awardTime;
     private Boolean valid;
-    private Double amountPercent;
+    private String cashPrize;
     private Date receivedTime;
     private ReceiveStatus receiveStatus;
 
@@ -117,6 +118,14 @@ public class InvestLottery implements java.io.Serializable {
     public void setValid(Boolean valid) {
         this.valid= valid;
     }
+
+    @Transient
+    public String getCashPrize() {
+        if (this.cashPrize == null && this.getAmount() != null) {
+            return  this.getPrizeType().getDesc()+this.amount/100d ;
+        }
+        return cashPrize;
+    }
     @Column(name = "received_time")
     public Date getReceivedTime() {
         return receivedTime;
@@ -133,14 +142,6 @@ public class InvestLottery implements java.io.Serializable {
 
     public void setReceiveStatus(ReceiveStatus receiveStatus) {
         this.receiveStatus = receiveStatus;
-    }
-
-    @Transient
-    public double getAmountPercent() {
-        if (this.amountPercent == null && this.getAmount() != null) {
-            return this.amount/100d;
-        }
-        return amountPercent;
     }
 
 }

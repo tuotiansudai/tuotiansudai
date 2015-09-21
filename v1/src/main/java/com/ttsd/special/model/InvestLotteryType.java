@@ -5,9 +5,19 @@ public enum InvestLotteryType {
     /**
      * 新手标
      */
-    NOVICE,
+    NOVICE("新手标"),
     /**
      * 普通标
      */
-    NORMAL
+    NORMAL("普通标");
+
+    private final String desc;
+
+    InvestLotteryType (String desc) {
+        this.desc = desc;
+    }
+
+    public String getDesc(){
+        return desc;
+    }
 }

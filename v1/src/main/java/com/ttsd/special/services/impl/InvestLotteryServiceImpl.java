@@ -107,8 +107,6 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         }
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public LotteryPrizeResponseDto getLotteryPrize(InvestLotteryType investLotteryType) {
         LotteryPrizeResponseDto dto = new LotteryPrizeResponseDto();
         List<InvestLottery> investLotteries = investLotteryDao.findInvestLotteryByType(investLotteryType);
@@ -175,7 +173,12 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
     public void updateInvestLotteryGranted(long id, ReceiveStatus receiveStatus) {
         InvestLottery investLottery = hibernateTemplate.get(InvestLottery.class, id);
         investLottery.setReceiveStatus(receiveStatus);
-        investLottery.setReceivedTime(new Date());
+        if(ReceiveStatus.NOT_RECEIVED.equals(receiveStatus)){
+            investLottery.setReceivedTime(null);
+
+        }else {
+            investLottery.setReceivedTime(new Date());
+        }
         hibernateTemplate.update(investLottery);
 
     }

@@ -211,6 +211,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
         return sendMap;
     }
+
     /**
      * 处理前台通知的投标
      */

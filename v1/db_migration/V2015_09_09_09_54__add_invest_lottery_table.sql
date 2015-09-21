@@ -10,7 +10,6 @@ CREATE TABLE `invest_lottery` (
 `is_valid` boolean,
 `received_time` datetime NULL,
 `receive_status` VARCHAR(16),
-
 PRIMARY KEY (`id`),
 CONSTRAINT FK_INVEST_LOTTERY_USER_ID_REF_USER_ID FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
 CONSTRAINT FK_INVEST_LOTTERY_INVEST_ID_REF_INVEST_ID FOREIGN KEY (`invest_id`) REFERENCES `invest` (`id`),
