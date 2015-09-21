@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 public class InvestTopItem implements Serializable{
-    private String userId;
     @JsonIgnore
-    private String phoneNumber;
+    private String userId;
+    private String phone;
     private String corpus;
     private String interest;
 
@@ -20,12 +20,20 @@ public class InvestTopItem implements Serializable{
         this.userId = userId;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    @JsonIgnore
+    public String getRealPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public String getPhone() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(phone.substring(0,3));
+        sb.append("****");
+        sb.append(phone.substring(7));
+        return sb.toString();
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCorpus() {
