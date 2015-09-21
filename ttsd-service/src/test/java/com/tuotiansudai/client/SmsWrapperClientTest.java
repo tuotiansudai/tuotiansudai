@@ -51,7 +51,7 @@ public class SmsWrapperClientTest {
         smsWrapperClient.setContext("");
         String mobile = "13900000000";
         String code = "1000";
-        BaseDto<BaseDataDto> resultDto = this.smsWrapperClient.sendSms(mobile, code);
+        BaseDto<BaseDataDto> resultDto = this.smsWrapperClient.sendSms(mobile, code, "127.0.0.1");
 
         assertNotNull(resultDto);
         assertTrue(resultDto.getData().getStatus());

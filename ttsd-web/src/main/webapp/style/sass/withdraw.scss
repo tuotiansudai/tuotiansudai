@@ -1,0 +1,205 @@
+//bind－card
+.main {
+  width: 998px;
+  height: auto;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+.email-nav {
+  width: 168px;
+  height: auto;
+  overflow: hidden;
+  border: #dadada 1px solid;
+  border-radius: 3px;
+  float: left;
+  background: #fff;
+}
+
+.email-nav li {
+  border-bottom: #dadada 1px solid;
+}
+
+.email-nav a {
+  display: block;
+  height: 41px;
+  line-height: 41px;
+  text-align: center;
+  color: #ffac2a;
+}
+
+.email-nav a:hover {
+  background: #ffac2a;
+  color: #fff;
+}
+
+.bind-card {
+  width: 820px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  float: right;
+  overflow: hidden;
+  & .hd-bind-card {
+    height: 50px;
+    border-bottom: 2px solid #d5d5d5;;
+    & span {
+      padding-left: 20px;
+      color: #ff9933;
+      font-size: 16px;
+      border-bottom: #e06b0c 2px solid;
+      display: inline-block;
+      line-height: 50px;
+      position: relative;
+      bottom: 0px;
+    }
+  }
+  & .card-list {
+    padding: 20px;
+    overflow: hidden;
+    & .card-box {
+      width: 260px;
+      background-color: #fdfefe;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+    }
+    & .hd-card {
+      border-bottom: 1px solid #ccc;
+      height: 38px;
+
+      & .logo-card {
+        width: 140px;
+        height: 38px;
+        float: left;
+      }
+      & .user {
+        float: right;
+        padding-right: 20px;
+        line-height: 38px;
+        font-size: 14px;
+      }
+    }
+    & .card-num {
+      line-height: 60px;
+      text-align: center;
+    }
+    & .options {
+      line-height: 30px;
+      background: #cdcdcd;
+      font-size: 12px;
+      overflow: hidden;
+      & .cart-edit {
+        float: left;
+        padding-left: 10px;
+        color: #ff0606;
+      }
+      & .open-fast-pay {
+        float: right;
+        padding-right: 10px;
+        color: #ff0606;
+      }
+    }
+  }
+  & .tips {
+    margin: 10px;
+    padding: 30px 20px;
+    border: 1px solid #ccc;
+    & h3 {
+      padding: 20px 0;
+    }
+    & p {
+      line-height: 24px;
+    }
+  }
+  .item-block {
+    margin-left: 50px;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    line-height: 40px;
+    & .name {
+      float: left;
+    }
+    & .input-bankcard {
+      width: 200px;
+      height: 20px;
+      margin: 0;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+    & .btn-ok {
+      padding: 10px 15px;
+      margin: 30px 0 0 0;
+      background: #ff7a2a;
+      border: 1px solid #ff7a2a;
+      cursor: pointer;
+      color: #fff;
+    }
+  }
+
+  .recharge-bank {
+    width: 800px;
+    margin: 0px 4px 0;
+    float: left;
+    padding: 0 0 20px 0;
+    overflow: hidden;
+    & p {
+      height: 34px;
+      line-height: 34px;
+      margin: 13px 0px 0px 16px;
+      color: #353535;
+      font-size: 15px;
+      & i {
+        color: #ffac2a;
+        margin: 0px 4px;
+      }
+      & b {
+        color: #afafaf;
+        font-size: 14px;
+        font-weight: normal;
+        margin-left: 4px;
+      }
+      & input {
+        width: 164px;
+        height: 34px;
+        border: #747474 1px solid;
+        margin: 0px 12px 0px 10px;
+        padding: 0px 15px;
+        line-height: 34px;
+      }
+    }
+    .p-h {
+      font-size: 14px;
+      color: #979797;
+      margin-left: 132px;
+      margin-top: 5px;
+      & span {
+        margin-right: 34px;
+      }
+      & em {
+        margin: 0px 4px;
+      }
+    }
+    & .recharge-qr {
+      margin: 20px 0px 0px 162px;
+      width: 190px;
+      height: 36px;
+      background: #cc0000;
+      color: #fff;
+      display: block;
+      line-height: 30px;
+      text-align: center;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+    & .recharge-qr.grey {
+      background: #666;
+      color: #fff;
+    }
+    & .error{
+      display: none;
+      & img{ vertical-align: middle; margin-left: 10px; margin-right: 5px;}
+    }
+  }
+}
