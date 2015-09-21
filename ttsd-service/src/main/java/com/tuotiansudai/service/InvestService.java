@@ -10,6 +10,7 @@ public interface InvestService {
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto);
 
+    long calculateExpectedInterest(long loanId, long amount);
     /**
      * 查找投资记录
      * @param queryDto

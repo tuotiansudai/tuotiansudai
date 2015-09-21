@@ -48,7 +48,6 @@ public class SmsCaptchaServiceTest {
 
     @Test
     public void shouldSendSmsByMobileRegisterIsOk() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
         MockResponse mockResponse = new MockResponse();
         String jsonString = "{\"success\":true,\"data\":{\"status\":true}}";
         mockResponse.setBody(jsonString);
@@ -56,7 +55,7 @@ public class SmsCaptchaServiceTest {
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
         smsWrapperClient.setContext("");
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000",request);
+        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
@@ -67,13 +66,12 @@ public class SmsCaptchaServiceTest {
 
     @Test
     public void shouldSendSmsByMobileRegisterIsFail() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
         MockResponse mockResponse = new MockResponse();
         String jsonString = "{\"success\":true,\"data\":{\"status\":false}}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000",request);
+        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
         assertFalse(result);

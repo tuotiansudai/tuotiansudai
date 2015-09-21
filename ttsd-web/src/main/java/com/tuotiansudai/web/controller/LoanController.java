@@ -23,13 +23,6 @@ public class LoanController {
         return new ModelAndView("/loan", "baseDto", dto);
     }
 
-    //TODO:计算总预收收益
-    @RequestMapping(value = "/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
-    public String getExpectedTotalIncome(@PathVariable long loanId, @PathVariable double amount) {
-        String expectedTotalIncome = loanService.getExpectedTotalIncome(loanId, amount);
-        return expectedTotalIncome;
-    }
-
     @RequestMapping(value = "/{loanId}/index/{index}/pagesize/{pagesize}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {

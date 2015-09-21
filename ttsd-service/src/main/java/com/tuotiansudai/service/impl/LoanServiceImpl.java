@@ -290,12 +290,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public String getExpectedTotalIncome(long loanId, double investAmount) {
-
-        return null;
-    }
-
-    @Override
     public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
             index = 1;
@@ -314,46 +308,46 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startDate, Date endDate) {
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
         String loginName = LoginUserInfo.getLoginName();
-        if (startDate == null) {
-            startDate = new DateTime(0).withTimeAtStartOfDay().toDate();
+        if (startTime == null) {
+            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
-            startDate = new DateTime(startDate).withTimeAtStartOfDay().toDate();
+            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
         }
 
-        if (endDate == null) {
-            endDate = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        if (endTime == null) {
+            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
         } else {
-            endDate = new DateTime(endDate).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
 
         List<LoanModel> loanModels = Lists.newArrayList();
         long count = 0;
         if (LoanStatus.REPAYING == status) {
-            count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startDate, endDate);
+            count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+                loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 
         if (LoanStatus.COMPLETE == status) {
-            count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startDate, endDate);
+            count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+                loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 
         if (LoanStatus.CANCEL == status) {
-            count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startDate, endDate);
+            count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startDate, endDate);
+                loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 

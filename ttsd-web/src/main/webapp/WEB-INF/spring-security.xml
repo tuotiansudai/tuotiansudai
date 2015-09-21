@@ -34,11 +34,13 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" logout-success-url="/" />
 
-        <!--<intercept-url pattern="/*" access="isAnonymous()"/>-->
+        <intercept-url pattern="/style/**" access="permitAll()"/>
+        <intercept-url pattern="/images/**" access="permitAll()"/>
+        <intercept-url pattern="/js/**" access="permitAll()"/>
+
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/monitor" access="permitAll()"/>
         <intercept-url pattern="/register" access="isAnonymous()"/>
-
         <intercept-url pattern="/mobile-retrieve-password*" access="isAnonymous()"/>
 
         <intercept-url pattern="/login" access="isAnonymous()"/>
@@ -47,8 +49,8 @@
         <intercept-url pattern="/recharge" access="hasAuthority('USER')"/>
         <intercept-url pattern="/withdraw" access="hasAuthority('USER')"/>
         <intercept-url pattern="/bind-card" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/loaner/*" access="isAnonymous()"/>
-        <intercept-url pattern="/*" access="hasAuthority('USER')"/>
+        <intercept-url pattern="/loaner/**" access="isAnonymous()"/>
+        <intercept-url pattern="/**" access="hasAuthority('USER')"/>
         <csrf/>
     </http>
 

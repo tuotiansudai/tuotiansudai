@@ -1,31 +1,44 @@
 package com.tuotiansudai.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 
 public class LoanRepayDataItemDto {
     private long loanRepayId;
+
     private long loanId;
+
     private int period;
-    private long corpus;
-    private long expectedInterest;
-    private long actualInterest;
-    private long defaultInterest;
+
+    private String corpus;
+
+    private String expectedInterest;
+
+    private String actualInterest;
+
+    private String defaultInterest;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
+
     private Date actualRepayDate;
+
     private String loanRepayStatus;
+
     private boolean isEnabled;
 
     public LoanRepayDataItemDto(LoanRepayModel loanRepayModel, boolean isEnabled) {
         this.loanRepayId = loanRepayModel.getId();
         this.loanId = loanRepayModel.getLoanId();
         this.period = loanRepayModel.getPeriod();
-        this.corpus = loanRepayModel.getCorpus();
-        this.expectedInterest = loanRepayModel.getExpectedInterest();
-        this.defaultInterest = loanRepayModel.getDefaultInterest();
+        this.corpus = AmountUtil.convertCentToString(loanRepayModel.getCorpus());
+        this.expectedInterest = AmountUtil.convertCentToString(loanRepayModel.getExpectedInterest());
+        this.defaultInterest = AmountUtil.convertCentToString(loanRepayModel.getDefaultInterest());
         this.repayDate = loanRepayModel.getRepayDate();
-        this.actualInterest = loanRepayModel.getActualInterest();
+        this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.loanRepayStatus = loanRepayModel.getStatus().getDescription();
         this.isEnabled = isEnabled;
@@ -43,19 +56,19 @@ public class LoanRepayDataItemDto {
         return period;
     }
 
-    public long getCorpus() {
+    public String getCorpus() {
         return corpus;
     }
 
-    public long getExpectedInterest() {
+    public String getExpectedInterest() {
         return expectedInterest;
     }
 
-    public long getActualInterest() {
+    public String getActualInterest() {
         return actualInterest;
     }
 
-    public long getDefaultInterest() {
+    public String getDefaultInterest() {
         return defaultInterest;
     }
 

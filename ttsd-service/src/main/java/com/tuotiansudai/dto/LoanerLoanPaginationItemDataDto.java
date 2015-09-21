@@ -1,29 +1,41 @@
 package com.tuotiansudai.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class LoanerLoanPaginationItemDataDto implements Serializable {
     private long loanId;
+
     private String loanName;
-    private long loanAmount;
-    private long expectedRepayAmount;
-    private long actualRepayAmount;
-    private long unpaidAmount;
+
+    private String loanAmount;
+
+    private String expectedRepayAmount;
+
+    private String actualRepayAmount;
+
+    private String unpaidAmount;
+
     private Date recheckTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date nextRepayDate;
+
     private Date completedDate;
 
 
     public LoanerLoanPaginationItemDataDto(LoanModel loanModel) {
+
         this.loanId = loanModel.getId();
         this.loanName = loanModel.getName();
-        this.loanAmount = loanModel.getLoanAmount();
-        this.expectedRepayAmount = loanModel.getExpectedRepayAmount();
-        this.actualRepayAmount = loanModel.getActualRepayAmount();
-        this.unpaidAmount = loanModel.getUnpaidAmount();
+        this.loanAmount = AmountUtil.convertCentToString(loanModel.getLoanAmount());
+        this.expectedRepayAmount = AmountUtil.convertCentToString(loanModel.getExpectedRepayAmount());
+        this.actualRepayAmount = AmountUtil.convertCentToString(loanModel.getActualRepayAmount());
+        this.unpaidAmount = AmountUtil.convertCentToString(loanModel.getUnpaidAmount());
         this.recheckTime = loanModel.getRecheckTime();
         this.nextRepayDate = loanModel.getNextRepayDate();
         this.completedDate = loanModel.getCompletedDate();
@@ -37,19 +49,19 @@ public class LoanerLoanPaginationItemDataDto implements Serializable {
         return loanName;
     }
 
-    public long getLoanAmount() {
+    public String getLoanAmount() {
         return loanAmount;
     }
 
-    public long getExpectedRepayAmount() {
+    public String getExpectedRepayAmount() {
         return expectedRepayAmount;
     }
 
-    public long getActualRepayAmount() {
+    public String getActualRepayAmount() {
         return actualRepayAmount;
     }
 
-    public long getUnpaidAmount() {
+    public String getUnpaidAmount() {
         return unpaidAmount;
     }
 

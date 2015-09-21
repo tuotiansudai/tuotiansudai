@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService {
         this.userRoleMapper.create(userRoleModel);
 
         String referrerId = dto.getReferrer();
-        if(StringUtils.isNotEmpty(referrerId)){
-            saveReferrerRelations(referrerId,dto.getLoginName());
+        if (StringUtils.isNotEmpty(referrerId)) {
+            saveReferrerRelations(referrerId, dto.getLoginName());
         }
 
         return true;
@@ -126,21 +126,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(String mobile, String password) {
-        userMapper.updatePassword(mobile,password);
+        userMapper.updatePassword(mobile, password);
     }
 
     @Override
     @Transactional
     public boolean changePassword(String loginName, String oldPassword, String newPassword) {
-        if(StringUtils.isBlank(loginName)){
+        if (StringUtils.isBlank(loginName)) {
             return false;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if(userModel == null){
+        if (userModel == null) {
             return false;
         }
         String encOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
-        if(!StringUtils.equals(encOldPassword, userModel.getPassword())){
+        if (!StringUtils.equals(encOldPassword, userModel.getPassword())) {
             return false;
         }
         String encNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());

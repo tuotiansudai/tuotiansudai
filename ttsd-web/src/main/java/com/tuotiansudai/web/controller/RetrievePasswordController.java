@@ -9,6 +9,7 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
 import com.tuotiansudai.utils.CaptchaVerifier;
+import com.tuotiansudai.utils.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,7 @@ public class RetrievePasswordController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
-            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile,request));
+            dataDto.setStatus(smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.getRequestIp(request)));
         }
         dataDto.setStatus(false);
         return baseDto;

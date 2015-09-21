@@ -10,9 +10,9 @@ import java.util.Map;
 
 public interface RepayService {
 
-    BaseDto<PayFormDataDto> repay(RepayDto repayDto);
+    BaseDto<PayFormDataDto> repay(long loanId);
 
     String repayCallback(Map<String, String> paramsMap, String originalQueryString);
 
-    void generateRepay(long loanId, List<InvestModel> successInvestModels);
+    void generateRepay(long loanId);
 }

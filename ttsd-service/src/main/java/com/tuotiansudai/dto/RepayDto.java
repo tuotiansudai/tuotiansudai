@@ -10,10 +10,6 @@ public class RepayDto {
     @Pattern(regexp = "^\\d+$")
     private long loanId;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d+$")
-    private int period;
-
     public long getLoanId() {
         return loanId;
     }
@@ -22,11 +18,4 @@ public class RepayDto {
         this.loanId = loanId;
     }
 
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
-    }
 }
