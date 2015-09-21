@@ -28,31 +28,31 @@ public interface LoanMapper {
     List<LoanModel> findRepayingPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
-                                                            @Param(value = "startDate") Date startDate,
-                                                            @Param(value = "endDate") Date endDate);
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
 
     List<LoanModel> findCompletedPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
                                                              @Param(value = "index") int index,
                                                              @Param(value = "pageSize") int pageSize,
-                                                             @Param(value = "startDate") Date startDate,
-                                                             @Param(value = "endDate") Date endDate);
+                                                             @Param(value = "startTime") Date startTime,
+                                                             @Param(value = "endTime") Date endTime);
 
     List<LoanModel> findCanceledPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
-                                                            @Param(value = "startDate") Date startDate,
-                                                            @Param(value = "endDate") Date endDate);
+                                                            @Param(value = "startTime") Date startTime,
+                                                            @Param(value = "endTime") Date endTime);
 
     long findCountRepayingByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                            @Param(value = "startDate") Date startDate,
-                                            @Param(value = "endDate") Date endDate);
+                                            @Param(value = "startTime") Date startTime,
+                                            @Param(value = "endTime") Date endTime);
 
     long findCountCompletedByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                             @Param(value = "startDate") Date startDate,
-                                             @Param(value = "endDate") Date endDate);
+                                             @Param(value = "startTime") Date startTime,
+                                             @Param(value = "endTime") Date endTime);
 
     long findCountCanceledByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                            @Param(value = "startDate") Date startDate,
-                                            @Param(value = "endDate") Date endDate);
+                                            @Param(value = "startTime") Date startTime,
+                                            @Param(value = "endTime") Date endTime);
 
 }

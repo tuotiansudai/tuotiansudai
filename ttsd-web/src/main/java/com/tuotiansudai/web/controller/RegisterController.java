@@ -7,6 +7,7 @@ import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
 import com.tuotiansudai.utils.CaptchaVerifier;
+import com.tuotiansudai.utils.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ public class RegisterController {
         baseDto.setData(dataDto);
         boolean result = this.captchaVerifier.registerImageCaptchaVerify(imageCaptcha);
         if (result) {
-            dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile, request));
+            dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile, RequestIPParser.getRequestIp(request)));
         }
         return baseDto;
     }

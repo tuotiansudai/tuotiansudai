@@ -181,7 +181,7 @@ public class LoanServiceImpl implements LoanService {
             processLoanAccountForLoanOut(loan, investAmountTotal);
 
             logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-            repayService.generateRepay(loanId, successInvestList);
+            repayService.generateRepay(loanId);
 
             logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
             recommendedIncome(loan, successInvestList);

@@ -5,9 +5,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2015/9/17.
- */
 public class SmsCaptchaDto implements Serializable {
 
     @NotEmpty
@@ -22,7 +19,6 @@ public class SmsCaptchaDto implements Serializable {
     private String ip;
 
     public SmsCaptchaDto() {
-
     }
 
     public SmsCaptchaDto(String mobile, String captcha, String ip) {

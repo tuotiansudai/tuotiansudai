@@ -111,7 +111,7 @@
         where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
         where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startDate} and #{endDate}
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
@@ -119,7 +119,7 @@
     <select id="findCountRepayingByLoanerLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startDate} and #{endDate}
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status = 'REPAYING') between #{startTime} and #{endTime}
     </select>
 
     <select id="findCompletedPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
@@ -135,7 +135,7 @@
         where loan.id=loan_repay.loan_id) as actual_repay_amount
         from loan
         where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
-        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startDate} and #{endDate}
+        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
         order by completed_date desc, id asc
         limit #{index}, #{pageSize}
     </select>
@@ -143,19 +143,19 @@
     <select id="findCountCompletedByLoanerLoginName" parameterType="map" resultType="long">
         select count(1) from loan
         where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
-        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startDate} and #{endDate}
+        and (select max(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
     </select>
 
     <select id="findCanceledPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
         select * from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startDate} and #{endDate}
+        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="findCountCanceledByLoanerLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startDate} and #{endDate}
+        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
 
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">

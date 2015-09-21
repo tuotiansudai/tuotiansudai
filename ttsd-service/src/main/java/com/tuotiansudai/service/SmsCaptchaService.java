@@ -1,15 +1,13 @@
 package com.tuotiansudai.service;
 
 
-import javax.servlet.http.HttpServletRequest;
-
 public interface SmsCaptchaService {
 
-    boolean sendRegisterCaptcha(String mobile, HttpServletRequest request);
+    boolean sendRegisterCaptcha(String mobile, String requestIP);
 
     boolean verifyRegisterCaptcha(String mobile, String captcha);
 
-    boolean sendMobileCaptcha(String mobile, HttpServletRequest request);
+    boolean sendRetrievePasswordCaptcha(String mobile, String requestIP);
 
     boolean verifyMobileCaptcha(String mobile, String captcha);
 

@@ -65,9 +65,7 @@ public interface LoanService {
 
     BaseDto<LoanDto> getLoanDetail(long loanId);
 
-    String getExpectedTotalIncome(long loanId, double investAmount);
-
     BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
-    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startDate, Date endDate);
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 }

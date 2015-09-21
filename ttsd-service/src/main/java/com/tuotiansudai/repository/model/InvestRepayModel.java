@@ -6,21 +6,21 @@ public class InvestRepayModel {
 
     private long id;
 
-    private long corpus;
+    private long investId;
 
-    private long defaultInterest;
+    private int period;
+
+    private long corpus;
 
     private long expectedInterest;
 
     private long actualInterest;
 
+    private long defaultInterest;
+
     private long expectedFee;
 
     private long actualFee;
-
-    private long investId;
-
-    private int period;
 
     private Date repayDate;
 
@@ -29,6 +29,19 @@ public class InvestRepayModel {
     private RepayStatus status;
 
     private Date createdTime = new Date();
+
+    public InvestRepayModel() {
+    }
+
+    public InvestRepayModel(long id, long investId, int period, long expectedInterest, long expectedFee, Date repayDate, RepayStatus status) {
+        this.id = id;
+        this.investId = investId;
+        this.period = period;
+        this.expectedInterest = expectedInterest;
+        this.expectedFee = expectedFee;
+        this.repayDate = repayDate;
+        this.status = status;
+    }
 
     public long getId() {
         return id;

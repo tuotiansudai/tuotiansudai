@@ -1,9 +1,9 @@
 package com.tuotiansudai.smswrapper.controller;
 
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsCaptchaDto;
-import com.tuotiansudai.smswrapper.dto.SmsResultDataDto;
-import com.tuotiansudai.smswrapper.dto.SmsResultDto;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,35 +17,43 @@ public class SmsController {
     @Autowired
     private SmsService smsService;
 
-    @RequestMapping(value = "/mobile/captcha/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register-captcha", method = RequestMethod.POST)
     @ResponseBody
-    public SmsResultDto sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        SmsResultDataDto data = new SmsResultDataDto();
+    public BaseDto<BaseDataDto> sendRegisterCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
+        BaseDto<BaseDataDto> dto = new BaseDto<>();
+        BaseDataDto data = new BaseDataDto();
+        dto.setData(data);
         data.setStatus(smsService.sendRegisterCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp()));
-        return new SmsResultDto(data);
+        return dto;
     }
 
-    @RequestMapping(value = "/mobile/captcha/retrieve", method = RequestMethod.POST)
+    @RequestMapping(value = "/retrieve-password-captcha", method = RequestMethod.POST)
     @ResponseBody
-    public SmsResultDto sendRetrievePasswordCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
-        SmsResultDataDto data = new SmsResultDataDto();
+    public BaseDto<BaseDataDto> sendRetrievePasswordCaptcha(@Valid @RequestBody SmsCaptchaDto smsCaptchaDto) {
+        BaseDto<BaseDataDto> dto = new BaseDto<>();
+        BaseDataDto data = new BaseDataDto();
+        dto.setData(data);
         data.setStatus(smsService.sendRetrievePasswordCaptcha(smsCaptchaDto.getMobile(), smsCaptchaDto.getCaptcha(), smsCaptchaDto.getIp()));
-        return new SmsResultDto(data);
+        return dto;
     }
 
-    @RequestMapping(value = "/mobile/loan-out-investor-notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/loan-out-investor-notify", method = RequestMethod.POST)
     @ResponseBody
-    public SmsResultDto sendInvestNotify(@RequestBody InvestSmsNotifyDto dto) {
-        SmsResultDataDto data = new SmsResultDataDto();
-        data.setStatus(smsService.sendInvestNotify(dto));
-        return new SmsResultDto(data);
+    public BaseDto<BaseDataDto> sendInvestNotify(@RequestBody InvestSmsNotifyDto investSmsNotifyDto) {
+        BaseDto<BaseDataDto> dto = new BaseDto<>();
+        BaseDataDto data = new BaseDataDto();
+        dto.setData(data);
+        data.setStatus(smsService.sendInvestNotify(investSmsNotifyDto));
+        return dto;
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/password-changed-notify", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/password-changed-notify", method = RequestMethod.POST)
     @ResponseBody
-    public SmsResultDto sendPasswordChangedNotify(@PathVariable String mobile) {
-        SmsResultDataDto data = new SmsResultDataDto();
+    public BaseDto<BaseDataDto> sendPasswordChangedNotify(@PathVariable String mobile) {
+        BaseDto<BaseDataDto> dto = new BaseDto<>();
+        BaseDataDto data = new BaseDataDto();
+        dto.setData(data);
         data.setStatus(smsService.sendPasswordChangedNotify(mobile));
-        return new SmsResultDto(data);
+        return dto;
     }
 }

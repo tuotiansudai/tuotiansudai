@@ -152,24 +152,18 @@ public class PayWrapperClient {
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
-        String requestJson;
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(agreementPath, requestJson);
+            return this.parsePayFormJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
         BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
         PayFormDataDto payFormDataDto = new PayFormDataDto();
         baseDto.setData(payFormDataDto);
-        try {
-            requestJson = objectMapper.writeValueAsString(dto);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
 
-        String responseJson = this.post(agreementPath, requestJson);
-        if (Strings.isNullOrEmpty(responseJson)) {
-            payFormDataDto.setStatus(false);
-            return baseDto;
-        }
-        return this.parsePayFormJson(responseJson);
+        return baseDto;
     }
 
     public BaseDto<PayFormDataDto> repay(RepayDto dto) {
