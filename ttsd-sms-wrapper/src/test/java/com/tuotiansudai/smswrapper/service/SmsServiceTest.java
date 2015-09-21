@@ -63,7 +63,7 @@ public class SmsServiceTest {
         String mobile = "13900000000";
         String captcha = "9999";
 
-        this.smsService.sendRegisterCaptcha(mobile, captcha);
+        this.smsService.sendRegisterCaptcha(mobile, captcha, "127.0.0.1");
 
         List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
 

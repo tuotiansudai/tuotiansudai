@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.RechargeService;
@@ -29,6 +30,7 @@ public class PayCallbackController {
 
     @Autowired
     private BindBankCardService bindBankCardService;
+
     @Autowired
     private WithdrawService withdrawService;
 
@@ -38,10 +40,21 @@ public class PayCallbackController {
     @Autowired
     private RepayService repayService;
 
+    @Autowired
+    private AgreementService agreementService;
+
+
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.rechargeService.rechargeCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/mer_bind_agreement_notify", method = RequestMethod.GET)
+    public ModelAndView agreementNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = agreementService.agreementCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
