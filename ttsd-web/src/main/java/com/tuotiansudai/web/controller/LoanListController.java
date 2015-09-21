@@ -27,10 +27,10 @@ public class LoanListController {
     @RequestMapping(value = "/activityType/{activityType}/status/{status}/periodsStart/{periodsStart}/periodsEnd/{periodsEnd}/rateStart/{rateStart}/rateEnd/{rateEnd}/currentPageNo/{currentPageNo}", method = RequestMethod.GET)
     public ModelAndView loanListWeb(@PathVariable String activityType, @PathVariable String status, @PathVariable String periodsStart, @PathVariable String periodsEnd, @PathVariable String rateStart, @PathVariable String rateEnd, @PathVariable String currentPageNo) {
         int loanListCountWeb = loanService.findLoanListCountWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd);
-        List<LoanListWebDto> LoanListWebDtos = loanService.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd, currentPageNo);
+        List<LoanListWebDto> loanListWebDtos = loanService.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd, currentPageNo);
         ModelAndView modelAndView = new ModelAndView("/loanList");
         modelAndView.addObject("loanListCountWeb",loanListCountWeb);
-        modelAndView.addObject("LoanListWebDtos",LoanListWebDtos);
+        modelAndView.addObject("loanListWebDtos",loanListWebDtos);
         modelAndView.addObject("currentPageNo",currentPageNo);
         return modelAndView;
     }
