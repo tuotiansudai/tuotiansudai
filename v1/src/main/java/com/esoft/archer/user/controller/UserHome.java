@@ -607,17 +607,19 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         String mobileNumberOld = oldUserInfo.getMobileNumber();
         if(org.apache.commons.lang3.StringUtils.isNotEmpty(realName)
                 && org.apache.commons.lang3.StringUtils.isNotEmpty(idCard)
+                &&!"".equals(mobileNumberNew)
                 && !mobileNumberOld.equals(mobileNumberNew)){
             try {
                 umPayUserOperation.createOperation(getInstance(),
                         FacesContext.getCurrentInstance());
+                FacesUtil.addInfoMessage("实名认证手机号修改成功。");
             } catch (IOException e) {
                 userInfo.setMobileNumber(mobileNumberOld);
                 log.error(e.getLocalizedMessage(),e);
-                FacesUtil.addErrorMessage("实名认证手机号修改失败:" + e.getMessage());
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
             }catch (UmPayOperationException e) {
                 userInfo.setMobileNumber(mobileNumberOld);
-                FacesUtil.addErrorMessage("实名认证手机号修改失败:" + e.getMessage());
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
                 log.error(e.getLocalizedMessage(),e);
             }
         }

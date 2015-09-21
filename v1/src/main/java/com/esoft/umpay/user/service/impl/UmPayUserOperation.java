@@ -21,6 +21,7 @@ import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.logging.Log;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -56,7 +57,7 @@ public class UmPayUserOperation extends UmPayOperationServiceAbs<User> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public TrusteeshipOperation createOperation(User user, FacesContext fc)
 			throws IOException {
 		Map<String, String> map = UmPaySignUtil
@@ -95,9 +96,7 @@ public class UmPayUserOperation extends UmPayOperationServiceAbs<User> {
 				throw new UmPayOperationException("开户失败:"
 						+ resData.get("ret_msg"));
 			}
-		} catch (ReqDataException e) {
-			e.printStackTrace();
-		} catch (RetDataException e) {
+		} catch (ReqDataException | RetDataException e) {
 			e.printStackTrace();
 		}
 		return null;
