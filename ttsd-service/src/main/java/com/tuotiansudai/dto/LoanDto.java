@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
-public class LoanDto {
+public class LoanDto extends BaseDataDto{
 
     private long id;
 
@@ -35,7 +35,7 @@ public class LoanDto {
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private long periods;
+    private int periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -113,6 +113,18 @@ public class LoanDto {
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    /**可投金额**/
+    private double amountNeedRaised;
+
+    /**当前登录用户的个人账户余额**/
+    private double balance;
+
+    /**完成比例**/
+    private double raiseCompletedRate;
+
+    /**预计总收益**/
+    private long expectedTotalIncome;
+
     public long getId() {
         return id;
     }
@@ -153,11 +165,11 @@ public class LoanDto {
         this.type = type;
     }
 
-    public long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 
@@ -311,5 +323,37 @@ public class LoanDto {
 
     public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
+    }
+
+    public double getAmountNeedRaised() {
+        return amountNeedRaised;
+    }
+
+    public void setAmountNeedRaised(double amountNeedRaised) {
+        this.amountNeedRaised = amountNeedRaised;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getRaiseCompletedRate() {
+        return raiseCompletedRate;
+    }
+
+    public void setRaiseCompletedRate(double raiseCompletedRate) {
+        this.raiseCompletedRate = raiseCompletedRate;
+    }
+
+    public long getExpectedTotalIncome() {
+        return expectedTotalIncome;
+    }
+
+    public void setExpectedTotalIncome(long expectedTotalIncome) {
+        this.expectedTotalIncome = expectedTotalIncome;
     }
 }

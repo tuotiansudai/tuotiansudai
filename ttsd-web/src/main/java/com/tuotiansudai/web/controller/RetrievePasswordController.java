@@ -14,6 +14,8 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/mobile-retrieve-password")
-public class RetrievePasswordController extends BaseController {
+public class RetrievePasswordController {
     @Autowired
     private UserService userService;
     @Autowired
@@ -37,13 +39,13 @@ public class RetrievePasswordController extends BaseController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView inputCellphone() {
-        return new ModelAndView("/retrieve").addObject("mobile","");
+        return new ModelAndView("/retrieve").addObject("mobile", "");
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page",method = RequestMethod.GET)
-    public ModelAndView inputPassword(@PathVariable String mobile,@PathVariable String captcha) {
+    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/new-password-page", method = RequestMethod.GET)
+    public ModelAndView inputPassword(@PathVariable String mobile, @PathVariable String captcha) {
         if (smsCaptchaService.verifyMobileCaptcha(mobile, captcha)) {
-            return new ModelAndView("/input-password").addObject("mobile",mobile).addObject("captcha",captcha);
+            return new ModelAndView("/input-password").addObject("mobile", mobile).addObject("captcha", captcha);
         }
         return new ModelAndView("redirect:/mobile-retrieve-password");
     }
@@ -71,11 +73,12 @@ public class RetrievePasswordController extends BaseController {
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> mobileCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         if (captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha)) {
-            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile));
+            dataDto.setStatus(smsCaptchaService.sendMobileCaptcha(mobile,request));
         }
         dataDto.setStatus(false);
         return baseDto;
@@ -113,6 +116,6 @@ public class RetrievePasswordController extends BaseController {
         if (retrievePasswordService.mobileRetrievePassword(retrievePasswordDto)) {
             return new ModelAndView("redirect:/login");
         }
-        return new ModelAndView("/input-password").addObject("mobile",retrievePasswordDto.getMobile()).addObject("captcha",retrievePasswordDto.getCaptcha());
+        return new ModelAndView("/input-password").addObject("mobile", retrievePasswordDto.getMobile()).addObject("captcha", retrievePasswordDto.getCaptcha());
     }
 }
