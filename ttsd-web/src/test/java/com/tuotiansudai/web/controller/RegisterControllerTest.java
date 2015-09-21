@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -142,7 +143,8 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(true);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
         this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -152,7 +154,8 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(true);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(true);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(false);
         this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -172,7 +175,8 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldNotFoundWhenMobileIsInvalid() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString())).thenReturn(false);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(),request)).thenReturn(false);
 
         this.mockMvc.perform(get("/register/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());

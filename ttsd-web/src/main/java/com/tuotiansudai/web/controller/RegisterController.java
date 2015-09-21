@@ -12,6 +12,8 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -83,12 +85,13 @@ public class RegisterController extends BaseController {
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-register-captcha", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto sendRegisterCaptcha(@PathVariable String mobile, @PathVariable String imageCaptcha) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         boolean result = this.captchaVerifier.registerImageCaptchaVerify(imageCaptcha);
         if (result) {
-            dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile));
+            dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(mobile, request));
         }
         return baseDto;
     }
