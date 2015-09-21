@@ -6,6 +6,8 @@ allprojects {
 subprojects {
     //Put instructions for each sub project
     apply plugin: "java"
+    apply plugin: "application"
+    apply plugin: "jacoco"
     repositories {
         maven { url 'http://maven.oschina.net/content/groups/public/' }
     }
@@ -16,6 +18,25 @@ subprojects {
         outputs.upToDateWhen { false }
         testLogging {
             exceptionFormat "full" // default is "short"
+        }
+
+        reports.html.enabled = false
+
+        jacoco {
+            applyTo run
+        }
+
+        task applicationCodeCoverageReport(type: JacocoReport) {
+            executionData run
+            sourceSets sourceSets.main
+        }
+
+        jacocoTestReport {
+            reports {
+                xml.enabled false
+                csv.enabled false
+                html.destination "${buildDir}/jacocoHtml"
+            }
         }
     }
 
