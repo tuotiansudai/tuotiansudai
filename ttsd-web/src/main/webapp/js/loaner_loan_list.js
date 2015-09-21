@@ -61,7 +61,8 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
                                 var txt = '';
                             }
                             console.log(txt)
-                            var total = parseInt(_res[i]['corpus']) + parseInt(_res[i]['actualInterest']) + parseInt(_res[i]['expectedInterest']) + parseInt(_res[i]['defaultInterest']);
+                            var total = parseFloat(_res[i]['corpus']) + parseFloat(_res[i]['expectedInterest']);
+                            var _total = parseInt(_res[i]['corpus']) + parseInt(_res[i]['actualInterest']) + parseInt(_res[i]['defaultInterest']);
                             str += "<tr><td>" +
                                 _res[i]['period']
                                 + "</td><td>" +
@@ -69,19 +70,17 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
                                 + "</td><td>" +
                                 _res[i]['expectedInterest']
                                 + "</td><td>" +
-                                _res[i]['actualInterest']
+                                _res[i]['expectedInterest']
                                 + "</td> <td>" +
                                 _res[i]['defaultInterest']
                                 + "</td> <td>" +
-                                total
-                                + "</td> <td>" +
                                 _res[i]['repayDate']
+                                + "</td> <td>" +
+                                _res[i]['actualInterest']
                                 + "</td> <td>" +
                                 _res[i]['actualRepayDate']
                                 + "</td><td>" +
-                                _res[i]['loanRepayStatus']
-                                + "</td><td>" +
-                                 txt
+                                txt
                                 + "</td></tr>";
 
                         }

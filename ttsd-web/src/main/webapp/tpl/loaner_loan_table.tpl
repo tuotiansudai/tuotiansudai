@@ -14,7 +14,7 @@
     {{#data.records}}
     <tr>
         <td>{{loanName}}</td>
-        <td><a class="red" href="/loan/{{loanId}}">{{recheckTime}}</td>
+        <td>{{recheckTime}}</td>
         <td>{{loanAmount}}</td>
         <td>{{unpaidAmount}}元</td>
         <td>{{nextRepayDate}}</td>
@@ -43,7 +43,7 @@
         {{#data.records}}
         <tr>
             <td>{{loanName}}</td>
-            <td><a class="red" href="/loan/{{loanId}}">{{recheckTime}}</td>
+            <td>{{recheckTime}}</td>
             <td>{{expectedRepayAmount}}</td>
             <td>{{actualRepayAmount}}元</td>
             <td>{{completedDate}}</td>

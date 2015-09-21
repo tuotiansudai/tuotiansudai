@@ -55,14 +55,13 @@
                 <tr>
                     <th>期数</th>
                     <th>本金</th>
-                    <th>预计利息</th>
-                    <th>实际利息</th>
+                    <th>利息</th>
                     <th>罚息</th>
-                    <th>总额</th>
+                    <th>应还总额</th>
                     <th>还款日</th>
+                    <th>实还总额</th>
                     <th>还款时间</th>
                     <th>状态</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
