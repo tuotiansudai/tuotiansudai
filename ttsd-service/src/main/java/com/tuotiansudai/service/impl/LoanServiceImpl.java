@@ -120,7 +120,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (maxInvestAmount < loanAmount) {
+        if (maxInvestAmount > loanAmount) {
             dataDto.setStatus(false);
             baseDto.setData(dataDto);
             return baseDto;
