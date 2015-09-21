@@ -31,10 +31,10 @@ import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.UmPayConstants.TransferProjectStatus;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
-import com.ttsd.special.services.InvestLotteryService;
 import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
+import com.ttsd.special.services.InvestLotteryService;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -75,11 +75,13 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
     @Resource
     InvestService investService;
 
+    @Resource
+    UserBillBO ubs;
 	@Autowired
 	private InvestLotteryService investLotteryService;
 
-    @Resource
-    UserBillBO ubs;
+	@Logger
+	Log log;
 
     @Resource
     LoanCalculator loanCalculator;
@@ -92,10 +94,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     HibernateTemplate ht;
-
-    @Logger
-    Log log;
-
 
     /**
      * 投资
@@ -213,8 +211,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
         return sendMap;
     }
-
-
     /**
      * 处理前台通知的投标
      */

@@ -68,6 +68,11 @@ public class ScheduleConstants {
 		public static final String LOAN_OUT_NOTIFICATION = "loan_out_notification";
 
 		/**
+		 * 现金奖品(抽奖)成功通知
+		 */
+		public static final String AUTO_GRANT_CASH_PRIZE = "auto_grant_cash_prize";
+
+		/**
 		 * 注册邮件验证
 		 */
 		public static final String REGISTER_VERIFICATION_EMAIL = "register_verification_email";
@@ -143,6 +148,11 @@ public class ScheduleConstants {
 		 * 放款成功通知
 		 */
 		public static final String LOAN_OUT_NOTIFICATION = "loan_out_notification";
+
+		/**
+		 * 现金奖品(抽奖)成功通知
+		 */
+		public static final String AUTO_GRANT_CASH_PRIZE = "auto_grant_cash_prize";
 		/**
 		 * 自动发放活动奖励
 		 */
