@@ -50,44 +50,44 @@
     <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
         select * from loan t
         <where>
-            <if test="#{status} != null">
+            <if test="status != null">
                 t.status = #{status}
             </if>
-            <if test="#{loanId} != null">
+            <if test="loanId > 0">
                 and t.id = #{loanId}
             </if>
-            <if test="#{loanName} != null">
+            <if test="loanName != null and loanName != '' ">
                 and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
             </if>
-            <if test="#{startTime} != null">
+            <if test="startTime != null">
                 and t.created_time >= #{startTime}
             </if>
-            <if test="#{endTime} != null">
+            <if test="endTime != null">
                 <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>
         order by t.created_time desc
-        <if test="#{currentPageNo} > 0">
-            limit (#{currentPageNo} - 1) * 10 , 10
+        <if test="currentPageNo > 0">
+            limit #{currentPageNo} , 10
         </if>
     </select>
 
-    <select id="findLoanListCount" parameterType="map" resultMap="int">
+    <select id="findLoanListCount" parameterType="map" resultType="int">
         select count(*) from loan t
         <where>
-            <if test="#{status} != null">
+            <if test="status != null">
                 t.status = #{status}
             </if>
-            <if test="#{loanId} != null">
+            <if test="loanId > 0">
                 and t.id = #{loanId}
             </if>
-            <if test="#{loanName} != null">
+            <if test="loanName != null and loanName != ''">
                 and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
             </if>
-            <if test="#{startTime} != null">
+            <if test="startTime != null">
                 and t.created_time >= #{startTime}
             </if>
-            <if test="#{endTime} != null">
+            <if test="endTime != null">
                 <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>

@@ -252,7 +252,8 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo) {
-        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"),new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"),currentPageNo);
+        currentPageNo = (currentPageNo - 1) * 10;
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime!=null?new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"):null,endTime!=null?new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"):null,currentPageNo);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i=0;i<loanModels.size();i++) {
             LoanListDto loanListDto = new LoanListDto();
@@ -273,7 +274,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime) {
-        return loanMapper.findLoanListCount(status, loanId, loanName, new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"), new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"));
+        return loanMapper.findLoanListCount(status, loanId, loanName, startTime!=null?new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"):null, endTime!=null?new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"):null);
     }
 
     public BaseDto<LoanDto> getLoanDetail(long loanId) {

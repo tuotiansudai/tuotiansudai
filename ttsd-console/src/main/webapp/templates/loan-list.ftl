@@ -86,24 +86,24 @@
                 <form action="" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">编号</label>
-                        <input type="text" class="form-control" id="" placeholder="">
+                        <input type="text" class="form-control" id="" placeholder="" value="${(loanId?string('0'))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">项目名称</label>
-                        <input type="text" class="form-control" id="" placeholder="">
+                        <input type="text" class="form-control" id="" placeholder="" value="${loanName!}">
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control"/>
+                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                         </div>
                         -
                         <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control"/>
+                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -128,7 +128,6 @@
                             <th>编号</th>
                             <th>项目名称</th>
                             <th>项目类型</th>
-                            <th>标的类型</th>
                             <th>借款人</th>
                             <th>借款金额</th>
                             <th>借款期限</th>
@@ -140,44 +139,55 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>20150714000141</td>
-                            <td>编辑</td>
-                        </tr>
+                            <#list loanListDtos as loanListDto>
+                                <tr>
+                                    <td>${loanListDto.id?string('0')}</td>
+                                    <td>${loanListDto.name}</td>
+                                    <td>${loanListDto.type.getName()}</td>
+                                    <td>${loanListDto.agentLoginName}</td>
+                                    <td>${loanListDto.loanAmount/100}</td>
+                                    <td>${loanListDto.periods}</td>
+                                    <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
+                                    <td>${loanListDto.status.getDescription()}</td>
+                                    <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                                    <td>投资/还款记录</td>
+                                    <td>编辑</td>
+                                </tr>
+                            </#list>
                         </tbody>
-
                     </table>
                 </div>
 
                 <!-- pagination  -->
                 <nav>
+                    <div>
+                        <span class="bordern">总共${loanListCount}条,每页显示10条</span>
+                    </div>
+                <#if loanListDtos?has_content>
                     <ul class="pagination">
+
                         <li>
+                            <#if hasPreviousPage >
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&loanName=${loanName!}" aria-label="Previous">
+                            <#else>
                             <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
+                            </#if>
+                            <span aria-hidden="true">&laquo; Prev</span>
+                        </a>
                         </li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
+                        <li><a>${currentPageNo}</a></li>
                         <li>
+                            <#if hasNextPage >
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&loanName=${loanName!}" aria-label="Next">
+                            <#else>
                             <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
+                            </#if>
+                            <span aria-hidden="true">Next &raquo;</span>
+                        </a>
+
                         </li>
                     </ul>
+                </#if>
                 </nav>
                 <!-- pagination -->
             </div>
