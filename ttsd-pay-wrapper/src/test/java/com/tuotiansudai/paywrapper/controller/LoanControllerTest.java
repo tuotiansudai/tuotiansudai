@@ -123,7 +123,7 @@ public class LoanControllerTest {
 
         String requestJson = objectMapper.writeValueAsString(loanOutDto);
 
-        this.mockMvc.perform(post("/loan/loanout").
+        this.mockMvc.perform(post("/loan/loan-out").
                 contentType(MediaType.APPLICATION_JSON_VALUE).
                 content(requestJson))
                 .andExpect(status().isOk())
