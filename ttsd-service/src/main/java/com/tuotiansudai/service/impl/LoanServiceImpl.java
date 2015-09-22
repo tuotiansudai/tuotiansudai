@@ -1,11 +1,5 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -467,9 +461,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanListWebDto> findLoanListWeb(String activityType, String status, String periodsStart, String periodsEnd, String rateStart, String rateEnd, String currentPageNo) {
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,divide(Double.valueOf(rateStart),100,2),
-                divide(Double.valueOf(rateEnd),100,2),Integer.valueOf(currentPageNo));
+    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
+        currentPageNo = (currentPageNo - 1) * 10;
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,rateStart,
+                rateEnd,currentPageNo);
         List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
         for (int i=0;i<loanModels.size();i++) {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
@@ -482,19 +477,14 @@ public class LoanServiceImpl implements LoanService {
             loanListWebDto.setStatus(loanModels.get(i).getStatus());
             loanListWebDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
             loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
+            loanListWebDtos.add(loanListWebDto);
         }
         return loanListWebDtos;
     }
 
     @Override
-    public int findLoanListCountWeb(String activityType, String status, String periodsStart, String periodsEnd, String rateStart, String rateEnd) {
-        return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,divide(Double.valueOf(rateStart),100,2),divide(Double.valueOf(rateEnd),100,2));
-    }
-
-    private double divide(double divisor, double dividend, int digits){
-        BigDecimal divisorBigDecimal = new BigDecimal(divisor);
-        BigDecimal dividendBigDecimal = new BigDecimal(dividend);
-        return divisorBigDecimal.divide(dividendBigDecimal, digits, BigDecimal.ROUND_HALF_UP).doubleValue();
+    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
+        return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,rateStart,rateEnd);
     }
 
 }

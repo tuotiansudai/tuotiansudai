@@ -63,7 +63,7 @@
                 and t.created_time >= #{startTime}
             </if>
             <if test="#{endTime} != null and #{endTime} != ''">
-                and t.created_time <= #{endTime}
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>
         order by t.created_time desc
@@ -72,7 +72,7 @@
         </if>
     </select>
 
-    <select id="findLoanListCount" parameterType="map" resultMap="int">
+    <select id="findLoanListCount" parameterType="map" resultType="int">
         select count(*) from loan t
         <where>
             <if test="#{status} != null and #{status} != ''">
@@ -88,7 +88,7 @@
                 and t.created_time >= #{startTime}
             </if>
             <if test="#{endTime} != null and #{endTime} != ''">
-                and t.created_time <= #{endTime}
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
             </if>
         </where>
     </select>
@@ -96,51 +96,51 @@
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
         select * from loan t
         <where>
-            <if test="#{activityType} !=null and #{activityType} != ''">
+            <if test="activityType !=null">
                 t.activity_type = #{activityType}
             </if>
-            <if test="#{status} != null and #{status} != ''">
+            <if test="status != null">
                 and t.status = #{status}
             </if>
-            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+            <if test="periodsStart > 0">
                 and t.periods >= #{periodsStart}
             </if>
-            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
-                and t.periods <= #{periodsEnd}
+            <if test="periodsEnd > 0">
+                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
             </if>
-            <if test="#{rateStart} > 0">
-                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            <if test="rateStart > 0">
+                and (t.base_rate + t.activity_rate) >= #{rateStart}
             </if>
-            <if test="#{rateEnd} > 0">
-                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            <if test="rateEnd > 0">
+                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
             </if>
             order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
-            <if test="#{currentPageNo} > 0">
-                limit (#{currentPageNo} - 1) * 10 , 10
+            <if test="currentPageNo > 0">
+                limit #{currentPageNo} , 10
             </if>
         </where>
     </select>
 
-    <select id="findLoanListCountWeb" parameterType="map" resultMap="int">
+    <select id="findLoanListCountWeb" parameterType="map" resultType="int">
         select count(*) from loan t
         <where>
-            <if test="#{activityType} !=null and #{activityType} != ''">
+            <if test="activityType !=null">
                 t.activity_type = #{activityType}
             </if>
-            <if test="#{status} != null and #{status} != ''">
+            <if test="status != null">
                 and t.status = #{status}
             </if>
-            <if test="#{periodsStart} != null and #{periodsStart} != ''">
+            <if test="periodsStart > 0">
                 and t.periods >= #{periodsStart}
             </if>
-            <if test="#{periodsEnd} != null and #{periodsEnd} != ''">
-                and t.periods <= #{periodsEnd}
+            <if test="periodsEnd > 0">
+                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
             </if>
-            <if test="#{rateStart} > 0">
-                and (t.basic_rate + t.activity_rate) >= #{rateStart}
+            <if test="rateStart > 0">
+                and (t.base_rate + t.activity_rate) >= #{rateStart}
             </if>
-            <if test="#{rateEnd} > 0">
-                and (t.basic_rate + t.activity_rate) <= #{rateEnd}
+            <if test="rateEnd > 0">
+                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
             </if>
         </where>
     </select>

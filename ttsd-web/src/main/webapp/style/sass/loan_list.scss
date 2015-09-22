@@ -73,6 +73,9 @@
     margin-top: 10px;
     position: relative;
     overflow: hidden;
+    &:hover{
+      border:1px solid #cc0000;
+    }
     & .hot {
       width: 59px;
       height: 59px;
