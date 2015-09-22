@@ -1,17 +1,22 @@
 package com.tuotiansudai.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 /**
  * Created by Administrator on 2015/9/11.
  */
 public class UserBillDto {
 
-    private String createdTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date createdTime;
 
     private String businessType;
 
     private String income;
 
-    private String expenditure;
+    private String cost;
 
     private String freeze;
 
@@ -19,11 +24,11 @@ public class UserBillDto {
 
     private long id;
 
-    public String getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -43,12 +48,12 @@ public class UserBillDto {
         this.income = income;
     }
 
-    public String getExpenditure() {
-        return expenditure;
+    public String getCost() {
+        return cost;
     }
 
-    public void setExpenditure(String expenditure) {
-        this.expenditure = expenditure;
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 
     public String getFreeze() {

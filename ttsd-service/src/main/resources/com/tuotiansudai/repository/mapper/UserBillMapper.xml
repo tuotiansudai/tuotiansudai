@@ -61,7 +61,7 @@
         </where>
         order by created_time desc
         <if test="currentPage >= 0">
-            limit #{currentPage} , 10
+            limit #{currentPage} , #{pageSize}
         </if>
     </select>
 

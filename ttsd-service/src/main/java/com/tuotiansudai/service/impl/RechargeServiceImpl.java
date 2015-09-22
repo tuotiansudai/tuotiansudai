@@ -10,8 +10,6 @@ import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
-
 @Service
 public class RechargeServiceImpl implements RechargeService {
 
@@ -29,9 +27,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     @Override
-    public String findSumRechargeByLoginName(String loginName) {
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        long sumRecharge = rechargeMapper.findSumRechargeByLoginName(loginName);
-        return decimalFormat.format(sumRecharge / 100D);
+    public long findSumRechargeByLoginName(String loginName) {
+        return rechargeMapper.findSumRechargeByLoginName(loginName);
     }
 }

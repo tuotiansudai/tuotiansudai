@@ -34,9 +34,9 @@ require(['jquery', 'mustache', 'text!/tpl/fundtable.tpl', 'moment', 'daterangepi
             rec_typestr = "&status=" ;
         }
         if (startDay == '' || startDay == 'undefined') {
-            var url = _API_FUND + "?index=" + page + rec_typestr;
+            var url = _API_FUND + "?index=" + page + "&pageSize=10" + rec_typestr;
         } else {
-            var url = _API_FUND + "?startTime=" + startDay + "&endTime=" + endDay + "&index=" + page + rec_typestr;
+            var url = _API_FUND + "?startTime=" + startDay + "&endTime=" + endDay + "&index=" + page + "&pageSize=10" + rec_typestr;
         }
         $.ajax({
             url: url,
@@ -44,7 +44,7 @@ require(['jquery', 'mustache', 'text!/tpl/fundtable.tpl', 'moment', 'daterangepi
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
         }).done(function (res) {
-            $('#jq-pay').text(res.accountModelBalance);
+            $('#jq-pay').text(res.balance);
             $('#jq-recharge').text(res.sumRecharge);
             $('#jq-withdraw').text(res.sumWithdraw);
             var ret = Mustache.render(dealtableTpl, res);

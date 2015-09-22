@@ -10,8 +10,6 @@ import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
-
 @Service
 public class WithdrawServiceImpl implements WithdrawService{
 
@@ -29,10 +27,8 @@ public class WithdrawServiceImpl implements WithdrawService{
     }
 
     @Override
-    public String findSumWithdrawByLoginName(String loginName) {
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        long sumWithdraw = withdrawMapper.findSumWithdrawByLoginName(loginName);
-        return decimalFormat.format(sumWithdraw / 100D);
+    public long findSumWithdrawByLoginName(String loginName) {
+        return withdrawMapper.findSumWithdrawByLoginName(loginName);
     }
 
 }

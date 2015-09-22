@@ -8,5 +8,5 @@ public interface RechargeService {
 
     BaseDto<PayFormDataDto> recharge(RechargeDto rechargeDto);
 
-    String findSumRechargeByLoginName(String loginName);
+    long findSumRechargeByLoginName(String loginName);
 }

@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class FundManagementDto extends BasePaginationDataDto<UserBillDto> {
 
-    private String accountModelBalance;
+    private String balance;
 
     private String sumRecharge;
 
@@ -17,12 +17,12 @@ public class FundManagementDto extends BasePaginationDataDto<UserBillDto> {
         super(index, pageSize, count, records);
     }
 
-    public String getAccountModelBalance() {
-        return accountModelBalance;
+    public String getBalance() {
+        return balance;
     }
 
-    public void setAccountModelBalance(String accountModelBalance) {
-        this.accountModelBalance = accountModelBalance;
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 
     public String getSumRecharge() {

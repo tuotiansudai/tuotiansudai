@@ -7,12 +7,12 @@ import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
+import com.tuotiansudai.utils.AmountUtil;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,34 +30,33 @@ public class UserBillServiceImpl implements UserBillService {
     private UserBillMapper userBillMapper;
 
     @Override
-    public List<UserBillDto> findUserBills(List<UserBillBusinessType> userBillBusinessType,int currentPage,Date startTime,Date endTime) {
+    public List<UserBillDto> findUserBills(List<UserBillBusinessType> userBillBusinessType,int currentPage,Date startTime,Date endTime,int pageSize) {
         Map<String, Object> params = new HashMap<String, Object>();
         DateTime dateTime = new DateTime(endTime);
-        dateTime = dateTime.plusHours(23);
-        dateTime = dateTime.plusMinutes(59);
+        dateTime = dateTime.plusHours(23).plusMinutes(59);
         params.put("userBillBusinessType",userBillBusinessType);
-        params.put("currentPage",(currentPage-1)*10);
-        params.put("startTime",new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"));
-        params.put("endTime",dateTime.toString("yyyy-MM-dd HH:mm:ss"));
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+        params.put("currentPage",(currentPage-1)*pageSize);
+        params.put("startTime", startTime);
+        params.put("endTime",dateTime);
+        params.put("pageSize",pageSize);
         List<UserBillDto> userBillDtos = Lists.newArrayList();
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(params);
         for (UserBillModel userBillModel:userBillModels) {
             UserBillDto userBillDto = new UserBillDto();
-            userBillDto.setCreatedTime(new DateTime(userBillModel.getCreatedTime()).toString("yyyy-MM-dd"));
+            userBillDto.setCreatedTime(userBillModel.getCreatedTime());
             userBillDto.setBusinessType(userBillModel.getBusinessType().getDescription());
-            if (UserBillOperationType.TI_BALANCE.equals(userBillModel.getOperationType().name())) {
-                userBillDto.setIncome(decimalFormat.format(userBillModel.getAmount() / 100D));
-                userBillDto.setExpenditure("0.00");
-            } else if (UserBillOperationType.TO_BALANCE.equals(userBillModel.getOperationType().name()) || UserBillOperationType.TO_FREEZE.equals(userBillModel.getOperationType().name())) {
-                userBillDto.setIncome("0.00");
-                userBillDto.setExpenditure(decimalFormat.format(userBillModel.getAmount() / 100D));
-            } else {
-                userBillDto.setIncome("0.00");
-                userBillDto.setExpenditure("0.00");
+            long income = 0;
+            long cost = 0;
+            if (UserBillOperationType.TI_BALANCE==userBillModel.getOperationType()) {
+                income = userBillModel.getAmount();
             }
-            userBillDto.setFreeze(decimalFormat.format(userBillModel.getFreeze() / 100D));
-            userBillDto.setBalance(decimalFormat.format(userBillModel.getBalance() / 100D));
+            if (UserBillOperationType.TO_BALANCE==userBillModel.getOperationType() || UserBillOperationType.TO_FREEZE==userBillModel.getOperationType()) {
+                cost = userBillModel.getAmount();
+            }
+            userBillDto.setIncome(AmountUtil.convertCentToString(income));
+            userBillDto.setCost(AmountUtil.convertCentToString(cost));
+            userBillDto.setFreeze(AmountUtil.convertCentToString(userBillModel.getFreeze()));
+            userBillDto.setBalance(AmountUtil.convertCentToString(userBillModel.getBalance()));
             userBillDto.setId(userBillModel.getId());
             userBillDtos.add(userBillDto);
         }
@@ -68,11 +67,10 @@ public class UserBillServiceImpl implements UserBillService {
     public int findUserBillsCount(List<UserBillBusinessType> userBillBusinessType,Date startTime,Date endTime){
         Map<String, Object> params = new HashMap<String, Object>();
         DateTime dateTime = new DateTime(endTime);
-        dateTime = dateTime.plusHours(23);
-        dateTime = dateTime.plusMinutes(59);
+        dateTime = dateTime.plusHours(23).plusMinutes(59);
         params.put("userBillBusinessType",userBillBusinessType);
-        params.put("startTime",new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"));
-        params.put("endTime",dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+        params.put("startTime", startTime);
+        params.put("endTime",dateTime);
         return userBillMapper.findUserBillsCount(params);
     }
 

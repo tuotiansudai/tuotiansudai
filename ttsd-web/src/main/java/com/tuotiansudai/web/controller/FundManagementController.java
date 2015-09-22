@@ -8,6 +8,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -52,16 +52,16 @@ public class FundManagementController {
     @RequestMapping(value = "/management", method = RequestMethod.GET)
     @ResponseBody
     public FundManagementDto fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,@RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
-                                       @RequestParam("index") int currentPage,@RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes) {
-        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
-        List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes,currentPage,startTime,endTime);
+                                       @RequestParam("index") Integer currentPage,@RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes, @RequestParam("pageSize") Integer pageSize) {
+
+        List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes,currentPage,startTime,endTime,pageSize!=null?pageSize:10);
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         int countNum = userBillService.findUserBillsCount(userBillBusinessTypes,startTime,endTime);
-        String sumRecharge = rechargeService.findSumRechargeByLoginName(LoginUserInfo.getLoginName());
-        String sumWithdraw = withdrawService.findSumWithdrawByLoginName(LoginUserInfo.getLoginName());
-        FundManagementDto fundManagementDto = new FundManagementDto(currentPage,10,countNum,userBillDtos);
+        String sumRecharge = AmountUtil.convertCentToString(rechargeService.findSumRechargeByLoginName(LoginUserInfo.getLoginName()));
+        String sumWithdraw = AmountUtil.convertCentToString(withdrawService.findSumWithdrawByLoginName(LoginUserInfo.getLoginName()));
+        FundManagementDto fundManagementDto = new FundManagementDto(currentPage,pageSize!=null?pageSize:10,countNum,userBillDtos);
         fundManagementDto.setStatus(true);
-        fundManagementDto.setAccountModelBalance(decimalFormat.format(accountModel!=null?accountModel.getBalance():0L/100D));
+        fundManagementDto.setBalance(AmountUtil.convertCentToString(accountModel != null ? accountModel.getBalance() : 0L));
         fundManagementDto.setSumRecharge(sumRecharge);
         fundManagementDto.setSumWithdraw(sumWithdraw);
         return fundManagementDto;

@@ -16,7 +16,7 @@
         <td>{{createdTime}}</td>
         <td>{{businessType}}</td>
         <td>+{{income}}元</td>
-        <td>-{{expenditure}}元</td>
+        <td>-{{cost}}元</td>
         <td>￥{{freeze}}</td>
         <td>￥{{balance}}</td>
         <td>编号:{{id}}</td>
