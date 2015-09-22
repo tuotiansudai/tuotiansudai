@@ -21,15 +21,15 @@
         <h2 class="hd"><span class="line">资金管理</span></h2>
         <div class="money-box">
             <div class="balance">
-                您的可用余额：${accountModelBalance}
+                您的可用余额：
             </div>
             <div class="item-block">
                 <a class="bt-pay" href="">充值</a>
                 <a class="bt-invest" href="">投资</a>
                 <a class="bt-withdraw" href="">提现</a>
             </div>
-            <p>累计充值： ￥${sumRecharge}</p>
-            <p>累计提现： ￥${sumWithdraw}</p>
+            <p>累计充值： ￥</p>
+            <p>累计提现： ￥</p>
         </div>
         <div class="item-block start-end">
             <span class="sub-hd">起止时间:</span>
@@ -61,33 +61,7 @@
             </tr>
             </thead>
             <tbody>
-            <#if userBillDtos?? >
-                <#list userBillDtos as userBillDto>
-                    <tr>
-                        <td>${userBillDto.createdTime}<td>
-                        <td>${userBillDto.businessType}<td>
-                        <td>${userBillDto.income}<td>
-                        <td>${userBillDto.expenditure}<td>
-                        <td>${userBillDto.freeze}<td>
-                        <td>${userBillDto.balance}<td>
-                        <td>${userBillDto.id}<td>
-                    </tr>
-                </#list>
-                <div class="pagination">
-                    <span class="total">共 <span class="subTotal">${countNum}</span>条,当前第 <span class="index-page">${currentPage}</span>页</span>
-                    <span class="prev">上一页</span>
-                    <a class="current" href="">1</a>
-                    <a href="">2</a>
-                    <a href="">20</a>
-                    <span class="next">下一页</span>
-                </div>
-            <#else>
-                <#--空白纪录-->
-                <tr>
-                    <td colspan="7" class="txtc">暂时没有资金纪录</td>
-                </tr>
-                <#--空白纪录 end-->
-            </#if>
+
             </tbody>
         </table>
 
@@ -95,221 +69,14 @@
     </div>
 </div>
 
-<#--弹出层-->
-<div class="layer-box">
-    <div class="layer-fix"></div>
-    <div class="layer-con">
-        <h2>
-            <span class="hd">提前还款(本金:0.0;手续费:0.0;罚息:0.0)</span>
-            <span class="close">x</span>
-        </h2>
-
-        <div class="table-list-box">
-            <table class="table-list">
-                <thead>
-                <tr>
-                    <th>期数</th>
-                    <th>本金</th>
-                    <th>利息</th>
-                    <th>罚息</th>
-                    <th>手续费</th>
-                    <th>总额</th>
-                    <th>还款日</th>
-                    <th>还款时间</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1.00</td>
-                    <td>1.00</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>200</td>
-                    <td>2015-09-24</td>
-                    <td>完成</td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<#--弹出层end-->
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.fund}">
 </@global.javascript>
 </body>
 </html>
+
+
+<script>
+
+    var _API_FUND = '';
+</script>
