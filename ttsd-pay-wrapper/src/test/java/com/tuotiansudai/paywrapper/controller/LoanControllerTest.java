@@ -88,7 +88,7 @@ public class LoanControllerTest {
 
     private MockWebServer mockUmPayService() throws IOException {
         MockWebServer mockWebServer = new MockWebServer();
-        mockWebServer.start(InetAddress.getLoopbackAddress(), 8091);
+        mockWebServer.start();
 
         MockResponse mockResponse = new MockResponse();
         mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +

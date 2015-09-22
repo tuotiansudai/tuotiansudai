@@ -62,7 +62,7 @@ public class LoginController {
         return baseDto;
     }
 
-    @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
+    @RequestMapping(value = "/loginName/{loginName}/is-exist", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto loginNameIsExist(@PathVariable String loginName) {
         BaseDataDto dataDto = new BaseDataDto();
