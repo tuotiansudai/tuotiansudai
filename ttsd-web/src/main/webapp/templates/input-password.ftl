@@ -23,6 +23,9 @@
                 <input class="phone-txt jq-ps-2" type="password" placeholder="再次输入密码"/>
             </div>
             <div class="item-block">
+                <div class="error"></div>
+            </div>
+            <div class="item-block">
                 <button type="submit" class="btn-send-form grey" disabled="disabled">确认</button>
             </div>
         </form>
