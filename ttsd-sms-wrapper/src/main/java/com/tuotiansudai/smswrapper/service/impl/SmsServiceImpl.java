@@ -1,6 +1,7 @@
 package com.tuotiansudai.smswrapper.service.impl;
 
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
@@ -26,7 +27,8 @@ public class SmsServiceImpl implements SmsService {
     public boolean sendRegisterCaptcha(String mobile, String captcha, String ip) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_REGISTER_CAPTCHA_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content, true, ip);
+        boolean isSendInterval = !Strings.isNullOrEmpty(ip);
+        return smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content, isSendInterval, ip);
     }
 
     @Override
@@ -43,7 +45,8 @@ public class SmsServiceImpl implements SmsService {
     public boolean sendRetrievePasswordCaptcha(String mobile, String captcha, String ip) {
         Map<String, String> map = ImmutableMap.<String, String>builder().put("captcha", captcha).build();
         String content = SmsTemplate.SMS_MOBILE_CAPTCHA_TEMPLATE.generateContent(map);
-        return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content, true, ip);
+        boolean isSendInterval = !Strings.isNullOrEmpty(ip);
+        return smsClient.sendSMS(RetrievePasswordCaptchaMapper.class, mobile, content, isSendInterval, ip);
     }
 
     @Override
