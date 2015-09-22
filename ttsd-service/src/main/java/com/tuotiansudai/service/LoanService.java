@@ -48,7 +48,6 @@ public interface LoanService {
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
-
     /**
      * 标的放款
      *
@@ -64,4 +63,5 @@ public interface LoanService {
     BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
     BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
+
 }

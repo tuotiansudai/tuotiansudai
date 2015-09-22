@@ -2,6 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
@@ -26,9 +27,16 @@ public class LoanRepayDataItemDto {
 
     private Date actualRepayDate;
 
-    private String loanRepayStatus;
+    private RepayStatus loanRepayStatus;
 
     private boolean isEnabled;
+
+    private String projectName;
+
+    private String loginName;
+
+    private String totalAmount;
+
 
     public LoanRepayDataItemDto(LoanRepayModel loanRepayModel, boolean isEnabled) {
         this.loanRepayId = loanRepayModel.getId();
@@ -40,8 +48,11 @@ public class LoanRepayDataItemDto {
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
-        this.loanRepayStatus = loanRepayModel.getStatus().getDescription();
+        this.loanRepayStatus = loanRepayModel.getStatus();
+        this.totalAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.isEnabled = isEnabled;
+        this.loginName = loanRepayModel.getLoan().getLoanerLoginName();
+        this.projectName = loanRepayModel.getLoan().getName();
     }
 
     public long getLoanRepayId() {
@@ -80,11 +91,79 @@ public class LoanRepayDataItemDto {
         return actualRepayDate;
     }
 
-    public String getLoanRepayStatus() {
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setLoanRepayId(long loanRepayId) {
+        this.loanRepayId = loanRepayId;
+    }
+
+    public void setLoanId(long loanId) {
+        this.loanId = loanId;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public void setCorpus(String corpus) {
+        this.corpus = corpus;
+    }
+
+    public void setExpectedInterest(String expectedInterest) {
+        this.expectedInterest = expectedInterest;
+    }
+
+    public void setActualInterest(String actualInterest) {
+        this.actualInterest = actualInterest;
+    }
+
+    public void setDefaultInterest(String defaultInterest) {
+        this.defaultInterest = defaultInterest;
+    }
+
+    public void setRepayDate(Date repayDate) {
+        this.repayDate = repayDate;
+    }
+
+    public void setActualRepayDate(Date actualRepayDate) {
+        this.actualRepayDate = actualRepayDate;
+    }
+
+    public void setIsEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public RepayStatus getLoanRepayStatus() {
         return loanRepayStatus;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
+    public void setLoanRepayStatus(RepayStatus loanRepayStatus) {
+        this.loanRepayStatus = loanRepayStatus;
     }
 }

@@ -2,6 +2,7 @@ var require = {
     'paths': {
         'text': '/js/libs/text-2.0.14',
         'jquery': '/js/libs/jquery-1.11.3.min',
+        'jqueryPage':'/js/libs/jquery.page',
         'jquery.validate': '/js/libs/jquery.validate-1.14.0.min',
         'daterangepicker':'/js/libs/jquery.daterangepicker-0.0.7',
         'mustache': '/js/libs/mustache-2.1.3.min',
@@ -12,6 +13,9 @@ var require = {
 
     'shim': {
         'jquery.validate': {
+            deps: ['jquery']
+        },
+        'jqueryPage': {
             deps: ['jquery']
         }
 

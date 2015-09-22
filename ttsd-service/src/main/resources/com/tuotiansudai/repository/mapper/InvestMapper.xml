@@ -55,14 +55,9 @@
         from invest
         where login_name = #{loginName}
         order by created_time ${sortStyle}
+
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
-        select <include refid="columns"></include>
-        from invest
-        where login_name = #{loanId}
-        order by created_time ${sortStyle}
-    </select>
 
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>

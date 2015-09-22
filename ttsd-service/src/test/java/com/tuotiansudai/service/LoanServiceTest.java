@@ -39,6 +39,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -66,6 +67,7 @@ public class LoanServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
 
     @Before
     public void createLoanTitle(){
@@ -418,6 +420,7 @@ public class LoanServiceTest {
         model.setCreatedTime(new Date());
         return model;
     }
+
 
     public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();
