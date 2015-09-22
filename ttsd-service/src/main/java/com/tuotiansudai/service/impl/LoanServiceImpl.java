@@ -256,9 +256,11 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         return investedAmountBig.divide(loanAmountBig)
+                .setScale(2, BigDecimal.ROUND_DOWN)
                 .multiply(new BigDecimal(100))
-                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                .doubleValue();
     }
+
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);

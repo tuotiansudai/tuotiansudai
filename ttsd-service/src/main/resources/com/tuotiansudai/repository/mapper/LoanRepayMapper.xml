@@ -15,7 +15,7 @@
         <result column="repay_date" property="repayDate"/>
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="status" property="status"/>
-        <result column="createdTime" property="createdTime"/>
+        <result column="created_time" property="createdTime"/>
         <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
             <id property="id" column="id"/>
             <result column="name" property="name"></result>
@@ -79,7 +79,7 @@
                 and a.status  = #{repayStatus}
             </if>
         </where>
-        order by a.time desc
+        order by a.repay_date asc
         limit #{index},#{pageSize}
     </select>
 
