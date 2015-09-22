@@ -2,7 +2,7 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,19 +24,13 @@ public class LoanController {
         view.addObject("baseDto", dto);
         return view;
     }
-    //TODO:计算总预收收益
-    @RequestMapping(value = "/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
-    public String getExpectedTotalIncome(@PathVariable long loanId, @PathVariable double amount) {
-        String expectedTotalIncome = loanService.getExpectedTotalIncome(loanId, amount);
-        return expectedTotalIncome;
-    }
 
     @RequestMapping(value = "/{loanId}/index/{index:^\\d+$}/pagesize/{pagesize:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
-        BasePaginationDto dto = loanService.getInvests(loanId, index, pagesize);
+    public BaseDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
+        BaseDto dto = loanService.getInvests(loanId, index, pagesize);
         return dto;
-    }
 
+    }
 
 }

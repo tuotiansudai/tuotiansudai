@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<#assign loanRepays = baseDto>
+<#assign loanRepays = baseDto.data>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -242,17 +242,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <#list loanRepays.recordDtoList as loanRepay>
+                        <#list loanRepays.records as loanRepay>
                             <tr>
                                 <td>${loanRepay.loanId}</td>
                                 <td>${loanRepay.projectName}</td>
                                 <td>${loanRepay.loginName}</td>
-                                <td>${loanRepay.repayDay}</td>
+                                <td>${loanRepay.repayDate?string("yyyy-MM-dd HH:mm:ss")}</td>
                                 <td>第${loanRepay.period}期</td>
-                                <td>${(loanRepay.corpus/100)?string("0.00")}</td>
-                                <td>${(loanRepay.interest/100)?string("0.00")}</td>
-                                <td>${(loanRepay.totalAmount)?string("0.00")}</td>
-                                <td>${loanRepay.repayStatus.getDescription()}</td>
+                                <td>${loanRepay.corpus}</td>
+                                <td>${loanRepay.expectedInterest}</td>
+                                <td>${loanRepay.totalAmount}</td>
+                                <td>${loanRepay.loanRepayStatus.getDescription()}</td>
                             </tr>
 
                         </#list>
@@ -266,7 +266,7 @@
                 <nav>
 
                     <div>
-                        <span class="bordern">总共${loanRepays.totalCount}条,每页显示${loanRepays.pageSize}条</span>
+                        <span class="bordern">总共${loanRepays.count}条,每页显示${loanRepays.pageSize}条</span>
                     </div>
                     <ul class="pagination">
 

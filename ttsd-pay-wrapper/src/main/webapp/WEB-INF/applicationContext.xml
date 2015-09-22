@@ -13,6 +13,7 @@
 
     <!-- enable autowire -->
     <context:annotation-config/>
+
     <context:property-placeholder location="classpath*:ttsd-service.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->

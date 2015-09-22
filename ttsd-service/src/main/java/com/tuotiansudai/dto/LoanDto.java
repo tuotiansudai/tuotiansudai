@@ -32,7 +32,7 @@ public class LoanDto extends BaseDataDto{
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private long periods;
+    private int periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -112,15 +112,19 @@ public class LoanDto extends BaseDataDto{
 
     private List<LoanTitleModel> loanTitleDto;
 
+    /**可投金额**/
     private double amountNeedRaised;
 
+    /**当前登录用户的个人账户余额**/
     private double balance;
 
+    /**完成比例**/
     private double raiseCompletedRate;
 
+    /**预计总收益**/
     private long expectedTotalIncome;
 
-    private BasePaginationDto basePaginationDto;
+    private BaseDto<BasePaginationDataDto> baseDto;
 
     private long preheatSeconds;
 
@@ -164,11 +168,11 @@ public class LoanDto extends BaseDataDto{
         this.type = type;
     }
 
-    public long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 
@@ -364,12 +368,12 @@ public class LoanDto extends BaseDataDto{
         this.loanTitleDto = loanTitleDto;
     }
 
-    public BasePaginationDto getBasePaginationDto() {
-        return basePaginationDto;
+    public BaseDto<BasePaginationDataDto> getBaseDto() {
+        return baseDto;
     }
 
-    public void setBasePaginationDto(BasePaginationDto basePaginationDto) {
-        this.basePaginationDto = basePaginationDto;
+    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
+        this.baseDto = baseDto;
     }
 
     public long getPreheatSeconds() {
@@ -379,4 +383,5 @@ public class LoanDto extends BaseDataDto{
     public void setPreheatSeconds(long preheatSeconds) {
         this.preheatSeconds = preheatSeconds;
     }
+
 }

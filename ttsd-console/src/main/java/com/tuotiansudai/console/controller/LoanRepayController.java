@@ -1,7 +1,8 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BasePaginationDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDto;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.service.LoanRepayService;
@@ -24,7 +25,7 @@ public class LoanRepayController {
     public ModelAndView findLoanRepayPagination(int index,int pageSize,String loanId,
                                                 String loginName,String repayStartDate,String repayEndDate,RepayStatus repayStatus){
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
-        BasePaginationDto baseDto = loanRepayService.findLoanRepayPagination(index,pageSize,
+        BaseDto<BasePaginationDataDto> baseDto = loanRepayService.findLoanRepayPagination(index,pageSize,
                                                                                 loanId,loginName,repayStartDate,repayEndDate,repayStatus);
         List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto",baseDto);

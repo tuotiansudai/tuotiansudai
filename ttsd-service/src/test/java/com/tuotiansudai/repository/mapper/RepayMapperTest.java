@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,9 +59,9 @@ public class RepayMapperTest {
         loanRepayModel.setLoanId(loanModel.getId());
         loanRepayModel.setRepayDate(new Date());
         loanRepayModel.setCorpus(0);
-        loanRepayModel.setExpectInterest(0);
+        loanRepayModel.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel);
-        loanRepayMapper.insertLoanRepay(loanRepayModels);
+        loanRepayMapper.create(loanRepayModels);
     }
 
     @Test
@@ -85,7 +84,7 @@ public class RepayMapperTest {
         loanRepayModel.setLoanId(loanModel.getId());
         loanRepayModel.setRepayDate(new Date());
         loanRepayModel.setCorpus(0);
-        loanRepayModel.setExpectInterest(0);
+        loanRepayModel.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel);
         LoanRepayModel loanRepayModel1 = new LoanRepayModel();
         loanRepayModel1.setId(idGenerator.generate());
@@ -96,9 +95,9 @@ public class RepayMapperTest {
         loanRepayModel1.setLoanId(loanModel.getId());
         loanRepayModel1.setRepayDate(new Date());
         loanRepayModel1.setCorpus(0);
-        loanRepayModel1.setExpectInterest(0);
+        loanRepayModel1.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel1);
-        loanRepayMapper.insertLoanRepay(loanRepayModels);
+        loanRepayMapper.create(loanRepayModels);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         cal.add(Calendar.DATE,-1);
         String startDate = sdf.format(cal.getTime());

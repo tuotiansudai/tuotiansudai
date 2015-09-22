@@ -36,7 +36,7 @@ public class InvestModel {
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private Date createdTime = new Date();
 
     public InvestModel(){
 

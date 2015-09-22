@@ -1,4 +1,29 @@
 {
   "status": true,
-  "bindCardStatus": "commonBindCard"
+  "data": [
+    {
+      "loanRepayId": 123456,
+      "period": 1,
+      "corpus": 1000,
+      "expectedInterest": 1000,
+      "actualInterest": 1000,
+      "defaultInterest": 1000,
+      "repayDate": "2015-02-01",
+      "actualRepayDate": "2015-02-01",
+      "status": "完成",
+      "isEnabled": true
+    },
+    {
+      "loanRepayId": "你好",
+      "period": 1,
+      "corpus": 1000,
+      "expectedInterest": 1000,
+      "actualInterest": 1000,
+      "defaultInterest": 1000,
+      "repayDate": "2015-02-01",
+      "actualRepayDate": "2015-02-01",
+      "status": "完成",
+      "isEnabled": false
+    }
+  ]
 }

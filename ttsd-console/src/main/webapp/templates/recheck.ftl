@@ -89,81 +89,60 @@
 
             <!-- content area begin -->
             <div class="col-md-10">
-                <form class="form-horizontal">
+                <form class="form-horizontal" method="post">
                     <div class="form-group">
                         <label for="project" class="col-sm-2 control-label">借款项目名称: </label>
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.projectName}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.agentLoginName}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.loanerLoginName}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">标的类型: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> 先付利息后还本金，按天计息，即投即生息</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">借款用途: </label>
-
-                        <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.type.getName()}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款总金额: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.loanAmount}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">尚未募集的金额: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.amountNeedRaised}</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款利率: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">手续费（还款时收取）: </label>
-
-                        <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">${loan.basicRate}% + ${loan.activityRate}%</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款期限: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> 1</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">审核信息: </label>
-
-                        <div class="col-sm-4">
-                            <textarea class="form-control" rows="3"></textarea>
+                            <span class="form-control">${loan.periods}</span>
                         </div>
                     </div>
                     <div class="form-group input-append">
@@ -171,7 +150,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker'>
-                                <input type='text' class="form-control"/>
+                                <input name="fundraisingEndTime" type='text' class="form-control" value="${loan.fundraisingEndTime?string("yyyy-MM-dd HH:mm:ss")}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -182,24 +161,16 @@
                         <label class="col-sm-2 control-label">最小投资金额: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">初审是否通过: </label>
-
-                        <div class="col-sm-4">
-                            <span class="label label-success "> 是</span>
+                            <input name="minInvestAmount" class="form-control" value="${loan.minInvestAmount}" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
-
                             <button type="submit" class="btn btn-primary">放款</button>
-                            <button type="submit" class="btn btn-primary">延期</button>
-                            <button type="submit" class="btn btn-primary">流标</button>
+                            <button type="button" class="btn btn-primary">延期</button>
+                            <button type="button" class="btn btn-primary">流标</button>
                         </div>
                     </div>
                 </form>

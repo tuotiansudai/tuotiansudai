@@ -125,7 +125,7 @@ public class LoanTitleRelationMapperTest {
         loanTitleRelationMapper.create(loanTitleRelationModels);
         List<LoanTitleRelationModel> models = loanTitleRelationMapper.findByLoanId(loanId);
         assertNotNull(models);
-        assertNotNull(models.get(0).getTitle());
+        assertNotNull(models.get(0).getTitleId());
     }
 
     @Test

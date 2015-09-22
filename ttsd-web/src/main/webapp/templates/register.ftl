@@ -15,20 +15,20 @@
         <ol>
             <form id="register-user-form">
                 <li>
-                    <input type="text" name="loginName" placeholder="5至25位以字母、数字组合，请勿使用手机号" class="login-name"/>
+                    <input type="text" name="loginName" placeholder="请输入用户名" maxlength="25" class="login-name"/>
                 </li>
                 <li>
-                    <input type="text" name="mobile" placeholder="请输入您的手机号" class="mobile"/>
+                    <input type="text" name="mobile" placeholder="请输入手机号" maxlength="11" class="mobile"/>
                 </li>
                 <li>
-                    <input type="text" name="captcha" placeholder="请输入手机验证码" class="captcha" maxlength="6"/>
+                    <input type="text" name="captcha" placeholder="请输入验证码" class="captcha" maxlength="6"/>
                     <button class="fetch-captcha grey"  disabled="disabled">获取验证码</button>
                 </li>
                 <li>
-                    <input type="password" name="password" placeholder="请输入6-16位字母、数字密码组合" class="password"/>
+                    <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password"/>
                 </li>
                 <li>
-                    <input type="text" name="referrer" placeholder="请输入推荐人用户（选填）" class="referrer"/>
+                    <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer"/>
                 </li>
                 <li>
                     <input style="" name='agreement' type="checkbox" class='agreement-check' checked="checked"/>
@@ -124,8 +124,8 @@
         <input type="text" class="verification-code-text" maxlength="5" placeholder="请输入图形验证码"/>
         <img src="/register/image-captcha" alt="" class="verification-code-img"/>
     </p>
-    <b>验证码输入错误</b>
-    <button class="complete grey" disabled="disabled">完成</button>
+    <b>图形验证码不正确</b>
+    <button class="complete grey" disabled="disabled">确定</button>
 </div>
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.register}">

@@ -5,6 +5,10 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.time.DateUtils;
@@ -19,14 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 import java.util.List;
+import java.util.UUID;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertNull;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -39,9 +45,6 @@ public class LoanServiceTest {
     private IdGenerator idGenerator;
 
     @Autowired
-    private LoanTitleRelationMapper loanTitleRelationMapper;
-
-    @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
@@ -49,6 +52,15 @@ public class LoanServiceTest {
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
+
+    @Autowired
+    private LoanTitleRelationMapper loanTitleRelationMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Before
@@ -65,20 +77,30 @@ public class LoanServiceTest {
      */
     @Test
     public void createLoanServiceTest_1() {
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        LoanDto loanDto = getLoanDto(fakeUser);
+        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
+        assertTrue(baseDto.getData().getStatus());
+        assertNotNull(loanMapper.findById(loanDto.getId()));
+        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private LoanDto getLoanDto(UserModel userModel) {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("xiangjie");
+        loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setAgentLoginName(userModel.getLoginName());
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
         loanDto.setLoanAmount("1000000.00");
         loanDto.setFundraisingEndTime(new Date());
         loanDto.setFundraisingStartTime(new Date());
-        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
-        assertTrue(baseDto.getData().getStatus());
-        assertNotNull(loanMapper.findById(loanDto.getId()));
-        assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+        return loanDto;
     }
 
     /**
@@ -206,7 +228,57 @@ public class LoanServiceTest {
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
-        return loanService.createLoan(loanDto);
+        return this.loanService.createLoan(loanDto);
+    }
+
+    @Test
+    public void updateLoanTest() {
+        UserModel fakeUser = getFakeUser();
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        this.creteLoan(getLoanDto(fakeUser));
+        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
+        long loanId = loanModelList.get(0).getId();
+        LoanDto loanDto = new LoanDto();
+        loanDto.setId(loanId);
+        loanDto.setLoanerLoginName(fakeUser.getLoginName());
+        loanDto.setAgentLoginName(fakeUser.getLoginName());
+        loanDto.setLoanAmount("5000.00");
+        loanDto.setMaxInvestAmount("999.00");
+        loanDto.setMinInvestAmount("1.00");
+        loanDto.setFundraisingEndTime(new Date());
+        loanDto.setFundraisingStartTime(new Date());
+        loanDto.setProjectName("店铺资金周转更新");
+        loanDto.setActivityRate("12.00");
+        loanDto.setBasicRate("16.00");
+        loanDto.setShowOnHome(true);
+        loanDto.setPeriods(30);
+        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setContractId(123);
+        loanDto.setDescriptionHtml("asdfasdf");
+        loanDto.setDescriptionText("asdfasd");
+        loanDto.setInvestFeeRate("15");
+        loanDto.setInvestIncreasingAmount("1");
+        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setCreatedTime(new Date());
+        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
+        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        for (int i = 0; i < 5; i++) {
+            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
+            loanTitleRelationModel.setId(idGenerator.generate());
+            loanTitleRelationModel.setLoanId(loanDto.getId());
+            List<LoanTitleModel> loanTitleModelList = loanTitleMapper.findAll();
+            if (loanTitleModelList != null && loanTitleModelList.size() > 0) {
+                loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
+            }
+            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
+            loanTitleRelationModelList.add(loanTitleRelationModel);
+        }
+        loanDto.setLoanTitles(loanTitleRelationModelList);
+        loanService.updateLoan(loanDto);
+        assertTrue(LoanStatus.WAITING_VERIFY == loanMapper.findById(loanId).getStatus());
     }
 
     @Test
@@ -221,19 +293,20 @@ public class LoanServiceTest {
     @Test
     public void shouldGetTheInvests(){
         createTestInvests();
-        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 1, 5);
-        assertEquals(5, dto.getRecordDtoList().size());
-        assertEquals(true, dto.isHasNextPage());
-        assertEquals(false, dto.isHasPreviousPage());
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 1, 5);
+        assertEquals(5, baseDto.getData().getRecords().size());
+        assertEquals(true, baseDto.getData().isHasNextPage());
+        assertEquals(false, baseDto.getData().isHasPreviousPage());
     }
 
     @Test
     public void shouldGetTheInvestsAndNextPagePreviousPage(){
         createTestInvests();
-        BasePaginationDto<InvestPaginationDataDto> dto = loanService.getInvests(1, 4, 3);
-        assertEquals(1, dto.getRecordDtoList().size());
-        assertEquals(false, dto.isHasNextPage());
-        assertEquals(true, dto.isHasPreviousPage());
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 4, 3);
+        BasePaginationDataDto data = baseDto.getData();
+        assertEquals(1, data.getRecords().size());
+        assertEquals(false, data.isHasNextPage());
+        assertEquals(true, data.isHasPreviousPage());
     }
     private void createTestInvests(){
 
@@ -256,7 +329,7 @@ public class LoanServiceTest {
         loanModel.setName("店铺资金周转");
         loanModel.setActivityRate(12);
         loanModel.setShowOnHome(true);
-        loanModel.setPeriods(30l);
+        loanModel.setPeriods(30);
         loanModel.setActivityType(ActivityType.EXCLUSIVE);
         loanModel.setContractId(123);
         loanModel.setDescriptionHtml("asdfasdf");
@@ -303,9 +376,6 @@ public class LoanServiceTest {
         investMapper.create(investModel2);
         investMapper.create(investModel3);
 
-
-
-
         return id;
 
     }
@@ -325,47 +395,16 @@ public class LoanServiceTest {
         model.setCreatedTime(new Date());
         return model;
     }
-    @Test
-    public void updateLoanTest() {
-        List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.VERIFY_FAIL);
-        long loanId = loanModelList.get(0).getId();;
-        LoanDto loanDto = new LoanDto();
-        loanDto.setId(loanId);
-        loanDto.setLoanerLoginName("xiangjie");
-        loanDto.setAgentLoginName("liming");
-        loanDto.setLoanAmount("5000.00");
-        loanDto.setMaxInvestAmount("999.00");
-        loanDto.setMinInvestAmount("1.00");
-        loanDto.setFundraisingEndTime(new Date());
-        loanDto.setFundraisingStartTime(new Date());
-        loanDto.setProjectName("店铺资金周转更新");
-        loanDto.setActivityRate("12.00");
-        loanDto.setBasicRate("16.00");
-        loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NORMAL);
-        loanDto.setContractId(123);
-        loanDto.setDescriptionHtml("asdfasdf");
-        loanDto.setDescriptionText("asdfasd");
-        loanDto.setInvestFeeRate("15");
-        loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
-        loanDto.setCreatedTime(new Date());
-        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
-        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
-        for (int i = 0; i < 5; i++) {
-            LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
-            loanTitleRelationModel.setId(idGenerator.generate());
-            loanTitleRelationModel.setLoanId(loanDto.getId());
-            List<LoanTitleModel> loanTitleModelList = loanTitleMapper.findAll();
-            if (loanTitleModelList != null && loanTitleModelList.size() > 0){
-                loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
-            }
-            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
-            loanTitleRelationModelList.add(loanTitleRelationModel);
-        }
-        loanDto.setLoanTitles(loanTitleRelationModelList);
-        loanService.updateLoan(loanDto);
-        assertTrue(LoanStatus.VERIFY_FAIL == loanMapper.findById(loanId).getStatus());
+    public UserModel getFakeUser() {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName("loginName");
+        userModelTest.setPassword("password");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13900000000");
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
     }
+
 }
