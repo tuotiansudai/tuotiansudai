@@ -21,6 +21,8 @@ public class AccountModel {
 
     private Date registerTime;
 
+    private boolean autoInvest;
+
     public AccountModel() {
     }
 
@@ -75,6 +77,14 @@ public class AccountModel {
 
     public Date getRegisterTime() {
         return registerTime;
+    }
+
+    public boolean isAutoInvest() {
+        return autoInvest;
+    }
+
+    public void setAutoInvest(boolean autoInvest) {
+        this.autoInvest = autoInvest;
     }
 
     @Override

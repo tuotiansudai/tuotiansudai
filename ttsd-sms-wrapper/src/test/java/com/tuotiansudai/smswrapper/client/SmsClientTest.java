@@ -12,13 +12,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
 import java.text.MessageFormat;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,6 +40,7 @@ public class SmsClientTest {
     }
 
     @Test
+    @Transactional
     public void shouldGetResultCode() throws Exception {
         MockResponse mockResponse = new MockResponse();
         String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
@@ -53,7 +52,7 @@ public class SmsClientTest {
 
         String mobile = "13900000000";
         String content = "content";
-        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content);
+        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,false,"127.0.0.1");
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();

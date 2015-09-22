@@ -58,14 +58,14 @@ gretty {
 
 cargo {
     containerId = 'tomcat6x'
-    port = 8080
+    port = 8082
 
     deployable {
         context = 'ttsd'
     }
 
     local {
-        homeDir = file('/usr/share/apache-tomcat-6.0.43')
+        homeDir = file('/workspace/apache-tomcat-6.0.43')
         outputFile = file('build/output.log')
         timeout = 180000   
     }

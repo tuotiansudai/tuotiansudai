@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
-public class BaseDataDto {
+import java.io.Serializable;
+
+public class BaseDataDto implements Serializable {
 
     private boolean status;
 
