@@ -1,5 +1,6 @@
 package com.tuotiansudai.utils;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,5 +16,9 @@ public class AmountUtil {
             return integer * 100 + fraction;
         }
         return 0;
+    }
+
+    public static String convertCentToString(long amount) {
+        return String.format("%.2f",amount/100D);
     }
 }

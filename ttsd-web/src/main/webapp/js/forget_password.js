@@ -10,22 +10,25 @@ require(['jquery', 'csrf'], function ($) {
                 $.get('/mobile-retrieve-password/mobile/' + _phone + '/is-exist?random=' + new Date().getTime(), function (data) {
                     console.log(data.data.status);
                     if (data.data.status) {
-                        _this.addClass('valid-ok').removeClass('error');
+                        _this.addClass('valid-ok');
                         $('.send-yzm').removeAttr('disabled').removeClass('grey');
+                        $('.error').html('');
                         if ($('.yzm').hasClass('valid-ok')) {
                             $('.btn-send-form').removeAttr('disabled').removeClass('grey');
                         } else {
-                            $('.btn-send-form').attr('disabled', true).addClass('grey');
+                            $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
                         }
                     } else {
-                        _this.addClass('error').removeClass('valid-ok');
-                        $('.send-yzm').attr('disabled', true).removeClass('grey')
+                        _this.removeClass('valid-ok');
+                        $('.error').html('手机号格式不合法或手机不存在');
+                        $('.send-yzm').attr('disabled', 'disabled').addClass('grey')
                     }
                 });
 
             } else {
-                _this.addClass('error').removeClass('valid-ok');
-                $('.send-yzm').attr('disabled', true).removeClass('grey');
+                _this.removeClass('valid-ok');
+                $('.error').html('手机号格式不合法或手机不存在');
+                $('.send-yzm').attr('disabled', 'disabled').addClass('grey');
             }
         });
 
@@ -36,24 +39,30 @@ require(['jquery', 'csrf'], function ($) {
                 var _captcha = $(this).val();
                 $.get('/mobile-retrieve-password/mobile/' + _phone + '/captcha/' + _captcha + '/verify?random=' + new Date().getTime(), function (data) {
                     if (data.data.status) {
-                        _this.closest('.yzm').addClass('valid-ok').removeClass('error');
+                        _this.closest('.yzm').addClass('valid-ok');
+                        $('.error').html('');
                         if ($('.phone-txt').hasClass('valid-ok')) {
                             $('.btn-send-form').removeAttr('disabled').removeClass('grey');
                         } else {
-                            $('.btn-send-form').attr('disabled', true).addClass('grey');
+                            $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
                         }
                     } else {
-                        _this.closest('.yzm').addClass('error').removeClass('valid-ok');
+                        _this.closest('.yzm').removeClass('valid-ok');
+                        $('.error').html('验证码不正确');
+                        $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
                     }
                 });
 
             } else {
-                _this.closest('.yzm').addClass('error').removeClass('valid-ok');
+                _this.closest('.yzm').removeClass('valid-ok');
+                $('.error').html('验证码不正确');
+                $('.btn-send-form').attr('disabled', 'disabled').addClass('grey');
             }
         });
 
 
         $('.fetch-captcha').on('click', function () {
+            $('.verification-code-text').val('');
             $('.layer-box').show();
             refreshCaptcha();
         });
@@ -75,10 +84,12 @@ require(['jquery', 'csrf'], function ($) {
             var num = 30;
             // 倒计时
             function countdown() {
-                $('.fetch-captcha').html(num + '秒后重新发送').css({'background': '#666', 'pointer-events': 'none'});
+                $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
                 if (num == 0) {
                     clearInterval(count);
-                    $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
+                    $('.fetch-captcha').html('重新发送').removeClass('grey');
+                    $('.complete').addClass('grey').attr('disabled','disabled');
+                    $('.verification-code-text').val('');
                 }
                 num--;
             }
@@ -104,6 +115,7 @@ require(['jquery', 'csrf'], function ($) {
             var _value = _this.val();
             if (_value.length < 5) {
                 $('.verification-code-main b').css('display', 'inline-block');
+                $('.complete').addClass('grey').attr('disabled','disabled');
             } else {
                 $.ajax({
                     url: '/register/image-captcha/' + _value + '/verify',
@@ -116,7 +128,7 @@ require(['jquery', 'csrf'], function ($) {
                         $('.complete').removeClass('grey').removeAttr('disabled');
                     } else {
                         $('.verification-code-main b').css('display', 'inline-block');
-                        $('.complete').addClass('grey').attr('disabled');
+                        $('.complete').addClass('grey').attr('disabled','disabled');
                         refreshCaptcha();
                     }
                 });

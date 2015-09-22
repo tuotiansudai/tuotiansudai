@@ -9,4 +9,6 @@ public interface AccountService {
 
     public AccountModel findByLoginName(String loginName);
 
+
+    long getBalance(String loginName);
 }

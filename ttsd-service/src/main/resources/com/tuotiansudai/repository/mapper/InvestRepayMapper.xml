@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.InvestRepayMapper">
+
+    <resultMap id="investRepayResultMap" type="InvestRepayModel">
+        <id column="id" property="id"></id>
+        <result column="invest_id" property="investId"></result>
+        <result column="corpus" property="corpus"></result>
+        <result column="expected_interest" property="expectedInterest"></result>
+        <result column="actual_interest" property="actualInterest"></result>
+        <result column="default_interest" property="defaultInterest"></result>
+        <result column="expected_fee" property="expectedFee"></result>
+        <result column="actual_fee" property="actualFee"></result>
+        <result column="period" property="period"></result>
+        <result column="repay_date" property="repayDate"></result>
+        <result column="actual_repay_date" property="actualRepayDate"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+    <sql id="columns">
+        id, invest_id, corpus, default_interest, expected_interest, actual_interest, expected_fee, actual_fee, period, repay_date, actual_repay_date, status, created_time
+    </sql>
+
+    <insert id="create" parameterType = "java.util.List">
+        insert into invest_repay ( <include refid="columns"></include> )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id}, #{item.investId}, #{item.corpus}, #{item.defaultInterest}, #{item.expectedInterest}, #{item.actualInterest}, #{item.expectedFee}, #{item.actualFee}, #{item.period}, #{item.repayDate}, #{item.actualRepayDate}, #{item.status}, #{item.createdTime})
+        </foreach>
+    </insert>
+
+    <select id="findByInvestId" parameterType="long" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId}
+    </select>
+</mapper>

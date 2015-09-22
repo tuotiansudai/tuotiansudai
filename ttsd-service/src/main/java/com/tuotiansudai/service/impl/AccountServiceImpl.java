@@ -18,9 +18,14 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Override
+
     public AccountModel findByLoginName(String loginName) {
         return accountMapper.findByLoginName(loginName);
+    }
+
+    public long getBalance(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel != null ? accountModel.getBalance() : 0;
     }
 
 }

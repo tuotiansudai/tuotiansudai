@@ -1,14 +1,12 @@
 package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.MonitorDataDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
@@ -47,6 +45,9 @@ public class PayWrapperClientTest {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private LoanTitleMapper loanTitleMapper;
 
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
@@ -118,6 +119,13 @@ public class PayWrapperClientTest {
 
     @Test
     public void shouldCreateLoanTest() throws Exception {
+        LoanTitleModel loanTitleModel = new LoanTitleModel();
+        long titleId = idGenerator.generate();
+        loanTitleModel.setId(titleId);
+        loanTitleModel.setType(LoanTitleType.BASE_TITLE_TYPE);
+        loanTitleModel.setTitle("房产证");
+        loanTitleMapper.create(loanTitleModel);
+
         LoanDto loanDto = new LoanDto();
         loanDto.setId(idGenerator.generate());
         loanDto.setLoanerLoginName("xiangjie");
@@ -143,13 +151,12 @@ public class PayWrapperClientTest {
         loanDto.setLoanStatus(LoanStatus.RECHECK);
         LoanModel loanModel = new LoanModel(loanDto);
         loanMapper.create(loanModel);
-
-        List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
+        List<LoanTitleRelationModel> loanTitleRelationModelList = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
             LoanTitleRelationModel loanTitleRelationModel = new LoanTitleRelationModel();
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());
-            loanTitleRelationModel.setTitleId(Long.parseLong("12312312312"));
+            loanTitleRelationModel.setTitleId(titleId);
             loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
@@ -163,10 +170,10 @@ public class PayWrapperClientTest {
         baseDto.setData(dataDto);
         mockResponse.setBody(objectMapper.writeValueAsString(baseDto));
         server.enqueue(mockResponse);
-        URL url = server.getUrl("/loan");
-        this.payWrapperClient.setHost("http://" + url.getAuthority());
+        payWrapperClient.setHost(server.getHostName());
+        payWrapperClient.setPort(String.valueOf(server.getPort()));
+        payWrapperClient.setContext("");
         BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto);
-
         assertTrue(actualBaseDto.isSuccess());
         assertTrue(actualBaseDto.getData().getStatus());
     }
