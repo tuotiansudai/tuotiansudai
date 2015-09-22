@@ -52,7 +52,7 @@ public class FundManagementController {
     @RequestMapping(value = "/management", method = RequestMethod.GET)
     @ResponseBody
     public FundManagementDto fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,@RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
-                                       @RequestParam("currentPage") int currentPage,@RequestParam("userBillBusinessType") List<UserBillBusinessType> userBillBusinessTypes) {
+                                       @RequestParam("index") int currentPage,@RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes) {
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes,currentPage,startTime,endTime);
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());

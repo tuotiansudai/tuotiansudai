@@ -28,7 +28,7 @@
     <select id="findUserBillsCount" parameterType="map" resultType="int">
         select count(*) from user_bill
         <where>
-            <if test="userBillBusinessType != null">
+            <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
                     #{item}
@@ -43,10 +43,10 @@
         </where>
     </select>
 
-    <select id="findUserBills" parameterType="map" resultType="list">
+    <select id="findUserBills" parameterType="map" resultMap="userBillResultMap">
         select * from user_bill
         <where>
-            <if test="userBillBusinessType != null">
+            <if test="userBillBusinessType != null and userBillBusinessType.size != 0">
                 business_type in
                 <foreach item="item" index="index" collection="userBillBusinessType" open="(" separator="," close=")">
                     #{item}
@@ -60,7 +60,7 @@
             </if>
         </where>
         order by created_time desc
-        <if test="currentPage > 0">
+        <if test="currentPage >= 0">
             limit #{currentPage} , 10
         </if>
     </select>

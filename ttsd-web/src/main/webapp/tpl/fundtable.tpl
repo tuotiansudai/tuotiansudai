@@ -2,34 +2,35 @@
     <thead>
     <tr>
         <th>交易时间</th>
-        <th>交易详情</th>
-        <th>交易状态</th>
-        <th>下次回款</th>
-        <th>我的投资</th>
-        <th>操作</th>
+        <th>交易类型</th>
+        <th>收入</th>
+        <th>支出</th>
+        <th>冻结</th>
+        <th>可用余额</th>
+        <th>备注</th>
     </tr>
     </thead>
     <tbody>
-    {{#recordDtoList}}
+    {{#records}}
     <tr>
         <td>{{createdTime}}</td>
-        <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
-        <td>{{investStatus}}</td>
-        <td>{{nextRepayDay}}/{{nextRepayAmount}}元</td>
-        <td>{{amount}}元</td>
-        <td><a class="red" href="">合同</a></td>
+        <td>{{businessType}}</td>
+        <td>+{{income}}元</td>
+        <td>-{{expenditure}}元</td>
+        <td>￥{{freeze}}</td>
+        <td>￥{{balance}}</td>
+        <td>编号:{{id}}</td>
     </tr>
-    {{/recordDtoList}}
-    {{^recordDtoList}}
+    {{/records}}
+    {{^records}}
     <td colspan="6" class="txtc">暂时没有投资纪录</td>
-    {{/recordDtoList}}
+    {{/records}}
     </tbody>
 </table>
-{{#totalPages}}
+
 
 <div class="pagination" data-currentpage="{{index}}">
-    <span class="total">共{{totalCount}}条,当前第{{index}}页</span>
+    <span class="total">共{{count}}条,当前第{{index}}页</span>
     {{#hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/hasPreviousPage}}
     {{#hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/hasNextPage}}
 </div>
-{{/totalPages}}

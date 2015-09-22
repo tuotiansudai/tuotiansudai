@@ -1,7 +1,5 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.UserBillBusinessType;
-
 /**
  * Created by Administrator on 2015/9/11.
  */
@@ -9,7 +7,7 @@ public class UserBillDto {
 
     private String createdTime;
 
-    private UserBillBusinessType businessType;
+    private String businessType;
 
     private String income;
 
@@ -29,11 +27,11 @@ public class UserBillDto {
         this.createdTime = createdTime;
     }
 
-    public UserBillBusinessType getBusinessType() {
+    public String getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(UserBillBusinessType businessType) {
+    public void setBusinessType(String businessType) {
         this.businessType = businessType;
     }
 

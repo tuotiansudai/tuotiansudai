@@ -15,11 +15,23 @@ require(['jquery', 'mustache', 'text!/tpl/fundtable.tpl', 'moment', 'daterangepi
         var dates = $('#daterangepicker').val().split('~');
         var startDay = $.trim(dates[0]);
         var endDay = $.trim(dates[1]);
-        var selectedType = $('.query-type').find(".current").attr('data-value');
+        var selectedValue = $('.query-type').find(".current").attr('data-value');
+        var selectedStatus = $('.query-type').find(".current").attr('data-status');
+        var selectedType = $('.query-type').find(".current").attr('data-type');
         //$(".query_type strong").css("opacity", '1');
         var rec_typestr = '';
-        if (selectedType) {
-            rec_typestr = "&status=" + selectedType;
+        if (selectedValue) {
+            if(selectedStatus){
+                rec_typestr = "&status=" + selectedValue +  "&status=" + selectedStatus ;
+            }else{
+                if(selectedType){
+                    rec_typestr = "&status=" + selectedValue +  "&status=" + selectedStatus + "&status=" + selectedType ;
+                }else{
+                    rec_typestr = "&status=" + selectedValue ;
+                }
+            }
+        }else{
+            rec_typestr = "&status=" ;
         }
         if (startDay == '' || startDay == 'undefined') {
             var url = _API_FUND + "?index=" + page + rec_typestr;
@@ -32,20 +44,12 @@ require(['jquery', 'mustache', 'text!/tpl/fundtable.tpl', 'moment', 'daterangepi
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8'
         }).done(function (res) {
-            if (selectedType == 'REPAYING') {
-                res.step1 = true;
-                var _plan = '<a class="re_plan" href="">提前还款</a>';
-                $('.jq-re-plan').append(_plan);
-            } else if (selectedType == 'COMPLETE') {
-                res.step2 = true;
-
-            } else {
-                res.step3 = true;
-            }
-
+            $('#jq-pay').text(res.accountModelBalance);
+            $('#jq-recharge').text(res.sumRecharge);
+            $('#jq-withdraw').text(res.sumWithdraw);
             var ret = Mustache.render(dealtableTpl, res);
             $('#tpl').html(ret);
-            _page = res.data.index;
+            _page = res.index;
         });
     }
 

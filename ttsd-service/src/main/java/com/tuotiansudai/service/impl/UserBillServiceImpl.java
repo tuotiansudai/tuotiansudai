@@ -45,7 +45,7 @@ public class UserBillServiceImpl implements UserBillService {
         for (UserBillModel userBillModel:userBillModels) {
             UserBillDto userBillDto = new UserBillDto();
             userBillDto.setCreatedTime(new DateTime(userBillModel.getCreatedTime()).toString("yyyy-MM-dd"));
-            userBillDto.setBusinessType(userBillModel.getBusinessType());
+            userBillDto.setBusinessType(userBillModel.getBusinessType().getDescription());
             if (UserBillOperationType.TI_BALANCE.equals(userBillModel.getOperationType().name())) {
                 userBillDto.setIncome(decimalFormat.format(userBillModel.getAmount() / 100D));
                 userBillDto.setExpenditure("0.00");
