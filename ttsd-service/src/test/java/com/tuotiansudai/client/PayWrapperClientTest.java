@@ -8,8 +8,10 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -45,6 +48,9 @@ public class PayWrapperClientTest {
 
     @Autowired
     private LoanMapper loanMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -119,6 +125,8 @@ public class PayWrapperClientTest {
 
     @Test
     public void shouldCreateLoanTest() throws Exception {
+        createMockUser("xiangjie");
+
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();
         loanTitleModel.setId(titleId);
@@ -176,5 +184,18 @@ public class PayWrapperClientTest {
         BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto);
         assertTrue(actualBaseDto.isSuccess());
         assertTrue(actualBaseDto.getData().getStatus());
+    }
+
+    private UserModel createMockUser(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("139" + RandomStringUtils.randomNumeric(8));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+        return userModelTest;
     }
 }
