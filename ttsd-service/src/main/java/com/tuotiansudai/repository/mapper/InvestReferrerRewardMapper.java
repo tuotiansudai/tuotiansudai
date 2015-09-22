@@ -2,7 +2,9 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.InvestReferrerRewardModel;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface InvestReferrerRewardMapper {
 
     void create(InvestReferrerRewardModel model);
