@@ -258,6 +258,7 @@ public class LoanServiceImpl implements LoanService {
         }
         loanDto = convertModelToDto(loanModel);
         loanDto.setStatus(true);
+        dto.setData(loanDto);
         return dto;
     }
 
