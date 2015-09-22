@@ -24,6 +24,9 @@
                 </div>
             </div>
             <div class="item-block">
+                <div class="error"></div>
+            </div>
+            <div class="item-block">
                 <button type="button" class="btn-send-form grey" disabled="disabled">提交</button>
             </div>
         </form>
