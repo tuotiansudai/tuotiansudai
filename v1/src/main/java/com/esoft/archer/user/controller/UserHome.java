@@ -31,6 +31,8 @@ import com.esoft.core.util.HashCrypt;
 import com.esoft.core.util.ImageUploadUtil;
 import com.esoft.core.util.SpringBeanUtil;
 import com.esoft.core.util.StringManager;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.ttsd.aliyun.AliyunUtils;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
@@ -105,6 +107,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     ValidationService vdtService;
     @Resource
     CaptchaService captchaService;
+    @Autowired
+    UmPayUserOperation umPayUserOperation;
 
     private static String imageCaptchaStatus = "{0}_image_captcha_status";
 
@@ -597,6 +601,28 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
         // 获取原始用户信息
         User oldUserInfo = userBO.getUserByUsernameFromDb(getInstance().getUsername());
+        String realName = oldUserInfo.getRealname();
+        String idCard = oldUserInfo.getIdCard();
+        String mobileNumberNew = getInstance().getMobileNumber();
+        String mobileNumberOld = oldUserInfo.getMobileNumber();
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(realName)
+                && org.apache.commons.lang3.StringUtils.isNotEmpty(idCard)
+                &&!"".equals(mobileNumberNew)
+                && !mobileNumberOld.equals(mobileNumberNew)){
+            try {
+                umPayUserOperation.createOperation(getInstance(),
+                        FacesContext.getCurrentInstance());
+                FacesUtil.addInfoMessage("实名认证手机号修改成功。");
+            } catch (IOException e) {
+                userInfo.setMobileNumber(mobileNumberOld);
+                log.error(e.getLocalizedMessage(),e);
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
+            }catch (UmPayOperationException e) {
+                userInfo.setMobileNumber(mobileNumberOld);
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
+                log.error(e.getLocalizedMessage(),e);
+            }
+        }
 
         // 修改用户信息
         getBaseService().merge(userInfo);
@@ -607,6 +633,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
 
         FacesUtil.addInfoMessage("用户信息修改成功！");
+
 
         String userString = userInfoLogService.generateUserInfoString(userInfo, oldUserInfo);
         userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
