@@ -67,7 +67,7 @@ public class SmsServiceTest {
 
         List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
 
-        assertThat(records.size(), is(1));
+        assert records.size() == 1;
 
         SmsModel record = records.get(0);
 

@@ -106,7 +106,7 @@ public class RepayMapperTest {
 
         List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, startDate, endDate);
         assertNotNull(models);
-        assertNotNull(models.get(0).getLoan().getLoanerLoginName());
+        assertNotNull(models.get(0).getLoan().getName());
     }
 
     private LoanDto getLoanModel(){

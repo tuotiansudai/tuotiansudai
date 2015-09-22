@@ -289,14 +289,14 @@ public class LoanServiceTest {
 
     @Test
     public void shouldGetLoanDetailTest(){
-        mockLoginUser("loginName", "1390000000");
+        mockLoginUser("loginName", "13900000000");
 
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
         Assert.assertNotNull(baseDto.getData().getId());
         Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.01, baseDto.getData().getRaiseCompletedRate());
+        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate());
     }
     @Test
     public void shouldGetTheInvests(){
