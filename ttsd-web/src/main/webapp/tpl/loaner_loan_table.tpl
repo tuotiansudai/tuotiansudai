@@ -18,7 +18,7 @@
         <td>{{loanAmount}}</td>
         <td>{{unpaidAmount}}元</td>
         <td>{{nextRepayDate}}</td>
-        <td><span class="plan" data-loan ='/loaner/loan-repay/{{loanId}}'>还款计划</span> | <a class="red" href="">合同</a></td>
+        <td><span class="plan" data-loan ='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a></td>
     </tr>
     {{/data.records}}
     {{^data.records}}
@@ -47,7 +47,7 @@
             <td>{{expectedRepayAmount}}</td>
             <td>{{actualRepayAmount}}元</td>
             <td>{{completedDate}}</td>
-            <td><span class="plan" data-loan ='/loaner/loan-repay/{{loanId}}'>还款计划</span> | <a class="red" href="">合同</a></td>
+            <td><span class="plan" data-loan ='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a></td>
         </tr>
         {{/data.records}}
         {{^data.records}}
@@ -84,7 +84,7 @@
 </table>
 
 <div class="pagination" data-currentpage="{{data.index}}">
-    <span class="total">共{{data.count}}条,当前第{{data.index}}页</span>
+    <span class="total">共 {{data.count}} 条记录，当前第 {{data.index}} 页</span>
     {{#data.hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/data.hasPreviousPage}}
     {{#data.hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/data.hasNextPage}}
 </div>

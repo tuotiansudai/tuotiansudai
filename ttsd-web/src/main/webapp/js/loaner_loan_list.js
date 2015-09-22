@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
+require(['jquery', 'mustache', 'text!/tpl/loaner_loan_table.tpl', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
     //初始化页面
     var _now_day = moment().format('YYYY-MM-DD'); // 今天
     var _week = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -97,7 +97,6 @@ require(['jquery', 'mustache', 'text!../../tpl/loaner_loan_table.tpl', 'moment',
                         }
                         $('.table-list tbody').find('tr').remove();
                         $('.table-list tbody').append(str);
-                        console.log(str)
                     }
 
                 });

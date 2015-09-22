@@ -34,7 +34,6 @@ public class LoanRepayDataItemDto {
 
     private String loanRepayStatus;
 
-    @JsonProperty(value = "isEnabled")
     private boolean isEnabled;
 
     public LoanRepayDataItemDto(LoanRepayModel loanRepayModel, boolean isEnabled) {
@@ -95,7 +94,7 @@ public class LoanRepayDataItemDto {
         return loanRepayStatus;
     }
 
-    public boolean isEnabled() {
+    public boolean getIsEnabled() {
         return isEnabled;
     }
 

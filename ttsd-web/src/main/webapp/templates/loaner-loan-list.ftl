@@ -79,5 +79,5 @@
 </html>
 
 <script>
-    var API_AJAX = 'loaner/fake-loan-data';
+    var API_AJAX = '/loaner/loan-data';
 </script>
