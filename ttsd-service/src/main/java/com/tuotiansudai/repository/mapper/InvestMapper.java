@@ -149,4 +149,8 @@ public interface InvestMapper {
                   @Param(value = "loanStatus") LoanStatus loanStatus,
                   @Param(value = "investStatus") InvestStatus investStatus);
 
+
+    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
+
+
 }

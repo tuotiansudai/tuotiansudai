@@ -77,4 +77,12 @@ public class SendCloudClient {
         transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
         transport.close();
     }
+
+    public void setSendCloudSmtpHost(String sendCloudSmtpHost) {
+        this.sendCloudSmtpHost = sendCloudSmtpHost;
+    }
+
+    public void setSendCloudSmtpPort(Integer sendCloudSmtpPort) {
+        this.sendCloudSmtpPort = sendCloudSmtpPort;
+    }
 }

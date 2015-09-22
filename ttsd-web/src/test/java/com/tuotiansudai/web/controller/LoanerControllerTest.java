@@ -133,12 +133,12 @@ public class LoanerControllerTest {
                 .andExpect(jsonPath("$.data.hasNextPage").value(true))
                 .andExpect(jsonPath("$.data.records[0].loanId").value(fakeCompletedLoan3.getId()))
                 .andExpect(jsonPath("$.data.records[0].completedDate").value(dateFormat.format(new DateTime().withDate(2000, 9, 1).withTimeAtStartOfDay().toDate())))
-                .andExpect(jsonPath("$.data.records[0].expectedRepayAmount").value(26))
-                .andExpect(jsonPath("$.data.records[0].actualRepayAmount").value(23))
+                .andExpect(jsonPath("$.data.records[0].expectedRepayAmount").value("0.26"))
+                .andExpect(jsonPath("$.data.records[0].actualRepayAmount").value("0.23"))
                 .andExpect(jsonPath("$.data.records[1].loanId").value(fakeCompletedLoan2.getId()))
                 .andExpect(jsonPath("$.data.records[1].completedDate").value(dateFormat.format(new DateTime().withDate(2000, 6, 1).withTimeAtStartOfDay().toDate())))
-                .andExpect(jsonPath("$.data.records[1].expectedRepayAmount").value(16))
-                .andExpect(jsonPath("$.data.records[1].actualRepayAmount").value(13));
+                .andExpect(jsonPath("$.data.records[1].expectedRepayAmount").value("0.16"))
+                .andExpect(jsonPath("$.data.records[1].actualRepayAmount").value("0.13"));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class LoanerControllerTest {
                 .getRequest()
                 .getSession();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         this.mockMvc.perform(get("/loaner/loan-data?index=1&pageSize=2&status=REPAYING")
                 .session((MockHttpSession) session)
@@ -201,10 +201,10 @@ public class LoanerControllerTest {
                 .andExpect(jsonPath("$.data.hasNextPage").value(true))
                 .andExpect(jsonPath("$.data.records[0].loanId").value(fakeRepayingLoan1.getId()))
                 .andExpect(jsonPath("$.data.records[0].nextRepayDate").value(dateFormat.format(new DateTime().withDate(2000, 2, 1).withTimeAtStartOfDay().toDate())))
-                .andExpect(jsonPath("$.data.records[0].unpaidAmount").value(12))
+                .andExpect(jsonPath("$.data.records[0].unpaidAmount").value("0.12"))
                 .andExpect(jsonPath("$.data.records[1].loanId").value(fakeRepayingLoan2.getId()))
                 .andExpect(jsonPath("$.data.records[1].nextRepayDate").value(dateFormat.format(new DateTime().withDate(2000, 4, 1).withTimeAtStartOfDay().toDate())))
-                .andExpect(jsonPath("$.data.records[1].unpaidAmount").value(23));
+                .andExpect(jsonPath("$.data.records[1].unpaidAmount").value("0.23"));
     }
 
     @Test

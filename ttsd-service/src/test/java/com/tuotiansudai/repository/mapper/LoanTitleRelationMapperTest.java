@@ -3,6 +3,8 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -32,8 +35,24 @@ public class LoanTitleRelationMapperTest {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+
+    private void createMockUser(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("123abc");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("1" + RandomStringUtils.randomNumeric(10));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        userMapper.create(userModelTest);
+    }
     @Test
     public void createLoanTitleTest(){
+        createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();
         loanTitleModel.setId(titleId);
@@ -81,6 +100,7 @@ public class LoanTitleRelationMapperTest {
 
     @Test
     public void findLoanTitlesTest(){
+        createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();
         loanTitleModel.setId(titleId);
@@ -130,6 +150,7 @@ public class LoanTitleRelationMapperTest {
 
     @Test
     public void deleteTest(){
+        createMockUser("xiangjie");
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();
         loanTitleModel.setId(titleId);
