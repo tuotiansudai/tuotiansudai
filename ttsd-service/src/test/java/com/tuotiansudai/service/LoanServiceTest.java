@@ -242,7 +242,7 @@ public class LoanServiceTest {
 
     @Test
     public void findLoanListServiceTest() {
-        List<LoanListDto> loanListDtos = loanService.findLoanList(LoanStatus.REPAYING, 1, "", new Date(), new Date(), 0);
+        List<LoanListDto> loanListDtos = loanService.findLoanList(LoanStatus.REPAYING, 1, "", new Date(), new Date(), 0, 10);
         int loanListCount = loanService.findLoanListCount(LoanStatus.REPAYING,1,"",new Date(),new Date());
         assertThat(loanListDtos.size(), is(loanListCount));
     }
