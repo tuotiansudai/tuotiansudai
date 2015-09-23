@@ -54,11 +54,9 @@
                             </span>
                             <#if loanListWebDto.status== 'RAISING'>
                                 <a class="btn-invest" href="">马上投资</a>
-                            </#if>
-                            <#if loanListWebDto.status== 'PREHEAT'>
+                            <#elseif loanListWebDto.status== 'PREHEAT'>
                                 <a class="btn-wait-invest" href="">预热中</a>
-                            </#if>
-                            <#if loanListWebDto.status== 'PREHEAT'>
+                            <#else>
                                 <a class="btn-finish-invest" href="">投资完成</a>
                             </#if>
                         </div>
@@ -66,7 +64,9 @@
                             <span class="name">年化收益：</span>
                             <span class="num">
                                 <td>${loanListWebDto.basicRate}</td>
+                                <#if loanListWebDto.activityRate != '0.0%'>
                                     <i>+${loanListWebDto.activityRate}</i>
+                                </#if>
                             </span>
                             <span class="name">项目期限（月）：</span>
                             <span class="month">${loanListWebDto.periods}个月</span>

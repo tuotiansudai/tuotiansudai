@@ -337,7 +337,7 @@ public class LoanServiceTest {
         int loanListCount = loanService.findLoanListCount("complete","","","","");
         assertThat(loanListDtos.size(), is(loanListCount));
     }
-    
+
     private void createTestInvests(long loanId, String loginName, int count){
         for(int i=0;i<count;i++) {
             InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
