@@ -31,5 +31,4 @@
                 <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
             </a>
         </div>
-    </div>
 </div>
