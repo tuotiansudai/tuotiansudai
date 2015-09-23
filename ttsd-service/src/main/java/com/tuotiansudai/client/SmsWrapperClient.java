@@ -34,7 +34,7 @@ public class SmsWrapperClient {
 
     private final static String REGISTER_CAPTCHA_SMS_URI = "/sms/register-captcha";
 
-    private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-captcha";
+    private final static String RETRIEVE_PASSWORD_CAPTCHA_URI = "/sms/retrieve-password-captcha";
 
     private final static String LOAN_OUT_INVESTOR_NOTIFY = "/sms/loan-out-investor-notify";
 
