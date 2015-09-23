@@ -33,7 +33,7 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
-    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo);
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo,int pageSize);
 
     public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime);
 

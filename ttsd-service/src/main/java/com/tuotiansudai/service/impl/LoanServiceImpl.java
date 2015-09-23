@@ -1,13 +1,9 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
-import com.google.common.base.Function;
 import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -26,7 +22,6 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -348,9 +343,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo) {
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime!=null?new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"):null,endTime!=null?new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"):null,currentPageNo);
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,currentPageNo,pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i=0;i<loanModels.size();i++) {
             LoanListDto loanListDto = new LoanListDto();
@@ -371,7 +366,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime) {
-        return loanMapper.findLoanListCount(status, loanId, loanName, startTime!=null?new DateTime(startTime).toString("yyyy-MM-dd HH:mm:ss"):null, endTime!=null?new DateTime(endTime).toString("yyyy-MM-dd HH:mm:ss"):null);
+        return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
     }
 
     public BaseDto<LoanDto> getLoanDetail(long loanId) {
