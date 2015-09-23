@@ -20,7 +20,7 @@ public interface LoanMapper {
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 
     public List<LoanModel> findLoanList(@Param(value = "status") LoanStatus status,@Param(value = "loanId") long loanId,@Param(value = "loanName") String loanName,
-                                        @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,@Param(value = "currentPageNo") int currentPageNo,int pageSize);
+                                        @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,@Param(value = "currentPageNo") int currentPageNo,@Param(value = "pageSize") int pageSize);
 
     public int findLoanListCount(@Param(value = "status") LoanStatus status,@Param(value = "loanId") long loanId,@Param(value = "loanName") String loanName,
                                  @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
