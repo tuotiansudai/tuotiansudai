@@ -16,6 +16,7 @@
             </#if>
             ${loan.projectName}
                 <input class="jq-loan-user" type="hidden" value="${loan.id}">
+                <input id="loanStatus" type="hidden" value="${loan.loanStatus}">
             </h2>
 
             <div class="chart-box">
@@ -36,13 +37,13 @@
                 <p>代理人： ${loan.agentLoginName}</p>
 
                 <p>借款人：${loan.loanerLoginName}</p>
-            <#if loan.type.getRepayTimeUnit() == "month">
+            <#if loan.type.getLoanPeriodUnit() == "MONTH">
                 <p>项目期限：${loan.periods}天 </p>
             </#if>
-            <#if loan.type.getRepayTimeUnit() == "day">
+            <#if loan.type.getLoanPeriodUnit() == "DAY">
                 <p>项目期限：${loan.periods}天 </p>
             </#if>
-                <p>还款方式：${loan.type.getDescription()}</p>
+                <p>还款方式：${loan.type.getName()}</p>
                 <a href="/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
@@ -215,7 +216,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <#list loan.basePaginationDto.recordDtoList as investPaginationDataDto>
+                    <#list loan.baseDto.data.records as investPaginationDataDto>
                     <tr>
                         <td>${investPaginationDataDto.serialNo}</td>
                         <td>${investPaginationDataDto.loginName}</td>
@@ -274,6 +275,8 @@
 <script>
     var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
     var java_point = ${loan.amountNeedRaised}; //后台传递数据
-    var pageTotal = '${loan.basePaginationDto.totalCount}';
-    var pageCurrent = '${loan.basePaginationDto.index}';
+    var pageCurrent = '${loan.baseDto.data.index}';
+    var pageTotal = '${loan.baseDto.data.count}';
+
+
 </script>

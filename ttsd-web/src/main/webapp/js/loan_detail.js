@@ -4,7 +4,6 @@
 require(['jquery', 'jqueryPage', 'csrf'], function ($) {
     $(function () {
 
-
         var pagesize = 10; //每页显示条数
         var loanId = $('.jq-loan-user').val();
         $(".pagination").createPage({
@@ -110,7 +109,10 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
         }
 
         $(function () {
-            timer(intDiff);
+            if($('#loanStatus').val() == 'PREHEAT' ){
+                timer(intDiff);
+
+            }
         });
 
 
