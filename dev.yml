@@ -33,6 +33,8 @@ sms-wrapper:
     - "20005:8080"
   volumes:
     - ./ttsd-sms-wrapper/war:/webapps
+  links:
+    - "redis-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:

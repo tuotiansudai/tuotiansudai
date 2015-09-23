@@ -3,6 +3,10 @@ package com.tuotiansudai.paywrapper.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.client.SendCloudClient;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -18,6 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -67,28 +72,48 @@ public class LoanControllerTest {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private SendCloudClient sendCloudClient;
+
 
     private ObjectMapper objectMapper;
     private MockWebServer mockServer;
+    private MockWebServer mockSmsServer;
+    private MockWebServer mockMailServer;
 
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         this.objectMapper = new ObjectMapper();
         this.mockServer = mockUmPayService();
+        this.mockSmsServer = mockSmsService();
+        this.mockMailServer = mockMailServer();
 
         MockPayGateWrapper.inject(paySyncClient);
         MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
+
+        smsWrapperClient.setHost(this.mockSmsServer.getHostName());
+        smsWrapperClient.setPort(String.valueOf(this.mockSmsServer.getPort()));
+        smsWrapperClient.setContext("/");
+
+
+        sendCloudClient.setSendCloudSmtpHost(this.mockMailServer.getHostName());
+        sendCloudClient.setSendCloudSmtpPort(this.mockMailServer.getPort());
     }
 
     @After
     public void clean() throws Exception {
         this.mockServer.shutdown();
+        this.mockSmsServer.shutdown();
+        this.mockMailServer.shutdown();
     }
 
     private MockWebServer mockUmPayService() throws IOException {
         MockWebServer mockWebServer = new MockWebServer();
-        mockWebServer.start(InetAddress.getLoopbackAddress(), 8091);
+        mockWebServer.start();
 
         MockResponse mockResponse = new MockResponse();
         mockResponse.setBody("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n" +
@@ -104,6 +129,48 @@ public class LoanControllerTest {
 
         return mockWebServer;
     }
+
+    private MockWebServer mockSmsService() throws IOException{
+        MockWebServer mockWebServer = new MockWebServer();
+        mockWebServer.start();
+
+        BaseDto<BaseDataDto> smsSuccess = new BaseDto<>();
+        smsSuccess.setData(new BaseDataDto());
+        smsSuccess.setSuccess(true);
+        smsSuccess.getData().setStatus(true);
+
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(objectMapper.writeValueAsString(smsSuccess));
+        mockResponse.setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+
+        return mockWebServer;
+    }
+
+    private MockWebServer mockMailServer() throws IOException{
+        MockWebServer mockWebServer = new MockWebServer();
+        mockWebServer.start();
+
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody("");
+        mockResponse.setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
+        return mockWebServer;
+    }
+
 
     @Test
     public void shouldLoanout() throws Exception {
@@ -123,7 +190,7 @@ public class LoanControllerTest {
 
         String requestJson = objectMapper.writeValueAsString(loanOutDto);
 
-        this.mockMvc.perform(post("/loan/loanout").
+        this.mockMvc.perform(post("/loan/loan-out").
                 contentType(MediaType.APPLICATION_JSON_VALUE).
                 content(requestJson))
                 .andExpect(status().isOk())
@@ -147,9 +214,9 @@ public class LoanControllerTest {
     }
 
     private void mockUsers(String[] loginNames) {
-        mockUser(loginNames[0], "18610361804", "zhanglong@tuotiansudai.com");
-        mockUser(loginNames[1], "13436964915", "zourenzheng@tuotiansudai.com");
-        mockUser(loginNames[2], "18601215857", "zhangzhigang@tuotiansudai.com");
+        mockUser(loginNames[0], "13000000000", "aaa@tuotiansudai.com");
+        mockUser(loginNames[1], "13000000001", "bbb@tuotiansudai.com");
+        mockUser(loginNames[2], "13000000002", "ccc@tuotiansudai.com");
     }
 
     private void mockUser(String loginName, String mobile, String email) {

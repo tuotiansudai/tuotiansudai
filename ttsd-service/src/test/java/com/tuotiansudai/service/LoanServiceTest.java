@@ -11,13 +11,18 @@ import com.tuotiansudai.dto.LoanListDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.utils.IdGenerator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +41,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -65,6 +71,7 @@ public class LoanServiceTest {
     @Autowired
     private UserMapper userMapper;
 
+
     @Before
     public void createLoanTitle(){
         LoanTitleModel loanTitleModel = new LoanTitleModel();
@@ -79,7 +86,7 @@ public class LoanServiceTest {
      */
     @Test
     public void createLoanServiceTest_1() {
-        UserModel fakeUser = getFakeUser();
+        UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
@@ -241,7 +248,7 @@ public class LoanServiceTest {
     }
 
     public void updateLoanTest() {
-        UserModel fakeUser = getFakeUser();
+        UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
@@ -291,17 +298,20 @@ public class LoanServiceTest {
 
     @Test
     public void shouldGetLoanDetailTest(){
+        mockLoginUser("loginName", "13900000000");
+
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
         Assert.assertNotNull(baseDto.getData().getId());
         Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.01, baseDto.getData().getRaiseCompletedRate());
+        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate());
     }
     @Test
     public void shouldGetTheInvests(){
-        createTestInvests();
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 1, 5);
+        long loanId = createLoanService();
+        createTestInvests(loanId, "loginName", 10);
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 5);
         assertEquals(5, baseDto.getData().getRecords().size());
         assertEquals(true, baseDto.getData().isHasNextPage());
         assertEquals(false, baseDto.getData().isHasPreviousPage());
@@ -309,19 +319,27 @@ public class LoanServiceTest {
 
     @Test
     public void shouldGetTheInvestsAndNextPagePreviousPage(){
-        createTestInvests();
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(1, 4, 3);
+        String mockUserName = "loginUser";
+        createMockUser(mockUserName);
+        long loanId = createLoanService();
+        // 虽然这里创建了10条投资记录，但是在上个方法里，已经创建了三条投资记录，其中已经包含了一个success的记录
+        createTestInvests(loanId, mockUserName, 10);
+
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 3);
+        assertEquals(3, baseDto.getData().getRecords().size());
+        assertEquals(11, baseDto.getData().getCount());
+
+        baseDto = loanService.getInvests(loanId, 4, 3);
         BasePaginationDataDto data = baseDto.getData();
-        assertEquals(1, data.getRecords().size());
+        assertEquals(2, data.getRecords().size());
         assertEquals(false, data.isHasNextPage());
         assertEquals(true, data.isHasPreviousPage());
     }
-    private void createTestInvests(){
+    private void createTestInvests(long loanId, String loginName, int count){
 
-        for(int i=0;i<10;i++) {
-            InvestModel investModel = this.getFakeInvestModel(idGenerator.generate());
-            investModel.setLoanId(1);
-            investModel.setLoginName("hourglass");
+        for(int i=0;i<count;i++) {
+            InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
+            investModel.setLoanId(loanId);
             investModel.setStatus(InvestStatus.SUCCESS);
             investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
             investMapper.create(investModel);
@@ -329,8 +347,15 @@ public class LoanServiceTest {
     }
 
     private long createLoanService(){
+        String fakeUserName = "loginName";
+        String fakeUserName2 = "investorName";
+        UserModel userModel = getFakeUser(fakeUserName);
+        UserModel userModel2 = getFakeUser(fakeUserName2);
+        userMapper.create(userModel);
+        userMapper.create(userModel2);
+
         LoanModel loanModel = new LoanModel();
-        loanModel.setAgentLoginName("xiangjie");
+        loanModel.setAgentLoginName(fakeUserName);
         loanModel.setBaseRate(16.00);
         long id = idGenerator.generate();
         loanModel.setId(id);
@@ -352,7 +377,7 @@ public class LoanServiceTest {
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
-        loanModel.setLoanerLoginName("loaner");
+        loanModel.setLoanerLoginName(fakeUserName);
         loanMapper.create(loanModel);
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();
@@ -372,12 +397,12 @@ public class LoanServiceTest {
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);
 
-        InvestModel investModel1 = getFakeInvestModel(id);
+        InvestModel investModel1 = getFakeInvestModel(id, fakeUserName2);
         investModel1.setStatus(InvestStatus.SUCCESS);
-        InvestModel investModel2 = getFakeInvestModel(id);
+        InvestModel investModel2 = getFakeInvestModel(id, fakeUserName2);
         investModel2.setStatus(InvestStatus.FAIL);
 
-        InvestModel investModel3 = getFakeInvestModel(id);
+        InvestModel investModel3 = getFakeInvestModel(id, fakeUserName2);
         investModel3.setStatus(InvestStatus.WAITING);
 
         investMapper.create(investModel1);
@@ -388,7 +413,7 @@ public class LoanServiceTest {
 
     }
 
-    private InvestModel getFakeInvestModel(long loanId) {
+    private InvestModel getFakeInvestModel(long loanId, String loginName) {
         InvestModel model = new InvestModel();
         model.setAmount(50);
         // 舍弃毫秒数
@@ -396,7 +421,7 @@ public class LoanServiceTest {
         model.setCreatedTime(currentDate);
         model.setId(idGenerator.generate());
         model.setIsAutoInvest(false);
-        model.setLoginName("hourglass");
+        model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(InvestSource.ANDROID);
         model.setStatus(InvestStatus.WAITING);
@@ -404,16 +429,27 @@ public class LoanServiceTest {
         return model;
     }
 
-    public UserModel getFakeUser() {
+
+    public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();
-        userModelTest.setLoginName("loginName");
+        userModelTest.setLoginName(loginName);
         userModelTest.setPassword("password");
         userModelTest.setEmail("12345@abc.com");
-        userModelTest.setMobile("13900000000");
+        userModelTest.setMobile("13" + RandomStringUtils.randomNumeric(9));
         userModelTest.setRegisterTime(new Date());
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
 
+    private void createMockUser(String loginName){
+        UserModel um = getFakeUser(loginName);
+        userMapper.create(um);
+    }
+
+    private void mockLoginUser(String loginName, String mobile){
+        MyUser user = new MyUser(loginName,"", true, true, true, true, AuthorityUtils.createAuthorityList("ROLE_PATRON"), mobile, "fdafdsa");
+        TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
+        SecurityContextHolder.getContext().setAuthentication(testingAuthenticationToken);
+    }
 }

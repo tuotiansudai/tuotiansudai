@@ -4,16 +4,17 @@ require(['jquery', 'csrf'], function ($) {
             if ($(this).val() != '') {
                 if ($('.jq-ps-2').val() != '') {
                     if ($(this).val() != $('.jq-ps-2').val()) {
-                        $('.jq-ps-2').addClass('error');
+                        $('.error').html('密码输入不一致');
                         $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
                     } else {
                         $('.jq-ps-2').removeClass('error');
                         $('.btn-send-form').removeClass('grey').removeAttr('disabled');
+                        $('.error').html('');
                     }
                 }
-                $(this).removeClass('error');
+                $('.error').html('');
             }else{
-                $(this).addClass('error');
+                $('.error').html('密码输入有误');
                 $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
                 console.log('333')
             }
@@ -22,16 +23,15 @@ require(['jquery', 'csrf'], function ($) {
             if ($(this).val() != '') {
                 if ($('.jq-ps-1').val() != '') {
                     if ($(this).val() != $('.jq-ps-1').val()) {
-                        $('.jq-ps-2').addClass('error');
+                        $('.error').html('密码输入不一致');
                         $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
                     } else {
-                        $('.jq-ps-2').removeClass('error');
+                        $('.error').html('');
                         $('.btn-send-form').removeClass('grey').removeAttr('disabled');
                     }
                 }
-                $(this).removeClass('error');
             }else{
-                $(this).addClass('error');
+                $('.error').html('密码输入不一致');
                 $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
             }
         })

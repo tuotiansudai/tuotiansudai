@@ -108,7 +108,7 @@ $(function () {
                 if (flag) {
                     var pix = _options.eq(i).attr('data-repaytimeunit');
                     var _pix = '';
-                    if (pix == 'month') {
+                    if (pix == 'MONTH') {
                         _pix = "月";
                     } else {
                         _pix = "天";
