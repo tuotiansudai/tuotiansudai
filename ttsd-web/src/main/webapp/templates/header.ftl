@@ -12,6 +12,7 @@
             <@global.security.authorize access="isAuthenticated()">
                 <li><a href="/user-center"><@global.security.authentication property="principal.username" /></a></li>
                 <li><a class="logout" href="/logout">退出</a>
+
                     <form class="logout-form" action="/logout" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
@@ -31,4 +32,5 @@
                 <img src="${requestContext.getContextPath()}/images/logo.png" alt="">
             </a>
         </div>
+    </div>
 </div>
