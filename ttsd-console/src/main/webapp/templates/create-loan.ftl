@@ -310,7 +310,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker6'>
-                                <input type='text' class="form-control jq-star-date"/>
+                                <input type='text' class="form-control jq-star-date" datatype="date"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -322,7 +322,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' class="form-control jq-end-date"/>
+                                <input type='text' class="form-control jq-end-date" datatype="date"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>

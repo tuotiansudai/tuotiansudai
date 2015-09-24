@@ -267,10 +267,11 @@ $(function () {
                         $('.form-error .txt').text('亲，建标失败啦！')
                         $('.form-error').append(htm);
                     }
-                    location.href='/'
+                    location.href='/loanList/console';
                 })
                 .fail(function () {
                     console.log("error");
+                    $('.jq-btn-form').removeAttr('disabled');
                 })
                 .always(function () {
                     console.log("complete");
