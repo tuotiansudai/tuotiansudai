@@ -266,8 +266,8 @@ $(function () {
                         var htm = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">亲，建标失败啦！</span></div>';
                         $('.form-error .txt').text('亲，建标失败啦！')
                         $('.form-error').append(htm);
-
                     }
+                    location.href='/'
                 })
                 .fail(function () {
                     console.log("error");
