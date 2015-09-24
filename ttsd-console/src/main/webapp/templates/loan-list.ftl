@@ -68,16 +68,16 @@
             <!-- menu sidebar -->
             <div class="col-md-2">
                 <ul class="nav bs-docs-sidenav">
-                    <li <#if !status??>class="active"</#if>>
+                    <li <#if status??><#else>class="active"</#if>>
                         <a href="${requestContext.getContextPath()}/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="">所有借款</a>
                     </li>
-                    <li <#if status = "WAITING_VERIFY">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=WAITING_VERIFY&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="WAITING_VERIFY">初审的借款</a></li>
-                    <li <#if status = "RAISING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RAISING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RAISING">筹款中借款</a></li>
-                    <li <#if status = "RECHECK">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RECHECK&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RECHECK">复审借款</a></li>
-                    <li <#if status = "REPAYING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=REPAYING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="REPAYING">还款中的借款</a></li>
-                    <li <#if status = "COMPLETE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="COMPLETE">完成还款的借款</a></li>
-                    <li <#if status = "CANCEL">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="CANCEL">已流标等借款</a></li>
-                    <li <#if status = "OVERDUE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="OVERDUE">逾期借款</a></li>
+                    <li <#if status?? && status=="WAITING_VERIFY">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=WAITING_VERIFY&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="WAITING_VERIFY">初审的借款</a></li>
+                    <li <#if status?? && status=="RAISING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RAISING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RAISING">筹款中借款</a></li>
+                    <li <#if status?? && status=="RECHECK">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RECHECK&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RECHECK">复审借款</a></li>
+                    <li <#if status?? && status=="REPAYING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=REPAYING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="REPAYING">还款中的借款</a></li>
+                    <li <#if status?? && status=="COMPLETE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="COMPLETE">完成还款的借款</a></li>
+                    <li <#if status?? && status=="CANCEL">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="CANCEL">已流标等借款</a></li>
+                    <li <#if status?? && status=="OVERDUE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="OVERDUE">逾期借款</a></li>
                     <li><a href="projectManage/star.html">发起借款</a></li>
                 </ul>
             </div>
