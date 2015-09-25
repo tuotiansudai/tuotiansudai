@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -11,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
-public class LoanDto {
+public class LoanDto extends BaseDataDto{
 
     private long id;
 
@@ -35,7 +32,7 @@ public class LoanDto {
     /***借款期限***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
-    private long periods;
+    private int periods;
 
     /***项目描述（纯文本）***/
     @NotEmpty
@@ -113,6 +110,24 @@ public class LoanDto {
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    private List<LoanTitleModel> loanTitleDto;
+
+    /**可投金额**/
+    private double amountNeedRaised;
+
+    /**当前登录用户的个人账户余额**/
+    private double balance;
+
+    /**完成比例**/
+    private double raiseCompletedRate;
+
+    /**预计总收益**/
+    private long expectedTotalIncome;
+
+    private BaseDto<BasePaginationDataDto> baseDto;
+
+    private long preheatSeconds;
+
     public long getId() {
         return id;
     }
@@ -153,11 +168,11 @@ public class LoanDto {
         this.type = type;
     }
 
-    public long getPeriods() {
+    public int getPeriods() {
         return periods;
     }
 
-    public void setPeriods(long periods) {
+    public void setPeriods(int periods) {
         this.periods = periods;
     }
 
@@ -312,4 +327,61 @@ public class LoanDto {
     public void setLoanTitles(List<LoanTitleRelationModel> loanTitles) {
         this.loanTitles = loanTitles;
     }
+
+    public double getAmountNeedRaised() {
+        return amountNeedRaised;
+    }
+
+    public void setAmountNeedRaised(double amountNeedRaised) {
+        this.amountNeedRaised = amountNeedRaised;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getRaiseCompletedRate() {
+        return raiseCompletedRate;
+    }
+
+    public void setRaiseCompletedRate(double raiseCompletedRate) {
+        this.raiseCompletedRate = raiseCompletedRate;
+    }
+
+    public long getExpectedTotalIncome() {
+        return expectedTotalIncome;
+    }
+
+    public void setExpectedTotalIncome(long expectedTotalIncome) {
+        this.expectedTotalIncome = expectedTotalIncome;
+    }
+
+    public List<LoanTitleModel> getLoanTitleDto() {
+        return loanTitleDto;
+    }
+
+    public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
+        this.loanTitleDto = loanTitleDto;
+    }
+
+    public BaseDto<BasePaginationDataDto> getBaseDto() {
+        return baseDto;
+    }
+
+    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
+        this.baseDto = baseDto;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
+    }
+
 }

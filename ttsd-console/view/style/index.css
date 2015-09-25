@@ -80,6 +80,13 @@ a:hover {
     background: #ccc;
     width: 38.66666%;
 }
+.table-bordered>thead>tr>td, .table-bordered>thead>tr>th{ font-size: 12px;}
+.query-build{padding-bottom: 20px;}
+.query-build .form-group{
+    margin: 10px 20px 10px 0;
+}
+.bordern{
+    border: none!important;}
 
 /*下拉框*/
 .files-input {
@@ -110,3 +117,4 @@ a:hover {
     border: none;
     box-shadow: none;
 }
+

@@ -78,5 +78,4 @@
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
-
 </beans>

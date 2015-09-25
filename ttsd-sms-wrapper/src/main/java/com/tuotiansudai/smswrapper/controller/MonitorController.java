@@ -2,7 +2,6 @@ package com.tuotiansudai.smswrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.MonitorDataDto;
-
 import com.tuotiansudai.smswrapper.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

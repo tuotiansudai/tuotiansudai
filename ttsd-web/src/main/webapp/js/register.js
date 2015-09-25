@@ -2,80 +2,75 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
 
     var registerUserForm = $("#register-user-form");
     var registerAccountForm = $("#register-account-form");
+    var fetchCaptchaElement = $('.fetch-captcha');
+    var imageCaptchaElement = $('.verification-code-img');
 
-    $(function() {
-        $('.fetch-captcha').on('click', function () {
-            var clientH = $(window).height();
-            $('.verification-code').css({'height': clientH, 'display': 'block'});
-            $('.verification-code-main').show();
-            refreshCaptcha();
-        });
-        $('.close').on('click', function () {
-            $('.verification-code,.verification-code-main').hide();
-        });
-        $('.mobile').blur(function () {
-            var _this = $(this);
-            if(_this.val()=='' || _this.hasClass('error')){
-                $('.fetch-captcha').addClass('grey').attr('disabled','disabled');
-            }else{
-                $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
-            }
-        });
-        $('.complete').click(function () {
-            var phone = $('.mobile').val();
-            var captcha = $('.verification-code-text').val();
-            var num = 30;
-            // 倒计时
-            function countdown() {
-                $('.fetch-captcha').html(num + '秒后重新发送').css({'background': '#666', 'pointer-events': 'none'});
-                if (num == 0) {
-                    clearInterval(count);
-                    $('.fetch-captcha').html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
-                }
-                num--;
-            }
-            var count = setInterval(countdown, 1000);
-            $('.verification-code,.verification-code-main').hide();
-            $.get('/register/mobile/' + phone + '/image-captcha/' + captcha + '/send-register-captcha');
-        });
-
-        // 刷新验证码
-        var refreshCaptcha = function () {
-            var captcha = $('.verification-code-img');
-            captcha.attr('src', '/register/image-captcha?' + new Date().toTimeString());
-        };
-
-        $('.verification-code-img').click(function () {
-            refreshCaptcha();
-        });
-
-        // 弹出框验证码
-        $('.verification-code-text').blur(function () {
-            var _this = $(this);
-            var _value = _this.val();
-            if (_value.length < 5) {
-                $('.verification-code-main b').css('display', 'inline-block');
-            } else {
-                $.ajax({
-                    url: '/register/image-captcha/' + _value + '/verify',
-                    type: 'get',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                }).done(function (response) {
-                    if (response.data.status) {
-                        $('.verification-code-main b').hide();
-                        $('.complete').removeClass('grey').removeAttr('disabled');
-                    } else {
-                        $('.verification-code-main b').css('display', 'inline-block');
-                        $('.complete').addClass('grey').attr('disabled');
-                        refreshCaptcha();
-                    }
-                });
-            }
-        });
-
+    fetchCaptchaElement.on('click', function () {
+        var clientH = $(window).height();
+        $('.verification-code').css({'height': clientH, 'display': 'block'});
+        $('.verification-code-text').val('');
+        $('.verification-code-main b').hide();
+        $('.complete').addClass('grey').attr('disabled');
+        $('.verification-code-main').show();
+        refreshCaptcha();
     });
 
+    $('.close').on('click', function () {
+        $('.verification-code, .verification-code-main').hide();
+    });
+
+    $('.complete').click(function () {
+        var phone = $('.mobile').val();
+        var captcha = $('.verification-code-text').val();
+        var num = 30;
+        // 倒计时
+        function countdown() {
+            fetchCaptchaElement.html(num + '秒后重新发送').css({'background': '#666', 'pointer-events': 'none'});
+            if (num == 0) {
+                clearInterval(count);
+                fetchCaptchaElement.html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
+            }
+            num--;
+        }
+
+        var count = setInterval(countdown, 1000);
+        $('.verification-code,.verification-code-main').hide();
+        $.get('/register/mobile/' + phone + '/image-captcha/' + captcha + '/send-register-captcha');
+    });
+
+    // 刷新验证码
+    var refreshCaptcha = function () {
+        imageCaptchaElement.attr('src', '/register/image-captcha?' + new Date().getTime());
+    };
+
+    imageCaptchaElement.click(function () {
+        refreshCaptcha();
+    });
+
+    // 弹出框验证码
+    $('.verification-code-text').blur(function () {
+        var _this = $(this);
+        var _value = _this.val();
+        if (_value.length < 5) {
+            $('.verification-code-main b').css('display', 'inline-block');
+        } else {
+            $.ajax({
+                url: '/register/image-captcha/' + _value + '/verify',
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (response) {
+                if (response.data.status) {
+                    $('.verification-code-main b').hide();
+                    $('.complete').removeClass('grey').removeAttr('disabled');
+                } else {
+                    $('.verification-code-main b').css('display', 'inline-block');
+                    $('.complete').addClass('grey').attr('disabled');
+                    refreshCaptcha();
+                }
+            });
+        }
+    });
 
     $.validator.addMethod(
         "regex",
@@ -310,7 +305,6 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
     });
 
     registerUserForm.validate({
-        success: 'valid',
         focusCleanup: true,
         focusInvalid: false,
         onkeyup: false,
@@ -331,16 +325,25 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
             return false;
         },
         onfocusout: function (element) {
-            if (element.name === 'mobile') {
-                $('.register .captcha').val('');
-            }
             this.element(element);
+        },
+        showErrors: function (errorMap, errorList) {
+            this.__proto__.defaultShowErrors.call(this);
+            if (errorMap['mobile']) {
+                $('.fetch-captcha').addClass('grey').attr('disabled', 'disabled');
+            }
+        },
+        success: function (error, element) {
+            error.addClass("valid");
+            if (element.name === 'mobile') {
+                $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
+            }
         },
         rules: {
             loginName: {
                 required: true,
-                regex: "^[a-zA-Z0-9]+$",
                 rangelength: [5, 25],
+                regex: "(?!^\\d+$)^([a-zA-Z0-9]+)$",
                 isExist: "/register/login-name/{0}/is-exist"
             },
             mobile: {
@@ -351,7 +354,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
             },
             password: {
                 required: true,
-                minlength: 6
+                rangelength: [6, 20],
+                regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'
             },
             captcha: {
                 required: true,
@@ -365,14 +369,14 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
                 }
             },
             referrer: {
-                isNotExist: "/register/login-Name/{0}/is-exist"
+                isNotExist: "/register/login-name/{0}/is-exist"
             }
         },
         messages: {
             loginName: {
                 required: "请输入用户名",
-                regex: "5至25位以字母、数字组合，请勿使用手机号",
-                rangelength: "5至25位以字母、数字组合，请勿使用手机号",
+                regex: "只能字母和数字，至少包含一个字母",
+                rangelength: "长度5至25位",
                 isExist: '用户名已存在'
             },
             mobile: {
@@ -383,13 +387,14 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
             },
             password: {
                 required: "请输入密码",
-                minlength: "密码至少6位"
+                regex: "只能字母和数字组合",
+                rangelength: "长度6至20位"
             },
             captcha: {
-                required: '请输入手机验证码',
-                digits: '手机验证码格式不正确',
-                rangelength: '手机验证码格式不正确',
-                captchaVerify: '手机验证码不正确'
+                required: '请输入验证码',
+                digits: '验证码格式不正确',
+                rangelength: '验证码格式不正确',
+                captchaVerify: '验证码不正确'
             },
             referrer: {
                 isNotExist: "推荐人不存在"

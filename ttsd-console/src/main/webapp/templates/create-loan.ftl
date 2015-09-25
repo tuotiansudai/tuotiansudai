@@ -182,8 +182,8 @@
                         <div class="col-sm-4">
                             <select class="selectpicker jq-b-type">
                             <#list loanTypes as loanType>
-                                <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getRepayTimeUnit()}"
-                                        data-repayTimePeriod="${loanType.getRepayTimePeriod()}">
+                                <option value="${loanType.name()}" data-repayTimeUnit="${loanType.getLoanPeriodUnit()}"
+                                        data-repayTimePeriod="1">
                                 ${loanType.getName()}
                                 </option>
                             </#list>
@@ -201,7 +201,7 @@
                         <div class="col-sm-3">
                             <div class="form-control-static">(单位：
                                 <label class="jq-day">1</label>
-                                <label class="jq-piex">天</label>
+                                <label class="jq-piex">月</label>
                                 )
                             </div>
                         </div>
