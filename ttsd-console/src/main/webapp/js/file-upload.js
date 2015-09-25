@@ -95,7 +95,10 @@ $(function () {
         })
     });
 
-
+    // 删除添加资料
+    $('body').on('click', '.fileinput-remove', function () {
+        $(this).closest('.form-group').remove();
+    });
 
 
 

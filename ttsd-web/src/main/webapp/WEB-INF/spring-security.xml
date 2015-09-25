@@ -42,17 +42,10 @@
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/register/**" access="isAnonymous()"/>
         <intercept-url pattern="/monitor" access="permitAll()"/>
-        <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
-
-        <intercept-url pattern="/login-handler" access="isAnonymous()"/>
-        <intercept-url pattern="/agreement/**" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/recharge/**" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/withdraw/**" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/bind-card/**" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/loaner/**" access="isAnonymous()"/>
-
-        <intercept-url pattern="/**" access="hasAuthority('USER')"/>
-        <csrf/>
+        <intercept-url pattern="/register" access="isAnonymous()"/>
+        <intercept-url pattern="/mobile-retrieve-password*" access="isAnonymous()"/>
+        <intercept-url pattern="/*" access="isAnonymous()"/>
+        <csrf />
     </http>
 
     <authentication-manager alias="authenticationManager">
