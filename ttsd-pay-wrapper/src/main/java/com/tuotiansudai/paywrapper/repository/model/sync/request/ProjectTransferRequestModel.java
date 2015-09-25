@@ -1,13 +1,13 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.tuotiansudai.paywrapper.repository.model.*;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class ProjectTransferRequestModel extends BaseAsyncModel {
+public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     private String projectId;
     private String orderId;
     private String userId;

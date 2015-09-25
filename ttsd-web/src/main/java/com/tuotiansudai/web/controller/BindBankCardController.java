@@ -23,9 +23,6 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         String loginName = LoginUserInfo.getLoginName();
-        if(StringUtils.isNotEmpty(loginName) && loginName.length() > 0){
-            loginName = loginName.substring(0,1) + "***";
-        }
         ModelAndView view = new ModelAndView("/bind-card");
         view.addObject("loginName",loginName);
         return view;
