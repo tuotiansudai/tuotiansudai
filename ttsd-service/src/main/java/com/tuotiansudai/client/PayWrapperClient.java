@@ -301,6 +301,8 @@ public class PayWrapperClient {
 
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
         if (Strings.isNullOrEmpty(json)) {
             baseDto.setSuccess(false);
             return baseDto;

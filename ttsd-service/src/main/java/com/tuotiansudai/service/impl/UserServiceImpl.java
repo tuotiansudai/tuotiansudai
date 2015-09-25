@@ -14,6 +14,8 @@ import com.tuotiansudai.repository.model.ReferrerRelationModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.security.MyAuthenticationManager;
+import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -50,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private MyAuthenticationManager myAuthenticationManager;
 
     public static String SHA = "SHA";
 
@@ -96,12 +101,19 @@ public class UserServiceImpl implements UserService {
             saveReferrerRelations(referrerId, dto.getLoginName());
         }
 
+        myAuthenticationManager.createAuthentication(dto.getLoginName());
+
         return true;
     }
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        return payWrapperClient.register(dto);
+        dto.setLoginName(LoginUserInfo.getLoginName());
+        dto.setMobile(LoginUserInfo.getMobile());
+        BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
+        myAuthenticationManager.createAuthentication(LoginUserInfo.getLoginName());
+
+        return baseDto;
     }
 
     @Override
