@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@Component
 public class MyAccessDeniedHandler extends AccessDeniedHandlerImpl {
 
     private Map<String, String> errorPageMapping = Maps.newHashMap();

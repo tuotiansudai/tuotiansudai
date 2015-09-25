@@ -60,7 +60,6 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
             type: 'GET',
             dataType: 'json',
             error: function (response) {
-                console.log(response);
                 previous.valid = isSuccess;
                 validator.stopRequest(element, isSuccess);
             },
@@ -344,7 +343,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
         messages: {
             loginName: {
                 required: "请输入用户名",
-                regex: "只能字母和数字，至少包含一个字母",
+                regex: "字母和数字组合",
                 rangelength: "长度5至25位",
                 isExist: '用户名已存在'
             },

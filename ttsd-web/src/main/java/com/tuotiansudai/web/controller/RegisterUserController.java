@@ -2,8 +2,10 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.security.MyAuthenticationManager;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RegisterCaptchaDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
@@ -81,8 +83,7 @@ public class RegisterUserController {
 
     @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto sendRegisterCaptcha(HttpServletRequest httpServletRequest,
-                                       @RequestBody RegisterCaptchaDto dto) {
+    public BaseDto sendRegisterCaptcha(HttpServletRequest httpServletRequest, @RequestBody RegisterCaptchaDto dto) {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
