@@ -208,9 +208,11 @@ audio, canvas, video {
     z-index: 3;
     left: 0;
 }
-.draw-box li.current{
-    background-color: rgba(224,55,44,.8);
+
+.draw-box li.current {
+    background-color: rgba(224, 55, 44, .8);
 }
+
 .draw-box .draw-1,
 .draw-box .draw-4,
 .draw-box .draw-9 {
@@ -260,21 +262,26 @@ audio, canvas, video {
 .draw-box .draw-10 {
     top: 367px;
 }
+
 .draw-box .draw-8 {
     left: 534px;
 }
+
 .draw-box .draw-6,
 .draw-box .draw-12 {
     top: 184px;
     background: #ffd670;
 }
-.draw-box .draw-9{
+
+.draw-box .draw-9 {
     left: 355px;
 }
+
 .draw-box .draw-1,
-.draw-box .draw-7{
+.draw-box .draw-7 {
     line-height: 100px;
 }
+
 .draw-box .btn-draw {
     width: 520px;
     height: 150px;
@@ -287,4 +294,90 @@ audio, canvas, video {
     background: transparent;
     border: none;
     outline: none;
+}
+
+#table-lottery {
+    position: relative;
+}
+
+#table-lottery tbody {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+#table-lottery td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.bg-1 {
+    background: url("../images/layer_1.png") no-repeat;
+    width: 801px;
+    height: 424px;
+    position: fixed;
+    margin: -212px 0 0 -400px;
+    z-index: 88;
+    left: 50%;
+    top: 50%;
+    display: none;
+}
+
+.bg-2 {
+    background: url("../images/layer_2.png") no-repeat;
+    width: 354px;
+    height: 467px;
+    position: fixed;
+    margin: -238px 0 0 -177px;
+    z-index: 88;
+    left: 50%;
+    top: 50%;
+    display: none;
+}
+
+.bg-1 .close {
+    width: 30px;
+    height: 30px;
+    margin-left: 762px;
+    display: inline-block;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.bg-2 .close {
+    width: 30px;
+    height: 30px;
+    margin-left: 316px;
+    display: inline-block;
+    margin-top: 8px;
+    cursor: pointer;
+}
+.bg-1 .title{
+    font-size: 20px;
+    color: #fed800;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+}
+.bg-1 .txtv{
+    font-size: 20px;
+    color: #fed800;
+    text-align: center;
+    display: block;
+    margin-top: 317px;
+}
+.bg-2 .title{
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+   display: block;
+    margin-top: 30px;
+}
+.bg-2 .txtv{
+    font-size: 80px;
+    color: #e22324;
+    text-align: center;
+    display: block;
+    margin-top: 143px;
 }

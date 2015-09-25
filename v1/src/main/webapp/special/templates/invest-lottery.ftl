@@ -17,67 +17,17 @@
             <div class="active-box">
                 <div class="table-list">
                     <div class="table-box">
-                        <!--<ol>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                            <!--<li>哈哈哈</li>-->
-                        <!--</ol>-->
-                        <table>
+                        <table id="table-lottery">
                             <tbody>
                             <#list investLotterys as item>
                             <tr>
                                 <td>${item.user.username}</td>
                                 <td>
-                                <#if item.prizeType == 'G'>
+                                    <#if item.prizeType == 'G'>
                                     ${(item.amount/100)?string('0.00')} 元现金
-                                <#else>
+                                    <#else>
                                     ${item.prizeType.desc}
-                                </#if>
+                                    </#if>
                                 </td>
                                 <td>${item.awardTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                             </tr>
@@ -112,9 +62,9 @@
             </div>
             <div class="item-box">
                 <div class="tab">
-                    <input type="hidden" id="currentLoginName" value="${currentLoginName!}" />
-                    <span class="news current">新手投资抽奖x${noviceRemainCount}</span>
-                    <span class="news">普通投资抽奖x${normalRemainCount}</span>
+                    <input type="hidden" id="currentLoginName" value="${currentLoginName!}"/>
+                    <span class="news current">新手投资抽奖x <i id="num">${noviceRemainCount}</i></span>
+                    <span class="news">普通投资抽奖x <i id="num_1">${normalRemainCount}</i></span>
                 </div>
                 <div class="con-box">
                     <div class="box" style="display: block;">
@@ -167,5 +117,20 @@
         <a href="/" class="btn-back"></a>
     </div>
 </div>
+
+
+<div class="layer-box">
+    <div class="box bg-1">
+        <span class="close"></span>
+        <div class="title">恭喜您抽中 <span></span>礼品</div>
+        <div class="txtv">¥<span></span></div>
+    </div>
+    <div class="box bg-2">
+        <span class="close"></span>
+        <div class="title">恭喜您获得 <span></span>现金</div>
+        <div class="txtv">¥<span></span></div>
+    </div>
+</div>
+
 </body>
 </html>
