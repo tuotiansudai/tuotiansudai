@@ -7,4 +7,6 @@ import com.tuotiansudai.dto.PayFormDataDto;
 public interface BindBankCardService {
 
     BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto);
+
+    String getUserName();
 }
