@@ -30,6 +30,8 @@ public class InvestLotteryController {
         if(!SpringSecurityUtils.isAnonymousUser(username)) {
             normalRemainCount = investLotteryService.getRemainingTimes(username, InvestLotteryType.NORMAL);
             noviceRemainCount = investLotteryService.getRemainingTimes(username, InvestLotteryType.NOVICE);
+        }else{
+            username = "";
         }
         ModelAndView mv = new ModelAndView("/invest-lottery");
         mv.addObject("investLotterys", investLotteryList);

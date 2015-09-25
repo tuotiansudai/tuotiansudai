@@ -27,7 +27,6 @@ $(function () {
             } else {
                 _tbody.css('top', top);
             }
-            console.log(top)
         }
     }, 50);
 
@@ -70,7 +69,7 @@ $(function () {
                                 if (res == 'A' && i > 20) {
                                     if (_index == 2) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -80,7 +79,7 @@ $(function () {
                                 } else if (res == 'B' && i > 20) {
                                     if (_index ==11) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -90,7 +89,7 @@ $(function () {
                                 } else if (res == 'C' && i > 20) {
                                     if (_index == 5 || _index == 9) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -101,7 +100,7 @@ $(function () {
                                 } else if (res == 'D' && i > 20) {
                                     if (_index == 1 || _index == 7) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -112,7 +111,7 @@ $(function () {
                                 } else if (res == 'E' && i > 20) {
                                     if (_index == 3 || _index == 10) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -123,7 +122,7 @@ $(function () {
                                 } else if (res == 'F' && i > 20) {
                                     if (_index == 4 || _index == 8) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -134,7 +133,7 @@ $(function () {
                                 } else if (res == 'G' && i > 20) {
                                     if (_index == 0 || _index == 6) {
                                         $('.bg-2 .title span').text(data.prizeDesc);
-                                        $('.bg-2 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-2 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').hide();
                                         $('.bg-2').show();
                                         flag = true;
@@ -145,6 +144,8 @@ $(function () {
                                 }
 
                             }, 100);
+                        }else{
+                            alert('您的抽奖机会已用完');
                         }
                     }
                 })
@@ -172,7 +173,7 @@ $(function () {
                                 if (res == 'A' && i > 20) {
                                     if (_index == 2) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -182,7 +183,7 @@ $(function () {
                                 } else if (res == 'B' && i > 20) {
                                     if (_index ==11) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -192,7 +193,7 @@ $(function () {
                                 } else if (res == 'C' && i > 20) {
                                     if (_index == 5 || _index == 9) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -203,7 +204,7 @@ $(function () {
                                 } else if (res == 'D' && i > 20) {
                                     if (_index == 1 || _index == 7) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -214,7 +215,7 @@ $(function () {
                                 } else if (res == 'E' && i > 20) {
                                     if (_index == 3 || _index == 10) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -225,7 +226,7 @@ $(function () {
                                 } else if (res == 'F' && i > 20) {
                                     if (_index == 4 || _index == 8) {
                                         $('.bg-1 .title span').text(data.prizeDesc);
-                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-1 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').show();
                                         $('.bg-2').hide();
                                         flag = true;
@@ -236,7 +237,7 @@ $(function () {
                                 } else if (res == 'G' && i > 20) {
                                     if (_index == 0 || _index == 6) {
                                         $('.bg-2 .title span').text(data.prizeDesc);
-                                        $('.bg-2 .txtv span').text(data.prizeDesc.replace(/[^0-9]/ig, ""));
+                                        $('.bg-2 .txtv span').text(data.prizeDesc.replace(/[^0-9.]/ig, ""));
                                         $('.bg-1').hide();
                                         $('.bg-2').show();
                                         flag = true;
@@ -247,6 +248,8 @@ $(function () {
                                 }
 
                             }, 100);
+                        }else{
+                            alert('您的抽奖机会已用完');
                         }
                     }
                 });
