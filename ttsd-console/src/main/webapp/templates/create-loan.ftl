@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,55 +8,23 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<@global.csrf></@global.csrf>
     <!-- link bootstrap css and js -->
-    <link href="../../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="../../js/libs/jquery-1.10.1.min.js"></script>
-    <!-- jquery -->
-    <script src="../../js/libs/bootstrap.min.js"></script>
+    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- link bootstrap css and js -->
-
-    <link rel="stylesheet" href="../../style/index.css">
+    <link rel="stylesheet" href="style/index.css">
     <!-- 日历插件 -->
-    <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
-    <!-- 富文本编辑器 -->
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/ueditor/ueditor.all.js"></script>
-    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
-    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/ueditor/lang/zh-cn/zh-cn.js"></script>
-    <script type="text/javascript" src="../../js/libs/ueditor/ueditor.js"></script>
-    <!-- 富文本编辑器  end-->
-
+    <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--上传图片插件-->
-    <link rel="stylesheet" href="../../style/libs/fileinput.css"/>
-    <script src="../../js/libs/fileinput.js"></script>
-    <script src="../../js/libs/fileinput_locale_zh.js"></script>
-    <!--上传图片插件 end-->
-
-    <#--表单校验-->
-    <script src="../../js/libs/Validform_v5.3.2.js"></script>
-    <script src="../../js/libs/Validform_Datatype.js"></script>
-
-    <#--表单校验-->
-
-    <!--Arttemplate js-->
-    <script src="../../js/libs/template.js"></script>
-    <!--Arttemplate js end-->
+    <link rel="stylesheet" href="style/libs/fileinput.css"/>
     <!--下拉框-->
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <script src="../../js/libs/bootstrap-select.js"></script>
-    <!--下拉框-->
-
+    <link rel="stylesheet" href="style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
-    <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-    <!--自动补全-->
+    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
-    <script src="../../js/createLoan.js"></script>
-<#--当前页面js end-->
+<@global.javascript pageJavascript="createLoan.js"></@global.javascript>
     <script id="upload" type="text/html">
         <div class="form-group">
             <label class="col-sm-2 control-label"></label>
@@ -157,7 +126,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款项目名称: </label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="请输入名称">
+                            <input type="text" class="form-control jq-user" placeholder="" datatype="*" errormsg="借款项目名称不能为空">
                         </div>
                     </div>
                     <div class="form-group">
@@ -165,7 +134,7 @@
 
                         <div class="col-sm-4">
                             <input type="text" id="tags_1" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                                   placeholder="">
+                                   placeholder="" errormsg="代理用户不能为空">
                         </div>
                     </div>
                     <div class="form-group">
@@ -173,7 +142,7 @@
 
                         <div class="col-sm-4">
                             <input type="text" id="tags" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
-                                   placeholder="">
+                                   placeholder="" errormsg="借款用户不能为空">
                         </div>
                     </div>
                     <div class="form-group">
@@ -195,7 +164,7 @@
                         <label class="col-sm-2 control-label">借款期限: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-timer" placeholder="" datatype="num">
+                            <input type="text" class="form-control jq-timer" placeholder="" datatype="num"  errormsg="借款期限需要填写数字">
 
                         </div>
                         <div class="col-sm-3">
@@ -226,14 +195,14 @@
                         <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl">
+                            <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl" errormsg="预计出借金额需要正确填写">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资手续费比例(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl">
+                            <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
@@ -243,21 +212,21 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay jq-money" value="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-min-pay jq-money" value="50.00" datatype="money_fl" errormsg="最小投资金额需要正确填写">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-add-pay jq-money" value="50.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-add-pay jq-money" value="50.00" datatype="money_fl" errormsg="投资递增金额需要正确填写">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl">
+                            <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写">
                         </div>
                     </div>
                     <div class="form-group">
@@ -278,7 +247,7 @@
                         <label class="col-sm-2 control-label">活动利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl">
+                            <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
@@ -288,7 +257,7 @@
                         <label class="col-sm-2 control-label">基本利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl">
+                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写">
                         </div>
                     </div>
                     <div class="form-group">
@@ -310,7 +279,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker6'>
-                                <input type='text' class="form-control jq-star-date" datatype="date"/>
+                                <input type='text' class="form-control jq-star-date" datatype="date" errormsg="筹款启动时间需要正确填写"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -322,7 +291,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' class="form-control jq-end-date" datatype="date"/>
+                                <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -352,14 +321,12 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label"></label>
                         <div class="col-sm-4 form-error">
-
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
-
                             <button type="button" class="btn jq-btn-form btn-primary" >保存</button>
                         </div>
                     </div>
