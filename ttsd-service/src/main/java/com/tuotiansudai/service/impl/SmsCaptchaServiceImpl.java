@@ -74,7 +74,7 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Override
     public boolean sendRetrievePasswordCaptcha(String mobile, String requestIP) {
-        String captcha = this.createRegisterCaptcha(mobile);
+        String captcha = this.createMobileCaptcha(mobile);
         if (!Strings.isNullOrEmpty(captcha)) {
             BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
             return resultDto.getData().getStatus();
