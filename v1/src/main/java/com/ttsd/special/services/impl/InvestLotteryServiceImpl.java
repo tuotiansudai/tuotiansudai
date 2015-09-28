@@ -74,6 +74,11 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertIntoInvestLottery(String investId) {
+        List<InvestLottery> lotteryListofInvest = hibernateTemplate.find("from InvestLottery t where t.invest.id = ?", investId);
+        if(lotteryListofInvest.size() > 0){
+            return;
+        }
+
         Invest invest = hibernateTemplate.get(Invest.class,investId);
         Loan loan = invest.getLoan();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
