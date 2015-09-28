@@ -74,6 +74,7 @@ public class UserInvest implements java.io.Serializable {
 
     private UserInvestItem createInvestItem(Map<String, Object> result) {
         UserInvestItem investItem = new UserInvestItem();
+        investItem.setLoanId((String) result.get("loanId"));
         investItem.setLoanName((String) result.get("loanName"));
         investItem.setLoanDeadline((Integer) result.get("deadline"));
         investItem.setInvestorId((String) result.get("userId"));

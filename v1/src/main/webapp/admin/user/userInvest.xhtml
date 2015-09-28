@@ -72,14 +72,22 @@
 
                     </f:facet>
 
-                    <p:column>
+                    <p:column style="display: none">
                         <f:facet name="header">
                             <h:outputText value="项目名称"></h:outputText>
                         </f:facet>
-                        <h:outputLink value="/p2p_loan/#{invest.loanId}" target="_blank">#{invest.loanName}</h:outputLink>
+                        <h:inputHidden value="#{invest.loanName}"></h:inputHidden>
                     </p:column>
 
                     <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="项目"></h:outputText>
+                        </f:facet>
+                        <h:outputLink value="/p2p_loan/#{invest.loanId}" target="_blank"><h:outputText value="#{invest.loanName}"></h:outputText> </h:outputLink>
+                    </p:column>
+
+                    <p:column>
+
                         <f:facet name="header">
                             <h:outputText value="期数"></h:outputText>
                         </f:facet>
@@ -102,7 +110,7 @@
 
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="推荐人是否业务员"></h:outputText>
+                            <h:outputText value="是否业务员"></h:outputText>
                         </f:facet>
                         <h:outputText value="#{invest.isMerchandiser ? '是' : '否'}"></h:outputText>
                     </p:column>
