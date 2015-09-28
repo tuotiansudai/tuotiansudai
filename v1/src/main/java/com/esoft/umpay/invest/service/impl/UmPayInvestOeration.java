@@ -31,6 +31,7 @@ import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.UmPayConstants.TransferProjectStatus;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.special.services.InvestLotteryService;
 import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
@@ -41,6 +42,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,9 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     InvestService investService;
+
+	@Autowired
+	private InvestLotteryService investLotteryService;
 
     @Resource
     UserBillBO ubs;
@@ -134,7 +139,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
         } catch (NoMatchingObjectsException e) {
             throw new UmPayOperationException("投资失败！");
         }
-
     }
 
     /**
@@ -232,6 +236,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
                 //处理投资成功修改状态
                 Invest invest = InvestSuccess(to);
                 ht.update(invest);
+                investLotteryService.insertIntoInvestLottery(order_id);
             } else {
                 fail(to);
                 log.error("投资失败:" + paramMap.toString());

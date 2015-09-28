@@ -42,7 +42,7 @@
 
     <!-- freemarker config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/mobile/templates"/>
+        <property name="templateLoaderPaths" value="/mobile/templates, /special/templates"/>
         <property name="defaultEncoding" value="utf-8"/>
     </bean>
 
