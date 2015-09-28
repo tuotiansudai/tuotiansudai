@@ -225,7 +225,6 @@ $(function () {
                 showErrorMessage('借款期限最小为1，最大为12',$('.jq-timer',curform));
                 return false;
             }
-
             var loanAmount = parseInt($('.jq-pay',curform).val());
             if(loanAmount <= 0){
                 showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));

@@ -124,13 +124,13 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (minInvestAmount <= 0) {
+        if (loanAmount <= 0) {
             dataDto.setStatus(false);
             dataDto.setMessage("预计出借金额应大于0");
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (loanAmount <= 0) {
+        if (minInvestAmount <= 0) {
             dataDto.setStatus(false);
             dataDto.setMessage("最小投资金额应大于0");
             baseDto.setData(dataDto);
