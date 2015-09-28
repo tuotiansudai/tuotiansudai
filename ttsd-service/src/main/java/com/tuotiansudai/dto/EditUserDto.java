@@ -1,5 +1,7 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 
@@ -94,5 +96,19 @@ public class EditUserDto {
 
     public void setUserRoles(List<UserRoleModel> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    public EditUserDto(UserModel userModel,AccountModel accountModel,List<UserRoleModel> userRoles){
+        this.email = userModel.getEmail();
+        this.mobile = userModel.getMobile();
+        if(accountModel != null){
+            this.identityNumber = accountModel.getIdentityNumber();
+            this.userName = accountModel.getUserName();
+        }
+        if (userRoles != null){
+            this.userRoles = userRoles;
+        }
+        this.referrer = userModel.getReferrer();
+        this.status = userModel.getStatus();
     }
 }

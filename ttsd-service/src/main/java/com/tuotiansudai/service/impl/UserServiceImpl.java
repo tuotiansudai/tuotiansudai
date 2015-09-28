@@ -154,9 +154,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EditUserDto getUser(long id) {
+    public EditUserDto getUser(String loginName) {
+       UserModel userModel = userMapper.findByLoginName(loginName);
 
-
+        return null;
     }
 
 

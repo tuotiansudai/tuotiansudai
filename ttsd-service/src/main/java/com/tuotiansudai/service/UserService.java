@@ -34,5 +34,5 @@ public interface UserService {
 
     void editUser();
 
-    EditUserDto getUser(long id);
+    EditUserDto getUser(String loginName);
 }
