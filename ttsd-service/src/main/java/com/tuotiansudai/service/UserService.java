@@ -1,9 +1,6 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
 
 public interface UserService {
 
@@ -34,4 +31,8 @@ public interface UserService {
      * @return 修改成功返回 true , 修改失败返回 false
      */
     boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
+
+    void editUser();
+
+    EditUserDto getUser(long id);
 }

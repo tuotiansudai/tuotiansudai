@@ -3,10 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -148,4 +145,19 @@ public class UserServiceImpl implements UserService {
         smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
         return true;
     }
+
+    @Override
+    @Transactional
+    public void editUser() {
+
+
+    }
+
+    @Override
+    public EditUserDto getUser(long id) {
+
+
+    }
+
+
 }
