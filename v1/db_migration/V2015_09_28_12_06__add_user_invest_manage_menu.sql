@@ -1,4 +1,4 @@
-BEGIN
+BEGIN;
 /** 给 menu_permission 表增加主键 **/
 alter table menu_permission add primary key (`menu_id`,`permission_id`);
 
