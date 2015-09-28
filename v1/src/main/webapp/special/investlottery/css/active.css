@@ -288,14 +288,21 @@ audio, canvas, video {
 }
 
 #table-lottery tbody {
-    width: 100%;
+    position: relative;
+    display: block;
+    width: 370px;
     left: 0;
     top: 0;
     font-size: 12px;
 }
 
+#table-lottery tr{
+    width: 370px;
+}
+
 #table-lottery td {
     font-size: 12px;
+    width: 130px;
     line-height: 26px;
     text-align: center;
 }
