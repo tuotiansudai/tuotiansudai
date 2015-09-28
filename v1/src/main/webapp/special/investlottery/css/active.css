@@ -239,6 +239,8 @@ audio, canvas, video {
 .draw-box .draw-3 {
     top: 0;
     left: 355px;
+    height: 142px;
+    width:178px;
     /*background: #d21819;*/
     background-color: #ffd670;
 }
