@@ -106,28 +106,33 @@ public class LoanServiceImpl implements LoanService {
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
         if (maxInvestAmount < minInvestAmount) {
             dataDto.setStatus(false);
+            dataDto.setMessage("最小投资金额不得大于最大投资金额");
             baseDto.setData(dataDto);
             return baseDto;
         }
         if (maxInvestAmount > loanAmount) {
             dataDto.setStatus(false);
+            dataDto.setMessage("最大投资金额不得大于预计出借金额");
             baseDto.setData(dataDto);
             return baseDto;
         }
         if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
             dataDto.setStatus(false);
+            dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
             baseDto.setData(dataDto);
             return baseDto;
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
+            dataDto.setMessage("借款用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null) {
             dataDto.setStatus(false);
+            dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
