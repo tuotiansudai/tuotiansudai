@@ -26,7 +26,7 @@
         <#--用户尚未绑定银行卡快捷支付-->
             <form action="" style="display: block" method="post" target="_blank">
                 <div class="item-block">
-                    <span class="name">持卡人：${loginName}</span>
+                    <span class="name">真实姓名：${userName}</span>
                 </div>
                 <div class="item-block">
                     <ol class="select-bank">

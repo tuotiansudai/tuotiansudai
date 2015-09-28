@@ -22,9 +22,9 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
-        String loginName = LoginUserInfo.getLoginName();
+
         ModelAndView view = new ModelAndView("/bind-card");
-        view.addObject("loginName",loginName);
+        view.addObject("userName",bindBankCardService.getUserName());
         return view;
     }
 
