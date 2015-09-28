@@ -109,29 +109,12 @@ audio, canvas, video {
 
 .main .bg-con .active-box .table-box {
 
-    margin: 110px 0 0 50px;
+    margin: 110px 30px 0 50px;
     height: 200px;
     overflow: hidden;
     position: relative;
 }
 
-.main .bg-con .active-box .table-list table {
-    position: absolute;
-    width: 380px;
-    height: 140px;
-    text-align: center;
-    color: #fff;
-}
-
-.main .bg-con .active-box .table-list table td:first-child {
-    padding-left: 20px;
-    text-align: left;
-}
-
-.main .bg-con .active-box .table-list table td {
-    width: 33%;
-    line-height: 26px;
-}
 
 .main .item-box {
 }
@@ -197,12 +180,11 @@ audio, canvas, video {
 .draw-box ul {
     display: block;
     position: relative;
-
 }
 
 .draw-box li {
-    width: 176px;
-    height: 141px;
+    width: 173px;
+    height: 134px;
     padding-top: 40px;
     position: absolute;
     z-index: 3;
@@ -211,6 +193,7 @@ audio, canvas, video {
 
 .draw-box li.current {
     background-color: rgba(224, 55, 44, .8);
+    box-shadow: 0px 0px 5px #e0372c;
 }
 
 .draw-box .draw-1,
@@ -222,11 +205,11 @@ audio, canvas, video {
 
 .draw-box .draw-2,
 .draw-box .draw-10 {
-    left: 177px;
+    left: 179px;
 }
 
 .draw-box .draw-4 {
-    left: 534px;
+    left: 536px;
 }
 
 .draw-box .draw-2,
@@ -238,9 +221,7 @@ audio, canvas, video {
 
 .draw-box .draw-3 {
     top: 0;
-    left: 355px;
-    height: 142px;
-    width:178px;
+    left: 357px;
     /*background: #d21819;*/
     background-color: #ffd670;
 }
@@ -254,7 +235,7 @@ audio, canvas, video {
 .draw-box .draw-7,
 .draw-box .draw-5,
 .draw-box .draw-6 {
-    left: 713px;
+    left: 715px;
 }
 
 .draw-box .draw-7,
@@ -266,7 +247,7 @@ audio, canvas, video {
 }
 
 .draw-box .draw-8 {
-    left: 534px;
+    left: 536px;
 }
 
 .draw-box .draw-6,
@@ -276,7 +257,7 @@ audio, canvas, video {
 }
 
 .draw-box .draw-9 {
-    left: 355px;
+    left: 357px;
 }
 
 .draw-box .draw-1,
@@ -300,10 +281,14 @@ audio, canvas, video {
 
 #table-lottery {
     position: relative;
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    color: #fff;
 }
 
 #table-lottery tbody {
-    position: absolute;
+    width: 100%;
     left: 0;
     top: 0;
     font-size: 12px;
@@ -311,7 +296,17 @@ audio, canvas, video {
 
 #table-lottery td {
     font-size: 12px;
+    line-height: 26px;
     text-align: center;
+}
+
+#table-lottery td:first-child {
+    width: 110px;
+}
+
+#table-lottery td:last-child {
+    width: 120px;
+    text-align: right;
 }
 
 .bg-1 {
@@ -367,7 +362,7 @@ audio, canvas, video {
     color: #fed800;
     text-align: center;
     display: block;
-    margin-top: 317px;
+    margin-top: 312px;
 }
 .bg-2 .title{
     font-size: 20px;
