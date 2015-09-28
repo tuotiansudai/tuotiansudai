@@ -19,7 +19,7 @@
             </@global.security.authorize>
 
             <@global.security.authorize access="! isAuthenticated()">
-                <li><a href="/register">免费注册</a></li>
+                <li><a href="/register/user">免费注册</a></li>
                 <li><a href="/login">登录</a></li>
             </@global.security.authorize>
             </ul>

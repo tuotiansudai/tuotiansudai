@@ -15,7 +15,7 @@ public abstract class BaseSyncRequestModel {
 
     static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
 
-    private static Properties props = new Properties();
+    private static Properties UMP_PROPS = new Properties();
 
     private Long id;
 
@@ -40,10 +40,11 @@ public abstract class BaseSyncRequestModel {
     private SyncRequestStatus status = SyncRequestStatus.READY;
 
     static {
-        if (props.isEmpty()) {
+        if (UMP_PROPS.isEmpty()) {
             try {
                 Resource resource = new ClassPathResource("/umpay.properties");
-                BaseSyncRequestModel.props = PropertiesLoaderUtils.loadProperties(resource);
+                BaseSyncRequestModel.UMP_PROPS = PropertiesLoaderUtils.loadProperties(resource);
+
             } catch (IOException e) {
                 logger.error("umpay.properties 不存在!");
                 logger.error(e);
@@ -52,10 +53,10 @@ public abstract class BaseSyncRequestModel {
     }
 
     public BaseSyncRequestModel() {
-        this.signType = props.getProperty("sign_type");
-        this.charset = props.getProperty("charset");
-        this.version = props.getProperty("version");
-        this.merId = props.getProperty("mer_id");
+        this.signType = UMP_PROPS.getProperty("sign_type");
+        this.charset = UMP_PROPS.getProperty("charset");
+        this.version = UMP_PROPS.getProperty("version");
+        this.merId = UMP_PROPS.getProperty("mer_id");
     }
 
     public Map<String, String> generatePayRequestData() {
