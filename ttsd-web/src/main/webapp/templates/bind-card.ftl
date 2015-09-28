@@ -26,11 +26,11 @@
         <#--用户尚未绑定银行卡快捷支付-->
             <form action="" style="display: block" method="post" target="_blank">
                 <div class="item-block">
-                    <span class="name">真实姓名：${loginName}</span>
+                    <span class="name">持卡人：${loginName}</span>
                 </div>
                 <div class="item-block">
                     <ol class="select-bank">
-                        <p>选中银行:</p>
+                        <p>选择银行:</p>
                         <li>
                             <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
                             <label for="bank-zs"><img src="/images/recharge/bank-zs.jpg" alt=""></label>
@@ -137,7 +137,7 @@
 
             <p>2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。</p>
 
-            <p>3、如果您的借记卡是中国工商银行，中国农业银行，中国建设银行，中国银行，光大银行，兴业银行，深圳发展银行七家之一，
+            <p>3、如果您的借记卡是中国工商银行，中国农业银行，中国建设银行，中国银行，光大银行，兴业银行，中国民生银行七家之一，
                 才可开通快捷支付。
             </p>
 
@@ -158,16 +158,16 @@
             <h3>绑卡成功与失败</h3>
         </div>
         <div class="bd">
-            <p>请在新打开的连接页面查看后后选择：</p>
+            <p>请在新打开的链接页面查看后选择：</p>
 
             <div class="ret">
                 <p>绑卡成功：<a class="g-btn g-btn-medium-major tongji"
                            href="" data-category="确认成功"
                            data-label="recharge">确认成功</a></p>
 
-                <p>绑卡失败：<a href="#" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新绑卡"
+                <p>绑卡失败：<a href="" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新绑卡"
                            data-label="recharge">重新绑卡</a>&nbsp;&nbsp;<span class="help">查看&nbsp;<a
-                        href="" class="tongji" target="_blank" data-category="查看帮助中心"
+                        href="#" class="tongji" target="_blank" data-category="查看帮助中心"
                         data-label="recharge">帮助中心</a></span></p>
 
                 <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
