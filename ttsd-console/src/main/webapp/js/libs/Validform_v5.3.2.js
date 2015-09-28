@@ -188,7 +188,8 @@
         tipSweep:false,
         showAllError:false,
         postonce:false,
-        ajaxPost:false
+        ajaxPost:false,
+        focusOnError:true
     }
 
     Validform.util={
@@ -926,8 +927,10 @@
                     Validform.util.showmsg.call(curform,inflag.info,settings.tiptype,{obj:$(this),type:inflag.type,sweep:settings.tipSweep});
                     _this.addClass("Validform_error");
 
-                    if(!settings.showAllError){
-                        _this.focus();
+                    if(!settings.showAllError) {
+                        if (settings.focusOnError) {
+                            _this.focus();
+                        }
                         flag=false;
                         return false;
                     }
