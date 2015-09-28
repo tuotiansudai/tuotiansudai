@@ -1,25 +1,55 @@
 package com.tuotiansudai.utils.quartz;
 
 
-import com.tuotiansudai.utils.JobManager;
 import com.tuotiansudai.utils.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 
 import java.util.Date;
 
+/**
+ * 可触发的Job构建器
+ * example:
+ * <pre>
+ *     // set target job class
+ *     jobmanager.newjob(testjob.class)
+ *
+ *     // [optional] add parameters
+ *     .addjobdata(some_parameters)
+ *
+ *     // [optional] add description
+ *     .withdescription(some_parameters)
+ *
+ *     // [optional] add identity
+ *     .withidentity(some_parameters)
+ *
+ *     // run once
+ *     .runonceat(some_date)
+ *
+ *     // or run with schedule
+ *     .runwithschedule(simpleschedulebuilder....)
+ *
+ *     // submit job to schedule
+ *     .submit();
+ * </pre>
+ */
 public class TriggeredJobBuilder {
     private static final String DEFAULT_JOB_GROUP = "DEFAULT_JOB_GROUP_TTSD";
-    private JobManager jobManager;
+    private Scheduler scheduler;
     private Class<? extends Job> jobClazz;
     private JobDataMap jobDataMap;
     private JobKey jobKey;
+    private TriggerKey triggerKey;
     private String jobDescription;
     private Date startDate;
     private ScheduleBuilder scheduleBuilder;
 
-    public TriggeredJobBuilder(Class<? extends Job> jobClazz, JobManager jobManager) {
-        this.jobManager = jobManager;
+    public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz, Scheduler scheduler){
+        return new TriggeredJobBuilder(jobClazz, scheduler);
+    }
+
+    public TriggeredJobBuilder(Class<? extends Job> jobClazz, Scheduler scheduler) {
+        this.scheduler = scheduler;
         this.jobClazz = jobClazz;
         this.jobDataMap = new JobDataMap();
     }
@@ -47,6 +77,7 @@ public class TriggeredJobBuilder {
             name = UUIDGenerator.generate();
         }
         this.jobKey = JobKey.jobKey(name, group);
+        this.triggerKey = TriggerKey.triggerKey(name, group);
         return this;
     }
 
@@ -55,7 +86,7 @@ public class TriggeredJobBuilder {
         return this;
     }
 
-    public TriggeredJobBuilder runAt(Date startDate) {
+    public TriggeredJobBuilder runOnceAt(Date startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -78,9 +109,7 @@ public class TriggeredJobBuilder {
     }
 
     private Trigger getJobTrigger(JobDetail jobDetail) {
-        TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger().withIdentity(
-                TriggerKey.triggerKey(jobDetail.getKey().getName()
-                        , jobDetail.getKey().getGroup()));
+        TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger().withIdentity(triggerKey);
         if (scheduleBuilder != null) {
             triggerBuilder.withSchedule(scheduleBuilder);
         } else {
@@ -94,13 +123,13 @@ public class TriggeredJobBuilder {
         return triggerBuilder.build();
     }
 
-    public void submit() {
+    public void submit() throws SchedulerException {
         if (jobClazz == null) {
             throw new NullPointerException("jobClazz");
         }
         JobDetail jobDetail = getJobDetail();
         Trigger jobTrigger = getJobTrigger(jobDetail);
-        this.jobManager.submitJob(jobDetail, jobTrigger);
+        scheduler.scheduleJob(jobDetail, jobTrigger);
     }
 }
 

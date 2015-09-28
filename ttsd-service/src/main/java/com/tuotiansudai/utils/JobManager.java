@@ -1,27 +1,43 @@
 package com.tuotiansudai.utils;
 
 import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
-import org.apache.log4j.Logger;
-import org.quartz.*;
+import org.quartz.Job;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * example:
+ * <pre>
+ *     // set target job class
+ *     jobmanager.newjob(testjob.class)
+ *
+ *     // [optional] add parameters
+ *     .addjobdata(some_parameters)
+ *
+ *     // [optional] add description
+ *     .withdescription(some_parameters)
+ *
+ *     // [optional] add identity
+ *     .withidentity(some_parameters)
+ *
+ *     // run once
+ *     .runonceat(some_date)
+ *
+ *     // or run with schedule
+ *     .runwithschedule(simpleschedulebuilder....)
+ *
+ *     // submit job to schedule
+ *     .submit();
+ * </pre>
+ */
 @Component
 public class JobManager {
-    static Logger log = Logger.getLogger(JobManager.class);
 
     @Autowired
     private Scheduler scheduler;
 
-    public void submitJob(JobDetail job, Trigger trigger) {
-        try {
-            scheduler.scheduleJob(job, trigger);
-        } catch (SchedulerException e) {
-            log.error(e.getLocalizedMessage(), e);
-        }
-    }
-
-    public TriggeredJobBuilder newJob(Class<? extends Job> jobClazz){
-        return new TriggeredJobBuilder(jobClazz, this);
+    public TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
+        return TriggeredJobBuilder.newJob(jobClazz, scheduler);
     }
 }
