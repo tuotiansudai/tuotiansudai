@@ -81,7 +81,7 @@ public class UserInvest implements java.io.Serializable {
         investItem.setInvestorName((String) result.get("userName"));
         investItem.setMoney((Double) result.get("money"));
         investItem.setInvestTime((Date) result.get("investTime"));
-        investItem.setIsMerchandiser(((BigInteger) result.get("isMerchandiser")).intValue()==1);
+        investItem.setIsMerchandiser(((Number) result.get("isMerchandiser")).intValue()==1);
         return investItem;
     }
 
