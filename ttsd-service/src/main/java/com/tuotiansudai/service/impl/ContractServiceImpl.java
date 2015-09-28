@@ -101,7 +101,6 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public void generateContractPdf(String pdfString,HttpServletResponse response) {
 
-
         ITextRenderer renderer = new ITextRenderer();
         ITextFontResolver fontResolver = renderer.getFontResolver();
 

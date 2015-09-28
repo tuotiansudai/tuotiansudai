@@ -2,7 +2,6 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.repository.model.ContractType;
 import com.tuotiansudai.service.ContractService;
-import com.tuotiansudai.utils.FreeMarkerHelper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
