@@ -57,7 +57,7 @@ public class UmPayUserOperation extends UmPayOperationServiceAbs<User> {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.NESTED)
 	public TrusteeshipOperation createOperation(User user, FacesContext fc)
 			throws IOException {
 		Map<String, String> map = UmPaySignUtil
