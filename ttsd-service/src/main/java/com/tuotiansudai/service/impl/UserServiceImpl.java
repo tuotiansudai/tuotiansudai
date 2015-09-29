@@ -4,13 +4,11 @@ import com.google.common.base.Strings;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
@@ -47,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
 
     public static String SHA = "SHA";
 
@@ -155,9 +156,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public EditUserDto getUser(String loginName) {
-       UserModel userModel = userMapper.findByLoginName(loginName);
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        return null;
+        return new EditUserDto(userModel,accountModel,userRoleModels);
     }
 
 

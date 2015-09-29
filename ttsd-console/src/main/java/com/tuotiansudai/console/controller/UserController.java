@@ -13,8 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable long id) {
+    public ModelAndView editUser(@PathVariable String loginName) {
         ModelAndView mv = new ModelAndView("/");
 
         return mv;
