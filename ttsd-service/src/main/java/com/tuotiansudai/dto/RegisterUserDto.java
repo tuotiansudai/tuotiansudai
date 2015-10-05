@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 public class RegisterUserDto {
 
     @NotEmpty
-    @Pattern(regexp = "(?!^\\\\d+$)^([a-zA-Z0-9]{5,25})$")
+    @Pattern(regexp = "(?!^\\d+$)^([a-zA-Z0-9]{5,25})$")
     private String loginName;
 
     @NotEmpty

@@ -34,7 +34,42 @@ var require = {
             'template': '/js/libs/template',
             'Validform_Datatype': '/js/libs/Validform_Datatype',
             'Validform_v5.3.2': '/js/libs/Validform_v5.3.2',
+            //'ueditor-all': '/js/libs/ueditor/ueditor.all.min',
+            'ueditor-all': '/js/libs/ueditor/ueditor.all',
+            'ueditor-config': '/js/libs/ueditor/ueditor.config',
+            'ueditor': '/js/libs/ueditor/ueditor',
+            'ueditor-lang': '/js/libs/ueditor/lang/zh-cn/zh-cn',
             'csrf': '/js/libs/csrf'
+        }
+    },
+
+    'shim': {
+        'bootstrap': {
+            deps: ['jquery']
+        },
+        'fileinput': {
+            deps: ['jquery']
+        },
+        'fileinput_locale_zh': {
+            deps: ['jquery','fileinput']
+        },
+        'Validform_Datatype': {
+            deps: ['jquery']
+        },
+        'Validform_v5.3.2': {
+            deps: ['jquery']
+        },
+        'jquery-ui': {
+            deps: ['jquery']
+        },
+        'ueditor-all':{
+            deps: ['ueditor-config']
+        },
+        'ueditor':{
+            deps: ['ueditor-all']
+        },
+        'ueditor-lang':{
+            deps: ['ueditor-all']
         }
     }
 };

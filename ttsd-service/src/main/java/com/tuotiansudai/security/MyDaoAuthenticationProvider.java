@@ -11,12 +11,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Component
-public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider{
+public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
-
     @Autowired
     private CaptchaVerifier captchaVerifier;
 
@@ -36,5 +34,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider{
         }
     }
 
-
+    public void setCaptchaVerifier(CaptchaVerifier captchaVerifier) {
+        this.captchaVerifier = captchaVerifier;
+    }
 }

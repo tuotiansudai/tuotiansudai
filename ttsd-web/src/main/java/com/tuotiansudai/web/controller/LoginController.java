@@ -44,9 +44,8 @@ public class LoginController {
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
 
-        //TODO: Put into redis
         HttpSession session = request.getSession(true);
-        session.setAttribute(session.getId(), captcha.getAnswer());
+        session.setAttribute("loginCaptcha", captcha.getAnswer());
     }
 
     @RequestMapping(value = "/captcha/{captcha}/verify", method = RequestMethod.GET,
@@ -61,16 +60,4 @@ public class LoginController {
 
         return baseDto;
     }
-
-    @RequestMapping(value = "/loginName/{loginName}/isexist", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto loginNameIsExist(@PathVariable String loginName) {
-        BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(userService.loginNameIsExist(loginName));
-        BaseDto baseDto = new BaseDto();
-        baseDto.setData(dataDto);
-
-        return baseDto;
-    }
-
 }

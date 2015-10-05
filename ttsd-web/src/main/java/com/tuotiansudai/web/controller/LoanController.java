@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -17,7 +20,7 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/{loanId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         BaseDto dto = loanService.getLoanDetail(loanId);
         ModelAndView view = new ModelAndView("/loan");

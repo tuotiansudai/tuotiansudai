@@ -12,5 +12,7 @@ public interface BankCardMapper {
 
     BankCardModel findById(long id);
 
+    BankCardModel findByLoginName(String loginName);
+
     void updateBankCard(BankCardModel bankCardModel);
 }

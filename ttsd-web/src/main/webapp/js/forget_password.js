@@ -118,7 +118,7 @@ require(['jquery', 'csrf'], function ($) {
                 $('.complete').addClass('grey').attr('disabled','disabled');
             } else {
                 $.ajax({
-                    url: '/register/image-captcha/' + _value + '/verify',
+                    url: '/mobile-retrieve-password/image-captcha/' + _value + '/verify',
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'

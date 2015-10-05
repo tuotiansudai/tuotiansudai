@@ -103,30 +103,53 @@ public class LoanServiceImpl implements LoanService {
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        if (maxInvestAmount < minInvestAmount) {
+        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
+        if (loanAgentId == null) {
             dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (maxInvestAmount > loanAmount) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setStatus(false);
+            dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
+            dataDto.setMessage("借款用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
-        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
-        if (loanAgentId == null) {
+        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
             dataDto.setStatus(false);
+            dataDto.setMessage("借款期限最小为1，最大为12");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (loanAmount <= 0) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("预计出借金额应大于0");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (minInvestAmount <= 0) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最小投资金额应大于0");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount < minInvestAmount) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最小投资金额不得大于最大投资金额");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最大投资金额不得大于预计出借金额");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
             baseDto.setData(dataDto);
             return baseDto;
         }

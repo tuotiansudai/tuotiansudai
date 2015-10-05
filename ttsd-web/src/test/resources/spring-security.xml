@@ -12,26 +12,31 @@
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
+        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>
-                <beans:entry key="/register" value="/"/>
+                <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/login" value="/"/>
             </beans:map>
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <beans:bean id="daoAuthenticationProvider"
+                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
     </beans:bean>
 
-    <!-- work around -->
-    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
-        <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
-        <beans:property name="saltSource" ref="saltSource"/>
-        <beans:property name="userDetailsService" ref="myUserDetailsService"/>
+    <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
+
+    <beans:bean id="affirmativeBased" class="com.tuotiansudai.security.MyAffirmativeBased">
+        <beans:constructor-arg ref="webExpressionVoter"/>
     </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="daoAuthenticationProvider"/>
+    </authentication-manager>
 
     <http auto-config="true" use-expressions="true">
         <access-denied-handler ref="myAccessDeniedHandler"/>
@@ -55,9 +60,5 @@
         <intercept-url pattern="/*" access="hasAuthority('USER')"/>
         <csrf disabled="true"/>
     </http>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="daoAuthenticationProvider"/>
-    </authentication-manager>
 
 </beans:beans>
