@@ -98,6 +98,19 @@ public class LoanServiceTest {
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
     }
 
+    private LoanDto getLoanDto(UserModel userModel, long loanId, Date date) {
+        LoanDto loanDto = new LoanDto();
+        loanDto.setId(loanId);
+        loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setAgentLoginName(userModel.getLoginName());
+        loanDto.setMaxInvestAmount("100.00");
+        loanDto.setMinInvestAmount("1.00");
+        loanDto.setLoanAmount("1000000.00");
+        loanDto.setFundraisingEndTime(date);
+        loanDto.setFundraisingStartTime(date);
+        return loanDto;
+    }
+
     private LoanDto getLoanDto(UserModel userModel) {
         LoanDto loanDto = new LoanDto();
         long loanId = idGenerator.generate();
@@ -242,8 +255,17 @@ public class LoanServiceTest {
 
     @Test
     public void findLoanListServiceTest() {
-        List<LoanListDto> loanListDtos = loanService.findLoanList(LoanStatus.REPAYING, 1, "", new Date(), new Date(), 0, 10);
-        int loanListCount = loanService.findLoanListCount(LoanStatus.REPAYING,1,"",new Date(),new Date());
+        Date date = new Date();
+        long id = idGenerator.generate();
+        UserModel fakeUser = getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        LoanDto loanDto = getLoanDto(fakeUser,id,date);
+        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
+        List<LoanListDto> loanListDtos = loanService.findLoanList(LoanStatus.REPAYING, id, "", date, date, 0, 10);
+        int loanListCount = loanService.findLoanListCount(LoanStatus.REPAYING,id,"",date,date);
         assertThat(loanListDtos.size(), is(loanListCount));
     }
 
