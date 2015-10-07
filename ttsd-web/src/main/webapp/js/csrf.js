@@ -4,4 +4,11 @@ define(['jquery'], function ($) {
     $(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(header, token);
     });
+
+    $(function () {
+        $('.header .logout').click(function (event) {
+            event.preventDefault();
+            $('.header .logout-form').submit();
+        })
+    });
 });
