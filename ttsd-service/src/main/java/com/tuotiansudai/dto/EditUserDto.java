@@ -111,4 +111,7 @@ public class EditUserDto {
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
     }
+    public EditUserDto(){
+
+    }
 }

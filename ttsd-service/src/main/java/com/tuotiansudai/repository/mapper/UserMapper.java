@@ -18,4 +18,6 @@ public interface UserMapper {
     void create(UserModel userModel);
 
     void updatePassword(@Param(value = "mobile")String mobile,@Param(value = "password")String password);
+
+    void updateUser(UserModel userModel);
 }

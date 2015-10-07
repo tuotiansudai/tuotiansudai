@@ -52,4 +52,14 @@ public class RegisterAccountDto {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
+    public RegisterAccountDto(String loginName,String mobile,String userName,String identityNumber){
+        this.setUserName(userName);
+        this.setLoginName(loginName);
+        this.setMobile(mobile);
+        this.setIdentityNumber(identityNumber);
+    }
+    public RegisterAccountDto(){
+
+    }
 }

@@ -2,6 +2,8 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserService {
 
     boolean emailIsExist(String email);
@@ -32,7 +34,7 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
 
-    void editUser();
+    BaseDto<PayDataDto> editUser(EditUserDto editUserDto,HttpServletRequest request);
 
     EditUserDto getUser(String loginName);
 }

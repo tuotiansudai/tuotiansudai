@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -66,10 +67,20 @@ public class RegisterServiceImpl implements RegisterService {
                         responseModel.getAccountId(),
                         new Date());
                 accountMapper.create(accountModel);
-                UserRoleModel userRoleModel = new UserRoleModel();
-                userRoleModel.setLoginName(dto.getLoginName());
-                userRoleModel.setRole(Role.INVESTOR);
-                userRoleMapper.create(userRoleModel);
+                List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(dto.getLoginName());
+                boolean investorFlag = false;
+                for(UserRoleModel userRoleModelTemp : userRoles){
+                    if(userRoleModelTemp.getRole() == Role.INVESTOR){
+                        investorFlag = true;
+                        break;
+                    }
+                }
+                if (!investorFlag){
+                    UserRoleModel userRoleModel = new UserRoleModel();
+                    userRoleModel.setLoginName(dto.getLoginName());
+                    userRoleModel.setRole(Role.INVESTOR);
+                    userRoleMapper.create(userRoleModel);
+                }
             }
 
             dataDto.setStatus(responseModel.isSuccess());
