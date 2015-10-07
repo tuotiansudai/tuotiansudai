@@ -50,4 +50,8 @@
         where login_name = #{loginName}
     </update>
 
+    <select id="findByIdentityNumber" parameterType="java.lang.String" resultMap="accountResultMap">
+        select * from account where identity_number = #{identityNumber}
+    </select>
+
 </mapper>

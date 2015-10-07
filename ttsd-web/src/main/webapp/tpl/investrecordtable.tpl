@@ -15,9 +15,15 @@
             <td>{{createdTime}}</td>
             <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
             <td>{{investStatus}}</td>
-            <td>{{nextRepayDay}}/{{nextRepayAmount}}元</td>
+            <td>
+            {{#nextRepayDay}}{{nextRepayDay}} / {{nextRepayAmount}}元{{/nextRepayDay}}
+            {{^nextRepayDay}}/{{/nextRepayDay}}
+            </td>
             <td>{{amount}}元</td>
-            <td><a class="red" href="">合同</a></td>
+            <td>
+            {{#hasContract}}<a class="red" href="">合同</a> /{{/hasContract}}
+            <a class="red" href="">回款记录</a>
+            </td>
         </tr>
         {{/recordDtoList}}
         {{^recordDtoList}}

@@ -1243,6 +1243,7 @@
   _globalConfig.hoverClass = "zeroclipboard-is-hover";
   _globalConfig.activeClass = "zeroclipboard-is-active";
   if (typeof define === "function" && define.amd) {
+    window.ZeroClipboard = ZeroClipboard;
     define(function() {
       return ZeroClipboard;
     });

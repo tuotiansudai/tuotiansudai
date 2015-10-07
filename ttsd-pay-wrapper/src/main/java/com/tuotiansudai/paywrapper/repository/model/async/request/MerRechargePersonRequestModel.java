@@ -1,10 +1,11 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class MerRechargePersonRequestModel extends BaseAsyncModel {
+public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
 
@@ -29,12 +30,14 @@ public class MerRechargePersonRequestModel extends BaseAsyncModel {
         this.amount = amount;
         this.gateId = gateId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), this.service);
+        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), this.service);
     }
 
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("ret_url", "/");
+        payRequestData.put("ret_url", this.retUrl);
         payRequestData.put("notify_url", this.notifyUrl);
         payRequestData.put("order_id", this.orderId);
         payRequestData.put("mer_date", this.merDate);
