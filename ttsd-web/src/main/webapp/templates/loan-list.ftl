@@ -88,6 +88,7 @@
                         </div>
                     </div>
                 </li>
+            </#list>
                 <li>
                     <span class="hot"></span>
 
@@ -102,39 +103,6 @@
                             <span class="name">年化收益：</span>
                         <span class="num">8.0%
                             <i>+8.0%</i>
-                        </span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <div class="process">
-                            <span class="hd">正在招募</span>
-                        <span class="process-percent">
-                            <span class="percent"></span>
-                        </span>
-                            <span class="point">50%</span>
-                        </div>
-                        <div class="sub-item-block">
-                            <p>招募金额: <span class="all-total">60000000</span>元</p>
-
-                            <p>剩余金额: <span class="all-total">600000</span>元</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-invest" href="">马上投资</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                        <span class="num">8.0%
                         </span>
                             <span class="name">项目期限（月）：</span>
                             <span class="month">3个月</span>
@@ -186,38 +154,6 @@
                             <p>招募金额: <span class="all-total">60000000</span>元</p>
 
                             <p> 2015-08-24 15:00 放标</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-finish-invest" href="">投资完成</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                            <span class="num">8.0%</span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <div class="process">
-                            <span class="hd">正在招募</span>
-                        <span class="process-percent">
-                            <span class="percent"></span>
-                        </span>
-                            <span class="point">50%</span>
-                        </div>
-                        <div class="sub-item-block">
-                            <p>招募金额: <span class="all-total">60000000</span>元</p>
-
-                            <p>剩余金额: <span class="all-total">600000</span>元</p>
                         </div>
                     </div>
                 </li>
@@ -292,7 +228,6 @@
                         <p class="status"><span class="grey">回款进度:</span> 0元</p>
                     </div>
                 </li>
-            </#list>
         </ul>
         <div class="pagination">
             <span class="total">共 <span class="subTotal">${loanListCountWeb}</span>条,当前第 <span class="index-page">${currentPageNo}</span>页</span>
