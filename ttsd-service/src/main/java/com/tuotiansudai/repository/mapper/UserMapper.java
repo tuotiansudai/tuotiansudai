@@ -1,8 +1,12 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface UserMapper {
@@ -20,4 +24,24 @@ public interface UserMapper {
     void updatePassword(@Param(value = "mobile")String mobile,@Param(value = "password")String password);
 
     void updateUser(UserModel userModel);
+
+    List<UserModel> findAllUser(@Param(value = "loginName") String loginName,
+                                @Param(value = "email") String email,
+                                @Param(value = "mobile") String mobile,
+                                @Param(value = "beginTime") Date beginTime,
+                                @Param(value = "endTime") Date endTime,
+                                @Param(value = "role") Role role,
+                                @Param(value = "referrer") String referrer,
+                                @Param(value = "limit") Integer limit,
+                                @Param(value = "offset") Integer offset);
+
+    int findAllUserCount(@Param(value = "loginName") String loginName,
+                                @Param(value = "email") String email,
+                                @Param(value = "mobile") String mobile,
+                                @Param(value = "beginTime") Date beginTime,
+                                @Param(value = "endTime") Date endTime,
+                                @Param(value = "role") Role role,
+                                @Param(value = "referrer") String referrer);
+
+
 }

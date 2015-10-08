@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -293,6 +295,25 @@ public class UserServiceImpl implements UserService {
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
         return new EditUserDto(userModel, accountModel, userRoleModels);
+    }
+
+    @Override
+    public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime, Role role, String referrer, Integer index, Integer pageSize) {
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, (index - 1) * pageSize, pageSize);
+        List<UserDataItemDto> userDataItemDtos = Lists.newArrayList();
+        for (UserModel userModel:userModels){
+
+            UserDataItemDto userDataItemDto = new UserDataItemDto(userModel);
+            userDataItemDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
+            userDataItemDtos.add(userDataItemDto);
+        }
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer);
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index,pageSize,count,userDataItemDtos);
+        basePaginationDataDto.setStatus(true);
+        baseDto.setData(basePaginationDataDto);
+        return baseDto;
+
     }
 
     public Object copy(Object object) throws Exception

@@ -4,6 +4,7 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.EditUserDto;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserModel {
 
@@ -32,6 +33,8 @@ public class UserModel {
     private UserStatus status = UserStatus.ACTIVE;
 
     private String salt;
+
+    private AccountModel account;
 
     public String getSalt() {
         return salt;
@@ -164,4 +167,13 @@ public class UserModel {
         this.lastModifiedTime = new Date();
         this.referrer = editUserDto.getReferrer();
     }
+
+    public AccountModel getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountModel account) {
+        this.account = account;
+    }
+
 }
