@@ -18,12 +18,11 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/edit-user")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/{loginName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit-user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName) {
         ModelAndView mv = new ModelAndView("/edit-user");
         EditUserDto editUserDto = userService.getUser(loginName);
@@ -31,7 +30,7 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/edit-user",method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<PayDataDto> editUser(@RequestBody EditUserDto editUserDto,HttpServletRequest request) {
         try {
@@ -46,9 +45,5 @@ public class UserController {
         }
 
     }
-
-
-
-
 
 }
