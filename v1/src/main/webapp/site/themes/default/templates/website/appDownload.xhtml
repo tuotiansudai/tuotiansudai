@@ -1,0 +1,39 @@
+<ui:component xmlns:c="http://java.sun.com/jsp/jstl/core"
+			  xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+			  xmlns:f="http://java.sun.com/jsf/core"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:p="http://primefaces.org/ui">
+
+		<script type="text/javascript">
+			function is_weixin(){
+				var ua = navigator.userAgent.toLowerCase();
+				if(ua.match(/MicroMessenger/i)=="micromessenger") {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
+			function jump() {
+				var u = navigator.userAgent;
+				if (!is_weixin()) {
+					if (u.indexOf('Android') > -1) {
+						location.href = "https://tuotiansudai.com/app/tuotiansudai.apk";
+					} else if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {
+						location.href = "http://itunes.apple.com/us/app/id1039233966";
+					}
+				} else {
+					document.getElementById("wxPic").style.display="block";
+				}
+			}
+		</script>
+		<body onload="jump()">
+		<div id="wxPic" style="display:none">
+
+			<p style="font-size: 45px;">请按照下面的图示操作，下载拓天速贷APP:</p>
+			<img style="width: 100%;" src="#{tplVars.themeImagePath}/appDownload/wxDownload.png"/>
+		</div>
+		</body>
+		<!--<div class="topbox">-->
+</ui:component>
