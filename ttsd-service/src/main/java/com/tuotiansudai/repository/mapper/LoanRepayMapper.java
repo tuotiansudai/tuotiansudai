@@ -1,12 +1,10 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -41,4 +39,6 @@ public interface LoanRepayMapper {
                                          @Param(value = "period") int period);
 
     void update(LoanRepayModel loanRepayModel);
+
+    long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
 }

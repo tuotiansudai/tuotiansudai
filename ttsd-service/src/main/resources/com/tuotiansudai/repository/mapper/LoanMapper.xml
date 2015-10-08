@@ -102,6 +102,9 @@
             <if test="status != null">
                 and t.status = #{status}
             </if>
+            <if test="status == null">
+                and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            </if>
             <if test="periodsStart > 0">
                 and t.periods >= #{periodsStart}
             </if>
@@ -145,8 +148,6 @@
         </where>
     </select>
 
-=======
->>>>>>> features/zrz/console_loan_list_new
     <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>

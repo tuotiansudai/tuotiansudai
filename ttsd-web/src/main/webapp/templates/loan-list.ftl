@@ -74,167 +74,60 @@
                             <span class="money-style">${loanListWebDto.type.getName()}</span>
                         </div>
                     </div>
-                    <div class="loan-process">
-                        <div class="process">
-                            <span class="hd">正在招募</span>
-                        <span class="process-percent" style="width:100px;">
+                    <#if loanListWebDto.status== 'RAISING'>
+                        <div class="loan-process">
+                            <div class="process">
+                                <span class="hd">正在招募</span>
+                        <span class="process-percent" style="width:${loanListWebDto.rateOfAdvance}px;">
                             <span class="percent"></span>
                         </span>
-                            <span class="point">50%</span>
+                                <span class="point">${loanListWebDto.rateOfAdvance}%</span>
+                            </div>
+                            <div class="sub-item-block">
+                                <p>招募金额: <span class="all-total">${loanListWebDto.loanAmount}</span>元</p>
+                                <p>剩余金额: <span class="all-total">${loanListWebDto.added}</span>元</p>
+                            </div>
                         </div>
-                        <div class="sub-item-block">
-                            <p>招募金额: <span class="all-total">${loanListWebDto.loanAmount}</span>元</p>
-                            <p>剩余金额: <span class="all-total">600000</span>元</p>
+                    <#elseif loanListWebDto.status== 'PREHEAT'>
+                        <div class="loan-process">
+                            <div class="process">
+                                <span class="hd">正在招募</span>
+                        <span class="process-percent" style="width:0px;">
+                            <span class="percent"></span>
+                        </span>
+                                <span class="point">0%</span>
+                            </div>
+                            <div class="sub-item-block">
+                                <p>招募金额: <span class="all-total">${loanListWebDto.loanAmount}</span>元</p>
+                                <p>${loanListWebDto.added} 放标</p>
+                            </div>
                         </div>
-                    </div>
+                    <#elseif loanListWebDto.status== 'RECHECK'>
+                        <div class="loan-process pr">
+                            <span class="img"><img src="../../images/loan/pic-recheck.png" alt=""/></span>
+                            <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
+                            <p class="status"><span class="grey">剩余金额:</span>${loanListWebDto.added}元</p>
+                        </div>
+                    <#elseif loanListWebDto.status== 'REPAYING'>
+                        <div class="loan-process">
+                            <span class="img"><img src="../../images/loan/pic-doing.png" alt=""/></span>
+                            <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                        </div>
+                    <#else>
+                        <div class="loan-process">
+                            <span class="img"><img src="../../images/loan/pic-finish.png" alt=""/></span>
+                            <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                        </div>
+                    </#if>
                 </li>
             </#list>
-                <li>
-                    <span class="hot"></span>
-
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-invest" href="">马上投资</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                        <span class="num">8.0%
-                            <i>+8.0%</i>
-                        </span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <div class="process">
-                            <span class="hd">正在招募</span>
-                        <span class="process-percent">
-                            <span class="percent"></span>
-                        </span>
-                            <span class="point">50%</span>
-                        </div>
-                        <div class="sub-item-block">
-                            <p>招募金额: <span class="all-total">60000000</span>元</p>
-
-                            <p>剩余金额: <span class="all-total">600000</span>元</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-wait-invest" href="">预热中</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                            <span class="num">8.0%</span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <div class="process">
-                            <span class="hd">正在招募</span>
-                        <span class="process-percent">
-                            <span class="percent"></span>
-                        </span>
-                            <span class="point">50%</span>
-                        </div>
-                        <div class="sub-item-block">
-                            <p>招募金额: <span class="all-total">60000000</span>元</p>
-
-                            <p> 2015-08-24 15:00 放标</p>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-finish-invest" href="">投资完成</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                            <span class="num">8.0%</span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process pr">
-                        <span class="img"><img src="../../images/loan/pic-recheck.png" alt=""/></span>
-
-                        <p class="status"><span class="grey">招募金额:</span>600000元</p>
-
-                        <p class="status"><span class="grey">剩余金额:</span> 0元</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-finish-invest" href="">投资完成</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                            <span class="num">8.0%</span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <span class="img"><img src="../../images/loan/pic-doing.png" alt=""/></span>
-                        <p class="status"><span class="grey">招募金额:</span>600000元</p>
-                        <p class="status"><span class="grey">回款进度:</span> 0元</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="loan-info">
-                        <div class="hd">
-                       <span class="sub-hd">
-                           生意周转
-                       </span>
-                            <a class="btn-finish-invest" href="">投资完成</a>
-                        </div>
-                        <div class="sub-item-block">
-                            <span class="name">年化收益：</span>
-                            <span class="num">8.0%</span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">3个月</span>
-                            <span class="name">还款方式：</span>
-                            <span class="money-style">到期一次性还本付息</span>
-                        </div>
-                    </div>
-                    <div class="loan-process">
-                        <span class="img"><img src="../../images/loan/pic-finish.png" alt=""/></span>
-                        <p class="status"><span class="grey">招募金额:</span>600000元</p>
-                        <p class="status"><span class="grey">回款进度:</span> 0元</p>
-                    </div>
-                </li>
         </ul>
         <div class="pagination">
-            <span class="total">共 <span class="subTotal">${loanListCountWeb}</span>条,当前第 <span class="index-page">${currentPageNo}</span>页</span>
+            <span class="total">共<span class="subTotal">${loanListCountWeb}</span>条,当前第 <span class="index-page">${currentPageNo}</span>页</span>
             <span class="prev">上一页</span>
-            <a class="current" href="">1</a>
-            <a href="">2</a>
-            <a href="">20</a>
+            <a class="current">${currentPageNo}</a>
             <span class="next">下一页</span>
         </div>
     </div>

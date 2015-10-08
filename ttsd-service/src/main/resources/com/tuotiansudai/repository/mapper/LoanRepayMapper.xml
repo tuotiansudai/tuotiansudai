@@ -154,4 +154,11 @@
     <update id="update" parameterType="LoanRepayModel">
         update loan_repay set corpus = #{corpus}, actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
     </update>
+
+    <select id="sumSuccessLoanRepayMaxPeriod" parameterType="map" resultType="long">
+        select IFNULL(max(period),0)
+        from loan_repay
+        where loan_id = #{loanId}
+        and status = 'COMPLETE'
+    </select>
 </mapper>

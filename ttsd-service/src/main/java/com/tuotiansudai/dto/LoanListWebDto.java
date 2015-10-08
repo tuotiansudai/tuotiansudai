@@ -25,6 +25,10 @@ public class LoanListWebDto {
 
     private String loanAmount;
 
+    private String added;
+
+    private String rateOfAdvance;
+
     private ActivityType activityType;
 
     public long getId() {
@@ -99,4 +103,19 @@ public class LoanListWebDto {
         this.activityType = activityType;
     }
 
+    public String getAdded() {
+        return added;
+    }
+
+    public void setAdded(String added) {
+        this.added = added;
+    }
+
+    public String getRateOfAdvance() {
+        return rateOfAdvance;
+    }
+
+    public void setRateOfAdvance(String rateOfAdvance) {
+        this.rateOfAdvance = rateOfAdvance;
+    }
 }

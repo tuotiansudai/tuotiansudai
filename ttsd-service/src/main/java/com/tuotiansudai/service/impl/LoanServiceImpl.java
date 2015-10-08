@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -22,7 +23,6 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +56,8 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private RepayService repayService;
 
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -524,10 +526,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
+
         currentPageNo = (currentPageNo - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,rateStart,
                 rateEnd,currentPageNo);
         List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
+        String added = "";
         for (int i=0;i<loanModels.size();i++) {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
@@ -539,6 +543,19 @@ public class LoanServiceImpl implements LoanService {
             loanListWebDto.setStatus(loanModels.get(i).getStatus());
             loanListWebDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
             loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
+            if (loanModels.get(i).getStatus() == LoanStatus.PREHEAT) {
+                if (DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()) < 30) {
+                    added = String.valueOf(DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()))+"后";
+                } else {
+                    added = new DateTime(loanModels.get(i).getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm");
+                }
+            } else if (loanModels.get(i).getStatus() == LoanStatus.RAISING || loanModels.get(i).getStatus() == LoanStatus.RECHECK) {
+                added = AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
+                loanListWebDto.setRateOfAdvance(String.valueOf(AmountUtil.div(investMapper.sumSuccessInvestAmount(loanModels.get(i).getId())*100,loanModels.get(i).getLoanAmount(),2)));
+            } else {
+                added = loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModels.get(i).getId()) + "/" + loanModels.get(i).getPeriods();
+            }
+            loanListWebDto.setAdded(added);
             loanListWebDtos.add(loanListWebDto);
         }
         return loanListWebDtos;

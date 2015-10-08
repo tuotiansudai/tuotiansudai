@@ -27,4 +27,13 @@ public class AmountUtil {
         }
         return "0";
     }
+
+    public static double div(long v1, long v2, int scale) {
+        if (scale < 0) {
+            return 0;
+        }
+        BigDecimal b1 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
+        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
 }
