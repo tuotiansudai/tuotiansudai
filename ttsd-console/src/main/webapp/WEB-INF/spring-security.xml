@@ -37,7 +37,7 @@
         <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/*" access="hasAuthority('ADMIN')"/>
-        <csrf />
+        <csrf/>
     </http>
 
     <authentication-manager alias="authenticationManager">

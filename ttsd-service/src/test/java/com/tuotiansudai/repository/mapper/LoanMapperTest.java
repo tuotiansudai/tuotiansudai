@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -275,8 +275,8 @@ public class LoanMapperTest {
 
     @Test
     public void findLoanListTest() {
-        List<LoanModel> loanModels = loanMapper.findLoanList("complete","","","","",0);
-        int loanListCount = loanMapper.findLoanListCount("complete","","","","");
+        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING,1,"",new Date(),new Date(),0,10);
+        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING,1,"",new Date(),new Date());
         assertThat(loanModels.size(), is(loanListCount));
     }
 

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /**
- * 
+ *
  * @authors Belen (985322190@qq.com)
  * @date    2015-08-03 14:32:14
  * @version $Id$
@@ -97,6 +97,11 @@ a:hover {
 .select-box{
     display: inline;}
 
+/*下拉框*/
+.files-input {
+    width: 30%;
+    display: inline-block;
+}
 .col-file-box {
     margin-bottom: 10px;
 }

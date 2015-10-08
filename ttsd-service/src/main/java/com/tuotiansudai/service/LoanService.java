@@ -33,6 +33,10 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> createLoan(LoanDto loanDto);
 
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo,int pageSize);
+
+    public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime);
+
     /**
      * @param loanDto
      * @return
@@ -45,9 +49,6 @@ public interface LoanService {
      * @return
      * @function 通过id查找标的
      */
-    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo);
-
-    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime);
 
     public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd,int currentPageNo);
 

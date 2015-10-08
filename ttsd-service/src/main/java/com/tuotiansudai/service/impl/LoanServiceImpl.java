@@ -178,21 +178,6 @@ public class LoanServiceImpl implements LoanService {
         return null;
     }
 
-    @Override
-    public BaseDto<LoanDto> getLoanDetail(long loanId) {
-        BaseDto dto = new BaseDto();
-        LoanDto loanDto = new LoanDto();
-        LoanModel loanModel = loanMapper.findById(loanId);
-        if (loanModel == null) {
-            dto.setSuccess(true);
-            loanDto.setStatus(false);
-            return dto;
-        }
-        loanDto = convertModelToDto(loanModel);
-        loanDto.setStatus(true);
-        dto.setData(loanDto);
-        return dto;
-    }
 
     private LoanDto convertModelToDto(LoanModel loanModel) {
         String loginName = LoginUserInfo.getLoginName();
@@ -380,6 +365,48 @@ public class LoanServiceImpl implements LoanService {
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
+
+    @Override
+    public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo, int pageSize) {
+        currentPageNo = (currentPageNo - 1) * 10;
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,currentPageNo,pageSize);
+        List<LoanListDto> loanListDtos = Lists.newArrayList();
+        for (int i=0;i<loanModels.size();i++) {
+            LoanListDto loanListDto = new LoanListDto();
+            loanListDto.setId(loanModels.get(i).getId());
+            loanListDto.setName(loanModels.get(i).getName());
+            loanListDto.setType(loanModels.get(i).getType());
+            loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
+            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
+            loanListDto.setPeriods(loanModels.get(i).getPeriods());
+            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
+            loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100)+"%");
+            loanListDto.setStatus(loanModels.get(i).getStatus());
+            loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
+            loanListDtos.add(loanListDto);
+        }
+        return loanListDtos;
+    }
+
+    @Override
+    public int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime) {
+        return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
+    }
+
+    public BaseDto<LoanDto> getLoanDetail(long loanId) {
+        BaseDto<LoanDto> dto = new BaseDto<>();
+        LoanDto loanDto = new LoanDto();
+        dto.setData(loanDto);
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if (loanModel == null) {
+            loanDto.setStatus(false);
+            return dto;
+        }
+        loanDto = convertModelToDto(loanModel);
+        loanDto.setStatus(true);
+        return dto;
+    }
+
     @Override
     public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
@@ -493,32 +520,6 @@ public class LoanServiceImpl implements LoanService {
                 throw new TTSDException("放款失败");
             }
         }
-    }
-
-    @Override
-    public List<LoanListDto> findLoanList(String status,String loanId,String loanName,String startTime,String endTime,String currentPageNo) {
-        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,Integer.parseInt(currentPageNo));
-        List<LoanListDto> loanListDtos = Lists.newArrayList();
-        for (int i=0;i<loanModels.size();i++) {
-            LoanListDto loanListDto = new LoanListDto();
-            loanListDto.setId(loanModels.get(i).getId());
-            loanListDto.setName(loanModels.get(i).getName());
-            loanListDto.setType(loanModels.get(i).getType());
-            loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
-            loanListDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
-            loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
-            loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100+"%"));
-            loanListDto.setStatus(loanModels.get(i).getStatus());
-            loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
-            loanListDtos.add(loanListDto);
-        }
-        return loanListDtos;
-    }
-
-    @Override
-    public int findLoanListCount(String status,String loanId,String loanName,String startTime,String endTime) {
-        return loanMapper.findLoanListCount(status,loanId,loanName,startTime,endTime);
     }
 
     @Override
