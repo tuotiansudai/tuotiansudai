@@ -21,6 +21,7 @@ import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -308,6 +309,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void updateStatusByLoginName(String loginName,UserStatus status) {
+        userMapper.updateStatusByLoginName(loginName,status);
+    }
+
     public Object copy(Object object) throws Exception
     {
         Class<?> classType = object.getClass();
@@ -342,6 +348,9 @@ public class UserServiceImpl implements UserService {
         return objectCopy;
 
     }
+
+
+
 
 
 }

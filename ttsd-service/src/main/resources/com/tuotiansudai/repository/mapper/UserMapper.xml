@@ -58,6 +58,10 @@
         update user set password = #{password} where login_name = #{loginName}
     </update>
 
+    <update id="updateStatusByLoginName" parameterType="map">
+        update user set status = #{status} where login_name = #{loginName}
+    </update>
+
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
         update user set email = #{email},
                         mobile = #{mobile},

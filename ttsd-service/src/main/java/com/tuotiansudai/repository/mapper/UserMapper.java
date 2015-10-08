@@ -2,6 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,7 @@ public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
     void create(UserModel userModel);
-    
+
     void updatePassword(@Param(value = "mobile")String mobile,@Param(value = "password")String password);
 
     void updateUser(UserModel userModel);
@@ -45,4 +46,6 @@ public interface UserMapper {
 
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
+
+    void updateStatusByLoginName(@Param(value = "loginName") String loginName, @Param(value = "status") UserStatus status);
 }

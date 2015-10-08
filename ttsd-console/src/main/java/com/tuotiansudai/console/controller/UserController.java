@@ -1,10 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.EditUserDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -76,7 +73,31 @@ public class UserController {
         mv.addObject("roleList",roleList);
         return mv;
 
+    }
+    @RequestMapping(value = "/userstatus",method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> updateUserStatus(String loginName,UserStatus status){
+
+        try {
+            userService.updateStatusByLoginName(loginName, status);
+            BaseDataDto baseDataDto = new BaseDataDto();
+            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+            baseDataDto.setStatus(true);
+            baseDto.setSuccess(true);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+
+        }catch (Exception e){
+            BaseDataDto baseDataDto = new BaseDataDto();
+            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+            baseDataDto.setStatus(false);
+            baseDto.setSuccess(true);
+            baseDto.setData(baseDataDto);
+            return baseDto;
+        }
 
     }
+
+
 
 }

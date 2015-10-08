@@ -3,6 +3,8 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -39,6 +41,8 @@ public interface UserService {
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                 String mobile, Date beginTime, Date endTime,
                 Role role, String referrer, Integer pageIndex, Integer pageSize);
+
+    void updateStatusByLoginName(String loginName,UserStatus status);
 
 
 }
