@@ -5,7 +5,7 @@ body{ margin:0;}
 a{ display:block; text-decoration:none;}
 img{ display:block;}
 
-.bannerbox{ background-image:url(../images/appDownload/banner_bg.jpg); overflow:hidden;}
+.bannerbox{ background-image:url(/site/themes/default/images/appDownload/banner_bg.jpg); overflow:hidden;}
 .banner{ width:1000px; margin-left:auto; margin-right:auto; margin-top:69px; position:relative;}
 .buttona,.buttonb{ position:absolute;}
 .buttona{ top:290px; left:279px;}
@@ -23,7 +23,3 @@ img{ display:block;}
 .bota,.botb{ position:absolute;}
 .bota{ top:148px; left:270px;}
 .botb{ top:148px; left:630px;}
-.appDownload {
-    bottom: 90px;
-    background: url("../images/appDownload/floatButton.png") no-repeat 0px 0px;
-}
