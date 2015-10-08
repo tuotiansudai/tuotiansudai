@@ -26,6 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@Transactional
 public class SmsServiceTest {
 
     private MockWebServer server;

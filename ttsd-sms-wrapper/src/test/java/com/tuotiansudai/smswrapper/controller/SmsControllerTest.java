@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,7 +72,9 @@ public class SmsControllerTest {
 
         this.smsClient.setUrl(url.toString());
 
-        SmsCaptchaDto dto = new SmsCaptchaDto("13911112222", "100022", "127.0.0.1");
+        String fakeIp = String.valueOf(new Date().getTime());
+
+        SmsCaptchaDto dto = new SmsCaptchaDto("13911112222", "100022", fakeIp);
         String requestData = this.objectMapper.writeValueAsString(dto);
         jsonPath(requestData);
 

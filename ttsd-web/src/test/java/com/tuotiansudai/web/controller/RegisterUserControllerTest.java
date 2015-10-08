@@ -136,10 +136,6 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
-        RegisterCaptchaDto dto = new RegisterCaptchaDto();
-        dto.setMobile("13900000000");
-        dto.setImageCaptcha("12345");
-
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
@@ -149,8 +145,8 @@ public class RegisterUserControllerTest {
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
-                .contentType("application/json; charset=UTF-8")
-                .content(objectMapper.writeValueAsString(dto)))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -159,10 +155,6 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        RegisterCaptchaDto dto = new RegisterCaptchaDto();
-        dto.setMobile("13900000000");
-        dto.setImageCaptcha("12345");
-
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
@@ -170,8 +162,8 @@ public class RegisterUserControllerTest {
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(false);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
-                .contentType("application/json; charset=UTF-8")
-                .content(objectMapper.writeValueAsString(dto)))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
