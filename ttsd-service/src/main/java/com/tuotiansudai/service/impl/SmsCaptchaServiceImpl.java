@@ -21,9 +21,12 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
-
     @Autowired
     private SmsWrapperClient smsWrapperClient;
+
+    private static final int CAPTCHA_LENGTH = 6;
+
+    private static final int CAPTCHA_EXPIRED_TIME = 10;
 
     @Override
     public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String requestIP) {
@@ -47,8 +50,8 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
     @Transactional(rollbackFor = Exception.class)
     private String createMobileCaptcha(String mobile, CaptchaType captchaType) {
         Date now = new Date();
-        Date expiredTime = new DateTime(now).plusMinutes(10).toDate();
-        String captcha = createRandomCaptcha(6);
+        Date expiredTime = new DateTime(now).plusMinutes(CAPTCHA_EXPIRED_TIME).toDate();
+        String captcha = createRandomCaptcha(CAPTCHA_LENGTH);
         SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, captchaType);
         if (existingCaptcha != null) {
             existingCaptcha.setCaptcha(captcha);
