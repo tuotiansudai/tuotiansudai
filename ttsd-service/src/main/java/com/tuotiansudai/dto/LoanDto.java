@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -113,6 +110,8 @@ public class LoanDto extends BaseDataDto{
     /***申请材料***/
     private List<LoanTitleRelationModel> loanTitles;
 
+    private List<LoanTitleModel> loanTitleDto;
+
     /**可投金额**/
     private double amountNeedRaised;
 
@@ -124,6 +123,10 @@ public class LoanDto extends BaseDataDto{
 
     /**预计总收益**/
     private long expectedTotalIncome;
+
+    private BaseDto<BasePaginationDataDto> baseDto;
+
+    private long preheatSeconds;
 
     public long getId() {
         return id;
@@ -356,4 +359,29 @@ public class LoanDto extends BaseDataDto{
     public void setExpectedTotalIncome(long expectedTotalIncome) {
         this.expectedTotalIncome = expectedTotalIncome;
     }
+
+    public List<LoanTitleModel> getLoanTitleDto() {
+        return loanTitleDto;
+    }
+
+    public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
+        this.loanTitleDto = loanTitleDto;
+    }
+
+    public BaseDto<BasePaginationDataDto> getBaseDto() {
+        return baseDto;
+    }
+
+    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
+        this.baseDto = baseDto;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
+    }
+
 }

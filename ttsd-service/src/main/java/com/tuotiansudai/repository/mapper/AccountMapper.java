@@ -20,4 +20,6 @@ public interface AccountMapper {
 
     void update(AccountModel model);
 
+    AccountModel findByIdentityNumber(String identityNumber);
+
 }

@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -17,18 +20,20 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/{loanId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         BaseDto dto = loanService.getLoanDetail(loanId);
-        return new ModelAndView("/loan", "baseDto", dto);
+        ModelAndView view = new ModelAndView("/loan");
+        view.addObject("baseDto", dto);
+        return view;
     }
 
-    @RequestMapping(value = "/{loanId}/index/{index}/pagesize/{pagesize}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId}/index/{index:^\\d+$}/pagesize/{pagesize:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
-        BaseDto<BasePaginationDataDto> dto = loanService.getInvests(loanId, index, pagesize);
-        return new ModelAndView("/loan", "baseDto", dto);
-    }
+    public BaseDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
+        BaseDto dto = loanService.getInvests(loanId, index, pagesize);
+        return dto;
 
+    }
 
 }
