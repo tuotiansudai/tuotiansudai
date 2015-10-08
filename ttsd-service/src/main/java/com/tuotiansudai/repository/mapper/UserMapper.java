@@ -17,5 +17,5 @@ public interface UserMapper {
 
     void create(UserModel userModel);
 
-    void updatePassword(@Param(value = "mobile")String mobile,@Param(value = "password")String password);
+    void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 }

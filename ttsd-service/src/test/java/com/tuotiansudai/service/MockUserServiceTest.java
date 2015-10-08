@@ -137,7 +137,7 @@ public class MockUserServiceTest {
         doNothing().when(userMapper).create(any(UserModel.class));
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
-        when(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha)).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
 
         boolean success = userService.registerUser(registerUserDto);

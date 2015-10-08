@@ -45,74 +45,58 @@ public class SmsWrapperClient {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public BaseDto<BaseDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
-        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        resultDto.setData(dataDto);
-
+    public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseString = post(REGISTER_CAPTCHA_SMS_URI, requestJson);
             if (!Strings.isNullOrEmpty(responseString)) {
-                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+                return mapper.readValue(responseString, new TypeReference<BaseDto<SmsDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return resultDto;
+        return getDefaultDto();
     }
 
-    public BaseDto<BaseDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
-        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        resultDto.setData(dataDto);
-
+    public BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto) {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseString = post(LOAN_OUT_INVESTOR_NOTIFY, requestJson);
             if (!Strings.isNullOrEmpty(responseString)) {
-                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+                return mapper.readValue(responseString, new TypeReference<BaseDto<SmsDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return resultDto;
+        return getDefaultDto();
     }
 
-    public BaseDto<BaseDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
-        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        resultDto.setData(dataDto);
-
+    public BaseDto<SmsDataDto> sendRetrievePasswordCaptchaSms(SmsCaptchaDto dto) {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseString = post(RETRIEVE_PASSWORD_CAPTCHA_URI, requestJson);
             if (!Strings.isNullOrEmpty(responseString)) {
-                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+                return mapper.readValue(responseString, new TypeReference<BaseDto<SmsDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return resultDto;
+        return getDefaultDto();
     }
 
-    public BaseDto<BaseDataDto> sendPasswordChangedNotify(String mobile){
-        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        resultDto.setData(dataDto);
-
+    public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile){
         try {
             String responseString = post(PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile), "");
             if (!Strings.isNullOrEmpty(responseString)) {
-                return mapper.readValue(responseString, new TypeReference<BaseDto<BaseDataDto>>(){});
+                return mapper.readValue(responseString, new TypeReference<BaseDto<SmsDataDto>>(){});
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return resultDto;
+        return getDefaultDto();
     }
 
     public BaseDto<MonitorDataDto> monitor() {
@@ -153,6 +137,13 @@ public class SmsWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return null;
+    }
+
+    private BaseDto<SmsDataDto> getDefaultDto() {
+        BaseDto<SmsDataDto> resultDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        resultDto.setData(dataDto);
+        return resultDto;
     }
 
     public void setHost(String host) {

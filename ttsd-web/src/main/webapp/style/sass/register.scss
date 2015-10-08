@@ -212,7 +212,7 @@
     }
   }
   .register-user {
-    width: 174px;
+    width: 150px;
     height: 48px;
     background: #fee2cb;
     //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
@@ -220,7 +220,7 @@
     line-height: 48px;
     text-align: center;
     display: block;
-    margin: 20px 0 20px 74px;
+    margin: 20px 0 20px 85px;
     font-size: 20px;
     color: #f68e3a;
     padding-left: 0;
@@ -332,7 +332,7 @@
     }
   }
 
-  & .image-captcha-wrapper{
+  & .image-captcha-wrapper {
     position: relative;
     height: 80px;
   }
@@ -343,7 +343,7 @@
     margin: 25px auto 0;
     & input.image-captcha-text {
       background: url("/images/register/register.png") no-repeat 6px -548px;
-      width: 130px;
+      width: 180px;
       height: 38px;
       border: #bababa 1px solid;
       border-radius: 3px;
@@ -353,15 +353,15 @@
       vertical-align: middle;
     }
     & img.image-captcha {
-      width: 70px;
-      height: 38px;
+      width: 60px;
+      height: 30px;
       border-radius: 3px;
       background: #e4e4e4;
       border: #bababa 1px solid;
       cursor: pointer;
-      vertical-align: middle;
       position: absolute;
-      right: 30px;
+      right: 55px;
+      top: 4px;
     }
   }
   & .image-captcha-error {
@@ -388,19 +388,27 @@
     cursor: pointer
   }
 
+  & .image-captcha-confirm.loading {
+    background: url("/images/login/loading.gif") no-repeat center center;
+    cursor: default;
+    text-indent: -9999px;
+  }
+
   & label {
     padding-left: 30px;
-    height: 38px;
-    margin-left: 30px;
-    line-height: 38px;
-    display: block;
+    height: 40px;
+    margin-left: 25px;
+    display: inline-block;
     &.error {
       background: url(/images/register/register.png) no-repeat 0 -82px;
       font-size: 12px;
+      line-height: 38px;
       color: #f68e3a;
     }
     &.valid {
       background: url(/images/register/register.png) no-repeat 0 -456px;
+      margin-left: 5px;
+      vertical-align: middle;
     }
   }
 }
