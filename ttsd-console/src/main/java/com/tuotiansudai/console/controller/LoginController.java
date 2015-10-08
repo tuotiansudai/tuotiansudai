@@ -47,7 +47,8 @@ public class LoginController {
         int captchaHeight = 30;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-        session.setAttribute(session.getId(), captcha.getAnswer());
+        session.setAttribute("loginCaptcha", captcha.getAnswer());
+
     }
 
     @RequestMapping(value = "/captcha/{captcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET,

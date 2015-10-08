@@ -5,6 +5,7 @@ import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
@@ -44,6 +45,9 @@ public class MockUserServiceTest {
 
     @Mock
     private SmsCaptchaService smsCaptchaService;
+
+    @Mock
+    private MyAuthenticationManager myAuthenticationManager;
 
     @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -139,6 +143,7 @@ public class MockUserServiceTest {
         when(userMapper.findByMobile(mobile)).thenReturn(null);
         when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
+        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
 
         boolean success = userService.registerUser(registerUserDto);
 

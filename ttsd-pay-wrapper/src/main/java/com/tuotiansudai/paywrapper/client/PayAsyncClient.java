@@ -8,7 +8,7 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseAsyncMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseCallbackMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
@@ -41,12 +41,10 @@ public class PayAsyncClient {
     PayGateWrapper payGateWrapper;
 
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
-                                                    BaseAsyncModel requestModel) throws PayException {
+                                                    BaseAsyncRequestModel requestModel) throws PayException {
         try {
             ReqData reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
-            requestModel.setRetUrl(MessageFormat.format("{0}/callback/{1}", webCallback, requestModel.getService()));
-            requestModel.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", backCallback, requestModel.getService()));
             requestModel.setSign(reqData.getSign());
             requestModel.setRequestUrl(reqData.getUrl());
             requestModel.setRequestData(field.toString());
@@ -98,7 +96,7 @@ public class PayAsyncClient {
 
     @Transactional(value = "payTransactionManager")
     private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
-                               BaseAsyncModel requestModel) {
+                               BaseAsyncRequestModel requestModel) {
         BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
         mapper.create(requestModel);
     }

@@ -15,7 +15,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
-
+    @Autowired
     private CaptchaVerifier captchaVerifier;
 
     @Override
