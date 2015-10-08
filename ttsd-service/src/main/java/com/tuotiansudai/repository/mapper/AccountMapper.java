@@ -12,8 +12,6 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
-    AccountModel findByLoginNameOrderByTime(String loginName);
-
     AccountModel findByPayUserId(String payUserId);
 
     List<String> findAllLoginNamesByLike(String loginName);

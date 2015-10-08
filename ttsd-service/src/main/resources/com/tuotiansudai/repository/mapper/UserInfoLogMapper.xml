@@ -4,10 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.UserInfoLogMapper">
 
-
-
     <insert id="create" parameterType="UserInfoLogModel">
-        insert into user_info_log (id,operate_time,user_id,ip,obj_id,description,is_success)
-        value(#{id}, #{operateTime}, #{userId},#{ip},#{objId},#{description},#{success})
+        insert into user_info_log (id,operate_time,login_name,ip,obj_id,description)
+        value(#{id}, #{operateTime}, #{loginName},#{ip},#{objId},#{description})
     </insert>
 </mapper>

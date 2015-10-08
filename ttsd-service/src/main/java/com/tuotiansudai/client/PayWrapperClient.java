@@ -36,6 +36,8 @@ public class PayWrapperClient {
 
     private String registerPath = "/register";
 
+    private String merRegisterPersonPath = "/mer-register-person";
+
     private String rechargePath = "/recharge";
 
     private String bindCardPath = "/bind-card";
@@ -60,6 +62,22 @@ public class PayWrapperClient {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseJson = this.post(registerPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payFormDataDto = new PayDataDto();
+        baseDto.setData(payFormDataDto);
+
+        return baseDto;
+    }
+
+    public BaseDto<PayDataDto> merRegisterPerson(RegisterAccountDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(merRegisterPersonPath, requestJson);
             return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);

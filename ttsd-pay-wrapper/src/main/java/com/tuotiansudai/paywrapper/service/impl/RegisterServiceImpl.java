@@ -67,20 +67,10 @@ public class RegisterServiceImpl implements RegisterService {
                         responseModel.getAccountId(),
                         new Date());
                 accountMapper.create(accountModel);
-                List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(dto.getLoginName());
-                boolean investorFlag = false;
-                for(UserRoleModel userRoleModelTemp : userRoles){
-                    if(userRoleModelTemp.getRole() == Role.INVESTOR){
-                        investorFlag = true;
-                        break;
-                    }
-                }
-                if (!investorFlag){
-                    UserRoleModel userRoleModel = new UserRoleModel();
-                    userRoleModel.setLoginName(dto.getLoginName());
-                    userRoleModel.setRole(Role.INVESTOR);
-                    userRoleMapper.create(userRoleModel);
-                }
+                UserRoleModel userRoleModel = new UserRoleModel();
+                userRoleModel.setLoginName(dto.getLoginName());
+                userRoleModel.setRole(Role.INVESTOR);
+                userRoleMapper.create(userRoleModel);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
@@ -88,6 +78,31 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
+        }
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+    @Transactional
+    public BaseDto merRegisterPerson(RegisterAccountDto dto) {
+        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
+                dto.getUserName(),
+                dto.getIdentityNumber(),
+                dto.getMobile());
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+
+        try {
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
+                    requestModel,
+                    MerRegisterPersonResponseModel.class);
+            dataDto.setStatus(responseModel.isSuccess());
+            dataDto.setCode(responseModel.getRetCode());
+            dataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);
         return baseDto;

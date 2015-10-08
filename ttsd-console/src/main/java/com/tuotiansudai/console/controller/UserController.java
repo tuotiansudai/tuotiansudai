@@ -3,7 +3,6 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value = "/edit-user", method = RequestMethod.GET)
     @ResponseBody
-    public BaseDto<PayDataDto> editUser(@RequestBody EditUserDto editUserDto, HttpServletRequest request) {
+    public BaseDto<PayDataDto> editUser(@RequestBody EditUserDto editUserDto,HttpServletRequest request) {
         try {
             return userService.editUser(editUserDto, request);
         } catch (Exception e) {

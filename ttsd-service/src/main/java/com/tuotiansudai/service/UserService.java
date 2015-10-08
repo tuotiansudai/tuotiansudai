@@ -22,6 +22,8 @@ public interface UserService {
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
+    BaseDto<PayDataDto> merRegisterPersonAccount(RegisterAccountDto dto);
+
     void saveReferrerRelations(String referrerLoginName, String loginName);
 
     /**

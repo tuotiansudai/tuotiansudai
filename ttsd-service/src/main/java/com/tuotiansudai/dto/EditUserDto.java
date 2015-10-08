@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class EditUserDto {
 
     private UserStatus status;
 
-    private List<UserRoleModel> userRoles ;
+    private List<Role> roles ;
 
     public long getId() {
         return id;
@@ -90,23 +87,23 @@ public class EditUserDto {
         this.status = status;
     }
 
-    public List<UserRoleModel> getUserRoles() {
-        return userRoles;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoles(List<UserRoleModel> userRoles) {
-        this.userRoles = userRoles;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
-    public EditUserDto(UserModel userModel,AccountModel accountModel,List<UserRoleModel> userRoles){
+    public EditUserDto(UserModel userModel,AccountModel accountModel,List<Role> roles){
         this.email = userModel.getEmail();
         this.mobile = userModel.getMobile();
         if(accountModel != null){
             this.identityNumber = accountModel.getIdentityNumber();
             this.userName = accountModel.getUserName();
         }
-        if (userRoles != null){
-            this.userRoles = userRoles;
+        if (roles != null){
+            this.roles = roles;
         }
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();

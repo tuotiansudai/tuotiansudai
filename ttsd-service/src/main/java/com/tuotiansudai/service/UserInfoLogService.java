@@ -9,7 +9,5 @@ import java.util.List;
 
 public interface UserInfoLogService {
 
-    String generateUserInfoString(UserModel userModel,List<UserRoleModel> userRoles, UserModel oldUserModel,List<UserRoleModel> oldUserRoles);
-
-    void logUserOperation(String objId, String description, boolean isSuccess,HttpServletRequest request);
+    void logUserOperation(UserModel userModel,List<UserRoleModel> userRoles,String userIp);
 }

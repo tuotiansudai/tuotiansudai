@@ -10,8 +10,7 @@ public class UserInfoLogModel {
     private String ip;
     private String objId;
     private String description;
-    private String userId;
-    private Boolean success;
+    private String loginName;
 
     public String getId() {
         return id;
@@ -53,19 +52,11 @@ public class UserInfoLogModel {
         this.description = description;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

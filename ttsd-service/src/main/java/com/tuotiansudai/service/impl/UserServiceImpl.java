@@ -20,6 +20,7 @@ import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.utils.RequestIPParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
@@ -127,6 +128,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public BaseDto<PayDataDto> merRegisterPersonAccount(RegisterAccountDto dto) {
+        BaseDto<PayDataDto> baseDto = payWrapperClient.merRegisterPerson(dto);
+        return baseDto;
+    }
+
+    @Override
     @Transactional
     public void saveReferrerRelations(String referrerLoginName, String loginName) {
         ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
@@ -178,14 +185,13 @@ public class UserServiceImpl implements UserService {
         }
         String newMobile = editUserDto.getMobile();
         UserModel userModel = userMapper.findByLoginName(editUserDto.getLoginName());
-        List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(editUserDto.getLoginName());
-        AccountModel accountModel = accountMapper.findByLoginNameOrderByTime(editUserDto.getLoginName());
+        AccountModel accountModel = accountMapper.findByLoginName(editUserDto.getLoginName());
         if(userModel != null && !newMobile.equals(userModel.getMobile()) && accountModel!=null){
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                                                                         newMobile,
                                                                         accountModel.getUserName(),
                                                                         accountModel.getIdentityNumber());
-            BaseDto<PayDataDto> accountBaseDto = this.registerAccount(registerAccountDto);
+            BaseDto<PayDataDto> accountBaseDto = this.merRegisterPersonAccount(registerAccountDto);
             if(!accountBaseDto.getData().getStatus()){
                 baseDto.setSuccess(true);
                 payDataDto.setStatus(false);
@@ -199,12 +205,16 @@ public class UserServiceImpl implements UserService {
             UserModel userModelEdit = (UserModel)this.copy(userModel);
             userModelEdit.convert(editUserDto);
             userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
+            List<UserRoleModel> userRoles = Lists.newArrayList();
+            for(Role role : editUserDto.getRoles()){
+                userRoles.add(new UserRoleModel(editUserDto.getLoginName(),role));
+            }
+            String userIp = RequestIPParser.getRequestIp(request);
+            userInfoLogService.logUserOperation(userModelEdit, userRoles, userIp);
             userMapper.updateUser(userModelEdit);
             userRoleMapper.delete(editUserDto.getLoginName());
-            userRoleMapper.createUserRoles(editUserDto.getUserRoles());
-            String userString = userInfoLogService.generateUserInfoString(userModelEdit, editUserDto.getUserRoles(),
-                    userModel, userRoleModels);
-            userInfoLogService.logUserOperation(editUserDto.getLoginName(), "修改了用户信息：" + userString, true,request);
+            userRoleMapper.createUserRoles(userRoles);
+
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(),e);
             baseDto.setSuccess(true);
@@ -254,12 +264,12 @@ public class UserServiceImpl implements UserService {
 
         }
 
-        List<UserRoleModel> userRoleModels = editUserDto.getUserRoles();
-        if (userRoleModels == null || userRoleModels.size() == 0) {
+        List<Role> roles = editUserDto.getRoles();
+        if (roles == null || roles.size() == 0) {
             return null;
         }
-        for (UserRoleModel userRoleModel : userRoleModels) {
-            if (userRoleModel.getRole() == Role.MERCHANDISER) {
+        for (Role role : roles) {
+            if (role == Role.MERCHANDISER) {
                 return "有推荐人的用户不允许添加业务员角色!";
 
             }
@@ -285,9 +295,13 @@ public class UserServiceImpl implements UserService {
     public EditUserDto getUser(String loginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
+        List<Role> roles = Lists.newArrayList();
+        for (UserRoleModel userRoleModel : userRoleModels){
+            roles.add(userRoleModel.getRole());
+        }
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        return new EditUserDto(userModel, accountModel, userRoleModels);
+        return new EditUserDto(userModel, accountModel, roles);
     }
 
     @Override

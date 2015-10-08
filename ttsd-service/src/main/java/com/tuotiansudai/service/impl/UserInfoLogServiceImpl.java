@@ -1,12 +1,13 @@
 package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.repository.mapper.UserInfoLogMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.UserInfoLogModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserInfoLogService;
 import com.tuotiansudai.utils.LoginUserInfo;
-import com.tuotiansudai.utils.RequestIPParser;
 import com.tuotiansudai.utils.UUIDGenerator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -24,11 +24,16 @@ import java.util.List;
 public class UserInfoLogServiceImpl implements UserInfoLogService {
     @Autowired
     private UserInfoLogMapper userInfoLogMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
-    @Override
-    public String generateUserInfoString(UserModel userModel,List<UserRoleModel> userRoles, UserModel oldUserModel,List<UserRoleModel> oldUserRoles) {
+    private String generateUserInfoString(UserModel userModel,List<UserRoleModel> userRoles) {
+        UserModel oldUserModel = userMapper.findByLoginName(userModel.getLoginName());
+        List<UserRoleModel> oldUserRoles = userRoleMapper.findByLoginName(userModel.getLoginName());
         StringBuffer sb = new StringBuffer();
-        sb.append("UserId:"+userModel.getId()+"; ");
+        sb.append("UserId:"+userModel.getLoginName()+"; ");
         sb.append(buildDiffInfo("Email",userModel.getEmail(),oldUserModel.getEmail()));
         sb.append(buildDiffInfo("Status", userModel.getStatus().name(), oldUserModel.getStatus().name()));
         sb.append(buildDiffInfo("Mobile", userModel.getMobile(), oldUserModel.getMobile()));
@@ -50,18 +55,17 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
 
     @Override
     @Transactional
-    public void logUserOperation(String objId, String description, boolean isSuccess,HttpServletRequest request) {
-        String userIp = RequestIPParser.getRequestIp(request);
+    public void logUserOperation(UserModel userModel,List<UserRoleModel> userRoles,String userIp) {
+        String description = generateUserInfoString(userModel,userRoles);
         Timestamp operateTime = new Timestamp(System.currentTimeMillis());
-        String userId = LoginUserInfo.getLoginName();
+        String loginName = LoginUserInfo.getLoginName();
         UserInfoLogModel log = new UserInfoLogModel();
         log.setId(UUIDGenerator.generate());
         log.setDescription(description);
         log.setIp(userIp);
-        log.setSuccess(isSuccess);
-        log.setObjId(objId);
+        log.setObjId(userModel.getLoginName());
         log.setOperateTime(operateTime);
-        log.setUserId(userId);
+        log.setLoginName(loginName);
         userInfoLogMapper.create(log);
 
     }

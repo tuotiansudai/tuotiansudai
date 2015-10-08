@@ -26,10 +26,6 @@
         select * from account where login_name = #{loginName}
     </select>
 
-    <select id="findByLoginNameOrderByTime" parameterType="java.lang.String" resultMap="accountResultMap">
-        select * from account where login_name = #{loginName} ORDER BY register_time desc limit 0,1
-    </select>
-
     <select id="findByPayUserId" parameterType="java.lang.String" resultMap="accountResultMap">
         select * from account where pay_user_id = #{payUserId}
     </select>
