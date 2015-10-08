@@ -220,13 +220,26 @@ $(function () {
         },
         //beforeSubmit
         beforeCheck: function(curform){
+            var periods = parseInt($('.jq-timer',curform).val());
+            if(periods <= 0){
+                showErrorMessage('借款期限最小为1，最大为12',$('.jq-timer',curform));
+                return false;
+            }
+            var loanAmount = parseInt($('.jq-pay',curform).val());
+            if(loanAmount <= 0){
+                showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
+                return false;
+            }
             var minPay = parseInt($('.jq-min-pay',curform).val());
+            if(minPay <= 0){
+                showErrorMessage('最小投资金额应大于0',$('.jq-min-pay',curform));
+                return false;
+            }
             var maxPay = parseInt($('.jq-max-pay',curform).val());
             if(minPay > maxPay){
                 showErrorMessage('最小投资金额不得大于最大投资金额',$('.jq-min-pay',curform));
                 return false;
             }
-            var loanAmount = parseInt($('.jq-pay',curform).val());
             if(loanAmount < maxPay){
                 showErrorMessage('最大投资金额不得大于预计出借金额',$('.jq-max-pay',curform));
                 return false;

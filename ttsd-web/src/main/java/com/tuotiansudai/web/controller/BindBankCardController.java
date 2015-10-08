@@ -3,6 +3,8 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.QuickPaymentBank;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -22,9 +24,22 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
+        String bindCardStatus = "unbindCard";
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView view = new ModelAndView("/bind-card");
-        view.addObject("loginName",loginName);
+
+        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard();
+        if (bankCardModel != null){
+            bindCardStatus = "commonBindCard";
+            if(QuickPaymentBank.isQuickPaymentBank(bankCardModel.getBankNumber().toUpperCase())){
+                bindCardStatus = "specialBindCard";
+            }
+            view.addObject("bankNumber",bankCardModel.getBankNumber().toUpperCase());
+            view.addObject("cardNumber",bankCardModel.getCardNumber());
+        }
+        view.addObject("userName",bindBankCardService.getUserName());
+        view.addObject("bindCardStatus",bindCardStatus);
+
         return view;
     }
 
