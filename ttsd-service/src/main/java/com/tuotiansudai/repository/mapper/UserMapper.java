@@ -20,7 +20,7 @@ public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
     void create(UserModel userModel);
-
+    
     void updatePassword(@Param(value = "mobile")String mobile,@Param(value = "password")String password);
 
     void updateUser(UserModel userModel);
@@ -44,4 +44,5 @@ public interface UserMapper {
                                 @Param(value = "referrer") String referrer);
 
 
+    void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 }

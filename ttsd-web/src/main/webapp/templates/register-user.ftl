@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <#import "macro/global.ftl" as global>
 <@global.head title="注册" pageCss="${css.register}">
 </@global.head>
@@ -31,7 +31,7 @@
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(originalFormData.referrer)!}"/>
                 </li>
                 <li>
-                    <input type="checkbox" name='agreement' class='agreement-check' checked="checked">
+                    <input type="checkbox" name='agreement' class='agreement-check' checked="checked" />
                     <span class="agreement-title">
                         同意拓天速贷
                         <a href="javascript:;" class="show-agreement">《服务协议》</a>

@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'jquery.form', 'csrf'], function (_, $) {
 
     var registerUserForm = $(".register-step-one .register-user-form");
     var imageCaptchaForm = $('.image-captcha-dialog .image-captcha-form');
@@ -6,13 +6,16 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
     var fetchCaptchaElement = $('.register-user-form .fetch-captcha');
     var imageCaptchaElement = $('.image-captcha-dialog .image-captcha');
     var imageCaptchaTextElement = $('.image-captcha-dialog .image-captcha-text');
+    var imageCaptchaSubmitElement = $('.image-captcha-dialog .image-captcha-confirm');
 
     fetchCaptchaElement.on('click', function () {
         displayImageCaptchaDialog(true);
+        return false;
     });
 
     $('.image-captcha-dialog .close').on('click', function () {
         displayImageCaptchaDialog(false);
+        return false;
     });
 
     var displayImageCaptchaDialog = function (isShow) {
@@ -211,63 +214,59 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
         return imageCaptchaVerifyFun.call(this, value, element, urlTemplate);
     }, $.validator.format("图形验证码不正确"));
 
-    var sendRegisterCaptcha = function (data) {
-        $.ajax({
-            url: imageCaptchaForm.attr("action"),
-            type: 'post',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8',
-            success: function (response) {
-                if (response.data.status) {
-                    displayImageCaptchaDialog(false);
-                    var seconds = 60;
-                    var count = setInterval(function () {
-                        fetchCaptchaElement.html(seconds + '秒后重新发送').css({
-                            'background': '#666',
-                            'pointer-events': 'none'
-                        });
-                        if (seconds == 0) {
-                            clearInterval(count);
-                            fetchCaptchaElement.html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
-                        }
-                        seconds--;
-                    }, 1000);
-                } else {
-                    var validate = imageCaptchaForm.validate();
-                    validate.resetForm();
-                    validate.checkForm();
-                }
-            }
-        });
-    };
-
     imageCaptchaForm.validate({
         success: 'valid',
         focusCleanup: true,
         focusInvalid: false,
-        onkeyup: false,
         onfocusout: function (element) {
-            this.element(element);
+            if (!this.checkable(element) && !this.optional(element)) {
+                this.element(element);
+            }
         },
-        submitHandler: function (validator) {
-            var mobile = $('.mobile').val();
-            var names = ['imageCaptcha'];
-            var elements = validator.elements;
-            var postData = {"mobile": mobile};
-            _.each(elements, function (element) {
-                if (names.indexOf(element.name) !== -1) {
-                    postData[element.name] = element.value;
+        submitHandler: function (form) {
+            var self = this;
+            $(form).ajaxSubmit({
+                data: {mobile: $('.mobile').val()},
+                dataType: 'json',
+                beforeSubmit: function (arr, $form, options) {
+                    imageCaptchaSubmitElement.addClass("loading");
+                    imageCaptchaSubmitElement.attr("disabled", true);
+                },
+                success: function (response) {
+                    var data = response.data;
+                    if (data.status) {
+                        if (!data.isRestricted) {
+                            displayImageCaptchaDialog(false);
+                            var seconds = 60;
+                            var count = setInterval(function () {
+                                fetchCaptchaElement.html(seconds + '秒后重新发送').css({ 'background': '#666', 'pointer-events': 'none'});
+                                if (seconds == 0) {
+                                    clearInterval(count);
+                                    fetchCaptchaElement.html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
+                                }
+                                seconds--;
+                            }, 1000);
+                        } else {
+                            self.invalid['imageCaptcha'] = true;
+                            self.showErrors({ imageCaptcha: '短信发送频繁，请稍后再试' });
+                            refreshCaptcha();
+                        }
+                    } else {
+                        self.invalid['imageCaptcha'] = true;
+                        self.showErrors({ imageCaptcha: '图形验证码不正确' });
+                        refreshCaptcha();
+                    }
+                },
+                error: function () {
+                    self.invalid['imageCaptcha'] = true;
+                    self.showErrors({imageCaptcha: '图形验证码不正确'});
+                    refreshCaptcha();
+                },
+                complete: function () {
+                    imageCaptchaSubmitElement.removeClass("loading");
+                    imageCaptchaSubmitElement.attr("disabled", false);
                 }
             });
-            sendRegisterCaptcha(postData);
-            return false;
-        },
-        showErrors: function (errorMap, errorList) {
-            this.__proto__.defaultShowErrors.call(this);
-            if (errorMap['imageCaptcha']) {
-                refreshCaptcha();
-            }
         },
         rules: {
             imageCaptcha: {
@@ -288,9 +287,17 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
     registerUserForm.validate({
         focusCleanup: true,
         focusInvalid: false,
-        onkeyup: false,
+        onkeyup: function (element, event) {
+            var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+            if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
+                this.element(element);
+            }
+        },
         onfocusout: function (element) {
-            this.element(element);
+            if (!this.checkable(element) && !this.optional(element)) {
+                this.element(element);
+            }
         },
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);

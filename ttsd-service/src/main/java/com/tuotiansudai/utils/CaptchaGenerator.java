@@ -12,7 +12,7 @@ public class CaptchaGenerator {
 
     public static Captcha generate(int captchaWidth, int captchaHeight) {
         Captcha.Builder captchaBuilder = new Captcha.Builder(captchaWidth, captchaHeight);
-        DefaultWordRenderer wordRenderer = new DefaultWordRenderer(Lists.newArrayList(Color.BLACK), Lists.newArrayList(new Font("Geneva", Font.BOLD, 24)));
+        DefaultWordRenderer wordRenderer = new DefaultWordRenderer(Lists.newArrayList(Color.BLACK), Lists.newArrayList(new Font(Font.MONOSPACED, Font.PLAIN, 24)));
         CurvedLineNoiseProducer noiseProducer = new CurvedLineNoiseProducer(Color.BLACK, 1.0f);
         return captchaBuilder.addText(wordRenderer).addNoise(noiseProducer).addBackground(new GradiatedBackgroundProducer()).build();
     }

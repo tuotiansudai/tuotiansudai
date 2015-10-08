@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
-        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyRegisterCaptcha(dto.getMobile(), dto.getCaptcha());
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
@@ -146,26 +146,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String mobile, String password) {
-        userMapper.updatePassword(mobile, password);
-    }
-
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String oldPassword, String newPassword) {
-        if (StringUtils.isBlank(loginName)) {
-            return false;
-        }
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
             return false;
         }
-        String encOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
-        if (!StringUtils.equals(encOldPassword, userModel.getPassword())) {
+        String encodedOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
+        if (!userModel.getPassword().equals(encodedOldPassword)) {
             return false;
         }
-        String encNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
-        userMapper.updatePassword(userModel.getMobile(), encNewPassword);
+        String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
+        userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
         smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
         return true;
     }
