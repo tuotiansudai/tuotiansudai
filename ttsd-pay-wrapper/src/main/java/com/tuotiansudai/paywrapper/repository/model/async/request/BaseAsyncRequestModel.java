@@ -42,7 +42,7 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel{
                 BaseAsyncRequestModel.CALLBACK_HOST_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
             } catch (IOException e) {
                 logger.error("ttsd-service.properties 不存在!");
-                logger.error(e);
+                logger.error(e.getLocalizedMessage(), e);
             }
         }
     }

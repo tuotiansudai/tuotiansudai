@@ -6,6 +6,7 @@ var require = {
         'jquery.validate': '/js/libs/jquery.validate-1.14.0.min',
         'jquery.form': '/js/libs/jquery.form-3.51.0.min',
         'daterangepicker': '/js/libs/jquery.daterangepicker-0.0.7',
+        'autoNumeric': '/js/libs/autoNumeric-2.0-BETA',
         'mustache': '/js/libs/mustache-2.1.3.min',
         'moment': '/js/libs/moment-2.10.6.min',
         'underscore': '/js/libs/underscore-1.8.3.min',
@@ -15,7 +16,8 @@ var require = {
     'shim': {
         'jquery.validate': ['jquery'],
         'jquery.form': ['jquery'],
-        'jqueryPage': ['jquery']
+        'jqueryPage': ['jquery'],
+        'autoNumeric': ['jquery']
     }
 };
 

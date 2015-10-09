@@ -88,13 +88,21 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                 }).complete(function () {
                     loginSubmitVerify();
                 });
+                return;
             }
+
+            captchaValid = false;
 
             if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
                 captchaValid = false;
                 loginSubmitVerify();
             }
+
+            if (value.length < 5 && $.inArray(event.keyCode, excludedKeys) === -1) {
+                captchaValid = false;
+            }
+            loginSubmitVerify();
         });
 
 
