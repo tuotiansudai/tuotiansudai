@@ -91,9 +91,9 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
         List<InvestLottery> investLotteryList = hibernateTemplate.find("from InvestLottery t where t.user.id = ? and t.type = ? and t.createdTime = ?",
                 new Object[]{invest.getUser().getId(),InvestLotteryType.NORMAL,createdTime});
         int total = 0;
-        if (invest.getInvestMoney() >= 500 && invest.getInvestMoney() < 1500) {
+        if (invest.getInvestMoney() >= 50 && invest.getInvestMoney() < 150) {
             total = 1;
-        } else if (invest.getInvestMoney() >= 1500) {
+        } else if (invest.getInvestMoney() >= 150) {
             total = 3;
         }
         int nowTotal = investLotteryList.size();
