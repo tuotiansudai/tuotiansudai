@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -70,7 +71,9 @@ public class RegisterServiceImpl implements RegisterService {
                 UserRoleModel userRoleModel = new UserRoleModel();
                 userRoleModel.setLoginName(dto.getLoginName());
                 userRoleModel.setRole(Role.INVESTOR);
-                userRoleMapper.create(userRoleModel);
+                List<UserRoleModel> userRoleModels = Lists.newArrayList();
+                userRoleModels.add(userRoleModel);
+                userRoleMapper.createUserRoles(userRoleModels);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
@@ -84,7 +87,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Transactional
-    public BaseDto merRegisterPerson(RegisterAccountDto dto) {
+    public BaseDto reRegister(RegisterAccountDto dto) {
         MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
                 dto.getUserName(),
                 dto.getIdentityNumber(),

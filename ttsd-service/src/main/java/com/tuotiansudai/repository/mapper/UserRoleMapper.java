@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface UserRoleMapper {
 
-    void create(UserRoleModel userRoleModel);
-
     List<UserRoleModel> findByLoginName(String loginName);
 
     void delete(@Param("loginName") String loginName);

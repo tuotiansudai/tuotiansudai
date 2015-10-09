@@ -6,7 +6,7 @@ import com.tuotiansudai.dto.EditUserDto;
 import java.util.Date;
 import java.util.List;
 
-public class UserModel {
+public class UserModel{
 
     private long id;
 
@@ -158,14 +158,6 @@ public class UserModel {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
-    }
-
-    public void convert(EditUserDto editUserDto){
-        this.email = editUserDto.getEmail();
-        this.mobile = editUserDto.getMobile();
-        this.status = editUserDto.getStatus();
-        this.lastModifiedTime = new Date();
-        this.referrer = editUserDto.getReferrer();
     }
 
     public AccountModel getAccount() {

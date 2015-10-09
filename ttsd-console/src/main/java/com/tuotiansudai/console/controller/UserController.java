@@ -3,8 +3,8 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.utils.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/edit-user/{loginName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName) {
         ModelAndView mv = new ModelAndView("/edit-user");
         EditUserDto editUserDto = userService.getUser(loginName);
@@ -29,32 +28,20 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping(value = "/edit-user", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     @ResponseBody
-    public BaseDto<PayDataDto> editUser(@RequestBody EditUserDto editUserDto,HttpServletRequest request) {
-        try {
-            return userService.editUser(editUserDto, request);
-        } catch (Exception e) {
-            BaseDto<PayDataDto> baseDto = new BaseDto<>();
-            PayDataDto payDataDto = new PayDataDto();
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getMessage());
-            baseDto.setSuccess(true);
-            return baseDto;
-        }
+    public BaseDto<PayDataDto> editUser(@ModelAttribute EditUserDto editUserDto,HttpServletRequest request) {
+        String ip = RequestIPParser.getRequestIp(request);
+        return userService.editUser(editUserDto, ip);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    Role role, String referrer, Integer index, Integer pageSize) {
-        if(index == null || index <= 0){
-            index = 1;
-        }
-        if (pageSize == null || pageSize <= 0){
-            pageSize = 10;
-        }
+                                    Role role, String referrer, @RequestParam(value = "index",defaultValue = "1",required = false) int index,
+                                    @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
+
         BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto",baseDto);
@@ -70,29 +57,6 @@ public class UserController {
         List<Role> roleList = Lists.newArrayList(Role.values());
         mv.addObject("roleList",roleList);
         return mv;
-
-    }
-    @RequestMapping(value = "/userstatus",method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto<BaseDataDto> updateUserStatus(String loginName,UserStatus status){
-
-        try {
-            userService.updateStatusByLoginName(loginName, status);
-            BaseDataDto baseDataDto = new BaseDataDto();
-            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-            baseDataDto.setStatus(true);
-            baseDto.setSuccess(true);
-            baseDto.setData(baseDataDto);
-            return baseDto;
-
-        }catch (Exception e){
-            BaseDataDto baseDataDto = new BaseDataDto();
-            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-            baseDataDto.setStatus(false);
-            baseDto.setSuccess(true);
-            baseDto.setData(baseDataDto);
-            return baseDto;
-        }
 
     }
 

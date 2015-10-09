@@ -5,7 +5,7 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.UserInfoLogMapper">
 
     <insert id="create" parameterType="UserInfoLogModel">
-        insert into user_info_log (id,operate_time,login_name,ip,obj_id,description)
-        value(#{id}, #{operateTime}, #{loginName},#{ip},#{objId},#{description})
+        insert into user_info_log (id,operate_time,login_name,ip,description)
+        value(#{id}, #{operateTime}, #{loginName},#{ip},#{description})
     </insert>
 </mapper>

@@ -5,18 +5,17 @@ import java.util.Date;
 
 public class UserInfoLogModel {
 
-    private String id;
+    private long id;
     private Date operateTime;
     private String ip;
-    private String objId;
     private String description;
     private String loginName;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -34,14 +33,6 @@ public class UserInfoLogModel {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public String getObjId() {
-        return objId;
-    }
-
-    public void setObjId(String objId) {
-        this.objId = objId;
     }
 
     public String getDescription() {

@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class UserDataItemDto implements Serializable{
+public class UserItemDataDto implements Serializable{
     private String loginName;
     private String userName;
     private String email;
@@ -83,7 +83,7 @@ public class UserDataItemDto implements Serializable{
         this.status = status;
     }
 
-    public UserDataItemDto(UserModel userModel){
+    public UserItemDataDto(UserModel userModel){
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.referrer = userModel.getReferrer();

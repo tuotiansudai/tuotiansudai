@@ -33,8 +33,8 @@ public interface UserMapper {
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "role") Role role,
                                 @Param(value = "referrer") String referrer,
-                                @Param(value = "limit") Integer limit,
-                                @Param(value = "offset") Integer offset);
+                                @Param(value = "index") Integer index,
+                                @Param(value = "pageSize") Integer pageSize);
 
     int findAllUserCount(@Param(value = "loginName") String loginName,
                                 @Param(value = "email") String email,

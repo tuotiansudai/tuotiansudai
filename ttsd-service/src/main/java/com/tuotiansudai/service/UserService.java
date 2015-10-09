@@ -22,7 +22,7 @@ public interface UserService {
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
-    BaseDto<PayDataDto> merRegisterPersonAccount(RegisterAccountDto dto);
+    BaseDto<PayDataDto> reRegisterAccount(RegisterAccountDto dto);
 
     void saveReferrerRelations(String referrerLoginName, String loginName);
 
@@ -36,7 +36,7 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
 
-    BaseDto<PayDataDto> editUser(EditUserDto editUserDto,HttpServletRequest request);
+    BaseDto<PayDataDto> editUser(EditUserDto editUserDto,String ip);
 
     EditUserDto getUser(String loginName);
 
@@ -44,7 +44,6 @@ public interface UserService {
                 String mobile, Date beginTime, Date endTime,
                 Role role, String referrer, Integer pageIndex, Integer pageSize);
 
-    void updateStatusByLoginName(String loginName,UserStatus status);
 
 
 }

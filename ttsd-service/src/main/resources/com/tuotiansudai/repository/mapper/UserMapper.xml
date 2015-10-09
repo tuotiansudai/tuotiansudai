@@ -57,11 +57,6 @@
     <update id="updatePasswordByLoginName" parameterType="map">
         update user set password = #{password} where login_name = #{loginName}
     </update>
-
-    <update id="updateStatusByLoginName" parameterType="map">
-        update user set status = #{status} where login_name = #{loginName}
-    </update>
-
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
         update user set email = #{email},
                         mobile = #{mobile},
@@ -96,7 +91,7 @@
 
         </where>
         order by a.register_time asc
-        limit #{limit},#{offset}
+        limit #{index},#{pageSize}
     </select>
 
     <select id="findAllUserCount" parameterType="map" resultType="int">

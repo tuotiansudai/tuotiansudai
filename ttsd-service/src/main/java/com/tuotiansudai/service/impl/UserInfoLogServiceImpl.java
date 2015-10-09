@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.UserInfoLogModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.UserInfoLogService;
+import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.UUIDGenerator;
 import org.apache.commons.lang3.ArrayUtils;
@@ -29,7 +30,7 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    private String generateUserInfoString(UserModel userModel,List<UserRoleModel> userRoles) {
+    private String generateDescription(UserModel userModel,List<UserRoleModel> userRoles) {
         UserModel oldUserModel = userMapper.findByLoginName(userModel.getLoginName());
         List<UserRoleModel> oldUserRoles = userRoleMapper.findByLoginName(userModel.getLoginName());
         StringBuffer sb = new StringBuffer();
@@ -56,14 +57,13 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
     @Override
     @Transactional
     public void logUserOperation(UserModel userModel,List<UserRoleModel> userRoles,String userIp) {
-        String description = generateUserInfoString(userModel,userRoles);
+        String description = generateDescription(userModel, userRoles);
         Timestamp operateTime = new Timestamp(System.currentTimeMillis());
         String loginName = LoginUserInfo.getLoginName();
         UserInfoLogModel log = new UserInfoLogModel();
-        log.setId(UUIDGenerator.generate());
+        log.setId(new IdGenerator().generate());
         log.setDescription(description);
         log.setIp(userIp);
-        log.setObjId(userModel.getLoginName());
         log.setOperateTime(operateTime);
         log.setLoginName(loginName);
         userInfoLogMapper.create(log);

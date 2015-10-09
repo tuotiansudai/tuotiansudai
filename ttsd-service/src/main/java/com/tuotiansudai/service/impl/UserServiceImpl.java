@@ -20,15 +20,13 @@ import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.RequestIPParser;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -105,7 +103,9 @@ public class UserServiceImpl implements UserService {
         UserRoleModel userRoleModel = new UserRoleModel();
         userRoleModel.setLoginName(dto.getLoginName().toLowerCase());
         userRoleModel.setRole(Role.USER);
-        this.userRoleMapper.create(userRoleModel);
+        List<UserRoleModel> userRoleModels = Lists.newArrayList();
+        userRoleModels.add(userRoleModel);
+        this.userRoleMapper.createUserRoles(userRoleModels);
 
         String referrerId = dto.getReferrer();
         if (StringUtils.isNotEmpty(referrerId)) {
@@ -128,8 +128,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseDto<PayDataDto> merRegisterPersonAccount(RegisterAccountDto dto) {
-        BaseDto<PayDataDto> baseDto = payWrapperClient.merRegisterPerson(dto);
+    public BaseDto<PayDataDto> reRegisterAccount(RegisterAccountDto dto) {
+        BaseDto<PayDataDto> baseDto = payWrapperClient.reRegister(dto);
         return baseDto;
     }
 
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> editUser(EditUserDto editUserDto,HttpServletRequest request) {
+    public BaseDto<PayDataDto> editUser(EditUserDto editUserDto,String ip) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         String message = checkUser(editUserDto);
@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
                                                                         newMobile,
                                                                         accountModel.getUserName(),
                                                                         accountModel.getIdentityNumber());
-            BaseDto<PayDataDto> accountBaseDto = this.merRegisterPersonAccount(registerAccountDto);
+            BaseDto<PayDataDto> accountBaseDto = this.reRegisterAccount(registerAccountDto);
             if(!accountBaseDto.getData().getStatus()){
                 baseDto.setSuccess(true);
                 payDataDto.setStatus(false);
@@ -202,18 +202,18 @@ public class UserServiceImpl implements UserService {
         }
 
         try {
-            UserModel userModelEdit = (UserModel)this.copy(userModel);
-            userModelEdit.convert(editUserDto);
-            userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
             List<UserRoleModel> userRoles = Lists.newArrayList();
             for(Role role : editUserDto.getRoles()){
                 userRoles.add(new UserRoleModel(editUserDto.getLoginName(),role));
             }
-            String userIp = RequestIPParser.getRequestIp(request);
-            userInfoLogService.logUserOperation(userModelEdit, userRoles, userIp);
+            UserModel userModelEdit = this.modifyUserModel(userModel, editUserDto);
+            userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
+            userInfoLogService.logUserOperation(userModelEdit, userRoles, ip);
             userMapper.updateUser(userModelEdit);
             userRoleMapper.delete(editUserDto.getLoginName());
-            userRoleMapper.createUserRoles(userRoles);
+            if (CollectionUtils.isNotEmpty(userRoles)){
+                userRoleMapper.createUserRoles(userRoles);
+            }
 
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(),e);
@@ -229,6 +229,24 @@ public class UserServiceImpl implements UserService {
         baseDto.setSuccess(true);
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+    private UserModel modifyUserModel(UserModel userModel,EditUserDto editUserDto){
+        UserModel userModelCopy = new UserModel();
+        userModelCopy.setId(userModel.getId());
+        userModelCopy.setLoginName(userModel.getLoginName());
+        userModelCopy.setPassword(userModel.getPassword());
+        userModelCopy.setEmail(editUserDto.getEmail());
+        userModelCopy.setMobile(editUserDto.getMobile());
+        userModelCopy.setRegisterTime(userModel.getRegisterTime());
+        userModelCopy.setLastLoginTime(userModel.getLastLoginTime());
+        userModelCopy.setLastModifiedTime(new Date());
+        userModelCopy.setLastModifiedUser(userModel.getLastModifiedUser());
+        userModelCopy.setAvatar(userModel.getAvatar());
+        userModelCopy.setReferrer(editUserDto.getReferrer());
+        userModelCopy.setStatus(editUserDto.getStatus());
+        userModelCopy.setSalt(userModel.getSalt());
+
+        return userModelCopy;
     }
 
     private String checkUser(EditUserDto editUserDto) {
@@ -308,63 +326,19 @@ public class UserServiceImpl implements UserService {
     public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime, Role role, String referrer, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, (index - 1) * pageSize, pageSize);
-        List<UserDataItemDto> userDataItemDtos = Lists.newArrayList();
+        List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel:userModels){
 
-            UserDataItemDto userDataItemDto = new UserDataItemDto(userModel);
-            userDataItemDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
-            userDataItemDtos.add(userDataItemDto);
+            UserItemDataDto userItemDataDto = new UserItemDataDto(userModel);
+            userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
+            userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer);
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index,pageSize,count,userDataItemDtos);
+        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index,pageSize,count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
         return baseDto;
 
     }
-
-    @Override
-    public void updateStatusByLoginName(String loginName,UserStatus status) {
-        userMapper.updateStatusByLoginName(loginName,status);
-    }
-
-    public Object copy(Object object) throws Exception
-    {
-        Class<?> classType = object.getClass();
-
-        Object objectCopy = classType.getConstructor(new Class[]{}).newInstance(new Object[]{});
-
-        //获得对象的所有成员变量
-        Field[] fields = classType.getDeclaredFields();
-        for(Field field : fields)
-        {
-            //获取成员变量的名字
-            String name = field.getName();    //获取成员变量的名字，此处为id，name,age
-            //System.out.println(name);
-
-            //获取get和set方法的名字
-            String firstLetter = name.substring(0,1).toUpperCase();    //将属性的首字母转换为大写
-            String getMethodName = "get" + firstLetter + name.substring(1);
-            String setMethodName = "set" + firstLetter + name.substring(1);
-            //System.out.println(getMethodName + "," + setMethodName);
-
-            //获取方法对象
-            Method getMethod = classType.getMethod(getMethodName, new Class[]{});
-            Method setMethod = classType.getMethod(setMethodName, new Class[]{field.getType()});//注意set方法需要传入参数类型
-
-            //调用get方法获取旧的对象的值
-            Object value = getMethod.invoke(object, new Object[]{});
-            //调用set方法将这个值复制到新的对象中去
-            setMethod.invoke(objectCopy, new Object[]{value});
-
-        }
-
-        return objectCopy;
-
-    }
-
-
-
-
 
 }
