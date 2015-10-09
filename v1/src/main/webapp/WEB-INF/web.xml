@@ -384,6 +384,18 @@
         <url-pattern>/mobile/*</url-pattern>
         <url-pattern>/special/*</url-pattern>
     </servlet-mapping>
+
+    <filter>
+        <!-- DO NOT change filter-name , Ref com.ttsd.filter.MobileAppClientStatisticsFilter -->
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <url-pattern>/v1.0/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>appDispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
