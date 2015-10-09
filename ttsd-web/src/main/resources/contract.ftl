@@ -3,11 +3,11 @@
 <head>
     <style type="text/css" mce_bogus="1">
 
-        body{font-family: 宋体, SimSun;width: 800px}
+        body{font-family: 宋体, SimSun}
     </style>
 
 </head>
-<body style="font-family: 宋体, SimSun;">
+<body >
 <p><span style="font-family: 宋体, SimSun;">编号：${loanId}</span></p>
 
 <p style="text-align: center;"><span style="font-family: 宋体, SimSun;"><strong><span
@@ -74,12 +74,13 @@
 <p>1.5 工作日：指中华人民共和国法律规定的工作日（法定工作日）。&nbsp;</p>
 
 <p>1.6 提前还款：指在出借人与借款人借贷关系存续期间约定了借款人的本息偿还周期和金额等相关还款
-    计划，借款人可能在协议规定的偿还周期结束前，在某一期将剩余本金提前偿还给出借人，从而使出借人的资金比约定的计划提前收回。</p>
+    计划，借款人可能在协议规定的偿还周期结束前，在某一期将剩余本金提前偿还给出借人，从而使
+    出借人的资金比约定的计划提前收回。</p>
 
 <p><br/></p>
 
 <p><strong>二、甲方向乙方借款，借款信息如下：&nbsp;</strong></p>
-<table data-sort="sortDisabled" style="margin-top: 60px;table-layout:fixed; word-break:break-strict">
+<table data-sort="sortDisabled" style="margin-top: 60px;table-layout:fixed; word-break:break-strict;width: 80%;">
     <tbody>
     <tr class="firstRow">
         <td width="142" valign="top" style="word-break: break-all; border-width: 1px; border-style: solid;">借款用途<br/>
@@ -199,9 +200,9 @@
 
 <p>5.8 对于丙方基于发布资金借款需要而提供给乙方的甲方个人证件、其他相关信用信息及甲方代理人的
     全部相关信息，乙方确保仅用于出借参考，不得向任何甲方、甲方代理人、丙方以外的第三方透露，
-    乙方有义务为甲方个人证件、其他相关信用信息及甲方代理人的全部相关信息、丙方的业务内容进行保
-    密。如乙方未经允许、不恰当地向第三方透露借款人的信用信息或甲方个人信用信息及甲方代理人、丙
-    方的商业秘密，由此对甲方、甲方代理人或丙方造成损失的，由乙方承担全部责任。</p>
+    乙方有义务为甲方个人证件、其他相关信用信息及甲方代理人的全部相关信息、丙方的业务内容进
+    行保密。如乙方未经允许、不恰当地向第三方透露借款人的信用信息或甲方个人信用信息及甲方代
+    理人、丙方的商业秘密，由此对甲方、甲方代理人或丙方造成损失的，由乙方承担全部责任。</p>
 
 <p><br/></p>
 
