@@ -132,8 +132,7 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentUserName",Strings.nullToEmpty(agentAccountModel.getUserName()));
         dataModel.put("agentLoginName",Strings.nullToEmpty(loanModel.getAgentLoginName()));
         dataModel.put("agentIdentityNumber",Strings.nullToEmpty(agentAccountModel.getIdentityNumber()));
-        //dataModel.put("investList",getInvestListTable(loanId,loanModel,contractType));
-        dataModel.put("investList","");
+        dataModel.put("investList",getInvestListTable(loanId,loanModel,contractType));
         dataModel.put("actualMoney",AmountUtil.convertCentToString(loanModel.getLoanAmount()));
 
         dataModel.put("fen", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 0));
