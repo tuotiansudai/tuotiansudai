@@ -102,7 +102,13 @@ public class InvestLotteryServiceImpl implements InvestLotteryService{
             InvestLottery investLottery = luckyDrawRules(invest.getInvestMoney(), this.getInvestLottery(invest, InvestLotteryType.NOVICE));
             investLotterys.add(investLottery);
         } else if ((LoanConstants.LoanActivityType.PT).equals(loan.getLoanActivityType())) {
-            for (int i=0;i < total - nowTotal;i++) {
+            int times = 0;
+            if (total == 1 && nowTotal < 3) {
+                times = 1;
+            } else {
+                times = total - nowTotal;
+            }
+            for (int i=0;i < times;i++) {
                 InvestLottery investLottery = luckyDrawRules(invest.getInvestMoney(),this.getInvestLottery(invest, InvestLotteryType.NORMAL));
                 investLotterys.add(investLottery);
             }
