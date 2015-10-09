@@ -1,7 +1,8 @@
 package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaVerifier;
@@ -11,13 +12,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import static org.mockito.Matchers.any;
@@ -29,14 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml", "classpath:spring-security.xml"})
-public class RegisterControllerTest {
+public class RegisterUserControllerTest {
 
     private MockMvc mockMvc;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @InjectMocks
-    private RegisterController registerController;
+    private RegisterUserController registerUserController;
 
     @Mock
     private UserService userService;
@@ -54,7 +53,7 @@ public class RegisterControllerTest {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setSuffix(".ftl");
 
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.registerController)
+        this.mockMvc = MockMvcBuilders.standaloneSetup(this.registerUserController)
                 .setViewResolvers(viewResolver)
                 .build();
     }
@@ -63,7 +62,7 @@ public class RegisterControllerTest {
     public void shouldMobileIsExist() throws Exception {
         when(userService.mobileIsExist(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/mobile/13900000000/is-exist"))
+        this.mockMvc.perform(get("/register/user/mobile/13900000000/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -74,7 +73,7 @@ public class RegisterControllerTest {
     public void shouldMobileIsNotExist() throws Exception {
         when(userService.mobileIsExist(anyString())).thenReturn(false);
 
-        this.mockMvc.perform(get("/register/mobile/13900000000/is-exist"))
+        this.mockMvc.perform(get("/register/user/mobile/13900000000/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -85,7 +84,7 @@ public class RegisterControllerTest {
     public void shouldLoginNameIsExist() throws Exception {
         when(userService.loginNameIsExist(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/login-name/loginName/is-exist"))
+        this.mockMvc.perform(get("/register/user/login-name/loginName/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -96,7 +95,7 @@ public class RegisterControllerTest {
     public void shouldLoginNameIsNotExist() throws Exception {
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
 
-        this.mockMvc.perform(get("/register/login-name/loginName/is-exist"))
+        this.mockMvc.perform(get("/register/user/login-name/loginName/is-exist"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -105,27 +104,19 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldRegisterUser() throws Exception {
-        RegisterUserDto registerUserDto = new RegisterUserDto();
-        registerUserDto.setLoginName("loginName");
-        registerUserDto.setMobile("13900000000");
-        registerUserDto.setPassword("password1");
-        registerUserDto.setCaptcha("123456");
-        registerUserDto.setAgreement(true);
-        String json = objectMapper.writeValueAsString(registerUserDto);
-
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
 
-        this.mockMvc.perform(post("/register/user").contentType("application/json; charset=UTF-8").content(json))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true));
+        this.mockMvc.perform(post("/register/user")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("loginName", "loginName").param("mobile", "13900000000").param("password", "123abc").param("captcha", "123456").param("agreement", "true"))
+                .andExpect(redirectedUrl("/register/account"));
     }
 
     @Test
     public void shouldVerifyCaptchaIsValid() throws Exception {
-        when(smsCaptchaService.verifyRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
@@ -134,9 +125,9 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldVerifyCaptchaIsInValid() throws Exception {
-        when(smsCaptchaService.verifyRegisterCaptcha(anyString(), anyString())).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
 
-        this.mockMvc.perform(get("/register/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
@@ -145,9 +136,18 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
+
+
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
-        this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
+        this.mockMvc.perform(post("/register/user/send-register-captcha")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
@@ -155,36 +155,46 @@ public class RegisterControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(false);
-        this.mockMvc.perform(get("/register/mobile/13900000000/image-captcha/12345/send-register-captcha")).andExpect(status().isOk())
+        this.mockMvc.perform(post("/register/user/send-register-captcha")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(false));
-
     }
 
     @Test
     public void shouldImageCaptchaVerify() throws Exception {
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
 
-        this.mockMvc.perform(get("/register/image-captcha/12345/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
+        this.mockMvc.perform(get("/register/user/image-captcha/12345/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
     }
 
     @Test
     public void shouldNotFoundWhenMobileIsInvalid() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(false);
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
 
-        this.mockMvc.perform(get("/register/mobile/abc/sendRegisterCaptcha"))
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
+
+        this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void shouldDisplayRegisterTemplate() throws Exception {
-        this.mockMvc.perform(get("/register"))
+    public void shouldDisplayRegisterUserTemplate() throws Exception {
+        this.mockMvc.perform(get("/register/user"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/register"));
+                .andExpect(view().name("/register-user"));
     }
 }

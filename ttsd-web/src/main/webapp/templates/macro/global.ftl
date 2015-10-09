@@ -19,3 +19,11 @@
         async="true"
         data-main="${requestContext.getContextPath()}/js/dest/${pageJavascript}"></script>
 </#macro>
+
+<#macro role hasRole>
+    <@security.authorize access="hasAuthority('${hasRole}')">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+
