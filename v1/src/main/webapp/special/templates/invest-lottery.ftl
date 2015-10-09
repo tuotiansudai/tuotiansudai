@@ -106,12 +106,12 @@
 <div class="layer-box">
     <div class="box bg-1">
         <span class="close"></span>
-        <div class="title">恭喜您抽中 <span></span>礼品</div>
-        <div class="txtv">¥<span></span></div>
+        <div class="title">恭喜您抽中 <span></span></div>
+        <div class="txtv"><span></span></div>
     </div>
     <div class="box bg-2">
         <span class="close"></span>
-        <div class="title">恭喜您获得 <span></span>现金</div>
+        <div class="title">恭喜您获得 <span></span></div>
         <div class="txtv">¥<span></span></div>
     </div>
 </div>
