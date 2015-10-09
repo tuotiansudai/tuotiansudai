@@ -29,7 +29,7 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping(value = "/edit-user", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit-user", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> editUser(@RequestBody EditUserDto editUserDto,HttpServletRequest request) {
         try {
@@ -42,7 +42,6 @@ public class UserController {
             baseDto.setSuccess(true);
             return baseDto;
         }
-
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
