@@ -83,6 +83,11 @@ public class InvestController {
         return dto;
     }
 
+    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
+    public ModelAndView autoInvest(){
+        return autoInvestAuthorize();
+    }
+
     private InvestDetailQueryDto buildInvestDetailQueryDto(Long loanId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, LoanStatus loanStatus, InvestStatus investStatus, Integer index, Integer pageSize, String loginName) {
         InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
         queryDto.setLoanId(loanId);
@@ -108,5 +113,9 @@ public class InvestController {
             queryDto.setPageSize(pageSize);
         }
         return queryDto;
+    }
+
+    private ModelAndView autoInvestAuthorize(){
+        return null;
     }
 }
