@@ -73,15 +73,15 @@ public class UmPaySystemRechargeOteration extends UmPayOperationServiceAbs<Syste
     @Transactional(rollbackFor = Exception.class)
     public TrusteeshipOperation createOperation(SystemRecharge recharge,
                                                 FacesContext facesContext) throws IOException {
-        String orderId = generateId();
+        recharge.setId(generateId());
         Map<String, String> sendMap = assembleSendMap(recharge);
         TrusteeshipOperation trusteeshipOperation = null;
         try {
             // 加密参数
             ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
             // 保存操作记录
-            trusteeshipOperation = createTrusteeshipOperation(orderId, reqData.getUrl(),
-                    orderId,
+            trusteeshipOperation = createTrusteeshipOperation(recharge.getId(), reqData.getUrl(),
+                    recharge.getId(),
                     UmPayConstants.OperationType.TRANSFER_ASYN,
                     GsonUtil.fromMap2Json(reqData.getField()));
             // 发送请求
@@ -189,7 +189,6 @@ public class UmPaySystemRechargeOteration extends UmPayOperationServiceAbs<Syste
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     private String createSystemRechargeOrder(SystemRecharge recharge) {
-        recharge.setId(generateId());
         recharge.setTime(new Date());
         recharge.setStatus(UserConstants.RechargeStatus.WAIT_PAY);
         ht.save(recharge);
