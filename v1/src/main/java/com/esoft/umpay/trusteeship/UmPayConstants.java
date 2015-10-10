@@ -109,6 +109,8 @@ public class UmPayConstants {
 
 		public static final String TRANSFER = "transfer";
 
+		public static final String TRANSFER_ASYN = "transfer_asyn";
+
 		/** 用户查询 */
 		public static final String USER_SEARCH = "user_search";
 		/** 标的查询 */
