@@ -49,16 +49,23 @@ public class UmpaySystemRechargeHome extends EntityHome<SystemRecharge> {
      * 充值
      */
     public void recharge() {
-        if (StringUtils.isEmpty(this.getInstance().getUser().getId())) {
+        SystemRecharge recharge = this.getInstance();
+        if (StringUtils.isEmpty(recharge.getUser().getId())) {
             FacesUtil.addErrorMessage("请选择资金来源账户！");
             return;
         }
-        if (this.getInstance().getMoney() <= 0) {
+        if (recharge.getMoney() <= 0) {
             FacesUtil.addErrorMessage("请输入要充值的金额！");
             return;
         }
+        String remark = "{operator} 从 {user} 账户为平台账户充值 {money} 元"
+                .replace("{operator}", loginUserInfo.getLoginUserId())
+                .replace("{user}", recharge.getUser().getId())
+                .replace("{money}", String.valueOf(recharge.getMoney()));
+        recharge.setRemark(remark);
+
         try {
-            umPaySystemRechargeOteration.createOperation(this.getInstance(), FacesContext.getCurrentInstance());
+            umPaySystemRechargeOteration.createOperation(recharge, FacesContext.getCurrentInstance());
         } catch (IOException e) {
             e.printStackTrace();
         }

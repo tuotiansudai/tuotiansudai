@@ -237,7 +237,7 @@ public class UmPaySystemRechargeOteration extends UmPayOperationServiceAbs<Syste
         ht.update(recharge);
         try {
             systemBillService.transferInto(recharge.getMoney(),
-                    SystemBillConstants.Type.IN,
+                    UserBillConstants.OperatorInfo.ADMIN_OPERATION,
                     recharge.getRemark()
             );
             userBillService.transferOutFromBalance(recharge.getUser().getId(),
