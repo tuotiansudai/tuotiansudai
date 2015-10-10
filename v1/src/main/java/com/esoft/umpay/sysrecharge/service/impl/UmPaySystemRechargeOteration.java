@@ -28,6 +28,8 @@ import com.umpay.api.exception.VerifyException;
 import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.logging.Log;
+import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -182,8 +185,28 @@ public class UmPaySystemRechargeOteration extends UmPayOperationServiceAbs<Syste
     }
 
     private String generateId() {
-        String gid = DateUtil.DateToString(new Date(), DateStyle.YYYYMMDDHHMMSS);
-        gid += RandomStringUtils.randomNumeric(5);
+        String gid = DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD);
+        String hql = "select recharge from SystemRecharge recharge where recharge.id = (select max(rechargeM.id) from SystemRecharge rechargeM where rechargeM.id like ?)";
+        List<SystemRecharge> contractList = ht.find(hql, gid + "%");
+        Integer itemp = 0;
+        if (contractList.size() == 1) {
+            SystemRecharge recharge = contractList.get(0);
+            ht.lock(recharge, LockMode.UPGRADE);
+            Session session = null;
+            try {
+                session = ht.getSessionFactory().openSession();
+                List<SystemRecharge> rechargeList = session.createQuery(hql).setParameter(0, gid + "%").list();
+                String temp = rechargeList.get(0).getId();
+                temp = temp.substring(temp.length() - 6);
+                itemp = Integer.valueOf(temp);
+            } finally {
+                if (session != null) {
+                    session.close();
+                }
+            }
+        }
+        itemp++;
+        gid += String.format("%04d", itemp);
         return gid;
     }
 
