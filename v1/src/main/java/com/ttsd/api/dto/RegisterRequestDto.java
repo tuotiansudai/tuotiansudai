@@ -59,7 +59,7 @@ public class RegisterRequestDto extends BaseParamDto {
         user.setMobileNumber(this.getPhoneNum());
         user.setPassword(this.password);
         user.setReferrer(this.getReferrer());
-        user.setSource(AccessSource.valueOf(super.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
+        user.setSource(AccessSource.valueOf(super.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
         return user;
     }
 }

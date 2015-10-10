@@ -109,7 +109,7 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         invest.setIsAutoInvest(false);
         invest.setLoan(loan);
         invest.setUser(user);
-        invest.setSource(AccessSource.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
+        invest.setSource(AccessSource.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
         return invest;
     }
 

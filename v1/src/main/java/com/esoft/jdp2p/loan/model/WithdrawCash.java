@@ -4,7 +4,6 @@ package com.esoft.jdp2p.loan.model;
 
 import com.esoft.archer.user.model.User;
 import com.esoft.jdp2p.bankcard.model.BankCard;
-import com.ttsd.api.dto.AccessSource;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -64,7 +63,7 @@ public class WithdrawCash implements java.io.Serializable {
 	/** 是否为管理员提现 */
 	private Boolean isWithdrawByAdmin;
 
-	private AccessSource source;
+	private String source;
 
 	// Constructors
 
@@ -223,11 +222,11 @@ public class WithdrawCash implements java.io.Serializable {
 	}
 
 	@Column(name = "source", length = 10)
-	public AccessSource getSource() {
+	public String getSource() {
 		return source;
 	}
 
-	public void setSource(AccessSource source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 }

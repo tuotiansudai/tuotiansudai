@@ -41,7 +41,7 @@ public class UmPayWithdrawHome extends WithdrawHome {
 		try {
 			String userId = loginUserInfo.getLoginUserId();
 			this.getInstance().setUser(new User(userId));
-			this.getInstance().setSource(AccessSource.WEB);
+			this.getInstance().setSource(AccessSource.WEB.name());
 			wcs.applyWithdrawCash(this.getInstance());
 			umPayWithdrawOperation.createOperation(this.getInstance(),
 					FacesContext.getCurrentInstance());

@@ -1,6 +1,5 @@
 package com.esoft.archer.user.model;
 
-import com.ttsd.api.dto.AccessSource;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
@@ -78,7 +77,7 @@ public class User implements java.io.Serializable {
 	 */
 	private Integer loginFailedTimes;
 
-	private AccessSource source;
+	private String source;
 
 	// Constructors
 
@@ -398,11 +397,11 @@ public class User implements java.io.Serializable {
 	}
 
 	@Column(name = "source", length = 10)
-	public AccessSource getSource() {
+	public String getSource() {
 		return source;
 	}
 
-	public void setSource(AccessSource source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 }

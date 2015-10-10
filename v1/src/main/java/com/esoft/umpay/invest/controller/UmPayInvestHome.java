@@ -58,7 +58,7 @@ public class UmPayInvestHome extends InvestHome {
 				this.getInstance().setUser(
 						new User(loginUserInfo.getLoginUserId()));
 				this.getInstance().setIsAutoInvest(false);
-				this.getInstance().setSource(AccessSource.WEB);
+				this.getInstance().setSource(AccessSource.WEB.name());
 				umPayInvestOeration.createOperation(getInstance(),
 						FacesContext.getCurrentInstance());
 			}
@@ -105,7 +105,7 @@ public class UmPayInvestHome extends InvestHome {
 			((Invest) getInstance()).setUser(new User(this.loginUserInfo
 					.getLoginUserId()));
 			((Invest) getInstance()).setIsAutoInvest(Boolean.valueOf(false));
-			((Invest) this.getInstance()).setSource(AccessSource.WEB);
+			((Invest) this.getInstance()).setSource(AccessSource.WEB.name());
 			this.umPayInvestOeration.createOperation((Invest) getInstance(),
 					FacesContext.getCurrentInstance());
 		} catch (UmPayOperationException e) {

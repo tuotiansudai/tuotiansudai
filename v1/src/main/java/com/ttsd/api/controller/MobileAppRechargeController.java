@@ -46,7 +46,7 @@ public class MobileAppRechargeController {
             User user = new User();
             user.setId(userId);
             recharge.setUser(user);
-            recharge.setSource(AccessSource.valueOf(platform.toUpperCase(Locale.ENGLISH)));
+            recharge.setSource(AccessSource.valueOf(platform.toUpperCase(Locale.ENGLISH)).name());
             return umPayRechargeOteration.createOperation(recharge, request);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(),e);

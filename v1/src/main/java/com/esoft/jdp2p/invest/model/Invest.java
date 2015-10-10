@@ -9,7 +9,6 @@ import com.esoft.jdp2p.loan.LoanConstants.RepayStatus;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.repay.model.InvestRepay;
 import com.esoft.jdp2p.repay.model.RepayRoadmap;
-import com.ttsd.api.dto.AccessSource;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -72,7 +71,7 @@ public class Invest implements java.io.Serializable {
 
 	private List<InvestRepay> investRepays = new ArrayList<InvestRepay>(0);
 
-	private AccessSource source;
+	private String source;
 
 	// Constructors
 
@@ -182,11 +181,11 @@ public class Invest implements java.io.Serializable {
 	}
 
 	@Column(name = "source", length = 10)
-	public AccessSource getSource() {
+	public String getSource() {
 		return source;
 	}
 
-	public void setSource(AccessSource source) {
+	public void setSource(String source) {
 		this.source = source;
 	}
 

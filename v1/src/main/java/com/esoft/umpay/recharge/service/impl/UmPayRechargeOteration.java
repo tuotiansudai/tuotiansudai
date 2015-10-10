@@ -74,7 +74,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(Recharge recharge,
 			FacesContext facesContext,boolean isOpenFastPayment) throws IOException {
-		recharge.setSource(AccessSource.WEB);
+		recharge.setSource(AccessSource.WEB.name());
 		Map<String,String> sendMap = assembleSendMap(recharge, isOpenFastPayment, null, false);
 		// 保存操作记录
 		TrusteeshipOperation trusteeshipOperation = null;

@@ -107,7 +107,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         withdrawCash.setCashFine(0D);
         withdrawCash.setMoney(money);
         withdrawCash.setBankCard(bankCard);
-        withdrawCash.setSource(accessSource);
+        withdrawCash.setSource(accessSource.name());
         withdrawCashService.applyWithdrawCash(withdrawCash);
 
         ReqData reqData = umPayWithdrawOperation.createOperation_mobile(withdrawCash);
