@@ -6,11 +6,12 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
         amountElement.autoNumeric("init");
 
         amountElement.keyup(function () {
-            var amount = amountElement.val();
-            if (amount.length > 0 && amount !== '0') {
-                submitElement.removeClass('grey').attr('disabled', false);
-            } else {
+            var amount = parseFloat(amountElement.val());
+
+            if (isNaN(amount) || amount === 0) {
                 submitElement.addClass('grey').attr('disabled', true);
+            } else {
+                submitElement.removeClass('grey').attr('disabled', false);
             }
         });
 
