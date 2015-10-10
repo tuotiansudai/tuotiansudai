@@ -234,28 +234,35 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.form', 'csrf'], func
                 },
                 success: function (response) {
                     var data = response.data;
-                    if (data.status) {
-                        if (!data.isRestricted) {
-                            displayImageCaptchaDialog(false);
-                            var seconds = 60;
-                            var count = setInterval(function () {
-                                fetchCaptchaElement.html(seconds + '秒后重新发送').css({ 'background': '#666', 'pointer-events': 'none'});
-                                if (seconds == 0) {
-                                    clearInterval(count);
-                                    fetchCaptchaElement.html('重新发送').css({'background': '#f68e3a', 'pointer-events': 'auto'});
-                                }
-                                seconds--;
-                            }, 1000);
-                        } else {
-                            self.invalid['imageCaptcha'] = true;
-                            self.showErrors({ imageCaptcha: '短信发送频繁，请稍后再试' });
-                            refreshCaptcha();
-                        }
-                    } else {
-                        self.invalid['imageCaptcha'] = true;
-                        self.showErrors({ imageCaptcha: '图形验证码不正确' });
-                        refreshCaptcha();
+                    if (data.status && !data.isRestricted) {
+                        displayImageCaptchaDialog(false);
+                        var seconds = 60;
+                        var count = setInterval(function () {
+                            fetchCaptchaElement.html(seconds + '秒后重新发送').css({
+                                'background': '#666',
+                                'pointer-events': 'none'
+                            });
+                            if (seconds == 0) {
+                                clearInterval(count);
+                                fetchCaptchaElement.html('重新发送').css({
+                                    'background': '#f68e3a',
+                                    'pointer-events': 'auto'
+                                });
+                            }
+                            seconds--;
+                        }, 1000);
+                        return;
                     }
+
+                    if (!data.status && data.isRestricted) {
+                        self.showErrors({imageCaptcha: '短信发送频繁，请稍后再试'});
+                    }
+
+                    if (!data.status && !data.isRestricted) {
+                        self.showErrors({imageCaptcha: '图形验证码不正确'});
+                    }
+                    self.invalid['imageCaptcha'] = true;
+                    refreshCaptcha();
                 },
                 error: function () {
                     self.invalid['imageCaptcha'] = true;
