@@ -30,6 +30,7 @@ import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.redis.RedisClient;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -795,6 +796,7 @@ public class UserServiceImpl implements UserService {
 	public void registerByMobileNumber(User user, String authCode,
 			String referrer) throws NoMatchingObjectsException,
 			AuthInfoOutOfDateException, AuthInfoAlreadyActivedException {
+		user.setSource(AccessSource.WEB);
 		registerByMobileNumber(user, authCode);
 		saveReferrerRelations(user);
 		saveReferrerInfo(user.getId(), referrer);

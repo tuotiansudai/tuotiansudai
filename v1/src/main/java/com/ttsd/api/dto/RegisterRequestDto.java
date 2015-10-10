@@ -3,6 +3,8 @@ package com.ttsd.api.dto;
 
 import com.esoft.archer.user.model.User;
 
+import java.util.Locale;
+
 public class RegisterRequestDto extends BaseParamDto {
     private String userName;
     private String phoneNum;
@@ -57,6 +59,7 @@ public class RegisterRequestDto extends BaseParamDto {
         user.setMobileNumber(this.getPhoneNum());
         user.setPassword(this.password);
         user.setReferrer(this.getReferrer());
+        user.setSource(AccessSource.valueOf(super.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)));
         return user;
     }
 }

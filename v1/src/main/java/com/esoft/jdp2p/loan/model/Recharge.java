@@ -4,6 +4,7 @@ package com.esoft.jdp2p.loan.model;
 
 import com.esoft.archer.user.model.User;
 import com.esoft.jdp2p.coupon.model.UserCoupon;
+import com.ttsd.api.dto.AccessSource;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -38,6 +39,8 @@ public class Recharge implements java.io.Serializable {
 	private boolean isRechargedByAdmin;
 
 	private String remark;
+
+	private AccessSource source;
 
 	// Constructors
 
@@ -160,4 +163,12 @@ public class Recharge implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	@Column(name = "source", length = 10)
+	public AccessSource getSource() {
+		return source;
+	}
+
+	public void setSource(AccessSource source) {
+		this.source = source;
+	}
 }

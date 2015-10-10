@@ -1,13 +1,5 @@
 package com.esoft.umpay.invest.controller;
 
-import java.io.IOException;
-import java.util.Date;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-
-import org.apache.commons.logging.Log;
-
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
@@ -18,6 +10,13 @@ import com.esoft.jdp2p.invest.service.InvestService;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.umpay.invest.service.impl.UmPayInvestOeration;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.ttsd.api.dto.AccessSource;
+import org.apache.commons.logging.Log;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public class UmPayInvestHome extends InvestHome {
@@ -59,6 +58,7 @@ public class UmPayInvestHome extends InvestHome {
 				this.getInstance().setUser(
 						new User(loginUserInfo.getLoginUserId()));
 				this.getInstance().setIsAutoInvest(false);
+				this.getInstance().setSource(AccessSource.WEB);
 				umPayInvestOeration.createOperation(getInstance(),
 						FacesContext.getCurrentInstance());
 			}
@@ -105,6 +105,7 @@ public class UmPayInvestHome extends InvestHome {
 			((Invest) getInstance()).setUser(new User(this.loginUserInfo
 					.getLoginUserId()));
 			((Invest) getInstance()).setIsAutoInvest(Boolean.valueOf(false));
+			((Invest) this.getInstance()).setSource(AccessSource.WEB);
 			this.umPayInvestOeration.createOperation((Invest) getInstance(),
 					FacesContext.getCurrentInstance());
 		} catch (UmPayOperationException e) {

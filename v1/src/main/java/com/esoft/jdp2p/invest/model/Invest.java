@@ -2,26 +2,6 @@ package com.esoft.jdp2p.invest.model;
 
 // default package
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import com.esoft.archer.user.model.User;
 import com.esoft.core.util.ArithUtil;
 import com.esoft.jdp2p.coupon.model.UserCoupon;
@@ -29,6 +9,14 @@ import com.esoft.jdp2p.loan.LoanConstants.RepayStatus;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.repay.model.InvestRepay;
 import com.esoft.jdp2p.repay.model.RepayRoadmap;
+import com.ttsd.api.dto.AccessSource;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Investment entity. 投资实体
@@ -83,6 +71,8 @@ public class Invest implements java.io.Serializable {
 			0);
 
 	private List<InvestRepay> investRepays = new ArrayList<InvestRepay>(0);
+
+	private AccessSource source;
 
 	// Constructors
 
@@ -189,6 +179,15 @@ public class Invest implements java.io.Serializable {
 	@JoinColumn(name = "user_coupon")
 	public UserCoupon getUserCoupon() {
 		return userCoupon;
+	}
+
+	@Column(name = "source", length = 10)
+	public AccessSource getSource() {
+		return source;
+	}
+
+	public void setSource(AccessSource source) {
+		this.source = source;
 	}
 
 	public void setUserCoupon(UserCoupon userCoupon) {

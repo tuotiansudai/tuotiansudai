@@ -1,16 +1,15 @@
 package com.esoft.archer.user.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-
-import com.google.common.collect.Lists;
+import com.ttsd.api.dto.AccessSource;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User entity. 用户，包括系统管理员；暂定username和id为相同值
@@ -78,6 +77,8 @@ public class User implements java.io.Serializable {
 	 * 用户登录失败次数
 	 */
 	private Integer loginFailedTimes;
+
+	private AccessSource source;
 
 	// Constructors
 
@@ -394,5 +395,14 @@ public class User implements java.io.Serializable {
 
 	public void setLoginFailedTimes(Integer loginFailedTimes) {
 		this.loginFailedTimes = loginFailedTimes;
+	}
+
+	@Column(name = "source", length = 10)
+	public AccessSource getSource() {
+		return source;
+	}
+
+	public void setSource(AccessSource source) {
+		this.source = source;
 	}
 }
