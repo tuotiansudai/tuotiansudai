@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -112,22 +113,27 @@ public class InvestController {
     }
 
     @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
-    public ModelAndView autoInvest() {
-        return autoInvestAuthorize();
+    public String autoInvest() {
+        return "redirect:/investor/auto-invest/agreement";
     }
 
-    private ModelAndView autoInvestAuthorize() {
-        return null;
-    }
-
-    private ModelAndView autoInvestPlan() {
-        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
-        ModelAndView mv = new ModelAndView("/auto-invest-plan");
+    @RequestMapping(value = "/investor/auto-invest/agreement", method = RequestMethod.GET)
+    private ModelAndView autoInvestAgreement() {
+        ModelAndView mv = new ModelAndView("/auto-invest-agreement");
         return mv;
     }
 
-    @RequestMapping(value = "/investor/auto-invest/enable", method = RequestMethod.POST)
-    public String enableAutoInvestPlan(long minInvestAmount, long maxInvestAmount, long retentionAmount, int autoInvestPeriods) {
+    @RequestMapping(value = "/investor/auto-invest/plan", method = RequestMethod.GET)
+    public ModelAndView autoInvestPlan() {
+        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        ModelAndView mv = new ModelAndView("/auto-invest-plan");
+        mv.addObject("model", model);
+        mv.addObject("periods", AutoInvestMonthPeriod.AllPeriods);
+        return mv;
+    }
+
+    @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
+    public String turnOnAutoInvestPlan(long minInvestAmount, long maxInvestAmount, long retentionAmount, int autoInvestPeriods) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setLoginName(LoginUserInfo.getLoginName());
         model.setMinInvestAmount(minInvestAmount);
@@ -138,8 +144,8 @@ public class InvestController {
         return "redirect:/investor/auto-invest";
     }
 
-    @RequestMapping(value = "/investor/auto-invest/disable", method = RequestMethod.POST)
-    public String disableAutoInvestPlan() {
+    @RequestMapping(value = "/investor/auto-invest/turn-off", method = RequestMethod.POST)
+    public String turnOffAutoInvestPlan() {
         investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
         return "redirect:/investor/auto-invest";
     }

@@ -134,7 +134,7 @@ public class InvestServiceImpl implements InvestService {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return autoInvestPlanMapper.findEnabledPlanByPeriod(period.intValue(), cal.getTime());
+        return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
     }
 
 }
