@@ -1,8 +1,8 @@
-package com.tuotiansudai.paywrapper.repository.model.sync.request;
+package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.*;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -44,8 +44,8 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
-        model.retUrl = "/";
-        model.notifyUrl = "/callback/repay_notify";
+        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "/");
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "/repay_notify");
         model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.LOANER.getCode();

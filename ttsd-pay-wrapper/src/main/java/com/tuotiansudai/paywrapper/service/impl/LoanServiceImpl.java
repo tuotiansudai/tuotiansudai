@@ -14,7 +14,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -236,7 +236,6 @@ public class LoanServiceImpl implements LoanService {
                         invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS);
             } catch (Exception e) {
                 logger.error("transferOutFreeze Fail while loan out, invest [" + invest.getId() + "]", e);
-                continue;
             }
         }
     }
@@ -409,15 +408,8 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processLoanStatusForLoanOut(LoanModel loan) {
-        // 修改当前传入的 loan 对象，以便其它方法处理 loan 的数据
         loan.setRecheckTime(new Date());
         loan.setStatus(LoanStatus.REPAYING);
-
-        // 构造新的 loan 对象，只应修改 recheckTime 和 status
-        LoanModel loan4update = new LoanModel();
-        loan4update.setId(loan.getId());
-        loan4update.setRecheckTime(loan.getRecheckTime());
-        loan4update.setStatus(loan.getStatus());
-        loanMapper.update(loan4update);
+        loanMapper.update(loan);
     }
 }

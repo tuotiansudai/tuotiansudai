@@ -41,7 +41,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Override
     @Transactional
-    public BaseDto getReferrerReward(ReferrerRewardDto referrerRewardDto) {
+    public BaseDto<PayDataDto> getReferrerReward(ReferrerRewardDto referrerRewardDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         long orderId = referrerRewardDto.getOrderId();
         String referrerLoginName = referrerRewardDto.getReferrerLoginName();
