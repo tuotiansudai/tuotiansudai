@@ -3,6 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -117,5 +118,10 @@ public class InvestController {
 
     private ModelAndView autoInvestAuthorize(){
         return null;
+    }
+
+    private ModelAndView autoInvestPlan(){
+        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        ModelAndView mv = new ModelAndView()
     }
 }

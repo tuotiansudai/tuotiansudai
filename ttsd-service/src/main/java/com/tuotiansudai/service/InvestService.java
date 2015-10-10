@@ -1,6 +1,10 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.utils.AutoInvestMonthPeriod;
+
+import java.util.List;
 
 public interface InvestService {
 
@@ -18,4 +22,12 @@ public interface InvestService {
      * @return
      */
     BasePaginationDataDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay);
+
+    void turnOnAutoInvest(AutoInvestPlanModel model);
+
+    void turnOffAutoInvest(String loginName);
+
+    AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
+
+    List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 }
