@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.UserModel;
-import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,4 +16,6 @@ public interface UserMapper {
     UserModel findByLoginNameOrMobile(String loginNameOrMobile);
 
     void create(UserModel userModel);
+
+    void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 }

@@ -16,4 +16,16 @@ public interface UserService {
     boolean loginNameIsExist(String loginName);
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
+
+    void saveReferrerRelations(String referrerLoginName, String loginName);
+
+    /**
+     * 修改用户密码
+     *
+     * @param loginName        用户名
+     * @param oldPasswordPlain 用户目前的密码（明文）
+     * @param newPasswordPlain 新密码（明文）
+     * @return 修改成功返回 true , 修改失败返回 false
+     */
+    boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
 }

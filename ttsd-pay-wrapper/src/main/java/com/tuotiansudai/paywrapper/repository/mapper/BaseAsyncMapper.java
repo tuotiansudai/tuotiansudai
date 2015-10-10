@@ -1,12 +1,10 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
-import org.apache.ibatis.annotations.Param;
+import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 
 public interface BaseAsyncMapper {
 
-    BaseAsyncModel findById(Long id);
+    BaseAsyncRequestModel findById(Long id);
 
-    void create(BaseAsyncModel model);
+    void create(BaseAsyncRequestModel model);
 }

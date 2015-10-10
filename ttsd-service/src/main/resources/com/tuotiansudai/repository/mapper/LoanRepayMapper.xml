@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoanRepayMapper">
+
+    <resultMap id="loanRepayResultMap" type="LoanRepayModel">
+        <id column="id" property="id"/>
+        <result column="loan_id" property="loanId"/>
+        <result column="corpus" property="corpus"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="period" property="period"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="actual_repay_date" property="actualRepayDate"/>
+        <result column="status" property="status"/>
+        <result column="created_time" property="createdTime"/>
+        <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
+            <id property="id" column="id"/>
+            <result column="name" property="name"></result>
+            <result column="agent" property="agentLoginName"></result>
+            <result column="loaner" property="loanerLoginName"></result>
+            <result column="type" property="type"></result>
+            <result column="periods" property="periods"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="description_text" property="descriptionText"></result>
+            <result column="description_html" property="descriptionHtml"></result>
+            <result column="base_rate" property="baseRate"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+            <result column="invest_fee_rate" property="investFeeRate"></result>
+            <result column="min_invest_amount" property="minInvestAmount"></result>
+            <result column="invest_increasing_amount" property="investIncreasingAmount"></result>
+            <result column="max_invest_amount" property="maxInvestAmount"></result>
+            <result column="activity_type" property="activityType"></result>
+            <result column="activity_rate" property="activityRate"></result>
+            <result column="contract_id" property="contractId"></result>
+            <result column="fundraising_start_time" property="fundraisingStartTime"></result>
+            <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+            <result column="show_on_home" property="showOnHome"></result>
+            <result column="created_time" property="createdTime"></result>
+            <result column="verify_time" property="verifyTime"></result>
+            <result column="recheck_time" property="recheckTime"></result>
+            <result column="status" property="status"></result>
+            <result column="loan_amount" property="loanAmount"></result>
+
+        </association>
+    </resultMap>
+
+    <sql id="columns">
+        id, loan_id, corpus, default_interest, expected_interest, actual_interest, period, repay_date, actual_repay_date, status, created_time
+    </sql>
+
+    <insert id="create" parameterType = "java.util.List">
+        insert into loan_repay ( <include refid="columns"></include> )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id},#{item.loanId},#{item.corpus},#{item.defaultInterest},#{item.expectedInterest},#{item.actualInterest},#{item.period},#{item.repayDate},#{item.actualRepayDate},#{item.status},#{item.createdTime})
+        </foreach>
+    </insert>
+
+    <select id="findLoanRepayPagination" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay a join loan b on a.loan_id = b.id
+        <where>
+            <if test="loanId !=null  ">
+              a.loan_id = #{loanId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and b.loaner like '${loginName}%']]>
+            </if>
+            <if test="repayStartDate !=null and repayStartDate !=''" >
+                and a.repay_date >= #{repayStartDate}
+            </if>
+            <if test="repayEndDate !=null and repayEndDate !='' ">
+                and a.repay_date &lt;= #{repayEndDate}
+            </if>
+
+            <if test="repayStatus !=null">
+                and a.status  = #{repayStatus}
+            </if>
+        </where>
+        order by a.repay_date asc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findLoanRepayCount" parameterType="map" resultType="int">
+        select count(1) from loan_repay a join loan b on a.loan_id = b.id
+        <where>
+            <if test="loanId !=null ">
+                a.loan_id = #{loanId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and b.loaner like '${loginName}%']]>
+            </if>
+            <if test="repayStartDate !=null and repayStartDate !=''" >
+                and a.repay_date >= #{repayStartDate}
+            </if>
+            <if test="repayEndDate !=null and repayEndDate !='' ">
+                and a.repay_date &lt;= #{repayEndDate}
+            </if>
+
+            <if test="repayStatus !=null">
+                and a.status  = #{repayStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where id = #{id}
+    </select>
+
+    <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} order by period asc
+    </select>
+
+    <select id="findByLoanerAndLoanId" parameterType="map" resultMap="loanRepayResultMap">
+        select loan_repay.* from loan_repay join loan on loan_repay.loan_id = loan.id
+        where loan.id= #{loanId} and loan.loaner_login_name = #{loanerLoginName}
+        order by period asc
+    </select>
+
+    <select id="findEnabledRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        <![CDATA[
+        select *
+        from
+            loan_repay enabled_repay
+        where
+            enabled_repay.loan_id = #{loanId}
+            and (
+                (exists(select 1
+                        from loan
+                        where loan.id = #{loanId} and status = 'REPAYING')
+                 and enabled_repay.status = 'REPAYING'
+                 and enabled_repay.period = (select min(period)
+                                             from loan_repay future_repay
+                                             where future_repay.loan_id = #{loanId} and
+                                                   date(future_repay.repay_date) >= date(now())))
+
+                or (exists(select 1
+                           from loan
+                           where loan.id = #{loanId} and status = 'OVERDUE')
+                    and enabled_repay.status = 'OVERDUE'
+                    and enabled_repay.period = (select min(period)
+                                                from loan_repay overdue_repay
+                                                where overdue_repay.loan_id = #{loanId} and
+                                                      overdue_repay.status = 'OVERDUE')))
+        ]]>
+    </select>
+
+    <select id="findByLoanIdAndPeriod" parameterType="map" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and period = #{period}
+    </select>
+
+    <update id="update" parameterType="LoanRepayModel">
+        update loan_repay set corpus = #{corpus}, actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
+    </update>
+</mapper>

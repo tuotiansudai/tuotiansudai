@@ -40,4 +40,8 @@
       insert into user (login_name, password, mobile, email, register_time, referrer, status, salt)
       value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt})
     </insert>
+
+    <update id="updatePasswordByLoginName" parameterType="map">
+        update user set password = #{password} where login_name = #{loginName}
+    </update>
 </mapper>

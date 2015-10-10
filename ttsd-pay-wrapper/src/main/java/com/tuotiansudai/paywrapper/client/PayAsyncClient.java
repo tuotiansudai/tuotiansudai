@@ -8,15 +8,15 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseAsyncMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BaseCallbackMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.BaseAsyncRequestModel;
 import com.tuotiansudai.utils.SpringContextUtil;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
-import com.umpay.api.paygate.v40.Mer2Plat_v40;
-import com.umpay.api.paygate.v40.Plat2Mer_v40;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,12 +29,21 @@ import java.util.Map;
 @Component
 public class PayAsyncClient {
 
-    static Logger logger = Logger.getLogger(PaySyncClient.class);
+    static Logger logger = Logger.getLogger(PayAsyncClient.class);
+
+    @Value(value = "${ump.callback.web.host}")
+    private String webCallback;
+
+    @Value(value = "${ump.callback.back.host}")
+    private String backCallback;
+
+    @Autowired
+    PayGateWrapper payGateWrapper;
 
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
-                                                    BaseAsyncModel requestModel) throws PayException {
+                                                    BaseAsyncRequestModel requestModel) throws PayException {
         try {
-            ReqData reqData = Mer2Plat_v40.makeReqDataByPost(requestModel.generatePayRequestData());
+            ReqData reqData = payGateWrapper.makeReqDataByPost(requestModel.generatePayRequestData());
             Map field = reqData.getField();
             requestModel.setSign(reqData.getSign());
             requestModel.setRequestUrl(reqData.getUrl());
@@ -60,7 +69,7 @@ public class PayAsyncClient {
                                                          Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> platNotifyData = Plat2Mer_v40.getPlatNotifyData(paramsMap);
+            Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
             Map<String, String> newPlatNotifyData = Maps.newHashMap();
             for (String key : platNotifyData.keySet()) {
                 StringBuilder newKeyBuilder = new StringBuilder();
@@ -87,18 +96,18 @@ public class PayAsyncClient {
 
     @Transactional(value = "payTransactionManager")
     private void createRequest(Class<? extends BaseAsyncMapper> baseMapperClass,
-                               BaseAsyncModel requestModel) {
+                               BaseAsyncRequestModel requestModel) {
         BaseAsyncMapper mapper = (BaseAsyncMapper) this.getMapperByClass(baseMapperClass);
         mapper.create(requestModel);
     }
 
     @Transactional(value = "payTransactionManager")
     private BaseCallbackRequestModel createCallbackRequest(Class<? extends BaseCallbackMapper> baseMapperClass,
-                                                    BaseCallbackRequestModel requestModel) {
+                                                           BaseCallbackRequestModel requestModel) {
         BaseCallbackMapper mapper = (BaseCallbackMapper) this.getMapperByClass(baseMapperClass);
         requestModel.setResponseTime(new Date());
         Map<String, String> map = requestModel.generatePayResponseData();
-        String notifyResData = Mer2Plat_v40.merNotifyResData(map);
+        String notifyResData = payGateWrapper.merNotifyResData(map);
         requestModel.setResponseData(notifyResData);
         mapper.create(requestModel);
         return requestModel;

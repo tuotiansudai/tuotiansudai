@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'org.flywaydb.flyway'
 
 version = '1.0'
 
@@ -12,19 +13,99 @@ sourceSets {
     test.runtimeClasspath += configurations.providedCompile
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.2.1'
+    }
+}
+
 dependencies {
     def springSecurityVersion = '4.0.2.RELEASE'
     compile fileTree(dir: 'libs', include: '**/*.jar'),
             "org.springframework.security:spring-security-config:$springSecurityVersion",
-            "org.springframework.security:spring-security-web:$springSecurityVersion"
+            "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
+
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 
     compile fileTree(dir: 'libs', include: '**/*.jar')
 }
 
-jar {
-    from('/workspace/new_version_config/ttsd-service/') {
+processResources.outputs.upToDateWhen { false }
+
+processResources {
+    def configFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
+    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service/ttsd-service.properties')
+    if (outerConfigFile.isFile()) {
+        configFilePath = outerConfigFile.getPath()
+    }
+    from(configFilePath) {
+        filter { String line ->
+            if (project.hasProperty("dbhost") && line.startsWith("jdbc.host=")) {
+                return "jdbc.host=${dbhost}"
+            }
+
+            if (project.hasProperty("dbport") && line.startsWith("jdbc.port=")) {
+                return "jdbc.port=${dbport}"
+            }
+
+            if (project.hasProperty("redishost") && line.startsWith("redis.host=")) {
+                return "redis.host=${redishost}"
+            }
+
+            if (project.hasProperty("redisport") && line.startsWith("redis.port=")) {
+                return "redis.port=${redisport}"
+            }
+            line
+        }
         into '/'
     }
+}
+
+/**
+ * parameter: dbhost dbport database
+ * dbhost default value: ttsd-service.properties jdbc.host
+ * dbport default value: ttsd-service.properties jdbc.port
+ * database default value: aa
+ * example: gradle -Pdbhost=192.168.33.10 -Pdbport=3306 -Pdatabase=aa ttsd-service:flywayMigrate
+ *
+ */
+flyway {
+    def sourcePropertiesFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
+    def buildPropertiesFilePath = "${project.buildDir.getPath()}/resources/main/ttsd-service.properties"
+    def properties = new Properties()
+
+    def sourceFile = new File(sourcePropertiesFilePath)
+    if (sourceFile.isFile()) {
+        properties.load(new FileInputStream(sourceFile))
+    }
+
+    def buildFile = new File(buildPropertiesFilePath)
+    if (buildFile.isFile()) {
+        properties.load(new FileInputStream(buildFile))
+    }
+
+    def defaultDatabase = 'aa'
+    def defaultHost = properties.getProperty("jdbc.host")
+    def defaultPort = properties.getProperty("jdbc.port")
+    if (project.hasProperty('database')) {
+        defaultDatabase = database;
+    }
+    if (project.hasProperty('dbhost')) {
+        defaultHost = dbhost;
+    }
+    if (project.hasProperty('dbport')) {
+        defaultPort = dbport;
+    }
+    outOfOrder = true
+    locations = ["filesystem:db_migration/${defaultDatabase}"]
+    schemas = ["${defaultDatabase}"]
+
+    url = "jdbc:mysql://${defaultHost}:${defaultPort}"
+    user = properties.getProperty("jdbc.username")
+    password = properties.getProperty("jdbc.password")
 }
