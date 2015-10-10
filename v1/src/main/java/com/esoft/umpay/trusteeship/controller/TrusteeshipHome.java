@@ -14,6 +14,7 @@ import com.esoft.umpay.recharge.service.impl.UmPayRechargeOteration;
 import com.esoft.umpay.repay.service.impl.UmPayNormalRepayOperation;
 import com.esoft.umpay.repay.service.impl.UmPayOverdueRepayOperation;
 import com.esoft.umpay.repay.service.impl.UmpayAdvanceRepayOperation;
+import com.esoft.umpay.sysrecharge.service.impl.UmPaySystemRechargeOteration;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
@@ -62,6 +63,9 @@ public class TrusteeshipHome {
 	@Resource
 	UmPayBindingAgreementOperation umPayBindingAgreementOperation;
 
+	@Resource
+	UmPaySystemRechargeOteration umPaySystemRechargeOteration;
+
 	@Logger
 	static Log log;
 
@@ -96,6 +100,8 @@ public class TrusteeshipHome {
 			return this.replaceBankCardWeb(false);
 		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			return this.bindingAgreementWeb(false);
+		} else if(UmPayConstants.OperationType.TRANSFER_ASYN.equals(this.operationType)){
+			return this.transferAsynWeb();
 		}
 		return "404";
 	}
@@ -164,6 +170,8 @@ public class TrusteeshipHome {
 			this.S2S(umPayReplaceBankCardOperation);
 		} else if (UmPayConstants.OperationType.PTP_MER_BIND_AGREEMENT.equals(this.operationType)) {
 			this.S2S(umPayBindingAgreementOperation);
+		} else if (UmPayConstants.OperationType.TRANSFER_ASYN.equals(this.operationType)) {
+			this.S2S(umPaySystemRechargeOteration);
 		}
 	}
 
@@ -363,6 +371,19 @@ public class TrusteeshipHome {
 		}else {
 			return "pretty:userCenter";
 		}
+	}
+
+	private String transferAsynWeb() {
+		try {
+			umPaySystemRechargeOteration.receiveOperationPostCallback(FacesUtil.getHttpServletRequest());
+			FacesUtil.setRequestAttribute("callback_status","success");
+			FacesUtil.addInfoMessage("银行已经接受您的请求!");
+		} catch (TrusteeshipReturnException e) {
+			FacesUtil.setRequestAttribute("callback_status","fail");
+			FacesUtil.addErrorMessage("平台充值失败: " + e.getLocalizedMessage());
+		}
+		FacesUtil.addMessagesOutOfJSFLifecycle(FacesUtil.getCurrentInstance());
+		return "/admin/fund/systemBillEdit.htm";
 	}
 
 	/**
