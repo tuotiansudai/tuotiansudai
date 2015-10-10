@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 public class RegisterCaptchaDto {
 
     @NotEmpty
-    @Pattern(regexp = "^\\d{11}$}$")
+    @Pattern(regexp = "^\\d{11}$")
     private String mobile;
 
     @NotEmpty

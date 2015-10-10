@@ -27,9 +27,6 @@ public class LoginController {
     static Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private CaptchaVerifier captchaVerifier;
 
     @RequestMapping(method = RequestMethod.GET)

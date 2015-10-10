@@ -41,7 +41,7 @@
       value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt})
     </insert>
 
-    <update id="updatePassword" parameterType="map">
-        update user set password = #{password} where mobile = #{mobile}
+    <update id="updatePasswordByLoginName" parameterType="map">
+        update user set password = #{password} where login_name = #{loginName}
     </update>
 </mapper>

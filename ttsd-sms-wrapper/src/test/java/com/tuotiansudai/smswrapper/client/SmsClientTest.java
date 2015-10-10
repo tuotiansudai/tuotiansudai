@@ -3,6 +3,8 @@ package com.tuotiansudai.smswrapper.client;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
 import okio.Buffer;
 import org.junit.After;
@@ -52,7 +54,7 @@ public class SmsClientTest {
 
         String mobile = "13900000000";
         String content = "content";
-        boolean actualResult = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content,false,"127.0.0.1");
+        BaseDto<SmsDataDto> dto = this.smsClient.sendSMS(RegisterCaptchaMapper.class, mobile, content, "127.0.0.1");
 
         RecordedRequest recordedRequest = server.takeRequest();
         Buffer body = recordedRequest.getBody();
@@ -61,6 +63,6 @@ public class SmsClientTest {
 
         assertTrue(requestBody.contains("mobile=" + mobile));
         assertTrue(requestBody.contains("content=" + content));
-        assertTrue(actualResult);
+        assertTrue(dto.getData().getStatus());
     }
 }

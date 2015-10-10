@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.RetrievePasswordDto;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
@@ -9,11 +10,10 @@ import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class RetrievePasswordServiceImpl implements RetrievePasswordService{
-    @Autowired
-    private UserService userService;
+public class RetrievePasswordServiceImpl implements RetrievePasswordService {
 
     @Autowired
     private SmsCaptchaService smsCaptchaService;
@@ -25,14 +25,15 @@ public class RetrievePasswordServiceImpl implements RetrievePasswordService{
     private UserMapper userMapper;
 
     @Override
+    @Transactional
     public boolean mobileRetrievePassword(RetrievePasswordDto retrievePasswordDto) {
         String mobile = retrievePasswordDto.getMobile();
         String captcha = retrievePasswordDto.getCaptcha();
         String password = retrievePasswordDto.getPassword();
-        if (userService.mobileIsExist(mobile) && smsCaptchaService.verifyMobileCaptcha(mobile,captcha)){
-            UserModel userModel = userMapper.findByMobile(retrievePasswordDto.getMobile());
+        UserModel userModel = userMapper.findByMobile(mobile);
+        if (userModel != null && smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA)) {
             String encodePassword = myShaPasswordEncoder.encodePassword(password, userModel.getSalt());
-            userService.updatePassword(mobile,encodePassword);
+            userMapper.updatePasswordByLoginName(userModel.getLoginName(), encodePassword);
             return true;
         }
         return false;

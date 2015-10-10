@@ -10,10 +10,7 @@ import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
@@ -79,7 +76,7 @@ public class UserServiceImpl implements UserService {
         boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
-        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyRegisterCaptcha(dto.getMobile(), dto.getCaptcha());
+        boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
@@ -137,26 +134,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(String mobile, String password) {
-        userMapper.updatePassword(mobile, password);
-    }
-
-    @Override
     @Transactional
     public boolean changePassword(String loginName, String oldPassword, String newPassword) {
-        if (StringUtils.isBlank(loginName)) {
-            return false;
-        }
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
             return false;
         }
-        String encOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
-        if (!StringUtils.equals(encOldPassword, userModel.getPassword())) {
+        String encodedOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
+        if (!userModel.getPassword().equals(encodedOldPassword)) {
             return false;
         }
-        String encNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
-        userMapper.updatePassword(userModel.getMobile(), encNewPassword);
+        String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
+        userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
         smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
         return true;
     }
