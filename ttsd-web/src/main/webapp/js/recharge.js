@@ -1,13 +1,13 @@
 require(['jquery', 'csrf', 'autoNumeric'], function ($) {
     $(function () {
-        var amountElement = $(".e-bank-amount");
+        var amountInputElement = $(".e-bank-amount");
+        var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
         var submitElement = $('.recharge-submit');
 
-        amountElement.autoNumeric("init");
+        amountInputElement.autoNumeric("init");
 
-        amountElement.keyup(function () {
-            var amount = parseFloat(amountElement.val());
-
+        amountInputElement.keyup(function () {
+            var amount = parseFloat(amountInputElement.autoNumeric("get"));
             if (isNaN(amount) || amount === 0) {
                 submitElement.addClass('grey').attr('disabled', true);
             } else {
@@ -81,6 +81,8 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
         //充值提交
         submitElement.click(function () {
             $('.ecope-overlay,.ecope-dialog').show();
+            var amount = amountInputElement.autoNumeric("get");
+            amountElement.val(amount);
         });
     });
 });

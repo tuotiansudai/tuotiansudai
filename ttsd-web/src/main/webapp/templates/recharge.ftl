@@ -148,9 +148,9 @@
                     <div class="recharge-form">
                         <form action="/recharge" method="post" target="_blank">
                             <p>账户可用余额：<i>${balance}</i>元</p>
-
-                            <p>输入充值金额：<input name="amount" type="text" class="e-bank-amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
+                            <p>输入充值金额：<input type="text" class="e-bank-amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
                             <input class="selected-bank" type="hidden" name="bank" value="CMB"/>
+                            <input type="hidden" name="amount" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                             <button type="submit" class="recharge-submit grey" disabled="disabled">确认充值</button>
