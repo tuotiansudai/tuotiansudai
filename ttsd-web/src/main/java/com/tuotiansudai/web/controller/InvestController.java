@@ -84,11 +84,6 @@ public class InvestController {
         return dto;
     }
 
-    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
-    public ModelAndView autoInvest(){
-        return autoInvestAuthorize();
-    }
-
     private InvestDetailQueryDto buildInvestDetailQueryDto(Long loanId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, LoanStatus loanStatus, InvestStatus investStatus, Integer index, Integer pageSize, String loginName) {
         InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
         queryDto.setLoanId(loanId);
@@ -116,12 +111,36 @@ public class InvestController {
         return queryDto;
     }
 
-    private ModelAndView autoInvestAuthorize(){
+    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
+    public ModelAndView autoInvest() {
+        return autoInvestAuthorize();
+    }
+
+    private ModelAndView autoInvestAuthorize() {
         return null;
     }
 
-    private ModelAndView autoInvestPlan(){
+    private ModelAndView autoInvestPlan() {
         AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
-        ModelAndView mv = new ModelAndView()
+        ModelAndView mv = new ModelAndView("/auto-invest-plan");
+        return mv;
+    }
+
+    @RequestMapping(value = "/investor/auto-invest/enable", method = RequestMethod.POST)
+    public String enableAutoInvestPlan(long minInvestAmount, long maxInvestAmount, long retentionAmount, int autoInvestPeriods) {
+        AutoInvestPlanModel model = new AutoInvestPlanModel();
+        model.setLoginName(LoginUserInfo.getLoginName());
+        model.setMinInvestAmount(minInvestAmount);
+        model.setMaxInvestAmount(maxInvestAmount);
+        model.setRetentionAmount(retentionAmount);
+        model.setAutoInvestPeriods(autoInvestPeriods);
+        investService.turnOnAutoInvest(model);
+        return "redirect:/investor/auto-invest";
+    }
+
+    @RequestMapping(value = "/investor/auto-invest/disable", method = RequestMethod.POST)
+    public String disableAutoInvestPlan() {
+        investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
+        return "redirect:/investor/auto-invest";
     }
 }

@@ -12,6 +12,7 @@ import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -99,11 +100,16 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public void turnOnAutoInvest(AutoInvestPlanModel model) {
+        if(StringUtils.isBlank(model.getLoginName())){
+            throw new NullPointerException("Not Login");
+        }
+
         AutoInvestPlanModel planModel = autoInvestPlanMapper.findByLoginName(model.getLoginName());
+        model.setCreatedTime(new Date());
+        model.setEnabled(true);
+
         if (planModel != null) {
             model.setId(planModel.getId());
-            model.setCreatedTime(new Date());
-            model.setEnabled(true);
             autoInvestPlanMapper.update(model);
         } else {
             model.setId(idGenerator.generate());

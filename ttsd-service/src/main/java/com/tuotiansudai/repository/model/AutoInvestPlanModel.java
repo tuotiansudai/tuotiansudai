@@ -77,12 +77,4 @@ public class AutoInvestPlanModel {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
-    public void setAutoInvestPeriods(AutoInvestMonthPeriod periods) {
-        this.autoInvestPeriods = periods.intValue();
-    }
-
-    public AutoInvestMonthPeriod setAutoInvestPeriodsObject() {
-        return new AutoInvestMonthPeriod(this.autoInvestPeriods);
-    }
 }
