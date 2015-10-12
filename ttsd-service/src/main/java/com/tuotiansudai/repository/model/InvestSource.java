@@ -15,5 +15,9 @@ public enum InvestSource {
     /**
      * IOS端投资
      */
-    IOS
+    IOS,
+    /**
+     * 自动投资
+     */
+    AUTO
 }
