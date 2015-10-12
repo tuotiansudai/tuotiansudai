@@ -36,7 +36,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         if (isAjaxRequest) {
             BaseDto<BaseDataDto> baseDto = new BaseDto<>();
             BaseDataDto dataDto = new BaseDataDto();
-            if (Integer.parseInt(redisWrapperClient.get(redisKey)) < times || !redisWrapperClient.exists(redisKey)) {
+            if (!redisWrapperClient.exists(redisKey) || Integer.parseInt(redisWrapperClient.get(redisKey)) < times) {
                 dataDto.setStatus(true);
                 redisWrapperClient.del(redisKey);
             } else {
