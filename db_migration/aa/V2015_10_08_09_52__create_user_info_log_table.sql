@@ -6,5 +6,5 @@ CREATE TABLE `aa`.`user_info_log` (
   `ip` varchar(70) DEFAULT NULL,
   `description` text,
   PRIMARY KEY (`id`),
-  INDEX `user_info_log_login_name` (`login_name`) USING BTREE,
+  INDEX `user_info_log_login_name` (`login_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
