@@ -38,7 +38,7 @@ public interface UserService {
 
     BaseDto<PayDataDto> editUser(EditUserDto editUserDto,String ip);
 
-    EditUserDto getUser(String loginName);
+    EditUserDto getEditUser(String loginName);
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                 String mobile, Date beginTime, Date endTime,

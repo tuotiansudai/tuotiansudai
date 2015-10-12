@@ -47,5 +47,4 @@ public interface UserMapper {
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 
-    void updateStatusByLoginName(@Param(value = "loginName") String loginName, @Param(value = "status") UserStatus status);
 }

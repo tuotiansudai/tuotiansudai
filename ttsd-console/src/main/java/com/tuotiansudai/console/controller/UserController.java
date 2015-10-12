@@ -23,7 +23,7 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName) {
         ModelAndView mv = new ModelAndView("/edit-user");
-        EditUserDto editUserDto = userService.getUser(loginName);
+        EditUserDto editUserDto = userService.getEditUser(loginName);
         mv.addObject(editUserDto);
         return mv;
     }

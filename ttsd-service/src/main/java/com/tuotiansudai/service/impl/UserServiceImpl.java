@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EditUserDto getUser(String loginName) {
+    public EditUserDto getEditUser(String loginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(loginName);
         List<Role> roles = Lists.newArrayList();
