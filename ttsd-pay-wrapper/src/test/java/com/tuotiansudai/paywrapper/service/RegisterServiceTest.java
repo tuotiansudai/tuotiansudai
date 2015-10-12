@@ -25,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -81,16 +82,16 @@ public class RegisterServiceTest {
         ArgumentCaptor<AccountModel> accountModelArgumentCaptor = ArgumentCaptor.forClass(AccountModel.class);
         verify(accountMapper, times(1)).create(accountModelArgumentCaptor.capture());
         AccountModel accountModel = accountModelArgumentCaptor.getValue();
-        ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
-        List<UserRoleModel> userRoleModels = Lists.newArrayList();
-        userRoleModels.add(userRoleModelArgumentCaptor.capture());
-        verify(userRoleMapper, times(1)).createUserRoles(userRoleModels);
-        assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.INVESTOR));
         assertThat(accountModel.getLoginName(), is("loginName"));
         assertThat(accountModel.getUserName(), is("userName"));
         assertThat(accountModel.getIdentityNumber(), is("identityNumber"));
         assertThat(accountModel.getPayUserId(), is("payUserId"));
         assertThat(accountModel.getPayAccountId(), is("payAccountId"));
         assertTrue(baseDto.getData().getStatus());
+
+        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
+        verify(userRoleMapper, times(1)).createUserRoles(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.INVESTOR));
+
     }
 }
