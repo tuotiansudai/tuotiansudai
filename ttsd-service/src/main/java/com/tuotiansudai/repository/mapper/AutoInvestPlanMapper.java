@@ -20,6 +20,6 @@ public interface AutoInvestPlanMapper {
 
     AutoInvestPlanModel findByLoginName(@Param("loginName") String loginName);
 
-    List<AutoInvestPlanModel> findEnabledPlanByPeriod(@Param("loginName") int period,
+    List<AutoInvestPlanModel> findEnabledPlanByPeriod(@Param("period") int period,
                                                        @Param("endTime") Date endTime);
 }

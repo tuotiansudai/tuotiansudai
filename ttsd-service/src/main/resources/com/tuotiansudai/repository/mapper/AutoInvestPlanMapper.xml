@@ -62,6 +62,6 @@
         where auto_invest_periods &amp; #{period} = #{period}
         and created_time &lt; #{endTime}
         and enabled = TRUE
-        order by create_time asc
+        order by created_time asc
     </select>
 </mapper>

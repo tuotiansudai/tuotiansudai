@@ -7,6 +7,7 @@ import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,17 +45,8 @@ public class AutoInvestPlanMapperTest {
     }
 
     @Test
-    public void shouldCreate() throws Exception {
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setEnabled(true);
-        model.setLoginName(User_ID);
-        model.setRetentionAmount(10000);
-        model.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_1.getPeriodValue());
-        model.setCreatedTime(new Date());
-        model.setId(idGenerator.generate());
-        model.setMaxInvestAmount(1000000);
-        model.setMinInvestAmount(50000);
-        autoInvestPlanMapper.create(model);
+    public void shouldCreateAndFind() throws Exception {
+        AutoInvestPlanModel model = createUserAutoInvestPlan(User_ID,AutoInvestMonthPeriod.Month_1.getPeriodValue());
 
         AutoInvestPlanModel dbModel = autoInvestPlanMapper.findByLoginName(User_ID);
         assertNotNull(dbModel);
@@ -65,16 +57,7 @@ public class AutoInvestPlanMapperTest {
 
     @Test
     public void shouldUpdate(){
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setEnabled(true);
-        model.setLoginName(User_ID);
-        model.setRetentionAmount(10000);
-        model.setAutoInvestPeriods(AutoInvestMonthPeriod.Month_1.getPeriodValue());
-        model.setCreatedTime(new Date());
-        model.setId(idGenerator.generate());
-        model.setMaxInvestAmount(1000000);
-        model.setMinInvestAmount(50000);
-        autoInvestPlanMapper.create(model);
+        AutoInvestPlanModel model = createUserAutoInvestPlan(User_ID,AutoInvestMonthPeriod.Month_1.getPeriodValue());
 
         AutoInvestPlanModel dbModel = autoInvestPlanMapper.findByLoginName(User_ID);
         assertNotNull(dbModel);
@@ -90,6 +73,73 @@ public class AutoInvestPlanMapperTest {
         assertEquals(dbModel2.getRetentionAmount(), 20000);
     }
 
+    @Test
+    public void shouldFindByPeriod() {
+        createUserByUserId("test00001");
+        createUserAutoInvestPlan("test00001",
+                AutoInvestMonthPeriod.Month_1.getPeriodValue());
+        createUserByUserId("test00002");
+        createUserAutoInvestPlan("test00002", AutoInvestMonthPeriod.merge(
+                AutoInvestMonthPeriod.Month_1,
+                AutoInvestMonthPeriod.Month_2).getPeriodValue());
+        createUserByUserId("test00003");
+        createUserAutoInvestPlan("test00003",AutoInvestMonthPeriod.merge(
+                AutoInvestMonthPeriod.Month_1,
+                AutoInvestMonthPeriod.Month_2,
+                AutoInvestMonthPeriod.Month_3,
+                AutoInvestMonthPeriod.Month_4).getPeriodValue());
+        createUserByUserId("test00004");
+        createUserAutoInvestPlan("test00004",AutoInvestMonthPeriod.merge(
+                AutoInvestMonthPeriod.Month_1,
+                AutoInvestMonthPeriod.Month_2,
+                AutoInvestMonthPeriod.Month_3,
+                AutoInvestMonthPeriod.Month_4).getPeriodValue());
+        createUserByUserId("test00005");
+        createUserAutoInvestPlan("test00005",AutoInvestMonthPeriod.merge(
+                AutoInvestMonthPeriod.Month_6,
+                AutoInvestMonthPeriod.Month_12).getPeriodValue());
+        createUserByUserId("test00006");
+        createUserAutoInvestPlan("test00006",
+                AutoInvestMonthPeriod.Month_6.getPeriodValue());
+
+        List<AutoInvestPlanModel> models = autoInvestPlanMapper.findEnabledPlanByPeriod(
+                AutoInvestMonthPeriod.Month_1.getPeriodValue(),
+                DateUtils.addDays(new Date(), 1)
+        );
+        assert models.size() == 4;
+        models = autoInvestPlanMapper.findEnabledPlanByPeriod(
+                AutoInvestMonthPeriod.Month_1.getPeriodValue(),
+                DateUtils.addDays(new Date(), -1)
+        );
+        assert models.size() == 0;
+        models = autoInvestPlanMapper.findEnabledPlanByPeriod(
+                AutoInvestMonthPeriod.Month_2.getPeriodValue(),
+                DateUtils.addDays(new Date(), 1)
+        );
+        assert models.size() == 3;
+        models = autoInvestPlanMapper.findEnabledPlanByPeriod(
+                AutoInvestMonthPeriod.Month_12.getPeriodValue(),
+                DateUtils.addDays(new Date(), 1)
+        );
+        assert models.size() == 1;
+    }
+
+    @Test
+    public void shouldEnableDisable(){
+        AutoInvestPlanModel model = createUserAutoInvestPlan(User_ID,AutoInvestMonthPeriod.Month_1.getPeriodValue());
+
+        AutoInvestPlanModel dbModel = autoInvestPlanMapper.findByLoginName(User_ID);
+        assertNotNull(dbModel);
+
+        autoInvestPlanMapper.disable(User_ID);
+        dbModel = autoInvestPlanMapper.findByLoginName(User_ID);
+        assert !dbModel.isEnabled();
+
+        autoInvestPlanMapper.enable(User_ID);
+        dbModel = autoInvestPlanMapper.findByLoginName(User_ID);
+        assert dbModel.isEnabled();
+    }
+
     private void createUserByUserId(String userId) {
         UserModel userModelTest = new UserModel();
         userModelTest.setLoginName(userId);
@@ -100,5 +150,19 @@ public class AutoInvestPlanMapperTest {
         userModelTest.setStatus(UserStatus.ACTIVE);
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
+    }
+
+    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods){
+        AutoInvestPlanModel model = new AutoInvestPlanModel();
+        model.setEnabled(true);
+        model.setLoginName(userId);
+        model.setRetentionAmount(10000);
+        model.setAutoInvestPeriods(periods);
+        model.setCreatedTime(new Date());
+        model.setId(idGenerator.generate());
+        model.setMaxInvestAmount(1000000);
+        model.setMinInvestAmount(50000);
+        autoInvestPlanMapper.create(model);
+        return model;
     }
 }
