@@ -45,10 +45,7 @@ require(['jquery', 'csrf'], function ($) {
                 $('.btn-send-form').addClass('grey').attr('disabled', 'disabled');
             }
         })
-
-        function a(sdfsd){
-
-        }
+        
 
     });
 });
