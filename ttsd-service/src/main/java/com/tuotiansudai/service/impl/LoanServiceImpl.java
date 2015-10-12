@@ -5,16 +5,22 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.job.AutoInvestJob;
+import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.JobManager;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -55,6 +61,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RepayService repayService;
+
+    @Autowired
+    private JobManager jobManager;
+
+    @Value("${autoInvest.delay.minutes}")
+    private int autoInvestDelayMinutes;
 
     /**
      * @param loanTitleDto
@@ -118,7 +130,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
+        if (loanDto.getPeriods() > 12 || loanDto.getPeriods() <= 0) {
             dataDto.setStatus(false);
             dataDto.setMessage("借款期限最小为1，最大为12");
             baseDto.setData(dataDto);
@@ -214,7 +226,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
@@ -228,13 +240,13 @@ public class LoanServiceImpl implements LoanService {
         return loanDto;
     }
 
-    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
+    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels, int serialNoBegin) {
 
         List<InvestPaginationItemDto> investRecordDtos = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InvestPaginationItemDto investRecordDto = null;
-        for (int i = 0;investModels!=null&&i < investModels.size();i++){
+        for (int i = 0; investModels != null && i < investModels.size(); i++) {
             InvestModel investModel = investModels.get(i);
             investRecordDto = new InvestPaginationItemDto();
             investRecordDto.setLoginName(investModel.getLoginName());
@@ -291,7 +303,8 @@ public class LoanServiceImpl implements LoanService {
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        if (loanMapper.findById(loanDto.getId()) == null) {
+        LoanModel loanModel = loanMapper.findById(loanDto.getId());
+        if (loanModel == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
@@ -306,13 +319,50 @@ public class LoanServiceImpl implements LoanService {
             updateLoanAndLoanTitleRelation(loanDto);
             baseDto = payWrapperClient.createLoan(loanDto);
             if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto);
+                baseDto = payWrapperClient.updateLoan(loanDto);
             }
+
+            // 建标成功后，再次校验Loan状态
+            loanModel = loanMapper.findById(loanDto.getId());
+            if(loanModel.getStatus() == LoanStatus.PREHEAT) {
+                createFundraisingStartJob(loanModel);
+                createAutoInvestJob(loanModel);
+            }
+
             return baseDto;
         }
         payDataDto.setStatus(false);
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+
+    @Override
+    public void startFundraising(long loanId) {
+        loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+    }
+
+    private void createFundraisingStartJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(FundraisingStartJob.class)
+                    .runOnceAt(loanModel.getFundraisingStartTime())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, loanModel.getId())
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createAutoInvestJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(AutoInvestJob.class)
+                    .runOnceAt(DateUtils.addMinutes(loanModel.getFundraisingStartTime(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, loanModel.getId())
+                    .withIdentity("AutoInvestJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -380,6 +430,7 @@ public class LoanServiceImpl implements LoanService {
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
+
     @Override
     public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
