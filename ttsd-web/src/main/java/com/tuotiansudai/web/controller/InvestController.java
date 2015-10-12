@@ -3,11 +3,13 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -83,11 +85,6 @@ public class InvestController {
         return dto;
     }
 
-    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
-    public ModelAndView autoInvest(){
-        return autoInvestAuthorize();
-    }
-
     private InvestDetailQueryDto buildInvestDetailQueryDto(Long loanId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime, @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, LoanStatus loanStatus, InvestStatus investStatus, Integer index, Integer pageSize, String loginName) {
         InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
         queryDto.setLoanId(loanId);
@@ -115,13 +112,42 @@ public class InvestController {
         return queryDto;
     }
 
+    @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
+    public String autoInvest() {
+        return "redirect:/investor/auto-invest/agreement";
+    }
+
     @RequestMapping(value = "/investor/auto-invest/agreement", method = RequestMethod.GET)
     private ModelAndView autoInvestAgreement() {
         ModelAndView mv = new ModelAndView("/auto-invest-agreement");
         mv.addObject("content", "自动投标");
         return mv;
     }
-    private ModelAndView autoInvestAuthorize(){
-        return null;
+
+    @RequestMapping(value = "/investor/auto-invest/plan", method = RequestMethod.GET)
+    public ModelAndView autoInvestPlan() {
+        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        ModelAndView mv = new ModelAndView("/auto-invest-plan");
+        mv.addObject("model", model);
+        mv.addObject("periods", AutoInvestMonthPeriod.AllPeriods);
+        return mv;
+    }
+
+    @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
+    public String turnOnAutoInvestPlan(long minInvestAmount, long maxInvestAmount, long retentionAmount, int autoInvestPeriods) {
+        AutoInvestPlanModel model = new AutoInvestPlanModel();
+        model.setLoginName(LoginUserInfo.getLoginName());
+        model.setMinInvestAmount(minInvestAmount);
+        model.setMaxInvestAmount(maxInvestAmount);
+        model.setRetentionAmount(retentionAmount);
+        model.setAutoInvestPeriods(autoInvestPeriods);
+        investService.turnOnAutoInvest(model);
+        return "redirect:/investor/auto-invest";
+    }
+
+    @RequestMapping(value = "/investor/auto-invest/turn-off", method = RequestMethod.POST)
+    public String turnOffAutoInvestPlan() {
+        investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
+        return "redirect:/investor/auto-invest";
     }
 }
