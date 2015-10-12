@@ -1,10 +1,13 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.paywrapper.repository.model.UmPayService;
+
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class PtpMerBindCardRequestModel extends BaseAsyncModel {
+public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
 
     private String orderId;
 
@@ -34,6 +37,9 @@ public class PtpMerBindCardRequestModel extends BaseAsyncModel {
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
+        this.retUrl =  (String)CALLBACK_HOST_PROPS.get("ump.callback.web.host");
+        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
+
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
@@ -37,8 +39,8 @@ public class LoanController {
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         ModelAndView modelAndView = new ModelAndView("/create-loan");
-        modelAndView.addObject("activityTypes", loanService.getActivityType());
-        modelAndView.addObject("loanTypes", loanService.getLoanType());
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contracts", contracts);
         return modelAndView;
     }
@@ -80,8 +82,8 @@ public class LoanController {
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         ModelAndView modelAndView = new ModelAndView("/edit-loan");
-        modelAndView.addObject("activityTypes", loanService.getActivityType());
-        modelAndView.addObject("loanTypes", loanService.getLoanType());
+        modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
+        modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contracts", contracts);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
         return modelAndView;

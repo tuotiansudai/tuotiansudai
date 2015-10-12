@@ -1,9 +1,9 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Strings;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsCaptchaDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
@@ -21,32 +21,41 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
 
     @Autowired
     private SmsCaptchaMapper smsCaptchaMapper;
-
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Override
-    public boolean sendRegisterCaptcha(String mobile) {
-        String captcha = this.createRegisterCaptcha(mobile);
-        if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto<BaseDataDto> resultDto = smsWrapperClient.sendSms(mobile, captcha);
-            return resultDto.getData().getStatus();
-        }
+    private static final int CAPTCHA_LENGTH = 6;
 
-        return  false;
+    private static final int CAPTCHA_EXPIRED_TIME = 10;
+
+    @Override
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String requestIP) {
+        String captcha = this.createMobileCaptcha(mobile, CaptchaType.REGISTER_CAPTCHA);
+        return smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String requestIP) {
+        String captcha = this.createMobileCaptcha(mobile, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        return smsWrapperClient.sendRetrievePasswordCaptchaSms(new SmsCaptchaDto(mobile, captcha, requestIP));
+    }
+
+    @Override
+    public boolean verifyMobileCaptcha(String mobile, String captcha, CaptchaType captchaType) {
+        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, captchaType);
+        Date now = new Date();
+        return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    private String createRegisterCaptcha(String mobile) {
+    private String createMobileCaptcha(String mobile, CaptchaType captchaType) {
         Date now = new Date();
-        Date tenMinuteLater = new DateTime(now).plusMinutes(10).toDate();
-        String captcha = createRandomCaptcha(6);
-
-        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobile(mobile);
-
+        Date expiredTime = new DateTime(now).plusMinutes(CAPTCHA_EXPIRED_TIME).toDate();
+        String captcha = createRandomCaptcha(CAPTCHA_LENGTH);
+        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, captchaType);
         if (existingCaptcha != null) {
             existingCaptcha.setCaptcha(captcha);
-            existingCaptcha.setExpiredTime(tenMinuteLater);
+            existingCaptcha.setExpiredTime(expiredTime);
             existingCaptcha.setCreatedTime(now);
             smsCaptchaMapper.update(existingCaptcha);
         } else {
@@ -54,59 +63,11 @@ public class SmsCaptchaServiceImpl implements SmsCaptchaService {
             newSmsCaptchaModel.setCaptcha(captcha);
             newSmsCaptchaModel.setMobile(mobile);
             newSmsCaptchaModel.setCreatedTime(now);
-            newSmsCaptchaModel.setExpiredTime(tenMinuteLater);
-            newSmsCaptchaModel.setCaptchaType(CaptchaType.REGISTER_CAPTCHA);
-            smsCaptchaMapper.create(newSmsCaptchaModel);
-        }
-
-        return captcha;
-    }
-
-    @Override
-    public boolean verifyRegisterCaptcha(String mobile, String captcha) {
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile(mobile);
-        Date now = new Date();
-        return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
-    }
-
-    @Override
-    public boolean sendMobileCaptcha(String mobile) {
-        String captcha = this.createMobileCaptcha(mobile);
-        if (!Strings.isNullOrEmpty(captcha)) {
-            BaseDto baseDto = smsWrapperClient.sendMobileRetrievePasswordSms(mobile, captcha);
-            return baseDto.getData().getStatus();
-        }
-        return false;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    private String createMobileCaptcha(String mobile) {
-        Date now = new Date();
-        Date tenMinuteLater = new DateTime(now).plusMinutes(10).toDate();
-        String captcha = createRandomCaptcha(6);
-        SmsCaptchaModel existingCaptcha = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        if (existingCaptcha != null) {
-            existingCaptcha.setCaptcha(captcha);
-            existingCaptcha.setExpiredTime(tenMinuteLater);
-            existingCaptcha.setCreatedTime(now);
-            smsCaptchaMapper.update(existingCaptcha);
-        } else {
-            SmsCaptchaModel newSmsCaptchaModel = new SmsCaptchaModel();
-            newSmsCaptchaModel.setCaptcha(captcha);
-            newSmsCaptchaModel.setMobile(mobile);
-            newSmsCaptchaModel.setCreatedTime(now);
-            newSmsCaptchaModel.setExpiredTime(tenMinuteLater);
-            newSmsCaptchaModel.setCaptchaType(CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+            newSmsCaptchaModel.setExpiredTime(expiredTime);
+            newSmsCaptchaModel.setCaptchaType(captchaType);
             smsCaptchaMapper.create(newSmsCaptchaModel);
         }
         return captcha;
-    }
-
-    @Override
-    public boolean verifyMobileCaptcha(String mobile, String captcha) {
-        SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobileAndCaptchaType(mobile, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
-        Date now = new Date();
-        return smsCaptchaModel != null && smsCaptchaModel.getCaptcha().equalsIgnoreCase(captcha) && smsCaptchaModel.getExpiredTime().after(now);
     }
 
     private String createRandomCaptcha(int captchaLength) {

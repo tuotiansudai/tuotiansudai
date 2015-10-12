@@ -1,7 +1,9 @@
 package com.tuotiansudai.smswrapper.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
+import com.tuotiansudai.dto.SmsCaptchaDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +21,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,8 +42,11 @@ public class SmsControllerTest {
     @Autowired
     private SmsClient smsClient;
 
+    private ObjectMapper objectMapper;
+
     @Before
     public void setUp() throws Exception {
+        this.objectMapper = new ObjectMapper();
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         this.server = new MockWebServer();
         this.server.start();
@@ -53,22 +59,31 @@ public class SmsControllerTest {
 
     @Test
     public void shouldGetResultCode() throws Exception {
-        MockResponse mockResponse = new MockResponse();
         String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
         String resultCode = "1234";
+
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setResponseCode(200);
         mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
+
         server.enqueue(mockResponse);
-        URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
+        URL url = server.getUrl("/");
+
         this.smsClient.setUrl(url.toString());
 
-        String mobile = "13900000000";
-        String captcha = "123456";
+        String fakeIp = String.valueOf(new Date().getTime());
 
-        String urlTemplate = "/sms/mobile/{0}/captcha/{1}/register";
-        this.mockMvc.perform(get(MessageFormat.format(urlTemplate, mobile, captcha))
-                .contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        SmsCaptchaDto dto = new SmsCaptchaDto("13911112222", "100022", fakeIp);
+        String requestData = this.objectMapper.writeValueAsString(dto);
+        jsonPath(requestData);
+
+        this.mockMvc.perform(post("/sms/register-captcha")
+                .contentType("application/json; charset=UTF-8")
+                .content(requestData)
+                .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().contentType("application/json; charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value(true));
     }

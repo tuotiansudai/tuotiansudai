@@ -1,14 +1,16 @@
 package com.tuotiansudai.service;
 
 
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.model.CaptchaType;
+
 public interface SmsCaptchaService {
 
-    boolean sendRegisterCaptcha(String mobile);
+    BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String requestIP);
 
-    boolean verifyRegisterCaptcha(String mobile, String captcha);
+    BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String requestIP);
 
-    boolean sendMobileCaptcha(String mobile);
-
-    boolean verifyMobileCaptcha(String mobile, String captcha);
+    boolean verifyMobileCaptcha(String mobile, String captcha, CaptchaType captchaType);
 
 }

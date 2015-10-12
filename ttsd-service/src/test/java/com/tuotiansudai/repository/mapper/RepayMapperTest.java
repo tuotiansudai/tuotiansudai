@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +11,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Administrator on 2015/9/8.
@@ -60,9 +59,54 @@ public class RepayMapperTest {
         loanRepayModel.setLoanId(loanModel.getId());
         loanRepayModel.setRepayDate(new Date());
         loanRepayModel.setCorpus(0);
-        loanRepayModel.setExpectInterest(0);
+        loanRepayModel.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel);
-        loanRepayMapper.insertLoanRepay(loanRepayModels);
+        loanRepayMapper.create(loanRepayModels);
+    }
+
+    @Test
+    public void shouldLoanRepayPaginationIsOk(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+
+        UserModel userModel = this.getUserModelTest();
+        userMapper.create(userModel);
+        LoanDto loanDto = this.getLoanModel();
+        LoanModel loanModel = new LoanModel(loanDto);
+        loanMapper.create(loanModel);
+        List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
+        LoanRepayModel loanRepayModel = new LoanRepayModel();
+        loanRepayModel.setId(idGenerator.generate());
+        loanRepayModel.setDefaultInterest(0);
+        loanRepayModel.setActualInterest(0);
+        loanRepayModel.setPeriod(1);
+        loanRepayModel.setStatus(RepayStatus.REPAYING);
+        loanRepayModel.setLoanId(loanModel.getId());
+        loanRepayModel.setRepayDate(new Date());
+        loanRepayModel.setCorpus(0);
+        loanRepayModel.setExpectedInterest(0);
+        loanRepayModels.add(loanRepayModel);
+        LoanRepayModel loanRepayModel1 = new LoanRepayModel();
+        loanRepayModel1.setId(idGenerator.generate());
+        loanRepayModel1.setDefaultInterest(0);
+        loanRepayModel1.setActualInterest(0);
+        loanRepayModel1.setPeriod(1);
+        loanRepayModel1.setStatus(RepayStatus.REPAYING);
+        loanRepayModel1.setLoanId(loanModel.getId());
+        loanRepayModel1.setRepayDate(new Date());
+        loanRepayModel1.setCorpus(0);
+        loanRepayModel1.setExpectedInterest(0);
+        loanRepayModels.add(loanRepayModel1);
+        loanRepayMapper.create(loanRepayModels);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cal.add(Calendar.DATE,-1);
+        String startDate = sdf.format(cal.getTime());
+        cal.add(Calendar.DATE,2);
+        String endDate = sdf.format(cal.getTime());
+
+        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, startDate, endDate);
+        assertNotNull(models);
+        assertNotNull(models.get(0).getLoan().getName());
     }
 
     private LoanDto getLoanModel(){

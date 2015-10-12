@@ -22,10 +22,10 @@ import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,7 +146,7 @@ public class LoanServiceImpl implements LoanService {
 
     private ProjectTransferResponseModel doLoanOut(long loanId) throws PayException {
         // 预处理等待状态的投资记录，检查是否存在等待状态的投资记录
-        preprocessWaitingInvest(loanId);
+        proProcessWaitingInvest(loanId);
 
         // 查找借款人
         LoanModel loan = loanMapper.findById(loanId);
@@ -157,7 +157,7 @@ public class LoanServiceImpl implements LoanService {
 
 
         // 查找所有投资成功的记录
-        List<InvestModel> successInvestList = investMapper.findSuccessInvests(loanId);
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
         logger.debug("标的放款：查找到" + successInvestList.size() + "条成功的投资，标的ID:" + loanId);
 
         // 计算投资总金额
@@ -181,7 +181,7 @@ public class LoanServiceImpl implements LoanService {
             processLoanAccountForLoanOut(loan, investAmountTotal);
 
             logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-            repayService.generateInvestRepay(loan, successInvestList);
+            repayService.generateRepay(loanId);
 
             logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
             recommendedIncome(loan, successInvestList);
@@ -192,7 +192,7 @@ public class LoanServiceImpl implements LoanService {
         return resp;
     }
 
-    private void preprocessWaitingInvest(long loanId) throws PayException {
+    private void proProcessWaitingInvest(long loanId) throws PayException {
         // 获取联动优势投资订单的有效时间点（在此时间之前的waiting记录将被清理，如存在在此时间之后的waiting记录，则暂时不允许放款）
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
@@ -318,7 +318,7 @@ public class LoanServiceImpl implements LoanService {
         double bonus = 0.00;
         DecimalFormat df = new DecimalFormat("######0.00");
         BigDecimal big100 = new BigDecimal(100);
-        String repayTimeUnit = loanModel.getType().getRepayTimeUnit();
+        LoanPeriodUnit loanPeriodUnit = loanModel.getType().getLoanPeriodUnit();
         long periods = loanModel.getPeriods();
         //TODO:从数据库中获取奖励比例
         Map<Integer, Double> merchandiserMap = new HashMap<>();
@@ -331,10 +331,10 @@ public class LoanServiceImpl implements LoanService {
         investorMap.put(1, 0.4);
         investorMap.put(2, 0.3);
         int daysOrMonthByYear = 1;
-        if ("month".equals(repayTimeUnit)) {
+        if (LoanPeriodUnit.MONTH == loanPeriodUnit) {
             daysOrMonthByYear = 12;
-        } else if ("day".equals(repayTimeUnit)) {
-            daysOrMonthByYear = DateUtil.judgeYear(new Date());
+        } else if (LoanPeriodUnit.DAY == loanPeriodUnit) {
+            daysOrMonthByYear = new DateTime().dayOfYear().getMaximumValue();
         }
         if (StringUtils.isEmpty(payUserId) || Role.INVESTOR.equals(role)) {
             if (investorMap.get(referrerRelationModel.getLevel()) != null) {
@@ -402,7 +402,6 @@ public class LoanServiceImpl implements LoanService {
                     .put("money", AmountUtil.convertCentToString(notifyInfo.getAmount()))
                     .build());
             String userEmail = notifyInfo.getEmail();
-            System.out.println(userEmail);
             if (StringUtils.isNotEmpty(userEmail)) {
                 sendCloudMailService.sendMailByLoanOut(userEmail, emailParameters);
             }

@@ -1,3 +1,5 @@
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+
 <#macro head title pageCss>
 <head lang="en">
     <meta charset="UTF-8">
@@ -17,3 +19,11 @@
         async="true"
         data-main="${requestContext.getContextPath()}/js/dest/${pageJavascript}"></script>
 </#macro>
+
+<#macro role hasRole>
+    <@security.authorize access="hasAuthority('${hasRole}')">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+

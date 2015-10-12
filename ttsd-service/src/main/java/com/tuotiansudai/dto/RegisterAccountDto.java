@@ -6,12 +6,8 @@ import javax.validation.constraints.Pattern;
 
 public class RegisterAccountDto {
 
-    @NotEmpty
-    @Pattern(regexp = "^[A-Za-z0-9]{5,25}$")
     private String loginName;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d{11}$")
     private String mobile;
 
     @NotEmpty

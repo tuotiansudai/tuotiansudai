@@ -1,12 +1,16 @@
 package com.tuotiansudai.smswrapper.service;
 
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.SmsDataDto;
 
 public interface SmsService {
 
-    boolean sendRegisterCaptcha(String mobile, String captcha);
+    BaseDto<SmsDataDto> sendRegisterCaptcha(String mobile, String captcha, String ip);
 
-    boolean sendInvestNotify(InvestSmsNotifyDto dto);
+    BaseDto<SmsDataDto> sendInvestNotify(InvestSmsNotifyDto dto);
 
-    boolean sendRetrievePasswordCaptcha(String mobile, String captcha);
+    BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, String ip);
+
+    BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile);
 }

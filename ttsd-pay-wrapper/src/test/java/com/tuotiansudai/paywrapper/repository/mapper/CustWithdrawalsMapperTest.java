@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class CustWithdrawalsMapperTest {
 
     @Test
     public void shouldCreateCustWithdrawalsModel() throws Exception {
-        CustWithdrawalsModel model = new CustWithdrawalsModel("orderId", "umpUserId", "amount");
+        CustWithdrawalsRequestModel model = new CustWithdrawalsRequestModel("orderId", "umpUserId", "amount");
         model.setSign("sign");
         model.setRetUrl("ret_url");
         model.setNotifyUrl("notify_url");

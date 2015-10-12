@@ -8,7 +8,7 @@ CREATE TABLE `aa`.`invest` (
   `is_auto_invest` BOOLEAN         NOT NULL  DEFAULT FALSE,
   `created_time`   DATETIME        NOT NULL, /* 创建时间 */
   PRIMARY KEY (`id`),
-  CONSTRAINT FK_INVEST_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
+  CONSTRAINT FK_INVEST_LOGIN_LOGIN_NAME_REF_USER_LOGIN_NAME FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`),
   CONSTRAINT FK_INVEST_LOAN_ID_REF_LOAN FOREIGN KEY (`loan_id`) REFERENCES `aa`.`loan` (`id`),
   INDEX INDEX_INVEST_STATUS (`status`)
 )
