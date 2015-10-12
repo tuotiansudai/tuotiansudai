@@ -137,4 +137,9 @@ public class InvestServiceImpl implements InvestService {
         return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
     }
 
+    @Override
+    public void validateAutoInvest(long loanId) {
+        // TODO: zrz
+    }
+
 }

@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface InvestService {
     AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
+
+    void validateAutoInvest(long loanId);
 }

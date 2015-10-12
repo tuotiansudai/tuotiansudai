@@ -20,5 +20,7 @@ public class AutoInvestJob implements Job {
                 .getString(LOAN_ID_KEY);
 
         long loanId = Long.parseLong(strLoanId);
+
+        investService.validateAutoInvest(loanId);
     }
 }
