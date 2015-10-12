@@ -18,6 +18,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Locale;
 
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
@@ -149,6 +150,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         try {
             if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
                 User user = registerRequestDto.convertToUser();
+                user.setSource(AccessSource.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
                 userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
             }
 
@@ -190,6 +192,5 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         }
         return ReturnMessage.SUCCESS.getCode();
     }
-
 
 }

@@ -6,7 +6,6 @@ import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.loan.model.WithdrawCash;
-import com.esoft.jdp2p.trusteeship.model.TrusteeshipOperation;
 import com.esoft.jdp2p.user.service.WithdrawCashService;
 import com.esoft.umpay.withdraw.service.impl.UmPayWithdrawOperation;
 import com.ttsd.api.dto.*;
@@ -18,11 +17,10 @@ import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 @Service
 public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
@@ -72,6 +70,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
     public BaseResponseDto generateWithdrawRequest(WithdrawOperateRequestDto requestDto) {
         String userId = requestDto.getBaseParam().getUserId();
         double money = requestDto.getMoney();
+        String platform = requestDto.getBaseParam().getPlatform();
         BaseResponseDto<WithdrawOperateResponseDataDto> dto = new BaseResponseDto<>();
 
         // verify bank card
@@ -81,7 +80,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
             dto.setMessage(ReturnMessage.NOT_BIND_CARD.getMsg());
         }else {
             try {
-                WithdrawOperateResponseDataDto responseDataDto = getWithdrawOperateResponseDataDto(userId, money, bankCards.get(0));
+                WithdrawOperateResponseDataDto responseDataDto = getWithdrawOperateResponseDataDto(userId, money, bankCards.get(0),AccessSource.valueOf(platform.toUpperCase(Locale.ENGLISH)));
                 // success
                 dto.setCode(ReturnMessage.SUCCESS.getCode());
                 dto.setMessage(ReturnMessage.SUCCESS.getMsg());
@@ -99,7 +98,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         return dto;
     }
 
-    private WithdrawOperateResponseDataDto getWithdrawOperateResponseDataDto(String userId, double money, BankCard bankCard) throws InsufficientBalance, ReqDataException {
+    private WithdrawOperateResponseDataDto getWithdrawOperateResponseDataDto(String userId, double money, BankCard bankCard, AccessSource accessSource) throws InsufficientBalance, ReqDataException {
         // create Withdraw apply
         WithdrawCash withdrawCash = new WithdrawCash();
         withdrawCash.setUser(new User(userId));
@@ -108,6 +107,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         withdrawCash.setCashFine(0D);
         withdrawCash.setMoney(money);
         withdrawCash.setBankCard(bankCard);
+        withdrawCash.setSource(accessSource.name());
         withdrawCashService.applyWithdrawCash(withdrawCash);
 
         ReqData reqData = umPayWithdrawOperation.createOperation_mobile(withdrawCash);

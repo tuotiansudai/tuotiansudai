@@ -4,10 +4,7 @@ import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.loan.model.Recharge;
 import com.esoft.umpay.recharge.service.impl.UmPayRechargeOteration;
-import com.ttsd.api.dto.BankCardRequestDto;
-import com.ttsd.api.dto.BankCardResponseDto;
-import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.dto.*;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created by tuotian on 15/8/7.
@@ -41,12 +39,14 @@ public class MobileAppRechargeController {
                                     HttpServletRequest request){
         String rechargeAmount = bankCardRequestDto.getRechargeAmount();
         String userId = bankCardRequestDto.getUserId();
+        String platform = bankCardRequestDto.getBaseParam().getPlatform();
         try {
             Recharge recharge = new Recharge();
             recharge.setActualMoney(new Double(rechargeAmount));
             User user = new User();
             user.setId(userId);
             recharge.setUser(user);
+            recharge.setSource(AccessSource.valueOf(platform.toUpperCase(Locale.ENGLISH)).name());
             return umPayRechargeOteration.createOperation(recharge, request);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(),e);

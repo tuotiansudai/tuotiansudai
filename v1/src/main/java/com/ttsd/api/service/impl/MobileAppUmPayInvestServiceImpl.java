@@ -1,6 +1,5 @@
 package com.ttsd.api.service.impl;
 
-import com.esoft.archer.config.model.Config;
 import com.esoft.archer.user.model.User;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
@@ -11,10 +10,7 @@ import com.esoft.umpay.invest.service.impl.UmPayInvestOeration;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dao.MobileAppLoanDetailDao;
-import com.ttsd.api.dto.BaseResponseDto;
-import com.ttsd.api.dto.InvestRequestDto;
-import com.ttsd.api.dto.InvestResponseDataDto;
-import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppUmPayInvestService;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.Map;
+import java.util.Locale;
 
 @Service
 public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestService {
@@ -113,6 +109,7 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         invest.setIsAutoInvest(false);
         invest.setLoan(loan);
         invest.setUser(user);
+        invest.setSource(AccessSource.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
         return invest;
     }
 
