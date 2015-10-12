@@ -2,21 +2,13 @@ package com.esoft.jdp2p.loan.model;
 
 // default package
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.esoft.archer.user.model.User;
+import com.esoft.jdp2p.bankcard.model.BankCard;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.esoft.archer.user.model.User;
-import com.esoft.jdp2p.bankcard.model.BankCard;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * WithdrawCash entity. @author MyEclipse Persistence Tools
@@ -70,6 +62,8 @@ public class WithdrawCash implements java.io.Serializable {
 
 	/** 是否为管理员提现 */
 	private Boolean isWithdrawByAdmin;
+
+	private String source;
 
 	// Constructors
 
@@ -227,4 +221,12 @@ public class WithdrawCash implements java.io.Serializable {
 		this.isWithdrawByAdmin = isWithdrawByAdmin;
 	}
 
+	@Column(name = "source", length = 10)
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
 }

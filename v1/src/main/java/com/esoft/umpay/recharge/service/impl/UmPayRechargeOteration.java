@@ -19,6 +19,7 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.api.dto.BankCardResponseDto;
 import com.ttsd.api.dto.BaseResponseDto;
 import com.ttsd.api.dto.ReturnMessage;
@@ -40,7 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -74,6 +74,7 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(Recharge recharge,
 			FacesContext facesContext,boolean isOpenFastPayment) throws IOException {
+		recharge.setSource(AccessSource.WEB.name());
 		Map<String,String> sendMap = assembleSendMap(recharge, isOpenFastPayment, null, false);
 		// 保存操作记录
 		TrusteeshipOperation trusteeshipOperation = null;

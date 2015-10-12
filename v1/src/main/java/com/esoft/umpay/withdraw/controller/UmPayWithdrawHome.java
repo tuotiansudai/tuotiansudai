@@ -1,10 +1,5 @@
 package com.esoft.umpay.withdraw.controller;
 
-import java.io.IOException;
-
-import javax.annotation.Resource;
-import javax.faces.context.FacesContext;
-
 import com.esoft.archer.system.controller.LoginUserInfo;
 import com.esoft.archer.user.controller.WithdrawHome;
 import com.esoft.archer.user.model.User;
@@ -14,6 +9,11 @@ import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.user.service.WithdrawCashService;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.withdraw.service.impl.UmPayWithdrawOperation;
+import com.ttsd.api.dto.AccessSource;
+
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 /**
  * Description :提现
@@ -41,6 +41,7 @@ public class UmPayWithdrawHome extends WithdrawHome {
 		try {
 			String userId = loginUserInfo.getLoginUserId();
 			this.getInstance().setUser(new User(userId));
+			this.getInstance().setSource(AccessSource.WEB.name());
 			wcs.applyWithdrawCash(this.getInstance());
 			umPayWithdrawOperation.createOperation(this.getInstance(),
 					FacesContext.getCurrentInstance());

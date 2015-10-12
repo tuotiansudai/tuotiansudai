@@ -34,6 +34,7 @@ import com.esoft.core.util.StringManager;
 import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -422,6 +423,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                 FacesUtil.addErrorMessage("注册失败！");
                 return null;
             }
+            getInstance().setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -458,6 +460,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     public String registerByOpenAuth() {
         try {
+            getInstance().setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
         } catch (NoMatchingObjectsException e) {
