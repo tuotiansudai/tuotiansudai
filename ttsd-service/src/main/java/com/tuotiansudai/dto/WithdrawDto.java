@@ -10,7 +10,7 @@ public class WithdrawDto implements Serializable{
     private String loginName;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+\\.\\d{2}$")
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
     public String getLoginName() {

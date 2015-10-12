@@ -120,6 +120,7 @@ public class InvestController {
     @RequestMapping(value = "/investor/auto-invest/agreement", method = RequestMethod.GET)
     private ModelAndView autoInvestAgreement() {
         ModelAndView mv = new ModelAndView("/auto-invest-agreement");
+        mv.addObject("content", "自动投标");
         return mv;
     }
 
