@@ -9,7 +9,7 @@ import org.springframework.beans.BeansException;
  * example:
  * <pre>
  *     // set target job class
- *     jobmanager.newjob(testjob.class)
+ *     Jobmanager.newjob(testjob.class)
  *
  *     // [optional] add parameters
  *     .addjobdata(some_parameters)
