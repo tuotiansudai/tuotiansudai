@@ -62,9 +62,6 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private RepayService repayService;
 
-    @Autowired
-    private JobManager jobManager;
-
     @Value("${autoInvest.delay.minutes}")
     private int autoInvestDelayMinutes;
 
@@ -343,7 +340,7 @@ public class LoanServiceImpl implements LoanService {
 
     private void createFundraisingStartJob(LoanModel loanModel) {
         try {
-            jobManager.newJob(FundraisingStartJob.class)
+            JobManager.newJob(FundraisingStartJob.class)
                     .runOnceAt(loanModel.getFundraisingStartTime())
                     .addJobData(FundraisingStartJob.LOAN_ID_KEY, loanModel.getId())
                     .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
@@ -355,7 +352,7 @@ public class LoanServiceImpl implements LoanService {
 
     private void createAutoInvestJob(LoanModel loanModel) {
         try {
-            jobManager.newJob(AutoInvestJob.class)
+            JobManager.newJob(AutoInvestJob.class)
                     .runOnceAt(DateUtils.addMinutes(loanModel.getFundraisingStartTime(), autoInvestDelayMinutes))
                     .addJobData(AutoInvestJob.LOAN_ID_KEY, loanModel.getId())
                     .withIdentity("AutoInvestJob", "Loan-" + loanModel.getId())
