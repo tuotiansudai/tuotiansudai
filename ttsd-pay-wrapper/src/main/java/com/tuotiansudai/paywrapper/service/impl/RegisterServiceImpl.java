@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -69,7 +71,9 @@ public class RegisterServiceImpl implements RegisterService {
                 UserRoleModel userRoleModel = new UserRoleModel();
                 userRoleModel.setLoginName(dto.getLoginName());
                 userRoleModel.setRole(Role.INVESTOR);
-                userRoleMapper.create(userRoleModel);
+                List<UserRoleModel> userRoleModels = Lists.newArrayList();
+                userRoleModels.add(userRoleModel);
+                userRoleMapper.createUserRoles(userRoleModels);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
@@ -77,6 +81,31 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
+        }
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+    @Transactional
+    public BaseDto reRegister(RegisterAccountDto dto) {
+        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
+                dto.getUserName(),
+                dto.getIdentityNumber(),
+                dto.getMobile());
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+
+        try {
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
+                    requestModel,
+                    MerRegisterPersonResponseModel.class);
+            dataDto.setStatus(responseModel.isSuccess());
+            dataDto.setCode(responseModel.getRetCode());
+            dataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);
         return baseDto;

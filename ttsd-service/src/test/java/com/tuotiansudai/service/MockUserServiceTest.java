@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -148,8 +150,10 @@ public class MockUserServiceTest {
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
-        ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
-        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
-        assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.USER));
+        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
+
+
+        verify(userRoleMapper, times(1)).createUserRoles(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.USER));
     }
 }
