@@ -134,13 +134,13 @@ public class InvestController {
     }
 
     @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
-    public String turnOnAutoInvestPlan(long minInvestAmount, long maxInvestAmount, long retentionAmount, int autoInvestPeriods) {
+    public String turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(minInvestAmount);
-        model.setMaxInvestAmount(maxInvestAmount);
-        model.setRetentionAmount(retentionAmount);
-        model.setAutoInvestPeriods(autoInvestPeriods);
+        model.setMinInvestAmount(autoInvestPlanDto.getMinInvestAmount());
+        model.setMaxInvestAmount(autoInvestPlanDto.getMaxInvestAmount());
+        model.setRetentionAmount(autoInvestPlanDto.getRetentionAmount());
+        model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
         investService.turnOnAutoInvest(model);
         return "redirect:/investor/auto-invest";
     }
