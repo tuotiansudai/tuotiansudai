@@ -150,8 +150,6 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         try {
             if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
                 User user = registerRequestDto.convertToUser();
-                log.debug("source="+registerRequestDto.getBaseParam().getPlatform());
-                System.out.println("source=" + registerRequestDto.getBaseParam().getPlatform());
                 user.setSource(AccessSource.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
                 userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
             }
