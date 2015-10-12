@@ -70,7 +70,9 @@ subprojects {
                 'javax.mail:mail:1.4.7',
                 'org.xhtmlrenderer:core-renderer:R8',
                 'org.jsoup:jsoup:1.8.3',
-                'dom4j:dom4j:1.6.1'
+                'dom4j:dom4j:1.6.1',
+                'org.quartz-scheduler:quartz:2.2.1',
+                'org.quartz-scheduler:quartz-jobs:2.2.1'
 
         testCompile "junit:junit:4.12",
                 'org.mockito:mockito-all:1.10.19',

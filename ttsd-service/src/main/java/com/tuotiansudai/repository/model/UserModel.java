@@ -1,9 +1,12 @@
 package com.tuotiansudai.repository.model;
 
 
-import java.util.Date;
+import com.tuotiansudai.dto.EditUserDto;
 
-public class UserModel {
+import java.util.Date;
+import java.util.List;
+
+public class UserModel{
 
     private long id;
 
@@ -30,6 +33,8 @@ public class UserModel {
     private UserStatus status = UserStatus.ACTIVE;
 
     private String salt;
+
+    private AccountModel account;
 
     public String getSalt() {
         return salt;
@@ -154,4 +159,13 @@ public class UserModel {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public AccountModel getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountModel account) {
+        this.account = account;
+    }
+
 }
