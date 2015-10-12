@@ -3,8 +3,7 @@ package com.tuotiansudai.utils;
 import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
 import org.quartz.Job;
 import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.BeansException;
 
 /**
  * example:
@@ -31,13 +30,13 @@ import org.springframework.stereotype.Component;
  *     .submit();
  * </pre>
  */
-@Component
 public class JobManager {
-
-    @Autowired
-    private Scheduler scheduler;
-
-    public TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
+    public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
+        Scheduler scheduler = null;
+        try {
+            scheduler = SpringContextUtil.getBeanByType(Scheduler.class);
+        }catch (BeansException exception){
+        }
         return TriggeredJobBuilder.newJob(jobClazz, scheduler);
     }
 }
