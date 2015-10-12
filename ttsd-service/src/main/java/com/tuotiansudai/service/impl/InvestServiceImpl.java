@@ -7,16 +7,13 @@ import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +38,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private IdGenerator idGenerator;
+
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
@@ -137,4 +137,25 @@ public class InvestServiceImpl implements InvestService {
         return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
     }
 
+
+    public void validateAutoInvest(LoanModel loanModel) {
+        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(loanModel.getPeriods());
+        
+    }
+
+    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
+        long availableAmount = accountService.getBalance(autoInvestPlanModel.getLoginName()) - autoInvestPlanModel.getRetentionAmount();
+        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
+        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
+        long returnAmount = 0;
+        if (availableAmount >= maxInvestAmount) {
+            returnAmount = maxInvestAmount;
+        } else if (availableAmount < maxInvestAmount && availableAmount > minInvestAmount) {
+            returnAmount = availableAmount;
+        }
+        if (returnAmount >= availableLoanAmount) {
+            returnAmount = availableLoanAmount;
+        }
+        return returnAmount;
+    }
 }
