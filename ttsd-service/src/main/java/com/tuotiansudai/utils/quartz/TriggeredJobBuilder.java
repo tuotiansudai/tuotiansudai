@@ -44,7 +44,7 @@ public class TriggeredJobBuilder {
     private Date startDate;
     private ScheduleBuilder scheduleBuilder;
 
-    public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz, Scheduler scheduler){
+    public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz, Scheduler scheduler) {
         return new TriggeredJobBuilder(jobClazz, scheduler);
     }
 
@@ -126,6 +126,9 @@ public class TriggeredJobBuilder {
     public void submit() throws SchedulerException {
         if (jobClazz == null) {
             throw new NullPointerException("jobClazz");
+        }
+        if (scheduler == null) {
+            throw new NullPointerException("scheduler is null , please check quartz config");
         }
         JobDetail jobDetail = getJobDetail();
         Trigger jobTrigger = getJobTrigger(jobDetail);
