@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.WithdrawService;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,8 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        return new ModelAndView("/withdraw", "balance", accountService.getBalance(LoginUserInfo.getLoginName()) / 100D);
+        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
+        return new ModelAndView("/withdraw", "balance", AmountUtil.convertCentToString(balance));
     }
 
 
