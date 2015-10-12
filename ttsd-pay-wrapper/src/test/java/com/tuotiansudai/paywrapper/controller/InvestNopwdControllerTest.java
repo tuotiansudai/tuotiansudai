@@ -184,7 +184,7 @@ public class InvestNopwdControllerTest {
         lm.setName("test loan");
         lm.setDescriptionHtml("fdjakf");
         lm.setDescriptionText("fdjakf");
-        lm.setPeriods(1L);
+        lm.setPeriods(1);
         lm.setType(LoanType.LOAN_TYPE_1);
         lm.setActivityRate(0.1);
         lm.setMinInvestAmount(1);
