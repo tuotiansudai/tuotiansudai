@@ -796,7 +796,6 @@ public class UserServiceImpl implements UserService {
 	public void registerByMobileNumber(User user, String authCode,
 			String referrer) throws NoMatchingObjectsException,
 			AuthInfoOutOfDateException, AuthInfoAlreadyActivedException {
-		user.setSource(AccessSource.WEB.name());
 		registerByMobileNumber(user, authCode);
 		saveReferrerRelations(user);
 		saveReferrerInfo(user.getId(), referrer);

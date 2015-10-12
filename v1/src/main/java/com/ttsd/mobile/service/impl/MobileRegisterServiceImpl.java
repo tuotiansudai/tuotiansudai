@@ -11,6 +11,7 @@ import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
 import org.apache.commons.logging.Log;
@@ -79,6 +80,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             user.setMobileNumber(phoneNum);
             user.setPassword(password);
             user.setReferrer(referrer);
+            user.setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(user, vCode, referrer);
             log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
             return true;
