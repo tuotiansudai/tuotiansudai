@@ -140,7 +140,7 @@ public class InvestServiceImpl implements InvestService {
 
     public void validateAutoInvest(LoanModel loanModel) {
         List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(loanModel.getPeriods());
-        
+
     }
 
     private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
