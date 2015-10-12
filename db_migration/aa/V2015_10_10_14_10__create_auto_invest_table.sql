@@ -8,6 +8,7 @@ CREATE TABLE `aa`.`auto_invest_plan` (
   `enabled`                   BOOLEAN         NOT NULL  DEFAULT FALSE,
   `created_time`              DATETIME        NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQUE_AUTO_INVEST_PLAN_LOGIN_NAME` (`login_name`),
   CONSTRAINT `FK_AUTO_INVEST_PLAN_LOGIN_NAME_REF_USER_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
