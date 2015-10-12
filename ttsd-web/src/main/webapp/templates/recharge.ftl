@@ -7,14 +7,14 @@
 <#include "header.ftl" />
 <div class="content">
     <ul class="email-nav">
-        <li><a href="javascript:;">账户总览</a></li>
-        <li><a href="javascript:;">投资记录</a></li>
-        <li><a href="javascript:;">债权转让</a></li>
-        <li><a href="javascript:;">资金管理</a></li>
-        <li><a href="javascript:;">个人资产</a></li>
-        <li><a href="javascript:;">自动投标</a></li>
-        <li><a href="javascript:;">积分红包</a></li>
-        <li><a href="javascript:;">推荐管理</a></li>
+        <li><a href="javascript:">账户总览</a></li>
+        <li><a href="javascript:">投资记录</a></li>
+        <li><a href="javascript:">债权转让</a></li>
+        <li><a href="javascript:">资金管理</a></li>
+        <li><a href="javascript:">个人资产</a></li>
+        <li><a href="javascript:">自动投标</a></li>
+        <li><a href="javascript:">积分红包</a></li>
+        <li><a href="javascript:">推荐管理</a></li>
     </ul>
     <div class="recharge-container">
         <p class="title"><em>我要充值</em></p>
@@ -147,10 +147,10 @@
                     </ol>
                     <div class="recharge-form">
                         <form action="/recharge" method="post" target="_blank">
-                            <p>账户可用余额：<i>0.00</i>元</p>
-
-                            <p>输入充值金额：<input name="amount" type="text" class="e-bank-amount" data-d-group="4" data-l-zero="deny" placeholder="0.00">元</p>
+                            <p>账户可用余额：<i>${balance}</i>元</p>
+                            <p>输入充值金额：<input type="text" class="e-bank-amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
                             <input class="selected-bank" type="hidden" name="bank" value="CMB"/>
+                            <input type="hidden" name="amount" />
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                             <button type="submit" class="recharge-submit grey" disabled="disabled">确认充值</button>

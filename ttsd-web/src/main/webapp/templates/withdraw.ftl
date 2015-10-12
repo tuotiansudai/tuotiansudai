@@ -8,14 +8,14 @@
 
 <div class="main">
     <ul class="email-nav">
-        <li><a href="javascript:;">账户总览</a></li>
-        <li><a href="javascript:;">投资记录</a></li>
-        <li><a href="javascript:;">债权转让</a></li>
-        <li><a href="javascript:;">资金管理</a></li>
-        <li><a href="javascript:;">个人资产</a></li>
-        <li><a href="javascript:;">自动投标</a></li>
-        <li><a href="javascript:;">积分红包</a></li>
-        <li><a href="javascript:;">推荐管理</a></li>
+        <li><a href="javascript:">账户总览</a></li>
+        <li><a href="javascript:">投资记录</a></li>
+        <li><a href="javascript:">债权转让</a></li>
+        <li><a href="javascript:">资金管理</a></li>
+        <li><a href="javascript:">个人资产</a></li>
+        <li><a href="javascript:">自动投标</a></li>
+        <li><a href="javascript:">积分红包</a></li>
+        <li><a href="javascript:">推荐管理</a></li>
     </ul>
 
     <div class="bind-card">
@@ -25,7 +25,7 @@
             <form action="/withdraw" method="post" target="_blank">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="recharge-bank">
-                    <p>可提现额度:<i class="jq-total">${balance?string("0.00")}</i>元</p>
+                    <p>可提现额度:<i class="jq-total">${balance}</i>元</p>
                     <p>输入提现金额：<input name="amount" type="text" value="" class="recharge-cz" placeholder="0.00">元
                         <span class="error"><img src="${requestContext.getContextPath()}/images/error.jpg" alt=""/>你最大可提现金额:<i>0.00</i>元</span>
                     </p>
