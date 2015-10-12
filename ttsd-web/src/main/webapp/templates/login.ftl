@@ -33,7 +33,7 @@
                 <a href="javascript:">忘记密码？</a>
             </p>
             <span>
-                <a href="javascript:" class="login-submit grey" >立即登录</a>
+                <a href="javascript:" class="login-submit grey">立即登录</a>
             </span>
 
             <b>数据采用256位加密技术，保障您的信息安全！</b>
