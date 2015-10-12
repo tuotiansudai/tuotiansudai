@@ -12,9 +12,9 @@ import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
@@ -38,34 +38,47 @@ import java.util.*;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+
     @Autowired
     private LoanMapper loanMapper;
+
     @Autowired
     private InvestMapper investMapper;
-    @Autowired
-    private PaySyncClient paySyncClient;
+
     @Autowired
     private AccountMapper accountMapper;
-    @Autowired
-    private UserBillService userBillService;
-    @Autowired
-    private SmsWrapperClient smsWrapperClient;
-    @Autowired
-    private RepayService repayService;
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
+
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private ReferrerRelationMapper referrerRelationMapper;
+
     @Autowired
     private InvestReferrerRewardMapper investReferrerRewardMapper;
+
     @Autowired
-    private ReferrerRewardService referrerRewardService;
+    private RepayService repayService;
+
     @Autowired
-    private IdGenerator idGenerator;
+    private PaySyncClient paySyncClient;
+
     @Autowired
     private SendCloudMailService sendCloudMailService;
 
+    @Autowired
+    private ReferrerRewardService referrerRewardService;
+
+    @Autowired
+    private UserBillService userBillService;
+
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -153,7 +166,7 @@ public class LoanServiceImpl implements LoanService {
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
-        String loanerId = accountMapper.findByLoginName(loan.getLoanerLoginName()).getPayUserId();
+        String loanerPayUserId = accountMapper.findByLoginName(loan.getLoanerLoginName()).getPayUserId();
 
 
         // 查找所有投资成功的记录
@@ -166,8 +179,8 @@ public class LoanServiceImpl implements LoanService {
             throw new PayException("amount should great than 0");
         }
 
-        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，借款人:" + loanerId + "，放款金额:" + investAmountTotal);
-        ProjectTransferResponseModel resp = doUmpayRequest(loanId, loanerId, investAmountTotal);
+        logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，借款人:" + loanerPayUserId + "，放款金额:" + investAmountTotal);
+        ProjectTransferResponseModel resp = doPayRequest(loanId, loanerPayUserId, investAmountTotal);
 
         if (resp.isSuccess()) {
             //TODO : 如果下面这些方法有任何一个出现异常，如何记录？
@@ -208,9 +221,9 @@ public class LoanServiceImpl implements LoanService {
         investMapper.cleanWaitingInvestBefore(loanId, validInvestTime);
     }
 
-    private ProjectTransferResponseModel doUmpayRequest(long loanId, String umpayUserId, long amount) throws PayException {
+    private ProjectTransferResponseModel doPayRequest(long loanId, String payUserId, long amount) throws PayException {
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newLoanOutRequest(
-                String.valueOf(loanId), String.valueOf(loanId), umpayUserId, String.valueOf(amount));
+                String.valueOf(loanId), String.valueOf(loanId), payUserId, String.valueOf(amount));
         ProjectTransferResponseModel responseModel = paySyncClient.send(
                 ProjectTransferMapper.class,
                 requestModel,

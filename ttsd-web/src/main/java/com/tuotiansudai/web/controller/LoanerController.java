@@ -1,14 +1,10 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataDto;
-import com.tuotiansudai.dto.LoanRepayDataItemDto;
-import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +49,6 @@ public class LoanerController {
     @RequestMapping(path = "/loan/{loanId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<LoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
-        return repayService.findLoanerLoanRepay(loanId);
+        return repayService.getLoanRepay(loanId);
     }
 }

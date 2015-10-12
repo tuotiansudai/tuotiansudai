@@ -29,14 +29,14 @@ public class RepayServiceImpl implements RepayService {
     }
 
     @Override
-    public BaseDto<LoanRepayDataDto> findLoanerLoanRepay(long loanId) {
+    public BaseDto<LoanRepayDataDto> getLoanRepay(long loanId) {
         String loginName = LoginUserInfo.getLoginName();
 
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
         LoanRepayDataDto dataDto = new LoanRepayDataDto();
         baseDto.setData(dataDto);
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanerAndLoanId(loginName, loanId);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(loginName, loanId);
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {
             final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledRepayByLoanId(loanId);
             List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {

@@ -15,15 +15,7 @@ public enum UmPayParticType {
     /**
      * P2P平台
      */
-    P2P("03"),
-    /**
-     * 担保方
-     */
-    GUARANTEE("04"),
-    /**
-     * 使用方
-     */
-    USE("05");
+    PLATFORM("03");
 
     private final String code;
 

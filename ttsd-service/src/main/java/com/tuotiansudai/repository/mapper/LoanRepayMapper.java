@@ -32,8 +32,8 @@ public interface LoanRepayMapper {
 
     List<LoanRepayModel> findByLoanId(long loanId);
 
-    List<LoanRepayModel> findByLoanerAndLoanId(@Param(value = "loanerLoginName") String loanerLoginName,
-                                               @Param(value = "loanId") long loanId);
+    List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String loanerLoginName,
+                                              @Param(value = "loanId") long loanId);
 
     LoanRepayModel findEnabledRepayByLoanId(long loanId);
 

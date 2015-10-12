@@ -115,7 +115,7 @@
 
     <select id="findByLoanerAndLoanId" parameterType="map" resultMap="loanRepayResultMap">
         select loan_repay.* from loan_repay join loan on loan_repay.loan_id = loan.id
-        where loan.id= #{loanId} and loan.loaner_login_name = #{loanerLoginName}
+        where loan.id= #{loanId} and loan.agent_login_name = #{agentLoginName}
         order by period asc
     </select>
 
@@ -127,23 +127,24 @@
         where
             enabled_repay.loan_id = #{loanId}
             and (
-                (exists(select 1
-                        from loan
-                        where loan.id = #{loanId} and status = 'REPAYING')
-                 and enabled_repay.status = 'REPAYING'
-                 and enabled_repay.period = (select min(period)
-                                             from loan_repay future_repay
-                                             where future_repay.loan_id = #{loanId} and
-                                                   date(future_repay.repay_date) >= date(now())))
-
-                or (exists(select 1
-                           from loan
-                           where loan.id = #{loanId} and status = 'OVERDUE')
-                    and enabled_repay.status = 'OVERDUE'
-                    and enabled_repay.period = (select min(period)
-                                                from loan_repay overdue_repay
-                                                where overdue_repay.loan_id = #{loanId} and
-                                                      overdue_repay.status = 'OVERDUE')))
+                    (exists(select 1
+                            from loan
+                            where loan.id = #{loanId} and status = 'REPAYING')
+                     and enabled_repay.status = 'REPAYING'
+                     and enabled_repay.period = (select min(period)
+                                                 from loan_repay future_repay
+                                                 where future_repay.loan_id = #{loanId} and
+                                                       date(future_repay.repay_date) >= date(now())))
+                or
+                    (exists(select 1
+                            from loan
+                            where loan.id = #{loanId} and status = 'OVERDUE')
+                     and enabled_repay.status = 'OVERDUE'
+                     and enabled_repay.period = (select min(period)
+                                                 from loan_repay overdue_repay
+                                                 where overdue_repay.loan_id = #{loanId} and
+                                                 overdue_repay.status = 'OVERDUE'))
+                )
         ]]>
     </select>
 
@@ -152,6 +153,6 @@
     </select>
 
     <update id="update" parameterType="LoanRepayModel">
-        update loan_repay set corpus = #{corpus}, actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
+        update loan_repay set actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
     </update>
 </mapper>

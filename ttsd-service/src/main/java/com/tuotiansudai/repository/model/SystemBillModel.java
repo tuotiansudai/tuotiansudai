@@ -8,7 +8,7 @@ public class SystemBillModel {
 
     private Date createdTime = new Date();
 
-    private SystemBillType Type;
+    private SystemBillOperationType Type;
 
     private long amount;
 
@@ -34,11 +34,11 @@ public class SystemBillModel {
         this.createdTime = createdTime;
     }
 
-    public SystemBillType getType() {
+    public SystemBillOperationType getType() {
         return Type;
     }
 
-    public void setType(SystemBillType type) {
+    public void setType(SystemBillOperationType type) {
         Type = type;
     }
 

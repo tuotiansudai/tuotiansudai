@@ -23,7 +23,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = "/";
         model.notifyUrl = "http://121.43.71.173:13002/paywrapper/callback/invest_notify";
         model.servType = UmPayServType.TRANSFER_IN_INVEST.getCode();
@@ -33,7 +33,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newLoanOutRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = "/";
         model.notifyUrl = "/";
         model.servType = UmPayServType.TRANSFER_OUT_LOAN_OUT.getCode();
@@ -43,7 +43,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount);
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "/");
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "/repay_notify");
         model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
@@ -52,7 +52,25 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount) {
+    public static ProjectTransferRequestModel newRepayPaybackRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "/repay_payback_notify");
+        model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
+    public static ProjectTransferRequestModel newRepayInvestFeeRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.MERCHANT);
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "/repay_invest_fee_notify");
+        model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.PLATFORM.getCode();
+        return model;
+    }
+
+    private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType) {
         super();
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
         this.orderId = orderId;
@@ -60,7 +78,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         this.userId = userId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.particAccType = UmPayParticAccType.PERSON.getCode();
+        this.particAccType = umPayParticAccType.getCode();
     }
 
     public Map<String, String> generatePayRequestData() {

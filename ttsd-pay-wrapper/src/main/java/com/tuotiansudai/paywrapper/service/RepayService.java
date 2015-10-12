@@ -12,6 +12,8 @@ public interface RepayService {
 
     BaseDto<PayFormDataDto> repay(long loanId);
 
+    BaseDto<PayFormDataDto> advanceRepay(long loanId);
+
     String repayCallback(Map<String, String> paramsMap, String originalQueryString);
 
     void generateRepay(long loanId);

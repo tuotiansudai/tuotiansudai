@@ -26,7 +26,6 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 @Service
 public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
@@ -34,39 +33,40 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
     @Autowired
     private UserBillService userBillService;
+
     @Autowired
     private SystemBillService systemBillService;
 
     @Override
     @Transactional
+    //TODO: puzzle
     public BaseDto<PayDataDto> getReferrerReward(ReferrerRewardDto referrerRewardDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         long orderId = referrerRewardDto.getOrderId();
         String referrerLoginName = referrerRewardDto.getReferrerLoginName();
         PayDataDto dataDto = new PayDataDto();
         long amount = AmountUtil.convertStringToCent(referrerRewardDto.getBonus());
-        TransferRequestModel requestModel = new TransferRequestModel(referrerRewardDto.getParticUserId(),"" + amount,"" + orderId);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        requestModel.setMerDate(simpleDateFormat.format(new Date()));
+        TransferRequestModel requestModel = new TransferRequestModel(referrerRewardDto.getParticUserId(), String.valueOf(amount), String.valueOf(orderId));
         try {
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class,
                     requestModel,
                     TransferResponseModel.class);
-            if(responseModel.isSuccess()){
+            if (responseModel.isSuccess()) {
                 userBillService.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD);
                 String transferOutDetailFormat = ReferrerRewardMessageTemplate.TRANSFER_OUT_DETAIL.getDescription();
-                String transferOutDetail = MessageFormat.format(transferOutDetailFormat,""+orderId, referrerLoginName,referrerRewardDto.getBonus());
-                systemBillService.transferOut(amount, transferOutDetail, SystemBillBusinessType.REFERRER_REWARD, "" + orderId);
+                String transferOutDetail = MessageFormat.format(transferOutDetailFormat, String.valueOf(orderId), referrerLoginName, referrerRewardDto.getBonus());
+                systemBillService.transferOut(amount, String.valueOf(orderId), SystemBillBusinessType.REFERRER_REWARD, transferOutDetail);
             }
             dataDto.setStatus(responseModel.isSuccess());
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
-            logger.error(e.getLocalizedMessage(), e);
             logger.error(orderId + ":普通转账免密(划账)失败");
+            logger.error(e.getLocalizedMessage(), e);
         }
         baseDto.setData(dataDto);
         return baseDto;

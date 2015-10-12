@@ -130,6 +130,38 @@ public class LoanRepayMapperTest {
     }
 
     @Test
+    public void shouldNotFindEnabledRepayingLoanRepayWhenCurrentPeriodIsConfirmingAndLoanIsRepaying() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.REPAYING);
+        loanMapper.create(fakeLoanModel);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, new DateTime().minusDays(1).toDate(), null, 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 2, RepayStatus.CONFIRMING, new DateTime().plusDays(1).toDate(), null, 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeLoanModel, 3, RepayStatus.REPAYING, new DateTime().plusDays(2).toDate(), null, 0, 0, 0, 0);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
+
+        LoanRepayModel enabledRepay = loanRepayMapper.findEnabledRepayByLoanId(fakeLoanModel.getId());
+
+        assertNull(enabledRepay);
+    }
+
+    @Test
+    public void shouldNotFindEnabledRepayingLoanRepayWhenCurrentPeriodIsConfirmingAndLoanIsOverdue() throws Exception {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+        LoanModel fakeLoanModel = this.getFakeLoanModel(LoanStatus.OVERDUE);
+        loanMapper.create(fakeLoanModel);
+        LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeLoanModel, 1, RepayStatus.COMPLETE, new DateTime().minusDays(2).toDate(), null, 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeLoanModel, 2, RepayStatus.CONFIRMING, new DateTime().minusDays(1).toDate(), null, 0, 0, 0, 0);
+        LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeLoanModel, 3, RepayStatus.REPAYING, new DateTime().plusDays(2).toDate(), null, 0, 0, 0, 0);
+        loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
+
+        LoanRepayModel enabledRepay = loanRepayMapper.findEnabledRepayByLoanId(fakeLoanModel.getId());
+
+        assertNull(enabledRepay);
+    }
+
+    @Test
     public void shouldFindEnabledOverdueLoanRepayWhenLoanHasMoreThanOneOverdueRepay() throws Exception {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);

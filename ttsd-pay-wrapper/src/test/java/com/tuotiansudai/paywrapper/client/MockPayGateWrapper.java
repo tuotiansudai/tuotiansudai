@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.client;
 
+import com.google.common.base.Strings;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ParameterCheckException;
 import com.umpay.api.exception.ReqDataException;
@@ -8,25 +9,27 @@ import com.umpay.api.exception.VerifyException;
 import com.umpay.api.util.DataUtil;
 import com.umpay.api.util.HttpMerParserUtil;
 import com.umpay.api.util.PlainUtil;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
 public class MockPayGateWrapper extends PayGateWrapper {
+
     private static final MockPayGateWrapper instance = new MockPayGateWrapper();
-    private MockPayGateWrapper(){}
 
-    private String requestUrl = null;
+    private MockPayGateWrapper() {
+    }
 
-    public static void inject(PaySyncClient paySyncClient){
+    private String requestUrl;
+
+    public static void inject(PaySyncClient paySyncClient) {
         paySyncClient.payGateWrapper = instance;
     }
 
-    public static void inject(PayAsyncClient payAsyncClient){
+    public static void inject(PayAsyncClient payAsyncClient) {
         payAsyncClient.payGateWrapper = instance;
     }
 
-    public static void setUrl(String requestUrl){
+    public static void setUrl(String requestUrl) {
         instance.requestUrl = requestUrl;
     }
 
@@ -44,7 +47,7 @@ public class MockPayGateWrapper extends PayGateWrapper {
     @Override
     public ReqData makeReqDataByPost(Object obj) throws ReqDataException {
         ReqData reqData = super.makeReqDataByPost(obj);
-        if(StringUtils.isNotBlank(requestUrl)) {
+        if (!Strings.isNullOrEmpty(requestUrl)) {
             reqData.setUrl(requestUrl);
         }
         return reqData;

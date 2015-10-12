@@ -22,6 +22,6 @@ public class RepayController {
     @RequestMapping(value = "/repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> repay(@Valid @RequestBody RepayDto dto) {
-        return repayService.repay(dto.getLoanId());
+        return dto.isAdvanced() ? repayService.advanceRepay(dto.getLoanId()) : repayService.repay(dto.getLoanId());
     }
 }
