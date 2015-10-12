@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -149,7 +150,9 @@ public class MockUserServiceTest {
 
         assertTrue(success);
         ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
-        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
+        List<UserRoleModel> userRoleModels = Lists.newArrayList();
+        userRoleModels.add(userRoleModelArgumentCaptor.capture());
+        verify(userRoleMapper, times(1)).createUserRoles(userRoleModels);
         assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.USER));
     }
 }

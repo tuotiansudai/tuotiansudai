@@ -33,4 +33,13 @@ public class UserRoleModel {
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
+
+    public UserRoleModel(String loginName,Role role){
+        this.loginName = loginName;
+        this.role = role;
+    }
+
+    public UserRoleModel(){
+
+    }
 }
