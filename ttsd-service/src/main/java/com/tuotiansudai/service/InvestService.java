@@ -30,4 +30,6 @@ public interface InvestService {
     AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
+
+    void validateAutoInvest(long loanId);
 }
