@@ -2,8 +2,8 @@ package com.tuotiansudai.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -34,15 +34,12 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", request.getParameter("username"));
         boolean isAjaxRequest = this.isAjaxRequest(request);
         if (isAjaxRequest) {
-            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-            BaseDataDto dataDto = new BaseDataDto();
-            if (!redisWrapperClient.exists(redisKey) || Integer.parseInt(redisWrapperClient.get(redisKey)) < times) {
-                dataDto.setStatus(true);
-                redisWrapperClient.del(redisKey);
-            } else {
-                dataDto.setStatus(false);
-            }
-            baseDto.setData(dataDto);
+            BaseDto<LoginDto> baseDto = new BaseDto<>();
+            LoginDto loginDto = new LoginDto();
+            loginDto.setStatus(true);
+            loginDto.setLocked(false);
+            redisWrapperClient.del(redisKey);
+            baseDto.setData(loginDto);
             String jsonBody = objectMapper.writeValueAsString(baseDto);
             response.setContentType("application/json; charset=UTF-8");
             response.setCharacterEncoding("UTF-8");

@@ -2,8 +2,9 @@ package com.tuotiansudai.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoginDto;
+import com.tuotiansudai.exception.LoginFailedMaxTimesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
@@ -35,17 +36,24 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes",request.getParameter("username"));
         if (this.isAjaxRequest(request)) {
-            BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-            BaseDataDto dataDto = new BaseDataDto();
-            dataDto.setStatus(false);
-            if (redisWrapperClient.exists(redisKey) && Integer.parseInt(redisWrapperClient.get(redisKey)) < times-1) {
-                redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey))+1));
-            } else if (redisWrapperClient.exists(redisKey) && Integer.parseInt(redisWrapperClient.get(redisKey)) == times-1){
-                redisWrapperClient.setex(redisKey, second, String.valueOf(times));
-            } else if (!redisWrapperClient.exists(redisKey)){
+            BaseDto<LoginDto> baseDto = new BaseDto<>();
+            LoginDto loginDto = new LoginDto();
+            loginDto.setStatus(false);
+            if (!redisWrapperClient.exists(redisKey)) {
                 redisWrapperClient.set(redisKey, "1");
+            } else {
+                if (Integer.parseInt(redisWrapperClient.get(redisKey)) < times-1) {
+                    redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey))+1));
+                } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times-1) {
+                    redisWrapperClient.setex(redisKey, second, String.valueOf(times));
+                }
             }
-            baseDto.setData(dataDto);
+            if (exception instanceof LoginFailedMaxTimesException) {
+                loginDto.setLocked(true);
+            } else {
+                loginDto.setLocked(false);
+            }
+            baseDto.setData(loginDto);
             String jsonBody = objectMapper.writeValueAsString(baseDto);
             response.setContentType("application/json; charset=UTF-8");
             response.setCharacterEncoding("UTF-8");

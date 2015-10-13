@@ -125,7 +125,11 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                     if (response.data.status) {
                         window.location.href = '/';
                     } else {
-                        errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        if (response.data.locked) {
+                            errorElement.text("用户已被锁定").css('visibility', 'visible');
+                        } else {
+                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        }
                     }
                 },
                 error: function () {
