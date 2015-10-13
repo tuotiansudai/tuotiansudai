@@ -37,7 +37,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
                     "Bad credentials"));
         }
 
-        boolean resultLoginFailedTimes = loginFailedTimesVerifier.loginFailedTimesVerifier(loginName);
+        boolean resultLoginFailedTimes = loginFailedTimesVerifier.verifyLoginFailedMaxTimes(loginName);
         if (!resultLoginFailedTimes) {
             logger.debug("Authentication failed: failed times is reach the ceiling");
             throw new LoginFailedMaxTimesException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials","Bad credentials"));

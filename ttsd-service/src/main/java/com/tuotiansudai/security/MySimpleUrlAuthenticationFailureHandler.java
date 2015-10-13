@@ -48,11 +48,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                     redisWrapperClient.setex(redisKey, second, String.valueOf(times));
                 }
             }
-            if (exception instanceof LoginFailedMaxTimesException) {
-                loginDto.setLocked(true);
-            } else {
-                loginDto.setLocked(false);
-            }
+            loginDto.setLocked(exception instanceof LoginFailedMaxTimesException);
             baseDto.setData(loginDto);
             String jsonBody = objectMapper.writeValueAsString(baseDto);
             response.setContentType("application/json; charset=UTF-8");

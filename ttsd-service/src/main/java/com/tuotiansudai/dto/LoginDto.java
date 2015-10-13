@@ -1,18 +1,20 @@
 package com.tuotiansudai.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by Administrator on 2015/10/13.
  */
 public class LoginDto extends BaseDataDto {
 
-    private boolean locked;
+    private boolean isLocked;
 
-    public boolean getLocked() {
-        return locked;
+    @JsonProperty(value = "isLocked")
+    public boolean isLocked() {
+        return isLocked;
     }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
     }
-
 }

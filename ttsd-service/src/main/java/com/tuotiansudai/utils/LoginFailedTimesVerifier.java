@@ -19,7 +19,7 @@ public class LoginFailedTimesVerifier {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    public boolean loginFailedTimesVerifier(String loginName) {
+    public boolean verifyLoginFailedMaxTimes(String loginName){
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         if (redisWrapperClient.exists(redisKey) && Integer.parseInt(redisWrapperClient.get(redisKey)) == times) {
             return false;
