@@ -2,10 +2,8 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.client.RedisWrapperClient;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.RegisterCaptchaDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
@@ -81,15 +79,15 @@ public class RegisterUserController {
         return baseDto;
     }
 
-    @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto sendRegisterCaptcha(HttpServletRequest httpServletRequest, @RequestBody RegisterCaptchaDto dto) {
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
+    public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @Valid @ModelAttribute RegisterCaptchaDto dto) {
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
         boolean result = this.captchaVerifier.registerImageCaptchaVerify(dto.getImageCaptcha());
         if (result) {
-            dataDto.setStatus(smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.getRequestIp(httpServletRequest)));
+            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.getRequestIp(httpServletRequest));
         }
         return baseDto;
     }
@@ -98,7 +96,7 @@ public class RegisterUserController {
     @ResponseBody
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha));
+        dataDto.setStatus(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA));
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         baseDto.setData(dataDto);
 

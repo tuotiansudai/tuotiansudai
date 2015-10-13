@@ -10,7 +10,7 @@ public interface RechargeMapper {
 
     void create(RechargeModel model);
 
-    void update(@Param("id") long id, @Param("status") RechargeStatus status);
+    void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
 
     RechargeModel findById(long id);
 }

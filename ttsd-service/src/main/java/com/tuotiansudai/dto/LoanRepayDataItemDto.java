@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.utils.AmountUtil;
@@ -21,6 +22,10 @@ public class LoanRepayDataItemDto {
     private String actualInterest;
 
     private String defaultInterest;
+
+    private String expectedRepayAmount;
+
+    private String actualRepayAmount;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
@@ -45,8 +50,12 @@ public class LoanRepayDataItemDto {
         this.corpus = AmountUtil.convertCentToString(loanRepayModel.getCorpus());
         this.expectedInterest = AmountUtil.convertCentToString(loanRepayModel.getExpectedInterest());
         this.defaultInterest = AmountUtil.convertCentToString(loanRepayModel.getDefaultInterest());
+        this.expectedRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         this.repayDate = loanRepayModel.getRepayDate();
         this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
+        if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
+            this.actualRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
+        }
         this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.totalAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
@@ -163,7 +172,19 @@ public class LoanRepayDataItemDto {
         return loanRepayStatus;
     }
 
+    public boolean getIsEnabled() {
+        return isEnabled;
+    }
+
     public void setLoanRepayStatus(RepayStatus loanRepayStatus) {
         this.loanRepayStatus = loanRepayStatus;
+    }
+
+    public String getExpectedRepayAmount() {
+        return expectedRepayAmount;
+    }
+
+    public String getActualRepayAmount() {
+        return actualRepayAmount;
     }
 }
