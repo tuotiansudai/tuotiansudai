@@ -1,7 +1,10 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
@@ -9,6 +12,8 @@ import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +23,14 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+
+    static Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;
@@ -76,34 +86,9 @@ public class LoanServiceImpl implements LoanService {
      * @return
      * @function 获取所有标题
      */
+    @Override
     public List<LoanTitleModel> findAllTitles() {
         return loanTitleMapper.findAll();
-    }
-
-    /**
-     * @return List<LoanType>
-     * @function 获取所有标的类型
-     */
-    @Override
-    public List<LoanType> getLoanType() {
-        List<LoanType> loanTypes = new ArrayList<LoanType>();
-        for (LoanType loanType : LoanType.values()) {
-            loanTypes.add(loanType);
-        }
-        return loanTypes;
-    }
-
-    /**
-     * @return List<ActivityType>
-     * @function 获取所有活动类型
-     */
-    @Override
-    public List<ActivityType> getActivityType() {
-        List<ActivityType> activityTypes = new ArrayList<ActivityType>();
-        for (ActivityType activityType : ActivityType.values()) {
-            activityTypes.add(activityType);
-        }
-        return activityTypes;
     }
 
     /**
@@ -114,35 +99,58 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        if (maxInvestAmount < minInvestAmount) {
+        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
+        if (loanAgentId == null) {
             dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (maxInvestAmount > loanAmount) {
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
-        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setStatus(false);
+            dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
             dataDto.setStatus(false);
+            dataDto.setMessage("借款用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         }
-        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
-        if (loanAgentId == null) {
+        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
             dataDto.setStatus(false);
+            dataDto.setMessage("借款期限最小为1，最大为12");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (loanAmount <= 0) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("预计出借金额应大于0");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (minInvestAmount <= 0) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最小投资金额应大于0");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount < minInvestAmount) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最小投资金额不得大于最大投资金额");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (maxInvestAmount > loanAmount) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("最大投资金额不得大于预计出借金额");
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+        if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
+            dataDto.setStatus(false);
+            dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
             baseDto.setData(dataDto);
             return baseDto;
         }
@@ -215,44 +223,20 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
-        loanDto.setBasePaginationDto(getInvests(loanModel.getId(),1,10));
+        loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
     }
 
-    @Override
-    public String getExpectedTotalIncome(long loanId, double investAmount) {
+    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
 
-        return null;
-    }
-
-    @Override
-    public BasePaginationDto<InvestPaginationDataDto> getInvests(long loanId, int index, int pageSize) {
-        if (index <= 0) {
-            index = 1;
-        }
-        if (pageSize <= 0) {
-            pageSize = 10;
-        }
-        int totalCount = investMapper.getTotalCount(loanId, InvestStatus.SUCCESS);
-        int serialNoBegin = (index - 1) * pageSize;
-        List<InvestModel> investModels = investMapper.getInvests(loanId, serialNoBegin, pageSize, InvestStatus.SUCCESS);
-        List<InvestPaginationDataDto> investRecordDtos = convertInvestModelToDto(investModels,serialNoBegin);
-        BasePaginationDto dto = new BasePaginationDto(index, pageSize, totalCount);
-        dto.setRecordDtoList(investRecordDtos);
-        dto.setStatus(true);
-        return dto;
-    }
-
-    private List<InvestPaginationDataDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
-
-        List<InvestPaginationDataDto> investRecordDtos = new ArrayList<>();
+        List<InvestPaginationItemDto> investRecordDtos = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        InvestPaginationDataDto investRecordDto = null;
+        InvestPaginationItemDto investRecordDto = null;
         for (int i = 0;investModels!=null&&i < investModels.size();i++){
             InvestModel investModel = investModels.get(i);
-            investRecordDto = new InvestPaginationDataDto();
+            investRecordDto = new InvestPaginationItemDto();
             investRecordDto.setLoginName(investModel.getLoginName());
             investRecordDto.setAmount(decimalFormat.format(investModel.getAmount() / 100d));
             investRecordDto.setSource(investModel.getSource());
@@ -295,9 +279,11 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
         return investedAmountBig.divide(loanAmountBig)
+                .setScale(2, BigDecimal.ROUND_DOWN)
                 .multiply(new BigDecimal(100))
-                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                .doubleValue();
     }
+
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
@@ -331,6 +317,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public LoanModel findLoanById(long loanId) {
+        // TODO: 重构 Mybatis 直接查询关联关系
         LoanModel loanModel = loanMapper.findById(loanId);
         List<LoanTitleRelationModel> loanTitleRelationModelList = loanTitleRelationMapper.findByLoanId(loanId);
         loanModel.setLoanTitles(loanTitleRelationModelList);
@@ -343,7 +330,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private BaseDto<PayDataDto> loanParamValidate(LoanDto loanDto) {
-        BaseDto<PayDataDto> baseDto = new BaseDto();
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
@@ -391,6 +378,120 @@ public class LoanServiceImpl implements LoanService {
         loanTitleRelationModelList = loanDto.getLoanTitles();
         if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
             loanTitleRelationMapper.create(loanTitleRelationModelList);
+        }
+    }
+    @Override
+    public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
+        if (index <= 0) {
+            index = 1;
+        }
+        if (pageSize <= 0) {
+            pageSize = 10;
+        }
+        long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
+        List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
+        List<InvestPaginationItemDto> investRecords = convertInvestModelToDto(investModels, (index - 1) * pageSize);
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        BasePaginationDataDto<InvestPaginationItemDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, investRecords);
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
+        return baseDto;
+    }
+
+    @Override
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
+        String loginName = LoginUserInfo.getLoginName();
+        if (startTime == null) {
+            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+        } else {
+            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        }
+
+        if (endTime == null) {
+            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        } else {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+
+        List<LoanModel> loanModels = Lists.newArrayList();
+        long count = 0;
+        if (LoanStatus.REPAYING == status) {
+            count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startTime, endTime);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+            }
+        }
+
+        if (LoanStatus.COMPLETE == status) {
+            count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startTime, endTime);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+            }
+        }
+
+        if (LoanStatus.CANCEL == status) {
+            count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startTime, endTime);
+            if (count > 0) {
+                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                index = index > totalPages ? totalPages : index;
+                loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+            }
+        }
+
+        List<LoanerLoanPaginationItemDataDto> records = Lists.transform(loanModels, new Function<LoanModel, LoanerLoanPaginationItemDataDto>() {
+            @Override
+            public LoanerLoanPaginationItemDataDto apply(LoanModel input) {
+                return new LoanerLoanPaginationItemDataDto(input);
+            }
+        });
+
+        BasePaginationDataDto<LoanerLoanPaginationItemDataDto> dataDto = new BasePaginationDataDto<>(index, pageSize, count, records);
+        dataDto.setStatus(true);
+
+        BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
+        dto.setData(dataDto);
+
+        return dto;
+    }
+
+    public LoanRepayDataDto getLoanerLoanData(long loanId) {
+        return null;
+    }
+
+    @Override
+    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
+        // 修改标的的最小投资金额和投资截止时间
+        updateLoanInfo(loanId, minInvestAmount, fundraisingEndTime);
+
+        // 如果存在未处理完成的记录，则不允许放款
+        // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
+        processLoanOutPayRequest(loanId);
+    }
+
+    private void updateLoanInfo(long loanId, long minInvestAmount, Date fundraisingEndTime) {
+        LoanModel loan4update = new LoanModel();
+        loan4update.setId(loanId);
+        if (fundraisingEndTime != null) {
+            loan4update.setFundraisingEndTime(fundraisingEndTime);
+        }
+        loan4update.setMinInvestAmount(minInvestAmount);
+        loanMapper.update(loan4update);
+    }
+
+    private void processLoanOutPayRequest(long loanId) throws TTSDException {
+        LoanOutDto loanOutDto = new LoanOutDto();
+        loanOutDto.setLoanId(String.valueOf(loanId));
+        BaseDto<PayDataDto> resp = payWrapperClient.loanOut(loanOutDto);
+        if (resp.isSuccess()) {
+            PayDataDto data = resp.getData();
+            if (!data.getStatus()) {
+                logger.error("放款失败:" + resp.getData().getMessage());
+                throw new TTSDException("放款失败");
+            }
         }
     }
 }

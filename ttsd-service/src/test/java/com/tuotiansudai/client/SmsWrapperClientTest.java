@@ -2,9 +2,7 @@ package com.tuotiansudai.client;
 
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.MonitorDataDto;
+import com.tuotiansudai.dto.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,9 +47,7 @@ public class SmsWrapperClientTest {
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
         smsWrapperClient.setContext("");
-        String mobile = "13900000000";
-        String code = "1000";
-        BaseDto<BaseDataDto> resultDto = this.smsWrapperClient.sendSms(mobile, code);
+        BaseDto<SmsDataDto> resultDto = this.smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto("13900000000", "1000", "127.0.0.1"));
 
         assertNotNull(resultDto);
         assertTrue(resultDto.getData().getStatus());

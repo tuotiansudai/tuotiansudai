@@ -1,12 +1,13 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.LoanRepayDataDto;
+import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.RepayDto;
 
-/**
- * Created by Administrator on 2015/9/6.
- */
 public interface RepayService {
 
-    public void generateInvestRepay(LoanModel loanModel);
+    BaseDto<PayFormDataDto> repay(RepayDto repayDto);
 
+    BaseDto<LoanRepayDataDto> findLoanerLoanRepay(long loanId);
 }

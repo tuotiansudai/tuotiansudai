@@ -2,12 +2,15 @@ package com.tuotiansudai.web.controller;
 
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 
 @Controller
@@ -17,26 +20,20 @@ public class LoanController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/{loanId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         BaseDto dto = loanService.getLoanDetail(loanId);
         ModelAndView view = new ModelAndView("/loan");
         view.addObject("baseDto", dto);
         return view;
     }
-    //TODO:计算总预收收益
-    @RequestMapping(value = "/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
-    public String getExpectedTotalIncome(@PathVariable long loanId, @PathVariable double amount) {
-        String expectedTotalIncome = loanService.getExpectedTotalIncome(loanId, amount);
-        return expectedTotalIncome;
-    }
 
     @RequestMapping(value = "/{loanId}/index/{index:^\\d+$}/pagesize/{pagesize:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
-    public BasePaginationDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
-        BasePaginationDto dto = loanService.getInvests(loanId, index, pagesize);
+    public BaseDto getInvestList(@PathVariable long loanId, @PathVariable int index, @PathVariable int pagesize) {
+        BaseDto dto = loanService.getInvests(loanId, index, pagesize);
         return dto;
-    }
 
+    }
 
 }

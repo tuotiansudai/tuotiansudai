@@ -18,6 +18,19 @@
         <result column="referrer" property="referrer"></result>
         <result column="status" property="status"></result>
         <result column="salt" property="salt"></result>
+        <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
+            <id column="id" property="id"></id>
+            <result column="login_name" property="loginName"></result>
+            <result column="user_name" property="userName"></result>
+            <result column="identity_number" property="identityNumber"></result>
+            <result column="pay_user_id" property="payUserId"></result>
+            <result column="pay_account_id" property="payAccountId"></result>
+            <result column="balance" property="balance"></result>
+            <result column="freeze" property="freeze"></result>
+            <result column="register_time" property="registerTime"></result>
+            <result column="auto_invest" property="autoInvest"></result>
+        </association>
+
     </resultMap>
 
     <select id="findByEmail" parameterType="java.lang.String" resultMap="userResultMap">
@@ -40,4 +53,71 @@
       insert into user (login_name, password, mobile, email, register_time, referrer, status, salt)
       value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt})
     </insert>
+
+    <update id="updatePasswordByLoginName" parameterType="map">
+        update user set password = #{password} where login_name = #{loginName}
+    </update>
+    <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
+        update user set email = #{email},
+                        mobile = #{mobile},
+                        last_modified_time = #{lastModifiedTime},
+                        last_modified_user = #{lastModifiedUser},
+                        status = #{status},
+                        referrer = #{referrer} where id = #{id}
+    </update>
+
+    <select id="findAllUser" parameterType="map" resultMap="userResultMap">
+        select * from user u join account a on u.login_name = a.login_name
+
+        <if test="role !=null" >
+            join user_role r on u.login_name = r.login_name
+        </if>
+        <where>
+            <if test="role !=null" >
+                and r.role = #{role}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and u.login_name like '${loginName}%']]>
+            </if>
+            <if test="beginTime !=null" >
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+
+        </where>
+        order by a.register_time asc
+        limit #{index},#{pageSize}
+    </select>
+
+    <select id="findAllUserCount" parameterType="map" resultType="int">
+        select count(1) from user u join account a on u.login_name = a.login_name
+
+        <if test="role !=null" >
+            join user_role r on u.login_name = r.login_name
+        </if>
+        <where>
+
+            <if test="role !=null" >
+                and r.role = #{role}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and u.login_name like '${loginName}%']]>
+            </if>
+            <if test="beginTime !=null" >
+                and u.register_time >= #{beginTime}
+            </if>
+            <if test="endTime !=null ">
+                and u.register_time &lt;= #{endTime}
+            </if>
+            <if test="referrer !=null and referrer != '' ">
+                and u.referrer = #{referrer}
+            </if>
+
+        </where>
+    </select>
 </mapper>

@@ -3,6 +3,8 @@ package com.tuotiansudai.service;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,12 +54,14 @@ public class SmsCaptchaServiceTest {
         String jsonString = "{\"success\":true,\"data\":{\"status\":true}}";
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
-        smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000");
+        smsWrapperClient.setHost(server.getHostName());
+        smsWrapperClient.setPort(String.valueOf(server.getPort()));
+        smsWrapperClient.setContext("");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
-        assertTrue(result);
+        assertTrue(dto.getData().getStatus());
         assertNotNull(smsCaptchaModel);
 
     }
@@ -68,10 +73,10 @@ public class SmsCaptchaServiceTest {
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
-        assertFalse(result);
+        assertFalse(dto.getData().getStatus());
         assertNotNull(smsCaptchaModel);
 
     }

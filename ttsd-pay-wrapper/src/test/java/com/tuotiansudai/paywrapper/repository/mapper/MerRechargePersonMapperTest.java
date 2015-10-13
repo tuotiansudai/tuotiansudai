@@ -1,7 +1,6 @@
 package com.tuotiansudai.paywrapper.repository.mapper;
 
-import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.request.SyncRequestStatus;
+import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonRequestModel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,10 @@ public class MerRechargePersonMapperTest {
 
     @Test
     public void shouldCreateMerRegisterPersonModel() {
-        MerRechargePersonModel model = new MerRechargePersonModel("orderId", "umpUserId", "amount", "gateId");
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel("orderId", "umpUserId", "amount", "gateId");
         model.setSign("sign");
+        model.setRetUrl("ret_url");
+        model.setNotifyUrl("notify_url");
         model.setRequestUrl("url");
         model.setRequestData("requestData");
 

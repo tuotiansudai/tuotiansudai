@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -44,6 +43,7 @@ public class RedisWrapperClientTest {
 
     @Test
     public void testRedisList() {
+        redisWrapperClient.del("listFuck");
         redisWrapperClient.lpush("listFuck","0","1","2");
         assertThat(redisWrapperClient.llen("listFuck"), is(3));
         redisWrapperClient.lpush("listFuck","3");
@@ -56,6 +56,7 @@ public class RedisWrapperClientTest {
 
     @Test
     public void testRedisMap() {
+        redisWrapperClient.del("bitch");
         Map<String, String> fuck = new HashMap<String, String>();
         fuck.put("fuck","0");
         fuck.put("shit","1");

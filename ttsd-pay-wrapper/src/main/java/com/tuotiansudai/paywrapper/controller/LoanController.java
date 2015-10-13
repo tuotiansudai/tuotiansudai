@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.paywrapper.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,12 @@ public class LoanController {
     @ResponseBody
     public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto) {
         return loanService.updateLoanStatus(loanDto.getId(), loanDto.getLoanStatus());
+    }
+
+    // 放款，只用传入loanId
+    @ResponseBody
+    @RequestMapping(value = "/loan-out", method = RequestMethod.POST)
+    public BaseDto<PayDataDto> loanOut(@RequestBody LoanOutDto loanOutDto){
+        return loanService.loanOut(loanOutDto.getLoanIdLong());
     }
 }

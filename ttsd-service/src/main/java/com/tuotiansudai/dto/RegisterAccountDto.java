@@ -6,12 +6,8 @@ import javax.validation.constraints.Pattern;
 
 public class RegisterAccountDto {
 
-    @NotEmpty
-    @Pattern(regexp = "^[A-Za-z0-9]{5,25}$")
     private String loginName;
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d{11}$")
     private String mobile;
 
     @NotEmpty
@@ -51,5 +47,15 @@ public class RegisterAccountDto {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public RegisterAccountDto(String loginName,String mobile,String userName,String identityNumber){
+        this.setUserName(userName);
+        this.setLoginName(loginName);
+        this.setMobile(mobile);
+        this.setIdentityNumber(identityNumber);
+    }
+    public RegisterAccountDto(){
+
     }
 }

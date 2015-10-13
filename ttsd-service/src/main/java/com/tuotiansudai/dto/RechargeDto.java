@@ -13,7 +13,7 @@ public class RechargeDto implements Serializable {
     private String bank;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+\\.\\d{2}$")
+    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
     private String amount;
 
     public String getLoginName() {

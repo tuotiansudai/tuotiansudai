@@ -12,10 +12,14 @@ public interface AccountMapper {
 
     AccountModel findByLoginName(String loginName);
 
+    AccountModel findByPayUserId(String payUserId);
+
     List<String> findAllLoginNamesByLike(String loginName);
 
     AccountModel lockByLoginName(String loginName);
 
     void update(AccountModel model);
+
+    AccountModel findByIdentityNumber(String identityNumber);
 
 }
