@@ -65,10 +65,12 @@ a:hover {
 .login {
     width: 500px;
     height: 400px;
-    margin: -250px 0 0 -250px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     padding: 20px 30px;
     background: #c1bebe;
     border-radius: 5px;
