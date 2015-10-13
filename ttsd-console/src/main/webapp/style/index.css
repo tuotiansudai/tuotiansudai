@@ -77,8 +77,9 @@ a:hover {
 
 .captcha-img {
     height: 34px;
-    background: #ccc;
+    background: #c1bebe;
     width: 38.66666%;
+    text-align:center;
 }
 
 .files-input {
