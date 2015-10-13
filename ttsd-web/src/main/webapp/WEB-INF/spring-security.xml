@@ -27,7 +27,6 @@
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
         <beans:property name="captchaVerifier" ref="captchaVerifier"/>
-        <beans:property name="loginFailedTimesVerifier" ref="loginFailedTimesVerifier"/>
     </beans:bean>
 
     <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>

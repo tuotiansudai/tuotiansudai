@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
-import com.tuotiansudai.exception.LoginFailedMaxTimesException;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${login.unlock.second}")
     private int second;
@@ -46,9 +52,12 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                     redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey))+1));
                 } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times-1) {
                     redisWrapperClient.setex(redisKey, second, String.valueOf(times));
+                    UserModel userModel = userMapper.findByLoginName(request.getParameter("username"));
+                    userModel.setStatus(UserStatus.INACTIVE);
+                    userMapper.updateUser(userModel);
                 }
             }
-            loginDto.setLocked(exception instanceof LoginFailedMaxTimesException);
+            loginDto.setLocked(exception instanceof DisabledException);
             baseDto.setData(loginDto);
             String jsonBody = objectMapper.writeValueAsString(baseDto);
             response.setContentType("application/json; charset=UTF-8");
