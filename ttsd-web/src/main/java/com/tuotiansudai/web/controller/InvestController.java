@@ -38,7 +38,7 @@ public class InvestController {
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setInvestSource(InvestSource.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-        if(baseDto.isSuccess()) {
+        if(baseDto.getData().getStatus()) {
             return new ModelAndView("/pay", "pay", baseDto);
         }else{
             return loanController.getLoanDetail(investDto.getLoanIdLong());
