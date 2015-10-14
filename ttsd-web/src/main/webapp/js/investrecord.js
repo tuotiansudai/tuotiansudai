@@ -23,14 +23,74 @@ require(['jquery', 'mustache', 'text!../../tpl/investrecordtable.tpl', 'moment',
             rec_typestr = "&loanStatus=" + selectedType;
         }
         if (startDay == '' || startDay == 'undefined') {
-            var url = API_AJAX + "?pageIndex=" + page + rec_typestr;
+            var url = API_AJAX + "?index=" + page + rec_typestr;
         } else {
-            var url = API_AJAX + "?beginTime=" + startDay + "&endTime=" + endDay + "&pageIndex=" + page + rec_typestr;
+            var url = API_AJAX + "?startTime=" + startDay + "&endTime=" + endDay + "&index=" + page + rec_typestr;
         }
-        $.get(url, function (res) {
+
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).done(function (res) {
             var ret = Mustache.render(dealtableTpl, res);
             $('#tpl').html(ret);
-            _page = res.index;
+            _page = res.data.index;
+
+            $('#tpl .plan').click(function () {
+                var dataRepay = $(this).attr('data-repay');
+                var str = '';
+                $.ajax({
+                    url: dataRepay,
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function (res) {
+                    console.log(res);
+                    if (res.data.status) {
+                        var _res = res.data.records;
+                        for (var i = 0; i < _res.length; i++) {
+                            // 序号	应回款时间	应回款金额	应收本金	应收利息	利息管理费
+                            // 实收总额	实收利息	实收罚息	实扣利息管理费	状态
+                            str += "<tr><td>" +
+                                (i+1)
+                                + "</td><td>" +
+                                _res[i]['repayDate']
+                                + "</td><td>" +
+                                _res[i]['amount']
+                                + "</td><td>" +
+                                _res[i]['corpus']
+                                + "</td><td>" +
+                                _res[i]['expectedInterest']
+                                + "</td><td>" +
+                                _res[i]['expectedFee']
+                                + "</td>";
+                            if(_res[i]['status'] == 'COMPLETE') {
+                                str += "<td>" +
+                                    _res[i]['actualAmount']
+                                    + "</td><td>" +
+                                    _res[i]['actualInterest']
+                                    + "</td><td>" +
+                                    _res[i]['defaultInterest']
+                                    + "</td><td>" +
+                                    _res[i]['actualFee']
+                                    + "</td><td>" +
+                                    '完成'
+                                    + "</td></tr>";
+                            }else{
+                                str += "<td> - </td><td> - </td><td> - </td><td> - </td><td>还款中</td></tr>";
+                            }
+                        }
+                        $('.table-list tbody').find('tr').remove();
+                        $('.table-list tbody').append(str);
+                    }
+                });
+                $('.layer-box').show();
+                return false;
+
+            });
+
         });
     }
 
@@ -82,4 +142,14 @@ require(['jquery', 'mustache', 'text!../../tpl/investrecordtable.tpl', 'moment',
         _page--;
         getAjax(_page);
     });
+
+    //还款计划
+    $('.layer-box .close').click(function () {
+        $('.layer-box').hide();
+        return false;
+    });
+    $('.layer-fix').click(function () {
+        $('.layer-box').hide();
+    });
+
 });

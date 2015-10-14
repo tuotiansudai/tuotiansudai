@@ -218,7 +218,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
-        loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate()));
+        loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
