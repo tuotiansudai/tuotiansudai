@@ -40,6 +40,46 @@
     </div>
 
 </div>
+<#--弹出层-->
+<div class="layer-box">
+    <div class="layer-fix"></div>
+    <div class="layer-con">
+        <h2>
+            <span class="hd"></span>
+            <span class="close">x</span>
+        </h2>
+
+        <div class="table-list-box">
+            <table class="table-list">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>应回款时间</th>
+                    <th>应回款金额</th>
+                    <th>应收本金</th>
+                    <th>应收利息</th>
+                    <th>利息管理费</th>
+                    <th>实收金额</th>
+                    <th>实收利息</th>
+                    <th>实收罚息</th>
+                    <th>实扣利息管理费</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="11" align="left">
+                        <p>应回款金额 = 应收本金 + 应收利息 - 利息管理费</p>
+                        <p>实收金额 = 应收本金 + 实收利息 + 实收罚息 - 实扣利息管理费</p>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.investrecord}">
 </@global.javascript>
@@ -47,7 +87,7 @@
 </html>
 <#--<script src="../js/libs/moment-2.10.6.min.js"></script>-->
 <script>
-    var API_AJAX  = "query_invests";
+    var API_AJAX  = "query-invests";
 //    var dd = moment();
 //    console.log(dd.subtract(10, 'days').format("YYYY-MM-DD"));
 </script>
