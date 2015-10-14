@@ -5,16 +5,22 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.job.AutoInvestJob;
+import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.JobManager;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -55,6 +61,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private RepayService repayService;
+
+    @Value("${autoInvest.delay.minutes}")
+    private int autoInvestDelayMinutes;
 
     /**
      * @param loanTitleDto
@@ -209,7 +218,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
-        loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate()));
+        loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
@@ -306,13 +315,50 @@ public class LoanServiceImpl implements LoanService {
             updateLoanAndLoanTitleRelation(loanDto);
             baseDto = payWrapperClient.createLoan(loanDto);
             if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto);
+                baseDto = payWrapperClient.updateLoan(loanDto);
             }
+
+            // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
+            LoanModel loanModel = loanMapper.findById(loanDto.getId());
+            if(loanModel.getStatus() == LoanStatus.PREHEAT) {
+                createFundraisingStartJob(loanModel);
+            }
+
             return baseDto;
         }
         payDataDto.setStatus(false);
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+
+    @Override
+    public void startFundraising(long loanId) {
+        loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+        createAutoInvestJob(loanId);
+    }
+
+    private void createFundraisingStartJob(LoanModel loanModel) {
+        try {
+            JobManager.newJob(FundraisingStartJob.class)
+                    .runOnceAt(loanModel.getFundraisingStartTime())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, loanModel.getId())
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createAutoInvestJob(long loanId) {
+        try {
+            JobManager.newJob(AutoInvestJob.class)
+                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, loanId)
+                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
+                    .submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

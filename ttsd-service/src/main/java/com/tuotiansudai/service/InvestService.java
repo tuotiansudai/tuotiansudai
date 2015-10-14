@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 
 import java.util.List;

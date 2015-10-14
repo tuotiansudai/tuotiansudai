@@ -185,12 +185,12 @@ public class InvestServiceImpl implements InvestService {
         }
         if (availableAmount >= maxInvestAmount) {
             returnAmount = maxInvestAmount;
-        } else if (availableAmount < maxInvestAmount && availableAmount > minInvestAmount) {
+        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
             returnAmount = availableAmount;
         }
         if (returnAmount >= availableLoanAmount) {
             returnAmount = availableLoanAmount;
-        }
+        } 
         return returnAmount;
     }
 
