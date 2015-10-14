@@ -6,7 +6,10 @@ import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
@@ -19,10 +22,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.Date;
@@ -55,16 +55,8 @@ public class InvestServiceTest {
     @Autowired
     private InvestMapper investMapper;
 
-    private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext wac;
-
     private ObjectMapper objectMapper;
     private MockWebServer mockServer;
-
-    @Autowired
-    private AccountMapper accountMapper;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -92,12 +84,12 @@ public class InvestServiceTest {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setEnabled(true);
         model.setLoginName(userId);
-        model.setRetentionAmount(10000);
+        model.setRetentionAmount(200);
         model.setAutoInvestPeriods(periods);
         model.setCreatedTime(DateUtils.addDays(new Date(), diffDays));
         model.setId(idGenerator.generate());
-        model.setMaxInvestAmount(1000000);
-        model.setMinInvestAmount(50000);
+        model.setMaxInvestAmount(1000);
+        model.setMinInvestAmount(100);
         autoInvestPlanMapper.create(model);
         return model;
     }
@@ -123,7 +115,6 @@ public class InvestServiceTest {
 
     @Before
     public void setup() throws Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         this.objectMapper = new ObjectMapper();
 
         this.mockServer = mockUmPayService();
@@ -233,6 +224,8 @@ public class InvestServiceTest {
 
         this.investService.autoInvest(loanId);
 
+        long amount = investMapper.sumSuccessInvestAmount(loanId);
 
+        assert amount == 100;
     }
 }
