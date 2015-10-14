@@ -50,6 +50,12 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public BaseDto<PayDataDto> investNopwd(InvestDto investDto) {
+        investDto.setInvestSource(InvestSource.AUTO);
+        return payWrapperClient.investNopwd(investDto);
+    }
+
+    @Override
     public long calculateExpectedInterest(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
         int repayTimes = loanModel.calculateLoanRepayTimes();
@@ -167,4 +173,5 @@ public class InvestServiceImpl implements InvestService {
         }
         return returnAmount;
     }
+    
 }
