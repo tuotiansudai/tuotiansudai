@@ -31,12 +31,6 @@ public class InvestController {
     @Autowired
     private RepayService repayService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.GET)
-    public ModelAndView invest() {
-        return new ModelAndView("/invest");
-    }
-
-
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setInvestSource(InvestSource.WEB);
