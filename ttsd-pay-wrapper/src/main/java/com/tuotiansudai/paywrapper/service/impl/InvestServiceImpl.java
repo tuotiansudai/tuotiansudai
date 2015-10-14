@@ -22,6 +22,8 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -57,6 +60,12 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserBillService userBillService;
 
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private com.tuotiansudai.service.InvestService investService;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -84,9 +93,8 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    @Override
     @Transactional
-    public BaseDto<PayDataDto> investNopwd(InvestDto dto) {
+    private BaseDto<PayDataDto> investNopwd(InvestDto dto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
@@ -199,4 +207,52 @@ public class InvestServiceImpl implements InvestService {
         investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
     }
 
+    @Override
+    public void autoInvest(long loanId) {
+        LoanModel loanModel= loanMapper.findById(loanId);
+        List<AutoInvestPlanModel> autoInvestPlanModels = investService.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
+        for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
+            try {
+                long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
+                if (availableLoanAmount <= 0) {
+                    return;
+                }
+                InvestDto investDto = new InvestDto();
+                investDto.setLoanId(String.valueOf(loanId));
+                investDto.setLoginName(autoInvestPlanModel.getLoginName());
+                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, availableLoanAmount);
+                if (autoInvestAmount == 0) {
+                    continue;
+                }
+                investDto.setAmount(String.valueOf(autoInvestAmount));
+                investDto.setInvestSource(InvestSource.AUTO);
+                BaseDto<PayDataDto> baseDto = this.investNopwd(investDto);
+                if (!baseDto.isSuccess()) {
+                    logger.debug("auto invest failed auto invest plan id is " + autoInvestPlanModel.getId());
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+                continue;
+            }
+        }
+    }
+
+    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
+        long availableAmount = accountService.getBalance(autoInvestPlanModel.getLoginName()) - autoInvestPlanModel.getRetentionAmount();
+        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
+        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
+        long returnAmount = 0;
+        if (availableLoanAmount < minInvestAmount) {
+            return returnAmount;
+        }
+        if (availableAmount >= maxInvestAmount) {
+            returnAmount = maxInvestAmount;
+        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
+            returnAmount = availableAmount;
+        }
+        if (returnAmount >= availableLoanAmount) {
+            returnAmount = availableLoanAmount;
+        }
+        return returnAmount;
+    }
 }

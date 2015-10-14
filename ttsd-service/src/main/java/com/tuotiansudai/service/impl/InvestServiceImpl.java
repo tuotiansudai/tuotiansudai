@@ -42,20 +42,11 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private IdGenerator idGenerator;
 
-    @Autowired
-    private AccountService accountService;
-
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
         return payWrapperClient.invest(investDto);
-    }
-
-    @Override
-    public BaseDto<PayDataDto> investNopwd(InvestDto investDto) {
-        investDto.setInvestSource(InvestSource.AUTO);
-        return payWrapperClient.investNopwd(investDto);
     }
 
     @Override
@@ -146,52 +137,6 @@ public class InvestServiceImpl implements InvestService {
         return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
     }
 
-    @Override
-    public void validateAutoInvest(long loanId) {
-        LoanModel loanModel= loanMapper.findById(loanId);
-        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
-        for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
-            try {
-                long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
-                if (availableLoanAmount <= 0) {
-                    return;
-                }
-                InvestDto investDto = new InvestDto();
-                investDto.setLoanId(String.valueOf(loanId));
-                investDto.setLoginName(autoInvestPlanModel.getLoginName());
-                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, availableLoanAmount);
-                if (autoInvestAmount == 0) {
-                    continue;
-                }
-                investDto.setAmount(String.valueOf(autoInvestAmount));
-                BaseDto<PayDataDto> baseDto = this.investNopwd(investDto);
-                if (!baseDto.isSuccess()) {
-                    logger.debug("auto invest failed auto invest plan id is " + autoInvestPlanModel.getId());
-                }
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-                continue;
-            }
-        }
-    }
 
-    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
-        long availableAmount = accountService.getBalance(autoInvestPlanModel.getLoginName()) - autoInvestPlanModel.getRetentionAmount();
-        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
-        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
-        long returnAmount = 0;
-        if (availableLoanAmount < minInvestAmount) {
-            return returnAmount;
-        }
-        if (availableAmount >= maxInvestAmount) {
-            returnAmount = maxInvestAmount;
-        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
-            returnAmount = availableAmount;
-        }
-        if (returnAmount >= availableLoanAmount) {
-            returnAmount = availableLoanAmount;
-        } 
-        return returnAmount;
-    }
 
 }

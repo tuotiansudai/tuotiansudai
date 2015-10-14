@@ -11,7 +11,7 @@ public interface InvestService {
 
     BaseDto<PayFormDataDto> invest(InvestDto dto);
 
-    BaseDto<PayDataDto> investNopwd(InvestDto dto);
-
     String investCallback(Map<String, String> paramsMap, String queryString);
+
+    public void autoInvest(long loanId);
 }
