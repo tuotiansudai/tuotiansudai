@@ -127,7 +127,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(dataDto);
             return baseDto;
         }
-        if (loanDto.getPeriods() > 12 || loanDto.getPeriods() <= 0) {
+        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
             dataDto.setStatus(false);
             dataDto.setMessage("借款期限最小为1，最大为12");
             baseDto.setData(dataDto);
@@ -223,7 +223,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance() / 100d);
+            loanDto.setBalance(accountModel.getBalance()/100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
@@ -237,13 +237,13 @@ public class LoanServiceImpl implements LoanService {
         return loanDto;
     }
 
-    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels, int serialNoBegin) {
+    private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
 
         List<InvestPaginationItemDto> investRecordDtos = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InvestPaginationItemDto investRecordDto = null;
-        for (int i = 0; investModels != null && i < investModels.size(); i++) {
+        for (int i = 0;investModels!=null&&i < investModels.size();i++){
             InvestModel investModel = investModels.get(i);
             investRecordDto = new InvestPaginationItemDto();
             investRecordDto.setLoginName(investModel.getLoginName());
@@ -426,7 +426,6 @@ public class LoanServiceImpl implements LoanService {
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
-
     @Override
     public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
         if (index <= 0) {
