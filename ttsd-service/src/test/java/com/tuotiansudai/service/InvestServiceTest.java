@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -193,46 +192,6 @@ public class InvestServiceTest {
         dbModel = investService.findUserAutoInvestPlan(loginName);
         assert dbModel != null;
         assert dbModel.isEnabled();
-    }
-
-    @Test
-    public void shouldFindValidPlanByPeriod()
-    {
-        createUserByUserId("test00001");
-        createUserAutoInvestPlan("test00001",
-                                AutoInvestMonthPeriod.Month_1.getPeriodValue(), 0);
-        createUserByUserId("test00002");
-        createUserAutoInvestPlan("test00002", AutoInvestMonthPeriod.merge(
-                                AutoInvestMonthPeriod.Month_1,
-                                AutoInvestMonthPeriod.Month_2).getPeriodValue(), -1);
-        createUserByUserId("test00003");
-        createUserAutoInvestPlan("test00003",AutoInvestMonthPeriod.merge(
-                                AutoInvestMonthPeriod.Month_1,
-                                AutoInvestMonthPeriod.Month_2,
-                                AutoInvestMonthPeriod.Month_3,
-                                AutoInvestMonthPeriod.Month_4).getPeriodValue(), -2);
-        createUserByUserId("test00004");
-        createUserAutoInvestPlan("test00004",AutoInvestMonthPeriod.merge(
-                                AutoInvestMonthPeriod.Month_1,
-                                AutoInvestMonthPeriod.Month_2,
-                                AutoInvestMonthPeriod.Month_3,
-                                AutoInvestMonthPeriod.Month_4).getPeriodValue(), -9);
-        createUserByUserId("test00005");
-        createUserAutoInvestPlan("test00005",AutoInvestMonthPeriod.merge(
-                                AutoInvestMonthPeriod.Month_6,
-                                AutoInvestMonthPeriod.Month_12).getPeriodValue(), -8);
-        createUserByUserId("test00006");
-        createUserAutoInvestPlan("test00006",
-                                AutoInvestMonthPeriod.Month_6.getPeriodValue(), 0);
-
-        List<AutoInvestPlanModel> models = investService.findValidPlanByPeriod(AutoInvestMonthPeriod.Month_1);
-        assert models.size() == 3;
-
-        models = investService.findValidPlanByPeriod(AutoInvestMonthPeriod.Month_6);
-        assert models.size() == 1;
-
-        models = investService.findValidPlanByPeriod(AutoInvestMonthPeriod.Month_3);
-        assert models.size() == 2;
     }
 
     private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods, int diffDays){

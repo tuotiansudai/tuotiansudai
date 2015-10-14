@@ -19,10 +19,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -61,10 +62,7 @@ public class InvestServiceImpl implements InvestService {
     private UserBillService userBillService;
 
     @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private com.tuotiansudai.service.InvestService investService;
+    private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Override
     @Transactional
@@ -208,9 +206,19 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
+    }
+
+    @Override
     public void autoInvest(long loanId) {
         LoanModel loanModel= loanMapper.findById(loanId);
-        List<AutoInvestPlanModel> autoInvestPlanModels = investService.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
+        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
             try {
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
@@ -238,7 +246,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
-        long availableAmount = accountService.getBalance(autoInvestPlanModel.getLoginName()) - autoInvestPlanModel.getRetentionAmount();
+        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
         long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
         long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
         long returnAmount = 0;
