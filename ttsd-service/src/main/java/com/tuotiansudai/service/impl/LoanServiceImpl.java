@@ -300,8 +300,7 @@ public class LoanServiceImpl implements LoanService {
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        LoanModel loanModel = loanMapper.findById(loanDto.getId());
-        if (loanModel == null) {
+        if (loanMapper.findById(loanDto.getId()) == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
@@ -319,8 +318,8 @@ public class LoanServiceImpl implements LoanService {
                 baseDto = payWrapperClient.updateLoan(loanDto);
             }
 
-            // 建标成功后，再次校验Loan状态
-            loanModel = loanMapper.findById(loanDto.getId());
+            // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
+            LoanModel loanModel = loanMapper.findById(loanDto.getId());
             if(loanModel.getStatus() == LoanStatus.PREHEAT) {
                 createFundraisingStartJob(loanModel);
             }
