@@ -323,7 +323,6 @@ public class LoanServiceImpl implements LoanService {
             loanModel = loanMapper.findById(loanDto.getId());
             if(loanModel.getStatus() == LoanStatus.PREHEAT) {
                 createFundraisingStartJob(loanModel);
-                createAutoInvestJob(loanModel);
             }
 
             return baseDto;
@@ -336,6 +335,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+        createAutoInvestJob(loanId);
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {
@@ -350,12 +350,12 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private void createAutoInvestJob(LoanModel loanModel) {
+    private void createAutoInvestJob(long loanId) {
         try {
             JobManager.newJob(AutoInvestJob.class)
-                    .runOnceAt(DateUtils.addMinutes(loanModel.getFundraisingStartTime(), autoInvestDelayMinutes))
-                    .addJobData(AutoInvestJob.LOAN_ID_KEY, loanModel.getId())
-                    .withIdentity("AutoInvestJob", "Loan-" + loanModel.getId())
+                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, loanId)
+                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
                     .submit();
         } catch (SchedulerException e) {
             e.printStackTrace();
