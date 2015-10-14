@@ -31,11 +31,18 @@ public class InvestController {
     @Autowired
     private RepayService repayService;
 
+    @Autowired
+    private LoanController loanController;
+
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setInvestSource(InvestSource.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-        return new ModelAndView("/pay", "pay", baseDto);
+        if(baseDto.isSuccess()) {
+            return new ModelAndView("/pay", "pay", baseDto);
+        }else{
+            return loanController.getLoanDetail(investDto.getLoanIdLong());
+        }
     }
 
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
