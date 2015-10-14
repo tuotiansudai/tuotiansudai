@@ -153,11 +153,11 @@ public class RefereeInvestList implements java.io.Serializable {
             whereTemplate += " and rr.level=" + condition.getRefereeLevel();
         }
         if (condition.getIsMerchandiser() != null && condition.getIsMerchandiser()) {
-            whereTemplate += " and reward.role_name='ROLE_MERCHANDISER'";
+            whereTemplate += "and exists (select 1 from user_role where user_role.user_id = referrer.id and user_role.role_id='ROLE_MERCHANDISER')";
         }
 
         if (condition.getIsMerchandiser() != null && !condition.getIsMerchandiser()) {
-            whereTemplate += " and reward.role_name='INVESTOR'";
+            whereTemplate += "and exists (select 1 from user_role where user_role.user_id = referrer.id and user_role.role_id='INVESTOR')";
         }
         if (investStartTime != null) {
             whereTemplate += " and invest.time >='" + dateFormat.format(investStartTime) + "'";
