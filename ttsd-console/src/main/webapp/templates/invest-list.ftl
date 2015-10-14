@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -70,70 +71,17 @@
     <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
-<!-- header begin -->
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
-                    aria-controls="bs-navbar" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="../" class="navbar-brand"><img src="images/logo.jpg" alt=""></a>
-        </div>
-    </div>
-    <nav id="bs-navbar" class="collapse navbar-collapse">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="">系统主页</a>
-                </li>
-                <li>
-                    <a href="">项目管理</a>
-                </li>
-                <li>
-                    <a href="">用户管理</a>
-                </li>
-                <li>
-                    <a href="">财务管理</a>
-                </li>
-                <li>
-                    <a href="">文章管理</a>
-                </li>
-                <li>
-                    <a href="">安全管理</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<!-- header end -->
+
+<@menu.header label="sysMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
-            <!-- menu sidebar -->
-            <div class="col-md-2">
-                <ul class="nav bs-docs-sidenav">
-                    <li class="active"><a href="index.html">所有借款</a></li>
-                    <li><a href="firstTrial.html">初审的借款</a></li>
-                    <li><a href="moneyCollect.html">筹款中借款</a></li>
-                    <li><a href="finishRefund.html">完成还款的借款</a></li>
-                    <li><a href="Drain.html">已经流标的借款</a></li>
-                    <li><a href="overdue.html">逾期借款</a></li>
-                    <li><a href="star.html">发起借款</a></li>
-                    <li><a href="twoTrial.html">复审借款</a></li>
-                    <li><a href="recheck.html">复审核借款</a></li>
-                    <li><a href="check.html">审核借款</a></li>
-                    <li><a href="fundsEdit.html">复审借款</a></li>
-                </ul>
-            </div>
-            <!-- menu sidebar end -->
 
-            <!-- content area begin -->
+            <@menu.sidebar label="index"></@menu.sidebar>
+
+                <!-- content area begin -->
             <div class="col-md-10">
                 <form action="" class="form-inline query-build">
                     <div class="form-group">
