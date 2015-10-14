@@ -21,8 +21,11 @@
             </td>
             <td>{{amount}}元</td>
             <td>
-            <span class="plan" data-repay="/investor/query-invest-repay?investId={{id}}">回款记录</span>
-            {{#hasContract}}<a class="red" href=""> | 合同</a>{{/hasContract}}
+            {{#hasContract}}
+            <span class="plan" data-repay="/investor/query-invest-repay?investId={{id}}">回款记录</span> |
+            <a class="red" href="/contract/investor/{{loanId}}" target="_blank">合同</a>
+            {{/hasContract}}
+            {{^hasContract}} - / - {{/hasContract}}
             </td>
         </tr>
         {{/data.records}}
