@@ -212,20 +212,42 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
+        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
             loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setMaxAvailableInvestAmount(calculateMaxAvailableInvestAmount(
+                    accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount, loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount()
+            )/100d);
+        }else{
+            loanDto.setMaxAvailableInvestAmount(0.00D);
         }
-        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
         loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
+
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
+    }
+
+    private long calculateMaxAvailableInvestAmount(long balance,long amountNeedRaised,long minInvestAmount,long investIncreasingAmount){
+
+        long maxAvailableInvestAmount = balance;
+        if(balance > amountNeedRaised){
+            maxAvailableInvestAmount = amountNeedRaised;
+        }
+        if (maxAvailableInvestAmount >= minInvestAmount){
+            maxAvailableInvestAmount = maxAvailableInvestAmount - maxAvailableInvestAmount%investIncreasingAmount;
+        }else{
+            maxAvailableInvestAmount = 0L;
+        }
+
+        return maxAvailableInvestAmount;
+
     }
 
     private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {

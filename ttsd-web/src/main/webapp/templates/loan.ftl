@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<#assign loan = baseDto.data>
+<#assign loan = (baseDto.data)>
 <#import "macro/global.ftl" as global>
 <@global.head title="标的详情" pageCss="${css.loan_detail}">
 </@global.head>
@@ -57,28 +57,29 @@
             </div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
+                <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
+                <span class="num balance"><i class="red">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="text" name="amount" value="" class="text-input"/>
-                <span class="bg-yellow">最大可投金额</span>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input"/>
+                <button class="bg-yellow"  type="reset">最大可投金额</button>
             </div>
             <div class="item-block">
                 <span class="sub-hd">预计总收益：</span>
-                <span class="num">600000元</span>
+                <span class="num expected-interest"></span>
             </div>
             <div class="item-block">
-                <input type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
                 <button class="btn-pay" type="submit">马上投资</button>
             </div>
             </form>
         </#if>
         <#if loan.loanStatus == "PREHEAT">
+            <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">项目金额：</span>
@@ -94,8 +95,8 @@
                 <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" value="" class="text-input"/>
-                <span class="bg-yellow">最大可投金额</span>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input"/>
+                <button class="bg-yellow" type="reset" >最大可投金额</button>
             </div>
             <div class="item-block">
                 <div class="time-item">
@@ -104,10 +105,13 @@
                     <strong id="second_show">0秒</strong>
                     以后可投资
                 </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
             </div>
             <div class="item-block">
-                <button class="btn-pay grey" type="button" disabled="disabled">预热中</button>
+                <button class="btn-pay grey" type="submit" disabled="disabled">预热中</button>
             </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "REPAYING">
             <div class="item-block" style="text-align: center">

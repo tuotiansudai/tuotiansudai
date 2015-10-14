@@ -17,6 +17,19 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
             }
         });
 
+        $('.text-input').blur(function(){
+            var loanId = $('.hid-loan').val();
+            var amount = $('.text-input').val();
+            $.ajax({
+                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(amount){
+                $('.expected-interest').html(amount);
+            });
+        });
+
 
         function pageAjax(url) {
             $.get(url, function (data) {
@@ -96,7 +109,7 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
                     minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                     second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                 }else{
-                    $('.btn-pay').removeClass('grey').removeAttr('disabled').html('可投资');
+                    $('.btn-pay').removeClass('grey').removeAttr('disabled').html('马上投资');
                 }
                 if (minute <= 9) minute = '0' + minute;
                 if (second <= 9) second = '0' + second;
