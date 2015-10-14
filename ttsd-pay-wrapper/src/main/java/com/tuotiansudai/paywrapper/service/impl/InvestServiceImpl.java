@@ -228,7 +228,7 @@ public class InvestServiceImpl implements InvestService {
                 investDto.setInvestSource(InvestSource.AUTO);
                 BaseDto<PayDataDto> baseDto = this.investNopwd(investDto);
                 if (!baseDto.isSuccess()) {
-                    logger.debug("auto invest failed auto invest plan id is " + autoInvestPlanModel.getId());
+                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}",autoInvestPlanModel.getId(),autoInvestAmount,loanId));
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
