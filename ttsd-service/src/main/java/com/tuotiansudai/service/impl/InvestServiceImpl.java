@@ -140,10 +140,14 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void validateAutoInvest(long loanId) {
         LoanModel loanModel= loanMapper.findById(loanId);
+        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY) {
+            return;
+        }
         long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
             this.calculateAutoInvestAmount(autoInvestPlanModel,0);
+
         }
 
     }
