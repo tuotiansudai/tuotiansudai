@@ -14,6 +14,7 @@ import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -146,16 +149,30 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void validateAutoInvest(long loanId) {
         LoanModel loanModel= loanMapper.findById(loanId);
-        if (loanModel.getType().getLoanPeriodUnit() == LoanPeriodUnit.DAY) {
-            return;
-        }
-        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
-            this.calculateAutoInvestAmount(autoInvestPlanModel,0);
-
+            try {
+                long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
+                if (availableLoanAmount <= 0) {
+                    return;
+                }
+                InvestDto investDto = new InvestDto();
+                investDto.setLoanId(String.valueOf(loanId));
+                investDto.setLoginName(autoInvestPlanModel.getLoginName());
+                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, availableLoanAmount);
+                if (autoInvestAmount == 0) {
+                    continue;
+                }
+                investDto.setAmount(String.valueOf(autoInvestAmount));
+                BaseDto<PayDataDto> baseDto = this.investNopwd(investDto);
+                if (!baseDto.isSuccess()) {
+                    logger.debug("auto invest failed auto invest plan id is " + autoInvestPlanModel.getId());
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+                continue;
+            }
         }
-
     }
 
     private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount) {
@@ -163,6 +180,9 @@ public class InvestServiceImpl implements InvestService {
         long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
         long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
         long returnAmount = 0;
+        if (availableLoanAmount < minInvestAmount) {
+            return returnAmount;
+        }
         if (availableAmount >= maxInvestAmount) {
             returnAmount = maxInvestAmount;
         } else if (availableAmount < maxInvestAmount && availableAmount > minInvestAmount) {
@@ -173,5 +193,5 @@ public class InvestServiceImpl implements InvestService {
         }
         return returnAmount;
     }
-    
+
 }
