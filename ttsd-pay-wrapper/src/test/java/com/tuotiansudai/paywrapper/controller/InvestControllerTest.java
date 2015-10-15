@@ -79,7 +79,7 @@ public class InvestControllerTest {
 
         this.mockServer = mockUmPayService();
 
-        MockPayGateWrapper.inject(payAsyncClient);
+        MockPayGateWrapper.injectInto(payAsyncClient);
     }
 
     @After

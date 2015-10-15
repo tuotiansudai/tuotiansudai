@@ -60,7 +60,10 @@ public class LoanServiceImpl implements LoanService {
     private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
-    private RepayService repayService;
+    private RepayGeneratorService repayGeneratorService;
+
+    @Autowired
+    private NormalRepayService normalRepayService;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -194,7 +197,7 @@ public class LoanServiceImpl implements LoanService {
             processLoanAccountForLoanOut(loan, investAmountTotal);
 
             logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-            repayService.generateRepay(loanId);
+            repayGeneratorService.generateRepay(loanId);
 
             logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
             recommendedIncome(loan, successInvestList);

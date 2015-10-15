@@ -6,11 +6,14 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +33,8 @@ public class RepayServiceImpl implements RepayService {
 
     @Override
     public BaseDto<LoanRepayDataDto> getLoanRepay(long loanId) {
+        this.resetExpiredLoanRepay(loanId);
+
         String loginName = LoginUserInfo.getLoginName();
 
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
@@ -38,7 +43,7 @@ public class RepayServiceImpl implements RepayService {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(loginName, loanId);
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {
-            final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledRepayByLoanId(loanId);
+            final LoanRepayModel enabledLoanRepayModel = loanRepayMapper.findEnabledLoanRepayByLoanId(loanId);
             List<LoanRepayDataItemDto> records = Lists.transform(loanRepayModels, new Function<LoanRepayModel, LoanRepayDataItemDto>() {
                 @Override
                 public LoanRepayDataItemDto apply(LoanRepayModel loanRepayModel) {
@@ -51,5 +56,27 @@ public class RepayServiceImpl implements RepayService {
         }
 
         return baseDto;
+    }
+
+    @Transactional
+    private void resetExpiredLoanRepay(long loanId) {
+        DateTime now = new DateTime();
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+
+        if (CollectionUtils.isEmpty(loanRepayModels)) {
+            return;
+        }
+
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getStatus() == RepayStatus.CONFIRMING) {
+                DateTime actualRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+                if (actualRepayDate.plusMinutes(30).isAfter(now)) {
+                    loanRepayModel.setStatus(RepayStatus.REPAYING);
+                    loanRepayModel.setActualRepayDate(null);
+                    loanRepayModel.setActualInterest(0);
+                    loanRepayMapper.update(loanRepayModel);
+                }
+            }
+        }
     }
 }

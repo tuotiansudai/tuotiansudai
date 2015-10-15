@@ -19,26 +19,30 @@ public interface LoanRepayMapper {
                                                  @Param(value = "loanId") Long loanId,
                                                  @Param(value = "loginName") String loginName,
                                                  @Param(value = "repayStatus") RepayStatus repayStatus,
-                                                 @Param(value = "repayStartDate") String repayStartDate,
-                                                 @Param(value = "repayEndDate") String repayEndDate);
+                                                 @Param(value = "repayStartDate") Date repayStartDate,
+                                                 @Param(value = "repayEndDate") Date repayEndDate);
 
-    int findLoanRepayCount(@Param(value = "loanId") Long loanId,
-                                                 @Param(value = "loginName") String loginName,
-                                                 @Param(value = "repayStatus") RepayStatus repayStatus,
-                                                 @Param(value = "repayStartDate") String repayStartDate,
-                                                 @Param(value = "repayEndDate") String repayEndDate);
+    int findLoanRepayCount(@Param(value = "loanId") long loanId,
+                           @Param(value = "loginName") String loginName,
+                           @Param(value = "repayStatus") RepayStatus repayStatus,
+                           @Param(value = "repayStartDate") Date repayStartDate,
+                           @Param(value = "repayEndDate") Date repayEndDate);
 
     LoanRepayModel findById(long id);
 
-    List<LoanRepayModel> findByLoanId(long loanId);
+    List<LoanRepayModel> findByLoanIdOrderByPeriodAsc(long loanId);
 
     List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String loanerLoginName,
                                               @Param(value = "loanId") long loanId);
 
-    LoanRepayModel findEnabledRepayByLoanId(long loanId);
+    LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 
     void update(LoanRepayModel loanRepayModel);
+
+    LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
+
+    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
 }

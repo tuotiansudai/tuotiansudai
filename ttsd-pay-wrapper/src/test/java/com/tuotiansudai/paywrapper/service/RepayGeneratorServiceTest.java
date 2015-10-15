@@ -21,10 +21,10 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
 @Transactional
-public class RepayServiceTest {
+public class RepayGeneratorServiceTest {
 
     @Autowired
-    private RepayService repayService;
+    private RepayGeneratorService repayGeneratorService;
 
     @Autowired
     private UserMapper userMapper;
@@ -52,7 +52,7 @@ public class RepayServiceTest {
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
         double baseRate = 0.09;
         double activityRate = 0.03;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 1, baseRate, activityRate, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 1, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -63,9 +63,9 @@ public class RepayServiceTest {
         investMapper.create(fakeInvestModel2);
         investMapper.create(fakeInvestModel3);
 
-        repayService.generateRepay(fakeNormalLoan.getId());
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(fakeNormalLoan.getId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.size(), is(1));
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getCorpus(), is(10000L));
@@ -79,6 +79,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels1.get(0).getCorpus(), is(1000L));
         assertThat(fakeInvestRepayModels1.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(0).getExpectedInterest(), is(12L));
+        assertThat(fakeInvestRepayModels1.get(0).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels1.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
@@ -87,6 +88,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels2.get(0).getCorpus(), is(2000L));
         assertThat(fakeInvestRepayModels2.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(0).getExpectedInterest(), is(21L));
+        assertThat(fakeInvestRepayModels2.get(0).getExpectedFee(), is(2L));
         assertThat(fakeInvestRepayModels2.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels3 = investRepayMapper.findByInvestId(fakeInvestModel3.getId());
@@ -95,6 +97,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels3.get(0).getCorpus(), is(7000L));
         assertThat(fakeInvestRepayModels3.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(0).getExpectedInterest(), is(64L));
+        assertThat(fakeInvestRepayModels3.get(0).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
     }
 
@@ -104,7 +107,7 @@ public class RepayServiceTest {
         userMapper.create(fakeUser);
         long loanAmount = 10000;
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.12, 0.0, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.12, 0.0, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -115,9 +118,9 @@ public class RepayServiceTest {
         investMapper.create(fakeInvestModel2);
         investMapper.create(fakeInvestModel3);
 
-        repayService.generateRepay(fakeNormalLoan.getId());
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(fakeNormalLoan.getId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.size(), is(3));
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getCorpus(), is(0L));
@@ -141,16 +144,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels1.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels1.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(0).getExpectedInterest(), is(12L));
+        assertThat(fakeInvestRepayModels1.get(0).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels1.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels1.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels1.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels1.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(1).getExpectedInterest(), is(10L));
+        assertThat(fakeInvestRepayModels1.get(1).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels1.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels1.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels1.get(2).getCorpus(), is(1000L));
         assertThat(fakeInvestRepayModels1.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(2).getExpectedInterest(), is(9L));
+        assertThat(fakeInvestRepayModels1.get(2).getExpectedFee(), is(0L));
         assertThat(fakeInvestRepayModels1.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
 
 
@@ -160,16 +166,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels2.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels2.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(0).getExpectedInterest(), is(21L));
+        assertThat(fakeInvestRepayModels2.get(0).getExpectedFee(), is(2L));
         assertThat(fakeInvestRepayModels2.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels2.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels2.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels2.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(1).getExpectedInterest(), is(20L));
+        assertThat(fakeInvestRepayModels2.get(1).getExpectedFee(), is(2L));
         assertThat(fakeInvestRepayModels2.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels2.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels2.get(2).getCorpus(), is(2000L));
         assertThat(fakeInvestRepayModels2.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(2).getExpectedInterest(), is(19L));
+        assertThat(fakeInvestRepayModels2.get(2).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels2.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels3 = investRepayMapper.findByInvestId(fakeInvestModel3.getId());
@@ -178,16 +187,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels3.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels3.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(0).getExpectedInterest(), is(64L));
+        assertThat(fakeInvestRepayModels3.get(0).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels3.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels3.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels3.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(1).getExpectedInterest(), is(71L));
+        assertThat(fakeInvestRepayModels3.get(1).getExpectedFee(), is(7L));
         assertThat(fakeInvestRepayModels3.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels3.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels3.get(2).getCorpus(), is(7000L));
         assertThat(fakeInvestRepayModels3.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(2).getExpectedInterest(), is(69L));
+        assertThat(fakeInvestRepayModels3.get(2).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
     }
 
@@ -199,7 +211,7 @@ public class RepayServiceTest {
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
         double baseRate = 0.09;
         double activityRate = 0.03;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 1, baseRate, activityRate, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 1, baseRate, activityRate, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -210,9 +222,9 @@ public class RepayServiceTest {
         investMapper.create(fakeInvestModel2);
         investMapper.create(fakeInvestModel3);
 
-        repayService.generateRepay(fakeNormalLoan.getId());
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(fakeNormalLoan.getId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.size(), is(1));
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getCorpus(), is(10000L));
@@ -226,6 +238,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels1.get(0).getCorpus(), is(1000L));
         assertThat(fakeInvestRepayModels1.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(0).getExpectedInterest(), is(9L));
+        assertThat(fakeInvestRepayModels1.get(0).getExpectedFee(), is(0L));
         assertThat(fakeInvestRepayModels1.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels2 = investRepayMapper.findByInvestId(fakeInvestModel2.getId());
@@ -234,6 +247,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels2.get(0).getCorpus(), is(2000L));
         assertThat(fakeInvestRepayModels2.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(0).getExpectedInterest(), is(18L));
+        assertThat(fakeInvestRepayModels2.get(0).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels2.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels3 = investRepayMapper.findByInvestId(fakeInvestModel3.getId());
@@ -242,6 +256,7 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels3.get(0).getCorpus(), is(7000L));
         assertThat(fakeInvestRepayModels3.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(0).getExpectedInterest(), is(64L));
+        assertThat(fakeInvestRepayModels3.get(0).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
     }
 
@@ -251,7 +266,7 @@ public class RepayServiceTest {
         userMapper.create(fakeUser);
         long loanAmount = 10000;
         DateTime recheckTime = new DateTime().withDate(2015, 2, 1).withTimeAtStartOfDay();
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 3, 0.12, 0.0, fakeUser.getLoginName(), recheckTime.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 3, 0.12, 0.0, 0.1, fakeUser.getLoginName(), recheckTime.toDate());
         loanMapper.create(fakeNormalLoan);
         DateTime investTime1 = recheckTime.minusDays(10);
         DateTime investTime2 = recheckTime.minusDays(5);
@@ -262,9 +277,9 @@ public class RepayServiceTest {
         investMapper.create(fakeInvestModel2);
         investMapper.create(fakeInvestModel3);
 
-        repayService.generateRepay(fakeNormalLoan.getId());
+        repayGeneratorService.generateRepay(fakeNormalLoan.getId());
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(fakeNormalLoan.getId());
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
         assertThat(loanRepayModels.size(), is(3));
         assertThat(loanRepayModels.get(0).getPeriod(), is(1));
         assertThat(loanRepayModels.get(0).getCorpus(), is(0L));
@@ -288,16 +303,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels1.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels1.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(0).getExpectedInterest(), is(9L));
+        assertThat(fakeInvestRepayModels1.get(0).getExpectedFee(), is(0L));
         assertThat(fakeInvestRepayModels1.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels1.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels1.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels1.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(1).getExpectedInterest(), is(10L));
+        assertThat(fakeInvestRepayModels1.get(1).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels1.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels1.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels1.get(2).getCorpus(), is(1000L));
         assertThat(fakeInvestRepayModels1.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels1.get(2).getExpectedInterest(), is(9L));
+        assertThat(fakeInvestRepayModels1.get(2).getExpectedFee(), is(0L));
         assertThat(fakeInvestRepayModels1.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
 
 
@@ -307,16 +325,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels2.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels2.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(0).getExpectedInterest(), is(18L));
+        assertThat(fakeInvestRepayModels2.get(0).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels2.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels2.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels2.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels2.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(1).getExpectedInterest(), is(20L));
+        assertThat(fakeInvestRepayModels2.get(1).getExpectedFee(), is(2L));
         assertThat(fakeInvestRepayModels2.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels2.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels2.get(2).getCorpus(), is(2000L));
         assertThat(fakeInvestRepayModels2.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels2.get(2).getExpectedInterest(), is(19L));
+        assertThat(fakeInvestRepayModels2.get(2).getExpectedFee(), is(1L));
         assertThat(fakeInvestRepayModels2.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
 
         List<InvestRepayModel> fakeInvestRepayModels3 = investRepayMapper.findByInvestId(fakeInvestModel3.getId());
@@ -325,16 +346,19 @@ public class RepayServiceTest {
         assertThat(fakeInvestRepayModels3.get(0).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels3.get(0).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(0).getExpectedInterest(), is(64L));
+        assertThat(fakeInvestRepayModels3.get(0).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(0).getRepayDate(), is(new DateTime().withDate(2015, 2, 28).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels3.get(1).getPeriod(), is(2));
         assertThat(fakeInvestRepayModels3.get(1).getCorpus(), is(0L));
         assertThat(fakeInvestRepayModels3.get(1).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(1).getExpectedInterest(), is(71L));
+        assertThat(fakeInvestRepayModels3.get(1).getExpectedFee(), is(7L));
         assertThat(fakeInvestRepayModels3.get(1).getRepayDate(), is(new DateTime().withDate(2015, 3, 31).withTimeAtStartOfDay().toDate()));
         assertThat(fakeInvestRepayModels3.get(2).getPeriod(), is(3));
         assertThat(fakeInvestRepayModels3.get(2).getCorpus(), is(7000L));
         assertThat(fakeInvestRepayModels3.get(2).getStatus(), is(RepayStatus.REPAYING));
         assertThat(fakeInvestRepayModels3.get(2).getExpectedInterest(), is(69L));
+        assertThat(fakeInvestRepayModels3.get(2).getExpectedFee(), is(6L));
         assertThat(fakeInvestRepayModels3.get(2).getRepayDate(), is(new DateTime().withDate(2015, 4, 30).withTimeAtStartOfDay().toDate()));
     }
 
@@ -349,7 +373,7 @@ public class RepayServiceTest {
         return userModelTest;
     }
 
-    private LoanModel getFakeNormalLoan(LoanType loanType,  long amount, int periods, double baseRate, double activityRate, String loginName, Date recheckTime) {
+    private LoanModel getFakeNormalLoan(LoanType loanType,  long amount, int periods, double baseRate, double activityRate, double investFeeRate, String loginName, Date recheckTime) {
         LoanModel fakeLoanModel = new LoanModel();
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");
@@ -362,6 +386,7 @@ public class RepayServiceTest {
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
         fakeLoanModel.setBaseRate(baseRate);
         fakeLoanModel.setActivityRate(activityRate);
+        fakeLoanModel.setInvestFeeRate(investFeeRate);
         fakeLoanModel.setFundraisingStartTime(new Date());
         fakeLoanModel.setFundraisingEndTime(new Date());
         fakeLoanModel.setDescriptionHtml("html");

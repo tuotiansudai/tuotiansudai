@@ -4,9 +4,11 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.model.RepayStatus;
 
+import java.util.Date;
+
 public interface LoanRepayService {
 
-    BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index,int pageSize,String loanId,
-                                                     String loginName,String repayStartDate,String repayEndDate,RepayStatus repayStatus);
+    BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, long loanId,
+                                                           String loginName, Date repayStartDate, Date repayEndDate, RepayStatus repayStatus);
 
 }

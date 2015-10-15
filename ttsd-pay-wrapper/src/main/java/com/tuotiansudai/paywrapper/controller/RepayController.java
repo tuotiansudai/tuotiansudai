@@ -3,7 +3,8 @@ package com.tuotiansudai.paywrapper.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RepayDto;
-import com.tuotiansudai.paywrapper.service.RepayService;
+import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
+import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +18,14 @@ import javax.validation.Valid;
 public class RepayController {
 
     @Autowired
-    private RepayService repayService;
+    private NormalRepayService normalRepayService;
+
+    @Autowired
+    private AdvanceRepayService advanceRepayService;
 
     @RequestMapping(value = "/repay", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayFormDataDto> repay(@Valid @RequestBody RepayDto dto) {
-        return dto.isAdvanced() ? repayService.advanceRepay(dto.getLoanId()) : repayService.repay(dto.getLoanId());
+        return dto.isAdvanced() ? advanceRepayService.repay(dto.getLoanId()) : normalRepayService.repay(dto.getLoanId());
     }
 }

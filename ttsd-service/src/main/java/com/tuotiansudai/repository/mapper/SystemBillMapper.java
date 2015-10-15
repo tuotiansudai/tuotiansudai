@@ -10,6 +10,5 @@ public interface SystemBillMapper {
 
     void create(SystemBillModel model);
 
-    List<SystemBillModel> getLastestSystemBill();
-
+    SystemBillModel findByOrderId(String orderId);
 }

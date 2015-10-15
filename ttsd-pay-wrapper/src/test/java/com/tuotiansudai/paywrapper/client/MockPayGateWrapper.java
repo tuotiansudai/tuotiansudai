@@ -21,11 +21,11 @@ public class MockPayGateWrapper extends PayGateWrapper {
 
     private String requestUrl;
 
-    public static void inject(PaySyncClient paySyncClient) {
+    public static void injectInto(PaySyncClient paySyncClient) {
         paySyncClient.payGateWrapper = instance;
     }
 
-    public static void inject(PayAsyncClient payAsyncClient) {
+    public static void injectInto(PayAsyncClient payAsyncClient) {
         payAsyncClient.payGateWrapper = instance;
     }
 
