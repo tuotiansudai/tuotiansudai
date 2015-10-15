@@ -129,7 +129,7 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
         });
 
         $('form .btn-pay[type="submit"]').click(function(){
-            var investAmount = Number($('form input[name="amount"').val());
+            var investAmount = Number($('form input[name="amount"]').val());
             var accountAmount = Number($('form i.account-amount').text());
             if(investAmount > accountAmount){
                 location.href = '/recharge';
