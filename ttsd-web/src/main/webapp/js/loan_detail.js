@@ -138,5 +138,18 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
             return true;
         });
 
+        $('.text-input-amount').blur(function(){
+            var loanId = $('.hid-loan').val();
+            var amount = $(this).val();
+            $.ajax({
+                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(amount){
+                $('.expected-interest').html(amount);
+            });
+        });
+
     });
 })

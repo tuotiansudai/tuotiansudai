@@ -72,7 +72,8 @@
                 </#if>
                 <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/><br/>
                 <#if errorMessage?has_content>
-                    ${errorMessage!}
+
+                    <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
                 </#if>
             </div>
             <div class="item-block">
