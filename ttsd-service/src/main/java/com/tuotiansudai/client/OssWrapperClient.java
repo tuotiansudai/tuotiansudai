@@ -6,7 +6,6 @@ import com.aliyun.oss.model.PutObjectResult;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -68,29 +67,29 @@ public class OssWrapperClient{
     /**
      * 阿里云ACCESS_KEYID
      */
-    @Value("${plat.oss.access_keyid}")
-    private String ACCESS_KEYID;
+//    @Value("${plat.oss.access_keyid}")
+    private static String ACCESS_KEYID="h3mUO1gON8xOgsKo";
     /**
      * 阿里云ACCESS_KEYSECRET
      */
-    @Value("${plat.oss.access_keysecret}")
-    private String ACCESS_KEYSECRET;
+//    @Value("${plat.oss.access_keysecret}")
+    private static String ACCESS_KEYSECRET="9LH9VX1zpmDC3s5uqY3oUb5g1c14jy";
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
-    @Value("${plat.oss.oss_endpoint}")
-    private String OSS_ENDPOINT;
+//    @Value("${plat.oss.oss_endpoint}")
+    private static String OSS_ENDPOINT="http://oss-cn-hangzhou.aliyuncs.com";
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
-    @Value("${plat.oss.bucket_name}")
-    private String BUCKET_NAME;
+//    @Value("${plat.oss.bucket_name}")
+    private static String BUCKET_NAME="ttsd-test100";
 
-    @Value("${plat.sitePath}")
-    private  String SITEPATH;
+//    @Value("${plat.sitePath}")
+    private static String SITEPATH="upload/";
 
-    private OSSClient getOSSClient(){
+    public static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
     }
@@ -104,17 +103,14 @@ public class OssWrapperClient{
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile dfi = multiRequest.getFile("upfile");
         this.originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
-        System.out.println("originalName = " + originalName);
         if (!this.checkFileType(this.originalName)) {
             this.state = this.errorInfo.get("TYPE");
             return;
         }
         this.fileName = this.getName(this.originalName);
-        System.out.println("fileName = " + fileName);
         this.type = FilenameUtils.getExtension(this.fileName);
         this.url = savePath + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
-        System.out.println("rootPath = " + rootPath);
         this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
         this.title = url;
         this.state = this.errorInfo.get("SUCCESS");
@@ -145,7 +141,7 @@ public class OssWrapperClient{
     private String getName(String fileName) {
         Random random = new Random();
         return this.fileName = "" + random.nextInt(10000)
-                + System.currentTimeMillis() + FilenameUtils.getExtension(fileName);
+                + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
     }
 
     /**
@@ -175,24 +171,18 @@ public class OssWrapperClient{
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             String waterPath = rootPath + "images" + File.separator + "watermark.png";
-            System.out.println("waterPath = " + waterPath);
             in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
             String sitePath = SITEPATH + format.format(new Date()) + File.separator;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-            fileName = sdf.format(new Date()) + FilenameUtils.getExtension(fileName);
+            fileName = sdf.format(new Date())+ "." + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
-            System.out.println("filePath = "+filePath);
-            System.out.println("begin connect oss");
             OSSClient client = getOSSClient();
-            System.out.println("connect oss success");
             PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
-            System.out.println("push oss success");
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
         } catch (Exception e) {
-            System.out.println(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
