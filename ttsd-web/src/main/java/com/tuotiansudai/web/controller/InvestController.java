@@ -55,6 +55,7 @@ public class InvestController {
                 errorMessage = "投资失败";
             }
             mv.addObject("errorMessage", errorMessage);
+            mv.addObject("investAmount", investDto.getAmount());
         }
         return mv;
     }
