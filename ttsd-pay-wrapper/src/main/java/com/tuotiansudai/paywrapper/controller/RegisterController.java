@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 @Controller
-public class RegisterController extends BaseController{
+public class RegisterController extends BaseController {
 
     @Autowired
     private RegisterService registerService;
@@ -23,5 +23,11 @@ public class RegisterController extends BaseController{
     @ResponseBody
     public BaseDto register(@Valid @RequestBody RegisterAccountDto dto) {
         return registerService.register(dto);
+    }
+
+    @RequestMapping(value = "/re-register", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto reRegister(@Valid @RequestBody RegisterAccountDto dto) {
+        return registerService.reRegister(dto);
     }
 }

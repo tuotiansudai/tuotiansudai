@@ -55,20 +55,15 @@
         from invest
         where login_name = #{loginName}
         order by created_time ${sortStyle}
+
     </select>
 
-    <select id="findByLoanIdOrderByTime" parameterType="map" resultMap="investResultMap">
-        select <include refid="columns"></include>
-        from invest
-        where login_name = #{loanId}
-        order by created_time ${sortStyle}
-    </select>
 
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
         from invest
         where loan_id = #{loanId} and status = 'SUCCESS'
-        order by created_time ${sortStyle}
+        order by created_time
     </select>
 
     <select id="sumSuccessInvestAmount" parameterType="map" resultType="long">
@@ -190,5 +185,12 @@
         <if test="investStatus != null">
             and invest.status = #{investStatus}
         </if>
+    </select>
+
+    <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
+        from invest
+        where loan_id = #{loanId} and login_name = #{loginName}
+        and status = 'SUCCESS'
     </select>
 </mapper>

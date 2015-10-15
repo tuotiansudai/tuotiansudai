@@ -39,10 +39,10 @@
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
         <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login" access="isAnonymous()"/>
-        <intercept-url pattern="/loginHandler" access="isAnonymous()"/>
+        <intercept-url pattern="/loginHandler" access="hasAuthority('ADMIN')"/>
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/*" access="hasAuthority('ADMIN')"/>
-        <csrf/>
+        <csrf />
     </http>
 
     <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">

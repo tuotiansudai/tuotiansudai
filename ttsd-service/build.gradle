@@ -40,7 +40,7 @@ processResources.outputs.upToDateWhen { false }
 
 processResources {
     def configFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
-    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service')
+    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service/ttsd-service.properties')
     if (outerConfigFile.isFile()) {
         configFilePath = outerConfigFile.getPath()
     }

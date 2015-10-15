@@ -3,6 +3,8 @@ package com.tuotiansudai.service;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.mapper.SmsCaptchaMapper;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.repository.model.SmsCaptchaModel;
@@ -55,11 +57,11 @@ public class SmsCaptchaServiceTest {
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
         smsWrapperClient.setContext("");
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
-        assertTrue(result);
+        assertTrue(dto.getData().getStatus());
         assertNotNull(smsCaptchaModel);
 
     }
@@ -71,10 +73,10 @@ public class SmsCaptchaServiceTest {
         mockResponse.setBody(jsonString);
         server.enqueue(mockResponse);
         smsWrapperClient.setHost("http://" + server.getHostName() + ":" + server.getPort());
-        boolean result = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
+        BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
 
-        assertFalse(result);
+        assertFalse(dto.getData().getStatus());
         assertNotNull(smsCaptchaModel);
 
     }

@@ -14,7 +14,6 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
-    <context:property-placeholder location="classpath*:oss_wrapper_client.properties" />
     <context:property-placeholder location="classpath*:ttsd-service.properties"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
@@ -85,4 +84,18 @@
 
     <bean class="com.tuotiansudai.utils.SpringContextUtil" />
 
+    <!-- quartz持久化存储 -->
+    <bean id="scheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="payBoneCPDataSource" />
+        </property>
+        <property name="jobFactory">
+            <bean class="com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory" />
+        </property>
+        <property name="schedulerName" value="Mscheduler" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="autoStartup" value="false" />
+    </bean>
 </beans>

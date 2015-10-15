@@ -1,10 +1,12 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.impl.UserServiceImpl;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +47,9 @@ public class MockUserServiceTest {
 
     @Mock
     private SmsCaptchaService smsCaptchaService;
+
+    @Mock
+    private MyAuthenticationManager myAuthenticationManager;
 
     @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
@@ -137,73 +143,17 @@ public class MockUserServiceTest {
         doNothing().when(userMapper).create(any(UserModel.class));
         when(userMapper.findByLoginName(loginName)).thenReturn(null);
         when(userMapper.findByMobile(mobile)).thenReturn(null);
-        when(smsCaptchaService.verifyRegisterCaptcha(mobile, captcha)).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(mobile, captcha, CaptchaType.REGISTER_CAPTCHA)).thenReturn(true);
         when(myShaPasswordEncoder.encodePassword(anyString(), anyString())).thenReturn("salt");
+        doNothing().when(myAuthenticationManager).createAuthentication(anyString());
 
         boolean success = userService.registerUser(registerUserDto);
 
         assertTrue(success);
-        ArgumentCaptor<UserRoleModel> userRoleModelArgumentCaptor = ArgumentCaptor.forClass(UserRoleModel.class);
-        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
-        assertThat(userRoleModelArgumentCaptor.getValue().getRole(), is(Role.USER));
-    }
-
-    @Test
-    public void shouldSaveReferrerRelations() {
-        UserModel user1 = new UserModel();
-        user1.setId(idGenerator.generate());
-        user1.setLoginName("test1");
-        user1.setPassword("123");
-        user1.setMobile("13900000000");
-        user1.setRegisterTime(new Date());
-        user1.setLastLoginTime(new Date());
-        user1.setLastModifiedTime(new Date());
-        user1.setStatus(UserStatus.ACTIVE);
-        user1.setSalt("123");
-        userMapper.create(user1);
-        UserModel user2 = new UserModel();
-        user2.setId(idGenerator.generate());
-        user2.setLoginName("test2");
-        user2.setPassword("123");
-        user2.setMobile("13900000001");
-        user2.setRegisterTime(new Date());
-        user2.setLastLoginTime(new Date());
-        user2.setLastModifiedTime(new Date());
-        user2.setStatus(UserStatus.ACTIVE);
-        user2.setSalt("123");
-        user2.setReferrer("test1");
-        userMapper.create(user2);
-
-        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setReferrerLoginName("test1");
-        referrerRelationModel.setLoginName("test2");
-        referrerRelationModel.setLevel(1);
-
-        referrerRelationMapper.create(referrerRelationModel);
+        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
 
 
-        UserModel user3 = new UserModel();
-        user3.setId(idGenerator.generate());
-        user3.setLoginName("test3");
-        user3.setPassword("123");
-        user3.setMobile("13900000002");
-        user3.setRegisterTime(new Date());
-        user3.setLastLoginTime(new Date());
-        user3.setLastModifiedTime(new Date());
-        user3.setStatus(UserStatus.ACTIVE);
-        user3.setSalt("123");
-        user3.setReferrer("test2");
-        userMapper.create(user3);
-
-        userService.saveReferrerRelations("test2", "test3");
-
-        List<ReferrerRelationModel> models = referrerRelationMapper.findByLoginName("test3");
-
-        for (ReferrerRelationModel model : models) {
-            if ("test1".equals(model.getReferrerLoginName())) {
-                assertEquals(2, model.getLevel());
-            }
-        }
-
+        verify(userRoleMapper, times(1)).createUserRoles(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.USER));
     }
 }

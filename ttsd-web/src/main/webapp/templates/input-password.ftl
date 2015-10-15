@@ -16,11 +16,14 @@
                 <input type="hidden" name="mobile" value="${mobile}">
                 <input type="hidden" name="captcha" value="${captcha}">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="phone-txt jq-ps-1" name="password" type="password" placeholder="请输入密码"/>
+                <input class="phone-txt jq-ps-1" name="password" type="password" maxlength="20" placeholder="请输入密码"/>
             </div>
             <div class="item-block">
                 <label for="">确认密码：</label>
-                <input class="phone-txt jq-ps-2" type="password" placeholder="再次输入密码"/>
+                <input class="phone-txt jq-ps-2" type="password" maxlength="20" placeholder="再次输入密码"/>
+            </div>
+            <div class="item-block">
+                <div class="error"></div>
             </div>
             <div class="item-block">
                 <button type="submit" class="btn-send-form grey" disabled="disabled">确认</button>

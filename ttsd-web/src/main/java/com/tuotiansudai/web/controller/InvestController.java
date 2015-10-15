@@ -7,17 +7,13 @@ import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -32,11 +28,8 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.GET)
-    public ModelAndView invest() {
-        return new ModelAndView("/invest");
-    }
-
+    @Autowired
+    private RepayService repayService;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
@@ -57,7 +50,7 @@ public class InvestController {
         return new ModelAndView("/invest-record");
     }
 
-    @RequestMapping(value = "/investor/query_invests", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/investor/query-invests", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> queryUserInvest(
             Long loanId,
@@ -85,6 +78,13 @@ public class InvestController {
         }
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(paginationList);
+        return dto;
+    }
+
+    @RequestMapping(value = "/investor/query-invest-repay", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public BaseDto<InvestRepayDataDto> queryUserInvestRepay(long investId) {
+        BaseDto<InvestRepayDataDto> dto = repayService.findInvestorInvestRepay(investId);
         return dto;
     }
 

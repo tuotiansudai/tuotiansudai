@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2015/9/15.
  */
-public class PtpMerBindAgreementRequestModel extends BaseAsyncModel{
+public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
 
     private String userId;
 
@@ -16,7 +16,7 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncModel{
     public PtpMerBindAgreementRequestModel() {
     }
 
-    public PtpMerBindAgreementRequestModel(String userId,AgreementType userBindAgreementList) {
+    public PtpMerBindAgreementRequestModel(String userId, AgreementType userBindAgreementList) {
         super();
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
