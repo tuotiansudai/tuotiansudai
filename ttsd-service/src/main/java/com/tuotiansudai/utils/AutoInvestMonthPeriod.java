@@ -18,6 +18,11 @@ public class AutoInvestMonthPeriod {
             Month_1, Month_2, Month_3, Month_4, Month_5, Month_6, Month_7, Month_8, Month_9, Month_10, Month_11, Month_12
     };
 
+    public static AutoInvestMonthPeriod generateFromLoanPeriod(int loanPeriod) {
+        int mp = (int) Math.pow(2,loanPeriod - 1);
+        return new AutoInvestMonthPeriod(mp, "");
+    }
+
     public static AutoInvestMonthPeriod merge(int... period) {
         int mp = 0;
         for (int p : period) {
@@ -57,4 +62,6 @@ public class AutoInvestMonthPeriod {
     public int getPeriodValue() {
         return periodValue;
     }
+
+
 }

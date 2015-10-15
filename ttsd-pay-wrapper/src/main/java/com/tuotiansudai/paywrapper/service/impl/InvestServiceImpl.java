@@ -19,16 +19,21 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -57,6 +62,9 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private UserBillService userBillService;
 
+    @Autowired
+    private AutoInvestPlanMapper autoInvestPlanMapper;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -84,27 +92,25 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    @Override
     @Transactional
-    public BaseDto<PayDataDto> investNopwd(InvestDto dto) {
+    private BaseDto<PayDataDto> investNopwd(long loanId,long amount,String loginName) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
-        AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-
-        InvestModel investModel = new InvestModel(dto);
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        InvestModel investModel = new InvestModel(loanId,amount,loginName,InvestSource.AUTO);
         investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
         investMapper.create(investModel);
         ProjectTransferNopwdRequestModel requestModel = ProjectTransferNopwdRequestModel.newInvestNopwdRequest(
-                dto.getLoanId(),
+                String.valueOf(loanId),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
                 String.valueOf(investModel.getAmount())
         );
         try {
-            checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
+            checkLoanInvestAccountAmount(loginName, investModel.getLoanId(), investModel.getAmount());
             ProjectTransferNopwdResponseModel responseModel = paySyncClient.send(
                     ProjectTransferNopwdMapper.class,
                     requestModel,
@@ -197,6 +203,64 @@ public class InvestServiceImpl implements InvestService {
 
     private void onInvestFail(InvestModel investModel){
         investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
+    }
+
+    @Override
+    public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
+    }
+
+    @Override
+    public void autoInvest(long loanId) {
+        LoanModel loanModel= loanMapper.findById(loanId);
+        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
+        for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
+            try {
+                long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
+                if (availableLoanAmount <= 0) {
+                    return;
+                }
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId,autoInvestPlanModel.getLoginName());
+                if (availableSelfLoanAmount <= 0) {
+                    continue;
+                }
+                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, NumberUtils.min(availableLoanAmount, availableSelfLoanAmount, loanModel.getMinInvestAmount()), loanModel.getInvestIncreasingAmount(), loanModel.getMinInvestAmount());
+                if (autoInvestAmount == 0) {
+                    continue;
+                }
+                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId,autoInvestAmount,autoInvestPlanModel.getLoginName());
+                if (!baseDto.isSuccess()) {
+                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}",autoInvestPlanModel.getId(),autoInvestAmount,loanId));
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+                continue;
+            }
+        }
+    }
+
+    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
+        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
+        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
+        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
+        long returnAmount = 0;
+        if (availableLoanAmount < minInvestAmount) {
+            return returnAmount;
+        }
+        if (availableAmount >= maxInvestAmount) {
+            returnAmount = maxInvestAmount;
+        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
+            returnAmount = availableAmount;
+        }
+        if (returnAmount >= availableLoanAmount) {
+            returnAmount = availableLoanAmount;
+        }
+        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
     }
 
 }

@@ -8,15 +8,14 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +24,8 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
 
     @Autowired
     private LoanMapper loanMapper;
@@ -43,12 +44,6 @@ public class InvestServiceImpl implements InvestService {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
         return payWrapperClient.invest(investDto);
-    }
-
-    @Override
-    public BaseDto<PayDataDto> investNopwd(InvestDto investDto) {
-        investDto.setInvestSource(InvestSource.AUTO);
-        return payWrapperClient.investNopwd(investDto);
     }
 
     @Override
@@ -129,18 +124,4 @@ public class InvestServiceImpl implements InvestService {
         return autoInvestPlanMapper.findByLoginName(loginName);
     }
 
-    @Override
-    public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return autoInvestPlanMapper.findEnabledPlanByPeriod(period.getPeriodValue(), cal.getTime());
-    }
-
-    @Override
-    public void validateAutoInvest(long loanId) {
-        // TODO: zrz
-    }
 }

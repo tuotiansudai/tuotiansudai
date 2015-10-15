@@ -26,9 +26,4 @@ public class InvestController {
         return investService.invest(dto);
     }
 
-    @RequestMapping(value = "/invest-nopwd", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto<PayDataDto> investNopwd(@Valid @RequestBody InvestDto dto) {
-        return investService.investNopwd(dto);
-    }
 }

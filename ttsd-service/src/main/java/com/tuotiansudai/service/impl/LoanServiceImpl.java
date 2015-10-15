@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
-import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -15,7 +14,6 @@ import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.JobManager;
 import com.tuotiansudai.utils.LoginUserInfo;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -28,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -350,15 +347,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void createAutoInvestJob(long loanId) {
-        try {
-            JobManager.newJob(AutoInvestJob.class)
-                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
-                    .addJobData(AutoInvestJob.LOAN_ID_KEY, loanId)
-                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
-                    .submit();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override

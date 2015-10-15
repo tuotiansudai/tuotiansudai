@@ -3,10 +3,6 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
-
-import java.util.List;
 
 public interface InvestService {
 
@@ -15,13 +11,6 @@ public interface InvestService {
      * @param investDto
      */
     BaseDto<PayFormDataDto> invest(InvestDto investDto);
-
-    /**
-     * 进行一次无密投资
-     * @para investDto
-     * @return
-     */
-    BaseDto<PayDataDto> investNopwd(InvestDto investDto);
 
     long calculateExpectedInterest(long loanId, long amount);
     /**
@@ -38,7 +27,4 @@ public interface InvestService {
 
     AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
 
-    List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
-
-    void validateAutoInvest(long loanId);
 }
