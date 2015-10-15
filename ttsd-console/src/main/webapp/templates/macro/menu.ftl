@@ -7,11 +7,11 @@
             },
             {
                 "name":"proMan",
-                "header":{"text":"项目管理","link":"/"},
+                "header":{"text":"项目管理","link":"/loan"},
                 "sidebar":
                 [
-                    {"name":"start","text":"发起借款","link":""},
                     {"name":"all","text":"所有的借款","link":""},
+                    {"name":"start","text":"发起借款","link":"/loan"},
                     {"name":"firstTrial","text":"初审的借款","link":""},
                     {"name":"moneyCollect","text":"筹款中的借款","link":""},
                     {"name":"recheck","text":"复审的借款","link":""},
