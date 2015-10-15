@@ -71,17 +71,17 @@ public class OssWrapperClient{
      * 阿里云ACCESS_KEYID
      */
     @Value("${plat.oss.access_keyid}")
-    private static String ACCESS_KEYID;
+    private String ACCESS_KEYID;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
     @Value("${plat.oss.access_keysecret}")
-    private static String ACCESS_KEYSECRET;
+    private String ACCESS_KEYSECRET;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
     @Value("${plat.oss.oss_endpoint}")
-    private static String OSS_ENDPOINT;
+    private String OSS_ENDPOINT;
 
     /**
      * 阿里云BUCKET_NAME  OSS
@@ -92,7 +92,7 @@ public class OssWrapperClient{
     @Value("${plat.sitePath}")
     private  String SITEPATH;
 
-    private static OSSClient getOSSClient(){
+    private OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
     }
