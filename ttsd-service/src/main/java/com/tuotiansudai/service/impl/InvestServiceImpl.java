@@ -3,6 +3,7 @@ package com.tuotiansudai.service.impl;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestDetailModel;
@@ -30,21 +31,19 @@ public class InvestServiceImpl implements InvestService {
     private InvestMapper investMapper;
 
     @Override
-    public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
+    public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
-        if (canInvest(investDto)) {
+
+        String investCheckResult = checkInvestAmount(investDto);
+        if (investCheckResult == null) {
             return payWrapperClient.invest(investDto);
         } else {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-            PayFormDataDto dataDto = new PayFormDataDto();
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
+            throw new InvestException(investCheckResult);
         }
     }
 
-    private boolean canInvest(InvestDto investDto) {
+    private String checkInvestAmount(InvestDto investDto) {
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
@@ -52,27 +51,37 @@ public class InvestServiceImpl implements InvestService {
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
         // 不满足最小投资限制
-        if(investAmount < userInvestMinAmount){ return false; }
+        if (investAmount < userInvestMinAmount) {
+            return "投资金额小于标的最小投资金额";
+        }
 
         // 不满足递增规则
-        if((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0){ return false; }
+        if ((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0) {
+            return "投资金额不符合递增金额要求";
+        }
 
         long userInvestMaxAmount = loan.getMaxInvestAmount();
         long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
         long loanNeedAmount = loan.getLoanAmount() - successInvestAmount;
 
         // 标已满
-        if(loanNeedAmount <= 0){ return false; }
+        if (loanNeedAmount <= 0) {
+            return "标的已满";
+        }
 
         // 超投
-        if(investAmount < loanNeedAmount){ return false; }
+        if (investAmount < loanNeedAmount) {
+            return "标的可投金额不足";
+        }
 
         long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
 
         // 不满足单用户投资限额
-        if(investAmount > userInvestMaxAmount - userInvestAmount){ return false; }
+        if (investAmount > userInvestMaxAmount - userInvestAmount) {
+            return "投资金额超过了用户投资限额";
+        }
 
-        return true;
+        return null;
     }
 
     @Override
