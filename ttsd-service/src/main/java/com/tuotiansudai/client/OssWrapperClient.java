@@ -171,8 +171,8 @@ public class OssWrapperClient{
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             String waterPath = rootPath + "images" + File.separator + "watermark.png";
-            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
-            objectMeta.setContentLength(in.available());
+//            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
+            objectMeta.setContentLength(inputStream.available());
             objectMeta.setContentType("image/jpeg");
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
             String sitePath = SITEPATH + format.format(new Date()) + File.separator;
@@ -180,14 +180,13 @@ public class OssWrapperClient{
             fileName = sdf.format(new Date())+ "." + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
             OSSClient client = getOSSClient();
-            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, inputStream, objectMeta);
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
-            System.out.println(filePath);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
-                in.close();
+                inputStream.close();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -216,8 +215,6 @@ public class OssWrapperClient{
             while ((rc = inStream.read(byteBuffer, 0, 100)) > 0) {
                 swapStream.write(byteBuffer, 0, rc);
             }
-//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
-//            encoder.encode(image);
             ImageIO.write(image,"image/jpeg",swapStream);
         } catch (Exception e) {
             logger.error("upload oss fail ");
