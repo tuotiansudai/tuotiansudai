@@ -186,4 +186,11 @@
             and invest.status = #{investStatus}
         </if>
     </select>
+
+    <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
+        select IFNULL(sum(amount),0)
+        from invest
+        where loan_id = #{loanId} and login_name = #{loginName}
+        and status = 'SUCCESS'
+    </select>
 </mapper>

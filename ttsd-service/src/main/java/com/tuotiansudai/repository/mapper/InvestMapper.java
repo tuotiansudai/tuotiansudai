@@ -152,5 +152,5 @@ public interface InvestMapper {
 
     List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
 
-
+    long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
 }

@@ -1,46 +1,55 @@
 package com.tuotiansudai.web.utils;
 
 import com.tuotiansudai.utils.JobManager;
+import com.tuotiansudai.web.job.TestJob;
+import com.tuotiansudai.web.repository.mapper.JobMapper;
+import com.tuotiansudai.web.repository.mapper.TriggerMapper;
+import com.tuotiansudai.web.repository.model.JobModel;
+import com.tuotiansudai.web.repository.model.TriggerModel;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml"})
+@Transactional
 public class QuartzTest {
 
+    @Autowired
+    JobMapper jobMapper;
+
+    @Autowired
+    TriggerMapper triggerMapper;
+
     @Test
-    public void shouldDoOnce() throws Exception {
+    public void shouldSubmitJob() throws Exception {
+        String jobName = "testName";
+        String jobGroup = "testGroup";
+
         String k = "testKey";
         String v = String.valueOf(System.currentTimeMillis());
         JobManager.newJob(TestJob.class)
                 .addJobData(k,v)
-                .withIdentity("testName", "testGroup")
+                .withIdentity(jobGroup, jobName)
                 .withDescription("some Description")
                 .runOnceAt(DateUtils.addSeconds(new Date(), 2))
                 .submit();
-        TestJob.targetValue = "oldValue";
 
-        assert "oldValue".equals(TestJob.targetValue);
+        JobModel jobModel = jobMapper.findByKey(jobGroup, jobName);
+        TriggerModel triggerModel = triggerMapper.findByKey(jobGroup, jobName);
 
-        Thread.sleep(3000);
+        assert jobModel != null;
+        assert triggerModel != null;
 
-        assert v.equals(TestJob.targetValue);
-    }
+        assert jobModel.getJobClassName().equals(TestJob.class.getCanonicalName());
 
-    public static class TestJob implements Job {
-        static String targetValue = null;
-
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-            targetValue = context.getJobDetail().getJobDataMap().getString("testKey");
-        }
+        assert triggerModel.getJobName().equals(jobModel.getJobName());
+        assert triggerModel.getJobGroup().equals(jobModel.getJobGroup());
     }
 }

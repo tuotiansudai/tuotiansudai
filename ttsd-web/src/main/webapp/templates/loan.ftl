@@ -66,8 +66,7 @@
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input"/>
-                <button class="bg-yellow"  type="reset">最大可投金额</button>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/>
             </div>
             <div class="item-block">
                 <span class="sub-hd">预计总收益：</span>

@@ -218,11 +218,12 @@ public class LoanServiceImpl implements LoanService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
+            long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(),loginName);
             loanDto.setBalance(accountModel.getBalance()/100d);
             loanDto.setMaxAvailableInvestAmount(calculateMaxAvailableInvestAmount(
                     accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount,
                     loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount(),
-                    loanModel.getMaxInvestAmount(),4000L)/100d);
+                    loanModel.getMaxInvestAmount(),sumSuccessInvestAmount)/100d);
         }else{
             loanDto.setMaxAvailableInvestAmount(0.00D);
         }
