@@ -182,6 +182,7 @@ public class OssWrapperClient{
             OSSClient client = getOSSClient();
             PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
+            System.out.println(filePath);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
