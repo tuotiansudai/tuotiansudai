@@ -66,7 +66,7 @@
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/><br/>
             </div>
             <div class="item-block">
                 <span class="sub-hd">预计总收益：</span>
@@ -83,10 +83,6 @@
             <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
-            </div>
-            <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
                 <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
@@ -95,9 +91,12 @@
                 <span class="sub-hd">账户余额：</span>
                 <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
             </div>
+            <div class="item-block">
+                <span class="sub-hd">每人限投：</span>
+                <span class="num">${loan.maxInvestAmount}元</span>
+            </div>
             <div class="item-block clearfix">
-                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input"/>
-                <button class="bg-yellow" type="reset" >最大可投金额</button>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/>
             </div>
             <div class="item-block">
                 <div class="time-item">
@@ -119,8 +118,8 @@
                 <img src="/images/loan/repaying.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -132,8 +131,8 @@
                 <img src="/images/loan/recheck.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -144,8 +143,8 @@
                 <img src="/images/loan/cancel.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -156,8 +155,8 @@
                 <img src="/images/loan/overdue.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -168,8 +167,8 @@
                 <img src="/images/loan/complete.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
