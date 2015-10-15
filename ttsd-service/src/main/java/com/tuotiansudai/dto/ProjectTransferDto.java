@@ -10,7 +10,7 @@ public abstract class ProjectTransferDto implements Serializable {
     private String loginName;
 
     @NotEmpty
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
+    @Pattern(regexp = "^\\d+$")
     private String amount;
 
     @NotEmpty
