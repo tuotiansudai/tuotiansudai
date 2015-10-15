@@ -43,7 +43,46 @@ public class InvestServiceImpl implements InvestService {
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
-        return payWrapperClient.invest(investDto);
+        if (canInvest(investDto)) {
+            return payWrapperClient.invest(investDto);
+        } else {
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+            PayFormDataDto dataDto = new PayFormDataDto();
+            dataDto.setStatus(false);
+            baseDto.setData(dataDto);
+            return baseDto;
+        }
+    }
+
+    private boolean canInvest(InvestDto investDto) {
+        long loanId = investDto.getLoanIdLong();
+        LoanModel loan = loanMapper.findById(loanId);
+        long userInvestMinAmount = loan.getMinInvestAmount();
+        long investAmount = Long.parseLong(investDto.getAmount());
+        long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
+
+        // 不满足最小投资限制
+        if(investAmount < userInvestMinAmount){ return false; }
+
+        // 不满足递增规则
+        if((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0){ return false; }
+
+        long userInvestMaxAmount = loan.getMaxInvestAmount();
+        long successInvestAmount = investMapper.sumSuccessInvestAmount(loanId);
+        long loanNeedAmount = loan.getLoanAmount() - successInvestAmount;
+
+        // 标已满
+        if(loanNeedAmount <= 0){ return false; }
+
+        // 超投
+        if(investAmount < loanNeedAmount){ return false; }
+
+        long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
+
+        // 不满足单用户投资限额
+        if(investAmount > userInvestMaxAmount - userInvestAmount){ return false; }
+
+        return true;
     }
 
     @Override

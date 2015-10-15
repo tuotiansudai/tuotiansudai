@@ -85,7 +85,7 @@ public class InvestController {
 
     @RequestMapping(value = "/investor/query-invest-repay", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto<InvestRepayDataDto> queryUserInvestRepay(long investId){
+    public BaseDto<InvestRepayDataDto> queryUserInvestRepay(long investId) {
         BaseDto<InvestRepayDataDto> dto = repayService.findInvestorInvestRepay(investId);
         return dto;
     }
