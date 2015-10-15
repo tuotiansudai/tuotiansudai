@@ -33,6 +33,10 @@ public class WebInvestDto implements Serializable {
         this.loanId = loanId;
     }
 
+    public long getLoanIdLong() {
+        return Long.parseLong(loanId);
+    }
+
     public InvestDto toInvestDto(String loginName) {
         if (StringUtils.isBlank(loginName)) {
             throw new NullPointerException("loginName");
