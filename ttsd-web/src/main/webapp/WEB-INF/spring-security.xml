@@ -63,6 +63,7 @@
 
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
+        <intercept-url pattern="/investor/**" access="hasAnyAuthority('INVESTOR')"/>
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>

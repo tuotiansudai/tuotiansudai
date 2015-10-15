@@ -44,7 +44,7 @@ public class LoginController {
     public void loginCaptcha(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(true);
         int captchaWidth = 80;
-        int captchaHeight = 30;
+        int captchaHeight = 34;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
         session.setAttribute("loginCaptcha", captcha.getAnswer());

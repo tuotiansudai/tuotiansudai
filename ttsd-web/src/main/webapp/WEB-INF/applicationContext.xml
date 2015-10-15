@@ -55,4 +55,19 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <!-- quartz持久化存储 -->
+    <bean id="scheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="boneCPDataSource" />
+        </property>
+        <property name="jobFactory">
+            <bean class="com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory" />
+        </property>
+        <property name="schedulerName" value="Mscheduler" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="autoStartup" value="false" />
+    </bean>
 </beans>

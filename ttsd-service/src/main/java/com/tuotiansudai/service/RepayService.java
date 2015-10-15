@@ -1,13 +1,12 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanRepayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.RepayDto;
+import com.tuotiansudai.dto.*;
 
 public interface RepayService {
 
     BaseDto<PayFormDataDto> repay(RepayDto repayDto);
 
     BaseDto<LoanRepayDataDto> getLoanRepay(long loanId);
+
+    BaseDto<InvestRepayDataDto> findInvestorInvestRepay(long investId);
 }

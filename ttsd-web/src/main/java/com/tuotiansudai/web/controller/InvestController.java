@@ -7,6 +7,7 @@ import com.tuotiansudai.repository.model.InvestSource;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,21 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
-    @RequestMapping(value = "/invest", method = RequestMethod.GET)
-    public ModelAndView invest() {
-        return new ModelAndView("/invest");
-    }
+    @Autowired
+    private RepayService repayService;
 
+    @Autowired
+    private LoanController loanController;
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setInvestSource(InvestSource.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-        return new ModelAndView("/pay", "pay", baseDto);
+        if(baseDto.getData().getStatus()) {
+            return new ModelAndView("/pay", "pay", baseDto);
+        }else{
+            return loanController.getLoanDetail(investDto.getLoanIdLong());
+        }
     }
 
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
@@ -52,7 +57,7 @@ public class InvestController {
         return new ModelAndView("/invest-record");
     }
 
-    @RequestMapping(value = "/investor/query_invests", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/investor/query-invests", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> queryUserInvest(
             Long loanId,
@@ -80,6 +85,13 @@ public class InvestController {
         }
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(paginationList);
+        return dto;
+    }
+
+    @RequestMapping(value = "/investor/query-invest-repay", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public BaseDto<InvestRepayDataDto> queryUserInvestRepay(long investId){
+        BaseDto<InvestRepayDataDto> dto = repayService.findInvestorInvestRepay(investId);
         return dto;
     }
 
