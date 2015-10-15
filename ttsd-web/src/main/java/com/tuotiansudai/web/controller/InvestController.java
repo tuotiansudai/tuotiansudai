@@ -138,6 +138,12 @@ public class InvestController {
         return mv;
     }
 
+    @RequestMapping(value = "/investor/auto-invest/plan-detail", method = RequestMethod.GET)
+    public ModelAndView autoInvestPlanDetail4Test() {
+        ModelAndView mv = new ModelAndView("/auto-invest-plan-detail");
+        return mv;
+    }
+
     @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
     public String turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
         AutoInvestPlanModel model = new AutoInvestPlanModel();
