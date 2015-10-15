@@ -51,7 +51,9 @@ public class OssUploadController {
         if (action.equals("uploadimage")) {
             try {
                 response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+                System.out.println("11111111111111111111111111111111111111111111111111111");
                 ossWrapperClient.upload(request);
+                System.out.println("22222222222222222222222222222222222222222222222222222");
                 response.getWriter().print(MessageFormat.format(uploadImage,ossWrapperClient.getOriginalName(),ossWrapperClient.getUrl(),ossWrapperClient.getTitle(),ossWrapperClient.getState()));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);

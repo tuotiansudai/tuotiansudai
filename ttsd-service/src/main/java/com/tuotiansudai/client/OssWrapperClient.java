@@ -104,14 +104,17 @@ public class OssWrapperClient{
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         MultipartFile dfi = multiRequest.getFile("upfile");
         this.originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
+        System.out.println("originalName = " + originalName);
         if (!this.checkFileType(this.originalName)) {
             this.state = this.errorInfo.get("TYPE");
             return;
         }
         this.fileName = this.getName(this.originalName);
+        System.out.println("fileName = " + fileName);
         this.type = FilenameUtils.getExtension(this.fileName);
         this.url = savePath + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
+        System.out.println("rootPath = " + rootPath);
         this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
         this.title = url;
         this.state = this.errorInfo.get("SUCCESS");
@@ -172,6 +175,7 @@ public class OssWrapperClient{
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             String waterPath = rootPath + File.separator + "images" + File.separator + "watermark.png";
+            System.out.println("waterPath = " + waterPath);
             in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
@@ -180,6 +184,7 @@ public class OssWrapperClient{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
             fileName = sdf.format(new Date()) + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
+            System.out.println("filePath = "+filePath);
             OSSClient client = getOSSClient();
             PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
