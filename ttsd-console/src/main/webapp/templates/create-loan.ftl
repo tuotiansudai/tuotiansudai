@@ -59,14 +59,14 @@
 </head>
 <body>
 
-<@menu.header label=""></@menu.header>
+<@menu.header label="proMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="" sideLab=""></@menu.sidebar>
+        <@menu.sidebar headLab="proMan" sideLab="start"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
