@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanPeriodUnit;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class InvestServiceImpl implements InvestService {
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
-        long investAmount = Long.parseLong(investDto.getAmount());
+        long investAmount = AmountUtil.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
         // 不满足最小投资限制
@@ -70,7 +71,7 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 超投
-        if (investAmount < loanNeedAmount) {
+        if (loanNeedAmount < investAmount) {
             return "标的可投金额不足";
         }
 

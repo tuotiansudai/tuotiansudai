@@ -59,14 +59,21 @@
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num balance">${loan.balance?string("0.00")}元</span>
+                <span class="num balance"><i class="account-amount">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">每人限投：</span>
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/><br/>
+                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
+                <#if investAmount?has_content>
+                    <#assign defaultInvestAmount = investAmount>
+                </#if>
+                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/><br/>
+                <#if errorMessage?has_content>
+                    ${errorMessage!}
+                </#if>
             </div>
             <div class="item-block">
                 <span class="sub-hd">预计总收益：</span>
@@ -89,7 +96,7 @@
 
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
+                <span class="num"><i class="red account-amount">${loan.balance?string("0.00")}</i>元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">每人限投：</span>
