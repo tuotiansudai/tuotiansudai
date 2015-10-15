@@ -37,11 +37,7 @@ public class InvestController {
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute WebInvestDto investDto) {
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-        if (baseDto.getData().getStatus()) {
-            return new ModelAndView("/pay", "pay", baseDto);
-        }else{
-            return loanController.getLoanDetail(investDto.getLoanIdLong());
-        }
+        return new ModelAndView("/pay", "pay", baseDto);
     }
 
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
