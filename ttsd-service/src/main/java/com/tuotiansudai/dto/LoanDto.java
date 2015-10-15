@@ -116,7 +116,7 @@ public class LoanDto extends BaseDataDto{
     private double amountNeedRaised;
 
 
-    private double maxAvailableInvestAmount;
+    private String maxAvailableInvestAmount;
 
     /**当前登录用户的个人账户余额**/
     private double balance;
@@ -388,11 +388,11 @@ public class LoanDto extends BaseDataDto{
         this.preheatSeconds = preheatSeconds;
     }
 
-    public double getMaxAvailableInvestAmount() {
+    public String getMaxAvailableInvestAmount() {
         return maxAvailableInvestAmount;
     }
 
-    public void setMaxAvailableInvestAmount(double maxAvailableInvestAmount) {
+    public void setMaxAvailableInvestAmount(String maxAvailableInvestAmount) {
         this.maxAvailableInvestAmount = maxAvailableInvestAmount;
     }
 }
