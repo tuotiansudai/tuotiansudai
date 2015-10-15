@@ -174,7 +174,7 @@ public class OssWrapperClient{
         String filePath = "";
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
-            String waterPath = rootPath + File.separator + "images" + File.separator + "watermark.png";
+            String waterPath = rootPath + "images" + File.separator + "watermark.png";
             System.out.println("waterPath = " + waterPath);
             in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
             objectMeta.setContentLength(in.available());
@@ -185,10 +185,14 @@ public class OssWrapperClient{
             fileName = sdf.format(new Date()) + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
             System.out.println("filePath = "+filePath);
+            System.out.println("begin connect oss");
             OSSClient client = getOSSClient();
+            System.out.println("connect oss success");
             PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            System.out.println("push oss success");
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
         } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
