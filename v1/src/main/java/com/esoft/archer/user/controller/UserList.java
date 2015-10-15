@@ -58,6 +58,7 @@ public class UserList extends EntityQuery<User> {
 				"user.mobileNumber like #{userList.example.mobileNumber}",
 				"user.status like #{userList.example.status}",
 				"user.email like #{userList.example.email}",
+				"user.source = #{userList.example.source}",
 				"user.referrer like #{userList.example.referrer}",
 				"user.registerTime >= #{userList.registerTimeStart}",
 				"user.registerTime <= #{userList.registerTimeEnd}",
