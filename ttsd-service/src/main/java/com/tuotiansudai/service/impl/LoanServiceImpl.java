@@ -12,6 +12,7 @@ import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,20 +206,23 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(decimalFormat.format(loanModel.getLoanAmount() / 100d));
-        loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
+        loanDto.setLoanAmount(AmountUtil.convertCentToString(loanModel.getLoanAmount()));
+        loanDto.setInvestIncreasingAmount(AmountUtil.convertCentToString(loanModel.getInvestIncreasingAmount()));
+        loanDto.setMinInvestAmount(AmountUtil.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
         loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
+        loanDto.setMaxInvestAmount(AmountUtil.convertCentToString(loanModel.getMaxInvestAmount()));
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
             loanDto.setBalance(accountModel.getBalance()/100d);
             loanDto.setMaxAvailableInvestAmount(calculateMaxAvailableInvestAmount(
-                    accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount, loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount()
-            )/100d);
+                    accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount,
+                    loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount(),
+                    loanModel.getMaxInvestAmount(),4000L)/100d);
         }else{
             loanDto.setMaxAvailableInvestAmount(0.00D);
         }
@@ -234,18 +238,15 @@ public class LoanServiceImpl implements LoanService {
         return loanDto;
     }
 
-    private long calculateMaxAvailableInvestAmount(long balance,long amountNeedRaised,long minInvestAmount,long investIncreasingAmount){
+    private long calculateMaxAvailableInvestAmount(long balance,long amountNeedRaised,long minInvestAmount,
+                                                   long investIncreasingAmount,long maxInvestAmount,long userInvestedAmount){
+        long maxAvailableInvestAmount = NumberUtils.min(balance,amountNeedRaised,maxInvestAmount - userInvestedAmount);
 
-        long maxAvailableInvestAmount = balance;
-        if(balance > amountNeedRaised){
-            maxAvailableInvestAmount = amountNeedRaised;
-        }
-        if (maxAvailableInvestAmount >= minInvestAmount){
-            maxAvailableInvestAmount = maxAvailableInvestAmount - maxAvailableInvestAmount%investIncreasingAmount;
+        if(maxAvailableInvestAmount >= minInvestAmount){
+            maxAvailableInvestAmount = maxAvailableInvestAmount - (maxAvailableInvestAmount - minInvestAmount)%investIncreasingAmount;
         }else{
             maxAvailableInvestAmount = 0L;
         }
-
         return maxAvailableInvestAmount;
 
     }

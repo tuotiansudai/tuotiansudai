@@ -33,6 +33,7 @@
             </div>
             <div class="chart-info">
                 <p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>
+                <p>项目金额： ${loan.loanAmount}元</p>
 
                 <p>代理人： ${loan.agentLoginName}</p>
 
@@ -44,6 +45,7 @@
                 <p>项目期限：${loan.periods}天 </p>
             </#if>
                 <p>还款方式：${loan.type.getName()}</p>
+                <p>投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍</p>
                 <a href="/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
@@ -52,16 +54,16 @@
             <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
-            </div>
-            <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
                 <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num balance"><i class="red">${loan.balance?string("0.00")}</i>元</span>
+                <span class="num balance">${loan.balance?string("0.00")}元</span>
+            </div>
+            <div class="item-block">
+                <span class="sub-hd">每人限投：</span>
+                <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
                 <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input"/>
