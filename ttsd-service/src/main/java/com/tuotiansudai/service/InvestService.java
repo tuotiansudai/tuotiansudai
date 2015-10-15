@@ -8,7 +8,7 @@ public interface InvestService {
      * 进行一次投资
      * @param investDto
      */
-    BaseDto<PayFormDataDto> invest(WebInvestDto investDto);
+    BaseDto<PayFormDataDto> invest(InvestDto investDto);
 
     long calculateExpectedInterest(long loanId, long amount);
     /**

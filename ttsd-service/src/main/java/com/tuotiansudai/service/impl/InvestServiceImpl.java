@@ -30,9 +30,9 @@ public class InvestServiceImpl implements InvestService {
     private InvestMapper investMapper;
 
     @Override
-    public BaseDto<PayFormDataDto> invest(WebInvestDto webInvestDto) {
+    public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
         String loginName = LoginUserInfo.getLoginName();
-        InvestDto investDto = webInvestDto.toInvestDto(loginName);
+        investDto.setLoginName(loginName);
         if (canInvest(investDto)) {
             return payWrapperClient.invest(investDto);
         } else {
