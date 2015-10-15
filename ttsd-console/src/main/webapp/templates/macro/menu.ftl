@@ -2,45 +2,61 @@
         [
             {
                 "name":"sysMain",
-                "header":{"text":"系统主页","link":""},
-                "sidebar":
-                    [
-                        {"name":"index","text":"所有借款","link":"index.html"},
-                        {"name":"firstTrial","text":"初审的借款","link":"firstTrial.html"},
-                        {"name":"moneyCollect","text":"筹款中借款","link":"moneyCollect.html"},
-                        {"name":"finishRefund","text":"完成还款的借款","link":"finishRefund.html"},
-                        {"name":"Drain","text":"已经流标的借款","link":"Drain.html"},
-                        {"name":"overdue","text":"逾期借款","link":"overdue.html"},
-                        {"name":"start","text":"发起借款","link":"start.html"},
-                        {"name":"twoTrial","text":"复审借款","link":"twoTrial.html"},
-                        {"name":"recheck","text":"复审核借款","link":"recheck.html"},
-                        {"name":"check","text":"审核借款","link":"check.html"},
-                        {"name":"fundsEdit","text":"复审借款","link":"fundsEdit.html"}
-                    ]
+                "header":{"text":"系统主页","link":"/"},
+                "sidebar":[]
             },
             {
                 "name":"proMan",
-                "header":{"text":"项目管理","link":""},
-                "sidebar":[]
+                "header":{"text":"项目管理","link":"/"},
+                "sidebar":
+                [
+                    {"name":"start","text":"发起借款","link":""},
+                    {"name":"all","text":"所有的借款","link":""},
+                    {"name":"firstTrial","text":"初审的借款","link":""},
+                    {"name":"moneyCollect","text":"筹款中的借款","link":""},
+                    {"name":"recheck","text":"复审的借款","link":""},
+                    {"name":"##############","text":"还款中的借款","link":""},
+                    {"name":"finishRefund","text":"完成还款的借款","link":""},
+                    {"name":"drain","text":"已经流标的借款","link":""},
+                    {"name":"overdue","text":"逾期的借款","link":""},
+                    {"name":"recheck","text":"复审核借款","link":""},
+                    {"name":"investmentInfoList","text":"项目投资明细表","link":""},
+                    {"name":"repaymentInfoList","text":"项目还款明细表","link":""}
+                ]
             },
             {
                 "name":"userMan",
-                "header":{"text":"用户管理","link":""},
-                "sidebar":[]
+                "header":{"text":"用户管理","link":"/"},
+                "sidebar":[
+                    {"name":"addUser","text":"添加用户","link":""},
+                    {"name":"userMan","text":"用户管理","link":""},
+                    {"name":"referMan","text":"推荐人管理","link":""},
+                    {"name":"##############","text":"推荐层级-收益比例管理(用户)","link":""},
+                    {"name":"##############","text":"用户推荐层级-收益比例管理(系统)","link":""},
+                    {"name":"##############","text":"业务员推荐层级-收益比例管理(系统)","link":""}
+                ]
             },
             {
                 "name":"finaMan",
-                "header":{"text":"财务管理","link":""},
-                "sidebar":[]
+                "header":{"text":"财务管理","link":"/invests"},
+                "sidebar":[
+                    {"name":"userInvest","text":"用户投资管理","link":""},
+                    {"name":"recharge","text":"充值记录","link":""},
+                    {"name":"##############","text":"提现记录","link":""},
+                    {"name":"##############","text":"用户资金查询","link":""},
+                    {"name":"##############","text":"系统账户查询","link":""},
+                    {"name":"##############","text":"管理员修改账户余额","link":""},
+                    {"name":"##############","text":"联动优势余额查询","link":""}
+                ]
             },
             {
                 "name":"artMan",
-                "header":{"text":"文章管理","link":""},
+                "header":{"text":"文章管理","link":"/"},
                 "sidebar":[]
             },
             {
                 "name":"secMan",
-                "header":{"text":"安全管理","link":""},
+                "header":{"text":"安全管理","link":"/"},
                 "sidebar":[]
             }
         ]
