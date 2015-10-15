@@ -59,14 +59,14 @@
 </head>
 <body>
 
-<@menu.header label="sysMain"></@menu.header>
+<@menu.header label=""></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar label="index"></@menu.sidebar>
+        <@menu.sidebar headLab="" sideLab=""></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">

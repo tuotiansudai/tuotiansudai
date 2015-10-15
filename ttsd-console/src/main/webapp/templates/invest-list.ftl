@@ -79,7 +79,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar label="index"></@menu.sidebar>
+            <@menu.sidebar headLab="sysMain" sideLab="index"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">

@@ -1,4 +1,52 @@
-<#macro header label>
+
+    <#assign menus=
+            [
+                {
+                    "name":"sysMain",
+                    "header":{"text":"系统主页","link":""},
+                    "sidebar":
+                        [
+                            {"name":"index","text":"所有借款","link":"index.html"},
+                            {"name":"firstTrial","text":"初审的借款","link":"firstTrial.html"},
+                            {"name":"moneyCollect","text":"筹款中借款","link":"moneyCollect.html"},
+                            {"name":"finishRefund","text":"完成还款的借款","link":"finishRefund.html"},
+                            {"name":"Drain","text":"已经流标的借款","link":"Drain.html"},
+                            {"name":"overdue","text":"逾期借款","link":"overdue.html"},
+                            {"name":"start","text":"发起借款","link":"start.html"},
+                            {"name":"twoTrial","text":"复审借款","link":"twoTrial.html"},
+                            {"name":"recheck","text":"复审核借款","link":"recheck.html"},
+                            {"name":"check","text":"审核借款","link":"check.html"},
+                            {"name":"fundsEdit","text":"复审借款","link":"fundsEdit.html"}
+                        ]
+                },
+                {
+                    "name":"proMan",
+                    "header":{"text":"项目管理","link":""},
+                    "sidebar":{}
+                },
+                {
+                    "name":"userMan",
+                    "header":{"text":"用户管理","link":""},
+                    "sidebar":{}
+                },
+                {
+                    "name":"finaMan",
+                    "header":{"text":"财务管理","link":""},
+                    "sidebar":{}
+                },
+                {
+                    "name":"artMan",
+                    "header":{"text":"文章管理","link":""},
+                    "sidebar":{}
+                },
+                {
+                    "name":"secMan",
+                    "header":{"text":"安全管理","link":""},
+                    "sidebar":{}
+                }
+            ]
+>
+    <#macro header label>
 <!-- header begin -->
 <header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
     <div class="container-fluid">
@@ -16,53 +64,30 @@
     <nav id="bs-navbar" class="collapse navbar-collapse">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <li id="sysMain">
-                    <a href="">系统主页</a>
-                </li>
-                <li id="proMan">
-                    <a href="">项目管理</a>
-                </li>
-                <li id="userMan">
-                    <a href="">用户管理</a>
-                </li>
-                <li id="finaMan">
-                    <a href="">财务管理</a>
-                </li>
-                <li id="artMan">
-                    <a href="">文章管理</a>
-                </li>
-                <li id="secMan">
-                    <a href="">安全管理</a>
-                </li>
+                <#list menus as menu>
+                    <li <#if menu.name == label>class="active"</#if>>
+                        <a href="${menu.header.link}">${menu.header.text}</a>
+                    </li>
+                </#list>
             </ul>
         </div>
     </nav>
 </header>
-<script>
-    document.getElementById("${label}").className="active";
-</script>
 <!-- header end -->
 </#macro>
 
-<#macro sidebar label>
+<#macro sidebar headLab sideLab>
 <!-- menu sidebar -->
 <div class="col-md-2">
     <ul class="nav bs-docs-sidenav">
-        <li id="index"><a href="index.html">所有借款</a></li>
-        <li id="firstTrial"><a href="firstTrial.html">初审的借款</a></li>
-        <li id="moneyCollect"><a href="moneyCollect.html">筹款中借款</a></li>
-        <li id="finishRefund"><a href="finishRefund.html">完成还款的借款</a></li>
-        <li id="Drain"><a href="Drain.html">已经流标的借款</a></li>
-        <li id="overdue"><a href="overdue.html">逾期借款</a></li>
-        <li id="star"><a href="star.html">发起借款</a></li>
-        <li id="twoTrial"><a href="twoTrial.html">复审借款</a></li>
-        <li id="recheck"><a href="recheck.html">复审核借款</a></li>
-        <li id="check"><a href="check.html">审核借款</a></li>
-        <li id="fundsEdit"><a href="fundsEdit.html">复审借款</a></li>
+        <#list menus as menu>
+            <#if menu.name=headLab>
+                <#list menu.sidebar as item>
+                    <li <#if item.name == sideLab>class="active"</#if>><a href="${item.link}">${item.text}</a></li>
+                </#list>
+            </#if>
+        </#list>
     </ul>
 </div>
-<script>
-    document.getElementById("${label}").className="active";
-</script>
 <!-- menu sidebar end -->
 </#macro>
