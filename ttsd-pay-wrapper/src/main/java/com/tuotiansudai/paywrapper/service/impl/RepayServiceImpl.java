@@ -124,6 +124,8 @@ public class RepayServiceImpl implements RepayService {
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
+            payFormDataDto.setMessage(e.getMessage());
+            payFormDataDto.setStatus(false);
             baseDto.setData(payFormDataDto);
             return baseDto;
         }

@@ -72,14 +72,14 @@
 </head>
 <body>
 
-<@menu.header label="sysMain"></@menu.header>
+<@menu.header label="finaMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="sysMain" sideLab="index"></@menu.sidebar>
+            <@menu.sidebar headLab="finaMan" sideLab="userInvest"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
