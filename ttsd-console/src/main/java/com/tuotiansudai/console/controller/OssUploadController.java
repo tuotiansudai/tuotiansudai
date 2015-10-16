@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +42,6 @@ public class OssUploadController {
         ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}/{time}{rand:6}");
     }
 
-    private String uploadImage = "{'original':'{0}','url':'{1}','title':'{2}','state':'{3}'}";
-
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
     public void uploadimage(HttpServletRequest request,  HttpServletResponse response){
         String action = request.getParameter("action");
@@ -52,7 +49,7 @@ public class OssUploadController {
             try {
                 response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 ossWrapperClient.upload(request);
-                response.getWriter().print(MessageFormat.format(uploadImage,ossWrapperClient.getOriginalName(),ossWrapperClient.getUrl(),ossWrapperClient.getTitle(),ossWrapperClient.getState()));
+                response.getWriter().print("{'original':'"+ossWrapperClient.getOriginalName()+"','url':'"+ossWrapperClient.getUrl()+"','title':'"+ossWrapperClient.getTitle()+"','state':'"+ossWrapperClient.getState()+"'}");
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             } finally {

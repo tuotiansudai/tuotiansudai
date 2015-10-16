@@ -6,7 +6,6 @@ import com.aliyun.oss.model.PutObjectResult;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -68,29 +67,29 @@ public class OssWrapperClient{
     /**
      * 阿里云ACCESS_KEYID
      */
-    @Value("${plat.oss.access_keyid}")
-    private String ACCESS_KEYID;
+//    @Value("${plat.oss.access_keyid}")
+    private static String ACCESS_KEYID="h3mUO1gON8xOgsKo";
     /**
      * 阿里云ACCESS_KEYSECRET
      */
-    @Value("${plat.oss.access_keysecret}")
-    private String ACCESS_KEYSECRET;
+//    @Value("${plat.oss.access_keysecret}")
+    private static String ACCESS_KEYSECRET="9LH9VX1zpmDC3s5uqY3oUb5g1c14jy";
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
-    @Value("${plat.oss.oss_endpoint}")
-    private String OSS_ENDPOINT;
+//    @Value("${plat.oss.oss_endpoint}")
+    private static String OSS_ENDPOINT="http://oss-cn-hangzhou.aliyuncs.com";
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
-    @Value("${plat.oss.bucket_name}")
-    private String BUCKET_NAME;
+//    @Value("${plat.oss.bucket_name}")
+    private static String BUCKET_NAME="ttsd-test100";
 
-    @Value("${plat.sitePath}")
-    private  String SITEPATH;
+//    @Value("${plat.sitePath}")
+    private static String SITEPATH="upload/";
 
-    private OSSClient getOSSClient(){
+    public static OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
     }
@@ -142,7 +141,7 @@ public class OssWrapperClient{
     private String getName(String fileName) {
         Random random = new Random();
         return this.fileName = "" + random.nextInt(10000)
-                + System.currentTimeMillis() + FilenameUtils.getExtension(fileName);
+                + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
     }
 
     /**
@@ -171,23 +170,23 @@ public class OssWrapperClient{
         String filePath = "";
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
-            String waterPath = rootPath + File.separator + "images" + File.separator + "watermark.png";
-            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
-            objectMeta.setContentLength(in.available());
+            String waterPath = rootPath + "images" + File.separator + "watermark.png";
+//            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
+            objectMeta.setContentLength(inputStream.available());
             objectMeta.setContentType("image/jpeg");
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
             String sitePath = SITEPATH + format.format(new Date()) + File.separator;
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-            fileName = sdf.format(new Date()) + FilenameUtils.getExtension(fileName);
+            fileName = sdf.format(new Date())+ "." + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
             OSSClient client = getOSSClient();
-            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, inputStream, objectMeta);
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
-                in.close();
+                inputStream.close();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -216,8 +215,6 @@ public class OssWrapperClient{
             while ((rc = inStream.read(byteBuffer, 0, 100)) > 0) {
                 swapStream.write(byteBuffer, 0, rc);
             }
-//            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
-//            encoder.encode(image);
             ImageIO.write(image,"image/jpeg",swapStream);
         } catch (Exception e) {
             logger.error("upload oss fail ");

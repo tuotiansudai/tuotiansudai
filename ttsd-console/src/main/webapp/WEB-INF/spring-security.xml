@@ -36,11 +36,12 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
 
 
-        <intercept-url pattern="/monitor" access="permitAll()" />
-        <intercept-url pattern="/login" access="isAnonymous()"/>
-        <intercept-url pattern="/loginHandler" access="hasAuthority('ADMIN')"/>
-        <intercept-url pattern="/" access="permitAll()"/>
-        <intercept-url pattern="/*" access="hasAuthority('ADMIN')"/>
+        <!--<intercept-url pattern="/monitor" access="permitAll()" />-->
+        <!--<intercept-url pattern="/login" access="isAnonymous()"/>-->
+        <!--<intercept-url pattern="/loginHandler" access="hasAuthority('ADMIN')"/>-->
+        <!--<intercept-url pattern="/" access="permitAll()"/>-->
+        <!--<intercept-url pattern="/*" access="hasAuthority('ADMIN')"/>-->
+        <intercept-url pattern="/*" access="permitAll()"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
 
