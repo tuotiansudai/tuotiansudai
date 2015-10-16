@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,8 @@ public class InvestRepayMapperTest {
 
         assertThat(updateInvestRepayModel.getStatus(), is(investRepayModel.getStatus()));
         assertThat(updateInvestRepayModel.getActualInterest(), is(investRepayModel.getActualInterest()));
-        assertThat(updateInvestRepayModel.getActualRepayDate(), is(investRepayModel.getActualRepayDate()));
+        assertThat(new DateTime(updateInvestRepayModel.getActualRepayDate()).withTimeAtStartOfDay().getMillis(),
+                is(new DateTime(investRepayModel.getActualRepayDate().getTime()).withTimeAtStartOfDay().getMillis()));
     }
 
     private UserModel getFakeUserModel() {
