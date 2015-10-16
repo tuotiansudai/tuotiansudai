@@ -112,3 +112,5 @@ a:hover {
     border: none;
     box-shadow: none;
 }
+td.projectName { width:25%;}
+td.projectName a { display: inline-block; text-overflow: ellipsis; white-space: nowrap; padding-right:10px; overflow: hidden; width:300px; }

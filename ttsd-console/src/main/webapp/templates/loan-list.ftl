@@ -124,12 +124,11 @@
                     <button type="button" class="btn btn-sm btn-primary">查询</button>
                 </form>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover ">
                         <thead>
                         <tr>
                             <th>编号</th>
                             <th>项目名称</th>
-                            <th>项目类型</th>
                             <th>借款人</th>
                             <th>借款金额</th>
                             <th>借款期限</th>
@@ -144,8 +143,7 @@
                         <#list loanListDtos as loanListDto>
                         <tr>
                             <td>${loanListDto.id?string('0')}</td>
-                            <td>${loanListDto.name}</td>
-                            <td>${loanListDto.type.getName()}</td>
+                            <td class="projectName"><a href="#" title="${loanListDto.name}">${loanListDto.name}</a></td>
                             <td>${loanListDto.agentLoginName}</td>
                             <td>${loanListDto.loanAmount/100}</td>
                             <td>${loanListDto.periods}</td>

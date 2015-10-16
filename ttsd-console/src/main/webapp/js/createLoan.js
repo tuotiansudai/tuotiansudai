@@ -311,7 +311,7 @@ $(function () {
                 .done(function (res) {
                     if(res.data.status){
                         formFlag =true;
-                        location.href='/loanList/console';
+                        location.href='/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10';
                     }else{
                         formFlag =false;
                         var msg = res.data.message || '服务端校验失败';
