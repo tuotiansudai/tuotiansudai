@@ -54,4 +54,6 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 </beans>

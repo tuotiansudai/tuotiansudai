@@ -77,6 +77,8 @@
 
     <bean id="httpClient" class="com.squareup.okhttp.OkHttpClient" />
 
+    <bean class="com.tuotiansudai.utils.SpringContextUtil" />
+
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
     <!-- quartz持久化存储 -->

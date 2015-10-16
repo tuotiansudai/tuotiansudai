@@ -30,7 +30,8 @@ dependencies {
             "org.springframework.security:spring-security-taglibs:$springSecurityVersion"
 
 
-    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0",
+            "commons-io:commons-io:2.4"
 
     compile fileTree(dir: 'libs', include: '**/*.jar')
 }

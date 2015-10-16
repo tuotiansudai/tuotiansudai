@@ -49,7 +49,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         bankCardModel.setId(idGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECK);
 
-
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
@@ -63,6 +62,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
         }

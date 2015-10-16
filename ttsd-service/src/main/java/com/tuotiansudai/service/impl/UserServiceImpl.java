@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     private AccountMapper accountMapper;
     @Autowired
     private UserInfoLogService userInfoLogService;
-
+    @Autowired
     private MyAuthenticationManager myAuthenticationManager;
 
     public static String SHA = "SHA";
