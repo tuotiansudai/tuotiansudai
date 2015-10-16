@@ -40,7 +40,7 @@ public class OssUploadController {
         ueditorConfig.put("imageCompressBorder",1600);
         ueditorConfig.put("imageInsertAlign","none");
         ueditorConfig.put("imageUrlPrefix","/upload");
-        ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}/{time}{rand:6}");
+        ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}");
     }
 
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
