@@ -25,7 +25,7 @@ var require = {
             deps: ['jquery']
         },
         'bootstrapSelect': {
-            deps: ['jquery','bootstrap']
+            deps: ['jquery']
         },
         'fileinput': {
             deps: ['jquery']

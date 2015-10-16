@@ -14,8 +14,6 @@
     <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
     <link href="style/libs/jquery-ui-1.9.2.custom.css" rel="stylesheet"/>
     <link href="style/index.css" rel="stylesheet"/>
-    <script src="js/libs/jquery-1.10.1.min.js"></script>
-    <script src="js/libs/bootstrap-select.js"></script>
 <@global.javascript pageJavascript="user-list.js"></@global.javascript>
 </head>
 <body>
@@ -40,14 +38,6 @@
                         <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                     </div>
                     <div class="form-group">
-                        <label for="mobile">手机号</label>
-                        <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">电子邮件</label>
-                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
-                    </div>
-                    <div class="form-group">
                         <label for="number">注册时间</label>
 
                         <div class='input-group date' id='datetimepicker1'>
@@ -70,12 +60,20 @@
                         <label for="project">角色</label>
                         <select class="selectpicker" name="role">
                             <option value="">全部</option>
-                            <#list roleList as roleItem>
+                        <#list roleList as roleItem>
                             <option value="${roleItem.name()}"
-                                <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
-                                >${roleItem.description}</option>
-                            </#list>
+                                    <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
+                                    >${roleItem.description}</option>
+                        </#list>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">手机号</label>
+                        <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">电子邮件</label>
+                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
                     </div>
                     <div class="form-group">
                         <label for="referrer">推荐人</label>
@@ -112,9 +110,9 @@
                             <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
                             <td><a href="/user/${userItem.loginName}/edit">编辑</a> |
                                 <#if userItem.status=='ACTIVE'>
-                                    <a class="user-status-modifier" href="/user/disable/${userItem.loginName}">禁止</a>
+                                    <a class="user-status-modifier" href="#" action-url="/user/disable/${userItem.loginName}">禁止</a>
                                 <#else>
-                                    <a class="user-status-modifier" href="/user/enable/${userItem.loginName}">解禁</a>
+                                    <a class="user-status-modifier" href="#" action-url="/user/enable/${userItem.loginName}">解禁</a>
                                 </#if>
                             </td>
                         </tr>
@@ -167,6 +165,5 @@
     </div>
 </div>
 <!-- main end -->
-
 </body>
 </html>

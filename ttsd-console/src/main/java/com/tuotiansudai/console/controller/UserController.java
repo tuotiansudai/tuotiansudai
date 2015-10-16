@@ -71,7 +71,7 @@ public class UserController {
             throw new IllegalArgumentException("参数为空");
         }
         if(LoginUserInfo.getLoginName().equals(loginName)){
-            throw new IllegalArgumentException("不能禁用当前登录用户");
+            return "不能禁用当前登录用户";
         }
         String ip = RequestIPParser.getRequestIp(request);
         userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip);
