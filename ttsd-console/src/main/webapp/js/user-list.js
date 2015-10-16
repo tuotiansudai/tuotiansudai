@@ -19,7 +19,7 @@ require(['jquery', 'jquery-ui',
         });
         //自动完成提示
         var autoValue = '';
-        var api_url = '${requestContext.getContextPath()}/user/name-like-query';
+        var api_url = '/user/name-like-query';
         $("#loginName").autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
