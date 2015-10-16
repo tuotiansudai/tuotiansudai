@@ -32,7 +32,47 @@
   color: #fff;
 }
 
-.invest-box {
+.money-box {
+  font-size: 12px;
+  width: 793px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding-bottom: 20px;
+  border-radius: 3px;
+  background: url("../../images/record/record.png") 360px 30px no-repeat;
+  & p {
+    padding-left: 20px;
+    line-height: 24px;
+    margin-top: 10px;
+  }
+  & .balance {
+    color: #ffac2a;
+    padding:20px 20px 10px;
+  }
+  & .bt-pay {
+    padding: 8px 10px;
+    background: #ffac2a;
+    border-radius: 3px;
+    color: #fff;
+    margin-left: 20px;
+  }
+  & .bt-invest {
+    padding: 8px 10px;
+    background: #55bee5;
+    border-radius: 3px;
+    color: #fff;
+    margin-left: 10px;
+  }
+  & .bt-withdraw {
+    margin-left: 10px;
+    padding: 8px 10px;
+    background-color: #ff6b2a;
+    border-radius: 3px;
+    color: #fff;
+  }
+}
+
+.fund-box {
   width: 815px;
   float: right;
   border: 1px solid #ccc;
@@ -87,7 +127,7 @@
     }
 
   }
-  & .invest-list {
+  & .fund-list {
     border-collapse: collapse;
     width: 100%;
     text-align: center;
@@ -99,7 +139,7 @@
       &:first-child {
         padding-left: 20px;
         text-align: left;
-        width: 18%;
+        width: 13%;
       }
     }
     & tr:nth-child(even) {
@@ -111,6 +151,9 @@
       &:first-child {
         padding-left: 20px;
         text-align: left;
+      }
+      &:last-child {
+        width: 150px;
       }
       &.txtc {
         text-align: center;
@@ -124,8 +167,6 @@
   }
 
 }
-.red{
-  color: #cc0000;}
 
 .date-picker {
   width: 170px;
@@ -522,28 +563,21 @@
 }
 
 .pagination {
-  padding: 15px 20px;
-  text-align: left;
-  color: #ccc;
-}
-
-.pagination a {
-  display: inline-block;
-  color: #428bca;
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 10px;
-  border: 1px solid #ddd;
-  margin: 0 2px;
-  font-size: 12px;
-  border-radius: 4px;
-  vertical-align: middle;
-}
-
-.pagination a:hover {
-  text-decoration: none;
-  border: 1px solid #428bca;
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+  text-align: center;
+  & a {
+    color: #777777;
+    padding: 2px 8px;
+  }
+  & a.current {
+    background: #f24712;
+    color: #fff;
+  }
+  & .next, & .prev {
+    cursor: pointer;
+  }
 }
 
 .layer-box {
