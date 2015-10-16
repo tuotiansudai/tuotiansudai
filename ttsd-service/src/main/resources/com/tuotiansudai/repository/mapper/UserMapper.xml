@@ -76,8 +76,14 @@
             <if test="role !=null" >
                 and r.role = #{role}
             </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
             <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and u.login_name like '${loginName}%']]>
+                and u.login_name = #{loginName}
             </if>
             <if test="beginTime !=null" >
                 and u.register_time >= #{beginTime}
@@ -105,8 +111,14 @@
             <if test="role !=null" >
                 and r.role = #{role}
             </if>
+            <if test="email !=null and email !='' ">
+                and u.email like '${email}%'
+            </if>
+            <if test="mobile !=null and mobile !='' ">
+                and u.mobile like '${mobile}%'
+            </if>
             <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and u.login_name like '${loginName}%']]>
+                and u.login_name = #{loginName}
             </if>
             <if test="beginTime !=null" >
                 and u.register_time >= #{beginTime}

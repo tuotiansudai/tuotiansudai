@@ -156,6 +156,7 @@
                             <td>${invest.amount}</td>
                             <td>${invest.status.getDescription()}</td>
                         </tr>
+                        <#else>
                         <tr>
                             <td colspan="10">Empty</td>
                         </tr>

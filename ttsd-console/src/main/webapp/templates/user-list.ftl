@@ -1,86 +1,36 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>用户管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- link bootstrap css and js -->
+<@global.csrf></@global.csrf>
     <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="js/libs/jquery-1.10.1.min.js"></script>
-    <!-- jquery -->
-    <script src="js/libs/bootstrap.min.js"></script>
-    <!-- link bootstrap css and js -->
-
-    <!-- 日历插件 -->
     <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <script src="js/libs/moment-with-locales.js"></script>
-    <script src="js/libs/bootstrap-datetimepicker.js"></script>
+    <link href="style/libs/jquery-ui-1.9.2.custom.css" rel="stylesheet"/>
+    <link href="style/index.css" rel="stylesheet"/>
+    <script src="js/libs/jquery-1.10.1.min.js"></script>
     <script src="js/libs/bootstrap-select.js"></script>
-    <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
-    <script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-    <!--自动补全-->
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
-            var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-            $('#datetimepicker1').on('dp.change',function(e){
-                dpicker2.minDate(e.date);
-            });
-            $('form button[type="reset"]').click(function () {
-                location.href = "users";
-            });
-            //自动完成提示
-            var autoValue = '';
-            var api_url = '${requestContext.getContextPath()}/user/name-like-query';
-            $("#loginName").autocomplete({
-                source: function (query, process) {
-                    //var matchCount = this.options.items;//返回结果集最大数量
-                    $.get(api_url+'/'+query.term, function (respData) {
-                        autoValue = respData;
-                        return process(respData);
-                    });
-                }
-            });
-            $("#loginName").blur(function () {
-                for(var i = 0; i< autoValue.length; i++){
-                    if($(this).val()== autoValue[i]){
-                        $(this).removeClass('Validform_error');
-                        return false;
-                    }else{
-                        $(this).addClass('Validform_error');
-                    }
-
-                }
-
-            });
-        });
-    </script>
-
-    <link rel="stylesheet" href="style/index.css">
+<@global.javascript pageJavascript="user-list.js"></@global.javascript>
 </head>
 <body>
 
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
 
-<@menu.header label="sysMain"></@menu.header>
+<@menu.header label="userMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="sysMain" sideLab="index"></@menu.sidebar>
+            <@menu.sidebar headLab="userMan" sideLab="userMan"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
@@ -90,12 +40,12 @@
                         <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                     </div>
                     <div class="form-group">
-                        <label for="email">邮箱</label>
-                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
-                    </div>
-                    <div class="form-group">
                         <label for="mobile">手机号</label>
                         <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">电子邮件</label>
+                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
                     </div>
                     <div class="form-group">
                         <label for="number">注册时间</label>
@@ -151,7 +101,7 @@
                         </thead>
                         <tbody>
                         <#list userList as userItem>
-                        <tr>
+                        <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
                             <td>${userItem.loginName}</td>
                             <td>${userItem.userName}</td>
                             <td>${userItem.mobile}</td>
@@ -162,9 +112,9 @@
                             <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
                             <td><a href="/user/${userItem.loginName}/edit">编辑</a> |
                                 <#if userItem.status=='ACTIVE'>
-                                    <a class="user-status-modifier" href="/user/disable?loginName=${userItem.loginName}">禁止</a>
+                                    <a class="user-status-modifier" href="/user/disable/${userItem.loginName}">禁止</a>
                                 <#else>
-                                    <a class="user-status-modifier" href="/user/enable?loginName=${userItem.loginName}">禁止</a>
+                                    <a class="user-status-modifier" href="/user/enable/${userItem.loginName}">解禁</a>
                                 </#if>
                             </td>
                         </tr>
@@ -187,7 +137,7 @@
                     <ul class="pagination">
                         <li>
                             <#if pagination.hasPreviousPage >
-                            <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex-1}"
+                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&pageSize=${pageSize}&index=${pageIndex-1}"
                                aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
@@ -198,7 +148,7 @@
                         <li><a>${pagination.index}</a></li>
                         <li>
                             <#if pagination.hasNextPage >
-                            <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex+1}"
+                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&pageSize=${pageSize}&index=${pageIndex+1}"
                                aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">

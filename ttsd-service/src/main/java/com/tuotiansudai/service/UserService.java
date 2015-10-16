@@ -38,6 +38,8 @@ public interface UserService {
 
     BaseDto<PayDataDto> editUser(EditUserDto editUserDto,String ip);
 
+    void updateUserStatus(String loginName, UserStatus userStatus, String ip);
+
     EditUserDto getEditUser(String loginName);
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
