@@ -3,9 +3,12 @@ package com.tuotiansudai.client;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -67,29 +70,29 @@ public class OssWrapperClient{
     /**
      * 阿里云ACCESS_KEYID
      */
-//    @Value("${plat.oss.access_keyid}")
-    private static String ACCESS_KEYID="h3mUO1gON8xOgsKo";
+    @Value("${plat.oss.access_keyid}")
+    private String ACCESS_KEYID;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
-//    @Value("${plat.oss.access_keysecret}")
-    private static String ACCESS_KEYSECRET="9LH9VX1zpmDC3s5uqY3oUb5g1c14jy";
+    @Value("${plat.oss.access_keysecret}")
+    private String ACCESS_KEYSECRET;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
-//    @Value("${plat.oss.oss_endpoint}")
-    private static String OSS_ENDPOINT="http://oss-cn-hangzhou.aliyuncs.com";
+    @Value("${plat.oss.oss_endpoint}")
+    private String OSS_ENDPOINT;
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
-//    @Value("${plat.oss.bucket_name}")
-    private static String BUCKET_NAME="ttsd-test100";
+    @Value("${plat.oss.bucket_name}")
+    private String BUCKET_NAME;
 
-//    @Value("${plat.sitePath}")
-    private static String SITEPATH="upload/";
+    @Value("${plat.sitePath}")
+    private String SITEPATH;
 
-    public static OSSClient getOSSClient(){
+    public OSSClient getOSSClient(){
         OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
         return client;
     }
@@ -109,10 +112,9 @@ public class OssWrapperClient{
         }
         this.fileName = this.getName(this.originalName);
         this.type = FilenameUtils.getExtension(this.fileName);
-        this.url = savePath + File.separator + this.fileName;
         String rootPath = request.getSession().getServletContext().getRealPath("/");
-        this.url = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
-        this.title = url;
+        this.title = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
+        this.url = this.title.substring(title.indexOf("/"),title.length());
         this.state = this.errorInfo.get("SUCCESS");
     }
 
@@ -171,8 +173,8 @@ public class OssWrapperClient{
         try {
             ObjectMetadata objectMeta = new ObjectMetadata();
             String waterPath = rootPath + "images" + File.separator + "watermark.png";
-//            in = new ByteArrayInputStream(pressImage(waterPath, inputStream, 0, 0).toByteArray());
-            objectMeta.setContentLength(inputStream.available());
+            in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
+            objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
             SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
             String sitePath = SITEPATH + format.format(new Date()) + File.separator;
@@ -180,13 +182,13 @@ public class OssWrapperClient{
             fileName = sdf.format(new Date())+ "." + FilenameUtils.getExtension(fileName);
             filePath = sitePath + fileName;
             OSSClient client = getOSSClient();
-            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, inputStream, objectMeta);
+            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
             logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
-                inputStream.close();
+                in.close();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
             }
@@ -194,7 +196,7 @@ public class OssWrapperClient{
         return filePath;
     }
 
-    private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream ,int x, int y) {
+    private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream) {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         try {
             //目标文件
@@ -210,12 +212,8 @@ public class OssWrapperClient{
             graphics.drawImage(waterImage, 0,0, width, height, null);
             //水印文件结束
             graphics.dispose();
-            byte[] byteBuffer = new byte[100]; //buff用于存放循环读取的临时数据
-            int rc = 0;
-            while ((rc = inStream.read(byteBuffer, 0, 100)) > 0) {
-                swapStream.write(byteBuffer, 0, rc);
-            }
-            ImageIO.write(image,"image/jpeg",swapStream);
+            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
+            encoder.encode(image);
         } catch (Exception e) {
             logger.error("upload oss fail ");
             e.printStackTrace();
