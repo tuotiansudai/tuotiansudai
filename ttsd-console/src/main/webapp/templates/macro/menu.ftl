@@ -26,7 +26,7 @@
             },
             {
                 "name":"userMan",
-                "header":{"text":"用户管理","link":"/"},
+                "header":{"text":"用户管理","link":"/users"},
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
                     {"name":"userMan","text":"用户管理","link":"/users"},
