@@ -1,9 +1,12 @@
 package com.tuotiansudai.repository.model;
 
 
-import java.util.Date;
+import com.tuotiansudai.dto.EditUserDto;
 
-public class UserModel {
+import java.util.Date;
+import java.util.List;
+
+public class UserModel{
 
     private long id;
 
@@ -21,7 +24,7 @@ public class UserModel {
 
     private Date lastModifiedTime;
 
-    private Long lastModifiedUser;
+    private String lastModifiedUser;
 
     private String avatar;
 
@@ -30,6 +33,8 @@ public class UserModel {
     private UserStatus status = UserStatus.ACTIVE;
 
     private String salt;
+
+    private AccountModel account;
 
     public String getSalt() {
         return salt;
@@ -103,11 +108,11 @@ public class UserModel {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Long getLastModifiedUser() {
+    public String getLastModifiedUser() {
         return lastModifiedUser;
     }
 
-    public void setLastModifiedUser(Long lastModifiedUser) {
+    public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
     }
 
@@ -154,4 +159,13 @@ public class UserModel {
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
     }
+
+    public AccountModel getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountModel account) {
+        this.account = account;
+    }
+
 }

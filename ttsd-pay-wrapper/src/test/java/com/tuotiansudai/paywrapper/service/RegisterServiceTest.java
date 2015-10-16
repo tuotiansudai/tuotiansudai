@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -11,8 +12,11 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.impl.RegisterServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +24,9 @@ import org.mockito.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -44,6 +51,9 @@ public class RegisterServiceTest {
 
     @Mock
     private AccountMapper accountMapper;
+
+    @Mock
+    private UserRoleMapper userRoleMapper;
 
     @Before
     public void init() {
@@ -78,5 +88,10 @@ public class RegisterServiceTest {
         assertThat(accountModel.getPayUserId(), is("payUserId"));
         assertThat(accountModel.getPayAccountId(), is("payAccountId"));
         assertTrue(baseDto.getData().getStatus());
+
+        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
+        verify(userRoleMapper, times(1)).createUserRoles(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole(), is(Role.INVESTOR));
+
     }
 }

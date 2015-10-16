@@ -1,13 +1,13 @@
-CREATE TABLE `aa`.`system_bill`(
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `created_time` datetime NOT NULL,
-  `type` varchar(8) ,
-  `amount` BIGINT UNSIGNED  NOT NULL,
-  `detail` varchar(200) ,
+CREATE TABLE `aa`.`system_bill` (
+  `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id`      VARCHAR(32),
+  `amount`        BIGINT UNSIGNED NOT NULL,
+  `type`          VARCHAR(8),
+  `detail`        VARCHAR(200),
   `business_type` VARCHAR(32)     NOT NULL,
-  `order_id`       VARCHAR(32),
+  `created_time`  DATETIME        NOT NULL,
   PRIMARY KEY (`id`)
 )
-ENGINE=InnoDB
-AUTO_INCREMENT = 100001
-DEFAULT CHARSET=utf8
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 100001
+  DEFAULT CHARSET = utf8

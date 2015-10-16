@@ -5,5 +5,8 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 
 public interface WithdrawService {
+
     BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto);
+
+    long findSumWithdrawByLoginName(String loginName);
 }

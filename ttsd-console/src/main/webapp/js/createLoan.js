@@ -1,6 +1,10 @@
-/**
- * Created by belen on 15/8/21.
- */
+window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
+require(['jquery', 'jquery-ui',
+    'bootstrap','bootstrapDatetimepicker','bootstrapSelect',
+    'moment','moment-with-locales', 'fileinput', 'fileinput_locale_zh',
+    'Validform_v5.3.2','Validform_Datatype',
+    'ueditor', 'ueditor-all','ueditor-lang', 'ueditor-config',
+    'csrf' ], function ($, ZeroClipboard) {
 $(function () {
     var _html = '';
     var data = '';
@@ -26,11 +30,15 @@ $(function () {
     };
     initSelect();
 
-    $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+    $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm', minDate: new Date(Date.parse('2015/1/1'))});
     $('#datetimepicker7').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
     $('.selectpicker').selectpicker({
         style: 'btn-default',
         size: 8
+    });
+    var dpicker7 = $('#datetimepicker7').data("DateTimePicker");
+    $('#datetimepicker6').on('dp.change',function(e){
+        dpicker7.minDate(e.date);
     });
     //添加申请材料
     $('.btn-upload').click(function () {
@@ -108,7 +116,7 @@ $(function () {
                 if (flag) {
                     var pix = _options.eq(i).attr('data-repaytimeunit');
                     var _pix = '';
-                    if (pix == 'month') {
+                    if (pix == 'MONTH') {
                         _pix = "月";
                     } else {
                         _pix = "天";
@@ -202,15 +210,59 @@ $(function () {
     var formFlag =false;
     $(".jq-form").Validform({
         btnSubmit:'.jq-btn-form',
-        tiptype: 0,
+        tipSweep: true,
+        focusOnError: false,
+        tiptype: function(msg, o, cssctl) {
+            if (o.type == 3) {
+                var msg = o.obj.attr('errormsg') || msg;
+                showErrorMessage(msg, o.obj);
+            }
+        },
+        //beforeSubmit
+        beforeCheck: function(curform){
+            var periods = parseInt($('.jq-timer',curform).val());
+            if(periods <= 0){
+                showErrorMessage('借款期限最小为1，最大为12',$('.jq-timer',curform));
+                return false;
+            }
+            var loanAmount = parseInt($('.jq-pay',curform).val());
+            if(loanAmount <= 0){
+                showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
+                return false;
+            }
+            var minPay = parseInt($('.jq-min-pay',curform).val());
+            if(minPay <= 0){
+                showErrorMessage('最小投资金额应大于0',$('.jq-min-pay',curform));
+                return false;
+            }
+            var maxPay = parseInt($('.jq-max-pay',curform).val());
+            if(minPay > maxPay){
+                showErrorMessage('最小投资金额不得大于最大投资金额',$('.jq-min-pay',curform));
+                return false;
+            }
+            if(loanAmount < maxPay){
+                showErrorMessage('最大投资金额不得大于预计出借金额',$('.jq-max-pay',curform));
+                return false;
+            }
+        },
         callback:function(form){
             formFlag = true;
             return false;
         }
     });
+
+    //显示警告提示
+    var currentErrorObj = null;
+    function showErrorMessage(msg, obj){
+        currentErrorObj = obj;
+        var htm = '<div class="alert alert-danger alert-dismissible" data-dismiss="alert" aria-label="Close" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">建标失败：'+msg+'</span></div>';
+        $('.form-error').append(htm);
+    }
+
     //关闭警告提示
-    $('body').on('click','[aria-hidden="true"]',function(){
+    $('body').on('click','.form-error',function(){
         $('.jq-btn-form').removeAttr('disabled');
+        if(!!currentErrorObj){currentErrorObj.focus();}
     });
     //提交表单
     $('.jq-btn-form').click(function () {
@@ -259,22 +311,21 @@ $(function () {
                 .done(function (res) {
                     if(res.data.status){
                         formFlag =true;
-                        var htm = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">亲，恭喜您建标成功！</span></div>';
-                        $('.form-error').append(htm);
+                        location.href='/loanList/console';
                     }else{
                         formFlag =false;
-                        var htm = '<div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> <span class="txt">亲，建标失败啦！</span></div>';
-                        $('.form-error .txt').text('亲，建标失败啦！')
-                        $('.form-error').append(htm);
-
+                        var msg = res.data.message || '服务端校验失败';
+                        showErrorMessage(msg);
                     }
                 })
                 .fail(function () {
                     console.log("error");
+                    $('.jq-btn-form').removeAttr('disabled');
                 })
                 .always(function () {
                     console.log("complete");
                 });
         }
     });
+});
 });

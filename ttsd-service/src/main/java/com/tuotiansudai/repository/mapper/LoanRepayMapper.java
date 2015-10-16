@@ -1,0 +1,48 @@
+package com.tuotiansudai.repository.mapper;
+
+import com.tuotiansudai.repository.model.LoanRepayModel;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.RepayStatus;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+
+@Repository
+public interface LoanRepayMapper {
+
+    void create(List<LoanRepayModel> loanRepayModels);
+
+    List<LoanRepayModel> findLoanRepayPagination(@Param(value = "index") int index,
+                                                 @Param(value = "pageSize") int pageSize,
+                                                 @Param(value = "loanId") Long loanId,
+                                                 @Param(value = "loginName") String loginName,
+                                                 @Param(value = "repayStatus") RepayStatus repayStatus,
+                                                 @Param(value = "repayStartDate") Date repayStartDate,
+                                                 @Param(value = "repayEndDate") Date repayEndDate);
+
+    int findLoanRepayCount(@Param(value = "loanId") long loanId,
+                           @Param(value = "loginName") String loginName,
+                           @Param(value = "repayStatus") RepayStatus repayStatus,
+                           @Param(value = "repayStartDate") Date repayStartDate,
+                           @Param(value = "repayEndDate") Date repayEndDate);
+
+    LoanRepayModel findById(long id);
+
+    List<LoanRepayModel> findByLoanIdOrderByPeriodAsc(long loanId);
+
+    List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String loanerLoginName,
+                                              @Param(value = "loanId") long loanId);
+
+    LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
+
+    LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
+                                         @Param(value = "period") int period);
+
+    void update(LoanRepayModel loanRepayModel);
+
+    LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
+
+    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+}

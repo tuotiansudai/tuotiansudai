@@ -52,6 +52,7 @@ public class SmsServiceTest {
     }
 
     @Test
+    @Transactional
     public void shouldSendRegisterCaptcha() throws Exception {
         MockResponse mockResponse = new MockResponse();
         String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
@@ -60,15 +61,14 @@ public class SmsServiceTest {
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
-
-        String mobile = "13900000000";
+        String mobile = "13900000700";
         String captcha = "9999";
 
-        this.smsService.sendRegisterCaptcha(mobile, captcha);
+        this.smsService.sendRegisterCaptcha(mobile, captcha, null);
 
         List<SmsModel> records = this.registerCaptchaMapper.findByMobile(mobile);
 
-        assertThat(records.size(), is(1));
+        assert records.size() == 1;
 
         SmsModel record = records.get(0);
 

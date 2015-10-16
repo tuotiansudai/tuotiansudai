@@ -15,22 +15,23 @@
     <context:annotation-config/>
 
 
-    <context:property-placeholder location="classpath*:jdbc.properties, classpath*:sms_wrapper_client.properties, classpath*:pay_wrapper_client.properties, classpath*:redis_wrapper_client.properties" />
+    <context:property-placeholder location="classpath:ttsd-service.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.utils"/>
+    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.utils"/>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-        <property name="driverClass" value="${jdbc.aa.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.aa.url}${jdbc.aa.schema}"/>
-        <property name="username" value="${jdbc.aa.username}"/>
-        <property name="password" value="${jdbc.aa.password}"/>
-        <property name="maxConnectionsPerPartition" value="30"/>
-        <property name="minConnectionsPerPartition" value="10"/>
-        <property name="partitionCount" value="3"/>
-        <property name="acquireIncrement" value="5"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -41,7 +42,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model, com.tuotiansudai.web.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -51,11 +52,26 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper, com.tuotiansudai.web.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
 
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
+
+    <!-- quartz持久化存储 -->
+    <bean id="scheduler"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="boneCPDataSource" />
+        </property>
+        <property name="jobFactory">
+            <bean class="com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory" />
+        </property>
+        <property name="schedulerName" value="Mscheduler" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="autoStartup" value="false" />
+    </bean>
 </beans>

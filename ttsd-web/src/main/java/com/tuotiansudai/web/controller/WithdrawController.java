@@ -3,7 +3,10 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.WithdrawService;
+import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,14 +23,18 @@ public class WithdrawController {
     @Autowired
     private WithdrawService withdrawService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        return new ModelAndView("/withdraw");
+        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
+        return new ModelAndView("/withdraw", "balance", AmountUtil.convertCentToString(balance));
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView recharge(@Valid @ModelAttribute WithdrawDto withdrawDto) {
+    public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
         BaseDto<PayFormDataDto> baseDto = withdrawService.withdraw(withdrawDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }

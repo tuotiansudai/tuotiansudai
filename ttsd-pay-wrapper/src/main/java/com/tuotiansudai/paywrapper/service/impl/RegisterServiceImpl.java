@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -11,14 +12,19 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.RegisterService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -30,6 +36,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -59,6 +68,12 @@ public class RegisterServiceImpl implements RegisterService {
                         responseModel.getAccountId(),
                         new Date());
                 accountMapper.create(accountModel);
+                UserRoleModel userRoleModel = new UserRoleModel();
+                userRoleModel.setLoginName(dto.getLoginName());
+                userRoleModel.setRole(Role.INVESTOR);
+                List<UserRoleModel> userRoleModels = Lists.newArrayList();
+                userRoleModels.add(userRoleModel);
+                userRoleMapper.createUserRoles(userRoleModels);
             }
 
             dataDto.setStatus(responseModel.isSuccess());
@@ -66,6 +81,31 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
+        }
+        baseDto.setData(dataDto);
+        return baseDto;
+    }
+
+    @Transactional
+    public BaseDto reRegister(RegisterAccountDto dto) {
+        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
+                dto.getUserName(),
+                dto.getIdentityNumber(),
+                dto.getMobile());
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto dataDto = new PayDataDto();
+
+        try {
+            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
+                    requestModel,
+                    MerRegisterPersonResponseModel.class);
+            dataDto.setStatus(responseModel.isSuccess());
+            dataDto.setCode(responseModel.getRetCode());
+            dataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            dataDto.setStatus(false);
+            dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);
         return baseDto;

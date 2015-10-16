@@ -1,6 +1,8 @@
 package com.tuotiansudai.dto;
 
-public class BaseDataDto {
+import java.io.Serializable;
+
+public class BaseDataDto implements Serializable {
 
     private boolean status;
 
@@ -11,4 +13,5 @@ public class BaseDataDto {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
 }

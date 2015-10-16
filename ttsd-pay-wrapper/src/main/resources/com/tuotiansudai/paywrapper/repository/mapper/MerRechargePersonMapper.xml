@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.MerRechargePersonMapper">
 
-    <resultMap id="requestMap" type="MerRechargePersonModel">
+    <resultMap id="requestMap" type="MerRechargePersonRequestModel">
         <id property="id" column="id" />
         <result property="service" column="service"/>
         <result property="signType" column="sign_type"/>
@@ -29,7 +29,7 @@
         select * from mer_recharge_person_request where id = #{id}
     </select>
 
-    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRechargePersonModel">
+    <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerRechargePersonRequestModel">
         insert into mer_recharge_person_request (service, sign_type, sign, charset, mer_Id, version, ret_url, notify_url, order_id, mer_date, pay_type, user_id, amount, gate_id, request_time, request_url, request_data)
         values (#{service}, #{signType}, #{sign}, #{charset}, #{merId}, #{version}, #{retUrl}, #{notifyUrl}, #{orderId}, #{merDate}, #{payType}, #{userId}, #{amount}, #{gateId}, #{requestTime}, #{requestUrl}, #{requestData})
     </insert>

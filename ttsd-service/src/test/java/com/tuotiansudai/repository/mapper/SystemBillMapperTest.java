@@ -29,9 +29,9 @@ public class SystemBillMapperTest {
         systemBillModel.setCreatedTime(new Date());
         systemBillModel.setDetail("detail");
         systemBillModel.setAmount(1);
-        systemBillModel.setBusinessType(SystemBillBusinessType.BINDING_CARD);
+        systemBillModel.setBusinessType(SystemBillBusinessType.BIND_CARD);
         systemBillModel.setOrderId("11111111111111");
-        systemBillModel.setType(SystemBillType.OUT);
+        systemBillModel.setType(SystemBillOperationType.OUT);
         systemBillMapper.create(systemBillModel);
         assertTrue(systemBillModel.getId() > 0);
 
