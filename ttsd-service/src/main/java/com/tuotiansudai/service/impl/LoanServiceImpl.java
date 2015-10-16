@@ -8,7 +8,6 @@ import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
@@ -23,7 +22,6 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -232,7 +230,7 @@ public class LoanServiceImpl implements LoanService {
         List<InvestPaginationItemDto> investRecordDtos = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        InvestPaginationItemDto investRecordDto = null;
+        InvestPaginationItemDto investRecordDto;
         for (int i = 0;investModels!=null&&i < investModels.size();i++){
             InvestModel investModel = investModels.get(i);
             investRecordDto = new InvestPaginationItemDto();
@@ -276,9 +274,7 @@ public class LoanServiceImpl implements LoanService {
     private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return investedAmountBig.multiply(new BigDecimal(100))
-                .divide(loanAmountBig, 2, BigDecimal.ROUND_DOWN)
-                .doubleValue();
+        return investedAmountBig.divide(loanAmountBig, 2, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     @Transactional(rollbackFor = Exception.class)
