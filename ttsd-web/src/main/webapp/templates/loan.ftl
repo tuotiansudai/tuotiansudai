@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<#assign loan = baseDto.data>
+<#assign loan = (baseDto.data)>
 <#import "macro/global.ftl" as global>
 <@global.head title="标的详情" pageCss="${css.loan_detail}">
 </@global.head>
@@ -33,6 +33,7 @@
             </div>
             <div class="chart-info">
                 <p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>
+                <p>项目金额： ${loan.loanAmount}元</p>
 
                 <p>代理人： ${loan.agentLoginName}</p>
 
@@ -44,6 +45,7 @@
                 <p>项目期限：${loan.periods}天 </p>
             </#if>
                 <p>还款方式：${loan.type.getName()}</p>
+                <p>投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍</p>
                 <a href="/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
@@ -52,38 +54,42 @@
             <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
-            </div>
-            <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
+                <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
+                <span class="num balance"><i class="account-amount">${loan.balance?string("0.00")}</i>元</span>
+            </div>
+            <div class="item-block">
+                <span class="sub-hd">每人限投：</span>
+                <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input type="text" name="amount" value="" class="text-input"/>
-                <span class="bg-yellow">最大可投金额</span>
+                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
+                <#if investAmount?has_content>
+                    <#assign defaultInvestAmount = investAmount>
+                </#if>
+                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/><br/>
+                <#if errorMessage?has_content>
+
+                    <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
+                </#if>
             </div>
             <div class="item-block">
                 <span class="sub-hd">预计总收益：</span>
-                <span class="num">600000元</span>
+                <span class="num expected-interest"></span>
             </div>
             <div class="item-block">
-                <input type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
                 <button class="btn-pay" type="submit">马上投资</button>
             </div>
             </form>
         </#if>
         <#if loan.loanStatus == "PREHEAT">
+            <form action="/invest" method="post">
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
-            <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
-            </div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
                 <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
@@ -91,11 +97,14 @@
 
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
-                <span class="num"><i class="red">${loan.balance?string("0.00")}</i>元</span>
+                <span class="num"><i class="red account-amount">${loan.balance?string("0.00")}</i>元</span>
+            </div>
+            <div class="item-block">
+                <span class="sub-hd">每人限投：</span>
+                <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" value="" class="text-input"/>
-                <span class="bg-yellow">最大可投金额</span>
+                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/>
             </div>
             <div class="item-block">
                 <div class="time-item">
@@ -104,18 +113,21 @@
                     <strong id="second_show">0秒</strong>
                     以后可投资
                 </div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
             </div>
             <div class="item-block">
-                <button class="btn-pay grey" type="button" disabled="disabled">预热中</button>
+                <button class="btn-pay grey" type="submit" disabled="disabled">预热中</button>
             </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "REPAYING">
             <div class="item-block" style="text-align: center">
                 <img src="/images/loan/repaying.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -127,8 +139,8 @@
                 <img src="/images/loan/recheck.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -139,8 +151,8 @@
                 <img src="/images/loan/cancel.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -151,8 +163,8 @@
                 <img src="/images/loan/overdue.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>
@@ -163,8 +175,8 @@
                 <img src="/images/loan/complete.png" width="200" height="200" alt=""/>
             </div>
             <div class="item-block">
-                <span class="sub-hd">项目金额：</span>
-                <span class="num"><i>${loan.loanAmount}</i>元</span>
+                <span class="sub-hd"></span>
+                <span class="num"></span>
             </div>
             <div class="item-block">
                 <button class="btn-pay" type="button">查看其他项目</button>

@@ -21,6 +21,25 @@
         opacity: .6;
       }
     }
+    & .loan-detail-error-msg{
+      color: #ee0505;font-size: 6px;
+      font-weight: normal;
+      display: block;
+      clear: both;
+      margin-left: 20px;
+      padding-top: 5px;
+    }
+    & .loan-detail-error-msg-li{
+     width: 14px;height: 14px;
+     border-radius: 7px;
+     background: red;
+     color:#fff;
+     font-size: 0.5em;
+     display: inline-block;
+     text-align: center;
+     margin-right: 6px;
+     line-height: 12px;
+     }
     & .text-input {
       float: left;
       width: 225px;
@@ -29,6 +48,16 @@
       color: #ccc;
       display: inline-block;
       margin-left: 20px;
+    }
+    & .text-input-amount {
+      float: left;
+      width: 330px;
+      border: 1px solid #f24712;
+      height: 32px;
+      color: #ccc;
+      display: inline-block;
+      margin-left: 20px;
+      padding-left:5px;
     }
     & .bg-yellow {
       width: 110px;
