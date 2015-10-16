@@ -60,6 +60,11 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/user/name-like-query/{loginName}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findLoginNames(@PathVariable String loginName) {
+        return userService.findLoginNameLike(loginName);
+    }
 
 
 }

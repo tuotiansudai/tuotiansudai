@@ -45,5 +45,5 @@ public interface UserService {
                 Role role, String referrer, Integer pageIndex, Integer pageSize);
 
 
-
+    List<String> findLoginNameLike(String loginName);
 }

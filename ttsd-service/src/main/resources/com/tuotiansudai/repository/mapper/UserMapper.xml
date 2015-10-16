@@ -120,4 +120,8 @@
 
         </where>
     </select>
+
+    <select id="findLoginNameLike" parameterType="java.lang.String" resultType="java.lang.String">
+        select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
 </mapper>

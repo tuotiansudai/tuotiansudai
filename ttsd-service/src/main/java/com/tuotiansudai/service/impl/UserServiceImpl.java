@@ -341,4 +341,9 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<String> findLoginNameLike(String loginName) {
+        return userMapper.findLoginNameLike(loginName);
+    }
+
 }
