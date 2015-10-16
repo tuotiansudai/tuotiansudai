@@ -10,27 +10,34 @@
         </tr>
     </thead>
     <tbody>
-       {{#recordDtoList}}
+       {{#data.records}}
         <tr>
             <td>{{createdTime}}</td>
             <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
             <td>{{investStatus}}</td>
-            <td>{{nextRepayDay}}/{{nextRepayAmount}}元</td>
+            <td>
+            {{#nextRepayDay}}{{nextRepayDay}} / {{nextRepayAmount}}元{{/nextRepayDay}}
+            {{^nextRepayDay}}/{{/nextRepayDay}}
+            </td>
             <td>{{amount}}元</td>
-            <td><a class="red" href="">合同</a></td>
+            <td>
+            {{#hasContract}}
+            <span class="plan" data-repay="/investor/query-invest-repay?investId={{id}}">回款记录</span> |
+            <a class="red" href="/contract/investor/{{loanId}}" target="_blank">合同</a>
+            {{/hasContract}}
+            {{^hasContract}} - / - {{/hasContract}}
+            </td>
         </tr>
-        {{/recordDtoList}}
-        {{^recordDtoList}}
+        {{/data.records}}
+        {{^data.records}}
          <td colspan="6" class="txtc">暂时没有投资纪录</td>
-        {{/recordDtoList}}
+        {{/data.records}}
     </tbody>
 </table>
-{{#totalPages}}
 
-<div class="pagination" data-currentpage="{{index}}">
-            <span class="total">共{{totalCount}}条,当前第{{index}}页</span>
-            {{#hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/hasPreviousPage}}
-            {{#hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/hasNextPage}}
-        </div>
-{{/totalPages}}
+<div class="pagination" data-currentpage="{{data.index}}">
+    <span class="total">共 {{data.count}} 条记录，当前第 {{data.index}} 页</span>
+    {{#data.hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/data.hasPreviousPage}}
+    {{#data.hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/data.hasNextPage}}
+</div>
 

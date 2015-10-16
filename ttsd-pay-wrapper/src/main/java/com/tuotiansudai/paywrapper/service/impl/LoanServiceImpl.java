@@ -402,7 +402,6 @@ public class LoanServiceImpl implements LoanService {
                     .put("money", AmountUtil.convertCentToString(notifyInfo.getAmount()))
                     .build());
             String userEmail = notifyInfo.getEmail();
-            System.out.println(userEmail);
             if (StringUtils.isNotEmpty(userEmail)) {
                 sendCloudMailService.sendMailByLoanOut(userEmail, emailParameters);
             }

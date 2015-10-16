@@ -1,10 +1,11 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-public class CustWithdrawalsRequestModel extends BaseAsyncModel {
+public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
 
     private String applyNotifyFlag;
 
@@ -27,6 +28,9 @@ public class CustWithdrawalsRequestModel extends BaseAsyncModel {
         this.userId = userId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), this.service);
+        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), this.service);
+
     }
 
     @Override

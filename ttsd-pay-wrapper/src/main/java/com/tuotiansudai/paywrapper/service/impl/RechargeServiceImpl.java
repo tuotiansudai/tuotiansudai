@@ -65,6 +65,7 @@ public class RechargeServiceImpl implements RechargeService {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
         }
@@ -92,18 +93,23 @@ public class RechargeServiceImpl implements RechargeService {
                 logger.error(MessageFormat.format("Recharge callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
+
+            if (rechargeModel.getStatus() != RechargeStatus.WAIT_PAY) {
+                logger.error(MessageFormat.format("System has dealt with the recharge (orderId = {0})", callbackRequestModel.getOrderId()));
+                return;
+            }
             String loginName = rechargeModel.getLoginName();
             long amount = rechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                rechargeMapper.update(orderId, RechargeStatus.SUCCESS);
+                rechargeMapper.updateStatus(orderId, RechargeStatus.SUCCESS);
                 userBillService.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS);
                 //TODO update system bill
             } else {
-                rechargeMapper.update(orderId, RechargeStatus.FAIL);
+                rechargeMapper.updateStatus(orderId, RechargeStatus.FAIL);
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Recharge callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
-            logger.error(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage(), e);
         }
 
     }

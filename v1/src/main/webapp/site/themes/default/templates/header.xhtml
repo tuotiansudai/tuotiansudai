@@ -12,9 +12,12 @@
 
 	<div class="top">
 		<div class="top-con clearfix">
-			<div class="fl top-con-left">
-				<span>热线电话：#{configHome.getConfigValue("site_phone")}</span>
-				<i>#{configHome.getConfigValue("service_time")}</i>
+			<div class="fl">
+				<!--<span>热线电话：#{configHome.getConfigValue("site_phone")}</span>-->
+				<a class="home" href="#{path}/"><img src="#{tplVars.themeImagePath}/appDownload/home.png"/></a>
+				<a class="app" href="#{path}/app/release"><img src="#{tplVars.themeImagePath}/appDownload/phone.png"/></a>
+				<a class="haoma" href=""><img src="#{tplVars.themeImagePath}/appDownload/haoma.png"/></a>
+				<i class="serviceTime">#{configHome.getConfigValue("service_time")}</i>
 			</div>
 			<div class="fr top-con-right">
 				<ui:fragment rendered="#{empty loginUserInfo.loginUserId}">

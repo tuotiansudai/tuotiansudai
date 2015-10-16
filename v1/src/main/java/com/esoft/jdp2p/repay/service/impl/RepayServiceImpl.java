@@ -154,11 +154,11 @@ public class RepayServiceImpl implements RepayService {
 							+ ir.getCorpus() + "  利息：" + ir.getInterest());
 			// 投资者手续费
 			userBillBO.transferOutFromBalance(ir.getInvest().getUser().getId(),
-					ir.getFee(), OperatorInfo.NORMAL_REPAY, "投资："
+					ir.getFee(), OperatorInfo.INVEST_FEE, "投资："
 							+ ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 							+ repay.getId());
 			systemBillService.transferInto(ir.getFee(),
-					OperatorInfo.NORMAL_REPAY, "投资：" + ir.getInvest().getId()
+					OperatorInfo.INVEST_FEE, "投资：" + ir.getInvest().getId()
 							+ "收到还款，扣除手续费, 还款ID:" + repay.getId());
 
 		}
@@ -490,11 +490,11 @@ public class RepayServiceImpl implements RepayService {
 						ir.getDefaultInterest());
 				// 投资者手续费
 				userBillBO.transferOutFromBalance(ir.getInvest().getUser()
-						.getId(), ir.getFee(), OperatorInfo.OVERDUE_REPAY,
+						.getId(), ir.getFee(), OperatorInfo.INVEST_FEE,
 						"投资：" + ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 								+ lr.getId());
 				systemBillService.transferInto(ir.getFee(),
-						OperatorInfo.OVERDUE_REPAY, "投资："
+						OperatorInfo.INVEST_FEE, "投资："
 								+ ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 								+ lr.getId());
 			}

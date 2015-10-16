@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.InvestService;
@@ -61,10 +62,21 @@ public class PayCallbackController {
     @RequestMapping(value = "/mer_bind_card_notify", method = RequestMethod.GET)
     public ModelAndView bindBankCard(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = null;
+        String service = paramsMap.get("service");
+        if(UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)){
+            responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
+        }else{
+            responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
+        }
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+    @RequestMapping(value = "/mer_bind_card_apply_notify", method = RequestMethod.GET)
+    public ModelAndView bindBankCardNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
-
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
     public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

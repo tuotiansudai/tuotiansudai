@@ -11,4 +11,6 @@ public interface BindBankCardService {
 
     String bindBankCardCallback(Map<String, String> paramsMap, String queryString);
 
+    String bindBankCardApplyCallback(Map<String, String> paramsMap, String queryString);
+
 }

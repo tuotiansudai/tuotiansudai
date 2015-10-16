@@ -28,4 +28,10 @@ public class AccountServiceImpl implements AccountService {
         return accountModel != null ? accountModel.getBalance() : 0;
     }
 
+    @Override
+    public boolean isIdentityNumberExist(String identityNumber) {
+        AccountModel accountModel = accountMapper.findByIdentityNumber(identityNumber);
+        return accountModel != null;
+    }
+
 }

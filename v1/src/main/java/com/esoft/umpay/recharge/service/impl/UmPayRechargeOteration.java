@@ -19,6 +19,11 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.AccessSource;
+import com.ttsd.api.dto.BankCardResponseDto;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -34,6 +39,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 
@@ -68,15 +74,48 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(Recharge recharge,
 			FacesContext facesContext,boolean isOpenFastPayment) throws IOException {
+		recharge.setSource(AccessSource.WEB.name());
+		Map<String,String> sendMap = assembleSendMap(recharge, isOpenFastPayment, null, false);
+		// 保存操作记录
+		TrusteeshipOperation trusteeshipOperation = null;
+		try {
+			// 加密参数
+			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+			// 保存操作记录
+			trusteeshipOperation = createTrusteeshipOperation(recharge.getId(), reqData.getUrl(),
+					recharge.getId(),
+					UmPayConstants.OperationType.MER_RECHARGE_PERSON,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			// 发送请求
+			sendOperation(trusteeshipOperation, facesContext);
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(),e);
+		}
+		return trusteeshipOperation;
+	}
 
+	/**
+	 * @function 组装请求联动优势接口的报文
+	 * @param recharge
+	 * @param isOpenFastPayment
+	 * @param request
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public Map<String,String> assembleSendMap(Recharge recharge, boolean isOpenFastPayment, HttpServletRequest request, boolean isMobileRequest){
 		TrusteeshipAccount ta = getTrusteeshipAccount(recharge.getUser()
 				.getId());
 		if(isOpenFastPayment){
+			String bankCardNo = rechargeService.getRechangeWay(recharge.getUser().getId());
+			if (bankCardNo == null){
+				return null;
+			}
 			recharge.setRechargeWay(rechargeService.getRechangeWay(recharge.getUser()
 					.getId()));
+
 		}
 		// 保存一个充值订单
-		String id = rechargeService.createRechargeOrder(recharge);
+		String id = rechargeService.createRechargeOrder(recharge,request);
 		log.debug(id);
 		recharge = ht.get(Recharge.class, recharge.getId());
 		User user = ht.get(User.class, recharge.getUser().getId());
@@ -87,9 +126,15 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 获取拼装map
 		Map<String, String> sendMap = UmPaySignUtil
 				.getSendMapDate(UmPayConstants.OperationType.MER_RECHARGE_PERSON);
-		// 同步地址
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		if(isMobileRequest) {
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		}else{
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.MER_RECHARGE_PERSON);
+		}
 		// 异步地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
@@ -116,33 +161,74 @@ public class UmPayRechargeOteration extends UmPayOperationServiceAbs<Recharge> {
 		// 资金账户托管平台的用户号
 		sendMap.put("user_id", ta.getId());
 		// 资金账户托管平台的账户号
-		// map.put("account_id",account_id);
 		double actualMoney = (double) recharge.getActualMoney();
 		// 充值的时候必须发送的请求是整数倍 而且单位是分
 		int monery = (int) actualMoney * 100;
 		// 充值金额
 		sendMap.put("amount", String.valueOf(monery));
 		// 用户IP地址
-		HttpServletRequest request = (HttpServletRequest) FacesContext
-				.getCurrentInstance().getExternalContext().getRequest();
-		sendMap.put("user_ip", FacesUtil.getRequestIp(request));
+		if (request == null){
+			request = (HttpServletRequest) FacesContext
+					.getCurrentInstance().getExternalContext().getRequest();
+			sendMap.put("user_ip", FacesUtil.getRequestIp(request));
+		}else {
+			sendMap.put("user_ip", FacesUtil.getRequestIp(request));
+		}
+
+		return sendMap;
+	}
+
+	/**
+	 * @function 用户通过app端快捷充值
+	 * @param recharge 充值所需参数包装类
+	 * @return
+	 * @throws IOException
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResponseDto createOperation(Recharge recharge,HttpServletRequest request) throws IOException {
+		BaseResponseDto baseResponseDto = new BaseResponseDto();
+		Map<String,String> sendMap = assembleSendMap(recharge, true, request, true);
+
+		if (sendMap == null){
+			baseResponseDto.setCode(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode());
+			baseResponseDto.setMessage(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getMsg());
+			return baseResponseDto;
+		}
+		//配置此项，表示使用H5页面
+		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		// 同步地址
+//		sendMap.put("ret_url", "");
 		// 保存操作记录
-		TrusteeshipOperation to = null;
+
 		try {
 			// 加密参数
 			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+			String requestData = GsonUtil.fromMap2Json(reqData.getField());//请求数据
 			// 保存操作记录
-			to = createTrusteeshipOperation(recharge.getId(), reqData.getUrl(),
+			createTrusteeshipOperation(recharge.getId(), reqData.getUrl(),
 					recharge.getId(),
 					UmPayConstants.OperationType.MER_RECHARGE_PERSON,
-					GsonUtil.fromMap2Json(reqData.getField()));
-			// 发送请求
-			sendOperation(to, facesContext);
+					requestData);
+			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+			bankCardResponseDto.setUrl(reqData.getUrl());
+			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),true));
+			baseResponseDto.setData(bankCardResponseDto);
+			return baseResponseDto;
+		} catch (UnsupportedEncodingException e){
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+			return baseResponseDto;
 		} catch (ReqDataException e) {
-			e.printStackTrace();
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
+			log.error(e.getLocalizedMessage(),e);
+			return baseResponseDto;
 		}
-		return to;
 	}
+
 
 	@Override
 	public TrusteeshipOperation createOperation(Recharge recharge, FacesContext facesContext) throws Exception {

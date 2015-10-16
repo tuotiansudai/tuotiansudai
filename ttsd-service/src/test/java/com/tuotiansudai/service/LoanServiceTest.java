@@ -39,6 +39,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
@@ -66,6 +67,7 @@ public class LoanServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
 
     @Before
     public void createLoanTitle(){
@@ -209,7 +211,7 @@ public class LoanServiceTest {
         loanDto.setActivityRate("12");
         loanDto.setBasicRate("16.00");
         loanDto.setShowOnHome(true);
-        loanDto.setPeriods(30);
+        loanDto.setPeriods(10);
         loanDto.setActivityType(ActivityType.NORMAL);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
@@ -287,15 +289,14 @@ public class LoanServiceTest {
 
     @Test
     public void shouldGetLoanDetailTest(){
-        mockLoginUser("loginName", "1390000000");
+        mockLoginUser("loginName", "13900000000");
 
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
         Assert.assertNotNull(baseDto.getData().getId());
-        System.out.println(baseDto.getData().getLoanTitles());
         Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.01, baseDto.getData().getRaiseCompletedRate());
+        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate());
     }
     @Test
     public void shouldGetTheInvests(){
@@ -418,6 +419,7 @@ public class LoanServiceTest {
         model.setCreatedTime(new Date());
         return model;
     }
+
 
     public UserModel getFakeUser(String loginName) {
         UserModel userModelTest = new UserModel();

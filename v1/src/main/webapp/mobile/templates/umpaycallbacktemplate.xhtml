@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:param name="servletPath"
+	value="#{requestScope['javax.servlet.forward.servlet_path']}"></ui:param>
+<ui:param name="path" value="#{request.contextPath}"></ui:param>
+<ui:param name="menuParentId"
+	value="#{menuList.getParentIdByChildUrl(servletPath)}"></ui:param>
+
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta charset="utf-8" />
+			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=yes,target-densitydpi=device-dpi" />
+			<title>#{empty title?siteVars.siteName:title}</title>
+			<link href="#{request.contextPath}/mobile/style/base.css" rel="stylesheet" />
+			<link href="#{request.contextPath}/mobile/style/ttsd-mobile.css" rel="stylesheet" />
+			<link rel="shortcut icon" type="image/ico" href="#{request.contextPath}/favicon.ico" />
+		</f:facet>
+	</h:head>
+
+	<h:body>
+		<ui:insert name="content">
+			<div class="main">www.tuotiansudai.com</div>
+		</ui:insert>
+	</h:body>
+</f:view>
+</html>

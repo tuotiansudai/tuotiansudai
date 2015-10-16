@@ -8,7 +8,6 @@ require(['jquery', 'csrf'], function ($) {
             if ($(this).val().length == 11 && m.test($(this).val())) {
                 var _phone = $(this).val();
                 $.get('/mobile-retrieve-password/mobile/' + _phone + '/is-exist?random=' + new Date().getTime(), function (data) {
-                    console.log(data.data.status);
                     if (data.data.status) {
                         _this.addClass('valid-ok');
                         $('.send-yzm').removeAttr('disabled').removeClass('grey');
@@ -81,22 +80,41 @@ require(['jquery', 'csrf'], function ($) {
         $('.complete').click(function () {
             var phone = $('.phone-txt').val();
             var captcha = $('.verification-code-text').val();
-            var num = 30;
-            // 倒计时
-            function countdown() {
-                $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
-                if (num == 0) {
-                    clearInterval(count);
-                    $('.fetch-captcha').html('重新发送').removeClass('grey');
-                    $('.complete').addClass('grey').attr('disabled','disabled');
-                    $('.verification-code-text').val('');
+            $.ajax({
+                url: '/mobile-retrieve-password/mobile/' + phone + '/captcha/' + captcha + '/send-mobile-captcha',
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function (response) {
+                if (response.data.status) {
+                    var num = 30;
+                    // 倒计时
+                    function countdown() {
+                        $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
+                        if (num == 0) {
+                            clearInterval(count);
+                            $('.fetch-captcha').html('重新发送').removeClass('grey');
+                            $('.complete').addClass('grey').attr('disabled','disabled');
+                            $('.verification-code-text').val('');
+                        }
+                        num--;
+                    }
+                    var count = setInterval(countdown, 1000);
+                    $('.layer-box').hide();
+                    $('.verification-code-main b').hide();
+                    $('.verification-code-main b').html("验证码输入错误");
+                }else{
+                    if (response.data.isRestricted) {
+                        $('.verification-code-main b').html('短信发送频繁，请稍后再试');
+                        $('.verification-code-main b').css('display', 'inline-block');
+                        refreshCaptcha();
+                    }
                 }
-                num--;
-            }
 
-            var count = setInterval(countdown, 1000);
-            $('.layer-box').hide();
-            $.get('/mobile-retrieve-password/mobile/' + phone + '/captcha/' + captcha + '/send-mobile-captcha');
+            });
+
+
+
         });
 
         // 刷新验证码
@@ -115,10 +133,11 @@ require(['jquery', 'csrf'], function ($) {
             var _value = _this.val();
             if (_value.length < 5) {
                 $('.verification-code-main b').css('display', 'inline-block');
+                $('.verification-code-main b').html("验证码输入错误");
                 $('.complete').addClass('grey').attr('disabled','disabled');
             } else {
                 $.ajax({
-                    url: '/register/image-captcha/' + _value + '/verify',
+                    url: '/mobile-retrieve-password/image-captcha/' + _value + '/verify',
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
@@ -128,6 +147,7 @@ require(['jquery', 'csrf'], function ($) {
                         $('.complete').removeClass('grey').removeAttr('disabled');
                     } else {
                         $('.verification-code-main b').css('display', 'inline-block');
+                        $('.verification-code-main b').html("验证码输入错误");
                         $('.complete').addClass('grey').attr('disabled','disabled');
                         refreshCaptcha();
                     }

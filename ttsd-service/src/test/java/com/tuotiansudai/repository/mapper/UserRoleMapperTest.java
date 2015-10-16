@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
@@ -36,12 +37,16 @@ public class UserRoleMapperTest {
         UserRoleModel userRoleModel1 = new UserRoleModel();
         userRoleModel1.setLoginName(fakeUserModel.getLoginName());
         userRoleModel1.setRole(Role.USER);
-        userRoleMapper.create(userRoleModel1);
+        List<UserRoleModel> userRoleModels1 = Lists.newArrayList();
+        userRoleModels1.add(userRoleModel1);
+        userRoleMapper.createUserRoles(userRoleModels1);
 
         UserRoleModel userRoleModel2 = new UserRoleModel();
         userRoleModel2.setLoginName(fakeUserModel.getLoginName());
         userRoleModel2.setRole(Role.INVESTOR);
-        userRoleMapper.create(userRoleModel2);
+        List<UserRoleModel> userRoleModels2 = Lists.newArrayList();
+        userRoleModels2.add(userRoleModel2);
+        userRoleMapper.createUserRoles(userRoleModels2);
 
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(fakeUserModel.getLoginName());
 

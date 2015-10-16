@@ -39,6 +39,7 @@ public class WithdrawList extends EntityQuery<WithdrawCash> implements java.io.S
 				"user.username like #{withdrawList.example.user.username}",
 				"time >= #{withdrawList.startTime}",
 				"time <= #{withdrawList.endTime}",
+				"source = #{withdrawList.example.source}",
 				"status like #{withdrawList.example.status}"};
 				
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));

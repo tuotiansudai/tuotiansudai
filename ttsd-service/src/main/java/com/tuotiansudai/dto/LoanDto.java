@@ -1,9 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.ActivityType;
-import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.repository.model.LoanTitleRelationModel;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -11,119 +8,181 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
-public class LoanDto extends BaseDataDto{
+public class LoanDto extends BaseDataDto {
 
     private long id;
 
-    /***标的名称***/
+    /***
+     * 标的名称
+     ***/
     @NotEmpty
     private String projectName;
 
-    /***代理人***/
+    /***
+     * 代理人
+     ***/
     @NotEmpty
     private String agentLoginName;
 
-    /***借款用户***/
+    /***
+     * 借款用户
+     ***/
     @NotEmpty
     @NotNull
     private String loanerLoginName;
 
-    /***标的类型***/
+    /***
+     * 标的类型
+     ***/
     @NotEmpty
     private LoanType type;
 
-    /***借款期限***/
+    /***
+     * 借款期限
+     ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+$")
     private int periods;
 
-    /***项目描述（纯文本）***/
+    /***
+     * 项目描述（纯文本）
+     ***/
     @NotEmpty
     private String descriptionText;
 
-    /***项目描述（带html标签）***/
+    /***
+     * 项目描述（带html标签）
+     ***/
     @NotEmpty
     private String descriptionHtml;
 
-    /***投资手续费比例***/
+    /***
+     * 投资手续费比例
+     ***/
     @NotEmpty
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String investFeeRate;
 
-    /***最小投资金额***/
+    /***
+     * 最小投资金额
+     ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String minInvestAmount;
 
-    /***投资递增金额***/
+    /***
+     * 投资递增金额
+     ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String investIncreasingAmount;
 
-    /***单笔最大投资金额***/
+    /***
+     * 单笔最大投资金额
+     ***/
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String maxInvestAmount;
 
-    /***活动类型***/
+    /***
+     * 活动类型
+     ***/
     @NotEmpty
     private ActivityType activityType;
 
-    /***活动利率***/
+    /***
+     * 活动利率
+     ***/
     @NotEmpty
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String activityRate;
 
-    /***基本利率***/
+    /***
+     * 基本利率
+     ***/
     @NotEmpty
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String basicRate;
 
-    /***合同***/
+    /***
+     * 合同
+     ***/
     @NotEmpty
     private long contractId;
 
-    /***筹款开始时间***/
+    /***
+     * 筹款开始时间
+     ***/
     @NotEmpty
     private Date fundraisingStartTime;
 
-    /***筹款截止时间***/
+    /***
+     * 筹款截止时间
+     ***/
     @NotEmpty
     private Date fundraisingEndTime;
 
-    /***是否显示在首页 true:显示在首页，false:不显示在首页***/
+    /***
+     * 是否显示在首页 true:显示在首页，false:不显示在首页
+     ***/
     private boolean showOnHome;
 
-    /***借款金额***/
+    /***
+     * 借款金额
+     ***/
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String loanAmount;
 
-    /***建标时间***/
+    /***
+     * 建标时间
+     ***/
     private Date createdTime;
 
-    /***初审时间***/
+    /***
+     * 初审时间
+     ***/
     private Date verifyTime;
 
-    /***复审时间***/
+    /***
+     * 复审时间
+     ***/
     private Date recheckTime;
 
-    /***标的状态***/
+    /***
+     * 标的状态
+     ***/
     private LoanStatus loanStatus;
 
-    /***申请材料***/
+    /***
+     * 申请材料
+     ***/
     private List<LoanTitleRelationModel> loanTitles;
 
-    /**可投金额**/
+    private List<LoanTitleModel> loanTitleDto;
+
+    /**
+     * 可投金额
+     **/
     private double amountNeedRaised;
 
-    /**当前登录用户的个人账户余额**/
+    /**
+     * 当前登录用户的个人账户余额
+     **/
     private double balance;
 
-    /**完成比例**/
+    /**
+     * 完成比例
+     **/
     private double raiseCompletedRate;
 
-    /**预计总收益**/
+    /**
+     * 预计总收益
+     **/
     private long expectedTotalIncome;
+
+    private BaseDto<BasePaginationDataDto> baseDto;
+
+    private long preheatSeconds;
 
     public long getId() {
         return id;
@@ -356,4 +415,29 @@ public class LoanDto extends BaseDataDto{
     public void setExpectedTotalIncome(long expectedTotalIncome) {
         this.expectedTotalIncome = expectedTotalIncome;
     }
+
+    public List<LoanTitleModel> getLoanTitleDto() {
+        return loanTitleDto;
+    }
+
+    public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
+        this.loanTitleDto = loanTitleDto;
+    }
+
+    public BaseDto<BasePaginationDataDto> getBaseDto() {
+        return baseDto;
+    }
+
+    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
+        this.baseDto = baseDto;
+    }
+
+    public long getPreheatSeconds() {
+        return preheatSeconds;
+    }
+
+    public void setPreheatSeconds(long preheatSeconds) {
+        this.preheatSeconds = preheatSeconds;
+    }
+
 }
