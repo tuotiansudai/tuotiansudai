@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!../../tpl/investrecordtable.tpl', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
+require(['jquery', 'mustache', 'text!../../tpl/invest-record-table.mustache', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
     //初始化页面
     var _now_day =  moment().format('YYYY-MM-DD'); // 今天
     var _week =  moment().subtract(1, 'week').format('YYYY-MM-DD');

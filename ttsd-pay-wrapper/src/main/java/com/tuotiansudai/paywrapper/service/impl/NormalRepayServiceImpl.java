@@ -86,7 +86,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         }
 
         DateTime actualRepayDate = new DateTime();
-        DateTime lastRepayDate = this.getLastRepayDate(loanModel, actualRepayDate);
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId), actualRepayDate);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
 
         enabledLoanRepay.setStatus(RepayStatus.CONFIRMING);
@@ -179,7 +179,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
         DateTime currentRepayDate = new DateTime(enabledLoanRepay.getActualRepayDate());
-        DateTime lastRepayDate = this.getLastRepayDate(loanModel, currentRepayDate);
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()), currentRepayDate);
 
         for (InvestModel successInvest : successInvests) {
             InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(successInvest.getId(), enabledLoanRepay.getPeriod());
@@ -252,24 +252,5 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             }
             systemBillService.transferIn(actualInvestFee, String.valueOf(investRepayId), SystemBillBusinessType.INVEST_FEE, "");
         }
-    }
-
-    private DateTime getLastRepayDate(LoanModel loanModel, final DateTime currentRepayDate) {
-        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1).withTimeAtStartOfDay();
-
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
-
-        Optional<LoanRepayModel> optional = Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-            @Override
-            public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.COMPLETE && new DateTime(input.getActualRepayDate()).withTimeAtStartOfDay().getMillis() <= currentRepayDate.withTimeAtStartOfDay().getMillis();
-            }
-        });
-
-        if (optional.isPresent()) {
-            lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
-        }
-
-        return lastRepayDate;
     }
 }

@@ -27,11 +27,7 @@ public class LoanerController {
     private RepayService repayService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView loanList(@RequestParam(name = "index", defaultValue = "1", required = false) int index,
-                                 @RequestParam(name = "pageSize", defaultValue = "10",required = false) int pageSize,
-                                 @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                 @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                 @RequestParam(name = "status", required = false) LoanStatus status) {
+    public ModelAndView loanList() {
         return new ModelAndView("/loaner-loan-list");
     }
 

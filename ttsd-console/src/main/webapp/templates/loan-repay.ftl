@@ -245,8 +245,8 @@
                         <#list loanRepays.records as loanRepay>
                             <tr>
                                 <td>${loanRepay.loanId}</td>
-                                <td>${loanRepay.projectName}</td>
-                                <td>${loanRepay.loginName}</td>
+                                <td>${loanRepay.loanName}</td>
+                                <td>${loanRepay.agentLoginName}</td>
                                 <td>${loanRepay.repayDate?string("yyyy-MM-dd HH:mm:ss")}</td>
                                 <td>第${loanRepay.period}期</td>
                                 <td>${loanRepay.corpus}</td>

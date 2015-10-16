@@ -7,8 +7,6 @@ import javax.validation.constraints.Pattern;
 
 public class RepayDto {
 
-    @NotEmpty
-    @Pattern(regexp = "^\\d+$")
     private long loanId;
 
     private boolean isAdvanced;

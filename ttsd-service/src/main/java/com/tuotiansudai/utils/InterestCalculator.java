@@ -1,8 +1,9 @@
 package com.tuotiansudai.utils;
 
-import com.tuotiansudai.repository.model.InterestInitiateType;
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.tuotiansudai.repository.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -48,5 +49,22 @@ public class InterestCalculator {
         long corpusMultiplyPeriodDays = investModel.getAmount() * periodDuration;
 
         return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
+    }
+
+    public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final DateTime currentRepayDate) {
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1).withTimeAtStartOfDay();
+
+        Optional<LoanRepayModel> optional = Iterators.tryFind(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+            @Override
+            public boolean apply(LoanRepayModel input) {
+                return input.getStatus() == RepayStatus.COMPLETE && new DateTime(input.getActualRepayDate()).withTimeAtStartOfDay().getMillis() <= currentRepayDate.withTimeAtStartOfDay().getMillis();
+            }
+        });
+
+        if (optional.isPresent()) {
+            lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
+        }
+
+        return lastRepayDate;
     }
 }

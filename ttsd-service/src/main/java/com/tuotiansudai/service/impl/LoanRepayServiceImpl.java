@@ -37,7 +37,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 loanId, loginName, repayStatus, repayStartDate, repayEndDate);
         List<LoanRepayDataItemDto> loanRepayDataItemDtos = Lists.newArrayList();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            LoanRepayDataItemDto loanRepayDataItemDto = new LoanRepayDataItemDto(loanRepayModel, false);
+            LoanRepayDataItemDto loanRepayDataItemDto = new LoanRepayDataItemDto(loanRepayModel);
             loanRepayDataItemDtos.add(loanRepayDataItemDto);
         }
         BasePaginationDataDto<LoanRepayDataItemDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, loanRepayDataItemDtos);

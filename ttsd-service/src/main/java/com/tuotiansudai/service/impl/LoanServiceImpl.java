@@ -418,7 +418,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.REPAYING == status) {
             count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -427,7 +427,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.COMPLETE == status) {
             count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -436,7 +436,7 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.CANCEL == status) {
             count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startTime, endTime);
             if (count > 0) {
-                int totalPages = (int) (count % pageSize > 0 ? count / index + 1 : count / index);
+                int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
                 loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
@@ -456,10 +456,6 @@ public class LoanServiceImpl implements LoanService {
         dto.setData(dataDto);
 
         return dto;
-    }
-
-    public LoanRepayDataDto getLoanerLoanData(long loanId) {
-        return null;
     }
 
     @Override
