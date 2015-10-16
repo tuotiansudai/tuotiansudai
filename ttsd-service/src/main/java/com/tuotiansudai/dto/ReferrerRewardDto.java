@@ -5,20 +5,23 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class ReferrerRewardDto {
+
     @NotEmpty
     private String referrerLoginName;
+
     @NotEmpty
     private String particUserId;
+
     @NotEmpty
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
     private String bonus;
 
     private long orderId;
 
-    public ReferrerRewardDto(){
-
+    public ReferrerRewardDto() {
     }
-    public ReferrerRewardDto(String particUserId,String bonus,String referrerLoginName,long orderId){
+
+    public ReferrerRewardDto(String particUserId, String bonus, String referrerLoginName, long orderId) {
         this.particUserId = particUserId;
         this.bonus = bonus;
         this.referrerLoginName = referrerLoginName;

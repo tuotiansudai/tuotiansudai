@@ -7,11 +7,11 @@ public enum UmPayParticAccType {
     /**
      * 个人
      */
-    PERSON("01"),
+    INDIVIDUAL("01"),
     /**
      * 商户
      */
-    MER("02");
+    MERCHANT("02");
 
     private final String code;
 

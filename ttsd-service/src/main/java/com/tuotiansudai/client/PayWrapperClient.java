@@ -69,6 +69,7 @@ public class PayWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
+
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payFormDataDto = new PayDataDto();
         baseDto.setData(payFormDataDto);
@@ -80,22 +81,6 @@ public class PayWrapperClient {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
             String responseJson = this.post(reRegisterPath, requestJson);
-            return this.parsePayResponseJson(responseJson);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payFormDataDto = new PayDataDto();
-        baseDto.setData(payFormDataDto);
-
-        return baseDto;
-    }
-
-    public BaseDto<PayDataDto> referrerReward(ReferrerRewardDto dto) {
-        try {
-            String requestJson = objectMapper.writeValueAsString(dto);
-            String responseJson = this.post(referrerRewardPath, requestJson);
             return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);

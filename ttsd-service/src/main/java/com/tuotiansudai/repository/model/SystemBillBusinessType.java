@@ -8,6 +8,8 @@ public enum SystemBillBusinessType {
 
     WITHDRAW_SUCCESS("提现"),
 
+    INVEST_FEE("利息管理费"),
+
     REFERRER_REWARD("推荐人奖励");
 
     private final String description;

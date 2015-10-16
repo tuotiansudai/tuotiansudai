@@ -15,7 +15,6 @@ import com.esoft.core.annotations.ScopeType;
  * 
  */
 @Component
-@Scope(ScopeType.REQUEST)
 public class BillStatistics {
 
 	@Resource

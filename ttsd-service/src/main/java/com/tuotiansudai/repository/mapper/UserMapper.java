@@ -47,4 +47,5 @@ public interface UserMapper {
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 
+    List<String> findLoginNameLike(String loginName);
 }

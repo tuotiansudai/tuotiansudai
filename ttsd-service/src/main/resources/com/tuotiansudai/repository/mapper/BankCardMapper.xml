@@ -32,8 +32,13 @@
     </update>
 
     <update id="updateBankCard" parameterType="com.tuotiansudai.repository.model.BankCardModel">
-        update bank_card set bank_number=#{bankNumber},card_number=#{cardNumber}, status = #{status},
-         login_name=#{loginName},is_open_fastPayment=#{isOpenFastPayment} where id = #{id}
+        update bank_card
+        set bank_number = #{bankNumber},
+            card_number = #{cardNumber},
+            status = #{status},
+            login_name=#{loginName},
+            is_open_fastPayment=#{isOpenFastPayment}
+        where id = #{id}
     </update>
 
 </mapper>
