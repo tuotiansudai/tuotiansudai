@@ -22,6 +22,12 @@ def build_common_params():
     return common_ret
 
 
+def default_result():
+    common_params = build_common_params()
+    common_params.update({'ret_code': '0000'})
+    return format_result(common_params)
+
+
 def build_register_params():
     register_ret = {'reg_date': datetime.datetime.today().date().strftime('%Y%m%d'), 'user_id': get_random_user_id(),
                     'ret_code': '0000', 'account_id': get_random_user_id()}
@@ -58,12 +64,7 @@ def mer_register_person():
     return result
 
 
-def mer_bind_card():
-    """
-    http://pay.soopay.net/spay/pay/payservice.do?account_name=dFW7mviI0wD5CZcNQOqkC3w4DA24nF9WNUHu3PGziYwtYG5n3wuNEjzQCQsr6pZs4VPbb5FwVljPfGsY2ziuHI4b%2F5GuVYQ7MhfLy1TBd%2FIGIq8tHsojE3TtjN7QWoqGlfi2GjwQSv7sgyfmFOUPAx68Nm47NlujHLbhtwSh%2BfA%3D&apply_notify_flag=0&card_id=RSkidX4tPpDTtO9BShePcTGGdb8ih6Pw4FIduY3GlC5cdbjvdv6EaG1L%2BJYyN4pKhLG5MDcwc2beC3bfET%2Bjb7rx125FVswB%2F8RatenMuyjKM4TfiCacnCEg4R4KNTGuZXt2G4o9n9vu2CUfEFg%2BADHWGc12yIAQJ68TVwPe1P0%3D&charset=UTF-8&identity_code=YItqH3o7zJd531qv802XOn47UJKALmecd84zJ3qfDe1jMNpDWV0jyvuazMa4M7180kAO1FjKxKEEvg5Y6Laa0gKmSFLDmSspCsu0oQqKu6Nrojz4N3WyspMCKFZgXyEu6tfu3n%2FIjyFmzC89gdpkaPh1h2usoB43laggPF%2Be70k%3D&identity_type=IDENTITY_CARD&is_open_fastPayment=0&mer_date=20150430&mer_id=7099088&notify_url=http%3A%2F%2Fbaidu1.com&order_id=302509&res_format=HTML&ret_url=http%3A%2F%2Fbaidu.com&service=mer_bind_card&sign_type=RSA&user_id=UB201504161125570000000003661793&version=1.0&sign=VfvDAlA8V5QqkZh9xuRSE0eJDhoTcp2htx6FSL9YX8ehpBbT7hsUD2Iu6Qe3Du71V%2FnIwOTZbHQbdtU0vPvfKR5P65QpZhdxbpzSisTJHzaQqI%2BAXH4h5bMsLN0uMo5xpFbydiPQRAA7L78Gl8y752A%2BdmnSZ0Y9CAv9leeYlvM%3D
-    :return:
-        Navigate to UMP page
-    """
+def bind_or_change_card(service):
     user_id = request.values.get('user_id')
     order_id = request.values.get('order_id')
     mer_date = request.values.get('mer_date')
@@ -72,9 +73,31 @@ def mer_bind_card():
     notify_url = request.values.get('notify_url')
 
     store = Store(user_id)
-    params = "mer_bind_card::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id)
+    params = "{4}::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id, service)
     store.set_frontend_notify("{0}::{1}".format(params, ret_url))
     store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    common_params = build_common_params()
+    common_params.update({'ret_code': '0000'})
+    return format_result(common_params)
+
+
+def mer_bind_card():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?account_name=dFW7mviI0wD5CZcNQOqkC3w4DA24nF9WNUHu3PGziYwtYG5n3wuNEjzQCQsr6pZs4VPbb5FwVljPfGsY2ziuHI4b%2F5GuVYQ7MhfLy1TBd%2FIGIq8tHsojE3TtjN7QWoqGlfi2GjwQSv7sgyfmFOUPAx68Nm47NlujHLbhtwSh%2BfA%3D&apply_notify_flag=0&card_id=RSkidX4tPpDTtO9BShePcTGGdb8ih6Pw4FIduY3GlC5cdbjvdv6EaG1L%2BJYyN4pKhLG5MDcwc2beC3bfET%2Bjb7rx125FVswB%2F8RatenMuyjKM4TfiCacnCEg4R4KNTGuZXt2G4o9n9vu2CUfEFg%2BADHWGc12yIAQJ68TVwPe1P0%3D&charset=UTF-8&identity_code=YItqH3o7zJd531qv802XOn47UJKALmecd84zJ3qfDe1jMNpDWV0jyvuazMa4M7180kAO1FjKxKEEvg5Y6Laa0gKmSFLDmSspCsu0oQqKu6Nrojz4N3WyspMCKFZgXyEu6tfu3n%2FIjyFmzC89gdpkaPh1h2usoB43laggPF%2Be70k%3D&identity_type=IDENTITY_CARD&is_open_fastPayment=0&mer_date=20150430&mer_id=7099088&notify_url=http%3A%2F%2Fbaidu1.com&order_id=302509&res_format=HTML&ret_url=http%3A%2F%2Fbaidu.com&service=mer_bind_card&sign_type=RSA&user_id=UB201504161125570000000003661793&version=1.0&sign=VfvDAlA8V5QqkZh9xuRSE0eJDhoTcp2htx6FSL9YX8ehpBbT7hsUD2Iu6Qe3Du71V%2FnIwOTZbHQbdtU0vPvfKR5P65QpZhdxbpzSisTJHzaQqI%2BAXH4h5bMsLN0uMo5xpFbydiPQRAA7L78Gl8y752A%2BdmnSZ0Y9CAv9leeYlvM%3D
+    :return:
+        Navigate to UMP page
+    """
+    return bind_or_change_card('mer_bind_card')
+
+
+def ptp_mer_replace_card():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?account_name=IM8r5T8E7vwr45eVhXKZDI5uLv%2FUC0rIEbbdVWk0H9TdDzCuKkNUk1q8mybzd2ZD0ld4mD7jgczFxjgTWJr%2Fhekt2cbg0rKmIZQC7CTDwD7GG%2FcA5tE5uML2cuYVfn4lcCAj075k6S5PaYH%2FG59LaE3INoW5tTvsaHOzX51eVjk%3D&card_id=IxZwGoxW8d%2BKzlTx2b80p4Ch9cjMB2T9rPTMUyfwWd634WSmoaZJ3RuHsMpqXoUp%2FlTY6n63yH8yLmI9myi28Q%2BjuKfQYfmP4ucWQx84JTKvWIIvBMNWj6LNRVZsYJWZKIN%2FeFpULJEeDURNwTJF8ejkgBSaLt872IZBXr%2BloDA%3D&charset=UTF-8&identity_code=SAaZtrbvEj8Czzidf1BtQ7IEdjjag08Y8S2DWneBOyBYgrrUwfKKOx7ntkqsbtkr%2F5MIm1Ak6okzX%2Bq%2FgJ7e%2F1V%2FLRMcusKTyU8u3LZDLcu0FKgDy%2FOjGhQ7JkeB205Y%2FHXPN7MfGf2AFcH5e9z%2Fmd1PE8pSNNYrGP6skJIVqBs%3D&identity_type=IDENTITY_CARD&mer_date=20151015&mer_id=7099088&notify_url=http%3A%2F%2Fwww.baidu.com&order_id=336437&res_format=HTML&ret_url=http%3A%2F%2Fwww.baidu.com&service=ptp_mer_replace_card&sign_type=RSA&user_id=UA001&version=1.0&sign=qjOV7%2BK%2FMRaofNqnP9YPhcYnTHszfk8S3f1kCSRHVklKYzpu7B6u%2FhQ4fdkb3ko%2BkETWQGuxR2sIWtIfdp2I7M1sqsJvlqcgwwP2IaWWG79XMSq6QH4uX5pn3lnkvfDn7gndlu9krcxoQBoMNgdtTwvED7FwlHBOxWlN0BazdZY%3D
+    :return:
+        Navigate to UMP page
+    """
+    return bind_or_change_card('ptp_mer_replace_card')
 
 
 def project_transfer():
@@ -93,6 +116,8 @@ def project_transfer():
     params = "project_transfer::{0}::{1}::{2}".format(order_id, mer_date, mer_id)
     store.set_frontend_notify("{0}::{1}".format(params, ret_url))
     store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    return default_result()
 
 
 def transfer():
