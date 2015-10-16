@@ -33,3 +33,7 @@ strong,em,b,i,h1,h2,h3{font-style: normal;font-weight: normal;}
 .submenu a{color: #bbbbbb;font-size: 16px;}
 .submenu a:hover{color: #f33735}
 .nav li:hover .submenu{display: block;}
+.home{ float:left; margin-right:40px; margin-top: 12px;}
+.app{ float:left; margin-right:40px; margin-top: 11px;}
+.haoma{ float:left; margin-right:10px; margin-top: 9px;}
+.serviceTime{ line-height: 44px;}

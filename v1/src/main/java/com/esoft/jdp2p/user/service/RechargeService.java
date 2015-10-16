@@ -4,6 +4,7 @@ import com.esoft.archer.user.model.RechargeBankCard;
 import com.esoft.archer.user.model.UserBill;
 import com.esoft.jdp2p.loan.model.Recharge;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public interface RechargeService {
 	 * 生成一个充值订单
 	 * @return 充值url
 	 */
-	public String createRechargeOrder(Recharge recharge);
+	public String createRechargeOrder(Recharge recharge, HttpServletRequest request);
 	
 	/**
 	 * 获取银行卡直连的列表
@@ -81,4 +82,8 @@ public interface RechargeService {
 	public boolean isRealNameBank(String bankNo);
 
 	public boolean isFastPaymentBank(String bankNo);
+
+	public List<Recharge> findUserRecharge(String userId, Integer offset, Integer limit);
+
+	public Integer findUserRechargeCount(String userId);
 }

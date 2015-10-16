@@ -62,10 +62,11 @@ public class MyPrettyFilter implements Filter {
 	public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 
-		if (request.getRequestURI().startsWith("/mobile/")) {
+		if (request.getRequestURI().startsWith("/mobile/") || request.getRequestURI().startsWith("/v1.0/")) {
 			chain.doFilter(req, resp);
 			return;
 		}
+
 
 		// let PrettyConfigReloader reload the configuration if required
 		// if (!PrettyContext.isInstantiated(request)) {

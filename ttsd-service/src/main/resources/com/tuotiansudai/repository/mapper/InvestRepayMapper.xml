@@ -32,6 +32,19 @@
     </insert>
 
     <select id="findByInvestId" parameterType="long" resultMap="investRepayResultMap">
-        select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by repay_date asc
+        select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by period asc
     </select>
+
+    <select id="findByInvestIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period = #{period}
+    </select>
+
+    <update id="update" parameterType="InvestRepayModel">
+        update invest_repay
+        set actual_interest = #{actualInterest},
+            actual_fee = #{actualFee},
+            actual_repay_date = #{actualRepayDate},
+            status = #{status}
+        where id = #{id}
+    </update>
 </mapper>

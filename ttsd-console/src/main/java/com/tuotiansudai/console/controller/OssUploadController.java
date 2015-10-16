@@ -3,6 +3,7 @@ package com.tuotiansudai.console.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.OssWrapperClient;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class OssUploadController {
         ueditorConfig.put("imageCompressBorder",1600);
         ueditorConfig.put("imageInsertAlign","none");
         ueditorConfig.put("imageUrlPrefix","/upload");
-        ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}/{time}{rand:6}");
+        ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}");
     }
 
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
@@ -49,7 +50,12 @@ public class OssUploadController {
             try {
                 response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
                 ossWrapperClient.upload(request);
-                response.getWriter().print("{'original':'"+ossWrapperClient.getOriginalName()+"','url':'"+ossWrapperClient.getUrl()+"','title':'"+ossWrapperClient.getTitle()+"','state':'"+ossWrapperClient.getState()+"'}");
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("original",ossWrapperClient.getOriginalName());
+                jsonObject.put("url",ossWrapperClient.getUrl());
+                jsonObject.put("title",ossWrapperClient.getTitle());
+                jsonObject.put("state", ossWrapperClient.getState());
+                response.getWriter().print(jsonObject);
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
             } finally {

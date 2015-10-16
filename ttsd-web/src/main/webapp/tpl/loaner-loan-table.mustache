@@ -1,0 +1,93 @@
+<table class="loan-list">
+    {{#isRepaying}}
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th>放款时间</th>
+            <th>借款金额</th>
+            <th>待还总额</th>
+            <th>下次还款</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#records}}
+            <tr>
+                <td>{{loanName}}</td>
+                <td>{{recheckTime}}</td>
+                <td>{{loanAmount}}</td>
+                <td>{{unpaidAmount}}元</td>
+                <td>{{nextRepayDate}}</td>
+                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a>
+                </td>
+            </tr>
+        {{/records}}
+        {{^records}}
+            <tr>
+                <td colspan="6" class="no-data">暂时没有纪录</td>
+            </tr>
+        {{/records}}
+        </tbody>
+    {{/isRepaying}}
+
+    {{#isComplete}}
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th>放款时间</th>
+            <th>应还总额</th>
+            <th>实还总额</th>
+            <th>还款日期</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#records}}
+            <tr>
+                <td>{{loanName}}</td>
+                <td>{{recheckTime}}</td>
+                <td>{{expectedRepayAmount}}</td>
+                <td>{{actualRepayAmount}}元</td>
+                <td>{{completedDate}}</td>
+                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a>
+                </td>
+            </tr>
+        {{/records}}
+        {{^records}}
+            <tr>
+                <td colspan="6" class="no-data">暂时没有纪录</td>
+            </tr>
+        {{/records}}
+        </tbody>
+    {{/isComplete}}
+
+    {{#isCancel}}
+        <thead>
+        <tr>
+            <th>项目名称</th>
+            <th>借款金额</th>
+            <th>流标时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#records}}
+            <tr>
+                <td>{{loanName}}</td>
+                <td>{{loanAmount}}</td>
+                <td>{{recheckTime}}</td>
+            </tr>
+        {{/records}}
+        {{^records}}
+            <tr>
+                <td colspan="3" class="no-data">暂时没有纪录</td>
+            </tr>
+        {{/records}}
+        </tbody>
+    {{/isCancel}}
+</table>
+
+<div class="pagination" data-currentpage="{{index}}">
+    <span class="total">共 {{count}} 条记录，当前第 {{index}} 页</span>
+    {{#hasPreviousPage}}<a href="javascript:" class="prevPage">上一页</a>{{/hasPreviousPage}}
+    {{#hasNextPage}}<a href="javascript:" class="nextPage">下一页</a>{{/hasNextPage}}
+</div>

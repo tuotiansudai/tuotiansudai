@@ -17,7 +17,7 @@ public enum UmPayServType {
     /**
      * 流标后返款
      */
-    TRANSFER_OUT_PAYBACK_ON_CANCEL("51"),
+    TRANSFER_OUT_CANCEL_PAYBACK("51"),
 
     /**
      * 平台收费
@@ -32,7 +32,7 @@ public enum UmPayServType {
     /**
      * 还款后返款
      */
-    TRANSFER_OUT_PAYBACK_ON_REPAY("54");
+    TRANSFER_OUT_REPAY_PAYBACK("54");
 
     private final String code;
 

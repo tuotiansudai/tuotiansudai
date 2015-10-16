@@ -1,5 +1,6 @@
 package com.esoft.umpay.bankcard.service.impl;
 
+import com.cfca.util.pki.ocsp.Req;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.jsf.util.FacesUtil;
@@ -18,6 +19,7 @@ import com.esoft.jdp2p.trusteeship.service.impl.TrusteeshipOperationBO;
 import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
@@ -70,35 +72,77 @@ public class UmPayReplaceBankCardOperation  extends UmPayOperationServiceAbs<Ban
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(BankCard bankCard,
 			FacesContext facesContext) throws IOException {
+		TrusteeshipOperation to = null;
+		try{
+			String orderId = generateReplaceCardOrderId(bankCard);
+			ReqData reqData = buildReqData(bankCard, orderId, false);
+			log.debug("换卡发送数据:" + reqData);
+			to = createTrusteeshipOperation(orderId, reqData.getUrl(),
+					bankCard.getUser().getId(),
+					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			sendOperation(to, facesContext);
+		}catch (UmPayOperationException e) {
+			log.error("联动优势处理失败",e);
+			e.getStackTrace();
+		}
+		return to;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public ReqData createOperation_mobile(BankCard bankCard) throws ReqDataException{
+		// 与桌面端不同，桌面端在UmPayBankCardHome里，保存了此记录，移动端将保存逻辑放到这里了。
+		ht.save(bankCard);
+        String orderId = generateReplaceCardOrderId(bankCard);
+        ReqData reqData = buildReqData(bankCard, orderId, true);
+        log.debug("换卡发送数据:" + reqData);
+        createTrusteeshipOperation(orderId, reqData.getUrl(),
+                bankCard.getUser().getId(),
+                UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
+                GsonUtil.fromMap2Json(reqData.getField()));
+        return reqData;
+	}
+
+	private String generateReplaceCardOrderId(BankCard bankCard) {
+		return System.currentTimeMillis() + bankCard.getCardNo();
+	}
+
+	private ReqData buildReqData(BankCard bankCard, String orderId, boolean isMobileRequest){
 		TrusteeshipAccount trusteeshipAccount = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
+		if(trusteeshipAccount==null){
+			throw new UmPayOperationException("该用户没有实名认证");
+		}
+
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+
+		if(isMobileRequest) {
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+			//配置此项，表示使用H5页面
+			sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		}else{
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
+		}
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
+
 						+ UmPayConstants.OperationType.PTP_MER_REPLACE_CARD);
-		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
-		sendMap.put("order_id", order_id);
+		sendMap.put("order_id", orderId);
 		sendMap.put("mer_date", DateUtil.DateToString(new Date(), DateStyle.YYYYMMDD));
 		sendMap.put("user_id", trusteeshipAccount.getId());
 		sendMap.put("card_id", bankCard.getCardNo());
 		sendMap.put("account_name", bankCard.getUser().getRealname());
 		sendMap.put("identity_type", "IDENTITY_CARD");
 		sendMap.put("identity_code", bankCard.getUser().getIdCard());
-		TrusteeshipOperation to = null;
-		try{
-			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
-			log.debug("换卡发送数据:" + reqData);
-			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
-					bankCard.getUser().getId(),
-					UmPayConstants.OperationType.PTP_MER_REPLACE_CARD,
-					GsonUtil.fromMap2Json(reqData.getField()));
-			sendOperation(to, facesContext);
-		}catch (ReqDataException e) {
-			e.getStackTrace();
+
+		try {
+			return Mer2Plat_v40.makeReqDataByPost(sendMap);
+		} catch (ReqDataException e) {
+			throw new UmPayOperationException("加密失败",e);
+
 		}
-		return to;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.mobile.dao.IMobileRegisterDao;
 import com.ttsd.mobile.service.IMobileRegisterService;
 import org.apache.commons.logging.Log;
@@ -79,6 +80,7 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
             user.setMobileNumber(phoneNum);
             user.setPassword(password);
             user.setReferrer(referrer);
+            user.setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(user, vCode, referrer);
             log.info("用户名为："+userName+",手机号为："+phoneNum+"的用户信息持久化成功！");
             return true;
@@ -95,9 +97,16 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     public boolean getCreatedValidateCode(String phoneNumber,String remoteIp){
         if (regValidatePhoneNum(phoneNumber)) {
-            boolean validateFlag = userService.sendRegisterByMobileNumberSMS(phoneNumber, remoteIp);
-            if (!validateFlag){
-                log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
+            try {
+                boolean validateFlag = userService.sendSmsMobileNumber(phoneNumber, remoteIp, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
+                if (!validateFlag){
+                    log.info("手机号为："+phoneNumber+"的用户试图在一分钟内连续多次获取授权码！");
+                    return false;
+                }
+                log.info("已为手机号为："+phoneNumber+"的用户成功创建授权码！");
+            } catch (Exception e){
+                log.error("生成授权码异常！");
+                log.error(e.getLocalizedMessage(),e);
                 return false;
             }
             log.info("已为手机号为："+phoneNumber+"的用户成功创建授权码！");
