@@ -18,37 +18,67 @@
         <li><a href="javascript:">推荐管理</a></li>
     </ul>
 
-    <div class="bind-card">
-        <h2 class="hd-bind-card"><span>我要提现</span></h2>
+    <div class="withdraw">
+        <h2 class="title"><span>我要提现</span></h2>
 
-        <div class="card-list">
+        <div class="container">
+            <p>提现额度：<i>${balance}</i>元</p>
+
+            <p>
+                提现金额：<input type="text" class="amount-display" data-d-group="4" data-l-zero="deny" data-v-min="0.00" data-v-max="${balance}" placeholder="0.00">元
+                <span class="error"><em>金额必须大于3.00元</em></span>
+            </p>
+
+            <div class="calculate">
+                <span>提现费用：<em>3.00</em> 元（每笔）</span>
+                <span>实际到账：<em class="actual-amount">0.00</em> 元</span>
+            </div>
+
+            <button class="withdraw-submit inactive" disabled="disabled">确认提现</button>
+
             <form action="/withdraw" method="post" target="_blank">
+                <input name="amount" type="hidden"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="recharge-bank">
-                    <p>可提现额度:<i class="jq-total">${balance}</i>元</p>
-                    <p>输入提现金额：<input name="amount" type="text" value="" class="recharge-cz" placeholder="0.00">元
-                        <span class="error"><img src="${requestContext.getContextPath()}/images/error.jpg" alt=""/>你最大可提现金额:<i>0.00</i>元</span>
-                    </p>
-                    <p class="p-h"><span>提现费用：<em>3.00</em> 元</span></p>
-                    <p class="p-h jq-sj"><span>实际到账：<em>0.00</em> 元</span></p>
-                    <button type="submit" class="recharge-qr grey" disabled="disabled">确认提现</button>
-                </div>
             </form>
         </div>
+
         <div class="tips">
             <h3>提现说明：</h3>
-
-            <p>1、每提现一笔，提现操作手续费为3元。</p>
-
+            <p>1、每笔提现，手续费3.00元。</p>
             <p>2、提现操作，T+1日内完成，均受节假日影响。</p>
-
             <p>3、提现银行卡姓名应与实名认证身份一致，才可提现。</p>
-
         </div>
     </div>
 </div>
+
+<div class="overlay"></div>
+<div class="overlay-content">
+    <div class="dg_wrapper dialog-chongzhi">
+        <div class="hd">
+            <h3>登录到联动优势支付平台充值</h3>
+        </div>
+        <div class="bd">
+            <p>请在新打开的联动优势页面充值完成后选择：</p>
+
+            <div class="ret">
+                <p>充值成功：<a href="" class="g-btn g-btn-medium-major tongji"  data-category="确认成功" data-label="recharge">确认成功</a></p>
+                <p>充值失败：<a href="" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值" data-label="recharge">重新充值</a>
+                    <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+                </p>
+                <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+            </div>
+        </div>
+        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+    </div>
+</div>
+
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.withdraw}">
-</@global.javascript>
+<#--<@global.javascript pageJavascript="${js.withdraw}">-->
+<#--</@global.javascript>-->
+<script src="${requestContext.getContextPath()}/js/dest/config.min.js"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+        defer
+        async="true"
+        data-main="${requestContext.getContextPath()}/js/withdraw.js"></script>
 </body>
 </html>

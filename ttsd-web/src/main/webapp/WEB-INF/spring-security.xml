@@ -62,7 +62,6 @@
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
         <intercept-url pattern="/fund/**" access="hasAuthority('USER')"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
-        <intercept-url pattern="/*" access="isAnonymous()"/>
         <intercept-url pattern="/bind-card/**" access="hasAuthority('USER')"/>
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('INVESTOR')"/>

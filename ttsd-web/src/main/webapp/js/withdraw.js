@@ -1,44 +1,35 @@
-require(['jquery', 'csrf'], function ($) {
+require(['jquery', 'csrf', 'autoNumeric'], function ($) {
     $(function () {
-        // 提现金额保留小数点后2位
-        var rep = /^\d+$/;
-        var rep_point = /^([0-9]+\.[0-9]{2})[0-9]*$/;
-        var rep_point1 = /^[0-9]+\.[0-9]$/;
-        $('.recharge-cz').blur(function () {
-            var _this = $(this)
-            var _btn = _this.closest('form').find('.recharge-qr');
-            var text = _this.val();
-            var num = text.replace(rep_point, "$1");
-            if (rep.test(text)) {
-                _this.val(text + '.00');
-                _btn.removeClass('grey').removeAttr('disabled');
-            } else if (rep_point.test(text)) {
-                _this.val(num);
-                _btn.removeClass('grey').removeAttr('disabled');
-            } else if (rep_point1.test(text)) {
-                _this.val(text + '0');
-                _btn.removeClass('grey').removeAttr('disabled');
+        var amountInputElement = $(".withdraw .amount-display");
+        var submitElement = $('.withdraw-submit');
+        var formElement = $('.withdraw form');
+        var errorElement = $('.withdraw .error');
+        var actualAmountElement = $('.withdraw .actual-amount');
+
+        amountInputElement.autoNumeric("init");
+
+        amountInputElement.keyup(function () {
+            var amount = parseFloat(amountInputElement.autoNumeric("get"));
+            if (isNaN(amount) || amount <= 3) {
+                submitElement.addClass('inactive').attr('disabled', true);
+                errorElement.show();
+                actualAmountElement.html('0.00');
             } else {
-                _this.val('');
-                _btn.addClass('grey').attr('disabled', 'disabled');
-            }
-            if ($('.jq-total').text() - _this.val() >= 0 && $('.jq-total').text() > 3) {
-                var money = _this.val() - 3.00;
-                var s_money = money.toString();
-                console.log(s_money + ':' + s_money.indexOf('.'))
-                if (s_money.indexOf('.') == -1) {
-                    money += ".00";
-                }
-                $('.jq-sj em').text(money);
-                $('.recharge-bank .error').hide();
-                $('.recharge-qr').removeClass('grey').removeAttr('disabled');
-            } else {
-                $('.jq-sj em').text('0.00');
-                $('.recharge-bank .error i').text($('.jq-total').text());
-                $('.recharge-bank .error').css('display', 'inline-block');
-                $('.recharge-qr').addClass('grey').attr('disabled', 'disabled');
+                submitElement.removeClass('inactive').attr('disabled', false);
+                errorElement.hide();
+                actualAmountElement.html(Number((amount - 3).toFixed(2)));
             }
         });
 
+        submitElement.click(function () {
+            if (submitElement.hasClass('inactive')) {
+                return false;
+            }
+
+            var amount = parseFloat(amountInputElement.autoNumeric("get"));
+            $(".withdraw form input[name='amount']").val(amount);
+            $('.ecope-overlay,.ecope-dialog').show();
+            formElement.submit();
+        });
     });
 });
