@@ -9,8 +9,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,9 +42,9 @@ public class UserBillMapperTest {
 
         userBillMapper.create(userBillModel);
 
-        UserBillModel actualModel = userBillMapper.findByLoginName(fakeUser.getLoginName());
+        List<UserBillModel> actualModels = userBillMapper.findByLoginName(fakeUser.getLoginName());
 
-        assertTrue(actualModel.getId() > 0);
+        assertThat(actualModels.size(), is(1));
 
     }
 

@@ -4,20 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.SystemBillMapper">
 
-    <resultMap id="SystemBillResultMap" type="SystemBillModel">
+    <resultMap id="systemBillResultMap" type="SystemBillModel">
         <id column="id" property="id"></id>
-        <result column="created_time" property="createdTime"></result>
-        <result column="type" property="type"></result>
-        <result column="amount" property="amount"></result>
-        <result column="detail" property="detail"></result>
-        <result column="business_type" property="businessType"></result>
         <result column="order_id" property="orderId"></result>
+        <result column="amount" property="amount"></result>
+        <result column="type" property="type"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="detail" property="detail"></result>
+        <result column="created_time" property="createdTime"></result>
     </resultMap>
 
-    <insert id="create" parameterType="com.tuotiansudai.repository.model.SystemBillModel" useGeneratedKeys="true"
-            keyProperty="id">
-        insert into system_bill ( amount, detail, type, created_time,order_id,business_type)
-        value( #{amount}, #{detail}, #{type}, #{createdTime},#{orderId},#{businessType})
+    <insert id="create" parameterType="SystemBillModel" useGeneratedKeys="true" keyProperty="id">
+        insert into system_bill ( amount, detail, type, created_time, order_id, business_type)
+        value(#{amount}, #{detail}, #{type}, #{createdTime}, #{orderId}, #{businessType})
     </insert>
+
+    <select id="findByOrderId" parameterType="java.lang.String" resultMap="systemBillResultMap">
+        select * from system_bill where order_id = #{orderId}
+    </select>
 
 </mapper>

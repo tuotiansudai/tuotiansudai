@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,13 +40,14 @@ public class InvestRepayMapperTest {
     private UserMapper userMapper;
 
     @Test
-    public void shouldCreateLoanRepayModel() throws Exception {
+    public void shouldCreateInvestRepayModel() throws Exception {
         InvestModel investModel = this.getFakeInvestModel();
         investMapper.create(investModel);
         List<InvestRepayModel> investRepayModels = Lists.newArrayList();
         InvestRepayModel investRepayModel = new InvestRepayModel();
         investRepayModel.setId(idGenerator.generate());
         investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setPeriod(1);
         investRepayModel.setStatus(RepayStatus.REPAYING);
         investRepayModel.setRepayDate(new Date());
         investRepayModels.add(investRepayModel);
@@ -53,6 +56,58 @@ public class InvestRepayMapperTest {
         List<InvestRepayModel> actualInvestRepayModels = investRepayMapper.findByInvestId(investModel.getId());
 
         assertTrue(CollectionUtils.isNotEmpty(actualInvestRepayModels));
+    }
+
+    @Test
+    public void shouldFindInvestRepayModelByInvestIdAndPeriod() throws Exception {
+        InvestModel investModel = this.getFakeInvestModel();
+        investMapper.create(investModel);
+
+        InvestRepayModel investRepayModel1 = new InvestRepayModel();
+        investRepayModel1.setId(idGenerator.generate());
+        investRepayModel1.setInvestId(investModel.getId());
+        investRepayModel1.setPeriod(1);
+        investRepayModel1.setStatus(RepayStatus.REPAYING);
+        investRepayModel1.setRepayDate(new Date());
+
+        InvestRepayModel investRepayModel2 = new InvestRepayModel();
+        investRepayModel2.setId(idGenerator.generate());
+        investRepayModel2.setInvestId(investModel.getId());
+        investRepayModel2.setPeriod(2);
+        investRepayModel2.setStatus(RepayStatus.REPAYING);
+        investRepayModel2.setRepayDate(new Date());
+
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel1, investRepayModel2);
+        investRepayMapper.create(investRepayModels);
+
+        InvestRepayModel secondInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), 2);
+
+        assertThat(secondInvestRepayModel.getId(), is(investRepayModel2.getId()));
+    }
+
+    @Test
+    public void shouldUpdate() throws Exception {
+        InvestModel investModel = this.getFakeInvestModel();
+        Date actualRepayDate = new Date();
+        investMapper.create(investModel);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setPeriod(1);
+        investRepayModel.setStatus(RepayStatus.REPAYING);
+        investRepayModel.setRepayDate(actualRepayDate);
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
+        investRepayMapper.create(investRepayModels);
+
+        investRepayModel.setStatus(RepayStatus.COMPLETE);
+        investRepayModel.setActualInterest(100L);
+        investRepayModel.setActualRepayDate(actualRepayDate);
+        investRepayMapper.update(investRepayModel);
+        InvestRepayModel updateInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), investRepayModel.getPeriod());
+
+        assertThat(updateInvestRepayModel.getStatus(), is(investRepayModel.getStatus()));
+        assertThat(updateInvestRepayModel.getActualInterest(), is(investRepayModel.getActualInterest()));
+        assertThat(updateInvestRepayModel.getActualRepayDate(), is(investRepayModel.getActualRepayDate()));
     }
 
     private UserModel getFakeUserModel() {

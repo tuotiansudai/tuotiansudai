@@ -1,5 +1,5 @@
 package com.tuotiansudai.repository.model;
-
+//TODO : puzzle
 public enum ReferrerRewardMessageTemplate {
     TRANSFER_OUT_DETAIL("referrer_reward,orderId:{0},referrer:{1},get:¥{2}"),
     NOT_BIND_CARD("未在联动优势开通账户,交易失败");

@@ -1,12 +1,14 @@
 package com.tuotiansudai.repository.model;
 
-public enum SystemBillType {
-    IN("in"),
-    OUT("out");
+public enum SystemBillOperationType {
+
+    IN("入账"),
+
+    OUT("出账");
 
     private final String description;
 
-    SystemBillType(String description) {
+    SystemBillOperationType(String description) {
         this.description = description;
     }
 
