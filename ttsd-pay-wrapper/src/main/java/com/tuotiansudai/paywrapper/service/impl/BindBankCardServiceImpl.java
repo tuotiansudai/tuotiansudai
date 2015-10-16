@@ -82,8 +82,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
         try {
             String service = callbackRequest.getService();
-            if(AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)){
-                this.postBankCardCallback(callbackRequest, paramsMap);
+            if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
+                this.postBankCardCallback(callbackRequest, paramsMap.get("gate_id"));
             }
         } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -103,25 +103,23 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     @Transactional
-    private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, Map<String, String> paramsMa) throws AmountTransferException {
-
-
+    private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, String bankCode) throws AmountTransferException {
         if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId())) {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
             if (callbackRequestModel.isSuccess()) {
                 if (bankCardModel != null) {
                     bankCardModel.setStatus(BankCardStatus.PASSED);
-                    bankCardModel.setBankNumber(paramsMa.get("gate_id"));
+                    bankCardModel.setBankNumber(bankCode);
                     bankCardMapper.updateBankCard(bankCardModel);
-                    if ("CMB".equals(paramsMa.get("gate_id"))) {
+                    if ("CMB".equals(bankCode)) {
                         String detailTemplate = "用户{0}绑定{1}银行卡";
-                        systemBillService.transferOut(1L, MessageFormat.format(detailTemplate, bankCardModel.getLoginName(),
-                                bankCardModel.getCardNumber()), SystemBillBusinessType.BIND_CARD,callbackRequestModel.getOrderId());
+                        systemBillService.transferOut(1L,
+                                callbackRequestModel.getOrderId(),
+                                SystemBillBusinessType.BIND_CARD,
+                                MessageFormat.format(detailTemplate, bankCardModel.getLoginName(), bankCardModel.getCardNumber()));
                     }
                 }
-
-
             } else {
                 bankCardMapper.update(orderId, BankCardStatus.FAIL);
             }

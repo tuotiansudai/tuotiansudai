@@ -11,9 +11,8 @@ public interface UserBillMapper {
 
     void create(UserBillModel userBillModel);
 
-    UserBillModel findByLoginName(String loginName);
-
     List<UserBillModel> findUserBills(Map<String, Object> params);
 
     int findUserBillsCount(Map<String, Object> params);
+    List<UserBillModel> findByLoginName(String loginName);
 }

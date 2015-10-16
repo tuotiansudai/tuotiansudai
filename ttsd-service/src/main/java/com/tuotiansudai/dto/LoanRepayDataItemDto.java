@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tuotiansudai.repository.model.LoanRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.utils.AmountUtil;
@@ -36,9 +35,9 @@ public class LoanRepayDataItemDto {
 
     private boolean isEnabled;
 
-    private String projectName;
+    private String loanName;
 
-    private String loginName;
+    private String agentLoginName;
 
     private String totalAmount;
 
@@ -60,8 +59,26 @@ public class LoanRepayDataItemDto {
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.totalAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
         this.isEnabled = isEnabled;
-        this.loginName = loanRepayModel.getLoan().getLoanerLoginName();
-        this.projectName = loanRepayModel.getLoan().getName();
+    }
+
+    public LoanRepayDataItemDto(LoanRepayModel loanRepayModel) {
+        this.loanRepayId = loanRepayModel.getId();
+        this.loanId = loanRepayModel.getLoanId();
+        this.period = loanRepayModel.getPeriod();
+        this.corpus = AmountUtil.convertCentToString(loanRepayModel.getCorpus());
+        this.expectedInterest = AmountUtil.convertCentToString(loanRepayModel.getExpectedInterest());
+        this.defaultInterest = AmountUtil.convertCentToString(loanRepayModel.getDefaultInterest());
+        this.expectedRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
+        this.repayDate = loanRepayModel.getRepayDate();
+        this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
+        if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
+            this.actualRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());
+        }
+        this.actualRepayDate = loanRepayModel.getActualRepayDate();
+        this.loanRepayStatus = loanRepayModel.getStatus();
+        this.totalAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
+        this.agentLoginName = loanRepayModel.getLoan().getLoanerLoginName();
+        this.loanName = loanRepayModel.getLoan().getName();
     }
 
     public long getLoanRepayId() {
@@ -144,20 +161,20 @@ public class LoanRepayDataItemDto {
         this.isEnabled = isEnabled;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public String getLoanName() {
+        return loanName;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setLoanName(String loanName) {
+        this.loanName = loanName;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getAgentLoginName() {
+        return agentLoginName;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setAgentLoginName(String agentLoginName) {
+        this.agentLoginName = agentLoginName;
     }
 
     public String getTotalAmount() {
