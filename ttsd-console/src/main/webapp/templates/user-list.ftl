@@ -79,7 +79,7 @@
                     </div>
                     <div class="form-group">
                         <label for="referrer">推荐人</label>
-                        <input type="text" class="form-control" name="referrer" placeholder="" value="${referrer!}">
+                        <input type="text" class="form-control ui-autocomplete-input" id="input-referrer" name="referrer" placeholder=""  datatype="*" autocomplete="off" value="${referrer!}">
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary">查询</button>
                     <button type="reset" class="btn btn-sm btn-default">重置</button>

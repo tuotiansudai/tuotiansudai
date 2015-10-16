@@ -20,7 +20,7 @@ require(['jquery', 'jquery-ui',
         //自动完成提示
         var autoValue = '';
         var api_url = '/user/name-like-query';
-        $("#loginName").autocomplete({
+        $("#loginName, #input-referrer").autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
                 $.get(api_url + '/' + query.term, function (respData) {
@@ -29,7 +29,7 @@ require(['jquery', 'jquery-ui',
                 });
             }
         });
-        $("#loginName").blur(function () {
+        $("#loginName, #input-referrer").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
@@ -37,9 +37,7 @@ require(['jquery', 'jquery-ui',
                 } else {
                     $(this).addClass('Validform_error');
                 }
-
             }
-
         });
 
         $('.user-status-modifier').click(function(){
