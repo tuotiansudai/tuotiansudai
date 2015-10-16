@@ -32,6 +32,10 @@ def mer_bind_card(user_id, order_id, mer_date, mer_id, url):
     return _process(order_id, mer_date, mer_id, url, special_payload)
 
 
+def ptp_mer_replace_card(user_id, order_id, mer_date, mer_id, url):
+    return mer_bind_card(user_id, order_id, mer_date, mer_id, url)
+
+
 def project_transfer(order_id, mer_date, mer_id, url):
     special_payload = {'trade_no': get_random_trad_id(), 'ret_code': '0000',
                        'mer_check_date': mer_date, 'service': 'project_transfer_notify'}
