@@ -19,9 +19,6 @@
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
     <context:component-scan base-package="com.tuotiansudai.paywrapper, com.tuotiansudai.utils, com.tuotiansudai.client"/>
 
-    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.paywrapper,com.tuotiansudai.utils,com.tuotiansudai.client"/>
-
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:annotation-driven transaction-manager="payTransactionManager"/>
 
@@ -87,9 +84,7 @@
     <!-- quartz持久化存储 -->
     <bean id="scheduler"
           class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="dataSource">
-            <ref bean="payBoneCPDataSource" />
-        </property>
+        <property name="dataSource" ref="payBoneCPDataSource"/>
         <property name="jobFactory">
             <bean class="com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory" />
         </property>

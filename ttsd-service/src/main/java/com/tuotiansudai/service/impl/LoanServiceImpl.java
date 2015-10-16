@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.ArrayList;
@@ -52,9 +53,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
-
-    @Autowired
-    private RepayService repayService;
 
     /**
      * @param loanTitleDto
@@ -180,14 +178,15 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public BaseDto<LoanDto> getLoanDetail(long loanId) {
-        BaseDto dto = new BaseDto();
+        BaseDto<LoanDto> dto = new BaseDto<>();
         LoanDto loanDto = new LoanDto();
+        dto.setData(loanDto);
+
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {
-            dto.setSuccess(true);
-            loanDto.setStatus(false);
             return dto;
         }
+
         loanDto = convertModelToDto(loanModel);
         loanDto.setStatus(true);
         dto.setData(loanDto);
@@ -269,18 +268,16 @@ public class LoanServiceImpl implements LoanService {
     private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
         BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        double amountNeedRaisedDouble = loanAmountBig.subtract(amountNeedRaisedBig)
-                .divide(new BigDecimal(100d))
-                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        return amountNeedRaisedDouble;
+        return loanAmountBig.subtract(amountNeedRaisedBig)
+                .divide(new BigDecimal(100D), 2, BigDecimal.ROUND_HALF_UP)
+                .doubleValue();
     }
 
     private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return investedAmountBig.divide(loanAmountBig)
-                .setScale(2, BigDecimal.ROUND_DOWN)
-                .multiply(new BigDecimal(100))
+        return investedAmountBig.multiply(new BigDecimal(100))
+                .divide(loanAmountBig, 2, BigDecimal.ROUND_DOWN)
                 .doubleValue();
     }
 
@@ -458,10 +455,6 @@ public class LoanServiceImpl implements LoanService {
         return dto;
     }
 
-    public LoanRepayDataDto getLoanerLoanData(long loanId) {
-        return null;
-    }
-
     @Override
     public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
         // 修改标的的最小投资金额和投资截止时间
@@ -485,11 +478,11 @@ public class LoanServiceImpl implements LoanService {
     private void processLoanOutPayRequest(long loanId) throws TTSDException {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
-        BaseDto<PayDataDto> resp = payWrapperClient.loanOut(loanOutDto);
-        if (resp.isSuccess()) {
-            PayDataDto data = resp.getData();
+        BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
+        if (dto.isSuccess()) {
+            PayDataDto data = dto.getData();
             if (!data.getStatus()) {
-                logger.error("放款失败:" + resp.getData().getMessage());
+                logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
                 throw new TTSDException("放款失败");
             }
         }

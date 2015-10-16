@@ -52,6 +52,7 @@ public class RechargeList extends EntityQuery<Recharge> implements
 				"time >= #{rechargeList.startTime}",
 				"time <= #{rechargeList.endTime}",
 				"status = #{rechargeList.example.status}",
+				"source = #{rechargeList.example.source}",
 				"rechargeWay like #{rechargeList.example.rechargeWay}",
 				"user.username like #{rechargeList.example.user.username}" };
 

@@ -13,6 +13,7 @@
 	<f:metadata>
 		<f:viewParam name="withdrawStatus" value="#{withdrawList.example.status}"></f:viewParam>
 	</f:metadata>
+
 	
 	<ui:define name="content">
 	
@@ -41,12 +42,18 @@
 						pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
 					<h:selectOneMenu value="#{withdrawList.example.status}" style="width:135px;">
                          <f:selectItem itemLabel="请选择提现状态" itemValue=""/> 
-                         <f:selectItem itemLabel="等待审核" itemValue="#{WithdrawStatus.WAIT_VERIFY}"/> 
-                         <f:selectItem itemLabel="等待复核" itemValue="#{WithdrawStatus.RECHECK}"/> 
-                         <f:selectItem itemLabel="通过" itemValue="#{WithdrawStatus.SUCCESS}"/> 
-                         <f:selectItem itemLabel="未通过" itemValue="#{WithdrawStatus.VERIFY_FAIL}"/> 
-                        
+                         <f:selectItem itemLabel="等待审核" itemValue="#{WithdrawStatus.WAIT_VERIFY}"/>
+                         <f:selectItem itemLabel="等待复核" itemValue="#{WithdrawStatus.RECHECK}"/>
+                         <f:selectItem itemLabel="通过" itemValue="#{WithdrawStatus.SUCCESS}"/>
+                         <f:selectItem itemLabel="未通过" itemValue="#{WithdrawStatus.VERIFY_FAIL}"/>
+
                     </h:selectOneMenu>
+					<h:selectOneMenu value="#{withdrawList.example.source}" style="width:135px;">
+						<f:selectItem itemLabel="请选择来源" itemValue=""/>
+						<f:selectItem itemLabel="WEB" itemValue="WEB"/>
+						<f:selectItem itemLabel="IOS" itemValue="IOS"/>
+						<f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+					</h:selectOneMenu>
 					<p:commandButton process="filters" update="dataTable"
 						value="#{commonMsg.searchLabel}"></p:commandButton>
 				</p:panel>
@@ -59,6 +66,7 @@
 				<o:importConstants
 					type="com.esoft.archer.user.UserConstants.WithdrawStatus"
 					var="withdrawStatus" />
+
 				<p:dataTable id="dataTable" value="#{withdrawList.lazyModel}"
 					var="withdraw" paginator="true" paginatorPosition="bottom"
 					rows="15" lazy="true" emptyMessage="#{commonMsg.noResultMsg}" sortBy="time" sortOrder="descending"
@@ -159,6 +167,12 @@
 							<h:outputText value="状态" />
 						</f:facet>
 						<h:outputText value="#{dictUtil.getValue('withdraw',withdraw.status)}"></h:outputText>
+					</p:column>
+					<p:column  style="width:60px">
+						<f:facet name="header">
+							<h:outputText value="来源" />
+						</f:facet>
+						<h:outputText value="#{withdraw.source}"></h:outputText>
 					</p:column>
 					<!-- <p:column headerText="#{commonMsg.actionLabel}" exportable="false" style="width:40px;" rendered="#{configHome.getConfigValue('ipspay_enable') != '1'}">
 						<h:link value="审核"
