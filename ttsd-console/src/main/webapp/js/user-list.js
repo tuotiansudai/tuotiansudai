@@ -53,7 +53,6 @@ require(['jquery', 'jquery-ui',
                 location.reload();
             }).fail(function (data) {
                 alert('操作失败');
-                console.log(data);
             });
             return false;
         });

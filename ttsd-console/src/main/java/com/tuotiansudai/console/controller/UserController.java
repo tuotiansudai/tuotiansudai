@@ -81,6 +81,9 @@ public class UserController {
     @RequestMapping(value = "/user/enable/{loginName}", method = RequestMethod.POST)
     @ResponseBody
     public String enableUser(@PathVariable String loginName,HttpServletRequest request){
+        if(StringUtils.isBlank(loginName)){
+            throw new IllegalArgumentException("参数为空");
+        }
         String ip = RequestIPParser.getRequestIp(request);
         userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip);
         return "OK";
