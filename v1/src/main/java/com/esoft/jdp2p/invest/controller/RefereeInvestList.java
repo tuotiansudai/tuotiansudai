@@ -5,7 +5,6 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.classic.Session;
 import org.hibernate.transform.Transformers;
 import org.primefaces.model.LazyDataModel;
@@ -88,6 +87,7 @@ public class RefereeInvestList implements java.io.Serializable {
         investItem.setInvestTime((Date) result.get("investTime"));
         investItem.setMoney((Double) result.get("money"));
         investItem.setLoanName((String) result.get("loanName"));
+        investItem.setLoanDeadline((Integer) result.get("deadline"));
         investItem.setReferrerId((String) result.get("referrerId"));
         investItem.setReferrerName((String) result.get("referrerName"));
         investItem.setRefereeLevel((Integer) result.get("level"));
@@ -114,6 +114,7 @@ public class RefereeInvestList implements java.io.Serializable {
         String selectTemplate = "select " +
                 "loan.id as loanId, " +
                 "loan.name as loanName, " +
+                "loan.deadline as deadline, " +
                 "invest.id as investId, " +
                 "invest.status as investStatus, " +
                 "invest.time as investTime, " +
@@ -152,11 +153,11 @@ public class RefereeInvestList implements java.io.Serializable {
             whereTemplate += " and rr.level=" + condition.getRefereeLevel();
         }
         if (condition.getIsMerchandiser() != null && condition.getIsMerchandiser()) {
-            whereTemplate += " and reward.role_name='ROLE_MERCHANDISER'";
+            whereTemplate += "and exists (select 1 from user_role where user_role.user_id = referrer.id and user_role.role_id='ROLE_MERCHANDISER')";
         }
 
         if (condition.getIsMerchandiser() != null && !condition.getIsMerchandiser()) {
-            whereTemplate += " and reward.role_name='INVESTOR'";
+            whereTemplate += "and exists (select 1 from user_role where user_role.user_id = referrer.id and user_role.role_id='INVESTOR')";
         }
         if (investStartTime != null) {
             whereTemplate += " and invest.time >='" + dateFormat.format(investStartTime) + "'";

@@ -30,7 +30,6 @@ import com.esoft.jdp2p.invest.model.InvestPulished;
  * 
  */
 @Component
-@Scope(ScopeType.REQUEST)
 public class InvestStatistics {
 
 	@Logger

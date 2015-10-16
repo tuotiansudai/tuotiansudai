@@ -13,6 +13,11 @@
 		<view-id value="themepath:user/center.htm"></view-id>
 		<action>#{trusteeshipHome.handleWebReturn}</action>
 	</url-mapping>
+	<url-mapping id="trusteeshipMobRetrun">
+		<pattern value="/trusteeship_return_mob/#{trusteeshipHome.operationType}"></pattern>
+		<view-id value="themepath:user/center.htm"></view-id>
+		<action>#{trusteeshipHome.handleMobReturn}</action>
+	</url-mapping>
 	<url-mapping id="trusteeshipS2SRetrun">
 		<pattern value="/trusteeship_return_s2s/#{trusteeshipHome.operationType}"></pattern>
 		<view-id value="themepath:user/center.htm" />

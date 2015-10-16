@@ -30,6 +30,7 @@ import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.redis.RedisClient;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
@@ -647,7 +648,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
+	public boolean sendSmsMobileNumber(String mobileNumber, String remoteIp, String authType) {
+		if (Strings.isNullOrEmpty(authType)){
+			return false;
+		}
 		String template = "ip={0}|mobileNumber={1}|registerTime={2}";
 		// FIXME:验证手机号码的合法性
 		// 发送手机验证码
@@ -657,8 +661,7 @@ public class UserServiceImpl implements UserService {
 				DateStyle.YYYY_MM_DD_HH_MM_SS_CN));
 		params.put(
 				"authCode",
-				authService.createAuthInfo(null, mobileNumber, null,
-						CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER)
+				authService.createAuthInfo(null, mobileNumber, null,authType)
 						.getAuthCode());
 		if(!CommonUtils.isDevEnvironment("environment")){
 			if (Strings.isNullOrEmpty(remoteIp)){
@@ -666,19 +669,16 @@ public class UserServiceImpl implements UserService {
 				remoteIp = CommonUtils.getRemoteHost(request);
 			}
 			Date nowTime = new Date();
-			redisClient.lpush("userRegisterList",MessageFormat.format(template, remoteIp, mobileNumber, DateUtil.DateToString(nowTime,"yyyy-MM-dd HH:mm:ss")));
+			redisClient.lpush("userRegisterList", MessageFormat.format(template, remoteIp, mobileNumber, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss")));
 			if (redisClient.exists(remoteIp)) {
 				return false;
 			} else {
 				redisClient.setex(remoteIp, DateUtil.DateToString(nowTime, "yyyy-MM-dd HH:mm:ss"), registerVerifyCodeExpireTime);
 			}
-			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
-					MessageConstants.UserMessageNodeId.REGISTER_BY_MOBILE_NUMBER
-							+ "_sms"), params, mobileNumber);
+			messageBO.sendSMS(ht.get(UserMessageTemplate.class,authType + "_sms"), params, mobileNumber);
 		}
 		return true;
 	}
-
 	@Override
 	public void sendChangeBindingMobileNumberSMS(String userId,
 			String oriMobileNumber) throws UserNotFoundException {

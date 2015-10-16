@@ -2,9 +2,6 @@ package com.esoft.archer.user.controller;
 
 import javax.annotation.Resource;
 
-import com.esoft.archer.user.model.RechargeBankCard;
-import com.esoft.archer.user.model.RechargeBankCardImpl;
-import com.esoft.jdp2p.bankcard.model.BankCard;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.context.annotation.Scope;
@@ -78,7 +75,7 @@ public class RechargeHome extends EntityHome<Recharge> {
 			return;
 		}
 		// 前台表单_blank提交，判空使用js验证，用于防止跳转到支付页面被拦截
-		String url = rechargeService.createRechargeOrder(getInstance());
+		String url = rechargeService.createRechargeOrder(getInstance(), null);
 		FacesUtil.sendRedirect(url);
 	}
 
