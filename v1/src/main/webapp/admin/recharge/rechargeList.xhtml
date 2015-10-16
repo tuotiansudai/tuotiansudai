@@ -28,6 +28,12 @@
 						<f:selectItem itemValue="success" itemLabel="充值成功"></f:selectItem>
 						<f:selectItem itemValue="wait_pay" itemLabel="等待支付"></f:selectItem>
 					</h:selectOneMenu>
+					<h:selectOneMenu value="#{rechargeList.example.source}" style="width:135px;">
+						<f:selectItem itemLabel="请选择来源" itemValue=""/>
+						<f:selectItem itemLabel="WEB" itemValue="WEB"/>
+						<f:selectItem itemLabel="IOS" itemValue="IOS"/>
+						<f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+					</h:selectOneMenu>
 					
 					<p:commandButton process="filters" update="dataTable"
 						value="#{commonMsg.searchLabel}"></p:commandButton>
@@ -111,6 +117,12 @@
 								action="#{rechargeHome.rechargeByAdmin(recharge.id)}"></h:commandLink>
 						</sec:ifAllGranted>
 						<h:outputText value="充值成功" rendered="#{recharge.status eq 'success'}"></h:outputText>
+					</p:column>
+					<p:column  style="width:60px">
+						<f:facet name="header">
+							<h:outputText value="来源" />
+						</f:facet>
+						<h:outputText value="#{recharge.source}"></h:outputText>
 					</p:column>
 					
 					<f:facet name="footer">

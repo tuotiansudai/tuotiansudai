@@ -31,7 +31,10 @@ import com.esoft.core.util.HashCrypt;
 import com.esoft.core.util.ImageUploadUtil;
 import com.esoft.core.util.SpringBeanUtil;
 import com.esoft.core.util.StringManager;
+import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
+import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.ttsd.aliyun.AliyunUtils;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -105,6 +108,8 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     ValidationService vdtService;
     @Resource
     CaptchaService captchaService;
+    @Autowired
+    UmPayUserOperation umPayUserOperation;
 
     private static String imageCaptchaStatus = "{0}_image_captcha_status";
 
@@ -418,6 +423,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
                 FacesUtil.addErrorMessage("注册失败！");
                 return null;
             }
+            getInstance().setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -454,6 +460,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     public String registerByOpenAuth() {
         try {
+            getInstance().setSource(AccessSource.WEB.name());
             userService.registerByMobileNumber(getInstance(), authCode,
                     referrer);
         } catch (NoMatchingObjectsException e) {
@@ -597,6 +604,28 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
         // 获取原始用户信息
         User oldUserInfo = userBO.getUserByUsernameFromDb(getInstance().getUsername());
+        String realName = oldUserInfo.getRealname();
+        String idCard = oldUserInfo.getIdCard();
+        String mobileNumberNew = getInstance().getMobileNumber();
+        String mobileNumberOld = oldUserInfo.getMobileNumber();
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(realName)
+                && org.apache.commons.lang3.StringUtils.isNotEmpty(idCard)
+                &&!"".equals(mobileNumberNew)
+                && !mobileNumberOld.equals(mobileNumberNew)){
+            try {
+                umPayUserOperation.createOperation(getInstance(),
+                        FacesContext.getCurrentInstance());
+                FacesUtil.addInfoMessage("实名认证手机号修改成功。");
+            } catch (IOException e) {
+                userInfo.setMobileNumber(mobileNumberOld);
+                log.error(e.getLocalizedMessage(),e);
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
+            }catch (UmPayOperationException e) {
+                userInfo.setMobileNumber(mobileNumberOld);
+                FacesUtil.addErrorMessage("实名认证手机号修改失败!");
+                log.error(e.getLocalizedMessage(),e);
+            }
+        }
 
         // 修改用户信息
         getBaseService().merge(userInfo);
@@ -607,6 +636,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
         }
 
         FacesUtil.addInfoMessage("用户信息修改成功！");
+
 
         String userString = userInfoLogService.generateUserInfoString(userInfo, oldUserInfo);
         userInfoLogService.logUserOperation(getInstance().getUsername(), "修改了用户信息：" + userString, true);
@@ -770,7 +800,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      */
     @Deprecated
     public void sendRegisterAuthCodeToMobile(String mobileNumber) {
-        userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         FacesUtil.addInfoMessage("短信已发送，请注意查收！");
     }
 
@@ -781,7 +811,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
      * @param jsCode       成功后执行的js代码
      */
     public void sendRegisterAuthCodeToMobile(String mobileNumber, String jsCode) {
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
             RequestContext.getCurrentInstance().execute(jsCode);
@@ -804,7 +834,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
             RequestContext.getCurrentInstance().execute(jsCode);
         } else {
@@ -822,7 +852,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
             return;
         }
 
-        boolean isSend = userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+        boolean isSend = userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
         if (isSend) {
 
             FacesUtil.addInfoMessage("短信已发送，请注意查收！");
@@ -947,7 +977,7 @@ public class UserHome extends EntityHome<User> implements java.io.Serializable {
     public String sendAuthCodeToMobile(String mobileNumber) {
         String hql = "from User u where u.mobileNumber = ?";
         if (0 != getBaseService().find(hql, mobileNumber).size()) {
-            userService.sendRegisterByMobileNumberSMS(mobileNumber, null);
+            userService.sendSmsMobileNumber(mobileNumber, null, CommonConstants.AuthInfoType.REGISTER_BY_MOBILE_NUMBER);
             RequestContext.getCurrentInstance().addCallbackParam("sendSuccess",
                     true);
             FacesUtil.setSessionAttribute("mobileNumber", mobileNumber);

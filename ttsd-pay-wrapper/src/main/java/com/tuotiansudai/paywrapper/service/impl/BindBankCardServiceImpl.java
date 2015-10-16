@@ -6,9 +6,11 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.AsyncServiceType;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindCardRequestModel;
@@ -85,6 +87,16 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             }
         } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public String bindBankCardApplyCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, BankCardApplyNotifyMapper.class, BankCardApplyNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
         }
 
         return callbackRequest.getResponseData();
