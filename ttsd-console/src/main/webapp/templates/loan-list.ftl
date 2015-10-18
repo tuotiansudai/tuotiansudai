@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
+<#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,47 +20,54 @@
     <script src="../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 
+    <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+        });
+
+        $(function () {
+            $(".search").on("click",function(){
+                var status = $(".bs-docs-sidenav").find(".active").find("a").data("status");
+                var loanId;
+                if ($(".loanId").val() == "") {
+                    loanId = 0;
+                } else {
+                    loanId = $(".loanId").val();
+                }
+                var loanName = $(".loanName").val();
+                var startTime = dateFormate($('#datetimepicker1').find("input").val());
+                var endTime = dateFormate($('#datetimepicker2').find("input").val());
+                window.location.href = "/loanList/console?status="+status+"&loanId="+loanId+"&startTime="+startTime+"&endTime="+endTime+"&currentPageNo=1&loanName="+loanName+"&pageSize=10";
+            });
+
+            function dateFormate(time) {
+                if(time == "") {
+                    return "";
+                }
+                var timeArray = time.split(" ");
+                var year = timeArray[0].split("/")[2];
+                var month = timeArray[0].split("/")[0];
+                var day = timeArray[0].split("/")[1];
+                var hour;
+                if(timeArray[2]=="PM") {
+                    hour = parseInt(timeArray[1].split(":")[0])+12;
+                } else {
+                    hour = timeArray[1].split(":")[0];
+                }
+                var min = timeArray[1].split(":")[1];
+                return year+"-"+month+"-"+day+" "+hour+":"+min;
+            }
+        });
+    </script>
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
 <!-- header begin -->
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="../../" class="navbar-brand"><img src="../images/logo.jpg" alt=""></a>
-        </div>
-    </div>
-    <nav id="bs-navbar" class="collapse navbar-collapse">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="">系统主页</a>
-                </li>
-                <li>
-                    <a href="" >项目管理</a>
-                </li>
-                <li>
-                    <a href="../html/userManage/referees.html">用户管理</a>
-                </li>
-                <li>
-                    <a href="" >财务管理</a>
-                </li>
-                <li>
-                    <a href="" >文章管理</a>
-                </li>
-                <li>
-                    <a href="" >安全管理</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+<@menu.header label="proMan"></@menu.header>
 <!-- header end -->
 
 <!-- main begin -->
@@ -88,11 +97,11 @@
                 <form action="" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">编号</label>
-                        <input type="text" class="form-control" id="" placeholder="" value="${(loanId?string('0'))!}">
+                        <input type="text" class="form-control loanId" id="" placeholder="" value="${(loanId?string('0'))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">项目名称</label>
-                        <input type="text" class="form-control" id="" placeholder="" value="${loanName!}">
+                        <input type="text" class="form-control loanName" id="" placeholder="" value="${loanName!}">
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
@@ -121,7 +130,7 @@
                     <!--</select>-->
                     <!--</div>-->
 
-                    <button type="button" class="btn btn-sm btn-primary">查询</button>
+                    <button type="button" class="btn btn-sm btn-primary search">查询</button>
                 </form>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover ">
