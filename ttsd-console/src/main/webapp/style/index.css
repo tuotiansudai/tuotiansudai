@@ -112,3 +112,12 @@ a:hover {
     border: none;
     box-shadow: none;
 }
+.query-build input.form-control {
+    width:170px;
+}
+td.projectName { width:25%;}
+td.projectName span { display: inline-block; text-overflow: ellipsis; white-space: nowrap; padding-right:10px; overflow: hidden; width:250px; }
+td.td {text-align:center;}
+
+.loan_repay{color: #0064cd;}
+.invest_repay{color: #cc0000;}
