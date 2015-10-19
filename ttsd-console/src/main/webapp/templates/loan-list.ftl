@@ -20,49 +20,10 @@
     <script src="../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 
-    <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker();
-            $('#datetimepicker2').datetimepicker();
-        });
-
-        $(function () {
-            $(".search").on("click",function(){
-                var status = $(".bs-docs-sidenav").find(".active").find("a").data("status");
-                var loanId;
-                if ($(".loanId").val() == "") {
-                    loanId = 0;
-                } else {
-                    loanId = $(".loanId").val();
-                }
-                var loanName = $(".loanName").val();
-                var startTime = dateFormate($('#datetimepicker1').find("input").val());
-                var endTime = dateFormate($('#datetimepicker2').find("input").val());
-                window.location.href = "/loanList/console?status="+status+"&loanId="+loanId+"&startTime="+startTime+"&endTime="+endTime+"&currentPageNo=1&loanName="+loanName+"&pageSize=10";
-            });
-
-            function dateFormate(time) {
-                if(time == "") {
-                    return "";
-                }
-                var timeArray = time.split(" ");
-                var year = timeArray[0].split("/")[2];
-                var month = timeArray[0].split("/")[0];
-                var day = timeArray[0].split("/")[1];
-                var hour;
-                if(timeArray[2]=="PM") {
-                    hour = parseInt(timeArray[1].split(":")[0])+12;
-                } else {
-                    hour = timeArray[1].split(":")[0];
-                }
-                var min = timeArray[1].split(":")[1];
-                return year+"-"+month+"-"+day+" "+hour+":"+min;
-            }
-        });
-    </script>
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datepicker.js"></script>
+    <@global.javascript pageJavascript="loanList.js"></@global.javascript>
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
@@ -75,26 +36,18 @@
     <div class="container-fluid">
         <div class="row">
             <!-- menu sidebar -->
-            <div class="col-md-2">
-                <ul class="nav bs-docs-sidenav">
-                    <li <#if status??><#else>class="active"</#if>>
-                        <a href="${requestContext.getContextPath()}/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="">所有借款</a>
-                    </li>
-                    <li <#if status?? && status=="WAITING_VERIFY">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=WAITING_VERIFY&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="WAITING_VERIFY">初审的借款</a></li>
-                    <li <#if status?? && status=="RAISING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RAISING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RAISING">筹款中借款</a></li>
-                    <li <#if status?? && status=="RECHECK">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RECHECK&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RECHECK">复审借款</a></li>
-                    <li <#if status?? && status=="REPAYING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=REPAYING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="REPAYING">还款中的借款</a></li>
-                    <li <#if status?? && status=="COMPLETE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="COMPLETE">完成还款的借款</a></li>
-                    <li <#if status?? && status=="CANCEL">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="CANCEL">已流标等借款</a></li>
-                    <li <#if status?? && status=="OVERDUE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="OVERDUE">逾期借款</a></li>
-                    <li><a href="projectManage/star.html">发起借款</a></li>
-                </ul>
-            </div>
+            <#if status??>
+                <#assign loanStatus="${status}">
+            <#else>
+                <#assign loanStatus="ALL">
+            </#if>
+            <@menu.sidebar headLab="proMan" sideLab="${loanStatus}"></@menu.sidebar>
             <!-- menu sidebar end -->
 
             <!-- content area begin -->
             <div class="col-md-10">
                 <form action="" class="form-inline query-build">
+                    <input type="hidden" class="status" value="<#if status??>${status}</#if>">
                     <div class="form-group">
                         <label for="number">编号</label>
                         <input type="text" class="form-control loanId" id="" placeholder="" value="${(loanId?string('0'))!}">
@@ -106,15 +59,15 @@
                     <div class="form-group">
                         <label for="number">日期</label>
 
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                        <div class='input-group date' id='datepicker1'>
+                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                         </div>
                         -
-                        <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                        <div class='input-group date' id='datepicker2'>
+                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -152,15 +105,15 @@
                         <#list loanListDtos as loanListDto>
                         <tr>
                             <td>${loanListDto.id?string('0')}</td>
-                            <td class="projectName"><a href="#" title="${loanListDto.name}">${loanListDto.name}</a></td>
+                            <td class="projectName"><span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${loanListDto.name}">${loanListDto.name}</span></td>
                             <td>${loanListDto.agentLoginName}</td>
-                            <td>${loanListDto.loanAmount/100}</td>
-                            <td>${loanListDto.periods}</td>
+                            <td class="td">${loanListDto.loanAmount/100}</td>
+                            <td class="td">${loanListDto.periods}</td>
                             <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
                             <td>${loanListDto.status.getDescription()}</td>
                             <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                            <td>投资/还款记录</td>
-                            <td>编辑</td>
+                            <td><a class="invest_repay" href="">投资</a>/<a class="loan_repay" href="/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
+                            <td><a>编辑</a></td>
                         </tr>
                         </#list>
                         </tbody>
