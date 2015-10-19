@@ -1,68 +1,96 @@
-/************recharge*********/
-.recharge-container {
-  width: 820px;
+@import 'variables';
+.content {
+  width: nth($baseWidth,1);
+  @include center-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow: auto;
   height: auto;
-  overflow: hidden;
-  float: right;
-  background: #fff;
+}
+aside.menuBox {
+  width: nth($baseWidth,2);
+  overflow: auto;
+  height: auto;
+  @include border-radius(3px);
   border: #dadada 1px solid;
-  border-radius: 3px;
-  & p.title {
-    display: block;
-    width: 100%;
-    height: 32px;
-    margin-top: 10px;
+  background: nth($baseColor,1);
+  .menu-list {
+    li {
+      border-bottom: #dadada 1px solid;
+      height: 41px;
+      line-height: 41px;
+      text-align: center;
+      font-size: nth($fontSize, 4);
+      a{
+        display: block;
+        color: nth($baseColor,2);
+        &:hover {
+          background: nth($baseColor,2);
+          color: nth($baseColor,1);
+        }
+      }
+      a.actived {
+        background: nth($baseColor,2);
+        color: nth($baseColor,1);
+      }
+    }
+  }
+}
+.recharge-container {
+  width: nth($baseWidth,3);
+  background:nth($baseColor,1);
+  border: #dadada 1px solid;
+  @include border-radius(3px);
+   & h4 {
+    height: 48px;
+    line-height: 46px;
     border-bottom: #d5d5d5 1px solid;
-    & em {
-      display: block;
-      height: 30px;
+     & em {
+      display: inline-block;
       padding: 1px 0;
       border-bottom: #e06b0c 2px solid;
       width: 110px;
-      text-align: center;
       color: #ffac2a;
     }
   }
   .recharge-content {
-    width: 800px;
     margin: 10px 4px 0px;
-    position: relative;
-    overflow: hidden;
-    & ul {
-      position: relative;
-      height: 50px;
+    & ul.payment-mode {
       border-bottom: #dddddd 1px solid;
-    }
-    & ul li.active {
-      border-bottom: #fff 1px solid;
-      border-top: #e06b0c 1px solid;
-    }
-    & .hot-flag {
-      position: absolute;
-      z-index: 8;
-      right: 3px;
-      top: -14px;
-    }
-    & ul li {
-      width: 114px;
-      height: 48px;
-      text-align: center;
-      line-height: 48px;
-      border: #dddddd 1px solid;
-      font-size: 17px;
-      color: #353535;
-      font-weight: normal;
-      float: left;
-      margin-right: 10px;
-      cursor: pointer;
-      position: relative;
-      bottom: -1px;
+      li {
+        width: 114px;
+        height:48px;
+        line-height: 48px;
+        border: #dddddd 1px solid;
+        font-size: 17px;
+        float: left;
+        margin-right: 10px;
+        cursor: pointer;
+        position: relative;
+        bottom: -1px;
+        text-align: center;
+      }
+
+      li.active {
+        border-bottom: #fff 1px solid;
+        border-top: #e06b0c 1px solid;
+      }
+      .hot-flag {
+        position: absolute;
+        z-index: 8;
+        right: 3px;
+        top: 0px;
+        background: url("/images/icons/hot.jpg") no-repeat center center;
+        width:23px;
+        height: 23px;
+      }
     }
     & .e-bank-recharge {
       border: #dddddd 1px solid;
       border-top: none;
       overflow: hidden;
       padding-bottom: 20px;
+
     }
     & ol.fast-pay li {
       width: auto;
@@ -107,6 +135,94 @@
             cursor: pointer;
           }
         }
+      }
+    }
+    & .CertifiedImg {
+      background: url('/images/sign/re-s01.png') center top no-repeat;
+      //background-size: 50%;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      height:170px;
+    }
+    & .panel {
+      color: nth($baseColor, 6);
+    }
+    & p.notice {
+      b  {
+        font-size: nth($fontSize,4);}
+    }
+    & .btnBox  {
+      margin-top:30px;
+      margin-bottom: 20px;
+    }
+    & .planSwitch {
+      color: nth($baseColor, 3);
+      form {
+        margin-left: 28px;
+        margin-top: 15px;
+      }
+      dl {
+        margin-bottom: 15px;
+        clear: both;
+        dt {
+          color: nth($baseColor,4);
+          display: inline-block;
+          float: left;
+        }
+        dd.projectLimit {
+          float: left;
+          width: 50%;
+          label {
+            margin-right: 5px;
+          }
+          span {
+            display: inline-block;
+            color: nth($baseColor, 4);
+            width:60px;
+            text-align: center;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e1e1e1;
+            position: relative;
+            cursor: pointer;
+            & .badge {
+              background-image: url("/images/icons/spr.png");
+              background-position: -387px -172px;
+              background-repeat: no-repeat;
+              width: 13px;
+              height: 13px;
+              position: absolute;
+              top: 0;
+              right: 0;
+              display: none;
+            }
+            &.active {
+              border: 1px solid nth($btnColor, 5);
+              color: nth($btnColor, 5);
+              & .badge {
+                display: inline-block;
+              }
+
+            }
+
+          }
+        }
+
+      }
+      & .agreeStatus {
+        margin-bottom: 20px;
+        color: nth($baseColor, 4);
+        label {
+          vertical-align: middle;
+        }
+      }
+    }
+    & .borderBox:nth-child(2) {
+      margin-top:10px;
+    }
+    & .planSet {
+      i {
+        color: nth($btnColor, 5);
       }
     }
   }
@@ -162,41 +278,6 @@
       padding: 0px 15px;
     }
   }
-}
-
-/***********recharge**********/
-.content {
-  width: 998px;
-  height: auto;
-  margin: 20px auto;
-  overflow: hidden;
-}
-
-.email-nav {
-  width: 168px;
-  height: auto;
-  overflow: hidden;
-  border: #dadada 1px solid;
-  border-radius: 3px;
-  float: left;
-  background: #fff;
-}
-
-.email-nav li {
-  border-bottom: #dadada 1px solid;
-}
-
-.email-nav a {
-  display: block;
-  height: 41px;
-  line-height: 41px;
-  text-align: center;
-  color: #ffac2a;
-}
-
-.email-nav a:hover {
-  background: #ffac2a;
-  color: #fff;
 }
 
 .email-right {
@@ -423,7 +504,9 @@
     color: #fff;
   }
 }
+.popWindow {
 
+}
 .ecope-overlay {
   background: #333;
   opacity: 0.6;
@@ -434,20 +517,16 @@
   width: 100%;
   height: 100%;
   z-index: 9999;
-  display: none;
+  //display: none;
 }
 
 .ecope-dialog {
   background: rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  position: fixed;
-  z-index: 10000;
-  top: 50%;
-  left: 50%;
-  margin: -130px 0 0 -280px;
-  height: 260px;
+  max-height: 560px;
   width: 560px;
-  display: none;
+  position: absolute;
+  z-index: 10000;
 }
 
 .ecope-dialog .dg_wrapper {
@@ -456,8 +535,6 @@
   padding: 10px;
   border: 1px solid #7a7a7a;
   font-size: 14px;
-  height: 220px;
-  width: 522px;
   background: #fff;
 }
 
@@ -484,6 +561,10 @@
 .ecope-dialog .btn-4 {
   background: #fc6;
 }
+.ecope-dialog .btn.btn-normal {
+  line-height: 25px;
+  margin: 20px auto 20px 90px;
+}
 
 .ecope-dialog .hd {
   height: 40px;
@@ -498,18 +579,17 @@
   text-indent: 10px;
   margin: 0;
   font-weight: normal;
+  position: relative;
 }
-
-.ecope-dialog .close {
+.ecope-dialog h3 .close  {
   width: 20px;
   height: 20px;
-  overflow: hidden;
   display: block;
   position: absolute;
-  top: 18px;
+  top: 14px;
   right: 18px;
-  background: url('/images/recharge/spr.png') no-repeat 0 -100px;
-  text-indent: -999em;
+  cursor: pointer;
+  background: url('/images/icons/spr.png') no-repeat 0 -100px;
 }
 
 .ecope-dialog .close:hover {
@@ -554,7 +634,7 @@
 }
 
 .ecope-dialog .dialog-chongzhi {
-  background:#fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
+  background:#fff url('/images/sign/bg_dialog_cz.png') 414px 110px no-repeat;
 }
 
 .ecope-dialog .dialog-2 {

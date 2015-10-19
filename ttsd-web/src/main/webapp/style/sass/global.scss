@@ -1,56 +1,53 @@
-body, html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input,button {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-family: 'Microsoft YaHei';
-  font-style: normal;
-  outline: none;
+@import 'reset', 'btn';
+@import 'recharge';
+.borderBox {
+  border: 1px solid nth($borderColor, 1);
+  padding: 12px;
+  font-size: 13px;
+  line-height: nth($baseLineHeight, 1);
+}
+.icon-notice {
+  width:23px;
+  height: 23px;
+  display: inline-block;
+  margin-right: 10px;
+  background: url('/images/icons/spr.png') no-repeat 0 -312px;
+  vertical-align: middle;
+}
+.text-notice {
+  color: nth($btnColor,5);
+  font-size: nth($fontSize, 4);
 }
 
-a {
-  text-decoration: none;
-}
 
-img {
-  border: none;
-}
-
-body {
-  background: #f9f9f9;
-}
+/* pop window */
 
 .header {
   .top {
     width: 100%;
     height: 30px;
     background: #333;
-    font-size: 12px;
-    div {
-      width: 994px;
-      height: 30px;
+    font-size: nth($fontSize,1);
+    .topIn {
+      width: nth($baseWidth,1);
       line-height: 30px;
       margin: 0 auto;
-      p {
-        width: 400px;
-        float: left;
-        color: #fff;
+      em {
+        color: nth($baseColor,1);
         span {
-          color: #979797;
+          color: nth($baseColor,4);
           margin-left: 8px;
         }
       }
       ul {
-        float: right;
         li {
-          float: left;
+          float: nth($baseFloat,1);
           margin-right: 10px;
-          color: #fff;
           a {
-            width: auto;
             padding-left: 8px;
-            color: #fff;
+            color: nth($baseColor,1);
             &:hover {
-              color: #ffc600;
+              color:  nth($baseColor,2);
             }
           }
         }

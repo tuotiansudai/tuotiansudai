@@ -31,23 +31,18 @@
         <h4><em class="tc">自动投标</em></h4>
 
         <div class="recharge-content pad-s">
-            <div class="CertifiedImg"></div>
+            <div class="borderBox">
+                <ul class="planSet">
+                    <li><b>投资金额：</b><i>100</i> --- <i>1000000</i> 元</li>
+                    <li><b>保留金额：</b><i>0.00 </i>元</li>
+                    <li><b>项目期限：</b><span>1月期、2月期、3月期、4月期、5月期、6月期、7月期、8月期、9月期、10月期、11月期、12月期</span></li>
+                </ul>
+            </div>
 
-            <p class="notice">
-                <b>注意事项：</b> <br/>
-                1. 设置并保存后，将在次日零点开启自动投标。<br/>
-                2. 自动投标开启后，若有多个项目可投，将尽可能优先选择可使用投资券的项目，投资券优先选择面值大的、快到期的。<br/>
-                3. 自动投标开启后，如果不想自动投标，请手动关闭。<br/>
-                4. 根据您的设置，筛选并自动为您投资，但我们不能保证对所有的项目投资成功。<br/>
-                5. 用户开通自动投标功能即视为委托拓天速贷平台与达到用户指定标准的借款人签署借款合同，并承担该合同项下的一切权利
-                及义务。<br/>
-                6. 如果您同意开通自动投标请前往联动优势托管平台进行授权，立即享受自动投标功能。<br/>
-            </p>
 
             <div class="btnBox tc">
-                <form action="/recharge" method="post" target="_blank">
-                    <button type="submit" id="btnAuthority" class="btn btn-normal">立即授权</button>
-                </form>
+                <button type="button" class="btn btn-normal">修改设置</button>
+                <p class="pad-m text-notice"><i class="icon-notice"></i>自动投标将在次日零点开启</p>
             </div>
         </div>
 
