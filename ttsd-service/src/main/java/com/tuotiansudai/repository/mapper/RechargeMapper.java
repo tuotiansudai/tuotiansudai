@@ -11,4 +11,6 @@ public interface RechargeMapper {
     void updateStatus(@Param("id") long id, @Param("status") RechargeStatus status);
 
     RechargeModel findById(long id);
+
+    long findSumRechargeByLoginName(String loginName);
 }

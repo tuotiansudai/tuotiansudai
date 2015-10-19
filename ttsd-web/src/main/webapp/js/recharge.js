@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'autoNumeric'], function ($) {
+require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
     $(function () {
         var amountInputElement = $(".e-bank-amount");
         var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
@@ -79,98 +79,16 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
             amountElement.val(amount);
             var content=$('#popRecharge');
 
-            popWindow('登录到联动优势支付平台充值',content,{width:'560px'});
+            commonFun.popWindow('登录到联动优势支付平台充值',content,{width:'560px'});
 
         });
-        var initRadio=function($radio,$radioLabel) {
-            var numRadio=$radio.length;
-            if(numRadio) {
-                $radio.each(function(key,option) {
-                    var $this=$(this);
-                    if($this.is(':checked')) {
-                        $this.next('label').addClass('checked');
-                    }
-                    $this.next('label').click(function() {
-                        var $thisLab=$(this);
-                        if(!/checked/.test(this.className)) {
-                            $radioLabel.removeClass('checked');
-                            $thisLab.addClass('checked');
-                        }
-                    });
-                });
 
-            }
-        };
-        var checkBoxInit=function($checkbox,$label) {
-            var numCheckbox=$checkbox.length;
-            if(numCheckbox) {
-                $checkbox.each(function(key,option) {
-                    var $this=$(this);
-                    if($this.is(':checked')) {
-                        $this.next('label').addClass('checked');
-                    }
-                    $this.next('label').click(function() {
-                        var $thisLab=$(this);
-                        if(/checked/.test(this.className)) {
-                            $thisLab.removeClass('checked');
-                        }
-                        else {
-                            $thisLab.addClass('checked');
-                        }
-                    });
-                });
-
-            }
-        };
-        var popWindow=function(title,content,size) {
-            if(!$('.popWindow').length) {
-                var popW=[];
-                popW.push('<div class="popWindow">');
-                popW.push('<div class="ecope-overlay"></div>');
-                popW.push('<div class="ecope-dialog">');
-                popW.push('<div class="dg_wrapper">');
-
-                popW.push('<div class="hd"><h3>'+title+' ' +
-                    '<em class="close" ></em></h3></div>');
-                popW.push('<div class="bd">sss</div>');
-
-                popW.push('</div></div></div>');
-                $('body').append(popW.join(''));
-                var $popWindow=$('.ecope-dialog'),
-                size= $.extend({width:'560px'},size);
-                $popWindow.css({
-                    width:size.width
-                });
-                var adjustPOS=function() {
-                    var scrollHeight=document.body.scrollTop || document.documentElement.scrollTop,
-                        pTop=$(window).height()-$popWindow.height(),
-                        pLeft=$(window).width()-$popWindow.width();
-                    $popWindow.css({'top':pTop/2+scrollHeight,left:pLeft/2});
-                    $popWindow.find('.bd').empty().append(content);
-                }
-                adjustPOS();
-                $(window).resize(function() {
-                    adjustPOS();
-                });
-                var mousewheel = document.all?"mousewheel":"DOMMouseScroll";
-                $(window).bind('mousewheel',function() {
-                    adjustPOS();
-                })
-            }
-            else {
-                $('.ecope-overlay,.popWindow').show();
-            }
-
-            $popWindow.delegate('.close','click',function() {
-                $('.ecope-overlay,.popWindow').hide();
-            })
-        }
 
         if($('#btnAuthority').length) {
             var $btnAuthority=$('#btnAuthority');
             $btnAuthority.click(function() {
                 var content='<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
-                popWindow('自动投标授权',content,{
+                commonFun.popWindow('自动投标授权',content,{
                     width:'450px'
                 });
 
@@ -190,8 +108,8 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
                 $checkbox=$('input[type="checkbox"]',$planSwitchDom),
                 $checkboxLabel=$('label.checkbox',$planSwitchDom);
             //init radio and checkbox
-            initRadio($radio,$radioLabel);
-            checkBoxInit($checkbox,$checkboxLabel);
+            commonFun.initRadio($radio,$radioLabel);
+            commonFun.checkBoxInit($checkbox,$checkboxLabel);
 
             $radioLabel.click(function(index) {
                 var $this=$(this),

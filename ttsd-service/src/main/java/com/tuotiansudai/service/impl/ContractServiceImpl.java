@@ -123,7 +123,7 @@ public class ContractServiceImpl implements ContractService {
         LoanModel loanModel = loanMapper.findById(loanId);
         AccountModel loanerAccountModel = accountMapper.findByLoginName(loanModel.getLoanerLoginName());
         AccountModel agentAccountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(loanId);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         dataModel.put("loanId","" + loanId);
         dataModel.put("loanerUserName",Strings.nullToEmpty(loanerAccountModel.getUserName()));
         dataModel.put("loanerLoginName",Strings.nullToEmpty(loanModel.getLoanerLoginName()));

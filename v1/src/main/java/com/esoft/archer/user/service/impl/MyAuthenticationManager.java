@@ -15,7 +15,10 @@ import com.esoft.archer.user.model.UserLoginLog;
 import com.esoft.archer.user.schedule.EnableUserJob;
 import com.esoft.archer.user.service.UserService;
 import com.esoft.core.jsf.util.FacesUtil;
-import com.esoft.core.util.*;
+import com.esoft.core.util.DateUtil;
+import com.esoft.core.util.IdGenerator;
+import com.esoft.core.util.SpringBeanUtil;
+import com.esoft.core.util.StringManager;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.ObjectNotFoundException;
 import org.quartz.*;
@@ -68,39 +71,10 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 	}
 
 	/**
-	 * 解密
-	 * 
-	 * @param authentication
-	 * @param userDetails
-	 * @return
-	 */
-	private Authentication decryptBase64(Authentication authentication) {
-		String en = request.getParameter("encrypt");
-		if (en != null && en.equals("encrypt")) {
-			try {
-				String username = new String(
-						Base64Coder.decryptBase64((String) authentication
-								.getPrincipal()));
-				String pass = new String(
-						Base64Coder.decryptBase64((String) authentication
-								.getCredentials()));
-				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-						username, pass, authentication.getAuthorities());
-				return token;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return authentication;
-	}
-
-	/**
 	 * 验证用户名
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		authentication = this.decryptBase64(authentication);
 		// 是否需要验证码
 		Boolean needValidateCode = (Boolean) request.getSession(true).getAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE);
 
@@ -156,6 +130,7 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		try {
 			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, false);
 			userService.changeUserStatus(user.getId(), UserConstants.UserStatus.ENABLE);
+
 		} catch (UserNotFoundException e) {
 			logger.error(e);
 			return;
@@ -201,12 +176,16 @@ public class MyAuthenticationManager extends DaoAuthenticationProvider {
 		BaseService<User> userService = (BaseService<User>) SpringBeanUtil.getBeanByName("baseService");
 		userService.save(user);
 
-		if (loginFailLimit <= loginFailTime) {
+		if (loginFailLimit <= loginFailTime && !isContainsAppHeader(request)) {
 			request.getSession(true).setAttribute(UserConstants.AuthenticationManager.NEED_VALIDATE_CODE, true);
 		}
 
 		handleUserState(user);
 		addUserLoginLog(user, request, UserConstants.UserLoginLog.FAIL);
+	}
+
+	private boolean isContainsAppHeader(final HttpServletRequest httpServletRequest) {
+		return "YES".equalsIgnoreCase(httpServletRequest.getHeader("MobileApp"));
 	}
 
 	/**

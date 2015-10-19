@@ -2,9 +2,13 @@ package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -60,6 +64,34 @@ public class UserController {
 
     }
 
+    @RequestMapping(value = "/user/disable/{loginName}", method = RequestMethod.POST)
+    @ResponseBody
+    public String disableUser(@PathVariable String loginName,HttpServletRequest request){
+        if(StringUtils.isBlank(loginName)){
+            throw new IllegalArgumentException("参数为空");
+        }
+        if(LoginUserInfo.getLoginName().equals(loginName)){
+            throw new IllegalArgumentException("不能禁用当前登录用户");
+        }
+        String ip = RequestIPParser.getRequestIp(request);
+        userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip);
+        return "OK";
+    }
 
+    @RequestMapping(value = "/user/enable/{loginName}", method = RequestMethod.POST)
+    @ResponseBody
+    public String enableUser(@PathVariable String loginName,HttpServletRequest request){
+        if(StringUtils.isBlank(loginName)){
+            throw new IllegalArgumentException("参数为空");
+        }
+        String ip = RequestIPParser.getRequestIp(request);
+        userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip);
+        return "OK";
+    }
 
+    @RequestMapping(value = "/user/name-like-query/{loginName}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findLoginNames(@PathVariable String loginName) {
+        return userService.findLoginNameLike(loginName);
+    }
 }

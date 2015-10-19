@@ -10,7 +10,9 @@ var require = {
         'mustache': '/js/libs/mustache-2.1.3.min',
         'moment': '/js/libs/moment-2.10.6.min',
         'underscore': '/js/libs/underscore-1.8.3.min',
-        'csrf': '/js/dest/csrf.min'
+        'csrf': '/js/dest/csrf.min',
+        'daterangepicker': '/js/libs/jquery.daterangepicker-0.0.7',
+        'commonFun': '/js/common',
     },
 
     'shim': {

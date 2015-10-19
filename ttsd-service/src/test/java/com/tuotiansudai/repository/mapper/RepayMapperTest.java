@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by Administrator on 2015/9/8.
@@ -73,6 +76,7 @@ public class RepayMapperTest {
         userMapper.create(userModel);
         LoanDto loanDto = this.getLoanModel();
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setCreatedTime(new DateTime().minusDays(2).withTimeAtStartOfDay().toDate());
         loanMapper.create(loanModel);
         List<LoanRepayModel> loanRepayModels = Lists.newArrayList();
         LoanRepayModel loanRepayModel = new LoanRepayModel();
@@ -82,7 +86,8 @@ public class RepayMapperTest {
         loanRepayModel.setPeriod(1);
         loanRepayModel.setStatus(RepayStatus.REPAYING);
         loanRepayModel.setLoanId(loanModel.getId());
-        loanRepayModel.setRepayDate(new Date());
+        loanRepayModel.setRepayDate(new DateTime().withTimeAtStartOfDay().toDate());
+        loanRepayModel.setCreatedTime(new DateTime().minusDays(1).withTimeAtStartOfDay().toDate());
         loanRepayModel.setCorpus(0);
         loanRepayModel.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel);
@@ -93,19 +98,21 @@ public class RepayMapperTest {
         loanRepayModel1.setPeriod(1);
         loanRepayModel1.setStatus(RepayStatus.REPAYING);
         loanRepayModel1.setLoanId(loanModel.getId());
-        loanRepayModel1.setRepayDate(new Date());
+        loanRepayModel1.setRepayDate(new DateTime().plusDays(10).withTimeAtStartOfDay().toDate());
         loanRepayModel1.setCorpus(0);
         loanRepayModel1.setExpectedInterest(0);
         loanRepayModels.add(loanRepayModel1);
         loanRepayMapper.create(loanRepayModels);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        cal.add(Calendar.DATE,-1);
-        String startDate = sdf.format(cal.getTime());
-        cal.add(Calendar.DATE,2);
-        String endDate = sdf.format(cal.getTime());
 
-        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", null, startDate, endDate);
+        List<LoanRepayModel> models = loanRepayMapper.findLoanRepayPagination(0, 1, loanModel.getId(), "", RepayStatus.REPAYING, new DateTime().withTimeAtStartOfDay().toDate(), new DateTime().withTimeAtStartOfDay().toDate());
         assertNotNull(models);
+
+        assertThat(models.get(0).getId(), is(loanRepayModel.getId()));
+        assertThat(models.get(0).getLoan().getId(), is(loanModel.getId()));
+        assertThat(models.get(0).getStatus(), is(loanRepayModel.getStatus()));
+        assertThat(models.get(0).getCreatedTime().getTime(), is(loanRepayModel.getCreatedTime().getTime()));
+        assertThat(models.get(0).getLoan().getStatus(), is(loanModel.getStatus()));
+        assertThat(models.get(0).getLoan().getCreatedTime().getTime(), is(loanModel.getCreatedTime().getTime()));
         assertNotNull(models.get(0).getLoan().getName());
     }
 
