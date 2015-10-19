@@ -56,7 +56,7 @@
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
+                <span class="num amountNeedRaised"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i>元</span>
             </div>
             <div class="item-block">
                 <span class="sub-hd">账户余额：</span>
@@ -72,9 +72,13 @@
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
                 <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
+
+
                 <#if errorMessage?has_content>
 
                     <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
+                <#else >
+                    <span class="loan-detail-error-msg" style="display: none"><i class="loan-detail-error-msg-li">x</i></span>
                 </#if>
             </div>
             <div class="btn-position">
@@ -96,7 +100,7 @@
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
+                <span class="num amountNeedRaised"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}<i>元</span>
             </div>
 
             <div class="item-block">
@@ -116,6 +120,8 @@
                 <#if errorMessage?has_content>
 
                     <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
+                <#else >
+                    <span class="loan-detail-error-msg" style="display: none"><i class="loan-detail-error-msg-li">x</i></span>
                 </#if>
             </div>
             <div class="item-block">

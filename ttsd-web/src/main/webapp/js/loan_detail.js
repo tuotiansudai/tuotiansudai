@@ -4,19 +4,7 @@
 require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
     $(function () {
         var amountInputElement = $(".text-input-amount");
-        //var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
-        //var submitElement = $('.recharge-submit');
-
         amountInputElement.autoNumeric("init");
-
-        //amountInputElement.keyup(function () {
-        //    var amount = parseFloat(amountInputElement.autoNumeric("get"));
-        //    if (isNaN(amount) || amount === 0) {
-        //        submitElement.addClass('grey').attr('disabled', true);
-        //    } else {
-        //        submitElement.removeClass('grey').attr('disabled', false);
-        //    }
-        //});
 
         var pagesize = 10; //每页显示条数
         var loanId = $('.jq-loan-user').val();
@@ -141,6 +129,20 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
         $('.text-input-amount').blur(function(){
             var loanId = $('.hid-loan').val();
             var amount = $(this).val();
+            console.log('==========3' + $('.amountNeedRaised-i').text());
+            var amountNeedRaised = Number($('.amountNeedRaised-i').text());
+            console.log('==========2');
+            console.log(amount);
+            console.log(amountNeedRaised);
+
+            if(amountNeedRaised < parseFloat(amount)){
+                console.log("================1");
+                console.log("================2");
+                $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!");
+                $('.loan-detail-error-msg').removeAttr("style");
+                return;
+                console.log("================3");
+            }
             $.ajax({
                 url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
                 type: 'get',
