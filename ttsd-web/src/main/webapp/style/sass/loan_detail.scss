@@ -5,7 +5,7 @@
   & .item-block {
     padding: 3px 0 0;
     display: block;
-    background: #fff;
+    //background: #fff;
     & .btn-pay {
       background: #f24712;
       border: none;
@@ -27,7 +27,7 @@
       display: block;
       clear: both;
       margin-left: 20px;
-      padding-top: 5px;
+      padding-top: 4px;
     }
     & .loan-detail-error-msg-li{
      width: 14px;height: 14px;
@@ -54,10 +54,13 @@
       width: 330px;
       border: 1px solid #f24712;
       height: 32px;
-      color: #ccc;
+      color: #000;
       display: inline-block;
       margin-left: 20px;
       padding-left:5px;
+      margin-top: 8px;
+      text-align: right;
+      padding-right: 5px;
     }
     & .bg-yellow {
       width: 110px;
@@ -79,7 +82,6 @@
       font-size: 12px;
     }
     & .num {
-      line-height: 34px;
       text-align: right;
       padding-right: 10px;
       width: 235px;
@@ -97,10 +99,12 @@
     &.bg-loan {
       border: 1px solid #ccc;
       overflow: hidden;
-      margin: 20px 0 0;
+      margin: 10px 0 0;
+      background: #fff;
     }
     & .news-share {
       width: 620px;
+      height: 320px;
       float: left;
       border-right: 1px solid #ccc;
       & .hd {
@@ -122,7 +126,6 @@
       }
       & .chart-box {
         width: 200px;
-        height: 200px;
         margin: 20px 60px;
         border-collapse: collapse;
         border-radius: 50%;
@@ -196,6 +199,7 @@
         float: right;
         color: #a4a4a4;
         font-size: 12px;
+        margin-top: 12px;
         & .point {
           color: #000;
         }
@@ -214,13 +218,46 @@
     & .account-info {
       width: 376px;
       float: left;
+      position: relative;
+      height: 320px;
+
       & .ttsd-tips {
         text-align: center;
-        font-size: 14px;
+        font-size: 12px;
         color: #949494;
         display: block;
-        line-height: 55px;
+        padding-top: 13px;
 
+      }
+      & .account-amount{
+        color: #f24712;
+      }
+      & .btn-position{
+        position: absolute;
+        bottom: 25px;
+        height: 60px;
+        & .item-block:nth-child(1){
+          margin-top: -4px;
+          padding-top: 0;
+          & .sub-hd {
+            line-height: 10px;
+            padding-top: 3px;
+            padding-bottom: 8px;
+          }
+        }
+        & .item-block:nth-child(2){
+          margin-top: 15px;
+        }
+        & .expected-interest{
+          color: #f24712;
+        }
+
+      }
+      & .hd{
+        height: 52px;
+        border-bottom: 2px solid #ccc;
+        margin-left: 8px;
+        margin-right: 8px;
       }
     }
   }

@@ -59,10 +59,12 @@ public class InvestController {
         }
         return mv;
     }
-
-    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.?\\d?\\d?$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
+        if(amount.lastIndexOf(".") > -1){
+            amount = amount.substring(0,amount.length()-1);
+        }
         long expectedInterest = investService.calculateExpectedInterest(loanId, AmountUtil.convertStringToCent(amount));
         return AmountUtil.convertCentToString(expectedInterest);
     }

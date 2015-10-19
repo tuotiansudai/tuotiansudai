@@ -32,8 +32,8 @@
                 </div>
             </div>
             <div class="chart-info">
-                <p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>
-                <p>项目金额： ${loan.loanAmount}元</p>
+                <#--<p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>-->
+                <p>项目金额： ${loan.loanAmount}万元</p>
 
                 <p>代理人： ${loan.agentLoginName}</p>
 
@@ -52,6 +52,7 @@
         <div class="account-info">
         <#if loan.loanStatus == "RAISING">
             <form action="/invest" method="post">
+                <h2 class="hd"></h2>
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
@@ -65,34 +66,37 @@
                 <span class="sub-hd">每人限投：</span>
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
-            <div class="item-block clearfix">
+            <div class="item-block clearfix" style="padding:0;">
                 <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
                 <#if investAmount?has_content>
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
-                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/><br/>
+                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/>
                 <#if errorMessage?has_content>
 
                     <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
                 </#if>
             </div>
-            <div class="item-block">
-                <span class="sub-hd">预计总收益：</span>
-                <span class="num expected-interest"></span>
-            </div>
-            <div class="item-block">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
-                <button class="btn-pay" type="submit">马上投资</button>
+            <div class="btn-position">
+                <div class="item-block" >
+                    <span class="sub-hd" >预计总收益：</span>
+                    <span class="num "><i class="expected-interest"></i>元</span>
+                </div>
+                <div class="item-block">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                    <button class="btn-pay" type="submit">马上投资</button>
+                </div>
             </div>
             </form>
         </#if>
         <#if loan.loanStatus == "PREHEAT">
             <form action="/invest" method="post">
+            <h2 class="hd"></h2>
             <div class="ttsd-tips">拓天速贷提醒您：理财非存款，投资需谨慎！</div>
             <div class="item-block">
                 <span class="sub-hd">可投金额：</span>
-                <span class="num">${loan.amountNeedRaised?string("0.00")}元</span>
+                <span class="num amountNeedRaised">${loan.amountNeedRaised?string("0.00")}元</span>
             </div>
 
             <div class="item-block">
@@ -104,7 +108,15 @@
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <input type="text" name="amount" value="${loan.maxAvailableInvestAmount}" class="text-input-amount"/>
+                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
+                <#if investAmount?has_content>
+                    <#assign defaultInvestAmount = investAmount>
+                </#if>
+                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/>
+                <#if errorMessage?has_content>
+
+                    <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
+                </#if>
             </div>
             <div class="item-block">
                 <div class="time-item">
@@ -204,7 +216,7 @@
 
                     <div class="pic-list">
                     <#list loan.loanTitleDto as loanTitle>
-                        <div class="title">${loanTitle.title}：</div>
+                        <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
 
                         <ul class="img-list">
                             <#list loan.loanTitles as loanTitleRelation >
