@@ -3,8 +3,6 @@ package com.tuotiansudai.client;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -212,8 +210,7 @@ public class OssWrapperClient{
             graphics.drawImage(waterImage, 0,0, width, height, null);
             //水印文件结束
             graphics.dispose();
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(swapStream);
-            encoder.encode(image);
+            ImageIO.write(image,  "jpg",  swapStream);
         } catch (Exception e) {
             logger.error("upload oss fail ");
             e.printStackTrace();
