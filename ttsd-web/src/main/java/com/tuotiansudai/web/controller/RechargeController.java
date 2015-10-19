@@ -4,7 +4,10 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RechargeService;
+import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,9 +24,13 @@ public class RechargeController {
     @Autowired
     private RechargeService rechargeService;
 
+    @Autowired
+    private AccountService accountService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView recharge() {
-        return new ModelAndView("/recharge");
+        long balance = accountService.getBalance(LoginUserInfo.getLoginName());
+        return new ModelAndView("/recharge", "balance", AmountUtil.convertCentToString(balance));
     }
 
 

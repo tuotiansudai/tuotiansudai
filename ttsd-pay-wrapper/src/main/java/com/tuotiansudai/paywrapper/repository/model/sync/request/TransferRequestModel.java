@@ -4,6 +4,8 @@ import com.tuotiansudai.paywrapper.repository.model.UmPayParticAccType;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.repository.model.UmPayTransAction;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 public class TransferRequestModel extends BaseSyncRequestModel {
@@ -14,7 +16,7 @@ public class TransferRequestModel extends BaseSyncRequestModel {
 
     private String merAccountId;
 
-    private String particAccType = UmPayParticAccType.PERSON.getCode();
+    private String particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
 
     private String transAction = UmPayTransAction.OUT.getCode();
 
@@ -32,6 +34,7 @@ public class TransferRequestModel extends BaseSyncRequestModel {
         this.service = UmPayService.TRANSFER.getServiceName();
         this.particUserId = payUserId;
         this.amount = amount;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.orderId = orderId;
     }
 

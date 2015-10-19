@@ -4,6 +4,8 @@ import com.esoft.archer.user.model.UserBill;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
 import com.esoft.jdp2p.loan.model.WithdrawCash;
 
+import java.util.List;
+
 /**
  * Filename:AtmFeesService.java Description:提现接口 Copyright: Copyright(c)2013
  * Company:jdp2p
@@ -62,5 +64,21 @@ public interface WithdrawCashService {
 	 * 生成ID
 	 */
 	public String generateId();
+
+	/**
+	 * 查询用户的提现记录
+	 * @param userId
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	public List<WithdrawCash> queryUserWithdrawLogs(String userId, int offset, int limit);
+
+	/**
+	 * 查询用户的提现记录数
+	 * @param userId
+	 * @return
+	 */
+	public int queryUserWithdrawLogsCount(String userId);
 
 }

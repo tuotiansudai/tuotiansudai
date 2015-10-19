@@ -107,11 +107,13 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
 
 
         var loginSubmitVerify = function () {
-            if (loginNameValid && passwordValid && captchaValid) {
-                loginSubmitElement.removeClass('grey').attr('disabled', false);
+            var isValid = loginNameValid && passwordValid && captchaValid;
+            if (isValid) {
+                loginSubmitElement.removeClass('grey');
             } else {
-                loginSubmitElement.addClass('grey').attr('disabled', true);
+                loginSubmitElement.addClass('grey');
             }
+            return isValid;
         };
 
         var submitLoginForm = function () {
@@ -123,7 +125,11 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                     if (response.data.status) {
                         window.location.href = '/';
                     } else {
-                        errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        if (response.data.isLocked) {
+                            errorElement.text("用户已被锁定").css('visibility', 'visible');
+                        } else {
+                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        }
                     }
                 },
                 error: function () {
@@ -131,7 +137,6 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                 },
                 complete: function () {
                     refreshCaptcha();
-                    loginNameValid = passwordValid = captchaValid = false;
                     loginSubmitElement.toggleClass('loading');
                     loginSubmitVerify();
                 }
@@ -139,12 +144,14 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
         };
 
         loginSubmitElement.click(function () {
-            submitLoginForm();
+            if (loginSubmitVerify()) {
+                submitLoginForm();
+            }
         });
 
         $(document).keypress(function (event) {
             var keycode = (event.keyCode ? event.keyCode : event.which)
-            if (keycode === 13) {
+            if (keycode === 13 && loginSubmitVerify()) {
                 submitLoginForm();
             }
         })

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -258,6 +259,25 @@ public class WithdrawCashServiceImpl implements WithdrawCashService {
 		ht.save(wc);
 		userBillBO.transferOutFromBalance(ub.getUser().getId(), ub.getMoney(),
 				OperatorInfo.ADMIN_OPERATION, ub.getDetail());
+	}
+
+	@Override
+	public List<WithdrawCash> queryUserWithdrawLogs(String userId, int offset, int limit) {
+		String hql = "select withdraw from WithdrawCash withdraw where withdraw.user.id=:userId order by withdraw.time desc";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId",userId);
+		query.setMaxResults(limit);
+		query.setFirstResult(offset);
+		return query.list();
+	}
+
+	@Override
+	public int queryUserWithdrawLogsCount(String userId) {
+		String hql = "select count(*) from WithdrawCash withdraw where withdraw.user.id=:userId";
+		Query query = ht.getSessionFactory().getCurrentSession().createQuery(hql);
+		query.setParameter("userId",userId);
+		int count = ((Number)query.uniqueResult()).intValue();
+		return count;
 	}
 
 }

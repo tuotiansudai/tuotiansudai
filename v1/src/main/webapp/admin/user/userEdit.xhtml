@@ -57,6 +57,13 @@
 						<f:selectItem itemValue="0" itemLabel="#{userMsg.stautsDisable}"></f:selectItem>
 					</h:selectOneMenu>
 
+					<h:outputLabel value="来源"></h:outputLabel>
+					<h:selectOneMenu value="#{userHome.instance.source}">
+						<f:selectItem itemValue="WEB" itemLabel="WEB"></f:selectItem>
+						<f:selectItem itemValue="IOS" itemLabel="IOS"></f:selectItem>
+						<f:selectItem itemValue="ANDROID" itemLabel="ANDROID"></f:selectItem>
+					</h:selectOneMenu>
+
 					<h:outputLabel value="#{userMsg.mobileNumber}"></h:outputLabel>
 					<h:inputText style="width:190px;height:18px;" maxlength="18"
 						validatorMessage="#{userMsg.mobileNumber}#{commonMsg.formatError}"

@@ -7,4 +7,6 @@ import com.tuotiansudai.dto.RechargeDto;
 public interface RechargeService {
 
     BaseDto<PayFormDataDto> recharge(RechargeDto rechargeDto);
+
+    long findSumRechargeByLoginName(String loginName);
 }

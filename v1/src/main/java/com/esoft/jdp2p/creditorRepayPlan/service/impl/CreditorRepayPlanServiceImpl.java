@@ -3,12 +3,12 @@ package com.esoft.jdp2p.creditorRepayPlan.service.impl;
 import com.esoft.jdp2p.creditorRepayPlan.model.CreditorRepayPlan;
 import com.esoft.jdp2p.creditorRepayPlan.service.CreditorRepayPlanService;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,7 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
         for (int i = 0;i < list.size();i++){
             CreditorRepayPlan creditorRepayPlan = new CreditorRepayPlan();
             creditorRepayPlan.setRepayTime(list.get(i).get("repayTime").toString());
-            creditorRepayPlan.setTotalMoney(list.get(i).get("totalMoney")+"");
+            creditorRepayPlan.setTotalMoney(new BigDecimal(list.get(i).get("totalMoney").toString()).toString());
             returnList.add(creditorRepayPlan);
         }
         return returnList;
@@ -154,7 +154,7 @@ public class CreditorRepayPlanServiceImpl implements CreditorRepayPlanService{
         for (int i = 0;i < list.size();i++){
             CreditorRepayPlan creditorRepayPlan = new CreditorRepayPlan();
             creditorRepayPlan.setRepayDay(list.get(i).get("repayDay").toString());
-            creditorRepayPlan.setRepayMoney(list.get(i).get("repayMoney") + "");
+            creditorRepayPlan.setRepayMoney(new BigDecimal(list.get(i).get("repayMoney").toString()).toString());
             creditorRepayPlan.setLoanName(list.get(i).get("loanName").toString());
             creditorRepayPlan.setLoanId(list.get(i).get("loanId").toString());
             creditorRepayPlan.setUserId(list.get(i).get("userId").toString());
