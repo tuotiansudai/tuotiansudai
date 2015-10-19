@@ -22,7 +22,7 @@
             <div class="chart-box">
                 <div class="box">
                     <div class="bg"></div>
-                    <div class="rount"></div>
+                    <div class="rount" ></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
                     <span class="sub-percent">+${loan.activityRate}%</span>
@@ -71,7 +71,7 @@
                 <#if investAmount?has_content>
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
-                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/>
+                <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
                 <#if errorMessage?has_content>
 
                     <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>
@@ -112,7 +112,7 @@
                 <#if investAmount?has_content>
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
-                <input type="text" name="amount" value="${defaultInvestAmount}" class="text-input-amount"/>
+                <input type="text" name="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" value="${defaultInvestAmount}" class="text-input-amount"/>
                 <#if errorMessage?has_content>
 
                     <span class="loan-detail-error-msg"><i class="loan-detail-error-msg-li">x</i>${errorMessage!}</span>

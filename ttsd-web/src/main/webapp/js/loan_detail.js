@@ -1,8 +1,22 @@
 /**
  * Created by belen on 15/8/19.
  */
-require(['jquery', 'jqueryPage', 'csrf'], function ($) {
+require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
     $(function () {
+        var amountInputElement = $(".text-input-amount");
+        //var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
+        //var submitElement = $('.recharge-submit');
+
+        amountInputElement.autoNumeric("init");
+
+        //amountInputElement.keyup(function () {
+        //    var amount = parseFloat(amountInputElement.autoNumeric("get"));
+        //    if (isNaN(amount) || amount === 0) {
+        //        submitElement.addClass('grey').attr('disabled', true);
+        //    } else {
+        //        submitElement.removeClass('grey').attr('disabled', false);
+        //    }
+        //});
 
         var pagesize = 10; //每页显示条数
         var loanId = $('.jq-loan-user').val();
