@@ -52,33 +52,27 @@
 </div>
 
 <div class="overlay"></div>
-<div class="overlay-content">
-    <div class="dg_wrapper dialog-chongzhi">
-        <div class="hd">
-            <h3>登录到联动优势支付平台充值</h3>
+<div class="overlay-container">
+    <div class="wrapper recharge">
+        <div class="title">
+            <h3>登录到联动优势支付平台提现</h3>
         </div>
-        <div class="bd">
-            <p>请在新打开的联动优势页面充值完成后选择：</p>
-
-            <div class="ret">
-                <p>充值成功：<a href="" class="g-btn g-btn-medium-major tongji"  data-category="确认成功" data-label="recharge">确认成功</a></p>
-                <p>充值失败：<a href="" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值" data-label="recharge">重新充值</a>
-                    <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+        <div class="content">
+            <p>请在联动优势提现完成后选择：</p>
+            <div class="confirm">
+                <p>提现成功：<a href="javascript:" class="success">确认成功</a></p>
+                <p>提现失败：<a href="javascript:" class="failed">重新提现</a>
+                    <span class="help">查看<a href="javascript:" target="_blank"> 帮助中心</a></span>
                 </p>
-                <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+                <p class="hot-line">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
             </div>
         </div>
-        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+        <a href="javascript:" class="close" data-category="关闭弹层"></a>
     </div>
 </div>
 
 <#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.withdraw}">-->
-<#--</@global.javascript>-->
-<script src="${requestContext.getContextPath()}/js/dest/config.min.js"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-        defer
-        async="true"
-        data-main="${requestContext.getContextPath()}/js/withdraw.js"></script>
+<@global.javascript pageJavascript="${js.withdraw}">
+</@global.javascript>
 </body>
 </html>

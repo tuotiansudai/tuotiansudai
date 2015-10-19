@@ -143,133 +143,100 @@
   width: 100%;
   height: 100%;
   z-index: 9999;
-  //display: none;
+  display: none;
 }
 
-.overlay-content {
+.overlay-container {
   background: rgba(0, 0, 0, 0.2);
   overflow: hidden;
   position: fixed;
   z-index: 10000;
   top: 50%;
   left: 50%;
-  margin: -130px 0 0 -280px;
+  margin: -200px 0 0 -272px;
   height: 260px;
   width: 560px;
   display: none;
-}
+  & .wrapper {
+    position: relative;
+    margin: 8px;
+    padding: 10px;
+    border: 1px solid #7a7a7a;
+    font-size: 14px;
+    height: 220px;
+    width: 522px;
+    background: #fff;
 
-.overlay-content .dg_wrapper {
-  position: relative;
-  margin: 8px;
-  padding: 10px;
-  border: 1px solid #7a7a7a;
-  font-size: 14px;
-  height: 220px;
-  width: 522px;
-  background: #fff;
-}
+    &.recharge {
+      background: #fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
+    }
 
-.overlay-content .btn {
-  display: block;
-  border: none;
-  height: 36px;
-  line-height: 36px;
-  font-size: 18px;
-  color: #fff;
-  text-align: center;
-  width: 212px;
-  background: #ff7575;
-  letter-spacing: 1px;
-  text-indent: 1px;
-  outline: none;
-  text-align: center;
-}
+    & .close {
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      display: block;
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: url('/images/recharge/spr.png') no-repeat 0 -100px;
+      text-indent: -999em;
+    }
 
-.overlay-content .btn:hover {
-  opacity: 0.8;
-}
+    & .close:hover {
+      background-position: 0 -143px;
+    }
 
-.overlay-content .btn-4 {
-  background: #fc6;
-}
-
-.overlay-content .hd {
-  height: 40px;
-  border-bottom: 1px solid #ccc;
-}
-
-.overlay-content .hd h3 {
-  height: 40px;
-  line-height: 40px;
-  font-size: 16px;
-  color: #333;
-  text-indent: 10px;
-  margin: 0;
-  font-weight: normal;
-}
-
-.overlay-content .close {
-  width: 20px;
-  height: 20px;
-  overflow: hidden;
-  display: block;
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: url('/images/recharge/spr.png') no-repeat 0 -100px;
-  text-indent: -999em;
-}
-
-.overlay-content .close:hover {
-  background-position: 0 -143px;
-}
-
-.overlay-content .bd {
-  margin: 10px;
-}
-
-.overlay-content .ret {
-  margin-top: 20px;
-  font-size: 16px;
-}
-
-.overlay-content .ret p {
-  color: #666;
-  margin: 20px 0;
-}
-
-.overlay-content .ret .btn {
-  height: 36px;
-  line-height: 36px;
-  width: 120px;
-  font-size: 14px;
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-}
-
-.overlay-content .ret .help {
-  color: #999;
-  font-size: 12px;
-}
-
-.overlay-content .ret a:hover {
-  text-decoration: underline;
-}
-
-.overlay-content .bd .btns {
-  margin: 40px 0 20px;
-}
-
-.overlay-content .dialog-chongzhi {
-  background:#fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
-}
-
-.overlay-content .dialog-2 {
-  width: 630px;
-  height: 260px;
-  margin: 0;
-  padding: 0;
-  background: #fff;
+    & .title {
+      height: 40px;
+      border-bottom: 1px solid #ccc;
+      h3 {
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        color: #333;
+        text-indent: 10px;
+        margin: 0;
+        font-weight: normal;
+      }
+    }
+    & .content {
+      margin: 10px;
+      & .confirm {
+        margin-top: 20px;
+        font-size: 16px;
+        & p {
+          color: #666;
+          margin: 20px 0;
+        }
+        & .success, .failed {
+          line-height: 30px;
+          letter-spacing: 1px;
+          text-indent: 1px;
+          color: #fff;
+          border-radius: 5px;
+          text-align: center;
+          display: inline-block;
+          width: 100px;
+        }
+        & .success {
+          background: #1a2;
+        }
+        & .failed {
+          background: #f63;
+        }
+        & .hot-line {
+          font-size:14px;
+        }
+        & a:hover {
+          text-decoration: underline;
+        }
+        & .help {
+          color: #999;
+          margin-left: 10px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }

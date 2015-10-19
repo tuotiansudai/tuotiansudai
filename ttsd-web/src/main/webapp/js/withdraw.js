@@ -17,7 +17,7 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
             } else {
                 submitElement.removeClass('inactive').attr('disabled', false);
                 errorElement.hide();
-                actualAmountElement.html(Number((amount - 3).toFixed(2)));
+                actualAmountElement.html(Number((amount - 3)).toFixed(2));
             }
         });
 
@@ -25,11 +25,18 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
             if (submitElement.hasClass('inactive')) {
                 return false;
             }
-
             var amount = parseFloat(amountInputElement.autoNumeric("get"));
             $(".withdraw form input[name='amount']").val(amount);
-            $('.ecope-overlay,.ecope-dialog').show();
+            $('.overlay,.overlay-container').show();
             formElement.submit();
+        });
+
+        $('.overlay-container .close').click(function () {
+            $('.overlay,.overlay-container').hide();
+        });
+
+        $('.overlay-container .confirm .failed').click(function () {
+            $('.overlay,.overlay-container').hide();
         });
     });
 });

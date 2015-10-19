@@ -3,7 +3,9 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
+import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
@@ -26,8 +28,15 @@ public class WithdrawController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private BindBankCardService bindBankCardService;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard();
+        if (bankCard == null) {
+            return new ModelAndView("redirect:/bind-card");
+        }
         long balance = accountService.getBalance(LoginUserInfo.getLoginName());
         return new ModelAndView("/withdraw", "balance", AmountUtil.convertCentToString(balance));
     }
