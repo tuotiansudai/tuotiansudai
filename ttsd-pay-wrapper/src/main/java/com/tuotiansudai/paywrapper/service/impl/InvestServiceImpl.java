@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -48,6 +49,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserBillService userBillService;
+
+    @Autowired
+    ProjectTransferNotifyMapper projectTransferNotifyMapper;
 
     @Override
     @Transactional
@@ -100,6 +104,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     @Transactional
     public String investCallback(Map<String, String> paramsMap, String originalQueryString) {
+        paramsMap.put("status","0");
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
@@ -109,30 +114,45 @@ public class InvestServiceImpl implements InvestService {
         if (callbackRequest == null) {
             return null;
         }
-        postInvestCallback(callbackRequest);
+//        postInvestCallback(callbackRequest);
         String respData = callbackRequest.getResponseData();
         return respData;
     }
 
+
+
+    public void asyncProcessInvestCallback(){
+
+        List<ProjectTransferNotifyRequestModel> todoList = projectTransferNotifyMapper.getTodoList();
+
+        for(ProjectTransferNotifyRequestModel model : todoList) {
+
+            postInvestCallback(model);
+
+        }
+    }
+
+
+    @Transactional
     private void postInvestCallback(BaseCallbackRequestModel callbackRequestModel) {
         long orderId = Long.parseLong(callbackRequestModel.getOrderId());
-        InvestModel investMode = investMapper.findById(orderId);
-        if (investMode == null) {
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
             return;
         }
 
-        String loginName = investMode.getLoginName();
+        String loginName = investModel.getLoginName();
         if (callbackRequestModel.isSuccess()) {
-            long loanId = investMode.getLoanId();
-            // freeze
+            long loanId = investModel.getLoanId();
+            // freeze  冻结用户账户内的相应金额，增加用户交易记录userBill
             try {
-                userBillService.freeze(loginName, orderId, investMode.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
+                userBillService.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
             } catch (AmountTransferException e) {
                 logger.error("投资成功，但资金冻结失败", e);
             }
             // 改invest 本身状态
-            investMapper.updateStatus(investMode.getId(), InvestStatus.SUCCESS);
+            investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
             LoanModel loanModel = loanMapper.findById(loanId);
             long successInvestAmountTotal = investMapper.sumSuccessInvestAmount(loanId);
             // 满标，改标的状态 RECHECK
@@ -143,7 +163,7 @@ public class InvestServiceImpl implements InvestService {
             }
         } else {
             // 失败的话：改invest本身状态
-            investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL);
+            investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
         }
     }
 }

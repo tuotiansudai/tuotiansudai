@@ -11,4 +11,6 @@ public interface InvestService {
     BaseDto<PayFormDataDto> invest(InvestDto dto);
 
     String investCallback(Map<String, String> paramsMap, String queryString);
+
+    void asyncProcessInvestCallback();
 }

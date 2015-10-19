@@ -11,8 +11,10 @@ import com.tuotiansudai.paywrapper.service.WithdrawService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +108,13 @@ public class PayCallbackController {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.advanceRepayService.repayCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/process_invest_notify", method = RequestMethod.GET)
+    public String processInvestNotify(HttpServletRequest request) {
+        this.investService.asyncProcessInvestCallback();
+        return "0";
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
