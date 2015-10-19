@@ -34,4 +34,19 @@ public class SendCloudMailServiceImpl implements SendCloudMailService {
         }
         return false;
     }
+
+    @Override
+    public boolean sendMailByRepayCompleted(String toAddress, Map<String, String> map) {
+        try {
+
+            String content = SendCloudTemplate.REPAY_COMPLETE_EMAIL.generateContent(map);
+            sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.REPAY_COMPLETE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
+            return true;
+        } catch (MessagingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+    }
 }

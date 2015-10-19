@@ -7,4 +7,7 @@ public interface SendCloudMailService {
 
     boolean sendMailByLoanOut(String toAddress,
                               Map<String, String> map);
+
+    boolean sendMailByRepayCompleted(String toAddress,
+                              Map<String, String> map);
 }

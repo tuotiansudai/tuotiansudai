@@ -20,6 +20,8 @@
         <result column="mobile" property="mobile"></result>
         <result column="email" property="email"></result>
         <result column="amount" property="amount"></result>
+        <result column="invest_id" property="investId"></result>
+        <result column="periods" property="periods"></result>
     </resultMap>
 
     <resultMap id="investDetailMap" type="InvestDetailModel" extends="investResultMap">
@@ -105,7 +107,7 @@
     </select>
 
     <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
-        select loan.name as loan_name, u.mobile, u.email, invest.amount
+        select loan.periods,loan.name as loan_name, u.mobile, u.email, invest.amount,invest.id as invest_id
         from invest
         inner join loan on invest.loan_id = loan.id
         inner join user u on u.login_name = invest.login_name

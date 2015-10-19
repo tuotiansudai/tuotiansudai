@@ -15,5 +15,7 @@ public interface InvestRepayMapper {
 
     InvestRepayModel findByInvestIdAndPeriod(@Param(value = "investId") long investId, @Param(value = "period") int period);
 
+    List<InvestRepayModel> findCompletedInvestRepayByIdAndStatus(@Param(value = "investId") long investId);
+
     void update(InvestRepayModel investRepayModel);
 }
