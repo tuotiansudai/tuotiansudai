@@ -39,8 +39,8 @@
         select * from invest_repay where invest_id = #{investId} and period = #{period}
     </select>
 
-    <select id="findCompletedInvestRepayByIdAndStatus" parameterType="map" resultMap="investRepayResultMap">
-        select * from invest_repay where invest_id = #{investId} and status = 'COMPLETE'
+    <select id="findCompletedInvestRepayByIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        select * from invest_repay where invest_id = #{investId} and period = #{period} and status = 'COMPLETE'
     </select>
 
     <update id="update" parameterType="InvestRepayModel">

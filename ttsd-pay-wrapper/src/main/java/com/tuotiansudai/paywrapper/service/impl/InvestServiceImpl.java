@@ -161,7 +161,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private void notifyInvestorRepaySuccessfulByEmail(long loanId){
+    private void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
@@ -170,8 +170,8 @@ public class InvestServiceImpl implements InvestService {
             String email = investNotifyInfo.getEmail();
             String loanName = investNotifyInfo.getLoanName();
             int periods = investNotifyInfo.getPeriods();
-            List<InvestRepayModel> investRepayModels = investRepayMapper.findCompletedInvestRepayByIdAndStatus(investId);
-            for(InvestRepayModel investRepay:investRepayModels){
+            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
+            if(investRepay != null){
 
                 Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                         .put("loanName", loanName)
