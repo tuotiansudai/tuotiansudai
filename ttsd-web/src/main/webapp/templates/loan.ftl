@@ -20,7 +20,7 @@
             </h2>
 
             <div class="chart-box">
-                <div class="box">
+                <div class="box" title="${loan.amountNeedRaised}%">
                     <div class="bg"></div>
                     <div class="rount" ></div>
                     <div class="bg2"></div>

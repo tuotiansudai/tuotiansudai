@@ -129,19 +129,14 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
         $('.text-input-amount').blur(function(){
             var loanId = $('.hid-loan').val();
             var amount = $(this).val();
-            console.log('==========3' + $('.amountNeedRaised-i').text());
             var amountNeedRaised = Number($('.amountNeedRaised-i').text());
-            console.log('==========2');
-            console.log(amount);
-            console.log(amountNeedRaised);
 
             if(amountNeedRaised < parseFloat(amount)){
-                console.log("================1");
-                console.log("================2");
                 $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!");
                 $('.loan-detail-error-msg').removeAttr("style");
+                $('.btn-pay').attr('disabled', 'disabled').addClass('grey')
+
                 return;
-                console.log("================3");
             }
             $.ajax({
                 url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
@@ -151,6 +146,7 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
             }).done(function(amount){
                 $('.loan-detail-error-msg').hide();
                 $('.expected-interest').html(amount);
+                $('.btn-pay').removeClass('grey').removeAttr('disabled');
             });
         });
 
