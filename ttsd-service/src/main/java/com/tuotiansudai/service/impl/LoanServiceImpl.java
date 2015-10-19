@@ -221,8 +221,6 @@ public class LoanServiceImpl implements LoanService {
                     accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount,
                     loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount(),
                     loanModel.getMaxInvestAmount(), sumSuccessInvestAmount)));
-        }else{
-            loanDto.setMaxAvailableInvestAmount("0.00");
         }
 
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));

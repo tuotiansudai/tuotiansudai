@@ -36,15 +36,13 @@ public class InvestServiceImpl implements InvestService {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
 
-        String investCheckResult = checkInvestAmount(investDto);
-        if (investCheckResult == null) {
-            return payWrapperClient.invest(investDto);
-        } else {
-            throw new InvestException(investCheckResult);
-        }
+        checkInvestAmount(investDto);
+
+        return payWrapperClient.invest(investDto);
+
     }
 
-    private String checkInvestAmount(InvestDto investDto) {
+    private void checkInvestAmount(InvestDto investDto) throws InvestException{
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
@@ -53,12 +51,12 @@ public class InvestServiceImpl implements InvestService {
 
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
-            return "投资金额小于标的最小投资金额";
+            throw new InvestException("投资金额小于标的最小投资金额");
         }
 
         // 不满足递增规则
         if ((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0) {
-            return "投资金额不符合递增金额要求";
+            throw new InvestException("投资金额不符合递增金额要求");
         }
 
         long userInvestMaxAmount = loan.getMaxInvestAmount();
@@ -67,22 +65,21 @@ public class InvestServiceImpl implements InvestService {
 
         // 标已满
         if (loanNeedAmount <= 0) {
-            return "标的已满";
+            throw new InvestException("标的已满");
         }
 
         // 超投
         if (loanNeedAmount < investAmount) {
-            return "标的可投金额不足";
+            throw new InvestException("标的可投金额不足");
         }
 
         long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
-            return "投资金额超过了用户投资限额";
+            throw new InvestException("投资金额超过了用户投资限额");
         }
 
-        return null;
     }
 
     @Override

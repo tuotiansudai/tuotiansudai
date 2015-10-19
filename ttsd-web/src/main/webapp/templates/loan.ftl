@@ -67,7 +67,7 @@
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix" style="padding:0;">
-                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
+                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
                 <#if investAmount?has_content>
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
@@ -112,7 +112,7 @@
                 <span class="num">${loan.maxInvestAmount}元</span>
             </div>
             <div class="item-block clearfix">
-                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount>
+                <#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>
                 <#if investAmount?has_content>
                     <#assign defaultInvestAmount = investAmount>
                 </#if>
