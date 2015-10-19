@@ -9,7 +9,10 @@ import com.esoft.archer.user.exception.*;
 import com.esoft.archer.user.model.ReferrerRelation;
 import com.esoft.archer.user.model.User;
 
+import java.util.Date;
+
 import java.util.List;
+
 
 /**
  * Description: 用户service<br/>
@@ -403,11 +406,11 @@ public interface UserService {
 
 	/**
 	 * 发送“通过手机号注册”的认证短信
-	 *
 	 * @param mobileNumber
 	 * @param remoteIp
+	 * @param authType
 	 */
-	public boolean sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp);
+	public boolean sendSmsMobileNumber(String mobileNumber, String remoteIp, String authType);
 
 	/**
 	 * 管理员创建借款者

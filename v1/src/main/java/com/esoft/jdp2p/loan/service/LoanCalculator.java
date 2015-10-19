@@ -111,4 +111,6 @@ public interface LoanCalculator {
 	 */
 	public Double calculateAnticipatedInterest(Loan loan);
 
+	public String calculateRemainTimeSeconds(String loanId);
+
 }

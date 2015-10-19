@@ -32,7 +32,7 @@
   color: #fff;
 }
 
-.invest-box {
+.loan-box {
   width: 815px;
   float: right;
   border: 1px solid #ccc;
@@ -64,7 +64,7 @@
     & .sub-hd {
       padding-left: 20px;
     }
-    & .jq-n {
+    & .select-item {
       display: inline-block;
       padding: 0 10px;
       margin-left: 10px;
@@ -78,7 +78,7 @@
     }
 
   }
-  & .invest-list {
+  & .loan-list {
     border-collapse: collapse;
     width: 100%;
     text-align: center;
@@ -103,11 +103,11 @@
         padding-left: 20px;
         text-align: left;
       }
-      &.txtc {
+      &.no-data {
         text-align: center;
         line-height: 100px;
       }
-      & .plan {
+      & .show-loan-repay {
         color: #cc0000;
         cursor: pointer;
       }
@@ -504,7 +504,7 @@
   bottom: -4px;
 }
 
-.starttime {
+.start-time {
   height: 26px;
   margin-left: 10px;
   padding-left: 10px;
@@ -530,9 +530,9 @@
 }
 
 //overlay repay plan
-.layer-box {
+.layer-container {
   display: none;
-  & .layer-fix {
+  & .layer-mask {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -541,14 +541,14 @@
     top: 0;
     background: rgba(0, 0, 0, .8);
   }
-  & .layer-con {
+  & .layer-content {
     width: 730px;
     height: 340px;
     border: 1px solid #ccc;
     position: fixed;
     left: 50%;
     top: 50%;
-    margin: -170px 0 0 -365px;
+    margin: -250px 0 0 -365px;
     background: #fff;
     z-index: 9999;
     & h2 {
@@ -563,15 +563,15 @@
         color: #999;
       }
       & .close {
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        line-height: 30px;
+        width: 25px;
+        height: 25px;
+        border-radius: 25px;
+        line-height: 20px;
         color: #555;
         position: absolute;
         background: #ccc;
         right: -10px;
-        top: -15px;
+        top: -10px;
         text-align: center;
         cursor: pointer;
       }
@@ -586,8 +586,8 @@
       width: 100%;
       text-align: center;
       border-collapse: collapse;
-      line-height: 24px;
-      max-height: 260px;
+      line-height: 30px;
+      max-height: 300px;
       & tbody {
 
       }
@@ -608,7 +608,6 @@
 .pagination a {
   display: inline-block;
   color: #428bca;
-  display: inline-block;
   height: 20px;
   line-height: 20px;
   padding: 0 10px;
@@ -628,13 +627,15 @@
   color: #cc0000;
 }
 
-.re_plan {
+.enabled-repay {
   background: #f55c1d;
   color: #fff;
   display: inline-block;
-  line-height: 28px;
+  line-height: 30px;
   width: 80px;
-  margin-right: 10px;
-  height: 28px;
   text-align: center;
+  border-radius: 5px;
+  &.inactive {
+    background: #999;
+  }
 }

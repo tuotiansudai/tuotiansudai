@@ -94,6 +94,25 @@ public class LoanCalculatorImpl implements LoanCalculator {
 
 		return days + "天" + hours + "时" + minutes + "分";
 	}
+	@Override
+	public String calculateRemainTimeSeconds(String loanId) {
+		Loan loan = ht.get(Loan.class, loanId);
+		if (loan == null) {
+			return "0";
+		}
+		if (loan.getExpectTime() == null) {
+			return "0";
+		}
+		Long time = (loan.getExpectTime().getTime() - System
+				.currentTimeMillis()) / 1000;
+
+		if (time < 0 || !loan.getStatus().equals(LoanStatus.RAISING)) {
+			return "0";
+		}
+
+
+		return time.toString();
+	}
 
 	@Override
 	public Double calculateMoneyNeedRaised(String loanId)

@@ -22,7 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Date;
 import java.util.Random;
 
@@ -92,7 +90,7 @@ public class LoanControllerTest {
         this.mockSmsServer = mockSmsService();
         this.mockMailServer = mockMailServer();
 
-        MockPayGateWrapper.inject(paySyncClient);
+        MockPayGateWrapper.injectInto(paySyncClient);
         MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
 
         smsWrapperClient.setHost(this.mockSmsServer.getHostName());

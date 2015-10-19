@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,9 +9,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -39,9 +44,9 @@ public class UserBillMapperTest {
 
         userBillMapper.create(userBillModel);
 
-        UserBillModel actualModel = userBillMapper.findByLoginName(fakeUser.getLoginName());
+        List<UserBillModel> actualModels = userBillMapper.findByLoginName(fakeUser.getLoginName());
 
-        assertTrue(actualModel.getId() > 0);
+        assertThat(actualModels.size(), is(1));
 
     }
 
@@ -56,4 +61,21 @@ public class UserBillMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         return userModelTest;
     }
+
+    @Test
+    public void userBillListTest(){
+        Map<String, Object> params = new HashMap<>();
+        List<UserBillBusinessType> billBusinessTypes = Lists.newArrayList();
+        billBusinessTypes.add(UserBillBusinessType.ACTIVITY_REWARD);
+        billBusinessTypes.add(UserBillBusinessType.ADVANCE_REPAY);
+        params.put("userBillBusinessType",billBusinessTypes);
+        params.put("currentPage",1);
+        params.put("startTime",new Date());
+        params.put("endTime",new Date());
+        params.put("pageSize",10);
+        List<UserBillModel> list = userBillMapper.findUserBills(params);
+        int count = userBillMapper.findUserBillsCount(params);
+        assertTrue(list.size() == count);
+    }
+
 }

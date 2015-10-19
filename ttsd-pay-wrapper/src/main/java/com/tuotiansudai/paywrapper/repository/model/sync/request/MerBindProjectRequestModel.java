@@ -1,9 +1,5 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
-import com.google.common.collect.Maps;
-import com.tuotiansudai.utils.AmountUtil;
-
-import java.math.BigDecimal;
 import java.util.Map;
 
 public class MerBindProjectRequestModel extends BaseSyncRequestModel{

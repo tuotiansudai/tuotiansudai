@@ -6,9 +6,11 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
+import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.PtpMerBindCardMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.AsyncServiceType;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BankCardNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindCardRequestModel;
@@ -49,7 +51,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         bankCardModel.setId(idGenerator.generate());
         bankCardModel.setStatus(BankCardStatus.UNCHECK);
 
-
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
@@ -63,6 +64,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
         }
@@ -80,8 +82,8 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
         try {
             String service = callbackRequest.getService();
-            if(AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)){
-                this.postBankCardCallback(callbackRequest, paramsMap);
+            if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
+                this.postBankCardCallback(callbackRequest, paramsMap.get("gate_id"));
             }
         } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -90,26 +92,34 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         return callbackRequest.getResponseData();
     }
 
+    @Override
+    public String bindBankCardApplyCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, BankCardApplyNotifyMapper.class, BankCardApplyNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
+        }
+
+        return callbackRequest.getResponseData();
+    }
+
     @Transactional
-    private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, Map<String, String> paramsMa) throws AmountTransferException {
-
-
+    private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, String bankCode) throws AmountTransferException {
         if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId())) {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
             if (callbackRequestModel.isSuccess()) {
                 if (bankCardModel != null) {
                     bankCardModel.setStatus(BankCardStatus.PASSED);
-                    bankCardModel.setBankNumber(paramsMa.get("gate_id"));
+                    bankCardModel.setBankNumber(bankCode);
                     bankCardMapper.updateBankCard(bankCardModel);
-                    if ("CMB".equals(paramsMa.get("gate_id"))) {
+                    if ("CMB".equals(bankCode)) {
                         String detailTemplate = "用户{0}绑定{1}银行卡";
-                        systemBillService.transferOut(1L, MessageFormat.format(detailTemplate, bankCardModel.getLoginName(),
-                                bankCardModel.getCardNumber()), SystemBillBusinessType.BIND_CARD,callbackRequestModel.getOrderId());
+                        systemBillService.transferOut(1L,
+                                callbackRequestModel.getOrderId(),
+                                SystemBillBusinessType.BIND_CARD,
+                                MessageFormat.format(detailTemplate, bankCardModel.getLoginName(), bankCardModel.getCardNumber()));
                     }
                 }
-
-
             } else {
                 bankCardMapper.update(orderId, BankCardStatus.FAIL);
             }
