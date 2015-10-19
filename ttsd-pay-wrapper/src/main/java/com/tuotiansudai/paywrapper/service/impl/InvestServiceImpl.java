@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -160,7 +161,8 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    public void notifyInvestorRepaySuccessfulByEmail(long loanId){
+    private void notifyInvestorRepaySuccessfulByEmail(long loanId){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
         for(InvestNotifyInfo investNotifyInfo:notifyInfos){
@@ -174,7 +176,7 @@ public class InvestServiceImpl implements InvestService {
                 Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)
-                        .put("repayDate", investRepay.getActualRepayDate().toString())
+                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
                         .put("amount", AmountUtil.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
                                 investRepay.getDefaultInterest(), investRepay.getActualFee())))
                         .build());
