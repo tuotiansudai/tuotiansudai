@@ -100,6 +100,28 @@ def ptp_mer_replace_card():
     return bind_or_change_card('ptp_mer_replace_card')
 
 
+def ptp_mer_bind_agreement():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?charset=UTF-8&mer_id=7099088&notify_url=http%3A%2F%2Fwww.baidu.com%2Fnotify_url&res_format=HTML&ret_url=http%3A%2F%2Fwww.baidu.com%2Fret_url&service=ptp_mer_bind_agreement&sign_type=RSA&user_bind_agreement_list=ZKJP0700%7CZTBB0G00&user_id=UA001&version=1.0&sign=TDE0uJcbq6IDqO%2FsZ9RUBohwo1x9MYeht3F7PueOibdczCAv4y1J0t9Ody90rcVrGaYEPBpzQfEJK0a3oNWqf3niEPReE13Bi7VX85n5wVd29xNaStsBIQyGWASxsgjVQczZ3kgQwqyan66fxTjG222UFl0Q3G9QxTvQTKwXU3I%3D
+    :return:
+        Navigate to UMP page
+    """
+    user_id = request.values.get('user_id')
+    mer_id = request.values.get('mer_id')
+    ret_url = request.values.get('ret_url')
+    notify_url = request.values.get('notify_url')
+    user_bind_agreement_list = request.values.get('user_bind_agreement_list')
+
+    store = Store(user_id)
+    params = "ptp_mer_bind_agreement::{0}::{1}::{2}".format(user_id, mer_id, user_bind_agreement_list)
+    store.set_frontend_notify("{0}::{1}".format(params, ret_url))
+    store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    common_params = build_common_params()
+    common_params.update({'ret_code': '0000'})
+    return format_result(common_params)
+
+
 def project_transfer():
     """
     http://pay.soopay.net/spay/pay/payservice.do?amount=12345&charset=UTF-8&mer_date=20150512&mer_id=7099088&notify_url=http%3A%2F%2Fbaidu1.com&order_id=173099&partic_acc_type=01&partic_type=01&partic_user_id=UB201504161125570000000003661793&project_account_id=4567889&project_id=123&res_format=HTML&ret_url=http%3A%2F%2Fbaidu.com&serv_type=03&service=project_transfer&sign_type=RSA&trans_action=02&version=1.0&sign=Uh9YaEXA4tqE2ZejQGuPzWGdMWXi%2Bb%2BjbS2TLwQdCxM3oHMCX48Q8MiB4zWMjIBvU2Yy2JVg0WIoQrfT4%2FJ3Df%2BY3Zi0OfEV6byMTmvDGCarHulbixIxpwLkhn4AscOom0kW8vTkmXt5NLcL3fNXrYpRzuIDxxwk%2BmwOqm8vHks%3D
