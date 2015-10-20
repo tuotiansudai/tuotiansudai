@@ -22,9 +22,14 @@ def build_common_params():
     return common_ret
 
 
+def success(common_params):
+    common_params.update({'ret_code': '0000'})
+    return common_params
+
+
 def default_result():
     common_params = build_common_params()
-    common_params.update({'ret_code': '0000'})
+    success(common_params)
     return format_result(common_params)
 
 
@@ -120,6 +125,23 @@ def ptp_mer_bind_agreement():
     common_params = build_common_params()
     common_params.update({'ret_code': '0000'})
     return format_result(common_params)
+
+
+def mer_bind_project():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?charset=UTF-8&loan_user_id=seekmm&mer_id=7099088&project_amount=100&project_id=project_001&project_name=This+is+Name&res_format=HTML&service=mer_bind_project&sign_type=RSA&version=1.0&sign=XrRsn60x%2B30%2B0%2Fg1Gl4mPRo7Bro2t8TJEYj0ssyfXrAAQ%2Bq1a4L%2FDCcVNcSxq6MVtuZADwYakT4%2Bft1i%2B%2Fj9v2dAsWYerQ3rtacy55S4jp3jFS8o3PQnxcJ7J69JFUkUNWDF%2BnzIVED7tNJf9E1hgMqSOjUyylPhFBazcl2CeM0%3D
+    :return:
+        <html>
+          <head>
+            <META NAME="MobilePayPlatform" CONTENT="mer_id=7099088&ret_code=00060122&ret_msg=个人用户未注册，请联系商户核实！&sign_type=RSA&version=1.0&sign=G7JiaLyXEF6KohkrR44HdGG1tTE3ymwJI+QKkUc5rDEQSjsCplRsXbJBOkPUtmuwJfbx8F15pz7om90gOqP6QYOY0eUYi91dZz6q/pmwdNKWTZ881yXVjgIz3RfduxF+i+DGhjANQw/sB3EkTOsZwTaUuePO7lGjfpUZvWQwVe8=">
+          </head>
+          <body>
+          </body>
+        </html>
+    """
+    common_params = build_common_params()
+    common_params.update({'project_state': 92})
+    return format_result(success(common_params))
 
 
 def project_transfer():
