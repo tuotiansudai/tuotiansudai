@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="充值" pageCss="${css.global}">
+<@global.head title="自动投标" pageCss="${css.global}">
 </@global.head>
 <#--<head lang="en">-->
     <#--<meta charset="UTF-8">-->
@@ -28,7 +28,7 @@
         </ul>
     </aside>
     <div class="recharge-container fr autoHeight">
-        <h4><em class="tc">自动投标</em></h4>
+        <h4><em class="tc">自动投标ww</em></h4>
 
         <div class="recharge-content pad-s">
             <div class="borderBox panel">
@@ -37,19 +37,19 @@
             </div>
 
             <div class="planSwitch" id="planSwitchDom">
-                <form name="planForm">
+                <form name="planForm" id="signPlanForm" method="post">
                 <dl>
                     <dt>功能状态：</dt>
                     <dd class="switchBtn"><input type="radio" name="planKind" value="1" id="plan-open" checked><label for="plan-open" class="radio">开启</label>
                         <input type="radio" name="planKind" value="2" id="plan-close"><label for="plan-close" class="radio">关闭并保存</label></dd>
                 </dl>
                     <dl>
-                        <dt>投资金额：</dt>
+                        <dt class="requireOpt">投资金额：</dt>
                         <dd><input type="number" name="investMin"> ~
                             <input type="number" name="investMax"> 元</dd>
                     </dl>
                     <dl>
-                        <dt>保留金额：</dt>
+                        <dt class="requireOpt">保留金额：</dt>
                         <dd><input type="number" name="ReservedAmount"> 元 （不会加入自动投标的金额）</dd>
                     </dl>
                     <dl class="clear">
@@ -58,25 +58,26 @@
                             若想提现请提前设置保留金额或关闭自动投标。</dd>
                     </dl>
                     <dl>
-                        <dt>项目期限：</dt>
+                        <dt class="requireOpt">项目期限：</dt>
                         <dd class="projectLimit">
-                            <span>1月期<i class="badge"></i></span>
-                            <span>2月期<i class="badge"></i></span>
-                            <span>3月期<i class="badge"></i></span>
-                            <span>4月期<i class="badge"></i></span>
-                            <span>5月期<i class="badge"></i></span>
-                            <span>6月期<i class="badge"></i></span>
-                            <span>7月期<i class="badge"></i></span>
-                            <span>8月期<i class="badge"></i></span>
-                            <span>9月期<i class="badge"></i></span>
-                            <span>10月期<i class="badge"></i></span>
-                            <span>11月期<i class="badge"></i></span>
-                            <span>12月期<i class="badge"></i></span>
+                            <span value="1">1月期<i class="badge"></i></span>
+                            <span value="2">2月期<i class="badge"></i></span>
+                            <span value="3">3月期<i class="badge"></i></span>
+                            <span value="4">4月期<i class="badge"></i></span>
+                            <span value="5">5月期<i class="badge"></i></span>
+                            <span value="6">6月期<i class="badge"></i></span>
+                            <span value="7">7月期<i class="badge"></i></span>
+                            <span value="8">8月期<i class="badge"></i></span>
+                            <span value="9">9月期<i class="badge"></i></span>
+                            <span value="10">10月期<i class="badge"></i></span>
+                            <span value="11">11月期<i class="badge"></i></span>
+                            <span value="12">12月期<i class="badge"></i></span>
+                            <span value="13">天标<i class="badge"></i></span>
                         </dd>
                     </dl>
                     <div class="btnBox tc clear">
-                        <div class="agreeStatus"><input type="checkbox" name="agreement" id="plan-agreement"><label for="plan-agreement" class="checkbox"> 我已阅读并同意拓天速贷的<a href="#" target="_blank"> 《自动投标协议》</a></label></div>
-                        <button type="button" class="btn btn-normal">保存</button>
+                        <#--<div class="agreeStatus"><input type="checkbox" name="agreement" id="plan-agreement" checked><label for="plan-agreement" class="checkbox"> 我已阅读并同意拓天速贷的<a href="#" target="_blank"> 《自动投标协议》</a></label></div>-->
+                        <button type="button" class="btn btn-normal" id="saveInvestPlan" disabled>保存</button>
                     </div>
                 </form>
             </div>
@@ -102,13 +103,13 @@
 </div>
 
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.recharge}">
+<@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
 <#--<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>-->
 <#--<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"-->
         <#--defer-->
         <#--async="true"-->
-        <#--data-main="${requestContext.getContextPath()}/js/recharge.js"></script>-->
+        <#--data-main="${requestContext.getContextPath()}/js/autoInvest.js"></script>-->
 
 </body>
 </html>

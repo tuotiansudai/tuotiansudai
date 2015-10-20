@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="充值" pageCss="${css.global}">
+<@global.head title="自动投标" pageCss="${css.global}">
 </@global.head>
 <#--<head lang="en">-->
     <#--<meta charset="UTF-8">-->
@@ -41,7 +41,7 @@
 
 
             <div class="btnBox tc">
-                <button type="button" class="btn btn-normal">修改设置</button>
+                <button type="button" id="editSetting" class="btn btn-normal">修改设置</button>
                 <p class="pad-m text-notice"><i class="icon-notice"></i>自动投标将在次日零点开启</p>
             </div>
         </div>
@@ -51,7 +51,7 @@
 
 
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.recharge}">
+<@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
 <#--<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>-->
 <#--<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"-->
