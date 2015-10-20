@@ -90,9 +90,9 @@ public class LoanServiceImpl implements LoanService {
         LoanModel loanModel = loanMapper.findById(loanId);
         String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayUserId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
-                String.valueOf(loanModel.getId()),
                 loanerId,
                 String.valueOf(loanModel.getLoanAmount()),
+                String.valueOf(loanModel.getId()),
                 loanModel.getName()
         );
         try {
