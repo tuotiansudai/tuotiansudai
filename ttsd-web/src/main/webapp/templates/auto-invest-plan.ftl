@@ -19,7 +19,7 @@
         </ul>
     </aside>
     <div class="recharge-container fr autoHeight">
-        <h4><em class="tc">自动投标ww</em></h4>
+        <h4><em class="tc">自动投标</em></h4>
 
         <div class="recharge-content pad-s">
             <div class="borderBox panel">
