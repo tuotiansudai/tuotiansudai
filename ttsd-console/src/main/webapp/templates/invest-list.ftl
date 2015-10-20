@@ -27,7 +27,7 @@
     <script src="js/libs/bootstrap-datetimepicker.js"></script>
     <script src="js/libs/bootstrap-select.js"></script>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <!--自动补全-->
     <script type="text/javascript">

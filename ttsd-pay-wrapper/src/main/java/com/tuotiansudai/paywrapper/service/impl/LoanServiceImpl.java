@@ -63,9 +63,6 @@ public class LoanServiceImpl implements LoanService {
     private RepayGeneratorService repayGeneratorService;
 
     @Autowired
-    private NormalRepayService normalRepayService;
-
-    @Autowired
     private PaySyncClient paySyncClient;
 
     @Autowired

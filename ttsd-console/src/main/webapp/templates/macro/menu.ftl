@@ -6,7 +6,7 @@
                 "sidebar":[]
             },
             {
-                "name":"proMan",
+                "name":"projectMain",
                 "header":{"text":"项目管理","link":"/loan"},
                 "sidebar":
                 [
@@ -25,12 +25,12 @@
                 ]
             },
             {
-                "name":"userMan",
+                "name":"userMain",
                 "header":{"text":"用户管理","link":"/users"},
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
-                    {"name":"userMan","text":"用户管理","link":"/users"},
-                    {"name":"referMan","text":"推荐人管理","link":""},
+                    {"name":"userMain","text":"用户管理","link":"/users"},
+                    {"name":"referMain","text":"推荐人管理","link":""},
                     {"name":"##############","text":"推荐层级-收益比例管理(用户)","link":""},
                     {"name":"##############","text":"用户推荐层级-收益比例管理(系统)","link":""},
                     {"name":"##############","text":"业务员推荐层级-收益比例管理(系统)","link":""}
@@ -74,7 +74,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="../" class="navbar-brand"><img src="images/logo.jpg" alt=""></a>
+            <a href="${requestContext.getContextPath()}" class="navbar-brand"><img src="${requestContext.getContextPath()}/images/logo.jpg" alt=""></a>
         </div>
     </div>
     <nav id="bs-navbar" class="collapse navbar-collapse">

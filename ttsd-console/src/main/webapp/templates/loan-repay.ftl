@@ -27,7 +27,7 @@
     <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--自动补全-->
-    <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="../../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
