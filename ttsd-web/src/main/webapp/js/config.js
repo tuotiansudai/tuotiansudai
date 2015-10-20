@@ -12,6 +12,7 @@ var require = {
         'underscore': '/js/libs/underscore-1.8.3.min',
         'csrf': '/js/dest/csrf.min',
         'daterangepicker': '/js/libs/jquery.daterangepicker-0.0.7',
+        'lodash':'/js/libs/lodash.min',
         'commonFun': '/js/common',
     },
 

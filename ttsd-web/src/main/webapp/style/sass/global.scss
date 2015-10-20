@@ -1,5 +1,5 @@
 @import 'reset', 'btn';
-@import 'recharge';
+@import 'myAccount';
 .borderBox {
   border: 1px solid nth($borderColor, 1);
   padding: 12px;
@@ -17,6 +17,12 @@
 .text-notice {
   color: nth($btnColor,5);
   font-size: nth($fontSize, 4);
+}
+.requireOpt:before {
+  color: $required;
+  padding-right: 2px;
+  display: inline-block;
+  content: '*';
 }
 
 
