@@ -1,13 +1,8 @@
-/**
- <!--[if lt IE 9]>
- <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
- <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
- * Created by zzg on 15/10/16.
- */
 require(['jquery', 'jquery-ui',
-    'bootstrap','bootstrapDatetimepicker','bootstrapSelect',
-    'moment','moment-with-locales', 'csrf' ], function ($) {
+    'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
+    'moment', 'moment-with-locales', 'csrf'], function ($) {
     $(function () {
+        $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});
         var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
@@ -19,8 +14,8 @@ require(['jquery', 'jquery-ui',
         });
         //自动完成提示
         var autoValue = '';
-        var api_url = '${requestContext.getContextPath()}/user/name-like-query';
-        $("#loginName").autocomplete({
+        var api_url = '/user/name-like-query';
+        $("#loginName, #input-referrer").autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
                 $.get(api_url + '/' + query.term, function (respData) {
@@ -29,7 +24,7 @@ require(['jquery', 'jquery-ui',
                 });
             }
         });
-        $("#loginName").blur(function () {
+        $("#loginName, #input-referrer").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
@@ -37,20 +32,22 @@ require(['jquery', 'jquery-ui',
                 } else {
                     $(this).addClass('Validform_error');
                 }
-
             }
-
         });
 
-        $('.user-status-modifier').click(function(){
+        $('.user-status-modifier').click(function () {
             var _this = $(this);
             $.ajax({
-                url: _this.attr('href'),
+                url: _this.attr('action-url'),
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
             }).done(function (data) {
-                location.reload();
+                if (data == 'OK') {
+                    location.reload();
+                } else {
+                    alert('操作失败：' + data);
+                }
             }).fail(function (data) {
                 alert('操作失败');
             });
