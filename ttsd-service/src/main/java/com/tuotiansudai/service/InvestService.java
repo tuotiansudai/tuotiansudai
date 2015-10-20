@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
+
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 
 public interface InvestService {
 
@@ -18,4 +20,11 @@ public interface InvestService {
      * @return
      */
     BasePaginationDataDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay);
+
+    void turnOnAutoInvest(AutoInvestPlanModel model);
+
+    void turnOffAutoInvest(String loginName);
+
+    AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
+
 }
