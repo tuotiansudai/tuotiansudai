@@ -113,7 +113,7 @@
                             <td>${loanListDto.status.getDescription()}</td>
                             <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                             <td><a class="invest_repay" href="/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
-                            <td><a>编辑</a></td>
+                            <td><a class="loan_edit" href="/loan/${loanListDto.id?string('0')}">编辑</a></td>
                         </tr>
                         </#list>
                         </tbody>
@@ -130,7 +130,7 @@
 
                         <li>
                             <#if hasPreviousPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
                             </#if>
@@ -140,7 +140,7 @@
                         <li><a>${currentPageNo}</a></li>
                         <li>
                             <#if hasNextPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">
                             </#if>
