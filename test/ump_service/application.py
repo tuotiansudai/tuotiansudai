@@ -127,6 +127,12 @@ def ptp_mer_bind_agreement():
     return format_result(common_params)
 
 
+def bind_or_update_project():
+    common_params = build_common_params()
+    common_params.update({'project_state': 92})
+    return format_result(success(common_params))
+
+
 def mer_bind_project():
     """
     http://pay.soopay.net/spay/pay/payservice.do?charset=UTF-8&loan_user_id=seekmm&mer_id=7099088&project_amount=100&project_id=project_001&project_name=This+is+Name&res_format=HTML&service=mer_bind_project&sign_type=RSA&version=1.0&sign=XrRsn60x%2B30%2B0%2Fg1Gl4mPRo7Bro2t8TJEYj0ssyfXrAAQ%2Bq1a4L%2FDCcVNcSxq6MVtuZADwYakT4%2Bft1i%2B%2Fj9v2dAsWYerQ3rtacy55S4jp3jFS8o3PQnxcJ7J69JFUkUNWDF%2BnzIVED7tNJf9E1hgMqSOjUyylPhFBazcl2CeM0%3D
@@ -139,9 +145,22 @@ def mer_bind_project():
           </body>
         </html>
     """
-    common_params = build_common_params()
-    common_params.update({'project_state': 92})
-    return format_result(success(common_params))
+    return bind_or_update_project()
+
+
+def mer_update_project():
+    """
+    http://pay.soopay.net/spay/pay/payservice.do?change_type=01&charset=UTF-8&mer_id=7099088&project_id=project_001&res_format=HTML&service=mer_update_project&sign_type=RSA&version=1.0&sign=LFg7YWCAH%2FmVRG5D6zRoHhaVJWrmSRwT6hUtAUlzLTvdMZ%2F%2FRDqFrpzL8cp%2B8Uy5I%2BFtDBUhslCCMzVOADTVaGLjAWA3VTYCcc1ysOmgyLlVU5bqFig%2Fuo0mitRo7qXZ%2FS%2B%2BFzYFcJmz5wbosJgNn8EzXl8k65PxSdHGpw%2F8K%2Fw%3D
+    :return:
+        <html>
+          <head>
+            <META NAME="MobilePayPlatform" CONTENT="mer_id=7099088&ret_code=00240200&ret_msg=标的不存在&sign_type=RSA&version=1.0&sign=rqxyL+LrtzdGba4k4rFd1cs232Kcc4aQaUHTQlfZ0y9ayowzpxMwnbrbKyVHPGRxVz/UzLdo6uhNjPmGHND8F/yT0TDXkF1K8KW5AEjCzOwq39dWhEpLon62a1K4fchubLrpdeAx45X1YqpqL0s6uug/jb4SeWAYPi0ktnlHFVE=">
+          </head>
+          <body>
+          </body>
+        </html>
+    """
+    return bind_or_update_project()
 
 
 def project_transfer():
