@@ -1,25 +1,23 @@
-package com.tuotiansudai.paywrapper.service.impl;
+package com.tuotiansudai.utils;
 
 import com.tuotiansudai.client.SendCloudClient;
 import com.tuotiansudai.dto.SendCloudType;
-import com.tuotiansudai.paywrapper.service.SendCloudMailService;
-import com.tuotiansudai.utils.SendCloudTemplate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-@Service
-public class SendCloudMailServiceImpl implements SendCloudMailService {
-    static Logger logger = Logger.getLogger(SendCloudMailServiceImpl.class);
+@Component
+public class SendCloudMailUtil {
+    static Logger logger = Logger.getLogger(SendCloudMailUtil.class);
     @Autowired
     SendCloudClient sendCloudClient;
 
 
-    @Override
     public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {
 
         try {
@@ -35,7 +33,6 @@ public class SendCloudMailServiceImpl implements SendCloudMailService {
         return false;
     }
 
-    @Override
     public boolean sendMailByRepayCompleted(String toAddress, Map<String, String> map) {
         try {
 

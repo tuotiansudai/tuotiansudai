@@ -4,9 +4,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SendCloudClient;
-import com.tuotiansudai.dto.SendCloudType;
-import com.tuotiansudai.paywrapper.service.impl.SendCloudMailServiceImpl;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.SendCloudMailUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
@@ -27,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 @Transactional
 public class SendCloudServiceTest {
     @InjectMocks
-    private SendCloudMailServiceImpl sendCloudMailService;
+    private SendCloudMailUtil sendCloudMailUtil;
 
     @Mock
     private SendCloudClient sendCloudClient;
@@ -46,7 +43,7 @@ public class SendCloudServiceTest {
                 .put("amount", "21.12")
                 .build());
 
-        boolean flag = sendCloudMailService.sendMailByRepayCompleted("aaa@ccc.com",emailParameters );
+        boolean flag = sendCloudMailUtil.sendMailByRepayCompleted("aaa@ccc.com",emailParameters );
         assertTrue(flag);
     }
 

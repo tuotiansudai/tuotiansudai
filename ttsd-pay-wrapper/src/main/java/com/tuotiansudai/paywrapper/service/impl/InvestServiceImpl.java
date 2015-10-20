@@ -14,7 +14,6 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.SendCloudMailService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -23,6 +22,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class InvestServiceImpl implements InvestService {
     private InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private SendCloudMailService sendCloudMailService;
+    private SendCloudMailUtil sendCloudMailUtil;
 
     @Override
     @Transactional
@@ -181,7 +181,7 @@ public class InvestServiceImpl implements InvestService {
                                 investRepay.getDefaultInterest(), investRepay.getActualFee())))
                         .build());
                 if (StringUtils.isNotEmpty(email)) {
-                    sendCloudMailService.sendMailByRepayCompleted(email, emailParameters);
+                    sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
                 }
             }
         }
