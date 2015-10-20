@@ -77,7 +77,7 @@ public class InvestNopwdControllerTest {
 
         this.mockServer = mockUmPayService();
 
-        MockPayGateWrapper.inject(paySyncClient);
+        MockPayGateWrapper.injectInto(paySyncClient);
         MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
     }
 
