@@ -3,15 +3,6 @@
 <#import "macro/global.ftl" as global>
 <@global.head title="自动投标" pageCss="${css.global}">
 </@global.head>
-<#--<head lang="en">-->
-    <#--<meta charset="UTF-8">-->
-    <#--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>-->
-    <#--<meta name="_csrf" content="${_csrf.token}"/>-->
-    <#--<meta name="_csrf_header" content="${_csrf.headerName}"/>-->
-    <#--<title></title>-->
-    <#--<link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/global.css">-->
-
-<#--</head>-->
 <body>
 <#include "header.ftl" />
 <div class="content">
@@ -105,11 +96,6 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
-<#--<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>-->
-<#--<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"-->
-        <#--defer-->
-        <#--async="true"-->
-        <#--data-main="${requestContext.getContextPath()}/js/autoInvest.js"></script>-->
 
 </body>
 </html>
