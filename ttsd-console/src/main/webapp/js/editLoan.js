@@ -269,7 +269,7 @@ require(['jquery', 'jquery-ui',
             //$(".jq-form").Validform({
             //    tiptype: 0,
             //});
-            var operate = $(this).data();
+            var operate = $(this).data("operate");
             if(formFlag) {
                 $(this).attr('disabled','disabled');
                 indexPic();
@@ -281,6 +281,8 @@ require(['jquery', 'jquery-ui',
                     showOnHome = false;
                 }
                 var dataForm = JSON.stringify({
+                    "id":$('.jq-loanId').val().replace(/\,/g,""),
+                    "loanStatus":$('.jq-status').val(),
                     "projectName": $('.jq-user').val(),
                     "agentLoginName": $('#tags_1').val(),
                     "loanerLoginName": $('#tags').val(),

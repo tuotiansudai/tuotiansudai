@@ -69,6 +69,8 @@
             <!-- content area begin -->
             <div class="col-md-10">
                 <form class="form-horizontal jq-form">
+                    <input type="hidden" class="jq-loanId" value="${loanInfo.id}">
+                    <input type="hidden" class="jq-status" value="${loanInfo.status}">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">借款项目名称: </label>
                         <div class="col-sm-4">
@@ -140,14 +142,14 @@
                         <label class="col-sm-2 control-label">预计出借金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl" errormsg="预计出借金额需要正确填写" value="${loanInfo.loanAmount/100}">
+                            <input type="text" class="form-control jq-pay jq-money" placeholder="" datatype="money_fl" errormsg="预计出借金额需要正确填写" value="${(loanInfo.loanAmount/100)?string('0.00')}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资手续费比例(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写" value="${loanInfo.investFeeRate*100}">
+                            <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写" value="${(loanInfo.investFeeRate*100)?string('0.00')}">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static"> 还款时收取所得利息的百分比。</div>
@@ -157,21 +159,21 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${loanInfo.minInvestAmount/100}">
+                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${(loanInfo.minInvestAmount/100)?string('0.00')}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">投资递增金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl" errormsg="投资递增金额需要正确填写" value="${loanInfo.investIncreasingAmount/100}">
+                            <input type="text" class="form-control jq-add-pay jq-money" datatype="money_fl" errormsg="投资递增金额需要正确填写" value="${(loanInfo.investIncreasingAmount/100)?string('0.00')}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写" value="${loanInfo.maxInvestAmount/100}">
+                            <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写" value="${(loanInfo.maxInvestAmount/100)?string('0.00')}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -192,7 +194,7 @@
                         <label class="col-sm-2 control-label">活动利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写" value="${loanInfo.activityRate*100}">
+                            <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写" value="${(loanInfo.activityRate*100)?string('0.00')}">
                         </div>
                         <div class="col-sm-6">
                             <div class="form-control-static">适用于所有标(0 表示无),站点前端以(基本利率%+加息利率%)方式展现,如(10%+2%)。</div>
@@ -202,7 +204,7 @@
                         <label class="col-sm-2 control-label">基本利率(%): </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写" value="${loanInfo.baseRate*100}">
+                            <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写" value="${(loanInfo.baseRate*100)?string('0.00')}">
                         </div>
                     </div>
                     <div class="form-group">
