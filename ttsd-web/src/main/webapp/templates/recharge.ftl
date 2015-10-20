@@ -200,7 +200,7 @@
                 <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
             </div>
         </div>
-        <a href="javascript:void(0)" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
     </div>
 </div>
 
