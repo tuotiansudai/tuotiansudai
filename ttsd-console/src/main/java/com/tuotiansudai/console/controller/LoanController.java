@@ -11,12 +11,10 @@ import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -89,10 +87,16 @@ public class LoanController {
         return modelAndView;
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> updateLoan(@RequestBody LoanDto loanDto) {
         return loanService.updateLoan(loanDto);
+    }
+
+    @RequestMapping(value = "/ok", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> openLoan(@RequestBody LoanDto loanDto) {
+        return loanService.openLoan(loanDto);
     }
 
     @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)

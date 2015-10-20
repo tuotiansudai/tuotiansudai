@@ -278,6 +278,32 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> openLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        if (loanMapper.findById(loanDto.getId()) == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
+            loanDto.setLoanStatus(LoanStatus.PREHEAT);
+            updateLoanAndLoanTitleRelation(loanDto);
+            baseDto = payWrapperClient.createLoan(loanDto);
+            if (baseDto.getData().getStatus()) {
+                return payWrapperClient.updateLoan(loanDto);
+            }
+            return baseDto;
+        }
+        payDataDto.setStatus(false);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
@@ -289,18 +315,10 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus() || LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
             updateLoanAndLoanTitleRelation(loanDto);
             payDataDto.setStatus(true);
             baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-            baseDto = payWrapperClient.createLoan(loanDto);
-            if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto);
-            }
             return baseDto;
         }
         payDataDto.setStatus(false);

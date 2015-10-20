@@ -40,6 +40,8 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
+    BaseDto<PayDataDto> openLoan(LoanDto loanDto);
+
     /**
      * @param loanId
      * @return
