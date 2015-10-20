@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="充值" pageCss="${css.recharge}">
+<@global.head title="充值" pageCss="${css.global}">
 </@global.head>
 <body>
 <#include "header.ftl" />
