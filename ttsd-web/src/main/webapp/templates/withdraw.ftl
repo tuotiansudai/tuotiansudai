@@ -60,7 +60,7 @@
         <div class="content">
             <p>请在联动优势提现完成后选择：</p>
             <div class="confirm">
-                <p>提现成功：<a href="javascript:" class="success">确认成功</a></p>
+                <p>提现成功：<a href="${requestContext.getContextPath()}/account" class="success">确认成功</a></p>
                 <p>提现失败：<a href="javascript:" class="failed">重新提现</a>
                     <span class="help">查看<a href="javascript:" target="_blank"> 帮助中心</a></span>
                 </p>
