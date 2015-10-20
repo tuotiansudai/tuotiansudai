@@ -25,5 +25,3 @@
         <#nested>
     </@security.authorize>
 </#macro>
-
-

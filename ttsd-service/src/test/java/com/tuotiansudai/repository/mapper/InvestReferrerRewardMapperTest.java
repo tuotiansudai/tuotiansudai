@@ -95,7 +95,7 @@ public class InvestReferrerRewardMapperTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setAgentLoginName(agentLoginName);
-        fakeLoanModel.setType(LoanType.LOAN_TYPE_1);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
         fakeLoanModel.setStatus(loanStatus);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);

@@ -12,7 +12,6 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Assert;
@@ -218,7 +217,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -267,7 +266,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -363,7 +362,7 @@ public class LoanServiceTest {
         loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.LOAN_TYPE_1);
+        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanModel.setMaxInvestAmount(100000000000l);
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
