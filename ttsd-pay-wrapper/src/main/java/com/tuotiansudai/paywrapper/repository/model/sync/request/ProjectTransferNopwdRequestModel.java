@@ -36,7 +36,7 @@ public class ProjectTransferNopwdRequestModel extends BaseSyncRequestModel{
         this.userId = userId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.particAccType = UmPayParticAccType.PERSON.getCode();
+        this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.particType = UmPayParticType.INVESTOR.getCode();
     }
 
