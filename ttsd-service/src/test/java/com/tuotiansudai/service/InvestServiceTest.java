@@ -93,7 +93,7 @@ public class InvestServiceTest {
             model.setIsAutoInvest(false);
             model.setLoginName(loginName);
             model.setLoanId(loanId);
-            model.setSource(InvestSource.ANDROID);
+            model.setSource(Source.ANDROID);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }

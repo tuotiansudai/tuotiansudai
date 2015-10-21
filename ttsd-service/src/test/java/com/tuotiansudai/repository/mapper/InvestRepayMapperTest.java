@@ -151,7 +151,7 @@ public class InvestRepayMapperTest {
         fakeInvestModel.setId(idGenerator.generate());
         fakeInvestModel.setLoginName(fakeUserModel.getLoginName());
         fakeInvestModel.setLoanId(fakeLoanModel.getId());
-        fakeInvestModel.setSource(InvestSource.WEB);
+        fakeInvestModel.setSource(Source.WEB);
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }

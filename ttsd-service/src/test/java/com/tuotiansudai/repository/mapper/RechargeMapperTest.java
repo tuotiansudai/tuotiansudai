@@ -42,7 +42,7 @@ public class RechargeMapperTest {
         RechargeModel model = new RechargeModel();
         model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
-        model.setBank("bank");
+        model.setBankCode("bank");
         model.setCreatedTime(new Date());
         model.setStatus(RechargeStatus.WAIT_PAY);
 
@@ -60,7 +60,7 @@ public class RechargeMapperTest {
         RechargeModel model = new RechargeModel();
         model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
-        model.setBank("bank");
+        model.setBankCode("bank");
         model.setCreatedTime(new Date());
         model.setStatus(RechargeStatus.WAIT_PAY);
 
