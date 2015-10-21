@@ -528,8 +528,8 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
             loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
-            loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100)+"%");
+            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
             loanListDtos.add(loanListDto);
