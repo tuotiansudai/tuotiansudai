@@ -160,6 +160,7 @@ public class LoanServiceImpl implements LoanService {
                 loanTitleRelationModel.setLoanId(projectId);
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
+            //TODO oss and water
         }
         dataDto.setStatus(true);
         baseDto.setData(dataDto);

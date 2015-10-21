@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
@@ -27,6 +28,9 @@ public class LoanController {
 
     @Autowired
     private LoanService loanService;
+
+    @Autowired
+    private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan(HttpServletRequest request) {
@@ -84,6 +88,7 @@ public class LoanController {
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contracts", contracts);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
+        modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
     }
 
