@@ -220,6 +220,10 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
+        loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
+        loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setMinInvestAmount(AmountUtil.convertCentToString(loanModel.getMinInvestAmount()));
+        loanDto.setMaxInvestAmount(AmountUtil.convertCentToString(loanModel.getMaxInvestAmount()));
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;

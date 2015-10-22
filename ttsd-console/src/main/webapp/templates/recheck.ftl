@@ -98,7 +98,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker'>
-                                <input name="fundraisingEndTime" type='text' class="form-control" value="${loan.fundraisingEndTime?string("yyyy-MM-dd HH:mm:ss")}"/>
+                                <input name="fundraisingEndTime" type='text' class="form-control" value="${(loan.fundraisingEndTime?string("yyyy-MM-dd HH:mm:ss"))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -109,7 +109,7 @@
                         <label class="col-sm-2 control-label">最小投资金额: </label>
 
                         <div class="col-sm-4">
-                            <input name="minInvestAmount" class="form-control" value="${loan.minInvestAmount}" />
+                            <input name="minInvestAmount" class="form-control" value="${loan.minInvestAmount!}" />
                         </div>
                     </div>
                     <div class="form-group">
