@@ -58,10 +58,15 @@ a{
   display: block;
   content: '';
 }
+.clearBlank{
+  clear: both;
+  margin-top:10px;
+}
 .pad-s {
   padding: 10px;
 }
 .pad-m {
   padding: 30px;
 }
+
 

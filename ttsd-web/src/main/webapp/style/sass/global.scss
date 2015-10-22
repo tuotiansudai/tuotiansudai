@@ -1,19 +1,19 @@
 @import 'reset', 'btn';
+@import 'font-awesome','table';
 @import 'myAccount';
 .borderBox {
   border: 1px solid nth($borderColor, 1);
   padding: 12px;
-  font-size: 13px;
   line-height: nth($baseLineHeight, 1);
+  height: auto;
+  overflow: auto;
+  &.spad { padding:5px;}
 }
-.icon-notice {
-  width:23px;
-  height: 23px;
-  display: inline-block;
-  margin-right: 10px;
-  background: url('/images/icons/spr.png') no-repeat 0 -312px;
-  vertical-align: middle;
+.bRadiusBox {
+  @extend .borderBox;
+  border-radius:3px;
 }
+
 .text-notice {
   color: nth($btnColor,5);
   font-size: nth($fontSize, 4);

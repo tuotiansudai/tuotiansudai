@@ -5,7 +5,7 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="content">
+<div class="mainFrame">
     <aside class="menuBox fl">
         <ul class="menu-list">
         <li><a href="javascript:" class="actived">账户总览</a></li>

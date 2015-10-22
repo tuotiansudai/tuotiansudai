@@ -1,7 +1,7 @@
 /**
  * Created by CBJ on 2015/10/19.
  */
-require(['jquery', 'csrf', 'autoNumeric','lodash','commonFun','jquery.validate'], function ($) {
+require(['jquery', 'csrf', 'autoNumeric','lodash','commonFun'], function ($) {
     $(function () {
 
         if($('#btnAuthority').length) {

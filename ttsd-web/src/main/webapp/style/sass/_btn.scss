@@ -60,15 +60,23 @@
 }
 
 .btn-normal {
-  background: nth($btnColor,5);
+  @extend .btn;
+  background: nth($CK1,2);
   color: #fff;
   &:hover {
-    background: nth($btnColor,6);
+   // background: nth($CK1,3);
     color: #fff;
   }
 
 }
 .btn-primary {
+  @extend .btn;
+  background: nth($CK1,1);
+  color: #fff;
+  &:hover {
+    //background: nth($CK1,2);
+    color: #fff;
+  }
 }
 
 .btn-link {

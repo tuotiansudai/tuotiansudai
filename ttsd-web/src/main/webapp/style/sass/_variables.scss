@@ -5,6 +5,8 @@ $linkColor:#ed6533 #e54c14;
 $btnColor:#333 #666 #ccc #e6e6e6
           #ff7a2a #f46916;
 $borderColor:#c7c7c7;
+$CK1:#ffac2a #ff7a2a #f46916 #ed6533 #e54c14;
+$CK2:#333 #666 #ccc #e6e6e6 #000;
 $required:red;
 $fontSize:12px 13px 14px 16px 18px;
 $baseLineHeight:2.2 1.5;
@@ -15,6 +17,7 @@ $baseWidth:998px 168px 820px;
 //page width:998px,
 //left menu width:168px,
 //right content width:820px
+$baseIconUrl:'/images/icons/';
 $Direction:top right bottom left;
 $imgPrefix:'';
 
