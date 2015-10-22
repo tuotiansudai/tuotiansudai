@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -12,5 +13,5 @@ public interface InvestService {
 
     String investCallback(Map<String, String> paramsMap, String queryString);
 
-    void asyncProcessInvestCallback();
+    BaseDto<BaseDataDto> asyncInvestCallback();
 }

@@ -3,7 +3,9 @@ package com.tuotiansudai.repository.model;
 public enum InvestStatus {
     WAITING("等待确认"),
     SUCCESS("投资成功"),
-    FAIL("投资失败");
+    FAIL("投资失败"),
+    OVER_INVEST_PAYBACK("超投返款"),
+    OVER_INVEST_PAYBACK_FAIL("超投返款失败");
 
     private final String description;
 

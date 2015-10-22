@@ -1,6 +1,8 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
+import com.tuotiansudai.dto.BaseDataDto;
+import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.paywrapper.service.AgreementService;
@@ -11,7 +13,6 @@ import com.tuotiansudai.paywrapper.service.WithdrawService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -111,10 +112,9 @@ public class PayCallbackController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/process_invest_notify", method = RequestMethod.GET)
-    public String processInvestNotify(HttpServletRequest request) {
-        this.investService.asyncProcessInvestCallback();
-        return "0";
+    @RequestMapping(value = "/async_invest_notify", method = RequestMethod.GET)
+    public BaseDto<BaseDataDto> asyncInvestNotify(HttpServletRequest request) {
+        return this.investService.asyncInvestCallback();
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {
