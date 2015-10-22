@@ -15,16 +15,19 @@
     <context:annotation-config/>
 
 
-    <context:property-placeholder location="classpath:ttsd-service.properties" />
+    <context:property-placeholder location="classpath:ttsd-service.properties"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!-- enable component scanning (beware that this does not enable mapper scanning!) -->
-    <context:component-scan base-package="com.tuotiansudai.service, com.tuotiansudai.repository, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.utils"/>
+    <context:component-scan
+            base-package="com.tuotiansudai.repository, com.tuotiansudai.service, com.tuotiansudai.client, com.tuotiansudai.security, com.tuotiansudai.scheduler, com.tuotiansudai.utils">
+    </context:component-scan>
 
     <bean id="boneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="jdbcUrl"
+                  value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
         <property name="partitionCount" value="4"/>
@@ -52,10 +55,11 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper,com.tuotiansudai.paywrapper.repository.mapper"/>
+        <property name="basePackage"
+                  value="com.tuotiansudai.repository.mapper,com.tuotiansudai.paywrapper.repository.mapper"/>
     </bean>
 
-    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+    <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient"/>
 
     <!-- job -->
     <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
@@ -74,4 +78,5 @@
     <bean id="jobStoreBuilder" class="com.tuotiansudai.utils.quartz.JobStoreBuilder">
         <property name="dataSource" ref="jobBoneCPDataSource"/>
     </bean>
+
 </beans>
