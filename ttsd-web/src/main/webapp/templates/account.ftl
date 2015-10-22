@@ -2,7 +2,6 @@
 <html>
 <#import "macro/global.ftl" as global>
 <#--<@global.head title="账户总览" pageCss="${css.global}"></@global.head>-->
-<#--<@global.head title="账户总览" pageCss="${css.font-awesome}"></@global.head>-->
 <head lang="en">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -272,7 +271,7 @@
         <div class="clearBlank"></div>
         <div class="newProjects bRadiusBox">
         <table class="table">
-            <caption>最新投资项目</caption>
+            <caption>最新投资项目 <a href="#" class="fr">更多...</a> </caption>
             <thead>
             <tr>
                 <th>交易时间</th>
