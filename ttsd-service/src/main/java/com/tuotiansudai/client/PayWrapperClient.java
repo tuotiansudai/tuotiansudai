@@ -50,7 +50,7 @@ public class PayWrapperClient {
 
     private String investPath = "/invest";
 
-    private String investNopwdPath = "/invest-nopwd";
+    private String autoInvestPath = "/auto-invest";
 
     private String agreementPath = "/agreement";
 
@@ -187,20 +187,9 @@ public class PayWrapperClient {
         return baseDto;
     }
 
-    public BaseDto<PayDataDto> investNopwd(InvestDto dto) {
-        try {
-            String requestJson = objectMapper.writeValueAsString(dto);
-            String responseJson = this.post(investNopwdPath, requestJson);
-            return this.parsePayResponseJson(responseJson);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        baseDto.setData(payDataDto);
-
-        return baseDto;
+    public BaseDto<PayDataDto> autoInvest(long loanId) {
+        String responseJson = this.post(autoInvestPath, String.valueOf(loanId));
+        return this.parsePayResponseJson(responseJson);
     }
 
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {

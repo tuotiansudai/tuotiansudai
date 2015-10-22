@@ -26,4 +26,19 @@ public class InvestController {
         return investService.invest(dto);
     }
 
+    @RequestMapping(value = "/auto-invest", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> autoInvest(@RequestBody long loanId) {
+        System.out.println(loanId);
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+        try {
+            investService.autoInvest(loanId);
+            payDataDto.setStatus(true);
+        } catch (Exception e) {
+            payDataDto.setStatus(false);
+        }
+        return baseDto;
+    }
 }

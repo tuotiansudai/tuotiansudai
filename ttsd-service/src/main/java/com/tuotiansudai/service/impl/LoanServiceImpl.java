@@ -5,7 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.FundraisingStartJob;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
@@ -13,6 +15,7 @@ import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.JobManager;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -55,6 +58,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Autowired
+    private JobManager jobManager;
 
     @Value("${autoInvest.delay.minutes}")
     private int autoInvestDelayMinutes;
@@ -218,7 +224,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setType(loanModel.getType());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
         }
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
@@ -330,9 +336,9 @@ public class LoanServiceImpl implements LoanService {
 
     private void createFundraisingStartJob(LoanModel loanModel) {
         try {
-            JobManager.newJob(FundraisingStartJob.class)
+            jobManager.newJob(JobType.LoanStatue, FundraisingStartJob.class)
                     .runOnceAt(loanModel.getFundraisingStartTime())
-                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, loanModel.getId())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
                     .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
                     .submit();
         } catch (SchedulerException e) {
@@ -341,7 +347,15 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void createAutoInvestJob(long loanId) {
-
+        try {
+            jobManager.newJob(JobType.AutoInvest, AutoInvestJob.class)
+                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, String.valueOf(loanId))
+                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
+                    .submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
