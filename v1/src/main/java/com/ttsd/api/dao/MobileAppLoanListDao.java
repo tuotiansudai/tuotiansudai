@@ -9,7 +9,7 @@ public interface MobileAppLoanListDao {
 
     Integer getTotalCount();
 
-    List<Loan> getInvestList(Integer index, Integer pageSize);
+    List<Loan> getLoanList(Integer index, Integer pageSize);
 
     List<Loan> getCompletedXsInvest();
 

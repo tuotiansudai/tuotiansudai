@@ -43,7 +43,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
 
-            List<Loan> investList = mobileAppLoanListDao.getInvestList(index, pageSize);
+            List<Loan> investList = mobileAppLoanListDao.getLoanList(index, pageSize);
             if(CollectionUtils.isNotEmpty(investList)){
                 Loan loan = investList.get(0);
                 if(!("xs").equals(loan.getLoanActivityType())){

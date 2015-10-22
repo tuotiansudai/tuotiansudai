@@ -42,7 +42,7 @@ public class MobileAppLoanListDaoImpl implements MobileAppLoanListDao {
     }
 
     @Override
-    public List<Loan> getInvestList(Integer index, Integer pageSize) {
+    public List<Loan> getLoanList(Integer index, Integer pageSize) {
         int indexInt = index.intValue();
         int pageSizeInt = pageSize.intValue();
 
