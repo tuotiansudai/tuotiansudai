@@ -25,6 +25,9 @@ public class QuartzTest {
     JobMapper jobMapper;
 
     @Autowired
+    JobManager jobManager;
+
+    @Autowired
     TriggerMapper triggerMapper;
 
     @Test
@@ -34,7 +37,7 @@ public class QuartzTest {
 
         String k = "testKey";
         String v = String.valueOf(System.currentTimeMillis());
-        JobManager.newJob(TestJob.class)
+        jobManager.newJob(TestJob.class)
                 .addJobData(k,v)
                 .withIdentity(jobGroup, jobName)
                 .withDescription("some Description")

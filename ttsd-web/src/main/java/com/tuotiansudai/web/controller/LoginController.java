@@ -3,7 +3,6 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.utils.CaptchaVerifier;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;

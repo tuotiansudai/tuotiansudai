@@ -1,15 +1,22 @@
 package com.tuotiansudai.utils;
 
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.utils.quartz.SchedulerBuilder;
+import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
 import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
 import org.quartz.Job;
 import org.quartz.Scheduler;
-import org.springframework.beans.BeansException;
+import org.quartz.SchedulerException;
+import org.quartz.spi.ThreadPool;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * example:
  * <pre>
  *     // set target job class
- *     Jobmanager.newjob(testjob.class)
+ *     jobmanager.newjob(testjob.class)
  *
  *     // [optional] add parameters
  *     .addjobdata(some_parameters)
@@ -30,13 +37,31 @@ import org.springframework.beans.BeansException;
  *     .submit();
  * </pre>
  */
-public class JobManager {
-    public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
+@Component
+public class JobManager implements InitializingBean {
+
+    private ThreadPool threadPool;
+
+    @Autowired
+    private SchedulerBuilder schedulerBuilder;
+
+    public TriggeredJobBuilder newJob(Class<? extends Job> jobClazz) {
+        return newJob(JobType.Default, jobClazz);
+    }
+
+    public TriggeredJobBuilder newJob(JobType jobType, Class<? extends Job> jobClazz) {
+        String schedulerName = "Scheduler-" + jobType.name();
         Scheduler scheduler = null;
         try {
-            scheduler = SpringContextUtil.getBeanByType(Scheduler.class);
-        }catch (BeansException exception){
+            scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
         }
         return TriggeredJobBuilder.newJob(jobClazz, scheduler);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        threadPool = ThreadPoolBuilder.buildMiniThreadPool();
     }
 }
