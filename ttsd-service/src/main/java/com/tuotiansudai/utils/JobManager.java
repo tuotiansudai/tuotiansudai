@@ -5,6 +5,7 @@ import com.tuotiansudai.utils.quartz.SchedulerBuilder;
 import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
 import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
 import org.quartz.Job;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.spi.ThreadPool;
@@ -49,6 +50,10 @@ public class JobManager implements InitializingBean {
         return newJob(JobType.Default, jobClazz);
     }
 
+    public void deleteJob(String jobGroup, String jobName) {
+        deleteJob(JobType.Default, jobGroup, jobName);
+    }
+
     public TriggeredJobBuilder newJob(JobType jobType, Class<? extends Job> jobClazz) {
         String schedulerName = "Scheduler-" + jobType.name();
         Scheduler scheduler = null;
@@ -58,6 +63,17 @@ public class JobManager implements InitializingBean {
             e.printStackTrace();
         }
         return TriggeredJobBuilder.newJob(jobClazz, scheduler);
+    }
+
+    public void deleteJob(JobType jobType, String jobGroup, String jobName) {
+        String schedulerName = "Scheduler-" + jobType.name();
+        Scheduler scheduler = null;
+        try {
+            scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
+            scheduler.deleteJob(JobKey.jobKey(jobName, jobGroup));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

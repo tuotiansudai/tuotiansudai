@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.web.repository.mapper.JobMapper">
+<mapper namespace="com.tuotiansudai.web.repository.job.mapper.JobMapper">
     <resultMap id="jobModelResultMap" type="JobModel">
         <result column="JOB_NAME" property="jobName"></result>
         <result column="JOB_GROUP" property="jobGroup"></result>
