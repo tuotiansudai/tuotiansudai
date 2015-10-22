@@ -49,9 +49,7 @@ a:hover {
     color: #cc9900
 }
 
-.table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
-    font-size: 12px;
-}
+table td,table th { font-size: 12px;}
 
 .file-input {
     margin-bottom: 10px;

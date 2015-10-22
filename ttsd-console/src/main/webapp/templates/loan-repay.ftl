@@ -126,7 +126,7 @@
                         <label for="number">开始时间:</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" id="repayStartDate" value="${repayStartDate}"/>
+                            <input type='text' class="form-control" id="repayStartDate" value="${(repayStartDate?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -134,7 +134,7 @@
 
                         <label for="number">结束时间:</label>
                         <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" id="repayEndDate" value="${repayEndDate}"/>
+                            <input type='text' class="form-control" id="repayEndDate" value="${(repayEndDate?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
