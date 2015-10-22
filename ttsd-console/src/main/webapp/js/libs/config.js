@@ -17,6 +17,7 @@ var require = {
         'ueditor-config': '/js/libs/ueditor/ueditor.config',
         'ueditor': '/js/libs/ueditor/ueditor',
         'ueditor-lang': '/js/libs/ueditor/lang/zh-cn/zh-cn',
+        'template': '/js/libs/template',
         'csrf': '/js/libs/csrf'
     },
 
