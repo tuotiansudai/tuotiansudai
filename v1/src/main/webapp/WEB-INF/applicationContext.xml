@@ -56,7 +56,7 @@
 			<value>
 				hibernate.dialect=com.esoft.core.hibernate.dialect.CustomMySQL5Dialect
 				hibernate.hbm2ddl.auto=none
-				hibernate.show_sql=true
+				hibernate.show_sql=false
 				hibernate.format_sql=false
 				hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
 				hibernate.cache.use_second_level_cache=false
