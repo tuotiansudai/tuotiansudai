@@ -256,21 +256,15 @@ var MyChartsObject={
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{b} : <br/> {c} ({d}/%)',
-                    show: true,
-                    itemStyle:{
-                        textStyle : {
-                            fontSize : '11',
-                            fontWeight : 'normal'
-                        }
-                    }
+                    formatter: '{b} : {c} ({d}/%)',
+                    show: true
                 },
                 series: [
                     {
                         name: name || "",
                         type: 'pie',
                         //radius: '65%',
-                        radius : ['70%', '100%'],
+                        radius : ['50%', '95%'],
                        // center: ['30%', '48%'],
                         center: ['70%', '48%'],
                         itemStyle : {
@@ -284,7 +278,7 @@ var MyChartsObject={
                             },
                             emphasis : {
                                 label : {
-                                    show : true,
+                                    show : false,
                                     position : 'center',
                                     textStyle : {
                                         fontSize : '11',
