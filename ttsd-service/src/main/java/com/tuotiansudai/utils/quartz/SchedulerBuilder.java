@@ -2,7 +2,6 @@ package com.tuotiansudai.utils.quartz;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.impl.DirectSchedulerFactory;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,13 @@ public class SchedulerBuilder {
     }
 
     public Scheduler buildScheduler(String schedulerName, ThreadPool threadPool, JobStore jobStore) throws SchedulerException {
-        Scheduler scheduler = DirectSchedulerFactory.getInstance().getScheduler(schedulerName);
+        DirectSchedulerFactory schedulerFactory = DirectSchedulerFactory.getInstance();
+        Scheduler scheduler = schedulerFactory.getScheduler(schedulerName);
         if (scheduler != null) {
             return scheduler;
         }
-
-        DirectSchedulerFactory.getInstance().createScheduler(
+        schedulerFactory.createScheduler(
                 schedulerName, "AUTO", threadPool, jobStore);
-        return DirectSchedulerFactory.getInstance().getScheduler(schedulerName);
+        return schedulerFactory.getScheduler(schedulerName);
     }
 }
