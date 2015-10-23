@@ -8,4 +8,14 @@
         insert into project_transfer_notify_request (service, sign_type, sign, mer_id, version, order_id, mer_date, trade_no, mer_check_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)
         values (#{service}, #{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{merCheckDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})
     </insert>
+
+    <select id="getTodoList" resultType="com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel">
+        <![CDATA[
+          select * from project_transfer_notify_request where status=0 order by requestTime asc;
+         ]]>
+    </select>
+
+    <update id="updateStatus" keyColumn="id" keyProperty="id" parameterType="map">
+        update project_transfer_notify_request set status = #{status} where id = #{id}
+    </update>
 </mapper>

@@ -251,6 +251,25 @@ public class PayWrapperClient {
         return resultDto;
     }
 
+
+    public BaseDto<BaseDataDto> investCallback() {
+        String responseJson = this.get("/callback/async_invest_notify");
+        if (!Strings.isNullOrEmpty(responseJson)) {
+            try {
+                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<BaseDataDto>>() {});
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
+        return resultDto;
+    }
+
     private String get(String path) {
         String url = URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{context}", context).replace("{uri}", path);
         Request request = new Request.Builder()

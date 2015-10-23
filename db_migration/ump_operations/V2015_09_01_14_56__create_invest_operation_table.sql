@@ -45,6 +45,7 @@ CREATE TABLE `ump_operations`.`project_transfer_notify_request` (
   `response_time`  DATETIME,
   `request_data`   TEXT            NOT NULL,
   `response_data`  TEXT,
+  `status`         INT(1)          NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
