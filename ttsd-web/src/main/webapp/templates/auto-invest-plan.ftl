@@ -13,7 +13,7 @@
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
             <li><a href="javascript:">个人资产</a></li>
-            <li><a href="javascript:" class="actived">自动投标</a></li>
+            <li><a href="/investor/auto-invest" class="actived">自动投标</a></li>
             <li><a href="javascript:">积分红包</a></li>
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
@@ -28,20 +28,23 @@
             </div>
 
             <div class="planSwitch" id="planSwitchDom">
-                <form name="planForm" id="signPlanForm" method="post">
+                <form name="planForm" id="signPlanForm" method="post" action="/investor/auto-invest/turn-on">
                 <dl>
                     <dt>功能状态：</dt>
-                    <dd class="switchBtn"><input type="radio" name="planKind" value="1" id="plan-open" checked><label for="plan-open" class="radio">开启</label>
-                        <input type="radio" name="planKind" value="2" id="plan-close"><label for="plan-close" class="radio">关闭并保存</label></dd>
+                    <dd class="switchBtn">
+                        <input type="radio" name="enable" value="1" id="plan-open" ${(model.enabled)?string('checked','')}>
+                        <label for="plan-open" class="radio">开启</label>
+                        <input type="radio" name="enable" value="2" id="plan-close" ${(model.enabled)?string('','checked')}>
+                        <label for="plan-close" class="radio">关闭并保存</label></dd>
                 </dl>
                     <dl>
                         <dt class="requireOpt">投资金额：</dt>
-                        <dd><input type="number" name="investMin"> ~
-                            <input type="number" name="investMax"> 元</dd>
+                        <dd><input type="text" name="minInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.minInvestAmount}"> ~
+                            <input type="text" name="maxInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.maxInvestAmount}"> 元</dd>
                     </dl>
                     <dl>
                         <dt class="requireOpt">保留金额：</dt>
-                        <dd><input type="number" name="ReservedAmount"> 元 （不会加入自动投标的金额）</dd>
+                        <dd><input type="text" name="retentionAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.retentionAmount}"> 元 （不会加入自动投标的金额）</dd>
                     </dl>
                     <dl class="clear">
                         <dt>本金复投：</dt>
@@ -50,20 +53,10 @@
                     </dl>
                     <dl>
                         <dt class="requireOpt">项目期限：</dt>
-                        <dd class="projectLimit">
-                            <span value="1">1月期<i class="badge"></i></span>
-                            <span value="2">2月期<i class="badge"></i></span>
-                            <span value="3">3月期<i class="badge"></i></span>
-                            <span value="4">4月期<i class="badge"></i></span>
-                            <span value="5">5月期<i class="badge"></i></span>
-                            <span value="6">6月期<i class="badge"></i></span>
-                            <span value="7">7月期<i class="badge"></i></span>
-                            <span value="8">8月期<i class="badge"></i></span>
-                            <span value="9">9月期<i class="badge"></i></span>
-                            <span value="10">10月期<i class="badge"></i></span>
-                            <span value="11">11月期<i class="badge"></i></span>
-                            <span value="12">12月期<i class="badge"></i></span>
-                            <span value="13">天标<i class="badge"></i></span>
+                        <dd class="projectLimit" data-value="${model.autoInvestPeriods?string('0')}">
+                            <#list periods as period>
+                            <span data-value="${period.periodValue?string('0')}">${period.periodName}<i class="badge"></i></span>
+                            </#list>
                         </dd>
                     </dl>
                     <div class="btnBox tc clear">

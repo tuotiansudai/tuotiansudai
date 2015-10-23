@@ -1,26 +1,61 @@
 package com.tuotiansudai.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AutoInvestMonthPeriod {
-    public static AutoInvestMonthPeriod Month_1 = new AutoInvestMonthPeriod(1, "1月期");
-    public static AutoInvestMonthPeriod Month_2 = new AutoInvestMonthPeriod(1 << 1, "2月期");
-    public static AutoInvestMonthPeriod Month_3 = new AutoInvestMonthPeriod(1 << 2, "3月期");
-    public static AutoInvestMonthPeriod Month_4 = new AutoInvestMonthPeriod(1 << 3, "4月期");
-    public static AutoInvestMonthPeriod Month_5 = new AutoInvestMonthPeriod(1 << 4, "5月期");
-    public static AutoInvestMonthPeriod Month_6 = new AutoInvestMonthPeriod(1 << 5, "6月期");
-    public static AutoInvestMonthPeriod Month_7 = new AutoInvestMonthPeriod(1 << 6, "7月期");
-    public static AutoInvestMonthPeriod Month_8 = new AutoInvestMonthPeriod(1 << 7, "8月期");
-    public static AutoInvestMonthPeriod Month_9 = new AutoInvestMonthPeriod(1 << 8, "9月期");
-    public static AutoInvestMonthPeriod Month_10 = new AutoInvestMonthPeriod(1 << 9, "10月期");
-    public static AutoInvestMonthPeriod Month_11 = new AutoInvestMonthPeriod(1 << 10, "11月期");
-    public static AutoInvestMonthPeriod Month_12 = new AutoInvestMonthPeriod(1 << 11, "12月期");
 
-    public static AutoInvestMonthPeriod[] AllPeriods = new AutoInvestMonthPeriod[]{
-            Month_1, Month_2, Month_3, Month_4, Month_5, Month_6, Month_7, Month_8, Month_9, Month_10, Month_11, Month_12
-    };
+    // 值是这样的： [{1:天标}, {2:1月期}, {4:2月期}, {8:3月期}, {16:4月期}.....{value:name}]
+    public static final AutoInvestMonthPeriod[] AllPeriods;
 
+    public static final AutoInvestMonthPeriod Daily;
+    public static final AutoInvestMonthPeriod Month_1;
+    public static final AutoInvestMonthPeriod Month_2;
+    public static final AutoInvestMonthPeriod Month_3;
+    public static final AutoInvestMonthPeriod Month_4;
+    public static final AutoInvestMonthPeriod Month_5;
+    public static final AutoInvestMonthPeriod Month_6;
+    public static final AutoInvestMonthPeriod Month_7;
+    public static final AutoInvestMonthPeriod Month_8;
+    public static final AutoInvestMonthPeriod Month_9;
+    public static final AutoInvestMonthPeriod Month_10;
+    public static final AutoInvestMonthPeriod Month_11;
+    public static final AutoInvestMonthPeriod Month_12;
+
+
+    static {
+        List<AutoInvestMonthPeriod> periodList = new ArrayList<>(12);
+        periodList.add(new AutoInvestMonthPeriod(1, "天标"));
+        for (int i = 1; i <= 12; i++) {
+            AutoInvestMonthPeriod p = new AutoInvestMonthPeriod(1 << i, i + "月期");
+            periodList.add(p);
+        }
+        AllPeriods = periodList.toArray(new AutoInvestMonthPeriod[0]);
+
+        Daily = AllPeriods[0];
+        Month_1 = AllPeriods[1];
+        Month_2 = AllPeriods[2];
+        Month_3 = AllPeriods[3];
+        Month_4 = AllPeriods[4];
+        Month_5 = AllPeriods[5];
+        Month_6 = AllPeriods[6];
+        Month_7 = AllPeriods[7];
+        Month_8 = AllPeriods[8];
+        Month_9 = AllPeriods[9];
+        Month_10 = AllPeriods[10];
+        Month_11 = AllPeriods[11];
+        Month_12 = AllPeriods[12];
+    }
+
+    public static void main(String[] args) {
+        for(AutoInvestMonthPeriod p: AllPeriods){
+            System.out.println(p.periodValue +": "+p.periodName);
+        }
+    }
+
+    // TODO : 添加天标/月标类型参数
     public static AutoInvestMonthPeriod generateFromLoanPeriod(int loanPeriod) {
-        int mp = (int) Math.pow(2,loanPeriod - 1);
-        return new AutoInvestMonthPeriod(mp, "");
+        return AllPeriods[loanPeriod];
     }
 
     public static AutoInvestMonthPeriod merge(int... period) {
@@ -37,6 +72,17 @@ public class AutoInvestMonthPeriod {
             mp = mp | p.periodValue;
         }
         return new AutoInvestMonthPeriod(mp, "");
+    }
+
+    public static AutoInvestMonthPeriod[] split(int mergedPeriodsValue){
+        List<AutoInvestMonthPeriod> selectedPeriods = new ArrayList<>();
+        AutoInvestMonthPeriod mergedPeriod = new AutoInvestMonthPeriod(mergedPeriodsValue,"");
+        for(AutoInvestMonthPeriod period : AllPeriods){
+            if(mergedPeriod.contains(period)){
+                selectedPeriods.add(period);
+            }
+        }
+        return selectedPeriods.toArray(new AutoInvestMonthPeriod[0]);
     }
 
     private final int periodValue;

@@ -3,10 +3,8 @@ package com.tuotiansudai.web.controller;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.repository.model.InvestSource;
-import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
@@ -29,6 +27,9 @@ public class InvestController {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private RepayService repayService;
@@ -119,46 +120,92 @@ public class InvestController {
 
     @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)
     public String autoInvest() {
-        return "redirect:/investor/auto-invest/agreement";
+        String loginName = LoginUserInfo.getLoginName();
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        if (accountModel.isAutoInvest()) {
+            AutoInvestPlanModel autoInvestPlan = investService.findUserAutoInvestPlan(loginName);
+            if (autoInvestPlan == null || (!autoInvestPlan.isEnabled())) {
+                return "redirect:/investor/auto-invest/plan";
+            } else {
+                return "redirect:/investor/auto-invest/plan-detail";
+            }
+        } else {
+            return "redirect:/investor/auto-invest/agreement";
+        }
     }
 
     @RequestMapping(value = "/investor/auto-invest/agreement", method = RequestMethod.GET)
     private ModelAndView autoInvestAgreement() {
-        ModelAndView mv = new ModelAndView("/auto-invest-agreement");
-        mv.addObject("content", "自动投标");
-        return mv;
+        String loginName = LoginUserInfo.getLoginName();
+        AccountModel accountModel = accountService.findByLoginName(loginName);
+        if (!accountModel.isAutoInvest()) {
+            ModelAndView mv = new ModelAndView("/auto-invest-agreement");
+            mv.addObject("content", "自动投标");
+            return mv;
+        } else {
+            return new ModelAndView("redirect:/investor/auto-invest");
+        }
     }
 
     @RequestMapping(value = "/investor/auto-invest/plan", method = RequestMethod.GET)
     public ModelAndView autoInvestPlan() {
         AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
         ModelAndView mv = new ModelAndView("/auto-invest-plan");
-        mv.addObject("model", model);
+        if (model == null) {
+            AutoInvestPlanDto dto = new AutoInvestPlanDto();
+            dto.setEnabled(true);
+            dto.setAutoInvestPeriods(0);
+            dto.setMaxInvestAmount("");
+            dto.setMinInvestAmount("");
+            dto.setRetentionAmount("");
+            mv.addObject("model", dto);
+        } else {
+            AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
+            mv.addObject("model", dto);
+        }
         mv.addObject("periods", AutoInvestMonthPeriod.AllPeriods);
         return mv;
     }
 
     @RequestMapping(value = "/investor/auto-invest/plan-detail", method = RequestMethod.GET)
-    public ModelAndView autoInvestPlanDetail4Test() {
-        ModelAndView mv = new ModelAndView("/auto-invest-plan-detail");
-        return mv;
+    public ModelAndView autoInvestPlanDetail() {
+        AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
+        if (model != null && model.isEnabled()) {
+            ModelAndView mv = new ModelAndView("/auto-invest-plan-detail");
+            AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
+            mv.addObject("model", dto);
+            mv.addObject("periods", AutoInvestMonthPeriod.split(model.getAutoInvestPeriods()));
+            return mv;
+        } else {
+            return new ModelAndView("redirect:/investor/auto-invest");
+        }
     }
 
     @RequestMapping(value = "/investor/auto-invest/turn-on", method = RequestMethod.POST)
-    public String turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
+    @ResponseBody
+    public BaseDto turnOnAutoInvestPlan(@RequestBody AutoInvestPlanDto autoInvestPlanDto) {
+        BaseDto baseDto = new BaseDto();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
+
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(autoInvestPlanDto.getMinInvestAmount());
-        model.setMaxInvestAmount(autoInvestPlanDto.getMaxInvestAmount());
-        model.setRetentionAmount(autoInvestPlanDto.getRetentionAmount());
+        model.setMinInvestAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
+        model.setMaxInvestAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
+        model.setRetentionAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
         model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
+        if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
+            dataDto.setStatus(false);
+        }
         investService.turnOnAutoInvest(model);
-        return "redirect:/investor/auto-invest";
+        return baseDto;
     }
 
     @RequestMapping(value = "/investor/auto-invest/turn-off", method = RequestMethod.POST)
-    public String turnOffAutoInvestPlan() {
+    @ResponseBody
+    public BaseDto turnOffAutoInvestPlan() {
         investService.turnOffAutoInvest(LoginUserInfo.getLoginName());
-        return "redirect:/investor/auto-invest";
+        return new BaseDto();
     }
 }

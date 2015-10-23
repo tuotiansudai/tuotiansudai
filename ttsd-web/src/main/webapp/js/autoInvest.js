@@ -1,120 +1,155 @@
 /**
  * Created by CBJ on 2015/10/19.
  */
-require(['jquery', 'csrf', 'autoNumeric','lodash','commonFun','jquery.validate'], function ($) {
+require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
     $(function () {
 
-        if($('#btnAuthority').length) {
-            var $btnAuthority=$('#btnAuthority');
-            $btnAuthority.click(function() {
-                var content='<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
-                commonFun.popWindow('自动投标授权',content,{
-                    width:'450px'
+        if ($('#btnAuthority').length) {
+            var $btnAuthority = $('#btnAuthority');
+            $btnAuthority.click(function () {
+                var content = '<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
+                commonFun.popWindow('自动投标授权', content, {
+                    width: '450px'
                 });
 
-                $('body').delegate('#finishAuthor','click',function() {
-                    location.href='http://localhost:8080/investor/auto-invest/plan';
+                $('body').delegate('#finishAuthor', 'click', function () {
+                    location.href = '/investor/auto-invest/plan';
                 });
 
             });
         }
         //switch button for plan
-        if($('#planSwitchDom').length) {
-            var $planSwitchDom=$('#planSwitchDom'),
-                $btnSwitch=$('.switchBtn',$planSwitchDom),
-                $radioLabel=$('label.radio',$btnSwitch),
-                $projectLimit=$('.projectLimit',$planSwitchDom),
-                $radio=$('input[type="radio"]',$planSwitchDom),
+        if ($('#planSwitchDom').length) {
+            var $planSwitchDom = $('#planSwitchDom'),
+                $btnSwitch = $('.switchBtn', $planSwitchDom),
+                $radioLabel = $('label.radio', $btnSwitch),
+                $projectLimit = $('.projectLimit', $planSwitchDom),
+                $radio = $('input[type="radio"]', $planSwitchDom),
                 //$checkbox=$('input[type="checkbox"]',$planSwitchDom),
                 //$checkboxLabel=$('label.checkbox',$planSwitchDom),
-                $saveInvestPlan=$('#saveInvestPlan'),
-                $signPlanForm=$("#signPlanForm");
+                $saveInvestPlan = $('#saveInvestPlan'),
+                $signPlanForm = $("#signPlanForm");
             //init radio and checkbox
-            commonFun.initRadio($radio,$radioLabel);
-           // commonFun.checkBoxInit($checkbox,$checkboxLabel);
+            commonFun.initRadio($radio, $radioLabel);
+            // commonFun.checkBoxInit($checkbox,$checkboxLabel);
 
-            $radioLabel.click(function(index) {
-                var $this=$(this),
-                    value=$this.prev('input').val();
-                if(value==1) {
+            if($('#plan-close').is(":checked")){
+                $planSwitchDom.find('dl').first().show().siblings().hide();
+            }
+
+            $('input.autoNumeric').autoNumeric('init');
+
+            $projectLimit.each(function () {
+                var $this = $(this);
+                var selectedPeriods = parseInt($this.data('value'));
+                if (!isNaN(selectedPeriods)) {
+                    $this.find('span').each(function () {
+                        var $item = $(this);
+                        var period = parseInt($item.data('value'));
+                        if ((period & selectedPeriods) == period) {
+                            $item.addClass('active');
+                        }
+                    });
+                }
+            });
+
+            $radioLabel.click(function (index) {
+                var $this = $(this),
+                    value = $this.prev('input').val();
+                if (value == 1) {
                     $planSwitchDom.find('dl').show().siblings().show();
                 }
                 else {
-                    $planSwitchDom.find('dl').first().show().siblings().hide();
-                    //close event
+                    $.ajax({
+                        url: '/investor/auto-invest/turn-off',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=UTF-8'
+                    }).done(function (data) {
+                        $planSwitchDom.find('dl').first().show().siblings().hide();
+                    }).fail(function (data) {
+                        console.log(data);
+                    });
                 }
 
             });
 
             /* get Project duration */
-            var getDurationObj=function() {
-                var limitObj=[],sum;
-                $projectLimit.find('span.active').each(function() {
-                    var $this=$(this);
-                    limitObj.push($this.attr('value'));
+            var getDurationObj = function () {
+                var limitObj = [], sum;
+                $projectLimit.find('span.active').each(function () {
+                    var $this = $(this);
+                    limitObj.push($this.data('value'));
                 });
-                sum= _.sum(limitObj);
+                sum = _.sum(limitObj);
                 return sum;
             }
-            var checkOption=function() {
-                var limitNum=getDurationObj(),
-                    serialArr=$('input[type="number"]',$signPlanForm).serializeArray(),
+            var checkOption = function () {
+                var limitNum = getDurationObj(),
+                    serialArr = $('input.autoNumeric', $signPlanForm).serializeArray(),
                     //isChecked=$checkbox.is(':checked'),
-                    valObj=_.map(serialArr, 'value');
+                    valObj = _.map(serialArr, 'value');
 
-                if(limitNum>0 && !_.isEmpty(valObj[0]) && !_.isEmpty(valObj[1]) && !_.isEmpty(valObj[2])) {
-                    $saveInvestPlan.prop('disabled',false);
+                if (limitNum > 0 && !_.isEmpty(valObj[0]) && !_.isEmpty(valObj[1]) && !_.isEmpty(valObj[2])) {
+                    $saveInvestPlan.prop('disabled', false);
                 }
                 else {
-                    $saveInvestPlan.prop('disabled',true);
+                    $saveInvestPlan.prop('disabled', true);
                 }
 
             }
             //select project limit
-            $projectLimit.find('span').click(function() {
-                var $this=$(this)
+            $projectLimit.find('span').click(function () {
+                var $this = $(this)
                 $this.toggleClass('active');
                 checkOption();
             });
 
-            /* mouse leave input, trigger it*/
-            $('input',$signPlanForm).bind('keyup',function() {
+            $('#checkOption').click(function(){
                 checkOption();
             });
 
-            $saveInvestPlan.click(function() {
-                var val=$signPlanForm.serialize(),
-                valObj=commonFun.parseURL('htt://test?'+val).params,
-                    planKind=valObj.planKind,
-                    investMin=valObj.investMin,
-                    investMax=valObj.investMax,
-                    ReservedAmount=valObj.ReservedAmount,
-                    agreement=valObj.agreement,
-                    duration=getDurationObj();
+            /* mouse leave input, trigger it*/
+            $('input', $signPlanForm).bind('keyup', function () {
+                checkOption();
+            });
 
-                var getParam={"status":planKind,
-                    "min":investMin,
-                    "max":investMax,
-                    "price":ReservedAmount,
-                    "duration":duration,
-                    "agreement":agreement};
+            checkOption();
+
+            $saveInvestPlan.click(function () {
+                var requestData = {
+                    "minInvestAmount": $('input[name="minInvestAmount"]').val().replace(/,/, ''),
+                    "maxInvestAmount": $('input[name="maxInvestAmount"]').val().replace(/,/, ''),
+                    "retentionAmount": $('input[name="retentionAmount"]').val().replace(/,/, ''),
+                    "autoInvestPeriods": getDurationObj()
+                };
+                if(parseInt(requestData.maxInvestAmount) < parseInt(requestData.minInvestAmount)){
+                    alert("投资金额范围输入有误");
+                    return false;
+                }
                 $.ajax({
-                    url: url,
-                    data:getParam,
+                    url: '/investor/auto-invest/turn-on',
+                    data: JSON.stringify(requestData),
                     type: 'POST',
-                    dataType: 'json'
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
                 }).done(function (data) {
-                    //var url=location.href.replace(/plan/,'plan-detail');
-                    //location.href=url;
+                    if (data.data.status) {
+                        location.href = 'plan-detail';
+                    } else {
+                        // fail
+                    }
+                }).fail(function (data) {
+                    console.log(data);
                 });
 
             });
         }
 
-        if($('#editSetting').length) {
-            $('#editSetting').click(function() {
-                var url=location.href.replace(/plan-detail/,'plan');
-                location.href=url;
+        if ($('#editSetting').length) {
+            $('#editSetting').click(function () {
+                var url = location.href.replace(/plan-detail/, 'plan');
+                location.href = url;
             });
         }
 

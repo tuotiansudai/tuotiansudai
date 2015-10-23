@@ -13,7 +13,7 @@
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
             <li><a href="javascript:">个人资产</a></li>
-            <li><a href="javascript:" class="actived">自动投标</a></li>
+            <li><a href="/investor/auto-invest" class="actived">自动投标</a></li>
             <li><a href="javascript:">积分红包</a></li>
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
@@ -36,7 +36,9 @@
             </p>
 
             <div class="btnBox tc">
-                <form action="/recharge" method="post" target="_blank">
+                <form action="/agreement" method="post" target="_blank">
+                    <input type="hidden" name="autoInvest" value="true"/>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <button type="submit" id="btnAuthority" class="btn btn-normal">立即授权</button>
                 </form>
             </div>
