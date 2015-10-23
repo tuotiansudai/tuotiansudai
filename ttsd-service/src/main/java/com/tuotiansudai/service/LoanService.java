@@ -40,6 +40,8 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
+    void startFundraising(long loanId);
+
     /**
      * @param loanId
      * @return

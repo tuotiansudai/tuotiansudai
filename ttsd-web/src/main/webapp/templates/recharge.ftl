@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="充值" pageCss="${css.recharge}">
+<@global.head title="充值" pageCss="${css.global}">
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="content">
-    <ul class="email-nav">
-        <li><a href="javascript:">账户总览</a></li>
+<div class="mainFrame">
+    <aside class="menuBox fl">
+        <ul class="menu-list">
+        <li><a href="javascript:" class="actived">账户总览</a></li>
         <li><a href="javascript:">投资记录</a></li>
         <li><a href="javascript:">债权转让</a></li>
         <li><a href="javascript:">资金管理</a></li>
@@ -15,16 +16,15 @@
         <li><a href="javascript:">自动投标</a></li>
         <li><a href="javascript:">积分红包</a></li>
         <li><a href="javascript:">推荐管理</a></li>
-    </ul>
-    <div class="recharge-container">
-        <p class="title"><em>我要充值</em></p>
+        </ul>
+    </aside>
+    <div class="recharge-container fr autoHeight">
+        <h4 class="title"><em class="tc">我要充值</em></h4>
 
         <div class="recharge-content">
-            <ul>
+            <ul class="payment-mode clear">
                 <li>
-                    <span class="hot-flag">
-                        <img src="/images/recharge/hot.jpg" alt=""/>
-                    </span>
+                    <i class="hot-flag"></i>
                     快捷支付
                 </li>
                 <li class="active">个人网银</li>
@@ -76,73 +76,73 @@
                         <p>请选择银行：</p>
                         <li>
                             <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
-                            <label for="bank-zs"><img src="/images/recharge/bank-zs.jpg" alt=""></label>
+                            <label for="bank-zs"><img src="/images/bindcard/bank-zs.jpg" alt=""></label>
                         </li>
                         <li>
                             <input data-name="ICBC" type="radio" name="bank" id="bank-gs">
-                            <label for="bank-gs"><img src="/images/recharge/bank-gs.jpg" alt=""> </label>
+                            <label for="bank-gs"><img src="/images/bindcard/bank-gs.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="CMBC" type="radio" name="bank" id="bank-ms">
-                            <label for="bank-ms"><img src="/images/recharge/bank-ms.jpg" alt=""> </label>
+                            <label for="bank-ms"><img src="/images/bindcard/bank-ms.jpg" alt=""> </label>
                         </li>
                         <li class="new-line">
                             <input data-name="CCB" type="radio" name="bank" id="bank-js">
-                            <label for="bank-js"><img src="/images/recharge/bank-js.jpg" alt=""> </label>
+                            <label for="bank-js"><img src="/images/bindcard/bank-js.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="BOC" type="radio" name="bank" id="bank-zg">
-                            <label for="bank-zg"><img src="/images/recharge/bank-zg.jpg" alt=""> </label>
+                            <label for="bank-zg"><img src="/images/bindcard/bank-zg.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="SPDB" type="radio" name="bank" id="bank-pf">
-                            <label for="bank-pf"><img src="/images/recharge/bank-pf.jpg" alt=""> </label>
+                            <label for="bank-pf"><img src="/images/bindcard/bank-pf.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="CIB" type="radio" name="bank" id="bank-xy">
-                            <label for="bank-xy"><img src="/images/recharge/bank-xy.jpg" alt=""> </label>
+                            <label for="bank-xy"><img src="/images/bindcard/bank-xy.jpg" alt=""> </label>
                         </li>
                         <li class="new-line">
                             <input data-name="COMM" type="radio" name="bank" id="bank-jt">
-                            <label for="bank-jt"><img src="/images/recharge/bank-jt.jpg" alt=""> </label>
+                            <label for="bank-jt"><img src="/images/bindcard/bank-jt.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="CEB" type="radio" name="bank" id="bank-gd">
-                            <label for="bank-gd"><img src="/images/recharge/bank-gd.jpg" alt=""> </label>
+                            <label for="bank-gd"><img src="/images/bindcard/bank-gd.jpg" alt=""> </label>
                         </li>
                         <li><input data-name="PSBC" type="radio" name="bank" id="bank-yz">
-                            <label for="bank-yz"><img src="/images/recharge/bank-yz.jpg" alt=""> </label>
+                            <label for="bank-yz"><img src="/images/bindcard/bank-yz.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="HXB" type="radio" name="bank" id="bank-hx">
-                            <label for="bank-hx"><img src="/images/recharge/bank-hx.jpg" alt=""> </label>
+                            <label for="bank-hx"><img src="/images/bindcard/bank-hx.jpg" alt=""> </label>
                         </li>
                         <li class="new-line">
                             <input data-name="BJBANK" type="radio" name="bank" id="bank-bj">
-                            <label for="bank-bj"><img src="/images/recharge/bank-bj.jpg" alt=""> </label>
+                            <label for="bank-bj"><img src="/images/bindcard/bank-bj.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="CITIC" type="radio" name="bank" id="bank-zx">
-                            <label for="bank-zx"><img src="/images/recharge/bank-zx.jpg" alt=""> </label>
+                            <label for="bank-zx"><img src="/images/bindcard/bank-zx.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="WZCB" type="radio" name="bank" id="bank-wz"><label for="bank-wz"><img
-                                src="/images/recharge/bank-wz.jpg" alt=""> </label></li>
+                                src="/images/bindcard/bank-wz.jpg" alt=""> </label></li>
                         <li>
                             <input data-name="SHRCB" type="radio" name="bank" id="bank-s">
-                            <label for="bank-s"><img src="/images/recharge/bank-sh.jpg" alt=""> </label>
+                            <label for="bank-s"><img src="/images/bindcard/bank-sh.jpg" alt=""> </label>
                         </li>
                         <li class="new-line">
                             <input data-name="ABC" type="radio" name="bank-n" id="bank-ny">
-                            <label for="bank-ny"><img src="../images/recharge/bank-ny.jpg" alt=""> </label>
+                            <label for="bank-ny"><img src="/images/bindcard/bank-ny.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="GDB" type="radio" name="bank" id="bank-gf">
-                            <label for="bank-gf"><img src="/images/recharge/bank-gf.jpg" alt=""> </label>
+                            <label for="bank-gf"><img src="/images/bindcard/bank-gf.jpg" alt=""> </label>
                         </li>
                         <li>
                             <input data-name="BEA" type="radio" name="bank" id="bank-dy">
-                            <label for="bank-dy"><img src="/images/recharge/bank-dy.jpg" alt=""> </label>
+                            <label for="bank-dy"><img src="/images/bindcard/bank-dy.jpg" alt=""> </label>
                         </li>
                     </ol>
                     <div class="recharge-form">
@@ -180,29 +180,20 @@
         <a href="" class="now">立即去绑定</a>
         <a href="javascript:" class="cancel">取消</a>
     </div>
-</div>
-<!--bind-card end-->
 
-<div class="ecope-overlay" style=""></div>
-<div class="ecope-dialog">
-    <div class="dg_wrapper dialog-chongzhi">
-        <div class="hd">
-            <h3>登录到联动优势支付平台充值</h3>
-        </div>
-        <div class="bd">
-            <p>请在新打开的联动优势页面充值完成后选择：</p>
+    <div id="popRecharge">
+        <p>请在新打开的联动优势页面充值完成后选择：</p>
 
-            <div class="ret">
-                <p>充值成功：<a href="${requestContext.getContextPath()}/account" class="g-btn g-btn-medium-major tongji"  data-category="确认成功" data-label="recharge">确认成功</a></p>
-                <p>充值失败：<a href="javascript:" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值" data-label="recharge">重新充值</a>
-                    <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
-                </p>
-                <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
-            </div>
+        <div class="ret">
+            <p>充值成功：<a href="" class="g-btn g-btn-medium-major tongji"  data-category="确认成功" data-label="recharge">确认成功</a></p>
+            <p>充值失败：<a href="" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值" data-label="recharge">重新充值</a>
+                <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+            </p>
+            <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
         </div>
-        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
     </div>
 </div>
+<!--bind-card end-->
 
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.recharge}">

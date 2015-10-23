@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'autoNumeric'], function ($) {
+require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
     $(function () {
         var amountInputElement = $(".e-bank-amount");
         var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
@@ -73,16 +73,15 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
             $('.bind-card-layer').hide();
         });
 
-        // 充值弹出页面
-        $('.ecope-dialog .close').click(function () {
-            $('.ecope-overlay,.ecope-dialog').hide();
-        });
-
         //充值提交
         submitElement.click(function () {
-            $('.ecope-overlay,.ecope-dialog').show();
             var amount = amountInputElement.autoNumeric("get");
             amountElement.val(amount);
+            var content=$('#popRecharge');
+
+            commonFun.popWindow('登录到联动优势支付平台充值',content,{width:'560px'});
+
         });
+
     });
 });

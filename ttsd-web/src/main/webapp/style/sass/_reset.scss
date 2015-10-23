@@ -1,0 +1,72 @@
+@import 'variables';
+* {
+  margin: 0;
+  padding: 0;
+}
+html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input,button {
+  list-style: none;
+  outline: none;
+  font-style: normal;
+}
+article,aside,canvas,details,figcaption,figure,
+footer,header,menu,nav,section,summary {
+  display:block;
+}
+img {
+  border: none;
+}
+
+body {
+  font-family: $fontStack;
+  font-size: nth($fontSize,2);
+  line-height: nth($baseLineHeight,1);
+  background: nth($baseColor,5);
+  color:nth($baseColor,3);
+}
+a{
+  color:nth($linkColor,1);
+  text-decoration: none;
+  &:hover{
+    color:nth($linkColor,2);
+  }
+}
+.fl {
+  float: nth($baseFloat, 1);
+}
+.fr {
+  float: nth($baseFloat,2);
+}
+.tl {
+  text-align: left;
+}
+.tc {
+  text-align: center;
+}
+.tr {
+  text-align: right;
+}
+//@extend
+.autoHeight {
+  overflow: auto;
+  height: auto;
+}
+.clear:after,
+.clear:before{
+  clear: both;
+  visibility: hidden;
+  height: 0;
+  display: block;
+  content: '';
+}
+.clearBlank{
+  clear: both;
+  margin-top:10px;
+}
+.pad-s {
+  padding: 10px;
+}
+.pad-m {
+  padding: 30px;
+}
+
+
