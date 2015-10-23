@@ -134,9 +134,8 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 										ScheduleConstants.TriggerGroup.REPAY_ALERT)
 								.forJob(jobDetail)
 								.withSchedule(
-								// 每天上午九点
 										CronScheduleBuilder
-												.cronSchedule("0 0 9 * * ? *"))
+												.cronSchedule("0 0 14 * * ? *"))
 								.build();
 
 						scheduler.scheduleJob(jobDetail, trigger);
