@@ -39,7 +39,7 @@
 
                 <p>借款人：${loan.loanerLoginName}</p>
             <#if loan.type.getLoanPeriodUnit() == "MONTH">
-                <p>项目期限：${loan.periods}天 </p>
+                <p>项目期限：${loan.periods}月 </p>
             </#if>
             <#if loan.type.getLoanPeriodUnit() == "DAY">
                 <p>项目期限：${loan.periods}天 </p>
@@ -126,9 +126,9 @@
             </div>
             <div class="item-block">
                 <div class="time-item">
-                    <strong id="minute_show">0分</strong>
+                    <strong id="minute_show">00分</strong>
                     <strong>：</strong>
-                    <strong id="second_show">0秒</strong>
+                    <strong id="second_show">00秒</strong>
                     以后可投资
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -307,7 +307,7 @@
 </body>
 </html>
 <script>
-    var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
+    var intDiff = parseInt(${loan.preheatSeconds?string('0')});//倒计时总秒数量
     var java_point = ${loan.amountNeedRaised}; //后台传递数据
     var pageCurrent = '${loan.baseDto.data.index}';
     var pageTotal = '${loan.baseDto.data.count}';

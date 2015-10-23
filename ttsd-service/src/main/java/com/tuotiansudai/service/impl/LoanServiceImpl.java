@@ -288,7 +288,7 @@ public class LoanServiceImpl implements LoanService {
     private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
         BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return loanAmountBig.subtract(amountNeedRaisedBig)
+        return amountNeedRaised == 0L?0:loanAmountBig.subtract(amountNeedRaisedBig)
                 .divide(new BigDecimal(100D), 2, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
     }

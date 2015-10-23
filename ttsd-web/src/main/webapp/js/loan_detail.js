@@ -86,11 +86,14 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
         })
 
         function timer(intDiff) {
+            console.log(intDiff);
             window.setInterval(function () {
                 var day = 0,
                     hour = 0,
                     minute = 0,
                     second = 0;//时间默认值
+
+                console.log(intDiff);
                 if (intDiff > 0) {
                 // day = Math.floor(intDiff / (60 * 60 * 24));
                 // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
