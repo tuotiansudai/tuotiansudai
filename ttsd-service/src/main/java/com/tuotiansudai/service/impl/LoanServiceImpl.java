@@ -342,7 +342,7 @@ public class LoanServiceImpl implements LoanService {
                     .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
                     .submit();
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.error("create fundraising start job for loan["+loanModel.getId()+"] fail", e);
         }
     }
 
@@ -354,7 +354,7 @@ public class LoanServiceImpl implements LoanService {
                     .withIdentity("AutoInvestJob", "Loan-" + loanId)
                     .submit();
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.error("create auto invest job for loan["+loanId+"] fail", e);
         }
     }
 
