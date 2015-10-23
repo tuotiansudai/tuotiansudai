@@ -31,7 +31,7 @@ public class RechargeModel {
 
     public RechargeModel(RechargeDto dto) {
         this.amount = AmountUtil.convertStringToCent(dto.getAmount());
-        this.bankCode = dto.getBank();
+        this.bankCode = dto.getBankCode();
         this.loginName = dto.getLoginName();
         this.status = RechargeStatus.WAIT_PAY;
         this.source = dto.getSource();

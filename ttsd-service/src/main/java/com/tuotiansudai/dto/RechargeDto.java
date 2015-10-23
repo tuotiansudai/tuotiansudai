@@ -12,7 +12,7 @@ public class RechargeDto implements Serializable {
     private String loginName;
 
     @NotEmpty
-    private String bank;
+    private String bankCode;
 
     @NotEmpty
     @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$")
@@ -31,12 +31,12 @@ public class RechargeDto implements Serializable {
         this.loginName = loginName;
     }
 
-    public String getBank() {
-        return bank;
+    public String getBankCode() {
+        return bankCode;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getAmount() {
