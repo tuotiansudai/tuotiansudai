@@ -9,6 +9,8 @@ public class ThreadPoolBuilder {
     }
 
     public static ThreadPool buildThreadPool(int threadCount, int threadPriority) {
-        return new SimpleThreadPool(threadCount, threadPriority);
+        SimpleThreadPool threadPool = new SimpleThreadPool(threadCount, threadPriority);
+        threadPool.setMakeThreadsDaemons(true);
+        return threadPool;
     }
 }
