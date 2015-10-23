@@ -32,6 +32,11 @@ def mer_bind_card(user_id, order_id, mer_date, mer_id, url):
     return _process(order_id, mer_date, mer_id, url, special_payload)
 
 
+def mer_recharge_person(order_id, mer_date, mer_id, url):
+    special_payload = {'ret_code': '0000', 'service': 'recharge_notify'}
+    return _process(order_id, mer_date, mer_id, url, special_payload)
+
+
 def ptp_mer_replace_card(user_id, order_id, mer_date, mer_id, url):
     return mer_bind_card(user_id, order_id, mer_date, mer_id, url)
 

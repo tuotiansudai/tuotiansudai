@@ -45,6 +45,12 @@ def build_transfer_params():
     return transfer_ret
 
 
+def build_transfer_no_pwd_params():
+    params = build_transfer_params()
+    params.update({'mer_check_date': params['mer_date']})
+    return params
+
+
 def format_result(params_dict):
     return reduce(lambda ret, item: '{0}={1}&{2}'.format(item[0], item[1], ret), params_dict.items(), '')[:-1]
 
@@ -201,6 +207,47 @@ def transfer():
     transfer_ret.update(common_params)
     result = format_result(transfer_ret)
     return result
+
+
+def project_transfer_nopwd():
+    """
+    4.3.5	无密标的转入(商户→平台)
+    http://pay.soopay.net/spay/pay/payservice.do?amount=200&charset=UTF-8&mer_date=20151022&mer_id=7099088&notify_url=https%3A%2F%2Fwww.baidu.com%2Fs%3Fwd%3Dnotify&order_id=123456&pay_type=DEBITCARD&res_format=HTML&service=mer_recharge_person_nopwd&sign_type=RSA&user_id=UA001&version=1.0&sign=j7XEkarrG3Cak2MOJp%2BDH97T5fCfMGWK62Qo8tbtsA1IC0IhrAnfO0uIKCwOWCjovSN6Hxu4%2BtLKD3NKHuY0YSW6FDl23sVbq%2B1dh9aBYXNqqL2q5vGgGhhcFzA8cWfNPrj2f6mIb0BXNeoVr05jShk0Cf77DFOA3a8WKO%2Bi5eA%3D
+    :return:
+        <html>
+          <head>
+            <META NAME="MobilePayPlatform" CONTENT="mer_id=7099088&order_id=123456&ret_code=00060122&ret_msg=个人用户未注册，请联系商户核实！&sign_type=RSA&version=1.0&sign=J/dSpZ+xRnTekyE5XgbQDtB1ix6YnS0Zq3v40ejA3OZxpDM5ihPMJMbO4UEFeefemeUoC+73NracrkXwbr36qDj1Il41ZwumEJYq4EcSfuiAuDwBBU6oVyUmr3gipZxwpBSAj0SBKoNTuskbXAQy0WUxzqW+GGI+tg9S8ZR+xGg=">
+          </head>
+          <body>
+          </body>
+        </html>
+    """
+    common_params = build_common_params()
+    transfer_ret = build_transfer_no_pwd_params()
+    transfer_ret.update(common_params)
+    result = format_result(transfer_ret)
+    return result
+
+
+def mer_recharge_person():
+    """
+    4.4.1	个人客户充值申请(商户→平台)
+    http://pay.soopay.net/spay/pay/payservice.do?amount=200&charset=UTF-8&gate_id=CMB&mer_date=20151023&mer_id=7099088&notify_url=https%3A%2F%2Fwww.baidu.com%2Fs%3Fwd%3Dnotify&order_id=123456&pay_type=B2CDEBITBANK&res_format=HTML&ret_url=https%3A%2F%2Fwww.baidu.com%2Fs%3Fwd%3Dret_url&service=mer_recharge_person&sign_type=RSA&user_id=UA001&version=1.0&sign=S0MSpSPL5EkWxbG2s0T4bfSKDpycuzTva3yDJBkkXmBxiRfjPHz5DtbMIsICX4%2FtLOGwsPb7kR1CPhLlSJpBZY3Xf%2FUQYNrFLluwjpcIhimY0qElhzAqWedvgW4r%2FDrg2Trk6cJjznBAvEvEISfsyaR1JQxOk4kmsGSyNhoh1rY%3D
+    :return:
+        Navigate to UMP page
+    """
+    order_id = request.values.get('order_id')
+    mer_date = request.values.get('mer_date')
+    mer_id = request.values.get('mer_id')
+    ret_url = request.values.get('ret_url')
+    notify_url = request.values.get('notify_url')
+
+    store = Store()
+    params = "mer_recharge_person::{0}::{1}::{2}".format(order_id, mer_date, mer_id)
+    store.set_frontend_notify("{0}::{1}".format(params, ret_url))
+    store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    return default_result()
 
 
 @app.route('/spay/pay/payservice.do', methods=['GET', 'POST'])
