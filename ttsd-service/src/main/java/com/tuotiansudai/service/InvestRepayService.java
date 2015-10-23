@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.dto.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 
 import java.util.Date;

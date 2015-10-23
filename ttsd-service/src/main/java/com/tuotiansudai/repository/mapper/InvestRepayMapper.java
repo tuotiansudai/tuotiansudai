@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.dto.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

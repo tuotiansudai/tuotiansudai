@@ -1,7 +1,5 @@
-package com.tuotiansudai.dto;
+package com.tuotiansudai.repository.model;
 
-
-import com.tuotiansudai.repository.model.RepayStatus;
 
 import java.util.Date;
 

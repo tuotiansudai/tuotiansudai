@@ -1,7 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
-import com.tuotiansudai.dto.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.service.InvestRepayService;

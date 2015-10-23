@@ -216,7 +216,7 @@
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findRecentlyInvestByLoginNameInAccount" parameterType="map" resultMap="InvestRepayInAccountDto">
+    <select id="findRecentlyInvestByLoginNameInAccount" parameterType="map" resultMap="investRepayInAccountResultMap">
         SELECT
           temp.`created_time`,
           temp.`name` AS loanName,
