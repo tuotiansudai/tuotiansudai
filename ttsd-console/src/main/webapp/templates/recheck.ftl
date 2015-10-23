@@ -34,7 +34,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="proMan" sideLab="RECHECK"></@menu.sidebar>
+            <@menu.sidebar headLab="proMan" sideLab=""></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
