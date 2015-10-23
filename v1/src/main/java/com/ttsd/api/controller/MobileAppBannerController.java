@@ -18,7 +18,7 @@ public class MobileAppBannerController {
 
     @RequestMapping(value = "/get/banner", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto getAppBanner(@RequestBody WithdrawListRequestDto requestDto) {
+    public BaseResponseDto getAppBanner() {
         return mobileAppBannerService.getAppBanner();
     }
 

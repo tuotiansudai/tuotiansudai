@@ -3,18 +3,18 @@ package com.ttsd.api.dto;
 
 public class BannerPictureResponseDataDto extends BaseResponseDataDto {
 
-    private String id;
+    private String pictureId;
     private String title;
     private String url;
     private Integer seqNum;
     private String picture;
 
-    public String getId() {
-        return id;
+    public String getPictureId() {
+        return pictureId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setPictureId(String pictureId) {
+        this.pictureId = pictureId;
     }
 
     public String getTitle() {

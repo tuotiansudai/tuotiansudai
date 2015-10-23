@@ -1,29 +1,27 @@
 package com.ttsd.api.dto;
 
-import com.esoft.archer.banner.model.BannerPicture;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class BannerResponseDataDto extends BaseResponseDataDto{
-    private String id;
-    private String description;
+    private String bannerId;
+    private String bannerDescription;
     private List<BannerPictureResponseDataDto> pictures = new ArrayList<BannerPictureResponseDataDto>(0);
 
-    public String getId() {
-        return id;
+    public String getBannerId() {
+        return bannerId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setBannerId(String bannerId) {
+        this.bannerId = bannerId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBannerDescription() {
+        return bannerDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBannerDescription(String bannerDescription) {
+        this.bannerDescription = bannerDescription;
     }
 
     public List<BannerPictureResponseDataDto> getPictures() {

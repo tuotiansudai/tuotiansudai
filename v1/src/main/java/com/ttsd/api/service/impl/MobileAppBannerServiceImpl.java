@@ -47,7 +47,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
     private BannerPictureResponseDataDto convertPicture2DTO(BannerPicture bannerPicture){
         BannerPictureResponseDataDto pictureDto = new BannerPictureResponseDataDto();
 
-        pictureDto.setId(bannerPicture.getId());
+        pictureDto.setPictureId(bannerPicture.getId());
         pictureDto.setPicture(domainName + bannerPicture.getPicture());
         pictureDto.setSeqNum(bannerPicture.getSeqNum());
         pictureDto.setTitle(bannerPicture.getTitle());
