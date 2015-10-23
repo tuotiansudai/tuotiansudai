@@ -214,7 +214,7 @@
             <div class="loan-list-con" style="display: block;">
                 <div class="loan-detail">
                     <h3>借款详情：</h3>
-                ${loan.descriptionText}
+                ${loan.descriptionHtml}
                 </div>
 
                 <div class="loan-material">
