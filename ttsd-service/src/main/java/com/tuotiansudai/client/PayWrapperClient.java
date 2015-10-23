@@ -44,7 +44,7 @@ public class PayWrapperClient {
 
     private String loanPath = "/loan";
 
-    private String loanOutPath = "/loan-out";
+    private String loanOutPath = "/loan/loan-out";
 
     private String withdrawPath = "/withdraw";
 

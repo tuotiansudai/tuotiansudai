@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
@@ -26,14 +27,14 @@
 </head>
 <body>
 
-<@menu.header label=""></@menu.header>
+<@menu.header label="proMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="" sideLab=""></@menu.sidebar>
+            <@menu.sidebar headLab="proMan" sideLab="RECHECK"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -116,6 +117,7 @@
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <button type="submit" class="btn btn-primary">放款</button>
                             <button type="button" class="btn btn-primary">延期</button>
                             <button type="button" class="btn btn-primary">流标</button>
@@ -131,9 +133,3 @@
 
 </body>
 </html>
-<script>
-    var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
-    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
-    var API_FORM = '${requestContext.getContextPath()}/loan/';
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
-</script>

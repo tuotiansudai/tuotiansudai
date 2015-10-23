@@ -179,7 +179,7 @@ public class LoanServiceImpl implements LoanService {
         // 计算投资总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
         if (investAmountTotal <= 0) {
-            throw new PayException("amount should great than 0");
+            throw new PayException("invest amount should great than 0");
         }
 
         logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，借款人:" + loanerPayUserId + "，放款金额:" + investAmountTotal);

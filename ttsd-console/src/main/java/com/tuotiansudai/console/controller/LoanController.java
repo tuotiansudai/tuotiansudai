@@ -117,11 +117,11 @@ public class LoanController {
         try {
             long minInvestAmountCent = AmountUtil.convertStringToCent(minInvestAmount);
             loanService.loanOut(loanId, minInvestAmountCent, dateFundraisingEndTime);
-            mv = recheck(loanId);
+            return new ModelAndView("redirect:/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10");
         } catch (TTSDException e) {
-            mv = recheck(loanId);
+            mv = new ModelAndView("redirect:/loan/recheck/"+loanId);
             WebUtils.addError(mv,e);
+            return mv;
         }
-        return mv;
     }
 }
