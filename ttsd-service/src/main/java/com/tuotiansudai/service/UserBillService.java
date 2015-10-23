@@ -14,4 +14,6 @@ public interface UserBillService {
     List<UserBillDto> findUserBills(List<UserBillBusinessType> userBillBusinessType,int currentPage,Date startTime,Date endTime,int pageSize);
 
     int findUserBillsCount(List<UserBillBusinessType> userBillBusinessType,Date startTime,Date endTime);
+
+    long findSumRewardByLoginName(String loginName);
 }

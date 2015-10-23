@@ -65,4 +65,16 @@
         </if>
     </select>
 
+    <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
+        SELECT
+          SUM(t.`amount`)
+        FROM
+          user_bill t
+        WHERE t.`business_type` IN (
+            'ACTIVITY_REWARD',
+            'REFERRER_REWARD'
+          )
+          AND t.`login_name` = #{loginName}
+    </select>
+
 </mapper>

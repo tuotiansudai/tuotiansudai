@@ -74,4 +74,9 @@ public class UserBillServiceImpl implements UserBillService {
         return userBillMapper.findUserBillsCount(params);
     }
 
+    @Override
+    public long findSumRewardByLoginName(String loginName) {
+        return userBillMapper.findSumRewardByLoginName(loginName);
+    }
+
 }
