@@ -1,9 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +39,7 @@ public class WithdrawMapperTest {
         withdrawModel.setAmount(1L);
         withdrawModel.setFee(1L);
         withdrawModel.setStatus(WithdrawStatus.WAIT_VERIFY);
+        withdrawModel.setSource(Source.WEB);
         withdrawModel.setCreatedTime(new Date());
 
         withdrawMapper.create(withdrawModel);
@@ -59,6 +57,7 @@ public class WithdrawMapperTest {
         withdrawModel.setLoginName(fakeUserModel.getLoginName());
         withdrawModel.setAmount(1L);
         withdrawModel.setFee(1L);
+        withdrawModel.setSource(Source.WEB);
         withdrawModel.setStatus(WithdrawStatus.WAIT_VERIFY);
         withdrawModel.setCreatedTime(new Date());
         withdrawMapper.create(withdrawModel);
