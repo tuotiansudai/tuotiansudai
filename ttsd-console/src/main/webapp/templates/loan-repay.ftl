@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <#assign loanRepays = baseDto.data>
 <head>
@@ -33,8 +34,8 @@
     <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm:ss'});
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
+            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
 
             //自动完成提示
             var autoValue = '';
@@ -64,8 +65,8 @@
 
                 location.href="${requestContext.getContextPath()}/loan-repay?loanId="
                                 +"&loginName="
-                                +"&repayStartDate="
-                                +"&repayEndDate="
+                                +"&beginTime="
+                                +"&endTime="
                                 +"&repayStatus="
                                 +"&index=1"
                                 +"&pageSize=10";
@@ -77,15 +78,15 @@
                 var index = $(e.target).attr("pageIndex");
                 var loanId =  $('#loanId').val();
                 var loginName =  $('#loginName').val();
-                var repayStartDate =  $('#repayStartDate').val();
-                var repayEndDate =  $('#repayEndDate').val();
+                var beginTime =  $('#beginTime').val();
+                var endTime =  $('#endTime').val();
                 var repayStatus = $('#repayStatus').val()
                 var pageSize = 10;
 
                 location.href="${requestContext.getContextPath()}/loan-repay?loanId="+loanId
                             +"&loginName="+loginName
-                            +"&repayStartDate="+repayStartDate
-                            +"&repayEndDate="+repayEndDate
+                            +"&beginTime="+beginTime
+                            +"&endTime="+endTime
                             +"&repayStatus="+repayStatus
                             +"&index="+index
                             +"&pageSize="+pageSize;
@@ -99,34 +100,40 @@
     </script>
 
     <link rel="stylesheet" href="../../style/index.css">
+    <style type="text/css">
+        .bootstrap-select {  width:auto!important;}
+        .bootstrap-select button.dropdown-toggle { width:170px; }
+        /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
+        .btnSearch { padding:5px 20px; font-size: 14px; }
+    </style>
 </head>
 <body>
 
-<@menu.header label=""></@menu.header>
+<@menu.header label="proMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="" sideLab=""></@menu.sidebar>
+        <@menu.sidebar headLab="proMan" sideLab="repaymentInfoList"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
                 <form action="${requestContext.getContextPath()}/loan-repay" method="post" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">项目编号:</label>
-                        <input type="text" class="form-control" id="loanId" placeholder="" value="${loanId}">
+                        <input type="text" class="form-control" id="loanId" placeholder="" value="${loanId!}">
                     </div>
                     <div class="form-group">
                         <label for="number">用户名:</label>
-                        <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName}"/>
+                        <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
                     </div>
                     <div class="form-group">
                         <label for="number">开始时间:</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" id="repayStartDate" value="${(repayStartDate?string('yyyy-MM-dd'))!}"/>
+                            <input type='text' class="form-control" id="beginTime" value="${(beginTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -134,7 +141,7 @@
 
                         <label for="number">结束时间:</label>
                         <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" id="repayEndDate" value="${(repayEndDate?string('yyyy-MM-dd'))!}"/>
+                            <input type='text' class="form-control" id="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -171,8 +178,8 @@
 
                             </select>
                     </div>
-                    <button type="button" class="btn btn-sm btn-primary" id="btnRepayQuery" pageIndex="1">查询</button>
-                    <button type="reset" class="btn btn-sm btn-default" id="btnRepayReset" ">重置</button>
+                    <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnRepayQuery" pageIndex="1">查询</button>
+                    <button type="reset" class="btn btn-sm btn-default btnSearch" id="btnRepayReset" ">重置</button>
 
                 </form>
                 <div class="table-responsive">
@@ -195,7 +202,7 @@
                             <tr>
                                 <td>${loanRepay.loanId}</td>
                                 <td>${loanRepay.loanName}</td>
-                                <td>${loanRepay.agentLoginName}</td>
+                                <td>${loanRepay.agentLoginName!}</td>
                                 <td>${loanRepay.repayDate?string("yyyy-MM-dd HH:mm:ss")}</td>
                                 <td>第${loanRepay.period}期</td>
                                 <td>${loanRepay.corpus}</td>

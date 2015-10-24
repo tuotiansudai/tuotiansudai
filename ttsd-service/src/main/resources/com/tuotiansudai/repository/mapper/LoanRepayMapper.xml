@@ -83,11 +83,11 @@
             <if test="loginName != null and loginName != ''">
                 <![CDATA[and b.loaner like '${loginName}%']]>
             </if>
-            <if test="repayStartDate != null" >
-                and a.repay_date &gt;= #{repayStartDate}
+            <if test="beginTime != null" >
+                and a.repay_date &gt;= #{beginTime}
             </if>
-            <if test="repayEndDate != null">
-                and a.repay_date &lt;= #{repayEndDate}
+            <if test="endTime != null">
+                and a.repay_date &lt;= #{endTime}
             </if>
 
             <if test="repayStatus != null">
@@ -107,11 +107,11 @@
             <if test="loginName !=null and loginName != '' ">
                 <![CDATA[and b.loaner like '${loginName}%']]>
             </if>
-            <if test="repayStartDate !=null and repayStartDate !=''" >
-                and a.repay_date >= #{repayStartDate}
+            <if test="beginTime !=null" >
+                and a.repay_date >= #{beginTime}
             </if>
-            <if test="repayEndDate !=null and repayEndDate !='' ">
-                and a.repay_date &lt;= #{repayEndDate}
+            <if test="endTime !=null ">
+                and a.repay_date &lt;= #{endTime}
             </if>
 
             <if test="repayStatus !=null">
