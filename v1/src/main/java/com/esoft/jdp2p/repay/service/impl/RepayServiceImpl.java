@@ -112,8 +112,8 @@ public class RepayServiceImpl implements RepayService {
 
 	@Resource
 	ConfigService configService;
-	@Value("${repay.remind.mobile}")
-	private String repayRemindMobile;
+	@Value("${repay.remind.mobileList}")
+	private String repayRemindMobileList;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -736,7 +736,7 @@ public class RepayServiceImpl implements RepayService {
 		Double loanRepayAmount = ((Number)ht.getSessionFactory().getCurrentSession()
 									.createSQLQuery(loanRepayAmountSql)
 									.uniqueResult()).doubleValue();
-		String mobile = repayRemindMobile;
+		String mobileList = repayRemindMobileList;
 
 		if(loanRepayAmount.doubleValue() > 0){
 			String loanRepaySql = "select * from loan_repay"
@@ -746,14 +746,14 @@ public class RepayServiceImpl implements RepayService {
 											.addEntity(LoanRepay.class)
 											.list();
 			for (LoanRepay loanRepay : loanRepays) {
-				if(mobile.indexOf(loanRepay.getLoan().getUser().getMobileNumber()) < 0){
-					mobile += loanRepay.getLoan().getUser().getMobileNumber() + ",";
+				if(mobileList.indexOf(loanRepay.getLoan().getUser().getMobileNumber()) < 0){
+					mobileList += loanRepay.getLoan().getUser().getMobileNumber() + ",";
 				}
 			}
-			log.debug("mobile:" + mobile + ";date:" + DateUtil.addDay(new Date(), daysBefore) + "loanRepayAmount:) + loanRepayAmount") ;
+			log.debug("mobile:" + mobileList + ";date:" + DateUtil.addDay(new Date(), daysBefore) + "loanRepayAmount:) + loanRepayAmount") ;
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("loanRepayAmount", loanRepayAmount.toString());
-			String[] mobiles = mobile.split(",");
+			String[] mobiles = mobileList.split(",");
 			for(String num:mobiles){
 				if(org.apache.commons.lang3.StringUtils.isNotEmpty(num)){
 					messageBO.sendSMS(ht.get(UserMessageTemplate.class,
