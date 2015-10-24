@@ -123,7 +123,7 @@
                 <form action="${requestContext.getContextPath()}/loan-repay" method="post" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">项目编号:</label>
-                        <input type="text" class="form-control" id="loanId" placeholder="" value="${loanId!}">
+                        <input type="text" class="form-control" id="loanId" placeholder="" value="${(loanId?string("0"))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">用户名:</label>
@@ -200,7 +200,7 @@
                         <tbody>
                         <#list loanRepays.records as loanRepay>
                             <tr>
-                                <td>${loanRepay.loanId}</td>
+                                <td>${loanRepay.loanId?string('0')}</td>
                                 <td>${loanRepay.loanName}</td>
                                 <td>${loanRepay.agentLoginName!}</td>
                                 <td>${loanRepay.repayDate?string("yyyy-MM-dd HH:mm:ss")}</td>
