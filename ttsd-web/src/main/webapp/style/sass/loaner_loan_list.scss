@@ -511,24 +511,6 @@
   width: 180px;
 }
 
-.pagination {
-  width: 100%;
-  margin: 10px 0;
-  display: block;
-  text-align: center;
-  & a {
-    color: #777777;
-    padding: 2px 8px;
-  }
-  & a.current {
-    background: #f24712;
-    color: #fff;
-  }
-  & .next, & .prev {
-    cursor: pointer;
-  }
-}
-
 //overlay repay plan
 .layer-container {
   display: none;
@@ -600,27 +582,24 @@
 }
 
 .pagination {
+  margin: 10px 0;
+  text-align: center;
   padding: 15px 20px;
-  text-align: left;
-  color: #ccc;
-}
-
-.pagination a {
-  display: inline-block;
-  color: #428bca;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 10px;
-  border: 1px solid #ddd;
-  margin: 0 2px;
   font-size: 12px;
-  border-radius: 4px;
-  vertical-align: middle;
-}
-
-.pagination a:hover {
-  text-decoration: none;
-  border: 1px solid #428bca;
+  color: #999;
+  .next, .prev {
+    border-radius: 4px;
+    padding: 4px;
+    color: #ddd;
+    border: 1px solid #ddd;
+    &.active {
+      cursor: pointer;
+      color: #ffac2a;
+    }
+    &.active:hover {
+      border: 1px solid #ffac2a;
+    }
+  }
 }
 
 .red {

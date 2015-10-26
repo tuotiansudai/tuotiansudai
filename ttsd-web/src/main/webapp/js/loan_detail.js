@@ -1,6 +1,3 @@
-/**
- * Created by belen on 15/8/19.
- */
 require(['jquery', 'jqueryPage', 'csrf'], function ($) {
     $(function () {
 
@@ -117,4 +114,4 @@ require(['jquery', 'jqueryPage', 'csrf'], function ($) {
 
 
     });
-})
+});

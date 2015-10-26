@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'daterangepicker', 'csrf',], function ($, Mustache, loanTemplate, loanRepayTemplate, moment, _) {
+require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanTemplate, loanRepayTemplate, moment, _) {
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -9,13 +9,15 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
     // 页面初始化日期 条件筛选1个月
     var dataPickerElement = $('#date-picker');
 
+    var paginationElement = $('.pagination');
+
     dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
 
-    $(document).on('click', '.pagination .nextPage', function () {
+    $(document).on('click', '.pagination .next', function () {
         pageIndex++;
         loadLoanData(pageIndex);
     });
-    $(document).on('click', '.pagination .prevPage', function () {
+    $(document).on('click', '.pagination .prev', function () {
         pageIndex--;
         loadLoanData(pageIndex);
     });
@@ -50,12 +52,12 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
     $(".date-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         changeDatePicker();
-        loadLoanData(1);
+        loadLoanData();
     });
 
     $(".status-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
-        loadLoanData(1);
+        loadLoanData();
     });
 
     //ajax require
@@ -65,20 +67,9 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         var endTime = $.trim(dates[1]) || '';
         var status = $('.status-filter .select-item.current').data('status');
 
-        var requestData = { startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+        var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
 
-        var queryParams = '';
-        _.each(requestData, function (value, key) {
-            queryParams += key + "=" + value + '&';
-        });
-
-        $.ajax({
-            url: '/loaner/loan-data?' + queryParams,
-            type: 'get',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        }).success(function (response) {
-            var data = response.data;
+        paginationElement.loadPagination(requestData, function (data) {
             pageIndex = data.index;
             switch (status) {
                 case 'REPAYING':
@@ -148,11 +139,11 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         });
     }
 
-    loadLoanData(1);
+    loadLoanData();
 
 //define calendar
     $('.apply-btn').click(function () {
-        loadLoanData(1);
+        loadLoanData();
     });
 });
 
