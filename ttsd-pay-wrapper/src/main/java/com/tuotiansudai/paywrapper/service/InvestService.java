@@ -15,8 +15,8 @@ public interface InvestService {
 
     String investCallback(Map<String, String> paramsMap, String queryString);
 
-    public void autoInvest(long loanId);
+    void autoInvest(long loanId);
 
-    public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
+    List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
 }
