@@ -218,15 +218,15 @@ var MyChartsObject={
     ChartOptionTemplates: {
         CommonOption: {
             tooltip: {
-                trigger: 'axis'//tooltip触发方式:axis以X轴线触发,item以每一个数据项触发
+                trigger: 'axis'
             },
             toolbox: {
-                show: true, //是否显示工具栏
+                show: true,
                 feature: {
                     mark: true,
-                    dataView: { readOnly: false }, //数据预览
-                    restore: true, //复原
-                    saveAsImage: true //是否保存图片
+                    dataView: { readOnly: false },
+                    restore: true,
+                    saveAsImage: true
                 }
             }
         },
@@ -300,7 +300,7 @@ var MyChartsObject={
             require(
                 [
                     'echarts',
-                    'echarts/chart/pie'
+                    'echarts/dist/chart/pie'
                 ],
                 function (ec) {
                     var echarts = ec;
