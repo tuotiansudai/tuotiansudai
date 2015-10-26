@@ -106,7 +106,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(10).toDate());
         investMapper.create(fakeInvestModel);
@@ -138,7 +138,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(10).toDate());
         investMapper.create(fakeInvestModel);
@@ -170,7 +170,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(30).toDate());
         investMapper.create(fakeInvestModel);
@@ -204,7 +204,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), 10000, fakeInvestor.getLoginName(), today.minusDays(30).toDate());
         investMapper.create(fakeInvestModel);
@@ -239,7 +239,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(30).toDate());
         investMapper.create(fakeInvestModel);
@@ -273,7 +273,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(fakeLoanerAccount);
         accountMapper.create(fakeInvestorAccount);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, fakeLoaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, fakeInvestor.getLoginName(), today.minusDays(30).toDate());
         investMapper.create(fakeInvestModel);
@@ -311,7 +311,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(investAccount1);
         accountMapper.create(investAccount2);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.09, 0.03, 0.1, loaner.getLoginName(), today.toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, loaner.getLoginName(), today.toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel1 = getFakeInvestModel(fakeNormalLoan.getId(), 1000, investor1.getLoginName(), today.minusDays(10).toDate());
         InvestModel fakeInvestModel2 = getFakeInvestModel(fakeNormalLoan.getId(), 9000, investor2.getLoginName(), today.minusDays(5).toDate());
@@ -406,7 +406,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(investAccount1);
         accountMapper.create(investAccount2);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_3, loanAmount, 3, 0.09, 0.03, 0.5, loaner.getLoginName(), today.minusDays(1).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.5, loaner.getLoginName(), today.minusDays(1).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel1 = getFakeInvestModel(fakeNormalLoan.getId(), 1000, investor1.getLoginName(), today.minusDays(10).toDate());
         InvestModel fakeInvestModel2 = getFakeInvestModel(fakeNormalLoan.getId(), 9000, investor2.getLoginName(), today.minusDays(5).toDate());
@@ -500,7 +500,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(investAccount1);
         accountMapper.create(investAccount2);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel1 = getFakeInvestModel(fakeNormalLoan.getId(), 1000, investor1.getLoginName(), today.minusDays(10).toDate());
         InvestModel fakeInvestModel2 = getFakeInvestModel(fakeNormalLoan.getId(), 9000, investor2.getLoginName(), today.minusDays(5).toDate());
@@ -589,7 +589,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(investAccount1);
         accountMapper.create(investAccount2);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 3, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(20).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 3, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(20).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel1 = getFakeInvestModel(fakeNormalLoan.getId(), 1000, investor1.getLoginName(), today.minusDays(20).toDate());
         InvestModel fakeInvestModel2 = getFakeInvestModel(fakeNormalLoan.getId(), 9000, investor2.getLoginName(), today.minusDays(20).toDate());
@@ -692,7 +692,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(loanerAccount);
         accountMapper.create(investAccount1);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, investor.getLoginName(), today.minusDays(10).toDate());
         investMapper.create(fakeInvestModel);
@@ -757,7 +757,7 @@ public class AdvanceRepayServiceTest {
         accountMapper.create(loanerAccount);
         accountMapper.create(investAccount1);
         long loanAmount = 10000;
-        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.LOAN_TYPE_1, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
+        LoanModel fakeNormalLoan = this.getFakeNormalLoan(LoanType.INVEST_INTEREST_MONTHLY_REPAY, loanAmount, 2, 0.09, 0.03, 0.1, loaner.getLoginName(), today.minusDays(30).toDate());
         loanMapper.create(fakeNormalLoan);
         InvestModel fakeInvestModel = getFakeInvestModel(fakeNormalLoan.getId(), loanAmount, investor.getLoginName(), today.minusDays(10).toDate());
         investMapper.create(fakeInvestModel);
