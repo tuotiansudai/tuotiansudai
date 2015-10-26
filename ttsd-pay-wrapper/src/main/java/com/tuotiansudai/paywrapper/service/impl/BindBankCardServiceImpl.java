@@ -49,7 +49,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
         BankCardModel bankCardModel = new BankCardModel(dto);
         bankCardModel.setId(idGenerator.generate());
-        bankCardModel.setStatus(BankCardStatus.UNCHECK);
+        bankCardModel.setStatus(BankCardStatus.UNCHECKED);
 
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
@@ -110,7 +110,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             if (callbackRequestModel.isSuccess()) {
                 if (bankCardModel != null) {
                     bankCardModel.setStatus(BankCardStatus.PASSED);
-                    bankCardModel.setBankNumber(bankCode);
+                    bankCardModel.setBankCode(bankCode);
                     bankCardMapper.updateBankCard(bankCardModel);
                     if ("CMB".equals(bankCode)) {
                         String detailTemplate = "用户{0}绑定{1}银行卡";
@@ -121,7 +121,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                     }
                 }
             } else {
-                bankCardMapper.update(orderId, BankCardStatus.FAIL);
+                bankCardMapper.update(orderId, BankCardStatus.FAILED);
             }
 
 

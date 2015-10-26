@@ -35,73 +35,73 @@
                             <p>选择银行:</p>
                             <li>
                                 <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
-                                <label for="bank-zs"><img src="/images/recharge/bank-zs.jpg" alt=""></label>
+                                <label for="bank-zs"><img src="/images/bank/CMB.jpg" alt=""></label>
                             </li>
                             <li>
                                 <input data-name="ICBC" type="radio" name="bank" id="bank-gs">
-                                <label for="bank-gs"><img src="/images/recharge/bank-gs.jpg" alt=""> </label>
+                                <label for="bank-gs"><img src="/images/bank/ICBC.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="CMBC" type="radio" name="bank" id="bank-ms">
-                                <label for="bank-ms"><img src="/images/recharge/bank-ms.jpg" alt=""> </label>
+                                <label for="bank-ms"><img src="/images/bank/CMBC.jpg" alt=""> </label>
                             </li>
                             <li class="m-right-0">
                                 <input data-name="CCB" type="radio" name="bank" id="bank-js">
-                                <label for="bank-js"><img src="/images/recharge/bank-js.jpg" alt=""> </label>
+                                <label for="bank-js"><img src="/images/bank/CCB.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="BOC" type="radio" name="bank" id="bank-zg">
-                                <label for="bank-zg"><img src="/images/recharge/bank-zg.jpg" alt=""> </label>
+                                <label for="bank-zg"><img src="/images/bank/BOC.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="SPDB" type="radio" name="bank" id="bank-pf">
-                                <label for="bank-pf"><img src="/images/recharge/bank-pf.jpg" alt=""> </label>
+                                <label for="bank-pf"><img src="/images/bank/SPDB.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="CIB" type="radio" name="bank" id="bank-xy">
-                                <label for="bank-xy"><img src="/images/recharge/bank-xy.jpg" alt=""> </label>
+                                <label for="bank-xy"><img src="/images/bank/CIB.jpg" alt=""> </label>
                             </li>
                             <li class="m-right-0">
                                 <input data-name="COMM" type="radio" name="bank" id="bank-jt">
-                                <label for="bank-jt"><img src="/images/recharge/bank-jt.jpg" alt=""> </label>
+                                <label for="bank-jt"><img src="/images/bank/COMM.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="CEB" type="radio" name="bank" id="bank-gd">
-                                <label for="bank-gd"><img src="/images/recharge/bank-gd.jpg" alt=""> </label>
+                                <label for="bank-gd"><img src="/images/bank/CEB.jpg" alt=""> </label>
                             </li>
                             <li><input data-name="PSBC" type="radio" name="bank" id="bank-yz">
-                                <label for="bank-yz"><img src="/images/recharge/bank-yz.jpg" alt=""> </label>
+                                <label for="bank-yz"><img src="/images/bank/PSBC.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="HXB" type="radio" name="bank" id="bank-hx">
-                                <label for="bank-hx"><img src="/images/recharge/bank-hx.jpg" alt=""> </label>
+                                <label for="bank-hx"><img src="/images/bank/HXB.jpg" alt=""> </label>
                             </li>
                             <li class="m-right-0">
                                 <input data-name="BJBANK" type="radio" name="bank" id="bank-bj">
-                                <label for="bank-bj"><img src="/images/recharge/bank-bj.jpg" alt=""> </label>
+                                <label for="bank-bj"><img src="/images/bank/BJBANK.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="CITIC" type="radio" name="bank" id="bank-zx">
-                                <label for="bank-zx"><img src="/images/recharge/bank-zx.jpg" alt=""> </label>
+                                <label for="bank-zx"><img src="/images/bank/CITIC.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="WZCB" type="radio" name="bank" id="bank-wz"><label for="bank-wz"><img
-                                    src="/images/recharge/bank-wz.jpg" alt=""> </label></li>
+                                    src="/images/bank/WZCB.jpg" alt=""> </label></li>
                             <li>
                                 <input data-name="SHRCB" type="radio" name="bank" id="bank-s">
-                                <label for="bank-s"><img src="/images/recharge/bank-sh.jpg" alt=""> </label>
+                                <label for="bank-s"><img src="/images/bank/SHRCB.jpg" alt=""> </label>
                             </li>
                             <li class="m-right-0">
                                 <input data-name="ABC" type="radio" name="bank-n" id="bank-ny">
-                                <label for="bank-ny"><img src="../images/recharge/bank-ny.jpg" alt=""> </label>
+                                <label for="bank-ny"><img src="../images/bank/ABC.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="GDB" type="radio" name="bank" id="bank-gf">
-                                <label for="bank-gf"><img src="/images/recharge/bank-gf.jpg" alt=""> </label>
+                                <label for="bank-gf"><img src="/images/bank/GDB.jpg" alt=""> </label>
                             </li>
                             <li>
                                 <input data-name="BEA" type="radio" name="bank" id="bank-dy">
-                                <label for="bank-dy"><img src="/images/recharge/bank-dy.jpg" alt=""> </label>
+                                <label for="bank-dy"><img src="/images/bank/BEA.jpg" alt=""> </label>
                             </li>
                         </ol>
                     </div>
@@ -120,7 +120,7 @@
             <#--未开通快捷支付-->
                 <div class="card-box">
                     <h4 class="hd-card">
-                    <span class="logo-card"><img src="${requestContext.getContextPath()}/images/bindcard/logo-${bankNumber}.png"
+                    <span class="logo-card"><img src="${requestContext.getContextPath()}/images/bindcard/logo-${bankCode}.png"
                                                  alt=""/></span>
                         <span class="user">${userName}</span>
                     </h4>

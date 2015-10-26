@@ -114,7 +114,7 @@ public class InvestControllerTest {
 
         InvestDto investDto = new InvestDto();
         investDto.setLoanId(String.valueOf(mockLoanId));
-        investDto.setInvestSource(InvestSource.WEB);
+        investDto.setSource(Source.WEB);
         investDto.setAmount(AmountUtil.convertCentToString(mockInvestAmount));
         investDto.setLoginName(mockInvestLoginName);
 
