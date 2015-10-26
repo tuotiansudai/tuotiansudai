@@ -32,80 +32,9 @@
     <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
-
-            //自动完成提示
-            var autoValue = '';
-            var api_url = '${requestContext.getContextPath()}/loan/loaner';
-            $("#loginName").autocomplete({
-                source: function (query, process) {
-                    //var matchCount = this.options.items;//返回结果集最大数量
-                    $.get(api_url+'/'+query.term, function (respData) {
-                        autoValue = respData;
-                        return process(respData);
-                    });
-                }
-            });
-            $("#loginName").blur(function () {
-                for(var i = 0; i< autoValue.length; i++){
-                    if($(this).val()== autoValue[i]){
-                        $(this).removeClass('Validform_error');
-                        return false;
-                    }else{
-                        $(this).addClass('Validform_error');
-                    }
-
-                }
-
-            });
-            $("#btnRepayReset").click(function(){
-
-                location.href="${requestContext.getContextPath()}/loan-repay?loanId="
-                                +"&loginName="
-                                +"&beginTime="
-                                +"&endTime="
-                                +"&repayStatus="
-                                +"&index=1"
-                                +"&pageSize=10";
-            });
-
-
-
-            function pageinationView(e){
-                var index = $(e.target).attr("pageIndex");
-                var loanId =  $('#loanId').val();
-                var loginName =  $('#loginName').val();
-                var beginTime =  $('#beginTime').val();
-                var endTime =  $('#endTime').val();
-                var repayStatus = $('#repayStatus').val()
-                var pageSize = 10;
-
-                location.href="${requestContext.getContextPath()}/loan-repay?loanId="+loanId
-                            +"&loginName="+loginName
-                            +"&beginTime="+beginTime
-                            +"&endTime="+endTime
-                            +"&repayStatus="+repayStatus
-                            +"&index="+index
-                            +"&pageSize="+pageSize;
-            }
-            $('#btnRepayQuery').click(pageinationView);
-            $('.Previous').click(pageinationView);
-            $('.Next').click(pageinationView);
-
-
-        });
-    </script>
-
     <link rel="stylesheet" href="../../style/index.css">
-    <style type="text/css">
-        .bootstrap-select {  width:auto!important;}
-        .bootstrap-select button.dropdown-toggle { width:170px; }
-        /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
-        .btnSearch { padding:5px 20px; font-size: 14px; }
-    </style>
+<@global.javascript pageJavascript="loan-repay.js"></@global.javascript>
+
 </head>
 <body>
 

@@ -67,12 +67,6 @@
             });
         });
     </script>
-    <style type="text/css">
-        .bootstrap-select {  width:auto!important;}
-        .bootstrap-select button.dropdown-toggle { width:170px; }
-        /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
-        .btnSearch { padding:5px 20px; font-size: 14px; }
-    </style>
     <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
