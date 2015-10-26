@@ -29,13 +29,13 @@
         <div class="bRadiusBox spad">
             <img src="/images/sign/profile.jpg" class="fl accountImg" >
             <div class="profileBox">
-                <span><em>您好：dongshao</em> 吃完午饭小憩一会，为下午补充能量！</span>
+                <span><em>您好：${loginName!}</em> 吃完午饭小憩一会，为下午补充能量！</span>
                 <ul class="proList">
                     <li class="fl"><a class="fa fa-cc-mastercard fa-fw"></a></li>
                     <li class="fl"><a class="fa fa-mobile fa-fw"></a></li>
                     <li class="fl"><a class="fa fa-envelope-o fa-fw"></a></li>
                     <li class="fr"><button class="btn-normal">充值</button> </li>
-                    <li class="fr"><button class="btn-primary">体现</button></li>
+                    <li class="fr"><button class="btn-primary">提现</button></li>
                 </ul>
             </div>
 
@@ -43,87 +43,56 @@
         <div class="clearBlank"></div>
         <div class="AssetsBox">
             <div class="AssetsReport bRadiusBox fl">
-                <h3>资产总额：<span>500.00元</span></h3>
+                <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))}元</span></h3>
                 <div id="ReportShow" style="width:100%; height:115px; "></div>
             </div>
             <div class="AssetsDetail bRadiusBox fr">
                 <ul class="DetailList">
-                    <li><b>我的余额：</b><span>0.00</span>元</li>
-                    <li><b>累计收益：</b><span>0.00</span>元</li>
-                    <li><b>待收本金：</b><span>0.00</span>元</li>
-                    <li><b>待收利息：</b><span>0.00</span>元</li>
-                    <li><b>已收利息：</b><span>0.00</span>元</li>
-                    <li><b>冻结金额：</b><span>0.00</span>元</li>
+                    <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
+                    <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
+                    <li><b>待收本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
+                    <li><b>待收利息：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                    <li><b>已收利息：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                    <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
                 </ul>
             </div>
         </div>
     <div class="clearBlank"></div>
-        <div class="LastMonth bRadiusBox">
-
-            <table class="table table-striped">
-                <caption>最近7天还款总额：￥0.00元 <a href="#" class="fr">更多...</a> </caption>
-                <thead>
-                <tr>
-                <th>项目名称</th>
-                <th>年利率</th>
-                <th>贷款周期</th>
-                <th>项目周期</th>
-                <th>预计还款</th>
-                <th>还款日期</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            <#if successSumRepay??>
+            <div class="LastMonth bRadiusBox">
+                <table class="table table-striped">
+                    <caption>本月还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="#" class="fr">更多...</a> </caption>
+                    <thead>
+                        <tr>
+                            <th>项目名称</th>
+                            <th>年利率</th>
+                            <th>贷款周期</th>
+                            <th>项目周期</th>
+                            <th>还款金额</th>
+                            <th>还款日期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <#if repayList??>
+                        <#list repayList as repay>
+                        <tr>
+                            <td>${repay.name!}</td>
+                            <td>${(((repay.baseRate+repay.activityRate)*100)?string('0.00'))!} % </td>
+                            <td>${repay.periods}个月</td>
+                            <td>第${repay.period}期/${repay.periods}期</td>
+                            <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))}</#if>元</td>
+                            <td><#if repay.status == 'COMPLETE'>${repay.actualRepayDate?string('MM月dd日')}<#else>${repay.repayDate?string('MM月dd日')}</#if></td>
+                        </tr>
+                        </#list>
+                    <#else>
+                        <tr>
+                            <td colspan="6" class="tc">暂时没有记录</td>
+                        </tr>
+                    </#if>
+                    </tbody>
+                </table>
+            </div>
+            </#if>
         <div class="clearBlank"></div>
         <div class="tMonthPayment bRadiusBox" id="tMonthBox">
 
@@ -132,7 +101,7 @@
                 <li><a href="javascript:void(0);">本月待收回款</a></li>
             </ul>
             <table class="table table-striped">
-                <caption>本月已收回款总额：￥6000.00元 <a href="#" class="fr">更多...</a> </caption>
+                <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="#" class="fr">更多...</a> </caption>
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -144,63 +113,27 @@
                 </tr>
                 </thead>
                 <tbody>
+                <#if successSumInvestRepayList??>
+                <#list successSumInvestRepayList as successSumInvestRepay>
                 <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
+                    <td>${successSumInvestRepay.name!}</td>
+                    <td>${(((successSumInvestRepay.activityRate+successSumInvestRepay.baseRate)*100)?string('0.00'))!}%</td>
+                    <td>${successSumInvestRepay.periods}个月</td>
+                    <td>第${successSumInvestRepay.period}期/${successSumInvestRepay.periods}期</td>
+                    <td>${(((successSumInvestRepay.corpus+successSumInvestRepay.defaultInterest+successSumInvestRepay.actualInterest-successSumInvestRepay.actualFee)/100)?string('0.00'))!}元</td>
+                    <td>${successSumInvestRepay.actualRepayDate?string('MM月dd日')}</td>
                 </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
+                </#list>
+                </#if>
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="6" class="tc">2015年5月应收本息 56780元</td>
+                    <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
                 </tr>
                 </tfoot>
             </table>
             <table class="table table-striped">
-                <caption>本月待收回款总额：￥7000.00元 <a href="#" class="fr">更多...</a> </caption>
+                <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="#" class="fr">更多...</a> </caption>
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -212,58 +145,22 @@
                 </tr>
                 </thead>
                 <tbody>
+                <#if notSuccessSumInvestRepayList??>
+                <#list notSuccessSumInvestRepayList as notSuccessSumInvestRepay>
                 <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
+                    <td>${notSuccessSumInvestRepay.name!}</td>
+                    <td>${(((notSuccessSumInvestRepay.activityRate+notSuccessSumInvestRepay.baseRate)*100)?string('0.00'))!}%</td>
+                    <td>${notSuccessSumInvestRepay.periods}个月</td>
+                    <td>第${notSuccessSumInvestRepay.period}期/${notSuccessSumInvestRepay.periods}期</td>
+                    <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}元</td>
+                    <td>${notSuccessSumInvestRepay.repayDate?string('MM月dd日')}</td>
                 </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td> 第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td>第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
-                <tr>
-                    <td>生意周转个人个人个人....... </td>
-                    <td>13.50 % </td>
-                    <td>3 个月 </td>
-                    <td>第1期/22期  </td>
-                    <td>2498.76元 </td>
-                    <td>10月09日 </td>
-                </tr>
+                </#list>
+                </#if>
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="6" class="tc">2015年5月应收本息 56780元</td>
+                    <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
                 </tr>
                 </tfoot>
             </table>
@@ -283,38 +180,22 @@
             </tr>
             </thead>
             <tbody>
+            <#if (recentlyInvestList?size>0)>
+            <#list recentlyInvestList as recentlyInvest>
             <tr>
-                <td>2015-06-06 </td>
-                <td><a href="#">个人经营借款6000元</a></td>
+                <td>${recentlyInvest.createdTime?string('yyyy-MM-dd')}</td>
+                <td><a href="#">${recentlyInvest.loanName!}</a></td>
                 <td>投资成功</td>
-                <td>2015-09-06/2000元</td>
-                <td>￥2498.76元 </td>
+                <td><#if recentlyInvest.status??>${recentlyInvest.repayDate?string('yyyy-MM-dd')}/${(((recentlyInvest.corpus+recentlyInvest.defaultInterest+recentlyInvest.expectedInterest-recentlyInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
+                <td>￥${(recentlyInvest.amount?string('0.00'))!}元</td>
                 <td><a href="#">合同</a></td>
             </tr>
+            </#list>
+            <#else>
             <tr>
-                <td>2015-06-06 </td>
-                <td><a href="#">个人经营借款6000元</a></td>
-                <td>投资成功</td>
-                <td>2015-09-06/2000元</td>
-                <td>￥2498.76元 </td>
-                <td><a href="#">合同</a></td>
+                <td colspan="6" class="tc">暂时没有记录</td>
             </tr>
-            <tr>
-                <td>2015-06-06 </td>
-                <td><a href="#">个人经营借款6000元</a></td>
-                <td>投资成功</td>
-                <td>2015-09-06/2000元</td>
-                <td>￥2498.76元 </td>
-                <td><a href="#">合同</a></td>
-            </tr>
-            <tr>
-                <td>2015-06-06 </td>
-                <td><a href="#">个人经营借款6000元</a></td>
-                <td>投资成功</td>
-                <td>2015-09-06/2000元</td>
-                <td>￥2498.76元 </td>
-                <td><a href="#">合同</a></td>
-            </tr>
+            </#if>
             </tbody>
         </table>
         </div>
@@ -330,5 +211,12 @@
 defer
 async="true"
 data-main="${requestContext.getContextPath()}/js/accountOverview.js"></script>
+<script>
+    var pydata = {
+        balance:'${((balance/100)?string('0.00'))!}',
+        collectingPrincipal:'${((collectingPrincipal/100)?string('0.00'))!}',
+        collectingInterest:'${((collectingInterest/100)?string('0.00'))!}'
+    };
+</script>
 </body>
 </html>

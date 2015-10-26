@@ -14,9 +14,9 @@ require(['jquery','csrf','echarts','commonFun'], function ($) {
             $('table',$tMonthBox).eq(num).show().siblings('table').hide();
         });
 
-        var data = [{ name: '可用金额', value: 20 },
-                { name: '代收本金', value: 20 },
-                { name: '代收收益', value: 20}],
+        var data = [{ name: '可用金额', value: pydata.balance },
+                { name: '待收本金', value: pydata.collectingPrincipal },
+                { name: '待收收益', value: pydata.collectingInterest}],
          option = MyChartsObject.ChartOptionTemplates.Pie(data,'YTTTTT'),
          container = $("#ReportShow")[0],
          opt = MyChartsObject.ChartConfig(container, option);

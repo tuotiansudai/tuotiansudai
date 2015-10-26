@@ -188,9 +188,9 @@
 
     <select id="findByLoginNameAndTimeSuccessRepay" parameterType="map" resultType="long">
         SELECT
-          SUM(
+          IFNULL(SUM(
             t.`corpus` + t.`default_interest` + t.`actual_interest`
-          )
+          ),0)
         FROM
           loan_repay t
           JOIN loan l

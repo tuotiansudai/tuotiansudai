@@ -106,9 +106,9 @@
 
     <select id="findByLoginNameAndTimeAndSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
-          SUM(
+          IFNULL(SUM(
             ir.`corpus` + ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
-          )
+          ),0)
         FROM
           invest_repay ir
           JOIN
@@ -132,9 +132,9 @@
 
     <select id="findByLoginNameAndTimeAndNotSuccessInvestRepay" parameterType="map" resultType="long">
         SELECT
-          SUM(
+          IFNULL(SUM(
             ir.`corpus` + ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
-          )
+          ),0)
         FROM
           invest_repay ir
           JOIN
@@ -271,9 +271,9 @@
 
     <select id="findSumSuccessInterestByLoginName" parameterType="map" resultType="long">
         SELECT
-          SUM(
+          IFNULL(SUM(
             ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
-          )
+          ),0)
         FROM
           invest_repay ir
           JOIN invest i
@@ -285,9 +285,9 @@
 
     <select id="findSumWillSuccessInterestByLoginName" parameterType="map" resultType="long">
         SELECT
-          SUM(
+          IFNULL(SUM(
             ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
-          )
+          ),0)
         FROM
           invest_repay ir
           JOIN invest i
@@ -299,7 +299,7 @@
 
     <select id="findSumWillSuccessCorpusByLoginName" parameterType="map" resultType="long">
         SELECT
-          SUM(ir.`corpus`)
+        IFNULL(SUM(ir.`corpus`),0)
         FROM
           invest_repay ir
           JOIN invest i
