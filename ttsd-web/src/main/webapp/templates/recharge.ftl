@@ -127,7 +127,7 @@
                 <p>充值成功：<a href="${requestContext.getContextPath()}/account" class="g-btn g-btn-medium-major tongji"
                            data-category="确认成功" data-label="recharge">确认成功</a></p>
 
-                <p>充值失败：<a href="javascript:" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值"
+                <p>充值失败：<a href="${requestContext.getContextPath()}/recharge" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值"
                            data-label="recharge">重新充值</a>
                     <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心"
                                             data-label="recharge">帮助中心</a></span>

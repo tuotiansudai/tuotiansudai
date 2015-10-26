@@ -32,7 +32,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setGateId(gateId);
         model.setPayType(NORMAL_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "account"));
+        model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
         model.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "recharge_notify"));
         return model;
     }
@@ -45,7 +45,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setAmount(amount);
         model.setPayType(FAST_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "account"));
+        model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
         model.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "recharge_notify"));
         return model;
     }
