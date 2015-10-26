@@ -1,5 +1,8 @@
 package com.tuotiansudai.utils;
 
+import com.tuotiansudai.repository.model.LoanPeriodUnit;
+import com.tuotiansudai.repository.model.LoanType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +56,12 @@ public class AutoInvestMonthPeriod {
         }
     }
 
-    // TODO : 添加天标/月标类型参数
-    public static AutoInvestMonthPeriod generateFromLoanPeriod(int loanPeriod) {
-        return AllPeriods[loanPeriod];
+    public static AutoInvestMonthPeriod generateFromLoanPeriod(LoanPeriodUnit loanPeriodUnit, int loanPeriod) {
+        if(LoanPeriodUnit.MONTH == loanPeriodUnit) {
+            return AllPeriods[loanPeriod];
+        }else{
+            return AllPeriods[0];
+        }
     }
 
     public static AutoInvestMonthPeriod merge(int... period) {

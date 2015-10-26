@@ -15,7 +15,6 @@ require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validat
                 $('body').delegate('#finishAuthor', 'click', function () {
                     location.href = '/investor/auto-invest/plan';
                 });
-
             });
         }
         //switch button for plan
