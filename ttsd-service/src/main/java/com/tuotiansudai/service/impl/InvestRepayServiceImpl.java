@@ -1,7 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 
-import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.service.InvestRepayService;
@@ -38,22 +38,22 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     }
 
     @Override
-    public List<InvestRepayInAccountDto> findRecentlyInvestByLoginNameInAccount(String loginName) {
-        return investRepayMapper.findRecentlyInvestByLoginNameInAccount(loginName);
+    public List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit) {
+        return investRepayMapper.findLatestInvestByLoginName(loginName, startLimit, endLimit);
     }
 
     @Override
-    public long findSumSuccessInterestByLoginName(String loginName) {
-        return investRepayMapper.findSumSuccessInterestByLoginName(loginName);
+    public long findSumRepaidInterestByLoginName(String loginName) {
+        return investRepayMapper.findSumRepaidInterestByLoginName(loginName);
     }
 
     @Override
-    public long findSumWillSuccessInterestByLoginName(String loginName) {
-        return investRepayMapper.findSumWillSuccessInterestByLoginName(loginName);
+    public long findSumRepayingInterestByLoginName(String loginName) {
+        return investRepayMapper.findSumRepayingInterestByLoginName(loginName);
     }
 
     @Override
-    public long findSumWillSuccessCorpusByLoginName(String loginName) {
-        return investRepayMapper.findSumWillSuccessCorpusByLoginName(loginName);
+    public long findSumRepayingCorpusByLoginName(String loginName) {
+        return investRepayMapper.findSumRepayingCorpusByLoginName(loginName);
     }
 }

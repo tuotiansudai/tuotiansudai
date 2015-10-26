@@ -3,9 +3,9 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class InvestRepayInAccountDto {
+public class LatestInvestView {
 
-    private Date createTime;
+    private Date investTime;
 
     private String loanName;
 
@@ -21,16 +21,16 @@ public class InvestRepayInAccountDto {
 
     private long expectedFee;
 
-    private long amount;
+    private long investAmount;
 
     private RepayStatus status;
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getInvestTime() {
+        return investTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setInvestTime(Date investTime) {
+        this.investTime = investTime;
     }
 
     public String getLoanName() {
@@ -65,12 +65,12 @@ public class InvestRepayInAccountDto {
         this.corpus = corpus;
     }
 
-    public long getAmount() {
-        return amount;
+    public long getInvestAmount() {
+        return investAmount;
     }
 
-    public void setAmount(long amount) {
-        this.amount = amount;
+    public void setInvestAmount(long investAmount) {
+        this.investAmount = investAmount;
     }
 
     public RepayStatus getStatus() {

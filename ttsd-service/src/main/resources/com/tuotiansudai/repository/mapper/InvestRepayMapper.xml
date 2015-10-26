@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.InvestRepayMapper">
 
-    <resultMap id="investRepayInAccountResultMap" type="InvestRepayInAccountDto">
-        <result column="created_time" property="createTime"></result>
+    <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
+        <result column="created_time" property="investTime"></result>
         <result column="loanName" property="loanName"></result>
         <result column="loanId" property="loanId"></result>
         <result column="repay_date" property="repayDate"></result>
@@ -13,7 +13,7 @@
         <result column="expected_interest" property="expectedInterest"></result>
         <result column="default_interest" property="defaultInterest"></result>
         <result column="expected_fee" property="expectedFee"></result>
-        <result column="amount" property="amount"></result>
+        <result column="amount" property="investAmount"></result>
         <result column="status" property="status"></result>
     </resultMap>
 
@@ -216,7 +216,7 @@
         LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findRecentlyInvestByLoginNameInAccount" parameterType="map" resultMap="investRepayInAccountResultMap">
+    <select id="findLatestInvestByLoginName" parameterType="map" resultMap="investRepayInAccountResultMap">
         SELECT
           temp.`created_time`,
           temp.`name` AS loanName,
@@ -266,10 +266,10 @@
                 AND t.`status` != 'COMPLETE') temp2
             ON temp.`id` = temp2.`invest_id`
         ORDER BY temp2.`repay_date` DESC
-        LIMIT 0, 4
+        LIMIT #{startLimit}, #{endLimit}
     </select>
 
-    <select id="findSumSuccessInterestByLoginName" parameterType="map" resultType="long">
+    <select id="findSumRepaidInterestByLoginName" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
             ir.`actual_interest` + ir.`default_interest` - ir.`actual_fee`
@@ -283,7 +283,7 @@
         WHERE ir.`status` = 'COMPLETE'
     </select>
 
-    <select id="findSumWillSuccessInterestByLoginName" parameterType="map" resultType="long">
+    <select id="findSumRepayingInterestByLoginName" parameterType="map" resultType="long">
         SELECT
           IFNULL(SUM(
             ir.`expected_interest` + ir.`default_interest` - ir.`expected_fee`
@@ -297,7 +297,7 @@
         WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
     </select>
 
-    <select id="findSumWillSuccessCorpusByLoginName" parameterType="map" resultType="long">
+    <select id="findSumRepayingCorpusByLoginName" parameterType="map" resultType="long">
         SELECT
         IFNULL(SUM(ir.`corpus`),0)
         FROM

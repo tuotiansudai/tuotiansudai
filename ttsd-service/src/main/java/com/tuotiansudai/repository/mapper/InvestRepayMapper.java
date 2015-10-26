@@ -1,6 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -29,12 +29,12 @@ public interface InvestRepayMapper {
     List<InvestRepayModel> findByLoginNameAndTimeNotSuccessInvestRepayList(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,
                                                                            @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
 
-    List<InvestRepayInAccountDto> findRecentlyInvestByLoginNameInAccount(@Param(value = "loginName") String loginName);
+    List<LatestInvestView> findLatestInvestByLoginName(@Param(value = "loginName") String loginName,@Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
 
-    long findSumSuccessInterestByLoginName(@Param(value = "loginName") String loginName);
+    long findSumRepaidInterestByLoginName(@Param(value = "loginName") String loginName);
 
-    long findSumWillSuccessInterestByLoginName(@Param(value = "loginName") String loginName);
+    long findSumRepayingInterestByLoginName(@Param(value = "loginName") String loginName);
 
-    long findSumWillSuccessCorpusByLoginName(@Param(value = "loginName") String loginName);
+    long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
 
 }

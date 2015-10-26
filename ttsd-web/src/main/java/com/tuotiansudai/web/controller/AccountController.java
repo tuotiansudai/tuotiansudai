@@ -41,9 +41,9 @@ public class AccountController {
         modelAndView.addObject("loginName",loginName);
         modelAndView.addObject("balance",accountService.getBalance(loginName));
         modelAndView.addObject("collectedReward", userBillService.findSumRewardByLoginName(loginName));
-        modelAndView.addObject("collectingPrincipal",investRepayService.findSumWillSuccessCorpusByLoginName(loginName));
-        modelAndView.addObject("collectingInterest",investRepayService.findSumWillSuccessInterestByLoginName(loginName));
-        modelAndView.addObject("collectedInterest",investRepayService.findSumSuccessInterestByLoginName(loginName));
+        modelAndView.addObject("collectingPrincipal",investRepayService.findSumRepayingCorpusByLoginName(loginName));
+        modelAndView.addObject("collectingInterest",investRepayService.findSumRepayingInterestByLoginName(loginName));
+        modelAndView.addObject("collectedInterest",investRepayService.findSumRepaidInterestByLoginName(loginName));
         modelAndView.addObject("freeze",accountService.getFreeze(loginName));
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)){
             modelAndView.addObject("successSumRepay",loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName,startTime,endTime));
@@ -53,7 +53,7 @@ public class AccountController {
         modelAndView.addObject("successSumInvestRepayList", investRepayService.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, 0, 5));
         modelAndView.addObject("notSuccessSumInvestRepay", investRepayService.findByLoginNameAndTimeAndNotSuccessInvestRepay(loginName, startTime, endTime));
         modelAndView.addObject("notSuccessSumInvestRepayList", investRepayService.findByLoginNameAndTimeNotSuccessInvestRepayList(loginName, startTime, endTime, 0, 5));
-        modelAndView.addObject("recentlyInvestList", investRepayService.findRecentlyInvestByLoginNameInAccount(loginName));
+        modelAndView.addObject("latestInvestList", investRepayService.findLatestInvestByLoginName(loginName, 0, 4));
         return modelAndView;
     }
 

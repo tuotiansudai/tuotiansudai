@@ -1,7 +1,7 @@
 package com.tuotiansudai.service;
 
 
-import com.tuotiansudai.repository.model.InvestRepayInAccountDto;
+import com.tuotiansudai.repository.model.LatestInvestView;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 
 import java.util.Date;
@@ -17,11 +17,11 @@ public interface InvestRepayService {
 
     List<InvestRepayModel> findByLoginNameAndTimeNotSuccessInvestRepayList(String loginName, Date startTime, Date endTime, int startLimit, int endLimit);
 
-    List<InvestRepayInAccountDto> findRecentlyInvestByLoginNameInAccount(String loginName);
+    List<LatestInvestView> findLatestInvestByLoginName(String loginName, int startLimit, int endLimit);
 
-    long findSumSuccessInterestByLoginName(String loginName);
+    long findSumRepaidInterestByLoginName(String loginName);
 
-    long findSumWillSuccessInterestByLoginName(String loginName);
+    long findSumRepayingInterestByLoginName(String loginName);
 
-    long findSumWillSuccessCorpusByLoginName(String loginName);
+    long findSumRepayingCorpusByLoginName(String loginName);
 }

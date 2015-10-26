@@ -180,14 +180,14 @@
             </tr>
             </thead>
             <tbody>
-            <#if (recentlyInvestList?size>0)>
-            <#list recentlyInvestList as recentlyInvest>
+            <#if (latestInvestList?size>0)>
+            <#list latestInvestList as latestInvest>
             <tr>
-                <td>${recentlyInvest.createdTime?string('yyyy-MM-dd')}</td>
-                <td><a href="#">${recentlyInvest.loanName!}</a></td>
+                <td>${latestInvest.investTime?string('yyyy-MM-dd')}</td>
+                <td><a href="#">${latestInvest.loanName!}</a></td>
                 <td>投资成功</td>
-                <td><#if recentlyInvest.status??>${recentlyInvest.repayDate?string('yyyy-MM-dd')}/${(((recentlyInvest.corpus+recentlyInvest.defaultInterest+recentlyInvest.expectedInterest-recentlyInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
-                <td>￥${(recentlyInvest.amount?string('0.00'))!}元</td>
+                <td><#if latestInvest.status??>${latestInvest.repayDate?string('yyyy-MM-dd')}/${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
+                <td>￥${(latestInvest.investAmount?string('0.00'))!}元</td>
                 <td><a href="#">合同</a></td>
             </tr>
             </#list>
