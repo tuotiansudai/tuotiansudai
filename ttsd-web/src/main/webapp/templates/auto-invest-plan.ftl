@@ -32,19 +32,19 @@
                 <dl>
                     <dt>功能状态：</dt>
                     <dd class="switchBtn">
-                        <input type="radio" name="enable" value="1" id="plan-open" ${(model.enabled)?string('checked','')}>
+                        <input type="radio" name="enable" value="1" id="plan-open" ${((model.enabled)!true)?string('checked','')}>
                         <label for="plan-open" class="radio">开启</label>
-                        <input type="radio" name="enable" value="2" id="plan-close" ${(model.enabled)?string('','checked')}>
+                        <input type="radio" name="enable" value="2" id="plan-close" ${((model.enabled)!true)?string('','checked')}>
                         <label for="plan-close" class="radio">关闭并保存</label></dd>
                 </dl>
                     <dl>
                         <dt class="requireOpt">投资金额：</dt>
-                        <dd><input type="text" name="minInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.minInvestAmount}"> ~
-                            <input type="text" name="maxInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.maxInvestAmount}"> 元</dd>
+                        <dd><input type="text" name="minInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.minInvestAmount)!}"> ~
+                            <input type="text" name="maxInvestAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.maxInvestAmount)!}"> 元</dd>
                     </dl>
                     <dl>
                         <dt class="requireOpt">保留金额：</dt>
-                        <dd><input type="text" name="retentionAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${model.retentionAmount}"> 元 （不会加入自动投标的金额）</dd>
+                        <dd><input type="text" name="retentionAmount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00" class="autoNumeric" value="${(model.retentionAmount)!}"> 元 （不会加入自动投标的金额）</dd>
                     </dl>
                     <dl class="clear">
                         <dt>本金复投：</dt>
@@ -53,7 +53,7 @@
                     </dl>
                     <dl>
                         <dt class="requireOpt">项目期限：</dt>
-                        <dd class="projectLimit" data-value="${model.autoInvestPeriods?string('0')}">
+                        <dd class="projectLimit" data-value="${(model.autoInvestPeriods?string('0'))!'0'}">
                             <#list periods as period>
                             <span data-value="${period.periodValue?string('0')}">${period.periodName}<i class="badge"></i></span>
                             </#list>

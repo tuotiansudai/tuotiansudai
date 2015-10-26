@@ -117,9 +117,9 @@ require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validat
 
             $saveInvestPlan.click(function () {
                 var requestData = {
-                    "minInvestAmount": $('input[name="minInvestAmount"]').val().replace(/,/, ''),
-                    "maxInvestAmount": $('input[name="maxInvestAmount"]').val().replace(/,/, ''),
-                    "retentionAmount": $('input[name="retentionAmount"]').val().replace(/,/, ''),
+                    "minInvestAmount": $('input[name="minInvestAmount"]').autoNumeric('get'),
+                    "maxInvestAmount": $('input[name="maxInvestAmount"]').autoNumeric('get'),
+                    "retentionAmount": $('input[name="retentionAmount"]').autoNumeric('get'),
                     "autoInvestPeriods": getDurationObj()
                 };
                 if(parseInt(requestData.maxInvestAmount) < parseInt(requestData.minInvestAmount)){

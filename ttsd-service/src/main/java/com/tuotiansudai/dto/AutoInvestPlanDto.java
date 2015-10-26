@@ -30,7 +30,7 @@ public class AutoInvestPlanDto implements Serializable {
 
     private boolean enabled;
 
-    private boolean freshPlan;
+    private boolean isTodayPlan;
 
     public AutoInvestPlanDto() {
     }
@@ -42,14 +42,9 @@ public class AutoInvestPlanDto implements Serializable {
         this.autoInvestPeriods = model.getAutoInvestPeriods();
         this.enabled = model.isEnabled();
 
-        // today 0:0:0
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-
-        this.freshPlan = model.getCreatedTime().after(cal.getTime());
+        Date startOfToday = new DateTime().withTimeAtStartOfDay().toDate();
+        // 是否为当天创建的计划
+        this.isTodayPlan = model.getCreatedTime().after(startOfToday);
     }
 
     public String getMinInvestAmount() {
@@ -92,11 +87,11 @@ public class AutoInvestPlanDto implements Serializable {
         this.enabled = enabled;
     }
 
-    public boolean isFreshPlan() {
-        return freshPlan;
+    public boolean isTodayPlan() {
+        return isTodayPlan;
     }
 
-    public void setFreshPlan(boolean freshPlan) {
-        this.freshPlan = freshPlan;
+    public void setIsTodayPlan(boolean isTodayPlan) {
+        this.isTodayPlan = isTodayPlan;
     }
 }

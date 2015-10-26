@@ -139,9 +139,7 @@ public class InvestController {
         String loginName = LoginUserInfo.getLoginName();
         AccountModel accountModel = accountService.findByLoginName(loginName);
         if (!accountModel.isAutoInvest()) {
-            ModelAndView mv = new ModelAndView("/auto-invest-agreement");
-            mv.addObject("content", "自动投标");
-            return mv;
+            return new ModelAndView("/auto-invest-agreement");
         } else {
             return new ModelAndView("redirect:/investor/auto-invest");
         }
@@ -151,15 +149,7 @@ public class InvestController {
     public ModelAndView autoInvestPlan() {
         AutoInvestPlanModel model = investService.findUserAutoInvestPlan(LoginUserInfo.getLoginName());
         ModelAndView mv = new ModelAndView("/auto-invest-plan");
-        if (model == null) {
-            AutoInvestPlanDto dto = new AutoInvestPlanDto();
-            dto.setEnabled(true);
-            dto.setAutoInvestPeriods(0);
-            dto.setMaxInvestAmount("");
-            dto.setMinInvestAmount("");
-            dto.setRetentionAmount("");
-            mv.addObject("model", dto);
-        } else {
+        if (model != null) {
             AutoInvestPlanDto dto = new AutoInvestPlanDto(model);
             mv.addObject("model", dto);
         }

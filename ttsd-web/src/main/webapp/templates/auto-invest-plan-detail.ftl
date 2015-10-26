@@ -31,7 +31,7 @@
             </div>
 
             <div class="btnBox tc">
-                <#if model.freshPlan>
+                <#if model.isTodayPlan()>
                     <p class="pad-m text-notice"><i class="icon-notice"></i>自动投标将在次日零点开启</p>
                 <#else>
                     <p class="pad-m text-notice"><i class="icon-notice"></i>自动投标已开启</p>
