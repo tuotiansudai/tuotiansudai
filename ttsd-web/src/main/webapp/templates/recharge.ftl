@@ -41,7 +41,7 @@
 
                 <#if !isFastPayOn && isBindCard>
                     <div class="turn-on-fast-form">
-                        <form>
+                        <form action="/agreement" method="post" target="_blank">
                             <p><label>姓名：</label><span>${userName}</span></p>
 
                             <p><label>身份证：</label><span>${identityNumber}</span></p>
@@ -49,6 +49,7 @@
                             <p><label>开户行：</label><span>${bank}</span></p>
 
                             <p><label>银行卡：</label><span>${bankCard}</span></p>
+                            <input type="hidden" name="fastPay" value="true"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input type="submit" class="submit" value="开通快捷支付" />
                         </form>
@@ -134,6 +135,23 @@
                 </p>
 
                 <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+            </div>
+        </div>
+        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+    </div>
+</div>
+
+<div class="ecope-overlay-fast" style=""></div>
+<div class="ecope-dialog-fast">
+    <div class="dg_wrapper dialog-chongzhi">
+        <div class="hd">
+            <h3>开通快捷支付功能</h3>
+        </div>
+        <div class="bd">
+            <div class="ret">
+                <a href="${requestContext.getContextPath()}/recharge" class="g-btn g-btn-medium-major tongji"
+                   data-category="继续充值" data-label="recharge">继续充值</a>
+                <p class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
             </div>
         </div>
         <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
