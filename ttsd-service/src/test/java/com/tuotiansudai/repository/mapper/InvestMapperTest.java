@@ -4,7 +4,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
-import junit.framework.Assert;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -108,7 +107,7 @@ public class InvestMapperTest {
         model.setIsAutoInvest(false);
         model.setLoginName(User_ID);
         model.setLoanId(Loan_ID);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }

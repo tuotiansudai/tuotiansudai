@@ -23,7 +23,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -856,7 +855,7 @@ public class AdvanceRepayServiceTest {
         model.setAmount(amount);
         model.setLoanId(loanId);
         model.setLoginName(loginName);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         model.setCreatedTime(investTime);
         return model;

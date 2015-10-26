@@ -1,16 +1,16 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.InvestSource;
+import com.tuotiansudai.repository.model.Source;
 
 public class InvestDto extends ProjectTransferDto {
 
-    private InvestSource investSource;
+    private Source source;
 
-    public InvestSource getInvestSource() {
-        return investSource;
+    public Source getSource() {
+        return source;
     }
 
-    public void setInvestSource(InvestSource investSource) {
-        this.investSource = investSource;
+    public void setSource(Source source) {
+        this.source = source;
     }
 }

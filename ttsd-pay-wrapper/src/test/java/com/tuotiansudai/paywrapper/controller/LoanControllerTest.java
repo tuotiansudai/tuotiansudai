@@ -276,7 +276,7 @@ public class LoanControllerTest {
         im.setAmount(amount);
         im.setCreatedTime(new Date());
         im.setId(idGenerator.generate());
-        im.setSource(InvestSource.WEB);
+        im.setSource(Source.WEB);
         im.setLoanId(loanId);
         im.setIsAutoInvest(false);
         im.setLoginName(loginName);
