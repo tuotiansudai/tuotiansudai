@@ -13,7 +13,7 @@
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
             <li><a href="javascript:">个人资产</a></li>
-            <li><a href="javascript:" class="actived">自动投标</a></li>
+            <li><a href="javascript:" class="active">自动投标</a></li>
             <li><a href="javascript:">积分红包</a></li>
             <li><a href="javascript:">推荐管理</a></li>
         </ul>

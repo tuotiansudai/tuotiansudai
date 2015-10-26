@@ -8,15 +8,15 @@
     <form method="post">
         <div class="item-block">
             <label for="">请输入原密码：</label>
-            <input class="phone-txt jq-ps-2" name="oldpwd" type="password" placeholder="请输入原密码"/>
+            <input class="phone-txt jq-ps-2" name="oldPassword" type="password" placeholder="请输入原密码"/>
         </div>
         <div class="item-block">
             <label for="">请输入新密码：</label>
-            <input class="phone-txt jq-ps-1" name="newpwd" type="password" placeholder="请输入新密码"/>
+            <input class="phone-txt jq-ps-1" name="newPassword" type="password" placeholder="请输入新密码"/>
         </div>
         <div class="item-block">
             <label for="">请确认新密码：</label>
-            <input class="phone-txt jq-ps-2" name="newpwdcheck" type="password" placeholder="请确认新密码"/>
+            <input class="phone-txt jq-ps-2" name="newPasswordCheck" type="password" placeholder="请确认新密码"/>
         </div>
         <div class="item-block">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

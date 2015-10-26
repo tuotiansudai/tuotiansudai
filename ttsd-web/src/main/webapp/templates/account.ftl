@@ -15,7 +15,7 @@
 <div class="mainFrame AccountOverview">
     <aside class="menuBox fl">
         <ul class="menu-list">
-            <li><a href="javascript:" class="actived">账户总览</a></li>
+            <li><a href="javascript:" class="active">账户总览</a></li>
             <li><a href="javascript:">投资记录</a></li>
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
