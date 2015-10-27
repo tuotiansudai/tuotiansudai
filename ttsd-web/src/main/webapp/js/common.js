@@ -300,7 +300,7 @@ var MyChartsObject={
             require(
                 [
                     'echarts',
-                    'echarts/dist/chart/pie'
+                    'echarts/chart/pie'
                 ],
                 function (ec) {
                     var echarts = ec;

@@ -1,4 +1,5 @@
 @import 'variables';
+
 .mainFrame {
   width: nth($baseWidth,1);
   @include center-block;
@@ -10,10 +11,41 @@
 .contentContainer {
   width: nth($baseWidth,3);
   background:nth($baseColor,1);
+  border: #dadada 1px solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.columnTitle {
+  height: 48px;
+  line-height: 46px;
+  border-bottom: #d5d5d5 1px solid;
+   em {
+    display: inline-block;
+    padding: 1px 0;
+    border-bottom: #e06b0c 2px solid;
+    width: 110px;
+    color: #ffac2a;
+  }
+}
+.popLayer {
+  text-align: center;
+  dl {
+    margin-bottom: 12px;
+    dt { float: left; }
+  }
+  button {
+    margin: 20px auto 0 auto;
+  }
 }
 
 //Account Overview
 .AccountOverview {
+  .contentContainer {
+    border:0;
+    border-radius:0;
+    background: none;
+  }
   .accountImg {
     margin-right: 10px;
     width:71px;
@@ -135,6 +167,102 @@
   }
 
 }
+
+//auto invest
+.autoInvest {
+  .CertifiedImg {
+    background: url('/images/sign/re-s01.png') center top no-repeat;
+    //background-size: 50%;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    height:170px;
+  }
+  .panel {
+    color: nth($baseColor, 6);
+  }
+  p.notice {
+    b  {
+      font-size: nth($fontSize,4);}
+  }
+  .btnBox  {
+    margin-top:30px;
+    margin-bottom: 20px;
+  }
+  .planSwitch {
+    color: nth($baseColor, 3);
+    form {
+      margin-left: 28px;
+      margin-top: 15px;
+    }
+    dl {
+      margin-bottom: 15px;
+      clear: both;
+      dt {
+        color: nth($baseColor,4);
+        display: inline-block;
+        float: left;
+        width:80px;
+        text-align: right;
+      }
+      dd.projectLimit {
+        float: left;
+        width: 50%;
+        label {
+          margin-right: 5px;
+        }
+        span {
+          display: inline-block;
+          color: nth($baseColor, 4);
+          width:60px;
+          text-align: center;
+          margin-right: 10px;
+          margin-bottom: 10px;
+          border: 1px solid #e1e1e1;
+          position: relative;
+          cursor: pointer;
+          & .badge {
+            background-image: url("/images/icons/spr.png");
+            background-position: -387px -172px;
+            background-repeat: no-repeat;
+            width: 13px;
+            height: 13px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+          }
+          &.active {
+            border: 1px solid nth($btnColor, 5);
+            color: nth($btnColor, 5);
+            & .badge {
+              display: inline-block;
+            }
+
+          }
+
+        }
+      }
+
+    }
+    & .agreeStatus {
+      margin-bottom: 20px;
+      color: nth($baseColor, 4);
+      label {
+        vertical-align: middle;
+      }
+    }
+  }
+  .borderBox:nth-child(2) {
+    margin-top:10px;
+  }
+  .planSet {
+    i {
+      color: nth($btnColor, 5);
+    }
+  }
+}
+
+//recharge page
 .recharge-container {
   width: nth($baseWidth,3);
   background:nth($baseColor,1);
@@ -236,96 +364,7 @@
         }
       }
     }
-    & .CertifiedImg {
-      background: url('/images/sign/re-s01.png') center top no-repeat;
-      //background-size: 50%;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 10px;
-      height:170px;
-    }
-    & .panel {
-      color: nth($baseColor, 6);
-    }
-    & p.notice {
-      b  {
-        font-size: nth($fontSize,4);}
-    }
-    & .btnBox  {
-      margin-top:30px;
-      margin-bottom: 20px;
-    }
-    & .planSwitch {
-      color: nth($baseColor, 3);
-      form {
-        margin-left: 28px;
-        margin-top: 15px;
-      }
-      dl {
-        margin-bottom: 15px;
-        clear: both;
-        dt {
-          color: nth($baseColor,4);
-          display: inline-block;
-          float: left;
-          width:80px;
-          text-align: right;
-        }
-        dd.projectLimit {
-          float: left;
-          width: 50%;
-          label {
-            margin-right: 5px;
-          }
-          span {
-            display: inline-block;
-            color: nth($baseColor, 4);
-            width:60px;
-            text-align: center;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #e1e1e1;
-            position: relative;
-            cursor: pointer;
-            & .badge {
-              background-image: url("/images/icons/spr.png");
-              background-position: -387px -172px;
-              background-repeat: no-repeat;
-              width: 13px;
-              height: 13px;
-              position: absolute;
-              top: 0;
-              right: 0;
-              display: none;
-            }
-            &.active {
-              border: 1px solid nth($btnColor, 5);
-              color: nth($btnColor, 5);
-              & .badge {
-                display: inline-block;
-              }
 
-            }
-
-          }
-        }
-
-      }
-      & .agreeStatus {
-        margin-bottom: 20px;
-        color: nth($baseColor, 4);
-        label {
-          vertical-align: middle;
-        }
-      }
-    }
-    & .borderBox:nth-child(2) {
-      margin-top:10px;
-    }
-    & .planSet {
-      i {
-        color: nth($btnColor, 5);
-      }
-    }
   }
   & .recharge-form {
     width: 800px;
@@ -381,6 +420,44 @@
   }
 }
 
+//Personal Info Page
+.PersonalInfo {
+  .InfoList {
+    color: nth($CK2,6);
+    line-height: 38px;
+    .fa {
+      font-size: nth($fontSize, 4);
+      padding-right: 5px;
+    }
+    .infoTitle {
+      font-weight: bold;
+      display: inline-block;
+      width:85px;
+      text-align: right;
+      margin-right: 20px;
+      color: nth($CK2,5);
+    }
+    em.info {
+     // width:calc(100% - 200px );
+    }
+    .BindingSet {
+      display: inline-block;
+      width:110px;
+      float: right;
+      .ok {
+        color: #2ac30c;
+      }
+      .no {
+        color: #ff1010;
+      }
+      a.setlink {
+        color: nth($CK1,1);
+        padding-left: 10px;
+      }
+    }
+
+  }
+}
 .email-right {
   width: 820px;
   height: auto;

@@ -21,7 +21,7 @@ body {
   font-size: nth($fontSize,2);
   line-height: nth($baseLineHeight,1);
   background: nth($baseColor,5);
-  color:nth($baseColor,3);
+  color:nth($CK2,5);
 }
 a{
   color:nth($linkColor,1);
@@ -67,6 +67,9 @@ a{
 }
 .pad-m {
   padding: 30px;
+}
+.bgWhite {
+  background: nth($baseColor,1);
 }
 
 

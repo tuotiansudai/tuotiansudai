@@ -23,7 +23,8 @@ var require = {
         'jquery.validate': ['jquery'],
         'jquery.form': ['jquery'],
         'jqueryPage': ['jquery'],
-        'autoNumeric': ['jquery']
+        'autoNumeric': ['jquery'],
+        'layer':['jquery']
     }
 };
 

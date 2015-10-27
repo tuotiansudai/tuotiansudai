@@ -18,7 +18,7 @@
         </ul>
     </aside>
     <div class="contentContainer fr autoHeight">
-        <div class="bRadiusBox spad">
+        <div class="bRadiusBox spad bgWhite">
             <img src="/images/sign/profile.jpg" class="fl accountImg" >
             <div class="profileBox">
                 <span><em>您好：dongshao</em> 吃完午饭小憩一会，为下午补充能量！</span>
@@ -33,7 +33,7 @@
 
         </div>
         <div class="clearBlank"></div>
-        <div class="AssetsBox">
+        <div class="AssetsBox bgWhite">
             <div class="AssetsReport bRadiusBox fl">
                 <h3>资产总额：<span>500.00元</span></h3>
                 <div id="ReportShow" style="width:100%; height:115px; "></div>
@@ -50,7 +50,7 @@
             </div>
         </div>
     <div class="clearBlank"></div>
-        <div class="LastMonth bRadiusBox">
+        <div class="LastMonth bRadiusBox bgWhite">
 
             <table class="table table-striped">
                 <caption>最近7天还款总额：￥0.00元 <a href="#" class="fr">更多...</a> </caption>
@@ -117,7 +117,7 @@
             </table>
         </div>
         <div class="clearBlank"></div>
-        <div class="tMonthPayment bRadiusBox" id="tMonthBox">
+        <div class="tMonthPayment bRadiusBox bgWhite" id="tMonthBox">
 
             <ul class="PaymentSwitch">
                 <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
@@ -261,7 +261,7 @@
             </table>
         </div>
         <div class="clearBlank"></div>
-        <div class="newProjects bRadiusBox">
+        <div class="newProjects bRadiusBox bgWhite">
         <table class="table">
             <caption>最新投资项目 <a href="#" class="fr">更多...</a> </caption>
             <thead>

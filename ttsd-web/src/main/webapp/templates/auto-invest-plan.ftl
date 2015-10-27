@@ -5,7 +5,7 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="mainFrame">
+<div class="mainFrame autoInvest">
     <aside class="menuBox fl">
         <ul class="menu-list">
             <li><a href="javascript:">账户总览</a></li>
@@ -18,10 +18,10 @@
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="recharge-container fr autoHeight">
-        <h4><em class="tc">自动投标</em></h4>
+    <div class="contentContainer fr autoHeight">
+        <h4 class="columnTitle"><em class="tc">自动投标</em></h4>
 
-        <div class="recharge-content pad-s">
+        <div class="pad-s">
             <div class="borderBox panel">
                 注意： 自动投标一旦设置并保存成功，将在次日零点自动进行投标。 <br/>
                 <span style="padding-left: 45px;">如不想复投，请提前关闭自动投标，以免影响提现。</span>

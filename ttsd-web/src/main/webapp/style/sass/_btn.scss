@@ -123,12 +123,17 @@ input {
   border: 1px solid nth($btnColor,3);
   background: nth($baseColor,1);
 }
+
 input[type="text"] {
   width: 150px;}
 input[type="radio"] {
   margin-right: 5px;
 }
+.input-control {
+  width:250px!important;
+  border-radius: 4px;
 
+}
 .planSwitch {
   input[type="radio"],
   input[type="checkbox"]
