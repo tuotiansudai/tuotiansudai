@@ -23,7 +23,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize,Long loanId,
-                                                                  String loginName, Date beginTime, Date endTime, RepayStatus repayStatus) {
+                                                                  String loginName, Date startTime, Date endTime, RepayStatus repayStatus) {
         if (index < 1) {
             index = 1;
         }
@@ -32,9 +32,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         }
 
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        int count = loanRepayMapper.findLoanRepayCount(loanId, loginName, repayStatus, beginTime, endTime);
+        int count = loanRepayMapper.findLoanRepayCount(loanId, loginName, repayStatus, startTime, endTime);
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findLoanRepayPagination((index - 1) * pageSize, pageSize,
-                loanId, loginName, repayStatus, beginTime, endTime);
+                loanId, loginName, repayStatus, startTime, endTime);
         List<LoanRepayDataItemDto> loanRepayDataItemDtos = Lists.newArrayList();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
             LoanRepayDataItemDto loanRepayDataItemDto = new LoanRepayDataItemDto(loanRepayModel);

@@ -62,7 +62,7 @@
                         <label for="number">开始时间:</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" id="beginTime" value="${(beginTime?string('yyyy-MM-dd'))!}"/>
+                            <input type='text' class="form-control" id="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -81,34 +81,16 @@
                         <label for="" >标的类型: </label>
 
                             <select class="selectpicker " id="repayStatus">
-                                <#if repayStatus?? >
                                     <option value="">全部</option>
-                                    <#list repayStatusList as rs>
-                                        <#if repayStatus == rs>
-                                            <option value="${rs.name()}" selected>
-                                            ${rs.getDescription()}
-                                            </option>
-                                        <#else >
-                                            <option value="${rs.name()}">
-                                            ${rs.getDescription()}
-                                            </option>
-                                        </#if>
-
-                                    </#list>
-                                <#else >
-                                    <option value="">全部</option>
-                                    <#list repayStatusList as rs>
-
-                                        <option value="${rs.name()}">
-                                        ${rs.getDescription()}
-                                        </option>
-                                    </#list>
-                                </#if>
-
+                                <#list repayStatusList as status>
+                                    <option value="${status}"
+                                            <#if repayStatus?has_content && status == repayStatus>selected</#if>
+                                            >${status.description}</option>
+                                </#list>
                             </select>
                     </div>
                     <button type="button" class="btn btn-sm btn-primary btnSearch" id="btnRepayQuery" pageIndex="1">查询</button>
-                    <button type="reset" class="btn btn-sm btn-default btnSearch" id="btnRepayReset" ">重置</button>
+                    <button type="reset" class="btn btn-sm btn-default btnSearch" id="btnRepayReset">重置</button>
 
                 </form>
                 <div class="table-responsive">

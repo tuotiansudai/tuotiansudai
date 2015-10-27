@@ -4,7 +4,7 @@ require(['jquery', 'jquery-ui',
     $(function () {
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
-        var api_url = 'http://localhost:8082/loan/loaner';
+        var api_url = '/loan/loaner';
         var autoValue = '';
         $("#loginName").autocomplete({
 
@@ -30,13 +30,7 @@ require(['jquery', 'jquery-ui',
         });
         $("#btnRepayReset").click(function(){
 
-            location.href="/loan-repay?loanId="
-            +"&loginName="
-            +"&beginTime="
-            +"&endTime="
-            +"&repayStatus="
-            +"&index=1"
-            +"&pageSize=10";
+            location.href="/loan-repay";
         });
 
 
@@ -45,14 +39,14 @@ require(['jquery', 'jquery-ui',
             var index = $(e.target).attr("pageIndex");
             var loanId =  $('#loanId').val();
             var loginName =  $('#loginName').val();
-            var beginTime =  $('#beginTime').val();
+            var startTime =  $('#startTime').val();
             var endTime =  $('#endTime').val();
             var repayStatus = $('#repayStatus').val()
             var pageSize = 10;
 
             location.href="/loan-repay?loanId="+loanId
             +"&loginName="+loginName
-            +"&beginTime="+beginTime
+            +"&startTime="+startTime
             +"&endTime="+endTime
             +"&repayStatus="+repayStatus
             +"&index="+index

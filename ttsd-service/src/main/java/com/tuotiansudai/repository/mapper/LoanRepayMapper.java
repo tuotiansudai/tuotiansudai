@@ -19,13 +19,13 @@ public interface LoanRepayMapper {
                                                  @Param(value = "loanId") Long loanId,
                                                  @Param(value = "loginName") String loginName,
                                                  @Param(value = "repayStatus") RepayStatus repayStatus,
-                                                 @Param(value = "beginTime") Date beginTime,
+                                                 @Param(value = "startTime") Date startTime,
                                                  @Param(value = "endTime") Date endTime);
 
     int findLoanRepayCount(@Param(value = "loanId") Long loanId,
                            @Param(value = "loginName") String loginName,
                            @Param(value = "repayStatus") RepayStatus repayStatus,
-                           @Param(value = "beginTime") Date beginTime,
+                           @Param(value = "startTime") Date startTime,
                            @Param(value = "endTime") Date endTime);
 
     LoanRepayModel findById(long id);

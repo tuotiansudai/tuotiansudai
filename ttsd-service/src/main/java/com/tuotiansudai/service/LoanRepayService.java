@@ -9,6 +9,6 @@ import java.util.Date;
 public interface LoanRepayService {
 
     BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
-                                                           String loginName, Date repayStartDate, Date repayEndDate, RepayStatus repayStatus);
+                                                           String loginName, Date startTime, Date endTime, RepayStatus repayStatus);
 
 }

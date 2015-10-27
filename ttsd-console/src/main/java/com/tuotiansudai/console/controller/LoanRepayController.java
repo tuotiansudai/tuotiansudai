@@ -29,11 +29,11 @@ public class LoanRepayController {
                                                 @RequestParam(value = "loanId",required = false) Long loanId,
                                                 @RequestParam(value = "loginName",required = false) String loginName,
                                                 @RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,
-                                                @DateTimeFormat(pattern = "yyyy-MM-dd") Date beginTime,
-                                                @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+                                                @RequestParam(value = "startTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                                @RequestParam(value = "endTime",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
         ModelAndView modelAndView = new ModelAndView("/loan-repay");
         BaseDto<BasePaginationDataDto> baseDto = loanRepayService.findLoanRepayPagination(index, pageSize,
-                loanId, loginName, beginTime, endTime, repayStatus);
+                loanId, loginName, startTime, endTime, repayStatus);
         List<RepayStatus> repayStatusList = Lists.newArrayList(RepayStatus.values());
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("repayStatusList", repayStatusList);
@@ -41,10 +41,11 @@ public class LoanRepayController {
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("beginTime", beginTime);
+        modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("repayStatus", repayStatus);
-
+        if (repayStatus!=null) {
+            modelAndView.addObject("repayStatus", repayStatus);
+        }
         return modelAndView;
     }
 
