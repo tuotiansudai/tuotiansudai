@@ -1,3 +1,6 @@
+@import "table";
+@import "pagination";
+
 .main {
   width: 1000px;
   margin: 0 auto;
@@ -17,7 +20,7 @@
       display: inline-block;
       margin-left: 20px;
       cursor: pointer;
-      &.grey{
+      &.grey {
         opacity: .6;
       }
     }
@@ -213,8 +216,8 @@
           line-height: 38px;
           cursor: pointer;
         }
-        &.current {
-          background: url("../../images/loan/nav_bg.png") left bottom no-repeat;
+        &.active {
+          background: url("/images/loan/nav_bg.png") left bottom no-repeat;
           color: #ed9c30;
         }
       }
@@ -222,11 +225,13 @@
     & .loan-list {
       & .loan-list-con {
         display: none;
+        &.active {
+          display: block;
+        }
         & .loan-detail {
           margin: 10px;
           padding: 10px;
           border: 1px solid #ccc;
-
           & h3 {
             color: #000;
             font-size: 14px;
@@ -265,72 +270,23 @@
             }
           }
         }
-        & .table-list {
-          margin: 10px;
-          border-collapse: collapse;
-          text-align: center;
-          line-height: 30px;
-          display: block;
-          float: left;
-          width: 980px;
-          & .icon-loan-ie, & .icon-loan-ios,
-          & .icon-loan-Android {
-            width: 18px;
-            height: 18px;
-            background: url("../../images/loan/ico_loan.png") no-repeat;
-            display: inline-block;
-            margin-bottom: -2px;
-          }
-          & .icon-loan-ios {
-            height: 22px;
-            background-position: 0 -61px;
-          }
-          & .icon-loan-Android {
-            height: 22px;
-            background-position: 0 -30px;
-          }
-          & th:first-child, & td:first-child {
-            width: 80px;
-          }
-          & th {
-            width: 180px;
-            background-color: #acacac;
-            border-right: 1px solid #ccc;
-          }
-          & td {
-            width: 180px;
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-          }
-          & td:nth-child(even) {
-
-          }
-          & td:nth-child(odd) {
-            background: #f0f0f0;
-          }
+        .invest-WEB, .invest-IOS, .invest-ANDROID {
+          background: url("/images/loan/ico_loan.png") no-repeat;
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          margin-bottom: -2px;
         }
-        & .pagination{
-          width: 100%;
-          margin: 10px 0;
-          display: block;
-          text-align: center;
-          & a{
-            color: #777777;
-            padding:2px 8px;
-          }
-          & a.current{
-            background: #f24712;
-            color: #fff;
-          }
-          & .next,& .prev{
-            cursor: pointer;
-          }
+        .invest-IOS {
+          height: 22px;
+          background-position: 0 -61px;
         }
-
+        .invest-ANDROID {
+          height: 22px;
+          background-position: 0 -30px;
+        }
       }
-
     }
-
   }
 }
 
@@ -360,7 +316,8 @@
   top: 50%;
   margin: -275px 0 0 -380px;
 }
-.time-item{
+
+.time-item {
   text-align: right;
   padding-right: 31px;
   line-height: 38px;
@@ -368,10 +325,10 @@
   color: #ccc;
 }
 
-a{ text-decoration:none;}
-a:hover{ text-decoration:none;}
-.pagination{padding: 15px 20px;text-align: left;color: #ccc;}
-.pagination a{display: inline-block;color: #428bca;display: inline-block;height: 25px;	line-height: 25px;	padding: 0 10px;border: 1px solid #ddd;	margin: 0 2px;border-radius: 4px;vertical-align: middle;}
-.pagination a:hover{text-decoration: none;border: 1px solid #428bca;}
-.pagination span.current{display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;color: #fff;background-color: #428bca;	border: 1px solid #428bca;border-radius: 4px;vertical-align: middle;}
-.pagination span.disabled{	display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;	color: #bfbfbf;background: #f2f2f2;border: 1px solid #bfbfbf;border-radius: 4px;vertical-align: middle;}
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}

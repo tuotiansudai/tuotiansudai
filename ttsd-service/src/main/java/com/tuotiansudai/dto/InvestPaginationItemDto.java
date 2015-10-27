@@ -1,18 +1,24 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestSource;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 
 public class InvestPaginationItemDto {
-    private String loginName;
-    private String amount;
-    private InvestSource source;
-    private String expectedRate;
-    private String createdTime;
-    private boolean autoInvest;
-    private int serialNo;
 
+    private String loginName;
+
+    private String amount;
+
+    private InvestSource source;
+
+    private String expectedInterest;
+
+    private Date createdTime;
+
+    private boolean autoInvest;
 
     public String getLoginName() {
         return loginName;
@@ -38,19 +44,19 @@ public class InvestPaginationItemDto {
         this.source = source;
     }
 
-    public String getExpectedRate() {
-        return expectedRate;
+    public String getExpectedInterest() {
+        return expectedInterest;
     }
 
-    public void setExpectedRate(String expectedRate) {
-        this.expectedRate = expectedRate;
+    public void setExpectedInterest(String expectedInterest) {
+        this.expectedInterest = expectedInterest;
     }
 
-    public String getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -60,13 +66,5 @@ public class InvestPaginationItemDto {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
-    }
-
-    public int getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(int serialNo) {
-        this.serialNo = serialNo;
     }
 }

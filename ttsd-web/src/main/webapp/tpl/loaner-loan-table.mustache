@@ -1,4 +1,4 @@
-<table class="loan-list">
+<table class="loan-list table-striped">
     {{#isRepaying}}
         <thead>
         <tr>
@@ -15,10 +15,11 @@
             <tr>
                 <td>{{loanName}}</td>
                 <td>{{recheckTime}}</td>
-                <td>{{loanAmount}}</td>
-                <td>{{unpaidAmount}}元</td>
+                <td>{{loanAmount}} 元</td>
+                <td>{{unpaidAmount}} 元</td>
                 <td>{{nextRepayDate}}</td>
-                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a>
+                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> |
+                    <a class="red" href="/contract/loaner/loan/{{loanId}}" target="_blank">合同</a>
                 </td>
             </tr>
         {{/records}}
@@ -46,8 +47,8 @@
             <tr>
                 <td>{{loanName}}</td>
                 <td>{{recheckTime}}</td>
-                <td>{{expectedRepayAmount}}</td>
-                <td>{{actualRepayAmount}}元</td>
+                <td>{{expectedRepayAmount}} 元</td>
+                <td>{{actualRepayAmount}} 元</td>
                 <td>{{completedDate}}</td>
                 <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a>
                 </td>
@@ -73,7 +74,7 @@
         {{#records}}
             <tr>
                 <td>{{loanName}}</td>
-                <td>{{loanAmount}}</td>
+                <td>{{loanAmount}} 元</td>
                 <td>{{recheckTime}}</td>
             </tr>
         {{/records}}
@@ -85,9 +86,3 @@
         </tbody>
     {{/isCancel}}
 </table>
-
-<div class="pagination" data-url="/loaner/loan-data">
-    <span class="count">共 {{count}} 条，当前第 {{index}} 页</span>
-    <span class="prev {{#hasPreviousPage}}active{{/hasPreviousPage}}">上一页</span>
-    <span class="next {{#hasNextPage}}active{{/hasNextPage}}">下一页</span>
-</div>

@@ -7,7 +7,8 @@ import com.tuotiansudai.utils.AmountUtil;
 import java.io.Serializable;
 import java.util.Date;
 
-public class LoanerLoanPaginationItemDataDto implements Serializable {
+public class LoanPaginationItemDataDto implements Serializable {
+
     private long loanId;
 
     private String loanName;
@@ -28,7 +29,7 @@ public class LoanerLoanPaginationItemDataDto implements Serializable {
     private Date completedDate;
 
 
-    public LoanerLoanPaginationItemDataDto(LoanModel loanModel) {
+    public LoanPaginationItemDataDto(LoanModel loanModel) {
 
         this.loanId = loanModel.getId();
         this.loanName = loanModel.getName();

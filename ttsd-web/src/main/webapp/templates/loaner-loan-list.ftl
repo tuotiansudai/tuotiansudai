@@ -35,14 +35,10 @@
             <span class="select-item" data-status="COMPLETE">已结清</span>
             <span class="select-item" data-status="CANCEL">流标</span>
         </div>
-        <div class="loan-content">
-            <table class="loan-list">
-
+        <div class="loan-list-content">
+            <table class="table-striped">
             </table>
-            <div class="pagination" data-url="/loaner/loan-data">
-                <span class="count">共 {{count}} 条，当前第 {{index}} 页</span>
-                <span class="prev {{#hasPreviousPage}}active{{/hasPreviousPage}}">上一页</span>
-                <span class="next {{#hasNextPage}}active{{/hasNextPage}}">下一页</span>
+            <div class="pagination" data-url="/loaner/loan-list-data" data-page-size="2">
             </div>
         </div>
     </div>

@@ -2,30 +2,18 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class InvestDetailModel extends InvestModel {
-    /**
-     * 标的名称
-     */
+public class InvestPaginationItemView extends InvestModel {
+
     private String loanName;
-    /**
-     * 标的类型
-     */
-    private LoanType loanType;
-    /**
-     * 标的状态
-     */
+
     private LoanStatus loanStatus;
-    /**
-     * 投资人的推荐人
-     */
-    private String userReferrer;
-    /**
-     * 下个还款日
-     */
+
+    private LoanType loanType;
+
+    private String referrerLoginName;
+
     private Date nextRepayDate;
-    /**
-     * 下次还款金额
-     */
+
     private long nextRepayAmount;
 
     public String getLoanName() {
@@ -52,12 +40,12 @@ public class InvestDetailModel extends InvestModel {
         this.loanStatus = loanStatus;
     }
 
-    public String getUserReferrer() {
-        return userReferrer;
+    public String getReferrerLoginName() {
+        return referrerLoginName;
     }
 
-    public void setUserReferrer(String userReferrer) {
-        this.userReferrer = userReferrer;
+    public void setReferrerLoginName(String referrerLoginName) {
+        this.referrerLoginName = referrerLoginName;
     }
 
     public Date getNextRepayDate() {
