@@ -242,6 +242,10 @@
     padding-left: 0;
     border: 0;
     cursor: pointer;
+    &.loading {
+      background: url("/images/login/loading.gif") no-repeat center center;
+      text-indent: -9999px;
+    }
   }
   &.active {
     display: block;
