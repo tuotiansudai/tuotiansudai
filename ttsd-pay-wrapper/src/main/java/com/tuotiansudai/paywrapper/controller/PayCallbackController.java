@@ -111,10 +111,11 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/async_invest_notify", method = RequestMethod.GET)
-    public BaseDto<BaseDataDto> asyncInvestNotify(HttpServletRequest request) {
-        return this.investService.asyncInvestCallback();
+    @RequestMapping(value = "/over_invest_payback_notify", method = RequestMethod.GET)
+    public ModelAndView overInvestPaybackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = this.investService.overInvestPaybackCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
     }
 
     private Map<String, String> parseRequestParameters(HttpServletRequest request) {

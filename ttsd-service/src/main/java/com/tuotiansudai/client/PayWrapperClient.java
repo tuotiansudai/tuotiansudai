@@ -251,9 +251,8 @@ public class PayWrapperClient {
         return resultDto;
     }
 
-
     public BaseDto<BaseDataDto> investCallback() {
-        String responseJson = this.get("/callback/async_invest_notify");
+        String responseJson = this.post("/job/async_invest_notify", "");
         if (!Strings.isNullOrEmpty(responseJson)) {
             try {
                 return objectMapper.readValue(responseJson, new TypeReference<BaseDto<BaseDataDto>>() {});

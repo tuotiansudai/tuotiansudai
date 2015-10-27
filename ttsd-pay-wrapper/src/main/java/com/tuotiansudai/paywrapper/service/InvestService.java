@@ -14,4 +14,7 @@ public interface InvestService {
     String investCallback(Map<String, String> paramsMap, String queryString);
 
     BaseDto<BaseDataDto> asyncInvestCallback();
+
+    String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString);
+
 }
