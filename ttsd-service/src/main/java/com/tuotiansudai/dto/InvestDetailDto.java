@@ -30,7 +30,7 @@ public class InvestDetailDto implements Serializable{
     /**
      * 投资来源渠道
      */
-    private InvestSource source;
+    private Source source;
     /**
      * 是否为自动投资
      */
@@ -125,11 +125,11 @@ public class InvestDetailDto implements Serializable{
         this.status = status;
     }
 
-    public InvestSource getSource() {
+    public Source getSource() {
         return source;
     }
 
-    public void setSource(InvestSource source) {
+    public void setSource(Source source) {
         this.source = source;
     }
 

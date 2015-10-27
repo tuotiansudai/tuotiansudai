@@ -24,6 +24,7 @@ pay-wrapper:
     - "20004:8080"
   volumes:
     - ./ttsd-pay-wrapper/war:/webapps
+    - /workspace/ump_sign/:/workspace/ump_sign
   links:
       - "sms-wrapper"
       - "redis-server"

@@ -611,7 +611,7 @@ public class NormalRepayServiceTest {
         model.setAmount(amount);
         model.setLoanId(loanId);
         model.setLoginName(loginName);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         model.setCreatedTime(investTime);
         return model;

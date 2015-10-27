@@ -20,7 +20,7 @@
             </h2>
 
             <div class="chart-box">
-                <div class="box" title="${loan.amountNeedRaised}%">
+                <div class="box" title="已投${(loan.raiseCompletedRate * 100)?string("0.00")}%">
                     <div class="bg"></div>
                     <div class="rount" ></div>
                     <div class="bg2"></div>
@@ -126,10 +126,14 @@
             </div>
             <div class="item-block">
                 <div class="time-item">
-                    <strong id="minute_show">00分</strong>
-                    <strong>：</strong>
-                    <strong id="second_show">00秒</strong>
-                    以后可投资
+                    <#if loan.preheatSeconds lte 1800>
+                        <strong id="minute_show">00分</strong>
+                        <strong>：</strong>
+                        <strong id="second_show">00秒</strong>
+                        以后可投资
+                    <#else >
+                        ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
+                    </#if>
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>

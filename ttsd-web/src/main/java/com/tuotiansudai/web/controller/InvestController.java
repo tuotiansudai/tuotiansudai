@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.InvestSource;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
@@ -37,7 +37,7 @@ public class InvestController {
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
-        investDto.setInvestSource(InvestSource.WEB);
+        investDto.setSource(Source.WEB);
         ModelAndView mv = null;
         String errorMessage = null;
         try {

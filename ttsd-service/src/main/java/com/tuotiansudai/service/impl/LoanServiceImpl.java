@@ -228,7 +228,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
-
+        loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
@@ -285,10 +285,10 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
-    private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
-        BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
+    private double calculateAmountNeedRaised(long investedAmount, long loanAmount) {
+        BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return amountNeedRaised == 0L?0:loanAmountBig.subtract(amountNeedRaisedBig)
+        return loanAmountBig.subtract(investedAmountBig)
                 .divide(new BigDecimal(100D), 2, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
     }

@@ -37,7 +37,8 @@
             <button class="withdraw-submit inactive" disabled="disabled">确认提现</button>
 
             <form action="/withdraw" method="post" target="_blank">
-                <input name="amount" type="hidden"/>
+                <input name="amount" type="hidden" value=""/>
+                <input name="source" type="hidden" value="WEB"/>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>
         </div>
