@@ -312,7 +312,7 @@
 </html>
 <script>
     var intDiff = parseInt(${loan.preheatSeconds?string('0')});//倒计时总秒数量
-    var java_point = ${loan.amountNeedRaised}; //后台传递数据
+    var java_point = ${loan.raiseCompletedRate}; //后台传递数据
     var pageCurrent = '${loan.baseDto.data.index}';
     var pageTotal = '${loan.baseDto.data.count}';
 
