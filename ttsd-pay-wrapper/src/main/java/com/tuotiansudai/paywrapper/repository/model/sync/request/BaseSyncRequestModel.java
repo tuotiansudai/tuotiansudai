@@ -42,11 +42,11 @@ public abstract class BaseSyncRequestModel {
     static {
         if (UMP_PROPS.isEmpty()) {
             try {
-                Resource resource = new ClassPathResource("/umpay.properties");
+                Resource resource = new ClassPathResource("SignVerProp.properties");
                 BaseSyncRequestModel.UMP_PROPS = PropertiesLoaderUtils.loadProperties(resource);
 
             } catch (IOException e) {
-                logger.error("umpay.properties 不存在!");
+                logger.error("SignVerProp.properties 不存在!");
                 logger.error(e);
             }
         }
