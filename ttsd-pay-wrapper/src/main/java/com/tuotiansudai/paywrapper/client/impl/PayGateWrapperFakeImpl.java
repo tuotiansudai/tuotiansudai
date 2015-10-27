@@ -20,6 +20,10 @@ public class PayGateWrapperFakeImpl extends PayGateWrapper {
         this.fakeServiceUrl = fakeServiceUrlPrefix + "/spay/pay/payservice.do";
     }
 
+    public void setFakeServiceUrl(String fakeServiceUrl) {
+        this.fakeServiceUrl = fakeServiceUrl;
+    }
+
     @Override
     public Map<String, String> getPlatNotifyData(Map<String, String> paramsMap) {
         return DataUtil.getData(paramsMap);
