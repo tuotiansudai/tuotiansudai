@@ -3,7 +3,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.repository.model.InvestSource;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.AmountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class InvestController {
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
-        investDto.setInvestSource(InvestSource.WEB);
+        investDto.setSource(Source.WEB);
         BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }

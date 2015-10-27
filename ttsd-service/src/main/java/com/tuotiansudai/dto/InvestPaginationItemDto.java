@@ -1,8 +1,6 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.repository.model.InvestSource;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.repository.model.Source;
 
 import java.util.Date;
 
@@ -12,7 +10,7 @@ public class InvestPaginationItemDto {
 
     private String amount;
 
-    private InvestSource source;
+    private Source source;
 
     private String expectedInterest;
 
@@ -36,11 +34,11 @@ public class InvestPaginationItemDto {
         this.amount = amount;
     }
 
-    public InvestSource getSource() {
+    public Source getSource() {
         return source;
     }
 
-    public void setSource(InvestSource source) {
+    public void setSource(Source source) {
         this.source = source;
     }
 
