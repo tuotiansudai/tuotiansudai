@@ -50,7 +50,7 @@
                 <li><span class="infoTitle"> 手机</span>
                     <em class="info">186****4768</em>
                     <span class="BindingSet">
-                       <i class="fa fa-check-circle no"></i> 未绑定 <a class="setlink setPhone" href="javascript:void(0);">绑定</a>
+                       <i class="fa fa-check-circle ok"></i> 已绑定
                     </span>
                 </li>
                 <li><span class="infoTitle"> 邮箱</span>
@@ -80,58 +80,44 @@
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">
 
-    <form name="">
+    <form name="changePassForm">
         <dl>
-            <dt>请输入原密码：</dt>
-            <dd><input type="text" class="input-control"  placeholder="请输入密码"> </dd>
+            <dt class="requireOpt">请输入原密码：</dt>
+            <dd><input type="text" id="oldPassword" name="oldPassword" class="input-control"  placeholder="请输入密码"> </dd>
         </dl>
         <dl>
-            <dt>请输入新密码：</dt>
-            <dd><input type="text" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
+            <dt class="requireOpt">请输入新密码：</dt>
+            <dd><input type="text" id="newPassword" name="newPassword" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
         </dl>
         <dl>
-            <dt>请确认新密码：</dt>
-            <dd><input type="text" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
+            <dt class="requireOpt">请确认新密码：</dt>
+            <dd><input type="text" id="newPassword2" name="newPassword2" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
         </dl>
 
-            <button type="button" class="btn btn-normal">确认修改</button>
+            <button type="submit" class="btn btn-normal" id="btnChangePass">确认修改</button>
 
     </form>
 </div>
 
 <div id="changeEmailDOM" class="pad-m popLayer" style="display: none;">
-    <form name="">
+    <form name="changeEmailForm">
         <dl>
-            <dt>请输入邮箱：</dt>
-            <dd><input type="email" class="input-control"  placeholder="请输入邮箱"> </dd>
+            <dt class="requireOpt">请输入邮箱：</dt>
+            <dd><input type="email" name="email" class="input-control"  placeholder="请输入邮箱"> </dd>
         </dl>
 
-            <button type="button" class="btn btn-normal">绑定</button>
+            <button type="submit" class="btn btn-normal" id="btnChangeEmail">绑定</button>
 
     </form>
 </div>
-<div id="setPhonelDOM" class="pad-m popLayer" style="display: none;">
-    <form name="">
-        <dl>
-            <dt>请输入手机号码：</dt>
-            <dd><input type="number" class="input-control" placeholder="请输入手机号码"> </dd>
-        </dl>
 
-            <button type="button" class="btn btn-normal">绑定</button>
-
-    </form>
+<div id="CESuccess" class="pad-m popLayer" style="display: none;">
+    验证邮箱已发送到 <span class="msgTip"> 825809454@qq.com</span> 请进入邮箱进行验证完成
 </div>
-<div id="setBankCardDOM" class="pad-m popLayer" style="display: none;">
-    <form name="">
-        <dl>
-            <dt>请输入银行卡号：</dt>
-            <dd><input type="number" class="input-control"  placeholder="请输入银行卡号"> </dd>
-        </dl>
-
-            <button type="button" class="btn btn-normal">绑定</button>
-
-    </form>
+<div id="CEFailed" class="pad-m popLayer" style="display: none;">
+    错误
 </div>
+
 <#include "footer.ftl">
 <#--<@global.javascript pageJavascript="${js.personalInfo}">-->
 <#--</@global.javascript>-->

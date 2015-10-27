@@ -71,5 +71,8 @@ a{
 .bgWhite {
   background: nth($baseColor,1);
 }
+.error {
+  color: $required;
+}
 
 

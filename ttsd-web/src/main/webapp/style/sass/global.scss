@@ -1,7 +1,6 @@
-@import 'reset', 'btn';
-@import 'font-awesome','table';
+@import 'layer','font-awesome';
+@import 'reset', 'btn','table';
 @import 'myAccount';
-@import 'layer';
 .borderBox {
   border: 1px solid nth($borderColor, 1);
   padding: 12px;

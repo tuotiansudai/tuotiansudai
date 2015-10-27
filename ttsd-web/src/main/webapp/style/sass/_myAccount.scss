@@ -1,5 +1,8 @@
 @import 'variables';
 
+.msgTip {
+  color: nth($CK1, 3);
+}
 .mainFrame {
   width: nth($baseWidth,1);
   @include center-block;
@@ -28,11 +31,37 @@
     color: #ffac2a;
   }
 }
+
+.layui-layer-btn { text-align: center;}
+.layui-layer-btn .layui-layer-btn0 {
+  padding: 3px 35px;
+  background: nth($CK1,2);
+  border-radius: 4px;
+  border:1px solid nth($CK1,2);
+  letter-spacing: 3px;
+  color: #fff;
+  &:hover {
+    // background: nth($CK1,3);
+    color: #fff;
+  }
+}
 .popLayer {
   text-align: center;
+  overflow: auto;
+  height: auto;
+
   dl {
     margin-bottom: 12px;
-    dt { float: left; }
+    height:auto;
+    overflow: auto;
+    clear:both;
+
+    dt,dd { float: left; }
+    dd { padding-left:5px;}
+    .error {
+      display: block;
+      text-align: left;
+    }
   }
   button {
     margin: 20px auto 0 auto;
