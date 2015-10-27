@@ -11,6 +11,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,27 +204,48 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(decimalFormat.format(loanModel.getLoanAmount() / 100d));
-        loanDto.setInvestIncreasingAmount("" + loanModel.getInvestIncreasingAmount());
+        loanDto.setLoanAmount(AmountUtil.convertCentToString(loanModel.getLoanAmount()/10000));
+        loanDto.setInvestIncreasingAmount(AmountUtil.convertCentToString(loanModel.getInvestIncreasingAmount()));
+        loanDto.setMinInvestAmount(AmountUtil.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
         loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
+        loanDto.setMaxInvestAmount(AmountUtil.convertCentToString(loanModel.getMaxInvestAmount()));
+        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
+            long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(),loginName);
             loanDto.setBalance(accountModel.getBalance()/100d);
+            loanDto.setMaxAvailableInvestAmount(AmountUtil.convertCentToString(calculateMaxAvailableInvestAmount(
+                    accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount,
+                    loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount(),
+                    loanModel.getMaxInvestAmount(), sumSuccessInvestAmount)));
         }
-        long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
 
         loanDto.setAmountNeedRaised(calculateAmountNeedRaised(investedAmount, loanModel.getLoanAmount()));
         loanDto.setRaiseCompletedRate(calculateRaiseCompletedRate(investedAmount, loanModel.getLoanAmount()));
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
+        loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
+    }
+
+    private long calculateMaxAvailableInvestAmount(long balance,long amountNeedRaised,long minInvestAmount,
+                                                   long investIncreasingAmount,long maxInvestAmount,long userInvestedAmount){
+        long maxAvailableInvestAmount = NumberUtils.min(balance,amountNeedRaised,maxInvestAmount - userInvestedAmount);
+
+        if(maxAvailableInvestAmount >= minInvestAmount){
+            maxAvailableInvestAmount = maxAvailableInvestAmount - (maxAvailableInvestAmount - minInvestAmount)%investIncreasingAmount;
+        }else{
+            maxAvailableInvestAmount = 0L;
+        }
+        return maxAvailableInvestAmount;
+
     }
 
     private List<InvestPaginationItemDto> convertInvestModelToDto(List<InvestModel> investModels,int serialNoBegin) {
@@ -264,10 +286,10 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
-    private double calculateAmountNeedRaised(long amountNeedRaised, long loanAmount) {
-        BigDecimal amountNeedRaisedBig = new BigDecimal(amountNeedRaised);
+    private double calculateAmountNeedRaised(long investedAmount, long loanAmount) {
+        BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return loanAmountBig.subtract(amountNeedRaisedBig)
+        return loanAmountBig.subtract(investedAmountBig)
                 .divide(new BigDecimal(100D), 2, BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
     }
