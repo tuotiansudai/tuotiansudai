@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
@@ -15,15 +17,21 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.SendCloudMailUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -48,6 +56,12 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private UserBillService userBillService;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private SendCloudMailUtil sendCloudMailUtil;
 
     @Override
     @Transactional
@@ -145,5 +159,35 @@ public class InvestServiceImpl implements InvestService {
             // 失败的话：改invest本身状态
             investMapper.updateStatus(investMode.getId(), InvestStatus.FAIL);
         }
+    }
+
+    private void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+
+        for(InvestNotifyInfo investNotifyInfo:notifyInfos){
+            long investId = investNotifyInfo.getInvestId();
+            String email = investNotifyInfo.getEmail();
+            String loanName = investNotifyInfo.getLoanName();
+            int periods = investNotifyInfo.getPeriods();
+            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
+            if(investRepay != null){
+
+                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                        .put("loanName", loanName)
+                        .put("periods", investRepay.getPeriod() + "/" + periods)
+                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
+                        .put("amount", AmountUtil.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
+                                investRepay.getDefaultInterest(), investRepay.getActualFee())))
+                        .build());
+                if (StringUtils.isNotEmpty(email)) {
+                    sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
+                }
+            }
+        }
+
+    }
+    private long calculateProfit(long corpus,long actualInterest,long defaultInterest,long actualFee){
+        return corpus + actualInterest + defaultInterest - actualFee;
     }
 }
