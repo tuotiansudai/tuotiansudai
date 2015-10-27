@@ -24,7 +24,7 @@ public class JobController {
 
     @ResponseBody
     @RequestMapping(value = "/async_invest_notify", method = RequestMethod.POST)
-    public BaseDto<BaseDataDto> asyncInvestNotify(HttpServletRequest request) {
+    public BaseDto<BaseDataDto> asyncInvestNotify() {
         return this.investService.asyncInvestCallback();
     }
 
