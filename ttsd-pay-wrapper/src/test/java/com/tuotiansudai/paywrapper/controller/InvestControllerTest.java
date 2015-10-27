@@ -79,7 +79,7 @@ public class InvestControllerTest {
 
         this.mockServer = mockUmPayService();
 
-        MockPayGateWrapper.inject(payAsyncClient);
+        MockPayGateWrapper.injectInto(payAsyncClient);
     }
 
     @After
@@ -148,8 +148,8 @@ public class InvestControllerTest {
     }
 
     private void mockUsers(String[] loginNames) {
-        mockUser(loginNames[0], "18610361804", "zhanglong@tuotiansudai.com");
-        mockUser(loginNames[1], "18601215857", "zhangzhigang@tuotiansudai.com");
+        mockUser(loginNames[0], "17610361805", "zhanglong@tuotiansudai.com");
+        mockUser(loginNames[1], "17601215859", "zhangzhigang@tuotiansudai.com");
     }
 
     private void mockUser(String loginName, String mobile, String email) {

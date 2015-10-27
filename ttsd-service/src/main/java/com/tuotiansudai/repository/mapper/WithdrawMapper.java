@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
-import org.apache.ibatis.annotations.Param;
 
 public interface WithdrawMapper {
 
@@ -11,5 +9,7 @@ public interface WithdrawMapper {
     WithdrawModel findById(long id);
 
     void update(WithdrawModel withdrawModel);
+
+    long findSumWithdrawByLoginName(String loginName);
 
 }

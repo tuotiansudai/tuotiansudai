@@ -1,0 +1,15 @@
+
+
+BEGIN ;
+
+ALTER TABLE `withdraw_cash` ADD INDEX INDEX_WITHDRAW_CASH_TIME (`time`);
+
+ALTER TABLE `recharge` ADD INDEX INDEX_RECHARGE_TIME (`time`);
+
+COMMIT ;
+
+	
+
+
+
+

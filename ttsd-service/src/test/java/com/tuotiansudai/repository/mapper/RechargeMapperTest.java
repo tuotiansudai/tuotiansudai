@@ -68,7 +68,7 @@ public class RechargeMapperTest {
 
         model.setStatus(RechargeStatus.SUCCESS);
 
-        rechargeMapper.update(model.getId(), RechargeStatus.SUCCESS);
+        rechargeMapper.updateStatus(model.getId(), RechargeStatus.SUCCESS);
 
         assertThat(rechargeMapper.findById(model.getId()).getStatus(), is(RechargeStatus.SUCCESS));
     }

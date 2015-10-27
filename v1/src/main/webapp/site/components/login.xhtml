@@ -13,7 +13,7 @@
 		<link href="#{request.contextPath}/include/css/admin.css" type="text/css" rel="stylesheet" />
 	</h:head>
 
-	<form action="#{request.contextPath}/login" method="post" id="user-login-form" accept-charset="UTF-8">
+	<form action="#{request.contextPath}/admin-login" method="post" id="user-login-form" accept-charset="UTF-8">
 	<p:panel header="用户登录" id="loginPanel" styleClass="loginPanel">
 		<ui:fragment
 			rendered="#{ not empty requestScope['SPRING_SECURITY_LAST_EXCEPTION'] and requestScope['SPRING_SECURITY_LAST_EXCEPTION'].message ne 'Authentication method not supported: GET'}">

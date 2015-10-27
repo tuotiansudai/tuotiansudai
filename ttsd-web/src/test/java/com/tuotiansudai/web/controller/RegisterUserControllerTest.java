@@ -1,8 +1,8 @@
 package com.tuotiansudai.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tuotiansudai.dto.RegisterCaptchaDto;
-import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaVerifier;
@@ -114,7 +114,7 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldVerifyCaptchaIsValid() throws Exception {
-        when(smsCaptchaService.verifyRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
 
         this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -125,7 +125,7 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldVerifyCaptchaIsInValid() throws Exception {
-        when(smsCaptchaService.verifyRegisterCaptcha(anyString(), anyString())).thenReturn(false);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
 
         this.mockMvc.perform(get("/register/user/mobile/13900000000/captcha/123456/verify")).andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
@@ -136,15 +136,17 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaSuccess() throws Exception {
-        RegisterCaptchaDto dto = new RegisterCaptchaDto();
-        dto.setMobile("13900000000");
-        dto.setImageCaptcha("12345");
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+        dataDto.setStatus(true);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(true);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
-                .contentType("application/json; charset=UTF-8")
-                .content(objectMapper.writeValueAsString(dto)))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -153,15 +155,15 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldSendRegisterCaptchaFailed() throws Exception {
-        RegisterCaptchaDto dto = new RegisterCaptchaDto();
-        dto.setMobile("13900000000");
-        dto.setImageCaptcha("12345");
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
 
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(true);
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
         when(captchaVerifier.registerImageCaptchaVerify(anyString())).thenReturn(false);
         this.mockMvc.perform(post("/register/user/send-register-captcha")
-                .contentType("application/json; charset=UTF-8")
-                .content(objectMapper.writeValueAsString(dto)))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("mobile", "13900000000").param("imageCaptcha", "12345"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -179,7 +181,11 @@ public class RegisterUserControllerTest {
 
     @Test
     public void shouldNotFoundWhenMobileIsInvalid() throws Exception {
-        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(false);
+        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
+        SmsDataDto dataDto = new SmsDataDto();
+        baseDto.setData(dataDto);
+
+        when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(baseDto);
 
         this.mockMvc.perform(get("/register/user/mobile/abc/sendRegisterCaptcha"))
                 .andExpect(status().isNotFound());

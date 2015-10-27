@@ -5,9 +5,6 @@ import com.tuotiansudai.repository.model.LoanType;
 
 import java.util.Date;
 
-/**
- * Created by Administrator on 2015/8/25.
- */
 public class LoanListDto{
 
     private long id;

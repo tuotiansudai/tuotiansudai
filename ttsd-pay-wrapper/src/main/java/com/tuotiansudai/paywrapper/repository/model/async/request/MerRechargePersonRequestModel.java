@@ -30,8 +30,8 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         this.amount = amount;
         this.gateId = gateId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), this.service);
-        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), this.service);
+        this.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "account");
+        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "recharge_notify");
     }
 
     @Override

@@ -41,6 +41,7 @@ public class UserInfoLogServiceImpl implements UserInfoLogService {
         sb.append(buildDiffInfo("NickName",user.getNickname(), oldUserInfo.getNickname()));
         sb.append(buildDiffInfo("Roles",getRoleNames(user.getRoles()), getRoleNames(oldUserInfo.getRoles())));
         sb.append(buildDiffInfo("Referrer",user.getReferrer(), oldUserInfo.getReferrer()));
+        sb.append(buildDiffInfo("Source",user.getSource(), oldUserInfo.getSource()));
         return sb.toString();
     }
 

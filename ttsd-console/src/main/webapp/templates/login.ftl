@@ -54,7 +54,9 @@
                         <div class="col-md-7">
                             <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="验证码" maxlength="5">
                         </div>
-                        <div class="captcha-img col-md-5"><img class="verification-console-img" src="/login/captcha" alt=""/></div>
+                        <div class="captcha-img col-md-5">
+                            <img class="verification-console-img" src="/login/captcha" alt=""/>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

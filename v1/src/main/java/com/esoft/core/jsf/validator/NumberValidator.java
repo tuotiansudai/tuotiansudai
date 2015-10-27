@@ -59,7 +59,7 @@ public class NumberValidator extends ValueChangeValidator implements
             int decimalBitCardinalNumber = getDecimalBit(cardinalNumber);
             int decimalBit = decimalBitInput > decimalBitCardinalNumber ? decimalBitInput : decimalBitCardinalNumber;
             int multiple = (int) Math.pow(10, decimalBit);
-            number = (int) number * multiple;
+            number = (int) (number * multiple);
             double cardinalNumber_end = cardinalNumber * multiple;
             if (number % cardinalNumber_end != 0) {
                 // 验证未通过

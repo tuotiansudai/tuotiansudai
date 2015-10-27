@@ -16,8 +16,23 @@
         <result column="actual_repay_date" property="actualRepayDate"/>
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
+    </resultMap>
+
+
+    <resultMap id="loanRepayResultMapWithLoanResultMap" type="LoanRepayModel">
+        <id column="loan_repay_id" property="id"/>
+        <result column="loan_repay_loan_id" property="loanId"/>
+        <result column="corpus" property="corpus"/>
+        <result column="expected_interest" property="expectedInterest"/>
+        <result column="actual_interest" property="actualInterest"/>
+        <result column="default_interest" property="defaultInterest"/>
+        <result column="period" property="period"/>
+        <result column="repay_date" property="repayDate"/>
+        <result column="actual_repay_date" property="actualRepayDate"/>
+        <result column="loan_repay_status" property="status"/>
+        <result column="loan_repay_created_time" property="createdTime"/>
         <association property="loan" javaType="com.tuotiansudai.repository.model.LoanModel">
-            <id property="id" column="id"/>
+            <id column="loan_id" property="id"/>
             <result column="name" property="name"></result>
             <result column="agent" property="agentLoginName"></result>
             <result column="loaner" property="loanerLoginName"></result>
@@ -38,12 +53,11 @@
             <result column="fundraising_start_time" property="fundraisingStartTime"></result>
             <result column="fundraising_end_time" property="fundraisingEndTime"></result>
             <result column="show_on_home" property="showOnHome"></result>
-            <result column="created_time" property="createdTime"></result>
+            <result column="loan_created_time" property="createdTime"></result>
             <result column="verify_time" property="verifyTime"></result>
             <result column="recheck_time" property="recheckTime"></result>
-            <result column="status" property="status"></result>
+            <result column="loan_status" property="status"></result>
             <result column="loan_amount" property="loanAmount"></result>
-
         </association>
     </resultMap>
 
@@ -59,28 +73,29 @@
         </foreach>
     </insert>
 
-    <select id="findLoanRepayPagination" parameterType="map" resultMap="loanRepayResultMap">
-        select * from loan_repay a join loan b on a.loan_id = b.id
+    <select id="findLoanRepayPagination" parameterType="map" resultMap="loanRepayResultMapWithLoanResultMap">
+        select *, a.id as loan_repay_id, a.loan_id as loan_repay_loan_id, b.id as loan_id, a.status as loan_repay_status, b.status as loan_status, a.created_time as loan_repay_created_time, b.created_time as loan_created_time
+        from loan_repay a join loan b on a.loan_id = b.id
         <where>
-            <if test="loanId !=null  ">
+            <if test="loanId != null">
               a.loan_id = #{loanId}
             </if>
-            <if test="loginName !=null and loginName != '' ">
+            <if test="loginName != null and loginName != ''">
                 <![CDATA[and b.loaner like '${loginName}%']]>
             </if>
-            <if test="repayStartDate !=null and repayStartDate !=''" >
-                and a.repay_date >= #{repayStartDate}
+            <if test="repayStartDate != null" >
+                and a.repay_date &gt;= #{repayStartDate}
             </if>
-            <if test="repayEndDate !=null and repayEndDate !='' ">
+            <if test="repayEndDate != null">
                 and a.repay_date &lt;= #{repayEndDate}
             </if>
 
-            <if test="repayStatus !=null">
-                and a.status  = #{repayStatus}
+            <if test="repayStatus != null">
+                and a.status = #{repayStatus}
             </if>
         </where>
         order by a.repay_date asc
-        limit #{index},#{pageSize}
+        limit #{index}, #{pageSize}
     </select>
 
     <select id="findLoanRepayCount" parameterType="map" resultType="int">
@@ -109,17 +124,17 @@
         select * from loan_repay where id = #{id}
     </select>
 
-    <select id="findByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+    <select id="findByLoanIdOrderByPeriodAsc" parameterType="long" resultMap="loanRepayResultMap">
         select * from loan_repay where loan_id = #{loanId} order by period asc
     </select>
 
-    <select id="findByLoanerAndLoanId" parameterType="map" resultMap="loanRepayResultMap">
+    <select id="findByAgentAndLoanId" parameterType="map" resultMap="loanRepayResultMap">
         select loan_repay.* from loan_repay join loan on loan_repay.loan_id = loan.id
-        where loan.id= #{loanId} and loan.loaner_login_name = #{loanerLoginName}
+        where loan.id= #{loanId} and loan.agent_login_name = #{agentLoginName}
         order by period asc
     </select>
 
-    <select id="findEnabledRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+    <select id="findEnabledLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
         <![CDATA[
         select *
         from
@@ -127,23 +142,24 @@
         where
             enabled_repay.loan_id = #{loanId}
             and (
-                (exists(select 1
-                        from loan
-                        where loan.id = #{loanId} and status = 'REPAYING')
-                 and enabled_repay.status = 'REPAYING'
-                 and enabled_repay.period = (select min(period)
-                                             from loan_repay future_repay
-                                             where future_repay.loan_id = #{loanId} and
-                                                   date(future_repay.repay_date) >= date(now())))
-
-                or (exists(select 1
-                           from loan
-                           where loan.id = #{loanId} and status = 'OVERDUE')
-                    and enabled_repay.status = 'OVERDUE'
-                    and enabled_repay.period = (select min(period)
-                                                from loan_repay overdue_repay
-                                                where overdue_repay.loan_id = #{loanId} and
-                                                      overdue_repay.status = 'OVERDUE')))
+                    (exists(select 1
+                            from loan
+                            where loan.id = #{loanId} and status = 'REPAYING')
+                     and enabled_repay.status = 'REPAYING'
+                     and enabled_repay.period = (select min(period)
+                                                 from loan_repay future_repay
+                                                 where future_repay.loan_id = #{loanId} and
+                                                       date(future_repay.repay_date) >= date(now())))
+                or
+                    (exists(select 1
+                            from loan
+                            where loan.id = #{loanId} and status = 'OVERDUE')
+                     and enabled_repay.status = 'OVERDUE'
+                     and enabled_repay.period = (select min(period)
+                                                 from loan_repay overdue_repay
+                                                 where overdue_repay.loan_id = #{loanId} and
+                                                 overdue_repay.status = 'OVERDUE'))
+                )
         ]]>
     </select>
 
@@ -151,8 +167,23 @@
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
+    <select id="findConfirmingLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and status = 'CONFIRMING'
+    </select>
+
+    <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select *
+        from loan_repay
+        where loan_id = #{loanId}
+              and loan_repay.period = (select min(period)
+                                       from loan_repay future_repay join loan on future_repay.loan_id = loan.id
+                                       where future_repay.loan_id = #{loanId}
+                                             and date(now()) >= date(loan.recheck_time)
+                                             and date(future_repay.repay_date) >= date(now()))
+    </select>
+
     <update id="update" parameterType="LoanRepayModel">
-        update loan_repay set corpus = #{corpus}, actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
+        update loan_repay set actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
     </update>
 
     <select id="sumSuccessLoanRepayMaxPeriod" parameterType="map" resultType="long">

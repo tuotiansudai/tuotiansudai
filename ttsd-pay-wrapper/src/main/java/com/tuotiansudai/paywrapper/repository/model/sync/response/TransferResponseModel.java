@@ -53,6 +53,4 @@ public class TransferResponseModel extends BaseSyncResponseModel {
     public void setMerCheckDate(String merCheckDate) {
         this.merCheckDate = merCheckDate;
     }
-
-
 }

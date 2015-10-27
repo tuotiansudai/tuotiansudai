@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
+<#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -18,47 +20,15 @@
     <script src="../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 
+    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datepicker.js"></script>
+    <@global.javascript pageJavascript="loanList.js"></@global.javascript>
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
 <!-- header begin -->
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="../../" class="navbar-brand"><img src="../images/logo.jpg" alt=""></a>
-        </div>
-    </div>
-    <nav id="bs-navbar" class="collapse navbar-collapse">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="">系统主页</a>
-                </li>
-                <li>
-                    <a href="" >项目管理</a>
-                </li>
-                <li>
-                    <a href="../html/userManage/referees.html">用户管理</a>
-                </li>
-                <li>
-                    <a href="" >财务管理</a>
-                </li>
-                <li>
-                    <a href="" >文章管理</a>
-                </li>
-                <li>
-                    <a href="" >安全管理</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+<@menu.header label="proMan"></@menu.header>
 <!-- header end -->
 
 <!-- main begin -->
@@ -66,46 +36,38 @@
     <div class="container-fluid">
         <div class="row">
             <!-- menu sidebar -->
-            <div class="col-md-2">
-                <ul class="nav bs-docs-sidenav">
-                    <li <#if status??><#else>class="active"</#if>>
-                        <a href="${requestContext.getContextPath()}/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="">所有借款</a>
-                    </li>
-                    <li <#if status?? && status=="WAITING_VERIFY">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=WAITING_VERIFY&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="WAITING_VERIFY">初审的借款</a></li>
-                    <li <#if status?? && status=="RAISING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RAISING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RAISING">筹款中借款</a></li>
-                    <li <#if status?? && status=="RECHECK">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=RECHECK&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="RECHECK">复审借款</a></li>
-                    <li <#if status?? && status=="REPAYING">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=REPAYING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="REPAYING">还款中的借款</a></li>
-                    <li <#if status?? && status=="COMPLETE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="COMPLETE">完成还款的借款</a></li>
-                    <li <#if status?? && status=="CANCEL">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="CANCEL">已流标等借款</a></li>
-                    <li <#if status?? && status=="OVERDUE">class="active"</#if>><a href="${requestContext.getContextPath()}/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10" data-status="OVERDUE">逾期借款</a></li>
-                    <li><a href="projectManage/star.html">发起借款</a></li>
-                </ul>
-            </div>
+            <#if status??>
+                <#assign loanStatus="${status}">
+            <#else>
+                <#assign loanStatus="ALL">
+            </#if>
+            <@menu.sidebar headLab="proMan" sideLab="${loanStatus}"></@menu.sidebar>
             <!-- menu sidebar end -->
 
             <!-- content area begin -->
             <div class="col-md-10">
                 <form action="" class="form-inline query-build">
+                    <input type="hidden" class="status" value="<#if status??>${status}</#if>">
                     <div class="form-group">
                         <label for="number">编号</label>
-                        <input type="text" class="form-control" id="" placeholder="" value="${(loanId?string('0'))!}">
+                        <input type="text" class="form-control loanId" id="" placeholder="" value="${(loanId?string('0'))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">项目名称</label>
-                        <input type="text" class="form-control" id="" placeholder="" value="${loanName!}">
+                        <input type="text" class="form-control loanName" id="" placeholder="" value="${loanName!}">
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
 
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                        <div class='input-group date' id='datepicker1'>
+                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                         </div>
                         -
-                        <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                        <div class='input-group date' id='datepicker2'>
+                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -121,15 +83,14 @@
                     <!--</select>-->
                     <!--</div>-->
 
-                    <button type="button" class="btn btn-sm btn-primary">查询</button>
+                    <button type="button" class="btn btn-sm btn-primary search">查询</button>
                 </form>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover ">
                         <thead>
                         <tr>
                             <th>编号</th>
                             <th>项目名称</th>
-                            <th>项目类型</th>
                             <th>借款人</th>
                             <th>借款金额</th>
                             <th>借款期限</th>
@@ -141,21 +102,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <#list loanListDtos as loanListDto>
-                                <tr>
-                                    <td>${loanListDto.id?string('0')}</td>
-                                    <td>${loanListDto.name}</td>
-                                    <td>${loanListDto.type.getName()}</td>
-                                    <td>${loanListDto.agentLoginName}</td>
-                                    <td>${loanListDto.loanAmount/100}</td>
-                                    <td>${loanListDto.periods}</td>
-                                    <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
-                                    <td>${loanListDto.status.getDescription()}</td>
-                                    <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                                    <td>投资/还款记录</td>
-                                    <td>编辑</td>
-                                </tr>
-                            </#list>
+                        <#list loanListDtos as loanListDto>
+                        <tr>
+                            <td>${loanListDto.id?string('0')}</td>
+                            <td class="projectName"><span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${loanListDto.name}">${loanListDto.name}</span></td>
+                            <td>${loanListDto.agentLoginName}</td>
+                            <td class="td">${loanListDto.loanAmount/100}</td>
+                            <td class="td">${loanListDto.periods}</td>
+                            <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
+                            <td>${loanListDto.status.getDescription()}</td>
+                            <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                            <td><a class="invest_repay" href="/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
+                            <td><a>编辑</a></td>
+                        </tr>
+                        </#list>
                         </tbody>
                     </table>
                 </div>
@@ -170,7 +130,7 @@
 
                         <li>
                             <#if hasPreviousPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&loanName=${loanName!}" aria-label="Previous">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
                             </#if>
@@ -180,7 +140,7 @@
                         <li><a>${currentPageNo}</a></li>
                         <li>
                             <#if hasNextPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=${(loanId?string('0'))!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&loanName=${loanName!}" aria-label="Next">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">
                             </#if>

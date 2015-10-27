@@ -6,6 +6,6 @@ import com.tuotiansudai.dto.ReferrerRewardDto;
 
 public interface ReferrerRewardService {
 
-    BaseDto getReferrerReward(ReferrerRewardDto dto);
+    BaseDto<PayDataDto> getReferrerReward(ReferrerRewardDto dto);
 
 }

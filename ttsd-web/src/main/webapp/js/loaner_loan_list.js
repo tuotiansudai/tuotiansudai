@@ -1,175 +1,158 @@
-require(['jquery', 'daterangepicker', 'moment', 'csrf'], function ($) {
+require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'daterangepicker', 'csrf',], function ($, Mustache, loanTemplate, loanRepayTemplate, moment, _) {
     //初始化页面
-    var oDate = new Date();
-    var oYear = oDate.getFullYear();
-    var oMonth = oDate.getMonth();
-    var oToday = oDate.getDate();
-    var _page,_hasNextPage,_hasPreviousPage;  //define pages
+    var today = moment().format('YYYY-MM-DD'); // 今天
+    var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
+    var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
+    var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
+    var pageIndex = 1;  //define pages
+
     // 页面初始化日期 条件筛选1个月
-    $('#daterangepicker')
-        .dateRangePicker({separator: ' ~ '})
-        .val((oYear + '-' + parseInt(oMonth+1) + '-' + oToday) + '~' + (oYear + '-' + parseInt(oMonth+1) + '-' + oToday));
+    var dataPickerElement = $('#date-picker');
+
+    dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+
+    $(document).on('click', '.pagination .nextPage', function () {
+        pageIndex++;
+        loadLoanData(pageIndex);
+    });
+    $(document).on('click', '.pagination .prevPage', function () {
+        pageIndex--;
+        loadLoanData(pageIndex);
+    });
+
+    var changeDatePicker = function () {
+        var duration = $(".date-filter .select-item.current").data('day');
+        switch (duration) {
+            case 1:
+                dataPickerElement.val(today + '~' + today);
+                break;
+            case 7:
+                dataPickerElement.val(week + '~' + today);
+                break;
+            case 30:
+                dataPickerElement.val(month + '~' + today);
+                break;
+            case 180:
+                dataPickerElement.val(sixMonths + '~' + today);
+                break;
+            default:
+                dataPickerElement.val('');
+        }
+    };
+
+    var layerContainerElement = $('.layer-container');
+
+    $('.layer-mask').click(function () {
+        layerContainerElement.hide();
+        return false;
+    });
+
+    $(".date-filter .select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        changeDatePicker();
+        loadLoanData(1);
+    });
+
+    $(".status-filter .select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        loadLoanData(1);
+    });
+
     //ajax require
-    function getAjax(page) {
-        var dates = $('#daterangepicker').val().split('~');
-        var startDay = $.trim(dates[0]);
-        var endDay = $.trim(dates[1]);
-        var selectedType = $('.query-type').find(".current").attr('data-value');
-        //$(".query_type strong").css("opacity", '1');
-        var rec_typestr = '';
-        if (selectedType) {
-            rec_typestr = "&status=" + selectedType;
-        }
-        if (startDay == '' || startDay == 'undefined') {
-            var url = "/loan?" + page + rec_typestr;
-        } else {
-            var url = "/loan?"+"startDay=" + startDay + "&endday=" + endDay + "&page=" + page + rec_typestr;
-        }
-        $.get(url, function (res) {
-            if (res.status === 'success') {
-                //$(".query-type strong").css("display", 'none');
-                //var ret = Mustache.render(dealtableTpl, res.data);
-                //$('.result').html(ret);
-                //_page = res.data['currentPage'];
-                //_hasNextPage = res.data['hasNextPage'];
-                //_hasPreviousPage = res.data['hasPreviousPage'];
-                //console.log('分页'+ _page);
+    function loadLoanData(currentPage) {
+        var dates = dataPickerElement.val().split('~');
+        var startTime = $.trim(dates[0]) || '';
+        var endTime = $.trim(dates[1]) || '';
+        var status = $('.status-filter .select-item.current').data('status');
+
+        var requestData = { startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+
+        var queryParams = '';
+        _.each(requestData, function (value, key) {
+            queryParams += key + "=" + value + '&';
+        });
+
+        $.ajax({
+            url: '/loaner/loan-data?' + queryParams,
+            type: 'get',
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8'
+        }).success(function (response) {
+            var data = response.data;
+            pageIndex = data.index;
+            switch (status) {
+                case 'REPAYING':
+                    data.isRepaying = true;
+                    break;
+                case 'COMPLETE':
+                    data.isComplete = true;
+                    break;
+                case 'CANCEL':
+                    data.isCancel = true;
+                    break;
             }
+            var html = Mustache.render(loanTemplate, data);
+            $('.loan-content').html(html);
+
+            $('.loan-content .show-loan-repay').click(function () {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).success(function (response) {
+                    var data = response.data;
+                    data.isLoanCompleted = status == 'COMPLETE';
+                    data.csrfToken = $("meta[name='_csrf']").attr("content");
+                    if (data.status) {
+                        _.each(data.records, function (item) {
+                            data.loanId = item.loanId;
+                            switch (item.loanRepayStatus) {
+                                case 'REPAYING':
+                                    item.status = '待还';
+                                    break;
+                                case 'COMPLETE':
+                                    item.status = '完成';
+                                    break;
+                                case 'CANCEL':
+                                    item.status = '流标';
+                                    break;
+                                case 'CONFIRMING':
+                                    item.status = '确认中';
+                                    break;
+                            }
+                        });
+                        var html = Mustache.render(loanRepayTemplate, data);
+                        $('.layer-content').remove();
+                        layerContainerElement.append(html).show();
+                        $('.layer-container .close').click(function () {
+                            layerContainerElement.hide();
+                            return false;
+                        });
+                        $('.layer-container a.enabled-repay.normal').click(function () {
+                            layerContainerElement.hide();
+                            $("#normal-repay").submit();
+                            return false;
+                        });
+                        $('.layer-container a.enabled-repay.advanced').click(function () {
+                            if (data.hasConfirmingLoanRepay) {
+                                return false;
+                            }
+                            layerContainerElement.hide();
+                            $("#advanced-repay").submit();
+                            return false;
+                        });
+                    }
+                });
+            })
         });
     }
-    getAjax(1);
 
-    //select calendar
-    $(".start-end .jq-n").click(function () {
-        $(this).addClass("current").siblings(".jq-n").removeClass("current");
-        filterChanged();
+    loadLoanData(1);
 
-    });
-
-    // options
-    $(".query-type .jq-n").click(function () {
-        $(this).addClass("current").siblings(".jq-n").removeClass("current");
-        getAjax(1);
-
-    });
-
-    //define calendar
+//define calendar
     $('.apply-btn').click(function () {
-        getAjax(1);
-    })
-
-    function filterChanged() {
-        var _year = oYear,
-            _month = oMonth,
-            _today = oToday,
-            _days = $(".start-end span.current").attr('day');
-        //console.log(_days);
-        if(_days){
-            if(_days < oToday){
-                if(parseInt(_days) == 1){
-                    _month = oMonth+1;
-                    _today = oToday;
-
-                }else{
-                    _month = oMonth+1;
-                    _today = oToday - _days;
-
-                }
-            }else if(_days == oToday) {
-
-                _today = 1;
-
-            }else{
-                if(_days == 180){ //  six month
-                    if(oMonth+1>6){
-                        _month = parseInt(oMonth)-5;
-
-                    }else{
-                        _month = 12+oMonth-5;
-                        _year = oYear -1;
-                    }
-
-                }else if (_days == 30){ // one month
-                    if(oMonth+1 == 2){
-                        _month = 12;
-                        _year = oYear -1;
-                    }else{
-                        _month = oMonth;
-                    }
-                }else{ //一周
-                    if(oMonth+1 == 2){
-                        _month = 12;
-                        _year = oYear -1;
-
-                    }else{
-                        _month = oMonth;
-                        _year = oYear ;
-
-                    }
-                    _days = _days || 0;
-                    oToday = oToday || 0;
-                    _today = 30+ oToday - _days;
-                }
-            }
-            $('#daterangepicker').val((_year + '-' + _month + '-' + _today) + '~' + (oYear + '-' + parseInt(oMonth + 1) + '-' + oToday));
-
-        }else{
-            $('#daterangepicker').val('');
-        }
-        getAjax(1);
-    }
-
-    //还款计划
-    $('.plan').click(function () {
-        var dataLoan = $(this).attr('data-loan');
-        var str = '';
-        $.get(dataLoan,function(res){
-            if(res.status){
-                var _res = res.data;
-                for(var i = 0; i< _res.length;i++){
-                    if(_res[i]['isEnabled']){
-                        var txt = '<a href = "">待还款</a>';
-                    }else{
-                        var txt = '';
-                    }
-                   var total =  _res[i]['corpus'] +_res[i]['actualInterest']+_res[i]['expectedInterest']+_res[i]['defaultInterest'];
-                    str+="<tr><td>"+
-                        _res[i]['period']
-                        +"</td><td>"+
-                        _res[i]['corpus']
-                        +"</td><td>"+
-                        _res[i]['expectedInterest']
-                        +"</td><td>"+
-                        _res[i]['actualInterest']
-                        + "</td> <td>"+
-                        _res[i]['defaultInterest']
-                        +"</td> <td>"+
-                        total
-                        +"</td> <td>"+
-                        _res[i]['repayDate']
-                        +"</td> <td>"+
-                        _res[i]['actualRepayDate']
-                        +"</td><td>"+
-                        _res[i]['status']
-                        +"</td><td>"+ txt+"</td></tr>";
-
-                }
-                $('.table-list tbody').find('tr').remove();
-                $('.table-list tbody').append(str);
-            }
-
-        });
-
-        $('.layer-box').show();
-        return false;
+        loadLoanData(1);
     });
-    $('.layer-box .close').click(function () {
-        $('.layer-box').hide();
-        return false;
-    });
-    $('.layer-fix').click(function () {
-        $('.layer-box').hide();
-    });
-
-
 });
+
