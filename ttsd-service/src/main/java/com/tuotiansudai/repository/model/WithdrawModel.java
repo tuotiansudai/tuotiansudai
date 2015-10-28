@@ -26,8 +26,6 @@ public class WithdrawModel {
 
     private WithdrawStatus status;
 
-    private Source source;
-
     public WithdrawModel() {
     }
 
@@ -36,7 +34,6 @@ public class WithdrawModel {
         this.loginName = dto.getLoginName();
         this.createdTime = new Date();
         this.status = WithdrawStatus.WAIT_VERIFY;
-        this.source = dto.getSource();
     }
 
     public long getId() {
@@ -117,14 +114,6 @@ public class WithdrawModel {
 
     public void setStatus(WithdrawStatus status) {
         this.status = status;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
     }
 
     @Override

@@ -15,13 +15,9 @@ public class RechargeModel {
 
     private long fee;
 
-    private String bankCode;
+    private String bank;
 
     private RechargeStatus status;
-
-    private Source source;
-
-    private boolean fastPay;
 
     private Date createdTime;
 
@@ -31,11 +27,9 @@ public class RechargeModel {
 
     public RechargeModel(RechargeDto dto) {
         this.amount = AmountUtil.convertStringToCent(dto.getAmount());
-        this.bankCode = dto.getBankCode();
+        this.bank = dto.getBank();
         this.loginName = dto.getLoginName();
         this.status = RechargeStatus.WAIT_PAY;
-        this.source = dto.getSource();
-        this.fastPay = dto.isFastPay();
         this.createdTime = new Date();
     }
 
@@ -63,12 +57,12 @@ public class RechargeModel {
         this.fee = fee;
     }
 
-    public String getBankCode() {
-        return bankCode;
+    public String getBank() {
+        return bank;
     }
 
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 
     public String getLoginName() {
@@ -85,22 +79,6 @@ public class RechargeModel {
 
     public void setStatus(RechargeStatus status) {
         this.status = status;
-    }
-
-    public Source getSource() {
-        return source;
-    }
-
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
-    public boolean isFastPay() {
-        return fastPay;
-    }
-
-    public void setFastPay(boolean fastPay) {
-        this.fastPay = fastPay;
     }
 
     public Date getCreatedTime() {

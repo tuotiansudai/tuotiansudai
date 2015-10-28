@@ -1,1 +1,0 @@
-ALTER TABLE `ump_operations`.`mer_recharge_person_request` CHANGE COLUMN `gate_id` `gate_id` VARCHAR(8);

@@ -8,7 +8,7 @@ public class BankCardModel {
 
     private long id;
 
-    private String bankCode;
+    private String bankNumber;
 
     private String cardNumber;
 
@@ -18,12 +18,12 @@ public class BankCardModel {
 
     private String loginName;
 
-    private boolean isFastPayOn;
+    private boolean isOpenFastPayment;
 
 
     public BankCardModel() {
-    }
 
+    }
     public BankCardModel(BindBankCardDto bindBankCardDto) {
         this.loginName = bindBankCardDto.getLoginName();
         this.cardNumber = bindBankCardDto.getCardNumber();
@@ -37,12 +37,12 @@ public class BankCardModel {
         this.id = id;
     }
 
-    public String getBankCode() {
-        return bankCode;
+    public String getBankNumber() {
+        return bankNumber;
     }
 
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
+    public void setBankNumber(String bankNumber) {
+        this.bankNumber = bankNumber;
     }
 
     public String getCardNumber() {
@@ -77,11 +77,11 @@ public class BankCardModel {
         this.loginName = loginName;
     }
 
-    public boolean isFastPayOn() {
-        return isFastPayOn;
+    public boolean isOpenFastPayment() {
+        return isOpenFastPayment;
     }
 
-    public void setIsFastPayOn(boolean isFastPayOn) {
-        this.isFastPayOn = isFastPayOn;
+    public void setIsOpenFastPayment(boolean isOpenFastPayment) {
+        this.isOpenFastPayment = isOpenFastPayment;
     }
 }

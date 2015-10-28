@@ -31,11 +31,11 @@ public class BankCardMapperTest {
         UserModel fakeUser = createFakeUser();
         BankCardModel bankCardModel = new BankCardModel();
 
-        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setBankNumber("ICBC");
         bankCardModel.setStatus(BankCardStatus.PASSED);
         bankCardModel.setCreatedTime(new Date());
         bankCardModel.setLoginName(fakeUser.getLoginName());
-        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setIsOpenFastPayment(true);
         bankCardModel.setCardNumber("1234567890");
 
         bankCardMapper.create(bankCardModel);
@@ -48,22 +48,22 @@ public class BankCardMapperTest {
         UserModel fakeUser = createFakeUser();
         BankCardModel bankCardModel = new BankCardModel();
 
-        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setBankNumber("ICBC");
         bankCardModel.setStatus(BankCardStatus.PASSED);
         bankCardModel.setCreatedTime(new Date());
         bankCardModel.setLoginName(fakeUser.getLoginName());
-        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setIsOpenFastPayment(true);
         bankCardModel.setCardNumber("1234567890");
 
         bankCardMapper.create(bankCardModel);
 
         bankCardModel.setCardNumber("99999");
-        bankCardModel.setBankCode("ABC");
+        bankCardModel.setBankNumber("ABC");
         bankCardMapper.updateBankCard(bankCardModel);
 
         BankCardModel bankCardModel1 = bankCardMapper.findById(bankCardModel.getId());
         assertEquals("99999",bankCardModel1.getCardNumber());
-        assertEquals("ABC",bankCardModel1.getBankCode());
+        assertEquals("ABC",bankCardModel1.getBankNumber());
 
 
     }

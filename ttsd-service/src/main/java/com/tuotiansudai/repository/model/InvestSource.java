@@ -1,19 +1,19 @@
 package com.tuotiansudai.repository.model;
 
 /**
- * 来源
+ * 投资来源
  */
-public enum Source {
+public enum InvestSource {
     /**
-     * WEB
+     * WEB端投资
      */
     WEB,
     /**
-     * Android
+     * Android设备投资
      */
     ANDROID,
     /**
-     * IOS
+     * IOS端投资
      */
     IOS,
     /**

@@ -28,7 +28,7 @@ public class InvestModel {
     /**
      * 投资来源渠道
      */
-    private Source source;
+    private InvestSource source;
     /**
      * 是否为自动投资
      */
@@ -46,7 +46,7 @@ public class InvestModel {
         this.loginName = dto.getLoginName();
         this.amount = AmountUtil.convertStringToCent(dto.getAmount());
         this.loanId = Long.parseLong(dto.getLoanId());
-        this.source = dto.getSource();
+        this.source = dto.getInvestSource();
         this.status = InvestStatus.WAITING;
         this.isAutoInvest = false;
         this.createdTime = new Date();
@@ -102,11 +102,11 @@ public class InvestModel {
         this.status = status;
     }
 
-    public Source getSource() {
+    public InvestSource getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(InvestSource source) {
         this.source = source;
     }
 

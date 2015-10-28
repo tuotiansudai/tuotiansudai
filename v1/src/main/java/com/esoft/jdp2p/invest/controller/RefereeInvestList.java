@@ -5,7 +5,6 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.model.InvestUserReferrer;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.classic.Session;
 import org.hibernate.transform.Transformers;
 import org.primefaces.model.LazyDataModel;
@@ -85,7 +84,6 @@ public class RefereeInvestList implements java.io.Serializable {
         investItem.setLoanId((String) result.get("loanId"));
         investItem.setInvestorId((String) result.get("userId"));
         investItem.setInvestorName((String) result.get("userName"));
-        investItem.setSource((String) result.get("source"));
         investItem.setInvestTime((Date) result.get("investTime"));
         investItem.setMoney((Double) result.get("money"));
         investItem.setLoanName((String) result.get("loanName"));
@@ -121,7 +119,6 @@ public class RefereeInvestList implements java.io.Serializable {
                 "invest.status as investStatus, " +
                 "invest.time as investTime, " +
                 "invest.money as money, " +
-                "invest.source as source, " +
                 "investor.id as userId, " +
                 "investor.realname as userName, " +
                 "referrer.id as referrerId, " +
@@ -162,16 +159,12 @@ public class RefereeInvestList implements java.io.Serializable {
         if (condition.getIsMerchandiser() != null && !condition.getIsMerchandiser()) {
             whereTemplate += "and exists (select 1 from user_role where user_role.user_id = referrer.id and user_role.role_id='INVESTOR')";
         }
-        if(StringUtils.isNotEmpty(condition.getSource())){
-            whereTemplate += " and invest.source='" + condition.getSource() + "'";
-        }
         if (investStartTime != null) {
             whereTemplate += " and invest.time >='" + dateFormat.format(investStartTime) + "'";
         }
         if (investEndTime != null) {
             whereTemplate += " and invest.time <='" + dateFormat.format(investEndTime) + "'";
         }
-
         if (rewardStartTime != null) {
             whereTemplate += " and reward.time >='" + dateFormat.format(rewardStartTime) + "'";
         }

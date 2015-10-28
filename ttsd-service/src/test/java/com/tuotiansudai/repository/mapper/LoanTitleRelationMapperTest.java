@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -125,7 +126,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -175,7 +176,7 @@ public class LoanTitleRelationMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        loanDto.setType(LoanType.LOAN_TYPE_1);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());

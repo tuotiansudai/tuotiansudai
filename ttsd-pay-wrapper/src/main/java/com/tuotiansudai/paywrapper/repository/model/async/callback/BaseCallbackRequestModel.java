@@ -44,11 +44,11 @@ public class BaseCallbackRequestModel {
     static {
         if (props.isEmpty()) {
             try {
-                Resource resource = new ClassPathResource("SignVerProp.properties");
+                Resource resource = new ClassPathResource("/umpay.properties");
                 BaseCallbackRequestModel.props = PropertiesLoaderUtils.loadProperties(resource);
             } catch (IOException e) {
-                logger.error("SignVerProp.properties 不存在!");
-                logger.error(e.getLocalizedMessage(), e);
+                logger.error("umpay.properties 不存在!");
+                logger.error(e);
             }
         }
     }
