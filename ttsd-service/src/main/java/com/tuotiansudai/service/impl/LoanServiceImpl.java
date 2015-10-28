@@ -297,7 +297,7 @@ public class LoanServiceImpl implements LoanService {
     private double calculateRaiseCompletedRate(long investedAmount, long loanAmount) {
         BigDecimal investedAmountBig = new BigDecimal(investedAmount);
         BigDecimal loanAmountBig = new BigDecimal(loanAmount);
-        return investedAmountBig.divide(loanAmountBig, 2, BigDecimal.ROUND_DOWN).doubleValue();
+        return investedAmountBig.divide(loanAmountBig, 4, BigDecimal.ROUND_DOWN).doubleValue();
     }
 
     @Transactional(rollbackFor = Exception.class)
