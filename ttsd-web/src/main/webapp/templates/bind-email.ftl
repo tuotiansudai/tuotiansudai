@@ -8,10 +8,21 @@
 <div class="emailBindBox">
     <div class="emailBindTip pad-s">
         <h2 class="tl"><i class="icon-msg1"></i>绑定邮箱提示</h2>
-        <p class="pad-m">您的邮箱 liuhainingvip@sina.com 已经绑定成功！</p>
-        <button class="btn btn-normal" type="button">
-            确定
-        </button>
+        <form action="/personal-info" method="get">
+            <#if email?has_content>
+                <p class="pad-m">您的邮箱 ${email}已经绑定成功！</p>
+                <button class="btn btn-normal" type="submit" >
+                    确定
+                </button>
+            <#else>
+                <p class="pad-m">您的邮箱验证失败！请重新验证 </p>
+                <button class="btn btn-normal" type="submit">
+                    确定
+                </button>
+            </#if>
+        </form>
+
+
     </div>
 </div>
 <#include "footer.ftl">

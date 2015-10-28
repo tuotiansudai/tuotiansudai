@@ -23,22 +23,20 @@ public class BindEmailController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView bindEmail(HttpServletRequest request) {
-//        String email = request.getParameter("email");
-//        String url = request.getRequestURL().toString();
-//        boolean result =  bindEmailService.sendActiveEmail(email,url);
-//        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-//        BaseDataDto dataDto = new BaseDataDto();
-//        dataDto.setStatus(result);
-//        baseDto.setData(dataDto);
-//        return baseDto;
-        ModelAndView mv = new ModelAndView("/bind-email");
-       return mv;
+    public BaseDto<BaseDataDto> bindEmail(HttpServletRequest request) {
+        String email = request.getParameter("email");
+        String url = request.getRequestURL().toString();
+        boolean result =  bindEmailService.sendActiveEmail(email,url);
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(result);
+        baseDto.setData(dataDto);
+        return baseDto;
     }
-    @RequestMapping(value = "/verify",method = RequestMethod.GET)
-    public ModelAndView verifyEmail(HttpServletRequest request){
-        ModelAndView mv = new ModelAndView("/");
-        String sign = request.getParameter("sign");
+    @RequestMapping(value = "/verify/{sign}",method = RequestMethod.GET)
+    public ModelAndView verifyEmail(@PathVariable String sign){
+
+        ModelAndView mv = new ModelAndView("/bind-email");
         String email = bindEmailService.verifyEmail(sign);
         mv.addObject("email",email);
         return mv;

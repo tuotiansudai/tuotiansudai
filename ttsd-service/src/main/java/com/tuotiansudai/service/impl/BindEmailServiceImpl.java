@@ -37,7 +37,8 @@ public class BindEmailServiceImpl implements BindEmailService {
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
-            String activeUrl = url + "/verify?sign=" + uuid;
+            String activeUrlTemplate = "{url}/verify/{uuid}";
+            String activeUrl = activeUrlTemplate.replace("{url}",url).replace("{uuid}",uuid);
 
             redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
                     86400,
