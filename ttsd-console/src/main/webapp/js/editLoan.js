@@ -17,7 +17,23 @@ require(['jquery', 'jquery-ui',
             //data = data;
             var dataTPL = {_data:data};
             _html = template('upload', dataTPL);
+            for(var i in rereq){
+                var uploadbox = $('.upload-box').append(_html);
+                $(".file-loading").fileinput({
+                    language: "zh",
+                    uploadUrl: "/upload",
+                    showUpload: true,
+                    initialPreviewShowDelete:true,
+                    allowedFileExtensions: ["jpg", "png", "gif", "jpeg"],
+                    initialPreview:rereq[i]
+                });
+                $('.selectpicker').selectpicker({
+                    style: 'btn-default',
+                    size: 8
+                });
 
+                $('.selectpicker',uploadbox.children().last()).selectpicker('val', i);
+            }
         });
 
         function initSelect() {
@@ -40,13 +56,17 @@ require(['jquery', 'jquery-ui',
         $('#datetimepicker6').on('dp.change',function(e){
             dpicker7.minDate(e.date);
         });
+
+
+
         //添加申请材料
         $('.btn-upload').click(function () {
             $('.upload-box').append(_html);
             $(".file-loading").fileinput({
                 language: "zh",
-                uploadUrl: "/",
-                showUpload: false,
+                uploadUrl: "/upload",
+                showUpload: true,
+                initialPreviewShowDelete:true,
                 allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
             });
             $('.selectpicker').selectpicker({
@@ -145,7 +165,7 @@ require(['jquery', 'jquery-ui',
                     obj.applyMetarialUrl = '';
                 } else {
                     formGroup.eq(index).find('.file-preview-frame').each(function (i) {
-                        var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
+                        var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('src');
                         str += _img + ',';
                         _url = str.substring(0, str.lastIndexOf(','));
 

@@ -43,7 +43,7 @@
                     <button type="button" class="btn btn-default jq-add">添加</button>
                     <button type="button" class="btn btn-danger jq-delete">删除</button>
                 </div>
-                <input type="file" multiple=true class="file-loading">
+                <input type="file" multiple=true class="file-loading" name="upfile">
             </div>
         </div>
     </script>
@@ -170,7 +170,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
+                        <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-max-pay jq-money" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写" value="${(loanInfo.maxInvestAmount/100)?string('0.00')}">
@@ -293,4 +293,15 @@
     var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
     var API_FORM = '${requestContext.getContextPath()}/loan/';
     var api_url = '${requestContext.getContextPath()}/loan/loaner';
+    var rereq = {};
+    <#if (loanTitleRelationModels?size>0)>
+        <#list loanTitleRelationModels as loanTitleRelationModel>
+            var initialPreview = [];
+            <#list loanTitleRelationModel.applyMetarialUrl?split(",") as title>
+                initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
+            </#list>
+            rereq['${loanTitleRelationModel.titleId}']=initialPreview;
+        </#list>
+    </#if>
+
 </script>

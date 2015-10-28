@@ -165,7 +165,7 @@ public class OssWrapperClient{
         return path;
     }
 
-    private String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath) {
+    public String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath) {
         ByteArrayInputStream in = null;
         String filePath = "";
         try {

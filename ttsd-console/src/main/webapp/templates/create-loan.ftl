@@ -43,7 +43,7 @@
                     <button type="button" class="btn btn-default jq-add">添加</button>
                     <button type="button" class="btn btn-danger jq-delete">删除</button>
                 </div>
-                <input type="file" multiple=true class="file-loading">
+                <input type="file" multiple=true class="file-loading upload" name="upfile"/>
             </div>
         </div>
     </script>
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
+                        <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写">

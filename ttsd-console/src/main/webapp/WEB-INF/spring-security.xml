@@ -48,6 +48,7 @@
         <beans:property name="execludeUrls">
             <beans:list>
                 <beans:value>/ueditor/**</beans:value>
+                <beans:value>/upload</beans:value>
             </beans:list>
         </beans:property>
     </beans:bean>
