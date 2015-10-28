@@ -1,9 +1,14 @@
 require(['jquery', 'jquery-ui',
     'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
-    'moment', 'moment-with-locales', 'Validform_v5.3.2','Validform_Datatype'], function ($) {
+    'moment', 'moment-with-locales'], function ($) {
     $(function () {
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
+
+        $('.selectpicker').selectpicker({
+            style: 'btn-default',
+            size: 8
+        });
         var api_url = '/loan/loaner';
         var autoValue = '';
         $("#loginName").autocomplete({

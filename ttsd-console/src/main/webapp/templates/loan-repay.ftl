@@ -17,21 +17,15 @@
     <!-- link bootstrap css and js -->
     <link href="../../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="../../js/libs/jquery-1.10.1.min.js"></script>
     <!-- jquery -->
-    <script src="../../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
     <!--下拉框-->
     <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <script src="../../js/libs/bootstrap-select.js"></script>
     <!--下拉框-->
     <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--自动补全-->
     <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
-    <script src="../../js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
     <link rel="stylesheet" href="../../style/index.css">
 <@global.javascript pageJavascript="loan-repay.js"></@global.javascript>
 
@@ -80,7 +74,7 @@
                     <div class="form-group">
                         <label for="" >标的类型: </label>
 
-                            <select class="selectpicker " id="repayStatus">
+                            <select class="selectpicker" name="repayStatus" id="repayStatus">
                                     <option value="">全部</option>
                                 <#list repayStatusList as status>
                                     <option value="${status}"
