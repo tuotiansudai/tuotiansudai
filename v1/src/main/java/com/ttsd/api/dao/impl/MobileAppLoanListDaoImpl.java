@@ -30,7 +30,7 @@ public class MobileAppLoanListDaoImpl implements MobileAppLoanListDao {
             + " and loan_activity_type = 'xs' order by commit_time desc limit 1 ";
 
     private static String raiseCompletedTimeSql = "select max(time) from invest where loan_id = ? "
-            + " and status = '" + InvestConstants.InvestStatus.BID_SUCCESS+"'";
+            + " and status in ('" + InvestConstants.InvestStatus.BID_SUCCESS+"','"+ InvestConstants.InvestStatus.COMPLETE+"','"+InvestConstants.InvestStatus.REPAYING+"')";
 
 
 
