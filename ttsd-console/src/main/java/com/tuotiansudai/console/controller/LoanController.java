@@ -7,10 +7,12 @@ import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -98,6 +100,10 @@ public class LoanController {
     @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
     public ModelAndView recheck(@PathVariable long loanId) {
         BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
+        LoanDto loanDto = dto.getData();
+        if(LoanStatus.RECHECK != loanDto.getLoanStatus()){
+            return new ModelAndView("redirect:/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10");
+        }
         return new ModelAndView("/recheck", "loan", dto.getData());
     }
 
@@ -113,6 +119,11 @@ public class LoanController {
         } catch (ParseException e) {
             dateFundraisingEndTime = null;
             e.printStackTrace();
+        }
+        BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
+        LoanDto loanDto = dto.getData();
+        if(LoanStatus.RECHECK != loanDto.getLoanStatus()){
+            return new ModelAndView("redirect:/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10");
         }
         try {
             long minInvestAmountCent = AmountUtil.convertStringToCent(minInvestAmount);

@@ -169,6 +169,9 @@ public class LoanServiceImpl implements LoanService {
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
+        if (LoanStatus.RECHECK != loan.getStatus()){
+            throw new PayException("loan is not ready for recheck [" + loanId + "]");
+        }
         String loanerPayUserId = accountMapper.findByLoginName(loan.getLoanerLoginName()).getPayUserId();
 
 
@@ -424,8 +427,12 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void processLoanStatusForLoanOut(LoanModel loan) {
-        loan.setRecheckTime(new Date());
-        loan.setStatus(LoanStatus.REPAYING);
-        loanMapper.update(loan);
+        BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
+        if(dto.getData().getStatus()){
+            LoanModel loan4Update = new LoanModel();
+            loan4Update.setId(loan.getId());
+            loan4Update.setRecheckTime(new Date());
+            loanMapper.update(loan);
+        }
     }
 }
