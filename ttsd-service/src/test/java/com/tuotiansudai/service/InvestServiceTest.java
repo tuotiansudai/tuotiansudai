@@ -66,7 +66,7 @@ public class InvestServiceTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -99,7 +99,7 @@ public class InvestServiceTest {
             model.setIsAutoInvest(false);
             model.setLoginName(loginName);
             model.setLoanId(loanId);
-            model.setSource(InvestSource.ANDROID);
+            model.setSource(Source.ANDROID);
             model.setStatus(InvestStatus.SUCCESS);
             investMapper.create(model);
         }
@@ -132,7 +132,7 @@ public class InvestServiceTest {
         assert dto.getId() == 10058000;
         assert dto.getId() == 10058000;
 
-        assert dto.getLoanType() == LoanType.LOAN_TYPE_1;
+        assert dto.getLoanType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY;
 
         queryDto.setInvestStatus(InvestStatus.FAIL);
         paginationDto = investService.queryInvests(queryDto, false);
