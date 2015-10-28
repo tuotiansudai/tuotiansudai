@@ -1,3 +1,4 @@
+@import 'btn';
 body, html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input,button {
   margin: 0;
   padding: 0;
@@ -18,7 +19,58 @@ img {
 body {
   background: #f9f9f9;
 }
+/********************************************
+*********************** can't be delete**************************/
+/* icon , will be make some change later */
 
+.pad-s {
+  padding: 10px;
+}
+.pad-m {
+  padding: 30px;
+}
+.tl { text-align: left; }
+.icon-msg1 {
+  background-image: url("/images/icons/spr.png");
+  background-position: -3px -442px;
+  background-repeat: no-repeat;
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 5px;
+}
+
+/*email tip */
+.emailBindBox { position: relative;
+  height: 400px; }
+.emailBindTip {
+  width:544px;
+  height:244px;
+  background: #fff;
+  border:8px solid #e7eaee;
+  position: absolute;
+  left:0;
+  right:0;
+  top:60px;
+  margin:auto;
+  //color: nth($CK1, 2);
+  color: #ff7200;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  h2 {
+    border-bottom:1px solid #ccc;
+    padding:5px;
+    font-size: 16px;
+  }
+  p { padding-top:50px; line-height: 2.2;
+    padding-bottom: 45px;}
+  button {padding: 8px 55px;}
+}
+
+/********************************************
+*********************** end **************************/
 .header {
   .top {
     width: 100%;
