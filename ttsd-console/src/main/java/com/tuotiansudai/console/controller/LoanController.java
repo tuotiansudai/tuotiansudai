@@ -5,7 +5,6 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.ActivityType;
