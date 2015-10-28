@@ -62,7 +62,7 @@
                 <li><span class="infoTitle"> 绑定银行卡</span>
                     <em class="info">12333*****333333</em>
                     <span class="BindingSet">
-                       <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="javascript:void(0);">绑定</a>
+                       <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="/bind-card">绑定</a>
                     </span>
                 </li>
                 <li><span class="infoTitle"> 密码</span>
