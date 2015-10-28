@@ -20,6 +20,7 @@ public class LoanResponseDataDto {
     private String maxInvestMoney;
     private String investBeginTime;
     private String investBeginSeconds;
+    private String raiseCompletedTime;
 
     public String getLoanId() {
         return loanId;
@@ -171,5 +172,13 @@ public class LoanResponseDataDto {
 
     public void setInvestBeginSeconds(String investBeginSeconds) {
         this.investBeginSeconds = investBeginSeconds;
+    }
+
+    public String getRaiseCompletedTime() {
+        return raiseCompletedTime;
+    }
+
+    public void setRaiseCompletedTime(String raiseCompletedTime) {
+        this.raiseCompletedTime = raiseCompletedTime;
     }
 }
