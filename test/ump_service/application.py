@@ -250,6 +250,33 @@ def mer_recharge_person():
     return default_result()
 
 
+def cust_withdrawals():
+    """
+    4.4.5	个人客户提现(商户→平台)
+    http://pay.soopay.net/spay/pay/payservice.do?amount=200&charset=UTF-8&mer_date=20151027&mer_id=7099088&notify_url=http%3A%2F%2Fwww.baidu.com%2Fnotify_url&order_id=123456&res_format=HTML&ret_url=https%3A%2F%2Fwww.baidu.com%2Fs%3Fwd%3Dret_url&service=cust_withdrawals&sign_type=RSA&user_id=UA001&version=1.0&sign=IKYDnScrjNd1suXC6jKjEt55tfWx6tOPx3k21p9u5hcay1C1AmHI0lY3ga9R4bX1YGWGHcnz3wzINXKmugv7qSoiO5dRiUto%2BAOfeNoHnyhlmcqIeHAeO40KsQN7Q%2BGT9RxnUzG0jHT6uUJdxWQ9LEmIgZuE%2BqFOqa2xGgKQjdo%3D
+    :return:
+        Navigate to UMP page
+    """
+    order_id = request.values.get('order_id')
+    mer_date = request.values.get('mer_date')
+    mer_id = request.values.get('mer_id')
+    amount = request.values.get('amount')
+    ret_url = request.values.get('ret_url')
+    notify_url = request.values.get('notify_url')
+    apply_notify_flag = request.values.get('apply_notify_flag')
+
+    store = Store()
+    if apply_notify_flag == '1':
+        params = "withdraw_apply_notify::{0}::{1}::{2}::{3}".format(order_id, mer_date, mer_id, amount)
+        store.set_frontend_notify("{0}::{1}".format(params, ret_url))
+        store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    params = "withdraw_apply_final::{0}::{1}::{2}::{3}".format(order_id, mer_date, mer_id, amount)
+    store.set_backend_notify("{0}::{1}".format(params, notify_url))
+
+    return default_result()
+
+
 @app.route('/spay/pay/payservice.do', methods=['GET', 'POST'])
 def index():
     service = globals().get(request.values.get('service'))
