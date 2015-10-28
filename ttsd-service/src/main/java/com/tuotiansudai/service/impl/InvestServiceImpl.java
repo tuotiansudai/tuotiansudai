@@ -5,14 +5,12 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.model.InvestDetailModel;
-import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.repository.model.LoanPeriodUnit;
-import com.tuotiansudai.repository.model.LoanType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +26,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Value(value = "${novice.invest.limit.count}")
+    private int noviceInvestLimitCount;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
@@ -51,6 +52,13 @@ public class InvestServiceImpl implements InvestService {
         long investAmount = Long.parseLong(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
+        // 不满足新手标投资限制约束
+        if(ActivityType.NOVICE == loan.getActivityType()){
+            if(!canInvestNoviceLoan(investDto.getLoginName())){
+                return false;
+            }
+        }
+
         // 不满足最小投资限制
         if(investAmount < userInvestMinAmount){ return false; }
 
@@ -73,6 +81,14 @@ public class InvestServiceImpl implements InvestService {
         if(investAmount > userInvestMaxAmount - userInvestAmount){ return false; }
 
         return true;
+    }
+
+    private boolean canInvestNoviceLoan(String loginName) {
+        if(noviceInvestLimitCount == 0){
+            return true;
+        }
+        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
+        return (noviceInvestCount < noviceInvestLimitCount);
     }
 
     @Override
