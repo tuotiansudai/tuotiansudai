@@ -14,7 +14,7 @@ def get_random_trad_id():
     return random.Random().randint(100000000000000, 999999999999999)
 
 
-def _process(order_id=None, mer_date=None, mer_id=None, url=None, special_payload={}):
+def _process(order_id, mer_date, mer_id, url, special_payload={}):
     common_payload = {'sign_type': 'RSA',
                       'sign': 'VfvDAlA8V5QqkZh9xuRSE0eJDhoTcp2htx6FSL9YX8ehpBbT7hsUD2Iu6Qe3Du71V/nIwOTZbHQbdtU0vPvfKR5P65QpZhdxbpzSisTJHzaQqI+AXH4h5bMsLN0uMo5xpFbydiPQRAA7L78Gl8y752A+dmnSZ0Y9CAv9leeYlvM=',
                       'charset': 'UTF-8', 'mer_id': mer_id, 'version': '1.0',
@@ -30,21 +30,6 @@ def mer_bind_card(user_id, order_id, mer_date, mer_id, url):
     special_payload = {'user_id': user_id, 'ret_code': '0000',
                        'service': 'mer_bind_card_apply_notify'}
     return _process(order_id, mer_date, mer_id, url, special_payload)
-
-
-def mer_recharge_person(order_id, mer_date, mer_id, url):
-    special_payload = {'ret_code': '0000', 'service': 'recharge_notify'}
-    return _process(order_id, mer_date, mer_id, url, special_payload)
-
-
-def ptp_mer_replace_card(user_id, order_id, mer_date, mer_id, url):
-    return mer_bind_card(user_id, order_id, mer_date, mer_id, url)
-
-
-def ptp_mer_bind_agreement(user_id, mer_id, user_bind_agreement_list, url):
-    special_payload = {'ret_code': '0000', 'user_id': user_id,
-                       'service': 'mer_bind_agreement_notify', 'user_bind_agreement_list': user_bind_agreement_list}
-    return _process(mer_id=mer_id, special_payload=special_payload, url=url)
 
 
 def project_transfer(order_id, mer_date, mer_id, url):

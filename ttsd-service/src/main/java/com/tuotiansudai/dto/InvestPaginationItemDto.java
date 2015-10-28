@@ -1,11 +1,13 @@
 package com.tuotiansudai.dto;
 
-import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.InvestSource;
+
+import java.util.Date;
 
 public class InvestPaginationItemDto {
     private String loginName;
     private String amount;
-    private Source source;
+    private InvestSource source;
     private String expectedRate;
     private String createdTime;
     private boolean autoInvest;
@@ -28,11 +30,11 @@ public class InvestPaginationItemDto {
         this.amount = amount;
     }
 
-    public Source getSource() {
+    public InvestSource getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(InvestSource source) {
         this.source = source;
     }
 

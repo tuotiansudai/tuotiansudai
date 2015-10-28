@@ -81,10 +81,6 @@ require(['underscore', 'jquery', 'jquery.validate', 'csrf'], function (_, $) {
         onfocusout: function (element) {
             this.element(element);
         },
-        submitHandler: function (form) {
-            $('.register-account').toggleClass('loading');
-            form.submit();
-        },
         rules: {
             userName: {
                 required: true

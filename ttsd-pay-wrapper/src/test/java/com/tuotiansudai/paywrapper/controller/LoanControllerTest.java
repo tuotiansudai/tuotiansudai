@@ -248,7 +248,7 @@ public class LoanControllerTest {
         lm.setDescriptionHtml("fdjakf");
         lm.setDescriptionText("fdjakf");
         lm.setPeriods(1);
-        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        lm.setType(LoanType.LOAN_TYPE_1);
         lm.setActivityRate(0.1);
         lm.setMinInvestAmount(1);
         lm.setMaxInvestAmount(1000000);
@@ -276,7 +276,7 @@ public class LoanControllerTest {
         im.setAmount(amount);
         im.setCreatedTime(new Date());
         im.setId(idGenerator.generate());
-        im.setSource(Source.WEB);
+        im.setSource(InvestSource.WEB);
         im.setLoanId(loanId);
         im.setIsAutoInvest(false);
         im.setLoginName(loginName);

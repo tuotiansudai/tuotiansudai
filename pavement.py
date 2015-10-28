@@ -116,7 +116,7 @@ def start_new_container(name, local_port):
     war_dir = get_v1_war_dir()
     print "local war dir: {0}".format(war_dir)
     host_config = utils.create_host_config(port_bindings={8080: local_port}, binds=['{0}:/webapps'.format(war_dir)])
-    container = client.create_container(image='leoshi/ttsd-tomcat6:v1', ports=[8080], volumes=['/webapps'],
+    container = client.create_container(image='leoshi/ttsd-tomcat6', ports=[8080], volumes=['/webapps'],
                                         host_config=host_config, name=name)
     print "Container id:{0}".format(container['Id'])
     client.start(container)

@@ -10,40 +10,40 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/my")
+@RequestMapping(path = "/personal-info")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ModelAndView home(){
-        ModelAndView mv = new ModelAndView("/user-home");
+        ModelAndView mv = new ModelAndView("/personal-info");
         mv.addObject("loginName", LoginUserInfo.getLoginName());
         return mv;
     }
 
-    @RequestMapping(value = "/password", method = RequestMethod.GET)
+    @RequestMapping(path = "/password", method = RequestMethod.GET)
     public ModelAndView changePassword() {
-        ModelAndView mv = new ModelAndView("/user-changepassword");
+        ModelAndView mv = new ModelAndView("/change-password");
         mv.addObject("loginName", LoginUserInfo.getLoginName());
         return mv;
     }
 
     @RequestMapping(value = "/password", method = RequestMethod.POST)
-    public String doChangePassword(String oldpwd, String newpwd, String newpwdcheck) {
+    public String doChangePassword(String oldPassword, String newPassword, String newPasswordCheck) {
         String loginName = LoginUserInfo.getLoginName();
         if(StringUtils.isBlank(loginName)){
             return "redirect:/";
         }
-        if(!StringUtils.equals(newpwd, newpwdcheck)){
-            return "redirect:/my/password";
+        if(!StringUtils.equals(newPassword, newPasswordCheck)){
+            return "redirect:/personal-info/password";
         }
-        boolean result = userService.changePassword(loginName, oldpwd, newpwd);
+        boolean result = userService.changePassword(loginName, oldPassword, newPassword);
         if(result) {
-            return "redirect:/my";
+            return "redirect:/personal-info";
         }else{
-            return "redirect:/my/password";
+            return "redirect:/personal-info/password";
         }
     }
 }

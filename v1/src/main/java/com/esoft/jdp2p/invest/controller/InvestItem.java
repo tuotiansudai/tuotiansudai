@@ -17,7 +17,6 @@ public class InvestItem implements java.io.Serializable {
     private Date rewardTime;
     private Date investTime;
     private Double money;
-    private String source;
 
     public String getInvestorName() {
         return investorName;
@@ -129,13 +128,5 @@ public class InvestItem implements java.io.Serializable {
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 }

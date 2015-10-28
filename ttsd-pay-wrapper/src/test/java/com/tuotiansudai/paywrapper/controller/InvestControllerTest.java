@@ -114,7 +114,7 @@ public class InvestControllerTest {
 
         InvestDto investDto = new InvestDto();
         investDto.setLoanId(String.valueOf(mockLoanId));
-        investDto.setSource(Source.WEB);
+        investDto.setInvestSource(InvestSource.WEB);
         investDto.setAmount(AmountUtil.convertCentToString(mockInvestAmount));
         investDto.setLoginName(mockInvestLoginName);
 
@@ -183,7 +183,7 @@ public class InvestControllerTest {
         lm.setDescriptionHtml("fdjakf");
         lm.setDescriptionText("fdjakf");
         lm.setPeriods(1);
-        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
+        lm.setType(LoanType.LOAN_TYPE_1);
         lm.setActivityRate(0.1);
         lm.setMinInvestAmount(1);
         lm.setMaxInvestAmount(1000000);

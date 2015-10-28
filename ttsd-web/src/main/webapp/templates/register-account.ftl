@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="实名验证" pageCss="${css.register}">
+<@global.head title="注册" pageCss="${css.register}">
 </@global.head>
 <body>
 <#include "header.ftl" />

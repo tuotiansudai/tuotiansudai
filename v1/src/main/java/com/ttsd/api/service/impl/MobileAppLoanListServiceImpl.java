@@ -4,21 +4,18 @@ import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.system.controller.DictUtil;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.ArithUtil;
-import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.ttsd.api.dao.MobileAppLoanListDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppLoanListService;
 import com.ttsd.api.util.CommonUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,18 +40,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
 
-            List<Loan> investList = mobileAppLoanListDao.getLoanList(index, pageSize);
-            if(CollectionUtils.isNotEmpty(investList)){
-                Loan loan = investList.get(0);
-                if(!("xs").equals(loan.getLoanActivityType())){
-                    List<Loan> loanXs = mobileAppLoanListDao.getCompletedXsInvest();
-                    investList.addAll(0,loanXs);
-
-                }
-            }else{
-                investList = mobileAppLoanListDao.getCompletedXsInvest();
-            }
-
+            List<Loan> investList = mobileAppLoanListDao.getInvestList(index, pageSize);
 
             loanDtoList = convertLoanDto(investList);
         }
@@ -94,7 +80,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setMaxInvestMoney("" + loan.getMaxInvestMoney());
             loanResponseDataDto.setCardinalNumber("" + loan.getCardinalNumber());
             if(loan.getInvestBeginTime() != null){
-                loanResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getInvestBeginTime()));
+                loanResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getInvestBeginTime()));
             }
             loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
             try {
@@ -104,13 +90,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             }
             loanResponseDataDto.setBaseRatePercent("" + loan.getJkRatePercent());
             loanResponseDataDto.setActivityRatePercent("" + loan.getHdRatePercent());
-            if(!LoanConstants.LoanStatus.RAISING.equals(loanResponseDataDto.getLoanStatus())){
-                Date raiseCompletedTime = mobileAppLoanListDao.getRaiseCompletedTime(loan.getId());
-                if(raiseCompletedTime != null){
-                    loanResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(raiseCompletedTime));
-                }
-
-            }
             investList.add(loanResponseDataDto);
         }
         return investList;

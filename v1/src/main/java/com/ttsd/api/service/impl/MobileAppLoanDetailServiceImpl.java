@@ -6,20 +6,17 @@ import com.esoft.archer.system.controller.DictUtil;
 import com.esoft.core.annotations.Logger;
 import com.esoft.core.util.ArithUtil;
 import com.esoft.jdp2p.invest.model.Invest;
-import com.esoft.jdp2p.loan.LoanConstants;
 import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.ttsd.aliyun.PropertiesUtils;
 import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dao.MobileAppLoanDetailDao;
-import com.ttsd.api.dao.MobileAppLoanListDao;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppLoanDetailService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -39,10 +36,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private MobileAppLoanDetailDao mobileAppLoanDetailDao;
     @Resource
     private MobileAppInvestListDao mobileAppInvestListDao;
-
-    @Autowired
-    private MobileAppLoanListDao mobileAppLoanListDao;
-
 
     @Resource
     private LoanCalculator loanCalculator;
@@ -103,7 +96,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
         loanDetailResponseDataDto.setRemainTime(loanCalculator.calculateRemainTimeSeconds(loan.getId()));
         if(loan.getInvestBeginTime() != null){
-            loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getInvestBeginTime()));
+            loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getInvestBeginTime()));
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(com.ttsd.api.util.CommonUtils.calculatorInvestBeginSeconds(loan.getInvestBeginTime()));
 
@@ -123,13 +116,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setMinInvestMoney("" + loan.getMinInvestMoney());
         loanDetailResponseDataDto.setMaxInvestMoney("" + loan.getMaxInvestMoney());
         loanDetailResponseDataDto.setCardinalNumber("" + loan.getCardinalNumber());
-        if(!LoanConstants.LoanStatus.RAISING.equals(loanDetailResponseDataDto.getLoanStatus())){
-            Date raiseCompletedTime = mobileAppLoanListDao.getRaiseCompletedTime(loan.getId());
-            if(raiseCompletedTime != null){
-                loanDetailResponseDataDto.setRaiseCompletedTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(raiseCompletedTime));
-            }
-
-        }
         return loanDetailResponseDataDto;
     }
 
