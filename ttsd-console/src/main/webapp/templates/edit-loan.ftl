@@ -117,7 +117,7 @@
                         <div class="col-sm-3">
                             <div class="form-control-static">(单位：
                                 <label class="jq-day">1</label>
-                                <label class="jq-piex">月</label>
+                                <label class="jq-piex"><#if loanInfo.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanInfo.type == 'LOAN_INTEREST_MONTHLY_REPAY'>月<#else>天</#if></label>
                                 )
                             </div>
                         </div>

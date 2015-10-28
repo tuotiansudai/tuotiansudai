@@ -160,7 +160,6 @@ public class LoanServiceImpl implements LoanService {
                 loanTitleRelationModel.setLoanId(projectId);
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
-            //TODO oss and water
         }
         dataDto.setStatus(true);
         baseDto.setData(dataDto);
@@ -395,6 +394,10 @@ public class LoanServiceImpl implements LoanService {
         }
         loanTitleRelationModelList = loanDto.getLoanTitles();
         if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+            for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModelList) {
+                loanTitleRelationModel.setId(idGenerator.generate());
+                loanTitleRelationModel.setLoanId(loanModel.getId());
+            }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
