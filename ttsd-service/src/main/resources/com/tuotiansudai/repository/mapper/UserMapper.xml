@@ -34,7 +34,7 @@
     </resultMap>
 
     <select id="findByEmail" parameterType="java.lang.String" resultMap="userResultMap">
-      select * from user where email = #{email}
+      select * from user where email = #{email} and status = 'ACTIVE'
     </select>
 
     <select id="findByMobile" parameterType="java.lang.String" resultMap="userResultMap">

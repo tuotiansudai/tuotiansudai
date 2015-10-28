@@ -11,5 +11,4 @@ public interface BindEmailService {
 
     String verifyEmail(String uuid);
 
-
 }

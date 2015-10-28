@@ -37,7 +37,7 @@ public class BindEmailServiceImpl implements BindEmailService {
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
-            String activeUrl = url + "/email-verify?verifySn=" + uuid;
+            String activeUrl = url + "/verify?sign=" + uuid;
 
             redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
                     86400,
@@ -60,7 +60,6 @@ public class BindEmailServiceImpl implements BindEmailService {
             return "";
         }
         String bindEmailKeyTemplate = "web:{loginName}:{uuid}";
-
         String loginName = LoginUserInfo.getLoginName();
         String bindEmailKey = bindEmailKeyTemplate.replace("{loginName}", loginName).replace("{uuid}", uuid);
         String bindEmailValue = redisWrapperClient.get(bindEmailKey);
@@ -73,11 +72,16 @@ public class BindEmailServiceImpl implements BindEmailService {
             logger.debug("bindEmailKey=" + bindEmailKey+ ",bindEmailValue="+ bindEmailValue + "!");
             return "";
         }
-        redisWrapperClient.del(bindEmailKey);
+        UserModel userModelEmail = userMapper.findByEmail(loginNameAndEmail[1]);
+        if(userModelEmail != null){
+            return "";
+        }
         UserModel userModel = userMapper.findByLoginName(loginName);
         userModel.setEmail(loginNameAndEmail[1]);
         userMapper.updateUser(userModel);
+        redisWrapperClient.del(bindEmailKey);
 
         return loginNameAndEmail[1];
     }
+
 }
