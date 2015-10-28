@@ -7,19 +7,10 @@ public enum InvestNotifyProcessStatus {
     /**
      * 未处理
      */
-    NOT_DONE(0),
+    NOT_DONE,
     /**
      * 已处理
      */
-    DONE(1);
+    DONE;
 
-    private final int status;
-
-    InvestNotifyProcessStatus(int status) {
-        this.status = status;
-    }
-
-    public int getStatus() {
-        return status;
-    }
 }

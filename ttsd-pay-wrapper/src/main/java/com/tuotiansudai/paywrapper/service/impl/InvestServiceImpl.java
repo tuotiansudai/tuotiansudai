@@ -121,7 +121,7 @@ public class InvestServiceImpl implements InvestService {
     @Transactional
     public String investCallback(Map<String, String> paramsMap, String originalQueryString) {
         // status标记此条记录是否已经被处理，0:未处理；1:已处理。
-        paramsMap.put("status", String.valueOf(InvestNotifyProcessStatus.NOT_DONE.getStatus()));
+        paramsMap.put("status", InvestNotifyProcessStatus.NOT_DONE.toString());
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 originalQueryString,
@@ -156,7 +156,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Transactional
     private void updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
-        investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE.getStatus());
+        investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
     }
 
     @Transactional

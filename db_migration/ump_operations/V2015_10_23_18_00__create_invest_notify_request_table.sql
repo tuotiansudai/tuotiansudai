@@ -15,7 +15,7 @@ CREATE TABLE `ump_operations`.`invest_notify_request` (
   `response_time`  DATETIME,
   `request_data`   TEXT            NOT NULL,
   `response_data`  TEXT,
-  `status`         INT(1)          NOT NULL   DEFAULT 0,
+  `status`         VARCHAR(1)      NOT NULL     DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_status` (`status`),
   KEY `idx_order_id` (`order_id`)
