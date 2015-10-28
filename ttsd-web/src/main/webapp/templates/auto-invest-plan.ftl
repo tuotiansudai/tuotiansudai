@@ -68,7 +68,7 @@
                     </dl>
                     <div class="btnBox tc clear">
                         <#--<div class="agreeStatus"><input type="checkbox" name="agreement" id="plan-agreement" checked><label for="plan-agreement" class="checkbox"> 我已阅读并同意拓天速贷的<a href="#" target="_blank"> 《自动投标协议》</a></label></div>-->
-                        <button type="button" class="btn btn-normal" id="saveInvestPlan" disabled>保存</button>
+                        <button type="button" class="btn" id="saveInvestPlan" disabled>保存</button>
                     </div>
                 </form>
             </div>
@@ -96,6 +96,5 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
-
 </body>
 </html>

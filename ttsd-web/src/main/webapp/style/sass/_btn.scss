@@ -23,14 +23,16 @@
   margin-bottom: 0;
   text-align: center;
   letter-spacing: 3px;
+  line-height: 1.3;
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
   @include user-select(none);
   @include touch-action(manipulation);
   background-image: none;
-  border: 1px solid transparent;
+  border: 1px solid nth($CK2,3);
   border-radius: 4px;
+  color: nth($CK2,2);
   &:focus,
   &:active:focus,
   &.active:focus,
@@ -57,19 +59,29 @@
   &:disabled, &:disabled:hover {
     background: #666 !important;
     cursor: default;
-
+    color: #fff;
   }
 }
 
 .btn-normal {
   @extend .btn;
   background: nth($CK1, 2);
+  border: 1px solid nth($CK1,3);
+
   color: #fff;
   &:hover {
     // background: nth($CK1,3);
     color: #fff;
   }
+}
+.btn-success {
+  @extend .btn;
+  background: nth($CK1,3);
+  border: 1px solid nth($CK1,3);
+  color: #fff;
+  &:hover {
 
+  }
 }
 
 .btn-primary {

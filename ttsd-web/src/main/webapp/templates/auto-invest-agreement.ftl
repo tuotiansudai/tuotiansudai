@@ -45,7 +45,9 @@
     </div>
 </div>
 
-
+<div class="auto-invest pad-m tc" style="display: none;">
+    <button id="finishAuthor" class="btn btn-normal">已完成授权</button>
+</div>
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>

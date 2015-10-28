@@ -1,30 +1,41 @@
-require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
+require(['jquery', 'layer','csrf', 'autoNumeric','commonFun'], function ($,layer) {
     $(function () {
-        var tabElement = $('.recharge-wrapper ul li');
+        var $rechargeForm=$('.recharge-form'),
+            $rechargeCon=$(".recharge-content"),
+            $fastRechargeForm=$(".fast-recharge-form");
+        var tabElement = $('.payment-mode li'),
+         rechargeInputAmountElement = $(".amount",$rechargeForm),
+         rechargeAmountElement = $("input[name='amount']",$rechargeForm),
+         rechargeSubmitElement = $('.btn',$rechargeForm),
 
-        var rechargeInputAmountElement = $(".recharge-form .amount");
-        var rechargeAmountElement = $(".recharge-form input[name='amount']");
-        var rechargeSubmitElement = $('.recharge-form .submit');
-
-        var fastRechargeInputAmountElement = $(".fast-recharge-form .amount");
-        var fastRechargeAmountElement = $(".fast-recharge-form input[name='amount']");
-        var fastRechargeSubmitElement = $('.fast-recharge-form .submit');
-
+         fastRechargeInputAmountElement = $(".amount",$fastRechargeForm),
+         fastRechargeAmountElement = $("input[name='amount']",$fastRechargeForm),
+         fastRechargeSubmitElement = $('.btn',$fastRechargeForm),
+         bankElement = $('.e-bank-recharge ol li');
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
                 if (isNaN(amount) || amount === 0) {
-                    rechargeSubmitElement.addClass('grey').attr('disabled', true);
+                    rechargeSubmitElement.prop('disabled',true).removeClass('btn-normal');
                 } else {
-                    rechargeSubmitElement.removeClass('grey').attr('disabled', false);
+                    rechargeSubmitElement.prop('disabled',false).addClass('btn-normal');
                 }
             });
             //网银充值提交
             rechargeSubmitElement.click(function () {
-                $('.ecope-overlay,.ecope-dialog').show();
-                var amount = rechargeInputAmountElement.autoNumeric("get");
+
+                var amount = rechargeInputAmountElement.autoNumeric("get"),
+                    $content=$('#popRecharge');
                 rechargeAmountElement.val(amount);
+
+                layer.open({
+                    type: 1,
+                    title :'登录到联动优势支付平台充值',
+                    area: ['560px', '270px'],
+                    shadeClose: true,
+                    content: $('#popRecharge')
+                });
             });
         }
 
@@ -33,9 +44,10 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
             fastRechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(fastRechargeInputAmountElement.autoNumeric("get"));
                 if (isNaN(amount) || amount === 0) {
-                    fastRechargeSubmitElement.addClass('grey').attr('disabled', true);
+                    fastRechargeSubmitElement.prop('disabled',true).removeClass('btn-normal');
+
                 } else {
-                    fastRechargeSubmitElement.removeClass('grey').attr('disabled', false);
+                    fastRechargeSubmitElement.prop('disabled',false).removeClass('btn-normal');
                 }
             });
             //快捷充值提交
@@ -47,13 +59,13 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
         }
 
         if ($(".bind-card-nav")) {
-            $(".bind-card-nav .submit").click(function () {
+            $(".bind-card-nav .btn",$rechargeCon).click(function () {
                 window.location.href = $(this).data('url');
             });
+
         }
 
         //select bank
-        var bankElement = $('.e-bank-recharge ol li');
 
         bankElement.click(function () {
             var selectedBankElement = $(this).find('input');
@@ -62,12 +74,23 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
         });
 
         //tab切换
-        tabElement.click(function () {
-            tabElement.removeClass("active");
-            var self = $(this);
-            self.addClass("active");
-            $(".recharge-content .fast-recharge").toggleClass("active");
-            $(".recharge-content .e-bank-recharge").toggleClass("active");
+        $(".fast-recharge",$rechargeCon).hide();
+        $(".e-bank-recharge",$rechargeCon).show();
+        tabElement.click(function (index) {
+            var $this=$(this),
+                activedNum=$this.index();
+
+            $this.addClass('active').siblings('li').removeClass('active');
+            if(activedNum==0) {
+                $(".fast-recharge",$rechargeCon).show();
+                $(".e-bank-recharge",$rechargeCon).hide();
+            }
+            else {
+                $(".fast-recharge",$rechargeCon).hide();
+                $(".e-bank-recharge",$rechargeCon).show();
+            }
+
+
         });
     });
 });
