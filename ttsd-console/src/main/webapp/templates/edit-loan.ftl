@@ -31,7 +31,7 @@
             <div class="col-sm-10">
                 <div class="row col-file-box">
                     <div class="select-box">
-                        <select class="selectpicker col-sm-5">
+                        <select class="selectpicker col-sm-5 rereq">
                             {{each _data}}
                             <option value="{{$value.id}}">{{$value.title}}</option>
                             {{/each}}

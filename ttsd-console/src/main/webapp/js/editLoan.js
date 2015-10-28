@@ -32,7 +32,7 @@ require(['jquery', 'jquery-ui',
                     size: 8
                 });
 
-                $('.selectpicker',uploadbox.children().last()).selectpicker('val', i);
+                $('.rereq',uploadbox.children().last()).selectpicker('val', i);
             }
         });
 
