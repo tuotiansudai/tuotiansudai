@@ -40,7 +40,7 @@
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab="repaymentInfoList"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="repaymentInfoList"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
