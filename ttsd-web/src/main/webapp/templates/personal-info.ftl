@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <#import "macro/global.ftl" as global>
-<#--<@global.head title="个人资料" pageCss="${css.global}">-->
-<#--</@global.head>-->
-<head lang="en">
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
-<title>个人资料</title>
-<link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/global.css">
-
-</head>
+<@global.head title="个人资料" pageCss="${css.global}">
+</@global.head>
 <body>
 <#include "header.ftl" />
 <div class="mainFrame PersonalInfo">
@@ -32,23 +23,23 @@
         <div class="pad-m">
             <ul class="InfoList" id="personInfoBox">
                 <li><span class="infoTitle"> 用户名</span>
-                    <em class="info">dongshao</em>
+                    <em class="info">${loginName}</em>
 
                 </li>
                 <li><span class="infoTitle"> 姓名</span>
-                    <em class="info">皮**</em>
+                    <em class="info">${userName}</em>
                     <span class="BindingSet">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
                 </li>
                 <li><span class="infoTitle"> 身份认证</span>
-                    <em class="info">412 *** ******** 0111</em>
+                    <em class="info">${identityNumber}</em>
                     <span class="BindingSet">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
                 </li>
                 <li><span class="infoTitle"> 手机</span>
-                    <em class="info">186****4768</em>
+                    <em class="info">${mobile}</em>
                     <span class="BindingSet">
                        <i class="fa fa-check-circle ok"></i> 已绑定
                     </span>
@@ -60,54 +51,55 @@
                     </span>
                 </li>
                 <li><span class="infoTitle"> 绑定银行卡</span>
-                    <em class="info">12333*****333333</em>
+                    <#if bankCard??>
+                    <em class="info">${bankCard}</em>
                     <span class="BindingSet">
-                       <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="/bind-card">绑定</a>
+                        <i class="fa fa-check-circle ok"></i> 已绑定
                     </span>
+                    <#else>
+                    <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
+                    <span class="BindingSet">
+                        <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">绑定</a>
+                    </span>
+                    </#if>
                 </li>
                 <li><span class="infoTitle"> 密码</span>
                     <em class="info">********</em>
                     <span class="BindingSet">
-                       <i class="fa fa-times-circle no"></i> 已设置 <a class="setlink setPass" href="javascript:void(0);">修改</a>
+                       <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setPass" href="javascript:void(0);">修改</a>
                     </span>
                 </li>
             </ul>
          </div>
     </div>
-
-
 </div>
 
 <div id="changePassDOM" class="pad-m popLayer" style="display: none;">
-
-    <form name="changePassForm">
+    <form name="changePasswordForm" action="${requestContext.getContextPath()}/personal-info/change-password" method="post">
         <dl>
-            <dt class="requireOpt">请输入原密码：</dt>
-            <dd><input type="text" id="oldPassword" name="oldPassword" class="input-control"  placeholder="请输入密码"> </dd>
+            <dt class="requireOpt">请输入原密码 </dt>
+            <dd><input type="password" id="originalPassword" name="originalPassword" class="input-control"  placeholder="请输入密码" maxlength="20"> </dd>
         </dl>
         <dl>
-            <dt class="requireOpt">请输入新密码：</dt>
-            <dd><input type="text" id="newPassword" name="newPassword" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
+            <dt class="requireOpt">请输入新密码 </dt>
+            <dd><input type="password" id="newPassword" name="newPassword" class="input-control"  placeholder="6位至20位数字与字母组合" maxlength="20"> </dd>
         </dl>
         <dl>
-            <dt class="requireOpt">请确认新密码：</dt>
-            <dd><input type="text" id="newPassword2" name="newPassword2" class="input-control"  placeholder="6位至16位数字与字母组合"> </dd>
+            <dt class="requireOpt">请确认新密码 </dt>
+            <dd><input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="input-control"  placeholder="6位至20位数字与字母组合" maxlength="20"> </dd>
         </dl>
-
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-normal" id="btnChangePass">确认修改</button>
-
     </form>
 </div>
 
 <div id="changeEmailDOM" class="pad-m popLayer" style="display: none;">
     <form name="changeEmailForm">
         <dl>
-            <dt class="requireOpt">请输入邮箱：</dt>
+            <dt class="requireOpt">请输入邮箱 </dt>
             <dd><input type="email" name="email" class="input-control"  placeholder="请输入邮箱"> </dd>
         </dl>
-
             <button type="submit" class="btn btn-normal" id="btnChangeEmail">绑定</button>
-
     </form>
 </div>
 
@@ -119,12 +111,7 @@
 </div>
 
 <#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.personalInfo}">-->
-<#--</@global.javascript>-->
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-defer
-async="true"
-data-main="${requestContext.getContextPath()}/js/personal_info.js"></script>
+<@global.javascript pageJavascript="${js.personal_info}">
+</@global.javascript>
 </body>
 </html>

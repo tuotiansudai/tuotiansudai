@@ -55,12 +55,15 @@
     height:auto;
     overflow: auto;
     clear:both;
-
     dt,dd { float: left; }
     dd { padding-left:5px;}
-    .error {
-      display: block;
-      text-align: left;
+    label {
+      &.error , &.valid {
+        font-size: 12px;
+        color: #f68e3a;
+        padding-left: 10px;
+        vertical-align: middle;
+      }
     }
   }
   button {
@@ -93,7 +96,6 @@
       li {
         a { display: block;}
         &.fl {
-          margin-top:5px;
           font-size: 20px;
           line-height: 0;
           margin-top: 14px;

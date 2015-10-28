@@ -1,28 +1,27 @@
-/**
- * Created by CBJ on 2015/10/26.
- */
-require(['jquery','layer','jquery.validate'], function ($,layer) {
+require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($, layer) {
     $(function () {
-    var $InfoBox=$('#personInfoBox'),
-        $setEmail=$('.setEmail',$InfoBox),
-        $setPass=$('.setPass',$InfoBox),
-        $btnChangeEmail=$('#btnChangeEmail'),
-        $changeEmailDOM=$('#changeEmailDOM'),
-        $EmailForm=$('form',$changeEmailDOM),
+        var $InfoBox = $('#personInfoBox'),
+            $setEmail = $('.setEmail', $InfoBox),
+            $setPass = $('.setPass', $InfoBox),
+            $btnChangeEmail = $('#btnChangeEmail'),
+            $changeEmailDOM = $('#changeEmailDOM'),
+            $EmailForm = $('form', $changeEmailDOM),
 
-        $btnChangePass=$('#btnChangePass'),
-        $changePassDOM=$('#changePassDOM'),
-        $PassForm=$('form',$changePassDOM);
+            $btnChangePass = $('#btnChangePass'),
+            $changePassDOM = $('#changePassDOM'),
 
-        $setEmail.on('click', function(){
+            $passwordForm = $('form', $changePassDOM);
+
+        $setEmail.on('click', function () {
             layer.open({
                 type: 1,
-                title :'绑定邮箱',
+                title: '绑定邮箱',
                 area: ['500px', '230px'],
                 shadeClose: true,
                 content: $changeEmailDOM
             });
         });
+
         $EmailForm.validate({
             rules: {
                 email: {
@@ -33,75 +32,113 @@ require(['jquery','layer','jquery.validate'], function ($,layer) {
             messages: {
                 email: "请输入有效的邮箱地址"
             },
-            submitHandler: function() {
+            submitHandler: function () {
                 //var index = layer.open();
                 //layer.close(index);
                 layer.closeAll();
                 layer.open({
                     type: 1,
-                    title :'验证邮箱',
+                    title: '验证邮箱',
                     area: ['500px', '220px'],
                     shadeClose: true,
                     content: $('#CESuccess'),
-                    btn:['返回'],
-                    yes: function(index, layero){
+                    btn: ['返回'],
+                    yes: function (index, layero) {
                         layer.close(index);
-                        console.log('000');
                     }
                 });
 
             }
         });
 
-        $setPass.on('click', function(){
+        $setPass.on('click', function () {
             layer.open({
                 type: 1,
-                title :'重置密码',
-                area: ['600px', '360px'],
+                title: '修改密码',
+                area: ['500px', '300px'],
                 shadeClose: true,
-                content: $changePassDOM
+                content: $changePassDOM,
+                cancel: function () {
+                    $passwordForm.validate().resetForm();
+                }
             });
         });
-        $PassForm.validate({
+
+        $passwordForm.validate({
+            focusCleanup: true,
+            focusInvalid: false,
+            errorClass: 'fa fa-times-circle error',
+            validClass: 'fa fa-check-circle valid',
+            onkeyup: function (element, event) {
+                var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+                if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
+                    this.element(element);
+                }
+            },
+            onfocusout: function (element) {
+                if (!this.checkable(element) && !this.optional(element)) {
+                    this.element(element);
+                }
+            },
+            submitHandler: function (form) {
+                var self = this;
+                $(form).ajaxSubmit({
+                    dataType: 'json',
+                    beforeSubmit: function (arr, $form, options) {
+                        self.resetForm();
+                    },
+                    success: function (response) {
+                        var data = response.data;
+                        if (data.status) {
+
+                        }
+                    },
+                    error: function () {
+                    },
+                    complete: function () {
+                    }
+                });
+                return false;
+            },
             rules: {
-                oldPassword:{
-                    required:true,
-                    //checkPassword:true
+                originalPassword: {
+                    required: true,
+                    rangelength: [6, 20],
+                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$',
+                    isNotExist: "/personal-info/password/{0}/is-exist"
                 },
-                newPassword:{
-                    required:true,
-                   // checkPassword:true,
-                    rangelength:[5,15]
+                newPassword: {
+                    required: true,
+                    rangelength: [6, 20],
+                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'
                 },
-                newPassword2:{
-                    required:true,
-                   // checkPassword:true,
-                    rangelength:[5,15],
-                    equalTo: "#newPassword"
+                newPasswordConfirm: {
+                    required: true,
+                    rangelength: [6, 20],
+                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$',
+                    equalTo: "input[name='newPassword']"
                 }
             },
             messages: {
-                oldPassword:{
-                    required:"请输入密码"
+                originalPassword: {
+                    required: "请输入原密码",
+                    regex: "原密码不正确",
+                    rangelength: "原密码不正确",
+                    isNotExist: "原密码不正确"
                 },
-                newPassword:{
-                    required:"请输入新密码",
-                    rangelength: $.validator.format("请输入 {0} 到 {1}的字符长度"),
+                newPassword: {
+                    required: "请输入新密码",
+                    regex: "只能字母和数字组合",
+                    rangelength: "长度6至20位"
                 },
-                newPassword2:{
-                    required:"请输入确认密码",
-                    equalTo:"两次输入密码不一致，请重新输入",
-                    rangelength: $.validator.format("请输入 {0} 到 {1}的字符长度"),
+                newPasswordConfirm: {
+                    required: "请输入新密码",
+                    regex: "只能字母和数字组合",
+                    rangelength: "长度6至20位",
+                    equalTo: "密码不一致"
                 }
-            },
-            submitHandler: function(index) {
-                console.log('ppp');
             }
         });
-
-        //jQuery.validator.addMethod("checkPassword", function(value, element) {
-        //    var checkPassword = /.{5,12}$/;
-        //    return this.optional(element) || (checkPassword.test(value));
-        //}, "密码长度为5-12");
     });
 });
