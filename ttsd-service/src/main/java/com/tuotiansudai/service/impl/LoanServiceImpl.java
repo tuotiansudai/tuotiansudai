@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.TTSDException;
+import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanService;
@@ -499,7 +499,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
+    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws BaseException {
         // 修改标的的最小投资金额和投资截止时间
         updateLoanInfo(loanId, minInvestAmount, fundraisingEndTime);
 
@@ -518,7 +518,7 @@ public class LoanServiceImpl implements LoanService {
         loanMapper.update(loan4update);
     }
 
-    private void processLoanOutPayRequest(long loanId) throws TTSDException {
+    private void processLoanOutPayRequest(long loanId) throws BaseException {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
         BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
@@ -526,7 +526,7 @@ public class LoanServiceImpl implements LoanService {
             PayDataDto data = dto.getData();
             if (!data.getStatus()) {
                 logger.error(MessageFormat.format("放款失败: {0}", dto.getData().getMessage()));
-                throw new TTSDException("放款失败");
+                throw new BaseException("放款失败");
             }
         }
     }

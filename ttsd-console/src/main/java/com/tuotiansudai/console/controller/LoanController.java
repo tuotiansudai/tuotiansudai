@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.LoanTitleDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.TTSDException;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
@@ -33,7 +34,7 @@ public class LoanController {
     private LoanTitleRelationMapper loanTitleRelationMapper;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView createLoan(HttpServletRequest request) {
+    public ModelAndView createLoan() {
         //TODO 合同需要从数据库中获取
         List contracts = new ArrayList();
         Map<String, String> contract = new HashMap<>();
@@ -75,7 +76,7 @@ public class LoanController {
     @ResponseBody
     public ModelAndView loanInfo(@PathVariable long loanId) {
         if (!loanService.loanIsExist(loanId)) {
-            return new ModelAndView("/");
+            return new ModelAndView("/index");
         }
         //TODO 合同需要从数据库中获取
         List contracts = new ArrayList();
@@ -127,7 +128,7 @@ public class LoanController {
             long minInvestAmountCent = AmountUtil.convertStringToCent(minInvestAmount);
             loanService.loanOut(loanId, minInvestAmountCent, dateFundraisingEndTime);
             mv = recheck(loanId);
-        } catch (TTSDException e) {
+        } catch (BaseException e) {
             mv = recheck(loanId);
             WebUtils.addError(mv,e);
         }
