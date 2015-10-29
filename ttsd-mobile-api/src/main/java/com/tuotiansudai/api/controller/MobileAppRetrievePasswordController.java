@@ -3,6 +3,7 @@ package com.tuotiansudai.api.controller;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
+import com.tuotiansudai.api.util.CommonUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +47,6 @@ public class MobileAppRetrievePasswordController {
      */
     @RequestMapping(value = "/retrievepassword/sendsms")
     public BaseResponseDto sendSMS(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto, HttpServletRequest request) {
-        throw new NotImplementedException(getClass().getName());
+        return retrievePasswordService.sendSMS(retrievePasswordRequestDto, CommonUtils.getRemoteHost(request));
     }
 }
