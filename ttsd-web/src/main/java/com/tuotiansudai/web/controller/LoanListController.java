@@ -27,10 +27,13 @@ public class LoanListController {
     private LoanService loanService;
 
     @RequestMapping(value = "/web",method = RequestMethod.GET)
-    public ModelAndView webLoanList(@RequestParam("activityType") ActivityType activityType, @RequestParam("status") LoanStatus status,
-                                     @RequestParam("periodsStart") long periodsStart, @RequestParam("periodsEnd") long periodsEnd,
-                                     @RequestParam("rateStart") double rateStart, @RequestParam("rateEnd") double rateEnd,
-                                     @RequestParam("currentPageNo") int currentPageNo){
+    public ModelAndView webLoanList(@RequestParam(value = "activityType",required = false) ActivityType activityType,
+                                     @RequestParam(value = "status",required = false) LoanStatus status,
+                                     @RequestParam(value = "periodsStart",defaultValue = "0",required = false) long periodsStart,
+                                     @RequestParam(value = "periodsEnd",defaultValue = "0",required = false) long periodsEnd,
+                                     @RequestParam(value = "rateStart",defaultValue = "0",required = false) double rateStart,
+                                     @RequestParam(value = "rateEnd",defaultValue = "0",required = false) double rateEnd,
+                                     @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo){
         int loanListCountWeb = loanService.findLoanListCountWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd);
         List<LoanListWebDto> loanListWebDtos = loanService.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd, currentPageNo);
         ModelAndView modelAndView = new ModelAndView("/loan-list");

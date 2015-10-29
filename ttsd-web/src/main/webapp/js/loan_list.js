@@ -1,7 +1,3 @@
 require(['jquery', 'csrf'], function ($) {
 
-
-
-
-
 })
