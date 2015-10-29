@@ -52,6 +52,9 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -106,6 +109,14 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanAgentId, Role.LOANER);
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                dataDto.setStatus(false);
+                dataDto.setMessage("代理用户不具有借款人角色");
+                baseDto.setData(dataDto);
+                return baseDto;
+            }
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
@@ -113,10 +124,18 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setMessage("借款用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanUserId, Role.LOANER);
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                dataDto.setStatus(false);
+                dataDto.setMessage("借款用户不具有借款人角色");
+                baseDto.setData(dataDto);
+                return baseDto;
+            }
         }
-        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
+        if(loanDto.getPeriods() <= 0){
             dataDto.setStatus(false);
-            dataDto.setMessage("借款期限最小为1，最大为12");
+            dataDto.setMessage("借款期限最小为1");
             baseDto.setData(dataDto);
             return baseDto;
         }
