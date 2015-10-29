@@ -36,7 +36,7 @@
             <span class="select-item" data-status="CANCEL">流标</span>
         </div>
         <div class="loan-list-content">
-            <table class="table-striped">
+            <table class="loan-list table-striped">
             </table>
             <div class="pagination" data-url="/loaner/loan-list-data" data-page-size="2">
             </div>

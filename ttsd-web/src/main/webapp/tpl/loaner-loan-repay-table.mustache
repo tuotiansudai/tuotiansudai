@@ -3,7 +3,7 @@
         {{^isLoanCompleted}}
             <span class="hd">
                 <span>
-                    <a class="enabled-repay advanced {{#hasConfirmingLoanRepay}}inactive{{/hasConfirmingLoanRepay}}" href="javascript:">提前还款</a> (还款总额：{{expectedAdvanceRepayAmount}})
+                    <a class="enabled-repay advanced {{#hasConfirmingLoanRepay}}inactive{{/hasConfirmingLoanRepay}}" href="javascript:">提前还款</a> (还款总额：{{expectedAdvanceRepayAmount}} 元)
                     {{^hasConfirmingLoanRepay}}
                         <form id="advanced-repay" action="/repay" method="post" target="_blank">
                             <input type="hidden" name="loanId" value="{{loanId}}"/>
