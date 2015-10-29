@@ -223,7 +223,7 @@ $(function () {
         beforeCheck: function(curform){
             var periods = parseInt($('.jq-timer',curform).val());
             if(periods <= 0){
-                showErrorMessage('借款期限最小为1，最大为12',$('.jq-timer',curform));
+                showErrorMessage('借款期限最小为1',$('.jq-timer',curform));
                 return false;
             }
             var loanAmount = parseInt($('.jq-pay',curform).val());
