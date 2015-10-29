@@ -78,7 +78,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="proMan" sideLab="investmentInfoList"></@menu.sidebar>
+            <@menu.sidebar headLab="projectMain" sideLab="investmentInfoList"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
