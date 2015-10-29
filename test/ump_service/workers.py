@@ -53,6 +53,18 @@ def project_transfer(order_id, mer_date, mer_id, url):
     return _process(order_id, mer_date, mer_id, url, special_payload)
 
 
+def withdraw_apply_notify(order_id, mer_date, mer_id, amount, url):
+    special_payload = {'trade_no': get_random_trad_id(), 'ret_code': '0000', 'amount': amount,
+                       'mer_check_date': mer_date, 'service': 'withdraw_apply_notify'}
+    return _process(order_id, mer_date, mer_id, url, special_payload)
+
+
+def withdraw_apply_final(order_id, mer_date, mer_id, amount, url):
+    special_payload = {'trade_no': get_random_trad_id(), 'ret_code': '0000', 'amount': amount, 'trade_state': 4,
+                       'mer_check_date': mer_date}
+    return _process(order_id, mer_date, mer_id, url, special_payload)
+
+
 def queue_daemon(channel_name):
     logger.info("Start to listen on {0}".format(channel_name))
     while True:

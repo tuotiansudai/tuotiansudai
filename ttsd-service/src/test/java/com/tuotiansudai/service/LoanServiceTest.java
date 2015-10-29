@@ -286,8 +286,9 @@ public class LoanServiceTest {
         assertNotNull(baseDto.getData().getId());
         assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
-        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate(), 0);
+        assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
     }
+
     @Test
     public void shouldGetTheInvests(){
         long loanId = createLoanService();

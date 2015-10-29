@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.List;
@@ -25,7 +26,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 @Transactional
 public class SmsServiceTest {
 
@@ -61,7 +62,7 @@ public class SmsServiceTest {
         server.enqueue(mockResponse);
         URL url = server.getUrl("/webservice.asmx/mdSmsSend_u");
         this.smsClient.setUrl(url.toString());
-        String mobile = "13900000700";
+        String mobile = String.valueOf(new BigDecimal(Math.random() * 9 + 1).multiply(new BigDecimal(10000000000L)).longValue());
         String captcha = "9999";
 
         this.smsService.sendRegisterCaptcha(mobile, captcha, null);

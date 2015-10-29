@@ -20,7 +20,7 @@
     <!--下拉框-->
     <link rel="stylesheet" href="style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
 <@global.javascript pageJavascript="createLoan.js"></@global.javascript>
@@ -57,14 +57,14 @@
 </head>
 <body>
 
-<@menu.header label="proMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab="start"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="start"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
