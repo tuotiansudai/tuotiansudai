@@ -29,6 +29,6 @@ public class MobileAppRegisterController {
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto, HttpServletRequest request) {
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
         String remoteIp = CommonUtils.getRemoteHost(request);
-        return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
+        return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
     }
 }

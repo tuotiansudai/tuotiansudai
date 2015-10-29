@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class BaseResponseDto<T extends BaseResponseDataDto> {
     public static final String SUCCESS_CODE = "0000";
 
@@ -33,6 +35,7 @@ public class BaseResponseDto<T extends BaseResponseDataDto> {
         this.data = data;
     }
 
+    @JsonIgnore
     public boolean isSuccess() {
         return SUCCESS_CODE.equalsIgnoreCase(code);
     }

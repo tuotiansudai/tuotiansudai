@@ -26,15 +26,12 @@
     </beans:bean>
 
     <http auto-config="true" use-expressions="true">
-        <headers>
-            <frame-options policy="SAMEORIGIN"/>
-        </headers>
+        <csrf disabled="true"/>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <form-login login-page="/login"
                     login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-
 
         <intercept-url pattern="/**" access="isAnonymous()"/>
     </http>
