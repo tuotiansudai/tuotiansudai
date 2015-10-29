@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.InvestException;
 
 public interface InvestService {
 
@@ -8,7 +9,7 @@ public interface InvestService {
      * 进行一次投资
      * @param investDto
      */
-    BaseDto<PayFormDataDto> invest(InvestDto investDto);
+    BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
     long calculateExpectedInterest(long loanId, long amount);
     /**
