@@ -3,7 +3,6 @@ package com.tuotiansudai.repository.model;
 public enum  LoanStatus {
     PREHEAT("0","预热"),
     WAITING_VERIFY("","等待审核"),
-    VERIFY_FAIL("","审核未通过"),
     RECHECK("","等待复核"),
     CANCEL("4","流标"),
     RAISING("1","筹款中"),
