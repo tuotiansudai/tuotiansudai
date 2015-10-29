@@ -3,18 +3,23 @@ package com.tuotiansudai.console.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.OssWrapperClient;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,6 +46,42 @@ public class OssUploadController {
         ueditorConfig.put("imageInsertAlign","none");
         ueditorConfig.put("imageUrlPrefix","/upload");
         ueditorConfig.put("imagePathFormat","/upload/{yyyy}{mm}{dd}");
+    }
+
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public void upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+        String rootPath = request.getSession().getServletContext().getRealPath("/");
+        JSONArray jsonArray = new JSONArray();
+        String imgTemplate = "\'<img src=\'{0}\' class=\'file-preview-image\' alt=\'{1}\' title=\'{2}\'>\'";
+        StringBuffer stringBuffer = new StringBuffer("[");
+        Iterator<String> itr =  request.getFileNames();
+        MultipartFile dfi = null;
+        String fileName = "";
+        while (itr.hasNext()) {
+            dfi  = request.getFile(itr.next());
+            fileName = dfi.getOriginalFilename();
+            String ossPath = "";
+            try {
+                ossPath = ossWrapperClient.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
+                jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("initialPreview", jsonArray);
+        try {
+            response.getWriter().print(jsonObject);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } finally {
+            try {
+                response.getWriter().close();
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
     }
 
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
