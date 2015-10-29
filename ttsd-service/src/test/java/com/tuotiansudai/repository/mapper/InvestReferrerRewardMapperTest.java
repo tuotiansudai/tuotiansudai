@@ -37,15 +37,8 @@ public class InvestReferrerRewardMapperTest {
         LoanModel loanModel = createMockLoan(userModelTest.getLoginName());
         InvestModel model = createMockInvest(userModelTest.getLoginName(), loanModel.getId());
 
-        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
         long id = idGenerator.generate();
-        investReferrerRewardModel.setId(id);
-        investReferrerRewardModel.setStatus(ReferrerRewardStatus.SUCCESS);
-        investReferrerRewardModel.setReferrerLoginName(userModelTest.getLoginName());
-        investReferrerRewardModel.setTime(new Date());
-        investReferrerRewardModel.setBonus(100);
-        investReferrerRewardModel.setInvestId(model.getId());
-        investReferrerRewardModel.setRoleName(Role.INVESTOR);
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(id, model.getId(), 100, userModelTest.getLoginName(), Role.INVESTOR);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
         InvestReferrerRewardModel investReferrerRewardModel1 = investReferrerRewardMapper.findById(id);

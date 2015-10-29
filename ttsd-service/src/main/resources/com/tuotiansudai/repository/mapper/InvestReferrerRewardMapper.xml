@@ -7,15 +7,16 @@
     <resultMap id="investReferrerRewardModelResultMap" type="InvestReferrerRewardModel">
         <result column="id" property="id"/>
         <result column="invest_id" property="investId"/>
-        <result column="time" property="time"/>
+        <result column="amount" property="amount"/>
         <result column="referrer_login_name" property="referrerLoginName"/>
+        <result column="referrer_role" property="referrer_role"/>
         <result column="status" property="status"/>
-        <result column="role_name" property="roleName"/>
+        <result column="created_time" property="createdTime"/>
     </resultMap>
 
-    <insert id="create" parameterType="InvestReferrerRewardModel" >
-        insert into invest_referrer_reward(id,invest_id,time,bonus,referrer_login_name,status,role_name)
-        values(#{id},#{investId},#{time},#{bonus},#{referrerLoginName},#{status},#{roleName})
+    <insert id="create" parameterType="InvestReferrerRewardModel">
+        insert into invest_referrer_reward(id, invest_id, amount, referrer_login_name, referrer_role, status, created_time)
+        values(#{id}, #{investId}, #{amount}, #{referrerLoginName}, #{referrerRole}, #{status}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="investReferrerRewardModelResultMap">
