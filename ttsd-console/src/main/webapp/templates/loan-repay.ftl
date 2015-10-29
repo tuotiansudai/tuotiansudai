@@ -25,7 +25,7 @@
     <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--自动补全-->
-    <link rel="stylesheet" href="../../style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="../../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <link rel="stylesheet" href="../../style/index.css">
 <@global.javascript pageJavascript="loan-repay.js"></@global.javascript>
 
@@ -39,7 +39,7 @@
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab="repaymentInfoList"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="repaymentInfoList"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
