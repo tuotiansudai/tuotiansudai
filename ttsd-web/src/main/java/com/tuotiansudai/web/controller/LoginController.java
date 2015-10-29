@@ -48,7 +48,7 @@ public class LoginController {
     @RequestMapping(value = "/captcha/{captcha}/verify", method = RequestMethod.GET,
             consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto captchaVerify(@PathVariable String captcha) {
+    public BaseDto<BaseDataDto> captchaVerify(@PathVariable String captcha) {
         boolean result = this.captchaVerifier.loginCaptchaVerify(captcha);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();

@@ -149,18 +149,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String oldPassword, String newPassword) {
+    public boolean changePassword(String originalPassword, String newPassword) {
+        String loginName = LoginUserInfo.getLoginName();
+
+        boolean correct = this.verifyPasswordCorrect(originalPassword);
+
+        if (!correct) {
+            return false;
+        }
+
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null) {
-            return false;
-        }
-        String encodedOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
-        if (!userModel.getPassword().equals(encodedOldPassword)) {
-            return false;
-        }
+
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
-        smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
+        smsWrapperClient.sendPasswordChangedNotify(LoginUserInfo.getMobile());
         return true;
     }
 
@@ -307,12 +309,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean hasDiffReferrerRelation(String loginName, String referrer) {
-
         long count = referrerRelationMapper.findByLoginNameAndReferrer(loginName, referrer);
-        if (count > 0) {
-            return true;
-        }
-        return false;
+        return count > 0;
 
     }
 
@@ -341,7 +339,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer);
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, userItemDataDtos);
+        BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
         return baseDto;
@@ -351,6 +349,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findLoginNameLike(String loginName) {
         return userMapper.findLoginNameLike(loginName);
+    }
+
+    @Override
+    public boolean verifyPasswordCorrect(String password) {
+        String loginName = LoginUserInfo.getLoginName();
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
     }
 
 }

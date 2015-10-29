@@ -4,12 +4,16 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,11 +27,19 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    static Logger logger = Logger.getLogger(InvestServiceImpl.class);
+
     @Autowired
     private LoanMapper loanMapper;
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private AutoInvestPlanMapper autoInvestPlanMapper;
+
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
@@ -78,11 +90,8 @@ public class InvestServiceImpl implements InvestService {
         long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
 
         // 不满足单用户投资限额
-        if (investAmount > userInvestMaxAmount - userInvestAmount) {
-            return false;
-        }
+        return investAmount <= userInvestMaxAmount - userInvestAmount;
 
-        return true;
     }
 
     @Override
@@ -127,4 +136,34 @@ public class InvestServiceImpl implements InvestService {
 
         return new BasePaginationDataDto<>(index, pageSize, count, records);
     }
+
+    @Override
+    public void turnOnAutoInvest(AutoInvestPlanModel model) {
+        if(StringUtils.isBlank(model.getLoginName())){
+            throw new NullPointerException("Not Login");
+        }
+
+        AutoInvestPlanModel planModel = autoInvestPlanMapper.findByLoginName(model.getLoginName());
+        model.setCreatedTime(new Date());
+        model.setEnabled(true);
+
+        if (planModel != null) {
+            model.setId(planModel.getId());
+            autoInvestPlanMapper.update(model);
+        } else {
+            model.setId(idGenerator.generate());
+            autoInvestPlanMapper.create(model);
+        }
+    }
+
+    @Override
+    public void turnOffAutoInvest(String loginName) {
+        autoInvestPlanMapper.disable(loginName);
+    }
+
+    @Override
+    public AutoInvestPlanModel findUserAutoInvestPlan(String loginName) {
+        return autoInvestPlanMapper.findByLoginName(loginName);
+    }
+
 }

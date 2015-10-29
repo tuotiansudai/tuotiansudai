@@ -1,6 +1,8 @@
 package com.tuotiansudai.service;
 
+
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 
@@ -20,4 +22,11 @@ public interface InvestService {
                                                                            Date endTime,
                                                                            InvestStatus investStatus,
                                                                            LoanStatus loanStatus);
+
+
+    void turnOnAutoInvest(AutoInvestPlanModel model);
+
+    void turnOffAutoInvest(String loginName);
+
+    AutoInvestPlanModel findUserAutoInvestPlan(String loginName);
 }

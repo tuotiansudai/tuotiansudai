@@ -1,7 +1,9 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.repository.model.AgreementType;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 /**
@@ -20,8 +22,8 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         super();
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
-        this.setNotifyUrl("http://121.43.71.173:13003/trusteeship_return_s2s/ptp_mer_bind_agreement");
-        this.setRetUrl("http://121.43.71.173:13003/trusteeship_return_web/ptp_mer_bind_agreement");
+        this.retUrl =  (String)CALLBACK_HOST_PROPS.get("ump.callback.web.host");
+        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), UmPayService.NOTIFY_MER_BIND_AGREEMENT.getServiceName());
         this.userBindAgreementList = userBindAgreementList;
     }
 

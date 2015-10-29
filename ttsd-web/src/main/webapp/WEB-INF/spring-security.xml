@@ -52,6 +52,8 @@
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
 
+        <intercept-url pattern="/account" access="permitAll()"/>
+
         <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
@@ -67,8 +69,9 @@
         <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
-        <intercept-url pattern="/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/**" access="permitAll()"/>
         <csrf/>
     </http>
 

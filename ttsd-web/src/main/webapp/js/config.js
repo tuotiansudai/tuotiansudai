@@ -11,7 +11,12 @@ var require = {
         'underscore': '/js/libs/underscore-1.8.3.min',
         'csrf': '/js/dest/csrf.min',
         'daterangepicker': '/js/libs/jquery.daterangepicker-0.0.7',
-        'pagination': '/js/dest/pagination.min'
+        'pagination': '/js/dest/pagination.min',
+        'lodash':'/js/libs/lodash.min',
+        'layer':'/js/libs/layer/layer',
+        'echarts':'/js/libs/echarts/dist/echarts.min',
+        'jquery.validate.extension': '/js/dest/jquery_validate_extension.min',
+        'commonFun': '/js/dest/common.min'
     },
 
     'shim': {
@@ -19,7 +24,10 @@ var require = {
         'jquery.form': ['jquery'],
         'jqueryPage': ['jquery'],
         'autoNumeric': ['jquery'],
-        'pagination': ['jquery']
+        'pagination': ['jquery'],
+        'layer':['jquery'],
+        'commonFun':['jquery.validate'],
+        'jquery.validate.extension':['jquery', 'jquery.validate']
     }
 };
 
