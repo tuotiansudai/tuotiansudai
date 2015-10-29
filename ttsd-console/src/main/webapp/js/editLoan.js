@@ -36,16 +36,6 @@ require(['jquery', 'jquery-ui',
             }
         });
 
-        function initSelect() {
-            var _selectAll = $('.jq-form select');
-            var _selectOption = $('select option');
-            _selectAll.each(function (m) {
-                var _optionTxt = $(this).find('option').eq(0).attr('value');
-                $(this).siblings('[type="hidden"]').val(_optionTxt);
-            });
-        };
-        initSelect();
-
         $('#datetimepicker6').datetimepicker({format: 'YYYY-MM-DD HH:mm', minDate: new Date(Date.parse('2015/1/1'))});
         $('#datetimepicker7').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
         $('.selectpicker').selectpicker({
@@ -56,8 +46,6 @@ require(['jquery', 'jquery-ui',
         $('#datetimepicker6').on('dp.change',function(e){
             dpicker7.minDate(e.date);
         });
-
-
 
         //添加申请材料
         $('.btn-upload').click(function () {

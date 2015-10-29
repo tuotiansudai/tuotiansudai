@@ -11,16 +11,16 @@ import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanTitleModel;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.utils.AmountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan")
@@ -104,33 +104,45 @@ public class LoanController {
         return loanService.openLoan(loanDto);
     }
 
-    @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
-    public ModelAndView recheck(@PathVariable long loanId) {
-        BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
-        return new ModelAndView("/recheck", "loan", dto.getData());
-    }
-
-    @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.POST)
-    public ModelAndView doRecheck(@PathVariable long loanId,
-                                  @RequestParam(value = "minInvestAmount", required = false) String minInvestAmount,
-                                  @RequestParam(value = "fundraisingEndTime", required = false) String fundraisingEndTime) {
-        ModelAndView mv;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date dateFundraisingEndTime = null;
+    @RequestMapping(value = "/recheck", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = null;
         try {
-            dateFundraisingEndTime = sdf.parse(fundraisingEndTime);
-        } catch (ParseException e) {
-            dateFundraisingEndTime = null;
+            baseDto =  loanService.loanOut(loanDto);
+        } catch (TTSDException e) {
             e.printStackTrace();
         }
-        try {
-            long minInvestAmountCent = AmountUtil.convertStringToCent(minInvestAmount);
-            loanService.loanOut(loanId, minInvestAmountCent, dateFundraisingEndTime);
-            mv = recheck(loanId);
-        } catch (TTSDException e) {
-            mv = recheck(loanId);
-            WebUtils.addError(mv,e);
-        }
-        return mv;
+        return baseDto;
     }
+
+//    @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
+//    public ModelAndView recheck(@PathVariable long loanId) {
+//        BaseDto<LoanDto> dto = loanService.getLoanDetail(loanId);
+//        return new ModelAndView("/recheck", "loan", dto.getData());
+//    }
+//
+//    @RequestMapping(value = "/recheck/{loanId:^[0-9]{15}$}", method = RequestMethod.POST)
+//    public ModelAndView doRecheck(@PathVariable long loanId,
+//                                  @RequestParam(value = "minInvestAmount", required = false) String minInvestAmount,
+//                                  @RequestParam(value = "fundraisingEndTime", required = false) String fundraisingEndTime) {
+//        ModelAndView mv;
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date dateFundraisingEndTime = null;
+//        try {
+//            dateFundraisingEndTime = sdf.parse(fundraisingEndTime);
+//        } catch (ParseException e) {
+//            dateFundraisingEndTime = null;
+//            e.printStackTrace();
+//        }
+//        try {
+//            long minInvestAmountCent = AmountUtil.convertStringToCent(minInvestAmount);
+//            loanService.loanOut(loanId, minInvestAmountCent, dateFundraisingEndTime);
+//            mv = recheck(loanId);
+//        } catch (TTSDException e) {
+//            mv = recheck(loanId);
+//            WebUtils.addError(mv,e);
+//        }
+//        return mv;
+//    }
 }

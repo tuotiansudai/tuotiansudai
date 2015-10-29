@@ -475,26 +475,14 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException {
-        // 修改标的的最小投资金额和投资截止时间
-        updateLoanInfo(loanId, minInvestAmount, fundraisingEndTime);
-
+    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws TTSDException {
+        updateLoanAndLoanTitleRelation(loanDto);
         // 如果存在未处理完成的记录，则不允许放款
         // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
-        processLoanOutPayRequest(loanId);
+        return processLoanOutPayRequest(loanDto.getId());
     }
 
-    private void updateLoanInfo(long loanId, long minInvestAmount, Date fundraisingEndTime) {
-        LoanModel loan4update = new LoanModel();
-        loan4update.setId(loanId);
-        if (fundraisingEndTime != null) {
-            loan4update.setFundraisingEndTime(fundraisingEndTime);
-        }
-        loan4update.setMinInvestAmount(minInvestAmount);
-        loanMapper.update(loan4update);
-    }
-
-    private void processLoanOutPayRequest(long loanId) throws TTSDException {
+    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) throws TTSDException {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
         BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
@@ -505,6 +493,7 @@ public class LoanServiceImpl implements LoanService {
                 throw new TTSDException("放款失败");
             }
         }
+        return dto;
     }
 
     @Override

@@ -58,7 +58,7 @@ public interface LoanService {
      * @param fundraisingEndTime
      * @throws TTSDException
      */
-    void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws TTSDException;
+    BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws TTSDException;
 
     BaseDto<LoanDto> getLoanDetail(long loanId);
 
