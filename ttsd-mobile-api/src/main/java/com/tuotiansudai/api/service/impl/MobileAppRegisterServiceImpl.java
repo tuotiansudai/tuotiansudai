@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
-    static Logger logger = Logger.getLogger(MobileAppRegisterServiceImpl.class);
+    static Logger log = Logger.getLogger(MobileAppRegisterServiceImpl.class);
 
     @Autowired
     private UserService userService;
@@ -35,18 +35,18 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
         String returnCode = ReturnMessage.SUCCESS.getCode();
         if (StringUtils.isEmpty(mobileNumber)) {
-            logger.info(mobileNumber + ":" + ReturnMessage.MOBILE_NUMBER_IS_NULL.getMsg());
+            log.info(mobileNumber + ":" + ReturnMessage.MOBILE_NUMBER_IS_NULL.getMsg());
             returnCode = ReturnMessage.MOBILE_NUMBER_IS_NULL.getCode();
         }
         if (userService.mobileIsExist(mobileNumber)) {
-            logger.info(mobileNumber + ":" + ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
+            log.info(mobileNumber + ":" + ReturnMessage.MOBILE_NUMBER_IS_EXIST.getMsg());
             returnCode = ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode();
         }
         if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
             BaseDto<SmsDataDto> smsDto = smsCaptchaService.sendRegisterCaptcha(mobileNumber, remoteIp);
             if (!smsDto.isSuccess() || !smsDto.getData().getStatus()) {
                 returnCode = ReturnMessage.SEND_SMS_IS_FAIL.getCode();
-                logger.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
+                log.info(mobileNumber + ":" + ReturnMessage.SEND_SMS_IS_FAIL.getMsg());
             }
         }
         dto.setCode(returnCode);
@@ -79,7 +79,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return new BaseResponseDto(ReturnMessage.REFERRER_IS_NOT_EXIST.getCode(),ReturnMessage.REFERRER_IS_NOT_EXIST.getMsg());
         }
         boolean verifyCaptchaFailed = !smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
-        if (!verifyCaptchaFailed){
+        if (verifyCaptchaFailed){
             return new BaseResponseDto(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
         }
 
