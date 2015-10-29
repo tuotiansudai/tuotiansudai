@@ -97,12 +97,19 @@
                     </div>
 
                     <#if errorMessage??>
-                    <div class="form-group">
+                        <div class="form-group console-error-message">
+                            <div class="col-sm-offset-2 col-sm-2">
+                                <div class="alert alert-danger" role="alert">${errorMessage}</div>
+                            </div>
+                        </div>
+
+                    </#if>
+
+                    <div class="form-group web-error-message">
                         <div class="col-sm-offset-2 col-sm-2">
-                            <div class="alert alert-danger" role="alert">${errorMessage}</div>
+                            <div class="alert alert-danger message" role="alert"></div>
                         </div>
                     </div>
-                    </#if>
 
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
