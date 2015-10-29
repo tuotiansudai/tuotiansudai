@@ -41,7 +41,7 @@
             <#else>
                 <#assign loanStatus="ALL">
             </#if>
-            <@menu.sidebar headLab="proMan" sideLab="${loanStatus}"></@menu.sidebar>
+            <@menu.sidebar headLab="projectMain" sideLab="${loanStatus}"></@menu.sidebar>
             <!-- menu sidebar end -->
 
             <!-- content area begin -->
