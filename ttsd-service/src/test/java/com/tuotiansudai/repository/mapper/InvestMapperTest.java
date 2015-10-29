@@ -167,7 +167,7 @@ public class InvestMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());

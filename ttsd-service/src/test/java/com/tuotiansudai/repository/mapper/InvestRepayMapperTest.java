@@ -131,7 +131,7 @@ public class InvestRepayMapperTest {
         fakeLoanModel.setName("name");
         fakeLoanModel.setAgentLoginName(fakeUserModel.getLoginName());
         fakeLoanModel.setLoanerLoginName(fakeUserModel.getLoginName());
-        fakeLoanModel.setType(LoanType.LOAN_TYPE_1);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(1);
         fakeLoanModel.setDescriptionText("text");
         fakeLoanModel.setDescriptionHtml("html");
