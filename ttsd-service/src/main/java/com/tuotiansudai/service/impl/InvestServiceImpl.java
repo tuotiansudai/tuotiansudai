@@ -53,7 +53,7 @@ public class InvestServiceImpl implements InvestService {
         // 不满足新手标投资限制约束
         if(ActivityType.NOVICE == loan.getActivityType()){
             if(!canInvestNoviceLoan(investDto.getLoginName())){
-                return false;
+                throw new InvestException("你的新手标投资已超上限");
             }
         }
 
