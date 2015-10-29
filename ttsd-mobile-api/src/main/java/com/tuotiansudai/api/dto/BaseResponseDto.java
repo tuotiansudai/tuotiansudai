@@ -40,4 +40,12 @@ public class BaseResponseDto<T extends BaseResponseDataDto> {
         return SUCCESS_CODE.equalsIgnoreCase(code);
     }
 
+
+    public BaseResponseDto(String code ,String message){
+        this.code = code;
+        this.message = message;
+    }
+    public BaseResponseDto(){
+
+    }
 }

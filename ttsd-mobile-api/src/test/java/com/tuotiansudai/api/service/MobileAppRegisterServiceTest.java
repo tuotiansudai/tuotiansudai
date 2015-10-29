@@ -1,27 +1,52 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.RegisterRequestDto;
+import com.tuotiansudai.api.dto.RegisterResponseDataDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.model.CaptchaType;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class MobileAppRegisterServiceTest extends ServiceTestBase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@Transactional
+public class MobileAppRegisterServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppRegisterServiceImpl mobileAppRegisterService;
+    @Autowired
+    private UserMapper userMapper;
 
     @Mock
     private UserService userService;
 
     @Mock
     private SmsCaptchaService smsCaptchaService;
+
 
     @Test
     public void shouldSendRegisterByMobileNumberSMS() {
@@ -39,5 +64,72 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase {
         BaseResponseDto responseDto = mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
 
         assert responseDto.isSuccess();
+
+    }
+    @Test
+    public void shouldRegisterUserLoginNameIsExist(){
+
+        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(userService.loginNameIsExist(anyString())).thenReturn(true);
+        when(userService.mobileIsExist(anyString())).thenReturn(false);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
+        assertEquals(ReturnMessage.USER_NAME_IS_EXIST.getCode(), baseResponseDto.getCode());
+    }
+    @Test
+    public void shouldRegisterUserMobileIsExist(){
+
+        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(userService.loginNameIsExist(anyString())).thenReturn(false);
+        when(userService.mobileIsExist(anyString())).thenReturn(true);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
+        assertEquals(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),baseResponseDto.getCode());
+    }
+    @Test
+    public void shouldRegisterUserCaptchaIsOk(){
+
+        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(userService.loginNameIsExist(anyString())).thenReturn(false);
+        when(userService.mobileIsExist(anyString())).thenReturn(false);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
+        assertEquals(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),baseResponseDto.getCode());
+    }
+    @Test
+    public void shouldRegisterUserIsOk(){
+        RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
+        when(userService.loginNameIsExist(anyString())).thenReturn(false);
+        when(userService.mobileIsExist(anyString())).thenReturn(false);
+        when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
+        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+        assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());
+    }
+
+
+    public UserModel getFakeUser(String loginName) {
+        UserModel userModelTest = new UserModel();
+        userModelTest.setLoginName(loginName);
+        userModelTest.setPassword("password");
+        userModelTest.setEmail("12345@abc.com");
+        userModelTest.setMobile("13" + RandomStringUtils.randomNumeric(9));
+        userModelTest.setRegisterTime(new Date());
+        userModelTest.setStatus(UserStatus.ACTIVE);
+        userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
+        return userModelTest;
+    }
+
+    public RegisterRequestDto getFakeRegisterRequestDto(){
+        RegisterRequestDto registerRequestDto = new RegisterRequestDto();
+        registerRequestDto.setUserName("loginName");
+        registerRequestDto.setCaptcha("123456");
+        registerRequestDto.setPassword("password");
+        registerRequestDto.setPhoneNum("13900000000");
+        return registerRequestDto;
     }
 }
