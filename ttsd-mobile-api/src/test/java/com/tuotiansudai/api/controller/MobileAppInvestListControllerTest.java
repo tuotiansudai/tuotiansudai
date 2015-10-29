@@ -1,30 +1,39 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.InvestListRequestDto;
+import com.tuotiansudai.api.dto.UserInvestListRequestDto;
+import com.tuotiansudai.api.service.MobileAppInvestListService;
 import org.junit.Test;
-import org.springframework.http.MediaType;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
-public class MobileAppInvestListControllerTest extends ControllerTestBase<MobileAppInvestListController> {
+public class MobileAppInvestListControllerTest extends ControllerTestBase {
+
+    @InjectMocks
+    private MobileAppInvestListController controller;
+
+    @Mock
+    private MobileAppInvestListService service;
+
+    @Override
+    protected Object getControllerObject() {
+        return controller;
+    }
+
     @Test
-    public void shouldGetInvests() throws Exception {
+    public void queryInvestList() throws Exception {
+        when(service.generateInvestList(any(InvestListRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/invests",
+                new InvestListRequestDto());
+    }
 
-        InvestListRequestDto requestDto = new InvestListRequestDto();
-        requestDto.setIndex(1);
-        requestDto.setLoanId("1312312312");
-        requestDto.setPageSize(10);
-
-        String requestJson = generateRequestJson(requestDto);
-
-        mockMvc.perform(post("/get/invests").
-                contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestJson))
-                .andExpect(status().isOk())
-                .andExpect((content().contentType(MediaType.APPLICATION_JSON_VALUE)))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true))
-                .andExpect(jsonPath("$.data.code").value("0000"));
+    @Test
+    public void queryUserInvestList() throws Exception {
+        when(service.generateUserInvestList(any(UserInvestListRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/userinvests",
+                new UserInvestListRequestDto());
     }
 }

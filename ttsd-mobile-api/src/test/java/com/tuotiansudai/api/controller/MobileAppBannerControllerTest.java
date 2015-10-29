@@ -1,22 +1,27 @@
 package com.tuotiansudai.api.controller;
 
+import com.tuotiansudai.api.service.MobileAppBannerService;
 import org.junit.Test;
-import org.springframework.http.MediaType;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.when;
 
-public class MobileAppBannerControllerTest extends ControllerTestBase<MobileAppBannerController> {
+public class MobileAppBannerControllerTest extends ControllerTestBase {
+    @InjectMocks
+    private MobileAppBannerController controller;
+
+    @Mock
+    private MobileAppBannerService service;
+
+    @Override
+    protected Object getControllerObject() {
+        return controller;
+    }
+
     @Test
-    public void shouldGetAppBanner() throws Exception {
-        String requestJson = "";
-        mockMvc.perform(post("/get/banner").
-                contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestJson))
-                .andExpect(status().isOk())
-                .andExpect((content().contentType(MediaType.APPLICATION_JSON_VALUE)))
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.status").value(true))
-                .andExpect(jsonPath("$.data.code").value("0000"));
+    public void getBannerTest() throws Exception {
+        when(service.getAppBanner()).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/banner");
     }
 }
