@@ -30,7 +30,7 @@
 
             <p class="forgot-password">
                 <a href="/register/user" class="register">免费注册</a>
-                <a href="javascript:">忘记密码？</a>
+                <a href="/mobile-retrieve-password">忘记密码？</a>
             </p>
             <span>
                 <a href="javascript:" class="login-submit grey">立即登录</a>
