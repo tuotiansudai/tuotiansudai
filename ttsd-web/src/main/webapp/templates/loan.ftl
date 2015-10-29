@@ -144,65 +144,74 @@
             </form>
         </#if>
         <#if loan.loanStatus == "REPAYING">
-            <div class="item-block" style="text-align: center">
-                <img src="/images/loan/repaying.png" width="200" height="200" alt=""/>
-            </div>
-            <div class="item-block">
-                <span class="sub-hd"></span>
-                <span class="num"></span>
-            </div>
-            <div class="item-block">
-                <button class="btn-pay" type="button">查看其他项目</button>
-            </div>
+            <form action="/loanList/web" method="get">
+                <div class="item-block" style="text-align: center">
+                    <img src="/images/loan/repaying.png" width="200" height="200" alt=""/>
+                </div>
+                <div class="item-block">
+                    <span class="sub-hd"></span>
+                    <span class="num"></span>
+                </div>
+                <div class="item-block">
+                    <button class="btn-pay" type="submit">查看其他项目</button>
+                </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "RECHECK">
-
-            <div class="item-block" style="text-align: center">
-                <img src="/images/loan/recheck.png" width="200" height="200" alt=""/>
-            </div>
-            <div class="item-block">
-                <span class="sub-hd"></span>
-                <span class="num"></span>
-            </div>
-            <div class="item-block">
-                <button class="btn-pay" type="button">查看其他项目</button>
-            </div>
+            <form action="/loanList/web" method="get">
+                <div class="item-block" style="text-align: center">
+                    <img src="/images/loan/recheck.png" width="200" height="200" alt=""/>
+                </div>
+                <div class="item-block">
+                    <span class="sub-hd"></span>
+                    <span class="num"></span>
+                </div>
+                <div class="item-block">
+                    <button class="btn-pay" type="submit">查看其他项目</button>
+                </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "CANCEL">
-            <div class="item-block" style="text-align: center">
-                <img src="/images/loan/cancel.png" width="200" height="200" alt=""/>
-            </div>
-            <div class="item-block">
-                <span class="sub-hd"></span>
-                <span class="num"></span>
-            </div>
-            <div class="item-block">
-                <button class="btn-pay" type="button">查看其他项目</button>
-            </div>
+            <form action="/loanList/web" method="get">
+                <div class="item-block" style="text-align: center">
+                    <img src="/images/loan/cancel.png" width="200" height="200" alt=""/>
+                </div>
+                <div class="item-block">
+                    <span class="sub-hd"></span>
+                    <span class="num"></span>
+                </div>
+                <div class="item-block">
+                    <button class="btn-pay" type="submit">查看其他项目</button>
+                </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "OVERDUE">
-            <div class="item-block" style="text-align: center">
-                <img src="/images/loan/overdue.png" width="200" height="200" alt=""/>
-            </div>
-            <div class="item-block">
-                <span class="sub-hd"></span>
-                <span class="num"></span>
-            </div>
-            <div class="item-block">
-                <button class="btn-pay" type="button">查看其他项目</button>
-            </div>
+            <form action="/loanList/web" method="get">
+                <div class="item-block" style="text-align: center">
+                    <img src="/images/loan/overdue.png" width="200" height="200" alt=""/>
+                </div>
+                <div class="item-block">
+                    <span class="sub-hd"></span>
+                    <span class="num"></span>
+                </div>
+                <div class="item-block">
+                    <button class="btn-pay" type="submit">查看其他项目</button>
+                </div>
+            </form>
         </#if>
         <#if loan.loanStatus == "COMPLETE">
-            <div class="item-block" style="text-align: center">
-                <img src="/images/loan/complete.png" width="200" height="200" alt=""/>
-            </div>
-            <div class="item-block">
-                <span class="sub-hd"></span>
-                <span class="num"></span>
-            </div>
-            <div class="item-block">
-                <button class="btn-pay" type="button">查看其他项目</button>
-            </div>
+            <form action="/loanList/web" method="get">
+                <div class="item-block" style="text-align: center">
+                    <img src="/images/loan/complete.png" width="200" height="200" alt=""/>
+                </div>
+                <div class="item-block">
+                    <span class="sub-hd"></span>
+                    <span class="num"></span>
+                </div>
+                <div class="item-block">
+                    <button class="btn-pay" type="submit">查看其他项目</button>
+                </div>
+            </form>
         </#if>
         </div>
     </div>
