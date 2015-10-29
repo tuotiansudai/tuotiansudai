@@ -20,7 +20,7 @@
     <!--下拉框-->
     <link rel="stylesheet" href="../style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="../style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
 <@global.javascript pageJavascript="editLoan.js"></@global.javascript>
