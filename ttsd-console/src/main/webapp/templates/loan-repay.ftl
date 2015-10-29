@@ -26,6 +26,7 @@
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--自动补全-->
     <link rel="stylesheet" href="../../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
+
     <link rel="stylesheet" href="../../style/index.css">
 <@global.javascript pageJavascript="loan-repay.js"></@global.javascript>
 

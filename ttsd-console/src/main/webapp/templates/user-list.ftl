@@ -12,7 +12,7 @@
     <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <link href="style/libs/jquery-ui-1.9.2.custom.css" rel="stylesheet"/>
+    <link href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css" rel="stylesheet"/>
     <link href="style/index.css" rel="stylesheet"/>
 <@global.javascript pageJavascript="user-list.js"></@global.javascript>
 </head>
@@ -28,7 +28,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="userMan" sideLab="userMan"></@menu.sidebar>
+            <@menu.sidebar headLab="userMain" sideLab="userMain"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
@@ -110,9 +110,9 @@
                             <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
                             <td><a href="/user/${userItem.loginName}/edit">编辑</a> |
                                 <#if userItem.status=='ACTIVE'>
-                                    <a class="user-status-modifier" href="#" action-url="/user/disable/${userItem.loginName}">禁止</a>
+                                    <a class="user-status-modifier" href="#" data-url="/user/${userItem.loginName}/disable">禁止</a>
                                 <#else>
-                                    <a class="user-status-modifier" href="#" action-url="/user/enable/${userItem.loginName}">解禁</a>
+                                    <a class="user-status-modifier" href="#" data-url="/user/${userItem.loginName}/enable">解禁</a>
                                 </#if>
                             </td>
                         </tr>

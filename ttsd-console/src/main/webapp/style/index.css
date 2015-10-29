@@ -124,3 +124,6 @@ td.td {text-align:center;}
 .bootstrap-select button.dropdown-toggle { width:170px; }
 /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
 .btnSearch { padding:5px 20px; font-size: 14px; }
+.web-error-message{
+    display: none;
+}
