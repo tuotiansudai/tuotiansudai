@@ -115,7 +115,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-2">
-                            <input class="btn btn-default" type="submit" value="提交">
+                            <input class="btn btn-default btn-submit" type="submit" value="提交">
                             <input class="btn btn-default" type="reset" value="重置">
                         </div>
                     </div>
