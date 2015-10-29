@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.dto;
 
-public class BaseResponseDto<T extends BaseResponseDataDto>{
+public class BaseResponseDto<T extends BaseResponseDataDto> {
+    public static final String SUCCESS_CODE = "0000";
+
     private String code;
 
     private String message;
@@ -30,4 +32,9 @@ public class BaseResponseDto<T extends BaseResponseDataDto>{
     public void setData(T data) {
         this.data = data;
     }
+
+    public boolean isSuccess() {
+        return SUCCESS_CODE.equalsIgnoreCase(code);
+    }
+
 }

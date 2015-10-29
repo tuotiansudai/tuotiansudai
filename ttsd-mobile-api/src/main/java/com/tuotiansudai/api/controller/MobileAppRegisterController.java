@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.RegisterRequestDto;
 import com.tuotiansudai.api.dto.SendSmsRequestDto;
 import com.tuotiansudai.api.service.MobileAppRegisterService;
+import com.tuotiansudai.api.util.CommonUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,8 @@ public class MobileAppRegisterController {
 
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto, HttpServletRequest request) {
-        throw new NotImplementedException(getClass().getName());
+        String mobileNumber = sendSmsRequestDto.getPhoneNum();
+        String remoteIp = CommonUtils.getRemoteHost(request);
+        return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber,remoteIp);
     }
 }
