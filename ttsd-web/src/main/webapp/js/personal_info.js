@@ -23,6 +23,9 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
         });
 
         $EmailForm.validate({
+            success: 'form-valid',
+            focusInvalid: false,
+            errorClass: 'form-error',
             rules: {
                 email: {
                     required: true,
@@ -55,7 +58,7 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
             layer.open({
                 type: 1,
                 title: '修改密码',
-                area: ['500px', '300px'],
+                area: ['550px', '300px'],
                 shadeClose: true,
                 content: $changePassDOM,
                 cancel: function () {
@@ -65,18 +68,17 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
         });
 
         $passwordForm.validate({
-            focusCleanup: true,
+            //focusCleanup: true,
+            success: 'form-valid',
             focusInvalid: false,
-            errorClass: 'fa fa-times-circle error',
-            validClass: 'fa fa-check-circle valid',
+            errorClass: 'form-error',
             onkeyup: function (element, event) {
                 var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
                 if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
                     this.element(element);
                 }
             },
-            onfocusout: function (element) {
+            onFocusOut: function (element) {
                 if (!this.checkable(element) && !this.optional(element)) {
                     this.element(element);
                 }
@@ -104,41 +106,37 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
             rules: {
                 originalPassword: {
                     required: true,
-                    rangelength: [6, 20],
-                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$',
-                    isNotExist: "/personal-info/password/{0}/is-exist"
+                    checkRegex:true,
+                    //isNotExist: "/personal-info/password/{0}/is-exist"
                 },
                 newPassword: {
                     required: true,
-                    rangelength: [6, 20],
-                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'
+                    checkRegex:true,
                 },
                 newPasswordConfirm: {
                     required: true,
-                    rangelength: [6, 20],
-                    regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$',
+                    checkRegex:true,
                     equalTo: "input[name='newPassword']"
                 }
             },
             messages: {
                 originalPassword: {
                     required: "请输入原密码",
-                    regex: "原密码不正确",
-                    rangelength: "原密码不正确",
                     isNotExist: "原密码不正确"
                 },
                 newPassword: {
-                    required: "请输入新密码",
-                    regex: "只能字母和数字组合",
-                    rangelength: "长度6至20位"
+                    required: "请输入新密码"
                 },
                 newPasswordConfirm: {
                     required: "请输入新密码",
-                    regex: "只能字母和数字组合",
-                    rangelength: "长度6至20位",
                     equalTo: "密码不一致"
                 }
             }
         });
+
+        jQuery.validator.addMethod("checkRegex", function(value, element) {
+            var checkPassword = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}$/;
+            return this.optional(element) || (checkPassword.test(value));
+        }, "6位至20位数字与字母组合");
     });
 });

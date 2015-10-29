@@ -24,6 +24,7 @@ var require = {
         'jqueryPage': ['jquery'],
         'autoNumeric': ['jquery'],
         'layer':['jquery'],
+        'commonFun':['jquery.validate'],
         'jquery.validate.extension':['jquery', 'jquery.validate']
     }
 };

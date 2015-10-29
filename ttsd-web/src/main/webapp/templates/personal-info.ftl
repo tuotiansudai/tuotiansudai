@@ -78,15 +78,15 @@
     <form name="changePasswordForm" action="${requestContext.getContextPath()}/personal-info/change-password" method="post">
         <dl>
             <dt class="requireOpt">请输入原密码 </dt>
-            <dd><input type="password" id="originalPassword" name="originalPassword" class="input-control"  placeholder="请输入密码" maxlength="20"> </dd>
+            <dd><input type="password" id="originalPassword" name="originalPassword" class="input-control"  placeholder="请输入密码" > </dd>
         </dl>
         <dl>
             <dt class="requireOpt">请输入新密码 </dt>
-            <dd><input type="password" id="newPassword" name="newPassword" class="input-control"  placeholder="6位至20位数字与字母组合" maxlength="20"> </dd>
+            <dd><input type="password" id="newPassword" name="newPassword" class="input-control"  placeholder="6位至20位数字与字母组合" > </dd>
         </dl>
         <dl>
             <dt class="requireOpt">请确认新密码 </dt>
-            <dd><input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="input-control"  placeholder="6位至20位数字与字母组合" maxlength="20"> </dd>
+            <dd><input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="input-control"  placeholder="6位至20位数字与字母组合" > </dd>
         </dl>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <button type="submit" class="btn btn-normal" id="btnChangePass">确认修改</button>
@@ -113,5 +113,6 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.personal_info}">
 </@global.javascript>
+
 </body>
 </html>

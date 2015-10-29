@@ -57,14 +57,7 @@
     clear:both;
     dt,dd { float: left; }
     dd { padding-left:5px;}
-    label {
-      &.error , &.valid {
-        font-size: 12px;
-        color: #f68e3a;
-        padding-left: 10px;
-        vertical-align: middle;
-      }
-    }
+
   }
   button {
     margin: 20px auto 0 auto;
