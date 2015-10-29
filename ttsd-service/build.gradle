@@ -102,6 +102,7 @@ flyway {
         defaultPort = dbport;
     }
     outOfOrder = true
+    validateOnMigrate = false
     locations = ["filesystem:db_migration/${defaultDatabase}"]
     schemas = ["${defaultDatabase}"]
 
