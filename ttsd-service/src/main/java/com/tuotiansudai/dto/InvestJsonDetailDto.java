@@ -62,10 +62,10 @@ public class InvestJsonDetailDto extends InvestDetailDto {
     public boolean hasContract() {
         LoanStatus ls = super.getLoanStatus();
         return (
-               ls != LoanStatus.WAITING_VERIFY
-            && ls != LoanStatus.PREHEAT
-            && ls != LoanStatus.RAISING
-            && ls != LoanStatus.CANCEL
+                InvestStatus.SUCCESS == getStatus()
+                && (ls == LoanStatus.COMPLETE
+                || ls == LoanStatus.OVERDUE
+                || ls == LoanStatus.REPAYING)
         );
     }
 
