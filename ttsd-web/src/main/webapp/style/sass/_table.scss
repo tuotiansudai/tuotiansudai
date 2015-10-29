@@ -3,8 +3,8 @@ table {
   border-collapse: collapse;
   width: 100%;
   text-align: left;
-  font-size: 12px;
-  line-height: 2.2;
+  font-size: 13px;
+  line-height: 1.6;
   caption {
     text-align: left;
     border: 1px solid #ccc;
@@ -12,18 +12,20 @@ table {
     padding: 5px;
   }
   th {
-    background: nth($CK2, 4);
+    background: #ddd;
     text-align: center;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
+    padding: 10px;
   }
   td {
+    padding: 8px;
+    text-align: center;
     color: #666;
   }
   &.table {
-    th, td {
+    th {
+      border-bottom: 2px solid nth($CK2, 3);
+    }
+    td {
       border-bottom: 1px solid nth($CK2, 3);
     }
   }
@@ -34,7 +36,7 @@ table {
   }
   &.table-striped {
     tr:nth-child(even) > td {
-      background: nth($CK2, 4);
+      background: #eee;
     }
   }
   &.table-hover {
