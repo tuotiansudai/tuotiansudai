@@ -44,6 +44,8 @@ public class LoanListController {
         modelAndView.addObject("periodsEnd",periodsEnd);
         modelAndView.addObject("rateStart",rateStart);
         modelAndView.addObject("rateEnd",rateEnd);
+        modelAndView.addObject("activityType",activityType);
+        modelAndView.addObject("status",status);
         long totalPages = loanListCountWeb / 10 + (loanListCountWeb % 10 > 0 ? 1 : 0);
         boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
         boolean hasNextPage = currentPageNo < totalPages;
