@@ -1,7 +1,5 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -28,8 +26,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,19 +72,6 @@ public class InvestServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
-
-    private MockWebServer mockUmPayService() throws IOException {
-        MockWebServer mockWebServer = new MockWebServer();
-        mockWebServer.start(InetAddress.getLoopbackAddress(), 8091);
-
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody("OK");
-        mockResponse.setResponseCode(200);
-        mockWebServer.enqueue(mockResponse);
-
-        return mockWebServer;
-    }
-
 
     // case6: 超投，返款。抛出 PayException 异常
     @Test
@@ -147,57 +130,5 @@ public class InvestServiceTest {
 
     }
 
-    // case7: 超投，返款抛出 Exception 异常
-//    @Test
-//    public void overInvestPaybackException() throws Exception {
-//
-//            long requestModelId = 1L;
-//            String orderId= "11111";
-//
-//            InvestNotifyRequestModel model = new InvestNotifyRequestModel();
-//            model.setStatus(InvestNotifyProcessStatus.NOT_DONE.toString());
-//            model.setId(requestModelId);
-//            model.setOrderId(orderId);
-//            model.setRetCode("0000");
-//
-//            List<InvestNotifyRequestModel> toDoList = new ArrayList<InvestNotifyRequestModel>();
-//            toDoList.add(model);
-//
-//            when(this.investNotifyRequestMapper.getTodoList(10)).thenReturn(toDoList);
-//
-//            long loanId = 123;
-//            long investId = 1;
-//            long amount = 99L;
-//            String loginName = "zbx";
-//            long sumAmount = 1000L;
-//
-//            InvestModel investModel = new InvestModel();
-//            investModel.setId(investId);
-//            investModel.setAmount(amount);
-//            investModel.setLoanId(loanId);
-//            investModel.setLoginName(loginName);
-//            investModel.setStatus(InvestStatus.WAITING);
-//
-//            when(this.investMapper.findById(Long.parseLong(orderId))).thenReturn(investModel);
-//            when(this.investMapper.sumSuccessInvestAmount(loanId)).thenReturn(sumAmount);
-//
-//            LoanModel loanModel = new LoanModel();
-//            loanModel.setId(loanId);
-//            loanModel.setLoanAmount(1000L);
-//            when(this.loanMapper.findById(loanId)).thenReturn(loanModel);
-//
-//            AccountModel accountModel = new AccountModel(loginName, "zhoubx", "", "mockPayUserId", "", new Date());
-//            when(this.accountMapper.findByLoginName(loginName)).thenReturn(accountModel);
-//
-//            when(this.paySyncClient.send(Matchers.<Class<? extends ProjectTransferMapper>>any(), any(ProjectTransferRequestModel.class), Matchers.<Class<ProjectTransferResponseModel>>any())).thenThrow(Exception.class);
-//
-//            investService.asyncInvestCallback();
-//
-//            ArgumentCaptor<Long> accountModelArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
-//            ArgumentCaptor<InvestStatus> accountModelArgumentCaptor2 = ArgumentCaptor.forClass(InvestStatus.class);
-//            verify(investMapper, times(1)).updateStatus(accountModelArgumentCaptor1.capture(), accountModelArgumentCaptor2.capture());
-//            long investModelId = accountModelArgumentCaptor1.getValue();
-//            InvestStatus investModelStatus = accountModelArgumentCaptor2.getValue();
-//            assertThat(investModelStatus, is(InvestStatus.OVER_INVEST_PAYBACK_FAIL));
-//    }
+    // case7: 超投，返款抛出 Exception 异常，需要集成测试中验证
 }

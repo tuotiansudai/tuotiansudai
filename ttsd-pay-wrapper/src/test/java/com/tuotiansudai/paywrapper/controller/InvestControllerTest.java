@@ -96,12 +96,10 @@ public class InvestControllerTest {
         this.mockServer = mockUmPayService();
 
         MockPayGateWrapper.injectInto(payAsyncClient);
-//        MockPayGateWrapper.injectInto(paySyncClient);
         this.mockPayServer = new MockWebServer();
         this.mockPayServer.start();
 
         MockPayGateWrapper.setUrl("mockURL");
-//        MockPayGateWrapper.setUrl(this.mockPayServer.getUrl("/").toString());
         MockitoAnnotations.initMocks(this);
     }
 
@@ -276,7 +274,7 @@ public class InvestControllerTest {
         long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
         long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
 
-        this.generateMockResponse_success(3); // 返款成功
+        this.generateMockResponse_success(2); // 返款成功
         this.jobAsyncInvestNotify();
 
         verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
