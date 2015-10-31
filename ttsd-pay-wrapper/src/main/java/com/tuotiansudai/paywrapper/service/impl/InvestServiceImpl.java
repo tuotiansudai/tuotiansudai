@@ -141,8 +141,9 @@ public class InvestServiceImpl implements InvestService {
         List<InvestNotifyRequestModel> todoList = investNotifyRequestMapper.getTodoList(limitCount);
 
         for(InvestNotifyRequestModel model : todoList) {
-            updateInvestNotifyRequestStatus(model);
-            processOneCallback(model);
+            if(updateInvestNotifyRequestStatus(model)) {
+                processOneCallback(model);
+            }
         }
 
         BaseDto<BaseDataDto> asyncInvestNotifyDto = new BaseDto<>();
@@ -154,9 +155,15 @@ public class InvestServiceImpl implements InvestService {
     }
 
 
-    @Transactional
-    private void updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
-        investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+    private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
+        try {
+            investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
+        }catch (Exception e) {
+            // TODO: 发送短信
+            logger.fatal("投资回调请求状态更新失败,orderId:" + model.getOrderId() + ",id:" + model.getId());
+            return false;
+        }
+        return true;
     }
 
     @Transactional
@@ -230,10 +237,10 @@ public class InvestServiceImpl implements InvestService {
                 errorLog("超投返款失败", orderId, investModel.getAmount(), loginName, loanId);
             }
         } catch (PayException e) {
-            // 调用umpay时出现异常(可能已经返款成功了)
+            // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
             fatalLog("超投返款PayException异常", orderId, investModel.getAmount(), loginName, loanId, e);
         } catch (Exception e) {
-            // 所有其他异常，包括数据库链接，网络异常，记录日志，抛出异常，事务回滚
+            // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
             fatalLog("超投返款其他异常", orderId, investModel.getAmount(), loginName, loanId, e);
             throw e;
         }
@@ -281,7 +288,7 @@ public class InvestServiceImpl implements InvestService {
             investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
         } else {
             // 返款失败，当作投资成功处理
-            errorLog("返款失败，当作投资成功处理", orderId, investModel.getAmount(), loginName, investModel.getLoanId());
+            errorLog("回调通知返款失败，当作投资成功处理", orderId, investModel.getAmount(), loginName, investModel.getLoanId());
 
             investSuccess(orderId, investModel, loginName);
 
@@ -333,6 +340,7 @@ public class InvestServiceImpl implements InvestService {
         // TODO: 发短信提醒
         logger.fatal(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
     }
+
 
 
 }

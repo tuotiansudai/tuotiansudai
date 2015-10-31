@@ -1,16 +1,14 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
-import com.tuotiansudai.paywrapper.repository.model.InvestNotifyProcessStatus;
-
 public class InvestNotifyRequestModel extends ProjectTransferNotifyRequestModel {
 
-    private InvestNotifyProcessStatus status;
+    private String status;
 
-    public InvestNotifyProcessStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(InvestNotifyProcessStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }
