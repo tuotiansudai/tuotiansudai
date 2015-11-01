@@ -53,6 +53,9 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
     /**
      * @param loanTitleDto
      * @function 创建标题
@@ -107,6 +110,14 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                dataDto.setStatus(false);
+                dataDto.setMessage("代理用户不具有借款人角色");
+                baseDto.setData(dataDto);
+                return baseDto;
+            }
         }
         String loanUserId = getLoginName(loanDto.getLoanerLoginName());
         if (loanUserId == null) {
@@ -114,10 +125,18 @@ public class LoanServiceImpl implements LoanService {
             dataDto.setMessage("借款用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                dataDto.setStatus(false);
+                dataDto.setMessage("借款用户不具有借款人角色");
+                baseDto.setData(dataDto);
+                return baseDto;
+            }
         }
-        if(loanDto.getPeriods()>12 || loanDto.getPeriods() <= 0){
+        if(loanDto.getPeriods() <= 0){
             dataDto.setStatus(false);
-            dataDto.setMessage("借款期限最小为1，最大为12");
+            dataDto.setMessage("借款期限最小为1");
             baseDto.setData(dataDto);
             return baseDto;
         }
@@ -203,7 +222,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(AmountUtil.convertCentToString(loanModel.getLoanAmount()/10000));
+        loanDto.setLoanAmount(AmountUtil.convertCentToString(loanModel.getLoanAmount() / 10000));
         loanDto.setInvestIncreasingAmount(AmountUtil.convertCentToString(loanModel.getInvestIncreasingAmount()));
         loanDto.setMinInvestAmount(AmountUtil.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
@@ -300,6 +319,38 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> openLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        if (loanMapper.findById(loanDto.getId()) == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
+            loanDto.setLoanStatus(LoanStatus.PREHEAT);
+            baseDto = payWrapperClient.createLoan(loanDto);
+            BaseDto<PayDataDto> openLoanDto = payWrapperClient.updateLoan(loanDto);
+            if (baseDto.getData().getStatus() && openLoanDto.getData().getStatus()) {
+                loanDto.setLoanStatus(LoanStatus.RAISING);
+                BaseDto<PayDataDto> investLoanDto = payWrapperClient.updateLoan(loanDto);
+                if (investLoanDto.getData().getStatus()) {
+                    loanDto.setLoanStatus(LoanStatus.PREHEAT);
+                    updateLoanAndLoanTitleRelation(loanDto);
+                    return investLoanDto;
+                }
+            }
+            return baseDto;
+        }
+        payDataDto.setStatus(false);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
@@ -311,21 +362,8 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus() || LoanStatus.VERIFY_FAIL == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-            payDataDto.setStatus(true);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
-        if (LoanStatus.PREHEAT == loanDto.getLoanStatus()) {
-            updateLoanAndLoanTitleRelation(loanDto);
-            baseDto = payWrapperClient.createLoan(loanDto);
-            if (baseDto.getData().getStatus()) {
-                return payWrapperClient.updateLoan(loanDto);
-            }
-            return baseDto;
-        }
-        payDataDto.setStatus(false);
+        updateLoanAndLoanTitleRelation(loanDto);
+        payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         return baseDto;
     }
@@ -392,6 +430,10 @@ public class LoanServiceImpl implements LoanService {
         }
         loanTitleRelationModelList = loanDto.getLoanTitles();
         if (!CollectionUtils.isEmpty(loanTitleRelationModelList)) {
+            for (LoanTitleRelationModel loanTitleRelationModel : loanTitleRelationModelList) {
+                loanTitleRelationModel.setId(idGenerator.generate());
+                loanTitleRelationModel.setLoanId(loanModel.getId());
+            }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
     }
@@ -474,26 +516,15 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws BaseException {
-        // 修改标的的最小投资金额和投资截止时间
-        updateLoanInfo(loanId, minInvestAmount, fundraisingEndTime);
+    public BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException {
+        updateLoanAndLoanTitleRelation(loanDto);
 
         // 如果存在未处理完成的记录，则不允许放款
         // 放款并记账，同时生成还款计划，处理推荐人奖励，处理短信和邮件通知
-        processLoanOutPayRequest(loanId);
+        return processLoanOutPayRequest(loanDto.getId());
     }
 
-    private void updateLoanInfo(long loanId, long minInvestAmount, Date fundraisingEndTime) {
-        LoanModel loan4update = new LoanModel();
-        loan4update.setId(loanId);
-        if (fundraisingEndTime != null) {
-            loan4update.setFundraisingEndTime(fundraisingEndTime);
-        }
-        loan4update.setMinInvestAmount(minInvestAmount);
-        loanMapper.update(loan4update);
-    }
-
-    private void processLoanOutPayRequest(long loanId) throws BaseException {
+    private BaseDto<PayDataDto> processLoanOutPayRequest(long loanId) throws BaseException {
         LoanOutDto loanOutDto = new LoanOutDto();
         loanOutDto.setLoanId(String.valueOf(loanId));
         BaseDto<PayDataDto> dto = payWrapperClient.loanOut(loanOutDto);
@@ -504,6 +535,7 @@ public class LoanServiceImpl implements LoanService {
                 throw new BaseException("放款失败");
             }
         }
+        return dto;
     }
 
     @Override
@@ -525,8 +557,8 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
             loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(loanModels.get(i).getBaseRate()*100)+"%");
-            loanListDto.setActivityRate(String.valueOf(loanModels.get(i).getActivityRate()*100)+"%");
+            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
             loanListDtos.add(loanListDto);

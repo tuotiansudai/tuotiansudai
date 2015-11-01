@@ -13,5 +13,7 @@ public interface UserRoleMapper {
 
     List<UserRoleModel> findByLoginName(String loginName);
 
+    List<UserRoleModel> findByLoginNameAndRole(@Param("loginName") String loginName,@Param("role") String role);
+
     void deleteByLoginName(@Param("loginName") String loginName);
 }

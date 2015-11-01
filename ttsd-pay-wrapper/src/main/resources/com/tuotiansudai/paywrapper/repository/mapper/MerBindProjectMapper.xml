@@ -36,7 +36,7 @@
     </update>
 
     <insert id="createResponse" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="MerBindProjectResponseModel">
-        insert into mer_bind_project_response (request_id, sign_type, sign, merId, version, project_account_id, project_state, mer_check_date,ret_code,ret_msg,response_data,response_time)
+        insert into mer_bind_project_response (request_id, sign_type, sign, mer_Id, version, project_account_id, project_state, mer_check_date,ret_code,ret_msg,response_data,response_time)
         values (#{requestId}, #{signType}, #{sign}, #{merId}, #{version}, #{projectAccountId}, #{projectState}, #{merCheckDate}, #{retCode}, #{retMsg}, #{responseData}, #{responseTime})
     </insert>
 
