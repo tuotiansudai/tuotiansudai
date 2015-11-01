@@ -74,4 +74,14 @@ public class UserBillServiceImpl implements UserBillService {
         return userBillMapper.findUserBillsCount(params);
     }
 
+    @Override
+    public List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime,int currentPage,int pageSize) {
+        return userBillMapper.findUserFunds(userBillBusinessType,userBillOperationType,loginName,startTime,endTime,(currentPage - 1) * pageSize,pageSize);
+    }
+
+    @Override
+    public int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime) {
+        return userBillMapper.findUserFundsCount(userBillBusinessType,userBillOperationType,loginName,startTime,endTime);
+    }
+
 }
