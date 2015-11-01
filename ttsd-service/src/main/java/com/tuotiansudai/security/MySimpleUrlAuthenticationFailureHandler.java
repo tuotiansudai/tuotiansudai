@@ -40,7 +40,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes",request.getParameter("username"));
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", request.getParameter("username"));
         if (this.isAjaxRequest(request)) {
             BaseDto<LoginDto> baseDto = new BaseDto<>();
             LoginDto loginDto = new LoginDto();
@@ -48,9 +48,9 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             if (!redisWrapperClient.exists(redisKey)) {
                 redisWrapperClient.set(redisKey, "1");
             } else {
-                if (Integer.parseInt(redisWrapperClient.get(redisKey)) < times-1) {
-                    redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey))+1));
-                } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times-1) {
+                if (Integer.parseInt(redisWrapperClient.get(redisKey)) < times - 1) {
+                    redisWrapperClient.set(redisKey, String.valueOf(Integer.parseInt(redisWrapperClient.get(redisKey)) + 1));
+                } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times - 1) {
                     redisWrapperClient.setex(redisKey, second, String.valueOf(times));
                     UserModel userModel = userMapper.findByLoginName(request.getParameter("username"));
                     userModel.setStatus(UserStatus.INACTIVE);

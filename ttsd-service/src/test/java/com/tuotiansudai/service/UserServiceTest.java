@@ -82,7 +82,7 @@ public class UserServiceTest {
         user3.setReferrer("test2");
         userMapper.create(user3);
 
-        userService.saveReferrerRelations("test2", "test3");
+//        userService.saveReferrerRelations("test2", "test3");
 
         List<ReferrerRelationModel> models = referrerRelationMapper.findByLoginName("test3");
 

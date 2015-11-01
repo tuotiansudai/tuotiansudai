@@ -2,10 +2,7 @@ package com.tuotiansudai.dto;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2015/9/18.
- */
-public class BasePaginationDataDto<T> extends BaseDataDto{
+public class BasePaginationDataDto<T> extends BaseDataDto {
 
     private int index;
     private int pageSize;

@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -23,10 +24,6 @@ public interface UserService {
 
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
-    BaseDto<PayDataDto> reRegisterAccount(RegisterAccountDto dto);
-
-    void saveReferrerRelations(String referrerLoginName, String loginName);
-
     /**
      * 修改用户密码
      *
@@ -37,7 +34,7 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
 
-    void editUser(EditUserDto editUserDto, String ip) throws BaseException;
+    void editUser(EditUserDto editUserDto, String ip) throws EditUserException;
 
     void updateUserStatus(String loginName, UserStatus userStatus, String ip);
 
