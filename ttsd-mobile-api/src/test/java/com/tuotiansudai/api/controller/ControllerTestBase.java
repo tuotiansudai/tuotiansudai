@@ -40,7 +40,7 @@ public abstract class ControllerTestBase {
         successResponseDto = new BaseResponseDto();
         successResponseDto.setCode("0000");
     }
-
+    
     protected String generateRequestJson(BaseParamDto requestParamDto) throws JsonProcessingException {
         requestParamDto.setBaseParam(BaseParamTest.getInstance());
         return objectMapper.writeValueAsString(requestParamDto);
@@ -63,6 +63,13 @@ public abstract class ControllerTestBase {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.code").value("0000"));
+    }
+    protected ResultActions doRequestWithServiceIsBadRequestMockedTest(String url, BaseParamDto requestDto) throws Exception {
+        String requestJson = generateRequestJson(requestDto);
+        return mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(requestJson))
+                .andExpect(status().isBadRequest());
+
     }
 
 }
