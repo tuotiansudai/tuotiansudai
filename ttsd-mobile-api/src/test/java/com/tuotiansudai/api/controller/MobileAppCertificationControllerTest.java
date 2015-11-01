@@ -1,10 +1,14 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.CertificationRequestDto;
+import com.tuotiansudai.api.dto.RegisterRequestDto;
 import com.tuotiansudai.api.service.MobileAppCertificationService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class MobileAppCertificationControllerTest extends ControllerTestBase {
 
@@ -20,8 +24,18 @@ public class MobileAppCertificationControllerTest extends ControllerTestBase {
     }
 
     @Test
-    public void userMobileCertification() throws Exception {
+    public void shouldUserMobileCertificationIsOk() throws Exception {
+        CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
+        certificationRequestDto.setUserIdCardNumber("123456789012345678");
+        certificationRequestDto.setUserRealName("拓天");
+        when(service.validateUserCertificationInfo(any(CertificationRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/certificate",
+                certificationRequestDto
+        );
+    }
+    @Test
+    public void shouldUserMobileCertificationIsBadRequest() throws Exception {
+        doRequestWithServiceIsBadRequestMockedTest("/certificate",
                 new CertificationRequestDto()
         );
     }
