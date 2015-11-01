@@ -90,9 +90,11 @@ public enum ReturnMessage {
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
     USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
+    CANNOT_GET_APK_VERSION("0050", "查找不到版本信息"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
+
 
     private String code;
     private String msg;
