@@ -13,6 +13,7 @@ import com.tuotiansudai.utils.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,15 @@ public class BindEmailServiceImpl implements BindEmailService {
     @Autowired
     private UserMapper userMapper;
 
+
+    @Value("${web.email.verify.host}")
+    private String host;
+
+    @Value("${web.email.verify.port}")
+    private String port;
+
+    private final static String ACTIVE_URL_TEMPLATE = "http://{host}:{port}/bind-email/verify/{uuid}";
+
     @Override
     public boolean sendActiveEmail(String email, String url) {
         if (StringUtils.isNotEmpty(email)) {
@@ -37,8 +47,7 @@ public class BindEmailServiceImpl implements BindEmailService {
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
-            String activeUrlTemplate = "{url}/verify/{uuid}";
-            String activeUrl = activeUrlTemplate.replace("{url}",url).replace("{uuid}",uuid);
+            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{host}",host).replace("{port}",port).replace("{uuid}",uuid);
 
             redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
                     86400,

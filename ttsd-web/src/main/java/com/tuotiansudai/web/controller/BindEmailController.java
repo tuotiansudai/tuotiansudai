@@ -21,7 +21,7 @@ public class BindEmailController {
     @Autowired
     private BindEmailService bindEmailService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<BaseDataDto> bindEmail(HttpServletRequest request) {
         String email = request.getParameter("email");
