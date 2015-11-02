@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf'], function ($, pagination, Mustache, investListTemplate) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
 
     $(function () {
         var amountInputElement = $(".text-input-amount");

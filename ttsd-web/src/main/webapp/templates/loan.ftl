@@ -256,15 +256,6 @@
     </div>
 </div>
 
-
-<#--弹出层-->
-<div class="layer-box">
-    <div class="layer-wrapper"></div>
-    <div class="content">
-        <img src="images/house-1.jpg" alt="" width="760" height="450"/>
-    </div>
-</div>
-<#--弹出层-->
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.loan_detail}">
 </@global.javascript>
