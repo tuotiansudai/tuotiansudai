@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -57,6 +58,9 @@ public class LoanServiceTest {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
 
     @Before
@@ -231,6 +235,7 @@ public class LoanServiceTest {
     public void updateLoanTest() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
 
