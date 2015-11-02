@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<#--<@global.head title="账户总览" pageCss="${css.global}"></@global.head>-->
-<head lang="en">
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
-<title>账户总览</title>
-<link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/global.css">
+<@global.head title="账户总览" pageCss="${css.global}"></@global.head>
 </head>
 <body>
 <#include "header.ftl" />
