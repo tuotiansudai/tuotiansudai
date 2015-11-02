@@ -69,7 +69,7 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
             $(".recharge-content .fast-recharge").toggleClass("active");
             $(".recharge-content .e-bank-recharge").toggleClass("active");
         });
-        
+
         //充值提交
         submitElement.click(function () {
             var amount = amountInputElement.autoNumeric("get");
