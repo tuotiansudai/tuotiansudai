@@ -43,10 +43,11 @@ $(function () {
     //添加申请材料
     $('.btn-upload').click(function () {
         $('.upload-box').append(_html);
-        $(".file-loading").fileinput({
+        $(".upload").fileinput({
             language: "zh",
-            uploadUrl: "/",
-            showUpload: false,
+            uploadUrl: "/upload",
+            showUpload: true,
+            initialPreviewShowDelete:true,
             allowedFileExtensions: ["jpg", "png", "gif", "jpeg"]
         });
         $('.selectpicker').selectpicker({
@@ -64,7 +65,7 @@ $(function () {
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify({title: txt}),
+            data: JSON.stringify({title: txt})
         }).done(function (data) {
             //if (data.status) {
             //data = data;
@@ -145,7 +146,7 @@ $(function () {
                 obj.applyMetarialUrl = '';
             } else {
                 formGroup.eq(index).find('.file-preview-frame').each(function (i) {
-                    var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('title');
+                    var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('src');
                     str += _img + ',';
                     _url = str.substring(0, str.lastIndexOf(','));
 
@@ -222,7 +223,7 @@ $(function () {
         beforeCheck: function(curform){
             var periods = parseInt($('.jq-timer',curform).val());
             if(periods <= 0){
-                showErrorMessage('借款期限最小为1，最大为12',$('.jq-timer',curform));
+                showErrorMessage('借款期限最小为1',$('.jq-timer',curform));
                 return false;
             }
             var loanAmount = parseInt($('.jq-pay',curform).val());

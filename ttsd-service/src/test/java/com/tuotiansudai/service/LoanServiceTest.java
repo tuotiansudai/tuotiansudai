@@ -1,21 +1,15 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,15 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
 import java.util.UUID;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
+
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -218,7 +208,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -267,7 +257,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -293,11 +283,12 @@ public class LoanServiceTest {
 
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
-        Assert.assertNotNull(baseDto.getData().getId());
-        Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
-        assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate());
+        assertNotNull(baseDto.getData().getId());
+        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
+        assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
+        assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
     }
+
     @Test
     public void shouldGetTheInvests(){
         long loanId = createLoanService();
@@ -363,7 +354,7 @@ public class LoanServiceTest {
         loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.LOAN_TYPE_1);
+        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanModel.setMaxInvestAmount(100000000000l);
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
@@ -414,7 +405,7 @@ public class LoanServiceTest {
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.WAITING);
         model.setCreatedTime(new Date());
         return model;
