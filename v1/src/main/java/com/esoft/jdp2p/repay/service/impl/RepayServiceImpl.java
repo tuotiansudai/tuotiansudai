@@ -750,7 +750,7 @@ public class RepayServiceImpl implements RepayService {
 					mobileList += loanRepay.getLoan().getUser().getMobileNumber() + ",";
 				}
 			}
-			log.debug("mobile:" + mobileList + ";date:" + DateUtil.addDay(new Date(), daysBefore) + "loanRepayAmount:) + loanRepayAmount") ;
+			log.debug("repayAlert|mobile:" + mobileList + ";date:" + DateUtil.addDay(new Date(), daysBefore) + ";loanRepayAmount:" + loanRepayAmount) ;
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("loanRepayAmount", loanRepayAmount.toString());
 			String[] mobiles = mobileList.split(",");

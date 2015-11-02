@@ -140,7 +140,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 						scheduler.scheduleJob(jobDetail, trigger);
 					} else {
-						scheduler.rescheduleJob(trigger.getKey(), trigger);
+						scheduler.resumeTrigger(trigger.getKey());
 					}
 				}
 
