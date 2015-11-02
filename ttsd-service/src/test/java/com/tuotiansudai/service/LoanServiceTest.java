@@ -244,6 +244,7 @@ public class LoanServiceTest {
         userMapper.create(fakeUser);
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
+        userRoleMapper.createUserRoles(getFakeUserRole(fakeUser,Role.LOANER));
 
         this.creteLoan(getLoanDto(fakeUser));
         List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
