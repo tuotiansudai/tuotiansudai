@@ -23,4 +23,41 @@
         select * from system_bill where order_id = #{orderId}
     </select>
 
+    <select id="findSystemBillPagination" parameterType="map" resultMap="systemBillResultMap">
+        select * from system_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type = #{businessType}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findSystemBillCount" parameterType="map" resultType="int">
+        select count(1) from system_bill
+        <where>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="operationType !=null">
+                and type = #{operationType}
+            </if>
+            <if test="businessType !=null">
+                and business_type  = #{businessType}
+            </if>
+        </where>
+    </select>
 </mapper>

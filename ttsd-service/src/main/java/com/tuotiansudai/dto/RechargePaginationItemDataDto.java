@@ -1,79 +1,65 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.utils.AmountUtil;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class RechargePaginationItemDataDto implements Serializable {
-    private long loanId;
+public class RechargePaginationItemDataDto extends RechargeDto implements Serializable {
 
-    private String loanName;
+    private long rechargeId;
 
-    private String loanAmount;
+    private String fee;
 
-    private String expectedRepayAmount;
+    private String status;
 
-    private String actualRepayAmount;
-
-    private String unpaidAmount;
-
-    private Date recheckTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date nextRepayDate;
-
-    private Date completedDate;
+    private Date createdTime;
 
 
-    public RechargePaginationItemDataDto(LoanModel loanModel) {
-
-        this.loanId = loanModel.getId();
-        this.loanName = loanModel.getName();
-        this.loanAmount = AmountUtil.convertCentToString(loanModel.getLoanAmount());
-        this.expectedRepayAmount = AmountUtil.convertCentToString(loanModel.getExpectedRepayAmount());
-        this.actualRepayAmount = AmountUtil.convertCentToString(loanModel.getActualRepayAmount());
-        this.unpaidAmount = AmountUtil.convertCentToString(loanModel.getUnpaidAmount());
-        this.recheckTime = loanModel.getRecheckTime();
-        this.nextRepayDate = loanModel.getNextRepayDate();
-        this.completedDate = loanModel.getCompletedDate();
+    public RechargePaginationItemDataDto(RechargeModel rechargeModel) {
+        this.rechargeId = rechargeModel.getId();
+        this.fee = AmountUtil.convertCentToString(rechargeModel.getFee());
+        this.status = rechargeModel.getStatus().getDescription();
+        this.createdTime = rechargeModel.getCreatedTime();
+        super.setLoginName(rechargeModel.getLoginName());
+        super.setBankCode(rechargeModel.getBankCode());
+        super.setAmount(AmountUtil.convertCentToString(rechargeModel.getAmount()));
+        super.setSource(rechargeModel.getSource());
+        super.setFastPay(rechargeModel.isFastPay());
     }
 
-    public long getLoanId() {
-        return loanId;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public String getLoanName() {
-        return loanName;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public String getLoanAmount() {
-        return loanAmount;
+    public long getRechargeId() {
+        return rechargeId;
     }
 
-    public String getExpectedRepayAmount() {
-        return expectedRepayAmount;
+    public void setRechargeId(long rechargeId) {
+        this.rechargeId = rechargeId;
     }
 
-    public String getActualRepayAmount() {
-        return actualRepayAmount;
+    public String getFee() {
+        return fee;
     }
 
-    public String getUnpaidAmount() {
-        return unpaidAmount;
+    public void setFee(String fee) {
+        this.fee = fee;
     }
 
-    public Date getRecheckTime() {
-        return recheckTime;
+    public String getStatus() {
+        return status;
     }
 
-    public Date getNextRepayDate() {
-        return nextRepayDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Date getCompletedDate() {
-        return completedDate;
-    }
 }
