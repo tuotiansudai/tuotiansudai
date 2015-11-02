@@ -429,7 +429,7 @@ public class LoanServiceImpl implements LoanService {
             LoanModel loan4Update = new LoanModel();
             loan4Update.setId(loan.getId());
             loan4Update.setRecheckTime(new Date());
-            loanMapper.update(loan);
+            loanMapper.update(loan4Update);
         }else{
             logger.error("update loan status failed : "+dto.getData().getMessage());
         }
