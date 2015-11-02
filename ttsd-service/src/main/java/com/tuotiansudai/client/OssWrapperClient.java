@@ -131,7 +131,7 @@ public class OssWrapperClient {
             graphics.drawImage(waterImage, 0, 0, width, height, null);
             //水印文件结束
             graphics.dispose();
-            ImageIO.write(image,  "jpg",  swapStream);
+            ImageIO.write(image, "jpg", swapStream);
         } catch (Exception e) {
             logger.error("upload oss fail ");
             e.printStackTrace();
