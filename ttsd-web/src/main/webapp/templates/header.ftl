@@ -1,5 +1,5 @@
 <div class="header-container">
-    <div class="header-bar">
+    <div class="header">
         <div>
             <p>客服电话：400-169-1188<span>沟通时间：(9:00-18:00)</span></p>
             <ul>

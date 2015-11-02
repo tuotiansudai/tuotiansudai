@@ -47,7 +47,7 @@
 
     </div>
 </div>
-<div class="main">
+<div class="main-frame">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
             <ul class="left-nav">

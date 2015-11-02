@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-<#assign loan = (baseDto.data)>
 <#import "macro/global.ftl" as global>
 <@global.head title="标的详情" pageCss="${css.loan_detail}">
 </@global.head>
@@ -11,10 +10,10 @@
         <div class="news-share">
             <h2 class="hd">
 
-            <#if loan.activityType == "NOVICE">
-                <span class="hot"></span>
-            </#if>
-            ${loan.projectName}
+                <#if loan.activityType == "NOVICE">
+                    <span class="hot"></span>
+                </#if>
+                ${loan.projectName}
                 <input class="jq-loan-user" type="hidden" value="${loan.id}">
                 <input id="loanStatus" type="hidden" value="${loan.loanStatus}">
             </h2>
@@ -35,7 +34,7 @@
                 <#--<p>已投：<span class="point">${loan.raiseCompletedRate?string("0.00")}%</span></p>-->
                 <p>项目金额： ${loan.loanAmount}万元</p>
 
-                <p>代理人： ${loan.agentLoginName}</p>
+                <p>代理人：${loan.agentLoginName}</p>
 
                 <p>借款人：${loan.loanerLoginName}</p>
             <#if loan.type.getLoanPeriodUnit() == "MONTH">
@@ -219,12 +218,12 @@
     <div class="item-block bg-loan loan-box">
         <div class="nav">
             <ul>
-                <li class="current"><span>借款详情</span></li>
+                <li class="active"><span>借款详情</span></li>
                 <li><span>出借纪录</span></li>
             </ul>
         </div>
         <div class="loan-list">
-            <div class="loan-list-con" style="display: block;">
+            <div class="loan-list-con loan-details active">
                 <div class="loan-detail">
                     <h3>借款详情：</h3>
                 ${loan.descriptionHtml}
@@ -232,11 +231,9 @@
 
                 <div class="loan-material">
                     <h3>申请材料：</h3>
-
                     <div class="pic-list">
                     <#list loan.loanTitleDto as loanTitle>
                         <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
-
                         <ul class="img-list">
                             <#list loan.loanTitles as loanTitleRelation >
                                 <#if loanTitle.id == loanTitleRelation.titleId>
@@ -244,86 +241,27 @@
                                 </#if>
                             </#list>
                         </ul>
-
-
                     </#list>
                     </div>
                 </div>
             </div>
+
             <div class="loan-list-con">
-                <table class="table-list">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>出借人</th>
-                        <th>出借金额（元）</th>
-                        <th>出借方式</th>
-                        <th>预期利息（元）</th>
-                        <th>出借时间</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#list loan.baseDto.data.records as investPaginationDataDto>
-                    <tr>
-                        <td>${investPaginationDataDto.serialNo}</td>
-                        <td>${investPaginationDataDto.loginName}</td>
-                        <td>${investPaginationDataDto.amount}</td>
-                        <td>
-                            <#if investPaginationDataDto.autoInvest>
-                                自动
-                                <#if investPaginationDataDto.source=="IOS">
-                                    <span class="icon-loan-ios"></span>
-                                <#elseif investPaginationDataDto.source=="ANDROID">
-                                    <span class="icon-loan-Android"></span>
-                                <#else>
-                                    <span class="icon-loan-ie"></span>
-                                </#if>
-                            </#if>
-                            <#if !investPaginationDataDto.autoInvest>
-                                手动
-                                <#if investPaginationDataDto.source=="IOS">
-                                    <span class="icon-loan-ios"></span>
-                                <#elseif investPaginationDataDto.source=="ANDROID">
-                                    <span class="icon-loan-Android"></span>
-                                <#else>
-                                    <span class="icon-loan-ie"></span>
-                                </#if>
-                            </#if>
-
-                        </td>
-                        <td>${investPaginationDataDto.expectedRate}</td>
-                        <td>${investPaginationDataDto.createdTime}</td>
-                    </tr>
-                    </#list>
-                    </tbody>
+                <table class="table-striped">
                 </table>
-
-                <div class="pagination"></div>
+                <div class="pagination" data-url="/loan/${loan.id}/invests" data-page-size="2">
+                </div>
             </div>
-
         </div>
     </div>
 </div>
 
-
-<#--弹出层-->
-<div class="layer-box">
-    <div class="layer-wrapper"></div>
-    <div class="content">
-        <img src="${staticServer}/images/house-1.jpg" alt="" width="760" height="450"/>
-    </div>
-</div>
-<#--弹出层-->
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.loan_detail}">
 </@global.javascript>
 </body>
 </html>
 <script>
-    var intDiff = parseInt(${loan.preheatSeconds?string('0')});//倒计时总秒数量
-    var java_point = ${loan.raiseCompletedRate}; //后台传递数据
-    var pageCurrent = '${loan.baseDto.data.index}';
-    var pageTotal = '${loan.baseDto.data.count}';
-
-
+    var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
+    var java_point = ${loan.amountNeedRaised}; //后台传递数据
 </script>

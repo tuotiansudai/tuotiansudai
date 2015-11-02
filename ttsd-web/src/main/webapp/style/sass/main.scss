@@ -1,11 +1,11 @@
 .header-container {
-  .header-bar {
+  .header {
     width: 100%;
     height: 30px;
     background: #333;
     font-size: 12px;
     div {
-      width: 60%;
+      width: 70%;
       height: 30px;
       line-height: 30px;
       margin: 0 auto;
@@ -75,7 +75,7 @@
     }
   }
   .copyright {
-    width: 60%;
+    width: 70%;
     height: 70px;
     border-top: #606060 1px solid;
     margin: 0 auto;
@@ -103,7 +103,7 @@
   width: 100%;
   background: #fff;
   .nav {
-    width: 60%;
+    width: 70%;
     height: 75px;
     position: relative;
     margin: 0 auto;
@@ -114,6 +114,7 @@
       display: block;
       float: left;
       margin-top: 15px;
+      position: absolute;
     }
     ul {
       height: 100%;
@@ -145,8 +146,8 @@
   }
 }
 
-.main {
-  width: 60%;
+.main-frame {
+  width: 70%;
   height: auto;
   margin: 20px auto;
   overflow: hidden;

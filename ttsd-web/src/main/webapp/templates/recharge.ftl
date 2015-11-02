@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html>
 <#import "macro/global.ftl" as global>
-<@global.head title="充值" pageCss="${css.recharge}">
+<@global.head title="充值" pageCss="${css.global}">
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="content">
-    <ul class="email-nav">
-        <li><a href="javascript:">账户总览</a></li>
+<div class="main-frame recharge-container">
+    <aside class="menu-box fl">
+        <ul class="menu-list">
+        <li><a href="javascript:" class="active">账户总览</a></li>
         <li><a href="javascript:">投资记录</a></li>
         <li><a href="javascript:">资金管理</a></li>
         <li><a href="javascript:">个人资料</a></li>
         <li><a href="javascript:">自动投标</a></li>
         <li><a href="javascript:">推荐管理</a></li>
-    </ul>
-    <div class="recharge-container">
-        <p class="title"><em>我要充值</em></p>
-
-        <div class="recharge-wrapper">
-            <ul>
+        </ul>
+    </aside>
+    <div class="content-container fr auto-height">
+        <h4 class="column-title"><em class="tc">我要充值</em></h4>
+            <div class="recharge-content">
+            <ul class="payment-mode clear">
                 <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
-                    <span class="hot-flag">
-                        <img src="${staticServer}/images/recharge/hot.jpg" alt=""/>
-                    </span>
+                    <i class="hot-flag"></i>
                     快捷支付
                 </li>
                 <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
             </ul>
 
-            <div class="recharge-content">
-
-                <div class="fast-recharge <#if isFastPayOn>active</#if>">
-
+            <div class="recharge-wrapper">
+                <div class="fast-recharge <#if isFastPayOn>active</#if>" style="display: none;">
                 <#if !isBindCard>
                     <div class="bind-card-nav">
                         <span>您尚未绑定银行卡，请先绑定银行卡！</span>
-                        <input type="submit" class="submit" value="立即绑卡" data-url="${staticServer}/bind-card"/>
+                        <input type="submit" class="btn btn-normal" value="立即绑卡" data-url="${requestContext.getContextPath()}/bind-card"/>
                     </div>
                 </#if>
 
@@ -50,7 +47,9 @@
 
                             <p><label>银行卡：</label><span>${bankCard}</span></p>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="submit" class="submit" value="开通快捷支付" />
+                            <div class="tc pad-m">
+                            <input type="submit" class="btn" value="开通快捷支付" />
+                            </div>
                         </form>
 
                     </div>
@@ -67,15 +66,16 @@
                             <input type="hidden" name="source" value="WEB"/>
                             <input type="hidden" name="fastPay" value="true"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <button type="submit" class="submit grey" disabled="disabled">确认充值</button>
+                            <div class="tc pad-m">
+                            <button type="submit" class="btn" disabled="disabled">确认充值</button>
+                            </div>
                         </form>
                     </div>
                 </#if>
                 </div>
 
                 <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
-                    <ol>
-                        <p>请选择银行：</p>
+                    <ol><b class="title">请选择银行：</b>
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
                             <input data-name="${bank}" type="radio" id="bank-${bank}" name="bank" <#if bank_index == 0>checked="checked"</#if>>
@@ -86,14 +86,15 @@
                     <div class="recharge-form">
                         <form action="/recharge" method="post" target="_blank">
                             <p>账户可用余额：<i>${balance}</i> 元</p>
-
                             <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
                             <input class="selected-bank" type="hidden" name="backCode" value="CMB"/>
                             <input type="hidden" name="amount" value=""/>
                             <input type="hidden" name="source" value="WEB"/>
                             <input type="hidden" name="fastPay" value="false"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="submit" class="submit grey" disabled="disabled" value="确认充值"/>
+                            <div class="tc pad-m">
+                            <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -112,36 +113,18 @@
     </div>
 </div>
 
-<!--bind-card end-->
+<div id="popRecharge" class="pad-m recharge-plat" style="display: none;">
+    <p>请在新打开的联动优势页面充值完成后选择：</p>
 
-<div class="ecope-overlay" style=""></div>
-<div class="ecope-dialog">
-    <div class="dg_wrapper dialog-chongzhi">
-        <div class="hd">
-            <h3>登录到联动优势支付平台充值</h3>
-        </div>
-        <div class="bd">
-            <p>请在新打开的联动优势页面充值完成后选择：</p>
-
-            <div class="ret">
-                <p>充值成功：<a href="${requestContext.getContextPath()}/account" class="g-btn g-btn-medium-major tongji"
-                           data-category="确认成功" data-label="recharge">确认成功</a></p>
-
-                <p>充值失败：<a href="${requestContext.getContextPath()}/recharge" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值"
-                           data-label="recharge">重新充值</a>
-                    <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心"
-                                            data-label="recharge">帮助中心</a></span>
-                </p>
-
-                <p style="font-size:14px">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
-            </div>
-        </div>
-        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+    <div class="ret">
+        <p>充值成功：<a href="" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
+        <p>充值失败：<a href="" class="btn-normal" data-category="重新充值" data-label="recharge">重新充值</a>
+            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+        </p>
+        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
     </div>
 </div>
 
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.recharge}">
 </@global.javascript>
-</body>
-</html>

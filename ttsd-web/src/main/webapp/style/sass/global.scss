@@ -1,22 +1,27 @@
-body, html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input, button {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-family: 'Microsoft YaHei', serif;
-  font-style: normal;
-  outline: none;
+@import 'layer', 'font_awesome';
+@import 'reset', 'btn','table';
+@import 'page_frame', 'my_account';
+.borderBox {
+  border: 1px solid nth($borderColor, 1);
+  padding: 12px;
+  line-height: nth($baseLineHeight, 1);
+  height: auto;
+  overflow: auto;
+  &.spad { padding:5px;}
+}
+.bRadiusBox {
+  @extend .borderBox;
+  border-radius:3px;
 }
 
-a {
-  text-decoration: none;
+.text-notice {
+  color: nth($btnColor,5);
+  font-size: nth($fontSize, 4);
 }
 
-img {
-  border: none;
+.requireOpt:before {
+  color: $required;
+  padding-right: 2px;
+  display: inline-block;
+  content: '*';
 }
-
-body {
-  background: #f9f9f9;
-}
-
-@import "main";
