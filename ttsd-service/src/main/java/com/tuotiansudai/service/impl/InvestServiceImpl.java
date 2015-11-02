@@ -5,11 +5,13 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -42,35 +44,31 @@ public class InvestServiceImpl implements InvestService {
     private IdGenerator idGenerator;
 
     @Override
-    public BaseDto<PayFormDataDto> invest(InvestDto investDto) {
+    public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
         String loginName = LoginUserInfo.getLoginName();
         investDto.setLoginName(loginName);
-        if (canInvest(investDto)) {
-            return payWrapperClient.invest(investDto);
-        } else {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-            PayFormDataDto dataDto = new PayFormDataDto();
-            dataDto.setStatus(false);
-            baseDto.setData(dataDto);
-            return baseDto;
-        }
+
+        checkInvestAmount(investDto);
+
+        return payWrapperClient.invest(investDto);
+
     }
 
-    private boolean canInvest(InvestDto investDto) {
+    private void checkInvestAmount(InvestDto investDto) throws InvestException{
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
-        long investAmount = Long.parseLong(investDto.getAmount());
+        long investAmount = AmountUtil.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
-            return false;
+            throw new InvestException("投资金额小于标的最小投资金额");
         }
 
         // 不满足递增规则
         if ((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0) {
-            return false;
+            throw new InvestException("投资金额不符合递增金额要求");
         }
 
         long userInvestMaxAmount = loan.getMaxInvestAmount();
@@ -79,18 +77,20 @@ public class InvestServiceImpl implements InvestService {
 
         // 标已满
         if (loanNeedAmount <= 0) {
-            return false;
+            throw new InvestException("标的已满");
         }
 
         // 超投
-        if (investAmount < loanNeedAmount) {
-            return false;
+        if (loanNeedAmount < investAmount) {
+            throw new InvestException("标的可投金额不足");
         }
 
         long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
 
         // 不满足单用户投资限额
-        return investAmount <= userInvestMaxAmount - userInvestAmount;
+        if (investAmount > userInvestMaxAmount - userInvestAmount) {
+            throw new InvestException("投资金额超过了用户投资限额");
+        }
 
     }
 

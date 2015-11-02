@@ -20,7 +20,7 @@
     <!--下拉框-->
     <link rel="stylesheet" href="style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
 <@global.javascript pageJavascript="createLoan.js"></@global.javascript>
@@ -43,7 +43,7 @@
                     <button type="button" class="btn btn-default jq-add">添加</button>
                     <button type="button" class="btn btn-danger jq-delete">删除</button>
                 </div>
-                <input type="file" multiple=true class="file-loading">
+                <input type="file" multiple=true class="file-loading upload" name="upfile"/>
             </div>
         </div>
     </script>
@@ -57,14 +57,14 @@
 </head>
 <body>
 
-<@menu.header label="proMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab="start"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="start"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
+                        <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写">

@@ -1,5 +1,8 @@
 require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf'], function ($, pagination, Mustache, investListTemplate) {
+
     $(function () {
+        var amountInputElement = $(".text-input-amount");
+        amountInputElement.autoNumeric("init");
 
         var paginationElement = $('.pagination');
 
@@ -11,14 +14,13 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     var html = Mustache.render(investListTemplate, data);
                     $('.loan-list-con table').html(html);
                 }
-
             });
         };
 
         //pageCount：总页数
         //current：当前页
         //初始化标的比例（进度条）
-        var java_point = 15; //后台传递数据
+        //var java_point = 15; //后台传递数据
         if (java_point <= 50) {
             $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * java_point + "deg)");
             $('.chart-box .rount2').hide();
@@ -58,26 +60,63 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                     hour = 0,
                     minute = 0,
                     second = 0;//时间默认值
-                if (intDiff > 0) {
-                    // day = Math.floor(intDiff / (60 * 60 * 24));
-                    // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
-                    minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
-                    second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
-                } else {
-                    $('.btn-pay').removeClass('grey').removeAttr('disabled').html('可投资');
+                if(intDiff <= 1800){
+
+                    if (intDiff > 0) {
+                        // day = Math.floor(intDiff / (60 * 60 * 24));
+                        // hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                        minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                        second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+                    }else{
+                        $('.btn-pay').removeClass('grey').removeAttr('disabled').html('马上投资');
+                    }
+                    if (minute <= 9) minute = '0' + minute;
+                    if (second <= 9) second = '0' + second;
+                    // $('#day_show').html(day+"天");
+                    // $('#hour_show').html('<s id="h"></s>'+hour+'时');
+                    $('#minute_show').html('<s></s>' + minute + '分');
+                    $('#second_show').html('<s></s>' + second + '秒');
+                    intDiff--;
                 }
-                if (minute <= 9) minute = '0' + minute;
-                if (second <= 9) second = '0' + second;
-                // $('#day_show').html(day+"天");
-                // $('#hour_show').html('<s id="h"></s>'+hour+'时');
-                $('#minute_show').html('<s></s>' + minute + '分');
-                $('#second_show').html('<s></s>' + second + '秒');
-                intDiff--;
             }, 1000);
         }
 
-        if ($('#loanStatus').val() == 'PREHEAT') {
-            timer(intDiff);
-        }
+        $(function () {
+            if($('#loanStatus').val() == 'PREHEAT' ){
+                timer(intDiff);
+            }
+        });
+
+        $('form .btn-pay[type="submit"]').click(function(){
+            var investAmount = Number($('form input[name="amount"]').val());
+            var accountAmount = Number($('form i.account-amount').text());
+            if(investAmount > accountAmount){
+                location.href = '/recharge';
+                return false;
+            }
+            return true;
+        });
+
+        amountInputElement.blur(function(){
+            var loanId = $('.hid-loan').val();
+            var amount = $(this).val();
+            var amountNeedRaised = Number($('.amountNeedRaised-i').text());
+
+            if(amountNeedRaised < parseFloat(amount)){
+                $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!").removeAttr("style");
+                $('.btn-pay').attr('disabled', 'disabled').addClass('grey');
+                return;
+            }
+            $.ajax({
+                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
+                type: 'get',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8'
+            }).done(function(amount){
+                $('.loan-detail-error-msg').hide();
+                $('.expected-interest').html(amount);
+                $('.btn-pay').removeClass('grey').removeAttr('disabled');
+            });
+        });
     });
 });

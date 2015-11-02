@@ -2,6 +2,7 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
@@ -9,8 +10,11 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import java.util.Date;
 
 public interface InvestService {
-
-    BaseDto<PayFormDataDto> invest(InvestDto investDto);
+    /**
+     * 进行一次投资
+     * @param investDto
+     */
+    BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
     long calculateExpectedInterest(long loanId, long amount);
 
