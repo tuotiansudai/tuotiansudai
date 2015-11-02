@@ -73,7 +73,7 @@ public class InvestServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    // case6: 超投，返款。抛出 PayException 异常
+    // case7: 超投，返款。抛出 PayException 异常
     @Test
     public void overInvestPaybackPayException() throws Exception {
 
@@ -91,7 +91,7 @@ public class InvestServiceTest {
 
         when(this.investNotifyRequestMapper.getTodoList(10)).thenReturn(toDoList);
 
-        long loanId = 123;
+        long loanId = 77777777L;
         long investId = 1;
         long amount = 99L;
         String loginName = "zbx";

@@ -305,10 +305,73 @@ public class InvestControllerTest {
         assertThat(investModel5.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
     }
 
-    // case5: 超投，返款失败，当投资成功处理
+    // case5: 超投后，又投资满标
+    @Test
+    public void investSuccessAfterOverInvest() throws Exception {
+        long mockLoanId = 55555555L;
+        long mockInitAmount = 1000000;
+        long mockLoanAmount = 3000000;
+
+        String mockLoanerLoginName = "mock_loaner1";
+
+        long mockInvestAmount1 = 1000000;
+        long mockInvestAmount2 = 1000000;
+        long mockInvestAmount3 = 900000;
+        long mockInvestAmount4 = 900000;
+        long mockInvestAmount5 = 100000;
+        String mockInvestLoginName1 = "mock_invest1";
+        String mockInvestLoginName2 = "mock_invest2";
+        String mockInvestLoginName3 = "mock_invest3";
+        String mockInvestLoginName4 = "mock_invest4";
+        String mockInvestLoginName5 = "mock_invest5";
+
+        String[] mockUserNames = new String[]{mockLoanerLoginName, mockInvestLoginName1, mockInvestLoginName2, mockInvestLoginName3,mockInvestLoginName4,mockInvestLoginName5};
+
+        mockUsers(mockUserNames);
+        mockAccounts(mockUserNames, mockInitAmount);
+        mockLoan(mockLoanAmount, mockLoanId, mockLoanerLoginName);
+
+        long orderId1 = investOneDeal(mockLoanId, mockInvestAmount1, mockInvestLoginName1);
+        long orderId2 = investOneDeal(mockLoanId, mockInvestAmount2, mockInvestLoginName2);
+        long orderId3 = investOneDeal(mockLoanId, mockInvestAmount3, mockInvestLoginName3);
+        long orderId4 = investOneDeal(mockLoanId, mockInvestAmount4, mockInvestLoginName4);
+        long orderId5 = investOneDeal(mockLoanId, mockInvestAmount5, mockInvestLoginName5);
+
+        this.generateMockResponse_success(1); // 返款成功
+        this.jobAsyncInvestNotify();
+
+        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount1, mockInvestLoginName1);
+        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount2, mockInvestLoginName2);
+        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount3, mockInvestLoginName3);
+        verifyInvestorAmount_fail(mockInitAmount, mockInvestAmount4, mockInvestLoginName4);
+        verifyInvestorAmount_success(mockInitAmount, mockInvestAmount5, mockInvestLoginName5);
+
+        // check loan status
+        LoanModel lm = loanMapper.findById(mockLoanId);
+        assertThat(lm.getStatus(), is(LoanStatus.RECHECK));
+
+        long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmount(mockLoanId);
+        assert sumSuccessInvestAmount == mockInvestAmount1 + mockInvestAmount2 + mockInvestAmount3 + mockInvestAmount5;
+
+        // 第4笔投资超投，返款回调
+        this.overInvestPaybackNotify(orderId4, "0000");
+//        this.overInvestPaybackNotify(orderId5, "0000");
+
+        List<InvestModel> investModelList4 = investMapper.findByLoginNameOrderByTime(mockInvestLoginName4, SortStyle.Desc);
+        assert investModelList4.size() > 0;
+        InvestModel investModel4 = investModelList4.get(0);
+        assertThat(investModel4.getStatus(), is(InvestStatus.OVER_INVEST_PAYBACK));
+
+        List<InvestModel> investModelList5 = investMapper.findByLoginNameOrderByTime(mockInvestLoginName5, SortStyle.Desc);
+        assert investModelList5.size() > 0;
+        InvestModel investModel5 = investModelList5.get(0);
+        assertThat(investModel5.getStatus(), is(InvestStatus.SUCCESS));
+    }
+
+    // case6: 超投，返款失败，当投资成功处理
     @Test
     public void overInvestPaybackFail() throws Exception {
-        long mockLoanId = 55555555L;
+        long mockLoanId = 66666666L;
         long mockInitAmount = 1000000;
         long mockLoanAmount = 3000000;
 
@@ -485,6 +548,7 @@ public class InvestControllerTest {
         lm.setFundraisingStartTime(new Date());
         lm.setFundraisingEndTime(new Date());
         lm.setStatus(LoanStatus.RAISING);
+//        lm.setUpdateTime(new Date());
         loanMapper.create(lm);
     }
 
