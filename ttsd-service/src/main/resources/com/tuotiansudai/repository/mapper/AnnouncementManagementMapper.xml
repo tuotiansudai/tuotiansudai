@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.AnnouncementManagementMapper">
+
+    <resultMap id="AnnouncementManagementResultMap" type="AnnouncementManagementModel">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="content" property="content"></result>
+        <result column="show_on_home" property="showOnHome"></result>
+        <result column="created_time" property="createdTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+
+    <select id="findAnnouncementManagement" parameterType="map" resultMap="AnnouncementManagementResultMap">
+
+    </select>
+
+    <select id="findAnnouncementManagementCount" parameterType="map" resultType="int">
+
+    </select>
+
+</mapper>
