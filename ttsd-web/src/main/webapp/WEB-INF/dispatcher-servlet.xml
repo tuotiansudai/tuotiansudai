@@ -10,6 +10,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
+    <context:property-placeholder location="classpath:ttsd-service.properties" />
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="false">
             <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -38,8 +40,9 @@
     <mvc:resources mapping="/tpl/**" location="/tpl/"/>
 
 
-    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.StaticResourceVersionMap">
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.web.configuration.FreeMarkerVariablesMap">
         <property name="singleton" value="true"/>
+        <property name="staticServer" value="${static.server}"/>
         <property name="javascriptLocation" value="/js/dest"/>
         <property name="cssLocation" value="/style/dest"/>
     </bean>

@@ -146,7 +146,7 @@
         <#if loan.loanStatus == "REPAYING">
             <form action="/loanList/web" method="get">
                 <div class="item-block" style="text-align: center">
-                    <img src="/images/loan/repaying.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/loan/repaying.png" width="200" height="200" alt=""/>
                 </div>
                 <div class="item-block">
                     <span class="sub-hd"></span>
@@ -160,7 +160,7 @@
         <#if loan.loanStatus == "RECHECK">
             <form action="/loanList/web" method="get">
                 <div class="item-block" style="text-align: center">
-                    <img src="/images/loan/recheck.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/loan/recheck.png" width="200" height="200" alt=""/>
                 </div>
                 <div class="item-block">
                     <span class="sub-hd"></span>
@@ -174,7 +174,7 @@
         <#if loan.loanStatus == "CANCEL">
             <form action="/loanList/web" method="get">
                 <div class="item-block" style="text-align: center">
-                    <img src="/images/loan/cancel.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/loan/cancel.png" width="200" height="200" alt=""/>
                 </div>
                 <div class="item-block">
                     <span class="sub-hd"></span>
@@ -188,7 +188,7 @@
         <#if loan.loanStatus == "OVERDUE">
             <form action="/loanList/web" method="get">
                 <div class="item-block" style="text-align: center">
-                    <img src="/images/loan/overdue.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/loan/overdue.png" width="200" height="200" alt=""/>
                 </div>
                 <div class="item-block">
                     <span class="sub-hd"></span>
@@ -202,7 +202,7 @@
         <#if loan.loanStatus == "COMPLETE">
             <form action="/loanList/web" method="get">
                 <div class="item-block" style="text-align: center">
-                    <img src="/images/loan/complete.png" width="200" height="200" alt=""/>
+                    <img src="${staticServer}/images/loan/complete.png" width="200" height="200" alt=""/>
                 </div>
                 <div class="item-block">
                     <span class="sub-hd"></span>
@@ -310,7 +310,7 @@
 <div class="layer-box">
     <div class="layer-wrapper"></div>
     <div class="content">
-        <img src="images/house-1.jpg" alt="" width="760" height="450"/>
+        <img src="${staticServer}/images/house-1.jpg" alt="" width="760" height="450"/>
     </div>
 </div>
 <#--弹出层-->

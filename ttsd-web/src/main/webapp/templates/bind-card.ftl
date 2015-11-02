@@ -120,7 +120,7 @@
             <#--未开通快捷支付-->
                 <div class="card-box">
                     <h4 class="hd-card">
-                    <span class="logo-card"><img src="${requestContext.getContextPath()}/images/bindcard/logo-${bankCode}.png"
+                    <span class="logo-card"><img src="${staticServer}/images/bindcard/logo-${bankCode}.png"
                                                  alt=""/></span>
                         <span class="user">${userName}</span>
                     </h4>

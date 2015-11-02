@@ -21,7 +21,7 @@
             <ul>
                 <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                     <span class="hot-flag">
-                        <img src="${requestContext.getContextPath()}/images/recharge/hot.jpg" alt=""/>
+                        <img src="${staticServer}/images/recharge/hot.jpg" alt=""/>
                     </span>
                     快捷支付
                 </li>
@@ -35,7 +35,7 @@
                 <#if !isBindCard>
                     <div class="bind-card-nav">
                         <span>您尚未绑定银行卡，请先绑定银行卡！</span>
-                        <input type="submit" class="submit" value="立即绑卡" data-url="${requestContext.getContextPath()}/bind-card"/>
+                        <input type="submit" class="submit" value="立即绑卡" data-url="${staticServer}/bind-card"/>
                     </div>
                 </#if>
 
@@ -79,7 +79,7 @@
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
                             <input data-name="${bank}" type="radio" id="bank-${bank}" name="bank" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}"><img src="${requestContext.getContextPath()}/images/bank/${bank}.jpg" alt=""></label>
+                            <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                         </li>
                     </#list>
                     </ol>
