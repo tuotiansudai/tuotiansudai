@@ -5,8 +5,8 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="mainFrame recharge-container">
-    <aside class="menuBox fl">
+<div class="main-frame recharge-container">
+    <aside class="menu-box fl">
         <ul class="menu-list">
         <li><a href="javascript:" class="active">账户总览</a></li>
         <li><a href="javascript:">投资记录</a></li>
@@ -16,8 +16,8 @@
         <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="contentContainer fr autoHeight">
-        <h4 class="columnTitle"><em class="tc">我要充值</em></h4>
+    <div class="content-container fr auto-height">
+        <h4 class="column-title"><em class="tc">我要充值</em></h4>
             <div class="recharge-content">
             <ul class="payment-mode clear">
                 <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">

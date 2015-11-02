@@ -5,8 +5,8 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="mainFrame autoInvest">
-    <aside class="menuBox fl">
+<div class="main-frame ">
+    <aside class="menu-box fl">
         <ul class="menu-list">
             <li><a href="javascript:">账户总览</a></li>
             <li><a href="javascript:">投资记录</a></li>
@@ -18,8 +18,8 @@
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="contentContainer fr autoHeight">
-        <h4 class="columnTitle"><em class="tc">自动投标</em></h4>
+    <div class="content-container fr auto-invest">
+        <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
         <div class="pad-s">
             <div class="borderBox panel">

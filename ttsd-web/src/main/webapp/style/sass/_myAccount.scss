@@ -1,25 +1,11 @@
 @import 'variables';
 
-.msgTip {
+.msg-tip {
   color: nth($CK1, 3);
 }
-.mainFrame {
-  width: nth($baseWidth,1);
-  @include center-block;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  overflow: auto;
-  height: auto;
-}
-.contentContainer {
-  width: nth($baseWidth,3);
-  background:nth($baseColor,1);
-  border: #dadada 1px solid;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-.columnTitle {
+
+
+.column-title {
   height: 48px;
   line-height: 46px;
   border-bottom: #d5d5d5 1px solid;
@@ -69,8 +55,8 @@
 }
 
 //Account Overview
-.AccountOverview {
-  .contentContainer {
+.account-overview {
+  .content-container {
     border:0;
     border-radius:0;
     background: none;
@@ -197,7 +183,7 @@
 }
 
 //auto invest
-.autoInvest {
+.auto-invest {
   .CertifiedImg {
     background: url('/images/sign/re-s01.png') center top no-repeat;
     //background-size: 50%;
@@ -434,15 +420,15 @@
 }
 
 //Personal Info Page
-.PersonalInfo {
-  .InfoList {
+.personal-info {
+  .info-list {
     color: nth($CK2,6);
     line-height: 38px;
     .fa {
       font-size: nth($fontSize, 4);
       padding-right: 5px;
     }
-    .infoTitle {
+    .info-title {
       font-weight: bold;
       display: inline-block;
       width:85px;
@@ -453,7 +439,7 @@
     em.info {
      // width:calc(100% - 200px );
     }
-    .BindingSet {
+    .binding-set {
       display: inline-block;
       width:110px;
       float: right;

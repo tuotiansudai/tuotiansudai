@@ -4,8 +4,8 @@
 <@global.head title="账户总览" pageCss="${css.global}"></@global.head>
 <body>
 <#include "header.ftl" />
-<div class="mainFrame AccountOverview">
-    <aside class="menuBox fl">
+<div class="main-frame account-overview">
+    <aside class="menu-box fl">
         <ul class="menu-list">
             <li><a href="javascript:" class="active">账户总览</a></li>
             <li><a href="javascript:">投资记录</a></li>
@@ -17,7 +17,7 @@
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="contentContainer fr autoHeight">
+    <div class="content-container fr auto-height">
         <div class="bRadiusBox spad bgWhite">
             <img src="/images/sign/profile.jpg" class="fl accountImg" >
             <div class="profileBox">
@@ -315,7 +315,7 @@
 
 
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.accountOverview}">
+<@global.javascript pageJavascript="${js.account_overview}">
 </@global.javascript>
 
 </body>

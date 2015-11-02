@@ -3,10 +3,12 @@
 <#import "macro/global.ftl" as global>
 <@global.head title="借款记录" pageCss="${css.loaner_loan_list}">
 </@global.head>
+
 <body>
 <#include "header.ftl" />
-<div class="mainFrame">
-    <ul class="email-nav">
+<div class="main-frame">
+    <aside class="menu-box fl">
+        <ul class="menu-list">
         <li><a href="javascript:">账户总览</a></li>
         <li><a href="javascript:">投资记录</a></li>
         <li><a href="javascript:">债权转让</a></li>
@@ -15,10 +17,11 @@
         <li><a href="javascript:">自动投标</a></li>
         <li><a href="javascript:">积分红包</a></li>
         <li><a href="javascript:">推荐管理</a></li>
-    </ul>
+        </ul>
+    </aside>
 
-    <div class="loan-box">
-        <h2 class="hd"><span class="line">借款记录</span></h2>
+    <div class="content-container fr">
+        <h4 class="column-title"><em class="tc">借款记录</em></h4>
 
         <div class="item-block date-filter">
             <span class="sub-hd">起止时间:</span>
