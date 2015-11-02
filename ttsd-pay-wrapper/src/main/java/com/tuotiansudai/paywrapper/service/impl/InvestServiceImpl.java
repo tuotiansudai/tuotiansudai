@@ -100,7 +100,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId,amount,loginName,InvestSource.AUTO);
+        InvestModel investModel = new InvestModel(loanId,amount,loginName,Source.AUTO);
         investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
         investMapper.create(investModel);

@@ -61,7 +61,7 @@
             <#if successSumRepay??>
             <div class="LastMonth bRadiusBox">
                 <table class="table table-striped">
-                    <caption>本月还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="#" class="fr">更多...</a> </caption>
+                    <caption>本月还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a> </caption>
                     <thead>
                         <tr>
                             <th>项目名称</th>
@@ -101,7 +101,7 @@
                 <li><a href="javascript:void(0);">本月待收回款</a></li>
             </ul>
             <table class="table table-striped">
-                <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="#" class="fr">更多...</a> </caption>
+                <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -133,7 +133,7 @@
                 </tfoot>
             </table>
             <table class="table table-striped">
-                <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="#" class="fr">更多...</a> </caption>
+                <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a> </caption>
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -168,7 +168,7 @@
         <div class="clearBlank"></div>
         <div class="newProjects bRadiusBox">
         <table class="table">
-            <caption>最新投资项目 <a href="#" class="fr">更多...</a> </caption>
+            <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a> </caption>
             <thead>
             <tr>
                 <th>交易时间</th>
