@@ -5,6 +5,7 @@ public enum Role {
     INVESTOR("出借人"),
     LOANER("借款人"),
     MERCHANDISER("业务员"),
+    CUSTOMER_SERVICE("客服"),
     ADMIN("管理员");
 
     private String description;

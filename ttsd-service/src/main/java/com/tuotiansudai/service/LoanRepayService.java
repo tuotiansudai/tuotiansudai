@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface LoanRepayService {
 
-    BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, long loanId,
-                                                           String loginName, Date repayStartDate, Date repayEndDate, RepayStatus repayStatus);
+    BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize, Long loanId,
+                                                           String loginName, Date startTime, Date endTime, RepayStatus repayStatus);
 
     long findByLoginNameAndTimeSuccessRepay(String loginName,Date startTime,Date endTime);
 
