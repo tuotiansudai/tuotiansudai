@@ -5,6 +5,7 @@ var require = {
         'moment': '/js/libs/moment-2.10.6.min',
         'bootstrap': '/js/libs/bootstrap.min',
         'bootstrapDatetimepicker': '/js/libs/bootstrap-datetimepicker',
+        'bootstrapDatePicker': '/js/libs/bootstrap-datepicker',
         'moment-with-locales': '/js/libs/moment-with-locales',
         'bootstrapSelect': '/js/libs/bootstrap-select',
         'fileinput': '/js/libs/fileinput',

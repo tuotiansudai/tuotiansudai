@@ -14,12 +14,7 @@
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="style/index.css">
-
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-
+    <@global.javascript pageJavascript="announce-manage.js"></@global.javascript>
 </head>
 <body>
 <@menu.header label="announceMan"></@menu.header>
