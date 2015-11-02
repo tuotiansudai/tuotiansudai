@@ -79,6 +79,7 @@ public class LoanServiceTest {
     public void createLoanServiceTest_1() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
 
