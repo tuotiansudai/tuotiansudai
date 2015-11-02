@@ -62,7 +62,7 @@ public class OssUploadController {
             fileName = dfi.getOriginalFilename();
             String ossPath = "";
             try {
-                ossPath = ossWrapperClient.uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
+                ossPath = ossWrapperClient.upload(fileName, dfi.getInputStream(), rootPath);
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
