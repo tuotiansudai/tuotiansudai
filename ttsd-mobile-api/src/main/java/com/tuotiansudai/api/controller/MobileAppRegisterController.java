@@ -12,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 public class MobileAppRegisterController {
@@ -21,8 +26,8 @@ public class MobileAppRegisterController {
     private MobileAppRegisterService mobileAppRegisterService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public BaseResponseDto registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+    public BaseResponseDto registerUser(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
+        return mobileAppRegisterService.registerUser(registerRequestDto);
     }
 
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
@@ -31,4 +36,5 @@ public class MobileAppRegisterController {
         String remoteIp = CommonUtils.getRemoteHost(request);
         return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
     }
+
 }

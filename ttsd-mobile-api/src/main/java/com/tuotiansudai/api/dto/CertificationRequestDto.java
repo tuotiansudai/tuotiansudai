@@ -1,15 +1,20 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.dto.RegisterAccountDto;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class CertificationRequestDto extends BaseParamDto {
 
     /**
      * 用户真实姓名
      */
+    @NotEmpty
     private String userRealName;
 
     /**
      * 用户身份证号码
      */
+    @NotEmpty
     private String userIdCardNumber;
 
 
@@ -43,6 +48,14 @@ public class CertificationRequestDto extends BaseParamDto {
      */
     public void setUserIdCardNumber(String userIdCardNumber) {
         this.userIdCardNumber = userIdCardNumber;
+    }
+
+    public RegisterAccountDto convertToRegisterAccountDto(){
+        RegisterAccountDto registerAccountDto = new RegisterAccountDto();
+        registerAccountDto.setIdentityNumber(this.getUserIdCardNumber());
+        registerAccountDto.setUserName(this.getUserRealName());
+        return registerAccountDto;
+
     }
 
 }
