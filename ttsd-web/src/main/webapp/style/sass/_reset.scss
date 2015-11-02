@@ -25,6 +25,7 @@ body {
   color:nth($CK2,5);
 }
 a{
+  cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
   &:hover{
@@ -59,7 +60,7 @@ a{
   display: block;
   content: '';
 }
-.clearBlank{
+.clear-blank{
   clear: both;
   margin-top:10px;
 }

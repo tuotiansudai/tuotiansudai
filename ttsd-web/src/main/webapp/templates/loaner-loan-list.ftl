@@ -27,7 +27,7 @@
         </ul>
     </aside>
 
-    <div class="content-container fr">
+    <div class="content-container fr loan-list-content">
         <h4 class="column-title"><em class="tc">借款记录</em></h4>
 
         <div class="item-block date-filter">
@@ -45,23 +45,29 @@
             <span class="select-item" data-status="COMPLETE">已结清</span>
             <span class="select-item" data-status="CANCEL">流标</span>
         </div>
-        <div class="loan-list-content">
+        <div class="clear-blank"></div>
             <table class="loan-list table-striped">
             </table>
             <div class="pagination" data-url="/loaner/loan-list-data" data-page-size="2">
             </div>
-        </div>
+
     </div>
 </div>
 
 <#--弹出层-->
 <div class="layer-container">
-    <div class="layer-mask"></div>
+
 </div>
 <#--弹出层end-->
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.loaner_loan_list}">
-</@global.javascript>
+<#--<@global.javascript pageJavascript="${js.loaner_loan_list}">-->
+<#--</@global.javascript>-->
+
+<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+defer
+async="true"
+data-main="${requestContext.getContextPath()}/js/loaner_loan_list.js"></script>
 </body>
 </html>
 

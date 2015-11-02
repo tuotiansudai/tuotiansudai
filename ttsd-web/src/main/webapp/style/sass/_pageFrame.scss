@@ -1,6 +1,6 @@
 @import 'variables';
 /* page main frame */
-.main-frame {
+.main-frame,.main {
   width: nth($baseWidth,1);
   @include center-block;
   margin-top: 20px;

@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _) {
+require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layer','daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _,layer) {
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -6,11 +6,8 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
     var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
 
     // 页面初始化日期 条件筛选1个月
-    var dataPickerElement = $('#date-picker');
-
-    var paginationElement = $('.pagination');
-
-    var layerContainerElement = $('.layer-container');
+    var dataPickerElement = $('#date-picker'),
+        paginationElement = $('.pagination');
 
     dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
 
@@ -33,11 +30,6 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                 dataPickerElement.val('');
         }
     };
-
-    $('.layer-mask').click(function () {
-        layerContainerElement.hide();
-        return false;
-    });
 
     $(".date-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
@@ -103,22 +95,23 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                             }
                         });
                         var html = Mustache.render(loanRepayTemplate, data);
-                        $('.layer-content').remove();
-                        layerContainerElement.append(html).show();
-                        $('.layer-container .close').click(function () {
-                            layerContainerElement.hide();
-                            return false;
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            area: ['850px'],
+                            shadeClose: true,
+                            content: html
                         });
-                        $('.layer-container a.enabled-repay.normal').click(function () {
-                            layerContainerElement.hide();
+
+                        $('a.enabled-repay.normal').click(function () {
                             $("#normal-repay").submit();
                             return false;
                         });
-                        $('.layer-container a.enabled-repay.advanced').click(function () {
+                        $('a.enabled-repay.advanced').click(function () {
                             if (data.hasConfirmingLoanRepay) {
                                 return false;
                             }
-                            layerContainerElement.hide();
                             $("#advanced-repay").submit();
                             return false;
                         });

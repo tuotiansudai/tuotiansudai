@@ -32,7 +32,7 @@
             </div>
 
         </div>
-        <div class="clearBlank"></div>
+        <div class="clear-blank"></div>
         <div class="AssetsBox bgWhite">
             <div class="AssetsReport bRadiusBox fl">
                 <h3>资产总额：<span>500.00元</span></h3>
@@ -49,7 +49,7 @@
                 </ul>
             </div>
         </div>
-    <div class="clearBlank"></div>
+    <div class="clear-blank"></div>
         <div class="LastMonth bRadiusBox bgWhite">
 
             <table class="table table-striped">
@@ -116,7 +116,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="clearBlank"></div>
+        <div class="clear-blank"></div>
         <div class="tMonthPayment bRadiusBox bgWhite" id="tMonthBox">
 
             <ul class="PaymentSwitch">
@@ -260,7 +260,7 @@
                 </tfoot>
             </table>
         </div>
-        <div class="clearBlank"></div>
+        <div class="clear-blank"></div>
         <div class="newProjects bRadiusBox bgWhite">
         <table class="table">
             <caption>最新投资项目 <a href="#" class="fr">更多...</a> </caption>
