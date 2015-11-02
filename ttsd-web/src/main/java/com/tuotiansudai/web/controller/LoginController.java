@@ -2,17 +2,14 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.utils.CaptchaVerifier;
 import com.tuotiansudai.utils.CaptchaGenerator;
+import com.tuotiansudai.utils.CaptchaVerifier;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +26,8 @@ public class LoginController {
     private CaptchaVerifier captchaVerifier;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView login() {
-        return new ModelAndView("/login");
+    public ModelAndView login(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
+        return new ModelAndView("/login", "redirect", redirect);
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)

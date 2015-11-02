@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 @Controller
 public class AgreementController {
 

@@ -14,12 +14,13 @@
         <result column="recheck_message" property="recheckMessage"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
+        <result column="source" property="source"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="WithdrawModel">
-        insert into withdraw (id, login_name, amount, fee, status, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{createdTime})
+        insert into withdraw (id, login_name, amount, fee, status, source, created_time)
+        value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">

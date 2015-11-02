@@ -30,7 +30,7 @@ import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -71,7 +71,7 @@ public class LoanControllerTest {
         when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(put("/loan").contentType("application/json; charset=UTF-8").content(json))
+        this.mockMvc.perform(post("/loan/save").contentType("application/json; charset=UTF-8").content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
@@ -98,7 +98,7 @@ public class LoanControllerTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
