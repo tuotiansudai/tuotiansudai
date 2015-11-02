@@ -13,4 +13,12 @@ public interface AnnouncementManagementMapper {
 
     List<AnnouncementManagementModel> findAnnouncementManagement(@Param("id") long id,@Param("title") String title,@Param("startLimit") int startLimit,@Param("endLimit") int endLimit);
 
+    void create(AnnouncementManagementModel announcementManagementModel);
+
+    void update(AnnouncementManagementModel announcementManagementModel);
+
+    void delete(long id);
+
+    AnnouncementManagementModel findById(long id);
+
 }
