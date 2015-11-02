@@ -40,6 +40,8 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
+    BaseDto<PayDataDto> openLoan(LoanDto loanDto);
+
     /**
      * @param loanId
      * @return
@@ -56,7 +58,7 @@ public interface LoanService {
      * @param fundraisingEndTime
      * @throws BaseException
      */
-    void loanOut(long loanId, long minInvestAmount, Date fundraisingEndTime) throws BaseException;
+    BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
 
     BaseDto<LoanDto> getLoanDetail(long loanId);
 
