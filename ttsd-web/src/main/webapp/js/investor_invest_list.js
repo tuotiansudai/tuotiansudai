@@ -1,15 +1,12 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination) {
+require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layer','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination,layer) {
 
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
     var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
     var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
 
-    var dataPickerElement = $('#date-picker');
-
-    var paginationElement = $('.pagination');
-
-    var layerContainerElement = $('.layer-container');
+    var dataPickerElement = $('#date-picker'),
+        paginationElement = $('.pagination');
 
     dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
 
@@ -33,11 +30,6 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         }
     };
 
-    $('.layer-mask').click(function () {
-        layerContainerElement.hide();
-        return false;
-    });
-
     var loadLoanData = function (currentPage) {
         var dates = dataPickerElement.val().split('~');
         var startTime = $.trim(dates[0]) || '';
@@ -48,8 +40,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
 
         paginationElement.loadPagination(requestData, function (data) {
             var html = Mustache.render(investListTemplate, data);
-            $('.invest-list-content .invest-list').html(html);
-
+            $('.invest-list').html(html);
             $('.invest-list .show-invest-repay').click(function () {
                 $.ajax({
                     url: $(this).data('url'),
@@ -79,12 +70,16 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                             }
                         });
                         var html = Mustache.render(investRepayTemplate, data);
-                        $('.layer-content').remove();
-                        layerContainerElement.append(html).show();
-                        $('.layer-container .close').click(function () {
-                            layerContainerElement.hide();
-                            return false;
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            offset: '100px',
+                            area: ['1000px'],
+                            shadeClose: true,
+                            content: html
                         });
+
                     }
                 });
             });
@@ -109,14 +104,5 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         loadLoanData();
     });
 
-
-    //还款计划
-    $('.layer-box .close').click(function () {
-        $('.layer-box').hide();
-        return false;
-    });
-    $('.layer-fix').click(function () {
-        $('.layer-box').hide();
-    });
 
 });

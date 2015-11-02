@@ -41,7 +41,9 @@ table {
     }
   }
   &.table-hover {
-
+    tr:hover td {
+      background: #f2f2f2;
+    }
   }
   &.table-condensed {
 

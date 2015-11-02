@@ -104,7 +104,7 @@
 </div>
 
 <div id="CESuccess" class="pad-m popLayer" style="display: none;">
-    验证邮箱已发送到 <span class="msg-tip"> 825809454@qq.com</span> 请进入邮箱进行验证完成
+    验证邮箱已发送到 <span class="color-info"> 825809454@qq.com</span> 请进入邮箱进行验证完成
 </div>
 <div id="CEFailed" class="pad-m popLayer" style="display: none;">
     错误

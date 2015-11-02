@@ -1,8 +1,11 @@
 @import 'variables';
 @import 'pagination';
 
-.msg-tip {
+.color-info {
   color: nth($CK1, 3);
+}
+.color-note {
+  color: nth($CK1, 1);
 }
 .column-title {
   height: 48px;
@@ -841,8 +844,8 @@
   }
 }
 
-/*loaner loan list*/
-.loan-list-content {
+/*loaner loan list ,invest box content*/
+.loan-list-content,.invest-box-content {
   .item-block {
     display: block;
     margin-top: 10px;

@@ -12,7 +12,7 @@
     <tbody>
        {{#records}}
         <tr>
-            <td><a class="red" href="/loan/{{loanId}}">{{loanName}}</td>
+            <td><a  href="/loan/{{loanId}}">{{loanName}}</td>
             <td>{{amount}}元</td>
             <td>{{createdTime}}</td>
             <td>{{status}}</td>
@@ -24,7 +24,7 @@
             </td>
             <td>
             {{#hasInvestRepay}}
-            <span class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</span> |
+            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</a> |
             <a class="red" href="/contract/investor/loan/{{loanId}}" target="_blank">合同</a>
             {{/hasInvestRepay}}
             {{^hasInvestRepay}} -- {{/hasInvestRepay}}
