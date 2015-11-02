@@ -240,7 +240,9 @@
                         <ul class="img-list">
                             <#list loan.loanTitles as loanTitleRelation >
                                 <#if loanTitle.id == loanTitleRelation.titleId>
-                                    <li><img src="${loanTitleRelation.applyMetarialUrl}" alt="${loanTitle.title}"/></li>
+                                    <#list loanTitleRelation.applyMetarialUrl?split(",") as title>
+                                        <li><img src="${title}" alt="${loanTitle.title}"/></li>
+                                    </#list>
                                 </#if>
                             </#list>
                         </ul>
