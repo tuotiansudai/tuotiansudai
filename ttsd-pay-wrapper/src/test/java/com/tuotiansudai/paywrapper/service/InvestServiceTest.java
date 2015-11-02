@@ -199,7 +199,7 @@ public class InvestServiceTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("1000");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -214,7 +214,7 @@ public class InvestServiceTest {
         model.setIsAutoInvest(false);
         model.setLoginName("testInvest");
         model.setLoanId(loanId);
-        model.setSource(InvestSource.WEB);
+        model.setSource(Source.WEB);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
 

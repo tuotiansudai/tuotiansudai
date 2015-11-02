@@ -52,7 +52,7 @@ public class InvestModel {
         this.createdTime = new Date();
     }
 
-    public InvestModel(long loanId, long amount, String loginName, InvestSource investSource) {
+    public InvestModel(long loanId, long amount, String loginName, Source investSource) {
         this.loanId = loanId;
         this.amount = amount;
         this.loginName = loginName;
