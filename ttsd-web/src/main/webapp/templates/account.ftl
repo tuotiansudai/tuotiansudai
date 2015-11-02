@@ -43,7 +43,7 @@
         <div class="clearBlank"></div>
         <div class="AssetsBox">
             <div class="AssetsReport bRadiusBox fl">
-                <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))}元</span></h3>
+                <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
                 <div id="ReportShow" style="width:100%; height:115px; "></div>
             </div>
             <div class="AssetsDetail bRadiusBox fr">
@@ -78,10 +78,10 @@
                         <tr>
                             <td>${repay.name!}</td>
                             <td>${(((repay.baseRate+repay.activityRate)*100)?string('0.00'))!} % </td>
-                            <td>${repay.periods}个月</td>
-                            <td>第${repay.period}期/${repay.periods}期</td>
-                            <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))}</#if>元</td>
-                            <td><#if repay.status == 'COMPLETE'>${repay.actualRepayDate?string('MM月dd日')}<#else>${repay.repayDate?string('MM月dd日')}</#if></td>
+                            <td>${(repay.periods?string('0'))!}个月</td>
+                            <td>第${(repay.period?string('0'))!}期/${(repay.periods?string('0'))!}期</td>
+                            <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))!}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))!}</#if>元</td>
+                            <td><#if repay.status == 'COMPLETE'>${(repay.actualRepayDate?string('MM月dd日'))!}<#else>${(repay.repayDate?string('MM月dd日'))!}</#if></td>
                         </tr>
                         </#list>
                     <#else>
@@ -118,10 +118,10 @@
                 <tr>
                     <td>${successSumInvestRepay.name!}</td>
                     <td>${(((successSumInvestRepay.activityRate+successSumInvestRepay.baseRate)*100)?string('0.00'))!}%</td>
-                    <td>${successSumInvestRepay.periods}个月</td>
-                    <td>第${successSumInvestRepay.period}期/${successSumInvestRepay.periods}期</td>
+                    <td>${(successSumInvestRepay.periods?string('0'))!}个月</td>
+                    <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.periods?string('0'))!}期</td>
                     <td>${(((successSumInvestRepay.corpus+successSumInvestRepay.defaultInterest+successSumInvestRepay.actualInterest-successSumInvestRepay.actualFee)/100)?string('0.00'))!}元</td>
-                    <td>${successSumInvestRepay.actualRepayDate?string('MM月dd日')}</td>
+                    <td>${(successSumInvestRepay.actualRepayDate?string('MM月dd日'))!}</td>
                 </tr>
                 </#list>
                 </#if>
@@ -150,10 +150,10 @@
                 <tr>
                     <td>${notSuccessSumInvestRepay.name!}</td>
                     <td>${(((notSuccessSumInvestRepay.activityRate+notSuccessSumInvestRepay.baseRate)*100)?string('0.00'))!}%</td>
-                    <td>${notSuccessSumInvestRepay.periods}个月</td>
-                    <td>第${notSuccessSumInvestRepay.period}期/${notSuccessSumInvestRepay.periods}期</td>
+                    <td>${(notSuccessSumInvestRepay.periods?string('0'))!}个月</td>
+                    <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.periods?string('0'))!}期</td>
                     <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}元</td>
-                    <td>${notSuccessSumInvestRepay.repayDate?string('MM月dd日')}</td>
+                    <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                 </tr>
                 </#list>
                 </#if>
@@ -183,10 +183,10 @@
             <#if (latestInvestList?size>0)>
             <#list latestInvestList as latestInvest>
             <tr>
-                <td>${latestInvest.investTime?string('yyyy-MM-dd')}</td>
+                <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                 <td><a href="#">${latestInvest.loanName!}</a></td>
                 <td>投资成功</td>
-                <td><#if latestInvest.status??>${latestInvest.repayDate?string('yyyy-MM-dd')}/${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
+                <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}/${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
                 <td>￥${(latestInvest.investAmount?string('0.00'))!}元</td>
                 <td><a href="#">合同</a></td>
             </tr>
