@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.ServletContext;
-
 @Controller
 public class MobileAppCheckVersionController {
 
@@ -29,9 +27,6 @@ public class MobileAppCheckVersionController {
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    ServletContext servletContext;
 
     @RequestMapping(value = "/get/version", method = RequestMethod.POST)
     @ResponseBody
