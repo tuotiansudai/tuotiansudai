@@ -5,7 +5,7 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="main">
+<div class="mainFrame">
     <ul class="email-nav">
         <li><a href="javascript:">账户总览</a></li>
         <li><a href="javascript:">投资记录</a></li>
