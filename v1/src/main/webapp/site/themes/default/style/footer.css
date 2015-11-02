@@ -22,3 +22,4 @@
 .footer_zs .pull-right a { display: block;float: left; margin-left: 5px; height: 47px;}
 .footer_zs span a{   display: block;float: left;margin-top: 13px;margin-left: -20px;}
 .copyright{ font-size: 15px;color: #ffffff;width: 500px; float: left; height: 47px; line-height: 47px; }
+.hide{display: none}
