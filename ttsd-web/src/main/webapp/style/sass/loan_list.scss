@@ -1,0 +1,243 @@
+.main {
+  margin-top: 60px;
+}
+
+.wrapper-all {
+  width: 100%;
+  &.bg {
+    background: #fff;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.grey {
+  color: #999;
+}
+
+.pr {
+  position: relative;
+}
+
+.wrapper {
+  width: 1000px;
+  margin: 0 auto;
+  & .loan-tags {
+    position: absolute;
+    top: -42px;
+    left: 0;
+    background: #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #fff;
+    color: #f24712;
+    font-size: 14px;
+    width: 108px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+  }
+  & .item-block {
+    padding: 15px 0;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    & .hd {
+      padding-left: 20px;
+      padding-right: 10px;
+    }
+    & a {
+      padding: 4px 10px;
+      display: inline-block;
+      color: #000;
+      font-size: 12px;
+      &:hover, &.active {
+        color: #fff;
+        background: #ffac2a;
+        border-radius: 3px;
+      }
+    }
+    &.laster {
+      border-bottom: none;
+    }
+  }
+
+}
+
+.loan-list ul {
+  & li {
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    padding: 2px;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    &:hover{
+      border:1px solid #cc0000;
+    }
+    & .hot {
+      width: 59px;
+      height: 59px;
+      background: url("../../images/loan/loan-hot.png") no-repeat;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    & .loan-info {
+      width: 700px;
+      border-right: 1px solid #ccc;
+      padding-right: 2px;
+      float: left;
+      & .hd, & .sub-item-block {
+        height: 56px;
+        border-bottom: 1px solid #ccc;
+        & .sub-hd {
+          padding-left: 40px;
+          line-height: 56px;
+          font-size: 14px;
+          float: left;
+          font-weight: bold;
+        }
+        & .btn-invest,
+        & .btn-wait-invest,
+        & .btn-finish-invest {
+          float: right;
+          width: 100px;
+          height: 26px;
+          line-height: 26px;
+          text-align: center;
+          border-radius: 3px;
+          background: #ff752a;
+          color: #fff;
+          margin-top: 15px;
+          margin-right: 10px;
+          font-size: 12px;
+        }
+        & .btn-wait-invest {
+          background: #ffa97a;
+        }
+        & .btn-finish-invest {
+          background: #a5a5a5;
+        }
+      }
+      & .sub-item-block {
+        border-bottom: none;
+        line-height: 56px;
+        font-size: 14px;
+        & .name {
+          padding-left: 30px;
+          color: #999999;
+          float: left;
+          padding-right: 10px;
+        }
+        & .num {
+          float: left;
+          font-size: 20px;
+          padding-right: 30px;
+          position: relative;
+          line-height: 56px;
+          color: #f0bc11;
+          & i {
+            position: absolute;
+            top: 5px;
+            right: 0;
+            z-index: 4;
+            line-height: 12px;
+            font-size: 12px;
+          }
+        }
+        & .month {
+          color: #000;
+          float: left;
+          padding-right: 20px;
+        }
+        & .money-style {
+          float: left;
+          color: #000;
+        }
+      }
+    }
+
+    & .loan-process {
+      width: 288px;
+      padding: 0 0 0 2px;
+      float: left;
+      & .status {
+        padding-left: 30px;
+        line-height: 56px;
+      }
+      & .img {
+        position: absolute;
+        z-index: 9;
+        right: 5px;
+        top: 5px;
+      }
+      & .process, & .sub-item-block {
+        line-height: 56px;
+        border-bottom: 1px solid #ccc;
+        overflow: hidden;
+        & .hd {
+          color: #eb950f;
+          float: left;
+          padding-left: 30px;
+        }
+        & .process-percent {
+          width: 100px;
+          float: left;
+          border-radius: 5px;
+          background: #eee;
+          line-height: 10px;
+          height: 10px;
+          border: 1px solid #f27531;
+          overflow: hidden;
+          margin-left: 20px;
+          margin-top: 20px;
+          & .percent {
+            width: 50px;
+            float: left;
+            height: 10px;
+            background: #f27531;
+          }
+        }
+        & .point {
+          float: left;
+          padding-left: 10px;
+        }
+      }
+      & .sub-item-block {
+        border-bottom: none;
+        padding: 5px 0 10px 80px;
+        line-height: 18px;
+        color: #999;
+        font-size: 12px;
+        & p {
+          padding-top: 5px;
+        }
+        & .all-total, & .sub-total {
+          color: #000;
+        }
+
+      }
+    }
+
+  }
+}
+
+.pagination {
+  width: 100%;
+  margin: 10px 0;
+  display: block;
+  text-align: center;
+  & a {
+    color: #777777;
+    padding: 2px 8px;
+  }
+  & a.current {
+    background: #f24712;
+    color: #fff;
+  }
+  & .next, & .prev {
+    cursor: pointer;
+  }
+}

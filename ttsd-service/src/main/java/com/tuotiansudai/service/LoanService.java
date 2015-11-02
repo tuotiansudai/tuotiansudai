@@ -47,6 +47,12 @@ public interface LoanService {
      * @return
      * @function 通过id查找标的
      */
+
+    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd,int currentPageNo);
+
+    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
+
+
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
