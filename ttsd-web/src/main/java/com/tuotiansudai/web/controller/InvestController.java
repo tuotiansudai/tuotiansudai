@@ -4,9 +4,11 @@ import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
+import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.LoginUserInfo;
@@ -23,13 +25,33 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
+    @Autowired
+    private LoanController loanController;
+
     @RequestMapping(value = "/invest", method = RequestMethod.POST)
     public ModelAndView invest(@Valid @ModelAttribute InvestDto investDto) {
         investDto.setSource(Source.WEB);
-        BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
-        return new ModelAndView("/pay", "pay", baseDto);
-    }
+        ModelAndView mv = null;
+        String errorMessage = null;
+        try {
+            BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
+            if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
+                mv = new ModelAndView("/pay", "pay", baseDto);
+            }
+        } catch (InvestException e) {
+            errorMessage = e.getMessage();
+        }
 
+        if (mv == null) {
+            mv = loanController.getLoanDetail(investDto.getLoanIdLong());
+            if(errorMessage == null){
+                errorMessage = "投资失败";
+            }
+            mv.addObject("errorMessage", errorMessage);
+            mv.addObject("investAmount", investDto.getAmount());
+        }
+        return mv;
+    }
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {

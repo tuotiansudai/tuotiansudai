@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
 
@@ -32,7 +33,7 @@ public interface UserService {
      */
     boolean changePassword(String originalPassword, String newPassword);
 
-    BaseDto<PayDataDto> editUser(EditUserDto editUserDto,String ip);
+    void editUser(EditUserDto editUserDto, String ip) throws BaseException;
 
     void updateUserStatus(String loginName, UserStatus userStatus, String ip);
 

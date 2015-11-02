@@ -14,6 +14,10 @@
         select * from user_role where login_name = #{loginName}
     </select>
 
+    <select id="findByLoginNameAndRole" parameterType="map" resultMap="userRoleResultMap">
+        select * from user_role where login_name = #{loginName} and role = #{role}
+    </select>
+
     <insert id="create" parameterType="UserRoleModel">
         insert into user_role (login_name, role, created_time)
         value(#{loginName}, #{role}, #{createdTime})

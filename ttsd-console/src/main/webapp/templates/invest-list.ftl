@@ -27,7 +27,7 @@
     <script src="js/libs/bootstrap-datetimepicker.js"></script>
     <script src="js/libs/bootstrap-select.js"></script>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
+    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
     <script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <!--自动补全-->
     <script type="text/javascript">
@@ -67,19 +67,18 @@
             });
         });
     </script>
-
     <link rel="stylesheet" href="style/index.css">
 </head>
 <body>
 
-<@menu.header label="finaMan"></@menu.header>
+<@menu.header label="proMan"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="finaMan" sideLab="userInvest"></@menu.sidebar>
+            <@menu.sidebar headLab="projectMain" sideLab="investmentInfoList"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
@@ -123,8 +122,8 @@
                             </#list>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-primary">查询</button>
-                    <button type="reset" class="btn btn-sm btn-default">重置</button>
+                    <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
+                    <button type="reset" class="btn btn-sm btn-default btnSearch">重置</button>
                 </form>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
