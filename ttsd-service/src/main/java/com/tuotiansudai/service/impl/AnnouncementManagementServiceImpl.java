@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.tuotiansudai.dto.AnnouncementManagementDto;
 import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
 import com.tuotiansudai.repository.model.AnnouncementManagementModel;
 import com.tuotiansudai.service.AnnouncementManagementService;
@@ -24,6 +25,19 @@ public class AnnouncementManagementServiceImpl implements AnnouncementManagement
         return announcementManagementMapper.findAnnouncementManagement(id, title, startLimit, endLimit);
     }
 
+    @Override
+    public void create(AnnouncementManagementDto announcementManagementDto) {
+        this.announcementManagementMapper.create(new AnnouncementManagementModel(announcementManagementDto));
+    }
 
+    @Override
+    public void update(AnnouncementManagementDto announcementManagementDto) {
+        this.announcementManagementMapper.update(new AnnouncementManagementModel(announcementManagementDto));
+    }
+
+    @Override
+    public void delete(AnnouncementManagementDto announcementManagementDto) {
+        this.announcementManagementMapper.delete(announcementManagementDto.getId());
+    }
 
 }

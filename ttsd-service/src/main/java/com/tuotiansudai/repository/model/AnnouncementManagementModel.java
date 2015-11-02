@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.AnnouncementManagementDto;
+
 import java.util.Date;
 
 public class AnnouncementManagementModel {
@@ -64,4 +66,14 @@ public class AnnouncementManagementModel {
         this.updateTime = updateTime;
     }
 
+    public AnnouncementManagementModel(){
+
+    }
+
+    public AnnouncementManagementModel(AnnouncementManagementDto announcementManagementDto) {
+        this.id = announcementManagementDto.getId();
+        this.title = announcementManagementDto.getTitle();
+        this.content = announcementManagementDto.getContent();
+        this.showOnHome = announcementManagementDto.isShowOnHome();
+    }
 }

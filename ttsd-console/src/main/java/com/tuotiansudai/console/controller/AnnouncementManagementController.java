@@ -27,7 +27,6 @@ public class AnnouncementManagementController {
         modelAndView.addObject("pageSize",pageSize);
         return modelAndView;
     }
-
-
+    
 
 }
