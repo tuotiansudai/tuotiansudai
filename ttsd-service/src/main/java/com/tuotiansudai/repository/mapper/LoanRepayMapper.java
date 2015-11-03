@@ -41,6 +41,8 @@ public interface LoanRepayMapper {
 
     void update(LoanRepayModel loanRepayModel);
 
+    long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
+
     LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
