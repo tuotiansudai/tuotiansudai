@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class UserModel{
+public class UserModel implements Cloneable {
 
     private long id;
 
@@ -141,22 +141,6 @@ public class UserModel{
         return this.status == UserStatus.ACTIVE;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserModel userModel = (UserModel) o;
-
-        return id == userModel.id;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
     public AccountModel getAccount() {
         return account;
     }
@@ -165,4 +149,12 @@ public class UserModel{
         this.account = account;
     }
 
+    @Override
+    public UserModel clone() throws CloneNotSupportedException {
+        UserModel clone = (UserModel) super.clone();
+        clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
+        clone.lastLoginTime = this.lastLoginTime != null ?  (Date) this.lastLoginTime.clone() : null;
+        clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
+        return clone;
+    }
 }
