@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.DateUtil;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,12 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Value("${autoInvest.delay.minutes}")
+    private int autoInvestDelayMinutes;
+
+    @Autowired
+    private LoanRepayMapper loanRepayMapper;
 
     @Autowired
     private UserRoleMapper userRoleMapper;
@@ -320,7 +328,6 @@ public class LoanServiceImpl implements LoanService {
                     return investLoanDto;
                 }
             }
-
             return baseDto;
         }
         payDataDto.setStatus(false);
@@ -564,4 +571,47 @@ public class LoanServiceImpl implements LoanService {
         }
         return loanListDtos;
     }
+
+    @Override
+    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
+
+        currentPageNo = (currentPageNo - 1) * 10;
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,rateStart,
+                rateEnd,currentPageNo);
+        List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
+        String added = "";
+        for (int i=0;i<loanModels.size();i++) {
+            LoanListWebDto loanListWebDto = new LoanListWebDto();
+            loanListWebDto.setId(loanModels.get(i).getId());
+            loanListWebDto.setName(loanModels.get(i).getName());
+            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
+            loanListWebDto.setType(loanModels.get(i).getType());
+            loanListWebDto.setStatus(loanModels.get(i).getStatus());
+            loanListWebDto.setLoanAmount(AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount()));
+            loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
+            if (loanModels.get(i).getStatus() == LoanStatus.PREHEAT) {
+                if (DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()) < 30) {
+                    added = String.valueOf(DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()))+" 分钟后";
+                } else {
+                    added = new DateTime(loanModels.get(i).getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm");
+                }
+            } else if (loanModels.get(i).getStatus() == LoanStatus.RAISING || loanModels.get(i).getStatus() == LoanStatus.RECHECK) {
+                added = AmountUtil.convertCentToString(loanModels.get(i).getLoanAmount() - investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
+                loanListWebDto.setRateOfAdvance(String.valueOf(AmountUtil.div(investMapper.sumSuccessInvestAmount(loanModels.get(i).getId())*100,loanModels.get(i).getLoanAmount(),2)));
+            } else {
+                added = loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModels.get(i).getId()) + "/" + loanModels.get(i).getPeriods();
+            }
+            loanListWebDto.setAdded(added);
+            loanListWebDtos.add(loanListWebDto);
+        }
+        return loanListWebDtos;
+    }
+
+    @Override
+    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
+        return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,rateStart,rateEnd);
+    }
+
 }
