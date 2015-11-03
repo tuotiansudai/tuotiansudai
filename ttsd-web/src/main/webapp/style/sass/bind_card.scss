@@ -150,6 +150,18 @@
   z-index: 9999;
   display: none;
 }
+.ecope-overlay-fast {
+  background: #333;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+}
 
 .ecope-dialog {
   background: rgba(0, 0, 0, 0.2);
@@ -160,6 +172,19 @@
   left: 50%;
   margin: -130px 0 0 -280px;
   height: 260px;
+  width: 560px;
+  display: none;
+}
+.ecope-dialog-fast {
+  background: #fff;
+  padding:20px;
+  overflow: hidden;
+  position: fixed;
+  z-index: 10000;
+  top: 50%;
+  left: 50%;
+  margin: -130px 0 0 -280px;
+  height: 160px;
   width: 560px;
   display: none;
 }
@@ -203,7 +228,10 @@
   height: 40px;
   border-bottom: 1px solid #ccc;
 }
-
+.ecope-dialog-fast .hd {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 13px;
+}
 .ecope-dialog .hd h3 {
   height: 40px;
   line-height: 40px;
@@ -234,9 +262,26 @@
   margin: 10px;
 }
 
+.ecope-dialog-fast .bd {
+  margin: 10px;
+  text-align: center;
+}
+
 .ecope-dialog .ret {
   margin-top: 20px;
   font-size: 16px;
+}
+
+.ecope-dialog-fast .ret {
+  margin-top: 20px;
+  font-size: 16px;
+  margin: 0px auto;
+  padding-top: 30px;
+}
+.ecope-dialog-fast .infoTip {
+  padding-top: 30px;
+  font-size: 14px;
+  color: #777;
 }
 
 .ecope-dialog .ret p {
