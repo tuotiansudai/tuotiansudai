@@ -1,0 +1,51 @@
+$CK2: #333 #666 #ccc rgba(230, 230, 230, 1) rgba(0, 0, 0, 1) rgba(121, 121, 121, 1);
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.6;
+  caption {
+    text-align: left;
+    border: 1px solid #ccc;
+    border-bottom-width: 0;
+    padding: 5px;
+  }
+  th {
+    background: #ddd;
+    text-align: center;
+    padding: 10px;
+  }
+  td {
+    padding: 8px;
+    text-align: center;
+    color: #666;
+  }
+  &.table {
+    th {
+      border-bottom: 2px solid nth($CK2, 3);
+    }
+    td {
+      border-bottom: 1px solid nth($CK2, 3);
+    }
+  }
+  &.table-border {
+    th, td {
+      border: 1px solid nth($CK2, 3);
+    }
+  }
+  &.table-striped {
+    tr:nth-child(even) > td {
+      background: #eee;
+    }
+  }
+  &.table-hover {
+    tr:hover td {
+      background: #f2f2f2;
+    }
+  }
+  &.table-condensed {
+
+  }
+}

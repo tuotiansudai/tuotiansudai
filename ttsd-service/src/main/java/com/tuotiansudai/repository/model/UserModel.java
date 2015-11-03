@@ -1,10 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 
-import com.tuotiansudai.dto.EditUserDto;
-
 import java.util.Date;
-import java.util.List;
 
 public class UserModel{
 
