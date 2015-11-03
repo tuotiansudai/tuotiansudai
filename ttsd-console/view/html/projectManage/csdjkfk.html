@@ -3,10 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>复审审核</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>筹款编辑</title>
+    <title>初审的借款放款</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,15 +18,14 @@
     <!-- jquery -->
     <script src="../../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
-
-    <link rel="stylesheet" href="../../style/index.css">
-    <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
     <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datetimepicker.js"></script>
+    <link rel="stylesheet" href="../../style/index.css">
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker').datetimepicker();
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+
         });
     </script>
 </head>
@@ -101,45 +97,86 @@
             <div class="col-md-10">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="project" class="col-sm-2 control-label">借款项目名称: </label>
+                        <label  class="col-sm-2 control-label">借款项目名称: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">aaaa什么事</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">代理用户: </label>
+                        <label  class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">aaaa什么事</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">借款用户: </label>
+                        <label  class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> abc_sl_01</span>
+                            <span class="form-control">aaaa什么事</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">标的类型: </label>
+                        <label  class="col-sm-2 control-label">标的类型: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> 先付利息后还本金，按天计息，即投即生息 </span>
+                            <span class="form-control">先付利息后还本金，按天计息，即投即生息</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">审核信息: </label>
+                        <label  class="col-sm-2 control-label">借款用途: </label>
 
+                        <div class="col-sm-4">
+                            <span class="form-control">aaaa什么事</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">借款总金额: </label>
+
+                        <div class="col-sm-4">
+                            <span class="form-control">aaaa什么事</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">尚未募集的金额: </label>
+
+                        <div class="col-sm-4">
+                            <span class="form-control">aaaa什么事</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">借款利率（％）: </label>
+
+                        <div class="col-sm-4">
+                            <span class="form-control">aaaa什么事</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">手续费（还款时收取）: </label>
+
+                        <div class="col-sm-4">
+                            <span class="form-control">aaaa什么事</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">借款期限: </label>
+
+                        <div class="col-sm-4">
+                            <span class="form-control">1</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">审核信息:	  </label>
                         <div class="col-sm-4">
                             <textarea class="form-control" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="form-group input-append">
-                        <label class="col-sm-2 control-label">筹款截止时间: </label>
+                        <label  class="col-sm-2 control-label">筹款截止时间: </label>
 
                         <div class="col-sm-4">
-                            <div class='input-group date' id='datetimepicker'>
+                            <div class='input-group date' id='datetimepicker1'>
                                 <input type='text' class="form-control"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -148,21 +185,33 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">风险等级: </label>
+                        <label  class="col-sm-2 control-label">最小投资金额: </label>
 
                         <div class="col-sm-4">
-                            <span class="form-control"> AAA</span>
+                            <input class="form-control" type="text" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">初审是否通过: </label>
+                        <label  class="col-sm-2 control-label">初审是否通过: </label>
 
                         <div class="col-sm-4">
                             <span class="label label-success "> 是</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">操作: </label>
+                        <label  class="col-sm-2 control-label">属性: </label>
+
+                        <div class="col-sm-4">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    首页
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label  class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
 

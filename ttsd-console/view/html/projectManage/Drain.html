@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>所有借款</title>
+    <title>还款中的借款</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,6 @@
     <!-- jquery -->
     <script src="../../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
-
     <!-- 日历插件 -->
     <link href="../../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
@@ -31,6 +30,12 @@
     </script>
 
     <link rel="stylesheet" href="../../style/index.css">
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm'});
+        });
+    </script>
 </head>
 <body>
 <!-- header begin -->
@@ -80,17 +85,15 @@
             <!-- menu sidebar -->
             <div class="col-md-2">
                 <ul class="nav bs-docs-sidenav">
-                    <li class="active"><a href="index.html">所有借款</a></li>
+                    <li class="active"><a href="../index.html">所有借款</a></li>
                     <li><a href="firstTrial.html">初审的借款</a></li>
                     <li><a href="moneyCollect.html">筹款中借款</a></li>
+                    <li><a href="twoTrial.html">复审借款</a></li>
+                    <li><a href="Drain.html">还款中的借款</a></li>
                     <li><a href="finishRefund.html">完成还款的借款</a></li>
-                    <li><a href="Drain.html">已经流标的借款</a></li>
+                    <li> <a href="check.html">已流标等借款</a></li>
                     <li><a href="overdue.html">逾期借款</a></li>
                     <li><a href="star.html">发起借款</a></li>
-                    <li><a href="twoTrial.html">复审借款</a></li>
-                    <li><a href="recheck.html">复审核借款</a></li>
-                    <li><a href="check.html">审核借款</a></li>
-                    <li><a href="fundsEdit.html">复审借款</a></li>
                 </ul>
             </div>
             <!-- menu sidebar end -->
@@ -104,10 +107,19 @@
                     </div>
                     <div class="form-group">
                         <label for="number">投资人</label>
-                        <input type="text" class="form-control" id="number" placeholder="">
+                        <input type="text" class="form-control"  placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
+                        <label for="">编号</label>
+                        <input type="text" class="form-control"  placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="">项目名称</label>
+                        <input type="text" class="form-control"  placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="">日期</label>
 
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control"/>
@@ -155,6 +167,7 @@
                             <td>20150714000141</td>
                             <td>20150714000141</td>
                             <td>20150714000141</td>
+                            <td><a href="">编辑</a></td>
                         </tr>
                         <tr>
                             <td>20150714000141</td>
@@ -168,7 +181,6 @@
                             <td>20150714000141</td>
                             <td>20150714000141</td>
                             <td>20150714000141</td>
-
                         </tr>
                         <tr>
                             <td>20150714000141</td>
@@ -182,7 +194,6 @@
                             <td>20150714000141</td>
                             <td>20150714000141</td>
                             <td>20150714000141</td>
-
                         </tr>
                         <tr>
                             <td>20150714000141</td>
@@ -196,7 +207,6 @@
                             <td>20150714000141</td>
                             <td>20150714000141</td>
                             <td>20150714000141</td>
-
                         </tr>
                         <tr>
                             <td>20150714000141</td>
@@ -218,11 +228,7 @@
 
                 <!-- pagination  -->
                 <nav>
-                    <div>
-                        <span class="bordern">总共100条,每页显示10条</span>
-                    </div>
                     <ul class="pagination">
-
                         <li>
                             <a href="#" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
