@@ -51,25 +51,25 @@
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         </tbody>
                     </table>

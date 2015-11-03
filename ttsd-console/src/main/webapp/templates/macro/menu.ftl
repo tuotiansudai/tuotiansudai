@@ -29,7 +29,7 @@
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
                     {"name":"userMan","text":"用户管理","link":"/users"},
-                    {"name":"referMan","text":"推荐人管理","link":""},
+                    {"name":"referMan","text":"推荐人管理","link":"/referrerManage"},
                     {"name":"##############","text":"推荐层级-收益比例管理(用户)","link":""},
                     {"name":"##############","text":"用户推荐层级-收益比例管理(系统)","link":""},
                     {"name":"##############","text":"业务员推荐层级-收益比例管理(系统)","link":""}
@@ -40,10 +40,10 @@
                 "header":{"text":"财务管理","link":"/invests"},
                 "sidebar":[
                     {"name":"userInvest","text":"用户投资管理","link":""},
-                    {"name":"recharge","text":"充值记录","link":""},
-                    {"name":"withdraw","text":"提现记录","link":""},
-                    {"name":"userFund","text":"用户资金查询","link":""},
-                    {"name":"debtRepay","text":"债权还款计划","link":""},
+                    {"name":"recharge","text":"充值记录","link":"/recharge"},
+                    {"name":"withdraw","text":"提现记录","link":"/withdraw"},
+                    {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
+                    {"name":"debtRepay","text":"债权还款计划","link":"/debtRepaymentPlan"},
                     {"name":"systemAccount","text":"系统账户查询","link":""},
                     {"name":"##############","text":"管理员修改账户余额","link":""},
                     {"name":"##############","text":"联动优势余额查询","link":""}
@@ -51,9 +51,9 @@
             },
             {
             "name":"announceMan",
-            "header":{"text":"公告管理","link":"/announces"},
+            "header":{"text":"公告管理","link":"/announceManage"},
             "sidebar":[
-                {"name":"announceMan","text":"公告管理","link":""}
+                {"name":"announceMan","text":"公告管理","link":"/announceManage"}
             ]
             },
             {

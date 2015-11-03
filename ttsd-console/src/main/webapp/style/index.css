@@ -5,6 +5,7 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
+body { overflow-x: hidden;}
 a {
     color: #000;
     text-decoration: none;
