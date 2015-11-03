@@ -17,7 +17,12 @@ require(['jquery', 'csrf'], function ($) {
                 $('.btn-ok').addClass('grey').attr('disabled','disabled');
             }
         });
+        $('.open-fast-pay').click(function(){
+            $('.ecope-overlay-fast,.ecope-dialog-fast').show();
+            $("form").attr("action","/agreement") ;
+            $("form").submit();
 
+        });
 
 
         // 绑卡弹出页面
@@ -28,5 +33,7 @@ require(['jquery', 'csrf'], function ($) {
         $('.btn-ok').click(function(){
             $('.ecope-overlay,.ecope-dialog').show();
         });
+
+
     });
 });

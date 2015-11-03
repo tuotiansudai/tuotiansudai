@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.callback;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -58,8 +59,12 @@ public class BaseCallbackRequestModel {
         payRequestData.put("sign_type", props.getProperty("sign_type"));
         payRequestData.put("mer_id", props.getProperty("mer_id"));
         payRequestData.put("version", props.getProperty("version"));
-        payRequestData.put("order_id", this.orderId);
-        payRequestData.put("mer_date", this.merDate);
+        if(StringUtils.isNotEmpty(this.orderId)){
+            payRequestData.put("order_id", this.orderId);
+        }
+        if(StringUtils.isNotEmpty(this.merDate)){
+            payRequestData.put("mer_date", this.merDate);
+        }
         payRequestData.put("ret_code", SUCCESS_CODE);
         return payRequestData;
     }

@@ -23,9 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Administrator on 2015/9/10.
- */
 @Controller
 @RequestMapping(value = "/fund")
 public class FundManagementController {

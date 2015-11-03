@@ -1,10 +1,13 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
@@ -149,80 +152,54 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean changePassword(String loginName, String oldPassword, String newPassword) {
+    public boolean changePassword(String originalPassword, String newPassword) {
+        String loginName = LoginUserInfo.getLoginName();
+
+        boolean correct = this.verifyPasswordCorrect(originalPassword);
+
+        if (!correct) {
+            return false;
+        }
+
         UserModel userModel = userMapper.findByLoginName(loginName);
-        if (userModel == null) {
-            return false;
-        }
-        String encodedOldPassword = myShaPasswordEncoder.encodePassword(oldPassword, userModel.getSalt());
-        if (!userModel.getPassword().equals(encodedOldPassword)) {
-            return false;
-        }
+
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
-        smsWrapperClient.sendPasswordChangedNotify(userModel.getMobile());
+        smsWrapperClient.sendPasswordChangedNotify(LoginUserInfo.getMobile());
         return true;
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public BaseDto<PayDataDto> editUser(EditUserDto editUserDto, String ip) {
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payDataDto = new PayDataDto();
-        String message = checkUser(editUserDto);
-        if (StringUtils.isNotEmpty(message)) {
-            baseDto.setSuccess(true);
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(message);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        }
+    @Transactional
+    public void editUser(EditUserDto editUserDto, String ip) throws BaseException {
+        this.checkUser(editUserDto);
         String newMobile = editUserDto.getMobile();
         UserModel userModel = userMapper.findByLoginName(editUserDto.getLoginName());
         AccountModel accountModel = accountMapper.findByLoginName(editUserDto.getLoginName());
-        if (userModel != null && !newMobile.equals(userModel.getMobile()) && accountModel != null) {
+
+        if (!newMobile.equals(userModel.getMobile()) && accountModel != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
                     newMobile,
                     accountModel.getUserName(),
                     accountModel.getIdentityNumber());
-            BaseDto<PayDataDto> accountBaseDto = this.reRegisterAccount(registerAccountDto);
-            if (!accountBaseDto.getData().getStatus()) {
-                baseDto.setSuccess(true);
-                payDataDto.setStatus(false);
-                payDataDto.setMessage(accountBaseDto.getData().getMessage());
-                baseDto.setData(payDataDto);
-                return baseDto;
+            BaseDto<PayDataDto> baseDto = this.reRegisterAccount(registerAccountDto);
+            if (!baseDto.getData().getStatus()) {
+                throw new BaseException(baseDto.getData().getMessage());
             }
         }
 
-        try {
-            List<UserRoleModel> userRoles = Lists.newArrayList();
-            for (Role role : editUserDto.getRoles()) {
-                userRoles.add(new UserRoleModel(editUserDto.getLoginName(), role));
-            }
-            UserModel userModelEdit = this.modifyUserModel(userModel, editUserDto);
-            userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
-            userInfoLogService.logUserOperation(userModelEdit, userRoles, ip);
-            userMapper.updateUser(userModelEdit);
-            userRoleMapper.delete(editUserDto.getLoginName());
-            if (CollectionUtils.isNotEmpty(userRoles)) {
-                userRoleMapper.createUserRoles(userRoles);
-            }
-
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            baseDto.setSuccess(true);
-            payDataDto.setStatus(false);
-            payDataDto.setMessage(e.getMessage());
-            baseDto.setData(payDataDto);
-            return baseDto;
-
+        List<UserRoleModel> userRoles = Lists.newArrayList();
+        for (Role role : editUserDto.getRoles()) {
+            userRoles.add(new UserRoleModel(editUserDto.getLoginName(), role));
         }
-
-        payDataDto.setStatus(true);
-        baseDto.setSuccess(true);
-        baseDto.setData(payDataDto);
-        return baseDto;
+        UserModel userModelEdit = this.modifyUserModel(userModel, editUserDto);
+        userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
+        userInfoLogService.logUserOperation(userModelEdit, userRoles, ip);
+        userMapper.updateUser(userModelEdit);
+        userRoleMapper.delete(editUserDto.getLoginName());
+        if (CollectionUtils.isNotEmpty(userRoles)) {
+            userRoleMapper.createUserRoles(userRoles);
+        }
     }
 
     @Override
@@ -255,65 +232,57 @@ public class UserServiceImpl implements UserService {
         return userModelCopy;
     }
 
-    private String checkUser(EditUserDto editUserDto) {
+    private void checkUser(EditUserDto editUserDto) throws BaseException {
         String email = editUserDto.getEmail();
         if (StringUtils.isNotEmpty(email)) {
             UserModel userModel = userMapper.findByEmail(email);
             if (userModel != null) {
-                return "该邮箱已经存在";
+                throw new BaseException("该邮箱已经存在");
             }
         }
+
         String mobile = editUserDto.getMobile();
         if (StringUtils.isNotEmpty(mobile)) {
             UserModel userModel = userMapper.findByMobile(mobile);
             if (userModel != null && !userModel.getLoginName().equals(editUserDto.getLoginName())) {
-                return "该手机号已经存在";
+                throw new BaseException("该手机号已经存在");
             }
         }
-        return checkReferrer(editUserDto);
+        this.checkReferrer(editUserDto);
     }
 
-    private String checkReferrer(EditUserDto editUserDto) {
+    private void checkReferrer(EditUserDto editUserDto) throws BaseException {
         String referrer = editUserDto.getReferrer();
         if (StringUtils.isBlank(referrer)) {
-            return null;
-        } else {
-            UserModel userModel = userMapper.findByLoginName(referrer);
-            if (userModel == null) {
-                return "设置的推荐人不存在";
-            }
-            if (editUserDto.getLoginName().equalsIgnoreCase(editUserDto.getReferrer())) {
-                return "不能将推荐人设置为自已";
-            }
+            return;
+        }
 
+        UserModel userModel = userMapper.findByLoginName(referrer);
+        if (userModel == null) {
+            throw new BaseException("设置的推荐人不存在");
+        }
+
+        if (editUserDto.getLoginName().equalsIgnoreCase(editUserDto.getReferrer())) {
+            throw new BaseException("不能将推荐人设置为自已");
         }
 
         List<Role> roles = editUserDto.getRoles();
-        if (roles == null || roles.size() == 0) {
-            return null;
+        if (CollectionUtils.isEmpty(roles)) {
+            return;
         }
-        for (Role role : roles) {
-            if (role == Role.MERCHANDISER) {
-                return "有推荐人的用户不允许添加业务员角色!";
 
+        if (Iterators.tryFind(roles.iterator(), new Predicate<Role>() {
+            @Override
+            public boolean apply(Role role) {
+                return role == Role.MERCHANDISER;
             }
+        }).isPresent()) {
+            throw new BaseException("有推荐人的用户不允许添加业务员角色");
         }
 
-        if (hasDiffReferrerRelation(editUserDto.getLoginName(), referrer)) {
-            return "设置的推荐人与本用户存在间接推荐关系，不能设置为本用户的推荐人";
+        if (referrerRelationMapper.findByLoginNameAndReferrer(editUserDto.getLoginName(), referrer) > 0) {
+            throw new BaseException("设置的推荐人与本用户存在间接推荐关系，不能设置为本用户的推荐人");
         }
-        return null;
-
-    }
-
-    private boolean hasDiffReferrerRelation(String loginName, String referrer) {
-
-        long count = referrerRelationMapper.findByLoginNameAndReferrer(loginName, referrer);
-        if (count > 0) {
-            return true;
-        }
-        return false;
-
     }
 
     @Override
@@ -341,7 +310,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDtos.add(userItemDataDto);
         }
         int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer);
-        BasePaginationDataDto basePaginationDataDto = new BasePaginationDataDto(index, pageSize, count, userItemDataDtos);
+        BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);
         return baseDto;
@@ -351,6 +320,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> findLoginNameLike(String loginName) {
         return userMapper.findLoginNameLike(loginName);
+    }
+
+    @Override
+    public boolean verifyPasswordCorrect(String password) {
+        String loginName = LoginUserInfo.getLoginName();
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
     }
 
 }

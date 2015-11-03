@@ -12,8 +12,10 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.request.PtpMerBindAgreementRequestModel;
 import com.tuotiansudai.paywrapper.service.AgreementService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.AgreementType;
+import com.tuotiansudai.repository.model.BankCardModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class AgreementServiceImpl implements AgreementService{
     @Autowired
     private AccountMapper accountMapper;
 
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
@@ -43,7 +48,10 @@ public class AgreementServiceImpl implements AgreementService{
         AgreementType agreementType = null;
         if (dto.isAutoInvest()) {
             agreementType = AgreementType.ZTBB0G00;
+        }else if(dto.isFastPay()){
+            agreementType = AgreementType.ZKJP0700;
         }
+
         PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(),agreementType);
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class,ptpMerBindAgreementRequestModel);
@@ -75,6 +83,13 @@ public class AgreementServiceImpl implements AgreementService{
         if (accountModel != null && callbackRequestModel.isSuccess()) {
             if (agreementNotifyRequestModel.isAutoInvest()) {
                 accountModel.setAutoInvest(true);
+            }
+            if(agreementNotifyRequestModel.isFastPay()){
+                String loginName = accountModel.getLoginName();
+                BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
+                bankCardModel.setIsFastPayOn(true);
+                bankCardMapper.updateBankCard(bankCardModel);
+
             }
             accountMapper.update(accountModel);
         } else {

@@ -92,6 +92,8 @@ public class LoanModel {
      * 建标时间
      ***/
     private Date createdTime = new Date();
+
+    private Date updateTime = new Date();
     /***
      * 初审时间
      ***/
@@ -418,5 +420,13 @@ public class LoanModel {
 
     public int calculateLoanRepayTimes() {
         return LoanPeriodUnit.DAY == this.type.getLoanPeriodUnit() ? 1 : this.periods;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

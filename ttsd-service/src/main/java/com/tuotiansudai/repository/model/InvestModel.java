@@ -52,6 +52,16 @@ public class InvestModel {
         this.createdTime = new Date();
     }
 
+    public InvestModel(long loanId, long amount, String loginName, Source source) {
+        this.loanId = loanId;
+        this.amount = amount;
+        this.loginName = loginName;
+        this.source = source;
+        this.status = InvestStatus.WAITING;
+        this.isAutoInvest = false;
+        this.createdTime = new Date();
+    }
+
     public long getId() {
         return id;
     }
