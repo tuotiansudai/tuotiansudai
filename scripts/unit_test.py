@@ -29,6 +29,7 @@ class NewVersionUnitTest(object):
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Pdatabase=aa ttsd-service:flywayMigrate'.format(self.db_host, self.db_port))
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Pdatabase=ump_operations ttsd-service:flywayMigrate'.format(self.db_host, self.db_port))
         sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Pdatabase=sms_operations ttsd-service:flywayMigrate'.format(self.db_host, self.db_port))
+        sh('/opt/gradle/latest/bin/gradle -Pdbhost={0} -Pdbport={1} -Pdatabase=job_worker ttsd-service:flywayMigrate'.format(self.db_host, self.db_port))
 
     def init_docker(self):
         print "Initialing docker..."

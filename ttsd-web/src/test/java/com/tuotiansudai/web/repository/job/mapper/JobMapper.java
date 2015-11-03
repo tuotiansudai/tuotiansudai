@@ -1,6 +1,6 @@
-package com.tuotiansudai.web.repository.mapper;
+package com.tuotiansudai.web.repository.job.mapper;
 
-import com.tuotiansudai.web.repository.model.JobModel;
+import com.tuotiansudai.web.repository.job.model.JobModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

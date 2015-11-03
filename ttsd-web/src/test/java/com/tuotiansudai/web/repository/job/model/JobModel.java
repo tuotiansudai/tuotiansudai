@@ -1,4 +1,4 @@
-package com.tuotiansudai.web.repository.model;
+package com.tuotiansudai.web.repository.job.model;
 
 import java.io.Serializable;
 
