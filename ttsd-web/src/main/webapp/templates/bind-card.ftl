@@ -119,6 +119,7 @@
             <#if bindCardStatus == "commonBindCard" ||  bindCardStatus == "specialBindCard">
             <#--未开通快捷支付-->
                 <div class="card-box">
+                    <form action="" method="post" target="_blank">
                     <h4 class="hd-card">
                     <span class="logo-card"><img src="${staticServer}/images/bindcard/logo-${bankCode}.png"
                                                  alt=""/></span>
@@ -127,11 +128,14 @@
 
                     <div class="card-num">${cardNumber}</div>
                     <div class="options">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <a class="cart-edit" href="">修改</a>
                     <#if bindCardStatus == "specialBindCard">
-                        <a class="open-fast-pay" href="">开通快捷支付</a>
+                        <input type="hidden" name="fastPay" value="true"/>
+                        <a class="open-fast-pay" href="javascript:void(0)" >开通快捷支付</a>
                     </#if>
                     </div>
+                    </form>
                 </div>
             <#--未开通快捷支付-->
 
@@ -144,9 +148,7 @@
 
             <p>2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。</p>
 
-            <p>3、如果您的借记卡是中国工商银行，中国农业银行，中国建设银行，中国银行，光大银行，兴业银行，中国民生银行七家之一，
-                才可开通快捷支付。
-            </p>
+            <p>3、如果您的借记卡是中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、民生银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行，方可开通快捷支付。</p>
 
             <p>4、当您的账户余额为零的时候，系统才会支持您更换银行卡操作。
             </p>
@@ -179,6 +181,23 @@
             </div>
         </div>
         <a href="javascript:void(0)" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
+    </div>
+</div>
+
+<div class="ecope-overlay-fast" style=""></div>
+<div class="ecope-dialog-fast">
+    <div class="dg_wrapper dialog-chongzhi">
+        <div class="hd">
+            <h3>开通快捷支付功能</h3>
+        </div>
+        <div class="bd">
+            <div class="ret">
+                <a href="${requestContext.getContextPath()}/recharge" class="g-btn g-btn-medium-major tongji"
+                      data-category="继续充值" data-label="recharge">继续充值</a>
+                <p class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+            </div>
+        </div>
+        <a href="javascript:" class="js-close close tongji" data-category="关闭弹层" data-label="recharge"></a>
     </div>
 </div>
 

@@ -1,14 +1,10 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.repository.model.AgreementType;
 
 import java.text.MessageFormat;
 import java.util.Map;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
 
     private String userId;
@@ -22,15 +18,15 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         super();
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
-        this.retUrl =  (String)CALLBACK_HOST_PROPS.get("ump.callback.web.host");
-        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), UmPayService.NOTIFY_MER_BIND_AGREEMENT.getServiceName());
+        this.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
+        this.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "mer_bind_agreement_notify"));
         this.userBindAgreementList = userBindAgreementList;
     }
 
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("ret_url", "/");
+        payRequestData.put("ret_url",this.getRetUrl());
         payRequestData.put("notify_url", this.getNotifyUrl());
         payRequestData.put("user_id", this.userId);
         payRequestData.put("user_bind_agreement_list", this.userBindAgreementList.name());
