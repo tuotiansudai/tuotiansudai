@@ -9,12 +9,8 @@
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="style/index.css">
-    <@global.javascript pageJavascript="announce-manage.js"></@global.javascript>
+
 </head>
 <body>
 <@menu.header label="announceMan"></@menu.header>

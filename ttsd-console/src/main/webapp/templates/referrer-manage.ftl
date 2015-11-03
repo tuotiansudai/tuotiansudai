@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
@@ -12,23 +13,9 @@
     <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
     <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="style/index.css">
+    <@global.javascript pageJavascript="referer-manage.js"></@global.javascript>
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-
-<script type="text/javascript">
-    $(function() {
-        $('#RewardDate .date,#investDate .date').datepicker({
-            format:'yyyy-mm-dd',
-            autoclose:true
-        });
-        $('.selectpicker').selectpicker();
-    })
-</script>
 </head>
 <body>
 <@menu.header label="userMan"></@menu.header>

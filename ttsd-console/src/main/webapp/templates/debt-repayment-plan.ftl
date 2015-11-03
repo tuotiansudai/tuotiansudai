@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>’Æ»®ªπøÓº∆ªÆ</title>
+    <title>ÂÄ∫ÊùÉËøòÊ¨æËÆ°Âàí</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,181 +15,66 @@
     <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="style/index.css">
+<@global.javascript pageJavascript="debt-repay-plan.js"></@global.javascript>
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-
-    <script type="text/javascript">
-        $(function() {
-            $('#RewardDate .date,#investDate .date').datepicker({
-                format:'yyyy-mm-dd',
-                autoclose:true
-            });
-            $('.selectpicker').selectpicker();
-        })
-    </script>
 </head>
 <body>
 <@menu.header label="finaMan"></@menu.header>
 <div class="main">
     <div class="container-fluid">
         <div class="row">
-        <@menu.sidebar headLab="finaMan" sideLab="userInvest"></@menu.sidebar>
+        <@menu.sidebar headLab="finaMan" sideLab="debtRepay"></@menu.sidebar>
             <!-- content area begin -->
 
             <div class="col-md-10">
-                <form action="" class="form-inline query-build">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="control-label">Õ∆ºˆ»À</label>
-                            <input type="text" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label for="control-label">Õ∂◊ »À</label>
-                            <input type="text" class="form-control" >
-                        </div>
-                        <div class="form-group" id="investDate">
-                            <label for="control-label">Õ∂◊  ±º‰</label>
-                            <div class='input-group date'>
-                                <input type='text' class="form-control" />
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
-                            </div>
-                            -
-                            <div class='input-group date'>
-                                <input type='text' class="form-control"/>
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="control-label">Õ∆ºˆ≤„º∂</label>
-                            <input type="text" class="form-control" >
+                    <div class="row">
+                        <div class="col-md-3">
+                        <div class="pull-left currentTab"><span> ÂÄ∫ÊùÉËøòÊ¨æËÆ°Âàí</span></div>
                         </div>
-                        <div class="form-group" id="RewardDate">
-                            <label for="control-label">Ω±¿¯ ±º‰</label>
-                            <div class='input-group date'>
-                                <input type='text' class="form-control" />
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
-                            </div>
-                            -
-                            <div class='input-group date'>
-                                <input type='text' class="form-control"/>
-					                <span class="input-group-addon">
-					                    <span class="glyphicon glyphicon-calendar"></span>
-					                </span>
-                            </div>
-                        </div>
+                        <div class="col-md-9 text-right">
+                            <form action="" class="form-inline query-build">
                         <div class="form-group">
-                            <label for="control-label">Õ∆ºˆ»ÀΩ«…´</label>
+
                             <select class="selectpicker"  data-style="btn-default" >
-                                <option>»´≤ø</option>
-                                <option>»´≤ø1</option>
+                                <option>ÂÖ®ÈÉ®</option>
+                                <option>Â∑≤ËøòÊ¨æ</option>
+                                <option>Êú™ËøòÊ¨æ</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary" type="submit">≤È—Ø</button>
-                        <button class="btn btn-default" type="submit">÷ÿ÷√</button>
+                        <button class="btn btn-primary" type="submit">Êü•ËØ¢</button>
+                            </form>
+                            </div>
                     </div>
 
-                </form>
-
                 <div class="row">
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover table-center">
                         <thead>
                         <tr>
-                            <th>œÓƒø√˚≥∆</th>
-                            <th>∆⁄ ˝</th>
-                            <th>Õ∂◊ »À</th>
-                            <th>Õ∂◊ »À–’√˚</th>
-                            <th>Õ∂◊ Ω∂Ó</th>
-                            <th>Õ∂◊  ±º‰</th>
-                            <th>Õ∆ºˆ»À</th>
-                            <th>Õ∆ºˆ»À–’√˚</th>
-                            <th>Õ∆ºˆ»À «∑Ò“µŒÒ‘±</th>
-                            <th>Õ∆ºˆ≤„º∂</th>
-                            <th>Õ∆ºˆΩ±¿¯</th>
-                            <th>Ω±¿¯◊¥Ã¨</th>
-                            <th>Ω±¿¯ ±º‰</th>
+                            <th>Êó∂Èó¥</th>
+                            <th>ËøòÊ¨æÈáëÈ¢ù</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>terer</td>
-                            <td>12∆⁄</td>
-                            <td>jiaojiao</td>
-                            <td>ΩøΩø</td>
-                            <td>50</td>
-                            <td>2015-05-09</td>
-                            <td>terer</td>
-                            <td>’≈¡˙</td>
-                            <td>∑Ò</td>
-                            <td>1</td>
-                            <td>0.1</td>
-                            <td>“—»Î’À</td>
-                            <td>2015-08-09</td>
+                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
+                            <td> 104.5</td>
+
                         </tr>
                         <tr>
-                            <td>terer</td>
-                            <td>12∆⁄</td>
-                            <td>jiaojiao</td>
-                            <td>ΩøΩø</td>
-                            <td>50</td>
-                            <td>2015-05-09</td>
-                            <td>terer</td>
-                            <td>’≈¡˙</td>
-                            <td>∑Ò</td>
-                            <td>1</td>
-                            <td>0.1</td>
-                            <td>“—»Î’À</td>
-                            <td>2015-08-09</td>
+                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
+                            <td>104.5</td>
+
                         </tr>
                         <tr>
-                            <td>terer</td>
-                            <td>12∆⁄</td>
-                            <td>jiaojiao</td>
-                            <td>ΩøΩø</td>
-                            <td>50</td>
-                            <td>2015-05-09</td>
-                            <td>terer</td>
-                            <td>’≈¡˙</td>
-                            <td>∑Ò</td>
-                            <td>1</td>
-                            <td>0.1</td>
-                            <td>“—»Î’À</td>
-                            <td>2015-08-09</td>
+                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
+                            <td>104.5</td>
+
                         </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="row">
-                    <!-- pagination  -->
-                    <nav>
-                        <div><span class="bordern">◊‹π≤5Ãı,√ø“≥œ‘ æ15Ãı</span></div>
-                        <ul class="pagination">
-
-                            <li>
-                                <a href="#">
-                                    <span>? Prev</span>
-                                </a>
-                            </li>
-                            <li><a>1</a></li>
-                            <li>
-                                <a href="#">
-                                    <span>Next ?</span>
-                                </a>
-
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
             </div>
 
             <!-- content area end -->
