@@ -79,10 +79,9 @@ public class LoanServiceTest {
     public void createLoanServiceTest_1() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
-        userRoleMapper.createUserRoles(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
-        userRoleMapper.createUserRoles(getFakeUserRole(fakeUser,Role.LOANER));
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertTrue(baseDto.getData().getStatus());
@@ -243,10 +242,9 @@ public class LoanServiceTest {
     public void updateLoanTest() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
-        userRoleMapper.createUserRoles(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
-        userRoleMapper.createUserRoles(getFakeUserRole(fakeUser,Role.LOANER));
 
         this.creteLoan(getLoanDto(fakeUser));
         List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
