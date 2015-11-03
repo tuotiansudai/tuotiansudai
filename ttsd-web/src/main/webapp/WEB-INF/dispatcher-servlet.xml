@@ -33,6 +33,7 @@
 
     <context:component-scan base-package="com.tuotiansudai.web"/>
 
+    <mvc:resources mapping="/html/**" location="/html/"/>
     <mvc:resources mapping="/style/**" location="/style/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>

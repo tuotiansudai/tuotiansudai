@@ -8,7 +8,7 @@
     {"title":"账户总览", "url":"/", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
-    {"title":"资金管理", "url":"/", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
@@ -28,7 +28,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
     <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}">
-    <#if pageCss??>
+    <#if pageCss?? && pageCss != "">
         <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}">
     </#if>
 </head>

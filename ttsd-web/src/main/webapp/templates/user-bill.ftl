@@ -1,19 +1,19 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.fund}" activeNav="我的账户" activeLeftNav="资金管理" title="资金管理">
+<@global.main pageCss="" pageJavascript="${js.user_bill}" activeNav="我的账户" activeLeftNav="资金管理" title="资金管理">
 <div class="content-container auto-height user-bill-list-content">
     <h4 class="column-title"><em class="tc">资金管理</em></h4>
 
     <div class="money-box">
         <div class="balance">
-            您的可用余额：<span id="jq-pay"></span>
+            可用余额：<span>${balance} 元</span>
         </div>
         <div class="item-block">
-            <a class="bt-pay" href="/recharge">充值</a>
-            <a class="bt-invest" href="">投资</a>
-            <a class="bt-withdraw" href="">提现</a>
+            <a class="btn-recharge" href="/recharge">充值</a>
+            <a class="btn-invest" href="">投资</a>
+            <a class="btn-withdraw" href="/withdraw">提现</a>
         </div>
-        <p>累计充值：￥<span id="jq-recharge"></span></p>
-        <p>累计提现：￥<span id="jq-withdraw"></span></p>
+        <p>累计充值：<span>${rechargeAmount} 元</span></p>
+        <p>累计提现：<span>${withdrawAmount} 元</span></p>
     </div>
 
     <div class="item-block date-filter">
@@ -29,15 +29,15 @@
     <div class="item-block status-filter">
         <span class="sub-hd">交易状态:</span>
         <span class="select-item current" data-status="">全部</span>
-        <span class="select-item" data-status="WITHDRAW_SUCCESS WITHDRAW_FAIL APPLY_WITHDRAW">提现</span>
+        <span class="select-item" data-status="WITHDRAW_SUCCESS,WITHDRAW_FAIL,APPLY_WITHDRAW">提现</span>
         <span class="select-item" data-status="RECHARGE_SUCCESS">充值</span>
-        <span class="select-item" data-status="ACTIVITY_REWARD REFERRER_REWARD">奖励</span>
-        <span class="select-item" data-status="NORMAL_REPAY ADVANCE_REPAY">本息</span>
+        <span class="select-item" data-status="ACTIVITY_REWARD,REFERRER_REWARD">奖励</span>
+        <span class="select-item" data-status="NORMAL_REPAY,ADVANCE_REPAY">本息</span>
         <span class="select-item" data-status="INVEST_SUCCESS">投标</span>
     </div>
 
     <div class="clear-blank"></div>
     <table class="user-bill-list table-striped"></table>
-    <div class="pagination" data-url="/fund/user-bill-list-data" data-page-size="2"></div>
+    <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="2"></div>
 </div>
 </@global.main>
