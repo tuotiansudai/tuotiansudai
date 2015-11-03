@@ -68,8 +68,8 @@
                                     <i>+${loanListWebDto.activityRate}</i>
                                 </#if>
                             </span>
-                            <span class="name">项目期限（<#if loanListWebDto.tpye == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.tpye = 'LOAN_INTEREST_MONTHLY_REPAY'>月<#else>天</#if>）：</span>
-                            <span class="month">${loanListWebDto.periods}<#if loanListWebDto.tpye == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.tpye = 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></span> <br/>
+                            <span class="name">项目期限（<#if loanListWebDto.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.type = 'LOAN_INTEREST_MONTHLY_REPAY'>月<#else>天</#if>）：</span>
+                            <span class="month">${loanListWebDto.periods}<#if loanListWebDto.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.type = 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></span> <br/>
                             <span class="name">还款方式：</span>
                             <span class="money-style">${loanListWebDto.type.getName()}</span>
                         </div>
