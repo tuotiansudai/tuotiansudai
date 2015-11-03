@@ -46,8 +46,7 @@
           }
 
         }
-        button {margin-left: 10px;
-          padding:8px 25px; }
+        .btn-primary,.btn-normal {margin-left: 10px; padding:8px 20px;  }
       }
     }
   }
@@ -93,17 +92,6 @@
         border-bottom-width: 0;
       }
     }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1)>td {
-        border-bottom-width: 0px;
-      }
-      tfoot tr td{
-        border-top: 1px solid nth($CK1,1);
-        border-bottom: 1px solid nth($CK1,1);
-      }
-    }
     .PaymentSwitch {
       li {
         float: left;
@@ -118,6 +106,18 @@
         }
       }
     }
+  }
+  .tMonthPayment {
+    table {
+      tr:nth-last-child(1)>td {
+        border-bottom-width: 0px;
+      }
+      tfoot tr td{
+        border-top: 1px solid nth($CK1,1);
+        border-bottom: 1px solid nth($CK1,1);
+      }
+    }
+
   }
   .newProjects {
     &.bRadiusBox {

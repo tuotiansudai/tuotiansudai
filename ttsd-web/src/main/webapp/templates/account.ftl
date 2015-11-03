@@ -22,13 +22,11 @@
         <div class="bRadiusBox spad">
             <img src="/images/sign/profile.jpg" class="fl accountImg" >
             <div class="profileBox">
-                <span><em>您好：${loginName!}</em> 吃完午饭小憩一会，为下午补充能量！</span>
+                <span><em>您好：${loginName!}</em></span>
                 <ul class="proList">
-                    <li class="fl"><a class="fa fa-cc-mastercard fa-fw"></a></li>
-                    <li class="fl"><a class="fa fa-mobile fa-fw"></a></li>
-                    <li class="fl"><a class="fa fa-envelope-o fa-fw"></a></li>
-                    <li class="fr"><button class="btn-normal">充值</button> </li>
-                    <li class="fr"><button class="btn-primary">提现</button></li>
+                    <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
+                    <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
+                    <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
                 </ul>
             </div>
 
@@ -53,15 +51,18 @@
     <div class="clearBlank"></div>
             <#if successSumRepay??>
             <div class="LastMonth bRadiusBox">
+                <ul class="PaymentSwitch">
+                    <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
+                </ul>
                 <table class="table table-striped">
-                    <caption>本月还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a> </caption>
+                    <caption>本月未还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a> </caption>
                     <thead>
                         <tr>
                             <th>项目名称</th>
                             <th>年利率</th>
                             <th>贷款周期</th>
                             <th>项目周期</th>
-                            <th>还款金额</th>
+                            <th>预计还款</th>
                             <th>还款日期</th>
                         </tr>
                     </thead>
@@ -69,7 +70,7 @@
                     <#if repayList??>
                         <#list repayList as repay>
                         <tr>
-                            <td>${repay.loan.name!}</td>
+                            <td><a href="/loan/${repay.loan.id}">${repay.loan.name!}</a></td>
                             <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} % </td>
                             <td>${(repay.loan.periods?string('0'))!}个月</td>
                             <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
@@ -109,7 +110,7 @@
                 <#if successSumInvestRepayList??>
                 <#list successSumInvestRepayList as successSumInvestRepay>
                 <tr>
-                    <td>${successSumInvestRepay.loan.name!}</td>
+                    <td><a href="/loan/${successSumInvestRepay.loan.id}">${successSumInvestRepay.loan.name!}</a></td>
                     <td>${(((successSumInvestRepay.loan.activityRate+successSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                     <td>${(successSumInvestRepay.loan.periods?string('0'))!}个月</td>
                     <td>第${(successSumInvestRepay.period?string('0'))!}期/${(successSumInvestRepay.loan.periods?string('0'))!}期</td>
@@ -141,7 +142,7 @@
                 <#if notSuccessSumInvestRepayList??>
                 <#list notSuccessSumInvestRepayList as notSuccessSumInvestRepay>
                 <tr>
-                    <td>${notSuccessSumInvestRepay.loan.name!}</td>
+                    <td><a href="/loan/${notSuccessSumInvestRepay.loan.id}">${notSuccessSumInvestRepay.loan.name!}</a></td>
                     <td>${(((notSuccessSumInvestRepay.loan.activityRate+notSuccessSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                     <td>${(notSuccessSumInvestRepay.loan.periods?string('0'))!}个月</td>
                     <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
@@ -177,11 +178,11 @@
             <#list latestInvestList as latestInvest>
             <tr>
                 <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
-                <td><a href="#">${latestInvest.loanName!}</a></td>
+                <td><a href="/loan/${latestInvest.loanId!}">${latestInvest.loanName!}</a></td>
                 <td>投资成功</td>
                 <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}/${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
                 <td>￥${(latestInvest.investAmount?string('0.00'))!}元</td>
-                <td><a href="#">合同</a></td>
+                <td><a href="/contract/investor/${latestInvest.loanId!}">合同</a></td>
             </tr>
             </#list>
             <#else>

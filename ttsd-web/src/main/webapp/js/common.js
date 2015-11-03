@@ -256,7 +256,7 @@ var MyChartsObject={
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{b} : {c} ({d}/%)',
+                    formatter: '{b} : {c} ({d}%)',
                     show: true
                 },
                 series: [

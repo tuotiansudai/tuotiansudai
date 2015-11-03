@@ -195,7 +195,7 @@
           loan_repay t
           JOIN loan l
             ON t.`loan_id` = l.`id`
-            AND l.`status` IN ('COMPLETE', 'REPAYING')
+            AND l.`status` != 'COMPLETE'
             AND l.`agent_login_name` = #{loginName}
         WHERE t.`status` = 'COMPLETE'
             AND t.`actual_repay_date` BETWEEN #{startTime}
@@ -219,30 +219,7 @@
         FROM
           `loan` m
           JOIN
-            (SELECT
-              t.`id`,
-              l.`id` AS `loanId`,
-              t.`period`,
-              t.`status`,
-              t.`corpus`,
-              t.`actual_interest`,
-              t.`expected_interest`,
-              t.`default_interest`,
-              t.`actual_repay_date`,
-              t.`repay_date`,
-              t.`actual_repay_date` AS `repayTime`
-            FROM
-              `loan_repay` t
-              JOIN `loan` l
-                ON t.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
-                AND l.`agent_login_name` = #{loginName}
-            WHERE t.`status` = 'COMPLETE'
-              AND t.`actual_repay_date` BETWEEN #{startTime}
-              AND #{endTime}
-            UNION
-            ALL
-            SELECT
+            ( SELECT
               t.`id`,
               l.`id` AS `loanId`,
               t.`period`,
