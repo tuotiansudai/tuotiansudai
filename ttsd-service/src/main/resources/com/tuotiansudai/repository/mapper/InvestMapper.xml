@@ -22,13 +22,14 @@
         <result column="amount" property="amount"></result>
     </resultMap>
 
-    <resultMap id="investDetailMap" type="InvestDetailModel" extends="investResultMap">
+    <resultMap id="investPaginationItemMap" type="InvestPaginationItemView" extends="investResultMap">
+        <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="loan_type" property="loanType"></result>
         <result column="loan_status" property="loanStatus"></result>
-        <result column="user_referrer" property="userReferrer"></result>
-        <result column="next_repay_amount" property="nextRepayAmount"></result>
+        <result column="referrer_login_name" property="referrerLoginName"></result>
         <result column="next_repay_date" property="nextRepayDate"></result>
+        <result column="next_repay_amount" property="nextRepayAmount"></result>
     </resultMap>
 
     <sql id="columns">
@@ -113,84 +114,53 @@
         and invest.status = 'SUCCESS'
     </select>
 
-    <select id="findByPage" parameterType="map" resultMap="investDetailMap">
-        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status
-        , invest.source, invest.is_auto_invest, invest.created_time
-        , loan.name as loan_name, loan.type as loan_type, loan.status as loan_status
-        , u.referrer as user_referrer
-        <if test="includeRepay">
-            , ifnull(repay.corpus,0)+ifnull(repay.default_interest,0)+ifnull(repay.expected_interest,0)-ifnull(repay.expected_fee,0) as next_repay_amount
-            , repay.repay_date as next_repay_date
-        </if>
-        <if test="!includeRepay">
-            , '0' as next_repay_amount, '1900-1-1' as next_repay_date
-        </if>
-        from invest
-        inner join loan on invest.loan_id = loan.id
-        inner join user u on u.login_name = invest.login_name
-        <if test="includeRepay">
-            left outer join invest_repay repay
-            on repay.id = (
-                select id
-                from invest_repay
-                where invest_repay.invest_id = invest.id
-                and invest_repay.status &lt;&gt; 'COMPLETE'
-                order by repay_date
-                asc
-                limit 1 )
-        </if>
-        where 1=1
-        <if test="loanId != null">
-            and invest.loan_id = #{loanId}
-        </if>
-        <if test="loginName != null and loginName != ''">
-            and invest.login_name = #{loginName}
-        </if>
-        <if test="endTime != null">
-            and invest.created_time &lt; #{endTime}
-        </if>
-        <if test="beginTime != null">
-            and invest.created_time &gt;= #{beginTime}
-        </if>
-        <if test="investStatus != null">
-            and invest.status = #{investStatus}
-        </if>
-        <if test="loanStatus != null">
-            and loan.status = #{loanStatus}
-        </if>
-        order by invest.created_time desc
-        limit #{limit} offset #{offset}
-    </select>
-
-    <select id="findCount" parameterType="map" resultType="int">
-        select count(*)
-        from invest
-        inner join loan on invest.loan_id = loan.id
-        where 1=1
-        <if test="loanId != null">
-            and invest.loan_id = #{loanId}
-        </if>
-        <if test="loginName != null and loginName != ''">
-            and invest.login_name = #{loginName}
-        </if>
-        <if test="endTime != null">
-            and invest.created_time &lt; #{endTime}
-        </if>
-        <if test="beginTime != null">
-            and invest.created_time &gt;= #{beginTime}
-        </if>
-        <if test="loanStatus != null">
-            and loan.status = #{loanStatus}
-        </if>
-        <if test="investStatus != null">
-            and invest.status = #{investStatus}
-        </if>
-    </select>
-
     <select id="sumSuccessInvestAmountByLoginName" parameterType="map" resultType="long">
         select IFNULL(sum(amount),0)
         from invest
         where loan_id = #{loanId} and login_name = #{loginName}
         and status = 'SUCCESS'
     </select>
+
+    <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemMap">
+        select invest.*,
+        loan.name as loan_name,
+        loan.status as loan_status,
+        (select user.referrer from user where user.login_name = #{loginName}) as referrer_login_name,
+        (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
+        (select invest_repay.expected_interest + invest_repay.default_interest + invest_repay.corpus
+          from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'
+          and invest_repay.period = (select min(invest_repay.period) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING')
+        ) as next_repay_amount
+        from invest join loan on invest.loan_id = loan.id
+        <where>
+            <if test="loginName != null">
+                and invest.login_name = #{loginName}
+            </if>
+            <if test="loanStatus != null">
+                and loan.status = #{loanStatus}
+            </if>
+            <if test="investStatus != null">
+                and invest.status = #{investStatus}
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and invest.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by invest.created_time desc, invest.id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findCountInvestPagination" parameterType="map" resultType="long">
+        select count(1)
+        from invest join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and invest.created_time between #{startTime} and #{endTime}
+        <if test="loanStatus != null">
+            and loan.status = #{loanStatus}
+        </if>
+        <if test="investStatus != null">
+            and invest.status = #{investStatus}
+        </if>
+    </select>
+
 </mapper>
