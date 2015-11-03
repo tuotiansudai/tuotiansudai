@@ -73,8 +73,10 @@
     margin-top: 10px;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
     &:hover{
       border:1px solid #cc0000;
+      background: #fff;
     }
     & .hot {
       width: 59px;
@@ -125,8 +127,9 @@
         border-bottom: none;
         line-height: 56px;
         font-size: 14px;
+        padding-left: 30px;
         & .name {
-          padding-left: 30px;
+
           color: #999999;
           float: left;
           padding-right: 10px;

@@ -43,7 +43,7 @@
     <div class="wrapper loan-list">
         <ul>
             <#list loanListWebDtos as loanListWebDto>
-                <li>
+                <li urlLink="/loan/${(loanListWebDto.id?string('0'))!}">
                     <#if loanListWebDto.activityType == 'NOVICE'>
                         <span class="hot"></span>
                     </#if>
@@ -69,7 +69,7 @@
                                 </#if>
                             </span>
                             <span class="name">项目期限（月）：</span>
-                            <span class="month">${loanListWebDto.periods}个月</span>
+                            <span class="month">${loanListWebDto.periods}个月</span> <br/>
                             <span class="name">还款方式：</span>
                             <span class="money-style">${loanListWebDto.type.getName()}</span>
                         </div>
@@ -121,7 +121,9 @@
                             <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
                         </div>
                     </#if>
+
                 </li>
+
             </#list>
         </ul>
         <div class="pagination">
