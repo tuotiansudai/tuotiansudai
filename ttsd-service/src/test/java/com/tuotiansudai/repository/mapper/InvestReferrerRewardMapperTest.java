@@ -41,8 +41,7 @@ public class InvestReferrerRewardMapperTest {
         InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(id, model.getId(), 100, userModelTest.getLoginName(), Role.INVESTOR);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
-        InvestReferrerRewardModel investReferrerRewardModel1 = investReferrerRewardMapper.findById(id);
-        assertNotNull(investReferrerRewardModel1);
+        assertNotNull(investReferrerRewardMapper.findById(id));
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {

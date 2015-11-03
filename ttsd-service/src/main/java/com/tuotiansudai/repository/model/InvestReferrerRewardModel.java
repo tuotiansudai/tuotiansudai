@@ -18,6 +18,9 @@ public class InvestReferrerRewardModel {
 
     private Date createdTime = new Date();
 
+    public InvestReferrerRewardModel() {
+    }
+
     public InvestReferrerRewardModel(long id, long investId, long amount, String referrerLoginName, Role referrerRole) {
         this.id = id;
         this.investId = investId;

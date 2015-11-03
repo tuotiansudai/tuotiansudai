@@ -9,7 +9,7 @@
         <result column="invest_id" property="investId"/>
         <result column="amount" property="amount"/>
         <result column="referrer_login_name" property="referrerLoginName"/>
-        <result column="referrer_role" property="referrer_role"/>
+        <result column="referrer_role" property="referrerRole"/>
         <result column="status" property="status"/>
         <result column="created_time" property="createdTime"/>
     </resultMap>
