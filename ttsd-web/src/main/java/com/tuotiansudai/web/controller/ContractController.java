@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 @RequestMapping(path = "/contract")
@@ -23,13 +24,23 @@ public class ContractController {
     @RequestMapping(value = "/investor/loanId/{loanId}", method = RequestMethod.GET)
     public void generateInvestorContract(@PathVariable long loanId, HttpServletResponse response) {
         String pdfString = contractService.generateInvestorContract(loanId, ContractType.INVEST);
-        contractService.generateContractPdf(pdfString,response);
+        response.setContentType("application/pdf;charset=UTF-8");
+        try {
+            contractService.generateContractPdf(pdfString,response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/loaner/loanId/{loanId}", method = RequestMethod.GET)
     public void generateLoanerContract(@PathVariable long loanId, HttpServletResponse response) {
         String pdfString = contractService.generateInvestorContract(loanId,ContractType.LOAN);
-        contractService.generateContractPdf(pdfString,response);
+        response.setContentType("application/pdf;charset=UTF-8");
+        try {
+            contractService.generateContractPdf(pdfString,response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
