@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.SmsDataDto;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.lang3.NotImplementedException;
@@ -32,7 +33,27 @@ public class MobileAppRetrievePasswordServiceImpl implements MobileAppRetrievePa
 
     @Override
     public BaseResponseDto validateAuthCode(RetrievePasswordRequestDto retrievePasswordRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+
+        BaseResponseDto dto = new BaseResponseDto();
+        String phoneNumber = retrievePasswordRequestDto.getPhoneNum();
+        String authCode = retrievePasswordRequestDto.getValidateCode();
+        if (Strings.isNullOrEmpty(authCode)) {
+            //验证码不能为空
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_IS_NULL.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_IS_NULL.getMsg());
+            return dto;
+        }
+        boolean verified = smsCaptchaService.verifyMobileCaptcha(phoneNumber, authCode, CaptchaType.RETRIEVE_PASSWORD_CAPTCHA);
+        if (verified) {
+            //验证码输入正确
+            dto.setCode(ReturnMessage.SUCCESS.getCode());
+            dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        } else {
+            //验证码输入错误
+            dto.setCode(ReturnMessage.SMS_CAPTCHA_ERROR.getCode());
+            dto.setMessage(ReturnMessage.SMS_CAPTCHA_ERROR.getMsg());
+        }
+        return dto;
     }
 
     @Override

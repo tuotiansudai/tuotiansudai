@@ -1,16 +1,15 @@
-package com.esoft.core.util;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.ServletRequest;
+package com.tuotiansudai.api.util;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.ServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 public class HttpClientUtil {
 		
@@ -53,7 +52,6 @@ public class HttpClientUtil {
 	
 	public static int saveHtmlFromRemoteSite(String url ,File file){
 		if(!file.exists()){
-			//file.mkdirs();
 			try {
 				File temp = file.getParentFile();
 				if(!temp.exists()){
@@ -69,9 +67,7 @@ public class HttpClientUtil {
 		
 		try {
 			final String response = getResponseBodyAsString(url);
-			//System.out.println(response);
-//			FileUtils.writeStringToFile(file, response , EncodingUtil.UTF8);
-			FileUtils.writeByteArrayToFile(file, response.getBytes( "utf-8" ));
+			FileUtils.writeByteArrayToFile(file, response.getBytes("utf-8"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return FAIL ;
