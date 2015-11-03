@@ -38,13 +38,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
-        pageSize = (loanListRequestDto.getPageSize() - 1) * 10;
+        index = (loanListRequestDto.getIndex() - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(null, null, 0, 0, 0,
-                0, pageSize);
+                0, index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
             LoanModel loanModel = loanModels.get(0);
-            if(!(ActivityType.NOVICE).equals(loanModel.getActivityType().name())){
+            if(!ActivityType.NOVICE.equals(loanModel.getActivityType())){
                 LoanModel loanModelTemp  = loanMapper.getCompletedXsInvest();
                 loanModels.add(0, loanModelTemp);
             }
