@@ -908,9 +908,6 @@
       margin-right: 20px;
       color: nth($CK2, 5);
     }
-    em.info {
-      // width:calc(100% - 200px );
-    }
     .binding-set {
       display: inline-block;
       width: 110px;
@@ -1061,7 +1058,6 @@
   border: 1px solid #ccc;
   border-radius: 3px;
   min-height: 500px;
-
   & .hd {
     height: 44px;
     line-height: 44px;
@@ -1150,3 +1146,143 @@
   }
 }
 
+.bind-card {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  margin: 10px;
+  & .hd-bind-card {
+    height: 50px;
+    border-bottom: 2px solid #d5d5d5;
+    & span {
+      padding-left: 20px;
+      color: #ff9933;
+      font-size: 16px;
+      border-bottom: #e06b0c 2px solid;
+      display: inline-block;
+      line-height: 50px;
+      position: relative;
+      bottom: 0;
+    }
+  }
+  & .card-list {
+    margin: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    & .card-box {
+      width: 260px;
+      background-color: #fdfefe;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+    }
+    & .hd-card {
+      border-bottom: 1px solid #ccc;
+      height: 38px;
+      & .logo-card {
+        width: 140px;
+        height: 38px;
+        float: left;
+      }
+      & .user {
+        float: right;
+        padding-right: 20px;
+        line-height: 38px;
+        font-size: 14px;
+      }
+    }
+    & .card-num {
+      line-height: 60px;
+      text-align: center;
+    }
+    & .options {
+      line-height: 30px;
+      background: #cdcdcd;
+      font-size: 12px;
+      overflow: hidden;
+      & .card-edit {
+        float: left;
+        padding-left: 10px;
+        color: #ff0606;
+      }
+      & .open-fast-pay {
+        float: right;
+        padding-right: 10px;
+        color: #ff0606;
+      }
+    }
+  }
+  .item-block {
+    margin-left: 20px;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+    line-height: 40px;
+    & .name {
+      float: left;
+    }
+    & .input-bankcard {
+      width: 200px;
+      height: 20px;
+      margin: 0;
+      border: 1px solid #ccc;
+      padding: 5px;
+    }
+
+  }
+  .bind-card-submit {
+    padding: 10px 15px;
+    margin: 30px 0 30px 120px;
+    background: #ff7a2a;
+    border: 1px solid #ff7a2a;
+    cursor: pointer;
+    color: #fff;
+    &.grey {
+      background: #ccc;
+      border: #ccc 1px solid;
+    }
+  }
+  .select-bank {
+    width: 100%;
+    z-index: 1;
+    float: left;
+    overflow: hidden;
+    padding: 10px 0;
+    & p {
+      width: 764px;
+      height: 24px;
+      line-height: 24px;
+      font-size: 15px;
+      color: #353535;
+    }
+    & li {
+      height: 38px;
+      float: left;
+      line-height: 38px;
+      width: 145px;
+      margin: 10px 36px 0 0;
+      cursor: pointer;
+      &.m-right-0 {
+        margin: 10px 0 0 4px;
+      }
+      & input {
+        display: block;
+        float: left;
+        width: 12px;
+        height: 12px;
+        margin: 13px 8px 0 0;
+      }
+      & label {
+        display: block;
+        float: left;
+        width: 123px;
+        height: 38px;
+        & img {
+          width: 123px;
+          height: 36px;
+          border: #ccc 1px solid;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

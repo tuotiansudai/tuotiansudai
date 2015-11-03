@@ -4,12 +4,12 @@
     <#local menus=[
     {"title":"首页", "url":"/"},
     {"title":"我要投资", "url":"/"},
-    {"title":"我的账户", "url":"/", "leftNavs":[
-    {"title":"账户总览", "url":"/", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"我的账户", "url":"/account", "leftNavs":[
+    {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"个人资料", "url":"/", "role":"'INVESTOR', 'LOANER'"},
+    {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
     {"title":"推荐奖励", "url":"/"},
