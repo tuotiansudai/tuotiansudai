@@ -13,11 +13,11 @@
     {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
     {"title":"推荐奖励", "url":"/"},
-    {"title":"关于我们", "url":"/", "leftNavs":[
-    {"title":"公司介绍", "url":"/"},
-    {"title":"高管团队", "url":"/"},
-    {"title":"联系我们", "url":"/"},
-    {"title":"拓天公告", "url":"/"}]}]/>
+    {"title":"关于我们", "url":"/about/company", "leftNavs":[
+    {"title":"公司介绍", "url":"/about/company"},
+    {"title":"高管团队", "url":"/about/team"},
+    {"title":"联系我们", "url":"/about/contact"},
+    {"title":"拓天公告", "url":"/about/notice"}]}]/>
 
 <!DOCTYPE html>
 <html lang="en">
