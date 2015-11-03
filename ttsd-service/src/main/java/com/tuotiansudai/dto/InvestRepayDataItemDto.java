@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
 import com.tuotiansudai.utils.AmountUtil;
@@ -20,7 +21,6 @@ public class InvestRepayDataItemDto {
 
     private String actualAmount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date actualRepayDate;
 
     private int period;
@@ -33,16 +33,7 @@ public class InvestRepayDataItemDto {
 
     private String actualFee;
 
-    @JsonIgnore
-    private long id;
-
-    @JsonIgnore
-    private long investId;
-
-    @JsonIgnore
-    private Date createdTime = new Date();
-
-    private RepayStatus status;
+    private String status;
 
     public InvestRepayDataItemDto() {
     }
@@ -52,14 +43,11 @@ public class InvestRepayDataItemDto {
         this.actualInterest = AmountUtil.convertCentToString(model.getActualInterest());
         this.actualRepayDate = model.getActualRepayDate();
         this.corpus = AmountUtil.convertCentToString(model.getCorpus());
-        this.createdTime = model.getCreatedTime();
         this.defaultInterest = AmountUtil.convertCentToString(model.getDefaultInterest());
         this.expectedFee = AmountUtil.convertCentToString(model.getExpectedFee());
         this.expectedInterest = AmountUtil.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = model.getStatus();
-        this.id = model.getId();
-        this.investId = model.getInvestId();
+        this.status = model.getStatus().getDescription();
         this.period = model.getPeriod();
         this.amount = AmountUtil.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
         this.actualAmount = AmountUtil.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee());
@@ -153,35 +141,11 @@ public class InvestRepayDataItemDto {
         this.actualFee = actualFee;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getInvestId() {
-        return investId;
-    }
-
-    public void setInvestId(long investId) {
-        this.investId = investId;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public RepayStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(RepayStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

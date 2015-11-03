@@ -26,12 +26,12 @@ public class LoanerController {
     @Autowired
     private RepayService repayService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path = "loan-list", method = RequestMethod.GET)
     public ModelAndView loanList() {
         return new ModelAndView("/loaner-loan-list");
     }
 
-    @RequestMapping(path = "/loan-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(path = "/loan-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> loanData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                    @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
