@@ -52,7 +52,7 @@ require(['jquery', 'bootstrap','Validform_v5.3.2','Validform_Datatype', 'ueditor
                     showOnHome=(showOnHomeInputVal=='0')?false:true;
 
                 var dataForm = JSON.stringify({
-                    "projectName": $('.jq-user').val(),
+                    "projectName": $('.jq-title').val(),
                     "descriptionText": getContentTxt(),
                     "descriptionHtml": getContent(),
                 });
