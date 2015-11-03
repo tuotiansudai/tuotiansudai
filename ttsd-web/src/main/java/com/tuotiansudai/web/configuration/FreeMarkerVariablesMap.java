@@ -1,5 +1,6 @@
 package com.tuotiansudai.web.configuration;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.config.MapFactoryBean;
 import org.springframework.context.ResourceLoaderAware;
@@ -11,19 +12,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class StaticResourceVersionMap extends MapFactoryBean implements ResourceLoaderAware {
+public class FreeMarkerVariablesMap extends MapFactoryBean implements ResourceLoaderAware {
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
 
+    private String staticServer = "";
+
     private String javascriptLocation;
+
     private String cssLocation;
 
     private static int DEV_VERSION_LENGTH = 3;
+
     private static int PROD_VERSION_LENGTH = 4;
 
     @Override
     protected Map<Object, Object> createInstance() {
-        Map map = Maps.newHashMap();
+        Map<Object, Object> map = Maps.newHashMap();
+
+        map.put("staticServer", Strings.isNullOrEmpty(staticServer) ? "" : staticServer);
+
         try {
             Resource javascriptResource = resourceLoader.getResource(javascriptLocation);
             File jsFolder = javascriptResource.getFile();
@@ -45,11 +53,6 @@ public class StaticResourceVersionMap extends MapFactoryBean implements Resource
         return map;
     }
 
-    @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
     private Map<String, String> generateVersionMap(File[] jsFiles) {
         Map<String, String> versionMap = Maps.newHashMap();
         for (File file : jsFiles) {
@@ -67,11 +70,20 @@ public class StaticResourceVersionMap extends MapFactoryBean implements Resource
         return versionMap;
     }
 
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
     public void setJavascriptLocation(String javascriptLocation) {
         this.javascriptLocation = javascriptLocation;
     }
 
     public void setCssLocation(String cssLocation) {
         this.cssLocation = cssLocation;
+    }
+
+    public void setStaticServer(String staticServer) {
+        this.staticServer = staticServer;
     }
 }

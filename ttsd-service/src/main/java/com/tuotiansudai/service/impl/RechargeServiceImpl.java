@@ -27,7 +27,7 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     @Override
-    public long findSumRechargeByLoginName(String loginName) {
-        return rechargeMapper.findSumRechargeByLoginName(loginName);
+    public long sumSuccessRechargeAmount(String loginName) {
+        return rechargeMapper.findSumSuccessRechargeByLoginName(loginName);
     }
 }
