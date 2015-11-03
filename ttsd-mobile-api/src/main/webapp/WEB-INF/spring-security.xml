@@ -34,7 +34,6 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
 
         <intercept-url pattern="/**" access="isAnonymous()"/>
-        <intercept-url pattern="/v1.0/get/version" filters="none" />
     </http>
 
     <authentication-manager alias="authenticationManager">
