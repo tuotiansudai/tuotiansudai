@@ -11,7 +11,9 @@ require(['jquery', 'layer','csrf', 'autoNumeric','commonFun'], function ($,layer
          fastRechargeInputAmountElement = $(".amount",$fastRechargeForm),
          fastRechargeAmountElement = $("input[name='amount']",$fastRechargeForm),
          fastRechargeSubmitElement = $('.btn',$fastRechargeForm),
-         bankElement = $('.e-bank-recharge ol li');
+         bankElement = $('.e-bank-recharge ol li'),
+         turnOnFastSubmitElement = $(".turn-on-fast-form .submit");
+
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
@@ -58,6 +60,14 @@ require(['jquery', 'layer','csrf', 'autoNumeric','commonFun'], function ($,layer
             });
         }
 
+        if(turnOnFastSubmitElement){
+            turnOnFastSubmitElement.click(function (){
+                $('.ecope-overlay-fast,.ecope-dialog-fast').show();
+            });
+        }
+
+
+
         if ($(".bind-card-nav")) {
             $(".bind-card-nav .btn",$rechargeCon).click(function () {
                 window.location.href = $(this).data('url');
@@ -89,8 +99,6 @@ require(['jquery', 'layer','csrf', 'autoNumeric','commonFun'], function ($,layer
                 $(".fast-recharge",$rechargeCon).hide();
                 $(".e-bank-recharge",$rechargeCon).show();
             }
-
-
         });
     });
 });

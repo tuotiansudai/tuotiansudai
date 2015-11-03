@@ -11,6 +11,8 @@ public class AgreementDto implements Serializable {
 
     private boolean autoInvest;
 
+    private boolean fastPay;
+
     public String getLoginName() {
         return loginName;
     }
@@ -25,5 +27,13 @@ public class AgreementDto implements Serializable {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public boolean isFastPay() {
+        return fastPay;
+    }
+
+    public void setFastPay(boolean fastPay) {
+        this.fastPay = fastPay;
     }
 }
