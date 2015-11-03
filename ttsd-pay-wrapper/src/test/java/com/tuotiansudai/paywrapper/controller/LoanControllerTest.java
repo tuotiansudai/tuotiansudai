@@ -248,7 +248,7 @@ public class LoanControllerTest {
         lm.setDescriptionHtml("fdjakf");
         lm.setDescriptionText("fdjakf");
         lm.setPeriods(1);
-        lm.setType(LoanType.LOAN_TYPE_1);
+        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         lm.setActivityRate(0.1);
         lm.setMinInvestAmount(1);
         lm.setMaxInvestAmount(1000000);

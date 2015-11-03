@@ -5,7 +5,6 @@ import com.tuotiansudai.repository.model.*;
 import java.util.List;
 
 public class EditUserDto {
-    private long id;
 
     private String loginName;
 
@@ -21,15 +20,7 @@ public class EditUserDto {
 
     private UserStatus status;
 
-    private List<Role> roles ;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    private List<Role> roles;
 
     public String getLoginName() {
         return loginName;
@@ -95,20 +86,21 @@ public class EditUserDto {
         this.roles = roles;
     }
 
-    public EditUserDto(UserModel userModel,AccountModel accountModel,List<Role> roles){
+    public EditUserDto(UserModel userModel, AccountModel accountModel, List<Role> roles) {
+        this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.mobile = userModel.getMobile();
-        if(accountModel != null){
+        if (accountModel != null) {
             this.identityNumber = accountModel.getIdentityNumber();
             this.userName = accountModel.getUserName();
         }
-        if (roles != null){
+        if (roles != null) {
             this.roles = roles;
         }
         this.referrer = userModel.getReferrer();
         this.status = userModel.getStatus();
     }
-    public EditUserDto(){
 
+    public EditUserDto() {
     }
 }
