@@ -46,4 +46,10 @@ public interface LoanRepayMapper {
     LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+
+    long findByLoginNameAndTimeSuccessRepay(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
+
+    List<LoanRepayModel> findByLoginNameAndTimeRepayList(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,
+                                                         @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
+
 }

@@ -18,6 +18,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
+    @Value("${autoInvest.delay.minutes}")
+    private int autoInvestDelayMinutes;
 
     @Autowired
     private LoanRepayMapper loanRepayMapper;
@@ -324,7 +328,6 @@ public class LoanServiceImpl implements LoanService {
                     return investLoanDto;
                 }
             }
-
             return baseDto;
         }
         payDataDto.setStatus(false);

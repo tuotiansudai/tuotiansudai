@@ -495,10 +495,14 @@
           }
 
         }
+<<<<<<< HEAD:ttsd-web/src/main/webapp/style/sass/_myAccount.scss
+        .btn-primary,.btn-normal {margin-left: 10px; padding:8px 20px;  }
+=======
         button {
           margin-left: 10px;
           padding: 8px 25px;
         }
+>>>>>>> master:ttsd-web/src/main/webapp/style/sass/_account.scss
       }
     }
   }
@@ -545,6 +549,8 @@
         border-bottom-width: 0;
       }
     }
+<<<<<<< HEAD:ttsd-web/src/main/webapp/style/sass/_myAccount.scss
+=======
   }
   .tMonthPayment {
     table {
@@ -556,6 +562,7 @@
         border-bottom: 1px solid nth($CK1, 1);
       }
     }
+>>>>>>> master:ttsd-web/src/main/webapp/style/sass/_account.scss
     .PaymentSwitch {
       li {
         float: left;
@@ -570,6 +577,18 @@
         }
       }
     }
+  }
+  .tMonthPayment {
+    table {
+      tr:nth-last-child(1)>td {
+        border-bottom-width: 0px;
+      }
+      tfoot tr td{
+        border-top: 1px solid nth($CK1,1);
+        border-bottom: 1px solid nth($CK1,1);
+      }
+    }
+
   }
   .newProjects {
     &.bRadiusBox {
@@ -811,7 +830,140 @@
         }
       }
     }
+    & .CertifiedImg {
+      background: url('/images/sign/re-s01.png') center top no-repeat;
+      //background-size: 50%;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      height:170px;
+    }
+    & .panel {
+      color: nth($baseColor, 6);
+    }
+    & p.notice {
+      b  {
+        font-size: nth($fontSize,4);}
+    }
+    & .btnBox  {
+      margin-top:30px;
+      margin-bottom: 20px;
+    }
+    & .planSwitch {
+      color: nth($baseColor, 3);
+      form {
+        margin-left: 28px;
+        margin-top: 15px;
+      }
+      dl {
+        margin-bottom: 15px;
+        clear: both;
+        dt {
+          color: nth($baseColor,4);
+          display: inline-block;
+          float: left;
+          width:80px;
+          text-align: right;
+        }
+        dd.projectLimit {
+          float: left;
+          width: 50%;
+          label {
+            margin-right: 5px;
+          }
+          span {
+            display: inline-block;
+            color: nth($baseColor, 4);
+            width:60px;
+            text-align: center;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e1e1e1;
+            position: relative;
+            cursor: pointer;
+            & .badge {
+              background-image: url("/images/icons/spr.png");
+              background-position: -387px -172px;
+              background-repeat: no-repeat;
+              width: 13px;
+              height: 13px;
+              position: absolute;
+              top: 0;
+              right: 0;
+              display: none;
+            }
+            &.active {
+              border: 1px solid nth($btnColor, 5);
+              color: nth($btnColor, 5);
+              & .badge {
+                display: inline-block;
+              }
+
+            }
+
+          }
+        }
+
+      }
+      & .agreeStatus {
+        margin-bottom: 20px;
+        color: nth($baseColor, 4);
+        label {
+          vertical-align: middle;
+        }
+      }
+    }
+    & .borderBox:nth-child(2) {
+      margin-top:10px;
+    }
+    & .planSet {
+      i {
+        color: nth($btnColor, 5);
+      }
+    }
   }
+<<<<<<< HEAD:ttsd-web/src/main/webapp/style/sass/_myAccount.scss
+  .recharge-form, .fast-recharge-form {
+    clear: both;
+    p {
+      margin: 10px 0 0 35px;
+      color: #353535;
+      font-size: 15px;
+      i {
+        color: #ffac2a;
+        margin-left: 10px;
+      }
+      .recharge-form, .fast-recharge-form {
+        width: 50%;
+        margin: 0 auto;
+        overflow: hidden;
+        p {
+          height: 34px;
+          line-height: 35px;
+          margin: 10px 0 0 35px;
+          color: #353535;
+          font-size: 15px;
+          i {
+            color: #ffac2a;
+            margin-left: 10px;
+          }
+          input {
+            width: 160px;
+            margin: 0 10px;
+            padding: 0 15px;
+            line-height: 30px;
+          }
+        }
+      }
+      .submit {
+        margin: 30px auto;
+        width: 150px;
+        height: 40px;
+        background: #cc0000;
+        color: #fff;
+        display: block;
+        line-height: 30px;
+      }
+=======
 }
 
 .withdraw {
@@ -841,6 +993,7 @@
       margin: 0 10px;
       padding: 0 15px;
       line-height: 30px;
+>>>>>>> master:ttsd-web/src/main/webapp/style/sass/_account.scss
     }
   }
   & .calculate {
@@ -1011,6 +1164,8 @@
     border-radius: 3px;
   }
 }
+<<<<<<< HEAD:ttsd-web/src/main/webapp/style/sass/_myAccount.scss
+=======
 
 .money-box {
   font-size: 12px;
@@ -1286,3 +1441,4 @@
     }
   }
 }
+>>>>>>> master:ttsd-web/src/main/webapp/style/sass/_account.scss

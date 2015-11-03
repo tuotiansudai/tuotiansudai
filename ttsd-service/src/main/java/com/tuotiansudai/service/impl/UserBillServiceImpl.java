@@ -53,7 +53,6 @@ public class UserBillServiceImpl implements UserBillService {
                 .put("startTime", startTime)
                 .put("endTime", endTime)
                 .put("pageSize", pageSize).build()));
-
         int count = userBillMapper.findUserBillsCount(Maps.newLinkedHashMap(ImmutableMap.<String, Object>builder()
                 .put("userBillBusinessType", userBillBusinessType)
                 .put("startTime", startTime)
@@ -73,5 +72,10 @@ public class UserBillServiceImpl implements UserBillService {
         dto.setData(dataDto);
 
         return dto;
+    }
+
+    @Override
+    public long findSumRewardByLoginName(String loginName) {
+        return userBillMapper.findSumRewardByLoginName(loginName);
     }
 }
