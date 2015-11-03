@@ -14,5 +14,5 @@ public interface RechargeMapper {
 
     RechargeModel findById(long id);
 
-    long findSumRechargeByLoginName(String loginName);
+    long findSumSuccessRechargeByLoginName(String loginName);
 }
