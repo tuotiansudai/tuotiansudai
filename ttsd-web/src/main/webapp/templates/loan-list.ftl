@@ -6,9 +6,9 @@
 <body>
 <#include "header.ftl" />
 <div class="main">
+    <div class="loan-tags">投资项目</div>
     <div class="wrapper-all bg">
         <div class="wrapper pr">
-            <div class="loan-tags">投资项目</div>
             <div class="item-block">
                 <span class="hd">项目类型: </span>
                 <a <#if activityType??><#else>class="active"</#if> href="/loanList/web?<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">全部</a>
@@ -68,8 +68,8 @@
                                     <i>+${loanListWebDto.activityRate}</i>
                                 </#if>
                             </span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">${loanListWebDto.periods}个月</span> <br/>
+                            <span class="name">项目期限（<#if loanListWebDto.tpye == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.tpye = 'LOAN_INTEREST_MONTHLY_REPAY'>月<#else>天</#if>）：</span>
+                            <span class="month">${loanListWebDto.periods}<#if loanListWebDto.tpye == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.tpye = 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></span> <br/>
                             <span class="name">还款方式：</span>
                             <span class="money-style">${loanListWebDto.type.getName()}</span>
                         </div>
@@ -129,11 +129,11 @@
         <div class="pagination">
             <span class="total">共<span class="subTotal">${loanListCountWeb}</span>条,当前第 <span class="index-page">${currentPageNo}</span>页</span>
             <#if hasPreviousPage>
-                <span class="prev"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo+1}">上一页</a></span>
+                <span class="prev"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo-1}">上一页</a></span>
             </#if>
             <a class="current">${currentPageNo}</a>
             <#if hasNextPage>
-                <span class="next"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo-1}">下一页</a></span>
+                <span class="next"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo+1}">下一页</a></span>
             </#if>
 
         </div>
