@@ -10,6 +10,8 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
         var fastRechargeAmountElement = $(".fast-recharge-form input[name='amount']");
         var fastRechargeSubmitElement = $('.fast-recharge-form .submit');
 
+        var turnOnFastSubmitElement = $(".turn-on-fast-form .submit");
+
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
@@ -45,6 +47,14 @@ require(['jquery', 'csrf', 'autoNumeric','commonFun'], function ($) {
                 fastRechargeAmountElement.val(amount);
             });
         }
+
+        if(turnOnFastSubmitElement){
+            turnOnFastSubmitElement.click(function (){
+                $('.ecope-overlay-fast,.ecope-dialog-fast').show();
+            });
+        }
+
+
 
         if ($(".bind-card-nav")) {
             $(".bind-card-nav .submit").click(function () {
