@@ -1,4 +1,4 @@
-<table class="fund-list">
+<table class="user-bill-list">
     <thead>
     <tr>
         <th>交易时间</th>
@@ -27,10 +27,3 @@
     {{/records}}
     </tbody>
 </table>
-
-
-<div class="pagination" data-currentpage="{{index}}">
-    <span class="total">共{{count}}条,当前第{{index}}页</span>
-    {{#hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/hasPreviousPage}}
-    {{#hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/hasNextPage}}
-</div>

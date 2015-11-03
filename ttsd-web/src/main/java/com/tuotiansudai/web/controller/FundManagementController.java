@@ -42,21 +42,24 @@ public class FundManagementController {
     private WithdrawService withdrawService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView fund(){
+    public ModelAndView fund() {
         return new ModelAndView("/fund");
     }
 
-    @RequestMapping(value = "/management", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-bill-list-data", method = RequestMethod.GET)
     @ResponseBody
-    public FundManagementDto fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,@RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
-                                       @RequestParam("index") Integer currentPage,@RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes, @RequestParam("pageSize") Integer pageSize) {
+    public FundManagementDto fundManagement(@RequestParam("startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                            @RequestParam("endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                            @RequestParam("index") Integer currentPage,
+                                            @RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes,
+                                            @RequestParam("pageSize") Integer pageSize) {
 
-        List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes,currentPage,startTime,endTime,pageSize!=null?pageSize:10);
+        List<UserBillDto> userBillDtos = userBillService.findUserBills(userBillBusinessTypes, currentPage, startTime, endTime, pageSize != null ? pageSize : 10);
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        int countNum = userBillService.findUserBillsCount(userBillBusinessTypes,startTime,endTime);
+        int countNum = userBillService.findUserBillsCount(userBillBusinessTypes, startTime, endTime);
         String sumRecharge = AmountUtil.convertCentToString(rechargeService.findSumRechargeByLoginName(LoginUserInfo.getLoginName()));
         String sumWithdraw = AmountUtil.convertCentToString(withdrawService.findSumWithdrawByLoginName(LoginUserInfo.getLoginName()));
-        FundManagementDto fundManagementDto = new FundManagementDto(currentPage,pageSize!=null?pageSize:10,countNum,userBillDtos);
+        FundManagementDto fundManagementDto = new FundManagementDto(currentPage, pageSize != null ? pageSize : 10, countNum, userBillDtos);
         fundManagementDto.setStatus(true);
         fundManagementDto.setBalance(AmountUtil.convertCentToString(accountModel != null ? accountModel.getBalance() : 0L));
         fundManagementDto.setSumRecharge(sumRecharge);

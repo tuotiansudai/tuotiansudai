@@ -1,57 +1,108 @@
 require(['jquery', 'mustache', 'text!/tpl/fundtable.tpl', 'moment', 'daterangepicker'], function ($, Mustache, dealtableTpl, moment) {
     //初始化页面
-    var _now_day = moment().format('YYYY-MM-DD'); // 今天
-    var _week = moment().subtract(1, 'week').format('YYYY-MM-DD');
-    var _month = moment().subtract(1, 'month').format('YYYY-MM-DD');
-    var _sixMonth = moment().subtract(6, 'month').format('YYYY-MM-DD');
+    var today = moment().format('YYYY-MM-DD'); // 今天
+    var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
+    var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
+    var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
     var _page;  //define pages
 
-    // 页面初始化日期 条件筛选1个月
-    $('#daterangepicker')
-        .dateRangePicker({separator: ' ~ '})
-        .val(_now_day + '~' + _now_day);
-    //ajax require
-    function getAjax(page) {
-        var dates = $('#daterangepicker').val().split('~');
-        var startDay = $.trim(dates[0]);
-        var endDay = $.trim(dates[1]);
-        var selectedValue = $('.query-type').find(".current").attr('data-value');
-        var selectedStatus = $('.query-type').find(".current").attr('data-status');
-        var selectedType = $('.query-type').find(".current").attr('data-type');
-        //$(".query_type strong").css("opacity", '1');
-        var rec_typestr = '';
-        if (selectedValue) {
-            if(selectedStatus){
-                rec_typestr = "&status=" + selectedValue +  "&status=" + selectedStatus ;
-            }else{
-                if(selectedType){
-                    rec_typestr = "&status=" + selectedValue +  "&status=" + selectedStatus + "&status=" + selectedType ;
-                }else{
-                    rec_typestr = "&status=" + selectedValue ;
-                }
-            }
-        }else{
-            rec_typestr = "&status=" ;
+    var dataPickerElement = $('#date-picker'),
+        paginationElement = $('.pagination');
+
+    dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+
+    var changeDatePicker = function () {
+        var duration = $(".date-filter .select-item.current").data('day');
+        switch (duration) {
+            case 1:
+                dataPickerElement.val(today + '~' + today);
+                break;
+            case 7:
+                dataPickerElement.val(week + '~' + today);
+                break;
+            case 30:
+                dataPickerElement.val(month + '~' + today);
+                break;
+            case 180:
+                dataPickerElement.val(sixMonths + '~' + today);
+                break;
+            default:
+                dataPickerElement.val('');
         }
-        if (startDay == '' || startDay == 'undefined') {
-            var url = _API_FUND + "?index=" + page + "&pageSize=10" + rec_typestr;
-        } else {
-            var url = _API_FUND + "?startTime=" + startDay + "&endTime=" + endDay + "&index=" + page + "&pageSize=10" + rec_typestr;
-        }
-        $.ajax({
-            url: url,
-            type: 'get',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        }).done(function (res) {
-            $('#jq-pay').text(res.balance);
-            $('#jq-recharge').text(res.sumRecharge);
-            $('#jq-withdraw').text(res.sumWithdraw);
-            var ret = Mustache.render(dealtableTpl, res);
-            $('#tpl').html(ret);
-            _page = res.index;
+    };
+
+    $(".date-filter .select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        changeDatePicker();
+        loadLoanData();
+    });
+
+    $(".status-filter .select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        loadLoanData();
+    });
+
+    //define calendar
+    $('.apply-btn').click(function () {
+        loadLoanData();
+    });
+
+
+    var loadLoanData = function (currentPage) {
+        var dates = dataPickerElement.val().split('~');
+        var startTime = $.trim(dates[0]) || '';
+        var endTime = $.trim(dates[1]) || '';
+        var status = $('.status-filter .select-item.current').data('status');
+
+        var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+
+        paginationElement.loadPagination(requestData, function (data) {
+            var html = Mustache.render(investListTemplate, data);
+            $('.invest-list').html(html);
+            $('.invest-list .show-invest-repay').click(function () {
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).success(function (response) {
+                    var data = response.data;
+                    data.isLoanCompleted = status == 'COMPLETE';
+                    data.csrfToken = $("meta[name='_csrf']").attr("content");
+                    if (data.status) {
+                        _.each(data.records, function (item) {
+                            data.loanId = item.loanId;
+                            switch (item.loanRepayStatus) {
+                                case 'REPAYING':
+                                    item.status = '待还';
+                                    break;
+                                case 'COMPLETE':
+                                    item.status = '完成';
+                                    break;
+                                case 'CANCEL':
+                                    item.status = '流标';
+                                    break;
+                                case 'CONFIRMING':
+                                    item.status = '确认中';
+                                    break;
+                            }
+                        });
+                        var html = Mustache.render(investRepayTemplate, data);
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            offset: '100px',
+                            area: ['1000px'],
+                            shadeClose: true,
+                            content: html
+                        });
+
+                    }
+                });
+            });
         });
-    }
+    };
 
     getAjax(1);
 

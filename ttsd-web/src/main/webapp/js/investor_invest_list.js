@@ -86,7 +86,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
     };
 
-    loadLoanData(1);
+    loadLoanData();
 
     $(".date-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
@@ -103,6 +103,4 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
     $('.apply-btn').click(function () {
         loadLoanData();
     });
-
-
 });
