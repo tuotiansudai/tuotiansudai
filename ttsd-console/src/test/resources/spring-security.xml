@@ -12,10 +12,8 @@
 
     <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
         <beans:property name="errorPage" value="/403"/>
-        <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>
-                <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/login" value="/"/>
             </beans:map>
         </beans:property>
@@ -23,47 +21,44 @@
 
     <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaVerifier"/>
 
-    <beans:bean id="daoAuthenticationProvider"
-                class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
     </beans:bean>
 
-    <beans:bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
-
-    <beans:bean id="affirmativeBased" class="com.tuotiansudai.security.MyAffirmativeBased">
-        <beans:constructor-arg ref="webExpressionVoter"/>
-    </beans:bean>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="daoAuthenticationProvider"/>
-    </authentication-manager>
-
     <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
     <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
 
     <http auto-config="true" use-expressions="true">
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
         <access-denied-handler ref="myAccessDeniedHandler"/>
         <form-login login-page="/login"
-                    login-processing-url="/login-handler"
+                    login-processing-url="/loginHandler"
                     authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
 
-        <!--<intercept-url pattern="/*" access="isAnonymous()"/>-->
-        <intercept-url pattern="/" access="permitAll()"/>
-        <intercept-url pattern="/monitor" access="permitAll()"/>
-        <intercept-url pattern="/register" access="isAnonymous()"/>
 
-        <intercept-url pattern="/mobile-retrieve-password*" access="isAnonymous()"/>
-
+        <intercept-url pattern="/monitor" access="permitAll()" />
         <intercept-url pattern="/login" access="isAnonymous()"/>
-        <intercept-url pattern="/login-handler" access="isAnonymous()"/>
-        <intercept-url pattern="/recharge" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/withdraw" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/bind-card" access="hasAuthority('USER')"/>
-        <intercept-url pattern="/*" access="hasAuthority('USER')"/>
-        <csrf disabled="true"/>
+        <intercept-url pattern="/loginHandler" access="hasAuthority('ADMIN')"/>
+        <intercept-url pattern="/" access="permitAll()"/>
+        <intercept-url pattern="/*" access="hasAuthority('ADMIN')"/>
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
+
+    <beans:bean id="csrfSecurityRequestMatcher" class="com.tuotiansudai.security.CsrfSecurityRequestMatcher">
+        <beans:property name="excludedUrls">
+            <beans:list>
+                <beans:value>/ueditor/**</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider ref="myDaoAuthenticationProvider"/>
+    </authentication-manager>
 
 </beans:beans>
