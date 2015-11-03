@@ -1,5 +1,6 @@
 package com.tuotiansudai.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
@@ -58,6 +59,9 @@ public class LoanServiceTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
 
     @Before
     public void createLoanTitle(){
@@ -77,12 +81,19 @@ public class LoanServiceTest {
         userMapper.create(fakeUser);
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
-
+        userRoleMapper.createUserRoles(getFakeUserRole(fakeUser,Role.LOANER));
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertTrue(baseDto.getData().getStatus());
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
+        List<UserRoleModel> userRoleModels = Lists.newArrayList();
+        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
+        userRoleModels.add(userRoleModel);
+        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -233,6 +244,7 @@ public class LoanServiceTest {
         userMapper.create(fakeUser);
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
+        userRoleMapper.createUserRoles(getFakeUserRole(fakeUser,Role.LOANER));
 
         this.creteLoan(getLoanDto(fakeUser));
         List<LoanModel> loanModelList = loanMapper.findByStatus(LoanStatus.WAITING_VERIFY);
