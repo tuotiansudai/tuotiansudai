@@ -112,13 +112,13 @@
                         <div class="loan-process">
                             <span class="img"><img src="../../images/loan/pic-doing.png" alt=""/></span>
                             <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
-                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}期</p>
                         </div>
                     <#else>
                         <div class="loan-process">
                             <span class="img"><img src="../../images/loan/pic-finish.png" alt=""/></span>
                             <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
-                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}期</p>
                         </div>
                     </#if>
 
