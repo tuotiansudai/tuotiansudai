@@ -73,7 +73,7 @@ public class RepayServiceImpl implements RepayService {
         }));
 
         if (loanModel.getStatus() == LoanStatus.REPAYING) {
-            DateTime now  = new DateTime();
+            DateTime now = new DateTime();
             List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
             long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
@@ -123,18 +123,13 @@ public class RepayServiceImpl implements RepayService {
     public BaseDto<InvestRepayDataDto> findInvestorInvestRepay(long investId) {
         BaseDto<InvestRepayDataDto> baseDto = new BaseDto<>();
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
+        dataDto.setStatus(true);
+        dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
 
         String loginName = LoginUserInfo.getLoginName();
-        if(StringUtils.isBlank(loginName)) {
-            throw new InsufficientAuthenticationException("not login");
-        }
-        InvestModel investModel = investMapper.findById(investId);
-        if(!StringUtils.equalsIgnoreCase(loginName, investModel.getLoginName())) {
-            throw new InsufficientAuthenticationException("denied access the invest repay");
-        }
 
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
         if (CollectionUtils.isNotEmpty(investRepayModels)) {
             List<InvestRepayDataItemDto> records = Lists.transform(investRepayModels, new Function<InvestRepayModel, InvestRepayDataItemDto>() {
                 @Override
@@ -142,12 +137,9 @@ public class RepayServiceImpl implements RepayService {
                     return new InvestRepayDataItemDto(investRepayModel);
                 }
             });
-            dataDto.setStatus(true);
             dataDto.setRecords(records);
-        }else{
-            dataDto.setStatus(true);
-            dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         }
+
         return baseDto;
     }
 }
