@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.service.InvestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +25,5 @@ public class InvestController {
     public BaseDto<PayFormDataDto> invest(@Valid @RequestBody InvestDto dto) {
         return investService.invest(dto);
     }
+
 }
