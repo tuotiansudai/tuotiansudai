@@ -82,12 +82,18 @@ public class LoanServiceTest {
         userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
-
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertTrue(baseDto.getData().getStatus());
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
+        List<UserRoleModel> userRoleModels = Lists.newArrayList();
+        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
+        userRoleModels.add(userRoleModel);
+        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -301,8 +307,6 @@ public class LoanServiceTest {
         createTestInvests(loanId, "loginName", 10);
         BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 5);
         assertEquals(5, baseDto.getData().getRecords().size());
-        assertEquals(true, baseDto.getData().isHasNextPage());
-        assertEquals(false, baseDto.getData().isHasPreviousPage());
     }
 
     @Test
@@ -320,8 +324,6 @@ public class LoanServiceTest {
         baseDto = loanService.getInvests(loanId, 4, 3);
         BasePaginationDataDto data = baseDto.getData();
         assertEquals(2, data.getRecords().size());
-        assertEquals(false, data.isHasNextPage());
-        assertEquals(true, data.isHasPreviousPage());
     }
     private void createTestInvests(long loanId, String loginName, int count){
 

@@ -1,59 +1,21 @@
-/**
- * Created by belen on 15/8/19.
- */
-require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
+
     $(function () {
         var amountInputElement = $(".text-input-amount");
         amountInputElement.autoNumeric("init");
 
-        var pagesize = 10; //每页显示条数
-        var loanId = $('.jq-loan-user').val();
-        $(".pagination").createPage({
-            pageCount: pageTotal,
-            current: 1,
-            backFn: function (pageCurrent) {
-                //单击回调方法，p是当前页码
-              var  API_LOAN_INVEST = '/loan/' + loanId + '/index/' + pageCurrent  + '/pagesize/' + pagesize;
-                pageAjax(API_LOAN_INVEST);
+        var paginationElement = $('.pagination');
 
-            }
-        });
+        var loadLoanData = function (currentPage) {
+            var requestData = {index: currentPage || 1};
 
-        function pageAjax(url) {
-            $.get(url, function (data) {
+            paginationElement.loadPagination(requestData, function (data) {
                 if (data.status) {
-                    var _result = data.recordDtoList;
-                    var str = '';
-                    for (var i = 0; i < _result.length; i++) {
-                        var txtStatus ='';
-                        if(_result[i]['autoInvest']){
-                            txtStatus+='自动';
-                            if(_result[i]['source']=='WEB'){
-                                txtStatus +='<span class="icon-loan-ie"></span>';
-                            }else if(_result[i]['source']=='IOS'){
-                                txtStatus +='<span class="icon-loan-ios"></span>';
-                            }else{
-                                txtStatus +='<span class="icon-loan-Android"></span>';
-                            }
-                        }else{
-                            txtStatus+='手动';
-                            if(_result[i]['source']=='WEB'){
-                                txtStatus +='<span class="icon-loan-ie"></span>';
-                            }else if(_result[i]['source']=='IOS'){
-                                txtStatus +='<span class="icon-loan-ios"></span>';
-                            }else{
-                                txtStatus +='<span class="icon-loan-Android"></span>';
-                            }
-                        }
-
-                        str += '<tr><td>' + _result[i]['serialNo'] + '</td><td>' + _result[i]['loginName'] + '</td><td>' + _result[i]['amount'] + '</td><td>' + txtStatus + '</td><td>' + _result[i]['expectedRate'] + '</td><td>' + _result[i]['createdTime'] + '</td></tr>';
-                    }
-                    $('.table-list tbody').find('tr').remove();
-                    $('.table-list tbody').append(str);
+                    var html = Mustache.render(investListTemplate, data);
+                    $('.loan-list-con table').html(html);
                 }
             });
-
-        }
+        };
 
         //pageCount：总页数
         //current：当前页
@@ -69,21 +31,28 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
         }
 
         // tab select
-        var tab_li = $('.nav li');
-        tab_li.click(function () {
-            var _index = $(this).index();
-            $(this).addClass('current').siblings().removeClass('current');
-            $('.loan-list .loan-list-con').eq(_index).show().siblings().hide();
+        var tabs = $('.nav li');
+        tabs.click(function () {
+            var self = $(this);
+            tabs.removeClass('active');
+            self.addClass('active');
+            var index = self.index();
+            if (index === 1) {
+                loadLoanData();
+            }
+            $('.loan-list .loan-list-con').removeClass('active').eq(index).addClass('active');
         });
+
         $('.img-list li').click(function () {
             var _imgSrc = $(this).find('img').attr('src');
             $('.content img').attr('src', _imgSrc);
             $('.layer-box').show();
             return false;
         });
+
         $('.layer-wrapper').click(function () {
             $('.layer-box').hide();
-        })
+        });
 
         function timer(intDiff) {
             window.setInterval(function () {
@@ -115,7 +84,6 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
         $(function () {
             if($('#loanStatus').val() == 'PREHEAT' ){
                 timer(intDiff);
-
             }
         });
 
@@ -129,16 +97,14 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
             return true;
         });
 
-        $('.text-input-amount').blur(function(){
+        amountInputElement.blur(function(){
             var loanId = $('.hid-loan').val();
             var amount = $(this).val();
             var amountNeedRaised = Number($('.amountNeedRaised-i').text());
 
             if(amountNeedRaised < parseFloat(amount)){
-                $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!");
-                $('.loan-detail-error-msg').removeAttr("style");
-                $('.btn-pay').attr('disabled', 'disabled').addClass('grey')
-
+                $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!").removeAttr("style");
+                $('.btn-pay').attr('disabled', 'disabled').addClass('grey');
                 return;
             }
             $.ajax({
@@ -152,6 +118,5 @@ require(['jquery', 'jqueryPage', 'csrf','autoNumeric'], function ($) {
                 $('.btn-pay').removeClass('grey').removeAttr('disabled');
             });
         });
-
     });
-})
+});

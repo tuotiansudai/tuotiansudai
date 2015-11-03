@@ -4,11 +4,8 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import org.apache.ibatis.annotations.Param;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -27,12 +24,11 @@ public interface UserService {
     /**
      * 修改用户密码
      *
-     * @param loginName        用户名
-     * @param oldPasswordPlain 用户目前的密码（明文）
-     * @param newPasswordPlain 新密码（明文）
+     * @param originalPassword 用户目前的密码（明文）
+     * @param newPassword 新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
-    boolean changePassword(String loginName, String oldPasswordPlain, String newPasswordPlain);
+    boolean changePassword(String originalPassword, String newPassword);
 
     void editUser(EditUserDto editUserDto, String ip) throws EditUserException;
 
@@ -46,4 +42,6 @@ public interface UserService {
 
 
     List<String> findLoginNameLike(String loginName);
+
+    boolean verifyPasswordCorrect(String password);
 }
