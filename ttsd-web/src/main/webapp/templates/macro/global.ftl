@@ -1,13 +1,13 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
-<#macro main pageCss pageJavascript activeLeftNav="" activeNav="" title="拓天速贷">
+<#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷">
     <#local menus=[
     {"title":"首页", "url":"/"},
     {"title":"我要投资", "url":"/"},
     {"title":"我的账户", "url":"/", "leftNavs":[
     {"title":"账户总览", "url":"/", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"我的投资", "url":"/", "role":"'INVESTOR'"},
-    {"title":"我的借款", "url":"/", "role":"'LOANER'"},
+    {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
+    {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
