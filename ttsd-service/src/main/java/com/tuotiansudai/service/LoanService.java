@@ -52,14 +52,7 @@ public interface LoanService {
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
-    /**
-     * 标的放款
-     *
-     * @param loanId
-     * @param minInvestAmount
-     * @param fundraisingEndTime
-     * @throws BaseException
-     */
+
     BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
 
     BaseDto<LoanDto> getLoanDetail(long loanId);

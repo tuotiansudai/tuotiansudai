@@ -307,8 +307,6 @@ public class LoanServiceTest {
         createTestInvests(loanId, "loginName", 10);
         BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 5);
         assertEquals(5, baseDto.getData().getRecords().size());
-        assertEquals(true, baseDto.getData().isHasNextPage());
-        assertEquals(false, baseDto.getData().isHasPreviousPage());
     }
 
     @Test
@@ -326,8 +324,6 @@ public class LoanServiceTest {
         baseDto = loanService.getInvests(loanId, 4, 3);
         BasePaginationDataDto data = baseDto.getData();
         assertEquals(2, data.getRecords().size());
-        assertEquals(false, data.isHasNextPage());
-        assertEquals(true, data.isHasPreviousPage());
     }
     private void createTestInvests(long loanId, String loginName, int count){
 

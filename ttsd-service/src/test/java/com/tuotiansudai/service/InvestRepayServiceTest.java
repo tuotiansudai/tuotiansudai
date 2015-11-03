@@ -170,6 +170,5 @@ public class InvestRepayServiceTest {
         List<LatestInvestView> latestInvestViews = investRepayService.findLatestInvestByLoginName("testuser123", 0, 4);
         assert latestInvestViews.size() == 2;
         assert latestInvestViews.get(0).getCorpus() == 100;
-        assert latestInvestViews.get(0).getStatus() == RepayStatus.OVERDUE;
     }
 }

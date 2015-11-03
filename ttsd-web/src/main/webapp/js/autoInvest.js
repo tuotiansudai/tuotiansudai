@@ -1,20 +1,23 @@
 /**
  * Created by CBJ on 2015/10/19.
  */
-require(['jquery', 'csrf', 'autoNumeric','lodash','commonFun'], function ($) {
+require(['jquery','layer', 'autoNumeric','lodash','commonFun'], function ($,layer) {
     $(function () {
 
         if($('#btnAuthority').length) {
             var $btnAuthority=$('#btnAuthority');
             $btnAuthority.click(function() {
-                var content='<div cass="auto-invest"><button id="finishAuthor" class="btn btn-normal">已完成授权</button></div>';
-                commonFun.popWindow('自动投标授权',content,{
-                    width:'450px'
+                layer.open({
+                    type: 1,
+                    title :'自动投标授权',
+                    area: ['450px', '150px'],
+                    shadeClose: true,
+                    content: $('.auto-invest')
                 });
-
-                $('body').delegate('#finishAuthor','click',function() {
+                $('#finishAuthor').click(function() {
                     location.href='http://localhost:8080/investor/auto-invest/plan';
                 });
+
 
             });
         }
@@ -63,10 +66,10 @@ require(['jquery', 'csrf', 'autoNumeric','lodash','commonFun'], function ($) {
                     valObj=_.map(serialArr, 'value');
 
                 if(limitNum>0 && !_.isEmpty(valObj[0]) && !_.isEmpty(valObj[1]) && !_.isEmpty(valObj[2])) {
-                    $saveInvestPlan.prop('disabled',false);
+                    $saveInvestPlan.prop('disabled',false).addClass('btn-normal');
                 }
                 else {
-                    $saveInvestPlan.prop('disabled',true);
+                    $saveInvestPlan.prop('disabled',true).removeClass('btn-normal');
                 }
 
             }

@@ -214,25 +214,4 @@ public class InvestMapperTest {
 
         assertEquals(1000000l, result);
     }
-
-
-    @Test
-    public void shouldFindByPage(){
-        int c = 101;
-        int limit = 3;
-        int offset = 6;
-        for(int i=0;i<c;i++){
-            InvestModel investModel = getFakeInvestModel();
-            investMapper.create(investModel);
-            investRepayMapper.create(getFakeInvestRepayModel(investModel.getId()));
-        }
-
-        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,null,true,offset,limit);
-
-        assert investDetailModels.size() == limit;
-        assert investDetailModels.get(0).getNextRepayAmount() == 108;
-
-        investDetailModels = investMapper.findByPage(null,null,null,null,null,null,false,offset,limit);
-        assert investDetailModels.get(0).getNextRepayAmount() == 0;
-    }
 }

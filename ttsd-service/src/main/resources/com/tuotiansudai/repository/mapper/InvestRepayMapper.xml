@@ -91,6 +91,14 @@
         select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by period asc
     </select>
 
+    <select id="findByLoginNameAndInvestId" parameterType="map" resultMap="investRepayResultMap">
+        select invest_repay.*
+        from invest_repay join invest on invest_repay.invest_id = invest.id
+        where invest_id = #{investId}
+        and invest.login_name = #{loginName}
+        order by period asc
+    </select>
+
     <select id="findByInvestIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
         select * from invest_repay where invest_id = #{investId} and period = #{period}
     </select>

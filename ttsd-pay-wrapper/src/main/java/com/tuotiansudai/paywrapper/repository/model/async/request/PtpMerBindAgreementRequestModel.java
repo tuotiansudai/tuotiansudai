@@ -1,14 +1,10 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
-import com.tuotiansudai.paywrapper.repository.model.UmPayService;
 import com.tuotiansudai.repository.model.AgreementType;
 
 import java.text.MessageFormat;
 import java.util.Map;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
 
     private String userId;

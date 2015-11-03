@@ -1,24 +1,15 @@
-require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'daterangepicker', 'csrf',], function ($, Mustache, loanTemplate, loanRepayTemplate, moment, _) {
+require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layer','daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _,layer) {
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
     var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
     var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
-    var pageIndex = 1;  //define pages
 
     // 页面初始化日期 条件筛选1个月
-    var dataPickerElement = $('#date-picker');
+    var dataPickerElement = $('#date-picker'),
+        paginationElement = $('.pagination');
 
     dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
-
-    $(document).on('click', '.pagination .nextPage', function () {
-        pageIndex++;
-        loadLoanData(pageIndex);
-    });
-    $(document).on('click', '.pagination .prevPage', function () {
-        pageIndex--;
-        loadLoanData(pageIndex);
-    });
 
     var changeDatePicker = function () {
         var duration = $(".date-filter .select-item.current").data('day');
@@ -40,22 +31,15 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         }
     };
 
-    var layerContainerElement = $('.layer-container');
-
-    $('.layer-mask').click(function () {
-        layerContainerElement.hide();
-        return false;
-    });
-
     $(".date-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         changeDatePicker();
-        loadLoanData(1);
+        loadLoanData();
     });
 
     $(".status-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
-        loadLoanData(1);
+        loadLoanData();
     });
 
     //ajax require
@@ -65,21 +49,9 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         var endTime = $.trim(dates[1]) || '';
         var status = $('.status-filter .select-item.current').data('status');
 
-        var requestData = { startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+        var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
 
-        var queryParams = '';
-        _.each(requestData, function (value, key) {
-            queryParams += key + "=" + value + '&';
-        });
-
-        $.ajax({
-            url: '/loaner/loan-data?' + queryParams,
-            type: 'get',
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8'
-        }).success(function (response) {
-            var data = response.data;
-            pageIndex = data.index;
+        paginationElement.loadPagination(requestData, function (data) {
             switch (status) {
                 case 'REPAYING':
                     data.isRepaying = true;
@@ -91,10 +63,10 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                     data.isCancel = true;
                     break;
             }
-            var html = Mustache.render(loanTemplate, data);
-            $('.loan-content').html(html);
+            var html = Mustache.render(loanListTemplate, data);
+            $('.loan-list-content .loan-list').html(html);
 
-            $('.loan-content .show-loan-repay').click(function () {
+            $('.loan-list .show-loan-repay').click(function () {
                 $.ajax({
                     url: $(this).data('url'),
                     type: 'get',
@@ -123,36 +95,38 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                             }
                         });
                         var html = Mustache.render(loanRepayTemplate, data);
-                        $('.layer-content').remove();
-                        layerContainerElement.append(html).show();
-                        $('.layer-container .close').click(function () {
-                            layerContainerElement.hide();
-                            return false;
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            offset: '100px',
+                            area: ['850px'],
+                            shadeClose: true,
+                            content: html
                         });
-                        $('.layer-container a.enabled-repay.normal').click(function () {
-                            layerContainerElement.hide();
+
+                        $('a.enabled-repay.normal').click(function () {
                             $("#normal-repay").submit();
                             return false;
                         });
-                        $('.layer-container a.enabled-repay.advanced').click(function () {
+                        $('a.enabled-repay.advanced').click(function () {
                             if (data.hasConfirmingLoanRepay) {
                                 return false;
                             }
-                            layerContainerElement.hide();
                             $("#advanced-repay").submit();
                             return false;
                         });
                     }
                 });
-            })
+            });
         });
     }
 
-    loadLoanData(1);
+    loadLoanData();
 
 //define calendar
     $('.apply-btn').click(function () {
-        loadLoanData(1);
+        loadLoanData();
     });
 });
 

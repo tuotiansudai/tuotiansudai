@@ -5,23 +5,23 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="mainFrame">
-    <aside class="menuBox fl">
+<div class="main-frame auto-invest">
+    <aside class="menu-box fl">
         <ul class="menu-list">
             <li><a href="javascript:">账户总览</a></li>
             <li><a href="javascript:">投资记录</a></li>
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
             <li><a href="javascript:">个人资产</a></li>
-            <li><a href="javascript:" class="actived">自动投标</a></li>
+            <li><a href="javascript:" class="active">自动投标</a></li>
             <li><a href="javascript:">积分红包</a></li>
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="recharge-container fr autoHeight">
-        <h4><em class="tc">自动投标</em></h4>
+    <div class="content-container fr auto-height">
+        <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
-        <div class="recharge-content pad-s">
+        <div class="pad-s">
             <div class="CertifiedImg"></div>
 
             <p class="notice">
@@ -45,7 +45,9 @@
     </div>
 </div>
 
-
+<div class="auto-invest pad-m tc" style="display: none;">
+    <button id="finishAuthor" class="btn btn-normal">已完成授权</button>
+</div>
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
