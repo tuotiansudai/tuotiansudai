@@ -340,25 +340,18 @@ public class LoanServiceImpl implements LoanService {
         if (LoanStatus.WAITING_VERIFY == loanDto.getLoanStatus()) {
             loanDto.setLoanStatus(LoanStatus.PREHEAT);
             baseDto = payWrapperClient.createLoan(loanDto);
-            if (baseDto.getData().getStatus()) {
-                baseDto = payWrapperClient.updateLoan(loanDto);
-            }
-
-            // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
-            LoanModel loanModel = loanMapper.findById(loanDto.getId());
-            if (loanModel.getStatus() == LoanStatus.PREHEAT) {
-                BaseDto<PayDataDto> openLoanDto = payWrapperClient.updateLoan(loanDto);
-                if (baseDto.getData().getStatus() && openLoanDto.getData().getStatus()) {
-                    loanDto.setLoanStatus(LoanStatus.RAISING);
-                    BaseDto<PayDataDto> investLoanDto = payWrapperClient.updateLoan(loanDto);
-                    if (investLoanDto.getData().getStatus()) {
-                        loanDto.setLoanStatus(LoanStatus.PREHEAT);
-                        updateLoanAndLoanTitleRelation(loanDto);
-                        createFundraisingStartJob(loanMapper.findById(loanDto.getId()));
-                        return investLoanDto;
-                    }
+            BaseDto<PayDataDto> openLoanDto = payWrapperClient.updateLoan(loanDto);
+            if (baseDto.getData().getStatus() && openLoanDto.getData().getStatus()) {
+                loanDto.setLoanStatus(LoanStatus.RAISING);
+                BaseDto<PayDataDto> investLoanDto = payWrapperClient.updateLoan(loanDto);
+                if (investLoanDto.getData().getStatus()) {
+                    loanDto.setLoanStatus(LoanStatus.PREHEAT);
+                    updateLoanAndLoanTitleRelation(loanDto);
+                    createFundraisingStartJob(loanMapper.findById(loanDto.getId()));
+                    return investLoanDto;
                 }
             }
+            return baseDto;
         }
         payDataDto.setStatus(false);
         baseDto.setData(payDataDto);
@@ -584,7 +577,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId,loanName,startTime,endTime,currentPageNo,pageSize);
+        List<LoanModel> loanModels = loanMapper.findLoanList(status,loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i=0;i<loanModels.size();i++) {
             LoanListDto loanListDto = new LoanListDto();
