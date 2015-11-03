@@ -37,7 +37,7 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.retUrl =  (String)CALLBACK_HOST_PROPS.get("ump.callback.web.host");
+        this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
 
     }
