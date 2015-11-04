@@ -22,7 +22,7 @@
         <result column="amount" property="amount"></result>
     </resultMap>
 
-    <resultMap id="investPaginationItemMap" type="InvestPaginationItemView" extends="investResultMap">
+    <resultMap id="investPaginationItemView" type="InvestPaginationItemView" extends="investResultMap">
         <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="loan_type" property="loanType"></result>
@@ -121,11 +121,12 @@
         and status = 'SUCCESS'
     </select>
 
-    <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemMap">
+    <select id="findInvestPagination" parameterType="map" resultMap="investPaginationItemView">
         select invest.*,
         loan.name as loan_name,
         loan.status as loan_status,
-        (select user.referrer from user where user.login_name = #{loginName}) as referrer_login_name,
+        loan.type as loan_type,
+        (select user.referrer from user where user.login_name = #{investorLoginName}) as referrer_login_name,
         (select min(repay_date) from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING') as next_repay_date,
         (select invest_repay.expected_interest + invest_repay.default_interest + invest_repay.corpus
           from invest_repay where invest_repay.invest_id = invest.id and invest_repay.status = 'REPAYING'
@@ -133,8 +134,11 @@
         ) as next_repay_amount
         from invest join loan on invest.loan_id = loan.id
         <where>
-            <if test="loginName != null">
-                and invest.login_name = #{loginName}
+            <if test="loanId != null">
+                and loan.id = #{loanId}
+            </if>
+            <if test="investorLoginName != null">
+                and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
                 and loan.status = #{loanStatus}
@@ -153,14 +157,23 @@
     <select id="findCountInvestPagination" parameterType="map" resultType="long">
         select count(1)
         from invest join loan on invest.loan_id = loan.id
-        where invest.login_name = #{loginName}
-        and invest.created_time between #{startTime} and #{endTime}
-        <if test="loanStatus != null">
-            and loan.status = #{loanStatus}
-        </if>
-        <if test="investStatus != null">
-            and invest.status = #{investStatus}
-        </if>
+        <where>
+            <if test="loanId != null">
+                and loan.id = #{loanId}
+            </if>
+            <if test="investorLoginName != null">
+                and invest.login_name = #{investorLoginName}
+            </if>
+            <if test="loanStatus != null">
+                and loan.status = #{loanStatus}
+            </if>
+            <if test="investStatus != null">
+                and invest.status = #{investStatus}
+            </if>
+            <if test="startTime != null &amp;&amp; endTime != null">
+                and invest.created_time between #{startTime} and #{endTime}
+            </if>
+        </where>
     </select>
 
     <select id="sumSuccessNoviceInvestCountByLoginName" parameterType="String" resultType="int">

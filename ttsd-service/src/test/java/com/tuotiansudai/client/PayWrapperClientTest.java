@@ -163,7 +163,7 @@ public class PayWrapperClientTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
+            loanTitleRelationModel.setApplicationMaterialUrls("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);
