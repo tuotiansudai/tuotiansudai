@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -17,7 +19,6 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,45 +62,30 @@ public class RegisterServiceImpl implements RegisterService {
             UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
 
             if (responseModel.isSuccess()) {
-                AccountModel accountModel = new AccountModel(userModel.getLoginName(),
-                        dto.getUserName(),
-                        dto.getIdentityNumber(),
-                        responseModel.getUserId(),
-                        responseModel.getAccountId(),
-                        new Date());
-                accountMapper.create(accountModel);
-                UserRoleModel userRoleModel = new UserRoleModel();
-                userRoleModel.setLoginName(dto.getLoginName());
-                userRoleModel.setRole(Role.INVESTOR);
-                List<UserRoleModel> userRoleModels = Lists.newArrayList();
-                userRoleModels.add(userRoleModel);
-                userRoleMapper.createUserRoles(userRoleModels);
+                if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {
+                    AccountModel accountModel = new AccountModel(userModel.getLoginName(),
+                            dto.getUserName(),
+                            dto.getIdentityNumber(),
+                            responseModel.getUserId(),
+                            responseModel.getAccountId(),
+                            new Date());
+                    accountMapper.create(accountModel);
+                }
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+                if (!Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
+                    @Override
+                    public boolean apply(UserRoleModel input) {
+                        return input.getRole() == Role.INVESTOR;
+                    }
+                }).isPresent()) {
+                    UserRoleModel userRoleModel = new UserRoleModel();
+                    userRoleModel.setLoginName(dto.getLoginName());
+                    userRoleModel.setRole(Role.INVESTOR);
+                    userRoleModels.add(userRoleModel);
+                    userRoleMapper.create(userRoleModels);
+                }
             }
 
-            dataDto.setStatus(responseModel.isSuccess());
-            dataDto.setCode(responseModel.getRetCode());
-            dataDto.setMessage(responseModel.getRetMsg());
-        } catch (PayException e) {
-            dataDto.setStatus(false);
-        }
-        baseDto.setData(dataDto);
-        return baseDto;
-    }
-
-    @Transactional
-    public BaseDto reRegister(RegisterAccountDto dto) {
-        MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
-                dto.getUserName(),
-                dto.getIdentityNumber(),
-                dto.getMobile());
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto dataDto = new PayDataDto();
-
-        try {
-            MerRegisterPersonResponseModel responseModel = paySyncClient.send(MerRegisterPersonMapper.class,
-                    requestModel,
-                    MerRegisterPersonResponseModel.class);
             dataDto.setStatus(responseModel.isSuccess());
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());

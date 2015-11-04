@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'autoNumeric'], function ($) {
+require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
     $(function () {
         var amountInputElement = $(".withdraw .amount-display");
         var submitElement = $('.withdraw-submit');
@@ -27,16 +27,16 @@ require(['jquery', 'csrf', 'autoNumeric'], function ($) {
             }
             var amount = parseFloat(amountInputElement.autoNumeric("get"));
             $(".withdraw form input[name='amount']").val(amount);
-            $('.overlay,.overlay-container').show();
             formElement.submit();
+            layer.open({
+                type: 1,
+                title: '登录到联动优势支付平台充值',
+                area: ['560px', '270px'],
+                shadeClose: true,
+                content: $('#popWithdraw')
+            });
         });
 
-        $('.overlay-container .close').click(function () {
-            $('.overlay,.overlay-container').hide();
-        });
 
-        $('.overlay-container .confirm .failed').click(function () {
-            $('.overlay,.overlay-container').hide();
-        });
     });
 });

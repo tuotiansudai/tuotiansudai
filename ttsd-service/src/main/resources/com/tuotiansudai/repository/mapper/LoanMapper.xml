@@ -77,9 +77,7 @@
                 <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
             </if>
             order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
-            <if test="currentPageNo > 0">
-                limit #{currentPageNo} , 10
-            </if>
+            limit #{currentPageNo} , 10
         </where>
     </select>
 

@@ -1,5 +1,19 @@
 .main {
   margin-top: 60px;
+  .loan-tags {
+    background: #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #fff;
+    color: #f24712;
+    font-size: 14px;
+    width: 108px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+  }
 }
 
 .wrapper-all {
@@ -20,25 +34,8 @@
 }
 
 .wrapper {
-  width: 1000px;
   margin: 0 auto;
-  & .loan-tags {
-    position: absolute;
-    top: -42px;
-    left: 0;
-    background: #fff;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border: 1px solid #ccc;
-    border-bottom: 1px solid #fff;
-    color: #f24712;
-    font-size: 14px;
-    width: 108px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    font-weight: bold;
-  }
+
   & .item-block {
     padding: 15px 0;
     border-bottom: 1px solid #ccc;
@@ -73,8 +70,10 @@
     margin-top: 10px;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
     &:hover{
       border:1px solid #cc0000;
+      background: #fff;
     }
     & .hot {
       width: 59px;
@@ -85,7 +84,7 @@
       top: 0;
     }
     & .loan-info {
-      width: 700px;
+      width: 690px;
       border-right: 1px solid #ccc;
       padding-right: 2px;
       float: left;
@@ -98,6 +97,10 @@
           font-size: 14px;
           float: left;
           font-weight: bold;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 90%;
         }
         & .btn-invest,
         & .btn-wait-invest,
@@ -125,8 +128,9 @@
         border-bottom: none;
         line-height: 56px;
         font-size: 14px;
+        padding-left: 30px;
         & .name {
-          padding-left: 30px;
+
           color: #999999;
           float: left;
           padding-right: 10px;
@@ -225,9 +229,6 @@
 }
 
 .pagination {
-  width: 100%;
-  margin: 10px 0;
-  display: block;
   text-align: center;
   & a {
     color: #777777;

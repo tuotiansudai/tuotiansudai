@@ -6,9 +6,9 @@
 <body>
 <#include "header.ftl" />
 <div class="main">
+    <div class="loan-tags">投资项目</div>
     <div class="wrapper-all bg">
         <div class="wrapper pr">
-            <div class="loan-tags">投资项目</div>
             <div class="item-block">
                 <span class="hd">项目类型: </span>
                 <a <#if activityType??><#else>class="active"</#if> href="/loanList/web?<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">全部</a>
@@ -43,7 +43,7 @@
     <div class="wrapper loan-list">
         <ul>
             <#list loanListWebDtos as loanListWebDto>
-                <li>
+                <li urlLink="/loan/${(loanListWebDto.id?string('0'))!}">
                     <#if loanListWebDto.activityType == 'NOVICE'>
                         <span class="hot"></span>
                     </#if>
@@ -68,8 +68,8 @@
                                     <i>+${loanListWebDto.activityRate}</i>
                                 </#if>
                             </span>
-                            <span class="name">项目期限（月）：</span>
-                            <span class="month">${loanListWebDto.periods}个月</span>
+                            <span class="name">项目期限（<#if loanListWebDto.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.type = 'LOAN_INTEREST_MONTHLY_REPAY'>月<#else>天</#if>）：</span>
+                            <span class="month">${loanListWebDto.periods}<#if loanListWebDto.type == 'INVEST_INTEREST_MONTHLY_REPAY' || loanListWebDto.type = 'LOAN_INTEREST_MONTHLY_REPAY'>个月<#else>天</#if></span> <br/>
                             <span class="name">还款方式：</span>
                             <span class="money-style">${loanListWebDto.type.getName()}</span>
                         </div>
@@ -112,26 +112,28 @@
                         <div class="loan-process">
                             <span class="img"><img src="../../images/loan/pic-doing.png" alt=""/></span>
                             <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
-                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}期</p>
                         </div>
                     <#else>
                         <div class="loan-process">
                             <span class="img"><img src="../../images/loan/pic-finish.png" alt=""/></span>
                             <p class="status"><span class="grey">招募金额:</span>${loanListWebDto.loanAmount}元</p>
-                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}元</p>
+                            <p class="status"><span class="grey">回款进度:</span>${loanListWebDto.added}期</p>
                         </div>
                     </#if>
+
                 </li>
+
             </#list>
         </ul>
         <div class="pagination">
             <span class="total">共<span class="subTotal">${loanListCountWeb}</span>条,当前第 <span class="index-page">${currentPageNo}</span>页</span>
             <#if hasPreviousPage>
-                <span class="prev"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo+1}">上一页</a></span>
+                <span class="prev"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo-1}">上一页</a></span>
             </#if>
             <a class="current">${currentPageNo}</a>
             <#if hasNextPage>
-                <span class="next"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo-1}">下一页</a></span>
+                <span class="next"><a href="/loanList/web?<#if status??>status=${status}&</#if><#if activityType??>activityType=${activityType}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}&currentPageNo=${currentPageNo+1}">下一页</a></span>
             </#if>
 
         </div>

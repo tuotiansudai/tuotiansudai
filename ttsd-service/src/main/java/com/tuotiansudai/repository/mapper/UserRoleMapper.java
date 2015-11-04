@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface UserRoleMapper {
 
+    void create(@Param("userRoles") List<UserRoleModel> userRoleModels);
+
     List<UserRoleModel> findByLoginName(String loginName);
 
     List<UserRoleModel> findByLoginNameAndRole(@Param("loginName") String loginName,@Param("role") String role);
 
-    void delete(@Param("loginName") String loginName);
-
-    void createUserRoles(@Param("userRoles") List<UserRoleModel> userRoleModels);
+    void deleteByLoginName(@Param("loginName") String loginName);
 }
