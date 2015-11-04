@@ -10,6 +10,6 @@ public interface WithdrawMapper {
 
     void update(WithdrawModel withdrawModel);
 
-    long findSumWithdrawByLoginName(String loginName);
+    long findSumSuccessWithdrawByLoginName(String loginName);
 
 }

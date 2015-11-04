@@ -185,4 +185,74 @@
     <update id="update" parameterType="LoanRepayModel">
         update loan_repay set actual_interest = #{actualInterest}, actual_repay_date = #{actualRepayDate}, status = #{status} where id = #{id}
     </update>
+
+    <select id="findByLoginNameAndTimeSuccessRepay" parameterType="map" resultType="long">
+        SELECT
+          IFNULL(SUM(
+            t.`corpus` + t.`default_interest` + t.`actual_interest`
+          ),0)
+        FROM
+          loan_repay t
+          JOIN loan l
+            ON t.`loan_id` = l.`id`
+            AND l.`status` != 'COMPLETE'
+            AND l.`agent_login_name` = #{loginName}
+        WHERE t.`status` = 'COMPLETE'
+            AND t.`actual_repay_date` BETWEEN #{startTime}
+            AND #{endTime}
+    </select>
+    
+    <select id="findByLoginNameAndTimeRepayList" parameterType="map" resultMap="loanRepayResultMapWithLoanResultMap">
+        SELECT
+          m.`name`,
+          m.`base_rate`,
+          m.`activity_rate`,
+          m.`periods`,
+          n.`period`,
+          n.`status` AS `loan_repay_status`,
+          n.`corpus`,
+          n.`actual_interest`,
+          n.`expected_interest`,
+          n.`default_interest`,
+          n.`actual_repay_date`,
+          n.`repay_date`
+        FROM
+          `loan` m
+          JOIN
+            ( SELECT
+              t.`id`,
+              l.`id` AS `loanId`,
+              t.`period`,
+              t.`status`,
+              t.`corpus`,
+              t.`actual_interest`,
+              t.`expected_interest`,
+              t.`default_interest`,
+              t.`actual_repay_date`,
+              t.`repay_date`,
+              t.`repay_date` AS `repayTime`
+            FROM
+              `loan_repay` t
+              JOIN `loan` l
+                ON t.`loan_id` = l.`id`
+                AND l.`status` IN ('COMPLETE', 'REPAYING')
+                AND l.`agent_login_name` = #{loginName}
+            WHERE t.`status` IN (
+                'REPAYING',
+                'CONFIRMING',
+                'OVERDUE'
+              )
+              AND t.`repay_date` BETWEEN #{startTime}
+              AND #{endTime}) n
+            ON n.loanId = m.`id`
+        ORDER BY n.`repayTime` desc
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="sumSuccessLoanRepayMaxPeriod" parameterType="map" resultType="long">
+        select IFNULL(max(period),0)
+        from loan_repay
+        where loan_id = #{loanId}
+        and status = 'COMPLETE'
+    </select>
 </mapper>

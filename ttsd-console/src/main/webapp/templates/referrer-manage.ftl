@@ -27,6 +27,23 @@
             autoclose:true
         });
         $('.selectpicker').selectpicker();
+
+        $('form button[type="reset"]').click(function () {
+            window.location.href = "/referrerManage";
+        });
+
+        $('.search').on('click',function(){
+            var referrerLoginName = $('.referrerLoginName').val();
+            var investLoginName = $('.investLoginName').val();
+            var investStartTime = $('.investStartTime').val();
+            var investEndTime = $('.investEndTime').val();
+            var level = $('.level').val();
+            var rewardStartTime = $('.rewardStartTime').val();
+            var rewardEndTime = $('.rewardEndTime').val();
+            var role = $('.role').val();
+            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&currentPageNo=1&pageSize=10';
+        });
+
     })
 </script>
 </head>
@@ -43,23 +60,23 @@
              <div class="row">
                  <div class="form-group">
                      <label for="control-label">推荐人</label>
-                     <input type="text" class="form-control" >
+                     <input type="text" class="form-control referrerLoginName" value="${referrerLoginName!}">
                  </div>
                  <div class="form-group">
                      <label for="control-label">投资人</label>
-                     <input type="text" class="form-control" >
+                     <input type="text" class="form-control investLoginName" value="${investLoginName!}">
                  </div>
              <div class="form-group" id="investDate">
                  <label for="control-label">投资时间</label>
                  <div class='input-group date'>
-                     <input type='text' class="form-control" />
+                     <input type='text' class="form-control investStartTime" value="${(investStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                  </div>
                  -
                  <div class='input-group date'>
-                     <input type='text' class="form-control"/>
+                     <input type='text' class="form-control investEndTime" value="${(investEndTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -68,19 +85,19 @@
 
              <div class="form-group">
                  <label for="control-label">推荐层级</label>
-                 <input type="text" class="form-control" >
+                 <input type="text" class="form-control level" value="${(level?string('0'))!}">
              </div>
                  <div class="form-group" id="RewardDate">
                      <label for="control-label">奖励时间</label>
                      <div class='input-group date'>
-                         <input type='text' class="form-control" />
+                         <input type='text' class="form-control rewardStartTime" value="${(rewardStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                      </div>
                      -
                      <div class='input-group date'>
-                         <input type='text' class="form-control"/>
+                         <input type='text' class="form-control rewardEndTime" value="${(rewardEndTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -88,13 +105,14 @@
                  </div>
                  <div class="form-group">
                      <label for="control-label">推荐人角色</label>
-                     <select class="selectpicker"  data-style="btn-default" >
-                         <option>全部</option>
-                         <option>全部1</option>
+                     <select class="selectpicker role"  data-style="btn-default" >
+                         <option value="" <#if role?has_content><#else>selected</#if>>全部</option>
+                         <option value="MERCHANDISER" <#if role?has_content && role == 'MERCHANDISER'>selected</#if>>业务员</option>
+                         <option value="USER" <#if role?has_content && role != 'MERCHANDISER'>selected</#if>>用户(非业务员)</option>
                      </select>
                  </div>
-                 <button class="btn btn-primary" type="submit">查询</button>
-                 <button class="btn btn-default" type="submit">重置</button>
+                 <button class="btn btn-primary search" type="button">查询</button>
+                 <button class="btn btn-default" type="reset">重置</button>
     </div>
 
              </form>
@@ -102,68 +120,40 @@
              <div class="row">
                  <table class="table table-bordered table-hover">
                      <thead>
-                <tr>
-                    <th>项目名称</th>
-                    <th>期数</th>
-                    <th>投资人</th>
-                    <th>投资人姓名</th>
-                    <th>投资金额</th>
-                    <th>投资时间</th>
-                    <th>推荐人</th>
-                    <th>推荐人姓名</th>
-                    <th>推荐人是否业务员</th>
-                    <th>推荐层级</th>
-                    <th>推荐奖励</th>
-                    <th>奖励状态</th>
-                    <th>奖励时间</th>
-                </tr>
+                    <tr>
+                        <th>项目名称</th>
+                        <th>期数</th>
+                        <th>投资人</th>
+                        <th>投资人姓名</th>
+                        <th>投资金额</th>
+                        <th>投资时间</th>
+                        <th>推荐人</th>
+                        <th>推荐人姓名</th>
+                        <th>推荐人是否业务员</th>
+                        <th>推荐层级</th>
+                        <th>推荐奖励</th>
+                        <th>奖励状态</th>
+                        <th>奖励时间</th>
+                    </tr>
                      </thead>
                      <tbody>
-                     <tr>
-                         <td>terer</td>
-                         <td>12期</td>
-                         <td>jiaojiao</td>
-                         <td>娇娇</td>
-                         <td>50</td>
-                         <td>2015-05-09</td>
-                         <td>terer</td>
-                         <td>张龙</td>
-                         <td>否</td>
-                         <td>1</td>
-                         <td>0.1</td>
-                         <td>已入账</td>
-                         <td>2015-08-09</td>
-                     </tr>
-                     <tr>
-                         <td>terer</td>
-                         <td>12期</td>
-                         <td>jiaojiao</td>
-                         <td>娇娇</td>
-                         <td>50</td>
-                         <td>2015-05-09</td>
-                         <td>terer</td>
-                         <td>张龙</td>
-                         <td>否</td>
-                         <td>1</td>
-                         <td>0.1</td>
-                         <td>已入账</td>
-                         <td>2015-08-09</td>
-                     </tr>
-                     <tr>
-                         <td>terer</td>
-                         <td>12期</td>
-                         <td>jiaojiao</td>
-                         <td>娇娇</td>
-                         <td>50</td>
-                         <td>2015-05-09</td>
-                         <td>terer</td>
-                         <td>张龙</td>
-                         <td>否</td>
-                         <td>1</td>
-                         <td>0.1</td>
-                         <td>已入账</td>
-                         <td>2015-08-09</td>
-                     </tr>
+                     <#list referrerManageViews as referrerManageView>
+                         <tr>
+                             <td>${referrerManageView.loanName!}</td>
+                             <td>${referrerManageView.periods?string('0')}</td>
+                             <td>${referrerManageView.investLoginName!}</td>
+                             <td>${referrerManageView.investName!}</td>
+                             <td>${referrerManageView.investAmount/100}</td>
+                             <td>${referrerManageView.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                             <td>${referrerManageView.referrerLoginName!}</td>
+                             <td>${referrerManageView.referrerName!}</td>
+                             <td><#if referrerManageView.role?? && referrerManageView.role == 'MERCHANDISER'>是<#else>否</#if></td>
+                             <td>${referrerManageView.level?string('0')}</td>
+                             <td>${referrerManageView.rewardAmount/100}</td>
+                             <td><#if referrerManageView.status?? && referrerManageView.status == 'SUCCESS'>已入账<#else>入账失败</#if></td>
+                             <td>${referrerManageView.rewardTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                         </tr>
+                     </#list>
                      </tbody>
                  </table>
              </div>
@@ -171,20 +161,26 @@
              <div class="row">
                  <!-- pagination  -->
                  <nav class="pagination-control">
-                     <div><span class="bordern">总共5条,每页显示15条</span></div>
+                     <div><span class="bordern">总共${referrerManageCount}条,每页显示${pageSize}条</span></div>
                      <ul class="pagination pull-left">
-
                          <li>
+                             <#if hasPreviousPage>
+                             <a href="/referrerManage?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                             <#else>
                              <a href="#">
+                             </#if>
                                  <span>« Prev</span>
                              </a>
                          </li>
-                         <li><a>1</a></li>
+                         <li><a>${currentPageNo}</a></li>
                          <li>
+                             <#if hasNextPage>
+                             <a href="/referrerManage?referrerLoginName=${referrerLoginName!}&investLoginName=${investLoginName!}&investStartTime=${(investStartTime?string('yyyy-MM-dd'))!}&investEndTime=${(investEndTime?string('yyyy-MM-dd'))!}&level=${(level?string('0'))!}&rewardStartTime=${(rewardStartTime?string('yyyy-MM-dd'))!}&rewardEndTime=${(rewardEndTime?string('yyyy-MM-dd'))!}&role=${role!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                             <#else>
                              <a href="#">
+                             </#if>
                                  <span>Next »</span>
                              </a>
-
                          </li>
                      </ul>
                      <button class="btn btn-default pull-left" type="button">导出Excel</button>

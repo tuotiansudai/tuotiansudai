@@ -2,7 +2,7 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class InvestDetailModel extends InvestModel{
+public class InvestDetailModel extends InvestModel {
     /**
      * 标的名称
      */

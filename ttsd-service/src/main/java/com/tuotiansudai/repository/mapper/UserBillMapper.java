@@ -20,17 +20,5 @@ public interface UserBillMapper {
     int findUserBillsCount(Map<String, Object> params);
     List<UserBillModel> findByLoginName(String loginName);
 
-    List<UserBillModel> findUserFunds(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
-                                      @Param("userBillOperationType") UserBillOperationType userBillOperationType,
-                                      @Param("loginName") String loginName,
-                                      @Param("startTime") Date startTime,
-                                      @Param("endTime") Date endTime,
-                                      @Param("startLimit") int startLimit,
-                                      @Param("endLimit") int endLimit);
-
-    int findUserFundsCount(@Param("userBillBusinessType") UserBillBusinessType userBillBusinessType,
-                           @Param("userBillOperationType") UserBillOperationType userBillOperationType,
-                           @Param("loginName") String loginName,
-                           @Param("startTime") Date startTime,
-                           @Param("endTime") Date endTime);
+    long findSumRewardByLoginName(String loginName);
 }

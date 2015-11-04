@@ -13,7 +13,11 @@ public interface ReferrerRelationMapper {
 
     List<ReferrerRelationModel> findByLoginName(String loginName);
 
-    long findByLoginNameAndReferrer(@Param(value = "referrerLoginName") String referrerLoginName,
-                                    @Param(value = "loginName") String loginName);
+    List<ReferrerRelationModel> findByReferrerLoginName(String referrerLoginName);
 
+    ReferrerRelationModel findByReferrerAndLoginName(@Param(value = "referrerLoginName") String referrerLoginName,
+                                                     @Param(value = "loginName") String loginName);
+
+    void delete(@Param(value = "referrerLoginName") String referrerLoginName,
+                @Param(value = "loginName") String loginName);
 }

@@ -2,186 +2,97 @@ package com.tuotiansudai.client;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PutObjectResult;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-/**
- * Created by Administrator on 2015/8/20.
- */
 @Component
-public class OssWrapperClient{
+public class OssWrapperClient {
 
     static Logger logger = Logger.getLogger(OssWrapperClient.class);
 
-    // 输出文件地址
-    private String url = "";
-    // 上传文件名
-    private String fileName = "";
-    // 状态
-    private String state = "";
-    // 文件类型
-    private String type = "";
-    // 原始文件名
-    private String originalName = "";
-    // 文件大小
-    private String size = "";
-
-    private String title = "";
-
-    // 保存路径
-    private String savePath = "upload";
     // 文件允许格式
-    private String[] allowFiles = { ".rar", ".doc", ".docx", ".zip", ".pdf",
-            ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp" };
-    // 文件大小限制，单位KB
-    private int maxSize = 1024*10;
-
-    private HashMap<String, String> errorInfo = new HashMap<String, String>();
-
-    public OssWrapperClient() {
-        HashMap<String, String> tmp = this.errorInfo;
-        tmp.put("SUCCESS", "SUCCESS");
-        tmp.put("NOFILE", "未包含文件上传域");
-        tmp.put("TYPE", "不允许的文件格式");
-        tmp.put("SIZE", "文件大小超出限制");
-        tmp.put("ENTYPE", "请求类型ENTYPE错误");
-        tmp.put("REQUEST", "上传请求异常");
-        tmp.put("IO", "IO异常");
-        tmp.put("DIR", "目录创建失败");
-        tmp.put("UNKNOWN", "未知错误");
-    }
+    private static final List<String> ALLOW_SUFFIXES = Lists.newArrayList(".rar", ".doc", ".docx", ".zip", ".pdf",
+            ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp");
 
     /**
      * 阿里云ACCESS_KEYID
      */
     @Value("${plat.oss.access_keyid}")
-    private String ACCESS_KEYID;
+    private String accessKeyId;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
     @Value("${plat.oss.access_keysecret}")
-    private String ACCESS_KEYSECRET;
+    private String accessKeySecret;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
     @Value("${plat.oss.oss_endpoint}")
-    private String OSS_ENDPOINT;
+    private String ossEndpoint;
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
     @Value("${plat.oss.bucket_name}")
-    private String BUCKET_NAME;
+    private String bucketName;
 
     @Value("${plat.sitePath}")
-    private String SITEPATH;
+    private String sitePath;
 
-    public OSSClient getOSSClient(){
-        OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
-        return client;
+    public OSSClient getOSSClient() {
+        return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
 
-    public void upload(HttpServletRequest request) throws Exception {
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if (!isMultipart) {
-            this.state = this.errorInfo.get("NOFILE");
-            return;
+    public String upload(String suffix, InputStream inputStream, String rootPath) throws Exception {
+        if (!isAllowedFileExtName(suffix)) {
+            throw new Exception("不允许的文件格式");
         }
-        MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-        MultipartFile dfi = multiRequest.getFile("upfile");
-        this.originalName = dfi.getOriginalFilename().substring(dfi.getOriginalFilename().lastIndexOf(System.getProperty("file.separator")) + 1);
-        if (!this.checkFileType(this.originalName)) {
-            this.state = this.errorInfo.get("TYPE");
-            return;
-        }
-        this.fileName = this.getName(this.originalName);
-        this.type = FilenameUtils.getExtension(this.fileName);
-        String rootPath = request.getSession().getServletContext().getRealPath("/");
-        this.title = uploadFileBlur(fileName, dfi.getInputStream(), rootPath);
-        this.url = this.title.substring(title.indexOf("/"),title.length());
-        this.state = this.errorInfo.get("SUCCESS");
+        String newFileName = generateRandomFileName(suffix);
+        return uploadFileBlur(newFileName, inputStream, rootPath);
     }
 
-    /**
-     * 文件类型判断
-     *
-     * @param fileName
-     * @return
-     */
-    private boolean checkFileType(String fileName) {
-        Iterator<String> type = Arrays.asList(this.allowFiles).iterator();
-        while (type.hasNext()) {
-            String ext = type.next();
-            if (fileName.toLowerCase().endsWith(ext)) {
-                return true;
+    private boolean isAllowedFileExtName(final String suffix) {
+        return Iterators.any(ALLOW_SUFFIXES.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return input.endsWith(suffix.toLowerCase());
             }
-        }
-        return false;
+        });
     }
 
-    /**
-     * 依据原始文件名生成新文件名
-     *
-     * @return
-     */
-    private String getName(String fileName) {
+    private String generateRandomFileName(String suffix) {
         Random random = new Random();
-        return this.fileName = "" + random.nextInt(10000)
-                + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
+        return MessageFormat.format("{0}{1}.{2}", String.valueOf(random.nextInt(10000)), String.valueOf(System.currentTimeMillis()), suffix);
     }
 
-    /**
-     * 根据字符串创建本地目录 并按照日期建立子目录返回
-     *
-     * @param path
-     * @return
-     */
-    private String getFolder(HttpServletRequest request, String path) {
-        SimpleDateFormat formater = new SimpleDateFormat("yyyyMMdd");
-        path += File.separator + formater.format(new Date());
-        File dir = new File(this.getPhysicalPath(request, path));
-        if (!dir.exists()) {
-            try {
-                dir.mkdirs();
-            } catch (Exception e) {
-                this.state = this.errorInfo.get("DIR");
-                return "";
-            }
-        }
-        return path;
-    }
 
-    public String uploadFileBlur(String fileName ,InputStream inputStream ,String rootPath) {
-        ByteArrayInputStream in = null;
-        String filePath = "";
+    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath) {
+        ObjectMetadata objectMeta = new ObjectMetadata();
+        String waterPath = rootPath + "images" + File.separator + "watermark.png";
+        ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
         try {
-            ObjectMetadata objectMeta = new ObjectMetadata();
-            String waterPath = rootPath + "images" + File.separator + "watermark.png";
-            in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-            String sitePath = SITEPATH + format.format(new Date()) + File.separator;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-            fileName = sdf.format(new Date())+ "." + FilenameUtils.getExtension(fileName);
-            filePath = sitePath + fileName;
+            String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
+            String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + File.separator + FilenameUtils.getExtension(fileName);
             OSSClient client = getOSSClient();
-            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
-            logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
+            client.putObject(bucketName, fileName, in, objectMeta);
+            return filePath;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
@@ -191,7 +102,7 @@ public class OssWrapperClient{
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return filePath;
+        return null;
     }
 
     private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream) {
@@ -201,19 +112,19 @@ public class OssWrapperClient{
             Image srcTarget = ImageIO.read(inStream);
             int width = srcTarget.getWidth(null);
             int height = srcTarget.getHeight(null);
-            BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics graphics = image.createGraphics();
             graphics.drawImage(srcTarget, 0, 0, width, height, null);
             //水印文件
             File waterFile = new File(waterImg);
             Image waterImage = ImageIO.read(waterFile);
-            graphics.drawImage(waterImage, 0,0, width, height, null);
+            graphics.drawImage(waterImage, 0, 0, width, height, null);
             //水印文件结束
             graphics.dispose();
-            ImageIO.write(image,  "jpg",  swapStream);
+            ImageIO.write(image, "jpg", swapStream);
         } catch (Exception e) {
-            logger.error("upload oss fail ");
-            e.printStackTrace();
+            logger.error("upload oss fail");
+            logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
                 swapStream.close();
@@ -223,57 +134,4 @@ public class OssWrapperClient{
         }
         return swapStream;
     }
-
-    /**
-     * 根据传入的虚拟路径获取物理路径
-     *
-     * @param path
-     * @return
-     */
-    private String getPhysicalPath(HttpServletRequest request, String path) {
-        String servletPath = request.getServletPath();
-        String realPath = request.getSession().getServletContext().getRealPath("") + servletPath;
-        return new File(realPath).getParent() + File.separator + path;
-    }
-
-    public void setSavePath(String savePath) {
-        this.savePath = savePath;
-    }
-
-    public void setAllowFiles(String[] allowFiles) {
-        this.allowFiles = allowFiles;
-    }
-
-    public void setMaxSize(int size) {
-        this.maxSize = size;
-    }
-
-    public String getSize() {
-        return this.size;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public String getFileName() {
-        return this.fileName;
-    }
-
-    public String getState() {
-        return this.state;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public String getOriginalName() {
-        return this.originalName;
-    }
-
 }

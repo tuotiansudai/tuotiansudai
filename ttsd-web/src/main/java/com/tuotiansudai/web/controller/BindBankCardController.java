@@ -31,7 +31,7 @@ public class BindBankCardController {
             if (QuickPaymentBank.isQuickPaymentBank(bankCardModel.getBankCode().toUpperCase())) {
                 bindCardStatus = "specialBindCard";
             }
-            view.addObject("bankNumber", bankCardModel.getBankCode().toUpperCase());
+            view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
         view.addObject("userName", bindBankCardService.getUserName());

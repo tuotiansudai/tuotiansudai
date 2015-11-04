@@ -1,7 +1,10 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -25,6 +28,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
 
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
@@ -87,7 +93,7 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/disable", method = RequestMethod.POST)
     @ResponseBody
     public String disableUser(@PathVariable String loginName, HttpServletRequest request) {
-        if (LoginUserInfo.getLoginName().equals(loginName)) {
+        if (loginName.equals(LoginUserInfo.getLoginName())) {
             return "不能禁用当前登录用户";
         }
         String ip = RequestIPParser.getRequestIp(request);

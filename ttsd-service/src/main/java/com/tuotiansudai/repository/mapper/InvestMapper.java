@@ -73,7 +73,7 @@ public interface InvestMapper {
      * @return
      */
     long findCountByStatus(@Param(value = "loanId") long loanId,
-                          @Param(value = "status") InvestStatus status);
+                           @Param(value = "status") InvestStatus status);
 
     /**
      * 获取所有投资成功的记录
@@ -110,47 +110,27 @@ public interface InvestMapper {
      */
     List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
 
-    /**
-     * 按条件分页查询投资记录
-     *
-     * @param loanId
-     * @param loginName
-     * @param beginTime
-     * @param endTime
-     * @param loanStatus
-     * @param offset
-     * @param limit
-     * @return
-     */
-    List<InvestDetailModel> findByPage(@Param(value = "loanId") Long loanId,
-                                       @Param(value = "loginName") String loginName,
-                                       @Param(value = "beginTime") Date beginTime,
-                                       @Param(value = "endTime") Date endTime,
-                                       @Param(value = "loanStatus") LoanStatus loanStatus,
-                                       @Param(value = "investStatus") InvestStatus investStatus,
-                                       @Param(value = "includeRepay") boolean includeRepay,
-                                       @Param(value = "offset") int offset,
-                                       @Param(value = "limit") int limit);
 
-    /**
-     * 查询投资记录总数
-     *
-     * @param loanId
-     * @param loginName
-     * @param beginTime
-     * @param endTime
-     * @param loanStatus
-     * @return
-     */
-    int findCount(@Param(value = "loanId") Long loanId,
-                  @Param(value = "loginName") String loginName,
-                  @Param(value = "beginTime") Date beginTime,
-                  @Param(value = "endTime") Date endTime,
-                  @Param(value = "loanStatus") LoanStatus loanStatus,
-                  @Param(value = "investStatus") InvestStatus investStatus);
+    long findCountInvestPagination(@Param(value = "loginName") String loginName,
+                                   @Param(value = "loanId") long loanId,
+                                   @Param(value = "index") int index,
+                                   @Param(value = "pageSize") int pageSize,
+                                   @Param(value = "startTime") Date startTime,
+                                   @Param(value = "endTime") Date endTime,
+                                   @Param(value = "investStatus") InvestStatus investStatus,
+                                   @Param(value = "loanStatus") LoanStatus loanStatus);
 
+    List<InvestPaginationItemView> findInvestPagination(@Param(value = "loginName") String loginName,
+                                                        @Param(value = "loanId") long loanId,
+                                                        @Param(value = "index") int index,
+                                                        @Param(value = "pageSize") int pageSize,
+                                                        @Param(value = "startTime") Date startTime,
+                                                        @Param(value = "endTime") Date endTime,
+                                                        @Param(value = "investStatus") InvestStatus investStatus,
+                                                        @Param(value = "loanStatus") LoanStatus loanStatus);
 
-    List<InvestModel> getSuccessInvests(@Param(value = "loanId") long loanId);
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
+
+    int sumSuccessNoviceInvestCountByLoginName(@Param(value = "loginName") String loginName);
 }
