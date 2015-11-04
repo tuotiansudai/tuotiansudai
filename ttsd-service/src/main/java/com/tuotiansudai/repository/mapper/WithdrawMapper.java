@@ -15,7 +15,7 @@ public interface WithdrawMapper {
 
     void update(WithdrawModel withdrawModel);
 
-    long findSumWithdrawByLoginName(String loginName);
+    long findSumSuccessWithdrawByLoginName(String loginName);
 
     List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") String withdrawId,
                                                @Param(value = "loginName") String loginName,

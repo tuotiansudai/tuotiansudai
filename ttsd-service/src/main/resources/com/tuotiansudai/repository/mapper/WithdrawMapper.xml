@@ -41,8 +41,8 @@
         where id = #{id}
     </update>
 
-    <select id="findSumWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
-        select IFNULL(sum(amount),0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
+    <select id="findSumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
     </select>
 
     <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultMap">

@@ -30,8 +30,8 @@ public class RechargeServiceImpl implements RechargeService {
     }
 
     @Override
-    public long findSumRechargeByLoginName(String loginName) {
-        return rechargeMapper.findSumRechargeByLoginName(loginName);
+    public long sumSuccessRechargeAmount(String loginName) {
+        return rechargeMapper.findSumSuccessRechargeByLoginName(loginName);
     }
 
     @Override
@@ -61,12 +61,5 @@ public class RechargeServiceImpl implements RechargeService {
         baseDto.setData(basePaginationDataDto);
         return baseDto;
     }
-
-    @Override
-    public int findRechargeCount(String rechargeId, String loginName, RechargeSource source,
-                                 RechargeStatus status, Date startTime, Date endTime) {
-
-        int count = rechargeMapper.findRechargeCount(rechargeId, loginName, source, status, startTime, endTime);
-        return count;
-    }
+    
 }

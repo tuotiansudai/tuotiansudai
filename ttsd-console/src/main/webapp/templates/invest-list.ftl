@@ -86,7 +86,7 @@
                     <div class="form-group">
                         <label for="number">项目编号</label>
                         <input type="text" class="form-control" name="loanId" placeholder=""
-                               value="${(query.loanId?string('0'))!}">
+                               value="${(loanId?string('0'))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">投资人</label>
@@ -97,7 +97,7 @@
 
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" name="beginTime"
-                                   value="${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                                   value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -105,7 +105,7 @@
                         -
                         <div class='input-group date' id='datetimepicker2'>
                             <input type='text' class="form-control" name="endTime"
-                                   value="${(query.endTime?string('yyyy-MM-dd HH:mm'))!}"/>
+                                   value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -116,9 +116,9 @@
                         <select class="selectpicker" name="investStatus">
                             <option value="">全部</option>
                             <#list investStatusList as status>
-                            <option value="${status}"
-                                <#if query.investStatus?has_content && status == query.investStatus>selected</#if>
-                                >${status.description}</option>
+                            <option value="${status}" <#if status == investStatus>selected</#if>>
+                                ${status.description}
+                            </option>
                             </#list>
                         </select>
                     </div>
@@ -142,7 +142,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <#list invests as invest>
+                        <#list data.records as invest>
                         <tr>
                             <td>${invest.loanId?string('0')}</td>
                             <td>${invest.loanName}</td>
@@ -168,14 +168,14 @@
                 <!-- pagination  -->
                 <nav>
                     <div>
-                        <span class="bordern">总共${pagination.count}条,每页显示${query.pageSize}条</span>
+                        <span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>
                     </div>
-                <#if invests?has_content>
+                <#if data.records?has_content>
                     <ul class="pagination">
 
                         <li>
-                            <#if pagination.hasPreviousPage >
-                            <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex-1}"
+                            <#if data.hasPreviousPage >
+                            <a href="?loanId=${loanId}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&status=${investStatus!}&index=${data.index - 1}"
                                aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
@@ -183,10 +183,10 @@
                             <span aria-hidden="true">&laquo; Prev</span>
                         </a>
                         </li>
-                        <li><a>${pagination.index}</a></li>
+                        <li><a>${data.index}</a></li>
                         <li>
-                            <#if pagination.hasNextPage >
-                            <a href="?loanId=${(query.loanId?string('0'))!}&loginName=${query.loginName!}&beginTime=${(query.beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(query.endTime?string('yyyy-MM-dd HH:mm'))!}&investStatus=${query.investStatus!}&pageSize=${query.pageSize}&pageIndex=${query.pageIndex+1}"
+                            <#if data.hasNextPage >
+                            <a href="?loanId=${loanId}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&status=${investStatus!}&index=${data.index + 1}"
                                aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">

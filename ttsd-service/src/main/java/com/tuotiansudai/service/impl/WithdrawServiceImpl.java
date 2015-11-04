@@ -31,8 +31,8 @@ public class WithdrawServiceImpl implements WithdrawService {
     }
 
     @Override
-    public long findSumWithdrawByLoginName(String loginName) {
-        return withdrawMapper.findSumWithdrawByLoginName(loginName);
+    public long sumSuccessWithdrawAmount(String loginName) {
+        return withdrawMapper.findSumSuccessWithdrawByLoginName(loginName);
     }
 
     @Override

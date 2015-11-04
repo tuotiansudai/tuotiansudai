@@ -87,7 +87,7 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/disable", method = RequestMethod.POST)
     @ResponseBody
     public String disableUser(@PathVariable String loginName, HttpServletRequest request) {
-        if (LoginUserInfo.getLoginName().equals(loginName)) {
+        if (loginName.equals(LoginUserInfo.getLoginName())) {
             return "不能禁用当前登录用户";
         }
         String ip = RequestIPParser.getRequestIp(request);

@@ -13,8 +13,6 @@ public interface WithdrawService {
 
     BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto);
 
-    long findSumWithdrawByLoginName(String loginName);
-
     BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId,
                                                           String loginName,
                                                           WithdrawStatus status,
@@ -28,4 +26,6 @@ public interface WithdrawService {
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
+
+    long sumSuccessWithdrawAmount(String loginName);
 }
