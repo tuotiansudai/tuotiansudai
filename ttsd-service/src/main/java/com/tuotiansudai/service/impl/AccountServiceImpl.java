@@ -29,6 +29,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public long getFreeze(String loginName) {
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        return accountModel != null ? accountModel.getFreeze() : 0;
+    }
+
+    @Override
     public boolean isIdentityNumberExist(String identityNumber) {
         AccountModel accountModel = accountMapper.findByIdentityNumber(identityNumber);
         return accountModel != null;

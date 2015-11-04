@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -42,7 +41,15 @@ public interface LoanRepayMapper {
 
     void update(LoanRepayModel loanRepayModel);
 
+    long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
+
     LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+
+    long findByLoginNameAndTimeSuccessRepay(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
+
+    List<LoanRepayModel> findByLoginNameAndTimeRepayList(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,
+                                                         @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
+
 }

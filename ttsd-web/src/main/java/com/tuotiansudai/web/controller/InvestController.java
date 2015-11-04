@@ -1,14 +1,13 @@
 package com.tuotiansudai.web.controller;
 
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.dto.AutoInvestPlanDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.service.RepayService;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.LoginUserInfo;

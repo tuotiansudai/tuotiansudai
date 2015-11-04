@@ -1,6 +1,6 @@
 require(['jquery', 'jquery-ui',
     'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
-    'moment', 'moment-with-locales', 'csrf'], function ($) {
+    'moment', 'csrf'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});

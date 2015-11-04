@@ -9,18 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
     <!-- link bootstrap css and js -->
-    <link href="../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- link bootstrap css and js -->
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
     <!-- 日历插件 -->
     <link href="../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--上传图片插件-->
-    <link rel="stylesheet" href="../style/libs/fileinput.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/fileinput.css"/>
     <!--下拉框-->
-    <link rel="stylesheet" href="../style/libs/bootstrap-select.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
     <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
 <@global.javascript pageJavascript="editLoan.js"></@global.javascript>

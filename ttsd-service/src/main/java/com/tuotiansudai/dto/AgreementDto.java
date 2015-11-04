@@ -2,9 +2,6 @@ package com.tuotiansudai.dto;
 
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class AgreementDto implements Serializable {
 
     private String loginName;
