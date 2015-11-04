@@ -1,6 +1,8 @@
 package com.tuotiansudai.api.service;
 
 import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.FundManagementResponseDataDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.api.service.impl.MobileAppFundManagementServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -48,7 +50,24 @@ public class MobileAppMobileAppFundManagementServiceTest extends ServiceTestBase
         when(investRepayService.findSumRepaidInterestByLoginName(anyString())).thenReturn(1500l);
         when(investRepayService.findSumRepaidCorpusByLoginName(anyString())).thenReturn(1600l);
 
-        BaseResponseDto baseResponseDto = mobileAppFundManagementService.queryFundByUserId("admin");
+        BaseResponseDto<FundManagementResponseDataDto> baseResponseDto = mobileAppFundManagementService.queryFundByUserId("admin");
+
+        assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
+        assertEquals(baseResponseDto.getData().getAccountBalance(), "10.00");
+        assertEquals(baseResponseDto.getData().getFrozenMoney(), "20.00");
+        assertEquals(baseResponseDto.getData().getAvailableMoney(), "10.00");
+        assertEquals(baseResponseDto.getData().getPaidRechargeMoney(), "11.00");
+        assertEquals(baseResponseDto.getData().getSuccessWithdrawMoney(), "12.00");
+        assertEquals(baseResponseDto.getData().getTotalAssets(), "57.00");
+        assertEquals(baseResponseDto.getData().getTotalInvestment(), "29.00");
+        assertEquals(baseResponseDto.getData().getExpectedTotalInterest(), "29.00");
+        assertEquals(baseResponseDto.getData().getReceivedInterest(), "15.00");
+        assertEquals(baseResponseDto.getData().getReceivedCorpus(), "16.00");
+        assertEquals(baseResponseDto.getData().getReceivableCorpus(), "13.00");
+        assertEquals(baseResponseDto.getData().getReceivableInterest(), "14.00");
+        assertEquals(baseResponseDto.getData().getReceivableCorpusInterest(), "27.00");
+
+
 
 
 
@@ -58,8 +77,8 @@ public class MobileAppMobileAppFundManagementServiceTest extends ServiceTestBase
 
     private AccountModel fakeUserModel(){
         AccountModel accountModel = new AccountModel();
-        accountModel.setBalance(1000);
-        accountModel.setFreeze(2000);
+        accountModel.setBalance(1000l);
+        accountModel.setFreeze(2000l);
         return accountModel;
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -84,6 +85,24 @@ public class InvestRepayMapperTest {
         InvestRepayModel secondInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), 2);
 
         assertThat(secondInvestRepayModel.getId(), is(investRepayModel2.getId()));
+    }
+    @Test
+    public void shouldFindSumRepaidCorpusByLoginNameIsOk(){
+        InvestModel investModel = this.getFakeInvestModel();
+        investMapper.create(investModel);
+        InvestRepayModel investRepayModel = new InvestRepayModel();
+        investRepayModel.setId(idGenerator.generate());
+        investRepayModel.setInvestId(investModel.getId());
+        investRepayModel.setPeriod(1);
+        investRepayModel.setStatus(RepayStatus.COMPLETE);
+        investRepayModel.setRepayDate(new Date());
+        investRepayModel.setCorpus(1000l);
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel);
+        investRepayMapper.create(investRepayModels);
+
+        long corpus = investRepayMapper.findSumRepaidCorpusByLoginName("loginName");
+
+        assertEquals(1000l,corpus);
     }
 
     @Test

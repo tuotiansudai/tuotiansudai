@@ -10,5 +10,4 @@ import java.util.List;
 public interface MobileAppLoanListService {
     BaseResponseDto generateLoanList(LoanListRequestDto investListRequestDt);
 
-    List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList);
 }
