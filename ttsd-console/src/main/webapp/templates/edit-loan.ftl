@@ -302,7 +302,7 @@
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
             var initialPreview = [];
-            <#list loanTitleRelationModel.applyMetarialUrl?split(",") as title>
+            <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
                 initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
             rereq['${loanTitleRelationModel.titleId}']=initialPreview;

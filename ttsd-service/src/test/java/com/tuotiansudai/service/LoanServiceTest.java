@@ -244,7 +244,7 @@ public class LoanServiceTest {
             if (loanTitleModelList != null && loanTitleModelList.size() > 0){
                 loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
             }
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
@@ -309,7 +309,7 @@ public class LoanServiceTest {
             if (loanTitleModelList != null && loanTitleModelList.size() > 0) {
                 loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
             }
-            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
+            loanTitleRelationModel.setApplicationMaterialUrls("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
@@ -324,7 +324,7 @@ public class LoanServiceTest {
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
         assertNotNull(baseDto.getData().getId());
-        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
+        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplicationMaterialUrls());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
         assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
     }
@@ -410,7 +410,7 @@ public class LoanServiceTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(id);
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);
