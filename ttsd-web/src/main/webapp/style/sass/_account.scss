@@ -785,13 +785,30 @@
         }
       }
     }
-    .e-bank-recharge {
+    .fast-recharge, .e-bank-recharge {
       display: none;
       border-top: none;
       overflow: hidden;
       &.active {
         display: block;
       }
+    }
+    .fast-recharge {
+      height: 125px;
+      .bind-card-nav {
+        span {
+          margin: 20px auto;
+          display: block;
+          text-align: center;
+          font-size: 15px;
+        }
+        input {
+          margin: 0 auto;
+          display: block;
+        }
+      }
+    }
+    .e-bank-recharge {
       ol {
         width: 798px;
         z-index: 1;
@@ -875,9 +892,7 @@
             position: relative;
             cursor: pointer;
             & .badge {
-              background-image: url("/images/icons/spr.png");
-              background-position: -387px -172px;
-              background-repeat: no-repeat;
+              background: url("/images/icons/spr.png") no-repeat -387px -172px;
               width: 13px;
               height: 13px;
               position: absolute;
