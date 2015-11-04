@@ -1,5 +1,24 @@
 apply plugin: 'java'
 
+
 dependencies {
     compile project(':ttsd-service')
 }
+
+startScripts {
+    classpath  = files('conf') + classpath
+}
+
+distZip {
+    applicationDistribution.from("src/main/resources/") {
+        into 'lib/conf'
+        exclude 'mybatis-configuration.xml'
+    }
+    applicationDistribution.from("../ttsd-service/src/main/resources/ttsd-service.properties") {
+        into 'lib/conf'
+    }
+}
+
+
+mainClassName = "com.tuotiansudai.scheduler.Main"
+
