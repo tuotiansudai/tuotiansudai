@@ -1,11 +1,12 @@
-.main {
-  width: 1000px;
+@import "table";
+@import "pagination";
+
+.loan {
   margin: 0 auto;
   overflow: hidden;
   & .item-block {
     padding: 3px 0 0;
     display: block;
-    background: #fff;
     & .btn-pay {
       background: #f24712;
       border: none;
@@ -17,10 +18,29 @@
       display: inline-block;
       margin-left: 20px;
       cursor: pointer;
-      &.grey{
+      &.grey {
         opacity: .6;
       }
     }
+    & .loan-detail-error-msg{
+      color: #ee0505;font-size: 6px;
+      font-weight: normal;
+      display: block;
+      clear: both;
+      margin-left: 20px;
+      padding-top: 4px;
+    }
+    & .loan-detail-error-msg-li{
+     width: 14px;height: 14px;
+     border-radius: 7px;
+     background: red;
+     color:#fff;
+     font-size: 0.5em;
+     display: inline-block;
+     text-align: center;
+     margin-right: 6px;
+     line-height: 12px;
+     }
     & .text-input {
       float: left;
       width: 225px;
@@ -29,6 +49,19 @@
       color: #ccc;
       display: inline-block;
       margin-left: 20px;
+    }
+    & .text-input-amount {
+      float: left;
+      width: 330px;
+      border: 1px solid #ccc;
+      height: 32px;
+      color: #000;
+      display: inline-block;
+      margin-left: 20px;
+      padding-left:5px;
+      margin-top: 8px;
+      text-align: right;
+      padding-right: 5px;
     }
     & .bg-yellow {
       width: 110px;
@@ -50,7 +83,6 @@
       font-size: 12px;
     }
     & .num {
-      line-height: 34px;
       text-align: right;
       padding-right: 10px;
       width: 235px;
@@ -68,10 +100,12 @@
     &.bg-loan {
       border: 1px solid #ccc;
       overflow: hidden;
-      margin: 20px 0 0;
+      margin: 10px 0 0;
+      background: #fff;
     }
     & .news-share {
       width: 620px;
+      height: 320px;
       float: left;
       border-right: 1px solid #ccc;
       & .hd {
@@ -93,7 +127,6 @@
       }
       & .chart-box {
         width: 200px;
-        height: 200px;
         margin: 20px 60px;
         border-collapse: collapse;
         border-radius: 50%;
@@ -167,6 +200,7 @@
         float: right;
         color: #a4a4a4;
         font-size: 12px;
+        margin-top: 12px;
         & .point {
           color: #000;
         }
@@ -185,13 +219,46 @@
     & .account-info {
       width: 376px;
       float: left;
+      position: relative;
+      height: 320px;
+
       & .ttsd-tips {
         text-align: center;
-        font-size: 14px;
+        font-size: 12px;
         color: #949494;
         display: block;
-        line-height: 55px;
+        padding-top: 13px;
 
+      }
+      & .account-amount{
+        color: #f24712;
+      }
+      & .btn-position{
+        position: absolute;
+        bottom: 25px;
+        height: 60px;
+        & .item-block:nth-child(1){
+          margin-top: -4px;
+          padding-top: 0;
+          & .sub-hd {
+            line-height: 10px;
+            padding-top: 3px;
+            padding-bottom: 8px;
+          }
+        }
+        & .item-block:nth-child(2){
+          margin-top: 15px;
+        }
+        & .expected-interest{
+          color: #f24712;
+        }
+
+      }
+      & .hd{
+        height: 52px;
+        border-bottom: 2px solid #ccc;
+        margin-left: 8px;
+        margin-right: 8px;
       }
     }
   }
@@ -213,20 +280,23 @@
           line-height: 38px;
           cursor: pointer;
         }
-        &.current {
-          background: url("../../images/loan/nav_bg.png") left bottom no-repeat;
+        &.active {
+          background: url("/images/loan/nav_bg.png") left bottom no-repeat;
           color: #ed9c30;
         }
       }
     }
     & .loan-list {
       & .loan-list-con {
+        margin-top:10px;
         display: none;
+        &.active {
+          display: block;
+        }
         & .loan-detail {
-          margin: 10px;
+          margin: 0px 10px 10px 10px;
           padding: 10px;
           border: 1px solid #ccc;
-
           & h3 {
             color: #000;
             font-size: 14px;
@@ -265,72 +335,23 @@
             }
           }
         }
-        & .table-list {
-          margin: 10px;
-          border-collapse: collapse;
-          text-align: center;
-          line-height: 30px;
-          display: block;
-          float: left;
-          width: 980px;
-          & .icon-loan-ie, & .icon-loan-ios,
-          & .icon-loan-Android {
-            width: 18px;
-            height: 18px;
-            background: url("../../images/loan/ico_loan.png") no-repeat;
-            display: inline-block;
-            margin-bottom: -2px;
-          }
-          & .icon-loan-ios {
-            height: 22px;
-            background-position: 0 -61px;
-          }
-          & .icon-loan-Android {
-            height: 22px;
-            background-position: 0 -30px;
-          }
-          & th:first-child, & td:first-child {
-            width: 80px;
-          }
-          & th {
-            width: 180px;
-            background-color: #acacac;
-            border-right: 1px solid #ccc;
-          }
-          & td {
-            width: 180px;
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-          }
-          & td:nth-child(even) {
-
-          }
-          & td:nth-child(odd) {
-            background: #f0f0f0;
-          }
+        .invest-WEB, .invest-IOS, .invest-ANDROID {
+          background: url("/images/loan/ico_loan.png") no-repeat;
+          width: 18px;
+          height: 18px;
+          display: inline-block;
+          margin-bottom: -2px;
         }
-        & .pagination{
-          width: 100%;
-          margin: 10px 0;
-          display: block;
-          text-align: center;
-          & a{
-            color: #777777;
-            padding:2px 8px;
-          }
-          & a.current{
-            background: #f24712;
-            color: #fff;
-          }
-          & .next,& .prev{
-            cursor: pointer;
-          }
+        .invest-IOS {
+          height: 22px;
+          background-position: 0 -61px;
         }
-
+        .invest-ANDROID {
+          height: 22px;
+          background-position: 0 -30px;
+        }
       }
-
     }
-
   }
 }
 
@@ -360,7 +381,8 @@
   top: 50%;
   margin: -275px 0 0 -380px;
 }
-.time-item{
+
+.time-item {
   text-align: right;
   padding-right: 31px;
   line-height: 38px;
@@ -368,10 +390,10 @@
   color: #ccc;
 }
 
-a{ text-decoration:none;}
-a:hover{ text-decoration:none;}
-.pagination{padding: 15px 20px;text-align: left;color: #ccc;}
-.pagination a{display: inline-block;color: #428bca;display: inline-block;height: 25px;	line-height: 25px;	padding: 0 10px;border: 1px solid #ddd;	margin: 0 2px;border-radius: 4px;vertical-align: middle;}
-.pagination a:hover{text-decoration: none;border: 1px solid #428bca;}
-.pagination span.current{display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;color: #fff;background-color: #428bca;	border: 1px solid #428bca;border-radius: 4px;vertical-align: middle;}
-.pagination span.disabled{	display: inline-block;height: 25px;line-height: 25px;padding: 0 10px;margin: 0 2px;	color: #bfbfbf;background: #f2f2f2;border: 1px solid #bfbfbf;border-radius: 4px;vertical-align: middle;}
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}

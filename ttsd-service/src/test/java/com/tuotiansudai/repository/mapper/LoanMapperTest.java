@@ -14,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.hamcrest.CoreMatchers.is;
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -225,7 +226,7 @@ public class LoanMapperTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setAgentLoginName(agentLoginName);
-        fakeLoanModel.setType(LoanType.LOAN_TYPE_1);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
         fakeLoanModel.setStatus(loanStatus);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);
@@ -271,4 +272,12 @@ public class LoanMapperTest {
         fakeUserModel.setStatus(UserStatus.ACTIVE);
         return fakeUserModel;
     }
+
+    @Test
+    public void findLoanListTest() {
+        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING,1,"",new Date(),new Date(),0,10);
+        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING,1,"",new Date(),new Date());
+        assertThat(loanModels.size(), is(loanListCount));
+    }
+
 }

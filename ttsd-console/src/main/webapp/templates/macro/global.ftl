@@ -7,8 +7,8 @@
 
 <#macro javascript pageJavascript>
 <script src="${requestContext.getContextPath()}/js/libs/config.js"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require.js"
-        defer
-        async="true"
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+        defer="defer"
+        async="async"
         data-main="${requestContext.getContextPath()}/js/${pageJavascript}"></script>
 </#macro>

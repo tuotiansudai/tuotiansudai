@@ -43,6 +43,8 @@ public class InvestRepayModel {
         this.status = status;
     }
 
+    private LoanModel loan;
+
     public long getId() {
         return id;
     }
@@ -145,5 +147,13 @@ public class InvestRepayModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public LoanModel getLoan() {
+        return loan;
+    }
+
+    public void setLoan(LoanModel loan) {
+        this.loan = loan;
     }
 }

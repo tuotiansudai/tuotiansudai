@@ -4,7 +4,6 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
-import junit.framework.Assert;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -108,7 +107,7 @@ public class InvestMapperTest {
         model.setIsAutoInvest(false);
         model.setLoginName(User_ID);
         model.setLoanId(Loan_ID);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         return model;
     }
@@ -144,12 +143,12 @@ public class InvestMapperTest {
 
     @Before
     public void createLoan() {
-        createLoanByUserId(User_ID, Loan_ID);
-        createLoanByUserId(User_ID2, Loan_ID2);
+        createLoan(User_ID, Loan_ID, ActivityType.NORMAL);
+        createLoan(User_ID2, Loan_ID2, ActivityType.NORMAL);
         assertNotNull(loanMapper.findById(Loan_ID));
     }
 
-    private void createLoanByUserId(String userId, long loanId) {
+    private void createLoan(String userId, long loanId, ActivityType activityType) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
         loanDto.setAgentLoginName(userId);
@@ -159,7 +158,7 @@ public class InvestMapperTest {
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setActivityType(activityType);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -168,7 +167,7 @@ public class InvestMapperTest {
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
         loanDto.setLoanAmount("10000");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
@@ -218,22 +217,29 @@ public class InvestMapperTest {
 
 
     @Test
-    public void shouldFindByPage(){
-        int c = 101;
-        int limit = 3;
-        int offset = 6;
-        for(int i=0;i<c;i++){
-            InvestModel investModel = getFakeInvestModel();
-            investMapper.create(investModel);
-            investRepayMapper.create(getFakeInvestRepayModel(investModel.getId()));
-        }
+    public void shouldSumSuccessNoviceInvestCount(){
+        long noviceLoanId = idGenerator.generate();
+        createLoan(User_ID, noviceLoanId, ActivityType.NOVICE);
 
-        List<InvestDetailModel> investDetailModels = investMapper.findByPage(null,null,null,null,null,null,true,offset,limit);
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(noviceLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setCreatedTime(DateUtils.addHours(new Date(), -1));
+        investMapper.create(investModel);
 
-        assert investDetailModels.size() == limit;
-        assert investDetailModels.get(0).getNextRepayAmount() == 108;
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(Loan_ID2);
+        investModel2.setLoginName(User_ID2);
+        investModel2.setCreatedTime(DateUtils.addHours(new Date(), -2));
+        investMapper.create(investModel2);
 
-        investDetailModels = investMapper.findByPage(null,null,null,null,null,null,false,offset,limit);
-        assert investDetailModels.get(0).getNextRepayAmount() == 0;
+        InvestModel investModel3 = this.getFakeInvestModel();
+        investModel3.setLoanId(noviceLoanId);
+        investModel3.setLoginName(User_ID2);
+        investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
+        investMapper.create(investModel3);
+
+        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(User_ID2);
+        assert noviceInvestCount == 2;
     }
 }

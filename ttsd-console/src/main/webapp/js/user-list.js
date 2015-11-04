@@ -1,6 +1,6 @@
 require(['jquery', 'jquery-ui',
     'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
-    'moment', 'moment-with-locales', 'csrf'], function ($) {
+    'moment', 'csrf'], function ($) {
     $(function () {
         $('.selectpicker').selectpicker();
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm', maxDate: 'now'});
@@ -14,11 +14,10 @@ require(['jquery', 'jquery-ui',
         });
         //自动完成提示
         var autoValue = '';
-        var api_url = '/user/name-like-query';
         $("#loginName, #input-referrer").autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
-                $.get(api_url + '/' + query.term, function (respData) {
+                $.get('/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -38,7 +37,7 @@ require(['jquery', 'jquery-ui',
         $('.user-status-modifier').click(function () {
             var _this = $(this);
             $.ajax({
-                url: _this.attr('action-url'),
+                url: _this.data('url'),
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
