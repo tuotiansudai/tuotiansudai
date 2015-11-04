@@ -40,6 +40,9 @@
             <if test="endTime != null">
                 <![CDATA[ and created_time <= #{endTime} ]]>
             </if>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
+            </if>
         </where>
     </select>
 
@@ -57,6 +60,9 @@
             </if>
             <if test="endTime != null">
                 <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+            <if test="loginName != null">
+                AND login_name = #{loginName}
             </if>
         </where>
         order by created_time desc
