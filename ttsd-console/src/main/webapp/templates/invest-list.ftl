@@ -15,20 +15,20 @@
     <!-- link bootstrap css and js -->
     <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="js/libs/jquery-1.10.1.min.js"></script>
+    <script src="/js/libs/jquery-1.11.3.min.js"></script>
     <!-- jquery -->
-    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="/js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 
     <!-- 日历插件 -->
-    <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <script src="js/libs/moment-with-locales.js"></script>
-    <script src="js/libs/bootstrap-datetimepicker.js"></script>
-    <script src="js/libs/bootstrap-select.js"></script>
+    <link href="/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="/style/libs/bootstrap-select.css" rel="stylesheet"/>
+    <script src="/js/libs/moment-with-locales.min.js"></script>
+    <script src="/js/libs/bootstrap-datetimepicker.js"></script>
+    <script src="/js/libs/bootstrap-select.js"></script>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
-    <script src="js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
+    <script src="/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
     <!--自动补全-->
     <script type="text/javascript">
         $(function () {
