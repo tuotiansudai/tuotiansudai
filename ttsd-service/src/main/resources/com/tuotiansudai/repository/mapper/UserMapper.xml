@@ -30,7 +30,6 @@
             <result column="register_time" property="registerTime"></result>
             <result column="auto_invest" property="autoInvest"></result>
         </association>
-
     </resultMap>
 
     <select id="findByEmail" parameterType="java.lang.String" resultMap="userResultMap">
@@ -57,15 +56,14 @@
     <update id="updatePasswordByLoginName" parameterType="map">
         update user set password = #{password} where login_name = #{loginName}
     </update>
+
     <update id="updateUser" parameterType="com.tuotiansudai.repository.model.UserModel">
         update user set email = #{email},
                         mobile = #{mobile},
                         last_modified_time = #{lastModifiedTime},
                         last_modified_user = #{lastModifiedUser},
-                        status = #{status}
-                        <if test="referrer !=null and referrer != '' ">
-                            ,referrer = #{referrer}
-                        </if>
+                        status = #{status},
+                        referrer = #{referrer}
                         where id = #{id}
     </update>
 

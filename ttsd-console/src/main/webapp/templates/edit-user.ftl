@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.10.3.custom.css" rel="stylesheet"/>
+    <link href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet"/>
     <link href="${requestContext.getContextPath()}/style/index.css" rel="stylesheet"/>
 <@global.javascript pageJavascript="edit-user.js"></@global.javascript>
 </head>

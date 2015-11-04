@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 @Controller
 @RequestMapping(value = "/agreement")
 public class AgreementController {

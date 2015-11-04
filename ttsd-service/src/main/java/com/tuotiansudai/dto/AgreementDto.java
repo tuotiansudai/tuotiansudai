@@ -2,14 +2,13 @@ package com.tuotiansudai.dto;
 
 import java.io.Serializable;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public class AgreementDto implements Serializable {
 
     private String loginName;
 
     private boolean autoInvest;
+
+    private boolean fastPay;
 
     public String getLoginName() {
         return loginName;
@@ -25,5 +24,13 @@ public class AgreementDto implements Serializable {
 
     public void setAutoInvest(boolean autoInvest) {
         this.autoInvest = autoInvest;
+    }
+
+    public boolean isFastPay() {
+        return fastPay;
+    }
+
+    public void setFastPay(boolean fastPay) {
+        this.fastPay = fastPay;
     }
 }

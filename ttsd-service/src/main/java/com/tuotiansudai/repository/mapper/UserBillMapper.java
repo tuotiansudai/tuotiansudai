@@ -15,4 +15,6 @@ public interface UserBillMapper {
 
     int findUserBillsCount(Map<String, Object> params);
     List<UserBillModel> findByLoginName(String loginName);
+
+    long findSumRewardByLoginName(String loginName);
 }
