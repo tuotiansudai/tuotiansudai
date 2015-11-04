@@ -48,6 +48,10 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <select id="getCompletedXsInvest"  resultMap="loanResultMap">
+        select * from loan where status = 'COMPLETE' and activity_type = 'NOVICE' limit 1;
+    </select>
+
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
         select * from loan t
         <where>
@@ -287,5 +291,7 @@
             </if>
         </where>
     </select>
+
+
 
 </mapper>

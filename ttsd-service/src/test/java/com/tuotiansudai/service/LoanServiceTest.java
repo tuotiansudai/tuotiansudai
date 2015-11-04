@@ -110,7 +110,6 @@ public class LoanServiceTest {
         loanDto.setFundraisingStartTime(date);
         return loanDto;
     }
-
     private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);

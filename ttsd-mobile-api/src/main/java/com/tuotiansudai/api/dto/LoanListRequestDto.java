@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 public class LoanListRequestDto extends BaseParamDto{
     private Integer index;
     private Integer pageSize;
