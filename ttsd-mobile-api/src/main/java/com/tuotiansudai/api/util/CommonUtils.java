@@ -2,6 +2,8 @@ package com.tuotiansudai.api.util;
 
 
 import com.google.common.base.Joiner;
+import com.tuotiansudai.repository.model.UserBillOperationType;
+import com.tuotiansudai.utils.AmountUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,13 +43,14 @@ public class CommonUtils {
         return cardNo;
     }
 
-    public static String convertRealMoneyByType(double money, String type) {
-        if ("ti_balance".equals(type)) {
-            return "+" + money;
-        } else if ("to_balance".equals(type) || "to_frozen".equals(type)) {
-            return "-" + money;
+    public static String convertRealMoneyByType(long amount, UserBillOperationType type) {
+
+        if (UserBillOperationType.TI_BALANCE.equals(type)){
+            return "+" + AmountUtil.convertCentToString(amount);
+        }else if(UserBillOperationType.TO_BALANCE.equals(type) || UserBillOperationType.TO_FREEZE.equals(type)){
+            return "-" + AmountUtil.convertCentToString(amount);
         }
-        return "" + money;
+        return "" + AmountUtil.convertCentToString(amount);
     }
 
     public static String mapToFormData(Map<String, String> map, boolean isURLEncoder) throws UnsupportedEncodingException {
