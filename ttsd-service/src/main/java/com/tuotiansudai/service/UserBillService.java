@@ -19,5 +19,9 @@ public interface UserBillService {
 
 
     long findSumRewardByLoginName(String loginName);
+
+    List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime,int currentPage,int pageSize);
+
+    int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime);
     
 }

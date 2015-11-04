@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.UserBillPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
+import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -74,5 +75,15 @@ public class UserBillServiceImpl implements UserBillService {
     @Override
     public long findSumRewardByLoginName(String loginName) {
         return userBillMapper.findSumRewardByLoginName(loginName);
+    }
+
+    @Override
+    public List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime,int currentPage,int pageSize) {
+        return userBillMapper.findUserFunds(userBillBusinessType,userBillOperationType,loginName,startTime,endTime,(currentPage - 1) * pageSize,pageSize);
+    }
+
+    @Override
+    public int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime) {
+        return userBillMapper.findUserFundsCount(userBillBusinessType,userBillOperationType,loginName,startTime,endTime);
     }
 }
