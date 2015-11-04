@@ -1,7 +1,7 @@
 <div class="header-container">
     <div class="header">
         <div>
-            <p>客服电话：400-169-1188<span>沟通时间：(9:00-18:00)</span></p>
+            <span>客服电话：400-169-1188<time>沟通时间：(9:00-18:00)</time></span>
             <ul>
                 <li><a href="javascript:">帮助中心</a></li>
                 <@global.security.authorize access="isAuthenticated()">
