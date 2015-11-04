@@ -16,12 +16,11 @@
     <!-- 日历插件 -->
     <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--上传图片插件-->
-    <link rel="stylesheet" href="style/libs/fileinput.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/fileinput.css"/>
     <!--下拉框-->
-    <link rel="stylesheet" href="style/libs/bootstrap-select.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
-    <script src="/js/libs/template.js"></script>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
 <#--当前页面js-->
 <@global.javascript pageJavascript="createLoan.js"></@global.javascript>
     <script id="upload" type="text/html">
