@@ -5,18 +5,19 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.job.DeadlineFundraisingJob;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.DateUtil;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.utils.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.JobDataMap;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private JobManager jobManager;
 
     /**
      * @param loanTitleDto
@@ -306,6 +310,7 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
+                    createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
                     return investLoanDto;
                 }
             }
@@ -593,6 +598,18 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
         return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,rateStart,rateEnd);
+    }
+
+    private void createDeadLineFundraisingJob(LoanModel loanModel) {
+        JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put("loan",loanModel);
+        try {
+            jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class).
+                    withIdentity("LoanStatusToRecheck","LoanStatusToRecheck").
+                    addJobData(jobDataMap).runOnceAt(loanModel.getFundraisingEndTime()).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(),e);
+        }
     }
 
 }
