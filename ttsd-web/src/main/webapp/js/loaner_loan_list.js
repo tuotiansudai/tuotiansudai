@@ -105,15 +105,15 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                             content: html
                         });
 
-                        $('a.enabled-repay.normal').click(function () {
-                            $("#normal-repay").submit();
+                        $('a.normal-repay').click(function () {
+                            $("#normal-repay-form").submit();
                             return false;
                         });
-                        $('a.enabled-repay.advanced').click(function () {
-                            if (data.hasConfirmingLoanRepay) {
-                                return false;
+
+                        $('a.advanced-repay').click(function () {
+                            if (!data.hasConfirmingLoanRepay) {
+                                $("#advanced-repay-form").submit();
                             }
-                            $("#advanced-repay").submit();
                             return false;
                         });
                     }
