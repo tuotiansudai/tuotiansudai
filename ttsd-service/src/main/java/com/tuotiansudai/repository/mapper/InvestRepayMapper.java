@@ -39,4 +39,6 @@ public interface InvestRepayMapper {
 
     long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
 
+    long findSumRepaidCorpusByLoginName(@Param(value = "loginName") String loginName);
+
 }
