@@ -51,8 +51,10 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
                 } else if (Integer.parseInt(redisWrapperClient.get(redisKey)) == times - 1) {
                     redisWrapperClient.setex(redisKey, second, String.valueOf(times));
                     UserModel userModel = userMapper.findByLoginName(request.getParameter("username"));
-                    userModel.setStatus(UserStatus.INACTIVE);
-                    userMapper.updateUser(userModel);
+                    if(userModel != null) {
+                        userModel.setStatus(UserStatus.INACTIVE);
+                        userMapper.updateUser(userModel);
+                    }
                 }
             }
             loginDto.setLocked(exception instanceof DisabledException);
