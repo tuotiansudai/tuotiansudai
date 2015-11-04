@@ -89,7 +89,7 @@ public class OssWrapperClient {
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
             String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
-            String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + File.separator + FilenameUtils.getExtension(fileName);
+            String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + "." + FilenameUtils.getExtension(fileName);
             OSSClient client = getOSSClient();
             client.putObject(bucketName, fileName, in, objectMeta);
             return filePath;
