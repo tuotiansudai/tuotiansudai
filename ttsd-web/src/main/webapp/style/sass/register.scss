@@ -150,8 +150,6 @@
     input {
       color: #999;
       width: 280px;
-      height: 38px;
-      line-height: 38px;
       border: #cecece 1px solid;
       //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
       border-radius: 3px;
@@ -242,6 +240,10 @@
     padding-left: 0;
     border: 0;
     cursor: pointer;
+    &.loading {
+      background: url("/images/login/loading.gif") no-repeat center center;
+      text-indent: -9999px;
+    }
   }
   &.active {
     display: block;

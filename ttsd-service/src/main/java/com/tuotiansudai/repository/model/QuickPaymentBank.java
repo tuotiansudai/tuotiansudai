@@ -7,6 +7,14 @@ public enum QuickPaymentBank {
     BOC("中国银行"),
     CEB("光大银行"),
     CIB("兴业银行"),
+    HXB("华夏银行"),
+    PSBC("中国邮政储蓄银行"),
+    SPDB("浦发银行"),
+    COMM("交通银行"),
+    GDB("广发银行"),
+    CITIC("中信银行"),
+    CMB("招商银行"),
+    PAB("平安银行"),
     CMBC("中国民生银行");
 
     private final String description;

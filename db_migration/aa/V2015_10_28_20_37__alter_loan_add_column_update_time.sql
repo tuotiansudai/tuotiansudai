@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`loan` ADD COLUMN `update_time` DATETIME NOT NULL;

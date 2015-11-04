@@ -1,21 +1,18 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleMapper;
-import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
+import com.tuotiansudai.dto.LoanListDto;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,15 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
 import java.util.UUID;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,6 +68,9 @@ public class LoanServiceTest {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
 
     @Before
     public void createLoanTitle(){
@@ -85,14 +88,34 @@ public class LoanServiceTest {
     public void createLoanServiceTest_1() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
-
         LoanDto loanDto = getLoanDto(fakeUser);
         BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
         assertTrue(baseDto.getData().getStatus());
         assertNotNull(loanMapper.findById(loanDto.getId()));
         assertTrue(loanTitleRelationMapper.findByLoanId(loanDto.getId()).size() > 0);
+    }
+
+    private LoanDto getLoanDto(UserModel userModel, long loanId, Date date) {
+        LoanDto loanDto = new LoanDto();
+        loanDto.setId(loanId);
+        loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setAgentLoginName(userModel.getLoginName());
+        loanDto.setMaxInvestAmount("100.00");
+        loanDto.setMinInvestAmount("1.00");
+        loanDto.setLoanAmount("1000000.00");
+        loanDto.setFundraisingEndTime(date);
+        loanDto.setFundraisingStartTime(date);
+        return loanDto;
+    }
+
+    private List<UserRoleModel> getFakeUserRole(UserModel userModel,Role role) {
+        List<UserRoleModel> userRoleModels = Lists.newArrayList();
+        UserRoleModel userRoleModel = new UserRoleModel(userModel.getLoginName(),role);
+        userRoleModels.add(userRoleModel);
+        return userRoleModels;
     }
 
     private LoanDto getLoanDto(UserModel userModel) {
@@ -218,7 +241,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -238,9 +261,25 @@ public class LoanServiceTest {
     }
 
     @Test
+    public void findLoanListServiceTest() {
+        Date date = new Date();
+        long id = idGenerator.generate();
+        UserModel fakeUser = getFakeUser("loginName");
+        userMapper.create(fakeUser);
+        AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
+        accountMapper.create(fakeAccount);
+
+        LoanDto loanDto = getLoanDto(fakeUser,id,date);
+        BaseDto<PayDataDto> baseDto = creteLoan(loanDto);
+        List<LoanListDto> loanListDtos = loanService.findLoanList(LoanStatus.REPAYING, id, "", date, date, 0, 10);
+        int loanListCount = loanService.findLoanListCount(LoanStatus.REPAYING,id,"",date,date);
+        assertThat(loanListDtos.size(), is(loanListCount));
+    }
+
     public void updateLoanTest() {
         UserModel fakeUser = getFakeUser("loginName");
         userMapper.create(fakeUser);
+        userRoleMapper.create(Lists.newArrayList(new UserRoleModel(fakeUser.getLoginName(), Role.LOANER)));
         AccountModel fakeAccount = new AccountModel(fakeUser.getLoginName(), "userName", "id", "payUserId", "payAccountId", new Date());
         accountMapper.create(fakeAccount);
 
@@ -267,7 +306,7 @@ public class LoanServiceTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         List<LoanTitleRelationModel> loanTitleRelationModelList = new ArrayList<LoanTitleRelationModel>();
@@ -293,19 +332,18 @@ public class LoanServiceTest {
 
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
-        Assert.assertNotNull(baseDto.getData().getId());
-        Assert.assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
-        assertEquals(99.5, baseDto.getData().getAmountNeedRaised());
-        assertEquals(0.00, baseDto.getData().getRaiseCompletedRate());
+        assertNotNull(baseDto.getData().getId());
+        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
+        assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
+        assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
     }
+
     @Test
     public void shouldGetTheInvests(){
         long loanId = createLoanService();
         createTestInvests(loanId, "loginName", 10);
         BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 5);
         assertEquals(5, baseDto.getData().getRecords().size());
-        assertEquals(true, baseDto.getData().isHasNextPage());
-        assertEquals(false, baseDto.getData().isHasPreviousPage());
     }
 
     @Test
@@ -323,11 +361,9 @@ public class LoanServiceTest {
         baseDto = loanService.getInvests(loanId, 4, 3);
         BasePaginationDataDto data = baseDto.getData();
         assertEquals(2, data.getRecords().size());
-        assertEquals(false, data.isHasNextPage());
-        assertEquals(true, data.isHasPreviousPage());
     }
-    private void createTestInvests(long loanId, String loginName, int count){
 
+    private void createTestInvests(long loanId, String loginName, int count){
         for(int i=0;i<count;i++) {
             InvestModel investModel = this.getFakeInvestModel(idGenerator.generate(), loginName);
             investModel.setLoanId(loanId);
@@ -363,7 +399,7 @@ public class LoanServiceTest {
         loanModel.setInvestFeeRate(15);
         loanModel.setInvestIncreasingAmount(1);
         loanModel.setLoanAmount(10000);
-        loanModel.setType(LoanType.LOAN_TYPE_1);
+        loanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanModel.setMaxInvestAmount(100000000000l);
         loanModel.setMinInvestAmount(0);
         loanModel.setCreatedTime(new Date());
@@ -414,7 +450,7 @@ public class LoanServiceTest {
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.WAITING);
         model.setCreatedTime(new Date());
         return model;

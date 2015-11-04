@@ -20,8 +20,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
+
     @Autowired
     private AccountMapper accountMapper;
+
     @Autowired
     private BankCardMapper bankCardMapper;
 
@@ -45,7 +47,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     public BankCardModel getPassedBankCard() {
         String loginName = LoginUserInfo.getLoginName();
 
-        BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
-        return bankCardModel;
+        return bankCardMapper.findByLoginName(loginName);
     }
 }

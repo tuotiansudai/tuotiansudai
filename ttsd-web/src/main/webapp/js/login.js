@@ -123,7 +123,7 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                 },
                 success: function (response) {
                     if (response.data.status) {
-                        window.location.href = '/';
+                        window.location.href = loginFormElement.data('redirect-url');
                     } else {
                         if (response.data.isLocked) {
                             errorElement.text("用户已被锁定").css('visibility', 'visible');
