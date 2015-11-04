@@ -101,9 +101,9 @@
                             <#list withdrawList as withdrawItem>
                             <tr>
                                 <td>${withdrawItem.withdrawId}</td>
-                                <td>${withdrawItem.createdTime?string('yyyy-MM-dd HH:mm')}</td>
-                                <td>${withdrawItem.verifyTime?string('yyyy-MM-dd HH:mm')}</td>
-                                <td>${withdrawItem.recheckTime?string('yyyy-MM-dd HH:mm')}</td>
+                                <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.verifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.recheckTime?string('yyyy-MM-dd HH:mm'))!}</td>
                                 <td>${withdrawItem.loginName}</td>
                                 <td>${withdrawItem.userName}</td>
                                 <td>${withdrawItem.amount}</td>

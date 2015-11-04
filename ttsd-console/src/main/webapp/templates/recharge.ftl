@@ -108,7 +108,7 @@
                         <#list rechargeList as rechargeItem>
                         <tr>
                             <td>${rechargeItem.rechargeId}</td>
-                            <td>${rechargeItem.createdTime?string('yyyy-MM-dd HH:mm')}</td>
+                            <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
                             <td>${rechargeItem.loginName}</td>
                             <td>${rechargeItem.amount}</td>
                             <td>${rechargeItem.fee}</td>

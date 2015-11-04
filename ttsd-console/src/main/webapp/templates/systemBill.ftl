@@ -96,7 +96,7 @@
                         <#if systemBillList?has_content>
                             <#list systemBillList as systemBillItem>
                             <tr>
-                                <td>${systemBillItem.createdTime?string('yyyy-MM-dd HH:mm')}</td>
+                                <td>${(systemBillItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
                                 <td>${systemBillItem.operationType}</td>
                                 <td>${systemBillItem.businessType}</td>
                                 <td>${systemBillItem.amount}</td>
