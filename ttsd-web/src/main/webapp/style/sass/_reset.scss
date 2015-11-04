@@ -14,6 +14,7 @@ footer,header,menu,nav,section,summary {
 }
 img {
   border: none;
+  vertical-align: middle;
 }
 
 body {
@@ -21,9 +22,10 @@ body {
   font-size: nth($fontSize,2);
   line-height: nth($baseLineHeight,1);
   background: nth($baseColor,5);
-  color:nth($baseColor,3);
+  color:nth($CK2,5);
 }
 a{
+  cursor: pointer;
   color:nth($linkColor,1);
   text-decoration: none;
   &:hover{
@@ -46,7 +48,7 @@ a{
   text-align: right;
 }
 //@extend
-.autoHeight {
+.auto-height {
   overflow: auto;
   height: auto;
 }
@@ -58,10 +60,51 @@ a{
   display: block;
   content: '';
 }
+.clear-blank{
+  clear: both;
+  margin-top:10px;
+}
 .pad-s {
   padding: 10px;
 }
 .pad-m {
   padding: 30px;
 }
+.bgWhite {
+  background: nth($baseColor,1);
+}
+.error {
+  color: $required;
+}
+// form validation
+.fa {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+label {
+  &.form-error {
+    font-size: 12px;
+    color: nth($checkValid,1);
+    padding-left: 5px;
+    vertical-align: middle;
+    &:before {
+      padding-right: 5px;
+      content: "\f057";
+      font: normal normal normal 14px/1 FontAwesome;
+      display: inline-block;
+      font-size: 16px;
+      color: nth($checkValid,1);
+    }
+  }
+}
+input.valid + label.form-valid:before {
+      content: "\f058";
+      font: normal normal normal 14px/1 FontAwesome;
+      display: inline-block;
+      font-size: 16px;
+      color: nth($checkValid,2);
+}
+
+
 

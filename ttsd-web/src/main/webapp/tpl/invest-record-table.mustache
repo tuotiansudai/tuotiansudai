@@ -34,10 +34,3 @@
         {{/data.records}}
     </tbody>
 </table>
-
-<div class="pagination" data-currentpage="{{data.index}}">
-    <span class="total">共 {{data.count}} 条记录，当前第 {{data.index}} 页</span>
-    {{#data.hasPreviousPage}}<a href="javascript:;" class="prevPage">上一页</a>{{/data.hasPreviousPage}}
-    {{#data.hasNextPage}}<a href="javascript:;" class="nextPage">下一页</a>{{/data.hasNextPage}}
-</div>
-

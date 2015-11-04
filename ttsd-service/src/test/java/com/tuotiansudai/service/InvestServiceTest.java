@@ -1,8 +1,5 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.InvestDetailDto;
-import com.tuotiansudai.dto.InvestDetailQueryDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -12,7 +9,6 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,9 +36,6 @@ public class InvestServiceTest {
 
     @Autowired
     private UserMapper userMapper;
-
-    @Autowired
-    private AutoInvestPlanMapper autoInvestPlanMapper;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -114,49 +107,6 @@ public class InvestServiceTest {
     }
 
     @Test
-    public void testPaginationInvestQuery() {
-        InvestDetailQueryDto queryDto = new InvestDetailQueryDto();
-        queryDto.setLoginName("testuser");
-        queryDto.setPageIndex(1);
-        queryDto.setPageSize(10);
-        BasePaginationDataDto<InvestDetailDto> paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 99;
-        InvestDetailDto dto = paginationDto.getRecords().get(0);
-        assert dto.getId() == 10098000;
-
-        queryDto.setPageIndex(3);
-        queryDto.setPageSize(20);
-        paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 99;
-        dto = paginationDto.getRecords().get(0);
-        assert dto.getId() == 10058000;
-        assert dto.getId() == 10058000;
-
-        assert dto.getLoanType() == LoanType.INVEST_INTEREST_MONTHLY_REPAY;
-
-        queryDto.setInvestStatus(InvestStatus.FAIL);
-        paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 0;
-
-        queryDto.setInvestStatus(InvestStatus.SUCCESS);
-        queryDto.setLoanStatus(LoanStatus.CANCEL);
-        paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 0;
-
-        queryDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
-        paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 99;
-
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, -15);
-        queryDto.setBeginTime(cal.getTime());
-        cal.add(Calendar.SECOND, 5);
-        queryDto.setEndTime(cal.getTime());
-        paginationDto = investService.queryInvests(queryDto, false);
-        assert paginationDto.getCount() == 5;
-    }
-
-    @Test
     public void shouldCreateAutoInvestPlanAndTurnOff(){
         String loginName = "testuser";
 
@@ -194,17 +144,4 @@ public class InvestServiceTest {
         assert dbModel.isEnabled();
     }
 
-    private AutoInvestPlanModel createUserAutoInvestPlan(String userId, int periods, int diffDays){
-        AutoInvestPlanModel model = new AutoInvestPlanModel();
-        model.setEnabled(true);
-        model.setLoginName(userId);
-        model.setRetentionAmount(10000);
-        model.setAutoInvestPeriods(periods);
-        model.setCreatedTime(DateUtils.addDays(new Date(), diffDays));
-        model.setId(idGenerator.generate());
-        model.setMaxInvestAmount(1000000);
-        model.setMinInvestAmount(50000);
-        autoInvestPlanMapper.create(model);
-        return model;
-    }
 }

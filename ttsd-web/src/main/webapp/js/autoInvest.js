@@ -1,9 +1,5 @@
-/**
- * Created by CBJ on 2015/10/19.
- */
 require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validate'], function ($) {
     $(function () {
-
         if ($('#btnAuthority').length) {
             var $btnAuthority = $('#btnAuthority');
             $btnAuthority.click(function () {
@@ -82,7 +78,7 @@ require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validat
                 });
                 sum = _.sum(limitObj);
                 return sum;
-            }
+            };
             var checkOption = function () {
                 var limitNum = getDurationObj(),
                     serialArr = $('input.autoNumeric', $signPlanForm).serializeArray(),
@@ -90,13 +86,12 @@ require(['jquery', 'csrf', 'autoNumeric', 'lodash', 'commonFun', 'jquery.validat
                     valObj = _.map(serialArr, 'value');
 
                 if (limitNum > 0 && !_.isEmpty(valObj[0]) && !_.isEmpty(valObj[1]) && !_.isEmpty(valObj[2])) {
-                    $saveInvestPlan.prop('disabled', false);
+                    $saveInvestPlan.prop('disabled', false).addClass('btn-normal');
                 }
                 else {
-                    $saveInvestPlan.prop('disabled', true);
+                    $saveInvestPlan.prop('disabled', true).removeClass('btn-normal');
                 }
-
-            }
+            };
             //select project limit
             $projectLimit.find('span').click(function () {
                 var $this = $(this)

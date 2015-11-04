@@ -55,10 +55,13 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" logout-success-url="/"/>
 
+        <intercept-url pattern="/html" access="permitAll()"/>
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
+
+        <intercept-url pattern="/account" access="permitAll()"/>
 
         <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
@@ -68,13 +71,14 @@
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN', 'MERCHANDISER')"/>
         <intercept-url pattern="/monitor" access="permitAll()"/>
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
-        <intercept-url pattern="/fund/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>
         <intercept-url pattern="/investor/**" access="hasAnyAuthority('INVESTOR')"/>
         <intercept-url pattern="/agreement/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/recharge/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/withdraw/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>

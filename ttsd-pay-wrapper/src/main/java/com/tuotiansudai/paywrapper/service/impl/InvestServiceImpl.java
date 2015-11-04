@@ -94,13 +94,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Transactional
-    private BaseDto<PayDataDto> investNopwd(long loanId,long amount,String loginName) {
+    private BaseDto<PayDataDto> investNopwd(long loanId, long amount, String loginName) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId,amount,loginName,Source.AUTO);
+        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO);
         investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
         investMapper.create(investModel);
@@ -116,7 +116,7 @@ public class InvestServiceImpl implements InvestService {
                     ProjectTransferNopwdMapper.class,
                     requestModel,
                     ProjectTransferNopwdResponseModel.class);
-            if(responseModel.isSuccess()){
+            if (responseModel.isSuccess()) {
                 onInvestSuccess(investModel);
             }
             payDataDto.setStatus(responseModel.isSuccess());
@@ -202,7 +202,7 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private void onInvestFail(InvestModel investModel){
+    private void onInvestFail(InvestModel investModel) {
         investMapper.updateStatus(investModel.getId(), InvestStatus.FAIL);
     }
 
@@ -218,15 +218,15 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public void autoInvest(long loanId) {
-        LoanModel loanModel= loanMapper.findById(loanId);
+        LoanModel loanModel = loanMapper.findById(loanId);
         List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getType().getLoanPeriodUnit(), loanModel.getPeriods()));
-        for (AutoInvestPlanModel autoInvestPlanModel: autoInvestPlanModels) {
+        for (AutoInvestPlanModel autoInvestPlanModel : autoInvestPlanModels) {
             try {
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
                 if (availableLoanAmount <= 0) {
                     return;
                 }
-                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId,autoInvestPlanModel.getLoginName());
+                long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName());
                 if (availableSelfLoanAmount <= 0) {
                     continue;
                 }
@@ -234,9 +234,9 @@ public class InvestServiceImpl implements InvestService {
                 if (autoInvestAmount == 0) {
                     continue;
                 }
-                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId,autoInvestAmount,autoInvestPlanModel.getLoginName());
+                BaseDto<PayDataDto> baseDto = this.investNopwd(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName());
                 if (!baseDto.isSuccess()) {
-                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}",autoInvestPlanModel.getId(),autoInvestAmount,loanId));
+                    logger.debug(MessageFormat.format("auto invest failed auto invest plan id is {0} and invest amount is {1} and loanId id {2}", autoInvestPlanModel.getId(), autoInvestAmount, loanId));
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);

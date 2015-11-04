@@ -49,17 +49,16 @@ public interface LoanService {
      * @return
      * @function 通过id查找标的
      */
+
+    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd,int currentPageNo);
+
+    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
+
+
     LoanModel findLoanById(long loanId);
 
     boolean loanIsExist(long loanId);
-    /**
-     * 标的放款
-     *
-     * @param loanId
-     * @param minInvestAmount
-     * @param fundraisingEndTime
-     * @throws BaseException
-     */
+
     BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
 
     BaseDto<LoanDto> getLoanDetail(long loanId);

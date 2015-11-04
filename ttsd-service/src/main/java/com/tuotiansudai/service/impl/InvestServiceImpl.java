@@ -1,5 +1,6 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -15,6 +16,7 @@ import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,38 +109,32 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDataDto<InvestDetailDto> queryInvests(InvestDetailQueryDto queryDto, boolean includeNextRepay) {
-        int offset = (queryDto.getPageIndex() - 1) * queryDto.getPageSize();
-        int limit = queryDto.getPageSize();
-        List<InvestDetailModel> investModelList = investMapper.findByPage(
-                queryDto.getLoanId(),
-                queryDto.getLoginName(),
-                queryDto.getBeginTime(),
-                queryDto.getEndTime(),
-                queryDto.getLoanStatus(),
-                queryDto.getInvestStatus(),
-                includeNextRepay,
-                offset,
-                limit
-        );
-        int count = investMapper.findCount(
-                queryDto.getLoanId(),
-                queryDto.getLoginName(),
-                queryDto.getBeginTime(),
-                queryDto.getEndTime(),
-                queryDto.getLoanStatus(),
-                queryDto.getInvestStatus()
-        );
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String loginName, long loanId,
+                                                                                  int index, int pageSize,
+                                                                                  Date startTime, Date endTime,
+                                                                                  InvestStatus investStatus, LoanStatus loanStatus) {
+        startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
 
-        List<InvestDetailDto> dtoList = Lists.newArrayList();
-        for (InvestDetailModel model : investModelList) {
-            dtoList.add(new InvestDetailDto(model));
+        List<InvestPaginationItemView> items = Lists.newArrayList();
+
+        long count = investMapper.findCountInvestPagination(loginName, loanId, index, pageSize, startTime, endTime, investStatus, loanStatus);
+
+
+        if (count > 0 ) {
+            int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
+            index = index > totalPages ? totalPages : index;
+            items = investMapper.findInvestPagination(loginName, loanId, index, pageSize, startTime, endTime, investStatus, loanStatus);
         }
-        BasePaginationDataDto<InvestDetailDto> paginationDto = new BasePaginationDataDto<>(
-                queryDto.getPageIndex(), queryDto.getPageSize(), count, dtoList
-        );
-        paginationDto.setStatus(true);
-        return paginationDto;
+
+        List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
+            @Override
+            public InvestPaginationItemDataDto apply(InvestPaginationItemView view) {
+                return new InvestPaginationItemDataDto(view);
+            }
+        });
+
+        return new BasePaginationDataDto<>(index, pageSize, count, records);
     }
 
     @Override

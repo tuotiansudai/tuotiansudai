@@ -5,23 +5,23 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="content">
-    <aside class="menuBox fl">
+<div class="main-frame ">
+    <aside class="menu-box fl">
         <ul class="menu-list">
             <li><a href="javascript:">账户总览</a></li>
             <li><a href="javascript:">投资记录</a></li>
             <li><a href="javascript:">债权转让</a></li>
             <li><a href="javascript:">资金管理</a></li>
             <li><a href="javascript:">个人资产</a></li>
-            <li><a href="/investor/auto-invest" class="actived">自动投标</a></li>
+            <li><a href="/investor/auto-invest" class="active">自动投标</a></li>
             <li><a href="javascript:">积分红包</a></li>
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="recharge-container fr autoHeight">
-        <h4><em class="tc">自动投标</em></h4>
+    <div class="content-container fr auto-invest">
+        <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
-        <div class="recharge-content pad-s">
+        <div class="pad-s">
             <div class="borderBox panel">
                 注意： 自动投标一旦设置并保存成功，将在次日零点自动进行投标。 <br/>
                 <span style="padding-left: 45px;">如不想复投，请提前关闭自动投标，以免影响提现。</span>
@@ -61,7 +61,7 @@
                     </dl>
                     <div class="btnBox tc clear">
                         <#--<div class="agreeStatus"><input type="checkbox" name="agreement" id="plan-agreement" checked><label for="plan-agreement" class="checkbox"> 我已阅读并同意拓天速贷的<a href="#" target="_blank"> 《自动投标协议》</a></label></div>-->
-                        <button type="button" class="btn btn-normal" id="saveInvestPlan" disabled>保存</button>
+                        <button type="button" class="btn" id="saveInvestPlan" disabled>保存</button>
                     </div>
                 </form>
             </div>
@@ -89,6 +89,5 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.autoInvest}">
 </@global.javascript>
-
 </body>
 </html>
