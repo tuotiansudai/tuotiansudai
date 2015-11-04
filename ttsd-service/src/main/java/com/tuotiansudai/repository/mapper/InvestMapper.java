@@ -111,17 +111,15 @@ public interface InvestMapper {
     List<InvestNotifyInfo> findSuccessInvestMobileEmailAndAmount(@Param(value = "loanId") long loanId);
 
 
-    long findCountInvestPagination(@Param(value = "loginName") String loginName,
-                                   @Param(value = "loanId") long loanId,
-                                   @Param(value = "index") int index,
-                                   @Param(value = "pageSize") int pageSize,
+    long findCountInvestPagination(@Param(value = "loanId") Long loanId,
+                                   @Param(value = "investorLoginName") String investorLoginName,
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
                                    @Param(value = "investStatus") InvestStatus investStatus,
                                    @Param(value = "loanStatus") LoanStatus loanStatus);
 
-    List<InvestPaginationItemView> findInvestPagination(@Param(value = "loginName") String loginName,
-                                                        @Param(value = "loanId") long loanId,
+    List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
+                                                        @Param(value = "investorLoginName") String investorLoginName,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize,
                                                         @Param(value = "startTime") Date startTime,
@@ -131,4 +129,6 @@ public interface InvestMapper {
 
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
+
+    int sumSuccessNoviceInvestCountByLoginName(@Param(value = "loginName") String loginName);
 }

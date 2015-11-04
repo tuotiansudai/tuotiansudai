@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -36,6 +37,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Value(value = "${novice.invest.limit.count}")
+    private int noviceInvestLimitCount;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
@@ -60,6 +64,13 @@ public class InvestServiceImpl implements InvestService {
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountUtil.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
+
+        // 不满足新手标投资限制约束
+        if(ActivityType.NOVICE == loan.getActivityType()){
+            if(!canInvestNoviceLoan(investDto.getLoginName())){
+                throw new InvestException("你的新手标投资已超上限");
+            }
+        }
 
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
@@ -94,6 +105,14 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
+    private boolean canInvestNoviceLoan(String loginName) {
+        if(noviceInvestLimitCount == 0){
+            return true;
+        }
+        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
+        return (noviceInvestCount < noviceInvestLimitCount);
+    }
+
     @Override
     public long calculateExpectedInterest(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
@@ -109,22 +128,31 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String loginName, long loanId,
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
                                                                                   int index, int pageSize,
                                                                                   Date startTime, Date endTime,
                                                                                   InvestStatus investStatus, LoanStatus loanStatus) {
-        startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
-        endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        if (startTime == null) {
+            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+        } else {
+            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        }
+
+        if (endTime == null) {
+            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        } else {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
 
         List<InvestPaginationItemView> items = Lists.newArrayList();
 
-        long count = investMapper.findCountInvestPagination(loginName, loanId, index, pageSize, startTime, endTime, investStatus, loanStatus);
+        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, startTime, endTime, investStatus, loanStatus);
 
 
         if (count > 0 ) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loginName, loanId, index, pageSize, startTime, endTime, investStatus, loanStatus);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
         }
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
@@ -134,7 +162,11 @@ public class InvestServiceImpl implements InvestService {
             }
         });
 
-        return new BasePaginationDataDto<>(index, pageSize, count, records);
+        BasePaginationDataDto<InvestPaginationItemDataDto> dto = new BasePaginationDataDto<>(index, pageSize, count, records);
+
+        dto.setStatus(true);
+
+        return dto;
     }
 
     @Override

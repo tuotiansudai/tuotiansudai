@@ -90,7 +90,7 @@ public class LoanTitleRelationMapperTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModels.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModels);
@@ -138,7 +138,7 @@ public class LoanTitleRelationMapperTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModels.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModels);
@@ -188,7 +188,7 @@ public class LoanTitleRelationMapperTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanId);
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModels.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModels);

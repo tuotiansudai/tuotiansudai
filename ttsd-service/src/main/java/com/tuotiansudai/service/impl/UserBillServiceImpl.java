@@ -6,24 +6,20 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanPaginationItemDataDto;
 import com.tuotiansudai.dto.UserBillPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserBillServiceImpl implements UserBillService {
@@ -46,15 +42,17 @@ public class UserBillServiceImpl implements UserBillService {
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-
+        String loginName = LoginUserInfo.getLoginName();
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("userBillBusinessType", userBillBusinessType)
+                .put("loginName", loginName)
                 .put("index", (index - 1) * pageSize)
                 .put("startTime", startTime)
                 .put("endTime", endTime)
                 .put("pageSize", pageSize).build()));
         int count = userBillMapper.findUserBillsCount(Maps.newLinkedHashMap(ImmutableMap.<String, Object>builder()
                 .put("userBillBusinessType", userBillBusinessType)
+                .put("loginName", loginName)
                 .put("startTime", startTime)
                 .put("endTime", endTime).build()));
 
@@ -77,5 +75,15 @@ public class UserBillServiceImpl implements UserBillService {
     @Override
     public long findSumRewardByLoginName(String loginName) {
         return userBillMapper.findSumRewardByLoginName(loginName);
+    }
+
+    @Override
+    public List<UserBillModel> findUserFunds(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime,int currentPage,int pageSize) {
+        return userBillMapper.findUserFunds(userBillBusinessType,userBillOperationType,loginName,startTime,endTime,(currentPage - 1) * pageSize,pageSize);
+    }
+
+    @Override
+    public int findUserFundsCount(UserBillBusinessType userBillBusinessType,UserBillOperationType userBillOperationType,String loginName,Date startTime,Date endTime) {
+        return userBillMapper.findUserFundsCount(userBillBusinessType,userBillOperationType,loginName,startTime,endTime);
     }
 }
