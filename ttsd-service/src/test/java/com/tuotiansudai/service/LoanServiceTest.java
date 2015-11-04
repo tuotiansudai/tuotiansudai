@@ -1,12 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.LoanListDto;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
@@ -29,15 +24,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
