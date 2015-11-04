@@ -16,5 +16,4 @@ public interface UserBillService {
                                                    List<UserBillBusinessType> userBillBusinessType);
 
     long findSumRewardByLoginName(String loginName);
-    
 }
