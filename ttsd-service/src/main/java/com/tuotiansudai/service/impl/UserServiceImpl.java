@@ -1,21 +1,20 @@
 package com.tuotiansudai.service.impl;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
+import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserInfoLogService;
+import com.tuotiansudai.service.UserAuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
@@ -53,12 +52,14 @@ public class UserServiceImpl implements UserService {
     private MyShaPasswordEncoder myShaPasswordEncoder;
 
     @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
+    private AccountMapper accountMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    private ReferrerRelationService referrerRelationService;
+
     @Autowired
-    private UserInfoLogService userInfoLogService;
+    private UserAuditLogService userAuditLogService;
+
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
 
@@ -102,11 +103,10 @@ public class UserServiceImpl implements UserService {
         userRoleModel.setRole(Role.USER);
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         userRoleModels.add(userRoleModel);
-        this.userRoleMapper.createUserRoles(userRoleModels);
+        this.userRoleMapper.create(userRoleModels);
 
-        String referrerId = dto.getReferrer();
-        if (StringUtils.isNotEmpty(referrerId)) {
-            saveReferrerRelations(referrerId, dto.getLoginName());
+        if (StringUtils.isNotEmpty(dto.getReferrer())) {
+            this.referrerRelationService.generateRelation(dto.getReferrer(), dto.getLoginName());
         }
 
         myAuthenticationManager.createAuthentication(dto.getLoginName());
@@ -122,32 +122,6 @@ public class UserServiceImpl implements UserService {
         myAuthenticationManager.createAuthentication(LoginUserInfo.getLoginName());
 
         return baseDto;
-    }
-
-    @Override
-    public BaseDto<PayDataDto> reRegisterAccount(RegisterAccountDto dto) {
-        BaseDto<PayDataDto> baseDto = payWrapperClient.reRegister(dto);
-        return baseDto;
-    }
-
-    @Override
-    @Transactional
-    public void saveReferrerRelations(String referrerLoginName, String loginName) {
-        ReferrerRelationModel referrerRelationModel = new ReferrerRelationModel();
-        referrerRelationModel.setReferrerLoginName(referrerLoginName);
-        referrerRelationModel.setLoginName(loginName);
-        referrerRelationModel.setLevel(1);
-        referrerRelationMapper.create(referrerRelationModel);
-
-        List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerLoginName);
-
-        for (ReferrerRelationModel model : list) {
-            ReferrerRelationModel upperRelation = new ReferrerRelationModel();
-            upperRelation.setReferrerLoginName(model.getReferrerLoginName());
-            upperRelation.setLoginName(loginName);
-            upperRelation.setLevel(model.getLevel() + 1);
-            referrerRelationMapper.create(upperRelation);
-        }
     }
 
     @Override
@@ -170,118 +144,100 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void editUser(EditUserDto editUserDto, String ip) throws BaseException {
-        this.checkUser(editUserDto);
-        String newMobile = editUserDto.getMobile();
-        UserModel userModel = userMapper.findByLoginName(editUserDto.getLoginName());
-        AccountModel accountModel = accountMapper.findByLoginName(editUserDto.getLoginName());
+    @Transactional(rollbackFor = Exception.class)
+    public void editUser(EditUserDto editUserDto, String ip) throws EditUserException {
+        this.checkUpdateUserData(editUserDto);
 
-        if (!newMobile.equals(userModel.getMobile()) && accountModel != null) {
+        final String loginName = editUserDto.getLoginName();
+
+        String mobile = editUserDto.getMobile();
+        UserModel userModel = userMapper.findByLoginName(loginName);
+        UserModel beforeUpdateUserModel;
+        try {
+            beforeUpdateUserModel = userModel.clone();
+        } catch (CloneNotSupportedException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return;
+        }
+
+        // update referrer
+        this.referrerRelationService.updateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
+
+        // update role
+        List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(loginName);
+        userRoleMapper.deleteByLoginName(loginName);
+        List<UserRoleModel> afterUpdateUserRoleModels = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(editUserDto.getRoles())) {
+            afterUpdateUserRoleModels = Lists.transform(editUserDto.getRoles(), new Function<Role, UserRoleModel>() {
+                @Override
+                public UserRoleModel apply(Role role) {
+                    return new UserRoleModel(loginName, role);
+                }
+            });
+            userRoleMapper.create(afterUpdateUserRoleModels);
+        }
+
+        userModel.setStatus(editUserDto.getStatus());
+        userModel.setMobile(mobile);
+        userModel.setEmail(editUserDto.getEmail());
+        userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
+        userModel.setLastModifiedTime(new Date());
+        userModel.setLastModifiedUser(LoginUserInfo.getLoginName());
+        userMapper.updateUser(userModel);
+
+        //generate audit
+        userAuditLogService.generateAuditLog(beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        if (!mobile.equals(userModel.getMobile()) && accountModel != null) {
             RegisterAccountDto registerAccountDto = new RegisterAccountDto(userModel.getLoginName(),
-                    newMobile,
+                    mobile,
                     accountModel.getUserName(),
                     accountModel.getIdentityNumber());
-            BaseDto<PayDataDto> baseDto = this.reRegisterAccount(registerAccountDto);
+            BaseDto<PayDataDto> baseDto = payWrapperClient.register(registerAccountDto);
             if (!baseDto.getData().getStatus()) {
-                throw new BaseException(baseDto.getData().getMessage());
+                throw new EditUserException(baseDto.getData().getMessage());
             }
-        }
-
-        List<UserRoleModel> userRoles = Lists.newArrayList();
-        for (Role role : editUserDto.getRoles()) {
-            userRoles.add(new UserRoleModel(editUserDto.getLoginName(), role));
-        }
-        UserModel userModelEdit = this.modifyUserModel(userModel, editUserDto);
-        userModelEdit.setLastModifiedUser(LoginUserInfo.getLoginName());
-        userInfoLogService.logUserOperation(userModelEdit, userRoles, ip);
-        userMapper.updateUser(userModelEdit);
-        userRoleMapper.delete(editUserDto.getLoginName());
-        if (CollectionUtils.isNotEmpty(userRoles)) {
-            userRoleMapper.createUserRoles(userRoles);
         }
     }
 
     @Override
+    @Transactional
     public void updateUserStatus(String loginName, UserStatus userStatus, String ip) {
         UserModel userModel = userMapper.findByLoginName(loginName);
-        List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(userModel.getLoginName());
+        UserModel beforeUpdateUserModel;
+        try {
+            beforeUpdateUserModel = userModel.clone();
+        } catch (CloneNotSupportedException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            return;
+        }
+
         userModel.setStatus(userStatus);
         userModel.setLastModifiedTime(new Date());
         userModel.setLastModifiedUser(LoginUserInfo.getLoginName());
         userMapper.updateUser(userModel);
-        userInfoLogService.logUserOperation(userModel, userRoles, ip);
+        List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
+
+        userAuditLogService.generateAuditLog(beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
     }
 
-    private UserModel modifyUserModel(UserModel userModel, EditUserDto editUserDto) {
-        UserModel userModelCopy = new UserModel();
-        userModelCopy.setId(userModel.getId());
-        userModelCopy.setLoginName(userModel.getLoginName());
-        userModelCopy.setPassword(userModel.getPassword());
-        userModelCopy.setEmail(editUserDto.getEmail());
-        userModelCopy.setMobile(editUserDto.getMobile());
-        userModelCopy.setRegisterTime(userModel.getRegisterTime());
-        userModelCopy.setLastLoginTime(userModel.getLastLoginTime());
-        userModelCopy.setLastModifiedTime(new Date());
-        userModelCopy.setLastModifiedUser(userModel.getLastModifiedUser());
-        userModelCopy.setAvatar(userModel.getAvatar());
-        userModelCopy.setReferrer(editUserDto.getReferrer());
-        userModelCopy.setStatus(editUserDto.getStatus());
-        userModelCopy.setSalt(userModel.getSalt());
+    private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
+        String loginName = editUserDto.getLoginName();
+        UserModel editUserModel = userMapper.findByLoginName(loginName);
 
-        return userModelCopy;
-    }
+        if (editUserModel == null) {
+            throw new EditUserException("该用户不存在");
+        }
 
-    private void checkUser(EditUserDto editUserDto) throws BaseException {
-        String email = editUserDto.getEmail();
-        if (StringUtils.isNotEmpty(email)) {
-            UserModel userModel = userMapper.findByEmail(email);
-            if (userModel != null) {
-                throw new BaseException("该邮箱已经存在");
-            }
+        String newEmail = editUserDto.getEmail();
+        if (!Strings.isNullOrEmpty(newEmail) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
+            throw new EditUserException("该邮箱已经存在");
         }
 
         String mobile = editUserDto.getMobile();
-        if (StringUtils.isNotEmpty(mobile)) {
-            UserModel userModel = userMapper.findByMobile(mobile);
-            if (userModel != null && !userModel.getLoginName().equals(editUserDto.getLoginName())) {
-                throw new BaseException("该手机号已经存在");
-            }
-        }
-        this.checkReferrer(editUserDto);
-    }
-
-    private void checkReferrer(EditUserDto editUserDto) throws BaseException {
-        String referrer = editUserDto.getReferrer();
-        if (StringUtils.isBlank(referrer)) {
-            return;
-        }
-
-        UserModel userModel = userMapper.findByLoginName(referrer);
-        if (userModel == null) {
-            throw new BaseException("设置的推荐人不存在");
-        }
-
-        if (editUserDto.getLoginName().equalsIgnoreCase(editUserDto.getReferrer())) {
-            throw new BaseException("不能将推荐人设置为自已");
-        }
-
-        List<Role> roles = editUserDto.getRoles();
-        if (CollectionUtils.isEmpty(roles)) {
-            return;
-        }
-
-        if (Iterators.tryFind(roles.iterator(), new Predicate<Role>() {
-            @Override
-            public boolean apply(Role role) {
-                return role == Role.MERCHANDISER;
-            }
-        }).isPresent()) {
-            throw new BaseException("有推荐人的用户不允许添加业务员角色");
-        }
-
-        if (referrerRelationMapper.findByLoginNameAndReferrer(editUserDto.getLoginName(), referrer) > 0) {
-            throw new BaseException("设置的推荐人与本用户存在间接推荐关系，不能设置为本用户的推荐人");
+        if (!Strings.isNullOrEmpty(mobile) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByMobile(mobile).getLoginName())) {
+            throw new EditUserException("该手机号已经存在");
         }
     }
 

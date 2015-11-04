@@ -1,9 +1,10 @@
-body, html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input {
+body, html, ul, li, ol, dl, dd, dt, p, h3, h4, h5, h1, h2, span, i, b, strong, em, input, button {
   margin: 0;
   padding: 0;
   list-style: none;
   font-family: 'Microsoft YaHei';
-  font-style: normal; }
+  font-style: normal;
+  outline: none; }
 
 a {
   text-decoration: none; }
