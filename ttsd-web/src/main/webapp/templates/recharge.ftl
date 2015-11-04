@@ -2,7 +2,8 @@
 <@global.main pageCss="" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
 <div class="content-container auto-height">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
-        <div class="recharge">
+
+    <div class="recharge">
         <ul class="payment-mode clear">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
@@ -31,39 +32,40 @@
                     </div>
                 </#if>
 
-            <#if !isFastPayOn && isBindCard>
-                <div class="turn-on-fast-form">
-                    <form action="/agreement" method="post" target="_blank">
-                        <p><label>姓名：</label><span>${userName}</span></p>
-                        <p><label>身份证：</label><span>${identityNumber}</span></p>
-                        <p><label>开户行：</label><span>${bank}</span></p>
-                        <p><label>银行卡：</label><span>${bankCard}</span></p>
-                        <input type="hidden" name="fastPay" value="true"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
-                            <input type="submit" class="btn" value="开通快捷支付" />
-                        </div>
-                    </form>
-                </div>
-            </#if>
+                <#if !isFastPayOn && isBindCard>
+                    <div class="turn-on-fast-form">
+                        <form action="/agreement" method="post" target="_blank">
+                            <p><label>姓名：</label><span>${userName}</span></p>
+                            <p><label>身份证：</label><span>${identityNumber}</span></p>
+                            <p><label>开户行：</label><span>${bank}</span></p>
+                            <p><label>银行卡：</label><span>${bankCard}</span></p>
+                            <input type="hidden" name="fastPay" value="true"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <div class="tc pad-m">
+                                <input type="submit" class="btn" value="开通快捷支付"/>
+                            </div>
+                        </form>
+                    </div>
+                </#if>
 
-            <#if isFastPayOn>
-                <div class="fast-recharge-form">
-                    <form action="/recharge" method="post" target="_blank">
-                        <p>账户可用余额：<i>${balance}</i> 元</p>
+                <#if isFastPayOn>
+                    <div class="fast-recharge-form">
+                        <form action="/recharge" method="post" target="_blank">
+                            <p>账户可用余额：<i>${balance}</i> 元</p>
 
-                        <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
-                        <input type="hidden" name="bankCode" value="${bankCode}"/>
-                        <input type="hidden" name="amount" value=""/>
-                        <input type="hidden" name="source" value="WEB"/>
-                        <input type="hidden" name="fastPay" value="true"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
-                        <button type="submit" class="btn" disabled="disabled">确认充值</button>
-                        </div>
-                    </form>
-                </div>
-            </#if>
+                            <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
+                            <input type="hidden" name="bankCode" value="${bankCode}"/>
+                            <input type="hidden" name="amount" value=""/>
+                            <input type="hidden" name="source" value="WEB"/>
+                            <input type="hidden" name="fastPay" value="true"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                            <div class="tc pad-m">
+                                <button type="submit" class="btn" disabled="disabled">确认充值</button>
+                            </div>
+                        </form>
+                    </div>
+                </#if>
             </div>
                 <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
                     <ol>
@@ -109,7 +111,6 @@
         <div class="ret">
             <p>充值成功：<a href="${requestContext.getContextPath()}/account" class="g-btn g-btn-medium-major tongji"
                        data-category="确认成功" data-label="recharge">确认成功</a></p>
-
             <p>充值失败：<a href="${requestContext.getContextPath()}/recharge" class="g-btn g-btn-medium-minor tongji js-close-btn" data-category="重新充值"
                        data-label="recharge">重新充值</a>
                 <span class="help">查看<a href="" class="tongji" target="_blank" data-category="查看帮助中心"
