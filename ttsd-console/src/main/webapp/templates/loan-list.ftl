@@ -16,7 +16,7 @@
     <!-- link bootstrap css and js -->
     <link href="../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="../js/libs/jquery-1.10.1.min.js"></script> <!-- jquery -->
+    <script src="../js/libs/jquery-1.11.3.min.js"></script> <!-- jquery -->
     <script src="../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 

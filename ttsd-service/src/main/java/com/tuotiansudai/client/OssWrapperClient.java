@@ -3,20 +3,23 @@ package com.tuotiansudai.client;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
+import javax.mail.Message;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 @Component
 public class OssWrapperClient {
@@ -24,8 +27,8 @@ public class OssWrapperClient {
     static Logger logger = Logger.getLogger(OssWrapperClient.class);
 
     // 文件允许格式
-    private static final String[] allowFiles = {".rar", ".doc", ".docx", ".zip", ".pdf",
-            ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp"};
+    private static final List<String> allowSuffixes = Lists.newArrayList(".rar", ".doc", ".docx", ".zip", ".pdf",
+            ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp");
 
     /**
      * 阿里云ACCESS_KEYID
@@ -57,52 +60,41 @@ public class OssWrapperClient {
         return client;
     }
 
-    public String upload(String fileExtName, InputStream inputStream, String rootPath) throws Exception {
-        if (!isAllowedFileExtName(fileExtName)) {
+    public String upload(String suffix, InputStream inputStream, String rootPath) throws Exception {
+        if (!isAllowedFileExtName(suffix)) {
             throw new Exception("不允许的文件格式");
         }
-        String newFileName = generateRandomFileName(fileExtName);
-        String absoluteUrl = uploadFileBlur(newFileName, inputStream, rootPath);
-        return absoluteUrl;
+        String newFileName = generateRandomFileName(suffix);
+        return uploadFileBlur(newFileName, inputStream, rootPath);
     }
 
-    private boolean isAllowedFileExtName(String fileName) {
-        Iterator<String> type = Arrays.asList(this.allowFiles).iterator();
-        while (type.hasNext()) {
-            String ext = type.next();
-            if (fileName.toLowerCase().endsWith(ext)) {
-                return true;
+    private boolean isAllowedFileExtName(final String suffix) {
+        return Iterators.any(this.allowSuffixes.iterator(), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return input.endsWith(suffix.toLowerCase());
             }
-        }
-        return false;
+        });
     }
 
-    private String generateRandomFileName(String fileExtName) {
+    private String generateRandomFileName(String suffix) {
         Random random = new Random();
-        return String.format("{0}{1}.{2}",
-                random.nextInt(10000),
-                System.currentTimeMillis(),
-                fileExtName);
+        return MessageFormat.format("{0}{1}.{2}", String.valueOf(random.nextInt(10000)), String.valueOf(System.currentTimeMillis()), suffix);
     }
 
 
     private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath) {
-        ByteArrayInputStream in = null;
-        String filePath = "";
+        ObjectMetadata objectMeta = new ObjectMetadata();
+        String waterPath = rootPath + "images" + File.separator + "watermark.png";
+        ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
         try {
-            ObjectMetadata objectMeta = new ObjectMetadata();
-            String waterPath = rootPath + "images" + File.separator + "watermark.png";
-            in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-            String sitePath = SITEPATH + format.format(new Date()) + File.separator;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-            fileName = sdf.format(new Date()) + "." + FilenameUtils.getExtension(fileName);
-            filePath = sitePath + fileName;
+            String sitePath = SITEPATH + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
+            String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + File.separator + FilenameUtils.getExtension(fileName);
             OSSClient client = getOSSClient();
-            PutObjectResult result = client.putObject(BUCKET_NAME, fileName, in, objectMeta);
-            logger.info("result etag :" + result.getETag() + "filepath:" + filePath);
+            client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            return filePath;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {
@@ -112,7 +104,7 @@ public class OssWrapperClient {
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
-        return filePath;
+        return null;
     }
 
     private static ByteArrayOutputStream pressImage(String waterImg, InputStream inStream) {
