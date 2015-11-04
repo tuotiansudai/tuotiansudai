@@ -131,7 +131,7 @@
                             </#if>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                        <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string}"/>
                     </div>
                     <div class="item-block">
                         <button class="btn-pay grey" type="submit" disabled="disabled">预热中</button>
@@ -246,7 +246,7 @@
             <div class="loan-list-con">
                 <table class="table-striped">
                 </table>
-                <div class="pagination" data-url="/loan/${loan.id}/invests" data-page-size="2">
+                <div class="pagination" data-url="/loan/${loan.id?string}/invests" data-page-size="2">
                 </div>
             </div>
         </div>
