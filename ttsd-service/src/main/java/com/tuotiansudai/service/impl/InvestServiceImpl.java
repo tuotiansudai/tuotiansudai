@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -36,6 +37,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Value(value = "${novice.invest.limit.count}")
+    private int noviceInvestLimitCount;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
@@ -60,6 +64,13 @@ public class InvestServiceImpl implements InvestService {
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountUtil.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
+
+        // 不满足新手标投资限制约束
+        if(ActivityType.NOVICE == loan.getActivityType()){
+            if(!canInvestNoviceLoan(investDto.getLoginName())){
+                throw new InvestException("你的新手标投资已超上限");
+            }
+        }
 
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
@@ -92,6 +103,14 @@ public class InvestServiceImpl implements InvestService {
             throw new InvestException("投资金额超过了用户投资限额");
         }
 
+    }
+
+    private boolean canInvestNoviceLoan(String loginName) {
+        if(noviceInvestLimitCount == 0){
+            return true;
+        }
+        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
+        return (noviceInvestCount < noviceInvestLimitCount);
     }
 
     @Override
