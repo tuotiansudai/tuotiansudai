@@ -83,4 +83,48 @@
           AND t.`login_name` = #{loginName}
     </select>
 
+    <select id="findUserFunds" parameterType="map" resultMap="userBillResultMap">
+        select * from user_bill
+        <where>
+            <if test="userBillBusinessType != null">
+                business_type = #{userBillBusinessType}
+            </if>
+            <if test="userBillOperationType != null">
+                and operation_type = #{userBillOperationType}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by created_time desc
+        limit #{startLimit} , #{endLimit}
+    </select>
+
+    <select id="findUserFundsCount" parameterType="map" resultType="int">
+        select count(*) from user_bill
+        <where>
+            <if test="userBillBusinessType != null">
+                business_type = #{userBillBusinessType}
+            </if>
+            <if test="userBillOperationType != null">
+                and operation_type = #{userBillOperationType}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="startTime != null">
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and created_time <= #{endTime} ]]>
+            </if>
+        </where>
+    </select>
+
 </mapper>
