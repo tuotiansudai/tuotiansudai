@@ -402,6 +402,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
+        LoanModel nowLoanModel  = loanMapper.findById(loanDto.getId());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
@@ -416,6 +417,9 @@ public class LoanServiceImpl implements LoanService {
                 loanTitleRelationModel.setLoanId(loanModel.getId());
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
+        }
+        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
+            this.createDeadLineFundraisingJob(loanModel);
         }
     }
 
