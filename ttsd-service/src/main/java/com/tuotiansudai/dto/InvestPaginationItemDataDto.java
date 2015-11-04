@@ -17,7 +17,17 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String loanName;
 
+    private String loanType;
+
     private String amount;
+
+    private String investorLoginName;
+
+    private String referrerLoginName;
+
+    private String source;
+
+    private boolean isAutoInvest;
 
     private String status;
 
@@ -35,6 +45,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.loanId = view.getLoanId();
         this.amount = AmountUtil.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
+        this.investorLoginName = view.getLoginName();
+        this.referrerLoginName = view.getReferrerLoginName();
+        this.source = view.getSource().name();
+        this.isAutoInvest = view.isAutoInvest();
+        this.loanType = view.getLoanType().getName();
         this.createdTime = view.getCreatedTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
@@ -54,8 +69,28 @@ public class InvestPaginationItemDataDto implements Serializable {
         return loanName;
     }
 
+    public String getLoanType() {
+        return loanType;
+    }
+
     public String getAmount() {
         return amount;
+    }
+
+    public String getInvestorLoginName() {
+        return investorLoginName;
+    }
+
+    public String getReferrerLoginName() {
+        return referrerLoginName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public boolean isAutoInvest() {
+        return isAutoInvest;
     }
 
     public String getStatus() {

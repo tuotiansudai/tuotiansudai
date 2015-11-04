@@ -19,6 +19,8 @@ public interface InvestRepayMapper {
 
     InvestRepayModel findByInvestIdAndPeriod(@Param(value = "investId") long investId, @Param(value = "period") int period);
 
+    InvestRepayModel findCompletedInvestRepayByIdAndPeriod(@Param(value = "investId") long investId,@Param(value = "period") int period);
+
     void update(InvestRepayModel investRepayModel);
 
     long findByLoginNameAndTimeAndSuccessInvestRepay(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
@@ -38,5 +40,7 @@ public interface InvestRepayMapper {
     long findSumRepayingInterestByLoginName(@Param(value = "loginName") String loginName);
 
     long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
+
+    long findSumRepaidCorpusByLoginName(@Param(value = "loginName") String loginName);
 
 }
