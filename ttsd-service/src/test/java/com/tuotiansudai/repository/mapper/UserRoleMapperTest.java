@@ -39,14 +39,14 @@ public class UserRoleMapperTest {
         userRoleModel1.setRole(Role.USER);
         List<UserRoleModel> userRoleModels1 = Lists.newArrayList();
         userRoleModels1.add(userRoleModel1);
-        userRoleMapper.createUserRoles(userRoleModels1);
+        userRoleMapper.create(userRoleModels1);
 
         UserRoleModel userRoleModel2 = new UserRoleModel();
         userRoleModel2.setLoginName(fakeUserModel.getLoginName());
         userRoleModel2.setRole(Role.INVESTOR);
         List<UserRoleModel> userRoleModels2 = Lists.newArrayList();
         userRoleModels2.add(userRoleModel2);
-        userRoleMapper.createUserRoles(userRoleModels2);
+        userRoleMapper.create(userRoleModels2);
 
         List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(fakeUserModel.getLoginName());
 

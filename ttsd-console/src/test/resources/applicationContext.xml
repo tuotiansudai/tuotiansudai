@@ -14,6 +14,7 @@
     <!-- enable autowire -->
     <context:annotation-config/>
 
+
     <context:property-placeholder location="classpath*:ttsd-service.properties" />
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
