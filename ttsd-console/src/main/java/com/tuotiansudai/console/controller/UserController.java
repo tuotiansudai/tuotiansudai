@@ -1,6 +1,7 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.Role;
@@ -9,6 +10,7 @@ import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,12 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Value("${login.max.times}")
+    private int times;
 
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
@@ -92,6 +100,8 @@ public class UserController {
         }
         String ip = RequestIPParser.getRequestIp(request);
         userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip);
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
+        redisWrapperClient.set(redisKey,String.valueOf(times));
         return "OK";
     }
 
@@ -100,6 +110,8 @@ public class UserController {
     public String enableUser(@PathVariable String loginName, HttpServletRequest request) {
         String ip = RequestIPParser.getRequestIp(request);
         userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip);
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
+        redisWrapperClient.del(redisKey);
         return "OK";
     }
 }
