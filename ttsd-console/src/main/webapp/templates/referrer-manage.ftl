@@ -18,11 +18,11 @@
 
 </head>
 <body>
-<@menu.header label="userMan"></@menu.header>
+<@menu.header label="userMain"></@menu.header>
 <div class="main">
     <div class="container-fluid">
         <div class="row">
-        <@menu.sidebar headLab="userMan" sideLab="referMan"></@menu.sidebar>
+        <@menu.sidebar headLab="userMain" sideLab="referMan"></@menu.sidebar>
             <!-- content area begin -->
 
          <div class="col-md-10">
@@ -38,14 +38,14 @@
                  </div>
              <div class="form-group" id="investDate">
                  <label for="control-label">投资时间</label>
-                 <div class='input-group date'>
+                 <div class='input-group date' id="investDateBegin">
                      <input type='text' class="form-control" />
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                  </div>
                  -
-                 <div class='input-group date'>
+                 <div class='input-group date' id="investDateEnd">
                      <input type='text' class="form-control"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -57,16 +57,16 @@
                  <label for="control-label">推荐层级</label>
                  <input type="text" class="form-control" >
              </div>
-                 <div class="form-group" id="RewardDate">
+                 <div class="form-group" id="">
                      <label for="control-label">奖励时间</label>
-                     <div class='input-group date'>
+                     <div class='input-group date' id="RewardDateBegin">
                          <input type='text' class="form-control" />
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                      </div>
                      -
-                     <div class='input-group date'>
+                     <div class='input-group date' id="RewardDateEnd">
                          <input type='text' class="form-control"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>

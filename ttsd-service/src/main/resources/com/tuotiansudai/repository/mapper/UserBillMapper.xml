@@ -60,9 +60,21 @@
             </if>
         </where>
         order by created_time desc
-        <if test="currentPage >= 0">
-            limit #{currentPage} , #{pageSize}
+        <if test="index >= 0">
+            limit #{index} , #{pageSize}
         </if>
+    </select>
+
+    <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
+        SELECT
+          IFNULL(SUM(t.`amount`),0)
+        FROM
+          user_bill t
+        WHERE t.`business_type` IN (
+            'ACTIVITY_REWARD',
+            'REFERRER_REWARD'
+          )
+          AND t.`login_name` = #{loginName}
     </select>
 
 </mapper>

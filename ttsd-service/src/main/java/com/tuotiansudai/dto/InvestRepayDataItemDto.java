@@ -1,8 +1,10 @@
 package com.tuotiansudai.dto;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.utils.AmountUtil;
 
 import java.util.Date;
 
@@ -11,113 +13,44 @@ public class InvestRepayDataItemDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date repayDate;
 
-    private long amount;
+    private String amount;
 
-    private long corpus;
+    private String corpus;
 
-    private long expectedFee;
+    private String expectedFee;
 
-    private long actualAmount;
+    private String actualAmount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date actualRepayDate;
 
     private int period;
 
-    private long expectedInterest;
+    private String expectedInterest;
 
-    private long actualInterest;
+    private String actualInterest;
 
-    private long defaultInterest;
+    private String defaultInterest;
 
-    private long actualFee;
+    private String actualFee;
 
-    @JsonIgnore
-    private long id;
-
-    @JsonIgnore
-    private long investId;
-
-    @JsonIgnore
-    private Date createdTime = new Date();
-
-    private RepayStatus status;
+    private String status;
 
     public InvestRepayDataItemDto() {
     }
 
     public InvestRepayDataItemDto(InvestRepayModel model) {
-        this.actualFee = model.getActualFee();
-        this.actualInterest = model.getActualInterest();
+        this.actualFee = AmountUtil.convertCentToString(model.getActualFee());
+        this.actualInterest = AmountUtil.convertCentToString(model.getActualInterest());
         this.actualRepayDate = model.getActualRepayDate();
-        this.corpus = model.getCorpus();
-        this.createdTime = model.getCreatedTime();
-        this.defaultInterest = model.getDefaultInterest();
-        this.expectedFee = model.getExpectedFee();
-        this.expectedInterest = model.getExpectedInterest();
+        this.corpus = AmountUtil.convertCentToString(model.getCorpus());
+        this.defaultInterest = AmountUtil.convertCentToString(model.getDefaultInterest());
+        this.expectedFee = AmountUtil.convertCentToString(model.getExpectedFee());
+        this.expectedInterest = AmountUtil.convertCentToString(model.getExpectedInterest());
         this.repayDate = model.getRepayDate();
-        this.status = model.getStatus();
-        this.id = model.getId();
-        this.investId = model.getInvestId();
+        this.status = model.getStatus().getDescription();
         this.period = model.getPeriod();
-        this.amount = this.corpus + this.expectedInterest - this.expectedFee;
-        this.actualAmount = this.corpus + this.actualInterest + this.defaultInterest - this.actualFee;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getCorpus() {
-        return corpus;
-    }
-
-    public void setCorpus(long corpus) {
-        this.corpus = corpus;
-    }
-
-    public long getDefaultInterest() {
-        return defaultInterest;
-    }
-
-    public void setDefaultInterest(long defaultInterest) {
-        this.defaultInterest = defaultInterest;
-    }
-
-    public long getExpectedInterest() {
-        return expectedInterest;
-    }
-
-    public void setExpectedInterest(long expectedInterest) {
-        this.expectedInterest = expectedInterest;
-    }
-
-    public long getActualInterest() {
-        return actualInterest;
-    }
-
-    public void setActualInterest(long actualInterest) {
-        this.actualInterest = actualInterest;
-    }
-
-    public long getInvestId() {
-        return investId;
-    }
-
-    public void setInvestId(long investId) {
-        this.investId = investId;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
+        this.amount = AmountUtil.convertCentToString(model.getCorpus() + model.getExpectedInterest() - model.getExpectedFee());
+        this.actualAmount = AmountUtil.convertCentToString(model.getCorpus() + model.getActualInterest() + model.getDefaultInterest() - model.getActualFee());
     }
 
     public Date getRepayDate() {
@@ -128,6 +61,38 @@ public class InvestRepayDataItemDto {
         this.repayDate = repayDate;
     }
 
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getCorpus() {
+        return corpus;
+    }
+
+    public void setCorpus(String corpus) {
+        this.corpus = corpus;
+    }
+
+    public String getExpectedFee() {
+        return expectedFee;
+    }
+
+    public void setExpectedFee(String expectedFee) {
+        this.expectedFee = expectedFee;
+    }
+
+    public String getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(String actualAmount) {
+        this.actualAmount = actualAmount;
+    }
+
     public Date getActualRepayDate() {
         return actualRepayDate;
     }
@@ -136,51 +101,51 @@ public class InvestRepayDataItemDto {
         this.actualRepayDate = actualRepayDate;
     }
 
-    public RepayStatus getStatus() {
-        return status;
+    public int getPeriod() {
+        return period;
     }
 
-    public void setStatus(RepayStatus status) {
-        this.status = status;
+    public void setPeriod(int period) {
+        this.period = period;
     }
 
-    public long getExpectedFee() {
-        return expectedFee;
+    public String getExpectedInterest() {
+        return expectedInterest;
     }
 
-    public void setExpectedFee(long expectedFee) {
-        this.expectedFee = expectedFee;
+    public void setExpectedInterest(String expectedInterest) {
+        this.expectedInterest = expectedInterest;
     }
 
-    public long getActualFee() {
+    public String getActualInterest() {
+        return actualInterest;
+    }
+
+    public void setActualInterest(String actualInterest) {
+        this.actualInterest = actualInterest;
+    }
+
+    public String getDefaultInterest() {
+        return defaultInterest;
+    }
+
+    public void setDefaultInterest(String defaultInterest) {
+        this.defaultInterest = defaultInterest;
+    }
+
+    public String getActualFee() {
         return actualFee;
     }
 
-    public void setActualFee(long actualFee) {
+    public void setActualFee(String actualFee) {
         this.actualFee = actualFee;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(long amount) {
-        this.amount = amount;
-    }
-
-    public long getActualAmount() {
-        return actualAmount;
-    }
-
-    public void setActualAmount(long actualAmount) {
-        this.actualAmount = actualAmount;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

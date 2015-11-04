@@ -8,5 +8,5 @@ public interface WithdrawService {
 
     BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto);
 
-    long findSumWithdrawByLoginName(String loginName);
+    long sumSuccessWithdrawAmount(String loginName);
 }

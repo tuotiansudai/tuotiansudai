@@ -6,7 +6,7 @@
                 "sidebar":[]
             },
             {
-                "name":"proMan",
+                "name":"projectMain",
                 "header":{"text":"项目管理","link":"/loan"},
                 "sidebar":
                 [
@@ -19,12 +19,12 @@
                     {"name":"COMPLETE","text":"完成还款的借款","link":"/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
                     {"name":"CANCEL","text":"已经流标的借款","link":"/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
                     {"name":"OVERDUE","text":"逾期的借款","link":"/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"investmentInfoList","text":"项目投资明细表","link":""},
-                    {"name":"repaymentInfoList","text":"项目还款明细表","link":""}
+                    {"name":"investmentInfoList","text":"项目投资明细表","link":"/invests"},
+                    {"name":"repaymentInfoList","text":"项目还款明细表","link":"/loan-repay"}
                 ]
             },
             {
-                "name":"userMan",
+                "name":"userMain",
                 "header":{"text":"用户管理","link":"/users"},
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
@@ -81,7 +81,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand"><img src="/images/logo.jpg" alt=""></a>
+            <a href="${requestContext.getContextPath()}" class="navbar-brand"><img src="${requestContext.getContextPath()}/images/logo.jpg" alt=""></a>
         </div>
     </div>
     <nav id="bs-navbar" class="collapse navbar-collapse">

@@ -30,11 +30,11 @@ import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:dispatcher-servlet.xml", "classpath:spring-security.xml", "classpath:applicationContext.xml"})
 @Transactional
 public class LoanControllerTest {
     private MockMvc mockMvc;
@@ -71,7 +71,7 @@ public class LoanControllerTest {
         when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(put("/loan").contentType("application/json; charset=UTF-8").content(json))
+        this.mockMvc.perform(post("/loan/save").contentType("application/json; charset=UTF-8").content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
