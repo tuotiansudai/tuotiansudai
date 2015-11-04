@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.UserBillModel;
+
 import java.util.List;
 
 public class UserBillDetailListResponseDataDto extends BaseResponseDataDto {
@@ -39,4 +41,12 @@ public class UserBillDetailListResponseDataDto extends BaseResponseDataDto {
     public void setUserBillList(List<UserBillRecordResponseDataDto> userBillList) {
         this.userBillList = userBillList;
     }
+
+    public UserBillDetailListResponseDataDto(){
+
+    }
+    public UserBillDetailListResponseDataDto(UserBillModel userBillModel){
+
+    }
+
 }

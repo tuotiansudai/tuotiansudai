@@ -1,4 +1,7 @@
 package com.tuotiansudai.api.dto;
+
+import com.tuotiansudai.repository.model.UserBillBusinessType;
+
 public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
     private String time;
     private String typeInfo;
@@ -20,8 +23,15 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
         return typeInfo;
     }
 
-    public void setTypeInfo(String typeInfo) {
-        this.typeInfo = typeInfo;
+    public void setTypeInfo(UserBillBusinessType typeInfo) {
+        if(UserBillBusinessType.LOAN_SUCCESS.equals(typeInfo)){
+            this.typeInfo = "give_money_to_borrower";
+        }else if(UserBillBusinessType.LOAN_CANCEL.equals(typeInfo)){
+            this.typeInfo = "cancel_loan";
+        }else{
+            this.typeInfo = typeInfo.name().toLowerCase();
+        }
+
     }
 
     public String getDetail() {
