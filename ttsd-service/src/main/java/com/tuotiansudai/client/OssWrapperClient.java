@@ -2,7 +2,6 @@ package com.tuotiansudai.client;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.aliyun.oss.model.PutObjectResult;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -12,14 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
-import javax.mail.Message;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class OssWrapperClient {
@@ -27,37 +26,36 @@ public class OssWrapperClient {
     static Logger logger = Logger.getLogger(OssWrapperClient.class);
 
     // 文件允许格式
-    private static final List<String> allowSuffixes = Lists.newArrayList(".rar", ".doc", ".docx", ".zip", ".pdf",
+    private static final List<String> ALLOW_SUFFIXES = Lists.newArrayList(".rar", ".doc", ".docx", ".zip", ".pdf",
             ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp");
 
     /**
      * 阿里云ACCESS_KEYID
      */
     @Value("${plat.oss.access_keyid}")
-    private String ACCESS_KEYID;
+    private String accessKeyId;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
     @Value("${plat.oss.access_keysecret}")
-    private String ACCESS_KEYSECRET;
+    private String accessKeySecret;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
     @Value("${plat.oss.oss_endpoint}")
-    private String OSS_ENDPOINT;
+    private String ossEndpoint;
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
     @Value("${plat.oss.bucket_name}")
-    private String BUCKET_NAME;
+    private String bucketName;
 
     @Value("${plat.sitePath}")
-    private String SITEPATH;
+    private String sitePath;
 
     public OSSClient getOSSClient() {
-        OSSClient client = new OSSClient(OSS_ENDPOINT, ACCESS_KEYID, ACCESS_KEYSECRET);
-        return client;
+        return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
 
     public String upload(String suffix, InputStream inputStream, String rootPath) throws Exception {
@@ -69,7 +67,7 @@ public class OssWrapperClient {
     }
 
     private boolean isAllowedFileExtName(final String suffix) {
-        return Iterators.any(this.allowSuffixes.iterator(), new Predicate<String>() {
+        return Iterators.any(ALLOW_SUFFIXES.iterator(), new Predicate<String>() {
             @Override
             public boolean apply(String input) {
                 return input.endsWith(suffix.toLowerCase());
@@ -90,10 +88,10 @@ public class OssWrapperClient {
         try {
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
-            String sitePath = SITEPATH + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
+            String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
             String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + File.separator + FilenameUtils.getExtension(fileName);
             OSSClient client = getOSSClient();
-            client.putObject(BUCKET_NAME, fileName, in, objectMeta);
+            client.putObject(bucketName, fileName, in, objectMeta);
             return filePath;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -125,8 +123,8 @@ public class OssWrapperClient {
             graphics.dispose();
             ImageIO.write(image, "jpg", swapStream);
         } catch (Exception e) {
-            logger.error("upload oss fail ");
-            e.printStackTrace();
+            logger.error("upload oss fail");
+            logger.error(e.getLocalizedMessage(), e);
         } finally {
             try {
                 swapStream.close();
