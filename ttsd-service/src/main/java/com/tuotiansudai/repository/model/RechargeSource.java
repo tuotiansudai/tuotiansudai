@@ -1,16 +1,14 @@
 package com.tuotiansudai.repository.model;
 
-public enum InvestStatus {
+public enum RechargeSource {
 
-    WAITING("等待确认"),
-
-    SUCCESS("投资成功"),
-    
-    FAIL("投资失败");
+    WEB("WEB"),
+    IOS("IOS"),
+    ANDROID("ANDROID");
 
     private final String description;
 
-    InvestStatus(String description) {
+    RechargeSource(String description) {
         this.description = description;
     }
 

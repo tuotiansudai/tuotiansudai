@@ -82,7 +82,7 @@
                         </div>
                         <div class="item-block">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
                             <button class="btn-pay" type="submit">马上投资</button>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                             <ul class="img-list">
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <li><img src="${loanTitleRelation.applyMetarialUrl}" alt="${loanTitle.title}"/></li>
+                                        <li><img src="${loanTitleRelation.applicationMaterialUrls}" alt="${loanTitle.title}"/></li>
                                     </#if>
                                 </#list>
                             </ul>
@@ -246,7 +246,7 @@
             <div class="loan-list-con">
                 <table class="table-striped">
                 </table>
-                <div class="pagination" data-url="/loan/${loan.id?string}/invests" data-page-size="2">
+                <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="2">
                 </div>
             </div>
         </div>
