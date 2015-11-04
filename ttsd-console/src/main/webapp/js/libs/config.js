@@ -5,7 +5,6 @@ var require = {
         'jquery.validate': '/js/libs/jquery.validate-1.14.0.min',
         'mustache': '/js/libs/mustache-2.1.3.min',
         'moment': '/js/libs/moment-with-locales.min',
-        'underscore': '/js/libs/underscore-1.8.3.min',
         'bootstrap': '/js/libs/bootstrap.min',
         'bootstrapDatetimepicker': '/js/libs/bootstrap-datetimepicker',
         'moment-with-locales': '/js/libs/moment-with-locales',
@@ -19,7 +18,7 @@ var require = {
         'ueditor.all': '/js/libs/ueditor/ueditor.all',
         'ueditor.config': '/js/libs/ueditor/ueditor.config',
         'ueditor.parse': '/js/libs/ueditor/ueditor.parse.min',
-        'Validform': '/js/libs/Validform_v5.3.2_min',
+        'Validform': '/js/libs/Validform_v5.3.2_min'
     },
 
     'shim': {
