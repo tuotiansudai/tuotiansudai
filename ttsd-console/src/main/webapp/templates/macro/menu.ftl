@@ -39,7 +39,7 @@
                 "name":"finaMan",
                 "header":{"text":"财务管理","link":"/invests"},
                 "sidebar":[
-                    {"name":"userInvest","text":"用户投资管理","link":""},
+                    {"name":"userInvest","text":"用户投资管理","link":"/invests"},
                     {"name":"recharge","text":"充值记录","link":"/recharge"},
                     {"name":"withdraw","text":"提现记录","link":"/withdraw"},
                     {"name":"userFund","text":"用户资金查询","link":""},
