@@ -26,10 +26,10 @@ body {
 }
 a{
   cursor: pointer;
-  color:nth($linkColor,1);
+  color:nth($CK1,1);
   text-decoration: none;
   &:hover{
-    color:nth($linkColor,2);
+    color:nth($CK1,2);
   }
 }
 .fl {

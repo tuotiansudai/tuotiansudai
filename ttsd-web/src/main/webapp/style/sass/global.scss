@@ -1,6 +1,10 @@
 @import 'layer', 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame', 'account';
+
+.page-width {
+  width:1000px;
+}
 .borderBox {
   border: 1px solid nth($borderColor, 1);
   padding: 12px;

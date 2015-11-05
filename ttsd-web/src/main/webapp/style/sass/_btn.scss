@@ -59,6 +59,7 @@
   }
   &:disabled, &:disabled:hover {
     background: #666 !important;
+    border:1px solid #666!important;
     cursor: default;
     color: #fff;
   }
@@ -68,8 +69,7 @@
   @extend .btn;
   background: nth($CK1, 2);
   border: 1px solid nth($CK1,3);
-
-  color: #fff;
+  color: #fff!important;
   &:hover {
     // background: nth($CK1,3);
     color: #fff;
