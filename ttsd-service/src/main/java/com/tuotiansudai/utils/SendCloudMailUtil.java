@@ -46,4 +46,19 @@ public class SendCloudMailUtil {
         }
         return false;
     }
+
+    public boolean sendActiveEmail(String toAddress, Map<String, String> map){
+        try {
+
+            String content = SendCloudTemplate.ACTIVE_EMAIL.generateContent(map);
+            sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.ACTIVE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
+            return true;
+        } catch (MessagingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        return false;
+
+    }
 }

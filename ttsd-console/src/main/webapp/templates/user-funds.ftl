@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
@@ -15,33 +16,8 @@
 
     <link rel="stylesheet" href="style/index.css">
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#investDate .date').datepicker({
-                format:'yyyy-mm-dd',
-                autoclose:true
-            });
-            $('.selectpicker').selectpicker();
+<@global.javascript pageJavascript="user-funds.js"></@global.javascript>
 
-            $('form button[type="reset"]').click(function () {
-                window.location.href = "/userFunds";
-            });
-
-            $('.search').click(function() {
-                var loginName = $('.jq-loginName').val();
-                var startTime = $('.jq-startTime').val();
-                var endTime = $('.jq-endTime').val();
-                var operationType = $('.operationType').val();
-                var businessType = $('.businessType').val();
-                window.location.href = "/userFunds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&currentPageNo=1&pageSize=10";
-            });
-
-        })
-    </script>
 </head>
 <body>
 <@menu.header label="finaMan"></@menu.header>
@@ -58,16 +34,16 @@
                             <label for="control-label">用户名</label>
                             <input type="text" class="form-control jq-loginName" value="${loginName!}">
                         </div>
-                        <div class="form-group" id="investDate">
+                        <div class="form-group">
                             <label for="control-label">时间</label>
-                            <div class='input-group date'>
+                            <div class='input-group date' id="investDateBegin">
                                 <input type='text' class="form-control jq-startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                             </div>
                             -
-                            <div class='input-group date'>
+                            <div class='input-group date' id="investDateEnd">
                                 <input type='text' class="form-control jq-endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
