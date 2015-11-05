@@ -80,7 +80,7 @@ public class BindEmailServiceImpl implements BindEmailService {
         String[] loginNameAndEmail = bindEmailValue.split(":");
         if(!loginName.equals(loginNameAndEmail[0])){
             logger.debug("bindEmailKey=" + bindEmailKey+ ",bindEmailValue="+ bindEmailValue + "!");
-            return "";
+            return "test|" + loginName;
         }
         UserModel userModelEmail = userMapper.findByEmail(loginNameAndEmail[1]);
         if(userModelEmail != null){
