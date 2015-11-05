@@ -25,9 +25,6 @@ distZip {
         into 'lib/conf'
         rename "job-worker-${defaultProperties}.properties", 'job-worker.properties'
     }
-    applicationDistribution.from("../ttsd-service/src/main/resources/ttsd-service.properties") {
-        into 'lib/conf'
-    }
 }
 
 
