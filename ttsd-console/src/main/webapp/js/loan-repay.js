@@ -1,6 +1,6 @@
 require(['jquery', 'jquery-ui',
     'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect',
-    'moment', 'moment-with-locales'], function ($) {
+    'moment'], function ($) {
     $(function () {
         $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD'});
         $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD'});
