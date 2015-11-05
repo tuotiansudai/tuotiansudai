@@ -18,8 +18,7 @@ public interface InvestService {
 
     long calculateExpectedInterest(long loanId, long amount);
 
-    BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String loginName,
-                                                                           long loanId,
+    BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
                                                                            int index,
                                                                            int pageSize,
                                                                            Date startTime,

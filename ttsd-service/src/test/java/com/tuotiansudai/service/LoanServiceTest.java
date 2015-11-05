@@ -1,12 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.dto.LoanListDto;
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
@@ -29,15 +24,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -253,7 +244,7 @@ public class LoanServiceTest {
             if (loanTitleModelList != null && loanTitleModelList.size() > 0){
                 loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
             }
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
@@ -318,7 +309,7 @@ public class LoanServiceTest {
             if (loanTitleModelList != null && loanTitleModelList.size() > 0) {
                 loanTitleRelationModel.setTitleId(loanTitleModelList.get(0).getId());
             }
-            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
+            loanTitleRelationModel.setApplicationMaterialUrls("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanDto.setLoanTitles(loanTitleRelationModelList);
@@ -333,7 +324,7 @@ public class LoanServiceTest {
         long id = createLoanService();
         BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
         assertNotNull(baseDto.getData().getId());
-        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplyMetarialUrl());
+        assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplicationMaterialUrls());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);
         assertEquals(0.005, baseDto.getData().getRaiseCompletedRate(), 0);
     }
@@ -419,7 +410,7 @@ public class LoanServiceTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(id);
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
+            loanTitleRelationModel.setApplicationMaterialUrls("https://github.com/tuotiansudai/tuotian/pull/279,https://github.com/tuotiansudai/tuotian/pull/279");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);

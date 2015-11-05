@@ -85,6 +85,32 @@ public class InvestRepayMapperTest {
 
         assertThat(secondInvestRepayModel.getId(), is(investRepayModel2.getId()));
     }
+    @Test
+    public void shouldFindCompletedInvestRepayByIdAndPeriod() throws Exception {
+        InvestModel investModel = this.getFakeInvestModel();
+        investMapper.create(investModel);
+
+        InvestRepayModel investRepayModel1 = new InvestRepayModel();
+        investRepayModel1.setId(idGenerator.generate());
+        investRepayModel1.setInvestId(investModel.getId());
+        investRepayModel1.setPeriod(1);
+        investRepayModel1.setStatus(RepayStatus.REPAYING);
+        investRepayModel1.setRepayDate(new Date());
+
+        InvestRepayModel investRepayModel2 = new InvestRepayModel();
+        investRepayModel2.setId(idGenerator.generate());
+        investRepayModel2.setInvestId(investModel.getId());
+        investRepayModel2.setPeriod(2);
+        investRepayModel2.setStatus(RepayStatus.COMPLETE);
+        investRepayModel2.setRepayDate(new Date());
+
+        List<InvestRepayModel> investRepayModels = Lists.newArrayList(investRepayModel1, investRepayModel2);
+        investRepayMapper.create(investRepayModels);
+
+        InvestRepayModel secondInvestRepayModel = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investModel.getId(), 2);
+
+        assertThat(secondInvestRepayModel.getId(), is(investRepayModel2.getId()));
+    }
 
     @Test
     public void shouldUpdate() throws Exception {

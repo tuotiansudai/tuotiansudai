@@ -56,15 +56,13 @@
     </script>
 </head>
 <body>
-
-<@menu.header label="proMan"></@menu.header>
-
+<@menu.header label="projectMain"></@menu.header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab=""></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab=""></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -302,7 +300,7 @@
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
             var initialPreview = [];
-            <#list loanTitleRelationModel.applyMetarialUrl?split(",") as title>
+            <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
                 initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
             rereq['${loanTitleRelationModel.titleId}']=initialPreview;
