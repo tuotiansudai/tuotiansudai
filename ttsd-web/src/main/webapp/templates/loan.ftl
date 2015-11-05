@@ -82,7 +82,7 @@
                         </div>
                         <div class="item-block">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string.computer}"/>
+                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
                             <button class="btn-pay" type="submit">马上投资</button>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                             </#if>
                         </div>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string}"/>
+                        <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
                     </div>
                     <div class="item-block">
                         <button class="btn-pay grey" type="submit" disabled="disabled">预热中</button>
@@ -234,7 +234,10 @@
                             <ul class="img-list">
                                 <#list loan.loanTitles as loanTitleRelation >
                                     <#if loanTitle.id == loanTitleRelation.titleId>
-                                        <li><img src="${loanTitleRelation.applicationMaterialUrls}" alt="${loanTitle.title}"/></li>
+
+                                        <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
+                                            <li><img src="${title}" alt="${loanTitle.title}"/></li>
+                                        </#list>
                                     </#if>
                                 </#list>
                             </ul>
@@ -246,7 +249,7 @@
             <div class="loan-list-con">
                 <table class="table-striped">
                 </table>
-                <div class="pagination" data-url="/loan/${loan.id?string.computer}/invests" data-page-size="2">
+                <div class="pagination" data-url="/loan/${loan.id?string("0")}/invests" data-page-size="2">
                 </div>
             </div>
         </div>
@@ -254,6 +257,6 @@
 </div>
 <script>
     var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
-    var java_point = ${loan.amountNeedRaised}; //后台传递数据
+    var java_point = ${loan.amountNeedRaised?string('0')}; //后台传递数据
 </script>
 </@global.main>
