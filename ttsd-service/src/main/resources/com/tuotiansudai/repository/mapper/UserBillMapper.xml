@@ -66,9 +66,7 @@
             </if>
         </where>
         order by created_time desc
-        <if test="index >= 0">
-            limit #{index} , #{pageSize}
-        </if>
+        limit #{indexPage},#{pageSize}
     </select>
 
     <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
