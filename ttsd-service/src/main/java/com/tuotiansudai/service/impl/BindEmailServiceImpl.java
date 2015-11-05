@@ -75,7 +75,7 @@ public class BindEmailServiceImpl implements BindEmailService {
         String bindEmailValue = redisWrapperClient.get(bindEmailKey);
         if(StringUtils.isEmpty(bindEmailValue)){
             logger.debug(bindEmailKey + "绑定邮箱链接已经过期!");
-            return "test1|";
+            return "test1|"+ loginName;
         }
         String[] loginNameAndEmail = bindEmailValue.split(":");
         if(!loginName.equals(loginNameAndEmail[0])){
@@ -84,7 +84,7 @@ public class BindEmailServiceImpl implements BindEmailService {
         }
         UserModel userModelEmail = userMapper.findByEmail(loginNameAndEmail[1]);
         if(userModelEmail != null){
-            return "test3|";
+            return "test3|" + loginName;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
         userModel.setEmail(loginNameAndEmail[1]);
