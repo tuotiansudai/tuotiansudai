@@ -1,2 +1,1 @@
-ALTER TABLE `aa`.`invest` DROP COLUMN `status`;
-ALTER TABLE `aa`.`invest` ADD COLUMN `status` VARCHAR(32) NOT NULL;
+ALTER TABLE `aa`.`invest` MODIFY COLUMN `status` VARCHAR(32) NOT NULL;
