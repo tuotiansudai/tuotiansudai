@@ -44,6 +44,8 @@ public class BindEmailServiceTest {
         redisWrapperClient.set("web:adminTest:uuid", "adminTest:testafter@tuotiansudai.com");
         bindEmailService.verifyEmail("uuid");
         UserModel userModel = userMapper.findByLoginName("adminTest");
+        String value = redisWrapperClient.get("web:adminTest:uuid");
+        assertNull(value);
         assertNotNull(userModel);
         assertEquals("testafter@tuotiansudai.com",userModel.getEmail());
     }
