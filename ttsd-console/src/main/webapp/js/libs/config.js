@@ -18,7 +18,8 @@ var require = {
         'ueditor.all': '/js/libs/ueditor/ueditor.all',
         'ueditor.config': '/js/libs/ueditor/ueditor.config',
         'ueditor.parse': '/js/libs/ueditor/ueditor.parse.min',
-        'Validform': '/js/libs/Validform_v5.3.2_min'
+        'Validform': '/js/libs/Validform_v5.3.2_min',
+        'Validform_Datatype':'/js/libs/Validform_Datatype'
     },
 
     'shim': {
@@ -29,7 +30,8 @@ var require = {
         'jquery-ui': ['jquery'],
         'ueditor': ['ueditor.all', 'ueditor.config', 'ueditor.parse'],
         'jquery.validate': ['jquery'],
-        'Validform': ['jquery']
+        'Validform': ['jquery'],
+        'Validform_Datatype':['jquery']
     }
 };
 
