@@ -13,6 +13,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.*;
@@ -65,6 +66,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+    @Autowired
+    private InvestService investService;
 
     @Override
     @Transactional
@@ -243,6 +246,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             }
 
         }
+        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(),enabledLoanRepay.getPeriod());
     }
 
     private void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
