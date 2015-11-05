@@ -52,9 +52,16 @@ worker-all:
   volumes:
       - ./ttsd-job-worker/build/distributions:/workspace/tuotian
   command: bash -c "./ttsd-job-worker-all/bin/ttsd-job-worker"
+  links:
+      - "pay-wrapper"
+      - "sms-wrapper"
+      - "redis-server"
 worker-invest:
   image: "leoshi/ttsd-java7"
   volumes:
       - ./ttsd-job-worker/build/distributions:/workspace/tuotian
   command: bash -c "./ttsd-job-worker-invest/bin/ttsd-job-worker"
-
+  links:
+      - "pay-wrapper"
+      - "sms-wrapper"
+      - "redis-server"

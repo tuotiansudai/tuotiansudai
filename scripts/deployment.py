@@ -13,7 +13,6 @@ class NewVersionDeployment(object):
     def clean(self):
         print "Cleaning..."
         sh('/opt/gradle/latest/bin/gradle clean')
-        sh('cd ./ttsd-job-worker && /opt/gradle/latest/bin/gradle clean')
 
     def compile(self):
         print "Compiling..."
