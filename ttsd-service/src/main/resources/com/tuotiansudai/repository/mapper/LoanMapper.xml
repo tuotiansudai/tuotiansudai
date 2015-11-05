@@ -210,6 +210,9 @@
             <if test="activityRate !=null and activityRate!=''">
                 activity_rate = #{activityRate},
             </if>
+            <if test="baseRate != null and baseRate != ''">
+                base_rate = #{baseRate},
+            </if>
             <if test="contractId !=null and contractId!=''">
                 contract_id = #{contractId},
             </if>

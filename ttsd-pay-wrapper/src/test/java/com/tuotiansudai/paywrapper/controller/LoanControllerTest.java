@@ -124,6 +124,7 @@ public class LoanControllerTest {
                 "</html>");
         mockResponse.setResponseCode(200);
         mockWebServer.enqueue(mockResponse);
+        mockWebServer.enqueue(mockResponse);
 
         return mockWebServer;
     }
