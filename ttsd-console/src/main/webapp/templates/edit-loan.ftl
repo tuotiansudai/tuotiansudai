@@ -157,7 +157,7 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${(loanInfo.minInvestAmount/100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${(loanInfo.minInvestAmount/100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>>
                         </div>
                     </div>
                     <div class="form-group">
@@ -209,7 +209,7 @@
                         <label class="col-sm-2 control-label">合同: </label>
 
                         <div class="col-sm-4">
-                            <select class="selectpicker ">
+                            <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
                             <#list contracts as contract>
                                 <option value="${contract.id}">
                                 ${contract.contractName}
@@ -236,7 +236,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写" value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>/>
+                                <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写" value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
