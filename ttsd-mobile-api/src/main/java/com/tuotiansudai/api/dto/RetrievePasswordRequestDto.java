@@ -1,19 +1,30 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.dto.RetrievePasswordDto;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+
 public class RetrievePasswordRequestDto extends BaseParamDto {
     /**
      * 手机号码
      */
+    @NotEmpty
+    @Pattern(regexp = "^1\\d{10}$")
     private String phoneNum;
 
     /**
      * 验证码
      */
+    @NotEmpty
+    @Pattern(regexp = "^[0-9]{6}$")
     private String validateCode;
 
     /**
      * 密码
      */
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$")
     private String password;
 
     /**
@@ -85,5 +96,13 @@ public class RetrievePasswordRequestDto extends BaseParamDto {
      */
     public void setAuthType(String authType) {
         this.authType = authType;
+    }
+
+    public RetrievePasswordDto convertToRetrievePasswordDto(){
+        RetrievePasswordDto retrievePasswordDto = new RetrievePasswordDto();
+        retrievePasswordDto.setCaptcha(this.getValidateCode());
+        retrievePasswordDto.setMobile(this.getPhoneNum());
+        retrievePasswordDto.setPassword(this.getPassword());
+        return retrievePasswordDto;
     }
 }

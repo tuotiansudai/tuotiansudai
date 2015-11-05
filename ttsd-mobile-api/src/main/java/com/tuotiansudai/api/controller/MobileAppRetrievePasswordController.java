@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 public class MobileAppRetrievePasswordController {
@@ -25,8 +26,8 @@ public class MobileAppRetrievePasswordController {
      * @function 找回密码
      */
     @RequestMapping(value = "/retrievepassword", method = RequestMethod.POST)
-    public BaseResponseDto retrievePassword(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+    public BaseResponseDto retrievePassword(@Valid @RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto) {
+       return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
     }
 
     /**
