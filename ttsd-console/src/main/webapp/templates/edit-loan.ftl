@@ -56,15 +56,13 @@
     </script>
 </head>
 <body>
-
-<@menu.header label="proMan"></@menu.header>
-
+<@menu.header label="projectMain"></@menu.header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab=""></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab=""></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">

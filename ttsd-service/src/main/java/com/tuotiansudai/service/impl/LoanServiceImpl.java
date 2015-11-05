@@ -385,12 +385,26 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                payDataDto.setStatus(false);
+                baseDto.setData(payDataDto);
+                return baseDto;
+            }
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
+        }else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                payDataDto.setStatus(false);
+                baseDto.setData(payDataDto);
+                return baseDto;
+            }
         }
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
