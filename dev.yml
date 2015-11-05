@@ -47,4 +47,14 @@ redis-server:
     - "20015:7005"
     - "20016:7006"
     - "20017:7007"
+worker-all:
+  image: "leoshi/ttsd-java7"
+  volumes:
+      - ./ttsd-job-worker/build/distributions:/workspace/tuotian
+  command: bash -c "./ttsd-job-worker-all/bin/ttsd-job-worker"
+worker-invest:
+  image: "leoshi/ttsd-java7"
+  volumes:
+      - ./ttsd-job-worker/build/distributions:/workspace/tuotian
+  command: bash -c "./ttsd-job-worker-invest/bin/ttsd-job-worker"
 
