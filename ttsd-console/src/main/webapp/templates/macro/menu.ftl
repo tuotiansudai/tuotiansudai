@@ -39,14 +39,21 @@
                 "name":"finaMan",
                 "header":{"text":"财务管理","link":"/invests"},
                 "sidebar":[
-                    {"name":"userInvest","text":"用户投资管理","link":""},
-                    {"name":"recharge","text":"充值记录","link":""},
-                    {"name":"##############","text":"提现记录","link":""},
-                    {"name":"##############","text":"用户资金查询","link":""},
-                    {"name":"##############","text":"系统账户查询","link":""},
+                    {"name":"userInvest","text":"用户投资管理","link":"/invests"},
+                    {"name":"recharge","text":"充值记录","link":"/recharge"},
+                    {"name":"withdraw","text":"提现记录","link":"/withdraw"},
+                    {"name":"userFund","text":"用户资金查询","link":""},
+                    {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
                     {"name":"##############","text":"管理员修改账户余额","link":""},
                     {"name":"##############","text":"联动优势余额查询","link":""}
                 ]
+            },
+            {
+            "name":"announceMan",
+            "header":{"text":"公告管理","link":"/announces"},
+            "sidebar":[
+                {"name":"announceMan","text":"公告管理","link":""}
+            ]
             },
             {
                 "name":"artMan",

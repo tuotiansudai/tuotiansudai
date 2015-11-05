@@ -28,6 +28,10 @@ public class WithdrawModel {
 
     private Source source;
 
+    private String userName;
+
+    private int isAdmin;
+
     public WithdrawModel() {
     }
 
@@ -125,6 +129,22 @@ public class WithdrawModel {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override

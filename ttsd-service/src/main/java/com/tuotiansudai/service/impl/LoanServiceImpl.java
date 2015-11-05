@@ -111,73 +111,55 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<PayDataDto> createLoan(LoanDto loanDto) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto dataDto = new PayDataDto();
+        baseDto.setData(dataDto);
         long minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
         long maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
         long loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
-        String loanAgentId = getLoginName(loanDto.getAgentLoginName());
-        if (loanAgentId == null) {
-            dataDto.setStatus(false);
+        String agentLoginName = getLoginName(loanDto.getAgentLoginName());
+        if (agentLoginName == null) {
             dataDto.setMessage("代理用户不存在");
             baseDto.setData(dataDto);
             return baseDto;
         } else {
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
             if (CollectionUtils.isEmpty(userRoleModels)) {
-                dataDto.setStatus(false);
                 dataDto.setMessage("代理用户不具有借款人角色");
-                baseDto.setData(dataDto);
                 return baseDto;
             }
         }
-        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
-        if (loanUserId == null) {
-            dataDto.setStatus(false);
+        String loanerLoginName = getLoginName(loanDto.getLoanerLoginName());
+        if (loanerLoginName == null) {
             dataDto.setMessage("借款用户不存在");
-            baseDto.setData(dataDto);
             return baseDto;
         } else {
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
             if (CollectionUtils.isEmpty(userRoleModels)) {
-                dataDto.setStatus(false);
                 dataDto.setMessage("借款用户不具有借款人角色");
-                baseDto.setData(dataDto);
                 return baseDto;
             }
         }
         if(loanDto.getPeriods() <= 0){
-            dataDto.setStatus(false);
             dataDto.setMessage("借款期限最小为1");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         if (loanAmount <= 0) {
-            dataDto.setStatus(false);
             dataDto.setMessage("预计出借金额应大于0");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         if (minInvestAmount <= 0) {
-            dataDto.setStatus(false);
             dataDto.setMessage("最小投资金额应大于0");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         if (maxInvestAmount < minInvestAmount) {
-            dataDto.setStatus(false);
             dataDto.setMessage("最小投资金额不得大于最大投资金额");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         if (maxInvestAmount > loanAmount) {
-            dataDto.setStatus(false);
             dataDto.setMessage("最大投资金额不得大于预计出借金额");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         if (loanDto.getFundraisingEndTime().before(loanDto.getFundraisingStartTime())) {
-            dataDto.setStatus(false);
             dataDto.setMessage("筹款启动时间不得晚于筹款截止时间");
-            baseDto.setData(dataDto);
             return baseDto;
         }
         long projectId = idGenerator.generate();/****标的号****/
@@ -192,7 +174,6 @@ public class LoanServiceImpl implements LoanService {
             loanTitleRelationMapper.create(loanTitleRelationModelList);
         }
         dataDto.setStatus(true);
-        baseDto.setData(dataDto);
         return baseDto;
     }
 

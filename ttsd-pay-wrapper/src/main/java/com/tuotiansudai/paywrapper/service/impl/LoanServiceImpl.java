@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -66,7 +67,7 @@ public class LoanServiceImpl implements LoanService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private SendCloudMailService sendCloudMailService;
+    private SendCloudMailUtil sendCloudMailUtil;
 
     @Autowired
     private ReferrerRewardService referrerRewardService;
@@ -418,7 +419,7 @@ public class LoanServiceImpl implements LoanService {
                     .build());
             String userEmail = notifyInfo.getEmail();
             if (StringUtils.isNotEmpty(userEmail)) {
-                sendCloudMailService.sendMailByLoanOut(userEmail, emailParameters);
+                sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
             }
         }
     }
