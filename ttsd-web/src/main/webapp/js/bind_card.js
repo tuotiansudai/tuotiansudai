@@ -1,4 +1,4 @@
-require(['jquery', 'csrf'], function ($) {
+require(['jquery', 'layer', 'csrf'], function ($, layer) {
     $(function () {
         //select bank
         var _bank = $('.select-bank li');
@@ -18,15 +18,28 @@ require(['jquery', 'csrf'], function ($) {
             }
         });
 
-
-
-        // 绑卡弹出页面
-        $('.ecope-dialog .close').click(function(){
-            $('.ecope-overlay,.ecope-dialog').hide();
+        $('.open-fast-pay').click(function(){
+            $(".open-fast-pay-form").submit();
+            layer.open({
+                type: 1,
+                title: '登录到联动优势支付平台充值',
+                area: ['560px', '270px'],
+                shadeClose: true,
+                content: $('#pop-bind-card')
+            });
         });
+
         //绑卡提交
-        $('.btn-ok').click(function(){
-            $('.ecope-overlay,.ecope-dialog').show();
+        $('.bind-card-submit').click(function(){
+            layer.open({
+                type: 1,
+                title: '登录到联动优势支付平台充值',
+                area: ['560px', '270px'],
+                shadeClose: true,
+                content: $('#pop-fast-pay')
+            });
         });
+
+
     });
 });

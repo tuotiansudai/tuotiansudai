@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
@@ -11,14 +14,18 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.RegisterService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -30,6 +37,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -52,13 +62,28 @@ public class RegisterServiceImpl implements RegisterService {
             UserModel userModel = userMapper.findByLoginName(dto.getLoginName());
 
             if (responseModel.isSuccess()) {
-                AccountModel accountModel = new AccountModel(userModel.getLoginName(),
-                        dto.getUserName(),
-                        dto.getIdentityNumber(),
-                        responseModel.getUserId(),
-                        responseModel.getAccountId(),
-                        new Date());
-                accountMapper.create(accountModel);
+                if (accountMapper.findByLoginName(userModel.getLoginName()) == null) {
+                    AccountModel accountModel = new AccountModel(userModel.getLoginName(),
+                            dto.getUserName(),
+                            dto.getIdentityNumber(),
+                            responseModel.getUserId(),
+                            responseModel.getAccountId(),
+                            new Date());
+                    accountMapper.create(accountModel);
+                }
+                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
+                if (!Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
+                    @Override
+                    public boolean apply(UserRoleModel input) {
+                        return input.getRole() == Role.INVESTOR;
+                    }
+                }).isPresent()) {
+                    UserRoleModel userRoleModel = new UserRoleModel();
+                    userRoleModel.setLoginName(dto.getLoginName());
+                    userRoleModel.setRole(Role.INVESTOR);
+                    userRoleModels.add(userRoleModel);
+                    userRoleMapper.create(userRoleModels);
+                }
             }
 
             dataDto.setStatus(responseModel.isSuccess());
@@ -66,6 +91,7 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
             dataDto.setStatus(false);
+            dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);
         return baseDto;

@@ -1,7 +1,7 @@
 CREATE TABLE `aa`.`user_bill` (
   `id`             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `login_name`     VARCHAR(25)     NOT NULL,
-  `order_id`       VARCHAR(32),
+  `order_id`      BIGINT UNSIGNED,
   `amount`         BIGINT UNSIGNED NOT NULL,
   `balance`        BIGINT UNSIGNED NOT NULL,
   `freeze`         BIGINT UNSIGNED NOT NULL,

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:spring-security.xml"})
 @Transactional
 public class AccountMapperTest {
 
@@ -59,6 +59,19 @@ public class AccountMapperTest {
         assertThat(updatedAccount.getBalance(), is(1L));
         assertThat(updatedAccount.getFreeze(), is(1L));
 
+    }
+
+    @Test
+    public void shouldFindByIdentityNumber() throws Exception {
+        UserModel fakeUser = createFakeUser();
+
+        AccountModel model = new AccountModel(fakeUser.getLoginName(), "userName", "identityNumber", "payUserId", "payAccountId", new Date());
+
+        accountMapper.create(model);
+
+        AccountModel accountModel = accountMapper.findByIdentityNumber(model.getIdentityNumber());
+
+        assertNotNull(accountModel);
     }
 
     private UserModel createFakeUser() {

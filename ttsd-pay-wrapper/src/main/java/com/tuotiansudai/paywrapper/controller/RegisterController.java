@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.Valid;
 
 @Controller
-public class RegisterController extends BaseController{
+public class RegisterController extends BaseController {
 
     @Autowired
     private RegisterService registerService;

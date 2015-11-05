@@ -8,17 +8,21 @@
         <id column="id" property="id"></id>
         <result column="loan_id" property="loanId"></result>
         <result column="title_id" property="titleId"></result>
-        <result column="apply_metarial_url" property="applyMetarialUrl"></result>
+        <result column="application_material_urls" property="applicationMaterialUrls"></result>
     </resultMap>
 
     <insert id="create" parameterType="LoanTitleModel">
-        insert into loan_title_relation (id,loan_id,title_id,apply_metarial_url) values
+        insert into loan_title_relation (id, loan_id, title_id, application_material_urls) values
         <foreach collection="loanTitleModels" item="item" index="index" separator=",">
-            (#{item.id},#{item.loanId},#{item.titleId},#{item.applyMetarialUrl})
+            (#{item.id}, #{item.loanId}, #{item.titleId}, #{item.applicationMaterialUrls})
         </foreach>
     </insert>
 
     <select id="findByLoanId" parameterType="long" resultMap="loanTitleResultMap">
-        select * from loan_title_relation where loan_id = #{loanId}
+        select * from loan_title_relation  where loan_id = #{loanId}
     </select>
+
+    <delete id="delete" parameterType="long">
+        delete from loan_title_relation where loan_id = #{loanId};
+    </delete>
 </mapper>

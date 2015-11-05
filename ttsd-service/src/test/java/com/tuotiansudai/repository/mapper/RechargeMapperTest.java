@@ -1,10 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +39,9 @@ public class RechargeMapperTest {
         RechargeModel model = new RechargeModel();
         model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
-        model.setBank("bank");
+        model.setBankCode("bank");
         model.setCreatedTime(new Date());
+        model.setSource(Source.WEB);
         model.setStatus(RechargeStatus.WAIT_PAY);
 
         rechargeMapper.create(model);
@@ -60,15 +58,16 @@ public class RechargeMapperTest {
         RechargeModel model = new RechargeModel();
         model.setId(idGenerator.generate());
         model.setLoginName(fakeUserModel.getLoginName());
-        model.setBank("bank");
+        model.setBankCode("bank");
         model.setCreatedTime(new Date());
+        model.setSource(Source.WEB);
         model.setStatus(RechargeStatus.WAIT_PAY);
 
         rechargeMapper.create(model);
 
         model.setStatus(RechargeStatus.SUCCESS);
 
-        rechargeMapper.update(model.getId(), RechargeStatus.SUCCESS);
+        rechargeMapper.updateStatus(model.getId(), RechargeStatus.SUCCESS);
 
         assertThat(rechargeMapper.findById(model.getId()).getStatus(), is(RechargeStatus.SUCCESS));
     }

@@ -10,7 +10,7 @@
     <!-- link bootstrap css and js -->
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.10.1.min.js"></script> <!-- jquery -->
+    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.11.3.min.js"></script> <!-- jquery -->
     <script src="${requestContext.getContextPath()}/js/libs/bootstrap.min.js"></script>
     <script src="${requestContext.getContextPath()}/js/login.js"></script>
     <!-- link bootstrap css and js -->
@@ -54,7 +54,9 @@
                         <div class="col-md-7">
                             <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="验证码" maxlength="5">
                         </div>
-                        <div class="captcha-img col-md-5"><img class="verification-console-img" src="/login/captcha" alt=""/></div>
+                        <div class="captcha-img col-md-5">
+                            <img class="verification-console-img" src="/login/captcha" alt=""/>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">

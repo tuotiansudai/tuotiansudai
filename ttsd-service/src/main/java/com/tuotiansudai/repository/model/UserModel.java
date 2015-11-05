@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class UserModel {
+public class UserModel implements Cloneable {
 
     private long id;
 
@@ -21,7 +21,7 @@ public class UserModel {
 
     private Date lastModifiedTime;
 
-    private Long lastModifiedUser;
+    private String lastModifiedUser;
 
     private String avatar;
 
@@ -30,6 +30,8 @@ public class UserModel {
     private UserStatus status = UserStatus.ACTIVE;
 
     private String salt;
+
+    private AccountModel account;
 
     public String getSalt() {
         return salt;
@@ -103,11 +105,11 @@ public class UserModel {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Long getLastModifiedUser() {
+    public String getLastModifiedUser() {
         return lastModifiedUser;
     }
 
-    public void setLastModifiedUser(Long lastModifiedUser) {
+    public void setLastModifiedUser(String lastModifiedUser) {
         this.lastModifiedUser = lastModifiedUser;
     }
 
@@ -139,19 +141,20 @@ public class UserModel {
         return this.status == UserStatus.ACTIVE;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public AccountModel getAccount() {
+        return account;
+    }
 
-        UserModel userModel = (UserModel) o;
-
-        return id == userModel.id;
-
+    public void setAccount(AccountModel account) {
+        this.account = account;
     }
 
     @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public UserModel clone() throws CloneNotSupportedException {
+        UserModel clone = (UserModel) super.clone();
+        clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
+        clone.lastLoginTime = this.lastLoginTime != null ?  (Date) this.lastLoginTime.clone() : null;
+        clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
+        return clone;
     }
 }

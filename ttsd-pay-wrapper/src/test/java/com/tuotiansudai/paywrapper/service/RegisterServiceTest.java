@@ -11,8 +11,11 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPer
 import com.tuotiansudai.paywrapper.service.impl.RegisterServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
+import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.AccountModel;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +24,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml"})
@@ -44,6 +47,9 @@ public class RegisterServiceTest {
 
     @Mock
     private AccountMapper accountMapper;
+
+    @Mock
+    private UserRoleMapper userRoleMapper;
 
     @Before
     public void init() {
@@ -78,5 +84,9 @@ public class RegisterServiceTest {
         assertThat(accountModel.getPayUserId(), is("payUserId"));
         assertThat(accountModel.getPayAccountId(), is("payAccountId"));
         assertTrue(baseDto.getData().getStatus());
+
+        ArgumentCaptor<LinkedList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<LinkedList<UserRoleModel>>) new LinkedList<UserRoleModel>().getClass());
+        verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
+        assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole().name(), is(Role.INVESTOR.name()));
     }
 }

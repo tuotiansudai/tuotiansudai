@@ -1,0 +1,192 @@
+@import 'variables';
+@mixin user-select($bool) {
+  -webkit-user-select: $bool;
+  -moz-user-select: $bool;
+  -ms-user-select: $bool;
+  user-select: $bool;
+}
+
+@mixin touch-action($action) {
+  -ms-touch-action: $action;
+  touch-action: $action;
+  //touch-action(manipulation)
+}
+
+.btn {
+
+  line-height:1;
+  font: {
+    size: nth($fontSize, 3);
+    weight: normal;
+  }
+  display: inline-block;
+  padding: 8px 35px;
+  margin-bottom: 0;
+  text-align: center;
+  letter-spacing: 3px;
+  line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  @include user-select(none);
+  @include touch-action(manipulation);
+  background-image: none;
+  border: 1px solid nth($CK2,3);
+  border-radius: 4px;
+  color: nth($CK2,2);
+  &:focus,
+  &:active:focus,
+  &.active:focus,
+  &.focus,
+  &:active.focus,
+  &.active.focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+  &:hover,
+  &:focus,
+  &.focus {
+    color: nth($btnColor, 1);
+    text-decoration: none;
+  }
+  &:active,
+  &.active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  }
+  &:disabled, &:disabled:hover {
+    background: #666 !important;
+    cursor: default;
+    color: #fff;
+  }
+}
+
+.btn-normal {
+  @extend .btn;
+  background: nth($CK1, 2);
+  border: 1px solid nth($CK1,3);
+
+  color: #fff;
+  &:hover {
+    // background: nth($CK1,3);
+    color: #fff;
+  }
+}
+.btn-success {
+  @extend .btn;
+  background: nth($CK1,3);
+  border: 1px solid nth($CK1,3);
+  color: #fff;
+  &:hover {
+
+  }
+}
+
+.btn-primary {
+  @extend .btn;
+  background: nth($CK1, 1);
+  color: #fff;
+  &:hover {
+    //background: nth($CK1,2);
+    color: #fff;
+  }
+}
+
+.btn-link {
+  @extend .btn;
+  font-weight: normal;
+  color: #337ab7;
+  border-radius: 0;
+}
+.btn-sm {
+  padding: 5px 10px;
+  font-size: nth($fontSize, 1);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 3px;
+}
+
+.btn-xs {
+  padding: 1px 5px;
+  font-size: nth($fontSize, 1);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 3px;
+}
+
+.btn-lg {
+  padding: 10px 16px;
+  font-size: nth($fontSize, 5);
+  line-height: nth($baseLineHeight, 2);
+  border-radius: 6px;
+}
+
+select {
+  vertical-align: middle;
+  background: none repeat scroll 0 0 nth($baseColor, 5);
+  border: {
+    color: nth($btnColor, 2) nth($btnColor, 3) nth($btnColor, 3) nth($btnColor, 2);
+    style: solid;
+    width: 1px;
+  }
+  color: nth($btnColor, 1);
+  padding: 4px;
+}
+
+input {
+  font-size: nth($fontSize, 3);
+  vertical-align: middle;
+  color: nth($btnColor, 2);
+  font-family: $fontStack;
+  padding: 6px;
+  border: 1px solid nth($btnColor, 3);
+  background: nth($baseColor, 1);
+}
+
+//input[type="text"] {
+//  width: 150px;
+//}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+.input-control {
+  width: 200px;
+  border-radius: 4px;
+}
+
+.planSwitch {
+  input[type="radio"],
+  input[type="checkbox"] {
+    display: none;
+  }
+
+}
+
+label.radio {
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px;
+  padding-left: 20px;
+  line-height: 17px;
+  background: url("/images/icons/spr.png") no-repeat 0 -209px;
+  &.checked {
+    background: url("/images/icons/spr.png") no-repeat 0 -233px;
+  }
+}
+
+label.checkbox {
+  display: inline-block;
+  cursor: pointer;
+  margin: 5px 0;
+  padding-left: 20px;
+  line-height: 17px;
+  background: url("/images/icons/spr.png") no-repeat 0 -258px;
+  &.checked {
+    background: url("/images/icons/spr.png") no-repeat 0 -284px;
+  }
+}
+
+

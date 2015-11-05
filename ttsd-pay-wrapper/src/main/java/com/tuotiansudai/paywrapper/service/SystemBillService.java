@@ -1,11 +1,11 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
 import com.tuotiansudai.repository.model.SystemBillBusinessType;
-import com.tuotiansudai.repository.model.SystemBillModel;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SystemBillService {
 
-    void transferOut(long amount,String detail,SystemBillBusinessType businessType,String orderId) throws AmountTransferException;
+    void transferOut(long amount, String orderId, SystemBillBusinessType businessType, String detail);
 
+    void transferIn(long amount, String orderId, SystemBillBusinessType businessType, String detail);
 }

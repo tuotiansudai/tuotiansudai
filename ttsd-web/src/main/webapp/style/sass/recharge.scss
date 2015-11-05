@@ -1,5 +1,5 @@
 /************recharge*********/
-.content-recharge {
+.recharge-container {
   width: 820px;
   height: auto;
   overflow: hidden;
@@ -7,184 +7,190 @@
   background: #fff;
   border: #dadada 1px solid;
   border-radius: 3px;
-  & p.p-e {
+  p.title {
     display: block;
     width: 100%;
     height: 32px;
     margin-top: 10px;
     border-bottom: #d5d5d5 1px solid;
-    & em {
+    em {
       display: block;
       height: 30px;
-      padding: 1px 0px;
+      padding: 1px 0;
       border-bottom: #e06b0c 2px solid;
       width: 110px;
       text-align: center;
       color: #ffac2a;
     }
   }
-  .banking {
-    width: 800px;
-    margin: 10px 4px 0px;
+  .recharge-wrapper {
+    margin: 15px 10px 0;
     position: relative;
     overflow: hidden;
-    & ul {
+    ul {
       position: relative;
       height: 50px;
       border-bottom: #dddddd 1px solid;
-    }
-    & ul li.active {
-      border-bottom: #fff 1px solid;
-      border-top: #e06b0c 1px solid;
-    }
-    & .hot-pay {
-      position: absolute;
-      z-index: 8;
-      right: 3px;
-      top: -14px;
-    }
-    & ul li {
-      width: 114px;
-      height: 48px;
-      text-align: center;
-      line-height: 48px;
-      border: #dddddd 1px solid;
-      font-size: 17px;
-      color: #353535;
-      font-weight: normal;
-      float: left;
-      margin-right: 10px;
-      cursor: pointer;
-      position: relative;
-      bottom: -1px;
-    }
-    & .tab-box {
-      border: #dddddd 1px solid;
-      border-top: none;
-      overflow: hidden;
-      padding-bottom: 20px;
-    }
-    & ol.fast-pay li {
-      width: auto;
-    }
-    & ol {
-      width: 798px;
-      z-index: 1;
-      float: left;
-      overflow: hidden;
-      padding: 10px 0;
-      & p {
-        width: 764px;
-        height: 56px;
-        line-height: 56px;
-        padding-left: 26px;
-        font-size: 15px;
+      li {
+        width: 110px;
+        height: 48px;
+        text-align: center;
+        line-height: 48px;
+        border: #dddddd 1px solid;
+        font-size: 17px;
         color: #353535;
-      }
-      & li {
-        height: 38px;
+        font-weight: normal;
         float: left;
-        line-height: 38px;
-        width: 145px;
-        margin: 10px 56px 0px 10px;
+        margin-right: 10px;
         cursor: pointer;
-        &.m-right-0 {
-          margin: 10px 0px 0px 4px;
+        position: relative;
+        bottom: -1px;
+        .hot-flag {
+          position: absolute;
+          z-index: 8;
+          right: 3px;
+          top: -14px;
         }
-        & input {
+      }
+      li.active {
+        border-bottom: #fff 1px solid;
+        border-top: #e06b0c 1px solid;
+      }
+    }
+    .recharge-content {
+      border: 1px solid #ddd;
+      border-top-width: 0;
+      padding: 15px 0;
+      .e-bank-recharge {
+        display: none;
+        border-top: none;
+        overflow: hidden;
+        &.active {
           display: block;
-          float: left;
-          width: 12px;
-          height: 12px;
-          margin: 13px 8px 0px 0px;
         }
-        & label {
-          display: block;
+        ol {
+          width: 798px;
+          z-index: 1;
           float: left;
-          width: 123px;
-          height: 38px;
-          & img {
-            width: 123px;
-            height: 36px;
-            border: #dddddd 1px solid;
+          overflow: hidden;
+          padding: 10px 0;
+          p {
+            line-height: 30px;
+            padding-left: 25px;
+            font-size: 15px;
+          }
+          li {
+            height: 38px;
+            float: left;
+            line-height: 38px;
+            width: 145px;
+            margin: 10px 56px 0 10px;
             cursor: pointer;
+            &.new-line {
+              margin: 10px 0 0 4px;
+            }
+            input {
+              display: block;
+              float: left;
+              width: 12px;
+              height: 12px;
+              margin: 13px 8px 0 0;
+            }
+            label {
+              display: block;
+              float: left;
+              width: 123px;
+              height: 38px;
+              img {
+                width: 123px;
+                height: 36px;
+                border: #dddddd 1px solid;
+                cursor: pointer;
+              }
+            }
           }
         }
       }
-    }
-  }
-  & .recharge-bank {
-    width: 800px;
-    margin: 50px 4px 0;
-    float: left;
-    padding: 0 0 20px 0;
-    overflow: hidden;
-    & p {
-      height: 34px;
-      line-height: 34px;
-      margin: 13px 0px 0px 16px;
-      color: #353535;
-      font-size: 15px;
-      & i {
-        color: #ffac2a;
-        margin: 0px 4px;
+      .fast-recharge {
+        display: none;
+        &.active {
+          display: block;
+        }
+        .bind-card-nav {
+          text-align: center;
+          height: 100px;
+          width: 50%;
+          margin: 0 auto;
+          padding: 50px 0;
+        }
+        .turn-on-fast-form {
+          width: 50%;
+          margin: 0 auto;
+          height: 200px;
+          color: #353535;
+          font-size: 15px;
+          p {
+            margin-top: 15px;
+            label {
+              display: inline-block;
+              width: 40%;
+              text-align: right;
+            }
+            span {
+              color: #b5b5b5;
+            }
+          }
+        }
       }
-      & b {
-        color: #afafaf;
+
+      .recharge-form, .fast-recharge-form {
+        width: 50%;
+        margin: 0 auto;
+        overflow: hidden;
+        p {
+          height: 34px;
+          line-height: 35px;
+          margin: 10px 0 0 35px;
+          color: #353535;
+          font-size: 15px;
+          i {
+            color: #ffac2a;
+            margin-left: 10px;
+          }
+          input {
+            width: 160px;
+            margin: 0 10px;
+            padding: 0 15px;
+            line-height: 30px;
+          }
+        }
+      }
+      .submit {
+        margin: 30px auto;
+        width: 150px;
+        height: 40px;
+        background: #cc0000;
+        color: #fff;
+        display: block;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        cursor: pointer;
         font-size: 14px;
-        font-weight: normal;
-        margin-left: 4px;
       }
-      & input {
-        width: 164px;
-        height: 34px;
-        border: #747474 1px solid;
-        margin: 0px 12px 0px 10px;
-        padding: 0px 15px;
-        line-height: 34px;
+      .submit.grey {
+        background: #666;
+        color: #fff;
       }
-    }
-    .p-h {
-      font-size: 14px;
-      color: #979797;
-      margin-left: 132px;
-      & span {
-        margin-right: 34px;
-      }
-      & em {
-        margin: 0px 4px;
-      }
-    }
-    & .recharge-qr {
-      margin: 40px 0px 0px 162px;
-      width: 190px;
-      height: 36px;
-      background: #cc0000;
-      color: #fff;
-      display: block;
-      line-height: 30px;
-      text-align: center;
-      border-radius: 3px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-    }
-    & .recharge-qr.grey {
-      background: #666;
-      color: #fff;
     }
   }
-  & div.cash-description {
-    width: 810px;
-    height: 182px;
+  .recharge-tips {
     border: #d1d1d1 1px solid;
-    margin: 20px 4px;
-    & p {
-      width: 770px;
-      height: 30px;
-      line-height: 30px;
-      font-size: 14px;
-      padding: 0px 15px;
-    }
+    margin: 15px 10px;
+    font-size: 14px;
+    padding: 15px;
+    line-height: 30px;
   }
 }
 
@@ -419,36 +425,19 @@
   }
 }
 
-.item-block {
-  margin-left: 300px;
-  display: inline-block;
-  overflow: hidden;
-  width: 100%;
-  line-height: 40px;
-  &.box-user {
-    padding-top: 30px;
-  }
-  & .name {
-    float: left;
-  }
-  & .input-bankcard {
-    width: 200px;
-    height: 20px;
-    margin: 0;
-    border: 1px solid #ccc;
-    padding: 5px;
-  }
-  & .btn-ok {
-    padding: 10px 15px;
-    margin: 10px 0 0 0;
-    background: #ff7a2a;
-    border: 1px solid #ff7a2a;
-    cursor: pointer;
-    color: #fff;
-  }
-}
-
 .ecope-overlay {
+  background: #333;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+}
+.ecope-overlay-fast {
   background: #333;
   opacity: 0.6;
   filter: alpha(opacity=60);
@@ -470,6 +459,19 @@
   left: 50%;
   margin: -130px 0 0 -280px;
   height: 260px;
+  width: 560px;
+  display: none;
+}
+.ecope-dialog-fast {
+  background: #fff;
+  padding:20px;
+  overflow: hidden;
+  position: fixed;
+  z-index: 10000;
+  top: 50%;
+  left: 50%;
+  margin: -130px 0 0 -280px;
+  height: 160px;
   width: 560px;
   display: none;
 }
@@ -513,6 +515,10 @@
   height: 40px;
   border-bottom: 1px solid #ccc;
 }
+.ecope-dialog-fast .hd {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 13px;
+}
 
 .ecope-dialog .hd h3 {
   height: 40px;
@@ -544,9 +550,27 @@
   margin: 10px;
 }
 
+.ecope-dialog-fast .bd {
+  margin: 10px;
+  text-align: center;
+}
+
 .ecope-dialog .ret {
   margin-top: 20px;
   font-size: 16px;
+}
+
+.ecope-dialog-fast .ret {
+  margin-top: 20px;
+  font-size: 16px;
+  margin: 0px auto;
+  padding-top: 30px;
+}
+
+.ecope-dialog-fast .infoTip {
+  padding-top: 30px;
+  font-size: 14px;
+  color: #777;
 }
 
 .ecope-dialog .ret p {
@@ -578,7 +602,7 @@
 }
 
 .ecope-dialog .dialog-chongzhi {
-  background:#fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
+  background: #fff url('/images/recharge/bg_dialog_cz.png') 414px 110px no-repeat;
 }
 
 .ecope-dialog .dialog-2 {

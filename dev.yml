@@ -8,21 +8,34 @@ web:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
-pay-wrapper:
+console:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
     - "20003:8080"
   volumes:
+    - ./ttsd-console/war:/webapps
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+pay-wrapper:
+  image: "leoshi/ttsd-tomcat8-java7"
+  ports:
+    - "20004:8080"
+  volumes:
     - ./ttsd-pay-wrapper/war:/webapps
+    - /workspace/ump_sign/:/workspace/ump_sign
   links:
       - "sms-wrapper"
       - "redis-server"
 sms-wrapper:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
-    - "20004:8080"
+    - "20005:8080"
   volumes:
     - ./ttsd-sms-wrapper/war:/webapps
+  links:
+    - "redis-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:
@@ -34,7 +47,4 @@ redis-server:
     - "20015:7005"
     - "20016:7006"
     - "20017:7007"
-db-server:
-  image: "ywatase/test-docker-mysql"
-  ports:
-    - "20020:3306"
+

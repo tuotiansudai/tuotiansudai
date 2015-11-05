@@ -44,6 +44,12 @@
 						<f:selectItems value="#{roleList.allResultList}"
 							var="role" itemLabel="#{role.name}" itemValue="#{role.id}" />
 					</h:selectOneMenu>
+                    <h:selectOneMenu value="#{userList.example.source}" style="width:135px;">
+                        <f:selectItem itemLabel="请选择来源" itemValue=""/>
+                        <f:selectItem itemLabel="WEB" itemValue="WEB"/>
+                        <f:selectItem itemLabel="IOS" itemValue="IOS"/>
+                        <f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
+                    </h:selectOneMenu>
 					<p:inputText id="fromWhere" value="#{userList.example.referrer}"></p:inputText>
                     <p:commandButton update="dataTable" process="filters"
                         value="#{commonMsg.searchLabel}"></p:commandButton>
@@ -125,6 +131,12 @@
 					<ui:repeat var="role" value="#{user.roles}">
                			<h:outputText value="#{role.name}"></h:outputText>&#160;
                		</ui:repeat>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="来源" />
+                    </f:facet>
+                    <h:outputText value="#{user.source}"></h:outputText>
                 </p:column>
                 <p:column>
                 	<f:facet name="header">

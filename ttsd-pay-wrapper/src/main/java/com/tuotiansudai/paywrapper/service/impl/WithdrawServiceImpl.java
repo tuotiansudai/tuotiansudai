@@ -12,7 +12,7 @@ import com.tuotiansudai.paywrapper.repository.mapper.WithdrawNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.WithdrawApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.WithdrawNotifyRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsModel;
+import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsRequestModel;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -36,6 +36,11 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     static Logger logger = Logger.getLogger(WithdrawServiceImpl.class);
 
+    /**
+     * 联动优势提现手续费3元(300分)
+     */
+    private static final long WITHDRAW_FEE = 300;
+
     @Autowired
     private PayAsyncClient payAsyncClient;
 
@@ -58,9 +63,9 @@ public class WithdrawServiceImpl implements WithdrawService {
         AccountModel accountModel = accountMapper.findByLoginName(withdrawDto.getLoginName());
         WithdrawModel withdrawModel = new WithdrawModel(withdrawDto);
         withdrawModel.setId(idGenerator.generate());
-        CustWithdrawalsModel requestModel = new CustWithdrawalsModel(String.valueOf(withdrawModel.getId()),
+        CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(withdrawModel.getAmount()));
+                String.valueOf(withdrawModel.getAmount() - WITHDRAW_FEE));
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CustWithdrawalsMapper.class, requestModel);
             withdrawMapper.create(withdrawModel);
@@ -69,6 +74,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
         }

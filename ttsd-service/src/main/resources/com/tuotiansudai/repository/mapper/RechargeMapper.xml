@@ -9,22 +9,77 @@
         <result column="login_name" property="loginName"></result>
         <result column="amount" property="amount"></result>
         <result column="fee" property="fee"></result>
-        <result column="bank" property="bank"></result>
+        <result column="bank_code" property="bankCode"></result>
         <result column="status" property="status"></result>
+        <result column="source" property="source"></result>
+        <result column="fast_pay" property="fastPay"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="RechargeModel">
-        insert into recharge (id, login_name, amount, fee, bank, status, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{bank}, #{status}, #{createdTime})
+        insert into recharge (id, login_name, amount, fee, bank_code, status, source, fast_pay, created_time)
+        value(#{id}, #{loginName}, #{amount}, #{fee}, #{bankCode}, #{status}, #{source}, #{fastPay}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="rechargeResultMap">
         select * from recharge where id = #{id}
     </select>
 
-    <update id="update" parameterType="map">
+    <update id="updateStatus" parameterType="map">
         update recharge set status = #{status} where id = #{id}
     </update>
 
+    <select id="findSumSuccessRechargeByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount),0) as amount from recharge where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
+    <select id="findRechargePagination" parameterType="map" resultMap="rechargeResultMap">
+        select * from recharge
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                id = #{rechargeId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and login_name like '${loginName}%']]>
+            </if>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and status  = #{status}
+            </if>
+            <if test="source !=null">
+                and source  = #{source}
+            </if>
+        </where>
+        order by created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findRechargeCount" parameterType="map" resultType="int">
+        select count(1) from recharge
+        <where>
+            <if test="rechargeId !=null and rechargeId !='' ">
+                id = #{rechargeId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and login_name like '${loginName}%']]>
+            </if>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and status  = #{status}
+            </if>
+            <if test="source !=null">
+                and source  = #{source}
+            </if>
+        </where>
+    </select>
 </mapper>

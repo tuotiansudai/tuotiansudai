@@ -86,5 +86,7 @@ public class UserBillModel {
         this.businessType = businessType;
     }
 
-
+    public Date getCreatedTime() {
+        return createdTime;
+    }
 }

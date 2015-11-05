@@ -1,108 +1,159 @@
-require(['jquery', 'csrf'], function ($) {
+require(['jquery', 'csrf', 'jquery.form'], function ($) {
     $(function () {
-        var errorElement = $('.error');
+        var loginFormElement = $('.form-login');
+        var loginSubmitElement = $('.form-login .login-submit');
+        var loginNameElement = $('.form-login .login-name');
+        var passwordElement = $('.form-login .password');
+        var captchaElement = $('.form-login .captcha');
+        var errorElement = $('.form-login .error');
+        var imageCaptchaElement = $('.form-login .image-captcha img');
+
+        var loginNameValid = false;
+        var passwordValid = false;
+        var captchaValid = false;
 
         var refreshCaptcha = function () {
-            var captcha = $('.login .img-captcha img');
-            captcha.attr('src', '/login/captcha?' + new Date().toTimeString());
+            captchaValid = false;
+            captchaElement.val('');
+            imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
+            loginSubmitVerify();
         };
 
+        imageCaptchaElement.click(function () {
+            refreshCaptcha();
+        });
 
-        $('.login .img-captcha img').click(refreshCaptcha);
+        //用户名校验
+        loginNameElement.keyup(function (event) {
+            var errorMessage = "用户名不能为空";
+            var value = loginNameElement.val().trim();
+            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
 
-        //及时校验 用户名
-        $('.login-name').blur(function () {
-            var msg = "用户名不能为空";
-            var _this = $(this);
-            if (_this.val().trim() == '') {
-                _this.removeClass('lock').addClass('unlock');
-                errorElement.addClass('wrong').text(msg);
-            } else {
-                _this.removeClass('unlock').addClass('lock');
-                errorElement.removeClass('wrong').text('');
+            errorElement.text('').css('visibility', 'hidden');
+
+            if (value !== '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+                loginNameValid = true;
             }
-            validSuccess();
+
+            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+                errorElement.text(errorMessage).css('visibility', 'visible');
+                loginNameValid = false;
+            }
+            loginSubmitVerify();
+
+            return true;
         });
 
         //密码校验
-        $('.password').blur(function () {
-            var msg = "密码不能为空";
-            var _this = $(this);
-            if (_this.val() == '') {
-                _this.removeClass('lock').addClass('unlock');
-                errorElement.addClass('wrong').text(msg);
-            } else {
-                _this.addClass('lock').removeClass('unlock');
-                errorElement.removeClass('wrong').text('');
+        passwordElement.keyup(function (event) {
+            var errorMessage = "密码不能为空";
+            var value = passwordElement.val().trim();
+            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+            errorElement.text('').css('visibility', 'hidden');
+
+            if (value !== '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+                passwordValid = true;
             }
-            validSuccess();
+
+            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+                errorElement.text(errorMessage).css('visibility', 'visible');
+                passwordValid = false;
+            }
+            loginSubmitVerify();
         });
 
         //验证码校验
-        $('.captcha').blur(function () {
-            var _this = $(this);
-            var msg = "验证码错误";
-            var _value = _this.val();
-            if (_value.length < 5) {
-                _this.removeClass('lock').addClass('unlock');
-                errorElement.addClass('wrong').text(msg);
-                validSuccess();
-            } else {
+        captchaElement.keyup(function (event) {
+            var value = captchaElement.val().trim();
+            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+            errorElement.text('').css('visibility', 'hidden');
+
+            if (value.length === 5 && $.inArray(event.keyCode, excludedKeys) === -1) {
                 $.ajax({
-                    url: '/login/captcha/' + _value + '/verify',
+                    url: '/login/captcha/' + value + '/verify',
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
-                }).done(function (response) {
+                }).success(function (response) {
                     if (response.data.status) {
-                        _this.addClass('lock').removeClass('unlock');
-                        $('.error').removeClass('wrong').text('');
+                        captchaValid = true;
                     } else {
-                        $('.error').addClass('wrong').text(msg);
-                        _this.removeClass('lock').addClass('unlock');
-                        refreshCaptcha();
+                        errorElement.text("验证码不正确").css('visibility', 'visible');
+                        captchaValid = false;
                     }
-                    validSuccess();
+                }).error(function () {
+                    captchaValid = false;
+                }).complete(function () {
+                    loginSubmitVerify();
                 });
+                return;
+            }
+
+            captchaValid = false;
+
+            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+                errorElement.text("验证码不能为空").css('visibility', 'visible');
+                captchaValid = false;
+                loginSubmitVerify();
+            }
+
+            if (value.length < 5 && $.inArray(event.keyCode, excludedKeys) === -1) {
+                captchaValid = false;
+            }
+            loginSubmitVerify();
+        });
+
+
+        var loginSubmitVerify = function () {
+            var isValid = loginNameValid && passwordValid && captchaValid;
+            if (isValid) {
+                loginSubmitElement.removeClass('grey');
+            } else {
+                loginSubmitElement.addClass('grey');
+            }
+            return isValid;
+        };
+
+        var submitLoginForm = function () {
+            loginFormElement.ajaxSubmit({
+                beforeSubmit: function (arr, $form, options) {
+                    loginSubmitElement.toggleClass('loading');
+                },
+                success: function (response) {
+                    if (response.data.status) {
+                        window.location.href = loginFormElement.data('redirect-url');
+                    } else {
+                        if (response.data.isLocked) {
+                            errorElement.text("用户已被锁定").css('visibility', 'visible');
+                        } else {
+                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                        }
+                    }
+                },
+                error: function () {
+                    errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                },
+                complete: function () {
+                    refreshCaptcha();
+                    loginSubmitElement.toggleClass('loading');
+                    loginSubmitVerify();
+                }
+            });
+        };
+
+        loginSubmitElement.click(function () {
+            if (loginSubmitVerify()) {
+                submitLoginForm();
             }
         });
 
-        var validSuccess = function () {
-            var _form = $('.form-login');
-            for (var i = 0; i < 3; i++) {
-                if (_form.find('label').eq(i).find('input').hasClass('unlock')) {
-                    $('.login-now').addClass('grey').attr('disabled', 'disabled');
-                    return false;
-                } else {
-                    $('.login-now').removeClass('grey').removeAttr('disabled');
-                }
+        $(document).keypress(function (event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which)
+            if (keycode === 13 && loginSubmitVerify()) {
+                submitLoginForm();
             }
-        };
-
-        $('.login-now').click(function () {
-            var self = $(this);
-            if (self.hasClass('grey')) {
-                return;
-            }
-            var data = $('.form-login').serialize();
-            $.ajax({
-                url: '/login-handler',
-                type: 'post',
-                data: data,
-                beforeSend: function () {
-                    self.addClass('loading');
-                }
-            }).done(function (response) {
-                if (response.data.status) {
-                    window.location.href = '/';
-                    console.log('success');
-                } else {
-                    refreshCaptcha();
-                    $('.captcha').addClass('unlock').removeClass('lock').val('');
-                    $('.error').addClass('wrong').text('用户名或密码错误');
-                }
-                self.removeClass('loading');
-            });
         })
     });
 });

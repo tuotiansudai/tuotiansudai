@@ -4,11 +4,21 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-public class PayFormDataDto extends BaseDataDto{
+public class PayFormDataDto extends BaseDataDto {
+
+   private String message;
 
     private String url;
 
     private Map<String, String> fields = Maps.newHashMap();
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getUrl() {
         return url;

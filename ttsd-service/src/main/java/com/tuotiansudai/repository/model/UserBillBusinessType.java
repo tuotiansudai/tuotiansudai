@@ -9,9 +9,11 @@ public enum UserBillBusinessType {
     LOAN_CANCEL("借款取消"),
     NORMAL_REPAY("正常还款"),
     ADVANCE_REPAY("提前还款"),
+    INVEST_FEE("利息管理费"),
     ACTIVITY_REWARD("活动奖励"),
     REFERRER_REWARD("推荐奖励"),
-    APPLY_WITHDRAW("申请提现");
+    APPLY_WITHDRAW("申请提现"),
+    OVER_INVEST_PAYBACK("超投返款");
 
     private final String description;
 

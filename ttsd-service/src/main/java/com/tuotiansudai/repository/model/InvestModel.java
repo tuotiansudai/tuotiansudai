@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.model;
 
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.utils.AmountUtil;
 import java.util.Date;
 
 public class InvestModel {
@@ -26,7 +28,7 @@ public class InvestModel {
     /**
      * 投资来源渠道
      */
-    private InvestSource source;
+    private Source source;
     /**
      * 是否为自动投资
      */
@@ -34,12 +36,31 @@ public class InvestModel {
     /**
      * 创建时间
      */
-    private Date createdTime;
-    /**
-     * 投资成功时间（联动优势划款成功）
-     */
-    private Date successTime;
+    private Date createdTime = new Date();
 
+    public InvestModel(){
+
+    }
+
+    public InvestModel(InvestDto dto){
+        this.loginName = dto.getLoginName();
+        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.loanId = Long.parseLong(dto.getLoanId());
+        this.source = dto.getSource();
+        this.status = InvestStatus.WAITING;
+        this.isAutoInvest = false;
+        this.createdTime = new Date();
+    }
+
+    public InvestModel(long loanId, long amount, String loginName, Source source) {
+        this.loanId = loanId;
+        this.amount = amount;
+        this.loginName = loginName;
+        this.source = source;
+        this.status = InvestStatus.WAITING;
+        this.isAutoInvest = false;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -81,11 +102,11 @@ public class InvestModel {
         this.status = status;
     }
 
-    public InvestSource getSource() {
+    public Source getSource() {
         return source;
     }
 
-    public void setSource(InvestSource source) {
+    public void setSource(Source source) {
         this.source = source;
     }
 
@@ -103,13 +124,5 @@ public class InvestModel {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public Date getSuccessTime() {
-        return successTime;
-    }
-
-    public void setSuccessTime(Date successTime) {
-        this.successTime = successTime;
     }
 }
