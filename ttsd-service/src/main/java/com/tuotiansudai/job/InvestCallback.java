@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Created by zhoubx on 15/10/22.
  */
 public class InvestCallback implements Job {
+    public static final int RUN_INTERVAL_SECONDS = 2;
+    public static final String JOB_GROUP = "umpay";
+    public static final String JOB_NAME = "invest_call_back";
 
     @Autowired
     PayWrapperClient payWrapperClient;
