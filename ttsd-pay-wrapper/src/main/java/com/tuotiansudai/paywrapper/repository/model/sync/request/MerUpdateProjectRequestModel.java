@@ -30,11 +30,14 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         Map<String, String> payRequestData = super.generatePayRequestData();
         payRequestData.put("service", this.service);
         payRequestData.put("project_id", String.valueOf(this.projectId));
-        payRequestData.put("project_name", this.projectName);
-        payRequestData.put("project_amount", String.valueOf(this.projectAmount));
         payRequestData.put("change_type", this.changeType);
         payRequestData.put("project_state", this.projectState);
-        payRequestData.put("project_expire_date", this.projectExpireDate);
+        // 从筹款到还款的状态变化时，以下字段不能添加，否则会失败
+        if("1".equals(this.projectState) || "0".equals(this.projectState)) {
+            payRequestData.put("project_name", this.projectName);
+            payRequestData.put("project_amount", String.valueOf(this.projectAmount));
+            payRequestData.put("project_expire_date", this.projectExpireDate);
+        }
         return payRequestData;
     }
 
