@@ -42,7 +42,7 @@ public class PayWrapperClient {
 
     private String loanPath = "/loan";
 
-    private String loanOutPath = "/loan-out";
+    private String loanOutPath = "/loan/loan-out";
 
     private String withdrawPath = "/withdraw";
 
@@ -243,6 +243,24 @@ public class PayWrapperClient {
 
         BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
         MonitorDataDto dataDto = new MonitorDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> investCallback() {
+        String responseJson = this.post("/job/async_invest_notify", "");
+        if (!Strings.isNullOrEmpty(responseJson)) {
+            try {
+                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<BaseDataDto>>() {});
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
 

@@ -23,6 +23,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -66,7 +67,7 @@ public class LoanServiceImpl implements LoanService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private SendCloudMailService sendCloudMailService;
+    private SendCloudMailUtil sendCloudMailUtil;
 
     @Autowired
     private ReferrerRewardService referrerRewardService;
@@ -166,6 +167,9 @@ public class LoanServiceImpl implements LoanService {
         if (loan == null) {
             throw new PayException("loan is not exists [" + loanId + "]");
         }
+        if (LoanStatus.RECHECK != loan.getStatus()){
+            throw new PayException("loan is not ready for recheck [" + loanId + "]");
+        }
         String loanerPayUserId = accountMapper.findByLoginName(loan.getLoanerLoginName()).getPayUserId();
 
 
@@ -176,7 +180,7 @@ public class LoanServiceImpl implements LoanService {
         // 计算投资总金额
         long investAmountTotal = computeInvestAmountTotal(successInvestList);
         if (investAmountTotal <= 0) {
-            throw new PayException("amount should great than 0");
+            throw new PayException("invest amount should great than 0");
         }
 
         logger.debug("标的放款：发起联动优势放款请求，标的ID:" + loanId + "，借款人:" + loanerPayUserId + "，放款金额:" + investAmountTotal);
@@ -415,14 +419,20 @@ public class LoanServiceImpl implements LoanService {
                     .build());
             String userEmail = notifyInfo.getEmail();
             if (StringUtils.isNotEmpty(userEmail)) {
-                sendCloudMailService.sendMailByLoanOut(userEmail, emailParameters);
+                sendCloudMailUtil.sendMailByLoanOut(userEmail, emailParameters);
             }
         }
     }
 
     private void processLoanStatusForLoanOut(LoanModel loan) {
-        loan.setRecheckTime(new Date());
-        loan.setStatus(LoanStatus.REPAYING);
-        loanMapper.update(loan);
+        BaseDto<PayDataDto> dto = updateLoanStatus(loan.getId(), LoanStatus.REPAYING);
+        if(dto.getData().getStatus()){
+            LoanModel loan4Update = new LoanModel();
+            loan4Update.setId(loan.getId());
+            loan4Update.setRecheckTime(new Date());
+            loanMapper.update(loan4Update);
+        }else{
+            logger.error("update loan status failed : "+dto.getData().getMessage());
+        }
     }
 }

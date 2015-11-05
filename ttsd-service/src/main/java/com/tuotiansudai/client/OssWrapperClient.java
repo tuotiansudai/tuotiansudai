@@ -5,7 +5,6 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -89,7 +88,7 @@ public class OssWrapperClient {
             objectMeta.setContentLength(in.available());
             objectMeta.setContentType("image/jpeg");
             String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
-            String filePath = sitePath + new SimpleDateFormat("yyyyMMddhhmmssSSS").format(new Date()) + File.separator + FilenameUtils.getExtension(fileName);
+            String filePath = sitePath + fileName;
             OSSClient client = getOSSClient();
             client.putObject(bucketName, fileName, in, objectMeta);
             return filePath;

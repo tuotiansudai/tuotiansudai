@@ -80,6 +80,8 @@
         <intercept-url pattern="/bind-card/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/bind-email/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
+
 
         <intercept-url pattern="/**" access="permitAll()"/>
         <csrf/>
