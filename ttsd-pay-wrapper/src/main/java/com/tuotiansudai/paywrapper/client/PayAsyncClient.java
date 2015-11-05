@@ -69,7 +69,9 @@ public class PayAsyncClient {
                                                          Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            // 解密
             Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
+            // aa_bb_cc to aaBbCc
             Map<String, String> newPlatNotifyData = Maps.newHashMap();
             for (String key : platNotifyData.keySet()) {
                 StringBuilder newKeyBuilder = new StringBuilder();
@@ -81,11 +83,13 @@ public class PayAsyncClient {
                 newPlatNotifyData.put(newKey, platNotifyData.get(key));
             }
 
+            // Map to Json String
             String json = objectMapper.writeValueAsString(newPlatNotifyData);
-
+            // Json String to model
             BaseCallbackRequestModel model = objectMapper.readValue(json, callbackRequestModel);
             model.setRequestData(originalQueryString);
 
+            // 生成返回值，并对其加密，然后将model写库
             return this.createCallbackRequest(baseMapperClass, model);
         } catch (VerifyException | IOException e) {
             logger.error(MessageFormat.format("Parse callback request failed: {0}", originalQueryString));

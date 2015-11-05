@@ -5,6 +5,7 @@ $linkColor:#ed6533 #e54c14;
 $btnColor:#333 #666 #ccc #e6e6e6
           #ff7a2a #f46916;
 $borderColor:#c7c7c7;
+
 $CK1:#ffac2a #ff7a2a #f46916 #ed6533 #e54c14;
 $CK2:#333 #666 #ccc rgba(230,230,230,1) rgba(0,0,0,1) rgba(121,121,121,1);
 $required:red;
@@ -14,6 +15,7 @@ $baseLineHeight:2.2 1.5;
 $baseFloat:left right;
 $textAlign:left center right;
 $headings: (h1: 2em, h2: 1.5em, h3: 1.2em,h4:18px, h5:16px);
+
 $baseIconUrl:'/images/icons/';
 $Direction:top right bottom left;
 $imgPrefix:'';
@@ -21,7 +23,9 @@ $imgPrefix:'';
 @each $header, $size in $headings {
   #{$header} {
     font-size: $size;
+
     font-weight: normal;
+
   }
 }
 @mixin center-block {
