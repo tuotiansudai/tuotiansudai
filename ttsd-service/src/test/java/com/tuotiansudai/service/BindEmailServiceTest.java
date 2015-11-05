@@ -38,13 +38,13 @@ public class BindEmailServiceTest {
 
     @Test
     public void shouldVerifyEmailIsOk(){
-        UserModel fakeUser = getFakeUser("adminTest");
+        UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
-        mockLoginUser("adminTest", "11900000000");
-        redisWrapperClient.set("web:adminTest:uuid", "adminTest:testafter@tuotiansudai.com");
+        mockLoginUser("loginname", "11900000000");
+        redisWrapperClient.set("web:loginname:uuid", "loginname:testafter@tuotiansudai.com");
         bindEmailService.verifyEmail("uuid");
-        UserModel userModel = userMapper.findByLoginName("adminTest");
-        String value = redisWrapperClient.get("web:adminTest:uuid");
+        UserModel userModel = userMapper.findByLoginName("loginname");
+        String value = redisWrapperClient.get("web:loginname:uuid");
         assertNull(value);
         assertNotNull(userModel);
         assertEquals("testafter@tuotiansudai.com",userModel.getEmail());
