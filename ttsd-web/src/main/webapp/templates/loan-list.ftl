@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
+<@global.main pageCss="" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="投资列表">
 <@global.head title="标的列表" pageCss="${css.loan_list}">
 </@global.head>
-<body>
-<#include "header.ftl" />
 <div class="main">
     <div class="loan-tags">投资项目</div>
     <div class="wrapper-all bg">
@@ -139,8 +136,4 @@
         </div>
     </div>
 </div>
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.loan_list}">
-</@global.javascript>
-</body>
-</html>
+</@global.main>

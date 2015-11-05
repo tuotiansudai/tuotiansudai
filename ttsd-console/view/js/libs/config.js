@@ -2,10 +2,9 @@ var require = {
     'paths': {
         'jquery': '/js/libs/jquery-1.10.1.min',
         'mustache': '/js/libs/mustache-2.1.3.min',
-        'moment': '/js/libs/moment-2.10.6.min',
         'bootstrap': '/js/libs/bootstrap.min',
         'bootstrapDatetimepicker': '/js/libs/bootstrap-datetimepicker',
-        'moment-with-locales': '/js/libs/moment-with-locales',
+        'moment': '/js/libs/moment-with-locales.min',
         'bootstrapSelect': '/js/libs/bootstrap-select',
         'fileinput': '/js/libs/fileinput',
         'fileinput_locale_zh': '/js/libs/fileinput_locale_zh',

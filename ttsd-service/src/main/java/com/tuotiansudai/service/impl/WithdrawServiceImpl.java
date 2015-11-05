@@ -1,17 +1,21 @@
 package com.tuotiansudai.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayFormDataDto;
-import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
-public class WithdrawServiceImpl implements WithdrawService{
+public class WithdrawServiceImpl implements WithdrawService {
 
     @Autowired
     private PayWrapperClient payWrapperClient;
@@ -31,4 +35,39 @@ public class WithdrawServiceImpl implements WithdrawService{
         return withdrawMapper.findSumSuccessWithdrawByLoginName(loginName);
     }
 
+    @Override
+    public BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId, String loginName,
+                                                                 WithdrawStatus status, int index, int pageSize, Date startTime, Date endTime) {
+        if (index < 1) {
+            index = 1;
+        }
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+
+        BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
+        List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
+
+        int count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
+
+        List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, (index-1)*pageSize, pageSize, startTime, endTime);
+
+        for (WithdrawModel model : withdrawModelList) {
+            WithdrawPaginationItemDataDto withdrawDto = new WithdrawPaginationItemDataDto(model);
+            withdrawPaginationItemDataDtos.add(withdrawDto);
+        }
+
+        BasePaginationDataDto<WithdrawPaginationItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, withdrawPaginationItemDataDtos);
+        basePaginationDataDto.setStatus(true);
+        baseDto.setData(basePaginationDataDto);
+        return baseDto;
+    }
+
+    @Override
+    public int findWithdrawCount(String withdrawId, String loginName,
+                                 WithdrawStatus status, Date startTime, Date endTime) {
+
+        int count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
+        return count;
+    }
 }

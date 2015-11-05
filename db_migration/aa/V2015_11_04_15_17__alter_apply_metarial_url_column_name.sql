@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`loan_title_relation` CHANGE COLUMN `apply_metarial_url` `application_material_urls` TEXT NOT NULL;

@@ -13,52 +13,73 @@
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- link bootstrap css and js -->
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="/js/libs/jquery-1.11.3.min.js"></script>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.11.3.min.js"></script>
     <!-- jquery -->
-    <script src="/js/libs/bootstrap.min.js"></script>
+    <script src="${requestContext.getContextPath()}/js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
 
     <!-- 日历插件 -->
-    <link href="/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="/style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <script src="/js/libs/moment-with-locales.min.js"></script>
-    <script src="/js/libs/bootstrap-datetimepicker.js"></script>
-    <script src="/js/libs/bootstrap-select.js"></script>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css" rel="stylesheet"/>
+    <script src="${requestContext.getContextPath()}/js/libs/moment-with-locales.min.js"></script>
+    <script src="${requestContext.getContextPath()}/js/libs/bootstrap-datetimepicker.js"></script>
+    <script src="${requestContext.getContextPath()}/js/libs/bootstrap-select.js"></script>
     <!--自动补全-->
     <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
-    <script src="/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+    <script src="${requestContext.getContextPath()}/js/libs/jquery-ui-1.11.4.min.js"></script>
     <!--自动补全-->
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD HH:mm',maxDate: 'now'});
+            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now'});
+            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now'});
             var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-            $('#datetimepicker1').on('dp.change',function(e){
+            $('#datetimepicker1').on('dp.change', function (e) {
                 dpicker2.minDate(e.date);
             });
             $('form button[type="reset"]').click(function () {
                 location.href = "invests";
             });
+            $('form button[type="submit"]').click(function (event) {
+                var queryParams = '';
+                if ($('form input[name="loanId"]').val()) {
+                    queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
+                }
+                if ($('form input[name="loginName"]').val().length > 0) {
+                    queryParams += "loginName=" + $('form input[name="loginName"]').val() + "&";
+                }
+                if ($('form input[name="startTime"]').val()) {
+                    queryParams += "startTime=" + $('form input[name="startTime"]').val() + "&";
+                }
+                if ($('form input[name="endTime"]').val()) {
+                    queryParams += "endTime=" + $('form input[name="endTime"]').val() + "&";
+                }
+                if ($('form select[name="investStatus"]').val()) {
+                    queryParams += "investStatus=" + $('form select[name="investStatus"]').val() + "&";
+                }
+                location.href = "${requestContext.getContextPath()}/invests?" + queryParams;
+                return false;
+            });
+
             //自动完成提示
             var autoValue = '';
             var api_url = '${requestContext.getContextPath()}/loan/loaner';
             $("#tags").autocomplete({
                 source: function (query, process) {
                     //var matchCount = this.options.items;//返回结果集最大数量
-                    $.get(api_url+'/'+query.term, function (respData) {
+                    $.get(api_url + '/' + query.term, function (respData) {
                         autoValue = respData;
                         return process(respData);
                     });
                 }
             });
             $("#tags").blur(function () {
-                for(var i = 0; i< autoValue.length; i++){
-                    if($(this).val()== autoValue[i]){
+                for (var i = 0; i < autoValue.length; i++) {
+                    if ($(this).val() == autoValue[i]) {
                         $(this).removeClass('Validform_error');
                         return false;
-                    }else{
+                    } else {
                         $(this).addClass('Validform_error');
                     }
 
@@ -67,36 +88,35 @@
             });
         });
     </script>
-    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
 </head>
 <body>
 
-<@menu.header label="proMan"></@menu.header>
-
+<@menu.header label="finaMan"></@menu.header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="projectMain" sideLab="investmentInfoList"></@menu.sidebar>
+        <@menu.sidebar headLab="finaMan" sideLab="userInvest"></@menu.sidebar>
 
-                <!-- content area begin -->
+            <!-- content area begin -->
             <div class="col-md-10">
-                <form action="" class="form-inline query-build">
+                <form action="" method="get" class="form-inline query-build">
                     <div class="form-group">
                         <label for="number">项目编号</label>
                         <input type="text" class="form-control" name="loanId" placeholder=""
-                               value="${(loanId?string('0'))!}">
+                               value="${(loanId?string.computer)!}">
                     </div>
                     <div class="form-group">
                         <label for="number">投资人</label>
-                        <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${query.loginName!}" />
+                        <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
 
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" name="beginTime"
+                            <input type='text' class="form-control" name="startTime"
                                    value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -114,12 +134,12 @@
                     <div class="form-group">
                         <label for="project">投资状态</label>
                         <select class="selectpicker" name="investStatus">
-                            <option value="">全部</option>
-                            <#list investStatusList as status>
-                            <option value="${status}" <#if status == investStatus>selected</#if>>
-                                ${status.description}
+                            <option value="" <#if !(investStatus??)>selected</#if>>全部</option>
+                        <#list investStatusList as status>
+                            <option value="${status}" <#if investStatus?? && status==investStatus>selected</#if>>
+                            ${status.description}
                             </option>
-                            </#list>
+                        </#list>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary btnSearch">查询</button>
@@ -144,16 +164,16 @@
                         <tbody>
                         <#list data.records as invest>
                         <tr>
-                            <td>${invest.loanId?string('0')}</td>
+                            <td>${invest.loanId?string.computer}</td>
                             <td>${invest.loanName}</td>
-                            <td>${invest.loanType.getName()}</td>
-                            <td>${invest.loginName}</td>
-                            <td>${invest.userReferrer!''}</td>
+                            <td>${invest.loanType}</td>
+                            <td>${invest.investorLoginName!}</td>
+                            <td>${invest.referrerLoginName!}</td>
                             <td>${invest.source}</td>
                             <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                             <td>${invest.autoInvest?then('是','否')}</td>
                             <td>${invest.amount}</td>
-                            <td>${invest.status.getDescription()}</td>
+                            <td>${invest.status}</td>
                         </tr>
                         <#else>
                         <tr>
@@ -172,11 +192,14 @@
                     </div>
                 <#if data.records?has_content>
                     <ul class="pagination">
-
                         <li>
                             <#if data.hasPreviousPage >
-                            <a href="?loanId=${loanId}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&status=${investStatus!}&index=${data.index - 1}"
-                               aria-label="Previous">
+                            <a href="?index=${data.index - 1}
+                            <#if loanId??>loanId=${loanId}&</#if>
+                            <#if loginName??>loginName=${loginName}&</#if>
+                            <#if startTime??>startTime=${startTime}&</#if>
+                            <#if endTime??>endTime=${endTime!}&</#if>
+                            <#if investStatus??>investStatus=${investStatus}&</#if>" aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
                             </#if>
@@ -185,15 +208,18 @@
                         </li>
                         <li><a>${data.index}</a></li>
                         <li>
-                            <#if data.hasNextPage >
-                            <a href="?loanId=${loanId}&loginName=${loginName!}&startTime=${startTime!}&endTime=${endTime!}&status=${investStatus!}&index=${data.index + 1}"
-                               aria-label="Next">
+                            <#if data.hasNextPage>
+                            <a href="?index=${data.index + 1}
+                            <#if loanId??>loanId=${loanId}&</#if>
+                            <#if loginName??>loginName=${loginName}&</#if>
+                            <#if startTime??>startTime=${startTime}&</#if>
+                            <#if endTime??>endTime=${endTime!}&</#if>
+                            <#if investStatus??>investStatus=${investStatus}&</#if>" aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">
                             </#if>
                             <span aria-hidden="true">Next &raquo;</span>
                         </a>
-
                         </li>
                     </ul>
                 </#if>

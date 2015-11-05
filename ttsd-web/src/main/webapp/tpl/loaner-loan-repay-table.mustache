@@ -1,10 +1,10 @@
 <div class="layer-content">
     <div class="pad-s">
         {{^isLoanCompleted}}
-                    <a class="btn btn-normal {{#hasConfirmingLoanRepay}}inactive{{/hasConfirmingLoanRepay}}" href="javascript:">提前还款</a>
+                    <a class="advanced-repay btn btn-normal {{#hasConfirmingLoanRepay}}inactive{{/hasConfirmingLoanRepay}}" href="javascript:">提前还款</a>
                      <span class="repay-total">(还款总额：{{expectedAdvanceRepayAmount}} 元) </span>
                     {{^hasConfirmingLoanRepay}}
-                        <form id="advanced-repay" action="/repay" method="post" target="_blank">
+                        <form id="advanced-repay-form" action="/repay" method="post" target="_blank">
                             <input type="hidden" name="loanId" value="{{loanId}}"/>
                             <input type="hidden" name="isAdvanced" value="true"/>
                             <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
@@ -50,8 +50,8 @@
                     </td>
                     <td>
                         {{#isEnabled}}
-                            <a class="enabled-repay btn btn-normal btn-sm" href="javascript:">{{status}}</a>
-                            <form id="normal-repay" action="/repay" method="post" target="_blank">
+                            <a class="normal-repay btn btn-normal btn-sm" href="javascript:">{{status}}</a>
+                            <form id="normal-repay-form" action="/repay" method="post" target="_blank">
                                 <input type="hidden" name="loanId" value="{{loanId}}"/>
                                 <input type="hidden" name="_csrf" value="{{csrfToken}}"/>
                             </form>
