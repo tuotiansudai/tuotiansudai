@@ -43,8 +43,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +81,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Autowired
     private SendCloudMailUtil sendCloudMailUtil;
+
 
     @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
@@ -354,7 +357,6 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-
     private void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
@@ -384,7 +386,6 @@ public class InvestServiceImpl implements InvestService {
     private long calculateProfit(long corpus,long actualInterest,long defaultInterest,long actualFee){
         return corpus + actualInterest + defaultInterest - actualFee;
     }
-
     /**
      * umpay 超投返款的回调
      *
