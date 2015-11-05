@@ -9,16 +9,7 @@
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="style/index.css">
-
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
 
 </head>
 <body>
@@ -60,25 +51,25 @@
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         <tr>
                             <td>20150706</td>
                             <td>好消息！7月注册活动红包发放添加新渠道啦！再也不用为领不到红包而担忧了！</td>
                             <td>2015-07-07</td>
-                            <td><a href="#" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
+                            <td><a href="/announceRelease" class="btn btn-link"> 编辑</a> | <a href="#" class="btn btn-link">删除</a></td>
                         </tr>
                         </tbody>
                     </table>
