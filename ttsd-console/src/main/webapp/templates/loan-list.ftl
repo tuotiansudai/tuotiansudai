@@ -16,19 +16,14 @@
     <!-- link bootstrap css and js -->
     <link href="../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="../js/libs/jquery-1.11.3.min.js"></script> <!-- jquery -->
-    <script src="../js/libs/bootstrap.min.js"></script>
     <!-- link bootstrap css and js -->
-
     <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/moment-with-locales.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../js/libs/bootstrap-datepicker.js"></script>
     <@global.javascript pageJavascript="loanList.js"></@global.javascript>
     <link rel="stylesheet" href="../style/index.css">
 </head>
 <body>
 <!-- header begin -->
-<@menu.header label="proMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 <!-- header end -->
 
 <!-- main begin -->
@@ -46,28 +41,28 @@
 
             <!-- content area begin -->
             <div class="col-md-10">
-                <form action="" class="form-inline query-build">
-                    <input type="hidden" class="status" value="<#if status??>${status}</#if>">
+                <form action="" class="form-inline query-build" id="formLoanList">
+                    <input type="hidden" class="status" name="status" value="<#if status??>${status}</#if>">
                     <div class="form-group">
                         <label for="number">编号</label>
-                        <input type="text" class="form-control loanId" id="" placeholder="" value="${(loanId?string('0'))!}">
+                        <input type="text" class="form-control loanId" name="loanId"  placeholder="" value="${(loanId?string('0'))!}">
                     </div>
                     <div class="form-group">
                         <label for="number">项目名称</label>
-                        <input type="text" class="form-control loanName" id="" placeholder="" value="${loanName!}">
+                        <input type="text" class="form-control loanName" name="loanName"  placeholder="" value="${loanName!}">
                     </div>
                     <div class="form-group">
                         <label for="number">日期</label>
 
-                        <div class='input-group date' id='datepicker1'>
-                            <input type='text' class="form-control" value="${(startTime?string('yyyy-MM-dd'))!}"/>
+                        <div class='input-group date' id='datepickerBegin'>
+                            <input type='text' class="form-control" name="startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                         </div>
                         -
-                        <div class='input-group date' id='datepicker2'>
-                            <input type='text' class="form-control" value="${(endTime?string('yyyy-MM-dd'))!}"/>
+                        <div class='input-group date' id='datepickerEnd'>
+                            <input type='text' class="form-control" name="endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
