@@ -10,6 +10,4 @@ public interface InvestReferrerRewardMapper {
     void create(InvestReferrerRewardModel model);
 
     InvestReferrerRewardModel findById(@Param(value = "id") long id);
-
-
 }

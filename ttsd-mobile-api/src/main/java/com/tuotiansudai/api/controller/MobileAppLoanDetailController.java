@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class MobileAppLoanDetailController {
     @Autowired
     private MobileAppLoanDetailService mobileAppLoanDetailService;
 
     @RequestMapping(value = "/get/loan", method = RequestMethod.POST)
-    public BaseResponseDto queryLoanList(@RequestBody LoanDetailRequestDto loanDetailRequestDto) {
+    public BaseResponseDto queryLoanList(@Valid @RequestBody LoanDetailRequestDto loanDetailRequestDto) {
         return mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
     }
 

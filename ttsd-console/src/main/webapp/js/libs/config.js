@@ -24,7 +24,7 @@ var require = {
 
     'shim': {
         'bootstrap': ['jquery'],
-        'bootstrapSelect': ['jquery'],
+        'bootstrapSelect': ['jquery', 'bootstrap'],
         'fileinput': ['jquery'],
         'fileinput_locale_zh': ['jquery', 'fileinput'],
         'jquery-ui': ['jquery'],
