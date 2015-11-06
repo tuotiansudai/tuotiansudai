@@ -1,38 +1,27 @@
 package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
+import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.UserBillDetailListRequestDto;
+import com.tuotiansudai.api.dto.UserBillDetailListResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppUserBillListServiceImpl;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
 public class MobileAppUserBillListServiceServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppUserBillListServiceImpl mobileAppUserBillListService;

@@ -3,31 +3,20 @@ package com.tuotiansudai.api.service;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.FundManagementResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.api.service.impl.MobileAppFundManagementServiceImpl;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.WithdrawService;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
 public class MobileAppMobileAppFundManagementServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppFundManagementServiceImpl mobileAppFundManagementService;
