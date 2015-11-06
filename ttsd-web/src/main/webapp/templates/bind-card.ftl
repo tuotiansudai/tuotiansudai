@@ -13,7 +13,7 @@
                 <div class="clear-blank"></div>
                 <div class="e-bank-recharge">
                     <b class="title">选择银行:</b>
-                    <ol>
+                    <ol class="select-bank">
                         <li>
                             <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
                             <label for="bank-zs"><img src="/images/bank/CMB.jpg" alt=""></label>
@@ -26,7 +26,7 @@
                             <input data-name="CMBC" type="radio" name="bank" id="bank-ms">
                             <label for="bank-ms"><img src="/images/bank/CMBC.jpg" alt=""> </label>
                         </li>
-                        <li class="m-right-0">
+                        <li>
                             <input data-name="CCB" type="radio" name="bank" id="bank-js">
                             <label for="bank-js"><img src="/images/bank/CCB.jpg" alt=""> </label>
                         </li>
@@ -42,7 +42,7 @@
                             <input data-name="CIB" type="radio" name="bank" id="bank-xy">
                             <label for="bank-xy"><img src="/images/bank/CIB.jpg" alt=""> </label>
                         </li>
-                        <li class="m-right-0">
+                        <li>
                             <input data-name="COMM" type="radio" name="bank" id="bank-jt">
                             <label for="bank-jt"><img src="/images/bank/COMM.jpg" alt=""> </label>
                         </li>
@@ -57,7 +57,7 @@
                             <input data-name="HXB" type="radio" name="bank" id="bank-hx">
                             <label for="bank-hx"><img src="/images/bank/HXB.jpg" alt=""> </label>
                         </li>
-                        <li class="m-right-0">
+                        <li>
                             <input data-name="BJBANK" type="radio" name="bank" id="bank-bj">
                             <label for="bank-bj"><img src="/images/bank/BJBANK.jpg" alt=""> </label>
                         </li>
@@ -90,7 +90,7 @@
                             银行卡：<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                             <div class="tc pad-m">
-                                <input type="submit" class="btn" disabled="disabled"  value="确认绑定"/>
+                                <input type="submit" class="btn bind-card-submit" disabled="disabled"  value="确认绑定"/>
                             </div>
                         </form>
                      </div>
@@ -144,14 +144,17 @@
     </div>
 </div>
 
-<div id="pop-fast-pay" class="pad-m recharge-plat" style="display: none;">
-    <p>请在新打开的联动优势页面绑卡完成后选择：</p>
+<div id="pop-fast-pay" class="pad-m" style="display: none; margin-top:-10px;">
+    <span>请在新打开的联动优势页面绑卡完成后选择：</span>
+    <div class="clear-blank"></div>
     <div class="ret">
-        <p>充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
-        <p>充值失败：<a href="" class="btn-normal" data-category="重新开通" data-label="recharge">重新开通</a>
-            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
-        </p>
-        <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
+        充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a>
+        <div class="clear-blank"></div>
+        充值失败：<a href="" class="btn-normal" data-category="重新开通" data-label="recharge">重新开通</a><br/>
+        <div class="clear-blank"></div>
+        <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span><br/>
+        <div class="clear-blank"></div>
+        遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）
     </div>
 </div>
 </@global.main>
