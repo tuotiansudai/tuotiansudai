@@ -90,7 +90,7 @@
             <if test="userBillOperationType != null">
                 and operation_type = #{userBillOperationType}
             </if>
-            <if test="loginName != null">
+            <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
             <if test="startTime != null">
@@ -113,7 +113,7 @@
             <if test="userBillOperationType != null">
                 and operation_type = #{userBillOperationType}
             </if>
-            <if test="loginName != null">
+            <if test="loginName != null and loginName != ''">
                 and login_name = #{loginName}
             </if>
             <if test="startTime != null">

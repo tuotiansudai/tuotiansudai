@@ -73,7 +73,7 @@
         LEFT JOIN account b
         ON a.`referrer_login_name` = b.`login_name`
         <where>
-            <if test="referrerLoginName != null">
+            <if test="referrerLoginName != null and referrerLoginName != ''">
                 a.`referrer_login_name` = #{referrerLoginName}
             </if>
             <if test="rewardStartTime != null">
@@ -99,7 +99,7 @@
         LEFT JOIN account n
         ON m.`login_name` = n.`login_name`
         <where>
-            <if test="investLoginName != null">
+            <if test="investLoginName != null and investLoginName != ''">
                 m.`login_name` = #{investLoginName}
             </if>
             <if test="investStartTime != null">
@@ -167,7 +167,7 @@
         LEFT JOIN account b
         ON a.`referrer_login_name` = b.`login_name`
         <where>
-            <if test="referrerLoginName != null">
+            <if test="referrerLoginName != null and referrerLoginName != ''">
                 a.`referrer_login_name` = #{referrerLoginName}
             </if>
             <if test="rewardStartTime != null">
@@ -193,7 +193,7 @@
         LEFT JOIN account n
         ON m.`login_name` = n.`login_name`
         <where>
-            <if test="investLoginName != null">
+            <if test="investLoginName != null and investLoginName != ''">
                 m.`login_name` = #{investLoginName}
             </if>
             <if test="investStartTime != null">
