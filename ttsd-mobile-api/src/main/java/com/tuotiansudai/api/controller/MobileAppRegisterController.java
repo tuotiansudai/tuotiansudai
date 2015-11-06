@@ -27,8 +27,6 @@ public class MobileAppRegisterController extends MobileAppBaseController {
 
     @RequestMapping(value = "/register/sendsms", method = RequestMethod.POST)
     public BaseResponseDto sendRegisterByMobileNumberSMS(@RequestBody SendSmsRequestDto sendSmsRequestDto, HttpServletRequest request) {
-        String loginName = getLoginName();
-        System.out.println(loginName);
         String mobileNumber = sendSmsRequestDto.getPhoneNum();
         String remoteIp = CommonUtils.getRemoteHost(request);
         return mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
