@@ -59,20 +59,19 @@
             </div>
 
             <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
-                <ol><b class="title">请选择银行：</b>
-                    <#list banks as bank>
-                        <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                            <input data-name="${bank}" type="radio" id="bank-${bank}" name="bank" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
-                        </li>
-                    </#list>
-                </ol>
                 <div class="recharge-form">
                     <form action="/recharge" method="post" target="_blank">
+                        <ol><b class="title">请选择银行：</b>
+                            <#list banks as bank>
+                                <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
+                                    <input value="${bank}" type="radio" id="bank-${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if>>
+                                    <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                                </li>
+                            </#list>
+                        </ol>
                         <p>账户可用余额：<i>${balance}</i> 元</p>
 
                         <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
-                        <input class="selected-bank" type="hidden" name="bankCode" value="CMB"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>

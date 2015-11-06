@@ -12,14 +12,14 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             fastRechargeInputAmountElement = $(".amount", $fastRechargeForm),
             fastRechargeAmountElement = $("input[name='amount']", $fastRechargeForm),
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
-            bankElement = $('.e-bank-recharge ol li'),
             turnOnFastSubmitElement = $(".turn-on-fast-form .submit");
 
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
-                if (isNaN(amount) || amount === 0) {
+                console.log(amount);
+                if (isNaN(amount) || amount < 0.01) {
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
                 } else {
                     rechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
@@ -44,7 +44,7 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             fastRechargeInputAmountElement.autoNumeric("init");
             fastRechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(fastRechargeInputAmountElement.autoNumeric("get"));
-                if (isNaN(amount) || amount === 0) {
+                if (isNaN(amount) || amount < 0.01) {
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
 
                 } else {
@@ -78,13 +78,6 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             });
 
         }
-
-        //select bank
-        bankElement.click(function () {
-            var selectedBankElement = $(this).find('input');
-            var bankCode = selectedBankElement.data('name');
-            $('.selected-bank').val(bankCode);
-        });
 
         //tab切换
         tabElement.click(function (index) {
