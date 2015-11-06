@@ -89,10 +89,10 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         assertEquals(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),baseResponseDto.getCode());
     }
     @Test
-    public void shouldRegisterUserCaptchaIsOk(){
+    public void shouldRegisterUserCaptchaIsValid(){
 
         RegisterRequestDto registerRequestDto = getFakeRegisterRequestDto();
-        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(true);
+        when(smsCaptchaService.verifyMobileCaptcha(anyString(), anyString(), any(CaptchaType.class))).thenReturn(false);
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
