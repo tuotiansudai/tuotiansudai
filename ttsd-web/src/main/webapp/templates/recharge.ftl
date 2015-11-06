@@ -51,7 +51,7 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                             <div class="tc pad-m">
-                                <button type="submit" class="btn" disabled="disabled">确认充值</button>
+                                <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
                             </div>
                         </form>
                     </div>
@@ -72,7 +72,7 @@
                         <p>账户可用余额：<i>${balance}</i> 元</p>
 
                         <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
-                        <input class="selected-bank" type="hidden" name="backCode" value="CMB"/>
+                        <input class="selected-bank" type="hidden" name="bankCode" value="CMB"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>

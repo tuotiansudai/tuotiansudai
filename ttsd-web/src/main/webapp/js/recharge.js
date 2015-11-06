@@ -48,7 +48,7 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
 
                 } else {
-                    fastRechargeSubmitElement.prop('disabled', false).removeClass('btn-normal');
+                    fastRechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
                 }
             });
             //快捷充值提交
