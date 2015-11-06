@@ -41,7 +41,7 @@
         <beans:property name="refreshTokenUrl" value="/refresh-token"/>
     </beans:bean>
 
-    <beans:bean id="loginFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+    <beans:bean id="loginFilter" class="com.tuotiansudai.api.security.MobileAppUsernamePasswordAuthenticationFilter">
         <beans:property name="authenticationManager" ref="authenticationManager"/>
         <beans:property name="usernameParameter" value="j_username"/>
         <beans:property name="passwordParameter" value="j_password"/>

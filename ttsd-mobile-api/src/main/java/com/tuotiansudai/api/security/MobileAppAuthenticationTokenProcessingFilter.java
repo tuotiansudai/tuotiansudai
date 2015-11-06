@@ -2,7 +2,6 @@ package com.tuotiansudai.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.security.MyUserDetailsService;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterBean {
@@ -50,8 +48,8 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
 
         final String uri = httpServletRequest.getRequestURI();
 
-        for(String ignoreUrl : ignoreUrlArray){
-            if(ignoreUrl.equalsIgnoreCase(uri)){
+        for (String ignoreUrl : ignoreUrlArray) {
+            if (ignoreUrl.equalsIgnoreCase(uri)) {
                 chain.doFilter(httpServletRequest, httpServletResponse);
                 return;
             }
@@ -68,6 +66,7 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
             responseObject(httpServletResponse, dto);
             return;
         }
+        bufferedRequest.setAttribute("currentLoginName", loginName);
 
         if (refreshTokenUrl.equalsIgnoreCase(uri)) {
             processGenerateTokenRequest(httpServletResponse, loginName, token);
