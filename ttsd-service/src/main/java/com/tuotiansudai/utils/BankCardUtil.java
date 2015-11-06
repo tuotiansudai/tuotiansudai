@@ -62,6 +62,10 @@ public class BankCardUtil {
         return BANK_CODE_MAPPING.get(bankCode);
     }
 
+    public static boolean canEnableFastPay(String bankCode) {
+        return FAST_PAY_BANKS.contains(bankCode);
+    }
+
 }
 
 
