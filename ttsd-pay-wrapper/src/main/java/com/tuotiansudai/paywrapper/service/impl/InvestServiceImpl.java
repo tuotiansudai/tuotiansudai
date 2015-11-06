@@ -356,8 +356,8 @@ public class InvestServiceImpl implements InvestService {
             }
         }
     }
-
-    private void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
+    @Override
+    public void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
