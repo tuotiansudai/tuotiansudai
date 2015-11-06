@@ -6,7 +6,6 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.ReferrerRewardDto;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
@@ -18,24 +17,28 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjec
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerBindProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerUpdateProjectResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.*;
-import com.tuotiansudai.repository.mapper.*;
+import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
+import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
+import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -50,15 +53,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private AccountMapper accountMapper;
-
-    @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
-
-    @Autowired
-    private InvestReferrerRewardMapper investReferrerRewardMapper;
 
     @Autowired
     private RepayGeneratorService repayGeneratorService;
@@ -77,9 +71,6 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
-
-    @Autowired
-    private IdGenerator idGenerator;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -201,7 +192,7 @@ public class LoanServiceImpl implements LoanService {
             repayGeneratorService.generateRepay(loanId);
 
             logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
-            recommendedIncome(loan, successInvestList);
+            referrerRewardService.rewardReferrer(loan, successInvestList);
 
             logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
             processNotifyForLoanOut(loanId);
@@ -266,134 +257,6 @@ public class LoanServiceImpl implements LoanService {
         } catch (Exception e) {
             logger.error("transferInBalance Fail while loan out, loan[" + loan.getId() + "]", e);
         }
-    }
-
-    private void recommendedIncome(LoanModel loanModel, List<InvestModel> investModels) {
-        long loanId = loanModel.getId();
-        logger.debug("begin referrer reward after make loan " + loanId);
-
-        for (InvestModel invest : investModels) {
-            logger.debug("find invest " + invest.getId());
-            List<ReferrerRelationModel> referrerRelationList = referrerRelationMapper.findByLoginName(invest.getLoginName());
-            for (ReferrerRelationModel referrerRelationModel : referrerRelationList) {
-                logger.debug("referrer is" + referrerRelationModel.getReferrerLoginName());
-                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
-                Role role = JudgeRole(userRoleModels);
-                AccountModel accountModel = accountMapper.findByLoginName(referrerRelationModel.getReferrerLoginName());
-                String payUserId = accountModel == null ? "" : accountModel.getPayUserId();
-                long orderId = idGenerator.generate();
-                ReferrerRewardStatus status = ReferrerRewardStatus.FAIL;
-                String bonus = calculateBonus(invest.getAmount(), referrerRelationModel, loanModel, payUserId, role);
-                if (Double.valueOf(bonus) == -1) {
-                    logger.debug("role is" + role + ": level is " + referrerRelationModel.getLevel() + ",该层级不存在对于奖励比例!");
-                    continue;
-                }
-                logger.debug("payUserId is" + payUserId + ": bonus is " + bonus);
-                if ((role.equals(Role.INVESTOR) || role.equals(Role.MERCHANDISER)) && !"".equals(payUserId) && Double.valueOf(bonus) > 0.00) {
-                    ReferrerRewardDto referrerRewardDto = new ReferrerRewardDto(payUserId, bonus, referrerRelationModel.getReferrerLoginName(), orderId);
-                    try {
-                        BaseDto<PayDataDto> baseDto = referrerRewardService.getReferrerReward(referrerRewardDto);
-                        if (baseDto.getData().getStatus()) {
-                            if ("0000".equals(baseDto.getData().getCode())) {
-                                status = ReferrerRewardStatus.SUCCESS;
-                            }
-                        } else {
-                            logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + "奖励失败！原因:" + baseDto.getData().getMessage());
-                        }
-
-                    } catch (Exception e) {
-                        logger.error(e.getLocalizedMessage(), e);
-                    }
-
-                }
-
-                if (role.equals(Role.USER)) {
-                    logger.debug("投资" + invest.getId() + ",推荐人" + referrerRelationModel.getReferrerLoginName() + ReferrerRewardMessageTemplate.NOT_BIND_CARD.getDescription());
-                }
-                createInvestReferrerReward(invest, bonus, referrerRelationModel, role, orderId, status);
-            }
-        }
-    }
-
-    private Role JudgeRole(List<UserRoleModel> userRoleModels) {
-        List<String> userRoles = new ArrayList<>();
-        for (UserRoleModel userRoleModel : userRoleModels) {
-            userRoles.add(userRoleModel.getRole().name());
-        }
-        if (userRoles.contains(Role.MERCHANDISER.name())) {
-            return Role.MERCHANDISER;
-        } else if (userRoles.contains(Role.INVESTOR.name()) && !userRoles.contains(Role.MERCHANDISER.name())) {
-            return Role.INVESTOR;
-        } else {
-            return Role.USER;
-        }
-    }
-
-    private String calculateBonus(long amount, ReferrerRelationModel referrerRelationModel,
-                                  LoanModel loanModel, String payUserId, Role role) {
-        double bonus = 0.00;
-        DecimalFormat df = new DecimalFormat("######0.00");
-        BigDecimal big100 = new BigDecimal(100);
-        LoanPeriodUnit loanPeriodUnit = loanModel.getType().getLoanPeriodUnit();
-        long periods = loanModel.getPeriods();
-        //TODO:从数据库中获取奖励比例
-        Map<Integer, Double> merchandiserMap = new HashMap<>();
-        merchandiserMap.put(1, 0.4);
-        merchandiserMap.put(2, 0.3);
-        merchandiserMap.put(3, 0.2);
-        merchandiserMap.put(4, 0.1);
-
-        Map<Integer, Double> investorMap = new HashMap<>();
-        investorMap.put(1, 0.4);
-        investorMap.put(2, 0.3);
-        int daysOrMonthByYear = 1;
-        if (LoanPeriodUnit.MONTH == loanPeriodUnit) {
-            daysOrMonthByYear = 12;
-        } else if (LoanPeriodUnit.DAY == loanPeriodUnit) {
-            daysOrMonthByYear = new DateTime().dayOfYear().getMaximumValue();
-        }
-        if (StringUtils.isEmpty(payUserId) || Role.INVESTOR.equals(role)) {
-            if (investorMap.get(referrerRelationModel.getLevel()) != null) {
-                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100).setScale(6, BigDecimal.ROUND_HALF_UP);
-                BigDecimal amountBig = new BigDecimal(amount / 100d);
-                BigDecimal periodsBig = new BigDecimal(periods);
-                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
-
-                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
-                        .divide(daysOrMonthByYearBig, 2).doubleValue();
-            } else {
-                bonus = -1;
-            }
-
-        } else {
-            if (merchandiserMap.get(referrerRelationModel.getLevel()) != null) {
-                BigDecimal rewardRateBig = new BigDecimal(investorMap.get(referrerRelationModel.getLevel())).divide(big100);
-                BigDecimal amountBig = new BigDecimal(amount / 100d);
-                BigDecimal periodsBig = new BigDecimal(periods);
-                BigDecimal daysOrMonthByYearBig = new BigDecimal(daysOrMonthByYear);
-
-                bonus = amountBig.multiply(rewardRateBig).multiply(periodsBig)
-                        .divide(daysOrMonthByYearBig).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-            } else {
-                bonus = -1;
-            }
-
-        }
-        return df.format(bonus);
-    }
-
-    private void createInvestReferrerReward(InvestModel investModel, String bonus, ReferrerRelationModel referrerRelationModel, Role role, long id, ReferrerRewardStatus status) {
-        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
-        investReferrerRewardModel.setId(id);
-        investReferrerRewardModel.setInvestId(investModel.getId());
-        investReferrerRewardModel.setReferrerLoginName(referrerRelationModel.getReferrerLoginName());
-        long bonusCent = AmountUtil.convertStringToCent(bonus);
-        investReferrerRewardModel.setBonus(bonusCent);
-        investReferrerRewardModel.setRoleName(role);
-        investReferrerRewardModel.setStatus(status);
-        investReferrerRewardModel.setTime(new Date());
-
-        investReferrerRewardMapper.create(investReferrerRewardModel);
     }
 
     private void processNotifyForLoanOut(long loanId) {
