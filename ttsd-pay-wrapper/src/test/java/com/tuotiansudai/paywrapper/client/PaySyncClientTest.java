@@ -1,8 +1,18 @@
 package com.tuotiansudai.paywrapper.client;
 
 import com.tuotiansudai.paywrapper.repository.mapper.MerRegisterPersonMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectAccountSearchMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.PtpMerQueryMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.UserSearchMapper;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerRegisterPersonRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectAccountSearchRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.PtpMerQueryRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.request.UserSearchRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.MerRegisterPersonResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectAccountSearchResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.PtpMerQueryResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.UserSearchResponseModel;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +29,11 @@ public class PaySyncClientTest {
     @Autowired
     private PaySyncClient paySyncClient;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
     @Test
     @Transactional
-    public void shouldRegisterPersonRequestFailed() throws Exception {
-        MerRegisterPersonRequestModel registerRequestData = new MerRegisterPersonRequestModel("fakeLoginName", "fakeName", "fakeID", "13900000000");
-        MerRegisterPersonResponseModel response = paySyncClient.send(MerRegisterPersonMapper.class, registerRequestData, MerRegisterPersonResponseModel.class);
-        assertFalse(response.isSuccess());
+    public void test() throws Exception {
     }
 }

@@ -37,15 +37,15 @@
             },
             {
                 "name":"finaMan",
-                "header":{"text":"财务管理","link":"/invests"},
+                "header":{"text":"财务管理","link":"/real-time-status"},
                 "sidebar":[
-                    {"name":"userInvest","text":"用户投资管理","link":""},
+                    {"name":"userInvest","text":"用户投资管理","link":"/invests"},
                     {"name":"recharge","text":"充值记录","link":""},
                     {"name":"withdraw","text":"提现记录","link":""},
                     {"name":"userFund","text":"用户资金查询","link":""},
                     {"name":"systemAccount","text":"系统账户查询","link":""},
                     {"name":"##############","text":"管理员修改账户余额","link":""},
-                    {"name":"##############","text":"联动优势余额查询","link":""}
+                    {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}
                 ]
             },
             {
