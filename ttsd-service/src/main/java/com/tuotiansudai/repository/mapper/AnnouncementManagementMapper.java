@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface AnnouncementManagementMapper {
 
-    int findAnnouncementManagementCount(@Param("id") long id,@Param("title") String title);
+    int findAnnouncementManagementCount(@Param("id") Long id,@Param("title") String title);
 
-    List<AnnouncementManagementModel> findAnnouncementManagement(@Param("id") long id,@Param("title") String title,@Param("startLimit") int startLimit,@Param("endLimit") int endLimit);
+    List<AnnouncementManagementModel> findAnnouncementManagement(@Param("id") Long id,@Param("title") String title,@Param("startLimit") int startLimit,@Param("endLimit") int endLimit);
 
     void create(AnnouncementManagementModel announcementManagementModel);
 

@@ -16,12 +16,12 @@ public class AnnouncementManagementServiceImpl implements AnnouncementManagement
     private AnnouncementManagementMapper announcementManagementMapper;
 
     @Override
-    public int findAnnouncementManagementCount(long id,String title) {
+    public int findAnnouncementManagementCount(Long id,String title) {
         return announcementManagementMapper.findAnnouncementManagementCount(id, title);
     }
 
     @Override
-    public List<AnnouncementManagementModel> findAnnouncementManagement(long id, String title, int startLimit, int endLimit) {
+    public List<AnnouncementManagementModel> findAnnouncementManagement(Long id, String title, int startLimit, int endLimit) {
         return announcementManagementMapper.findAnnouncementManagement(id, title, startLimit, endLimit);
     }
 
@@ -38,6 +38,11 @@ public class AnnouncementManagementServiceImpl implements AnnouncementManagement
     @Override
     public void delete(AnnouncementManagementDto announcementManagementDto) {
         this.announcementManagementMapper.delete(announcementManagementDto.getId());
+    }
+
+    @Override
+    public AnnouncementManagementModel findById(long id) {
+        return this.announcementManagementMapper.findById(id);
     }
 
 }

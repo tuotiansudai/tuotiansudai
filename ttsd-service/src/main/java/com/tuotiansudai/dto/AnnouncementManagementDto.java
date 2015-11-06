@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 import java.io.Serializable;
 
-public class AnnouncementManagementDto implements Serializable{
+public class AnnouncementManagementDto extends BaseDataDto implements Serializable{
 
     private long id;
 
