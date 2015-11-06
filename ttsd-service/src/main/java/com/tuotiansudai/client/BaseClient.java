@@ -34,7 +34,7 @@ public abstract class BaseClient {
         String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{context}", getContext()).replace("{uri}", path);
         Request request = new Request.Builder()
                 .url(url)
-                .method(method, Strings.isNullOrEmpty(requestJson) ? null : RequestBody.create(JSON, requestJson) )
+                .method(method, RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : ""))
                 .addHeader("Content-Type", "application/json; charset=UTF-8")
                 .build();
 
@@ -60,7 +60,8 @@ public abstract class BaseClient {
         }
 
         try {
-            return objectMapper.readValue(responseString, new TypeReference<BaseDto<MonitorDataDto>>() {});
+            return objectMapper.readValue(responseString, new TypeReference<BaseDto<MonitorDataDto>>() {
+            });
         } catch (IOException e) {
             BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
             MonitorDataDto dataDto = new MonitorDataDto();
