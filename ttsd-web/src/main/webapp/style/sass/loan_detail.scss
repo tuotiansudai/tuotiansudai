@@ -1,14 +1,12 @@
 @import "table";
 @import "pagination";
 
-.main {
-  width: 1000px;
+.loan {
   margin: 0 auto;
   overflow: hidden;
   & .item-block {
     padding: 3px 0 0;
     display: block;
-    //background: #fff;
     & .btn-pay {
       background: #f24712;
       border: none;
@@ -55,7 +53,7 @@
     & .text-input-amount {
       float: left;
       width: 330px;
-      border: 1px solid #f24712;
+      border: 1px solid #ccc;
       height: 32px;
       color: #000;
       display: inline-block;

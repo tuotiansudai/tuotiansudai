@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layer','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination,layer) {
+require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layer','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination, layer) {
 
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -86,7 +86,7 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         });
     };
 
-    loadLoanData(1);
+    loadLoanData();
 
     $(".date-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
@@ -103,6 +103,4 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
     $('.apply-btn').click(function () {
         loadLoanData();
     });
-
-
 });

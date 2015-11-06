@@ -2,8 +2,8 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 
@@ -18,8 +18,7 @@ public interface InvestService {
 
     long calculateExpectedInterest(long loanId, long amount);
 
-    BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String loginName,
-                                                                           long loanId,
+    BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
                                                                            int index,
                                                                            int pageSize,
                                                                            Date startTime,

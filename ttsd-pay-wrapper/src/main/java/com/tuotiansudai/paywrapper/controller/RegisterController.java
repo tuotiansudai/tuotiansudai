@@ -24,10 +24,4 @@ public class RegisterController extends BaseController {
     public BaseDto register(@Valid @RequestBody RegisterAccountDto dto) {
         return registerService.register(dto);
     }
-
-    @RequestMapping(value = "/re-register", method = RequestMethod.POST)
-    @ResponseBody
-    public BaseDto reRegister(@Valid @RequestBody RegisterAccountDto dto) {
-        return registerService.reRegister(dto);
-    }
 }

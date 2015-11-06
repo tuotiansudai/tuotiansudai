@@ -82,6 +82,25 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
+    /**
+     * 撤资后返款(超投后返款)
+     *
+     * @param projectId
+     * @param orderId
+     * @param userId
+     * @param amount
+     * @return
+     */
+    public static ProjectTransferRequestModel overInvestPaybackRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.MERCHANT);
+        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "over_invest_payback_notify");
+        model.servType = UmPayServType.TRANSFER_OVER_INVEST_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.PLATFORM.getCode();
+        return model;
+    }
+
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType) {
         super();
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
