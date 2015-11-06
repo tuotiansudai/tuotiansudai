@@ -9,18 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
     <!-- link bootstrap css and js -->
-    <link href="../style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <!-- link bootstrap css and js -->
-    <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
     <!-- 日历插件 -->
     <link href="../style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--上传图片插件-->
-    <link rel="stylesheet" href="../style/libs/fileinput.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/fileinput.css"/>
     <!--下拉框-->
-    <link rel="stylesheet" href="../style/libs/bootstrap-select.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="../style/libs/jquery-ui/jquery-ui-1.10.3.custom.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
     <script src="/js/libs/template.js"></script>
 <#--当前页面js-->
 <@global.javascript pageJavascript="editLoan.js"></@global.javascript>
@@ -56,15 +56,13 @@
     </script>
 </head>
 <body>
-
-<@menu.header label="proMan"></@menu.header>
-
+<@menu.header label="projectMain"></@menu.header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab=""></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab=""></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -159,7 +157,7 @@
                         <label class="col-sm-2 control-label">最小投资金额（元）: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${(loanInfo.minInvestAmount/100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
+                            <input type="text" class="form-control jq-min-pay jq-money" datatype="money_fl" errormsg="最小投资金额需要正确填写" value="${(loanInfo.minInvestAmount/100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>>
                         </div>
                     </div>
                     <div class="form-group">
@@ -211,7 +209,7 @@
                         <label class="col-sm-2 control-label">合同: </label>
 
                         <div class="col-sm-4">
-                            <select class="selectpicker ">
+                            <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
                             <#list contracts as contract>
                                 <option value="${contract.id}">
                                 ${contract.contractName}
@@ -238,7 +236,7 @@
 
                         <div class="col-sm-4">
                             <div class='input-group date' id='datetimepicker7'>
-                                <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写" value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>/>
+                                <input type='text' class="form-control jq-end-date" datatype="date" errormsg="筹款截止时间需要正确填写" value="${(loanInfo.fundraisingEndTime?string('yyyy-MM-dd HH:mm'))!}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING" && loanInfo.status!="RECHECK">disabled="disabled"</#if>/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -302,7 +300,7 @@
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
             var initialPreview = [];
-            <#list loanTitleRelationModel.applyMetarialUrl?split(",") as title>
+            <#list loanTitleRelationModel.applicationMaterialUrls?split(",") as title>
                 initialPreview.push("<img src='${title}' class='file-preview-image' alt='${title}' title='${title}'>");
             </#list>
             rereq['${loanTitleRelationModel.titleId}']=initialPreview;

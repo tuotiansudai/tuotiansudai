@@ -15,5 +15,9 @@ public enum Source {
     /**
      * IOS
      */
-    IOS
+    IOS,
+    /**
+     * 自动投资
+     */
+    AUTO
 }

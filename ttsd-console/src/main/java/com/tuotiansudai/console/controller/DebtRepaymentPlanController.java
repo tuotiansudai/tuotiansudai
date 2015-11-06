@@ -15,4 +15,10 @@ public class DebtRepaymentPlanController {
     public ModelAndView debtRepaymentPlan() {
         return new ModelAndView("/debt-repayment-plan");
     }
+
+    @RequestMapping(value = "/debtRepaymentDetail", method = RequestMethod.GET)
+    public ModelAndView debtRepaymentPlanDetail() {
+        return new ModelAndView("/debt-repayment-detail");
+    }
+
 }

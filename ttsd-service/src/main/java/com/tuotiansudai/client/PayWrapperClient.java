@@ -36,23 +36,21 @@ public class PayWrapperClient {
 
     private String registerPath = "/register";
 
-    private String reRegisterPath = "/re-register";
-
     private String rechargePath = "/recharge";
 
     private String bindCardPath = "/bind-card";
 
     private String loanPath = "/loan";
 
-    private String loanOutPath = "/loan-out";
+    private String loanOutPath = "/loan/loan-out";
 
     private String withdrawPath = "/withdraw";
 
     private String investPath = "/invest";
 
-    private String agreementPath = "/agreement";
+    private String investNopwdPath = "/invest-nopwd";
 
-    private String referrerRewardPath = "/referrer-reward";
+    private String agreementPath = "/agreement";
 
     private String repayPath = "/repay";
 
@@ -67,22 +65,6 @@ public class PayWrapperClient {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-
-        BaseDto<PayDataDto> baseDto = new BaseDto<>();
-        PayDataDto payFormDataDto = new PayDataDto();
-        baseDto.setData(payFormDataDto);
-
-        return baseDto;
-    }
-
-    public BaseDto<PayDataDto> reRegister(RegisterAccountDto dto) {
-        try {
-            String requestJson = objectMapper.writeValueAsString(dto);
-            String responseJson = this.post(reRegisterPath, requestJson);
-            return this.parsePayResponseJson(responseJson);
-        } catch (JsonProcessingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
 
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payFormDataDto = new PayDataDto();
@@ -185,6 +167,22 @@ public class PayWrapperClient {
         return baseDto;
     }
 
+    public BaseDto<PayDataDto> investNopwd(InvestDto dto) {
+        try {
+            String requestJson = objectMapper.writeValueAsString(dto);
+            String responseJson = this.post(investNopwdPath, requestJson);
+            return this.parsePayResponseJson(responseJson);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        baseDto.setData(payDataDto);
+
+        return baseDto;
+    }
+
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {
         try {
             String requestJson = objectMapper.writeValueAsString(dto);
@@ -245,6 +243,24 @@ public class PayWrapperClient {
 
         BaseDto<MonitorDataDto> resultDto = new BaseDto<>();
         MonitorDataDto dataDto = new MonitorDataDto();
+        dataDto.setStatus(false);
+        resultDto.setData(dataDto);
+
+        return resultDto;
+    }
+
+    public BaseDto<BaseDataDto> investCallback() {
+        String responseJson = this.post("/job/async_invest_notify", "");
+        if (!Strings.isNullOrEmpty(responseJson)) {
+            try {
+                return objectMapper.readValue(responseJson, new TypeReference<BaseDto<BaseDataDto>>() {});
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        BaseDto<BaseDataDto> resultDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(false);
         resultDto.setData(dataDto);
 

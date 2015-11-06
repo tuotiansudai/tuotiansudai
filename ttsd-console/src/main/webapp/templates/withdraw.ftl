@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>提现记录</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
+    <link href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css" rel="stylesheet"/>
+    <link href="style/index.css" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="style/index.css">
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
+    <@global.javascript pageJavascript="withdraw.js"></@global.javascript>
 
-    <script type="text/javascript">
-        $(function() {
-            $('#recordDate .date').datepicker({
-                format:'yyyy-mm-dd',
-                autoclose:true
-            });
-            $('.selectpicker').selectpicker();
-        })
-    </script>
 </head>
 <body>
+
+<#assign pagination = baseDto.data />
+<#assign withdrawList = pagination.records />
+
 <@menu.header label="finaMan"></@menu.header>
 <div class="main">
     <div class="container-fluid">
@@ -43,41 +35,45 @@
                     <div class="row">
                         <div class="form-group">
                             <label for="control-label">编号</label>
-                            <input type="text" class="form-control" >
-                        </div>
-                        <div class="form-group">
-                            <label for="control-label">用户名</label>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="withdrawId" placeholder="" value="${withdrawId!}">
                         </div>
                         <div class="form-group" id="recordDate">
                             <label for="control-label">时间</label>
-                            <div class='input-group date'>
-                                <input type='text' class="form-control" />
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" name="startTime"
+                                       value="${(startTime?string('yyyy-MM-dd HH:mm'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                             </div>
                             -
-                            <div class='input-group date'>
-                                <input type='text' class="form-control"/>
+                            <div class='input-group date' id='datetimepicker2'>
+                                <input type='text' class="form-control" name="endTime"
+                                       value="${(endTime?string('yyyy-MM-dd HH:mm'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                             </div>
                         </div>
+                        </br>
+                        <div class="form-group">
+                            <label for="control-label">用户名</label>
+                            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
+                        </div>
                         <div class="form-group">
                             <label for="control-label">状态</label>
-                            <select class="selectpicker"  data-style="btn-default" >
-                                <option>请选择提现状态</option>
-                                <option>等待审核 </option>
-                                <option>提现成功</option>
-                                <option>提现失败</option>
-
+                            <select class="selectpicker" name="status">
+                                <option value="">全部</option>
+                            <#list withdrawStatusList as statusItem>
+                                <option value="${statusItem.name()}"
+                                        <#if (status.name())?has_content && status.name() == statusItem.name()>selected</#if>
+                                        >${statusItem.description}</option>
+                            </#list>
                             </select>
                         </div>
 
-                        <button class="btn btn-primary" type="submit">查询</button>
-                        <button class="btn btn-default" type="submit">重置</button>
+                        <button type="submit" class="btn btn-sm btn-primary">查询</button>
+                        <button type="reset" class="btn btn-sm btn-default">重置</button>
                     </div>
 
                 </form>
@@ -96,78 +92,69 @@
                             <th>手续费</th>
                             <th>管理员提现</th>
                             <th>银行卡</th>
-                            <th>操作</th>
-
+                            <th>状态</th>
                         </tr>
                         </thead>
+
                         <tbody>
+                        <#if withdrawList?has_content>
+                            <#list withdrawList as withdrawItem>
+                            <tr>
+                                <td>${withdrawItem.withdrawId}</td>
+                                <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.verifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.recheckTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${withdrawItem.loginName}</td>
+                                <td>${withdrawItem.userName}</td>
+                                <td>${withdrawItem.amount}</td>
+                                <td>${withdrawItem.fee}</td>
+                                <td><#if withdrawItem.adminRole==1>是<#else>否</#if></td>
+                                <td>TODO</td>
+                                <td>${withdrawItem.status}</td>
+                            </tr>
+                            </#list>
+                        <#else>
                         <tr>
-                            <td>2015080400000003</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>shenjiaojiao</td>
-                            <td>申娇娇</td>
-                            <td>100.00</td>
-                            <td>3.0</td>
-                            <td>否</td>
-                            <td>中国建设银行---6217000940009330979</td>
-                            <td>提现成功</td>
+                            <td colspan="11">Empty</td>
                         </tr>
-                        <tr>
-                            <td>2015080400000003</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>shenjiaojiao</td>
-                            <td>申娇娇</td>
-                            <td>100.00</td>
-                            <td>3.0</td>
-                            <td>否</td>
-                            <td>中国建设银行---6217000940009330979</td>
-                            <td>提现成功</td>
-                        </tr>
-                        <tr>
-                            <td>2015080400000003</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>2015-08-04</td>
-                            <td>shenjiaojiao</td>
-                            <td>申娇娇</td>
-                            <td>100.00</td>
-                            <td>3.0</td>
-                            <td>否</td>
-                            <td>中国建设银行---6217000940009330979</td>
-                            <td>提现成功</td>
-                        </tr>
+                        </#if>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="row">
-                    <!-- pagination  -->
-                    <nav class="pagination-control">
-                        <div><span class="bordern">总共5条,每页显示15条</span></div>
-                        <ul class="pagination pull-left">
-
-                            <li>
-                                <a href="#">
-                                    <span>« Prev</span>
-                                </a>
-                            </li>
-                            <li><a>1</a></li>
-                            <li>
-                                <a href="#">
-                                    <span>Next »</span>
-                                </a>
-
-                            </li>
-                        </ul>
-                        <button class="btn btn-default pull-left" type="button">导出Excel</button>
-                    </nav>
-                </div>
+                <!-- pagination  -->
+                <nav>
+                <#if withdrawList?has_content>
+                    <div>
+                        <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
+                    </div>
+                    <ul class="pagination">
+                        <li>
+                            <#if pagination.hasPreviousPage >
+                            <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
+                               aria-label="Previous">
+                            <#else>
+                            <a href="#" aria-label="Previous">
+                            </#if>
+                            <span aria-hidden="true">&laquo; Prev</span>
+                        </a>
+                        </li>
+                        <li><a>${pagination.index}</a></li>
+                        <li>
+                            <#if pagination.hasNextPage >
+                            <a href="?withdrawId=${withdrawId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&status=${status!}&pageSize=${pageSize}&index=${index+1}"
+                               aria-label="Next">
+                            <#else>
+                            <a href="#" aria-label="Next">
+                            </#if>
+                            <span aria-hidden="true">Next &raquo;</span>
+                        </a>
+                        </li>
+                    </ul>
+                </#if>
+                </nav>
+                <!-- pagination -->
             </div>
-
             <!-- content area end -->
         </div>
     </div>

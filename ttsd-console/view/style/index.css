@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /**
- * 
+ *
  * @authors Belen (985322190@qq.com)
  * @date    2015-08-03 14:32:14
  * @version $Id$
@@ -58,7 +58,10 @@ a:hover {
 }
 
 /*登录*/
-.login-bg{ background: #eee;}
+.login-bg {
+    background: #eee;
+}
+
 .login {
     width: 500px;
     height: 400px;
@@ -66,12 +69,13 @@ a:hover {
     position: absolute;
     left: 50%;
     top: 50%;
-    padding:20px 30px;
+    padding: 20px 30px;
     background: #c1bebe;
     border-radius: 5px;
     z-index: 9999;
 }
-.captcha-img{
+
+.captcha-img {
     height: 34px;
     background: #ccc;
     width: 38.66666%;
@@ -79,10 +83,12 @@ a:hover {
 .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{ font-size: 12px;}
 .query-build{padding-bottom: 20px;}
 .query-build .form-group{
-    margin: 10px 20px 10px 0;
+	margin: 10px 20px 10px 0;
 }
 .bordern{
-    border: none!important;}
+	border: none!important;
+    margin: 10px 20px 10px 0;
+}
 
 /*下拉框*/
 .files-input{ width: 30%;
@@ -90,3 +96,32 @@ a:hover {
 .col-file-box{ margin-bottom: 10px;}
 .select-box{
     display: inline;}
+
+/*下拉框*/
+.files-input {
+    width: 30%;
+    display: inline-block;
+}
+.col-file-box {
+    margin-bottom: 10px;
+}
+
+.select-box {
+    display: inline;
+}
+
+.query-build {
+    padding-bottom: 20px;
+}
+
+.query-build .form-group {
+    margin: 10px 20px 10px 0;
+}
+
+.table-bordered th {
+    text-align: center
+}
+.form-horizontal span.form-control{
+    border: none;
+    box-shadow: none;
+}

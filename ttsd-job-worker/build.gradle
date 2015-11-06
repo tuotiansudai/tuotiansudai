@@ -1,0 +1,31 @@
+apply plugin: 'java'
+
+
+dependencies {
+    compile project(':ttsd-service')
+}
+
+startScripts {
+    classpath = files('conf') + classpath
+}
+
+distZip {
+    def defaultProperties = 'all'
+    if (project.hasProperty('rop')) {
+        defaultProperties = rop;
+    }
+
+    archiveName baseName+'-'+defaultProperties+'.zip'
+
+    applicationDistribution.from("src/main/resources/") {
+        into 'lib/conf'
+        exclude 'mybatis-configuration.xml','job-worker.properties','job-worker.properties.deploy'
+    }
+    applicationDistribution.from("src/main/resources/job-worker.properties.deploy/job-worker-${defaultProperties}.properties") {
+        into 'lib/conf'
+        rename "job-worker-${defaultProperties}.properties", 'job-worker.properties'
+    }
+}
+
+
+mainClassName = "com.tuotiansudai.scheduler.Main"

@@ -10,7 +10,7 @@
     <!-- link bootstrap css and js -->
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.10.1.min.js"></script> <!-- jquery -->
+    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.11.3.min.js"></script> <!-- jquery -->
     <script src="${requestContext.getContextPath()}/js/libs/bootstrap.min.js"></script>
     <script src="${requestContext.getContextPath()}/js/login.js"></script>
     <!-- link bootstrap css and js -->

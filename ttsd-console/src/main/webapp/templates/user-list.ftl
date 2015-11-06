@@ -8,12 +8,12 @@
     <title>用户管理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <link href="style/libs/jquery-ui/jquery-ui-1.10.3.custom.css" rel="stylesheet"/>
-    <link href="style/index.css" rel="stylesheet"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css" rel="stylesheet"/>
+    <link href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet"/>
+    <link href="${requestContext.getContextPath()}/style/index.css" rel="stylesheet"/>
 <@global.javascript pageJavascript="user-list.js"></@global.javascript>
 </head>
 <body>

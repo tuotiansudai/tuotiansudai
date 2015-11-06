@@ -1,19 +1,19 @@
-$(function () {
-    $('#datepicker1').datepicker({
-        format:'yyyy-mm-dd',
-        autoclose:true
+require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
+    $('#datepickerBegin,#datepickerEnd').datetimepicker({
+        format: 'YYYY-MM-DD'
     });
-    $('#datepicker2').datepicker({
-        format:'yyyy-mm-dd',
-        autoclose:true
+    $("#datepickerBegin").on("dp.change", function (e) {
+        $('#datepickerEnd').data("DateTimePicker").minDate(e.date);
     });
+    $("#datepickerEnd").on("dp.change", function (e) {
+        $('#datepickerBegin').data("DateTimePicker").maxDate(e.date);
+    });
+
     var tooltip = $('.add-tooltip');
     if (tooltip.length){
         tooltip.tooltip();
     }
-});
 
-$(function () {
     $(".search").on("click",function(){
         var status = $(".status").val();
         var loanId;
@@ -22,9 +22,11 @@ $(function () {
         } else {
             loanId = $(".loanId").val();
         }
-        var loanName = $(".loanName").val();
-        var startTime = $('#datepicker1').find("input").val();
-        var endTime = $('#datepicker2').find("input").val();
-        window.location.href = "/loanList/console?status="+status+"&loanId="+loanId+"&startTime="+startTime+"&endTime="+endTime+"&currentPageNo=1&loanName="+loanName+"&pageSize=10";
+        var formData=$("#formLoanList").serialize(),
+            allData=formData+'&currentPageNo=1&pageSize=10';
+        window.location.href = "/loanList/console?"+allData;
+
     });
+
 });
+
