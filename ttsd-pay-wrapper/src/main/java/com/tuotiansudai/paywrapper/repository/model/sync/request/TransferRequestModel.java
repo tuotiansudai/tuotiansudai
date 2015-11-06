@@ -29,13 +29,16 @@ public class TransferRequestModel extends BaseSyncRequestModel {
     public TransferRequestModel() {
     }
 
-    public TransferRequestModel(String payUserId,String amount,String orderId) {
-        super();
-        this.service = UmPayService.TRANSFER.getServiceName();
-        this.particUserId = payUserId;
-        this.amount = amount;
-        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.orderId = orderId;
+    public static TransferRequestModel newReferrerRewardRequest(String orderId, String payUserId, String amount) {
+        TransferRequestModel model = new TransferRequestModel();
+        model.service = UmPayService.TRANSFER.getServiceName();
+        model.orderId = orderId;
+        model.particUserId = payUserId;
+        model.amount = amount;
+        model.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return model;
     }
 
     @Override
@@ -43,10 +46,10 @@ public class TransferRequestModel extends BaseSyncRequestModel {
         Map<String, String> payRequestData = super.generatePayRequestData();
         payRequestData.put("partic_acc_type", this.particAccType);
         payRequestData.put("trans_action", this.transAction);
-        payRequestData.put("order_id",this.orderId);
-        payRequestData.put("partic_user_id",this.particUserId);
-        payRequestData.put("amount",this.amount);
-        payRequestData.put("mer_date",this.merDate);
+        payRequestData.put("order_id", this.orderId);
+        payRequestData.put("partic_user_id", this.particUserId);
+        payRequestData.put("amount", this.amount);
+        payRequestData.put("mer_date", this.merDate);
 
         return payRequestData;
     }

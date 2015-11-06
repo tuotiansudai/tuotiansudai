@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +56,31 @@ public class ReferrerManageController {
         boolean hasNextPage = currentPageNo < totalPages;
         modelAndView.addObject("hasPreviousPage",hasPreviousPage);
         modelAndView.addObject("hasNextPage",hasNextPage);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/referrerManageExcel",method = RequestMethod.GET)
+    public ModelAndView referrerManageExcel(@RequestParam(value = "referrerLoginName",required = false) String referrerLoginName,
+                                            @RequestParam(value = "investLoginName",required = false) String investLoginName,
+                                            @RequestParam(value = "investStartTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date investStartTime,
+                                            @RequestParam(value = "investEndTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date investEndTime,
+                                            @RequestParam(value = "level",required = false) Integer level,
+                                            @RequestParam(value = "rewardStartTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date rewardStartTime,
+                                            @RequestParam(value = "rewardEndTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date rewardEndTime,
+                                            @RequestParam(value = "role",required = false) Role role,HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("推荐人管理.xls", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("application/csv");
+        ModelAndView modelAndView = new ModelAndView("/referrer-manage-excel");
+        DateTime investDateTime = new DateTime(investEndTime);
+        DateTime rewardDateTime = new DateTime(rewardEndTime);
+        int referrerManageCount = referrerManageService.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime, level, rewardStartTime, rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime, role);
+        List<ReferrerManageView> referrerManageViews = referrerManageService.findReferrerManage(referrerLoginName,investLoginName,investStartTime,investEndTime!=null?investDateTime.plusDays(1).toDate():investEndTime,level,rewardStartTime,rewardEndTime!=null?rewardDateTime.plusDays(1).toDate():rewardEndTime,role,1,referrerManageCount);
+        modelAndView.addObject("referrerManageViews",referrerManageViews);
         return modelAndView;
     }
 

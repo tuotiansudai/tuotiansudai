@@ -186,4 +186,11 @@
         and invest.login_name = #{loginName}
         and invest.status &lt;&gt; 'FAIL'
     </select>
+
+    <select id="countSuccessInvest" parameterType="long" resultType="long">
+        select count(*)
+        from invest
+        where loan_id = #{loanId} and status = 'SUCCESS'
+
+    </select>
 </mapper>

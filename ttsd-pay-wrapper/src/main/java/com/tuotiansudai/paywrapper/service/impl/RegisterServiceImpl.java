@@ -45,7 +45,7 @@ public class RegisterServiceImpl implements RegisterService {
     private PaySyncClient paySyncClient;
 
     @Transactional
-    public BaseDto register(RegisterAccountDto dto) {
+    public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         MerRegisterPersonRequestModel requestModel = new MerRegisterPersonRequestModel(dto.getLoginName(),
                 dto.getUserName(),
                 dto.getIdentityNumber(),

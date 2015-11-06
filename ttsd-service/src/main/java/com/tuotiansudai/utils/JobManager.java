@@ -4,10 +4,7 @@ import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.utils.quartz.SchedulerBuilder;
 import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
 import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
-import org.quartz.Job;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
+import org.quartz.*;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +51,10 @@ public class JobManager implements InitializingBean {
         deleteJob(JobType.Default, jobGroup, jobName);
     }
 
+    public JobDetail findJobDetail(String jobGroup, String jobName) {
+        return findJobDetail(JobType.Default, jobGroup, jobName);
+    }
+
     public TriggeredJobBuilder newJob(JobType jobType, Class<? extends Job> jobClazz) {
         String schedulerName = "Scheduler-" + jobType.name();
         Scheduler scheduler = null;
@@ -67,13 +68,23 @@ public class JobManager implements InitializingBean {
 
     public void deleteJob(JobType jobType, String jobGroup, String jobName) {
         String schedulerName = "Scheduler-" + jobType.name();
-        Scheduler scheduler = null;
         try {
-            scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
+            Scheduler scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
             scheduler.deleteJob(JobKey.jobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    public JobDetail findJobDetail(JobType jobType, String jobGroup, String jobName) {
+        String schedulerName = "Scheduler-" + jobType.name();
+        try {
+            Scheduler scheduler = schedulerBuilder.buildScheduler(schedulerName, threadPool);
+            return scheduler.getJobDetail(JobKey.jobKey(jobName, jobGroup));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

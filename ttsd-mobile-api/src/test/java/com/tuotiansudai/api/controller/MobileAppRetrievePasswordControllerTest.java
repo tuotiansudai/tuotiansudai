@@ -26,9 +26,13 @@ public class MobileAppRetrievePasswordControllerTest extends ControllerTestBase 
 
     @Test
     public void retrievePasswordIsOk() throws Exception {
+        RetrievePasswordRequestDto retrievePasswordRequestDto = new RetrievePasswordRequestDto();
+        retrievePasswordRequestDto.setPassword("123abc");
+        retrievePasswordRequestDto.setValidateCode("123456");
+        retrievePasswordRequestDto.setPhoneNum("12345678900");
         when(service.retrievePassword(any(RetrievePasswordRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/retrievepassword",
-                new RetrievePasswordRequestDto());
+                retrievePasswordRequestDto);
     }
     @Test
     public void retrievePasswordIsValid() throws Exception {

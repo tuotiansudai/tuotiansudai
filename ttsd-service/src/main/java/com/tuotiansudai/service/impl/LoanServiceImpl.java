@@ -238,6 +238,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setLoanTitles(loanTitleRelationMapper.findByLoanId(loanModel.getId()));
         loanDto.setLoanTitleDto(loanTitleMapper.findAll());
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
+        loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
@@ -384,12 +385,26 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
+        } else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                payDataDto.setStatus(false);
+                baseDto.setData(payDataDto);
+                return baseDto;
+            }
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
+        }else {
+            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
+            if (CollectionUtils.isEmpty(userRoleModels)) {
+                payDataDto.setStatus(false);
+                baseDto.setData(payDataDto);
+                return baseDto;
+            }
         }
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
