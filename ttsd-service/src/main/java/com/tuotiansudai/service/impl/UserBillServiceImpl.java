@@ -18,8 +18,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserBillServiceImpl implements UserBillService {
@@ -46,7 +45,7 @@ public class UserBillServiceImpl implements UserBillService {
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("userBillBusinessType", userBillBusinessType)
                 .put("loginName", loginName)
-                .put("index", (index - 1) * pageSize)
+                .put("indexPage", (index - 1) * pageSize)
                 .put("startTime", startTime)
                 .put("endTime", endTime)
                 .put("pageSize", pageSize).build()));

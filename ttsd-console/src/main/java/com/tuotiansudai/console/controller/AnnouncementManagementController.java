@@ -11,8 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AnnouncementManagementController {
 
-    @RequestMapping(value = "/announcementManagement", method = RequestMethod.GET)
+    @RequestMapping(value = "/announceManage", method = RequestMethod.GET)
     public ModelAndView userFunds() {
-        return new ModelAndView("/announcement-management");
+        return new ModelAndView("/announce-manage");
     }
+    @RequestMapping(value = "/announceRelease", method = RequestMethod.GET)
+    public ModelAndView userFundsRelease() {
+        return new ModelAndView("/announce-release");
+    }
+
 }

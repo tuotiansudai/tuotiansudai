@@ -1,10 +1,5 @@
 window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'jquery-ui',
-    'bootstrap','bootstrapDatetimepicker','bootstrapSelect',
-    'moment','moment-with-locales', 'fileinput', 'fileinput_locale_zh',
-    'Validform_v5.3.2','Validform_Datatype',
-    'ueditor', 'ueditor-all','ueditor-lang', 'ueditor-config',
-    'csrf' ], function ($, ZeroClipboard) {
+require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicker', 'bootstrapSelect', 'moment', 'fileinput', 'fileinput_locale_zh', 'Validform', 'Validform_Datatype','ueditor', 'csrf'], function ($, template) {
     $(function () {
         var _html = '';
         var data = '';
@@ -150,7 +145,7 @@ require(['jquery', 'jquery-ui',
                 var obj = {};
                 obj.titleId = formGroup.eq(index).find('.jq-txt').val();
                 if (formGroup.eq(index).find('.file-preview-frame').index()) {
-                    obj.applyMetarialUrl = '';
+                    obj.applicationMaterialUrls = '';
                 } else {
                     formGroup.eq(index).find('.file-preview-frame').each(function (i) {
                         var _img = formGroup.eq(index).find('.file-preview-frame').eq(i).find('img').attr('src');
@@ -158,7 +153,7 @@ require(['jquery', 'jquery-ui',
                         _url = str.substring(0, str.lastIndexOf(','));
 
                     });
-                    obj.applyMetarialUrl = _url;
+                    obj.applicationMaterialUrls = _url;
                 }
                 uploadFile.push(obj);
             });

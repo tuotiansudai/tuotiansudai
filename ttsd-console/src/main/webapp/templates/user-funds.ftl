@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
@@ -8,40 +9,15 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
+<@global.javascript pageJavascript="user-funds.js"></@global.javascript>
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('#investDate .date').datepicker({
-                format:'yyyy-mm-dd',
-                autoclose:true
-            });
-            $('.selectpicker').selectpicker();
-
-            $('form button[type="reset"]').click(function () {
-                window.location.href = "/userFunds";
-            });
-
-            $('.search').click(function() {
-                var loginName = $('.jq-loginName').val();
-                var startTime = $('.jq-startTime').val();
-                var endTime = $('.jq-endTime').val();
-                var operationType = $('.operationType').val();
-                var businessType = $('.businessType').val();
-                window.location.href = "/userFunds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&currentPageNo=1&pageSize=10";
-            });
-
-        })
-    </script>
 </head>
 <body>
 <@menu.header label="finaMan"></@menu.header>
@@ -58,16 +34,16 @@
                             <label for="control-label">用户名</label>
                             <input type="text" class="form-control jq-loginName" value="${loginName!}">
                         </div>
-                        <div class="form-group" id="investDate">
+                        <div class="form-group">
                             <label for="control-label">时间</label>
-                            <div class='input-group date'>
+                            <div class='input-group date' id="investDateBegin">
                                 <input type='text' class="form-control jq-startTime" value="${(startTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                             </div>
                             -
-                            <div class='input-group date'>
+                            <div class='input-group date' id="investDateEnd">
                                 <input type='text' class="form-control jq-endTime" value="${(endTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -152,7 +128,7 @@
                                     <span>Next »</span></a>
                             </li>
                         </ul>
-                        <button class="btn btn-default pull-left" type="button">导出Excel</button>
+                        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
                     </nav>
                 </div>
             </div>
@@ -164,3 +140,6 @@
 <!-- main end -->
 </body>
 </html>
+<script>
+    var api_url = '${requestContext.getContextPath()}/loan/loaner';
+</script>

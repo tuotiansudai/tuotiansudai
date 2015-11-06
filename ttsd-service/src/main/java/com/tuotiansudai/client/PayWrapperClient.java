@@ -38,13 +38,11 @@ public class PayWrapperClient extends BaseClient {
 
     private String loanPath = "/loan";
 
-    private String loanOutPath = "/loan-out";
+    private String loanOutPath = "/loan/loan-out";
 
     private String withdrawPath = "/withdraw";
 
     private String investPath = "/invest";
-
-    private String investNopwdPath = "/invest-nopwd";
 
     private String agreementPath = "/agreement";
 
@@ -78,10 +76,6 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(dto, repayPath, "POST");
     }
 
-    public BaseDto<PayDataDto> investNopwd(InvestDto dto) {
-        return syncExecute(dto, investNopwdPath, "POST");
-    }
-
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {
         return syncExecute(dto, loanPath, "POST");
     }
@@ -102,6 +96,10 @@ public class PayWrapperClient extends BaseClient {
             logger.error(e.getLocalizedMessage(), e);
         }
         return Maps.newHashMap();
+    }
+
+    public BaseDto<PayDataDto> investCallback() {
+        return syncExecute(null, "/job/async_invest_notify", "POST");
     }
 
     public Map<String, String> getLoanStatus(long loanId) {
@@ -162,8 +160,7 @@ public class PayWrapperClient extends BaseClient {
 
     private BaseDto<PayDataDto> syncExecute(Object requestData, String requestPath, String method) {
         try {
-            String requestJson = objectMapper.writeValueAsString(requestData);
-            String responseJson = this.execute(requestPath, requestJson, method);
+            String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
             return this.parsePayResponseJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -178,8 +175,7 @@ public class PayWrapperClient extends BaseClient {
 
     private BaseDto<PayFormDataDto> asyncExecute(Object requestData, String requestPath, String method) {
         try {
-            String requestJson = objectMapper.writeValueAsString(requestData);
-            String responseJson = this.execute(requestPath, requestJson, method);
+            String responseJson = this.execute(requestPath, requestData != null ? objectMapper.writeValueAsString(requestData) : null, method);
             return this.parsePayFormJson(responseJson);
         } catch (JsonProcessingException e) {
             logger.error(e.getLocalizedMessage(), e);
