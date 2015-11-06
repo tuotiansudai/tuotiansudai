@@ -129,9 +129,6 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
 
     private String calculateRemainTime(Date fundraisingEndTime, LoanStatus status) {
 
-        if (fundraisingEndTime == null) {
-            return "未开始";
-        }
         Long time = (fundraisingEndTime.getTime() - System
                 .currentTimeMillis()) / 1000;
 
