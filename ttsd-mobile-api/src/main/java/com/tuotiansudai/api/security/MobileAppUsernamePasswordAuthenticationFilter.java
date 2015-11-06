@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.security;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -57,32 +56,5 @@ public class MobileAppUsernamePasswordAuthenticationFilter extends UsernamePassw
         }
 
         successfulAuthentication(request, response, chain, authResult);
-    }
-
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request,
-                                            HttpServletResponse response, FilterChain chain, Authentication authResult)
-            throws IOException, ServletException {
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Authentication success. Updating SecurityContextHolder to contain: "
-                    + authResult);
-        }
-
-        // Fire event
-        if (this.eventPublisher != null) {
-            eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(
-                    authResult, this.getClass()));
-        }
-
-        getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
-    }
-
-
-    public void setContinueChainBeforeSuccessfulAuthentication(
-            boolean continueChainBeforeSuccessfulAuthentication) {
-        super.setContinueChainBeforeSuccessfulAuthentication(continueChainBeforeSuccessfulAuthentication);
-        this.continueChainBeforeSuccessfulAuthentication = continueChainBeforeSuccessfulAuthentication;
     }
 }

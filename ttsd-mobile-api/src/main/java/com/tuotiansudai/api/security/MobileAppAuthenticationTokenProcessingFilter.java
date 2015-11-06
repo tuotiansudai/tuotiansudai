@@ -3,9 +3,10 @@ package com.tuotiansudai.api.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.security.MyUser;
 import com.tuotiansudai.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -61,19 +62,16 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         if (!Strings.isNullOrEmpty(token)) {
             loginName = mobileAppTokenProvider.getUserNameByToken(token);
         }
-        if (Strings.isNullOrEmpty(loginName)) {
-            BaseResponseDto dto = mobileAppTokenProvider.generateResponseDto(ReturnMessage.UNAUTHORIZED);
-            responseObject(httpServletResponse, dto);
-            return;
+        if (!Strings.isNullOrEmpty(loginName)) {
+            bufferedRequest.setAttribute("currentLoginName", loginName);
+            if (refreshTokenUrl.equalsIgnoreCase(uri)) {
+                processGenerateTokenRequest(httpServletResponse, loginName, token);
+                return;
+            }
+            this.authenticateToken(loginName);
+        } else {
+            this.authenticateAnonymousToken();
         }
-        bufferedRequest.setAttribute("currentLoginName", loginName);
-
-        if (refreshTokenUrl.equalsIgnoreCase(uri)) {
-            processGenerateTokenRequest(httpServletResponse, loginName, token);
-            return;
-        }
-
-        this.authenticateToken(loginName);
         chain.doFilter(bufferedRequest, response);
     }
 
@@ -92,7 +90,6 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         }
     }
 
-
     private void authenticateToken(String loginName) {
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginName);
 
@@ -101,6 +98,16 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         grantedAuthorities.add(grantedAuthority);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), grantedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private void authenticateAnonymousToken() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+        UserDetails userDetails = new MyUser("anonymousUser", "anonymousUser", true, true, true, true, grantedAuthorities, "", "");
+
+        AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(
+                userDetails.getUsername(), userDetails.getPassword(), grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
