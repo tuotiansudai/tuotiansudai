@@ -10,14 +10,9 @@
         <beans:property name="userPropertyToUse" value="salt"/>
     </beans:bean>
 
-    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.security.MyAccessDeniedHandler">
-        <beans:property name="errorPage" value="/403"/>
-        <beans:property name="errorPageMapping">
-            <beans:map>
-                <beans:entry key="/login" value="/"/>
-            </beans:map>
-        </beans:property>
-    </beans:bean>
+    <beans:bean id="myAccessDeniedHandler" class="com.tuotiansudai.api.security.MobileAppAccessDeniedHandler"/>
+    <beans:bean id="mobileAppAuthenticationEntryPoint"
+                class="com.tuotiansudai.api.security.MobileAppAuthenticationEntryPoint"/>
 
     <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaVerifier"/>
 
@@ -25,20 +20,52 @@
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
         <beans:property name="saltSource" ref="saltSource"/>
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
+        <beans:property name="usernameParameter" value="j_username"/>
+        <beans:property name="enableCaptchaVerify" value="false"/>
     </beans:bean>
 
-    <beans:bean id="mySimpleUrlAuthenticationSuccessHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationSuccessHandler"/>
-    <beans:bean id="mySimpleUrlAuthenticationFailureHandler" class="com.tuotiansudai.security.MySimpleUrlAuthenticationFailureHandler"/>
+    <beans:bean id="mobileAppTokenProvider" class="com.tuotiansudai.api.security.MobileAppTokenProvider">
+        <beans:property name="tokenExpiredSeconds" value="3600"/>
+    </beans:bean>
+    <beans:bean id="mobileAppAuthenticationSuccessHandler"
+                class="com.tuotiansudai.api.security.MobileAppAuthenticationSuccessHandler"/>
+    <beans:bean id="mobileAppAuthenticationFailureHandler"
+                class="com.tuotiansudai.api.security.MobileAppAuthenticationFailureHandler"/>
+    <beans:bean id="mobileAppLogoutSuccessHandler" class="com.tuotiansudai.api.security.MobileAppLogoutSuccessHandler"/>
 
-    <http auto-config="true" use-expressions="true">
+    <beans:bean id="tokenFilter" class="com.tuotiansudai.api.security.MobileAppAuthenticationTokenProcessingFilter">
+        <beans:property name="ignoreUrls" value="/login"/>
+        <beans:property name="refreshTokenUrl" value="/refresh-token"/>
+    </beans:bean>
+
+    <beans:bean id="loginFilter" class="com.tuotiansudai.api.security.MobileAppUsernamePasswordAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager"/>
+        <beans:property name="usernameParameter" value="j_username"/>
+        <beans:property name="passwordParameter" value="j_password"/>
+        <beans:property name="authenticationSuccessHandler" ref="mobileAppAuthenticationSuccessHandler"/>
+        <beans:property name="authenticationFailureHandler" ref="mobileAppAuthenticationFailureHandler"/>
+    </beans:bean>
+
+    <beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <beans:constructor-arg ref="mobileAppLogoutSuccessHandler"/>
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:bean
+                        class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+            </beans:list>
+        </beans:constructor-arg>
+        <beans:property name="filterProcessesUrl" value="/usermember/logout"/>
+    </beans:bean>
+
+    <http auto-config="true" use-expressions="true" disable-url-rewriting="true"
+          entry-point-ref="mobileAppAuthenticationEntryPoint">
         <csrf disabled="true"/>
         <access-denied-handler ref="myAccessDeniedHandler"/>
-        <form-login login-page="/login"
-                    login-processing-url="/loginHandler"
-                    authentication-success-handler-ref="mySimpleUrlAuthenticationSuccessHandler"
-                    authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
-
-        <intercept-url pattern="/**" access="isAnonymous()"/>
+        <custom-filter ref="tokenFilter" position="PRE_AUTH_FILTER"/>
+        <custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"/>
+        <custom-filter ref="logoutFilter" before="LOGOUT_FILTER"/>
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <!--<intercept-url pattern="/**" access="permitAll()"/>-->
     </http>
 
     <authentication-manager alias="authenticationManager">
