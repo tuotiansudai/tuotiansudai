@@ -6,9 +6,6 @@ import com.tuotiansudai.dto.PayFormDataDto;
 
 import java.util.Map;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 public interface AgreementService {
 
     BaseDto<PayFormDataDto> agreement(AgreementDto dto);

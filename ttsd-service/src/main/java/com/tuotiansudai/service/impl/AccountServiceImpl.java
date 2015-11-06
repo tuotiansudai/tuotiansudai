@@ -7,9 +7,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by Administrator on 2015/9/11.
- */
 @Service
 public class AccountServiceImpl implements AccountService {
 
