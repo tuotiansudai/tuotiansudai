@@ -90,14 +90,12 @@ p {
 .pad-m {
   padding: 30px;
 }
-.bgWhite {
-  background: nth($baseColor,1);
-}
+
 .error {
   color: $required;
 }
 // form validation
-.fa {
+.fa:before {
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -118,7 +116,12 @@ label {
     }
   }
 }
-input.valid + label.form-valid:before {
+
+input.valid + label.form-error:before {
+  content: '';
+}
+input.valid + label.form-valid:before,
+input.valid + label.valid:before{
       content: "\f058";
       font: normal normal normal 14px/1 FontAwesome;
       display: inline-block;

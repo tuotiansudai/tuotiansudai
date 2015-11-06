@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
-<div class="content-container auto-height">
+<div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
-        <div class="recharge">
+        <div class="recharge-bind-card">
         <ul class="payment-mode clear">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
@@ -40,9 +40,8 @@
             <#if isFastPayOn>
                 <div class="fast-recharge-form">
                     <form action="/recharge" method="post" target="_blank">
-                        <p>账户可用余额：<i>${balance}</i> 元</p>
-
-                        <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
+                        账户可用余额：<i>${balance}</i> 元 <br/>
+                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元
                         <input type="hidden" name="bankCode" value="${bankCode}"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
@@ -57,7 +56,8 @@
             </div>
 
             <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
-                <ol><b class="title">请选择银行：</b>
+                <b class="title">请选择银行：</b>
+                <ol>
                 <#list banks as bank>
                     <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
                         <input data-name="${bank}" type="radio" id="bank-${bank}" name="bank" <#if bank_index == 0>checked="checked"</#if>>
@@ -67,8 +67,8 @@
                 </ol>
                 <div class="recharge-form">
                     <form action="/recharge" method="post" target="_blank">
-                        <p>账户可用余额：<i>${balance}</i> 元</p>
-                        <p>输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元</p>
+                        账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
+                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                         <input class="selected-bank" type="hidden" name="backCode" value="CMB"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>

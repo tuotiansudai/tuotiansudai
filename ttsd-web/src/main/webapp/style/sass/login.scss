@@ -45,6 +45,7 @@
     }
      .forgot-password {
       font-size: 12px;
+
        a {
         color: #545353;
       }
@@ -53,8 +54,8 @@
         font-size: 12px;
       }
     }
-      a.login-submit.loading {
-        background: url("/images/login/loading.gif") no-repeat center center !important;
+    .login-submit.loading {
+        background: #ff7a2a url("/images/login/loading.gif") no-repeat center center !important;
         text-indent: -9999px;
       }
      b {
@@ -72,8 +73,16 @@
   .error {
     font-size: 12px;
     visibility: hidden;
+    margin-left: 60px;
   }
-  & div.right {
-    background: url("/images/login/ok.png") 95px center no-repeat;
-  }
+}
+
+.register-container {
+  height: auto;
+  overflow: hidden;
+  background: #fff;
+  margin: 12px auto;
+  border: #cecece 1px solid;
+  border-radius: 3px;
+  position: relative;
 }

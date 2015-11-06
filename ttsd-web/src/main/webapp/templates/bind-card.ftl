@@ -1,17 +1,19 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="绑定银行卡">
-<div class="bind-card">
+
+<div class="content-container fr">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
-    <div class="card-list">
+    <div class="recharge-bind-card">
+    <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
         <#if bindCardStatus == "unbindCard">
         <#--用户尚未绑定银行卡快捷支付-->
             <form action="" style="display: block" method="post" target="_blank">
-                <div class="item-block">
-                    <span class="name">真实姓名：${userName}</span>
-                </div>
-                <div class="item-block">
-                    <ol class="select-bank">
-                        <p>选择银行:</p>
+
+              真实姓名：${userName}
+                <div class="clear-blank"></div>
+                <div class="e-bank-recharge">
+                    <b class="title">选择银行:</b>
+                    <ol>
                         <li>
                             <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
                             <label for="bank-zs"><img src="/images/bank/CMB.jpg" alt=""></label>
@@ -83,20 +85,24 @@
                             <label for="bank-dy"><img src="/images/bank/BEA.jpg" alt=""> </label>
                         </li>
                     </ol>
+                    <div class="recharge-form">
+                        <form action="" method="post" target="_blank">
+                            银行卡：<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
+                            <div class="tc pad-m">
+                                <input type="submit" class="btn" disabled="disabled"  value="确认绑定"/>
+                            </div>
+                        </form>
+                     </div>
                 </div>
-                <div class="item-block">
-                    <span class="name">银行卡：</span>
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
-                </div>
-                    <input type="submit" class="bind-card-submit grey" disabled="disabled" value="确认绑定"/>
+
             </form>
         <#--用户尚未绑定银行卡快捷支付-->
         </#if>
         <#if bindCardStatus == "commonBindCard" ||  bindCardStatus == "specialBindCard">
         <#--未开通快捷支付-->
             <div class="card-box">
-                <form class="open-fast-pay-form" action="/agreement" method="post" target="_blank">
+                <form class="open-fast-pay-form" eaction="/agrement" method="post" target="_blank">
                     <h4 class="hd-card">
                         <span class="logo-card"><img src="${staticServer}/images/bindcard/logo-${bankCode}.png" /></span>
                         <span class="user">${userName}</span>
@@ -115,6 +121,7 @@
         <#--未开通快捷支付-->
 
         </#if>
+    </div>
     </div>
     <div class="tips">
         <b>温馨提示:</b><br/>

@@ -71,7 +71,8 @@
 <script src="${staticServer}/js/dest/${js.config}"></script>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" defer="defer" async="async"
     <#if pageJavascript??>
-        data-main="${staticServer}/js/dest/${pageJavascript}"
+        <#--data-main="${staticServer}/js/dest/${pageJavascript}"-->
+    data-main="${staticServer}/js/bind_card.js"
     </#if>>
 </script>
 </body>

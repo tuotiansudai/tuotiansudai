@@ -52,7 +52,7 @@
           text-decoration: underline;
         }
       }
-      p {
+      .f-title {
         height: 18px;
         line-height: 18px;
         margin-top: 52px;
@@ -166,6 +166,8 @@
     width: 833px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    overflow: hidden;
+    background: nth($baseColor,1);
+    height: auto;
+    overflow: auto;
   }
 }

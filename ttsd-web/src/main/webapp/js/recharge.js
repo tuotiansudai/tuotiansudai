@@ -1,7 +1,7 @@
 require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
     $(function () {
         var $rechargeForm = $('.recharge-form'),
-            $rechargeCon = $(".recharge"),
+            $rechargeCon = $(".recharge-bind-card"),
             $fastRechargeForm = $(".fast-recharge-form");
 
         var tabElement = $('.payment-mode li'),

@@ -117,8 +117,6 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
 
         var submitLoginForm = function () {
             loginFormElement.ajaxSubmit({
-                
-
                 beforeSubmit: function (arr, $form, options) {
                     loginSubmitElement.toggleClass('loading');
                 },

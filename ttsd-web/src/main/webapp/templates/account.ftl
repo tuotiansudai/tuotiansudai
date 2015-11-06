@@ -1,56 +1,45 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
-<@global.head title="账户总览" pageCss="${css.global}"></@global.head>
-</head>
-<body>
-<#include "header.ftl" />
-<div class="mainFrame AccountOverview">
-    <aside class="menuBox fl">
-        <ul class="menu-list">
-            <li><a href="javascript:" class="actived">账户总览</a></li>
-            <li><a href="javascript:">投资记录</a></li>
-            <li><a href="javascript:">债权转让</a></li>
-            <li><a href="javascript:">资金管理</a></li>
-            <li><a href="javascript:">个人资产</a></li>
-            <li><a href="javascript:" >自动投标</a></li>
-            <li><a href="javascript:">积分红包</a></li>
-            <li><a href="javascript:">推荐管理</a></li>
-        </ul>
-    </aside>
-    <div class="contentContainer fr autoHeight">
-        <div class="bRadiusBox spad">
-            <img src="/images/sign/profile.jpg" class="fl accountImg" >
-            <div class="profileBox">
-                <span><em>您好：${loginName!}</em></span>
-                <ul class="proList">
-                    <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
-                    <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
-                    <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
-                </ul>
-            </div>
+<@global.main pageCss="" pageJavascript="${js.account_overview}" activeNav="我的账户" activeLeftNav="账户总览" title="账户总览">
+<script type="text/javascript">
+    var pydata = {
+        balance:'${((balance/100)?string('0.00'))!}',
+        collectingPrincipal:'${((collectingPrincipal/100)?string('0.00'))!}',
+        collectingInterest:'${((collectingInterest/100)?string('0.00'))!}'
+    };
+</script>
+<div class="content-container fr account-overview">
+    <div class="bRadiusBox spad bg-w">
+        <img src="/images/sign/profile.jpg" class="fl accountImg" >
+        <div class="profileBox">
+            <span><em>您好：${loginName!}</em></span>
+            <ul class="proList">
+                <li class="fl"><a class="fa fa-envelope-o fa-fw" href="/personal-info"></a></li>
+                <li class="fr"><a class="btn-normal" href="/recharge">充值</a></li>
+                <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
+            </ul>
+        </div>
 
+    </div>
+    <div class="clear-blank"></div>
+    <div class="AssetsBox bg-w">
+        <div class="AssetsReport bRadiusBox fl">
+            <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
+            <div id="ReportShow" style="width:100%; height:115px; "></div>
         </div>
-        <div class="clearBlank"></div>
-        <div class="AssetsBox">
-            <div class="AssetsReport bRadiusBox fl">
-                <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
-                <div id="ReportShow" style="width:100%; height:115px; "></div>
-            </div>
-            <div class="AssetsDetail bRadiusBox fr">
-                <ul class="DetailList">
-                    <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
-                    <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
-                    <li><b>待收本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
-                    <li><b>待收利息：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
-                    <li><b>已收利息：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
-                    <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
-                </ul>
-            </div>
+        <div class="AssetsDetail bRadiusBox fr">
+            <ul class="DetailList">
+                <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
+                <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收本金：</b><span>${((collectingPrincipal/100)?string('0.00'))!}</span>元</li>
+                <li><b>待收利息：</b><span>${((collectingInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>已收利息：</b><span>${((collectedInterest/100)?string('0.00'))!}</span>元</li>
+                <li><b>冻结金额：</b><span>${((freeze/100)?string('0.00'))!}</span>元</li>
+            </ul>
         </div>
-        <div class="clearBlank"></div>
+    </div>
+    <div class="clear-blank"></div>
     <#if successSumRepay??>
-        <div class="LastMonth bRadiusBox">
+        <div class="LastMonth bRadiusBox bg-w">
             <ul class="PaymentSwitch">
                 <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
             </ul>
@@ -87,26 +76,26 @@
             </table>
         </div>
     </#if>
-        <div class="clearBlank"></div>
-        <div class="tMonthPayment bRadiusBox" id="tMonthBox">
+    <div class="clear-blank"></div>
+    <div class="tMonthPayment bRadiusBox bg-w" id="tMonthBox">
 
-            <ul class="PaymentSwitch">
-                <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
-                <li><a href="javascript:void(0);">本月待收回款</a></li>
-            </ul>
-            <table class="table table-striped">
-                <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
-                <thead>
-                <tr>
-                    <th>项目名称</th>
-                    <th>年利率</th>
-                    <th>贷款周期</th>
-                    <th>项目周期</th>
-                    <th>预计还款</th>
-                    <th>还款日期</th>
-                </tr>
-                </thead>
-                <tbody>
+        <ul class="PaymentSwitch">
+            <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
+            <li><a href="javascript:void(0);">本月待收回款</a></li>
+        </ul>
+        <table class="table table-striped">
+            <caption>本月已收回款总额：￥${((successSumInvestRepay/100)?string('0.00'))!}元 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
+            <thead>
+            <tr>
+                <th>项目名称</th>
+                <th>年利率</th>
+                <th>贷款周期</th>
+                <th>项目周期</th>
+                <th>预计还款</th>
+                <th>还款日期</th>
+            </tr>
+            </thead>
+            <tbody>
                 <#if successSumInvestRepayList??>
                     <#list successSumInvestRepayList as successSumInvestRepay>
                     <tr>
@@ -119,26 +108,26 @@
                     </tr>
                     </#list>
                 </#if>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
-                </tr>
-                </tfoot>
-            </table>
-            <table class="table table-striped">
-                <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a> </caption>
-                <thead>
-                <tr>
-                    <th>项目名称</th>
-                    <th>年利率</th>
-                    <th>贷款周期</th>
-                    <th>项目周期</th>
-                    <th>预计还款</th>
-                    <th>还款日期</th>
-                </tr>
-                </thead>
-                <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
+            </tr>
+            </tfoot>
+        </table>
+        <table class="table table-striped">
+            <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a> </caption>
+            <thead>
+            <tr>
+                <th>项目名称</th>
+                <th>年利率</th>
+                <th>贷款周期</th>
+                <th>项目周期</th>
+                <th>预计还款</th>
+                <th>还款日期</th>
+            </tr>
+            </thead>
+            <tbody>
                 <#if notSuccessSumInvestRepayList??>
                     <#list notSuccessSumInvestRepayList as notSuccessSumInvestRepay>
                     <tr>
@@ -151,29 +140,29 @@
                     </tr>
                     </#list>
                 </#if>
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-        <div class="clearBlank"></div>
-        <div class="newProjects bRadiusBox">
-            <table class="table">
-                <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a> </caption>
-                <thead>
-                <tr>
-                    <th>交易时间</th>
-                    <th>交易详情</th>
-                    <th>交易状态</th>
-                    <th>下次回款</th>
-                    <th>我的投资</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6" class="tc">本月应收本息${(((successSumInvestRepay+notSuccessSumInvestRepay)/100)?string('0.00'))!}元</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="clear-blank"></div>
+    <div class="newProjects bRadiusBox bg-w">
+        <table class="table">
+            <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a> </caption>
+            <thead>
+            <tr>
+                <th>交易时间</th>
+                <th>交易详情</th>
+                <th>交易状态</th>
+                <th>下次回款</th>
+                <th>我的投资</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
                 <#if (latestInvestList?size>0)>
                     <#list latestInvestList as latestInvest>
                     <tr>
@@ -190,27 +179,8 @@
                     <td colspan="6" class="tc">暂时没有记录</td>
                 </tr>
                 </#if>
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
-
-
-<#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.accountOverview}">-->
-<#--</@global.javascript>-->
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-        defer
-        async="true"
-        data-main="${requestContext.getContextPath()}/js/accountOverview.js"></script>
-<script>
-    var pydata = {
-        balance:'${((balance/100)?string('0.00'))!}',
-        collectingPrincipal:'${((collectingPrincipal/100)?string('0.00'))!}',
-        collectingInterest:'${((collectingInterest/100)?string('0.00'))!}'
-    };
-</script>
-</body>
-</html>
+</@global.main>

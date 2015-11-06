@@ -5,23 +5,24 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="register">
-    <ul>
-        <li class="register-step-one-title register-arrow active">1 注册</li>
-        <li class="register-step-two-title register-arrow">2 实名验证</li>
-        <li class="register-step-three-title register-arrow">3 充值投资</li>
+<div class="register-container page-width">
+    <ul class="step-tab">
+        <li class="first on"><s></s>1 注册<g></g></li>
+        <li><s></s>2 实名验证<g></g></li>
+        <li class="last"><s></s>3 充值投资<g></g></li>
     </ul>
-    <div class="register-step-one register-step active">
-        <ol>
+    <div class="clear-blank"></div>
+    <div class="register-step-one register-box">
+        <ul class="reg-list tl">
             <form class="register-user-form" action="/register/user" method="post">
                 <li>
-                    <input type="text" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" class="login-name"/>
+                    <input type="text" class="login-name input-control" class="" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
                 <li>
-                    <input type="text" name="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" class="mobile"/>
+                    <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
-                <li>
-                    <input type="text" name="captcha" placeholder="请输入验证码" class="captcha" maxlength="6" value="${(originalFormData.captcha)!}"/>
+                <li class="captcha-tag">
+                    <input type="text" name="captcha" class="captcha" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
                     <button class="fetch-captcha grey" disabled="disabled">获取验证码</button>
                 </li>
                 <li>
@@ -45,7 +46,7 @@
 
                 <input type="submit" class="register-user" value="下一步"/>
             </form>
-        </ol>
+        </ul>
     </div>
 </div>
 <div class="agreement-dialog"></div>
@@ -108,15 +109,16 @@
     <p>
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
-<div class="image-captcha-dialog-mask"></div>
-<div class="image-captcha-dialog">
-    <div class="image-captcha-dialog-title">手机验证<i class="close">X</i></div>
+
+<div class="image-captcha-dialog pad-m">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
-        <div class="image-captcha-wrapper">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
+<div class="clear-blank-m"></div>
+        <div class="tc">
+            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
         </div>
-        <input type="submit" class="image-captcha-confirm" value="确定"/>
+
     </form>
 </div>
 <#include "footer.ftl">

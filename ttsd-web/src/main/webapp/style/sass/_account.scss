@@ -1,14 +1,6 @@
 @import 'variables';
 @import 'pagination';
 
-.color-info {
-  color: nth($CK1, 3);
-}
-
-.color-note {
-  color: nth($CK1, 1);
-}
-
 .column-title {
   height: 48px;
   line-height: 46px;
@@ -453,7 +445,7 @@
 
 //Account Overview
 .account-overview {
-  .content-container {
+  &.content-container {
     border: 0;
     border-radius: 0;
     background: none;
@@ -549,31 +541,6 @@
   .tMonthPayment {
     table {
       tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-      tfoot tr td {
-        border-top: 1px solid nth($CK1, 1);
-        border-bottom: 1px solid nth($CK1, 1);
-      }
-    }
-    .PaymentSwitch {
-      li {
-        float: left;
-        font-size: nth($fontSize, 4);
-        margin-right: 18px;
-        margin-bottom: 10px;
-        a {
-          color: nth($CK2, 5);
-        }
-        &.current a {
-          color: nth($CK1, 1);
-        }
-      }
-    }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1) > td {
         border-bottom-width: 0px;
       }
       tfoot tr td {
@@ -582,6 +549,20 @@
       }
     }
 
+  }
+  .PaymentSwitch {
+    li {
+      float: left;
+      font-size: nth($fontSize, 4);
+      margin-right: 18px;
+      margin-bottom: 10px;
+      a {
+        color: nth($CK2, 5);
+      }
+      &.current a {
+        color: nth($CK1, 1);
+      }
+    }
   }
   .newProjects {
     &.bRadiusBox {
@@ -695,8 +676,8 @@
   }
 }
 
-//recharge page
-.recharge {
+//recharge and bind-card pages
+.recharge-bind-card {
   margin: 10px;
   & ul.payment-mode {
     border-bottom: 1px solid #ccc;
@@ -769,21 +750,10 @@
     padding: 15px 10px;
     .recharge-form, .fast-recharge-form {
       clear: both;
-      p {
-        margin: 10px 0 0 35px;
-        color: #353535;
-        font-size: 15px;
-        i {
-          color: #ffac2a;
-          margin-left: 10px;
-        }
-        input {
-          width: 160px;
-          margin: 0 10px;
-          padding: 0 15px;
-          line-height: 30px;
-        }
-      }
+      margin-left: 30px;
+      font-size: 15px;
+      line-height: 40px;
+      color: #353535;
     }
     .e-bank-recharge {
       display: none;
@@ -792,15 +762,16 @@
       &.active {
         display: block;
       }
+      b.title {
+        display: block;
+      }
       ol {
         width: 798px;
         z-index: 1;
         float: left;
         overflow: hidden;
         padding: 10px 0;
-        b.title {
-          display: block;
-        }
+
         p {
           line-height: 30px;
           padding-left: 25px;
@@ -959,7 +930,13 @@
     }
   }
 }
+.bind-card-frame {
+  border-top-width: 1px!important;
+  .e-bank-recharge {
+    display: block!important;
 
+  }
+}
 .withdraw {
   border: 1px solid #ccc;
   overflow: hidden;
@@ -1292,10 +1269,9 @@
   }
 }
 
+/* bind card page style*/
 .bind-card {
-  border: 1px solid #ccc;
-  overflow: hidden;
-  margin: 10px;
+
   & .hd-bind-card {
     height: 50px;
     border-bottom: 2px solid #d5d5d5;
