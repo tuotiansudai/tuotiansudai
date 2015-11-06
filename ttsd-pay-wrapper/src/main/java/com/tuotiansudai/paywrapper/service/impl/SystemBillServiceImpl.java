@@ -22,11 +22,11 @@ public class SystemBillServiceImpl implements SystemBillService {
     @Transactional
     public void transferOut(long amount, String orderId, SystemBillBusinessType businessType, String detail) {
         SystemBillModel systemBillModel = new SystemBillModel();
+        systemBillModel.setOrderId(orderId);
         systemBillModel.setType(SystemBillOperationType.OUT);
         systemBillModel.setAmount(amount);
-        systemBillModel.setDetail(detail);
-        systemBillModel.setOrderId(orderId);
         systemBillModel.setBusinessType(businessType);
+        systemBillModel.setDetail(detail);
         systemBillModel.setCreatedTime(new Date());
         systemBillMapper.create(systemBillModel);
     }

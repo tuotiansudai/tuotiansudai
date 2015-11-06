@@ -5,8 +5,6 @@ import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.security.MyUser;
-import com.tuotiansudai.utils.UUIDGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +33,7 @@ public class BindEmailServiceTest {
     private UserMapper userMapper;
 
     @Test
-    public void shouldVerifyEmailIsOk(){
+    public void shouldVerifyEmailIsOk() {
         UserModel fakeUser = getFakeUser("loginname");
         userMapper.create(fakeUser);
         mockLoginUser("loginname", "11900000000");

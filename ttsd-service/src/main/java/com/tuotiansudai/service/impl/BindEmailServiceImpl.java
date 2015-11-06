@@ -6,7 +6,6 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BindEmailService;
-import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.SendCloudMailUtil;
 import com.tuotiansudai.utils.UUIDGenerator;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 @Service
@@ -47,7 +47,7 @@ public class BindEmailServiceImpl implements BindEmailService {
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
-            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{host}",host).replace("{port}",port).replace("{uuid}",uuid);
+            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{uuid}", uuid);
 
             redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
                     86400,
@@ -65,33 +65,35 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Override
     @Transactional
-    public String verifyEmail(String uuid) {
-        if(StringUtils.isEmpty(uuid)){
-            return "";
+    public String verifyEmail(String uuid)  {
+        if (StringUtils.isEmpty(uuid)) {
+            return null;
         }
         String bindEmailKeyTemplate = "web:{loginName}:{uuid}";
         String loginName = LoginUserInfo.getLoginName();
         String bindEmailKey = bindEmailKeyTemplate.replace("{loginName}", loginName).replace("{uuid}", uuid);
         String bindEmailValue = redisWrapperClient.get(bindEmailKey);
-        if(StringUtils.isEmpty(bindEmailValue)){
-            logger.debug(bindEmailKey + "绑定邮箱链接已经过期!");
-            return "";
+        if (StringUtils.isEmpty(bindEmailValue)) {
+            logger.debug(bindEmailKey + "绑定邮箱失败，绑定邮箱链接已经过期!");
+            return null;
         }
         String[] loginNameAndEmail = bindEmailValue.split(":");
-        if(!loginName.equals(loginNameAndEmail[0])){
-            logger.debug("bindEmailKey=" + bindEmailKey+ ",bindEmailValue="+ bindEmailValue + "!");
-            return "";
+        if (!loginName.equals(loginNameAndEmail[0])) {
+            logger.debug(MessageFormat.format("绑定邮箱失败，绑定邮箱链接非法! bindEmailKey={0} bindEmailValue={1}", bindEmailKey, bindEmailValue));
+            return null;
         }
-        UserModel userModelEmail = userMapper.findByEmail(loginNameAndEmail[1]);
-        if(userModelEmail != null){
-            return "";
+        String email = loginNameAndEmail[1];
+        UserModel userModelEmail = userMapper.findByEmail(email);
+        if (userModelEmail != null) {
+            logger.error(MessageFormat.format("绑定邮箱失败，{0} 已被绑定!", email));
+            return null;
         }
         UserModel userModel = userMapper.findByLoginName(loginName);
-        userModel.setEmail(loginNameAndEmail[1]);
+        userModel.setEmail(email);
         userMapper.updateUser(userModel);
         redisWrapperClient.del(bindEmailKey);
 
-        return loginNameAndEmail[1];
+        return email;
     }
 
 }
