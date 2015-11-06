@@ -14,25 +14,17 @@ import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
 public class MobileAppLoanListServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppLoanListServiceImpl mobileAppRegisterService;

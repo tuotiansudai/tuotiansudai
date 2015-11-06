@@ -1,37 +1,22 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.*;
+import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.CertificationRequestDto;
+import com.tuotiansudai.api.dto.CertificationResponseDataDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
-import com.tuotiansudai.api.service.impl.MobileAppRegisterServiceImpl;
-import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.model.CaptchaType;
-import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.service.SmsCaptchaService;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.UserService;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-@Transactional
 public class MobileAppCertificationServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppCertificationServiceImpl mobileAppCertificationService;

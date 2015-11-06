@@ -1,10 +1,11 @@
 package com.tuotiansudai.api.dto;
 
 
-public class InvestRequestDto extends BaseParamDto{
+public class InvestRequestDto extends BaseParamDto {
     private String userId;
-    private double investMoney;
+    private String investMoney;
     private String loanId;
+    @Deprecated
     private String password;
 
 
@@ -25,19 +26,21 @@ public class InvestRequestDto extends BaseParamDto{
         this.loanId = loanId;
     }
 
+    @Deprecated
     public String getPassword() {
         return password;
     }
 
+    @Deprecated
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public double getInvestMoney() {
+    public String getInvestMoney() {
         return investMoney;
     }
 
-    public void setInvestMoney(double investMoney) {
+    public void setInvestMoney(String investMoney) {
         this.investMoney = investMoney;
     }
 }

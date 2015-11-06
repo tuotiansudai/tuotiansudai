@@ -1,15 +1,19 @@
 package com.tuotiansudai.exception;
 
 public class InvestException extends BaseException {
+    private final InvestExceptionType type;
 
-    public InvestException() {
+    public InvestException(InvestExceptionType exceptionType) {
+        super(exceptionType.getDescription());
+        this.type = exceptionType;
     }
 
-    public InvestException(String msg) {
-        super(msg);
+    public InvestException(InvestExceptionType exceptionType, Throwable e) {
+        super(exceptionType.getDescription(), e);
+        this.type = exceptionType;
     }
 
-    public InvestException(String msg, Throwable e) {
-        super(msg, e);
+    public InvestExceptionType getType() {
+        return type;
     }
 }

@@ -47,7 +47,7 @@ public enum ReturnMessage {
     INVEST_PASSWORD_IS_NULL("0030","投资密码为空"),
     UMPAY_INVEST_MESSAGE_INVALID("0031","请求第三方加密失败"),
     INSUFFICIENT_BALANCE("0032","账户余额不足，请充值"),
-    EXCEED_MONEY_NEED_RAISED("0033","投资金额不能大于尚未募集的金额！"),
+    EXCEED_MONEY_NEED_RAISED("0033","标的可投金额不足"),
     UNREACHED_MONEY_LIMIT_EXCETPTION("0034","投资金额未到达优惠券使用条件"),
     LLLEGAL_LOAN_STATUS_EXCEPTION("0035","当前借款不可投资"),
     NO_MATCHING_OBJECTS_EXCEPTION("0036","投资失败"),
@@ -56,6 +56,12 @@ public enum ReturnMessage {
     INVEST_CAN_NOT_BE_FOUND("0040","查找不到投资详情"),
     NOT_SUFFICIENT_FUNDS("0045","账户余额不足"),
     NO_MATCH_XS_INVEST_CONDITION("0050","不符合新手标投资条件"),
+    ILLEGAL_INVEST_AMOUNT("0051","投资金额不符合递增金额要求"),
+    MORE_THAN_MAX_INVEST_AMOUNT("0052","投资金额超过了用户投资限额"),
+    LOAN_IS_FULL("0052","标的已满"),
+    LESS_THAN_MIN_INVEST_AMOUNT("0054","投资金额小于标的最小投资金额"),
+    OUT_OF_NOVICE_INVEST_LIMIT("0055","新手标投资已超上限"),
+    INVEST_FAILED("0056","投资失败"),
 
     /******手机端投资******/
 
@@ -90,7 +96,7 @@ public enum ReturnMessage {
     NOT_OPNE_FAST_PAYMENT("0046","未开通快捷支付"),
 
     USER_IS_DISABLED("0049", "登录尝试次数过多，用户已被禁用"),
-    CANNOT_GET_APK_VERSION("0050", "查找不到版本信息"),
+    CANNOT_GET_APK_VERSION("0060", "查找不到版本信息"),
 
     BAD_REQUEST("0400", "非法请求"),
     UNAUTHORIZED("0401", "未授权");
