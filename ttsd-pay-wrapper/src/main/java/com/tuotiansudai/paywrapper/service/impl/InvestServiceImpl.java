@@ -198,8 +198,8 @@ public class InvestServiceImpl implements InvestService {
         return respData;
     }
 
-
-    public BaseDto<BaseDataDto> asyncInvestCallback(){
+    @Override
+    public BaseDto<PayDataDto> asyncInvestCallback(){
         int limitCount = 10;
         List<InvestNotifyRequestModel> todoList = investNotifyRequestMapper.getTodoList(limitCount);
 
@@ -209,8 +209,8 @@ public class InvestServiceImpl implements InvestService {
             }
         }
 
-        BaseDto<BaseDataDto> asyncInvestNotifyDto = new BaseDto<>();
-        BaseDataDto baseDataDto = new BaseDataDto();
+        BaseDto<PayDataDto> asyncInvestNotifyDto = new BaseDto<>();
+        PayDataDto baseDataDto = new PayDataDto();
         baseDataDto.setStatus(true);
         asyncInvestNotifyDto.setData(baseDataDto);
 

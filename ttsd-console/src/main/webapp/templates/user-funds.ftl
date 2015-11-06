@@ -9,13 +9,13 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="style/index.css">
-
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
 <@global.javascript pageJavascript="user-funds.js"></@global.javascript>
 
 </head>
@@ -128,7 +128,7 @@
                                     <span>Next »</span></a>
                             </li>
                         </ul>
-                        <button class="btn btn-default pull-left" type="button">导出Excel</button>
+                        <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
                     </nav>
                 </div>
             </div>
@@ -140,3 +140,6 @@
 <!-- main end -->
 </body>
 </html>
+<script>
+    var api_url = '${requestContext.getContextPath()}/loan/loaner';
+</script>

@@ -3,13 +3,32 @@ package com.tuotiansudai.repository.model;
 import java.util.Date;
 
 public class InvestReferrerRewardModel {
-    private long id ;
+
+    private long id;
+
     private long investId;
-    private Date time;
-    private long bonus;
+
+    private long amount;
+
     private String referrerLoginName;
+
+    private Role referrerRole;
+
     private ReferrerRewardStatus status;
-    private Role roleName;
+
+    private Date createdTime = new Date();
+
+    public InvestReferrerRewardModel() {
+    }
+
+    public InvestReferrerRewardModel(long id, long investId, long amount, String referrerLoginName, Role referrerRole) {
+        this.id = id;
+        this.investId = investId;
+        this.amount = amount;
+        this.referrerLoginName = referrerLoginName;
+        this.referrerRole = referrerRole;
+        this.status = ReferrerRewardStatus.FAILURE;
+    }
 
     public long getId() {
         return id;
@@ -27,20 +46,12 @@ public class InvestReferrerRewardModel {
         this.investId = investId;
     }
 
-    public Date getTime() {
-        return time;
+    public long getAmount() {
+        return amount;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public long getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(long bonus) {
-        this.bonus = bonus;
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
     public String getReferrerLoginName() {
@@ -51,6 +62,14 @@ public class InvestReferrerRewardModel {
         this.referrerLoginName = referrerLoginName;
     }
 
+    public Role getReferrerRole() {
+        return referrerRole;
+    }
+
+    public void setReferrerRole(Role referrerRole) {
+        this.referrerRole = referrerRole;
+    }
+
     public ReferrerRewardStatus getStatus() {
         return status;
     }
@@ -59,12 +78,11 @@ public class InvestReferrerRewardModel {
         this.status = status;
     }
 
-    public Role getRoleName() {
-        return roleName;
+    public Date getCreatedTime() {
+        return createdTime;
     }
 
-    public void setRoleName(Role roleName) {
-        this.roleName = roleName;
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
-
 }

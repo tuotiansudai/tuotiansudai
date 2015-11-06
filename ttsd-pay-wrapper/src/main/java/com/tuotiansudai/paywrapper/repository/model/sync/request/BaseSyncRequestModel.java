@@ -15,7 +15,7 @@ public abstract class BaseSyncRequestModel {
 
     static Logger logger = Logger.getLogger(BaseSyncRequestModel.class);
 
-    private static Properties UMP_PROPS = new Properties();
+    protected static Properties UMP_PROPS = new Properties();
 
     private Long id;
 
