@@ -73,7 +73,7 @@
           loan_repay l
           JOIN loan t
             ON l.`loan_id` = t.`id`
-            AND l.`status` IN ('REPAYING', 'COMPLETE', 'OVERDUE')
+            AND t.`status` IN ('REPAYING', 'COMPLETE', 'OVERDUE')
         WHERE DATE_FORMAT(l.`repay_date`, '%Y-%m') = #{date}
         <if test="repayStatus != null and repayStatus.name() == 'COMPLETE'">
           AND l.`status` = 'COMPLETE'
