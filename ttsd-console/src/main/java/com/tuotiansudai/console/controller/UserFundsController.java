@@ -64,7 +64,7 @@ public class UserFundsController {
                                           HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.xls", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.csv", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
