@@ -25,7 +25,7 @@
           ) AS total_amount
         FROM
           (
-          <if test="repayStatus == null or repayStatus == 'COMPLETE'">
+          <if test="repayStatus == null or repayStatus.name() == 'COMPLETE'">
           SELECT
             DATE_FORMAT(m.`actual_repay_date`, '%Y-%m') AS repay_date,
             SUM(m.`actual_interest`) AS interest,
@@ -40,7 +40,7 @@
           UNION
           ALL
         </if>
-        <if test="repayStatus == null or repayStatus != 'COMPLETE'">
+        <if test="repayStatus == null or repayStatus.name() != 'COMPLETE'">
           SELECT
             DATE_FORMAT(m.`repay_date`, '%Y-%m') AS repay_date,
             SUM(m.`expected_interest`) AS interest,
@@ -75,10 +75,10 @@
             ON l.`loan_id` = t.`id`
             AND l.`status` IN ('REPAYING', 'COMPLETE', 'OVERDUE')
         WHERE DATE_FORMAT(l.`repay_date`, '%Y-%m') = #{date}
-        <if test="repayStatus != null and repayStatus == 'COMPLETE'">
+        <if test="repayStatus != null and repayStatus.name() == 'COMPLETE'">
           AND l.`status` = 'COMPLETE'
         </if>
-        <if test="repayStatus != null and repayStatus != 'COMPLETE'">
+        <if test="repayStatus != null and repayStatus.name() != 'COMPLETE'">
           AND l.`status` != 'COMPLETE'
         </if>
         ORDER BY l.`repay_date`
