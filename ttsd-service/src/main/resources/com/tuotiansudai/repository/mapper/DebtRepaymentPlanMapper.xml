@@ -67,7 +67,7 @@
           t.`name` AS loan_name,
           t.`id` AS loan_id,
           t.`agent_login_name` AS login_name,
-          t.`status`,
+          l.`status`,
           l.`actual_repay_date`
         FROM
           loan_repay l
