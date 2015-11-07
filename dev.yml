@@ -8,6 +8,7 @@ web:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "static-server"
 console:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
@@ -18,6 +19,7 @@ console:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "static-server"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
@@ -65,3 +67,7 @@ worker-invest:
       - "pay-wrapper"
       - "sms-wrapper"
       - "redis-server"
+static-server:
+  image: "nginx"
+    volumes:
+        - ./ttsd-web/build/static:/usr/share/nginx/html:ro
