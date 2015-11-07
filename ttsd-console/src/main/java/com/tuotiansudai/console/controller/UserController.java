@@ -30,9 +30,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/edit-user");

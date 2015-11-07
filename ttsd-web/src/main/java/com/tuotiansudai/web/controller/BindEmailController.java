@@ -26,23 +26,18 @@ public class BindEmailController {
     public BaseDto<BaseDataDto> bindEmail(HttpServletRequest request) {
         String email = request.getParameter("email");
         String url = request.getRequestURL().toString();
-        boolean result =  bindEmailService.sendActiveEmail(email,url);
+        boolean result = bindEmailService.sendActiveEmail(email, url);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);
         baseDto.setData(dataDto);
         return baseDto;
     }
-    @RequestMapping(value = "/verify/{sign}",method = RequestMethod.GET)
-    public ModelAndView verifyEmail(@PathVariable String sign){
 
-        ModelAndView mv = new ModelAndView("/bind-email");
-        String email = bindEmailService.verifyEmail(sign);
-        mv.addObject("email",email);
-        return mv;
+    @RequestMapping(value = "/verify/{sign}", method = RequestMethod.GET)
+    public ModelAndView verifyEmail(@PathVariable String sign) {
+        return new ModelAndView("/bind-email", "email", bindEmailService.verifyEmail(sign));
     }
-
-
 
 
 }

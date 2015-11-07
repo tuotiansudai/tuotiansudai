@@ -1,32 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
 <#import "macro/global.ftl" as global>
-<@global.head title="邮箱提示" pageCss="${css.global}">
-</@global.head>
-<body>
-<#include "header.ftl" />
-<div class="emailBindBox">
-    <div class="emailBindTip pad-s">
-        <h2 class="tl"><i class="icon-msg1"></i>绑定邮箱提示</h2>
-        <form action="/personal-info" method="get">
-            <#if email?has_content>
-                <p class="pad-m">您的邮箱 ${email}已经绑定成功！</p>
-                <button class="btn btn-normal" type="submit" >
-                    确定
-                </button>
-            <#else>
-                <p class="pad-m">您的邮箱验证失败！请重新验证 </p>
-                <button class="btn btn-normal" type="submit">
-                    确定
-                </button>
-            </#if>
-        </form>
-
-
+<@global.main pageCss="" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
+<div class="content-container fr auto-height personal-info">
+    <h4 class="column-title"><em class="tc long-title">绑定邮箱提示</em></h4>
+    <div class="pad-m tc">
+        <div>
+            <div class="pad-s">
+                <#if email??>
+                    <h3 class="pad-m">您的邮箱 ${email}已经绑定成功！</h3>
+                <#else>
+                    <h3 class="pad-m">您的邮箱验证失败，请重新绑定！</h3>
+                </#if>
+                <button class="btn btn-normal redirect-to-personal-info" type="button">确定</button>
+            </div>
+        </div>
     </div>
 </div>
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.index}">
-</@global.javascript>
-</body>
-</html>
+</@global.main>
