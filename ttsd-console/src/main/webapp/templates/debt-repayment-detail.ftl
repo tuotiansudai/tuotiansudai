@@ -9,12 +9,12 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css" />
 <@global.javascript pageJavascript="debt-repay-plan.js"></@global.javascript>
 
 </head>
@@ -30,19 +30,20 @@
 
                 <div class="row">
                     <div class="col-md-3">
-                        <div class="pull-left currentTab"><span> 债权还款计划 > 全部</span></div>
+                        <div class="pull-left currentTab"><span> 债权还款计划</span></div>
                     </div>
                     <div class="col-md-9 text-right">
                         <form action="" class="form-inline query-build">
+                            <input type="hidden" class="date" value="${(date?string('yyyy-MM'))!}">
                             <div class="form-group">
 
                                 <select class="selectpicker"  data-style="btn-default" >
-                                    <option>全部</option>
-                                    <option>已还款</option>
-                                    <option>未还款</option>
+                                    <option value="" <#if repayStatus??><#else>checked</#if>>全部</option>
+                                    <option value="COMPLETE" <#if repayStatus?? && repayStatus=='COMPLETE'>checked</#if>>已还款</option>
+                                    <option value="REPAYING" <#if repayStatus?? && repayStatus!='COMPLETE'>checked</#if>>未还款</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary" type="submit">查询</button>
+                            <button class="btn btn-primary jq-search-detail" type="button">查询</button>
                         </form>
                     </div>
                 </div>
@@ -60,33 +61,25 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>2015-10-03</td>
-                            <td> 104.50</td>
-                            <td>新手的标</td>
-                            <td>tuotiantian</td>
-                            <td class="badgeCol">尚未还款</td>
-                            <td>---</td>
-
-                        </tr>
-                        <tr>
-                            <td>2015-10-03</td>
-                            <td> 104.50</td>
-                            <td>新手的标</td>
-                            <td>tuotiantian</td>
-                            <td class="badgeCol">尚未还款</td>
-                            <td>---</td>
-
-                        </tr>
-                        <tr>
-                            <td>2015-10-03</td>
-                            <td> 104.50</td>
-                            <td>新手的标</td>
-                            <td>tuotiantian</td>
-                            <td>还款完成</td>
-                            <td>2015-10-01</td>
-
-                        </tr>
+                        <#list debtRepaymentPlanDetails as debtRepaymentPlanDetail>
+                            <tr>
+                                <td>${(debtRepaymentPlanDetail.expertRepayDate?string('yyyy-MM-dd'))!}</td>
+                                <td>${((debtRepaymentPlanDetail.repayAmount/100)?string('0.00'))!}</td>
+                                <td>${debtRepaymentPlanDetail.loanName!}</td>
+                                <td>${debtRepaymentPlanDetail.loginName!}</td>
+                                <#if debtRepaymentPlanDetail.status == 'COMPLETE'>
+                                    <td>还款完成</td>
+                                <#else>
+                                    <td class="badgeCol">尚未还款</td>
+                                </#if>
+                                <#if debtRepaymentPlanDetail.actualRepayDate??>
+                                    <td>${(debtRepaymentPlanDetail.actualRepayDate?string(yyyy-MM-dd))!}</td>
+                                <#else>
+                                    <td>---</td>
+                                </#if>
+                                <td></td>
+                            </tr>
+                        </#list>
                         </tbody>
                     </table>
                 </div>
