@@ -69,5 +69,5 @@ worker-invest:
       - "redis-server"
 static-server:
   image: "nginx"
-    volumes:
-        - ./ttsd-web/build/static:/usr/share/nginx/html:ro
+  volumes:
+      - ./ttsd-web/build/static:/usr/share/nginx/html:ro
