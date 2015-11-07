@@ -11,5 +11,5 @@ public interface DebtRepaymentPlanService {
 
     List<DebtRepaymentPlanView> findDebtRepaymentPlan(RepayStatus repayStatus);
 
-    List<DebtRepaymentPlanView> findDebtRepaymentPlanDetail(RepayStatus repayStatus, Date date);
+    List<DebtRepaymentPlanView> findDebtRepaymentPlanDetail(RepayStatus repayStatus, String date);
 }

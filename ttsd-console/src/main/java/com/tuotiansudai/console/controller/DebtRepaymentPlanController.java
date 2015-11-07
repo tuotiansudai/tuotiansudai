@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-
 @Controller
 public class DebtRepaymentPlanController {
 
@@ -26,7 +24,7 @@ public class DebtRepaymentPlanController {
     }
 
     @RequestMapping(value = "/debtRepaymentDetail", method = RequestMethod.GET)
-    public ModelAndView debtRepaymentPlanDetail(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,@RequestParam("date") Date date) {
+    public ModelAndView debtRepaymentPlanDetail(@RequestParam(value = "repayStatus",required = false) RepayStatus repayStatus,@RequestParam("date") String date) {
         ModelAndView modelAndView = new ModelAndView("/debt-repayment-detail");
         modelAndView.addObject("debtRepaymentPlanDetails",this.debtRepaymentPlanService.findDebtRepaymentPlanDetail(repayStatus,date));
         modelAndView.addObject("repayStatus",repayStatus);

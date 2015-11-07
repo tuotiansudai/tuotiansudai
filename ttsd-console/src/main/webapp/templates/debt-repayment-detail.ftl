@@ -34,13 +34,13 @@
                     </div>
                     <div class="col-md-9 text-right">
                         <form action="" class="form-inline query-build">
-                            <input type="hidden" class="date" value="${(date?string('yyyy-MM'))!}">
+                            <input type="hidden" class="date" value="${date!}">
                             <div class="form-group">
 
-                                <select class="selectpicker"  data-style="btn-default" >
-                                    <option value="" <#if repayStatus??><#else>checked</#if>>全部</option>
-                                    <option value="COMPLETE" <#if repayStatus?? && repayStatus=='COMPLETE'>checked</#if>>已还款</option>
-                                    <option value="REPAYING" <#if repayStatus?? && repayStatus!='COMPLETE'>checked</#if>>未还款</option>
+                                <select class="selectpicker status"  data-style="btn-default" >
+                                    <option value="" <#if repayStatus??><#else>selected="selected" </#if>>全部</option>
+                                    <option value="COMPLETE" <#if repayStatus?? && repayStatus=='COMPLETE'>selected="selected" </#if>>已还款</option>
+                                    <option value="REPAYING" <#if repayStatus?? && repayStatus=='REPAYING'>selected="selected" </#if>>未还款</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary jq-search-detail" type="button">查询</button>
@@ -73,11 +73,10 @@
                                     <td class="badgeCol">尚未还款</td>
                                 </#if>
                                 <#if debtRepaymentPlanDetail.actualRepayDate??>
-                                    <td>${(debtRepaymentPlanDetail.actualRepayDate?string(yyyy-MM-dd))!}</td>
+                                    <td>${(debtRepaymentPlanDetail.actualRepayDate?string('yyyy-MM-dd'))!}</td>
                                 <#else>
                                     <td>---</td>
                                 </#if>
-                                <td></td>
                             </tr>
                         </#list>
                         </tbody>

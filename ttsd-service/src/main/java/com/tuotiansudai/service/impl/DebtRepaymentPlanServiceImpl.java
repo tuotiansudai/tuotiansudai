@@ -7,7 +7,6 @@ import com.tuotiansudai.service.DebtRepaymentPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +21,7 @@ public class DebtRepaymentPlanServiceImpl implements DebtRepaymentPlanService{
     }
 
     @Override
-    public List<DebtRepaymentPlanView> findDebtRepaymentPlanDetail(RepayStatus repayStatus, Date date) {
+    public List<DebtRepaymentPlanView> findDebtRepaymentPlanDetail(RepayStatus repayStatus, String date) {
         return debtRepaymentPlanMapper.findDebtRepaymentPlanDetail(repayStatus,date);
     }
 }

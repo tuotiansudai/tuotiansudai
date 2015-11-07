@@ -37,9 +37,9 @@
                         <div class="form-group">
 
                             <select class="selectpicker status"  data-style="btn-default" >
-                                <option value="" <#if repayStatus??><#else>checked</#if>>全部</option>
-                                <option value="COMPLETE" <#if repayStatus?? && repayStatus=='COMPLETE'>checked</#if>>已还款</option>
-                                <option value="REPAYING" <#if repayStatus?? && repayStatus!='COMPLETE'>checked</#if>>未还款</option>
+                                <option value="" <#if repayStatus??><#else>selected="selected" </#if>>全部</option>
+                                <option value="COMPLETE" <#if repayStatus?? && repayStatus=="COMPLETE">selected="selected" </#if>>已还款</option>
+                                <option value="REPAYING" <#if repayStatus?? && repayStatus=="REPAYING">selected="selected" </#if>>未还款</option>
                             </select>
                         </div>
                         <button class="btn btn-primary jq-search" type="button">查询</button>
@@ -58,7 +58,7 @@
                         <tbody>
                         <#list debtRepaymentPlans as debtRepaymentPlan>
                             <tr>
-                                <td><a href="/debtRepaymentDetail?date=${(debtRepaymentPlan.repayDate?string('yyyy-MM'))!}" class="linked">${(debtRepaymentPlan.repayDate?string('yyyy-MM'))!}</a></td>
+                                <td><a href="/debtRepaymentDetail?date=${debtRepaymentPlan.repayDate!}" class="linked">${debtRepaymentPlan.repayDate!}</a></td>
                                 <td>${((debtRepaymentPlan.totalAmount/100)?string('0.00'))!}</td>
                             </tr>
                         </#list>

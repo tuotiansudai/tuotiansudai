@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class DebtRepaymentPlanView {
 
-    private Date repayDate;
+    private String repayDate;
 
     private long totalAmount;
 
@@ -23,11 +23,11 @@ public class DebtRepaymentPlanView {
 
     private Date actualRepayDate;
 
-    public Date getRepayDate() {
+    public String getRepayDate() {
         return repayDate;
     }
 
-    public void setRepayDate(Date repayDate) {
+    public void setRepayDate(String repayDate) {
         this.repayDate = repayDate;
     }
 
