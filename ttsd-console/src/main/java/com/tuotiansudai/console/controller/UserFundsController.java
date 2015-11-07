@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -53,5 +55,25 @@ public class UserFundsController {
         return modelAndView;
     }
 
-
+    @RequestMapping(value = "/userFundsDownload", method = RequestMethod.GET)
+    public ModelAndView userFundsDownload(@RequestParam(value = "userBillBusinessType",required = false) UserBillBusinessType userBillBusinessType,
+                                          @RequestParam(value = "userBillOperationType",required = false) UserBillOperationType userBillOperationType,
+                                          @RequestParam(value = "loginName",required = false) String loginName,
+                                          @RequestParam(value = "startTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,
+                                          @RequestParam(value = "endTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
+                                          HttpServletResponse response) {
+        response.setCharacterEncoding("UTF-8");
+        try {
+            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.csv", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("application/csv");
+        ModelAndView modelAndView = new ModelAndView("/user-funds-download");
+        DateTime dateTime = new DateTime(endTime);
+        int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime!=null?dateTime.plusDays(1).toDate():endTime);
+        List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime!=null?dateTime.plusDays(1).toDate():endTime, 1, userFundsCount);
+        modelAndView.addObject("userBillModels",userBillModels);
+        return modelAndView;
+    }
 }

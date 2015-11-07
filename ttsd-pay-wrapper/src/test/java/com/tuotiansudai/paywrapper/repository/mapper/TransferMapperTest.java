@@ -25,7 +25,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferRequest() {
-        TransferRequestModel model = new TransferRequestModel("1111","100","" + 12345678);
+        TransferRequestModel model = TransferRequestModel.newReferrerRewardRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");
@@ -38,7 +38,7 @@ public class TransferMapperTest {
 
     @Test
     public void shouldCreateTransferResponse(){
-        TransferRequestModel model = new TransferRequestModel("1111","100","" + 12345678);
+        TransferRequestModel model = TransferRequestModel.newReferrerRewardRequest(String.valueOf(System.currentTimeMillis()), "payUserId", "1");
         model.setMerDate("2015-05-05");
         model.setSign("sign");
         model.setRequestUrl("url");
@@ -65,6 +65,5 @@ public class TransferMapperTest {
         responseModel.setRequestId(model.getId());
         transferMapper.createResponse(responseModel);
         assertNotNull(responseModel.getId());
-
     }
 }

@@ -2,6 +2,7 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
@@ -22,6 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class PersonalInfoController {
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -36,12 +40,12 @@ public class PersonalInfoController {
         String mobile = LoginUserInfo.getMobile();
         AccountModel accountModel = accountService.findByLoginName(loginName);
         BankCardModel bankCard = bindBankCardService.getPassedBankCard();
-
         ModelAndView mv = new ModelAndView("/personal-info");
         mv.addObject("loginName", loginName);
         mv.addObject("userName", accountModel.getUserName());
         mv.addObject("identityNumber", accountModel.getIdentityNumber());
         mv.addObject("mobile", mobile);
+        mv.addObject("email", userMapper.findByLoginName(loginName).getEmail());
         if (bankCard != null) {
             mv.addObject("bankCard", bankCard.getCardNumber());
         }
@@ -56,6 +60,17 @@ public class PersonalInfoController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
         dataDto.setStatus(userService.verifyPasswordCorrect(password));
+
+        return baseDto;
+    }
+
+    @RequestMapping(path = "/email/{email}/is-exist", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> isEmailExist(@PathVariable String email) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        BaseDataDto dataDto = new BaseDataDto();
+        baseDto.setData(dataDto);
+        dataDto.setStatus(userService.emailIsExist(email));
 
         return baseDto;
     }

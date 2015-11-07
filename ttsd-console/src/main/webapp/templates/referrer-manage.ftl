@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
@@ -8,51 +9,22 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
+    <@global.javascript pageJavascript="referer-manage.js"></@global.javascript>
 
-    <link rel="stylesheet" href="style/index.css">
 
-    <script type="text/javascript" src="js/libs/jquery-1.10.1.min.js"></script>
-    <script type="text/javascript" src="../js/libs/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-select.js"></script>
-    <script type="text/javascript" src="../../js/libs/bootstrap-datepicker.js"></script>
-
-<script type="text/javascript">
-    $(function() {
-        $('#RewardDate .date,#investDate .date').datepicker({
-            format:'yyyy-mm-dd',
-            autoclose:true
-        });
-        $('.selectpicker').selectpicker();
-
-        $('form button[type="reset"]').click(function () {
-            window.location.href = "/referrerManage";
-        });
-
-        $('.search').on('click',function(){
-            var referrerLoginName = $('.referrerLoginName').val();
-            var investLoginName = $('.investLoginName').val();
-            var investStartTime = $('.investStartTime').val();
-            var investEndTime = $('.investEndTime').val();
-            var level = $('.level').val();
-            var rewardStartTime = $('.rewardStartTime').val();
-            var rewardEndTime = $('.rewardEndTime').val();
-            var role = $('.role').val();
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&currentPageNo=1&pageSize=10';
-        });
-
-    })
-</script>
 </head>
 <body>
-<@menu.header label="userMan"></@menu.header>
+<@menu.header label="userMain"></@menu.header>
 <div class="main">
     <div class="container-fluid">
         <div class="row">
-        <@menu.sidebar headLab="userMan" sideLab="referMan"></@menu.sidebar>
+        <@menu.sidebar headLab="userMain" sideLab="referMan"></@menu.sidebar>
             <!-- content area begin -->
 
          <div class="col-md-10">
@@ -60,22 +32,23 @@
              <div class="row">
                  <div class="form-group">
                      <label for="control-label">推荐人</label>
-                     <input type="text" class="form-control referrerLoginName" value="${referrerLoginName!}">
+                     <input type="text" id="tags" class="form-control referrerLoginName" name="referrerLoginName" value="${referrerLoginName!}">
                  </div>
                  <div class="form-group">
                      <label for="control-label">投资人</label>
-                     <input type="text" class="form-control investLoginName" value="${investLoginName!}">
+                     <input type="text" id="tags_1" class="form-control investLoginName" name="investLoginName" value="${investLoginName!}">
                  </div>
              <div class="form-group" id="investDate">
                  <label for="control-label">投资时间</label>
-                 <div class='input-group date'>
-                     <input type='text' class="form-control investStartTime" value="${(investStartTime?string('yyyy-MM-dd'))!}"/>
+                 <div class='input-group date' id="investDateBegin">
+                     <input type='text' class="form-control investStartTime"  value="${(investStartTime?string('yyyy-MM-dd'))!}"/>
+
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                  </div>
                  -
-                 <div class='input-group date'>
+                 <div class='input-group date'  id="investDateEnd">
                      <input type='text' class="form-control investEndTime" value="${(investEndTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -87,16 +60,16 @@
                  <label for="control-label">推荐层级</label>
                  <input type="text" class="form-control level" value="${(level?string('0'))!}">
              </div>
-                 <div class="form-group" id="RewardDate">
+                 <div class="form-group" id="">
                      <label for="control-label">奖励时间</label>
-                     <div class='input-group date'>
+                     <div class='input-group date' id="RewardDateBegin">
                          <input type='text' class="form-control rewardStartTime" value="${(rewardStartTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
                      </div>
                      -
-                     <div class='input-group date'>
+                     <div class='input-group date' id="RewardDateEnd">
                          <input type='text' class="form-control rewardEndTime" value="${(rewardEndTime?string('yyyy-MM-dd'))!}"/>
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
@@ -183,7 +156,7 @@
                              </a>
                          </li>
                      </ul>
-                     <button class="btn btn-default pull-left" type="button">导出Excel</button>
+                     <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
                  </nav>
              </div>
         </div>
@@ -195,3 +168,6 @@
 <!-- main end -->
 </body>
 </html>
+<script>
+    var api_url = '${requestContext.getContextPath()}/loan/loaner';
+</script>

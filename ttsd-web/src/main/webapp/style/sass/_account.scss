@@ -19,6 +19,9 @@
     border-bottom: #e06b0c 2px solid;
     width: 110px;
     color: #ffac2a;
+    &.long-title {
+      width: 140px;
+    }
   }
 }
 
@@ -794,7 +797,7 @@
       }
     }
     .fast-recharge {
-      height: 125px;
+      height: 200px;
       .bind-card-nav {
         span {
           margin: 20px auto;

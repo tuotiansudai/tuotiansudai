@@ -26,11 +26,9 @@ import java.util.List;
 
 @Controller
 public class UserController {
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private UserService userService;
 
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {

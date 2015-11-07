@@ -1,8 +1,6 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 
@@ -15,8 +13,12 @@ public interface InvestService {
 
     String investCallback(Map<String, String> paramsMap, String queryString);
 
-    public void autoInvest(long loanId);
+    BaseDto<PayDataDto> asyncInvestCallback();
 
-    public List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
+    String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString);
+
+    void autoInvest(long loanId);
+
+    List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
 }

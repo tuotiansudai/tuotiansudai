@@ -18,6 +18,10 @@ public class InvestNotifyInfo {
      */
     private String email;
 
+    private long investId;
+
+    private int periods;
+
     public String getLoanName() {
         return loanName;
     }
@@ -49,4 +53,22 @@ public class InvestNotifyInfo {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(int periods) {
+        this.periods = periods;
+    }
+
+    public long getInvestId() {
+        return investId;
+    }
+
+    public void setInvestId(long investId) {
+        this.investId = investId;
+    }
+
+
 }

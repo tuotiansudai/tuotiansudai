@@ -69,13 +69,12 @@ public class UserBillMapperTest {
         billBusinessTypes.add(UserBillBusinessType.ACTIVITY_REWARD);
         billBusinessTypes.add(UserBillBusinessType.ADVANCE_REPAY);
         params.put("userBillBusinessType",billBusinessTypes);
-        params.put("currentPage",1);
+        params.put("indexPage",1);
         params.put("startTime",new Date());
         params.put("endTime",new Date());
         params.put("pageSize",10);
         List<UserBillModel> list = userBillMapper.findUserBills(params);
-        int count = userBillMapper.findUserBillsCount(params);
-        assertTrue(list.size() == count);
+        assertTrue(list.size() <= 10);
     }
 
 }
