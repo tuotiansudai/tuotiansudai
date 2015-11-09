@@ -13,7 +13,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         layer.open({
             type: 1,
             title: '手机验证',
-            area: ['360px', '225px'],
+            area: ['360px', '190px'],
             shadeClose: true,
             content: $('.image-captcha-dialog'),
             success: function(layero, index){
