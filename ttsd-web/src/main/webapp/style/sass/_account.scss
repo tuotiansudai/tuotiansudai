@@ -607,7 +607,7 @@
     }
     .binding-set {
       display: inline-block;
-      width: 110px;
+      width: 130px;
       float: right;
       .ok {
         color: #2ac30c;
@@ -649,6 +649,142 @@
 
   }
 
+}
+
+/* I want to invest page*/
+.loan-list-content {
+  .wrapper-list {
+    li {
+      border-bottom: 1px solid #e6e6e6;
+      padding:12px;
+      span {
+        padding-right: 10px;
+      }
+      a {
+        color: #000;
+        font-size: 12px;
+        padding: 7px 13px;
+        &:hover, &.active {
+          color: #fff;
+          background: #ffac2a;
+          border-radius: 3px;
+        }
+      }
+      &:nth-last-child(1) {
+        padding-bottom:0;
+      }
+      &:nth-child(1) {
+        padding-top:0;
+      }
+    }
+
+  }
+  .loan-list-box ul {
+    & li {
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      padding: 2px;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #fff;
+      &:hover{
+        border:1px solid #cc0000;
+        background: #fff;
+      }
+       .hot {
+        width: 59px;
+        height: 59px;
+        background: url("../../images/loan/loan-hot.png") no-repeat;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+       .loan-info-frame {
+        width: 690px;
+         padding-bottom: 10px;
+        border-right: 1px solid #ccc;
+        text-align: center;
+         .loan-top {
+           padding:10px 50px 0px 60px;
+           height: auto;
+           overflow: auto;
+           line-height: 50px;
+           .l-title {
+             font-size: 24px;
+             color: #4e4e4e;
+           }
+           .l-way {
+             font-size: 12px;
+             color: nth($CK1,2);
+           }
+         }
+         .loan-info-dl {
+           width: 90%;
+           margin: 10px auto;
+           dl {
+             width:33%;
+             float: left;
+             color: #808080;
+             font-size: 20px;
+               em {
+                 color: nth($CK1, 2);
+                 font-size: 30px;
+               }
+           }
+         }
+      }
+       .loan-process {
+         float: left;
+         width: 240px;
+         margin: 20px 30px;
+         .p-title {
+           font-size: nth($fontSize,1);
+           color: #999;
+           line-height: 1.8;
+           .point {
+             color: nth($CK1,2);
+         }
+         }
+         .process-percent {
+          border-radius: 3px;
+          background: #ffe3d4;
+          height: 8px;
+          width:100%;
+          overflow: hidden;
+          position: relative;
+           .percent {
+            width: 50px;
+            position: absolute;
+            height: 100%;
+            background: #ff752a;
+          }
+        }
+         .rest-amount {
+           color: #ff752a;
+           font-size: 14px;
+           padding-top:30px;
+           i {
+             font-size: 24px;
+           }
+           .btn-normal {
+             padding:7px 0;
+             width:100%;
+             font-size: 18px;
+             font-weight: bold;
+           }
+           &.finish-invest {
+             color: #999;
+             button:disabled {
+               background: #ccc!important;
+               border-color: #ccc!important;
+             }
+           }
+          }
+      }
+    }
+  }
 }
 
 .bind-card-layer {
