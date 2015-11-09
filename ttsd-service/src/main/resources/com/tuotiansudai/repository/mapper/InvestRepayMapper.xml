@@ -217,7 +217,7 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
-              l.`loan_id`
+              l.`id` as `loan_id`
             FROM
               invest i
               JOIN loan l
