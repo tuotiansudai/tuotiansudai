@@ -24,10 +24,20 @@ public class MobileAppInvestListControllerTest extends ControllerTestBase {
     }
 
     @Test
-    public void queryInvestList() throws Exception {
+    public void shouldQueryInvestListIsOk() throws Exception {
         when(service.generateInvestList(any(InvestListRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/get/invests",
                 new InvestListRequestDto());
+    }
+    @Test
+    public void shouldQueryInvestListIsBadRequest() throws Exception {
+        InvestListRequestDto investListRequestDto = new InvestListRequestDto();
+        investListRequestDto.setIndex(1);
+        investListRequestDto.setPageSize(10);
+        investListRequestDto.setLoanId("abc123");
+        when(service.generateInvestList(any(InvestListRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/invests",
+                investListRequestDto);
     }
 
     @Test
