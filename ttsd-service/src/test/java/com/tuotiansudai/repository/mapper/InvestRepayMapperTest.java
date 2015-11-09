@@ -12,14 +12,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -86,6 +85,7 @@ public class InvestRepayMapperTest {
 
         assertThat(secondInvestRepayModel.getId(), is(investRepayModel2.getId()));
     }
+
     @Test
     public void shouldFindSumRepaidCorpusByLoginNameIsOk() {
         InvestModel investModel = this.getFakeInvestModel();
@@ -104,6 +104,8 @@ public class InvestRepayMapperTest {
 
         assertEquals(1000l, corpus);
     }
+
+    @Test
     public void shouldFindCompletedInvestRepayByIdAndPeriod() throws Exception {
         InvestModel investModel = this.getFakeInvestModel();
         investMapper.create(investModel);
@@ -156,6 +158,40 @@ public class InvestRepayMapperTest {
                 is(new DateTime(investRepayModel.getActualRepayDate().getTime()).withTimeAtStartOfDay().getMillis()));
     }
 
+    @Test
+    public void shouldFindByLoginNameAndStatus() {
+        InvestModel fakeInvestModel = getFakeInvestModel();
+        investMapper.create(fakeInvestModel);
+
+        List<InvestRepayModel> investRepayModels = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            InvestRepayModel investRepayModel = new InvestRepayModel();
+            investRepayModel.setId(idGenerator.generate());
+            investRepayModel.setInvestId(fakeInvestModel.getId());
+            investRepayModel.setPeriod(i + 1);
+            investRepayModel.setRepayDate(new DateTime().withDate(2015, 1, i + 1).withTimeAtStartOfDay().toDate());
+            if (i > 20) {
+                investRepayModel.setStatus(RepayStatus.REPAYING);
+            } else {
+                investRepayModel.setStatus(RepayStatus.COMPLETE);
+                investRepayModel.setActualRepayDate(investRepayModel.getRepayDate());
+            }
+            investRepayModels.add(investRepayModel);
+        }
+        investRepayMapper.create(investRepayModels);
+
+        List<InvestRepayModel> repayModelsPaid = investRepayMapper.findByLoginNameAndStatus(fakeInvestModel.getLoginName(), "paid", 0, Integer.MAX_VALUE);
+        List<InvestRepayModel> repayModelsUnPaid = investRepayMapper.findByLoginNameAndStatus(fakeInvestModel.getLoginName(), "unpaid", 0, Integer.MAX_VALUE);
+        long repayModelCountPaid = investRepayMapper.findCountByLoginNameAndStatus(fakeInvestModel.getLoginName(), "paid");
+        long repayModelCountUnPaid = investRepayMapper.findCountByLoginNameAndStatus(fakeInvestModel.getLoginName(), "unpaid");
+
+        assertEquals(21, repayModelsPaid.get(0).getPeriod());
+        assertEquals(22, repayModelsUnPaid.get(0).getPeriod());
+
+        assertEquals(21, repayModelCountPaid);
+        assertEquals(9, repayModelCountUnPaid);
+    }
+
     private UserModel getFakeUserModel() {
         UserModel fakeUserModel = new UserModel();
         fakeUserModel.setLoginName("loginName");
@@ -185,7 +221,7 @@ public class InvestRepayMapperTest {
         fakeLoanModel.setStatus(LoanStatus.REPAYING);
         return fakeLoanModel;
     }
-    
+
     private InvestModel getFakeInvestModel() {
         UserModel fakeUserModel = this.getFakeUserModel();
         LoanModel fakeLoanModel = this.getFakeLoanModel();
@@ -199,6 +235,6 @@ public class InvestRepayMapperTest {
         fakeInvestModel.setStatus(InvestStatus.SUCCESS);
         return fakeInvestModel;
     }
-    
+
 
 }
