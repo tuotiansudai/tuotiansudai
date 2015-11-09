@@ -5,18 +5,18 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.job.DeadlineFundraisingJob;
+import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.DateUtil;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.utils.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,6 +65,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private JobManager jobManager;
 
     /**
      * @param loanTitleDto
@@ -307,6 +310,7 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
+                    createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
                     return investLoanDto;
                 }
             }
@@ -319,6 +323,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        LoanModel nowLoanModel = loanMapper.findById(loanDto.getId());
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
@@ -330,6 +335,31 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         updateLoanAndLoanTitleRelation(loanDto);
+        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
+            createDeadLineFundraisingJob(new LoanModel(loanDto));
+        }
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> delayLoan(LoanDto loanDto) {
+        LoanModel nowLoanModel = loanMapper.findById(loanDto.getId());
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        if (loanMapper.findById(loanDto.getId()) == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        loanMapper.updateStatus(loanDto.getId(),LoanStatus.RAISING);
+        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
+            createDeadLineFundraisingJob(new LoanModel(loanDto));
+        }
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         return baseDto;
@@ -412,6 +442,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
+        LoanModel nowLoanModel  = loanMapper.findById(loanDto.getId());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
@@ -580,8 +611,8 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
-            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
             loanListWebDto.setStatus(loanModels.get(i).getStatus());
@@ -608,6 +639,16 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
         return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,rateStart,rateEnd);
+    }
+
+    private void createDeadLineFundraisingJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class).
+                    addJobData("loanId", loanModel.getId())
+                    .runOnceAt(loanModel.getFundraisingEndTime()).submit();
+        } catch (SchedulerException e) {
+            logger.error(e.getLocalizedMessage(),e);
+        }
     }
 
 }
