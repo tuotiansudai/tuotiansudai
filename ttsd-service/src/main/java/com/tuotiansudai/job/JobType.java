@@ -23,7 +23,8 @@ public enum JobType {
     LoanStatusToRaising("标的状态从预热转为可投资"),
     LoanOut("放款后续处理"),
     AutoInvest("自动投资"),
-    OverInvestPayBack("超投还款");
+    OverInvestPayBack("超投还款"),
+    LoanStatusToRecheck("标的状态从筹款变为等待复核");
 
     private final String description;
 
