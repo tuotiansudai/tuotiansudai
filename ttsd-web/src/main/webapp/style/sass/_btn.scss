@@ -18,6 +18,7 @@
   font: {
     size: nth($fontSize, 3);
     weight: normal;
+    family: $fontStack;
   }
   display: inline-block;
   padding: 8px 35px;
