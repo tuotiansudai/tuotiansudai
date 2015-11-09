@@ -21,7 +21,6 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -46,6 +45,7 @@ public class InvestMapperTest {
     private String User_ID2 = "testuser";
     private long Loan_ID = 200093022L;
     private long Loan_ID2 = 300093022L;
+    private long Loan_ID3 = 400093022L;
 
     @Test
     public void shouldCreateInvest() throws Exception {
@@ -60,7 +60,7 @@ public class InvestMapperTest {
     }
 
     @Test
-    public void shouldUpdateInvestStatus(){
+    public void shouldUpdateInvestStatus() {
         InvestModel investModel = this.getFakeInvestModel();
         investModel.setStatus(InvestStatus.WAITING);
         investMapper.create(investModel);
@@ -74,22 +74,15 @@ public class InvestMapperTest {
         assertEquals(investModel2.getStatus(), InvestStatus.FAIL);
     }
 
-    @Test
-    public void shouldFindByCorrectSortStyle(){
-        createTestInvests();
-        List<InvestModel> investModels2 = investMapper.findByLoginNameOrderByTime(User_ID2, SortStyle.Desc);
-        assertEquals(investModels2.size(), 5);
-        assert investModels2.get(4).getCreatedTime().before(investModels2.get(2).getCreatedTime());
-    }
-
-
-    private void createTestInvests(){
-        for(int i=0;i<10;i++) {
+    private void createTestInvests() {
+        for (int i = 0; i < 15; i++) {
             InvestModel investModel = this.getFakeInvestModel();
-            if(i<5) {
+            if (i < 5) {
                 investModel.setLoanId(Loan_ID2);
+            } else if (i < 10) {
+                investModel.setLoanId(Loan_ID3);
             }
-            if(i%2 == 1){
+            if (i % 2 == 1) {
                 investModel.setLoginName(User_ID2);
             }
             investModel.setCreatedTime(DateUtils.addHours(new Date(), -i));
@@ -101,7 +94,7 @@ public class InvestMapperTest {
         InvestModel model = new InvestModel();
         model.setAmount(1000000);
         // 舍弃毫秒数
-        Date currentDate = new Date((new Date().getTime()/1000)*1000);
+        Date currentDate = new Date((new Date().getTime() / 1000) * 1000);
         model.setCreatedTime(currentDate);
         model.setId(idGenerator.generate());
         model.setIsAutoInvest(false);
@@ -112,7 +105,7 @@ public class InvestMapperTest {
         return model;
     }
 
-    private List<InvestRepayModel> getFakeInvestRepayModel(long investId){
+    private List<InvestRepayModel> getFakeInvestRepayModel(long investId) {
         List<InvestRepayModel> list = new ArrayList<>();
         InvestRepayModel model = new InvestRepayModel();
         model.setId(idGenerator.generate());
@@ -145,10 +138,15 @@ public class InvestMapperTest {
     public void createLoan() {
         createLoan(User_ID, Loan_ID, ActivityType.NORMAL);
         createLoan(User_ID2, Loan_ID2, ActivityType.NORMAL);
+        createLoan(User_ID2, Loan_ID3, ActivityType.NORMAL, LoanStatus.CANCEL);
         assertNotNull(loanMapper.findById(Loan_ID));
     }
 
     private void createLoan(String userId, long loanId, ActivityType activityType) {
+        createLoan(userId, loanId, activityType, LoanStatus.WAITING_VERIFY);
+    }
+
+    private void createLoan(String userId, long loanId, ActivityType activityType, LoanStatus loanStatus) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
         loanDto.setAgentLoginName(userId);
@@ -171,8 +169,8 @@ public class InvestMapperTest {
         loanDto.setMaxInvestAmount("100000000000");
         loanDto.setMinInvestAmount("0");
         loanDto.setCreatedTime(new Date());
-        loanDto.setLoanStatus(LoanStatus.WAITING_VERIFY);
         LoanModel loanModel = new LoanModel(loanDto);
+        loanModel.setStatus(loanStatus);
         loanMapper.create(loanModel);
     }
 
@@ -196,8 +194,9 @@ public class InvestMapperTest {
         userModelTest.setSalt(UUID.randomUUID().toString().replaceAll("-", ""));
         userMapper.create(userModelTest);
     }
+
     @Test
-    public void shouldSumSuccessInvestAmount(){
+    public void shouldSumSuccessInvestAmount() {
         InvestModel investModel1 = getFakeInvestModel();
         investModel1.setStatus(InvestStatus.SUCCESS);
         InvestModel investModel2 = getFakeInvestModel();
@@ -217,7 +216,7 @@ public class InvestMapperTest {
 
 
     @Test
-    public void shouldSumSuccessNoviceInvestCount(){
+    public void shouldSumSuccessNoviceInvestCount() {
         long noviceLoanId = idGenerator.generate();
         createLoan(User_ID, noviceLoanId, ActivityType.NOVICE);
 
@@ -241,5 +240,14 @@ public class InvestMapperTest {
 
         int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(User_ID2);
         assert noviceInvestCount == 2;
+    }
+
+    @Test
+    public void shouldFindByLoginName() {
+        createTestInvests();
+        List<InvestModel> investModelList = investMapper.findByLoginName(User_ID2, 0, Integer.MAX_VALUE);
+        assertEquals(4, investModelList.size());
+        long investCount = investMapper.findCountByLoginName(User_ID2);
+        assertEquals(4, investCount);
     }
 }

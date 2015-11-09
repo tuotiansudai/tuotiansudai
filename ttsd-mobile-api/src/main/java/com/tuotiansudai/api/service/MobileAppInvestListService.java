@@ -13,6 +13,5 @@ public interface MobileAppInvestListService {
 
     BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto);
 
-
     BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto);
 }

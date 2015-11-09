@@ -53,14 +53,23 @@
         where id = #{id}
     </select>
 
-    <select id="findByLoginNameOrderByTime" parameterType="map" resultMap="investResultMap">
-        select <include refid="columns"></include>
+    <select id="findByLoginName" parameterType="map" resultMap="investResultMap">
+        select invest.id, invest.login_name, invest.loan_id, invest.amount, invest.status, invest.source, invest.is_auto_invest, invest.created_time
         from invest
-        where login_name = #{loginName}
-        order by created_time ${sortStyle}
-
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status &lt;&gt; 'CANCEL'
+        order by invest.created_time desc
+        limit #{index}, #{pageSize}
     </select>
 
+    <select id="findCountByLoginName" parameterType="map" resultType="long">
+        select count(1)
+        from invest
+        inner join loan on invest.loan_id = loan.id
+        where invest.login_name = #{loginName}
+        and loan.status &lt;&gt; 'CANCEL'
+    </select>
 
     <select id="findSuccessInvestsByLoanId" parameterType="long" resultMap="investResultMap">
         select <include refid="columns"></include>
