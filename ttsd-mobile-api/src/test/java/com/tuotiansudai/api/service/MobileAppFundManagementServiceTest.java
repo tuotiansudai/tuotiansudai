@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class MobileAppMobileAppFundManagementServiceTest extends ServiceTestBase{
+public class MobileAppFundManagementServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppFundManagementServiceImpl mobileAppFundManagementService;
     @Mock
@@ -55,13 +55,6 @@ public class MobileAppMobileAppFundManagementServiceTest extends ServiceTestBase
         assertEquals(baseResponseDto.getData().getReceivableCorpus(), "13.00");
         assertEquals(baseResponseDto.getData().getReceivableInterest(), "14.00");
         assertEquals(baseResponseDto.getData().getReceivableCorpusInterest(), "27.00");
-
-
-
-
-
-
-
     }
 
     private AccountModel fakeUserModel(){
