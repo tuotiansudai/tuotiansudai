@@ -34,6 +34,8 @@
   border: 1px solid nth($CK2,3);
   border-radius: 4px;
   color: nth($CK2,2);
+  background: #999;
+  color: #fff;
   &:focus,
   &:active:focus,
   &.active:focus,
@@ -72,6 +74,12 @@
   color: #fff!important;
   &:hover {
     // background: nth($CK1,3);
+    color: #fff;
+  }
+  &:disabled, &:disabled:hover {
+    background: #666 !important;
+    border:1px solid #666!important;
+    cursor: default;
     color: #fff;
   }
 }

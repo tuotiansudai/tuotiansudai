@@ -53,6 +53,9 @@ p {
   &.text-indent {
     text-indent: 2em;
   }
+  &.notice {
+    line-height: 2.4;
+  }
 }
 .text-s {
   font-size: nth($fontSize,1); //12px
@@ -93,6 +96,10 @@ p {
 
 .error {
   color: $required;
+  font-size:nth($fontSize,1);
+  .fa {
+    font-size:nth($fontSize,3);
+  }
 }
 // form validation
 .fa:before {

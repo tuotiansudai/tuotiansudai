@@ -1,19 +1,19 @@
 require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
 
-    var registerUserForm = $(".register-step-one .register-user-form");
-    var imageCaptchaForm = $('.image-captcha-dialog .image-captcha-form');
-
-    var fetchCaptchaElement = $('.register-user-form .fetch-captcha');
-    var imageCaptchaElement = $('.image-captcha-dialog .image-captcha');
-    var imageCaptchaTextElement = $('.image-captcha-dialog .image-captcha-text');
-    var imageCaptchaSubmitElement = $('.image-captcha-dialog .image-captcha-confirm');
+    var registerUserForm = $(".register-user-form"),
+        fetchCaptchaElement = $('.fetch-captcha',registerUserForm);
+    var $imgCaptchaDialog=$('.image-captcha-dialog');
+    var imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
+        imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
+        imageCaptchaTextElement = $('.image-captcha-text',$imgCaptchaDialog),
+        imageCaptchaSubmitElement = $('.image-captcha-confirm',$imgCaptchaDialog);
 
     /*获取验证码*/
     fetchCaptchaElement.on('click', function () {
         layer.open({
             type: 1,
             title: '手机验证',
-            area: ['400px', '225px'],
+            area: ['360px', '225px'],
             shadeClose: true,
             content: $('.image-captcha-dialog'),
             success: function(layero, index){
@@ -188,20 +188,26 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             }
         },
         showErrors: function (errorMap, errorList) {
+
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').addClass('grey').prop('disabled', true);
+                $('.fetch-captcha').prop('disabled', true);
             }
         },
         success: function (error, element) {
+
             error.addClass("valid");
             if (element.name === 'mobile') {
-                $('.fetch-captcha').removeClass('grey').prop('disabled', false);
+                $('.fetch-captcha').prop('disabled', false);
             }
         }
 
     });
 
+    //var moveAgree=function() {
+    //    var $agreementDom=$('#agreement');
+    //    $agreementDom.next('label').prepend($agreementDom.parent('label'));
+    //}
     //用户名验证规则
     jQuery.validator.addMethod("checkUser", function(value, element) {
         var checkUser = /(?!^\d+$)^\w{6,20}$/;

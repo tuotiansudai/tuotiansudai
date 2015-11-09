@@ -115,6 +115,7 @@
             </tr>
             </tfoot>
         </table>
+        <div class="clear-blank"></div>
         <table class="table table-striped">
             <caption>本月待收回款总额：￥${((notSuccessSumInvestRepay/100)?string('0.00'))!}元<a href="/investor/invest-list" class="fr">更多...</a> </caption>
             <thead>

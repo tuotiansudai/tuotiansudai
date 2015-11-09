@@ -23,7 +23,7 @@
                 </li>
                 <li class="captcha-tag">
                     <input type="text" name="captcha" class="captcha" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                    <button class="fetch-captcha grey" disabled="disabled">获取验证码</button>
+                    <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
                 </li>
                 <li>
                     <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
@@ -32,11 +32,10 @@
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(originalFormData.referrer)!}"/>
                 </li>
                 <li>
-                    <input type="checkbox" name='agreement' class='agreement-check' checked="checked" />
-                    <span class="agreement-title">
-                        同意拓天速贷
-                        <a href="javascript:;" class="show-agreement">《服务协议》</a>
-                    </span>
+                    <label for="agreement">
+                    <input type="checkbox" name='agreement' id="agreement" class='agreement-check' checked="checked" />
+                        同意拓天速贷<a href="javascript:;" class="show-agreement">《服务协议》</a>
+                    </label>
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
@@ -110,7 +109,7 @@
         习近平强调，中方始终从战略高度和长远角度看待中缅关系，支持缅甸维护主权独立和领土完整，尊重缅甸自主选择发展道路，支持缅甸民族和解进程，坚定不移推进中缅传统友好和务实合作。希望并且相信，缅方在中缅关系问题上的立场也将是一贯的，无论国内形势如何变化，都将积极致力于推动中缅友好关系发展。</p>
 </div>
 
-<div class="image-captcha-dialog pad-m">
+<div class="image-captcha-dialog pad-m" style="display: none;">
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
@@ -122,7 +121,12 @@
     </form>
 </div>
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.register_user}">
-</@global.javascript>
+<#--<@global.javascript pageJavascript="${js.register_user}">-->
+<#--</@global.javascript>-->
+<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+defer
+async="true"
+data-main="${requestContext.getContextPath()}/js/register_user.js"></script>
 </body>
 </html>

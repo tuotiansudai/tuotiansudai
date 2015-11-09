@@ -1,20 +1,23 @@
 require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
     $(function () {
-        var $rechargeForm = $('.recharge-form'),
-            $rechargeCon = $(".recharge-bind-card"),
-            $fastRechargeForm = $(".fast-recharge-form");
+
+        var $rechargeCon = $(".recharge-bind-card"),
+            $fastRecharge=$('.fast-recharge',$rechargeCon),
+            $rechargeForm = $('.recharge-form',$rechargeCon),
+            $fastRechargeForm = $(".fast-recharge-form",$rechargeCon),
+            $turnOnFast=$(".turn-on-fast-form",$rechargeCon);
 
         var tabElement = $('.payment-mode li'),
-            rechargeInputAmountElement = $(".amount", $rechargeForm),
-            rechargeAmountElement = $("input[name='amount']", $rechargeForm),
+            rechargeInputAmountElement = $('.amount', $rechargeForm),
+            rechargeAmountElement = $('input[name="amount"]', $rechargeForm),
             rechargeSubmitElement = $('.btn', $rechargeForm),
 
-            fastRechargeInputAmountElement = $(".amount", $fastRechargeForm),
-            fastRechargeAmountElement = $("input[name='amount']", $fastRechargeForm),
+            fastRechargeInputAmountElement = $('.amount', $fastRechargeForm),
+            fastRechargeAmountElement = $('input[name="amount"]', $fastRechargeForm),
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
             bankElement = $('.e-bank-recharge ol li'),
-            turnOnFastSubmitElement = $(".turn-on-fast-form .submit");
-
+            turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast);
+        $fastRecharge.hide();
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
@@ -58,17 +61,22 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
                 layer.open({
                     type: 1,
                     title: '登录到联动优势支付平台充值',
-                    area: ['560px', '270px'],
+                    area: ['500px', '290px'],
                     shadeClose: true,
                     content: $('#popRecharge')
                 });
             });
-        }
-
-        if (turnOnFastSubmitElement) {
-            turnOnFastSubmitElement.click(function () {
-                $('.ecope-overlay-fast,.ecope-dialog-fast').show();
+            //开通快捷支付
+            turnOnFastSubmitElement.click(function() {
+                layer.open({
+                    type: 1,
+                    title: '开通快捷支付功能',
+                    area: ['500px', '180px'],
+                    shadeClose: true,
+                    content: $('#openFastRecharge')
+                });
             });
+
         }
 
 

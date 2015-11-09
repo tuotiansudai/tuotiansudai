@@ -63,7 +63,7 @@
           width: 280px;
           border: #cecece 1px solid;
           border-radius: 3px;
-          padding-left: 40px;
+          padding:9px 2px 9px 30px;
           &.mobile {
             background: url(/images/icons/register.png) no-repeat 6px -362px;
           }
@@ -90,23 +90,12 @@
           }
         }
         .fetch-captcha {
-          display: block;
-          width: 90px;
-          height: 28px;
-          background: #f68e3a;
-          color: #fff;
-          border-radius: 3px;
+          padding: 5px;
+          letter-spacing: 0;
           position: absolute;
-          left: 224px;
-          top: 6px;
+          left: 237px;
+          top: 5px;
           font-size: 12px;
-          line-height: 24px;
-          text-align: center;
-          cursor: pointer;
-          border: none;
-        }
-        .fetch-captcha.grey {
-          background: #ccc;
         }
       }
       .register-user {
@@ -174,14 +163,15 @@
 
 .image-captcha-dialog {
   padding-bottom: 10px!important;
+  padding-right: 10px;
    .image-captcha-form {
      position: relative;
      input.image-captcha-text {
       background: url("/images/icons/register.png") no-repeat 6px -548px;
-      width: 180px;
+      width: 156px;
       border-radius: 3px;
       font-size: 12px;
-      padding-left: 30px;
+      padding: 10px 6px 9px 30px;
     }
      img.image-captcha {
       width: 60px;
@@ -191,8 +181,8 @@
       border: #bababa 1px solid;
       cursor: pointer;
       position: absolute;
-      left: 150px;
-      top: 4px;
+      left: 130px;
+      top: 2px;
     }
   }
 

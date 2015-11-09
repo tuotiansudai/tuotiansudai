@@ -3,7 +3,7 @@
 
 <div class="content-container fr">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
-    <div class="recharge-bind-card">
+    <div class="recharge-bind-card pad-m">
     <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
         <#if bindCardStatus == "unbindCard">
         <#--用户尚未绑定银行卡快捷支付-->
@@ -103,10 +103,9 @@
         <#--未开通快捷支付-->
             <div class="card-box">
                 <form class="open-fast-pay-form" eaction="/agrement" method="post" target="_blank">
-                    <h4 class="hd-card">
-                        <span class="logo-card"><img src="${staticServer}/images/bindcard/logo-${bankCode}.png" /></span>
-                        <span class="user">${userName}</span>
-                    </h4>
+                        <img class="logo-card fl" src="${staticServer}/images/bindcard/logo-${bankCode}.png" />
+                        <span class="user fr">${userName}</span>
+<div class="clear"></div>
                     <div class="card-num">${cardNumber}</div>
                     <div class="options">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -122,15 +121,17 @@
 
         </#if>
     </div>
+        <div class="clear-blank"></div>
+        <div class="borderBox">
+            <b>温馨提示:</b><br/>
+            1、不支持提现至信用卡账户。<br/>
+            2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>
+            3、如果您的借记卡是中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、民生银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行，方可开通快捷支付。<br/>
+            4、当您的账户余额为零的时候，系统才会支持您更换银行卡操作。<br/>
+            5、如果您已经开通快捷支付，系统不再支持您更换银行卡。<br/>
+        </div>
     </div>
-    <div class="tips">
-        <b>温馨提示:</b><br/>
-        1、不支持提现至信用卡账户。<br/>
-        2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>
-        3、如果您的借记卡是中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、民生银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行，方可开通快捷支付。<br/>
-        4、当您的账户余额为零的时候，系统才会支持您更换银行卡操作。<br/>
-        5、如果您已经开通快捷支付，系统不再支持您更换银行卡。<br/>
-    </div>
+
 </div>
 
 <div id="pop-bind-card" class="pad-m recharge-plat" style="display: none;">
