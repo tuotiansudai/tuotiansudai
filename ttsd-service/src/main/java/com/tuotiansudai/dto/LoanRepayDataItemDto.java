@@ -70,6 +70,7 @@ public class LoanRepayDataItemDto {
         this.defaultInterest = AmountUtil.convertCentToString(loanRepayModel.getDefaultInterest());
         this.expectedRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest());
         this.repayDate = loanRepayModel.getRepayDate();
+        this.actualRepayDate = loanRepayModel.getActualRepayDate();
         this.actualInterest = AmountUtil.convertCentToString(loanRepayModel.getActualInterest());
         if (loanRepayModel.getStatus() == RepayStatus.COMPLETE) {
             this.actualRepayAmount = AmountUtil.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest());

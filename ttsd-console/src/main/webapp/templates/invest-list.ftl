@@ -92,13 +92,13 @@
 </head>
 <body>
 
-<@menu.header label="finaMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="finaMan" sideLab="userInvest"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="investmentInfoList"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
