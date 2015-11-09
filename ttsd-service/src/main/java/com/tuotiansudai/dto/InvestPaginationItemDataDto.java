@@ -3,6 +3,7 @@ package com.tuotiansudai.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.InvestPaginationItemView;
+import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.utils.AmountUtil;
 
@@ -53,8 +54,11 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.createdTime = view.getCreatedTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
-        this.nextRepayAmount = AmountUtil.convertCentToString(view.getNextRepayAmount());;
-        this.hasInvestRepay = Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.COMPLETE).contains(view.getLoanStatus());
+        this.nextRepayAmount = AmountUtil.convertCentToString(view.getNextRepayAmount());
+        this.hasInvestRepay =
+                Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE)
+                        .contains(view.getLoanStatus())
+                && view.getStatus() == InvestStatus.SUCCESS;
     }
 
     public long getInvestId() {
