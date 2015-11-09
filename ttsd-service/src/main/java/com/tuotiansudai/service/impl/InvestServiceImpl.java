@@ -117,6 +117,11 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public long calculateExpectedInterest(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
+        return calculateExpectedInterest(loanModel, amount);
+    }
+
+    @Override
+    public long calculateExpectedInterest(LoanModel loanModel, long amount) {
         int repayTimes = loanModel.calculateLoanRepayTimes();
         LoanType loanType = loanModel.getType();
 

@@ -35,13 +35,15 @@ public interface InvestMapper {
 
     /**
      * 查找用户的投资记录
-     * 如果有分页插件的话，需要修改此返回类型
      *
      * @param loginName
      * @return
      */
-    List<InvestModel> findByLoginNameOrderByTime(@Param(value = "loginName") String loginName,
-                                                 @Param(value = "sortStyle") SortStyle sortStyle);
+    List<InvestModel> findByLoginName(@Param(value = "loginName") String loginName,
+                                      @Param(value = "index") Integer index,
+                                      @Param(value = "pageSize") Integer pageSize);
+
+    long findCountByLoginName(@Param(value = "loginName") String loginName);
 
     /**
      * 计算标的的投资总额

@@ -1,7 +1,10 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.InvestModel;
-import org.apache.commons.lang3.NotImplementedException;
+import com.tuotiansudai.repository.model.LoanModel;
+import com.tuotiansudai.utils.AmountUtil;
+
+import java.text.SimpleDateFormat;
 
 public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     /**
@@ -52,8 +55,19 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
     public UserInvestRecordResponseDataDto() {
     }
 
-    public UserInvestRecordResponseDataDto(InvestModel invest) {
-        throw new NotImplementedException(getClass().getName());
+    public UserInvestRecordResponseDataDto(InvestModel invest, LoanModel loan) {
+        InvestStatus investStatus = InvestStatus.convertInvestStatus(invest.getStatus());
+        LoanStatus loanStatus = LoanStatus.convertLoanStatus(loan.getStatus());
+        this.loanId = String.valueOf(invest.getLoanId());
+        this.loanName = loan.getName();
+        this.loanStatus = loanStatus.getCode();
+        this.loanStatusDesc = loanStatus.getMessage();
+        this.investId = String.valueOf(invest.getId());
+        this.investMoney = AmountUtil.convertCentToString(invest.getAmount());
+        this.investTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getCreatedTime());
+        this.investStatus = investStatus.getCode();
+        this.investStatusDesc = investStatus.getMessage();
+        this.investRate = String.format("%.1f", loan.getActivityRate() + loan.getBaseRate());
     }
 
     public String getLoanId() {
