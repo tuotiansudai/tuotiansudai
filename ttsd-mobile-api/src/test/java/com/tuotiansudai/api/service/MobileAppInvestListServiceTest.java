@@ -2,41 +2,48 @@ package com.tuotiansudai.api.service;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.api.service.impl.MobileAppInvestListServiceImpl;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.InvestStatus;
-import com.tuotiansudai.repository.model.Source;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
-public class MobileAppInvestListServiceTest extends ServiceTestBase{
+public class MobileAppInvestListServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppInvestListServiceImpl mobileAppInvestListService;
+
     @Autowired
     private IdGenerator idGenerator;
+
     @Mock
     private InvestMapper investMapper;
-    @Test
-    public void shouldGenerateInvestListIsOk(){
 
+    @Mock
+    private InvestService investService;
+
+    @Mock
+    private LoanMapper loanMapper;
+
+    private static int INVEST_COUNT = 110;
+    private static long INTEREST = 1100L;
+
+    @Test
+    public void shouldGenerateInvestListIsOk() {
         InvestModel investModel1 = new InvestModel();
         investModel1.setAmount(1000000L);
         investModel1.setCreatedTime(new Date());
@@ -73,7 +80,6 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase{
         investModels.add(investModel3);
 
 
-
         when(investMapper.findByStatus(anyLong(), anyInt(), anyInt(), any(InvestStatus.class))).thenReturn(investModels);
 
         when(investMapper.findCountByStatus(anyLong(), any(InvestStatus.class))).thenReturn(3L);
@@ -86,13 +92,60 @@ public class MobileAppInvestListServiceTest extends ServiceTestBase{
 
         assertEquals("10000.00", baseResponseDto.getData().getInvestRecord().get(0).getInvestMoney());
         assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(0).getUserName());
-        assertEquals("11000.00",baseResponseDto.getData().getInvestRecord().get(1).getInvestMoney());
-        assertEquals("log***",baseResponseDto.getData().getInvestRecord().get(1).getUserName());
-        assertEquals("12000.00",baseResponseDto.getData().getInvestRecord().get(2).getInvestMoney());
-        assertEquals("log***",baseResponseDto.getData().getInvestRecord().get(2).getUserName());
-
-
+        assertEquals("11000.00", baseResponseDto.getData().getInvestRecord().get(1).getInvestMoney());
+        assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(1).getUserName());
+        assertEquals("12000.00", baseResponseDto.getData().getInvestRecord().get(2).getInvestMoney());
+        assertEquals("log***", baseResponseDto.getData().getInvestRecord().get(2).getUserName());
     }
 
 
+    private List<InvestModel> generateMockedInvestList() {
+        List<InvestModel> investModelList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            InvestModel investModel = generateMockedInvestModel();
+            investModelList.add(investModel);
+        }
+        return investModelList;
+    }
+
+    private InvestModel generateMockedInvestModel() {
+        InvestModel investModel = new InvestModel();
+        investModel.setId(idGenerator.generate());
+        investModel.setAmount(1000);
+        investModel.setCreatedTime(new Date());
+        investModel.setLoginName("loginName");
+        investModel.setSource(Source.IOS);
+        investModel.setLoanId(1213L);
+        investModel.setStatus(InvestStatus.SUCCESS);
+        return investModel;
+    }
+
+    private LoanModel generateMockedLoanModel() {
+        LoanModel loanModel = new LoanModel();
+        loanModel.setStatus(LoanStatus.RAISING);
+        loanModel.setName("test loan name");
+        loanModel.setCreatedTime(new Date());
+        loanModel.setId(idGenerator.generate());
+        return loanModel;
+    }
+
+    @Test
+    public void shouldGenerateUserInvestList() {
+        when(investMapper.findByLoginName(anyString(), anyInt(), anyInt())).thenReturn(generateMockedInvestList());
+        when(investMapper.findCountByLoginName(anyString())).thenReturn((long) INVEST_COUNT);
+        when(loanMapper.findById(anyLong())).thenReturn(generateMockedLoanModel());
+        when(investService.calculateExpectedInterest(any(LoanModel.class), anyLong())).thenReturn(INTEREST);
+
+        UserInvestListRequestDto requestDto = new UserInvestListRequestDto();
+        requestDto.setBaseParam(BaseParamTest.getInstance());
+        requestDto.setIndex(1);
+        requestDto.setPageSize(10);
+        BaseResponseDto<UserInvestListResponseDataDto> responseDto = mobileAppInvestListService.generateUserInvestList(requestDto);
+        UserInvestListResponseDataDto dataDto = responseDto.getData();
+
+        assertEquals(INVEST_COUNT, dataDto.getTotalCount().intValue());
+        assertEquals(10, dataDto.getInvestList().size());
+        assertEquals(com.tuotiansudai.api.dto.InvestStatus.BID_SUCCESS.getCode(), dataDto.getInvestList().get(0).getInvestStatus());
+        assertEquals(com.tuotiansudai.api.dto.LoanStatus.RAISING.getCode(), dataDto.getInvestList().get(0).getLoanStatus());
+    }
 }
