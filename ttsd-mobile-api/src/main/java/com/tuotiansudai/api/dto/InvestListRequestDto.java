@@ -1,9 +1,15 @@
 package com.tuotiansudai.api.dto;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Pattern;
+
 public class InvestListRequestDto extends BaseParamDto{
 
     private Integer index;
     private Integer pageSize;
+    @NotEmpty
+    @Pattern(regexp = "^\\d+$")
     private String loanId;
 
     public String getLoanId() {

@@ -13,7 +13,6 @@ public interface MobileAppInvestListService {
 
     BaseResponseDto generateInvestList(InvestListRequestDto investListRequestDto);
 
-    List<InvestRecordResponseDataDto> convertInvestRecordDto(List<InvestModel> investList);
 
     BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto);
 }

@@ -1,5 +1,7 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.InvestModel;
+
 import java.util.List;
 
 public class InvestListResponseDataDto extends BaseResponseDataDto {
@@ -39,4 +41,6 @@ public class InvestListResponseDataDto extends BaseResponseDataDto {
     public void setInvestRecord(List<InvestRecordResponseDataDto> investRecord) {
         this.investRecord = investRecord;
     }
+
+
 }
