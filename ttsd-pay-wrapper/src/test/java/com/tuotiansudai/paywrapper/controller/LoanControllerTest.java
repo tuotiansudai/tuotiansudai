@@ -10,8 +10,8 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -65,7 +65,7 @@ public class LoanControllerTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -230,16 +230,16 @@ public class LoanControllerTest {
         userMapper.create(um);
     }
 
-    private void mockAccounts(String[] loginNames, long initAmount) {
+    private void mockAccounts(String[] loginNames, long initAmount) throws AmountTransferException {
         for (String loginName : loginNames) {
             mockAccount(loginName, initAmount);
         }
     }
 
-    private void mockAccount(String loginName, long initAmount) {
+    private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, loginName, loginName, new Date());
         accountMapper.create(am);
-        userBillService.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS);
+        amountTransferService.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanId, String loanerLoginName) {
@@ -284,6 +284,6 @@ public class LoanControllerTest {
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
-        userBillService.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS);
+        amountTransferService.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS, null, null);
     }
 }

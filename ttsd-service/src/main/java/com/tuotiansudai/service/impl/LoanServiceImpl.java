@@ -575,7 +575,7 @@ public class LoanServiceImpl implements LoanService {
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,rateStart,
                 rateEnd,currentPageNo);
         List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
-        String added = "";
+        String added;
         for (int i=0;i<loanModels.size();i++) {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());

@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.TransferMapper;
@@ -9,7 +10,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
@@ -37,7 +38,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -124,7 +125,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             TransferRequestModel requestModel = TransferRequestModel.newReferrerRewardRequest(String.valueOf(orderId), accountModel.getPayUserId(), String.valueOf(amount));
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
-                userBillService.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD);
+                try {
+                    amountTransferService.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
+                } catch (AmountTransferException e) {
+                    logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
+                }
                 systemBillService.transferOut(amount, String.valueOf(orderId), SystemBillBusinessType.REFERRER_REWARD, SystemBillMessageTemplate.REFERRER_REWARD_MESSAGE_TEMPLATE.getTemplate());
                 model.setStatus(ReferrerRewardStatus.SUCCESS);
             } else {

@@ -6,6 +6,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
@@ -20,7 +21,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -67,7 +68,7 @@ public class LoanServiceImpl implements LoanService {
     private ReferrerRewardService referrerRewardService;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
     @Autowired
     private SmsWrapperClient smsWrapperClient;
@@ -240,9 +241,9 @@ public class LoanServiceImpl implements LoanService {
         }
         for (InvestModel invest : investList) {
             try {
-                userBillService.transferOutFreeze(invest.getLoginName(),
-                        invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS);
-            } catch (Exception e) {
+                amountTransferService.transferOutFreeze(invest.getLoginName(),
+                        invest.getId(), invest.getAmount(), UserBillBusinessType.LOAN_SUCCESS, null, null);
+            } catch (AmountTransferException e) {
                 logger.error("transferOutFreeze Fail while loan out, invest [" + invest.getId() + "]", e);
             }
         }
@@ -252,8 +253,7 @@ public class LoanServiceImpl implements LoanService {
     private void processLoanAccountForLoanOut(LoanModel loan, long amount) {
         try {
             long orderId = loan.getId();
-            userBillService.transferInBalance(loan.getLoanerLoginName(),
-                    orderId, amount, UserBillBusinessType.LOAN_SUCCESS);
+            amountTransferService.transferInBalance(loan.getLoanerLoginName(), orderId, amount, UserBillBusinessType.LOAN_SUCCESS, null, null);
         } catch (Exception e) {
             logger.error("transferInBalance Fail while loan out, loan[" + loan.getId() + "]", e);
         }

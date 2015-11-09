@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CustWithdrawalsMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.WithdrawApplyNotifyMapper;
@@ -13,7 +13,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.WithdrawApplyNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.WithdrawNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsRequestModel;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
@@ -54,7 +54,7 @@ public class WithdrawServiceImpl implements WithdrawService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
 
     @Override
@@ -110,7 +110,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                userBillService.freeze(loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW);
+                amountTransferService.freeze(loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
                 withdrawModel.setStatus(WithdrawStatus.RECHECK);
                 //TODO update system bill
             } else {
@@ -142,7 +142,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             String loginName = withdrawModel.getLoginName();
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
-                userBillService.transferOutFreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS);
+                amountTransferService.transferOutFreeze(loginName, orderId, amount, UserBillBusinessType.WITHDRAW_SUCCESS, null, null);
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
                 //TODO update system bill
             } else {

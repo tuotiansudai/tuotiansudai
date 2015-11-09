@@ -45,7 +45,7 @@
                     {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
                     {"name":"debtRepay","text":"债权还款计划","link":"/debtRepaymentPlan"},
                     {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
-                    {"name":"##############","text":"管理员修改账户余额","link":""},
+                    {"name":"adminIntervention","text":"管理员修改账户余额","link":"/admin-intervention"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}
                 ]
             },

@@ -6,11 +6,12 @@ import com.google.common.collect.Maps;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -77,7 +78,7 @@ public class InvestControllerTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
     @Autowired
     private PayAsyncClient payAsyncClient;
@@ -516,16 +517,16 @@ public class InvestControllerTest {
         userMapper.create(um);
     }
 
-    private void mockAccounts(String[] loginNames, long initAmount) {
+    private void mockAccounts(String[] loginNames, long initAmount) throws AmountTransferException {
         for (String loginName : loginNames) {
             mockAccount(loginName, initAmount);
         }
     }
 
-    private void mockAccount(String loginName, long initAmount) {
+    private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, loginName, loginName, new Date());
         accountMapper.create(am);
-        userBillService.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS);
+        amountTransferService.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanAmount, long loanId, String loanerLoginName) {

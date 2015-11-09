@@ -2,14 +2,13 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -24,7 +23,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
+import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
@@ -74,7 +73,7 @@ public class InvestServiceImpl implements InvestService {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransferService amountTransferService;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -445,7 +444,7 @@ public class InvestServiceImpl implements InvestService {
     private void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
-            userBillService.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
+            amountTransferService.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
             fatalLog("投资成功，但资金冻结失败", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);
