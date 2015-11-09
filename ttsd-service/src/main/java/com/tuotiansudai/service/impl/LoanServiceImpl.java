@@ -16,7 +16,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -324,6 +323,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
+        LoanModel nowLoanModel = loanMapper.findById(loanDto.getId());
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
@@ -335,6 +335,31 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         updateLoanAndLoanTitleRelation(loanDto);
+        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
+            createDeadLineFundraisingJob(new LoanModel(loanDto));
+        }
+        payDataDto.setStatus(true);
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> delayLoan(LoanDto loanDto) {
+        LoanModel nowLoanModel = loanMapper.findById(loanDto.getId());
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        if (loanMapper.findById(loanDto.getId()) == null) {
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        loanMapper.updateStatus(loanDto.getId(),LoanStatus.RAISING);
+        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
+            createDeadLineFundraisingJob(new LoanModel(loanDto));
+        }
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         return baseDto;
@@ -432,9 +457,6 @@ public class LoanServiceImpl implements LoanService {
                 loanTitleRelationModel.setLoanId(loanModel.getId());
             }
             loanTitleRelationMapper.create(loanTitleRelationModelList);
-        }
-        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
-            this.createDeadLineFundraisingJob(loanModel);
         }
     }
 
@@ -622,7 +644,7 @@ public class LoanServiceImpl implements LoanService {
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
         try {
             jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class).
-                    withIdentity("LoanStatusToRecheck","LoanStatusToRecheck").addJobData("loanId",loanModel.getId())
+                    addJobData("loanId", loanModel.getId())
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(),e);

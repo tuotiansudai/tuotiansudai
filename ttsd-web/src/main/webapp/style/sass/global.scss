@@ -1,6 +1,15 @@
 @import 'layer', 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame', 'account';
+
+.page-width {
+  width:1000px;
+}
+.layui-layer-content {
+  .pad-m {
+    padding:15px 20px 10px 20px;
+  }
+}
 .borderBox {
   border: 1px solid nth($borderColor, 1);
   padding: 12px;
@@ -24,4 +33,14 @@
   padding-right: 2px;
   display: inline-block;
   content: '*';
+}
+.color-info {
+  color: nth($CK1, 3);
+}
+
+.color-note {
+  color: nth($CK1, 1);
+}
+.bg-w {
+  background: nth($baseColor,1);
 }

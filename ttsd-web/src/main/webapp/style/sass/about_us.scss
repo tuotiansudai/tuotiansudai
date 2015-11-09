@@ -1,0 +1,93 @@
+@import 'variables';
+/*关于我们*/
+.about-us-container {
+  background: #fff;
+  padding:10px 30px 30px 40px;
+  overflow: hidden;
+
+  .a-title {
+    border-bottom:1px solid #ccc;
+    margin-bottom: 20px;
+    span {
+      display: inline-block;
+      border-bottom:4px solid #ff7200;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ff7200;
+    }
+    &.article {
+      text-align: center;
+      span {
+        border-bottom-width: 0px;
+      }
+      time {
+        font-size: nth($fontSize, 1);
+        color: #666;
+        display: block;
+        margin-top:15px;
+      }
+    }
+  }
+
+  .company-summary {
+    p {
+      font-size: nth($fontSize,1);
+    }
+  }
+  .company-info {
+    width:48%;
+    b.text-m {
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+  }
+  .notice-list {
+    li {
+      border-bottom: 1px dotted #ccc;
+      color:#4c4c4c;
+      padding-top: 7px;
+      position: relative;
+      font-size: nth($fontSize,3);
+      line-height: 2;
+      i {
+        color: #ff7200;
+        padding-right: 7px;
+        float: left;
+      }
+      a {
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width:80%;
+        color:#4c4c4c;
+        &.hover {
+          color: nth($CK1,2);
+        }
+      }
+      time {
+        position: absolute;
+        right:0;
+        top:5px;
+      }
+
+    }
+  }
+  .real-attention {
+    margin-top:15px;
+    margin-bottom:15px;
+    height: auto;
+    overflow: auto;
+    li {
+      width:50%;
+      float: left;
+    vertical-align: bottom;
+    display: inline-block;
+    img {
+      border:1px solid #ccc;
+      vertical-align: bottom;
+      margin-right: 15px;
+    }
+    }
+  }
+}

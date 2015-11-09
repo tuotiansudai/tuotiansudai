@@ -1,42 +1,26 @@
 @import 'variables';
-
 .header-container {
+  height:30px;
+  line-height:30px;
+  background: #333;
+  font-size: 12px;
+  color: #fff;
   .header {
-    width: 100%;
-    height: 30px;
-    background: #333;
-    font-size: 12px;
-    div {
-      width: 1000px;
-      height: 30px;
-      line-height: 30px;
-      margin: 0 auto;
-      p {
-        width: 400px;
-        float: left;
-        color: #fff;
-        span {
+    margin: 0 auto;
+       time {
           color: #979797;
           margin-left: 8px;
         }
-      }
       ul {
-        float: right;
         li {
           float: left;
           margin-right: 10px;
-          color: #fff;
           a {
-            width: auto;
             padding-left: 8px;
             color: #fff;
-            &:hover {
-              color: #ffc600;
-            }
           }
         }
       }
-    }
   }
 }
 
@@ -68,7 +52,7 @@
           text-decoration: underline;
         }
       }
-      p {
+      .f-title {
         height: 18px;
         line-height: 18px;
         margin-top: 52px;
@@ -182,6 +166,8 @@
     width: 833px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    overflow: hidden;
+    background: nth($baseColor,1);
+    height: auto;
+    overflow: auto;
   }
 }

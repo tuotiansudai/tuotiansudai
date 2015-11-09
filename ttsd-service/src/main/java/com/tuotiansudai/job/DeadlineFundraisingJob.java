@@ -3,6 +3,7 @@ package com.tuotiansudai.job;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -14,6 +15,8 @@ import java.util.Date;
 @Component
 public class DeadlineFundraisingJob implements Job{
 
+    static Logger logger = Logger.getLogger(DeadlineFundraisingJob.class);
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -21,6 +24,9 @@ public class DeadlineFundraisingJob implements Job{
     public void execute(JobExecutionContext context) throws JobExecutionException {
         long loanId = (Long)context.getJobDetail().getJobDataMap().get("loanId");
         LoanModel loanModel = loanMapper.findById(loanId);
+        logger.debug("loanId = " + loanId);
+        logger.debug("status = " + loanModel.getStatus());
+        logger.debug("fundraisingEndTime = " + loanModel.getFundraisingEndTime());
         if (loanModel.getStatus() == LoanStatus.RAISING && !loanModel.getFundraisingEndTime().after(new Date())) {
             loanMapper.updateStatus(loanModel.getId(), LoanStatus.RECHECK);
         }
