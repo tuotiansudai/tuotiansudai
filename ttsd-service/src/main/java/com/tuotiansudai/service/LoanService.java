@@ -40,6 +40,8 @@ public interface LoanService {
      */
     BaseDto<PayDataDto> updateLoan(LoanDto loanDto);
 
+    BaseDto<PayDataDto> delayLoan(LoanDto loanDto);
+
     void startFundraising(long loanId);
 
     BaseDto<PayDataDto> openLoan(LoanDto loanDto);
