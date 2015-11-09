@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AdminInterventionDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.service.AmountTransferService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
@@ -28,7 +28,7 @@ public class AdminInterventionController {
     static Logger logger = Logger.getLogger(AdminInterventionController.class);
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -52,23 +52,23 @@ public class AdminInterventionController {
 
         try {
             String loginName = adminInterventionDto.getLoginName();
-            long amount = AmountUtil.convertStringToCent(adminInterventionDto.getAmount());
+            long amount = AmountConverter.convertStringToCent(adminInterventionDto.getAmount());
             String description = adminInterventionDto.getDescription();
             switch (adminInterventionDto.getOperationType()) {
                 case TI_BALANCE:
-                    amountTransferService.transferInBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.transferInBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case TO_BALANCE:
-                    amountTransferService.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case FREEZE:
-                    amountTransferService.freeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.freeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case UNFREEZE:
-                    amountTransferService.unfreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.unfreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case TO_FREEZE:
-                    amountTransferService.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
             }
             redirectAttributes.addFlashAttribute("message", "修改成功");

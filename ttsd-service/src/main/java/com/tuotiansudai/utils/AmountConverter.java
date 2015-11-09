@@ -1,10 +1,9 @@
 package com.tuotiansudai.utils;
 
-import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AmountUtil {
+public class AmountConverter {
 
     public static long convertStringToCent(String amount) {
         Pattern pattern = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
@@ -25,14 +24,4 @@ public class AmountUtil {
     public static String convertCentToString(long amount) {
         return String.format("%.2f", amount / 100D);
     }
-
-    public static double div(long v1, long v2, int scale) {
-        if (scale < 0) {
-            return 0;
-        }
-        BigDecimal b1 = new BigDecimal(v1);
-        BigDecimal b2 = new BigDecimal(v2);
-        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
-
 }

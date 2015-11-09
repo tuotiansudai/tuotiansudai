@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,10 +33,10 @@ public class LoanPaginationItemDataDto implements Serializable {
 
         this.loanId = loanModel.getId();
         this.loanName = loanModel.getName();
-        this.loanAmount = AmountUtil.convertCentToString(loanModel.getLoanAmount());
-        this.expectedRepayAmount = AmountUtil.convertCentToString(loanModel.getExpectedRepayAmount());
-        this.actualRepayAmount = AmountUtil.convertCentToString(loanModel.getActualRepayAmount());
-        this.unpaidAmount = AmountUtil.convertCentToString(loanModel.getUnpaidAmount());
+        this.loanAmount = AmountConverter.convertCentToString(loanModel.getLoanAmount());
+        this.expectedRepayAmount = AmountConverter.convertCentToString(loanModel.getExpectedRepayAmount());
+        this.actualRepayAmount = AmountConverter.convertCentToString(loanModel.getActualRepayAmount());
+        this.unpaidAmount = AmountConverter.convertCentToString(loanModel.getUnpaidAmount());
         this.recheckTime = loanModel.getRecheckTime();
         this.nextRepayDate = loanModel.getNextRepayDate();
         this.completedDate = loanModel.getCompletedDate();

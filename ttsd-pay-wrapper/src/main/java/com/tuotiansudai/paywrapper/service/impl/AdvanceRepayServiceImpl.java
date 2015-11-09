@@ -14,9 +14,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -55,7 +55,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -165,7 +165,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         //更新代理人账户
         try {
-            amountTransferService.transferOutBalance(loanModel.getAgentLoginName(),
+            amountTransfer.transferOutBalance(loanModel.getAgentLoginName(),
                     enabledLoanRepay.getId(),
                     enabledLoanRepay.getActualInterest() + loanModel.getLoanAmount(),
                     UserBillBusinessType.ADVANCE_REPAY, null, null);
@@ -239,7 +239,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
                 long investRepayAmount = actualInvestRepayInterest + successInvest.getAmount();
                 try {
-                    amountTransferService.transferInBalance(investorLoginName, investRepayId, investRepayAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
+                    amountTransfer.transferInBalance(investorLoginName, investRepayId, investRepayAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("invest payback transfer in balance failed (investRepayId = {0})", String.valueOf(investRepayId)));
                     logger.error(e.getLocalizedMessage(), e);
@@ -270,7 +270,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         if (repayInvestFeeSuccess) {
             try {
-                amountTransferService.transferOutBalance(investorAccount.getLoginName(), investRepayId, actualInvestFee, UserBillBusinessType.INVEST_FEE, null, null);
+                amountTransfer.transferOutBalance(investorAccount.getLoginName(), investRepayId, actualInvestFee, UserBillBusinessType.INVEST_FEE, null, null);
             } catch (AmountTransferException e) {
                 logger.error(MessageFormat.format("transfer out balance for invest payback fee (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);

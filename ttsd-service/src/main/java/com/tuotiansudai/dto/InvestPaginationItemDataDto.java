@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.InvestPaginationItemView;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -43,7 +43,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     public InvestPaginationItemDataDto(InvestPaginationItemView view) {
         this.investId = view.getId();
         this.loanId = view.getLoanId();
-        this.amount = AmountUtil.convertCentToString(view.getAmount());
+        this.amount = AmountConverter.convertCentToString(view.getAmount());
         this.loanName = view.getLoanName();
         this.investorLoginName = view.getLoginName();
         this.referrerLoginName = view.getReferrerLoginName();
@@ -53,7 +53,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.createdTime = view.getCreatedTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
-        this.nextRepayAmount = AmountUtil.convertCentToString(view.getNextRepayAmount());;
+        this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());;
         this.hasInvestRepay = Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.COMPLETE).contains(view.getLoanStatus());
     }
 

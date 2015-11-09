@@ -10,12 +10,12 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -38,7 +38,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     private PaySyncClient paySyncClient;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -126,7 +126,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
             TransferResponseModel responseModel = paySyncClient.send(TransferMapper.class, requestModel, TransferResponseModel.class);
             if (responseModel.isSuccess()) {
                 try {
-                    amountTransferService.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
+                    amountTransfer.transferInBalance(referrerLoginName, orderId, amount, UserBillBusinessType.REFERRER_REWARD, null, null);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
                 }

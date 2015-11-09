@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import java.util.Date;
 
 public class InvestModel {
@@ -44,7 +44,7 @@ public class InvestModel {
 
     public InvestModel(InvestDto dto){
         this.loginName = dto.getLoginName();
-        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.loanId = Long.parseLong(dto.getLoanId());
         this.source = dto.getSource();
         this.status = InvestStatus.WAITING;

@@ -12,13 +12,13 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonRequestModel;
 import com.tuotiansudai.paywrapper.service.RechargeService;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class RechargeServiceImpl implements RechargeService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Override
     @Transactional
@@ -111,7 +111,7 @@ public class RechargeServiceImpl implements RechargeService {
             if (callbackRequestModel.isSuccess()) {
                 rechargeMapper.updateStatus(orderId, RechargeStatus.SUCCESS);
                 try {
-                    amountTransferService.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+                    amountTransfer.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("recharge transfer in balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
                 }

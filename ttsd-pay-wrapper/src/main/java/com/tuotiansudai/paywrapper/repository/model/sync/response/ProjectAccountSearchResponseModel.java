@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.repository.model.sync.response;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public class ProjectAccountSearchResponseModel extends BaseSyncResponseModel {
                 .put("标的账户号", Strings.isNullOrEmpty(this.projectAccountId) ? "" : this.projectAccountId)
                 .put("标的账户状态", Strings.isNullOrEmpty(HUMAN_READABLE_PROJECT_ACCOUNT_STATE.get(this.projectAccountState)) ? "" : HUMAN_READABLE_PROJECT_ACCOUNT_STATE.get(this.projectAccountState))
                 .put("标的状态", Strings.isNullOrEmpty(HUMAN_READABLE_PROJECT_STATE.get(this.projectState)) ? "" : HUMAN_READABLE_PROJECT_STATE.get(this.projectState))
-                .put("标的余额", AmountUtil.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
+                .put("标的余额", AmountConverter.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
                 .build());
     }
 }

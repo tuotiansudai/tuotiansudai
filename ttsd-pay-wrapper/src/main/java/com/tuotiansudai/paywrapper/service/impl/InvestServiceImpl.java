@@ -23,18 +23,14 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.SendCloudMailUtil;
+import com.tuotiansudai.utils.*;
 import org.apache.commons.lang3.StringUtils;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +69,7 @@ public class InvestServiceImpl implements InvestService {
     private LoanMapper loanMapper;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -370,7 +366,7 @@ public class InvestServiceImpl implements InvestService {
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)
                         .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
-                        .put("amount", AmountUtil.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
+                        .put("amount", AmountConverter.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
                                 investRepay.getDefaultInterest(), investRepay.getActualFee())))
                         .build());
                 if (StringUtils.isNotEmpty(email)) {
@@ -442,7 +438,7 @@ public class InvestServiceImpl implements InvestService {
     private void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
-            amountTransferService.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
+            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
             fatalLog("投资成功，但资金冻结失败", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);

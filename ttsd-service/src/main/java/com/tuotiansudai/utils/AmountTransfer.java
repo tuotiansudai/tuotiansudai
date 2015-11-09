@@ -1,7 +1,6 @@
-package com.tuotiansudai.service.impl;
+package com.tuotiansudai.utils;
 
 import com.tuotiansudai.exception.*;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.AccountModel;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 
 @Service
-public class AmountTransferServiceImpl implements AmountTransferService {
+public class AmountTransfer {
 
     @Autowired
     private AccountMapper accountMapper;
@@ -23,7 +22,6 @@ public class AmountTransferServiceImpl implements AmountTransferService {
     @Autowired
     private UserBillMapper userBillMapper;
 
-    @Override
     @Transactional
     public void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
@@ -49,7 +47,6 @@ public class AmountTransferServiceImpl implements AmountTransferService {
         userBillMapper.create(userBillModel);
     }
 
-    @Override
     @Transactional
     public void unfreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
@@ -75,7 +72,6 @@ public class AmountTransferServiceImpl implements AmountTransferService {
         userBillMapper.create(userBillModel);
     }
 
-    @Override
     @Transactional
     public void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
@@ -96,7 +92,6 @@ public class AmountTransferServiceImpl implements AmountTransferService {
         userBillMapper.create(userBillModel);
     }
 
-    @Override
     @Transactional
     public void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
@@ -122,7 +117,6 @@ public class AmountTransferServiceImpl implements AmountTransferService {
         userBillMapper.create(userBillModel);
     }
 
-    @Override
     @Transactional
     public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);

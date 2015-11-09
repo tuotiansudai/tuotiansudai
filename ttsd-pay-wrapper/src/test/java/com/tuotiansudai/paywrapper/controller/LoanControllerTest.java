@@ -11,12 +11,12 @@ import com.tuotiansudai.dto.LoanOutDto;
 import com.tuotiansudai.paywrapper.client.MockPayGateWrapper;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.exception.AmountTransferException;
-import com.tuotiansudai.service.AmountTransferService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.IdGenerator;
 import org.junit.After;
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class LoanControllerTest {
     private AccountMapper accountMapper;
 
     @Autowired
-    private AmountTransferService amountTransferService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private PaySyncClient paySyncClient;
@@ -239,7 +239,7 @@ public class LoanControllerTest {
     private void mockAccount(String loginName, long initAmount) throws AmountTransferException {
         AccountModel am = new AccountModel(loginName, loginName, loginName, loginName, loginName, new Date());
         accountMapper.create(am);
-        amountTransferService.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+        amountTransfer.transferInBalance(loginName, idGenerator.generate(), initAmount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
     }
 
     private void mockLoan(long loanId, String loanerLoginName) {
@@ -284,6 +284,6 @@ public class LoanControllerTest {
         im.setStatus(InvestStatus.SUCCESS);
         investMapper.create(im);
 
-        amountTransferService.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS, null, null);
+        amountTransfer.freeze(loginName, im.getId(), amount, UserBillBusinessType.INVEST_SUCCESS, null, null);
     }
 }
