@@ -1,7 +1,4 @@
-/**
- * Created by CBJ on 2015/10/21.
- */
-require(['jquery','echarts','commonFun'], function ($) {
+require(['jquery','echarts','commonFun', 'csrf'], function ($) {
     $(function () {
     var $tMonthBox=$('#tMonthBox'),
         $switchMenu=$('ul',$tMonthBox);

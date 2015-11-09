@@ -246,12 +246,14 @@ public class UserServiceImpl implements UserService {
         }
 
         String newEmail = editUserDto.getEmail();
-        if (!Strings.isNullOrEmpty(newEmail) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
+        UserModel userModelByEmail = userMapper.findByEmail(newEmail);
+        if (!Strings.isNullOrEmpty(newEmail) && userModelByEmail != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByEmail.getLoginName())) {
             throw new EditUserException("该邮箱已经存在");
         }
 
         String mobile = editUserDto.getMobile();
-        if (!Strings.isNullOrEmpty(mobile) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByMobile(mobile).getLoginName())) {
+        UserModel userModelByMobile = userMapper.findByMobile(mobile);
+        if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
             throw new EditUserException("该手机号已经存在");
         }
     }

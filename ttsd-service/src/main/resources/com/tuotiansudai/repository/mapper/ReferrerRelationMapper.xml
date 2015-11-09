@@ -27,7 +27,7 @@
     </select>
 
     <delete id="delete" parameterType="map">
-        delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{login_name}
+        delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
     </delete>
 
 </mapper>
