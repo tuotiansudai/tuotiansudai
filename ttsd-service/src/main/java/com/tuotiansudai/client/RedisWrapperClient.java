@@ -186,6 +186,16 @@ public class RedisWrapperClient {
         });
     }
 
+    public boolean exists(final byte[] key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Boolean>() {
+            @Override
+            public Boolean action(Jedis jedis) {
+                return jedis.exists(key);
+            }
+        });
+    }
+
     public Object expire(final byte[] key,final int seconds) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Object>() {

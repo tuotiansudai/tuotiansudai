@@ -1,22 +1,31 @@
 package com.tuotiansudai.cache;
 
 import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.utils.SerializeUtil;
+import com.tuotiansudai.utils.SpringContextUtil;
 import org.apache.ibatis.cache.Cache;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-@Component
 public class MybatisRedisCache implements Cache{
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    @Autowired
-    private RedisWrapperClient redisWrapperClient;
+    private static RedisWrapperClient redisWrapperClient = null;
 
     private String id;
+
+    private RedisWrapperClient getRedisWrapperClient() {
+        if (redisWrapperClient == null) {
+            redisWrapperClient = SpringContextUtil.getBeanByType(RedisWrapperClient.class);
+        }
+        return redisWrapperClient;
+    }
+
+    public MybatisRedisCache(){
+
+    }
 
     public MybatisRedisCache(final String id) {
         this.id = id;
@@ -29,28 +38,28 @@ public class MybatisRedisCache implements Cache{
 
     @Override
     public void putObject(Object key, Object value) {
-        redisWrapperClient.set(SerializeUtil.serialize(key.toString()),SerializeUtil.serialize(value.toString()));
+        getRedisWrapperClient().set(SerializeUtil.serialize(key.toString()), SerializeUtil.serialize(value));
     }
 
     @Override
     public Object getObject(Object key) {
-        Object value = SerializeUtil.unserialize(redisWrapperClient.get(SerializeUtil.serialize(key.toString())));
+        Object value = SerializeUtil.unserialize(getRedisWrapperClient().get(SerializeUtil.serialize(key.toString())));
         return value;
     }
 
     @Override
     public Object removeObject(Object key) {
-        return redisWrapperClient.expire(SerializeUtil.serialize(key.toString()),0);
+        return getRedisWrapperClient().expire(SerializeUtil.serialize(key.toString()), 0);
     }
 
     @Override
     public void clear() {
-        redisWrapperClient.flushDB();
+        getRedisWrapperClient().flushDB();
     }
 
     @Override
     public int getSize() {
-        return Integer.valueOf(redisWrapperClient.dbSize().toString());
+        return Integer.valueOf(getRedisWrapperClient().dbSize().toString());
     }
 
     @Override

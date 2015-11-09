@@ -1,4 +1,4 @@
-package com.tuotiansudai.cache;
+package com.tuotiansudai.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
