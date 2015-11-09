@@ -1,7 +1,10 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.client.RedisWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.EditUserDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -23,6 +26,7 @@ import java.util.List;
 
 @Controller
 public class UserController {
+
     @Autowired
     private UserService userService;
 

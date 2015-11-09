@@ -1,11 +1,12 @@
 package com.tuotiansudai.paywrapper.service;
 
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.ReferrerRewardDto;
+import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.LoanModel;
+
+import java.util.List;
 
 public interface ReferrerRewardService {
 
-    BaseDto<PayDataDto> getReferrerReward(ReferrerRewardDto dto);
+    void rewardReferrer(LoanModel loanModel, List<InvestModel> investModels);
 
 }

@@ -1,5 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.account_overview}" activeNav="我的账户" activeLeftNav="账户总览" title="账户总览">
+<<<<<<< HEAD
 <script type="text/javascript">
     var pydata = {
         balance:'${((balance/100)?string('0.00'))!}',
@@ -10,6 +11,13 @@
 <div class="content-container fr account-overview">
     <div class="bRadiusBox spad bg-w">
         <img src="/images/sign/profile.jpg" class="fl accountImg" >
+=======
+
+<div class="contentContainer fr autoHeight">
+    <div class="bRadiusBox spad">
+        <img src="/images/sign/profile.jpg" class="fl accountImg">
+
+>>>>>>> master
         <div class="profileBox">
             <span><em>您好：${loginName!}</em></span>
             <ul class="proList">
@@ -18,12 +26,22 @@
                 <li class="fr"><a class="btn-primary" href="/withdraw">提现</a></li>
             </ul>
         </div>
+<<<<<<< HEAD
 
     </div>
     <div class="clear-blank"></div>
     <div class="AssetsBox bg-w">
         <div class="AssetsReport bRadiusBox fl">
             <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
+=======
+
+    </div>
+    <div class="clearBlank"></div>
+    <div class="AssetsBox">
+        <div class="AssetsReport bRadiusBox fl">
+            <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
+
+>>>>>>> master
             <div id="ReportShow" style="width:100%; height:115px; "></div>
         </div>
         <div class="AssetsDetail bRadiusBox fr">
@@ -37,14 +55,18 @@
             </ul>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="clear-blank"></div>
+=======
+    <div class="clearBlank"></div>
+>>>>>>> master
     <#if successSumRepay??>
         <div class="LastMonth bRadiusBox bg-w">
             <ul class="PaymentSwitch">
                 <li class="current"><a href="javascript:void(0);">本月未还款</a></li>
             </ul>
             <table class="table table-striped">
-                <caption>本月未还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a> </caption>
+                <caption>本月未还款总额：￥${((successSumRepay/100)?string('0.00'))!}元 <a href="/loaner/loan-list" class="fr">更多...</a></caption>
                 <thead>
                 <tr>
                     <th>项目名称</th>
@@ -60,10 +82,12 @@
                         <#list repayList as repay>
                         <tr>
                             <td><a href="/loan/${repay.loan.id?string('0')}">${repay.loan.name!}</a></td>
-                            <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} % </td>
+                            <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} %</td>
                             <td>${(repay.loan.periods?string('0'))!}个月</td>
                             <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
-                            <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))!}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))!}</#if>元</td>
+                            <td><#if repay.status == 'COMPLETE'>${(((repay.corpus+repay.actualInterest+repay.defaultInterest)/100)?string('0.00'))!}<#else>${(((repay.corpus+repay.expectedInterest+repay.defaultInterest)/100)?string('0.00'))!}</#if>
+                                元
+                            </td>
                             <td><#if repay.status == 'COMPLETE'>${(repay.actualRepayDate?string('MM月dd日'))!}<#else>${(repay.repayDate?string('MM月dd日'))!}</#if></td>
                         </tr>
                         </#list>
@@ -76,8 +100,13 @@
             </table>
         </div>
     </#if>
+<<<<<<< HEAD
     <div class="clear-blank"></div>
     <div class="tMonthPayment bRadiusBox bg-w" id="tMonthBox">
+=======
+    <div class="clearBlank"></div>
+    <div class="tMonthPayment bRadiusBox" id="tMonthBox">
+>>>>>>> master
 
         <ul class="PaymentSwitch">
             <li class="current"><a href="javascript:void(0);"> 本月已收回款</a></li>
@@ -136,7 +165,9 @@
                         <td>${(((notSuccessSumInvestRepay.loan.activityRate+notSuccessSumInvestRepay.loan.baseRate)*100)?string('0.00'))!}%</td>
                         <td>${(notSuccessSumInvestRepay.loan.periods?string('0'))!}个月</td>
                         <td>第${(notSuccessSumInvestRepay.period?string('0'))!}期/${(notSuccessSumInvestRepay.loan.periods?string('0'))!}期</td>
-                        <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}元</td>
+                        <td>${(((notSuccessSumInvestRepay.corpus+notSuccessSumInvestRepay.defaultInterest+notSuccessSumInvestRepay.expectedInterest-notSuccessSumInvestRepay.expectedFee)/100)?string('0.00'))!}
+                            元
+                        </td>
                         <td>${(notSuccessSumInvestRepay.repayDate?string('MM月dd日'))!}</td>
                     </tr>
                     </#list>
@@ -149,10 +180,17 @@
             </tfoot>
         </table>
     </div>
+<<<<<<< HEAD
     <div class="clear-blank"></div>
     <div class="newProjects bRadiusBox bg-w">
         <table class="table">
             <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a> </caption>
+=======
+    <div class="clearBlank"></div>
+    <div class="newProjects bRadiusBox">
+        <table class="table">
+            <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a></caption>
+>>>>>>> master
             <thead>
             <tr>
                 <th>交易时间</th>
@@ -170,7 +208,9 @@
                         <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                         <td><a href="/loan/${latestInvest.loanId?string('0')}">${latestInvest.loanName!}</a></td>
                         <td>投资成功</td>
-                        <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}/${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元</td>
+                        <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}
+                            /${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元
+                        </td>
                         <td>￥${(latestInvest.investAmount?string('0.00'))!}元</td>
                         <td><a href="/contract/investor/${latestInvest.loanId!}">合同</a></td>
                     </tr>
@@ -184,4 +224,14 @@
         </table>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+<script>
+    var pydata = {
+        balance: '${((balance/100)?string('0.00'))!}',
+        collectingPrincipal: '${((collectingPrincipal/100)?string('0.00'))!}',
+        collectingInterest: '${((collectingInterest/100)?string('0.00'))!}'
+    };
+</script>
+>>>>>>> master
 </@global.main>

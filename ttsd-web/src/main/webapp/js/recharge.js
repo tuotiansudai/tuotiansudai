@@ -17,12 +17,14 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
             bankElement = $('.e-bank-recharge ol li'),
             turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast);
-        $fastRecharge.hide();
+            $fastRecharge.hide();
+
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
-                if (isNaN(amount) || amount === 0) {
+                console.log(amount);
+                if (isNaN(amount) || amount < 0.01) {
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
                 } else {
                     rechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
@@ -47,11 +49,11 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             fastRechargeInputAmountElement.autoNumeric("init");
             fastRechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(fastRechargeInputAmountElement.autoNumeric("get"));
-                if (isNaN(amount) || amount === 0) {
+                if (isNaN(amount) || amount < 0.01) {
                     fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
 
                 } else {
-                    fastRechargeSubmitElement.prop('disabled', false).removeClass('btn-normal');
+                    fastRechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
                 }
             });
             //快捷充值提交
@@ -86,13 +88,6 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             });
 
         }
-
-        //select bank
-        bankElement.click(function () {
-            var selectedBankElement = $(this).find('input');
-            var bankCode = selectedBankElement.data('name');
-            $('.selected-bank').val(bankCode);
-        });
 
         //tab切换
         tabElement.click(function (index) {

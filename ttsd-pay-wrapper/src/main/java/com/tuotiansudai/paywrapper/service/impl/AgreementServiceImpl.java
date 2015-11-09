@@ -24,11 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.MessageFormat;
 import java.util.Map;
 
-/**
- * Created by Administrator on 2015/9/15.
- */
 @Service
-public class AgreementServiceImpl implements AgreementService{
+public class AgreementServiceImpl implements AgreementService {
 
     static Logger logger = Logger.getLogger(AgreementServiceImpl.class);
 
@@ -48,13 +45,13 @@ public class AgreementServiceImpl implements AgreementService{
         AgreementType agreementType = null;
         if (dto.isAutoInvest()) {
             agreementType = AgreementType.ZTBB0G00;
-        }else if(dto.isFastPay()){
+        } else if (dto.isFastPay()) {
             agreementType = AgreementType.ZKJP0700;
         }
 
-        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(),agreementType);
+        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType);
         try {
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class,ptpMerBindAgreementRequestModel);
+            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
             return baseDto;
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
@@ -77,14 +74,14 @@ public class AgreementServiceImpl implements AgreementService{
     }
 
     @Transactional
-    private void postAgreementCallback(BaseCallbackRequestModel callbackRequestModel){
-        AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel)callbackRequestModel;
+    private void postAgreementCallback(BaseCallbackRequestModel callbackRequestModel) {
+        AgreementNotifyRequestModel agreementNotifyRequestModel = (AgreementNotifyRequestModel) callbackRequestModel;
         AccountModel accountModel = accountMapper.findByPayUserId(agreementNotifyRequestModel.getUserId());
         if (accountModel != null && callbackRequestModel.isSuccess()) {
             if (agreementNotifyRequestModel.isAutoInvest()) {
                 accountModel.setAutoInvest(true);
             }
-            if(agreementNotifyRequestModel.isFastPay()){
+            if (agreementNotifyRequestModel.isFastPay()) {
                 String loginName = accountModel.getLoginName();
                 BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
                 bankCardModel.setIsFastPayOn(true);

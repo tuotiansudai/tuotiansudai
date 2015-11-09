@@ -5,15 +5,19 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
+body { overflow-x: hidden;}
 a {
     color: #000;
     text-decoration: none;
 }
+a.linked {color: #377ac6;  }
 
 a:hover {
     color: #cc9900;
 }
-
+.badgeCol  {
+    color: #ff0000;
+}
 .navbar {
     background: #eee url(../images/header_bg.jpg) no-repeat right top;
     margin-bottom: 10px;
@@ -50,6 +54,10 @@ a:hover {
 }
 
 table td,table th { font-size: 12px;}
+.table-center th,.table-center td
+{
+    text-align: center;
+}
 
 .file-input {
     margin-bottom: 10px;
@@ -106,12 +114,16 @@ table td,table th { font-size: 12px;}
 .table-bordered th {
     text-align: center
 }
+.table .btn-link {
+    padding:0px 2px;
+}
 .form-horizontal span.form-control{
     border: none;
     box-shadow: none;
 }
 .query-build input.form-control {
     width:170px;
+    font-size: 13px;
 }
 td.projectName { width:25%;}
 td.projectName span { display: inline-block; text-overflow: ellipsis; white-space: nowrap; padding-right:10px; overflow: hidden; width:250px; }
@@ -119,6 +131,8 @@ td.td {text-align:center;}
 
 .loan_repay{color: #0064cd;}
 .invest_repay{color: #cc0000;}
+.pagination-control button {     margin: 20px 0 0 10px; }
+.currentTab { padding-top:15px;}
 
 .bootstrap-select {  width:auto!important;}
 .bootstrap-select button.dropdown-toggle { width:170px; }
@@ -127,3 +141,5 @@ td.td {text-align:center;}
 .web-error-message{
     display: none;
 }
+.publishAD { margin-right: 40px; margin-top:10px;}
+

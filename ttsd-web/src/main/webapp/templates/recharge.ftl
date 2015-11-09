@@ -12,7 +12,7 @@
         </ul>
         <div class="recharge-wrapper">
 
-                <div class="fast-recharge <#if isFastPayOn>active</#if>">
+            <div class="fast-recharge <#if isFastPayOn>active</#if>">
                 <#if !isBindCard>
                     <div class="bind-card-nav">
                         <span>您尚未绑定银行卡，请先绑定银行卡！</span>
@@ -69,12 +69,14 @@
                         账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
                         输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                         <input class="selected-bank" type="hidden" name="backCode" value="CMB"/>
+
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
                         <div class="tc pad-m">
-                        <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+                            <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
                         </div>
                     </form>
                 </div>
@@ -98,8 +100,9 @@
 <div id="popRecharge" class="pad-m" style="display: none;">
     <p>请在新打开的联动优势页面充值完成后选择：</p>
         <p>充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
+
         <p>充值失败：<a href="" class="btn-normal" data-category="重新充值" data-label="recharge">重新充值</a>
-            <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
+            <span class="help">查看<a href="#" target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <span>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
 </div>
@@ -110,7 +113,6 @@
         <span class="infoTip">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</span>
 
 </div>
-
 </div>
 
 </@global.main>

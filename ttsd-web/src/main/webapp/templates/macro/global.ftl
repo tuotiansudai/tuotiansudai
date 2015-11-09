@@ -3,7 +3,7 @@
 <#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷">
     <#local menus=[
     {"title":"首页", "url":"/"},
-    {"title":"我要投资", "url":"/"},
+    {"title":"我要投资", "url":"/loanList/web"},
     {"title":"我的账户", "url":"/account", "leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
@@ -91,8 +91,9 @@
 </#macro>
 
 <#macro javascript pageJavascript>
-<script src="${staticServer}/js/dest/${js.config}"></script>
+<script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js"
+        type="text/javascript" charset="utf-8"
         defer="defer"
         async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}"></script>

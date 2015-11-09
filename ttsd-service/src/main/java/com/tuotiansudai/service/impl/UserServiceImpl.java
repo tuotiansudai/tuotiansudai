@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
@@ -22,9 +23,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +65,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
+
+    @Autowired
+    private RedisWrapperClient redisWrapperClient;
+
+    @Value("${login.max.times}")
+    private int times;
 
     public static String SHA = "SHA";
 
@@ -217,6 +226,12 @@ public class UserServiceImpl implements UserService {
         userModel.setLastModifiedTime(new Date());
         userModel.setLastModifiedUser(LoginUserInfo.getLoginName());
         userMapper.updateUser(userModel);
+        String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
+        if (userStatus == UserStatus.ACTIVE) {
+            redisWrapperClient.del(redisKey);
+        } else {
+            redisWrapperClient.set(redisKey,String.valueOf(times));
+        }
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
         userAuditLogService.generateAuditLog(beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
@@ -231,12 +246,14 @@ public class UserServiceImpl implements UserService {
         }
 
         String newEmail = editUserDto.getEmail();
-        if (!Strings.isNullOrEmpty(newEmail) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
+        UserModel userModelByEmail = userMapper.findByEmail(newEmail);
+        if (!Strings.isNullOrEmpty(newEmail) && userModelByEmail != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByEmail.getLoginName())) {
             throw new EditUserException("该邮箱已经存在");
         }
 
         String mobile = editUserDto.getMobile();
-        if (!Strings.isNullOrEmpty(mobile) && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByMobile(mobile).getLoginName())) {
+        UserModel userModelByMobile = userMapper.findByMobile(mobile);
+        if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
             throw new EditUserException("该手机号已经存在");
         }
     }

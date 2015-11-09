@@ -1,10 +1,15 @@
 package com.tuotiansudai.repository.model;
 
 public class LoanTitleRelationModel {
+
     private long id;
+
     private long loanId;/***借款标的***/
+
     private long titleId;/***申请材料标题***/
-    private String applyMetarialUrl;
+
+    private String applicationMaterialUrls;
+    
     private String title;
     public long getId() {
         return id;
@@ -31,12 +36,12 @@ public class LoanTitleRelationModel {
     }
 
     /***申请材料存放路径***/
-    public String getApplyMetarialUrl() {
-        return applyMetarialUrl;
+    public String getApplicationMaterialUrls() {
+        return applicationMaterialUrls;
     }
 
-    public void setApplyMetarialUrl(String applyMetarialUrl) {
-        this.applyMetarialUrl = applyMetarialUrl;
+    public void setApplicationMaterialUrls(String applicationMaterialUrls) {
+        this.applicationMaterialUrls = applicationMaterialUrls;
     }
 
     public String getTitle() {

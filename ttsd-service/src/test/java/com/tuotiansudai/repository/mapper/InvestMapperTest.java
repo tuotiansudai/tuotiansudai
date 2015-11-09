@@ -143,12 +143,12 @@ public class InvestMapperTest {
 
     @Before
     public void createLoan() {
-        createLoanByUserId(User_ID, Loan_ID);
-        createLoanByUserId(User_ID2, Loan_ID2);
+        createLoan(User_ID, Loan_ID, ActivityType.NORMAL);
+        createLoan(User_ID2, Loan_ID2, ActivityType.NORMAL);
         assertNotNull(loanMapper.findById(Loan_ID));
     }
 
-    private void createLoanByUserId(String userId, long loanId) {
+    private void createLoan(String userId, long loanId, ActivityType activityType) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
         loanDto.setAgentLoginName(userId);
@@ -158,7 +158,7 @@ public class InvestMapperTest {
         loanDto.setActivityRate("12");
         loanDto.setShowOnHome(true);
         loanDto.setPeriods(30);
-        loanDto.setActivityType(ActivityType.NORMAL);
+        loanDto.setActivityType(activityType);
         loanDto.setContractId(123);
         loanDto.setDescriptionHtml("asdfasdf");
         loanDto.setDescriptionText("asdfasd");
@@ -213,5 +213,33 @@ public class InvestMapperTest {
         long result = investMapper.sumSuccessInvestAmount(Loan_ID);
 
         assertEquals(1000000l, result);
+    }
+
+
+    @Test
+    public void shouldSumSuccessNoviceInvestCount(){
+        long noviceLoanId = idGenerator.generate();
+        createLoan(User_ID, noviceLoanId, ActivityType.NOVICE);
+
+        InvestModel investModel = this.getFakeInvestModel();
+        investModel.setLoanId(noviceLoanId);
+        investModel.setLoginName(User_ID2);
+        investModel.setCreatedTime(DateUtils.addHours(new Date(), -1));
+        investMapper.create(investModel);
+
+        InvestModel investModel2 = this.getFakeInvestModel();
+        investModel2.setLoanId(Loan_ID2);
+        investModel2.setLoginName(User_ID2);
+        investModel2.setCreatedTime(DateUtils.addHours(new Date(), -2));
+        investMapper.create(investModel2);
+
+        InvestModel investModel3 = this.getFakeInvestModel();
+        investModel3.setLoanId(noviceLoanId);
+        investModel3.setLoginName(User_ID2);
+        investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
+        investMapper.create(investModel3);
+
+        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(User_ID2);
+        assert noviceInvestCount == 2;
     }
 }

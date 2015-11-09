@@ -62,7 +62,7 @@ public class OssUploadController {
             fileName = dfi.getOriginalFilename();
             String ossPath = "";
             try {
-                ossPath = ossWrapperClient.upload(fileName, dfi.getInputStream(), rootPath);
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath);
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -85,7 +85,7 @@ public class OssUploadController {
     }
 
     @RequestMapping(value = "/ueditor", method = RequestMethod.POST)
-    public void uploadimage(HttpServletRequest request, HttpServletResponse response) {
+    public void upload(HttpServletRequest request, HttpServletResponse response) {
         String action = request.getParameter("action");
         if (action.equals("uploadimage")) {
             try {
@@ -135,18 +135,14 @@ public class OssUploadController {
     @RequestMapping(value = "/ueditor", method = RequestMethod.GET)
     public void config(HttpServletRequest request, HttpServletResponse response) {
         String action = request.getParameter("action");
-        PrintWriter writer = null;
         if (action.equals("config")) {
             response.setContentType("application/json");
-            try {
+            try (PrintWriter writer = response.getWriter()) {
                 String exec = objectMapper.writeValueAsString(ueditorConfig);
-                writer = response.getWriter();
                 writer.write(exec);
                 writer.flush();
             } catch (IOException e) {
                 logger.error(e.getLocalizedMessage(), e);
-            } finally {
-                writer.close();
             }
         }
     }
