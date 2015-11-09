@@ -393,6 +393,8 @@ public class InvestServiceImpl implements InvestService {
      */
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString){
 
+        logger.debug("into over_invest_payback_callback, queryString: " + queryString);
+
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
                 queryString,
