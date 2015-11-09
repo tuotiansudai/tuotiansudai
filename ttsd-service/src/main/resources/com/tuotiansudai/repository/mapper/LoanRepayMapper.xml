@@ -204,6 +204,7 @@
     
     <select id="findByLoginNameAndTimeRepayList" parameterType="map" resultMap="loanRepayResultMapWithLoanResultMap">
         SELECT
+          m.`id` as`loan_id`,
           m.`name`,
           m.`base_rate`,
           m.`activity_rate`,

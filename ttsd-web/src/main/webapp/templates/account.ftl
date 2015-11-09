@@ -59,7 +59,7 @@
                     <#if repayList??>
                         <#list repayList as repay>
                         <tr>
-                            <td><a href="/loan/${repay.loanId?string('0')}">${repay.loan.name!}</a></td>
+                            <td><a href="/loan/${repay.loan.id?string('0')}">${repay.loan.name!}</a></td>
                             <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} %</td>
                             <td>${(repay.loan.periods?string('0'))!}个月</td>
                             <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
@@ -177,7 +177,7 @@
                             ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>
                         </td>
                         <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}元</td>
-                        <td><a href="/contract/investor/${(latestInvest.loanId?string('0'))!}">合同</a></td>
+                        <td><a href="/contract/investor/loanId/${(latestInvest.loanId?string('0'))!}">合同</a></td>
                     </tr>
                     </#list>
                 <#else>
