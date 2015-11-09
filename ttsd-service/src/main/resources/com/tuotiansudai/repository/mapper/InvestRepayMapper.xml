@@ -167,7 +167,7 @@
           AND ir.`repay_date` BETWEEN #{startTime}
           AND #{endTime}
     </select>
-    
+
     <select id="findByLoginNameAndTimeSuccessInvestRepayList" parameterType="map" resultMap="investRepayResultMapWithLoanResultMap">
         SELECT
           ir.*,
@@ -333,4 +333,32 @@
         WHERE ir.`status` = 'COMPLETE'
     </select>
 
+    <select id="findByLoginNameAndStatus" parameterType="map" resultMap="investRepayResultMap">
+        select ir.id, ir.invest_id, ir.corpus, ir.default_interest, ir.expected_interest, ir.actual_interest, ir.expected_fee, ir.actual_fee, ir.period, ir.repay_date, ir.actual_repay_date, ir.status, ir.created_time
+        from invest_repay ir
+        inner join invest on invest.id = ir.invest_id
+        where invest.login_name = #{loginName}
+        <if test="paidStatus == 'paid'">
+            and ir.status = 'COMPLETE'
+            order by actual_repay_date desc
+        </if>
+        <if test="paidStatus == 'unpaid'">
+            and ir.status &lt;&gt; 'COMPLETE'
+            order by repay_date asc
+        </if>
+        limit #{rowLimit} offset #{rowIndex}
+    </select>
+
+    <select id="findCountByLoginNameAndStatus" parameterType="map" resultType="long">
+        select count(*)
+        from invest_repay ir
+        inner join invest on invest.id = ir.invest_id
+        where invest.login_name = #{loginName}
+        <if test="paidStatus == 'paid'">
+            and ir.status = 'COMPLETE'
+        </if>
+        <if test="paidStatus == 'unpaid'">
+            and ir.status &lt;&gt; 'COMPLETE'
+        </if>
+    </select>
 </mapper>
