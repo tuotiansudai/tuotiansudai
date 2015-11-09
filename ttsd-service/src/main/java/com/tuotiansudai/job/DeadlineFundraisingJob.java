@@ -19,7 +19,8 @@ public class DeadlineFundraisingJob implements Job{
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LoanModel loanModel = (LoanModel)context.getJobDetail().getJobDataMap().get("loan");
+        long loanId = (Long)context.getJobDetail().getJobDataMap().get("loanId");
+        LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel.getStatus() == LoanStatus.RAISING && !loanModel.getFundraisingEndTime().after(new Date())) {
             loanMapper.updateStatus(loanModel.getId(), LoanStatus.RECHECK);
         }

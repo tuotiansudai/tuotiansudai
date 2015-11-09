@@ -589,8 +589,8 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
-            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
             loanListWebDto.setStatus(loanModels.get(i).getStatus());
@@ -620,12 +620,10 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
-        JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.put("loan",loanModel);
         try {
             jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class).
-                    withIdentity("LoanStatusToRecheck","LoanStatusToRecheck").
-                    addJobData(jobDataMap).runOnceAt(loanModel.getFundraisingEndTime()).submit();
+                    withIdentity("LoanStatusToRecheck","LoanStatusToRecheck").addJobData("loanId",loanModel.getId())
+                    .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(),e);
         }
