@@ -5,10 +5,10 @@
 </@global.head>
 <body>
 <#include "header.ftl" />
-<div class="login">
-    <div>
+<div class="login-container page-width">
+    <div class="login-box fr">
         <h3>欢迎登录拓天速贷</h3>
-
+        <div class="clear-blank-m"></div>
         <form class="form-login" action="/login-handler" method="post" data-redirect-url="${redirect}">
             <label>
                 <em class="name">账<i></i>号:</em>
@@ -26,22 +26,28 @@
                 </em>
             </label>
 
-            <div class="error"></div>
-
-            <p class="forgot-password">
-                <a href="/register/user" class="register">免费注册</a>
-                <a href="/mobile-retrieve-password">忘记密码？</a>
-            </p>
-            <span>
-                <a href="javascript:" class="login-submit grey">立即登录</a>
-            </span>
-
+            <i class="error fa fa-times-circle"></i>
+            <div class="forgot-password tc">
+                <div class="tr">
+                    <a href="/register/user" class="register">免费注册</a>
+                    <a href="/mobile-retrieve-password">忘记密码？</a>
+                 </div>
+                <div class="clear-blank"></div>
+                <button class="login-submit btn btn-normal" disabled type="button">立即登录</button>
+            </div>
+            <div class="clear-blank"></div>
             <b>数据采用256位加密技术，保障您的信息安全！</b>
         </form>
     </div>
 </div>
 <#include "footer.ftl">
-<@global.javascript pageJavascript="${js.login}">
-</@global.javascript>
+<#--<@global.javascript pageJavascript="${js.login}">-->
+<#--</@global.javascript>-->
+
+<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+defer
+async="true"
+data-main="${requestContext.getContextPath()}/js/login.js"></script>
 </body>
 </html>

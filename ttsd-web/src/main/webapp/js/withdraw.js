@@ -1,21 +1,22 @@
 require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
     $(function () {
-        var amountInputElement = $(".withdraw .amount-display");
-        var submitElement = $('.withdraw-submit');
-        var formElement = $('.withdraw form');
-        var errorElement = $('.withdraw .error');
-        var actualAmountElement = $('.withdraw .actual-amount');
+        var $withdraw=$('.withdraw'),
+         amountInputElement = $(".amount-display",$withdraw),
+         submitElement = $('.withdraw-submit',$withdraw),
+         formElement = $('form',$withdraw),
+         errorElement = $('.error',$withdraw),
+         actualAmountElement = $('.actual-amount',$withdraw);
 
         amountInputElement.autoNumeric("init");
 
         amountInputElement.keyup(function () {
             var amount = parseFloat(amountInputElement.autoNumeric("get"));
             if (isNaN(amount) || amount <= 3) {
-                submitElement.addClass('inactive').attr('disabled', true);
+                submitElement.prop('disabled',true);
                 errorElement.show();
                 actualAmountElement.html('0.00');
             } else {
-                submitElement.removeClass('inactive').attr('disabled', false);
+                submitElement.prop('disabled',false);
                 errorElement.hide();
                 actualAmountElement.html(Number((amount - 3)).toFixed(2));
             }

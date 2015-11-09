@@ -38,7 +38,7 @@ public class MobileAppCheckVersionController {
 
     @RequestMapping(value = "/get/version", method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponseDto queryLoanList(@RequestBody BaseParamDto dto) {
+    public BaseResponseDto getVersion(@RequestBody BaseParamDto dto) {
         BaseResponseDto<AppVersionResponseDataDto> baseResponseDto = new BaseResponseDto<>();
         AppVersionResponseDataDto dataDto = getLastestVersionInfo();
         if (dataDto != null) {

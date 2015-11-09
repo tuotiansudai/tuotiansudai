@@ -1,16 +1,16 @@
 require(['jquery', 'csrf', 'jquery.form'], function ($) {
     $(function () {
-        var loginFormElement = $('.form-login');
-        var loginSubmitElement = $('.form-login .login-submit');
-        var loginNameElement = $('.form-login .login-name');
-        var passwordElement = $('.form-login .password');
-        var captchaElement = $('.form-login .captcha');
-        var errorElement = $('.form-login .error');
-        var imageCaptchaElement = $('.form-login .image-captcha img');
+        var loginFormElement = $('.form-login'),
+         loginSubmitElement = $('.login-submit',loginFormElement),
+         loginNameElement = $('.login-name',loginFormElement),
+         passwordElement = $('.password',loginFormElement),
+         captchaElement = $('.captcha',loginFormElement),
+         errorElement = $('.error',loginFormElement),
+         imageCaptchaElement = $('.image-captcha img',loginFormElement);
 
-        var loginNameValid = false;
-        var passwordValid = false;
-        var captchaValid = false;
+        var loginNameValid = false,
+            passwordValid = false,
+            captchaValid = false;
 
         var refreshCaptcha = function () {
             captchaValid = false;
@@ -105,13 +105,12 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
             loginSubmitVerify();
         });
 
-
         var loginSubmitVerify = function () {
             var isValid = loginNameValid && passwordValid && captchaValid;
-            if (isValid) {
-                loginSubmitElement.removeClass('grey');
+            if (!isValid) {
+                loginSubmitElement.prop('disabled',!isValid).removeClass('btn-normal');
             } else {
-                loginSubmitElement.addClass('grey');
+                loginSubmitElement.prop('disabled',!isValid).addClass('btn-normal');
             }
             return isValid;
         };
@@ -141,6 +140,7 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                     loginSubmitVerify();
                 }
             });
+            return false;
         };
 
         loginSubmitElement.click(function () {

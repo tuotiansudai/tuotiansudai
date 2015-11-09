@@ -12,6 +12,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
@@ -65,6 +66,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+    @Autowired
+    private InvestService investService;
 
     @Override
     @Transactional
@@ -220,6 +223,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             }
 
         }
+        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(),enabledLoanRepay.getPeriod());
     }
 
     private void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
