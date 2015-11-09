@@ -9,12 +9,12 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/libs/bootstrap-select.css"/>
-    <link href="../../style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
+    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css" />
 <@global.javascript pageJavascript="debt-repay-plan.js"></@global.javascript>
 
 </head>
@@ -36,13 +36,13 @@
                             <form action="" class="form-inline query-build">
                         <div class="form-group">
 
-                            <select class="selectpicker"  data-style="btn-default" >
-                                <option>全部</option>
-                                <option>已还款</option>
-                                <option>未还款</option>
+                            <select class="selectpicker status"  data-style="btn-default" >
+                                <option value="" <#if repayStatus??><#else>selected="selected" </#if>>全部</option>
+                                <option value="COMPLETE" <#if repayStatus?? && repayStatus=="COMPLETE">selected="selected" </#if>>已还款</option>
+                                <option value="REPAYING" <#if repayStatus?? && repayStatus=="REPAYING">selected="selected" </#if>>未还款</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary" type="submit">查询</button>
+                        <button class="btn btn-primary jq-search" type="button">查询</button>
                             </form>
                             </div>
                     </div>
@@ -56,21 +56,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
-                            <td> 104.5</td>
-
-                        </tr>
-                        <tr>
-                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
-                            <td>104.5</td>
-
-                        </tr>
-                        <tr>
-                            <td><a href="/debtRepaymentDetail" class="linked">2015-03</a></td>
-                            <td>104.5</td>
-
-                        </tr>
+                        <#list debtRepaymentPlans as debtRepaymentPlan>
+                            <tr>
+                                <td><a href="/debtRepaymentDetail?date=${debtRepaymentPlan.repayDate!}" class="linked">${debtRepaymentPlan.repayDate!}</a></td>
+                                <td>${((debtRepaymentPlan.totalAmount/100)?string('0.00'))!}</td>
+                            </tr>
+                        </#list>
                         </tbody>
                     </table>
                 </div>
