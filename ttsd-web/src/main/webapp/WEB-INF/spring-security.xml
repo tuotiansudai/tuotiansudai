@@ -61,7 +61,7 @@
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
 
-        <intercept-url pattern="/account" access="permitAll()"/>
+        <intercept-url pattern="/account" access="hasAuthority('USER')"/>
 
         <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>

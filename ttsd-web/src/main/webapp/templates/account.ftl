@@ -59,7 +59,7 @@
                     <#if repayList??>
                         <#list repayList as repay>
                         <tr>
-                            <td><a href="/loan/${repay.loan.id?string('0')}">${repay.loan.name!}</a></td>
+                            <td><a href="/loan/${repay.loanId?string('0')}">${repay.loan.name!}</a></td>
                             <td>${(((repay.loan.baseRate+repay.loan.activityRate)*100)?string('0.00'))!} %</td>
                             <td>${(repay.loan.periods?string('0'))!}个月</td>
                             <td>第${(repay.period?string('0'))!}期/${(repay.loan.periods?string('0'))!}期</td>
@@ -155,7 +155,7 @@
     <div class="clear-blank"></div>
     <div class="newProjects bRadiusBox bg-w">
         <table class="table">
-            <caption>最新投资项目 <a href="/investor/invests" class="fr">更多...</a> </caption>
+            <caption>最新投资项目 <a href="/investor/invest-list" class="fr">更多...</a> </caption>
             <thead>
             <tr>
                 <th>交易时间</th>
@@ -174,10 +174,10 @@
                         <td><a href="/loan/${latestInvest.loanId?string('0')}">${latestInvest.loanName!}</a></td>
                         <td>投资成功</td>
                         <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}
-                            /${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>/2000元
+                            ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>
                         </td>
-                        <td>￥${(latestInvest.investAmount?string('0.00'))!}元</td>
-                        <td><a href="/contract/investor/${latestInvest.loanId!}">合同</a></td>
+                        <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}元</td>
+                        <td><a href="/contract/investor/${(latestInvest.loanId?string('0'))!}">合同</a></td>
                     </tr>
                     </#list>
                 <#else>

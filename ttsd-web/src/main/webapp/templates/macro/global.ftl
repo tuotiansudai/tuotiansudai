@@ -37,7 +37,7 @@
     <#include "../header.ftl" />
 <div class="nav-container">
     <div class="nav">
-        <a href="${requestContext.getContextPath()}" class="logo"></a>
+        <a href="${requestContext.getContextPath()}/" class="logo"></a>
         <#if activeNav??>
             <ul>
                 <#list menus as menu>
