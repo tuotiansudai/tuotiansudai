@@ -5,6 +5,7 @@ public enum LoanStatus {
     WAITING_VERIFY_AFFIRM("waiting_verify_affirm", "审核后等待第三方确认"),
     WAITING_VERIFY_AFFIRM_USER("waiting_verify_affirm_user", "审核后等待用户确认"),
     DQGS("dqgs", "贷前公示"),
+    PREHEAT("preheat", "预热"),
     VERIFY_FAIL("verify_fail", "审核未通过"),
     RAISING("raising", "筹款中"),
     RECHECK("recheck", "等待复核"),
@@ -52,7 +53,7 @@ public enum LoanStatus {
 
     public static LoanStatus convertLoanStatus(com.tuotiansudai.repository.model.LoanStatus loanStatus) {
         if (loanStatus == com.tuotiansudai.repository.model.LoanStatus.PREHEAT) {
-            return DQGS;
+            return PREHEAT;
         }
         if (loanStatus == com.tuotiansudai.repository.model.LoanStatus.CANCEL) {
             return CANCEL;

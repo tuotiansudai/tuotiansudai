@@ -37,8 +37,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
     @Override
     public BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        int index = requestDto.getIndex().intValue();
         int pageSize = requestDto.getPageSize().intValue();
+        int index = (requestDto.getIndex().intValue() - 1) * pageSize;
 
         List<InvestModel> investList = investMapper.findByLoginName(loginName, index, pageSize);
         int investListCount = (int) investMapper.findCountByLoginName(loginName);
