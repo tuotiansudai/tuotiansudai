@@ -8,6 +8,7 @@ class NewVersionDeployment(object):
         self.compile()
         self.migrate()
         self.mkwar()
+        self.mk_static_package()
         self.init_docker()
 
     def clean(self):
@@ -35,6 +36,12 @@ class NewVersionDeployment(object):
         print "Making war..."
         sh('/opt/gradle/latest/bin/gradle war')
         self.build_and_unzip_worker()
+
+    def mk_static_package(self):
+        print "Making static package..."
+        sh('cd ./ttsd-web/src/main/webapp && zip -r static.zip images/ js/ pdf/ style/ tpl/')
+        sh('mv ./ttsd-web/src/main/webapp/static.zip  ./ttsd-web/build/')
+        sh('cd ./ttsd-web/build && unzip static.zip -d static')
 
     def init_docker(self):
         print "Initialing docker..."

@@ -58,10 +58,10 @@
         i.`created_time` AS investTime,
         i.`loan_id` AS loanId,
         i.investName,
-        irr.`bonus` AS rewardAmount,
-        irr.`time` AS rewardTime,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
         irr.`referrer_login_name` AS referrerLoginName,
-        irr.`role_name`,
+        irr.`referrer_role` as role_name,
         irr.`status`,
         irr.referrerName
         FROM
@@ -152,10 +152,10 @@
         i.`created_time` AS investTime,
         i.`loan_id` AS loanId,
         i.investName,
-        irr.`bonus` AS rewardAmount,
-        irr.`time` AS rewardTime,
+        irr.`amount` AS rewardAmount,
+        irr.`created_time` AS rewardTime,
         irr.`referrer_login_name` AS referrerLoginName,
-        irr.`role_name`,
+        irr.`referrer_role` as role_name,
         irr.`status`,
         irr.referrerName
         FROM
