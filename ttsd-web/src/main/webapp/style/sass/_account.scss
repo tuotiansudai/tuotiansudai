@@ -1,13 +1,5 @@
 @import 'variables';
-@import 'pagination';
-
-.color-info {
-  color: nth($CK1, 3);
-}
-
-.color-note {
-  color: nth($CK1, 1);
-}
+@import 'daterangepicker','pagination';
 
 .column-title {
   height: 48px;
@@ -27,21 +19,28 @@
 
 .layui-layer-btn {
   text-align: center;
-}
-
-.layui-layer-btn .layui-layer-btn0 {
-  padding: 3px 35px;
-  background: nth($CK1, 2);
-  border-radius: 4px;
-  border: 1px solid nth($CK1, 2);
-  letter-spacing: 3px;
-  color: #fff;
-  &:hover {
-    // background: nth($CK1,3);
+  .layui-layer-btn0 {
+    padding: 3px 35px;
+    background: nth($CK1, 2);
+    border-radius: 4px;
+    border: 1px solid nth($CK1, 2);
+    letter-spacing: 3px;
     color: #fff;
+    &:hover {
+      // background: nth($CK1,3);
+      color: #fff;
+    }
   }
 }
-
+.layui-layer-content {
+  //loaner record
+  .layer-content {
+    .repay-total {
+      vertical-align: bottom;
+      color: #666;
+    }
+  }
+}
 .popLayer {
   text-align: center;
   overflow: auto;
@@ -64,399 +63,9 @@
     margin: 20px auto 0 auto;
   }
 }
-
-.layui-layer-content {
-  //loaner record
-  .layer-content {
-    .repay-total {
-      vertical-align: bottom;
-      color: #666;
-    }
-  }
-}
-
-/* calender*/
-.date-picker-wrapper {
-  position: absolute;
-  z-index: 1;
-  border: 1px solid #bfbfbf;
-  background-color: #efefef;
-  padding: 5px 12px;
-  font-size: 12px;
-  line-height: 20px;
-  color: #aaa;
-  font-family: Arial;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-  box-sizing: initial;
-  &.inline-wrapper {
-    position: relative;
-    box-shadow: none;
-  }
-
-  &.single-date {
-    width: auto;
-  }
-
-  &.no-shortcuts {
-    padding-bottom: 12px;
-  }
-
-  &.no-topbar {
-    padding-top: 12px;
-  }
-
-  .footer {
-    font-size: 11px;
-    padding-top: 3px;
-    background: none;
-    height: auto;
-  }
-
-  b {
-    color: #666;
-    font-weight: 700;
-  }
-
-  a {
-    color: rgb(107, 180, 214);
-    text-decoration: underline;
-  }
-
-  .month-name {
-    text-transform: uppercase;
-  }
-
-  .month-wrapper {
-    border: 1px solid #bfbfbf;
-    border-radius: 3px;
-    background-color: #fff;
-    padding: 5px;
-    cursor: default;
-    position: relative;
-    _overflow: hidden;
-  }
-
-  .month-wrapper table {
-    width: 190px;
-    float: left;
-  }
-
-  .month-wrapper table.month2 {
-    width: 190px;
-    float: left;
-  }
-
-  .month-wrapper table th,
-  .month-wrapper table td {
-    vertical-align: middle;
-    text-align: center;
-    line-height: 14px;
-    margin: 0;
-    padding: 0;
-  }
-
-  .month-wrapper table .day {
-    padding: 5px 0;
-    line-height: 1;
-    font-size: 12px;
-    margin-bottom: 1px;
-    color: #999;
-    cursor: default;
-  }
-
-  .month-wrapper table div.day.lastMonth,
-  .month-wrapper table div.day.nextMonth {
-    color: #999;
-    cursor: default;
-  }
-
-  .month-wrapper table .day.checked {
-    background-color: rgb(156, 219, 247);
-  }
-
-  .month-wrapper table .week-name {
-    height: 20px;
-    line-height: 20px;
-    font-weight: 100;
-    text-transform: uppercase;
-  }
-
-  .month-wrapper table .day.has-tooltip {
-    cursor: help !important;
-  }
-
-  .time label {
-    white-space: nowrap;
-  }
-
-  .month-wrapper table .day.toMonth.valid {
-    color: #333;
-    cursor: pointer;
-  }
-
-  .month-wrapper table .day.toMonth.hovering {
-    background-color: #cdecfa;
-  }
-
-  .month-wrapper table .day.nextMonth,
-  .month-wrapper table .day.lastMonth {
-    display: none;
-  }
-
-  .month-wrapper table .day.real-today {
-    background-color: rgb(255, 230, 132);
-  }
-
-  .month-wrapper table .day.real-today.checked,
-  .month-wrapper table .day.real-today.hovering {
-    background-color: rgb(112, 204, 213);
-  }
-
-  table .caption {
-    height: 40px;
-  }
-
-  table .caption .next,
-  table .caption .prev {
-    padding: 0 5px;
-    cursor: pointer;
-  }
-
-  table .caption .next:hover,
-  table .caption .prev:hover {
-    background-color: #ccc;
-    color: white;
-  }
-
-  .gap {
-    position: relative;
-    z-index: 1;
-    width: 15px;
-    height: 100%;
-    background-color: red;
-    font-size: 0;
-    line-height: 0;
-    float: left;
-    top: -5px;
-    margin: 0 10px -10px;
-    visibility: hidden;
-    height: 0;
-  }
-
-  .gap .gap-lines {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .gap .gap-line {
-    height: 15px;
-    width: 15px;
-    position: relative;
-  }
-
-  .gap .gap-line .gap-1 {
-    z-index: 1;
-    height: 0;
-    border-left: 8px solid white;
-    border-top: 8px solid #eee;
-    border-bottom: 8px solid #eee;
-  }
-
-  .gap .gap-line .gap-2 {
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 2;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-top: 8px solid white;
-  }
-
-  .gap .gap-line .gap-3 {
-    position: absolute;
-    right: 0;
-    top: 8px;
-    z-index: 2;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-bottom: 8px solid white;
-  }
-
-  .gap .gap-top-mask {
-    width: 6px;
-    height: 1px;
-    position: absolute;
-    top: -1px;
-    left: 1px;
-    background-color: #eee;
-    z-index: 3;
-  }
-
-  .gap .gap-bottom-mask {
-    width: 6px;
-    height: 1px;
-    position: absolute;
-    bottom: -1px;
-    left: 7px;
-    background-color: #eee;
-    z-index: 3;
-  }
-
-  .selected-days {
-    display: none;
-  }
-
-  .drp_top-bar {
-    line-height: 40px;
-    height: 40px;
-    position: relative;
-  }
-
-  .drp_top-bar .error-top {
-    display: none;
-  }
-
-  .drp_top-bar .normal-top {
-    display: none;
-  }
-
-  .drp_top-bar .default-top {
-    display: block;
-  }
-
-  .drp_top-bar.error .default-top {
-    display: none;
-  }
-
-  .drp_top-bar.error .error-top {
-    display: block;
-    color: red;
-  }
-
-  .drp_top-bar.normal .default-top {
-    display: none;
-  }
-
-  .drp_top-bar.normal .normal-top {
-    display: block;
-  }
-
-  .drp_top-bar .apply-btn {
-    position: absolute;
-    right: 0;
-    top: 6px;
-    padding: 3px 5px;
-    margin: 0;
-    font-size: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-
-    color: #d9eef7;
-    border: solid 1px #0076a3;
-    background: #0095cd;
-    background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
-    background: -moz-linear-gradient(top, #00adee, #0078a5);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
-    line-height: initial;
-  }
-
-  .drp_top-bar .apply-btn.disabled {
-    cursor: pointer;
-    color: #606060;
-    border: solid 1px #b7b7b7;
-    background: #fff;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
-    background: -moz-linear-gradient(top, #fff, #ededed);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
-  }
-
-  /*time styling*/
-  .time {
-    position: relative;
-  }
-
-  &.single-month .time {
-    display: none;
-  }
-
-  .time input[type=range] {
-    vertical-align: middle;
-    width: 129px;
-    padding: 0;
-    margin: 0;
-    height: 20px;
-  }
-
-  .time1, .time2 {
-    width: 180px;
-    padding: 0 5px;
-    text-align: center;
-  }
-
-  .time1 {
-    float: left;
-  }
-
-  .time2 {
-    float: right;
-  }
-
-  .hour, .minute {
-    text-align: right;
-  }
-
-  .hide {
-    display: none;
-  }
-
-  .first-date-selected {
-    background-color: #49e !important;
-    color: white !important;
-  }
-
-  .last-date-selected {
-    background-color: #49e !important;
-    color: white !important;
-  }
-
-  .date-range-length-tip {
-    position: absolute;
-    margin-top: -4px;
-    margin-left: -8px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
-    display: none;
-    background-color: yellow;
-    padding: 0 6px;
-    border-radius: 2px;
-    font-size: 12px;
-    line-height: 16px;
-    -webkit-filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-    -moz-filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-    -ms-filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-    -o-filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-    filter: drop-shadow(0 0 3px rgba(0, 0, 0, .3));
-  }
-
-  .date-range-length-tip:after {
-    content: '';
-    position: absolute;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid yellow;
-    left: 50%;
-    margin-left: -4px;
-    bottom: -4px;
-  }
-}
-
-.recharge-plat {
-  line-height: 45px;
-  margin-top: -15px;
-}
-
 //Account Overview
 .account-overview {
-  .content-container {
+  &.content-container {
     border: 0;
     border-radius: 0;
     background: none;
@@ -552,31 +161,6 @@
   .tMonthPayment {
     table {
       tr:nth-last-child(1) > td {
-        border-bottom-width: 0;
-      }
-      tfoot tr td {
-        border-top: 1px solid nth($CK1, 1);
-        border-bottom: 1px solid nth($CK1, 1);
-      }
-    }
-    .PaymentSwitch {
-      li {
-        float: left;
-        font-size: nth($fontSize, 4);
-        margin-right: 18px;
-        margin-bottom: 10px;
-        a {
-          color: nth($CK2, 5);
-        }
-        &.current a {
-          color: nth($CK1, 1);
-        }
-      }
-    }
-  }
-  .tMonthPayment {
-    table {
-      tr:nth-last-child(1) > td {
         border-bottom-width: 0px;
       }
       tfoot tr td {
@@ -585,6 +169,20 @@
       }
     }
 
+  }
+  .PaymentSwitch {
+    li {
+      float: left;
+      font-size: nth($fontSize, 4);
+      margin-right: 18px;
+      margin-bottom: 10px;
+      a {
+        color: nth($CK2, 5);
+      }
+      &.current a {
+        color: nth($CK1, 1);
+      }
+    }
   }
   .newProjects {
     &.bRadiusBox {
@@ -698,9 +296,8 @@
   }
 }
 
-//recharge page
-.recharge {
-  margin: 10px;
+//recharge and bind-card pages
+.recharge-bind-card {
   & ul.payment-mode {
     border-bottom: 1px solid #ccc;
     li {
@@ -772,21 +369,10 @@
     padding: 15px 10px;
     .recharge-form, .fast-recharge-form {
       clear: both;
-      p {
-        margin: 10px 0 0 35px;
-        color: #353535;
-        font-size: 15px;
-        i {
-          color: #ffac2a;
-          margin-left: 10px;
-        }
-        input {
-          width: 160px;
-          margin: 0 10px;
-          padding: 0 15px;
-          line-height: 30px;
-        }
-      }
+      margin-left: 30px;
+      font-size: 15px;
+      line-height: 40px;
+      color: #353535;
     }
     .fast-recharge, .e-bank-recharge {
       display: none;
@@ -818,9 +404,7 @@
         float: left;
         overflow: hidden;
         padding: 10px 0;
-        b.title {
-          display: block;
-        }
+
         p {
           line-height: 30px;
           padding-left: 25px;
@@ -911,7 +495,6 @@
               }
 
             }
-
           }
         }
 
@@ -977,76 +560,26 @@
     }
   }
 }
+.bind-card-frame {
+  border-top-width: 1px!important;
+  .e-bank-recharge {
+    display: block!important;
 
-.withdraw {
-  border: 1px solid #ccc;
-  overflow: hidden;
-  margin: 10px;
-  & p {
-    height: 34px;
-    line-height: 34px;
-    margin: 13px 0 0 16px;
-    color: #353535;
-    font-size: 15px;
-    & i {
-      color: #ffac2a;
-      margin: 0 10px;
-    }
-    & b {
-      color: #afafaf;
-      font-size: 14px;
-      font-weight: normal;
-      margin-left: 4px;
-    }
-    & input {
-      width: 164px;
-      height: 30px;
-      border: #747474 1px solid;
-      margin: 0 10px;
-      padding: 0 15px;
-      line-height: 30px;
-    }
-  }
-  & .calculate {
-    & span {
-      display: block;
-      font-size: 14px;
-      color: #979797;
-      margin: 10px 0 10px 105px;
-    }
-    & em {
-      margin: 0 4px;
-    }
-  }
-  & .withdraw-submit {
-    font-size: 14px;
-    margin: 20px 0 30px 130px;
-    width: 150px;
-    height: 40px;
-    background: #cc0000;
-    color: #fff;
-    line-height: 30px;
-    text-align: center;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    &.inactive {
-      background: #666;
-      color: #fff;
-    }
-  }
-  & .error {
-    display: none;
-    margin-left: 15px;
-    background: url("/images/error.jpg") no-repeat left;
-    & em {
-      margin-left: 25px;
-      font-size: 12px;
-      color: #fb6861;
-    }
   }
 }
 
+/* withdraw page*/
+.withdraw {
+  line-height: 3!important;
+  font-size: 15px;
+   .calculate {
+     font-size: 14px;
+     color: #979797;
+     margin-left: 105px;
+  }
+}
+
+//tips will be removed
 .tips {
   border: 1px solid #ccc;
   margin: 15px 10px;
@@ -1309,144 +842,20 @@
     }
   }
 }
+.card-box {
+  margin:20px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  width: 280px;
+  padding: 10px;
+  .user {
+    margin-top: 6px;
+    margin-right: 5px;
+  }
+  .card-num {
+    border-top:1px solid #ccc;
+    padding-top:35px;
+    margin-top: 5px;
+  }
 
-.bind-card {
-  border: 1px solid #ccc;
-  overflow: hidden;
-  margin: 10px;
-  & .hd-bind-card {
-    height: 50px;
-    border-bottom: 2px solid #d5d5d5;
-    & span {
-      padding-left: 20px;
-      color: #ff9933;
-      font-size: 16px;
-      border-bottom: #e06b0c 2px solid;
-      display: inline-block;
-      line-height: 50px;
-      position: relative;
-      bottom: 0;
-    }
-  }
-  & .card-list {
-    margin: 10px;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    & .card-box {
-      width: 260px;
-      background-color: #fdfefe;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      overflow: hidden;
-    }
-    & .hd-card {
-      border-bottom: 1px solid #ccc;
-      height: 38px;
-      & .logo-card {
-        width: 140px;
-        height: 38px;
-        float: left;
-      }
-      & .user {
-        float: right;
-        padding-right: 20px;
-        line-height: 38px;
-        font-size: 14px;
-      }
-    }
-    & .card-num {
-      line-height: 60px;
-      text-align: center;
-    }
-    & .options {
-      line-height: 30px;
-      background: #cdcdcd;
-      font-size: 12px;
-      overflow: hidden;
-      & .card-edit {
-        float: left;
-        padding-left: 10px;
-        color: #ff0606;
-      }
-      & .open-fast-pay {
-        float: right;
-        padding-right: 10px;
-        color: #ff0606;
-      }
-    }
-  }
-  .item-block {
-    margin-left: 20px;
-    display: inline-block;
-    overflow: hidden;
-    width: 100%;
-    line-height: 40px;
-    & .name {
-      float: left;
-    }
-    & .input-bankcard {
-      width: 200px;
-      height: 20px;
-      margin: 0;
-      border: 1px solid #ccc;
-      padding: 5px;
-    }
-
-  }
-  .bind-card-submit {
-    padding: 10px 15px;
-    margin: 30px 0 30px 120px;
-    background: #ff7a2a;
-    border: 1px solid #ff7a2a;
-    cursor: pointer;
-    color: #fff;
-    &.grey {
-      background: #ccc;
-      border: #ccc 1px solid;
-    }
-  }
-  .select-bank {
-    width: 100%;
-    z-index: 1;
-    float: left;
-    overflow: hidden;
-    padding: 10px 0;
-    & p {
-      width: 764px;
-      height: 24px;
-      line-height: 24px;
-      font-size: 15px;
-      color: #353535;
-    }
-    & li {
-      height: 38px;
-      float: left;
-      line-height: 38px;
-      width: 145px;
-      margin: 10px 36px 0 0;
-      cursor: pointer;
-      &.m-right-0 {
-        margin: 10px 0 0 4px;
-      }
-      & input {
-        display: block;
-        float: left;
-        width: 12px;
-        height: 12px;
-        margin: 13px 8px 0 0;
-      }
-      & label {
-        display: block;
-        float: left;
-        width: 123px;
-        height: 38px;
-        & img {
-          width: 123px;
-          height: 36px;
-          border: #ccc 1px solid;
-          cursor: pointer;
-        }
-      }
-    }
-  }
 }
