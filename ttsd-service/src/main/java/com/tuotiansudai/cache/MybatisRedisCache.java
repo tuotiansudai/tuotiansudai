@@ -29,27 +29,28 @@ public class MybatisRedisCache implements Cache{
 
     @Override
     public void putObject(Object key, Object value) {
-        redisWrapperClient.set(key.toString(),value.toString());
+        redisWrapperClient.set(SerializeUtil.serialize(key.toString()),SerializeUtil.serialize(value.toString()));
     }
 
     @Override
     public Object getObject(Object key) {
-        return redisWrapperClient.get(key.toString());
+        Object value = SerializeUtil.unserialize(redisWrapperClient.get(SerializeUtil.serialize(key.toString())));
+        return value;
     }
 
     @Override
     public Object removeObject(Object key) {
-        return redisWrapperClient.del(key.toString());
+        return redisWrapperClient.expire(SerializeUtil.serialize(key.toString()),0);
     }
 
     @Override
     public void clear() {
-
+        redisWrapperClient.flushDB();
     }
 
     @Override
     public int getSize() {
-        return 0;
+        return Integer.valueOf(redisWrapperClient.dbSize().toString());
     }
 
     @Override

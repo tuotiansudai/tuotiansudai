@@ -11,7 +11,6 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -167,12 +166,52 @@ public class RedisWrapperClient {
         });
     }
 
+    public byte[] get(final byte[] key) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<byte[]>() {
+            @Override
+            public byte[] action(Jedis jedis) {
+                return jedis.get(key);
+            }
+        });
+    }
+
     public boolean exists(final String key) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Boolean>() {
             @Override
             public Boolean action(Jedis jedis) {
                 return jedis.exists(key);
+            }
+        });
+    }
+
+    public Object expire(final byte[] key,final int seconds) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Object>() {
+            @Override
+            public Object action(Jedis jedis) {
+                return jedis.expire(key,seconds);
+            }
+        });
+    }
+
+    public void flushDB() {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.flushDB();
+            }
+        });
+    }
+
+    public Long dbSize() {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.dbSize();
             }
         });
     }
@@ -188,6 +227,16 @@ public class RedisWrapperClient {
     }
 
     public void set(final String key, final String value) {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.set(key, value);
+            }
+        });
+    }
+
+    public void set(final byte[] key,final byte[] value) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override
