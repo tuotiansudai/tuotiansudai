@@ -1,13 +1,27 @@
 require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
 
     var registerUserForm = $(".register-user-form"),
-        fetchCaptchaElement = $('.fetch-captcha',registerUserForm);
-    var $imgCaptchaDialog=$('.image-captcha-dialog');
-    var imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
+        fetchCaptchaElement = $('.fetch-captcha',registerUserForm),
+        showAgreement=$('.show-agreement',registerUserForm);
+    var $imgCaptchaDialog=$('.image-captcha-dialog'),
+        imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
         imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
         imageCaptchaTextElement = $('.image-captcha-text',$imgCaptchaDialog),
         imageCaptchaSubmitElement = $('.image-captcha-confirm',$imgCaptchaDialog);
 
+    //服务协议
+    showAgreement.click(function() {
+        layer.open({
+            type: 1,
+            title: '拓天速贷服务协议',
+            area: ['950px','600px'],
+            shadeClose: true,
+            content: $('#agreementBox'),
+            success: function(layero, index){
+
+            }
+        });
+    });
     /*获取验证码*/
     fetchCaptchaElement.on('click', function () {
         layer.open({
