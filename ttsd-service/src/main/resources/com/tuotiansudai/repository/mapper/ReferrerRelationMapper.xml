@@ -18,8 +18,16 @@
         select * from referrer_relation where login_name = #{loginName}
     </select>
 
-    <select id="findByLoginNameAndReferrer" parameterType="map" resultType="long">
-        select count(*) from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    <select id="findByReferrerLoginName" parameterType="java.lang.String" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName}
     </select>
+
+    <select id="findByReferrerAndLoginName" parameterType="map" resultType="long">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    </select>
+
+    <delete id="delete" parameterType="map">
+        delete from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
+    </delete>
 
 </mapper>

@@ -21,8 +21,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -154,7 +152,7 @@ public class PayWrapperClientTest {
         loanDto.setDescriptionText("asdfasd");
         loanDto.setInvestFeeRate("15");
         loanDto.setInvestIncreasingAmount("1");
-        loanDto.setType(LoanType.LOAN_TYPE_1);
+        loanDto.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         loanDto.setCreatedTime(new Date());
         loanDto.setLoanStatus(LoanStatus.RECHECK);
         LoanModel loanModel = new LoanModel(loanDto);
@@ -165,7 +163,7 @@ public class PayWrapperClientTest {
             loanTitleRelationModel.setId(idGenerator.generate());
             loanTitleRelationModel.setLoanId(loanDto.getId());
             loanTitleRelationModel.setTitleId(titleId);
-            loanTitleRelationModel.setApplyMetarialUrl("www.baidu.com,www.google.com");
+            loanTitleRelationModel.setApplicationMaterialUrls("www.baidu.com,www.google.com");
             loanTitleRelationModelList.add(loanTitleRelationModel);
         }
         loanTitleRelationMapper.create(loanTitleRelationModelList);

@@ -1,5 +1,7 @@
 package com.esoft.jdp2p.repay.service.impl;
 
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,9 +10,13 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.esoft.core.annotations.Message;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,6 +112,8 @@ public class RepayServiceImpl implements RepayService {
 
 	@Resource
 	ConfigService configService;
+	@Value("${repay.remind.mobileList}")
+	private String repayRemindMobileList;
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -154,11 +162,11 @@ public class RepayServiceImpl implements RepayService {
 							+ ir.getCorpus() + "  利息：" + ir.getInterest());
 			// 投资者手续费
 			userBillBO.transferOutFromBalance(ir.getInvest().getUser().getId(),
-					ir.getFee(), OperatorInfo.NORMAL_REPAY, "投资："
+					ir.getFee(), OperatorInfo.INVEST_FEE, "投资："
 							+ ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 							+ repay.getId());
 			systemBillService.transferInto(ir.getFee(),
-					OperatorInfo.NORMAL_REPAY, "投资：" + ir.getInvest().getId()
+					OperatorInfo.INVEST_FEE, "投资：" + ir.getInvest().getId()
 							+ "收到还款，扣除手续费, 还款ID:" + repay.getId());
 
 		}
@@ -490,11 +498,11 @@ public class RepayServiceImpl implements RepayService {
 						ir.getDefaultInterest());
 				// 投资者手续费
 				userBillBO.transferOutFromBalance(ir.getInvest().getUser()
-						.getId(), ir.getFee(), OperatorInfo.OVERDUE_REPAY,
+						.getId(), ir.getFee(), OperatorInfo.INVEST_FEE,
 						"投资：" + ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 								+ lr.getId());
 				systemBillService.transferInto(ir.getFee(),
-						OperatorInfo.OVERDUE_REPAY, "投资："
+						OperatorInfo.INVEST_FEE, "投资："
 								+ ir.getInvest().getId() + "收到还款，扣除手续费, 还款ID:"
 								+ lr.getId());
 			}
@@ -718,28 +726,41 @@ public class RepayServiceImpl implements RepayService {
 	@Override
 	@Transactional
 	public void repayAlert() {
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd");
 		int daysBefore = Integer.parseInt(configService
 				.getConfigValue(RepayAlert.DAYS_BEFORE));
+		String repayDate = simple.format(DateUtil.addDay(new Date(), daysBefore));
+		log.debug("repayDate:====" + repayDate);
+		String loanRepayAmountSql = "select ifnull(round(sum(corpus) + sum(default_interest) + sum(interest),2),0.00) from loan_repay"
+				+ " where status = '"+ LoanConstants.RepayStatus.REPAYING + "' and repay_day like '" + repayDate + "%'";
+		Double loanRepayAmount = ((Number)ht.getSessionFactory().getCurrentSession()
+									.createSQLQuery(loanRepayAmountSql)
+									.uniqueResult()).doubleValue();
+		String mobileList = repayRemindMobileList;
 
-		List<LoanRepay> lrs = ht.find(
-				"from LoanRepay lr where lr.status =? and lr.repayDay<=?",
-				LoanConstants.RepayStatus.REPAYING,
-				DateUtil.addDay(new Date(), daysBefore));
-		if (log.isInfoEnabled()) {
-			log.info("repay alert start, size:" + lrs.size());
-		}
-		// 还款提醒。。。
-		for (LoanRepay lr : lrs) {
+		if(loanRepayAmount.doubleValue() > 0){
+			String loanRepaySql = "select * from loan_repay"
+					+ " where status = '"+ LoanConstants.RepayStatus.REPAYING + "' and repay_day like '" + repayDate + "%'";
+			List<LoanRepay> loanRepays = ht.getSessionFactory().getCurrentSession()
+											.createSQLQuery(loanRepaySql)
+											.addEntity(LoanRepay.class)
+											.list();
+			for (LoanRepay loanRepay : loanRepays) {
+				if(mobileList.indexOf(loanRepay.getLoan().getUser().getMobileNumber()) < 0){
+					mobileList += loanRepay.getLoan().getUser().getMobileNumber() + ",";
+				}
+			}
+			log.debug("repayAlert|mobile:" + mobileList + ";date:" + DateUtil.addDay(new Date(), daysBefore) + ";loanRepayAmount:" + loanRepayAmount) ;
 			Map<String, String> params = new HashMap<String, String>();
-			params.put("username", lr.getLoan().getUser().getId());
-			params.put("loanName", lr.getLoan().getName());
-			params.put(
-					"days",
-					String.valueOf(DateUtil.getIntervalDays(new Date(),
-							lr.getRepayDay())));
-			messageBO.sendSMS(ht.get(UserMessageTemplate.class,
-					MessageConstants.UserMessageNodeId.REPAY_ALERT + "_sms"),
-					params, lr.getLoan().getUser().getMobileNumber());
+			params.put("loanRepayAmount", loanRepayAmount.toString());
+			String[] mobiles = mobileList.split(",");
+			for(String num:mobiles){
+				if(org.apache.commons.lang3.StringUtils.isNotEmpty(num)){
+					messageBO.sendSMS(ht.get(UserMessageTemplate.class,
+									MessageConstants.UserMessageNodeId.REPAY_ALERT + "_sms"),
+							params, num);
+				}
+			}
 		}
 	}
 }

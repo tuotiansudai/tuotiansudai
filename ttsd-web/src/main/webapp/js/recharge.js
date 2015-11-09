@@ -1,88 +1,98 @@
-require(['jquery', 'csrf', 'autoNumeric'], function ($) {
+require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
     $(function () {
-        var amountInputElement = $(".e-bank-amount");
-        var amountElement = $(".e-bank-recharge .recharge-form input[name='amount']");
-        var submitElement = $('.recharge-submit');
+        var $rechargeForm = $('.recharge-form'),
+            $rechargeCon = $(".recharge"),
+            $fastRechargeForm = $(".fast-recharge-form");
 
-        amountInputElement.autoNumeric("init");
+        var tabElement = $('.payment-mode li'),
+            rechargeInputAmountElement = $(".amount", $rechargeForm),
+            rechargeAmountElement = $("input[name='amount']", $rechargeForm),
+            rechargeSubmitElement = $('.btn', $rechargeForm),
 
-        amountInputElement.keyup(function () {
-            var amount = parseFloat(amountInputElement.autoNumeric("get"));
-            if (isNaN(amount) || amount === 0) {
-                submitElement.addClass('grey').attr('disabled', true);
-            } else {
-                submitElement.removeClass('grey').attr('disabled', false);
-            }
-        });
+            fastRechargeInputAmountElement = $(".amount", $fastRechargeForm),
+            fastRechargeAmountElement = $("input[name='amount']", $fastRechargeForm),
+            fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
+            turnOnFastSubmitElement = $(".turn-on-fast-form .submit");
 
-        //select bank
-        var bankElement = $('.e-bank-recharge ol li');
+        if (rechargeInputAmountElement) {
+            rechargeInputAmountElement.autoNumeric("init");
+            rechargeInputAmountElement.keyup(function () {
+                var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
+                console.log(amount);
+                if (isNaN(amount) || amount < 0.01) {
+                    rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
+                } else {
+                    rechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
+                }
+            });
+            //网银充值提交
+            rechargeSubmitElement.click(function () {
+                var amount = rechargeInputAmountElement.autoNumeric("get");
+                rechargeAmountElement.val(amount);
 
-        bankElement.click(function () {
-            var selectedBankElement = $(this).find('input');
-            var bankCode = selectedBankElement.data('name');
-            $('.selected-bank').val(bankCode);
-        });
+                layer.open({
+                    type: 1,
+                    title: '登录到联动优势支付平台充值',
+                    area: ['560px', '270px'],
+                    shadeClose: true,
+                    content: $('#popRecharge')
+                });
+            });
+        }
+
+        if (fastRechargeInputAmountElement) {
+            fastRechargeInputAmountElement.autoNumeric("init");
+            fastRechargeInputAmountElement.keyup(function () {
+                var amount = parseFloat(fastRechargeInputAmountElement.autoNumeric("get"));
+                if (isNaN(amount) || amount < 0.01) {
+                    fastRechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
+
+                } else {
+                    fastRechargeSubmitElement.prop('disabled', false).addClass('btn-normal');
+                }
+            });
+            //快捷充值提交
+            fastRechargeSubmitElement.click(function () {
+                var amount = fastRechargeInputAmountElement.autoNumeric("get");
+                fastRechargeAmountElement.val(amount);
+                layer.open({
+                    type: 1,
+                    title: '登录到联动优势支付平台充值',
+                    area: ['560px', '270px'],
+                    shadeClose: true,
+                    content: $('#popRecharge')
+                });
+            });
+        }
+
+        if (turnOnFastSubmitElement) {
+            turnOnFastSubmitElement.click(function () {
+                $('.ecope-overlay-fast,.ecope-dialog-fast').show();
+            });
+        }
+
+
+        if ($(".bind-card-nav")) {
+            $(".bind-card-nav .btn", $rechargeCon).click(function () {
+                window.location.href = $(this).data('url');
+            });
+
+        }
 
         //tab切换
-        var _li = $('.banking ul li');
-        _li.click(function () {
-            var _this = $(this);
-            var index = _this.index();
-            var boxBanking = $('.box-banking .tab-box');
-            if (_this.hasClass('tab-fast-pay')) {
-                $.get(API_FAST_PAY, function (data) {
-                    /*optional stuff to do after success */
-                    if (data.bindCardStatus == "unbindCard") {
-                        //未绑卡
-                        $('.bind-card-layer').find('p').text("您还未绑定银行卡，请您绑定银行卡！");
-                        $('.btn-box-layer').find('.now').attr('href', "/bind-card");
-                        $('.bind-card-layer').show();
-                        //location.href = 'http://localhost:8080/bind-card';
-                    } else if (data.bindCardStatus == "commonBindCard") {
-                        $('.bind-card-layer').find('p').text("您绑定的银行卡不支持快捷支付，是否换卡？");
-                        $('.btn-box-layer').find('.now').attr('href', "/bind-card");
-                        $('.bind-card-layer').show();
-                        //  普卡绑
-                        //location.href = 'http://localhost:8080/bind-card';
+        tabElement.click(function (index) {
+            var $this = $(this),
+                activeNum = $this.index();
 
-                    } else if (data.bindCardStatus == "specialBindCard") {
-                        //  7卡未开
-                        _this.addClass('active').siblings().removeClass('active');
-                        boxBanking.eq(index).find('.recharge-bank').hide();
-                        boxBanking.eq(index).find('.jq-open-fast-pay').show();
-                        boxBanking.eq(index).show().siblings().hide();
-                    } else if (data.bindCardStatus == "openFastPay") {
-                        //  开通快捷支付
-                        _this.addClass('active').siblings().removeClass('active');
-                        boxBanking.eq(index).find('.recharge-bank').show()
-                        boxBanking.eq(index).find('.jq-open-fast-pay').hide()
-                        boxBanking.eq(index).show().siblings().hide();
-
-                    }
-                });
-
-            } else {
-                _this.addClass('active').siblings().removeClass('active');
-                boxBanking.eq(index).show().siblings().hide();
+            $this.addClass('active').siblings('li').removeClass('active');
+            if (activeNum == 0) {
+                $(".fast-recharge", $rechargeCon).show();
+                $(".e-bank-recharge", $rechargeCon).hide();
             }
-
-        });
-
-        $('.close2,.cancel').click(function () {
-            $('.bind-card-layer').hide();
-        });
-
-        // 充值弹出页面
-        $('.ecope-dialog .close').click(function () {
-            $('.ecope-overlay,.ecope-dialog').hide();
-        });
-
-        //充值提交
-        submitElement.click(function () {
-            $('.ecope-overlay,.ecope-dialog').show();
-            var amount = amountInputElement.autoNumeric("get");
-            amountElement.val(amount);
+            else {
+                $(".fast-recharge", $rechargeCon).hide();
+                $(".e-bank-recharge", $rechargeCon).show();
+            }
         });
     });
 });

@@ -1,9 +1,9 @@
 package com.tuotiansudai.dto;
 
-
 import java.util.List;
 
 public class BasePaginationDataDto<T> extends BaseDataDto {
+
     private int index;
     private int pageSize;
     private long count;

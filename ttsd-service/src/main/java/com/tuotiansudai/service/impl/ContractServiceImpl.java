@@ -1,7 +1,6 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Strings;
-import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.tuotiansudai.repository.mapper.AccountMapper;
@@ -16,7 +15,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -24,13 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -99,7 +91,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public void generateContractPdf(String pdfString,HttpServletResponse response) {
+    public void generateContractPdf(String pdfString, OutputStream outputStream) {
 
         ITextRenderer renderer = new ITextRenderer();
         ITextFontResolver fontResolver = renderer.getFontResolver();
@@ -108,9 +100,8 @@ public class ContractServiceImpl implements ContractService {
             fontResolver.addFont(ContractServiceImpl.class.getClassLoader().getResource("SIMSUN.TTC").toString(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             renderer.setDocumentFromString(pdfString);
             //renderer.setDocument(xhtmlContent,"");
-            response.setContentType("application/pdf;charset=UTF-8");
             renderer.layout();
-            renderer.createPDF(response.getOutputStream(), true);
+            renderer.createPDF(outputStream, true);
         } catch (DocumentException e) {
             logger.error(e.getLocalizedMessage(),e);
         } catch (IOException e) {
@@ -123,7 +114,7 @@ public class ContractServiceImpl implements ContractService {
         LoanModel loanModel = loanMapper.findById(loanId);
         AccountModel loanerAccountModel = accountMapper.findByLoginName(loanModel.getLoanerLoginName());
         AccountModel agentAccountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanId(loanId);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         dataModel.put("loanId","" + loanId);
         dataModel.put("loanerUserName",Strings.nullToEmpty(loanerAccountModel.getUserName()));
         dataModel.put("loanerLoginName",Strings.nullToEmpty(loanModel.getLoanerLoginName()));

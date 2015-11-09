@@ -1,7 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.RepayStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,26 +18,38 @@ public interface LoanRepayMapper {
                                                  @Param(value = "loanId") Long loanId,
                                                  @Param(value = "loginName") String loginName,
                                                  @Param(value = "repayStatus") RepayStatus repayStatus,
-                                                 @Param(value = "repayStartDate") String repayStartDate,
-                                                 @Param(value = "repayEndDate") String repayEndDate);
+                                                 @Param(value = "startTime") Date startTime,
+                                                 @Param(value = "endTime") Date endTime);
 
     int findLoanRepayCount(@Param(value = "loanId") Long loanId,
-                                                 @Param(value = "loginName") String loginName,
-                                                 @Param(value = "repayStatus") RepayStatus repayStatus,
-                                                 @Param(value = "repayStartDate") String repayStartDate,
-                                                 @Param(value = "repayEndDate") String repayEndDate);
+                           @Param(value = "loginName") String loginName,
+                           @Param(value = "repayStatus") RepayStatus repayStatus,
+                           @Param(value = "startTime") Date startTime,
+                           @Param(value = "endTime") Date endTime);
 
     LoanRepayModel findById(long id);
 
-    List<LoanRepayModel> findByLoanId(long loanId);
+    List<LoanRepayModel> findByLoanIdOrderByPeriodAsc(long loanId);
 
-    List<LoanRepayModel> findByLoanerAndLoanId(@Param(value = "loanerLoginName") String loanerLoginName,
-                                               @Param(value = "loanId") long loanId);
+    List<LoanRepayModel> findByAgentAndLoanId(@Param(value = "agentLoginName") String loanerLoginName,
+                                              @Param(value = "loanId") long loanId);
 
-    LoanRepayModel findEnabledRepayByLoanId(long loanId);
+    LoanRepayModel findEnabledLoanRepayByLoanId(long loanId);
 
     LoanRepayModel findByLoanIdAndPeriod(@Param(value = "loanId") long loanId,
                                          @Param(value = "period") int period);
 
     void update(LoanRepayModel loanRepayModel);
+
+    long sumSuccessLoanRepayMaxPeriod(@Param(value = "loanId") long loanId);
+
+    LoanRepayModel findConfirmingLoanRepayByLoanId(long loanId);
+
+    LoanRepayModel findCurrentLoanRepayByLoanId(long loanId);
+
+    long findByLoginNameAndTimeSuccessRepay(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
+
+    List<LoanRepayModel> findByLoginNameAndTimeRepayList(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,
+                                                         @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
+
 }

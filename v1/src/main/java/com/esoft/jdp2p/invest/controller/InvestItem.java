@@ -5,6 +5,7 @@ import java.util.Date;
 public class InvestItem implements java.io.Serializable {
     private String loanId;
     private String loanName;
+    private int loanDeadline;
     private String investorId;
     private String investorName;
     private String referrerId;
@@ -16,6 +17,7 @@ public class InvestItem implements java.io.Serializable {
     private Date rewardTime;
     private Date investTime;
     private Double money;
+    private String source;
 
     public String getInvestorName() {
         return investorName;
@@ -39,6 +41,14 @@ public class InvestItem implements java.io.Serializable {
 
     public void setLoanName(String loanName) {
         this.loanName = loanName;
+    }
+
+    public int getLoanDeadline() {
+        return loanDeadline;
+    }
+
+    public void setLoanDeadline(int loanDeadline) {
+        this.loanDeadline = loanDeadline;
     }
 
     public String getInvestorId() {
@@ -119,5 +129,13 @@ public class InvestItem implements java.io.Serializable {
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

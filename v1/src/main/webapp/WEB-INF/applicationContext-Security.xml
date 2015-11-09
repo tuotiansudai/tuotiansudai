@@ -27,8 +27,26 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="accessDeniedUrl" value="/error/403.htm" />
 	</beans:bean>
 
+	<beans:bean id="authenticationTokenProcessingFilter" class="com.ttsd.api.security.AuthenticationTokenProcessingFilter">
+		<beans:property name="loginUrl" value="/login" />
+		<beans:property name="refreshTokenUrl" value="/refresh-token" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+		<beans:property name="uriPrefixes">
+			<beans:list value-type="java.lang.String">
+				<beans:value>/v1.0</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="tokenExpiredSeconds" value="3000" />
+	</beans:bean>
+
 	<http entry-point-ref="loginUrlEntryPoint" use-expressions="true"
 		access-decision-manager-ref="accessDecisionManager">
+		<custom-filter ref="authenticationTokenProcessingFilter" position="PRE_AUTH_FILTER" />
+
 <!-- 		是按照顺序加载和过滤么？ 结论：最后一个优先 -->
 		<intercept-url pattern="/re_active" access="hasRole('INACTIVE')" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN') and not hasRole('INACTIVE')" />
@@ -77,6 +95,19 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/mobile/register/mobilePhoneNumValidation" access="not hasRole('USER')" />
 		<intercept-url pattern="/mobile/register/vCodeValidation" access="not hasRole('USER')" />
 
+
+		<intercept-url pattern="/v1.0/register/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword/sendsms" filters="none" />
+		<intercept-url pattern="/v1.0/retrievepassword" filters="none" />
+		<intercept-url pattern="/v1.0/validatecaptcha" filters="none" />
+		<intercept-url pattern="/v1.0/get/invests" filters="none" />
+		<intercept-url pattern="/v1.0/get/loans" filters="none" />
+		<intercept-url pattern="/v1.0/get/loan" filters="none" />
+		<intercept-url pattern="/v1.0/get/nodes" filters="none" />
+		<intercept-url pattern="/v1.0/get/node" filters="none" />
+		<intercept-url pattern="/v1.0/get/banner" filters="none" />
+		<intercept-url pattern="/v1.0/register" filters="none" />
+		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />
 		<intercept-url pattern="/**" access="URL_MAPPING_PERMISSION" />
@@ -151,22 +182,28 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 			ref="failureHandler" />
 		<beans:property name="authenticationSuccessHandler"
 			ref="successHandler" />
-		<beans:property name="filterProcessesUrl" value="/memberLogin" />
+		<beans:property name="filterProcessesUrl" value="/login" />
 	</beans:bean>
 
-	<beans:bean id="failureHandler"
-		class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
+	<beans:bean id="failureHandler" class="com.esoft.archer.user.service.impl.MyUrlAuthenticationFailureHandler">
 		<!-- FIXME:登录失败以后的url就变了，如果用户直接访问这个登录失败的url，会提示 Authentication method not 
 			supported: GET -->
 		<beans:property name="useForward" value="true" />
 		<beans:property name="defaultFailureUrl" value="/memberLoginPage?error=true" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
 	</beans:bean>
 
-	<beans:bean id="successHandler"
-		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-		<!-- <beans:property name="useReferer" value="true" /> -->
-		<!-- <beans:property name="alwaysUseDefaultTargetUrl" value="false" /> -->
+	<beans:bean id="successHandler" class="com.ttsd.api.security.MySavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/" />
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
 	</beans:bean>
 
 	<!-- 登录过滤器，验证后台用户 -->
@@ -180,7 +217,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 			ref="adminFailureHandler" />
 		<beans:property name="authenticationSuccessHandler"
 			ref="adminSuccessHandler" />
-		<beans:property name="filterProcessesUrl" value="/login" />
+		<beans:property name="filterProcessesUrl" value="/admin-login" />
 	</beans:bean>
 
 	<beans:bean id="adminFailureHandler"
@@ -199,14 +236,20 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<beans:property name="defaultTargetUrl" value="/admin/index.htm" />
 	</beans:bean>
 
+	<beans:bean id="mySimpleUrlLogoutSuccessHandler" class="com.ttsd.api.security.MySimpleUrlLogoutSuccessHandler" >
+		<beans:property name="appHeaders">
+			<beans:map key-type="java.lang.String" value-type="java.lang.String">
+				<beans:entry key="MobileApp" value="YES" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+
 	<!-- 注销过滤器，完成前台用户注销时的定向功能 -->
-	<beans:bean id="logoutFilter"
-		class="org.springframework.security.web.authentication.logout.LogoutFilter">
-		<beans:constructor-arg value="/" />
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg ref="mySimpleUrlLogoutSuccessHandler"/>
 		<beans:constructor-arg>
 			<beans:list>
-				<beans:bean
-					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
 				<beans:ref bean="rememberMeServices" />
 			</beans:list>
 		</beans:constructor-arg>

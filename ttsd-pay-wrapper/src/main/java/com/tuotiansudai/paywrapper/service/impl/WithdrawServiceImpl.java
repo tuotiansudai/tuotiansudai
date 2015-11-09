@@ -36,6 +36,11 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     static Logger logger = Logger.getLogger(WithdrawServiceImpl.class);
 
+    /**
+     * 联动优势提现手续费3元(300分)
+     */
+    private static final long WITHDRAW_FEE = 300;
+
     @Autowired
     private PayAsyncClient payAsyncClient;
 
@@ -60,7 +65,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         withdrawModel.setId(idGenerator.generate());
         CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(withdrawModel.getAmount()));
+                String.valueOf(withdrawModel.getAmount() - WITHDRAW_FEE));
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CustWithdrawalsMapper.class, requestModel);
             withdrawMapper.create(withdrawModel);
@@ -69,6 +74,7 @@ public class WithdrawServiceImpl implements WithdrawService {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
             payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
         }

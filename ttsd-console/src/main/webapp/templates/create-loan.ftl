@@ -6,8 +6,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>筹款编辑</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
     <!-- link bootstrap css and js -->
@@ -18,12 +16,11 @@
     <!-- 日历插件 -->
     <link href="style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <!--上传图片插件-->
-    <link rel="stylesheet" href="style/libs/fileinput.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/fileinput.css"/>
     <!--下拉框-->
-    <link rel="stylesheet" href="style/libs/bootstrap-select.css"/>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css"/>
     <!--自动补全-->
-    <link rel="stylesheet" href="style/libs/jquery-ui-1.9.2.custom.css"/>
-    <script src="/js/libs/template.js"></script>
+    <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
 <#--当前页面js-->
 <@global.javascript pageJavascript="createLoan.js"></@global.javascript>
     <script id="upload" type="text/html">
@@ -45,7 +42,7 @@
                     <button type="button" class="btn btn-default jq-add">添加</button>
                     <button type="button" class="btn btn-danger jq-delete">删除</button>
                 </div>
-                <input type="file" multiple=true class="file-loading">
+                <input type="file" multiple=true class="file-loading upload" name="upfile"/>
             </div>
         </div>
     </script>
@@ -59,14 +56,14 @@
 </head>
 <body>
 
-<@menu.header label="proMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="proMan" sideLab="start"></@menu.sidebar>
+        <@menu.sidebar headLab="projectMain" sideLab="start"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -171,7 +168,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">单笔最大投资金额（元）: </label>
+                        <label class="col-sm-2 control-label">个人最大投资金额（元）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-max-pay jq-money" value="999999.00" datatype="money_fl" errormsg="单笔最大投资金额需要正确填写">

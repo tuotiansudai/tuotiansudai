@@ -36,15 +36,72 @@
         <result column="unpaid_amount" property="unpaidAmount"></result>
         <result column="expected_repay_amount" property="expectedRepayAmount"></result>
         <result column="actual_repay_amount" property="actualRepayAmount"></result>
+        <result column="update_time" property="updateTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id,name,agent_login_name,loaner_login_name,type,periods,description_text,description_html,base_rate,loan_amount,invest_fee_rate,min_invest_amount,invest_increasing_amount,max_invest_amount,activity_type,activity_rate,contract_id,fundraising_start_time,fundraising_end_time,show_on_home,created_time,status)
-        values(#{id},#{name},#{agentLoginName},#{loanerLoginName},#{type},#{periods},#{descriptionText},#{descriptionHtml},#{baseRate},#{loanAmount},#{investFeeRate},#{minInvestAmount},#{investIncreasingAmount},#{maxInvestAmount}, #{activityType},#{activityRate},#{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime},#{showOnHome},#{createdTime},#{status})
+        insert into loan(id, name, agent_login_name, loaner_login_name, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
         select * from loan where id = #{loanId}
+    </select>
+
+    <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="activityType !=null">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="status != null">
+                and t.status = #{status}
+            </if>
+            <if test="status == null">
+                and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            </if>
+            <if test="periodsStart > 0">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="periodsEnd > 0">
+                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
+            </if>
+            <if test="rateStart > 0">
+                and (t.base_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="rateEnd > 0">
+                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
+            </if>
+            order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
+            limit #{currentPageNo} , 10
+        </where>
+    </select>
+
+    <select id="findLoanListCountWeb" parameterType="map" resultType="int">
+        select count(*) from loan t
+        <where>
+            <if test="activityType !=null">
+                t.activity_type = #{activityType}
+            </if>
+            <if test="status != null">
+                and t.status = #{status}
+            </if>
+            <if test="status == null">
+                and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            </if>
+            <if test="periodsStart > 0">
+                and t.periods >= #{periodsStart}
+            </if>
+            <if test="periodsEnd > 0">
+                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
+            </if>
+            <if test="rateStart > 0">
+                and (t.base_rate + t.activity_rate) >= #{rateStart}
+            </if>
+            <if test="rateEnd > 0">
+                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
+            </if>
+        </where>
     </select>
 
     <select id="findByStatus" resultMap="loanResultMap">
@@ -153,6 +210,9 @@
             <if test="activityRate !=null and activityRate!=''">
                 activity_rate = #{activityRate},
             </if>
+            <if test="baseRate != null and baseRate != ''">
+                base_rate = #{baseRate},
+            </if>
             <if test="contractId !=null and contractId!=''">
                 contract_id = #{contractId},
             </if>
@@ -172,7 +232,10 @@
                 recheck_time = #{recheckTime},
             </if>
             <if test="status !=null">
-                status = #{status}
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
             </if>
         </trim>
         where id = #{id}
@@ -181,5 +244,51 @@
     <update id="updateStatus" parameterType="map">
         update loan set status = #{status} where id = #{loanId}
     </update>
+
+    <select id="findLoanList" parameterType="map" resultMap="loanResultMap">
+        select * from loan t
+        <where>
+            <if test="status != null">
+                t.status = #{status}
+            </if>
+            <if test="loanId > 0">
+                and t.id = #{loanId}
+            </if>
+            <if test="loanName != null and loanName != '' ">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="startTime != null">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
+            </if>
+        </where>
+        order by t.created_time desc
+        <if test="currentPageNo >= 0">
+            limit #{currentPageNo} , #{pageSize}
+        </if>
+    </select>
+
+    <select id="findLoanListCount" parameterType="map" resultType="int">
+        select count(*) from loan t
+        <where>
+            <if test="status != null">
+                t.status = #{status}
+            </if>
+            <if test="loanId > 0">
+                and t.id = #{loanId}
+            </if>
+            <if test="loanName != null and loanName != ''">
+                and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
+            </if>
+            <if test="startTime != null">
+                and t.created_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                <![CDATA[ and t.created_time <= #{endTime} ]]>
+            </if>
+        </where>
+    </select>
 
 </mapper>

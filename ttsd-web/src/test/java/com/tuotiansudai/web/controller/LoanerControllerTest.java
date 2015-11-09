@@ -119,7 +119,7 @@ public class LoanerControllerTest {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        this.mockMvc.perform(get("/loaner/loan-data?index=1&pageSize=2&status=COMPLETE")
+        this.mockMvc.perform(get("/loaner/loan-list-data?index=1&pageSize=2&status=COMPLETE")
                 .session((MockHttpSession) session)
                 .contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
@@ -187,7 +187,7 @@ public class LoanerControllerTest {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        this.mockMvc.perform(get("/loaner/loan-data?index=1&pageSize=2&status=REPAYING")
+        this.mockMvc.perform(get("/loaner/loan-list-data?index=1&pageSize=2&status=REPAYING")
                 .session((MockHttpSession) session)
                 .contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
@@ -252,7 +252,7 @@ public class LoanerControllerTest {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        this.mockMvc.perform(get("/loaner/loan-data?index=1&pageSize=2&status=CANCEL")
+        this.mockMvc.perform(get("/loaner/loan-list-data?index=1&pageSize=2&status=CANCEL")
                 .session((MockHttpSession) session)
                 .contentType(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
@@ -287,7 +287,7 @@ public class LoanerControllerTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setAgentLoginName(agentLoginName);
-        fakeLoanModel.setType(LoanType.LOAN_TYPE_1);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
         fakeLoanModel.setStatus(loanStatus);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);

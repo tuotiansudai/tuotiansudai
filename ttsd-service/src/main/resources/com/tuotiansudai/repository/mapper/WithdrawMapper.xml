@@ -14,12 +14,15 @@
         <result column="recheck_message" property="recheckMessage"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
+        <result column="source" property="source"></result>
         <result column="created_time" property="createdTime"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="is_admin" property="isAdmin"></result>
     </resultMap>
 
     <insert id="create" parameterType="WithdrawModel">
-        insert into withdraw (id, login_name, amount, fee, status, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{createdTime})
+        insert into withdraw (id, login_name, amount, fee, status, source, created_time)
+        value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
@@ -38,4 +41,53 @@
         where id = #{id}
     </update>
 
+    <select id="findSumSuccessWithdrawByLoginName" parameterType="java.lang.String" resultType="long">
+        select IFNULL(sum(amount), 0) as amount from withdraw where status = 'SUCCESS' and login_name = #{loginName}
+    </select>
+
+    <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultMap">
+        select w.id, w.login_name, w.amount, w.fee, w.verify_message, w.verify_time, w.recheck_message, w.recheck_time, w.created_time, w.status, w.source, a.user_name as user_name,
+        exists (select 1 from user_role r where r.login_name = w.login_name and r.role='admin') as is_admin
+        from withdraw w join account a on w.login_name = a.login_name
+        <where>
+            <if test="withdrawId !=null and withdrawId != '' ">
+                w.id = #{withdrawId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and w.login_name like '${loginName}%']]>
+            </if>
+            <if test="startTime !=null" >
+                and w.created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and w.created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and w.status  = #{status}
+            </if>
+        </where>
+        order by w.created_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="findWithdrawCount" parameterType="map" resultType="int">
+        select count(1) from withdraw
+        <where>
+            <if test="withdrawId !=null and withdrawId != '' ">
+                id = #{withdrawId}
+            </if>
+            <if test="loginName !=null and loginName != '' ">
+                <![CDATA[and login_name like '${loginName}%']]>
+            </if>
+            <if test="startTime !=null" >
+                and created_time >= #{startTime}
+            </if>
+            <if test="endTime !=null ">
+                and created_time &lt;= #{endTime}
+            </if>
+            <if test="status !=null">
+                and status  = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -8,6 +8,7 @@ web:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "static-server"
 console:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
@@ -18,15 +19,17 @@ console:
     - "pay-wrapper"
     - "sms-wrapper"
     - "redis-server"
+    - "static-server"
 pay-wrapper:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
     - "20004:8080"
   volumes:
     - ./ttsd-pay-wrapper/war:/webapps
+    - /workspace/ump_sign/:/workspace/ump_sign
   links:
-      - "sms-wrapper"
-      - "redis-server"
+    - "sms-wrapper"
+    - "redis-server"
 sms-wrapper:
   image: "leoshi/ttsd-tomcat8-java7"
   ports:
@@ -46,4 +49,27 @@ redis-server:
     - "20015:7005"
     - "20016:7006"
     - "20017:7007"
-
+worker-all:
+  image: "leoshi/ttsd-java7"
+  volumes:
+    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
+  command: bash -c "./ttsd-job-worker-all/bin/ttsd-job-worker"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+worker-invest:
+  image: "leoshi/ttsd-java7"
+  volumes:
+    - ./ttsd-job-worker/build/distributions:/workspace/tuotian
+  command: bash -c "./ttsd-job-worker-invest/bin/ttsd-job-worker"
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
+static-server:
+  image: "nginx"
+  volumes:
+    - ./ttsd-web/build/static:/usr/share/nginx/html:ro
+  ports:
+    - "20020:80"

@@ -6,6 +6,7 @@ import com.esoft.core.jsf.util.FacesUtil;
 import com.esoft.core.util.DateStyle;
 import com.esoft.core.util.DateUtil;
 import com.esoft.core.util.GsonUtil;
+import com.esoft.core.util.IdGenerator;
 import com.esoft.jdp2p.bankcard.model.BankCard;
 import com.esoft.jdp2p.bankcard.service.BankCardService;
 import com.esoft.jdp2p.loan.exception.InsufficientBalance;
@@ -19,6 +20,10 @@ import com.esoft.jdp2p.user.service.RechargeService;
 import com.esoft.umpay.sign.util.UmPaySignUtil;
 import com.esoft.umpay.trusteeship.UmPayConstants;
 import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
+import com.ttsd.api.dto.BankCardResponseDto;
+import com.ttsd.api.dto.BaseResponseDto;
+import com.ttsd.api.dto.ReturnMessage;
+import com.ttsd.api.util.CommonUtils;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -35,6 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -67,18 +73,51 @@ public class UmPayBindingBankCardOperation extends
 	@Transactional(rollbackFor = Exception.class)
 	public TrusteeshipOperation createOperation(BankCard bankCard,
 			FacesContext facesContext) throws IOException {
+		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
+		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
+		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,false);
+		TrusteeshipOperation to = null;
+		try {
+			// 加密参数
+			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+			log.debug("绑卡发送数据:" + reqData);
+			// 保存操作记录
+			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
+					bankCard.getUser().getId(),
+					UmPayConstants.OperationType.PTP_MER_BIND_CARD,
+					GsonUtil.fromMap2Json(reqData.getField()));
+			// 发送请求
+			sendOperation(to, facesContext);
+		} catch (ReqDataException e) {
+			log.error(e.getLocalizedMessage(),e);
+		}
+		return to;
+	}
+
+	/**
+	 * @function 组装调用联动优势的请求报文
+	 * @param bankCard
+	 * @param order_id
+	 * @return
+	 */
+	public Map<String,String> assembleSendMap(BankCard bankCard, String order_id, boolean isMobileRequest){
+
 		TrusteeshipAccount ta = getTrusteeshipAccount(bankCard.getUser()
 				.getId());
 		Map<String, String> sendMap = UmPaySignUtil.getSendMapDate(UmPayConstants.OperationType.PTP_MER_BIND_CARD);
-		// 同步地址
-		sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
-				+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		if(isMobileRequest) {
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseMobUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		}else{
+			// 同步地址
+			sendMap.put("ret_url", UmPayConstants.ResponseWebUrl.PRE_RESPONSE_URL
+					+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
+		}
 		// 后台地址
 		sendMap.put("notify_url",
 				UmPayConstants.ResponseS2SUrl.PRE_RESPONSE_URL
 						+ UmPayConstants.OperationType.PTP_MER_BIND_CARD);
-		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
-		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
 		// 流水号(时间戳)
 		sendMap.put("order_id", order_id);
 		// 时间
@@ -102,23 +141,53 @@ public class UmPayBindingBankCardOperation extends
 		/* map.put("card_branch_name",""); */
 		// 快捷协议标志
 		sendMap.put("is_open_fastPayment", bankCard.getIsOpenFastPayment()?"1":"0");
-		TrusteeshipOperation to = null;
+		return sendMap;
+	}
+
+	/**
+	 * @function 用户通过app端绑定银行卡
+	 * @param bankCard
+	 * @return
+	 * @throws IOException
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public BaseResponseDto createOperation(BankCard bankCard) throws IOException {
+		// 因为返回通知的时候不知道是绑定什么卡,哪张卡,这里用绑卡的ID加上时间戳,保证不重复情况加回调的时候去掉时间戳的结尾
+		String order_id = System.currentTimeMillis() + bankCard.getCardNo();
+		Map<String, String> sendMap = assembleSendMap(bankCard,order_id,true);
+		//配置此项，表示使用H5页面
+		sendMap.put("sourceV", UmPayConstants.SourceViewType.SOURCE_V);
+		// 同步地址
+//		sendMap.put("ret_url", "");
+		BaseResponseDto baseResponseDto = new BaseResponseDto();
 		try {
 			// 加密参数
 			ReqData reqData = Mer2Plat_v40.makeReqDataByPost(sendMap);
+			String requestData = GsonUtil.fromMap2Json(reqData.getField());
 			log.debug("绑卡发送数据:" + reqData);
 			// 保存操作记录
-			to = createTrusteeshipOperation(order_id, reqData.getUrl(),
+			createTrusteeshipOperation(order_id, reqData.getUrl(),
 					bankCard.getUser().getId(),
 					UmPayConstants.OperationType.PTP_MER_BIND_CARD,
-					GsonUtil.fromMap2Json(reqData.getField()));
-			// 发送请求
-			sendOperation(to, facesContext);
+					requestData);
+			baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+			baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+			BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+			bankCardResponseDto.setUrl(reqData.getUrl());
+			bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(reqData.getField(),true));
+			baseResponseDto.setData(bankCardResponseDto);
+		} catch (UnsupportedEncodingException e){
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
 		} catch (ReqDataException e) {
-			e.getStackTrace();
+			log.error(e.getLocalizedMessage(),e);
+			baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode());
+			baseResponseDto.setMessage(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
 		}
-		return to;
+		return baseResponseDto;
 	}
+
 
 	/**
 	 * 绑卡-WEB通知
@@ -158,7 +227,7 @@ public class UmPayBindingBankCardOperation extends
 						ret_code + ":" + paramMap.get("ret_msg")));
 			}
 		} catch (VerifyException e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(), e);
 			throw new TrusteeshipReturnException("验签失败");
 		} catch (DuplicateKeyException e) {
 			log.error(e.getLocalizedMessage(),e);
@@ -224,11 +293,15 @@ public class UmPayBindingBankCardOperation extends
 									}
 								}
 							}
+							if (userWillBindingBankCard.size() > 0){
+								log.debug(("用户:"
+										+ userWillBindingBankCard.get(0).getUser()
+										.getId() + "绑定"
+										+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
+							}else {
+								log.debug("********************************************bind card fail***********************************************");
+							}
 
-							log.debug(("用户:"
-									+ userWillBindingBankCard.get(0).getUser()
-									.getId() + "绑定"
-									+ userWillBindingBankCard.get(0).getCardNo() + "成功!"));
 						} else {
 							log.debug(bankCardId + "已经被绑定！！！！");
 						}
@@ -242,11 +315,11 @@ public class UmPayBindingBankCardOperation extends
 					response.getWriter().print(responseData);
 					FacesUtil.getCurrentInstance().responseComplete();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.error(e.getLocalizedMessage(), e);
 				}
 			}
 		} catch (VerifyException e) {
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 }

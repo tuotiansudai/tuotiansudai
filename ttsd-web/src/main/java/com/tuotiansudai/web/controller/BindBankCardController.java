@@ -6,8 +6,6 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.QuickPaymentBank;
 import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.utils.LoginUserInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,20 +23,19 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         String bindCardStatus = "unbindCard";
-        String loginName = LoginUserInfo.getLoginName();
         ModelAndView view = new ModelAndView("/bind-card");
 
         BankCardModel bankCardModel = bindBankCardService.getPassedBankCard();
-        if (bankCardModel != null){
+        if (bankCardModel != null) {
             bindCardStatus = "commonBindCard";
-            if(QuickPaymentBank.isQuickPaymentBank(bankCardModel.getBankNumber().toUpperCase())){
+            if (QuickPaymentBank.isQuickPaymentBank(bankCardModel.getBankCode().toUpperCase())) {
                 bindCardStatus = "specialBindCard";
             }
-            view.addObject("bankNumber",bankCardModel.getBankNumber().toUpperCase());
-            view.addObject("cardNumber",bankCardModel.getCardNumber());
+            view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
+            view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
-        view.addObject("userName",bindBankCardService.getUserName());
-        view.addObject("bindCardStatus",bindCardStatus);
+        view.addObject("userName", bindBankCardService.getUserName());
+        view.addObject("bindCardStatus", bindCardStatus);
 
         return view;
     }

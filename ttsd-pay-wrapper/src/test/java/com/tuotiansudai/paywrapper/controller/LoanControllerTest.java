@@ -22,7 +22,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.Date;
 import java.util.Random;
 
@@ -92,7 +90,7 @@ public class LoanControllerTest {
         this.mockSmsServer = mockSmsService();
         this.mockMailServer = mockMailServer();
 
-        MockPayGateWrapper.inject(paySyncClient);
+        MockPayGateWrapper.injectInto(paySyncClient);
         MockPayGateWrapper.setUrl(this.mockServer.getUrl("/").toString());
 
         smsWrapperClient.setHost(this.mockSmsServer.getHostName());
@@ -125,6 +123,7 @@ public class LoanControllerTest {
                 "  </body>\n" +
                 "</html>");
         mockResponse.setResponseCode(200);
+        mockWebServer.enqueue(mockResponse);
         mockWebServer.enqueue(mockResponse);
 
         return mockWebServer;
@@ -250,7 +249,7 @@ public class LoanControllerTest {
         lm.setDescriptionHtml("fdjakf");
         lm.setDescriptionText("fdjakf");
         lm.setPeriods(1);
-        lm.setType(LoanType.LOAN_TYPE_1);
+        lm.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         lm.setActivityRate(0.1);
         lm.setMinInvestAmount(1);
         lm.setMaxInvestAmount(1000000);
@@ -278,7 +277,7 @@ public class LoanControllerTest {
         im.setAmount(amount);
         im.setCreatedTime(new Date());
         im.setId(idGenerator.generate());
-        im.setSource(InvestSource.WEB);
+        im.setSource(Source.WEB);
         im.setLoanId(loanId);
         im.setIsAutoInvest(false);
         im.setLoginName(loginName);

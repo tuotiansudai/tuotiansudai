@@ -26,6 +26,12 @@ public class WithdrawModel {
 
     private WithdrawStatus status;
 
+    private Source source;
+
+    private String userName;
+
+    private int isAdmin;
+
     public WithdrawModel() {
     }
 
@@ -34,6 +40,7 @@ public class WithdrawModel {
         this.loginName = dto.getLoginName();
         this.createdTime = new Date();
         this.status = WithdrawStatus.WAIT_VERIFY;
+        this.source = dto.getSource();
     }
 
     public long getId() {
@@ -114,6 +121,30 @@ public class WithdrawModel {
 
     public void setStatus(WithdrawStatus status) {
         this.status = status;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     @Override

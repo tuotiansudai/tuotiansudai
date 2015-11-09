@@ -37,19 +37,11 @@ public class InvestReferrerRewardMapperTest {
         LoanModel loanModel = createMockLoan(userModelTest.getLoginName());
         InvestModel model = createMockInvest(userModelTest.getLoginName(), loanModel.getId());
 
-        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel();
         long id = idGenerator.generate();
-        investReferrerRewardModel.setId(id);
-        investReferrerRewardModel.setStatus(ReferrerRewardStatus.SUCCESS);
-        investReferrerRewardModel.setReferrerLoginName(userModelTest.getLoginName());
-        investReferrerRewardModel.setTime(new Date());
-        investReferrerRewardModel.setBonus(100);
-        investReferrerRewardModel.setInvestId(model.getId());
-        investReferrerRewardModel.setRoleName(Role.INVESTOR);
+        InvestReferrerRewardModel investReferrerRewardModel = new InvestReferrerRewardModel(id, model.getId(), 100, userModelTest.getLoginName(), Role.INVESTOR);
         investReferrerRewardMapper.create(investReferrerRewardModel);
 
-        InvestReferrerRewardModel investReferrerRewardModel1 = investReferrerRewardMapper.findById(id);
-        assertNotNull(investReferrerRewardModel1);
+        assertNotNull(investReferrerRewardMapper.findById(id));
     }
 
     private InvestModel createMockInvest(String loginName, long loanId) {
@@ -62,7 +54,7 @@ public class InvestReferrerRewardMapperTest {
         model.setIsAutoInvest(false);
         model.setLoginName(loginName);
         model.setLoanId(loanId);
-        model.setSource(InvestSource.ANDROID);
+        model.setSource(Source.ANDROID);
         model.setStatus(InvestStatus.SUCCESS);
         investMapper.create(model);
         return model;
@@ -95,7 +87,7 @@ public class InvestReferrerRewardMapperTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
         fakeLoanModel.setAgentLoginName(agentLoginName);
-        fakeLoanModel.setType(LoanType.LOAN_TYPE_1);
+        fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);
         fakeLoanModel.setStatus(loanStatus);
         fakeLoanModel.setActivityType(ActivityType.NORMAL);

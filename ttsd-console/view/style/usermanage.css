@@ -1,0 +1,19 @@
+a {color: #000;text-decoration: none;}
+a:hover{ color: #cc9900;}
+.navbar { background: #eee url(../images/header_bg.jpg) no-repeat right top; margin-bottom: 10px;}
+.navbar-brand{ padding: 0 15px; height: auto;}
+.navbar-collapse { border-bottom: 1px solid #ccc; background: url(../images/nav_bg.jpg) repeat-x;}
+@media (min-width: 768px){
+    .navbar-nav>li>a {
+        padding: 10px 15px;
+    }
+}
+.navbar-nav>li>a:hover,.navbar-nav>li.active>a{ background: #666666; color: #fff; text-shadow:none;}
+.bs-docs-sidenav{ background: #f1f1f1;}
+.bs-docs-sidenav li.active>a{ color:#cc9900 }
+
+
+.query-build{padding-bottom: 20px;}
+.query-build .form-group{
+    margin: 10px 20px 10px 0;
+}

@@ -7,6 +7,4 @@ public interface RegisterService {
 
     BaseDto register(RegisterAccountDto dto);
 
-    BaseDto reRegister(RegisterAccountDto dto);
-
 }

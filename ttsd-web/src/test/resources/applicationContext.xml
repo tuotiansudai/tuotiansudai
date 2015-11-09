@@ -27,13 +27,13 @@
         <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="maxConnectionsPerPartition" value="30"/>
-        <property name="minConnectionsPerPartition" value="10"/>
-        <property name="partitionCount" value="3"/>
-        <property name="acquireIncrement" value="5"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
-
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="boneCPDataSource"/>
@@ -41,7 +41,7 @@
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="boneCPDataSource"/>
-        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.repository.model, com.tuotiansudai.web.repository.model"/>
     </bean>
 
     <!-- define the SqlSessionFactory -->
@@ -51,7 +51,8 @@
 
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.tuotiansudai.repository.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.repository.mapper, com.tuotiansudai.web.repository.mapper"/>
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
@@ -59,18 +60,31 @@
     <!--for test-->
     <bean id="httpServletRequest" class="org.springframework.mock.web.MockHttpServletRequest"/>
 
-    <!-- quartz持久化存储 -->
-    <bean id="scheduler"
-          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="dataSource">
-            <ref bean="boneCPDataSource" />
-        </property>
-        <property name="jobFactory">
-            <bean class="com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory" />
-        </property>
-        <property name="schedulerName" value="Mscheduler" />
-        <property name="configLocation" value="classpath:quartz.properties" />
-        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
-        <property name="autoStartup" value="true" />
+    <!-- job -->
+    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="2"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.utils.quartz.JobStoreBuilder">
+        <property name="dataSource" ref="jobBoneCPDataSource"/>
+    </bean>
+
+    <bean id="jobSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="jobBoneCPDataSource"/>
+        <property name="typeAliasesPackage" value="com.tuotiansudai.web.repository.job.model"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="jobSqlSessionFactory"/>
+        <property name="basePackage" value="com.tuotiansudai.web.repository.job.mapper"/>
     </bean>
 </beans>

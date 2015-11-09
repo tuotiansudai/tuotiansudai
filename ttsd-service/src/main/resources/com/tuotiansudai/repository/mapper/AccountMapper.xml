@@ -18,8 +18,8 @@
     </resultMap>
 
     <insert id="create" parameterType="AccountModel" useGeneratedKeys="true" keyProperty="id">
-        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, register_time)
-        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{registerTime})
+        insert into account (login_name, user_name, identity_number, pay_user_id, pay_account_id, balance, freeze, register_time)
+        value(#{loginName}, #{userName}, #{identityNumber}, #{payUserId}, #{payAccountId}, #{balance}, #{freeze}, #{registerTime})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">
@@ -31,7 +31,7 @@
     </select>
 
     <select id="findAllLoginNamesByLike" parameterType="java.lang.String" resultType="java.lang.String">
-        select login_name from account where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+        select t.login_name from account t JOIN user_role r ON t.`login_name` = r.`login_name` AND r.`role` = 'LOANER' where t.login_name like CONCAT(CONCAT('%', #{loginName}), '%')
     </select>
 
     <select id="lockByLoginName" parameterType="java.lang.String" resultMap="accountResultMap">

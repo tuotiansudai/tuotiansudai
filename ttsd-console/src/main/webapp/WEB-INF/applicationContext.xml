@@ -26,10 +26,11 @@
         <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/aa?useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="maxConnectionsPerPartition" value="30"/>
-        <property name="minConnectionsPerPartition" value="10"/>
-        <property name="partitionCount" value="3"/>
-        <property name="acquireIncrement" value="5"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="5"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
         <property name="statementsCacheSize" value="100"/>
     </bean>
 
@@ -54,4 +55,24 @@
     </bean>
 
     <bean id="okHttpClient" class="com.squareup.okhttp.OkHttpClient" />
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <!-- job -->
+    <bean id="jobBoneCPDataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://${jdbc.host}:${jdbc.port}/job_worker?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="partitionCount" value="4"/>
+        <property name="minConnectionsPerPartition" value="1"/>
+        <property name="maxConnectionsPerPartition" value="2"/>
+        <property name="acquireIncrement" value="1"/>
+        <property name="idleMaxAgeInSeconds" value="300"/>
+        <property name="statementsCacheSize" value="100"/>
+    </bean>
+
+    <bean id="jobStoreBuilder" class="com.tuotiansudai.utils.quartz.JobStoreBuilder">
+        <property name="dataSource" ref="jobBoneCPDataSource"/>
+    </bean>
 </beans>

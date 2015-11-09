@@ -34,5 +34,13 @@ public class AgreementNotifyRequestModel extends BaseCallbackRequestModel {
             return false;
         }
     }
+
+    public boolean isFastPay(){
+        if (this.getUserBindAgreementList().contains(AgreementType.ZKJP0700.name())){
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 }
