@@ -68,12 +68,14 @@
     <#nested>
 </div>
     <#include "../footer.ftl" />
-<script src="${staticServer}/js/dest/${js.config}"></script>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" defer="defer" async="async"
-    <#if pageJavascript??>
-        data-main="${staticServer}/js/dest/${pageJavascript}"
-    </#if>>
+<script type="text/javascript" charset="utf-8">
+    var staticServer = '${staticServer}';
 </script>
+<script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
+<#if pageJavascript??>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
+        data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+</#if>
 </body>
 </html>
 </#macro>
@@ -91,12 +93,14 @@
 </#macro>
 
 <#macro javascript pageJavascript>
+<script type="text/javascript" charset="utf-8">
+    var staticServer = '${staticServer}';
+</script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js"
-        type="text/javascript" charset="utf-8"
-        defer="defer"
-        async="async"
+<#if pageJavascript??>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+</#if>
 </#macro>
 
 <#macro role hasRole>
