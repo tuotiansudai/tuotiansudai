@@ -14,10 +14,7 @@ import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +60,9 @@ public class RechargeServiceImpl implements RechargeService {
             requestModel = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(rechargeModel.getId()),
                     accountModel.getPayUserId(),
                     String.valueOf(rechargeModel.getAmount()));
+        }
+        if(rechargeModel.getSource().equals(Source.ANDROID) || rechargeModel.getSource().equals(Source.IOS)){
+            requestModel.setSourceV("HTML5");
         }
 
         try {

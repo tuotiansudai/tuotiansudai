@@ -63,6 +63,7 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         if (NORMAL_PAY.equals(this.payType)) {
             payRequestData.put("gate_id", this.gateId);
         }
+
         return payRequestData;
     }
 

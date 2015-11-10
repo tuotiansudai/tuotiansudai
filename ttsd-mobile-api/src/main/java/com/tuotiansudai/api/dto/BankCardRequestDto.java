@@ -1,5 +1,8 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.utils.AmountUtil;
+
 public class BankCardRequestDto extends BaseParamDto{
 
     //用户ID
@@ -82,5 +85,13 @@ public class BankCardRequestDto extends BaseParamDto{
 
     public void setRechargeAmount(String rechargeAmount) {
         this.rechargeAmount = rechargeAmount;
+    }
+
+    public RechargeDto convertToRechargeDto(){
+        RechargeDto rechargeDto = new RechargeDto();
+        rechargeDto.setAmount(this.rechargeAmount);
+        rechargeDto.setLoginName(this.userId);
+        rechargeDto.setFastPay(this.isOpenFastPayment);
+        return rechargeDto;
     }
 }

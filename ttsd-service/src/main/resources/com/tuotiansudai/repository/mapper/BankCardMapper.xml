@@ -27,6 +27,10 @@
         select * from bank_card where login_name = #{loginName} and status = 'PASSED'
     </select>
 
+    <select id="findByLoginNameAndIsFastPayOn" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where login_name = #{loginName} and status = 'PASSED' and is_fast_pay_on = true
+    </select>
+
     <update id="update" parameterType="map">
         update bank_card set status = #{status} where id = #{id}
     </update>

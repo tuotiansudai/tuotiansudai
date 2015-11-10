@@ -1,0 +1,60 @@
+package com.tuotiansudai.api.service.impl;
+
+import com.tuotiansudai.api.dto.BankCardRequestDto;
+import com.tuotiansudai.api.dto.BankCardResponseDto;
+import com.tuotiansudai.api.dto.BaseResponseDto;
+import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.service.MobileAppRechargeService;
+import com.tuotiansudai.api.util.CommonUtils;
+import com.tuotiansudai.client.PayWrapperClient;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.Source;
+import org.jboss.logging.Message;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
+
+@Service
+public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
+    @Autowired
+    private PayWrapperClient payWrapperClient;
+    @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Override
+    public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
+        BaseResponseDto baseResponseDto = new BaseResponseDto();
+        Source source = Source.valueOf(bankCardRequestDto.getBaseParam().getPlatform().toUpperCase());
+        RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
+        String loginName = rechargeDto.getLoginName();
+        BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
+        if (bankCardModel == null) {
+            return new BaseResponseDto(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode(), ReturnMessage.NOT_OPNE_FAST_PAYMENT.getMsg());
+        }
+        rechargeDto.setBankCode(bankCardModel.getBankCode());
+        rechargeDto.setSource(source);
+        BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
+        try {
+            BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);
+            if (formDto.getData().getStatus()) {
+                bankCardResponseDto.setUrl(formDto.getData().getUrl());
+                bankCardResponseDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields(), true));
+
+            }
+        } catch (UnsupportedEncodingException e) {
+            return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+        }
+        baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());
+        baseResponseDto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        baseResponseDto.setData(bankCardResponseDto);
+
+        return baseResponseDto;
+    }
+}

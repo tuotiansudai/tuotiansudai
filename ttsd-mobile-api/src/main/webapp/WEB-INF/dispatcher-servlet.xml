@@ -29,4 +29,33 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
     <context:component-scan base-package="com.tuotiansudai.api.controller"/>
+
+    <mvc:resources mapping="/style/**" location="/style/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+
+    <bean id="staticResourceVersionMap" class="com.tuotiansudai.api.configuration.FreeMarkerVariablesMap">
+        <property name="singleton" value="true"/>
+        <property name="staticServer" value="${static.server}"/>
+        <property name="javascriptLocation" value="/js/dest"/>
+        <property name="cssLocation" value="/style/dest"/>
+    </bean>
+
+    <!-- freemarker config -->
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/templates"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerVariables" ref="staticResourceVersionMap"/>
+    </bean>
+
+
+
+    <bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
+        <property name="requestContextAttribute" value="requestContext"/>
+        <property name="exposeSessionAttributes" value="true"/>
+    </bean>
 </beans>
