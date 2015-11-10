@@ -22,19 +22,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}">
+    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}">
+    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}" charset="utf-8" />
     </#if>
 </head>
 <body>
-    <#include "../header.ftl" />
+<#include "../header.ftl"/>
 <div class="nav-container">
     <div class="nav">
         <a href="${requestContext.getContextPath()}/" class="logo"></a>
@@ -60,21 +60,27 @@
                     <#else>
                         <li><a <#if leftNav.title==activeLeftNav>class="active"</#if> href="${leftNav.url}">${leftNav.title}</a></li>
                     </#if>
-
                 </#list>
             </ul>
         </#if>
     </#list>
     <#nested>
 </div>
-    <#include "../footer.ftl" />
+<#include "../footer.ftl" />
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
+    <@security.authorize access="isAuthenticated()">
+    $(function () {
+        $('.header .logout').click(function (event) {
+            event.preventDefault();
+            $('.header .logout-form').submit();
+        })
+    });
+    </@security.authorize>
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}/js/dest/${pageJavascript}"></script>
 </#if>
 </body>
 </html>
@@ -88,18 +94,27 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
     <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}">
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}">
+    <#if pageCss?? && pageCss != "">
+        <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}">
+    </#if>
 </head>
 </#macro>
 
 <#macro javascript pageJavascript>
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
+    <@security.authorize access="isAuthenticated()">
+    $(function () {
+        $('.header .logout').click(function (event) {
+            event.preventDefault();
+            $('.header .logout-form').submit();
+        })
+    });
+    </@security.authorize>
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}/js/dest/${pageJavascript}"></script>
 </#if>
 </#macro>
 
