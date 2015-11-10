@@ -1,7 +1,6 @@
 package com.tuotiansudai.console.controller;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
@@ -49,7 +48,7 @@ public class UserController {
     @RequestMapping(value = "/user/edit", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView editUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        String ip = RequestIPParser.getRequestIp(request);
+        String ip = RequestIPParser.parse(request);
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.editUser(editUserDto, ip);
@@ -94,7 +93,7 @@ public class UserController {
         if (loginName.equals(LoginUserInfo.getLoginName())) {
             return "不能禁用当前登录用户";
         }
-        String ip = RequestIPParser.getRequestIp(request);
+        String ip = RequestIPParser.parse(request);
         userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip);
         return "OK";
     }
@@ -102,7 +101,7 @@ public class UserController {
     @RequestMapping(value = "/user/{loginName}/enable", method = RequestMethod.POST)
     @ResponseBody
     public String enableUser(@PathVariable String loginName, HttpServletRequest request) {
-        String ip = RequestIPParser.getRequestIp(request);
+        String ip = RequestIPParser.parse(request);
         userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip);
         return "OK";
     }

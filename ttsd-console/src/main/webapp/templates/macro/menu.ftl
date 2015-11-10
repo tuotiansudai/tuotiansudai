@@ -58,11 +58,11 @@
                 ]
             },
             {
-                "name":"secMan",
-                "header":{"text":"安全管理","link":"/"},
+                "name":"security",
+                "header":{"text":"安全管理","link":"/security-log/login-log"},
                 "sidebar":[
-                    {"name":"##############","text":"用户登录日志","link":""},
-                    {"name":"##############","text":"用户管理日志","link":""}
+                    {"name":"loginLog","text":"登录日志","link":"/security-log/login-log"},
+                    {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log"}
                 ]
             }
         ]

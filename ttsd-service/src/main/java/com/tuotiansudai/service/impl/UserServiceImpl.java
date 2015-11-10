@@ -15,7 +15,7 @@ import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyAuthenticationManager;
 import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.SmsCaptchaService;
-import com.tuotiansudai.service.UserAuditLogService;
+import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.LoginUserInfo;
 import com.tuotiansudai.utils.MyShaPasswordEncoder;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
     private ReferrerRelationService referrerRelationService;
 
     @Autowired
-    private UserAuditLogService userAuditLogService;
+    private AuditLogService auditLogService;
 
     @Autowired
     private MyAuthenticationManager myAuthenticationManager;
@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(userModel);
 
         //generate audit
-        userAuditLogService.generateAuditLog(beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+        auditLogService.generateAuditLog(beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (!mobile.equals(userModel.getMobile()) && accountModel != null) {
@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService {
         }
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
-        userAuditLogService.generateAuditLog(beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
+        auditLogService.generateAuditLog(beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {

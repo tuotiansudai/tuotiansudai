@@ -3,9 +3,11 @@ package com.tuotiansudai.repository.model;
 
 import java.util.Date;
 
-public class UserAuditLogModel {
+public class AuditLogModel {
 
     private long id;
+
+    private String loginName;
 
     private String operatorLoginName;
 
@@ -22,6 +24,14 @@ public class UserAuditLogModel {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getOperatorLoginName() {
