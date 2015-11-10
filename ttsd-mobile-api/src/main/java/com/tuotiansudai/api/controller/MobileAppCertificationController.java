@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
-public class MobileAppCertificationController {
+public class MobileAppCertificationController extends MobileAppBaseController {
     @Autowired
     private MobileAppCertificationService mobileAppCertificationService;
 

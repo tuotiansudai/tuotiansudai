@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppNodeListController {
+public class MobileAppNodeListController extends MobileAppBaseController {
     @Autowired
     private MobileAppNodeListService mobileAppNodeListService;
 

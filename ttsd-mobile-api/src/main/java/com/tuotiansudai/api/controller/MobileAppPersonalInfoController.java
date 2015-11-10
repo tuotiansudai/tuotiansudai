@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppPersonalInfoController {
+public class MobileAppPersonalInfoController extends MobileAppBaseController {
     @Autowired
     private MobileAppPersonalInfoService mobileAppPersonalInfoService;
 

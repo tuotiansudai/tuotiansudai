@@ -1,9 +1,11 @@
 package com.tuotiansudai.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 
+@RequestMapping("/v1.0")
 public abstract class MobileAppBaseController {
 
     @Autowired

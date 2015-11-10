@@ -47,13 +47,10 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        final String uri = httpServletRequest.getRequestURI();
-
-        for (String ignoreUrl : ignoreUrlArray) {
-            if (ignoreUrl.equalsIgnoreCase(uri)) {
-                chain.doFilter(httpServletRequest, httpServletResponse);
-                return;
-            }
+        if (shouldNotFilter(httpServletRequest)) {
+            authenticateAnonymousToken();
+            chain.doFilter(httpServletRequest, httpServletResponse);
+            return;
         }
 
         BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpServletRequest);
@@ -63,16 +60,34 @@ public class MobileAppAuthenticationTokenProcessingFilter extends GenericFilterB
             loginName = mobileAppTokenProvider.getUserNameByToken(token);
         }
         if (!Strings.isNullOrEmpty(loginName)) {
-            bufferedRequest.setAttribute("currentLoginName", loginName);
-            if (refreshTokenUrl.equalsIgnoreCase(uri)) {
+            if (isRefreshTokenRequest(httpServletRequest)) {
                 processGenerateTokenRequest(httpServletResponse, loginName, token);
                 return;
             }
-            this.authenticateToken(loginName);
+            bufferedRequest.setAttribute("currentLoginName", loginName);
+            authenticateToken(loginName);
         } else {
-            this.authenticateAnonymousToken();
+            authenticateAnonymousToken();
         }
         chain.doFilter(bufferedRequest, response);
+    }
+
+    private boolean isRefreshTokenRequest(HttpServletRequest request) {
+        return refreshTokenUrl.equalsIgnoreCase(request.getRequestURI());
+    }
+
+    private boolean shouldNotFilter(HttpServletRequest request) {
+        if (request.getMethod().equalsIgnoreCase("GET")) {
+            return true;
+        }
+
+        String uri = request.getRequestURI();
+        for (String ignoreUrl : ignoreUrlArray) {
+            if (ignoreUrl.equalsIgnoreCase(uri)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void processGenerateTokenRequest(HttpServletResponse httpServletResponse, String loginName, String token) throws IOException {

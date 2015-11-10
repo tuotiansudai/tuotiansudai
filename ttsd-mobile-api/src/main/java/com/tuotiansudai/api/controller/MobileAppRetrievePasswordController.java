@@ -4,7 +4,6 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.RetrievePasswordRequestDto;
 import com.tuotiansudai.api.service.MobileAppRetrievePasswordService;
 import com.tuotiansudai.api.util.CommonUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-public class MobileAppRetrievePasswordController {
+public class MobileAppRetrievePasswordController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppRetrievePasswordService retrievePasswordService;
@@ -27,7 +26,7 @@ public class MobileAppRetrievePasswordController {
      */
     @RequestMapping(value = "/retrievepassword", method = RequestMethod.POST)
     public BaseResponseDto retrievePassword(@Valid @RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto) {
-       return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
+        return retrievePasswordService.retrievePassword(retrievePasswordRequestDto);
     }
 
     /**
@@ -46,7 +45,7 @@ public class MobileAppRetrievePasswordController {
      * @return BaseResponseDto
      * @function 发送手机验证码
      */
-    @RequestMapping(value = "/retrievepassword/sendsms")
+    @RequestMapping(value = "/retrievepassword/sendsms", method = RequestMethod.POST)
     public BaseResponseDto sendSMS(@RequestBody RetrievePasswordRequestDto retrievePasswordRequestDto, HttpServletRequest request) {
         return retrievePasswordService.sendSMS(retrievePasswordRequestDto, CommonUtils.getRemoteHost(request));
     }

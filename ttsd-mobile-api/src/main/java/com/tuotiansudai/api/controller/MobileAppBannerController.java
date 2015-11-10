@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppBannerController {
+public class MobileAppBannerController extends MobileAppBaseController {
     @Autowired
     private MobileAppBannerService mobileAppBannerService;
 

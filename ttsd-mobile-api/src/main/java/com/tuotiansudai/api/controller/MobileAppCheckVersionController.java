@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class MobileAppCheckVersionController {
+public class MobileAppCheckVersionController extends MobileAppBaseController {
 
     private static final String APP_VERSION_CHECK_URL = "https://tuotiansudai.com/app/version.json";
     private static final String APP_VERSION_INFO_REDIS_KEY = "app:version:info";
-    private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60*60;
+    private static final int APP_VERSION_INFO_EXPIRE_SECONDS = 60 * 60;
     static Logger log = Logger.getLogger(MobileAppCheckVersionController.class);
 
     @Autowired
@@ -48,9 +48,9 @@ public class MobileAppCheckVersionController {
     private AppVersionResponseDataDto getLastestVersionInfo() {
         try {
             String jsonString = redisWrapperClient.get(APP_VERSION_INFO_REDIS_KEY);
-            if(StringUtils.isBlank(jsonString)) {
+            if (StringUtils.isBlank(jsonString)) {
                 jsonString = HttpClientUtil.getResponseBodyAsString(APP_VERSION_CHECK_URL, "UTF-8");
-                redisWrapperClient.setex(APP_VERSION_INFO_REDIS_KEY, APP_VERSION_INFO_EXPIRE_SECONDS,jsonString);
+                redisWrapperClient.setex(APP_VERSION_INFO_REDIS_KEY, APP_VERSION_INFO_EXPIRE_SECONDS, jsonString);
             }
             JsonObject json = GsonUtil.stringToJsonObject(jsonString);
             AppVersionResponseDataDto dto = new AppVersionResponseDataDto();

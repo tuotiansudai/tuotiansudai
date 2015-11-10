@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppNodeDetailController {
+public class MobileAppNodeDetailController extends MobileAppBaseController {
     @Autowired
     private MobileAppNodeDetailService mobileAppNodeDetailService;
     @RequestMapping(value="/get/node",method = RequestMethod.POST)

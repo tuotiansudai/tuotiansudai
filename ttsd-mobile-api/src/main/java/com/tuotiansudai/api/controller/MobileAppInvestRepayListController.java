@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppInvestRepayListController {
+public class MobileAppInvestRepayListController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppInvestRepayListService mobileAppInvestRepayListService;

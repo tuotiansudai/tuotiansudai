@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppBankCardController {
+public class MobileAppBankCardController extends MobileAppBaseController {
 
     @Autowired
     private MobileAppBankCardService mobileAppBankCardService;//查询签约／绑卡结果
@@ -47,7 +47,7 @@ public class MobileAppBankCardController {
         throw new NotImplementedException(getClass().getName());
     }
 
-    @RequestMapping(value = "/bankcard/query")
+    @RequestMapping(value = "/bankcard/query", method = RequestMethod.POST)
     public BaseResponseDto queryBindAndSginStatus(@RequestBody BankCardRequestDto bankCardRequestDto) {
         throw new NotImplementedException(getClass().getName());
     }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MobileAppWithdrawController {
+public class MobileAppWithdrawController extends MobileAppBaseController {
     @Autowired
     private MobileAppWithdrawService mobileAppWithDrawService;
 
