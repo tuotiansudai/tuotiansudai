@@ -97,7 +97,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "over_invest_payback_notify");
         model.servType = UmPayServType.TRANSFER_OVER_INVEST_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
-        model.particType = UmPayParticType.PLATFORM.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
 

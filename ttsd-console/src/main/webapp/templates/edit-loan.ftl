@@ -278,6 +278,7 @@
                             </#if>
                             <#if loanInfo.status == "RECHECK">
                                 <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="recheck">放款</button>
+                                <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="delay">延期</button>
                             </#if>
                         </div>
                     </div>

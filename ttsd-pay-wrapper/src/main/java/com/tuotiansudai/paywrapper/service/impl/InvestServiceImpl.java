@@ -216,7 +216,7 @@ public class InvestServiceImpl implements InvestService {
             investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
         }catch (Exception e) {
             // TODO: 发送短信
-            logger.fatal("投资回调请求状态更新失败,orderId:" + model.getOrderId() + ",id:" + model.getId());
+            logger.fatal("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;
         }
         return true;
@@ -240,12 +240,12 @@ public class InvestServiceImpl implements InvestService {
             LoanModel loanModel = loanMapper.findById(loanId);
             if (successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount()) {
                 // 超投
-                infoLog("超投", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("over_invest", orderId, investModel.getAmount(), loginName, loanId);
                 // 超投返款处理
                 overInvestPaybackProcess(orderId, investModel, loginName, loanId);
             } else {
                 // 投资成功
-                infoLog("投资成功", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("invest_success", orderId, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
                 investSuccess(orderId, investModel, loginName);
 
@@ -285,18 +285,18 @@ public class InvestServiceImpl implements InvestService {
 
             if (responseModel.isSuccess()) {
                 // 超投返款成功
-                infoLog("超投返款成功", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("pay_back_success", orderId, investModel.getAmount(), loginName, loanId);
                 paybackSuccess = true;
             } else {
                 // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
-                errorLog("超投返款失败", orderId, investModel.getAmount(), loginName, loanId);
+                errorLog("pay_back_fail", orderId, investModel.getAmount(), loginName, loanId);
             }
         } catch (PayException e) {
             // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
-            fatalLog("超投返款PayException异常", orderId, investModel.getAmount(), loginName, loanId, e);
+            fatalLog("pay_back_PayException", orderId, investModel.getAmount(), loginName, loanId, e);
         } catch (Exception e) {
             // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
-            fatalLog("超投返款其他异常", orderId, investModel.getAmount(), loginName, loanId, e);
+            fatalLog("pay_back_other_exceptions", orderId, investModel.getAmount(), loginName, loanId, e);
             throw e;
         }
 
@@ -349,8 +349,8 @@ public class InvestServiceImpl implements InvestService {
             }
         }
     }
-
-    private void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
+    @Override
+    public void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
@@ -374,8 +374,8 @@ public class InvestServiceImpl implements InvestService {
                 }
             }
         }
-
     }
+
     private long calculateProfit(long corpus,long actualInterest,long defaultInterest,long actualFee){
         return corpus + actualInterest + defaultInterest - actualFee;
     }
@@ -387,6 +387,8 @@ public class InvestServiceImpl implements InvestService {
      * @return
      */
     public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString){
+
+        logger.debug("into over_invest_payback_callback, queryString: " + queryString);
 
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
                 paramsMap,
@@ -415,7 +417,7 @@ public class InvestServiceImpl implements InvestService {
             investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
         } else {
             // 返款失败，当作投资成功处理
-            errorLog("回调通知返款失败，当作投资成功处理", orderId, investModel.getAmount(), loginName, investModel.getLoanId());
+            errorLog("pay_back_notify_fail,take_as_invest_success", orderId, investModel.getAmount(), loginName, investModel.getLoanId());
 
             investSuccess(orderId, investModel, loginName);
 
@@ -441,7 +443,7 @@ public class InvestServiceImpl implements InvestService {
             amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
-            fatalLog("投资成功，但资金冻结失败", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);
+            fatalLog("invest success, but freeze account fail", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);
         }
         // 改invest 本身状态为投资成功
         investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);

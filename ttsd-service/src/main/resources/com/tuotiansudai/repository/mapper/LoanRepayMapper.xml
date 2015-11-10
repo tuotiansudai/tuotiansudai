@@ -197,13 +197,18 @@
             ON t.`loan_id` = l.`id`
             AND l.`status` != 'COMPLETE'
             AND l.`agent_login_name` = #{loginName}
-        WHERE t.`status` = 'COMPLETE'
-            AND t.`actual_repay_date` BETWEEN #{startTime}
+        WHERE t.`status` IN (
+                'REPAYING',
+                'CONFIRMING',
+                'OVERDUE'
+              )
+            AND t.`repay_date` BETWEEN #{startTime}
             AND #{endTime}
     </select>
     
     <select id="findByLoginNameAndTimeRepayList" parameterType="map" resultMap="loanRepayResultMapWithLoanResultMap">
         SELECT
+          m.`id` as`loan_id`,
           m.`name`,
           m.`base_rate`,
           m.`activity_rate`,

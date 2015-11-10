@@ -21,4 +21,6 @@ public interface InvestService {
 
     List<AutoInvestPlanModel> findValidPlanByPeriod(AutoInvestMonthPeriod period);
 
+    void notifyInvestorRepaySuccessfulByEmail(long loanId,int period);
+
 }
