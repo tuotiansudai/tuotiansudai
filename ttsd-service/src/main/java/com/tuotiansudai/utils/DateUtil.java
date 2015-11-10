@@ -2,15 +2,13 @@ package com.tuotiansudai.utils;
 
 import org.joda.time.DateTime;
 
-import java.util.Calendar;
-
 import java.util.Date;
 
 public class DateUtil {
 
     public static Date getFirstDayOfMonth(Date date) {
         DateTime dateTime = new DateTime(date);
-        return new DateTime().withDate(dateTime.getYear(), dateTime.getMonthOfYear(), 1).toDate();
+        return new DateTime().withDate(dateTime.getYear(), dateTime.getMonthOfYear(), 1).withTimeAtStartOfDay().toDate();
     }
 
     public static long differenceMinute(Date date1, Date date2) {
