@@ -1,5 +1,5 @@
 require(['jquery', 'csrf'], function ($) {
-    var $loanLi=$('.loan-list').find('li');
+    var $loanLi=$('.loan-list-box').find('li');
     $loanLi.click(function() {
         var $this=$(this),
             thisUrl=$this.attr('urlLink');

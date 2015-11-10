@@ -18,6 +18,7 @@
   font: {
     size: nth($fontSize, 3);
     weight: normal;
+    family: $fontStack;
   }
   display: inline-block;
   padding: 8px 35px;
@@ -34,6 +35,8 @@
   border: 1px solid nth($CK2,3);
   border-radius: 4px;
   color: nth($CK2,2);
+  background: #999;
+  color: #fff;
   &:focus,
   &:active:focus,
   &.active:focus,
@@ -59,6 +62,7 @@
   }
   &:disabled, &:disabled:hover {
     background: #666 !important;
+    border:1px solid #666!important;
     cursor: default;
     color: #fff;
   }
@@ -68,10 +72,15 @@
   @extend .btn;
   background: nth($CK1, 2);
   border: 1px solid nth($CK1,3);
-
-  color: #fff;
+  color: #fff!important;
   &:hover {
     // background: nth($CK1,3);
+    color: #fff;
+  }
+  &:disabled, &:disabled:hover {
+    background: #666 !important;
+    border:1px solid #666!important;
+    cursor: default;
     color: #fff;
   }
 }

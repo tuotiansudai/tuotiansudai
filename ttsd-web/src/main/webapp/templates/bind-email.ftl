@@ -10,7 +10,7 @@
                 <#else>
                     <h3 class="pad-m">您的邮箱验证失败，请重新绑定！</h3>
                 </#if>
-                <button class="btn btn-normal redirect-to-personal-info" type="button">确定</button>
+                <a class="btn btn-normal redirect-to-personal-info" type="button" href="/personal-info">确定</a>
             </div>
         </div>
     </div>

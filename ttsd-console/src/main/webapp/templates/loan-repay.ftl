@@ -95,7 +95,8 @@
                             <th>项目编号</th>
                             <th>项目名称</th>
                             <th>还款人</th>
-                            <th>还款日期</th>
+                            <th>预计还款日期</th>
+                            <th>实际还款日期</th>
                             <th>当前期数</th>
                             <th>应还本金</th>
                             <th>应还利息</th>
@@ -109,7 +110,8 @@
                                 <td>${loanRepay.loanId?string('0')}</td>
                                 <td>${loanRepay.loanName}</td>
                                 <td>${loanRepay.agentLoginName!}</td>
-                                <td>${loanRepay.repayDate?string("yyyy-MM-dd HH:mm:ss")}</td>
+                                <td>${loanRepay.repayDate?string("yyyy-MM-dd")}</td>
+                                <td>${(loanRepay.actualRepayDate?string("yyyy-MM-dd HH:mm:ss"))!"-"}</td>
                                 <td>第${loanRepay.period}期</td>
                                 <td>${loanRepay.corpus}</td>
                                 <td>${loanRepay.expectedInterest}</td>

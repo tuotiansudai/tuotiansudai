@@ -22,14 +22,14 @@ body {
   font-size: nth($fontSize,2);
   line-height: nth($baseLineHeight,1);
   background: nth($baseColor,5);
-  color:nth($CK2,5);
+  color:nth($CK2,7);
 }
 a{
   cursor: pointer;
-  color:nth($linkColor,1);
+  color:nth($CK1,1);
   text-decoration: none;
   &:hover{
-    color:nth($linkColor,2);
+    color:nth($CK1,2);
   }
 }
 .fl {
@@ -46,6 +46,25 @@ a{
 }
 .tr {
   text-align: right;
+}
+p {
+  color: #4c4c4c;
+  margin-bottom: 15px;
+  &.text-indent {
+    text-indent: 2em;
+  }
+  &.notice {
+    line-height: 2.4;
+  }
+}
+.text-s {
+  font-size: nth($fontSize,1); //12px
+}
+.text-m {
+  font-size: nth($fontSize,3); //14px
+}
+.text-b {
+  font-size: nth($fontSize,4); //16px
 }
 //@extend
 .auto-height {
@@ -64,20 +83,26 @@ a{
   clear: both;
   margin-top:10px;
 }
+.clear-blank-m{
+  clear: both;
+  margin-top:30px;
+}
 .pad-s {
   padding: 10px;
 }
 .pad-m {
   padding: 30px;
 }
-.bgWhite {
-  background: nth($baseColor,1);
-}
+
 .error {
   color: $required;
+  font-size:nth($fontSize,1);
+  .fa {
+    font-size:nth($fontSize,3);
+  }
 }
 // form validation
-.fa {
+.fa:before {
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -98,7 +123,12 @@ label {
     }
   }
 }
-input.valid + label.form-valid:before {
+
+input.valid + label.form-error:before {
+  content: '';
+}
+input.valid + label.form-valid:before,
+input.valid + label.valid:before{
       content: "\f058";
       font: normal normal normal 14px/1 FontAwesome;
       display: inline-block;
