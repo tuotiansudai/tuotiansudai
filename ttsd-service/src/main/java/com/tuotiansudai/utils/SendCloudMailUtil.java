@@ -13,9 +13,11 @@ import java.util.Map;
 
 @Component
 public class SendCloudMailUtil {
-    static Logger logger = Logger.getLogger(SendCloudMailUtil.class);
+
+    private static Logger logger = Logger.getLogger(SendCloudMailUtil.class);
+
     @Autowired
-    SendCloudClient sendCloudClient;
+    private SendCloudClient sendCloudClient;
 
 
     public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {

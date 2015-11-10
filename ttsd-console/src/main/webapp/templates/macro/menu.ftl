@@ -50,11 +50,11 @@
                 ]
             },
             {
-            "name":"announceMan",
-            "header":{"text":"公告管理","link":"/announceManage"},
-            "sidebar":[
-                {"name":"announceMan","text":"公告管理","link":"/announceManage"}
-            ]
+                "name":"announceMan",
+                "header":{"text":"公告管理","link":"/announceManage"},
+                "sidebar":[
+                    {"name":"announceMan","text":"公告管理","link":"/announceManage"}
+                ]
             },
             {
                 "name":"artMan",
@@ -62,9 +62,12 @@
                 "sidebar":[]
             },
             {
-                "name":"secMan",
-                "header":{"text":"安全管理","link":"/"},
-                "sidebar":[]
+                "name":"security",
+                "header":{"text":"安全管理","link":"/security-log/login-log"},
+                "sidebar":[
+                    {"name":"loginLog","text":"登录日志","link":"/security-log/login-log"},
+                    {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log"}
+                ]
             }
         ]
 >
