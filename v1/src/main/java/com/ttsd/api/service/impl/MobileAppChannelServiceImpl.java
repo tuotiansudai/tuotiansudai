@@ -2,13 +2,16 @@ package com.ttsd.api.service.impl;
 
 import com.esoft.core.util.HttpClientUtil;
 import com.google.common.base.Strings;
+import com.ttsd.api.dto.AccessSource;
 import com.ttsd.api.dto.BaseParam;
 import com.ttsd.api.service.MobileAppChannelService;
 import com.ttsd.redis.RedisClient;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MobileAppChannelServiceImpl implements MobileAppChannelService {
     public static final String MOBILE_APP_ID_DOMOB = "3232323";
     private static final String MOBILE_APP_SIGN_KEY_DOMOB = "123123";
@@ -41,9 +44,16 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
     }
 
     @Override
-    public String obtainChannelBySource(BaseParam param) {
-        //findChannelByIfa(param.getDeviceId());
-        return null;
+    public String obtainChannelBySource(BaseParam baseParam){
+        if(baseParam == null){
+            return "";
+        }
+        AccessSource source = AccessSource.valueOf(baseParam.getPlatform().toUpperCase());
+        if(AccessSource.IOS.equals(source)){
+            String deviceId = baseParam.getDeviceId();
+            return this.findChannelByIfa(deviceId);
+        }
+        return org.apache.commons.lang3.StringUtils.isNotEmpty(baseParam.getChannel())?baseParam.getChannel():"";
     }
 
     @Override
