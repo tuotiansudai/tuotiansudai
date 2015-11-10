@@ -1,8 +1,8 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.loan_detail}" pageJavascript="${js.loan_detail}" activeNav="我要投资" activeLeftNav="" title="标的详情">
-<div class="loan">
-    <div class="item-block bg-loan">
-        <div class="news-share">
+<div class="loan-detail-content">
+    <div class="borderBox bg-w">
+        <div class="news-share fl">
             <h2 class="hd">
                 <#if loan.activityType == "NOVICE">
                     <span class="hot"></span>
@@ -25,24 +25,21 @@
                 </div>
             </div>
             <div class="chart-info">
-                <p>项目金额： ${loan.loanAmount}万元</p>
-
-                <p>代理人：${loan.agentLoginName}</p>
-
-                <p>借款人：${loan.loanerLoginName}</p>
+                项目金额： ${loan.loanAmount}万元<br/>
+                代理人：${loan.agentLoginName}<br/>
+                借款人：${loan.loanerLoginName} <br/>
                 <#if loan.type.getLoanPeriodUnit() == "MONTH">
-                    <p>项目期限：${loan.periods}月 </p>
+                    项目期限：${loan.periods}月 <br/>
                 </#if>
                 <#if loan.type.getLoanPeriodUnit() == "DAY">
-                    <p>项目期限：${loan.periods}天 </p>
+                    项目期限：${loan.periods}天 <br/>
                 </#if>
-                <p>还款方式：${loan.type.getName()}</p>
-
-                <p>投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍</p>
+                还款方式：${loan.type.getName()}<br/>
+                投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍<br/>
                 <a href="/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
-        <div class="account-info">
+        <div class="account-info fl">
             <#if loan.loanStatus == "RAISING">
                 <form action="/invest" method="post">
                     <h2 class="hd"></h2>
@@ -209,8 +206,8 @@
                 </form>
             </#if>
         </div>
-    </div>
 
+    </div>
     <div class="item-block bg-loan loan-box">
         <div class="nav">
             <ul>

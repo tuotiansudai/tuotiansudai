@@ -1,12 +1,151 @@
 @import "table";
 @import "pagination";
 
-.loan {
-  margin: 0 auto;
-  overflow: hidden;
+.loan-detail-content {
+  .borderBox { padding:0;}
+   .news-share {
+    width: 620px;
+    border-right: 1px solid #ccc;
+    padding-bottom: 15px;
+    .hd {
+      margin: -3px 10px 0;
+      position: relative;
+      line-height: 55px;
+      padding-left: 40px;
+      border-bottom: 2px solid #ccc;
+      font-size: 14px;
+       .hot {
+        width: 55px;
+        height: 55px;
+        position: absolute;
+        left: -10px;
+        top: 0;
+        z-index: 99;
+        background: url("/images/icons/hot.png") no-repeat;
+      }
+    }
+    .chart-box {
+      width: 200px;
+      margin: 20px 60px;
+      border-collapse: collapse;
+      border-radius: 50%;
+      border: 1px solid #f24712;
+      float: left;
+      display: inline-block;
+      & .box {
+        width: 180px;
+        height: 180px;
+        position: relative;
+        margin: 10px;
+        & .sub-percent {
+          color: #f24712;
+          font-size: 12px;
+          right: 23px;
+          top: 66px;
+          position: absolute;
+          z-index: 33;
+        }
+        & .title {
+          color: #000;
+          font-size: 16px;
+          right: 0;
+          width: 180px;
+          top: 120px;
+          position: absolute;
+          z-index: 33;
+          text-align: center;
+        }
+        & div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-radius: 50%;
+          height: 160px;
+          width: 160px;
+          -webkit-transition: all .2s ease-in-out;
+          -moz-transition: all .2s ease-in-out;
+        }
+        & .bg {
+          border: #ccc 10px solid
+        }
+        & .bg2 {
+          border: #ccc 10px solid;
+          clip: rect(0, 90px, 180px, 0);
+        }
+        & .rount {
+          border: #f24712 10px solid;
+          clip: rect(0, 90px, 180px, 0);
+          -webkit-transform: rotate(0deg);
+        }
+        & .rount2 {
+          border: #f24712 10px solid;
+          clip: rect(0, 180px, 180px, 90px);
+          -webkit-transform: rotate(0deg);
+          display: none
+        }
+        & .num {
+          font: bold 20px/180px tahoma;
+          text-align: center;
+          color: #f24712;
+          top: 5px;
+          left: 10px;
+          z-index: 9;
+        }
+
+      }
+    }
+    & .chart-info {
+      color: #a4a4a4;
+      padding-top: 20px;
+      line-height: 30px;
+    }
+  }
+   .account-info {
+    width: 376px;
+    float: left;
+    position: relative;
+    height: 320px;
+
+    & .ttsd-tips {
+      text-align: center;
+      font-size: 12px;
+      color: #949494;
+      display: block;
+      padding-top: 13px;
+
+    }
+    & .account-amount{
+      color: #f24712;
+    }
+    & .btn-position{
+      position: absolute;
+      bottom: 25px;
+      height: 60px;
+      & .item-block:nth-child(1){
+        margin-top: -4px;
+        padding-top: 0;
+        & .sub-hd {
+          line-height: 10px;
+          padding-top: 3px;
+          padding-bottom: 8px;
+        }
+      }
+      & .item-block:nth-child(2){
+        margin-top: 15px;
+      }
+      & .expected-interest{
+        color: #f24712;
+      }
+
+    }
+    & .hd{
+      height: 52px;
+      border-bottom: 2px solid #ccc;
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+  }
   & .item-block {
-    padding: 3px 0 0;
-    display: block;
     & .btn-pay {
       background: #f24712;
       border: none;
@@ -97,170 +236,7 @@
       color: #f27532;
       font-style: normal;
     }
-    &.bg-loan {
-      border: 1px solid #ccc;
-      overflow: hidden;
-      margin: 10px 0 0;
-      background: #fff;
-    }
-    & .news-share {
-      width: 620px;
-      height: 320px;
-      float: left;
-      border-right: 1px solid #ccc;
-      & .hd {
-        margin: -3px 10px 0;
-        position: relative;
-        line-height: 55px;
-        padding-left: 40px;
-        border-bottom: 2px solid #ccc;
-        font-size: 14px;
-        & .hot {
-          width: 55px;
-          height: 55px;
-          position: absolute;
-          left: -10px;
-          top: 0;
-          z-index: 99;
-          background: url("../../images/loan/hot.png") no-repeat;
-        }
-      }
-      & .chart-box {
-        width: 200px;
-        margin: 20px 60px;
-        border-collapse: collapse;
-        border-radius: 50%;
-        border: 1px solid #f24712;
-        float: left;
-        display: inline-block;
-        & .box {
-          width: 180px;
-          height: 180px;
-          position: relative;
-          margin: 10px;
-          & .sub-percent {
-            color: #f24712;
-            font-size: 12px;
-            right: 23px;
-            top: 66px;
-            position: absolute;
-            z-index: 33;
-          }
-          & .title {
-            color: #000;
-            font-size: 16px;
-            right: 0;
-            width: 180px;
-            top: 120px;
-            position: absolute;
-            z-index: 33;
-            text-align: center;
-          }
-          & div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 50%;
-            height: 160px;
-            width: 160px;
-            -webkit-transition: all .2s ease-in-out;
-            -moz-transition: all .2s ease-in-out;
-          }
-          & .bg {
-            border: #ccc 10px solid
-          }
-          & .bg2 {
-            border: #ccc 10px solid;
-            clip: rect(0, 90px, 180px, 0);
-          }
-          & .rount {
-            border: #f24712 10px solid;
-            clip: rect(0, 90px, 180px, 0);
-            -webkit-transform: rotate(0deg);
-          }
-          & .rount2 {
-            border: #f24712 10px solid;
-            clip: rect(0, 180px, 180px, 90px);
-            -webkit-transform: rotate(0deg);
-            display: none
-          }
-          & .num {
-            font: bold 20px/180px tahoma;
-            text-align: center;
-            color: #f24712;
-            top: 5px;
-            left: 10px;
-            z-index: 9;
-          }
 
-        }
-      }
-      & .chart-info {
-        width: 290px;
-        float: right;
-        color: #a4a4a4;
-        font-size: 12px;
-        margin-top: 12px;
-        & .point {
-          color: #000;
-        }
-        & p {
-          line-height: 26px;
-          padding: 8px 0 0;
-        }
-        & a {
-          margin-top: 10px;
-          color: #f24712;
-          display: block;
-        }
-      }
-    }
-
-    & .account-info {
-      width: 376px;
-      float: left;
-      position: relative;
-      height: 320px;
-
-      & .ttsd-tips {
-        text-align: center;
-        font-size: 12px;
-        color: #949494;
-        display: block;
-        padding-top: 13px;
-
-      }
-      & .account-amount{
-        color: #f24712;
-      }
-      & .btn-position{
-        position: absolute;
-        bottom: 25px;
-        height: 60px;
-        & .item-block:nth-child(1){
-          margin-top: -4px;
-          padding-top: 0;
-          & .sub-hd {
-            line-height: 10px;
-            padding-top: 3px;
-            padding-bottom: 8px;
-          }
-        }
-        & .item-block:nth-child(2){
-          margin-top: 15px;
-        }
-        & .expected-interest{
-          color: #f24712;
-        }
-
-      }
-      & .hd{
-        height: 52px;
-        border-bottom: 2px solid #ccc;
-        margin-left: 8px;
-        margin-right: 8px;
-      }
-    }
   }
   .loan-box {
     & .nav {
@@ -281,7 +257,7 @@
           cursor: pointer;
         }
         &.active {
-          background: url("/images/loan/nav_bg.png") left bottom no-repeat;
+         // background: url("/images/loan/nav_bg.png") left bottom no-repeat;
           color: #ed9c30;
         }
       }
@@ -334,7 +310,7 @@
           }
         }
         .invest-WEB, .invest-IOS, .invest-ANDROID {
-          background: url("/images/loan/ico_loan.png") no-repeat;
+          background: url("/images/icons/ico_loan.png") no-repeat;
           width: 18px;
           height: 18px;
           display: inline-block;

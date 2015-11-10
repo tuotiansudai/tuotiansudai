@@ -81,11 +81,10 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }, 1000);
         }
 
-        $(function () {
             if($('#loanStatus').val() == 'PREHEAT' ){
                 timer(intDiff);
             }
-        });
+
 
         $('form .btn-pay[type="submit"]').click(function(){
             var investAmount = Number($('form input[name="amount"]').val());

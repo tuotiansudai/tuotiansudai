@@ -690,8 +690,9 @@
       cursor: pointer;
       background: #fff;
       &:hover{
-        border:1px solid #cc0000;
+       // border:1px solid #cc0000;
         background: #fff;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.1),-1px -1px 5px rgba(0,0,0,0.1);
       }
        .hot {
         width: 59px;
@@ -712,7 +713,7 @@
            overflow: auto;
            line-height: 50px;
            .l-title {
-             font-size: 24px;
+             font-size: 22px;
              color: #4e4e4e;
            }
            .l-way {
@@ -738,7 +739,7 @@
        .loan-process {
          float: left;
          width: 240px;
-         margin: 20px 30px;
+         margin: 10px 30px 0px 30px;
          .p-title {
            font-size: nth($fontSize,1);
            color: #999;
@@ -764,7 +765,8 @@
          .rest-amount {
            color: #ff752a;
            font-size: 14px;
-           padding-top:30px;
+           padding-top:25px;
+           line-height: 2;
            i {
              font-size: 24px;
            }
@@ -773,6 +775,19 @@
              width:100%;
              font-size: 18px;
              font-weight: bold;
+             margin-top: 10px;
+             &:hover {
+               background: #ff9e69;
+               border-color:#ff9e69!important;
+             }
+           }
+           &.wait-invest {
+             color: #999;
+             margin-top:15px;
+             .btn-normal {
+               background: #ff9c1b;
+               border-color: #ff9c1b;
+             }
            }
            &.finish-invest {
              color: #999;
@@ -785,6 +800,11 @@
       }
     }
   }
+}
+
+/* loan detail */
+.loan-detail-content {
+
 }
 
 .bind-card-layer {
