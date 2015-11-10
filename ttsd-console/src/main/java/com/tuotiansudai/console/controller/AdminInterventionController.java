@@ -59,7 +59,7 @@ public class AdminInterventionController {
                     amountTransfer.transferInBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case TO_BALANCE:
-                    amountTransfer.transferOutFreeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
+                    amountTransfer.transferOutBalance(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
                     break;
                 case FREEZE:
                     amountTransfer.freeze(loginName, orderId, amount, ADMIN_INTERVENTION, LoginUserInfo.getLoginName(), description);
