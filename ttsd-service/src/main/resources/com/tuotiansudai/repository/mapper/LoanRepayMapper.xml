@@ -197,7 +197,11 @@
             ON t.`loan_id` = l.`id`
             AND l.`status` != 'COMPLETE'
             AND l.`agent_login_name` = #{loginName}
-        WHERE t.`status` = 'COMPLETE'
+        WHERE t.`status` IN (
+                'REPAYING',
+                'CONFIRMING',
+                'OVERDUE'
+              )
             AND t.`repay_date` BETWEEN #{startTime}
             AND #{endTime}
     </select>
