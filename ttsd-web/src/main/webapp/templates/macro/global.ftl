@@ -70,11 +70,9 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    $(function () {
-        $('.header .logout').click(function (event) {
-            event.preventDefault();
-            $('.header .logout-form').submit();
-        })
+    document.getElementById("logout-link").addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById("logout-form").submit();
     });
     </@security.authorize>
 </script>
@@ -104,11 +102,9 @@
 <script type="text/javascript" charset="utf-8">
     var staticServer = '${staticServer}';
     <@security.authorize access="isAuthenticated()">
-    $(function () {
-        $('.header .logout').click(function (event) {
-            event.preventDefault();
-            $('.header .logout-form').submit();
-        })
+    document.getElementById("logout-link").addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById("logout-form").submit();
     });
     </@security.authorize>
 </script>
