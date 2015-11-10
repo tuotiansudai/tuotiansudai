@@ -41,8 +41,8 @@ public class MobileAppChannelController {
 
     @RequestMapping(value = "/install-notify", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject installNotify(BaseParamDto paramDto, HttpServletRequest request) {
-        mobileAppChannelService.sendInstallNotify(paramDto);
+    public JSONObject installNotify(BaseParamDto paramDto) {
+        mobileAppChannelService.sendInstallNotify(paramDto.getBaseParam());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", "");
         jsonObject.put("code", "0000");
