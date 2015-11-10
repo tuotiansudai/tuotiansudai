@@ -139,12 +139,7 @@
     </form>
 </div>
 <#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.register_user}">-->
-<#--</@global.javascript>-->
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-defer
-async="true"
-data-main="${requestContext.getContextPath()}/js/register_user.js"></script>
+<@global.javascript pageJavascript="${js.register_user}">
+</@global.javascript>
 </body>
 </html>
