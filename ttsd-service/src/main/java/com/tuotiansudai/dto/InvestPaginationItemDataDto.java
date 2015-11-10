@@ -56,6 +56,7 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
         this.hasInvestRepay = view.getStatus() == InvestStatus.SUCCESS && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(view.getLoanStatus());
+    }
 
     public long getInvestId() {
         return investId;
