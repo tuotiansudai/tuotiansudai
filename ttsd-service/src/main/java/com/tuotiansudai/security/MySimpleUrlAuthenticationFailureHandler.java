@@ -10,6 +10,7 @@ import com.tuotiansudai.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
+import com.tuotiansudai.service.LoginLogService;
 import com.tuotiansudai.utils.RequestIPParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,13 @@ import java.text.MessageFormat;
 
 public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    private static String LOGIN_LOG_TABLE_TEMPLATE = "login_log_{0}{1}";
-
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
     @Autowired
-    private LoginLogMapper loginLogMapper;
+    private LoginLogService loginLogService;
 
     @Autowired
     private UserMapper userMapper;
@@ -49,7 +48,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        this.logFailedLogin(request);
+        loginLogService.generateLoginLog(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);
 
         if (this.isAjaxRequest(request)) {
             BaseDto<LoginDto> baseDto = new BaseDto<>();
@@ -93,12 +92,5 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         } else {
             redisWrapperClient.set(redisKey, String.valueOf(1));
         }
-    }
-
-    @Transactional
-    private void logFailedLogin(HttpServletRequest request) {
-        LoginLogModel model = new LoginLogModel(request.getParameter("username"), Source.WEB, RequestIPParser.parse(request), null, false);
-        DateTime now = new DateTime();
-        loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
     }
 }
