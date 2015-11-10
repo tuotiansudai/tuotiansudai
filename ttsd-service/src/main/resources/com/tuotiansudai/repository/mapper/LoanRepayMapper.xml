@@ -198,7 +198,7 @@
             AND l.`status` != 'COMPLETE'
             AND l.`agent_login_name` = #{loginName}
         WHERE t.`status` = 'COMPLETE'
-            AND t.`actual_repay_date` BETWEEN #{startTime}
+            AND t.`repay_date` BETWEEN #{startTime}
             AND #{endTime}
     </select>
     
