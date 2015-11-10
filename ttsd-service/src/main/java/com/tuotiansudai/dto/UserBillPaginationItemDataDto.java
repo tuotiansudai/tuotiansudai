@@ -3,7 +3,7 @@ package com.tuotiansudai.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.util.Date;
 
@@ -29,13 +29,13 @@ public class UserBillPaginationItemDataDto {
 
     public UserBillPaginationItemDataDto(UserBillModel userBillModel) {
         this.id = userBillModel.getId();
-        this.freeze = AmountUtil.convertCentToString(userBillModel.getFreeze());
-        this.balance = AmountUtil.convertCentToString(userBillModel.getBalance());
+        this.freeze = AmountConverter.convertCentToString(userBillModel.getFreeze());
+        this.balance = AmountConverter.convertCentToString(userBillModel.getBalance());
         if (UserBillOperationType.TI_BALANCE == userBillModel.getOperationType()) {
-            this.income = AmountUtil.convertCentToString(userBillModel.getAmount());
+            this.income = AmountConverter.convertCentToString(userBillModel.getAmount());
         }
         if (UserBillOperationType.TO_BALANCE == userBillModel.getOperationType() || UserBillOperationType.TO_FREEZE == userBillModel.getOperationType()) {
-            this.cost = AmountUtil.convertCentToString(userBillModel.getAmount());
+            this.cost = AmountConverter.convertCentToString(userBillModel.getAmount());
         }
         this.businessType = userBillModel.getBusinessType().getDescription();
         this.createdTime = userBillModel.getCreatedTime();

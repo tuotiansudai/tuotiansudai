@@ -13,12 +13,13 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/contracts")
 public class ContractController {
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Map<String,String>> getAllContracts(){
+    public List<Map<String, String>> getAllContracts() {
         List contracts = new ArrayList();
-        Map<String,String> contract = new HashMap<>();
-        contract.put("id","8907456");
+        Map<String, String> contract = new HashMap<>();
+        contract.put("id", "8907456");
         contract.put("contractName", "四方合同");
         contracts.add(contract);
         return contracts;
