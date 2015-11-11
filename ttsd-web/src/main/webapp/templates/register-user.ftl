@@ -12,8 +12,8 @@
         <li class="last"><s></s>3 充值投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
-    <div class="register-step-one register-box">
-        <ul class="reg-list tl">
+    <div class=" register-box">
+        <ul class="reg-list tl register-step-one">
             <form class="register-user-form" action="/register/user" method="post">
                 <li>
                     <input type="text" class="login-name input-control" class="" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
