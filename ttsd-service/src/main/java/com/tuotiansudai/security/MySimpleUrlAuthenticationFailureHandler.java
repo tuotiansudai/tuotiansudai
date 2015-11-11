@@ -53,7 +53,6 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
         if (this.isAjaxRequest(request)) {
             BaseDto<LoginDto> baseDto = new BaseDto<>();
             LoginDto loginDto = new LoginDto();
-
             baseDto.setData(loginDto);
             this.updateUserStatus(request.getParameter("username"));
             loginDto.setLocked(exception instanceof DisabledException);
