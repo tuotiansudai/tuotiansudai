@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.repository.model.sync.response;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class PtpMerQueryResponseModel extends BaseSyncResponseModel {
     public Map<String, String> generateHumanReadableInfo() {
         return Maps.newLinkedHashMap(ImmutableMap.<String, String>builder()
                 .put("商户号", Strings.isNullOrEmpty(this.queryMerId) ? "" : this.queryMerId)
-                .put("账户余额", AmountUtil.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
+                .put("账户余额", AmountConverter.convertCentToString(Long.parseLong(Strings.isNullOrEmpty(this.balance) ? "0" : this.balance)))
                 .put("账户类型", Strings.isNullOrEmpty(this.accountType) ? "" : HUMAN_READABLE_ACCOUNT_TYPE.get(this.accountType))
                 .put("账户状态", Strings.isNullOrEmpty(HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState)) ? "" : HUMAN_READABLE_ACCOUNT_STATE.get(this.accountState))
                 .build());

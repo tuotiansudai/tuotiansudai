@@ -16,11 +16,28 @@ public class UserBillModel {
 
     private long freeze;
 
-    private UserBillOperationType operationType;
-
     private UserBillBusinessType businessType;
 
+    private UserBillOperationType operationType;
+
+    private String operatorLoginName;
+
+    private String description;
+
     private Date createdTime = new Date();
+
+    public UserBillModel() {
+    }
+
+    public UserBillModel(String loginName, long orderId, long amount, long balance, long freeze, UserBillBusinessType businessType, UserBillOperationType operationType) {
+        this.loginName = loginName;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.balance = balance;
+        this.freeze = freeze;
+        this.businessType = businessType;
+        this.operationType = operationType;
+    }
 
     public long getId() {
         return id;
@@ -70,14 +87,6 @@ public class UserBillModel {
         this.freeze = freeze;
     }
 
-    public UserBillOperationType getOperationType() {
-        return operationType;
-    }
-
-    public void setOperationType(UserBillOperationType operationType) {
-        this.operationType = operationType;
-    }
-
     public UserBillBusinessType getBusinessType() {
         return businessType;
     }
@@ -86,7 +95,35 @@ public class UserBillModel {
         this.businessType = businessType;
     }
 
+    public UserBillOperationType getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(UserBillOperationType operationType) {
+        this.operationType = operationType;
+    }
+
+    public String getOperatorLoginName() {
+        return operatorLoginName;
+    }
+
+    public void setOperatorLoginName(String operatorLoginName) {
+        this.operatorLoginName = operatorLoginName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreatedTime() {
         return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 }

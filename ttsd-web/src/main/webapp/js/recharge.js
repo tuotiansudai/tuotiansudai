@@ -23,7 +23,6 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             rechargeInputAmountElement.autoNumeric("init");
             rechargeInputAmountElement.keyup(function () {
                 var amount = parseFloat(rechargeInputAmountElement.autoNumeric("get"));
-                console.log(amount);
                 if (isNaN(amount) || amount < 0.01) {
                     rechargeSubmitElement.prop('disabled', true).removeClass('btn-normal');
                 } else {

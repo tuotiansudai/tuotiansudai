@@ -3,6 +3,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerRechargePersonMapper;
@@ -11,13 +12,13 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.RechargeNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePersonRequestModel;
 import com.tuotiansudai.paywrapper.service.RechargeService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class RechargeServiceImpl implements RechargeService {
     private IdGenerator idGenerator;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransfer amountTransfer;
 
     @Override
     @Transactional
@@ -109,7 +110,11 @@ public class RechargeServiceImpl implements RechargeService {
             long amount = rechargeModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 rechargeMapper.updateStatus(orderId, RechargeStatus.SUCCESS);
-                userBillService.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS);
+                try {
+                    amountTransfer.transferInBalance(loginName, orderId, amount, UserBillBusinessType.RECHARGE_SUCCESS, null, null);
+                } catch (AmountTransferException e) {
+                    logger.error(MessageFormat.format("recharge transfer in balance failed (orderId = {0})", String.valueOf(callbackRequestModel.getOrderId())));
+                }
                 //TODO update system bill
             } else {
                 rechargeMapper.updateStatus(orderId, RechargeStatus.FAIL);

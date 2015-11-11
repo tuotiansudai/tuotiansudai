@@ -127,10 +127,8 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
     });
 
     registerUserForm.validate({
-        success: 'form-valid',
         focusInvalid: false,
         errorClass: 'form-error',
-        onkeyup:true,
         rules: {
             loginName: {
                 required: true,
@@ -209,8 +207,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             }
         },
         success: function (error, element) {
-
-            error.addClass("valid");
+            error.addClass("form-valid");
             if (element.name === 'mobile') {
                 $('.fetch-captcha').prop('disabled', false);
             }

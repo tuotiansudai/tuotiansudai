@@ -30,9 +30,6 @@ public class LoginController {
     static Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
     private CaptchaVerifier captchaVerifier;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -54,11 +51,10 @@ public class LoginController {
     @RequestMapping(value = "/captcha/{captcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET,
             consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public BaseDto captchaVerify(@PathVariable String captcha) {
-        boolean result = this.captchaVerifier.loginCaptchaVerify(captcha);
-        BaseDto baseDto = new BaseDto();
+    public BaseDto<BaseDataDto> captchaVerify(@PathVariable String captcha) {
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(result);
+        dataDto.setStatus(this.captchaVerifier.loginCaptchaVerify(captcha));
         baseDto.setData(dataDto);
 
         return baseDto;
