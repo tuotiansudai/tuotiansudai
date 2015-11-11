@@ -34,7 +34,7 @@ public class LoanController {
         return loanService.loanOut(loanOutDto.getLoanIdLong());
     }
 
-    @RequestMapping(value = "/cancel/{loanId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{loanId}/cancel", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> cancelLoan(@PathVariable Long loanId) {
         return loanService.cancelLoan(loanId);
