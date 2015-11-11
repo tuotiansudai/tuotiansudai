@@ -8,7 +8,7 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +45,9 @@ public class UserBillController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView userBill() {
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
-        String balance = AmountUtil.convertCentToString(accountModel != null ? accountModel.getBalance() : 0);
-        String rechargeAmount = AmountUtil.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
-        String withdrawAmount = AmountUtil.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
+        String balance = AmountConverter.convertCentToString(accountModel != null ? accountModel.getBalance() : 0);
+        String rechargeAmount = AmountConverter.convertCentToString(rechargeService.sumSuccessRechargeAmount(LoginUserInfo.getLoginName()));
+        String withdrawAmount = AmountConverter.convertCentToString(withdrawService.sumSuccessWithdrawAmount(LoginUserInfo.getLoginName()));
         ModelAndView modelAndView = new ModelAndView("/user-bill");
         modelAndView.addObject("balance", balance);
         modelAndView.addObject("rechargeAmount", rechargeAmount);

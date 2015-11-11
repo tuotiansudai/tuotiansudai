@@ -9,7 +9,7 @@ public class InvestException extends BaseException {
     }
 
     public InvestException(InvestExceptionType exceptionType, Throwable e) {
-        super(exceptionType.getDescription(), e);
+        super(exceptionType.getDescription());
         this.type = exceptionType;
     }
 

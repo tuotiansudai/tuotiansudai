@@ -5,8 +5,8 @@
                 <li><a href="javascript:">帮助中心</a></li>
                 <@global.security.authorize access="isAuthenticated()">
                 <li><a href="${requestContext.getContextPath()}/user-center"><@global.security.authentication property="principal.username" /></a></li>
-                <li><a class="logout" href="/logout">退出</a>
-                    <form class="logout-form" action="/logout" method="post">
+                <li><a id="logout-link" href="/logout" class="logout">退出</a>
+                    <form id="logout-form" class="logout-form" action="/logout" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </li>

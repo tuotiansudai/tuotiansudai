@@ -11,8 +11,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountUtil;
 import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.utils.AmountConverter;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +63,7 @@ public class InvestServiceImpl implements InvestService {
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
-        long investAmount = AmountUtil.convertStringToCent(investDto.getAmount());
+        long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
         // 不满足新手标投资限制约束

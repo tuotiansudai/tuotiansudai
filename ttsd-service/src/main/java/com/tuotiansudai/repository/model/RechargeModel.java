@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ public class RechargeModel {
     }
 
     public RechargeModel(RechargeDto dto) {
-        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.bankCode = dto.getBankCode();
         this.loginName = dto.getLoginName();
         this.status = RechargeStatus.WAIT_PAY;

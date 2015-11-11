@@ -6,8 +6,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
-public class RegisterUserDto {
+public class RegisterUserDto implements Serializable {
 
     @NotEmpty
     @Pattern(regexp = "(?!^\\d+$)^([a-zA-Z0-9]{5,25})$")

@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardApplyNotifyMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.BankCardNotifyMapper;
