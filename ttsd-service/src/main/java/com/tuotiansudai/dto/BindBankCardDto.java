@@ -6,8 +6,9 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class BindBankCardDto implements Serializable {
+
     @NotEmpty
-    @Pattern(regexp = "^(\\d{16}|\\d{17}|\\d{18}|\\d{19})$")
+    @Pattern(regexp = "^\\d{16,19}$")
     private String cardNumber;
 
     private String loginName;
