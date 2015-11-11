@@ -57,9 +57,6 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Autowired
-    private JobManager jobManager;
-
     @Value("${autoInvest.delay.minutes}")
     private int autoInvestDelayMinutes;
 

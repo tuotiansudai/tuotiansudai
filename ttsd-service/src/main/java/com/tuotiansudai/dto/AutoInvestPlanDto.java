@@ -1,14 +1,12 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 public class AutoInvestPlanDto implements Serializable {
@@ -36,9 +34,9 @@ public class AutoInvestPlanDto implements Serializable {
     }
 
     public AutoInvestPlanDto(AutoInvestPlanModel model) {
-        this.minInvestAmount = AmountUtil.convertCentToString(model.getMinInvestAmount());
-        this.maxInvestAmount = AmountUtil.convertCentToString(model.getMaxInvestAmount());
-        this.retentionAmount = AmountUtil.convertCentToString(model.getRetentionAmount());
+        this.minInvestAmount = AmountConverter.convertCentToString(model.getMinInvestAmount());
+        this.maxInvestAmount = AmountConverter.convertCentToString(model.getMaxInvestAmount());
+        this.retentionAmount = AmountConverter.convertCentToString(model.getRetentionAmount());
         this.autoInvestPeriods = model.getAutoInvestPeriods();
         this.enabled = model.isEnabled();
 

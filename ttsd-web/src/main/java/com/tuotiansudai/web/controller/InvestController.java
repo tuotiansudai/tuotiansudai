@@ -123,9 +123,9 @@ public class InvestController {
 
         AutoInvestPlanModel model = new AutoInvestPlanModel();
         model.setLoginName(LoginUserInfo.getLoginName());
-        model.setMinInvestAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
-        model.setMaxInvestAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
-        model.setRetentionAmount(AmountUtil.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
+        model.setMinInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMinInvestAmount()));
+        model.setMaxInvestAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getMaxInvestAmount()));
+        model.setRetentionAmount(AmountConverter.convertStringToCent(autoInvestPlanDto.getRetentionAmount()));
         model.setAutoInvestPeriods(autoInvestPlanDto.getAutoInvestPeriods());
         if (model.getMaxInvestAmount() < model.getMaxInvestAmount()) {
             dataDto.setStatus(false);
