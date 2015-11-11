@@ -50,7 +50,8 @@
                 <td>{{expectedRepayAmount}} 元</td>
                 <td>{{actualRepayAmount}} 元</td>
                 <td>{{completedDate}}</td>
-                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> | <a class="red" href="">合同</a>
+                <td><span class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</span> |
+                <a class="red" href="/contract/loaner/loanId/{{loanId}}" target="_blank">合同</a>
                 </td>
             </tr>
         {{/records}}
