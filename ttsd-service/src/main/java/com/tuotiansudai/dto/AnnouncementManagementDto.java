@@ -19,6 +19,10 @@ public class AnnouncementManagementDto extends BaseDataDto implements Serializab
 
     private Date updateTime = new Date();
 
+    public AnnouncementManagementDto () {
+        super();
+    }
+
     public AnnouncementManagementDto (AnnouncementManagementModel model) {
         this.id = model.getId();
         this.title = model.getTitle();
