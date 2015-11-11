@@ -1,18 +1,17 @@
 require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
 
     $(function () {
-        var $loanDetail=$('.loan-detail-content'),
+        var $loanDetail = $('.loan-detail-content'),
             amountInputElement = $(".text-input-amount"),
-         $accountInfo=$('.account-info'),
-        $btnLookOther=$('.btn-pay',$accountInfo),
-        $errorDom=$('.error',$accountInfo),
-        tabs = $('.loan-nav li'),
-        $loanlist=$('.loan-list',$loanDetail),
-        paginationElement = $('.pagination');
+            $accountInfo = $('.account-info'),
+            $btnLookOther = $('.btn-pay', $accountInfo),
+            $errorDom = $('.error', $accountInfo),
+            tabs = $('.loan-nav li'),
+            $loanlist = $('.loan-list', $loanDetail),
+            paginationElement = $('.pagination');
         amountInputElement.autoNumeric("init")
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
-
             paginationElement.loadPagination(requestData, function (data) {
                 if (data.status) {
                     var html = Mustache.render(investListTemplate, data);

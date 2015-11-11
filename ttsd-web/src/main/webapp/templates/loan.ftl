@@ -36,7 +36,7 @@
                 </#if>
                 还款方式：${loan.type.getName()}<br/>
                 投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍<br/>
-                <a href="/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
+                <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
         <h5 class="account-info fl">

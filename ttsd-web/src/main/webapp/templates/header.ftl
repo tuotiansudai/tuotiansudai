@@ -1,6 +1,6 @@
 <div class="header-container">
     <div class="header page-width">
-            <span class="fl">客服电话：400-169-1188<time>服务时间：(9：00－21:00)</time></span>
+            <span class="fl">客服电话:400-169-1188<time>服务时间:(9:00－21:00)</time></span>
             <ul class="fr">
                 <li><a href="javascript:">手机APP</a></li>
                 <@global.security.authorize access="isAuthenticated()">
