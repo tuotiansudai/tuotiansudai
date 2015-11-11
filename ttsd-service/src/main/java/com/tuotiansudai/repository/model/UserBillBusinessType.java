@@ -14,6 +14,7 @@ public enum UserBillBusinessType {
     REFERRER_REWARD("推荐奖励"),
     APPLY_WITHDRAW("申请提现"),
     OVER_INVEST_PAYBACK("超投返款"),
+    CANCEL_INVEST_PAYBACK("流标返款"),
     ADMIN_INTERVENTION("管理员干预");
 
     private final String description;
