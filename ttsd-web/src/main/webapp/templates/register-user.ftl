@@ -12,8 +12,8 @@
         <li class="last"><s></s>3 充值投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
-    <div class="register-step-one register-box">
-        <ul class="reg-list tl">
+    <div class=" register-box">
+        <ul class="reg-list tl register-step-one">
             <form class="register-user-form" action="/register/user" method="post">
                 <li>
                     <input type="text" class="login-name input-control" class="" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
@@ -139,12 +139,7 @@
     </form>
 </div>
 <#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.register_user}">-->
-<#--</@global.javascript>-->
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-defer
-async="true"
-data-main="${requestContext.getContextPath()}/js/register_user.js"></script>
+<@global.javascript pageJavascript="${js.register_user}">
+</@global.javascript>
 </body>
 </html>

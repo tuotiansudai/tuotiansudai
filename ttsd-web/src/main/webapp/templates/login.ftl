@@ -41,13 +41,7 @@
     </div>
 </div>
 <#include "footer.ftl">
-<#--<@global.javascript pageJavascript="${js.login}">-->
-<#--</@global.javascript>-->
-
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-defer
-async="true"
-data-main="${requestContext.getContextPath()}/js/login.js"></script>
+<@global.javascript pageJavascript="${js.login}">
+</@global.javascript>
 </body>
 </html>

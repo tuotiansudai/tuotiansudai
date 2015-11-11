@@ -4,11 +4,14 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.QuickPaymentBank;
 import com.tuotiansudai.service.BindBankCardService;
+import com.tuotiansudai.utils.BankCardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -22,20 +25,19 @@ public class BindBankCardController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
-        String bindCardStatus = "unbindCard";
         ModelAndView view = new ModelAndView("/bind-card");
-
         BankCardModel bankCardModel = bindBankCardService.getPassedBankCard();
-        if (bankCardModel != null) {
-            bindCardStatus = "commonBindCard";
-            if (QuickPaymentBank.isQuickPaymentBank(bankCardModel.getBankCode().toUpperCase())) {
-                bindCardStatus = "specialBindCard";
-            }
+
+        boolean isBindCard = bankCardModel != null;
+        if (isBindCard) {
+            view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
             view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
+
         view.addObject("userName", bindBankCardService.getUserName());
-        view.addObject("bindCardStatus", bindCardStatus);
+        view.addObject("isBindCard", isBindCard);
+        view.addObject("banks", BankCardUtil.getFastPayBanks());
 
         return view;
     }
