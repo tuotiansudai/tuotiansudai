@@ -80,7 +80,7 @@ public class RetrievePasswordController {
         baseDto.setData(dataDto);
         boolean result = captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha);
         if (result) {
-            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.getRequestIp(httpServletRequest));
+            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }
