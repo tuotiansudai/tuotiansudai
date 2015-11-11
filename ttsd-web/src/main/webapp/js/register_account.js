@@ -27,7 +27,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             },
             identityNumber: {
                 required: true,
-                regex: "^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$",
+                regex: /^[1-9]\\d{13,16}[a-zA-Z0-9]$/,
                 isExist: "/register/account/identity-number/{0}/is-exist"
             }
         },

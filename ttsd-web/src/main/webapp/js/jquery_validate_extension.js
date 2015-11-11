@@ -148,8 +148,7 @@ require(['jquery', 'jquery.validate'], function ($) {
     $.validator.addMethod(
         "regex",
         function (value, element, regexp) {
-            var re = new RegExp(regexp);
-            return this.optional(element) || re.test(value);
+            return this.optional(element) || regexp.test(value);
         },
         "请检查您的输入"
     );
