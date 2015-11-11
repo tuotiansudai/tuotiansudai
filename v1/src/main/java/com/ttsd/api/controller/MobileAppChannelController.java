@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class MobileAppChannelController {
@@ -21,11 +20,11 @@ public class MobileAppChannelController {
 
     @RequestMapping(value = "/domob", method = RequestMethod.GET)
     @ResponseBody
-    public JSONObject clickNotify(HttpServletRequest request, HttpServletResponse response) {
-        boolean recordSuccess = false;
-        if (MobileAppChannelServiceImpl.MOBILE_APP_ID_DOMOB
+    public JSONObject clickNotifyDomob(HttpServletRequest request) {
+        boolean recordSuccess;
+        if (MobileAppChannelServiceImpl.MOBILE_APP_ID
                 .equalsIgnoreCase(request.getParameter("appkey"))) {
-            recordSuccess = mobileAppChannelService.recordChannelDomob(request.getParameter("mac"),
+            recordSuccess = recordChannelDomob(request.getParameter("mac"),
                     request.getParameter("macmd5"),
                     request.getParameter("ifa"),
                     request.getParameter("ifamd5"),
@@ -47,5 +46,14 @@ public class MobileAppChannelController {
         jsonObject.put("message", "");
         jsonObject.put("code", "0000");
         return jsonObject;
+    }
+
+    public boolean recordChannelDomob(String mac, String macmd5, String ifa, String ifamd5, String subChannel) {
+        String channel = "domob";
+        boolean r1 = mobileAppChannelService.recordDeviceId("mac", mac, channel, subChannel);
+        boolean r2 = mobileAppChannelService.recordDeviceId("macmd5", macmd5, channel, subChannel);
+        boolean r3 = mobileAppChannelService.recordDeviceId("ifa", ifa, channel, subChannel);
+        boolean r4 = mobileAppChannelService.recordDeviceId("ifamd5", ifamd5, channel, subChannel);
+        return (r1 || r2 || r3 || r4);
     }
 }
