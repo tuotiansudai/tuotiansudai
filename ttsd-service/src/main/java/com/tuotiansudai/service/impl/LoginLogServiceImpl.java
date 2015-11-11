@@ -2,22 +2,19 @@ package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoginLogModel;
-import com.tuotiansudai.repository.model.AuditLogModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.LoginLogService;
-import com.tuotiansudai.utils.RequestIPParser;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,11 +25,14 @@ public class LoginLogServiceImpl implements LoginLogService {
     @Autowired
     private LoginLogMapper loginLogMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
 
     @Transactional
     @Override
-    public void generateLoginLog(String loginName, Source source, String ip, String device, boolean loginSuccess) {
-        LoginLogModel model = new LoginLogModel(loginName, source, ip, device, loginSuccess);
+    public void generateLoginLog(String loginNameOrMobile, Source source, String ip, String device, boolean loginSuccess) {
+        LoginLogModel model = new LoginLogModel(userMapper.findByLoginNameOrMobile(loginNameOrMobile).getLoginName(), source, ip, device, loginSuccess);
         DateTime now = new DateTime();
         loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
     }
