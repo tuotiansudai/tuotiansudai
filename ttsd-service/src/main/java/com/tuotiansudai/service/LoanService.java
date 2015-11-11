@@ -46,6 +46,8 @@ public interface LoanService {
 
     BaseDto<PayDataDto> openLoan(LoanDto loanDto);
 
+    BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
+
     /**
      * @param loanId
      * @return
