@@ -169,4 +169,10 @@ require(['jquery', 'jquery.validate'], function ($) {
     $.validator.addMethod("imageCaptchaVerify", function (value, element, urlTemplate) {
         return imageCaptchaVerifyFun.call(this, value, element, urlTemplate);
     }, $.validator.format("图形验证码不正确"));
+
+    //用户名验证规则
+    jQuery.validator.addMethod("checkUser", function(value, element) {
+        var checkUser = /(?!^\d+$)^\w{6,20}$/;
+        return this.optional(element) || (checkUser.test(value));
+    }, "6位至20位数字与字母下划线组合，不能全部数字");
 });

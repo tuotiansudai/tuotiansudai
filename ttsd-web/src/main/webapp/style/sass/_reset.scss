@@ -124,11 +124,10 @@ label {
   }
 }
 
-input.valid + label.form-error:before {
-  content: '';
-}
-input.valid + label.form-valid:before,
-input.valid + label.valid:before{
+//input.valid + label.form-error:before {
+//  content: '';
+//}
+input.valid + label.form-valid:before{
       content: "\f058";
       font: normal normal normal 14px/1 FontAwesome;
       display: inline-block;

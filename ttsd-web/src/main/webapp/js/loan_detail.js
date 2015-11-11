@@ -1,11 +1,15 @@
 require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
 
     $(function () {
-        var amountInputElement = $(".text-input-amount");
-        amountInputElement.autoNumeric("init");
-
-        var paginationElement = $('.pagination');
-
+        var $loanDetail=$('.loan-detail-content'),
+            amountInputElement = $(".text-input-amount"),
+         $accountInfo=$('.account-info'),
+        $btnLookOther=$('.btn-pay',$accountInfo),
+        $errorDom=$('.error',$accountInfo),
+        tabs = $('.loan-nav li'),
+        $loanlist=$('.loan-list',$loanDetail),
+        paginationElement = $('.pagination');
+        amountInputElement.autoNumeric("init")
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
 
@@ -31,27 +35,21 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         }
 
         // tab select
-        var tabs = $('.nav li');
+        $loanlist.find('.loan-list-con').eq(0).show();
         tabs.click(function () {
             var self = $(this);
-            tabs.removeClass('active');
-            self.addClass('active');
+            self.addClass('active').siblings('li').removeClass('active');
             var index = self.index();
             if (index === 1) {
                 loadLoanData();
             }
-            $('.loan-list .loan-list-con').removeClass('active').eq(index).addClass('active');
+            $loanlist.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
         });
 
         $('.img-list li').click(function () {
             var _imgSrc = $(this).find('img').attr('src');
             $('.content img').attr('src', _imgSrc);
-            $('.layer-box').show();
             return false;
-        });
-
-        $('.layer-wrapper').click(function () {
-            $('.layer-box').hide();
         });
 
         function timer(intDiff) {
@@ -68,7 +66,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                         minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
                         second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
                     }else{
-                        $('.btn-pay').removeClass('grey').removeAttr('disabled').html('马上投资');
+                        $btnLookOther.prop('disabled', false);
+                        $btnLookOther.html('马上投资');
                     }
                     if (minute <= 9) minute = '0' + minute;
                     if (second <= 9) second = '0' + second;
@@ -86,9 +85,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             }
 
 
-        $('form .btn-pay[type="submit"]').click(function(){
+        $btnLookOther.click(function(){
             var investAmount = Number($('form input[name="amount"]').val());
-            var accountAmount = Number($('form i.account-amount').text());
+            var accountAmount = Number($('form .account-amount').text());
             if(investAmount > accountAmount){
                 location.href = '/recharge';
                 return false;
@@ -102,8 +101,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var amountNeedRaised = Number($('.amountNeedRaised-i').text());
 
             if(amountNeedRaised < parseFloat(amount)){
-                $('.loan-detail-error-msg').html("<i class='loan-detail-error-msg-li'>x</i>输入金额不能大于可投金额!").removeAttr("style");
-                $('.btn-pay').attr('disabled', 'disabled').addClass('grey');
+                $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
+                $btnLookOther.prop('disabled', true);
                 return;
             }
             $.ajax({
@@ -112,9 +111,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 dataType: 'json',
                 contentType: 'application/json; charset=UTF-8'
             }).done(function(amount){
-                $('.loan-detail-error-msg').hide();
+                $errorDom.hide();
                 $('.expected-interest').html(amount);
-                $('.btn-pay').removeClass('grey').removeAttr('disabled');
+                $btnLookOther.prop('disabled', false);
             });
         });
     });

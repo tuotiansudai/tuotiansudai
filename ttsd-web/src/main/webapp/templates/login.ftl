@@ -25,7 +25,6 @@
                     <img src="/login/captcha" alt=""/>
                 </em>
             </label>
-
             <i class="error fa fa-times-circle"></i>
             <div class="forgot-password tc">
                 <div class="tr">
@@ -33,7 +32,7 @@
                     <a href="/mobile-retrieve-password">忘记密码？</a>
                  </div>
                 <div class="clear-blank"></div>
-                <button class="login-submit btn btn-normal" disabled type="button">立即登录</button>
+                <button class="login-submit btn-normal" type="button">立即登录</button>
             </div>
             <div class="clear-blank"></div>
             <b>数据采用256位加密技术，保障您的信息安全！</b>

@@ -3,6 +3,7 @@
 
 .loan-detail-content {
   .borderBox { padding:0;}
+  color: #8c8c8c;
    .news-share {
     width: 620px;
     border-right: 1px solid #ccc;
@@ -94,214 +95,117 @@
 
       }
     }
-    & .chart-info {
+     .chart-info {
       color: #a4a4a4;
       padding-top: 20px;
       line-height: 30px;
     }
   }
    .account-info {
-    width: 376px;
-    float: left;
-    position: relative;
-    height: 320px;
-
-    & .ttsd-tips {
-      text-align: center;
-      font-size: 12px;
-      color: #949494;
-      display: block;
-      padding-top: 13px;
-
-    }
-    & .account-amount{
-      color: #f24712;
-    }
-    & .btn-position{
-      position: absolute;
-      bottom: 25px;
-      height: 60px;
-      & .item-block:nth-child(1){
-        margin-top: -4px;
-        padding-top: 0;
-        & .sub-hd {
-          line-height: 10px;
-          padding-top: 3px;
-          padding-bottom: 8px;
-        }
-      }
-      & .item-block:nth-child(2){
-        margin-top: 15px;
-      }
-      & .expected-interest{
-        color: #f24712;
-      }
-
-    }
-    & .hd{
-      height: 52px;
-      border-bottom: 2px solid #ccc;
-      margin-left: 8px;
-      margin-right: 8px;
-    }
-  }
-  & .item-block {
-    & .btn-pay {
-      background: #f24712;
-      border: none;
-      text-align: center;
-      color: #fff;
-      font-size: 14px;
-      width: 340px;
-      height: 34px;
-      display: inline-block;
-      margin-left: 20px;
-      cursor: pointer;
-      &.grey {
-        opacity: .6;
-      }
-    }
-    & .loan-detail-error-msg{
-      color: #ee0505;font-size: 6px;
-      font-weight: normal;
-      display: block;
-      clear: both;
-      margin-left: 20px;
-      padding-top: 4px;
-    }
-    & .loan-detail-error-msg-li{
-     width: 14px;height: 14px;
-     border-radius: 7px;
-     background: red;
-     color:#fff;
-     font-size: 0.5em;
-     display: inline-block;
+     margin: 10px;
+     width: 350px;
      text-align: center;
-     margin-right: 6px;
-     line-height: 12px;
-     }
-    & .text-input {
-      float: left;
-      width: 225px;
-      border: 1px solid #ccc;
-      height: 32px;
-      color: #ccc;
-      display: inline-block;
-      margin-left: 20px;
-    }
-    & .text-input-amount {
-      float: left;
-      width: 330px;
-      border: 1px solid #ccc;
-      height: 32px;
-      color: #000;
-      display: inline-block;
-      margin-left: 20px;
-      padding-left:5px;
-      margin-top: 8px;
-      text-align: right;
-      padding-right: 5px;
-    }
-    & .bg-yellow {
-      width: 110px;
-      height: 32px;
-      line-height: 32px;
-      font-size: 12px;
-      color: #fff;
-      text-align: center;
-      background: #f49578;
-      border: 1px solid #ff752a;
-      display: inline-block;
-    }
-    & .sub-hd {
-      line-height: 26px;
-      color: #a4a4a4;
-      padding-left: 20px;
-      display: inline-block;
-      width: 100px;
-      font-size: 12px;
-    }
-    & .num {
-      text-align: right;
-      padding-right: 10px;
-      width: 235px;
-      font-size: 12px;
-      display: inline-block;
-    }
-    & .num i {
-      color: #010101;
-      font-style: normal;
-    }
-    & .num i.red {
-      color: #f27532;
-      font-style: normal;
-    }
+     position: relative;
+     font-size: 12px;
+     color: #949494;
+      .l-title {
+        margin-top: 43px;
+        padding: 10px;
+        border-top: 2px solid #ccc;
+        font-size: 12px;
 
+      }
+     .account-list {
+       margin-left: 10px;
+        dd {
+          overflow: auto;
+          height:auto;
+          margin-bottom: 7px;
+          .text-input-amount {
+            width:95%;
+            text-align: right;
+          }
+          &.invest-amount {
+            height:52px;
+            overflow: hidden;
+          }
+          &.img-status {
+            padding:20px;
+          }
+          .btn-normal {
+            width: 100%;
+            padding: 8px 0;
+          }
+          .account-amount{
+            color: #f24712;
+          }
+          .time-item {
+            text-align: right;
+            padding-right: 31px;
+            line-height: 38px;
+            font-size: 12px;
+            color: #ccc;
+          }
+        }
+     }
   }
-  .loan-box {
-    & .nav {
-      height: 50px;
-      border-bottom: 1px solid #ccc;
-      & li {
+   .loan-nav {
+     height: auto;
+     overflow: auto;
+     border-bottom: 1px solid #ccc;
+     padding-top:10px;
+       li {
         float: left;
-        width: 130px;
-        height: 50px;
-        & span {
-          float: left;
-          width: 130px;
-          border-right: 1px solid #ccc;
-          margin: 5px 0;
-          color: #8c8c8c;
-          text-align: center;
-          line-height: 38px;
-          cursor: pointer;
-        }
-        &.active {
-         // background: url("/images/loan/nav_bg.png") left bottom no-repeat;
-          color: #ed9c30;
-        }
+         padding: 5px 30px;
+         border-right: 1px solid #ccc;
+         position: relative;
+         cursor: pointer;
+         i {
+           display: none;
+           position: absolute;
+           bottom: -6px;
+           left: 45%;
+           font-size: 18px;
+           color: #ed9c30;
+         }
+         &.active {
+            border-bottom: 2px solid #ed9c30;
+           i {
+             display: block;
+           }
+         }
+         &:nth-last-child(1) {
+           border-right-width:0px;
+         }
       }
     }
-    & .loan-list {
-      & .loan-list-con {
-        margin-top:10px;
+   .loan-list {
+     .borderBox { padding: 10px;}
+      .loan-list-con {
         display: none;
-        &.active {
-          display: block;
+        .b-title {
+          color: #000;
+          font-size: 14px;
+          padding-bottom: 10px;
         }
-        & .loan-detail {
-          margin: 0px 10px 10px 10px;
-          padding: 10px;
-          border: 1px solid #ccc;
-          & h3 {
-            color: #000;
-            font-size: 14px;
-            padding-bottom: 10px;
-          }
-          & p {
-            line-height: 26px;
-            color: #7c7c7c;
-            font-size: 12px;
-          }
-        }
-        & .loan-material {
-          margin: 10px;
-          & h3 {
+         .loan-material {
+           margin-top:10px;
+           h3 {
             padding: 10px;
             background: #eaeaea;
             color: #ed9c30;
             font-size: 14px;
           }
-          & .title {
+           .title {
             padding-top: 10px;
             line-height: 36px;
           }
-          & .pic-list {
+           .pic-list {
             & .img-list {
               display: block;
               overflow: hidden;
             }
-            & li {
+             li {
               float: left;
               margin: 5px 10px 5px 0;
               cursor: pointer;
@@ -309,65 +213,8 @@
             }
           }
         }
-        .invest-WEB, .invest-IOS, .invest-ANDROID {
-          background: url("/images/icons/ico_loan.png") no-repeat;
-          width: 18px;
-          height: 18px;
-          display: inline-block;
-          margin-bottom: -2px;
-        }
-        .invest-IOS {
-          height: 22px;
-          background-position: 0 -61px;
-        }
-        .invest-ANDROID {
-          height: 22px;
-          background-position: 0 -30px;
-        }
       }
     }
-  }
 }
 
-.layer-box {
-  display: none;
-}
 
-.layer-box .layer-wrapper {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background: rgba(0, 0, 0, .6);
-  z-index: 888;
-  top: 0;
-  left: 0;
-}
-
-.layer-box .content {
-  width: 760px;
-  height: 450px;
-  position: fixed;
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  z-index: 900;
-  left: 50%;
-  top: 50%;
-  margin: -275px 0 0 -380px;
-}
-
-.time-item {
-  text-align: right;
-  padding-right: 31px;
-  line-height: 38px;
-  font-size: 12px;
-  color: #ccc;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: none;
-}

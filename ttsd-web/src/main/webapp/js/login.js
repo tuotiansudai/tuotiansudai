@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery.form'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate','jquery.form'], function ($) {
     $(function () {
         var loginFormElement = $('.form-login'),
          loginSubmitElement = $('.login-submit',loginFormElement),
@@ -107,11 +107,12 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
 
         var loginSubmitVerify = function () {
             var isValid = loginNameValid && passwordValid && captchaValid;
-            if (!isValid) {
-                loginSubmitElement.prop('disabled',!isValid).removeClass('btn-normal');
-            } else {
-                loginSubmitElement.prop('disabled',!isValid).addClass('btn-normal');
-            }
+                if(!isValid) {
+                    errorElement.text('账号、密码和验证码不能为空').css('visibility', 'visible');
+                }
+            else {
+                    errorElement.text('').css('visibility', 'hidden');
+                }
             return isValid;
         };
 
