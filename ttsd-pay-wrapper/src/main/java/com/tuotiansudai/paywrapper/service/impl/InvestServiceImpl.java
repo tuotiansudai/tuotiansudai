@@ -503,11 +503,15 @@ public class InvestServiceImpl implements InvestService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("|")), errMsg);
+        if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
+            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("|")), errMsg);
+        }
     }
 
     private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
         for (String mobile : mobiles) {
+            logger.info("sent invest fatal sms message to " + mobile);
+
             SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto();
             dto.setMobile(mobile);
             dto.setErrMsg(errMsg);
