@@ -1,8 +1,7 @@
 package com.esoft.jdp2p.invest.controller;
 
-import com.esoft.archer.system.model.Dict;
 import com.esoft.core.annotations.ScopeType;
-import com.esoft.jdp2p.invest.model.InvestUserReferrer;
+import com.esoft.jdp2p.invest.service.InvestService;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -29,8 +28,12 @@ public class UserInvest implements java.io.Serializable {
     @Resource
     HibernateTemplate ht;
 
+    @Resource
+    InvestService investService;
+
     private Date investStartTime;
     private Date investEndTime;
+    private List<String> allChannelList;
 
     private UserInvestItem condition = new UserInvestItem();
 
@@ -84,6 +87,7 @@ public class UserInvest implements java.io.Serializable {
         investItem.setInvestTime((Date) result.get("investTime"));
         investItem.setIsMerchandiser(((Number) result.get("isMerchandiser")).intValue() == 1);
         investItem.setSource((String) result.get("source"));
+        investItem.setChannel((String) result.get("channel"));
         return investItem;
     }
 
@@ -98,6 +102,7 @@ public class UserInvest implements java.io.Serializable {
                 "invest.time as investTime, " +
                 "invest.money as money, " +
                 "invest.source as source, " +
+                "invest.channel as channel, " +
                 "user.id as userId, " +
                 "user.realname as userName, " +
                 "exists (select 1 from user_role where user.id=user_role.user_id and user_role.role_id='ROLE_MERCHANDISER') isMerchandiser ";
@@ -133,6 +138,9 @@ public class UserInvest implements java.io.Serializable {
         }
         if (investEndTime != null) {
             whereTemplate += " and invest.time <='" + dateFormat.format(investEndTime) + "'";
+        }
+        if (!Strings.isNullOrEmpty(condition.getChannel())) {
+            whereTemplate += " and invest.channel ='" + condition.getChannel() + "'";
         }
 
         return whereTemplate;
@@ -177,5 +185,15 @@ public class UserInvest implements java.io.Serializable {
         this.investEndTime = investEndTime;
     }
 
+    public List<String> getAllChannelList() {
+        if(allChannelList == null){
+            allChannelList = investService.getAllChannelName();
+        }
+        return allChannelList;
+    }
+
+    public void setAllChannelList(List<String> allChannelList) {
+        this.allChannelList = allChannelList;
+    }
 }
 
