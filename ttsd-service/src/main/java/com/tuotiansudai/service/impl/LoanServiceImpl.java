@@ -357,7 +357,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        loanMapper.updateStatus(loanDto.getId(),LoanStatus.RAISING);
+        loanMapper.updateStatus(loanDto.getId(), LoanStatus.RAISING);
         if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(new LoanModel(loanDto));
         }
@@ -589,7 +589,7 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
-        return payWrapperClient.cancelLoan(loanDto);
+        return payWrapperClient.cancelLoan(loanDto.getId());
     }
 
     @Override

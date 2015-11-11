@@ -67,8 +67,8 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(dto, investPath, "POST");
     }
 
-    public BaseDto<PayDataDto> cancelLoan(LoanDto dto) {
-        return syncExecute(dto, cancelLoanPath, "POST");
+    public BaseDto<PayDataDto> cancelLoan(Long loanId) {
+        return syncExecute(null, cancelLoanPath+"/"+loanId, "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {

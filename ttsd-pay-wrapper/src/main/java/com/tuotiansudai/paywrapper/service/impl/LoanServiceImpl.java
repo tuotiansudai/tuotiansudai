@@ -48,6 +48,10 @@ public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
 
+    private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
+
+    private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE = "{0}" + CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR + "{1}";
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -114,10 +118,15 @@ public class LoanServiceImpl implements LoanService {
             investDto.setLoanId(String.valueOf(loanId));
             investDto.setLoginName(investModel.getLoginName());
             investDto.setAmount(String.valueOf(investModel.getAmount()));
-            if (this.cancelPayBack(investDto).isSuccess()){
-                logger.debug(investModel.getId() + " cancel payBack is success!");
-            } else {
-                logger.debug(investModel.getId() + " cancel payBack is fail!");
+            try {
+                if (this.cancelPayBack(investDto).isSuccess()) {
+                    logger.debug(investModel.getId() + " cancel payBack is success!");
+                } else {
+                    logger.debug(investModel.getId() + " cancel payBack is fail!");
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(),e);
+                continue;
             }
         }
         return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
@@ -322,22 +331,25 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private BaseDto<PayFormDataDto> cancelPayBack(InvestDto dto) {
+    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
         InvestModel investModel = new InvestModel(dto);
-        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(), String.valueOf(investModel.getId()) + "P" + System.currentTimeMillis(),
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(),
+                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE,String.valueOf(investModel.getId()),System.currentTimeMillis()),
                 accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
         try {
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
-            return baseDto;
+            ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
-            PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
-            payFormDataDto.setMessage(e.getMessage());
-            baseDto.setData(payFormDataDto);
-            return baseDto;
+            payDataDto.setStatus(false);
+            logger.error(e.getLocalizedMessage(), e);
         }
+        baseDto.setData(payDataDto);
+        return baseDto;
     }
 
     @Override
@@ -352,7 +364,7 @@ public class LoanServiceImpl implements LoanService {
             return null;
         }
         String orderIdOri = callbackRequest.getOrderId();
-        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split("P")[0];
+        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split(CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR)[0];
         long orderId = Long.parseLong(orderIdStr);
         InvestModel investModel = investMapper.findById(orderId);
         if (investModel == null) {
