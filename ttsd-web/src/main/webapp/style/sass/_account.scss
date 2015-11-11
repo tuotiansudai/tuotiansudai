@@ -690,8 +690,9 @@
       cursor: pointer;
       background: #fff;
       &:hover{
-        border:1px solid #cc0000;
+       // border:1px solid #cc0000;
         background: #fff;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.1),-1px -1px 5px rgba(0,0,0,0.1);
       }
        .hot {
         width: 59px;
@@ -712,7 +713,7 @@
            overflow: auto;
            line-height: 50px;
            .l-title {
-             font-size: 24px;
+             font-size: 22px;
              color: #4e4e4e;
            }
            .l-way {
@@ -738,7 +739,7 @@
        .loan-process {
          float: left;
          width: 240px;
-         margin: 20px 30px;
+         margin: 10px 30px 0px 30px;
          .p-title {
            font-size: nth($fontSize,1);
            color: #999;
@@ -764,7 +765,8 @@
          .rest-amount {
            color: #ff752a;
            font-size: 14px;
-           padding-top:30px;
+           padding-top:25px;
+           line-height: 2;
            i {
              font-size: 24px;
            }
@@ -773,6 +775,19 @@
              width:100%;
              font-size: 18px;
              font-weight: bold;
+             margin-top: 10px;
+             &:hover {
+               background: #ff9e69;
+               border-color:#ff9e69!important;
+             }
+           }
+           &.wait-invest {
+             color: #999;
+             margin-top:15px;
+             .btn-normal {
+               background: #ff9c1b;
+               border-color: #ff9c1b;
+             }
            }
            &.finish-invest {
              color: #999;
@@ -787,6 +802,221 @@
   }
 }
 
+/* loan detail */
+.loan-detail-content {
+  .borderBox { padding:0;}
+  color: #8c8c8c;
+  .news-share {
+    width: 620px;
+    border-right: 1px solid #ccc;
+    padding-bottom: 15px;
+    .hd {
+      margin: -3px 10px 0;
+      position: relative;
+      line-height: 55px;
+      padding-left: 40px;
+      border-bottom: 2px solid #ccc;
+      font-size: 14px;
+      .hot {
+        width: 55px;
+        height: 55px;
+        position: absolute;
+        left: -10px;
+        top: 0;
+        z-index: 99;
+        background: url("/images/icons/hot.png") no-repeat;
+      }
+    }
+    .chart-box {
+      width: 200px;
+      margin: 20px 60px;
+      border-collapse: collapse;
+      border-radius: 50%;
+      border: 1px solid #f24712;
+      float: left;
+      display: inline-block;
+      & .box {
+        width: 180px;
+        height: 180px;
+        position: relative;
+        margin: 10px;
+        & .sub-percent {
+          color: #f24712;
+          font-size: 12px;
+          right: 23px;
+          top: 66px;
+          position: absolute;
+          z-index: 33;
+        }
+        & .title {
+          color: #000;
+          font-size: 16px;
+          right: 0;
+          width: 180px;
+          top: 120px;
+          position: absolute;
+          z-index: 33;
+          text-align: center;
+        }
+        & div {
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-radius: 50%;
+          height: 160px;
+          width: 160px;
+          -webkit-transition: all .2s ease-in-out;
+          -moz-transition: all .2s ease-in-out;
+        }
+        & .bg {
+          border: #ccc 10px solid
+        }
+        & .bg2 {
+          border: #ccc 10px solid;
+          clip: rect(0, 90px, 180px, 0);
+        }
+        & .rount {
+          border: #f24712 10px solid;
+          clip: rect(0, 90px, 180px, 0);
+          -webkit-transform: rotate(0deg);
+        }
+        & .rount2 {
+          border: #f24712 10px solid;
+          clip: rect(0, 180px, 180px, 90px);
+          -webkit-transform: rotate(0deg);
+          display: none
+        }
+        & .num {
+          font: bold 20px/180px tahoma;
+          text-align: center;
+          color: #f24712;
+          top: 5px;
+          left: 10px;
+          z-index: 9;
+        }
+
+      }
+    }
+    .chart-info {
+      color: #a4a4a4;
+      padding-top: 20px;
+      line-height: 30px;
+    }
+  }
+  .account-info {
+    margin: 10px;
+    width: 350px;
+    text-align: center;
+    position: relative;
+    font-size: 12px;
+    color: #949494;
+    .l-title {
+      margin-top: 43px;
+      padding: 10px;
+      border-top: 2px solid #ccc;
+      font-size: 12px;
+
+    }
+    .account-list {
+      margin-left: 10px;
+      dd {
+        overflow: auto;
+        height:auto;
+        margin-bottom: 7px;
+        .text-input-amount {
+          width:95%;
+          text-align: right;
+        }
+        &.invest-amount {
+          height:52px;
+          overflow: hidden;
+        }
+        &.img-status {
+          padding:20px;
+        }
+        .btn-normal {
+          width: 100%;
+          padding: 8px 0;
+        }
+        .account-amount{
+          color: #f24712;
+        }
+        .time-item {
+          text-align: right;
+          padding-right: 31px;
+          line-height: 38px;
+          font-size: 12px;
+          color: #ccc;
+        }
+      }
+    }
+  }
+  .loan-nav {
+    overflow: hidden;
+    border-bottom: 1px solid #ccc;
+    padding-top:10px;
+    li {
+      float: left;
+      padding: 5px 30px;
+      border-right: 1px solid #ccc;
+      position: relative;
+      cursor: pointer;
+      i {
+        display: none;
+        position: absolute;
+        bottom: -6px;
+        left: 45%;
+        font-size: 18px;
+        color: #ed9c30;
+      }
+      &.active {
+        border-bottom: 2px solid #ed9c30;
+        i {
+          display: block;
+        }
+      }
+      &:nth-last-child(1) {
+        border-right-width:0px;
+      }
+    }
+  }
+  .loan-list {
+    .borderBox { padding: 10px;}
+    .loan-list-con {
+      display: none;
+      .b-title {
+        color: #000;
+        font-size: 14px;
+        padding-bottom: 10px;
+      }
+      .loan-material {
+        margin-top:10px;
+        h3 {
+          padding: 10px;
+          background: #eaeaea;
+          color: #ed9c30;
+          font-size: 14px;
+        }
+        .title {
+          padding-top: 10px;
+          line-height: 36px;
+        }
+        .pic-list {
+          & .img-list {
+            display: block;
+            overflow: hidden;
+          }
+          li {
+            float: left;
+            margin: 5px 10px 5px 0;
+            cursor: pointer;
+
+          }
+        }
+      }
+    }
+  }
+}
 .bind-card-layer {
   width: 540px;
   height: 244px;

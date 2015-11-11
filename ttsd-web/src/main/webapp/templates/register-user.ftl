@@ -33,8 +33,8 @@
                 </li>
                 <li>
                     <label for="agreement">
-                    <input type="checkbox" name='agreement' id="agreement" class='agreement-check' checked="checked" />
-                        同意拓天速贷<a href="javascript:;" class="show-agreement">《服务协议》</a>
+                    <input type="checkbox" name='agreement' id="agreement" class='agreement-check' />
+                        <span class="agreement">同意拓天速贷<a href="javascript:;" class="show-agreement">《服务协议》</a></span>
                     </label>
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -48,7 +48,7 @@
         </ul>
     </div>
 </div>
-<div id="agreementBox" class="pad-m">
+<div id="agreementBox" class="pad-m" style="display: none;">
     <p>本网站由拓天伟业（北京）金融信息服务有限公司负责运营（以下“本网站”均指网站及拓天伟业（北京）金融信息服务有限公司）。在注册成为本网站用户前请务必仔细阅读以下条款。一旦成功注册成为本网站用户，您将被视为已充分理解并同意本协议全部内容；注册同时签署本协议，本协议立即在您与本公司之间产生合同法律效力。您注册成功后在本网站使用的全部服务及全部活动将受到本协议的约束并承担相应的责任和义务。若您不接受以下条款，请不要注册使用本网站服务。</p>
     <b>一、 本协议的签署与修改</b>
         <P>1.1注册成为本网站用户，您须为中华人民共和国有效身份证明且年满18周岁具有完全民事行为能力的自然人。如不符合上述要求，请勿注册；否则，本网站保留终止用户资格、追究用户或向用户的监护人相关法律责任的权利。</P>
