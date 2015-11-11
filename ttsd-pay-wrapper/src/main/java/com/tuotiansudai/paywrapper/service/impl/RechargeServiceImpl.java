@@ -59,12 +59,8 @@ public class RechargeServiceImpl implements RechargeService {
         if (dto.isFastPay()) {
             requestModel = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(rechargeModel.getId()),
                     accountModel.getPayUserId(),
-                    String.valueOf(rechargeModel.getAmount()));
+                    String.valueOf(rechargeModel.getAmount()),rechargeModel.getSource());
         }
-        if(rechargeModel.getSource().equals(Source.ANDROID) || rechargeModel.getSource().equals(Source.IOS)){
-            requestModel.setSourceV("HTML5");
-        }
-
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(MerRechargePersonMapper.class, requestModel);
             rechargeMapper.create(rechargeModel);
