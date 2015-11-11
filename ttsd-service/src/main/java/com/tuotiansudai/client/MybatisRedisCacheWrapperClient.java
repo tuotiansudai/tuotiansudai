@@ -11,26 +11,24 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 @Component
-public class RedisWrapperClient {
+public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
 
-    static Logger logger = Logger.getLogger(RedisWrapperClient.class);
+    static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
-    @Value("${redis.host}")
-    private String redisHost;
-
-    @Value("${redis.port}")
-    private int redisPort;
-
-    @Value("${redis.password}")
-    private String redisPassword;
-
-    @Value("${redis.db}")
+    @Value("${redis.cache.db}")
     private int redisDb;
+
+    @Value("${redis.cache.second}")
+    private int second;
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
+    }
 
     private JedisPool jedisPool;
 
@@ -48,33 +46,9 @@ public class RedisWrapperClient {
     private JedisPool getPool() {
         if (pool == null) {
             JedisPoolConfig config = new JedisPoolConfig();
-            pool = new JedisPool(config, redisHost, redisPort);
+            pool = new JedisPool(config, getRedisHost(), getRedisPort());
         }
         return pool;
-    }
-
-    public String getRedisHost() {
-        return redisHost;
-    }
-
-    public void setRedisHost(String redisHost) {
-        this.redisHost = redisHost;
-    }
-
-    public int getRedisPort() {
-        return redisPort;
-    }
-
-    public String getRedisPassword() {
-        return redisPassword;
-    }
-
-    public void setRedisPassword(String redisPassword) {
-        this.redisPassword = redisPassword;
-    }
-
-    public void setRedisPort(int redisPort) {
-        this.redisPort = redisPort;
     }
 
     private interface JedisAction<T> {
@@ -90,8 +64,8 @@ public class RedisWrapperClient {
         boolean broken = false;
         try {
             jedis = jedisPool.getResource();
-            if(StringUtils.isNotEmpty(redisPassword)){
-                jedis.auth(redisPassword);
+            if(StringUtils.isNotEmpty(getRedisPassword())){
+                jedis.auth(getRedisPassword());
             }
             jedis.select(redisDb);
             return jedisAction.action(jedis);
@@ -108,8 +82,8 @@ public class RedisWrapperClient {
         boolean broken = false;
         try {
             jedis = jedisPool.getResource();
-            if(StringUtils.isNotEmpty(redisPassword)){
-                jedis.auth(redisPassword);
+            if(StringUtils.isNotEmpty(getRedisPassword())){
+                jedis.auth(getRedisPassword());
             }
             jedis.select(redisDb);
             jedisAction.action(jedis);
@@ -164,22 +138,52 @@ public class RedisWrapperClient {
         }
     }
 
-    public String get(final String key) {
+    public byte[] get(final byte[] key) {
         this.setJedisPool(getPool());
-        return execute(new JedisAction<String>() {
+        return execute(new JedisAction<byte[]>() {
             @Override
-            public String action(Jedis jedis) {
+            public byte[] action(Jedis jedis) {
                 return jedis.get(key);
             }
         });
     }
 
-    public boolean exists(final String key) {
+    public boolean exists(final byte[] key) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Boolean>() {
             @Override
             public Boolean action(Jedis jedis) {
                 return jedis.exists(key);
+            }
+        });
+    }
+
+    public Object expire(final byte[] key,final int seconds) {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Object>() {
+            @Override
+            public Object action(Jedis jedis) {
+                return jedis.expire(key,seconds);
+            }
+        });
+    }
+
+    public void flushDB() {
+        this.setJedisPool(getPool());
+        execute(new JedisActionNoResult() {
+            @Override
+            public void action(Jedis jedis) {
+                jedis.flushDB();
+            }
+        });
+    }
+
+    public Long dbSize() {
+        this.setJedisPool(getPool());
+        return execute(new JedisAction<Long>() {
+            @Override
+            public Long action(Jedis jedis) {
+                return jedis.dbSize();
             }
         });
     }
@@ -194,132 +198,12 @@ public class RedisWrapperClient {
         });
     }
 
-    public void set(final String key, final String value) {
+    public void set(final byte[] key,final byte[] value) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override
             public void action(Jedis jedis) {
                 jedis.set(key, value);
-            }
-        });
-    }
-
-    public boolean del(final String... keys) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.del(keys) == keys.length ? true : false;
-            }
-        });
-    }
-
-    public void append(final String key,final String value) {
-        this.setJedisPool(getPool());
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-                jedis.append(key, value);
-            }
-        });
-    }
-
-    public Long lpush(final String key, final String... values) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.lpush(key, values);
-            }
-        });
-    }
-
-    public List lrange(final String key, final int start, final int end) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<List>() {
-            @Override
-            public List action(Jedis jedis) {
-                return jedis.lrange(key, start, end);
-            }
-        });
-    }
-
-    public int llen(final String key) {
-        this.setJedisPool(getPool());
-        return Integer.valueOf(execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.llen(key);
-            }
-        }).toString());
-    }
-
-    public void hmset(final String key, final Map map) {
-        this.setJedisPool(getPool());
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-                jedis.hmset(key, map);
-            }
-        });
-    }
-
-    public void hset(final String key, final String hkey, final String value) {
-        this.setJedisPool(getPool());
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-                jedis.hset(key, hkey, value);
-            }
-        });
-    }
-
-    public Long hdel(final String key, final String... hkeys) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hdel(key, hkeys);
-            }
-        });
-    }
-
-    public int hlen(final String key) {
-        this.setJedisPool(getPool());
-        return Integer.valueOf(execute(new JedisAction<Long>() {
-            @Override
-            public Long action(Jedis jedis) {
-                return jedis.hlen(key);
-            }
-        }).toString());
-    }
-
-    public Set hkeys(final String key) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Set>() {
-            @Override
-            public Set action(Jedis jedis) {
-                return jedis.hkeys(key);
-            }
-        });
-    }
-
-    public List hmget(final String key, final String... hkey) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<List>() {
-            @Override
-            public List action(Jedis jedis) {
-                return jedis.hmget(key, hkey);
-            }
-        });
-    }
-
-    public String hget(final String key, final String hkey) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<String>() {
-            @Override
-            public String action(Jedis jedis) {
-                return jedis.hget(key, hkey);
             }
         });
     }
