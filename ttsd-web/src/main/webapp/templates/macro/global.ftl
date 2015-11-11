@@ -78,7 +78,12 @@
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
+        data-main="${staticServer}/js/dest/${pageJavascript}">
+    <#--data-main="${staticServer}/js/notice.js"-->
+//        >
+</script>
+
 </#if>
 </body>
 </html>
