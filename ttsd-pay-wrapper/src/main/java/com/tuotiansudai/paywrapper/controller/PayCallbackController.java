@@ -43,8 +43,7 @@ public class PayCallbackController {
     private AgreementService agreementService;
 
     @Autowired
-    private PayBackService payBackService;
-
+    private LoanService loanService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -115,10 +114,10 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
-    @RequestMapping(value = "/pay_back_notify", method = RequestMethod.GET)
-    public ModelAndView payBackNotify(HttpServletRequest request) {
+    @RequestMapping(value = "/cancel_pay_back_notify", method = RequestMethod.GET)
+    public ModelAndView cancelPayBackNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
-        String responseData = this.payBackService.payBackCallback(paramsMap, request.getQueryString());
+        String responseData = loanService.cancelPayBackCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 

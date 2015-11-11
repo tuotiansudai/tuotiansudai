@@ -3,15 +3,17 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestSmsNotifyDto;
-import com.tuotiansudai.dto.PayDataDto;
+import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
@@ -73,6 +75,9 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private PayAsyncClient payAsyncClient;
+
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -98,6 +103,24 @@ public class LoanServiceImpl implements LoanService {
         }
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> cancelLoan(long loanId) {
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel investModel : investModels) {
+            InvestDto investDto = new InvestDto();
+            investDto.setLoanId(String.valueOf(loanId));
+            investDto.setLoginName(investModel.getLoginName());
+            investDto.setAmount(String.valueOf(investModel.getAmount()));
+            if (this.cancelPayBack(investDto).isSuccess()){
+                logger.debug(investModel.getId() + " cancel payBack is success!");
+            } else {
+                logger.debug(investModel.getId() + " cancel payBack is fail!");
+            }
+        }
+        return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -298,4 +321,57 @@ public class LoanServiceImpl implements LoanService {
             logger.error("update loan status failed : "+dto.getData().getMessage());
         }
     }
+
+    private BaseDto<PayFormDataDto> cancelPayBack(InvestDto dto) {
+        AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
+        InvestModel investModel = new InvestModel(dto);
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(), String.valueOf(investModel.getId()) + "P" + System.currentTimeMillis(),
+                accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
+        try {
+            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
+            return baseDto;
+        } catch (PayException e) {
+            BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
+            PayFormDataDto payFormDataDto = new PayFormDataDto();
+            payFormDataDto.setStatus(false);
+            payFormDataDto.setMessage(e.getMessage());
+            baseDto.setData(payFormDataDto);
+            return baseDto;
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String cancelPayBackCallback(Map<String, String> paramsMap, String queryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
+        }
+        String orderIdOri = callbackRequest.getOrderId();
+        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split("P")[0];
+        long orderId = Long.parseLong(orderIdStr);
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
+            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
+            return null;
+        }
+        String loginName = investModel.getLoginName();
+        if (callbackRequest.isSuccess()) {
+            investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
+            try {
+                amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+            } catch (AmountTransferException e) {
+                logger.error(e.getLocalizedMessage(),e);
+            }
+        } else {
+            //TODO SEND_SMS
+        }
+        String respData = callbackRequest.getResponseData();
+        return respData;
+    }
+
 }

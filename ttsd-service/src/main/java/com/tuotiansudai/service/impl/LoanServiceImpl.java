@@ -589,20 +589,7 @@ public class LoanServiceImpl implements LoanService {
             return baseDto;
         }
         investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
-        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanDto.getId());
-        for (InvestModel investModel : investModels) {
-            InvestDto investDto = new InvestDto();
-            investDto.setLoanId(String.valueOf(loanDto.getId()));
-            investDto.setLoginName(investModel.getLoginName());
-            investDto.setAmount(String.valueOf(investModel.getAmount()));
-            if (payWrapperClient.payBack(investDto).isSuccess()){
-                logger.debug(investModel.getId() + " cancel payBack is success!");
-            } else {
-                logger.debug(investModel.getId() + " cancel payBack is fail!");
-            }
-        }
-        loanDto.setLoanStatus(LoanStatus.CANCEL);
-        return payWrapperClient.updateLoan(loanDto);
+        return payWrapperClient.cancelLoan(loanDto);
     }
 
     @Override
