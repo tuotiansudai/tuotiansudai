@@ -43,7 +43,7 @@ public class MobileAppCheckVersionControllerTest extends ControllerTestBase {
                 "  \"message\": \"修复用户名包含下划线不能登陆问题\"" +
                 "}");
 
-        mockMvc.perform(post("/get/version").
+        mockMvc.perform(post("/v1.0/get/version").
                 contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestJson))
                 .andExpect(status().isOk())
