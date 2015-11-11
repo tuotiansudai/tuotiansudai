@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -31,7 +31,7 @@ public class WithdrawPaginationItemDataDto extends WithdrawDto implements Serial
 
     public WithdrawPaginationItemDataDto(WithdrawModel withdrawModel) {
         this.withdrawId = withdrawModel.getId();
-        this.fee = AmountUtil.convertCentToString(withdrawModel.getFee());
+        this.fee = AmountConverter.convertCentToString(withdrawModel.getFee());
         this.verifyMessage = withdrawModel.getVerifyMessage();
         this.verifyTime = withdrawModel.getVerifyTime();
         this.recheckMessage = withdrawModel.getRecheckMessage();
@@ -41,7 +41,7 @@ public class WithdrawPaginationItemDataDto extends WithdrawDto implements Serial
         this.userName = withdrawModel.getUserName();
         this.adminRole = withdrawModel.getIsAdmin();
         super.setLoginName(withdrawModel.getLoginName());
-        super.setAmount(AmountUtil.convertCentToString(withdrawModel.getAmount()));
+        super.setAmount(AmountConverter.convertCentToString(withdrawModel.getAmount()));
         super.setSource(withdrawModel.getSource());
     }
 

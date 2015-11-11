@@ -1,8 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.repository.model.RechargeStatus;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,12 +19,12 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
 
     public RechargePaginationItemDataDto(RechargeModel rechargeModel) {
         this.rechargeId = rechargeModel.getId();
-        this.fee = AmountUtil.convertCentToString(rechargeModel.getFee());
+        this.fee = AmountConverter.convertCentToString(rechargeModel.getFee());
         this.status = rechargeModel.getStatus().getDescription();
         this.createdTime = rechargeModel.getCreatedTime();
         super.setLoginName(rechargeModel.getLoginName());
         super.setBankCode(rechargeModel.getBankCode());
-        super.setAmount(AmountUtil.convertCentToString(rechargeModel.getAmount()));
+        super.setAmount(AmountConverter.convertCentToString(rechargeModel.getAmount()));
         super.setSource(rechargeModel.getSource());
         super.setFastPay(rechargeModel.isFastPay());
     }

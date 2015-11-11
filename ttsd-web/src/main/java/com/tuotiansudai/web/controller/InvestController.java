@@ -7,7 +7,7 @@ import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +56,8 @@ public class InvestController {
     @RequestMapping(value = "/calculate-expected-interest/loan/{loanId}/amount/{amount:^\\d+\\.\\d{2}$}", method = RequestMethod.GET)
     @ResponseBody
     public String calculateExpectedInterest(@PathVariable long loanId, @PathVariable String amount) {
-        long expectedInterest = investService.calculateExpectedInterest(loanId, AmountUtil.convertStringToCent(amount));
-        return AmountUtil.convertCentToString(expectedInterest);
+        long expectedInterest = investService.calculateExpectedInterest(loanId, AmountConverter.convertStringToCent(amount));
+        return AmountConverter.convertCentToString(expectedInterest);
     }
 
     @RequestMapping(value = "/investor/auto-invest", method = RequestMethod.GET)

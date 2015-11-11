@@ -40,31 +40,30 @@
                 "header":{"text":"财务管理","link":"/invests"},
                 "sidebar":[
                     {"name":"userInvest","text":"用户投资管理","link":"/invests"},
+                    {"name":"debtRepay","text":"债权还款计划","link":"/debtRepaymentPlan"},
                     {"name":"recharge","text":"充值记录","link":"/recharge"},
                     {"name":"withdraw","text":"提现记录","link":"/withdraw"},
                     {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
-                    {"name":"debtRepay","text":"债权还款计划","link":"/debtRepaymentPlan"},
+                    {"name":"realTimeStatus","text":"联动优势资金查询","link":"/real-time-status"},
                     {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
-                    {"name":"##############","text":"管理员修改账户余额","link":""},
+                    {"name":"adminIntervention","text":"管理员修改账户余额","link":"/admin-intervention"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}
                 ]
             },
             {
-            "name":"announceMan",
-            "header":{"text":"公告管理","link":"/announceManage"},
-            "sidebar":[
-                {"name":"announceMan","text":"公告管理","link":"/announceManage"}
-            ]
+                "name":"announceMan",
+                "header":{"text":"公告管理","link":"/announceManage"},
+                "sidebar":[
+                    {"name":"announceMan","text":"公告管理","link":"/announceManage"}
+                ]
             },
             {
-                "name":"artMan",
-                "header":{"text":"文章管理","link":"/"},
-                "sidebar":[]
-            },
-            {
-                "name":"secMan",
-                "header":{"text":"安全管理","link":"/"},
-                "sidebar":[]
+                "name":"security",
+                "header":{"text":"安全管理","link":"/security-log/login-log"},
+                "sidebar":[
+                    {"name":"loginLog","text":"登录日志","link":"/security-log/login-log"},
+                    {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log"}
+                ]
             }
         ]
 >

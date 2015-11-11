@@ -24,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static org.hamcrest.core.Is.is;
@@ -85,7 +86,7 @@ public class RegisterServiceTest {
         assertThat(accountModel.getPayAccountId(), is("payAccountId"));
         assertTrue(baseDto.getData().getStatus());
 
-        ArgumentCaptor<LinkedList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<LinkedList<UserRoleModel>>) new LinkedList<UserRoleModel>().getClass());
+        ArgumentCaptor<ArrayList<UserRoleModel>> userRoleModelArgumentCaptor = ArgumentCaptor.forClass((Class<ArrayList<UserRoleModel>>) new ArrayList<UserRoleModel>().getClass());
         verify(userRoleMapper, times(1)).create(userRoleModelArgumentCaptor.capture());
         assertThat(userRoleModelArgumentCaptor.getValue().get(0).getRole().name(), is(Role.INVESTOR.name()));
     }

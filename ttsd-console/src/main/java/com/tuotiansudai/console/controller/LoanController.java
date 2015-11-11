@@ -103,6 +103,12 @@ public class LoanController {
         return loanService.openLoan(loanDto);
     }
 
+    @RequestMapping(value = "/delay", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> delayLoan(@RequestBody LoanDto loanDto) {
+        return loanService.delayLoan(loanDto);
+    }
+
     @RequestMapping(value = "/recheck", method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> recheckLoan(@RequestBody LoanDto loanDto) {

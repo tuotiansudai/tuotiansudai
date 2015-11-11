@@ -1,16 +1,16 @@
-require(['jquery', 'csrf', 'jquery.form'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate','jquery.form'], function ($) {
     $(function () {
-        var loginFormElement = $('.form-login');
-        var loginSubmitElement = $('.form-login .login-submit');
-        var loginNameElement = $('.form-login .login-name');
-        var passwordElement = $('.form-login .password');
-        var captchaElement = $('.form-login .captcha');
-        var errorElement = $('.form-login .error');
-        var imageCaptchaElement = $('.form-login .image-captcha img');
+        var loginFormElement = $('.form-login'),
+         loginSubmitElement = $('.login-submit',loginFormElement),
+         loginNameElement = $('.login-name',loginFormElement),
+         passwordElement = $('.password',loginFormElement),
+         captchaElement = $('.captcha',loginFormElement),
+         errorElement = $('.error',loginFormElement),
+         imageCaptchaElement = $('.image-captcha img',loginFormElement);
 
-        var loginNameValid = false;
-        var passwordValid = false;
-        var captchaValid = false;
+        var loginNameValid = false,
+            passwordValid = false,
+            captchaValid = false;
 
         var refreshCaptcha = function () {
             captchaValid = false;
@@ -105,14 +105,14 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
             loginSubmitVerify();
         });
 
-
         var loginSubmitVerify = function () {
             var isValid = loginNameValid && passwordValid && captchaValid;
-            if (isValid) {
-                loginSubmitElement.removeClass('grey');
-            } else {
-                loginSubmitElement.addClass('grey');
-            }
+                if(!isValid) {
+                    errorElement.text('账号、密码和验证码不能为空').css('visibility', 'visible');
+                }
+            else {
+                    errorElement.text('').css('visibility', 'hidden');
+                }
             return isValid;
         };
 
@@ -141,6 +141,7 @@ require(['jquery', 'csrf', 'jquery.form'], function ($) {
                     loginSubmitVerify();
                 }
             });
+            return false;
         };
 
         loginSubmitElement.click(function () {

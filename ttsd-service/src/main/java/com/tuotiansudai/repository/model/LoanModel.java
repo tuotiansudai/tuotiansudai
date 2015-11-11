@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -154,13 +154,13 @@ public class LoanModel {
         this.descriptionText = loanDto.getDescriptionText();
         this.fundraisingStartTime = loanDto.getFundraisingStartTime();
         this.fundraisingEndTime = loanDto.getFundraisingEndTime();
-        this.investIncreasingAmount = AmountUtil.convertStringToCent(loanDto.getInvestIncreasingAmount());
-        this.maxInvestAmount = AmountUtil.convertStringToCent(loanDto.getMaxInvestAmount());
-        this.minInvestAmount = AmountUtil.convertStringToCent(loanDto.getMinInvestAmount());
+        this.investIncreasingAmount = AmountConverter.convertStringToCent(loanDto.getInvestIncreasingAmount());
+        this.maxInvestAmount = AmountConverter.convertStringToCent(loanDto.getMaxInvestAmount());
+        this.minInvestAmount = AmountConverter.convertStringToCent(loanDto.getMinInvestAmount());
         this.periods = loanDto.getPeriods();
         this.showOnHome = loanDto.isShowOnHome();
         this.type = loanDto.getType();
-        this.loanAmount = AmountUtil.convertStringToCent(loanDto.getLoanAmount());
+        this.loanAmount = AmountConverter.convertStringToCent(loanDto.getLoanAmount());
         this.status = LoanStatus.WAITING_VERIFY;
         this.verifyTime = loanDto.getVerifyTime();
         this.recheckTime = loanDto.getRecheckTime();

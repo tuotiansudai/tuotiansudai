@@ -1,39 +1,44 @@
-require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $) {
+require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
 
-    var registerUserForm = $(".register-step-one .register-user-form");
-    var imageCaptchaForm = $('.image-captcha-dialog .image-captcha-form');
+    var registerUserForm = $(".register-user-form"),
+        fetchCaptchaElement = $('.fetch-captcha',registerUserForm),
+        showAgreement=$('.show-agreement',registerUserForm),
+        $agreement=$('#agreement');
+    var $imgCaptchaDialog=$('.image-captcha-dialog'),
+        imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
+        imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
+        imageCaptchaTextElement = $('.image-captcha-text',$imgCaptchaDialog),
+        imageCaptchaSubmitElement = $('.image-captcha-confirm',$imgCaptchaDialog);
 
-    var fetchCaptchaElement = $('.register-user-form .fetch-captcha');
-    var imageCaptchaElement = $('.image-captcha-dialog .image-captcha');
-    var imageCaptchaTextElement = $('.image-captcha-dialog .image-captcha-text');
-    var imageCaptchaSubmitElement = $('.image-captcha-dialog .image-captcha-confirm');
+    //服务协议
+    showAgreement.click(function() {
+        layer.open({
+            type: 1,
+            title: '拓天速贷服务协议',
+            area: ['950px','600px'],
+            shadeClose: true,
+            move: false,
+            content: $('#agreementBox'),
+            success: function(layero, index){
 
+            }
+        });
+    });
+    /*获取验证码*/
     fetchCaptchaElement.on('click', function () {
-        displayImageCaptchaDialog(true);
-        return false;
+        layer.open({
+            type: 1,
+            title: '手机验证',
+            area: ['360px', '190px'],
+            shadeClose: true,
+            content: $('.image-captcha-dialog'),
+            success: function(layero, index){
+                $('.image-captcha-form label').remove();
+                imageCaptchaTextElement.val('');
+                refreshCaptcha();
+            }
+        });
     });
-
-    $('.image-captcha-dialog .close').on('click', function () {
-        displayImageCaptchaDialog(false);
-        return false;
-    });
-
-    var displayImageCaptchaDialog = function (isShow) {
-        var imageCaptchaDialogMask = $('.image-captcha-dialog-mask');
-        var imageCaptchaDialog = $('.image-captcha-dialog');
-        if (isShow) {
-            var clientH = $(window).height();
-            $('.image-captcha-form label').remove();
-            imageCaptchaDialogMask.css({'height': clientH, 'display': 'block'});
-            imageCaptchaTextElement.val('');
-            imageCaptchaDialog.show();
-            refreshCaptcha();
-        } else {
-            imageCaptchaDialog.hide();
-            imageCaptchaDialogMask.hide();
-        }
-    };
-
     // 刷新验证码
     var refreshCaptcha = function () {
         imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
@@ -43,10 +48,13 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         refreshCaptcha();
     });
 
+    /*手机验证码*/
     imageCaptchaForm.validate({
-        success: 'valid',
-        focusCleanup: true,
+        success: 'form-valid',
         focusInvalid: false,
+        errorClass: 'form-error',
+        onkeyup:true,
+       // errorLabelContainer:$('.image-captcha-error'),
         onfocusout: function (element) {
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
@@ -64,7 +72,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
                 success: function (response) {
                     var data = response.data;
                     if (data.status && !data.isRestricted) {
-                        displayImageCaptchaDialog(false);
+                        //displayImageCaptchaDialog(false);
                         var seconds = 60;
                         var count = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').css({
@@ -100,14 +108,14 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
                 },
                 complete: function () {
                     imageCaptchaSubmitElement.removeClass("loading");
-                    imageCaptchaSubmitElement.attr("disabled", false);
+                    imageCaptchaSubmitElement.prop("disabled", false);
                 }
             });
         },
         rules: {
             imageCaptcha: {
                 required: true,
-                regex: "^[a-zA-Z0-9]{5}$",
+                regex: /^[a-zA-Z0-9]{5}$/,
                 imageCaptchaVerify: "/register/user/image-captcha/{0}/verify"
             }
         },
@@ -121,37 +129,12 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     });
 
     registerUserForm.validate({
-        focusCleanup: true,
         focusInvalid: false,
-        onkeyup: function (element, event) {
-            var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
-            if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
-                this.element(element);
-            }
-        },
-        onfocusout: function (element) {
-            if (!this.checkable(element) && !this.optional(element)) {
-                this.element(element);
-            }
-        },
-        showErrors: function (errorMap, errorList) {
-            this.__proto__.defaultShowErrors.call(this);
-            if (errorMap['mobile']) {
-                $('.fetch-captcha').addClass('grey').attr('disabled', 'disabled');
-            }
-        },
-        success: function (error, element) {
-            error.addClass("valid");
-            if (element.name === 'mobile') {
-                $('.fetch-captcha').removeClass('grey').removeAttr('disabled');
-            }
-        },
+        errorClass: 'form-error',
         rules: {
             loginName: {
                 required: true,
-                rangelength: [5, 25],
-                regex: "(?!^\\d+$)^([a-zA-Z0-9]+)$",
+                regex: /(?!^\d+$)^\w{6,20}$/,
                 isExist: "/register/user/login-name/{0}/is-exist"
             },
             mobile: {
@@ -162,8 +145,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             },
             password: {
                 required: true,
-                rangelength: [6, 20],
-                regex: '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'
+                regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
             },
             captcha: {
                 required: true,
@@ -186,20 +168,18 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
         messages: {
             loginName: {
                 required: "请输入用户名",
-                regex: "字母和数字组合",
-                rangelength: "长度5至25位",
+                regex: '6位至20位数字与字母下划线组合，不能全部数字',
                 isExist: '用户名已存在'
             },
             mobile: {
                 required: '请输入手机号',
-                digits: '手机号格式不正确',
-                rangelength: '手机号格式不正确',
+                rangelength:'手机格式不对',
+                digits:'必须是数字',
                 isExist: '手机号已存在'
             },
             password: {
                 required: "请输入密码",
-                regex: "只能字母和数字组合",
-                rangelength: "长度6至20位"
+                regex:'6位至20位数字与字母组合'
             },
             captcha: {
                 required: '请输入验证码',
@@ -213,6 +193,42 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             agreement: {
                 required: "请同意服务协议"
             }
+        },
+        onkeyup: function (element, event) {
+            var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+            if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
+                this.element(element);
+            }
+        },
+        onfocusout: function (element) {
+            if (!this.checkable(element) && !this.optional(element)) {
+                this.element(element);
+            }
+        },
+        showErrors: function (errorMap, errorList) {
+
+            this.__proto__.defaultShowErrors.call(this);
+            if (errorMap['mobile']) {
+                $('.fetch-captcha').prop('disabled', true);
+            }
+        },
+        success: function (error, element) {
+            error.addClass("form-valid");
+            if (element.name === 'mobile') {
+                $('.fetch-captcha').prop('disabled', false);
+            }
+            var $agreementBox=$agreement.parent('label');
+            $agreementBox.append($('#agreement-error'));
         }
+
     });
+
+    //var moveAgree=function() {
+    //    var $agreementDom=$('#agreement');
+    //    $agreementDom.next('label').prepend($agreementDom.parent('label'));
+    //}
+
+
+
 });

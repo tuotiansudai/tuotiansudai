@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.InvestNotifyInfo;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class InvestSmsNotifyDto implements Serializable {
     public InvestSmsNotifyDto(InvestNotifyInfo notifyInfo) {
         this.loanName = notifyInfo.getLoanName();
         this.mobile = notifyInfo.getMobile();
-        this.amount = AmountUtil.convertCentToString(notifyInfo.getAmount());
+        this.amount = AmountConverter.convertCentToString(notifyInfo.getAmount());
     }
 
     public String getLoanName() {

@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.util.Date;
 
@@ -36,7 +36,7 @@ public class WithdrawModel {
     }
 
     public WithdrawModel(WithdrawDto dto) {
-        this.amount = AmountUtil.convertStringToCent(dto.getAmount());
+        this.amount = AmountConverter.convertStringToCent(dto.getAmount());
         this.loginName = dto.getLoginName();
         this.createdTime = new Date();
         this.status = WithdrawStatus.WAIT_VERIFY;

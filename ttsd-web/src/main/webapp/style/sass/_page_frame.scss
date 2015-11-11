@@ -1,56 +1,38 @@
 @import 'variables';
-
 .header-container {
+  height:30px;
+  line-height:30px;
+  background: #333;
+  font-size: 12px;
+  color: #fff;
   .header {
-    width: 100%;
-    height: 30px;
-    background: #333;
-    font-size: 12px;
-    div {
-      width: 1000px;
-      height: 30px;
-      line-height: 30px;
-      margin: 0 auto;
-      p {
-        width: 400px;
-        float: left;
-        color: #fff;
-        span {
+    margin: 0 auto;
+       time {
           color: #979797;
           margin-left: 8px;
         }
-      }
       ul {
-        float: right;
         li {
           float: left;
           margin-right: 10px;
-          color: #fff;
           a {
-            width: auto;
             padding-left: 8px;
             color: #fff;
-            &:hover {
-              color: #ffc600;
-            }
           }
         }
       }
-    }
   }
 }
 
 .footer-container {
   width: 100%;
   background: #3f3f3f;
-  height: 280px;
+  color: #c2c2c2;
   overflow: hidden;
   margin-top: 20px;
   .footer {
-    width: 1000px;
     height: 210px;
     margin: 0 auto;
-    color: #fff;
     ul {
       float: left;
       min-width: 150px;
@@ -60,44 +42,28 @@
         margin-top: 14px;
         font-size: 12px;
         a {
-          display: block;
-          height: 14px;
-          color: #fff;
+          color: #c2c2c2;
         }
         a:hover {
           text-decoration: underline;
         }
       }
-      p {
-        height: 18px;
-        line-height: 18px;
-        margin-top: 52px;
+      .f-title {
         font-size: 14px;
+        color: #fff;
+        margin:30px 0px 25px 0px;
+      }
+      &.last {
+        margin-top:50px;
+        float: right;
       }
     }
   }
   .copyright {
-    width: 1000px;
-    height: 70px;
+    height: 65px;
     border-top: #606060 1px solid;
     margin: 0 auto;
-    color: #fff;
-    font-size: 12px;
-    .certification {
-      float: left;
-      padding-top: 10px;
-      a {
-        margin-right: 5px;
-      }
-    }
-    .copy {
-      float: right;
-      line-height: 30px;
-      p {
-        text-align: right;
-      }
-    }
-
+    padding-top: 20px;
   }
 }
 
@@ -110,7 +76,7 @@
     position: relative;
     margin: 0 auto;
     .logo {
-      background: url("/images/logo.png") center center no-repeat;
+      background: url("/images/icons/logo.png") center center no-repeat;
       width: 328px;
       height: 50px;
       display: block;
@@ -152,7 +118,6 @@
   width: 1000px;
   height: auto;
   margin: 20px auto;
-  overflow: hidden;
   .left-nav {
     width: 150px;
     height: auto;
@@ -182,6 +147,8 @@
     width: 833px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    overflow: hidden;
+    background: nth($baseColor,1);
+    height: auto;
+    overflow: auto;
   }
 }

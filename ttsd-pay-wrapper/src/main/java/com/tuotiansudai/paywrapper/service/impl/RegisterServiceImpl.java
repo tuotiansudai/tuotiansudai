@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -71,8 +70,7 @@ public class RegisterServiceImpl implements RegisterService {
                             new Date());
                     accountMapper.create(accountModel);
                 }
-                List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginName(userModel.getLoginName());
-                if (!Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
+                if (!Iterators.tryFind(userRoleMapper.findByLoginName(userModel.getLoginName()).iterator(), new Predicate<UserRoleModel>() {
                     @Override
                     public boolean apply(UserRoleModel input) {
                         return input.getRole() == Role.INVESTOR;
@@ -81,8 +79,7 @@ public class RegisterServiceImpl implements RegisterService {
                     UserRoleModel userRoleModel = new UserRoleModel();
                     userRoleModel.setLoginName(dto.getLoginName());
                     userRoleModel.setRole(Role.INVESTOR);
-                    userRoleModels.add(userRoleModel);
-                    userRoleMapper.create(userRoleModels);
+                    userRoleMapper.create(Lists.newArrayList(userRoleModel));
                 }
             }
 
@@ -90,7 +87,6 @@ public class RegisterServiceImpl implements RegisterService {
             dataDto.setCode(responseModel.getRetCode());
             dataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            dataDto.setStatus(false);
             dataDto.setMessage(e.getMessage());
         }
         baseDto.setData(dataDto);

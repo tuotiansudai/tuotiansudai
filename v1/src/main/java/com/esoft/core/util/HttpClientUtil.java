@@ -10,23 +10,30 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class HttpClientUtil {
 		
 	public final static int SUCCESS = 1 ;
 	
 	public final static int FAIL = 0 ;
-	
+
+
 	public static String getResponseBodyAsString(String url ){
+		return getResponseBodyAsString(url, null);
+	}
+
+	public static String getResponseBodyAsString(String url, String charset) {
 		GetMethod get = new GetMethod(url);
 		
 		HttpClient client = new HttpClient();
 		try {
 			client.executeMethod(get);
-//			System.out.println(url);
-//			System.out.println( get.getResponseCharSet() );
-			return get.getResponseBodyAsString();
-			
+			if(StringUtils.isBlank(charset)){
+				charset = get.getResponseCharSet();
+			}
+			return new String(get.getResponseBody(), charset);
+
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

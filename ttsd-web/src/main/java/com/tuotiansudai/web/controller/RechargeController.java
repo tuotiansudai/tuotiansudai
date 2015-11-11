@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.RechargeService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import com.tuotiansudai.utils.BankCardUtil;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class RechargeController {
         boolean isBindCard = bankCard != null;
         boolean isFastPayOn = bankCard != null && bankCard.isFastPayOn();
 
-        modelAndView.addObject("balance", AmountUtil.convertCentToString(balance));
+        modelAndView.addObject("balance", AmountConverter.convertCentToString(balance));
         modelAndView.addObject("banks", BankCardUtil.getRechargeBanks());
         modelAndView.addObject("isBindCard", isBindCard);
         modelAndView.addObject("isFastPayOn", isFastPayOn);

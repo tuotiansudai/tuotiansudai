@@ -1,11 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.Lists;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
-import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.service.RepayGeneratorService;
-import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.IdGenerator;

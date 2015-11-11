@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
@@ -13,10 +13,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
+import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.AmountTransfer;
 import com.tuotiansudai.utils.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -55,7 +56,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
     private AccountMapper accountMapper;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private SystemBillService systemBillService;
@@ -65,6 +66,9 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
+    @Autowired
+    private InvestService investService;
 
     @Override
     @Transactional
@@ -165,10 +169,10 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
 
         //更新代理人账户
         try {
-            userBillService.transferOutBalance(loanModel.getAgentLoginName(),
+            amountTransfer.transferOutBalance(loanModel.getAgentLoginName(),
                     enabledLoanRepay.getId(),
                     enabledLoanRepay.getActualInterest() + loanModel.getLoanAmount(),
-                    UserBillBusinessType.ADVANCE_REPAY);
+                    UserBillBusinessType.ADVANCE_REPAY, null, null);
         } catch (AmountTransferException e) {
             logger.error(MessageFormat.format("Transfer out balance for loan repay interest (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())));
             logger.error(e.getLocalizedMessage(), e);
@@ -223,7 +227,7 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                     ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
                     investRepayPaybackSuccess = responseModel.isSuccess();
                 } catch (PayException e) {
-                    logger.error(MessageFormat.format("Repay payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(MessageFormat.format("invest payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
                     logger.error(e.getLocalizedMessage(), e);
                 }
             }
@@ -238,11 +242,17 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                 }
 
                 long investRepayAmount = actualInvestRepayInterest + successInvest.getAmount();
-                userBillService.transferInBalance(investorLoginName, investRepayId, investRepayAmount, UserBillBusinessType.ADVANCE_REPAY);
+                try {
+                    amountTransfer.transferInBalance(investorLoginName, investRepayId, investRepayAmount, UserBillBusinessType.ADVANCE_REPAY, null, null);
+                } catch (AmountTransferException e) {
+                    logger.error(MessageFormat.format("invest payback transfer in balance failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(e.getLocalizedMessage(), e);
+                }
                 this.paybackInvestFee(loanModel.getId(), investRepayId, accountModel, actualInvestFee);
             }
 
         }
+        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(),enabledLoanRepay.getPeriod());
     }
 
     private void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
@@ -251,23 +261,22 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             String investFeeOrderId = MessageFormat.format(ADVANCE_REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime()));
             ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanId),
                     investFeeOrderId,
-                    investorAccount.getPayUserId(),
                     String.valueOf(actualInvestFee));
 
             try {
                 ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
                 repayInvestFeeSuccess = responseModel.isSuccess();
             } catch (PayException e) {
-                logger.error(MessageFormat.format("Repay payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                logger.error(MessageFormat.format("invest payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
 
         if (repayInvestFeeSuccess) {
             try {
-                userBillService.transferOutBalance(investorAccount.getLoginName(), investRepayId, actualInvestFee, UserBillBusinessType.INVEST_FEE);
+                amountTransfer.transferOutBalance(investorAccount.getLoginName(), investRepayId, actualInvestFee, UserBillBusinessType.INVEST_FEE, null, null);
             } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("transfer out balance for invest repay fee (investRepayId = {0})", String.valueOf(investRepayId)));
+                logger.error(MessageFormat.format("transfer out balance for invest payback fee (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
             systemBillService.transferIn(actualInvestFee, String.valueOf(investRepayId), SystemBillBusinessType.INVEST_FEE, "");
