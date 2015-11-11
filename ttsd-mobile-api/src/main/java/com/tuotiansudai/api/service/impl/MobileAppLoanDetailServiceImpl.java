@@ -12,7 +12,7 @@ import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -63,7 +63,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setDeadline(loan.getPeriods());
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().name());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
-        loanDetailResponseDataDto.setLoanMoney(AmountUtil.convertCentToString(loan.getLoanAmount()));
+        loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
         loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name());
         loanDetailResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
@@ -76,7 +76,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         }
         loanDetailResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
         long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-        loanDetailResponseDataDto.setInvestedMoney(AmountUtil.convertCentToString(investedAmount));
+        loanDetailResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
         loanDetailResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
         loanDetailResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
         loanDetailResponseDataDto.setLoanDetail(loan.getDescriptionHtml());
@@ -99,9 +99,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             loanDetailResponseDataDto.setInvestRecord(investRecordResponseDataDtos);
         }
 
-        loanDetailResponseDataDto.setMinInvestMoney(AmountUtil.convertCentToString(loan.getMinInvestAmount()));
-        loanDetailResponseDataDto.setMaxInvestMoney(AmountUtil.convertCentToString(loan.getMaxInvestAmount()));
-        loanDetailResponseDataDto.setCardinalNumber(AmountUtil.convertCentToString(loan.getInvestIncreasingAmount()));
+        loanDetailResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
+        loanDetailResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
+        loanDetailResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
 
         return loanDetailResponseDataDto;
 

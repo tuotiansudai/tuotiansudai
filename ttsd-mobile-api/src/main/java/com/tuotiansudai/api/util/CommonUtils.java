@@ -3,7 +3,7 @@ package com.tuotiansudai.api.util;
 
 import com.google.common.base.Joiner;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,11 +46,11 @@ public class CommonUtils {
     public static String convertRealMoneyByType(long amount, UserBillOperationType type) {
 
         if (UserBillOperationType.TI_BALANCE.equals(type)){
-            return "+" + AmountUtil.convertCentToString(amount);
+            return "+" + AmountConverter.convertCentToString(amount);
         }else if(UserBillOperationType.TO_BALANCE.equals(type) || UserBillOperationType.TO_FREEZE.equals(type)){
-            return "-" + AmountUtil.convertCentToString(amount);
+            return "-" + AmountConverter.convertCentToString(amount);
         }
-        return "" + AmountUtil.convertCentToString(amount);
+        return "" + AmountConverter.convertCentToString(amount);
     }
 
     public static String mapToFormData(Map<String, String> map, boolean isURLEncoder) throws UnsupportedEncodingException {

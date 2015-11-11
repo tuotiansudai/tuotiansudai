@@ -9,8 +9,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.AmountUtil;
-import org.apache.commons.lang3.NotImplementedException;
+import com.tuotiansudai.utils.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,19 +49,19 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long receivableCorpusInterest = receivableInterest + receivableCorpus;
 
         FundManagementResponseDataDto fundManagementResponseDataDto = new FundManagementResponseDataDto();
-        fundManagementResponseDataDto.setAccountBalance(AmountUtil.convertCentToString(accountBalance));
-        fundManagementResponseDataDto.setFrozenMoney(AmountUtil.convertCentToString(frozenMoney));
-        fundManagementResponseDataDto.setAvailableMoney(AmountUtil.convertCentToString(accountBalance));
-        fundManagementResponseDataDto.setPaidRechargeMoney(AmountUtil.convertCentToString(paidRechargeMoney));
-        fundManagementResponseDataDto.setSuccessWithdrawMoney(AmountUtil.convertCentToString(successWithdrawMoney));
-        fundManagementResponseDataDto.setTotalAssets(AmountUtil.convertCentToString(totalAssets));
-        fundManagementResponseDataDto.setTotalInvestment(AmountUtil.convertCentToString(totalInvestment));
-        fundManagementResponseDataDto.setExpectedTotalInterest(AmountUtil.convertCentToString(expectedTotalInterest));
-        fundManagementResponseDataDto.setReceivedInterest(AmountUtil.convertCentToString(receivedInterest));
-        fundManagementResponseDataDto.setReceivedCorpus(AmountUtil.convertCentToString(receivedCorpus));
-        fundManagementResponseDataDto.setReceivableInterest(AmountUtil.convertCentToString(receivableInterest));
-        fundManagementResponseDataDto.setReceivableCorpus(AmountUtil.convertCentToString(receivableCorpus));
-        fundManagementResponseDataDto.setReceivableCorpusInterest(AmountUtil.convertCentToString(receivableCorpusInterest));
+        fundManagementResponseDataDto.setAccountBalance(AmountConverter.convertCentToString(accountBalance));
+        fundManagementResponseDataDto.setFrozenMoney(AmountConverter.convertCentToString(frozenMoney));
+        fundManagementResponseDataDto.setAvailableMoney(AmountConverter.convertCentToString(accountBalance));
+        fundManagementResponseDataDto.setPaidRechargeMoney(AmountConverter.convertCentToString(paidRechargeMoney));
+        fundManagementResponseDataDto.setSuccessWithdrawMoney(AmountConverter.convertCentToString(successWithdrawMoney));
+        fundManagementResponseDataDto.setTotalAssets(AmountConverter.convertCentToString(totalAssets));
+        fundManagementResponseDataDto.setTotalInvestment(AmountConverter.convertCentToString(totalInvestment));
+        fundManagementResponseDataDto.setExpectedTotalInterest(AmountConverter.convertCentToString(expectedTotalInterest));
+        fundManagementResponseDataDto.setReceivedInterest(AmountConverter.convertCentToString(receivedInterest));
+        fundManagementResponseDataDto.setReceivedCorpus(AmountConverter.convertCentToString(receivedCorpus));
+        fundManagementResponseDataDto.setReceivableInterest(AmountConverter.convertCentToString(receivableInterest));
+        fundManagementResponseDataDto.setReceivableCorpus(AmountConverter.convertCentToString(receivableCorpus));
+        fundManagementResponseDataDto.setReceivableCorpusInterest(AmountConverter.convertCentToString(receivableCorpusInterest));
 
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         baseResponseDto.setData(fundManagementResponseDataDto);

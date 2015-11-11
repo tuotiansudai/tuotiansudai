@@ -4,7 +4,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.RepayStatus;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.text.SimpleDateFormat;
 
@@ -63,7 +63,7 @@ public class InvestRepayRecordResponseDataDto {
         this.loanId = String.valueOf(loan.getId());
         this.loanName = loan.getName();
         this.investId = String.valueOf(invest.getId());
-        this.investMoney = AmountUtil.convertCentToString(invest.getAmount());
+        this.investMoney = AmountConverter.convertCentToString(invest.getAmount());
         this.investTime = sdf.format(invest.getCreatedTime());
         this.repayDay = sdfDay.format(investRepay.getRepayDate());
         this.status = investRepay.getStatus().name();
@@ -71,11 +71,11 @@ public class InvestRepayRecordResponseDataDto {
         if (investRepay.getActualRepayDate() != null) {
             this.time = sdf.format(investRepay.getActualRepayDate());
         }
-        this.corpus = AmountUtil.convertCentToString(investRepay.getCorpus());
+        this.corpus = AmountConverter.convertCentToString(investRepay.getCorpus());
         if (RepayStatus.COMPLETE == investRepay.getStatus()) {
-            this.interest = AmountUtil.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest());
+            this.interest = AmountConverter.convertCentToString(investRepay.getActualInterest() + investRepay.getDefaultInterest());
         } else {
-            this.interest = AmountUtil.convertCentToString(investRepay.getExpectedInterest());
+            this.interest = AmountConverter.convertCentToString(investRepay.getExpectedInterest());
         }
     }
 

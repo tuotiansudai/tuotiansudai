@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.RechargeModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.commons.lang3.NotImplementedException;
 
 import java.text.SimpleDateFormat;
@@ -50,7 +50,7 @@ public class RechargeDetailResponseDataDto extends BaseResponseDataDto {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.rechargeId = "" + recharge.getId();
         this.userId = recharge.getLoginName();
-        this.actualMoney = AmountUtil.convertCentToString(recharge.getAmount());
+        this.actualMoney = AmountConverter.convertCentToString(recharge.getAmount());
         this.rechargeType = "";
         this.status = recharge.getStatus().name();
         this.statusDesc = recharge.getStatus().getDescription();

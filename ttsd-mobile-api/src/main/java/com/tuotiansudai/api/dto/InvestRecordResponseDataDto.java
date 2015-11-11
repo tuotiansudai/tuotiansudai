@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.model.InvestModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.text.SimpleDateFormat;
 
@@ -41,7 +41,7 @@ public class InvestRecordResponseDataDto {
     public InvestRecordResponseDataDto(InvestModel input){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.setUserName(CommonUtils.encryptUserName(input.getLoginName()));
-        this.setInvestMoney(AmountUtil.convertCentToString(input.getAmount()));
+        this.setInvestMoney(AmountConverter.convertCentToString(input.getAmount()));
         this.setInvestTime(simpleDateFormat.format(input.getCreatedTime()));
     }
 }

@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,18 +78,18 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setDeadline(loan.getPeriods());
             loanResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().name());
             loanResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
-            loanResponseDataDto.setLoanMoney(AmountUtil.convertCentToString(loan.getLoanAmount()));
+            loanResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
             loanResponseDataDto.setLoanStatus(loan.getStatus().name());
             loanResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
-            loanResponseDataDto.setMinInvestMoney(AmountUtil.convertCentToString(loan.getMinInvestAmount()));
-            loanResponseDataDto.setMaxInvestMoney(AmountUtil.convertCentToString(loan.getMaxInvestAmount()));
-            loanResponseDataDto.setCardinalNumber(AmountUtil.convertCentToString(loan.getInvestIncreasingAmount()));
+            loanResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
+            loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
+            loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
             if(loan.getFundraisingStartTime() != null){
                 loanResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));
             }
             loanResponseDataDto.setInvestBeginSeconds(CommonUtils.calculatorInvestBeginSeconds(loan.getFundraisingStartTime()));
             long investedAmount = investMapper.sumSuccessInvestAmount(loan.getId());
-            loanResponseDataDto.setInvestedMoney(AmountUtil.convertCentToString(investedAmount));
+            loanResponseDataDto.setInvestedMoney(AmountConverter.convertCentToString(investedAmount));
             loanResponseDataDto.setBaseRatePercent(decimalFormat.format(loan.getBaseRate() * 100));
             loanResponseDataDto.setActivityRatePercent(decimalFormat.format(loan.getActivityRate() * 100));
 

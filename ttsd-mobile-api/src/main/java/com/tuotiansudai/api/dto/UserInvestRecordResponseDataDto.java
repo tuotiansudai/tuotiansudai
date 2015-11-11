@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.text.SimpleDateFormat;
 
@@ -63,7 +63,7 @@ public class UserInvestRecordResponseDataDto extends BaseResponseDataDto {
         this.loanStatus = loanStatus.getCode();
         this.loanStatusDesc = loanStatus.getMessage();
         this.investId = String.valueOf(invest.getId());
-        this.investMoney = AmountUtil.convertCentToString(invest.getAmount());
+        this.investMoney = AmountConverter.convertCentToString(invest.getAmount());
         this.investTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(invest.getCreatedTime());
         this.investStatus = investStatus.getCode();
         this.investStatusDesc = investStatus.getMessage();

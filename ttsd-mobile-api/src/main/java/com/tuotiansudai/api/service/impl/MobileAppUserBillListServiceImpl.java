@@ -8,7 +8,7 @@ import com.tuotiansudai.api.service.MobileAppUserBillListService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.repository.mapper.UserBillMapper;
 import com.tuotiansudai.repository.model.UserBillModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
             userBillRecordResponseDataDto.setMoney(CommonUtils.convertRealMoneyByType(userBill.getAmount(), userBill.getOperationType()));
             userBillRecordResponseDataDto.setTypeInfo(userBill.getBusinessType());
             userBillRecordResponseDataDto.setTypeInfoDesc(userBill.getBusinessType().getDescription());
-            userBillRecordResponseDataDto.setFrozenMoney(AmountUtil.convertCentToString(userBill.getFreeze()));
+            userBillRecordResponseDataDto.setFrozenMoney(AmountConverter.convertCentToString(userBill.getFreeze()));
             userBillRecordResponseDataDto.setDetail(userBill.getOperationType().getDescription());
             userBillRecords.add(userBillRecordResponseDataDto);
         }

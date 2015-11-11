@@ -1,7 +1,6 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.utils.AmountUtil;
 
 public class BankCardRequestDto extends BaseParamDto{
 

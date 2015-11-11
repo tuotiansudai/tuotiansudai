@@ -11,7 +11,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -107,7 +107,7 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 }
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(invest, loanModel);
                 long investInterest = investService.calculateExpectedInterest(loanModel, invest.getAmount());
-                dto.setInvestInterest(AmountUtil.convertCentToString(investInterest));
+                dto.setInvestInterest(AmountConverter.convertCentToString(investInterest));
                 list.add(dto);
             }
         }
