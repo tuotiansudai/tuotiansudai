@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -442,7 +443,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
-        LoanModel nowLoanModel  = loanMapper.findById(loanDto.getId());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
@@ -569,6 +569,40 @@ public class LoanServiceImpl implements LoanService {
             }
         }
         return dto;
+    }
+
+    @Override
+    public BaseDto<PayDataDto> cancelLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
+        Date validInvestTime = cal.getTime();
+        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanDto.getId(), validInvestTime);
+        if (waitingInvestCount > 0) {
+            logger.debug("流标失败，存在等待第三方资金托管确认的投资!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanDto.getId());
+        for (InvestModel investModel : investModels) {
+            InvestDto investDto = new InvestDto();
+            investDto.setLoanId(String.valueOf(loanDto.getId()));
+            investDto.setLoginName(investModel.getLoginName());
+            investDto.setAmount(String.valueOf(investModel.getAmount()));
+            if (payWrapperClient.payBack(investDto).isSuccess()){
+                logger.debug(investModel.getId() + " cancel payBack is success!");
+            } else {
+                logger.debug(investModel.getId() + " cancel payBack is fail!");
+            }
+        }
+        loanDto.setLoanStatus(LoanStatus.CANCEL);
+        return payWrapperClient.updateLoan(loanDto);
     }
 
     @Override
