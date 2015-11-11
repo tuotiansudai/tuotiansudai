@@ -47,7 +47,7 @@ public class RegisterAccountController {
         boolean isRegisterSuccess = dto.getData().getStatus();
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerAccountDto);
-            redirectAttributes.addFlashAttribute("success", isRegisterSuccess);
+            redirectAttributes.addFlashAttribute("success", false);
         }
 
         return new ModelAndView(isRegisterSuccess ? "redirect:/" : "redirect:/register/account");

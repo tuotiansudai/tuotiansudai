@@ -58,6 +58,10 @@ public class BankCardUtil {
         return WITHDRAW_BANKS;
     }
 
+    public static List<String> getFastPayBanks() {
+        return FAST_PAY_BANKS;
+    }
+
     public static String getBankName(String bankCode) {
         return BANK_CODE_MAPPING.get(bankCode);
     }
