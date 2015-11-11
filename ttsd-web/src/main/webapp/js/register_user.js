@@ -2,7 +2,8 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
 
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha',registerUserForm),
-        showAgreement=$('.show-agreement',registerUserForm);
+        showAgreement=$('.show-agreement',registerUserForm),
+        $agreement=$('#agreement');
     var $imgCaptchaDialog=$('.image-captcha-dialog'),
         imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
         imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
@@ -16,6 +17,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             title: '拓天速贷服务协议',
             area: ['950px','600px'],
             shadeClose: true,
+            move: false,
             content: $('#agreementBox'),
             success: function(layero, index){
 
@@ -113,7 +115,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         rules: {
             imageCaptcha: {
                 required: true,
-                regex: "^[a-zA-Z0-9]{5}$",
+                regex: /^[a-zA-Z0-9]{5}$/,
                 imageCaptchaVerify: "/register/user/image-captcha/{0}/verify"
             }
         },
@@ -132,17 +134,18 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         rules: {
             loginName: {
                 required: true,
-                checkUser:true,
+                regex: /(?!^\d+$)^\w{6,20}$/,
                 isExist: "/register/user/login-name/{0}/is-exist"
             },
             mobile: {
                 required: true,
-                checkMobile:true,
+                digits: true,
+                rangelength: [11, 11],
                 isExist: "/register/user/mobile/{0}/is-exist"
             },
             password: {
                 required: true,
-                checkPass: true
+                regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
             },
             captcha: {
                 required: true,
@@ -165,14 +168,18 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         messages: {
             loginName: {
                 required: "请输入用户名",
+                regex: '6位至20位数字与字母下划线组合，不能全部数字',
                 isExist: '用户名已存在'
             },
             mobile: {
                 required: '请输入手机号',
+                rangelength:'手机格式不对',
+                digits:'必须是数字',
                 isExist: '手机号已存在'
             },
             password: {
-                required: "请输入密码"
+                required: "请输入密码",
+                regex:'6位至20位数字与字母组合'
             },
             captcha: {
                 required: '请输入验证码',
@@ -211,6 +218,8 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             if (element.name === 'mobile') {
                 $('.fetch-captcha').prop('disabled', false);
             }
+            var $agreementBox=$agreement.parent('label');
+            $agreementBox.append($('#agreement-error'));
         }
 
     });
@@ -219,21 +228,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
     //    var $agreementDom=$('#agreement');
     //    $agreementDom.next('label').prepend($agreementDom.parent('label'));
     //}
-    //用户名验证规则
-    jQuery.validator.addMethod("checkUser", function(value, element) {
-        var checkUser = /(?!^\d+$)^\w{6,20}$/;
-        return this.optional(element) || (checkUser.test(value));
-    }, "6位至20位数字与字母下划线组合，不能全部数字");
 
-    //手机验证规则
-    jQuery.validator.addMethod("checkMobile", function (value, element) {
-        var mobile = /^1[3|4|5|7|8]\d{9}$/;
-        return this.optional(element) || (mobile.test(value));
-    }, "手机格式不对");
 
-    jQuery.validator.addMethod("checkPass", function(value, element) {
-        var checkPassword = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+){6,20}$/;
-        return this.optional(element) || (checkPassword.test(value));
-    }, "6位至20位数字与字母组合");
-    //^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$
+
 });

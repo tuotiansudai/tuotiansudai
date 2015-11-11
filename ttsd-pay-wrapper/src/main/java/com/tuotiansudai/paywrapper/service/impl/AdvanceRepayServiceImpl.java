@@ -261,7 +261,6 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
             String investFeeOrderId = MessageFormat.format(ADVANCE_REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime()));
             ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanId),
                     investFeeOrderId,
-                    investorAccount.getPayUserId(),
                     String.valueOf(actualInvestFee));
 
             try {

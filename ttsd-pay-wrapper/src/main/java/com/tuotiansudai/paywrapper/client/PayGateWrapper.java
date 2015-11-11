@@ -1,33 +1,51 @@
 package com.tuotiansudai.paywrapper.client;
 
+import com.tuotiansudai.paywrapper.client.impl.PayGateWrapperFakeImpl;
+import com.tuotiansudai.paywrapper.client.impl.PayGateWrapperImpl;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ParameterCheckException;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.RetDataException;
 import com.umpay.api.exception.VerifyException;
-import com.umpay.api.paygate.v40.Mer2Plat_v40;
-import com.umpay.api.paygate.v40.Plat2Mer_v40;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Component
-public class PayGateWrapper {
+public class PayGateWrapper implements InitializingBean {
+
+    @Value(value = "${ump.service.fake}")
+    private boolean umpServiceFaked;
+
+    @Value(value = "${ump.service.fake.url}")
+    private String umpServiceFakeUrlPrefix;
+
+    private PayGateWrapper payGateWrapperImpl;
 
     public Map<String, String> getPlatNotifyData(Map<String, String> paramsMap) throws VerifyException {
-        return Plat2Mer_v40.getPlatNotifyData(paramsMap);
+        return payGateWrapperImpl.getPlatNotifyData(paramsMap);
     }
 
-
     public Map<String, String> getResData(String responseBodyString) throws RetDataException {
-        return Plat2Mer_v40.getResData(responseBodyString);
+        return payGateWrapperImpl.getResData(responseBodyString);
     }
 
     public ReqData makeReqDataByPost(Object obj) throws ReqDataException {
-        return Mer2Plat_v40.makeReqDataByPost(obj);
+        return payGateWrapperImpl.makeReqDataByPost(obj);
     }
 
     public String merNotifyResData(Object map) throws ParameterCheckException {
-        return Mer2Plat_v40.merNotifyResData(map);
+        return payGateWrapperImpl.merNotifyResData(map);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (umpServiceFaked) {
+            payGateWrapperImpl = new PayGateWrapperFakeImpl(umpServiceFakeUrlPrefix);
+        } else {
+            payGateWrapperImpl = new PayGateWrapperImpl();
+        }
     }
 }

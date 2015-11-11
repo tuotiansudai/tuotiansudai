@@ -36,15 +36,19 @@ public class SecurityLogController {
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                  @RequestParam(name = "success", required = false) Boolean success) {
 
-        DateTime now = new DateTime();
-        if (selectedYear == null || selectedYear > now.getYear()) {
+        DateTime now = new DateTime().withTimeAtStartOfDay();
+        if (selectedYear == null) {
             selectedYear = now.getYear();
-            selectedMonth = now.getMonthOfYear();
         }
-        if (selectedMonth == null || selectedYear > now.getYear() || (selectedYear == now.getYear() && selectedMonth > now.getMonthOfYear())) {
+        if (selectedMonth == null) {
             selectedMonth = now.getMonthOfYear();
         }
 
+        if (new DateTime().withDate(selectedYear, selectedMonth, now.dayOfMonth().getMaximumValue()).isAfterNow() ||
+                new DateTime().withDate(selectedYear, selectedMonth, now.dayOfMonth().getMaximumValue()).isBefore(new DateTime(2015, 11, 1, 0, 0, 0))) {
+            selectedYear = now.getYear();
+            selectedMonth = now.getMonthOfYear();
+        }
 
         BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(loginName, success, index, pageSize, selectedYear, selectedMonth);
 

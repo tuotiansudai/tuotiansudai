@@ -28,7 +28,7 @@
                     </span>
             </li>
             <li><span class="info-title"> 邮箱</span>
-                <#if email??>
+                <#if email?? && email != "">
                     <em class="info">${email}</em>
                     <span class="binding-set">
                         <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setEmail" href="javascript:">修改</a>

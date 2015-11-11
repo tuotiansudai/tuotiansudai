@@ -3,10 +3,10 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     var registerAccountForm = $('.register-step-two .register-account-form');
 
     registerAccountForm.validate({
-        success: 'valid',
+        success: 'form-valid',
         focusCleanup: true,
         focusInvalid: false,
-        onkeyup: false,
+        errorClass: 'form-error',
         onfocusout: function (element) {
             this.element(element);
         },
@@ -14,13 +14,20 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             $('.register-account').toggleClass('loading');
             form.submit();
         },
+        onkeyup: function (element, event) {
+            var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
+
+            if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
+                this.element(element);
+            }
+        },
         rules: {
             userName: {
                 required: true
             },
             identityNumber: {
                 required: true,
-                regex: "^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$",
+                regex: /^[1-9]\\d{13,16}[a-zA-Z0-9]$/,
                 isExist: "/register/account/identity-number/{0}/is-exist"
             }
         },
