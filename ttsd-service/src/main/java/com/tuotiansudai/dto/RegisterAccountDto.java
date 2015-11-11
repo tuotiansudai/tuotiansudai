@@ -3,8 +3,10 @@ package com.tuotiansudai.dto;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
+import java.awt.*;
+import java.io.Serializable;
 
-public class RegisterAccountDto {
+public class RegisterAccountDto implements Serializable{
 
     private String loginName;
 
