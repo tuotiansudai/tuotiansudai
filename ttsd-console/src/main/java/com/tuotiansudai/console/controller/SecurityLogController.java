@@ -46,7 +46,7 @@ public class SecurityLogController {
             selectedMonth = now.getMonthOfYear();
         }
 
-        if (new DateTime().withDate(selectedYear, selectedMonth, new DateTime().withDate(selectedYear, selectedMonth, 1).dayOfMonth().getMaximumValue()).isBeforeNow() &&
+        if (new DateTime().withDate(selectedYear, selectedMonth, 1).isBeforeNow() &&
                 new DateTime().withDate(selectedYear, selectedMonth, new DateTime().withDate(selectedYear, selectedMonth, 1).dayOfMonth().getMaximumValue()).isAfter(new DateTime(2015, 11, 1, 0, 0, 0))) {
             BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(loginName, success, index, pageSize, selectedYear, selectedMonth);
             modelAndView.addObject("data", data);
