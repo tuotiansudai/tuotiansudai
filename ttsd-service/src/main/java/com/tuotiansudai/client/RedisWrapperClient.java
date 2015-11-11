@@ -45,7 +45,7 @@ public class RedisWrapperClient {
 
     private static JedisPool pool = null;
 
-    private JedisPool getPool() {
+    public JedisPool getPool() {
         if (pool == null) {
             JedisPoolConfig config = new JedisPoolConfig();
             pool = new JedisPool(config, redisHost, redisPort);
@@ -77,11 +77,11 @@ public class RedisWrapperClient {
         this.redisPort = redisPort;
     }
 
-    private interface JedisAction<T> {
+    public interface JedisAction<T> {
         T action(Jedis jedis);
     }
 
-    private interface JedisActionNoResult {
+    public interface JedisActionNoResult {
         void action(Jedis jedis);
     }
 

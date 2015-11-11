@@ -5,10 +5,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.exceptions.JedisConnectionException;
-import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
 @Component
@@ -30,40 +26,11 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         this.second = second;
     }
 
-    private JedisPool jedisPool;
-
-    public void setJedisPool(JedisPool jedisPool) {
-        this.jedisPool = jedisPool;
-    }
-
-    public JedisPool getJedisPool() {
-
-        return jedisPool;
-    }
-
-    private static JedisPool pool = null;
-
-    private JedisPool getPool() {
-        if (pool == null) {
-            JedisPoolConfig config = new JedisPoolConfig();
-            pool = new JedisPool(config, getRedisHost(), getRedisPort());
-        }
-        return pool;
-    }
-
-    private interface JedisAction<T> {
-        T action(Jedis jedis);
-    }
-
-    private interface JedisActionNoResult {
-        void action(Jedis jedis);
-    }
-
     private  <T> T execute(JedisAction<T> jedisAction) throws JedisException {
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = jedisPool.getResource();
+            jedis = getJedisPool().getResource();
             if(StringUtils.isNotEmpty(getRedisPassword())){
                 jedis.auth(getRedisPassword());
             }
@@ -81,7 +48,7 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         Jedis jedis = null;
         boolean broken = false;
         try {
-            jedis = jedisPool.getResource();
+            jedis = getJedisPool().getResource();
             if(StringUtils.isNotEmpty(getRedisPassword())){
                 jedis.auth(getRedisPassword());
             }
@@ -95,65 +62,12 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         }
     }
 
-    protected boolean handleJedisException(JedisException jedisException) {
-        if (jedisException instanceof JedisConnectionException) {
-            logger.error(jedisException.getLocalizedMessage(), jedisException);
-        } else if (jedisException instanceof JedisDataException) {
-            if ((jedisException.getMessage() != null) && (jedisException.getMessage().contains("READONLY"))) {
-                logger.error(jedisException.getLocalizedMessage(), jedisException);
-            } else {
-                return false;
-            }
-        } else {
-            logger.error(jedisException.getLocalizedMessage(), jedisException);
-        }
-        return true;
-    }
-
-    protected void closeResource(Jedis jedis, boolean connectionBroken) {
-        try {
-            if (connectionBroken) {
-                jedisPool.returnBrokenResource(jedis);
-            } else {
-                jedisPool.returnResource(jedis);
-            }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
-            destroyJedis(jedis);
-        }
-    }
-
-    private static void destroyJedis(Jedis jedis) {
-        if ((jedis != null) && jedis.isConnected()) {
-            try {
-                try {
-                    jedis.quit();
-                } catch (Exception e) {
-                    logger.error(e.getLocalizedMessage(), e);
-                }
-                jedis.disconnect();
-            } catch (Exception e) {
-                logger.error(e.getLocalizedMessage(), e);
-            }
-        }
-    }
-
     public byte[] get(final byte[] key) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<byte[]>() {
             @Override
             public byte[] action(Jedis jedis) {
                 return jedis.get(key);
-            }
-        });
-    }
-
-    public boolean exists(final byte[] key) {
-        this.setJedisPool(getPool());
-        return execute(new JedisAction<Boolean>() {
-            @Override
-            public Boolean action(Jedis jedis) {
-                return jedis.exists(key);
             }
         });
     }
@@ -184,16 +98,6 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
             @Override
             public Long action(Jedis jedis) {
                 return jedis.dbSize();
-            }
-        });
-    }
-
-    public void setex(final String key, final int seconds, final String value) {
-        this.setJedisPool(getPool());
-        execute(new JedisActionNoResult() {
-            @Override
-            public void action(Jedis jedis) {
-                jedis.setex(key, seconds, value);
             }
         });
     }
