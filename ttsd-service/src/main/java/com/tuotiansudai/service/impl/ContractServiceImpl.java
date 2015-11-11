@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 import com.tuotiansudai.utils.LoginUserInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -124,16 +124,16 @@ public class ContractServiceImpl implements ContractService {
         dataModel.put("agentLoginName",Strings.nullToEmpty(loanModel.getAgentLoginName()));
         dataModel.put("agentIdentityNumber",Strings.nullToEmpty(agentAccountModel.getIdentityNumber()));
         dataModel.put("investList",getInvestListTable(loanId,loanModel,contractType));
-        dataModel.put("actualMoney",AmountUtil.convertCentToString(loanModel.getLoanAmount()));
+        dataModel.put("actualMoney", AmountConverter.convertCentToString(loanModel.getLoanAmount()));
 
-        dataModel.put("fen", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 0));
-        dataModel.put("bugle", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 1));
-        dataModel.put("yuan", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 2));
-        dataModel.put("ten", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 3));
-        dataModel.put("hundred", this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 4));
-        dataModel.put("thousand",this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 5));
-        dataModel.put("tenThousand",this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 6));
-        dataModel.put("hundredThousand",this.getDigitBySerialNo(AmountUtil.convertCentToString(loanModel.getLoanAmount()), 7));
+        dataModel.put("fen", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 0));
+        dataModel.put("bugle", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 1));
+        dataModel.put("yuan", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 2));
+        dataModel.put("ten", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 3));
+        dataModel.put("hundred", this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 4));
+        dataModel.put("thousand",this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 5));
+        dataModel.put("tenThousand",this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 6));
+        dataModel.put("hundredThousand",this.getDigitBySerialNo(AmountConverter.convertCentToString(loanModel.getLoanAmount()), 7));
 
         dataModel.put("deadline","" + loanModel.getPeriods());
         if(CollectionUtils.isNotEmpty(loanRepayModels)){
@@ -184,7 +184,7 @@ public class ContractServiceImpl implements ContractService {
             rowsString = rowsString.replace("#{0}",encryString(invest.getLoginName(), "platformAccount", invest.getLoginName(), loginName, contractType))
                     .replace("#{1}", encryString(accountModel.getUserName(), "realName", invest.getLoginName(), loginName,contractType))
                     .replace("#{2}",encryString(accountModel.getIdentityNumber(), "IdCard", invest.getLoginName(), loginName, contractType))
-                    .replace("#{3}",AmountUtil.convertCentToString(invest.getAmount()))
+                    .replace("#{3}", AmountConverter.convertCentToString(invest.getAmount()))
                     .replace("#{4}",deadLine)
                     .replace("#{5}", format.format(invest.getCreatedTime()));
 
