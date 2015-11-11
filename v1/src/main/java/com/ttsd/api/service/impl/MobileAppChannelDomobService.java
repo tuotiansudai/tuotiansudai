@@ -4,8 +4,13 @@ import com.esoft.core.util.HttpClientUtil;
 import com.ttsd.api.dto.BaseParam;
 import com.ttsd.api.util.CommonUtils;
 import net.sf.json.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 class MobileAppChannelDomobService {
+
+    static Log log = LogFactory.getLog(MobileAppChannelDomobService.class);
+
     private final String appKey;
     private static final String MOBILE_APP_SIGN_KEY_DOMOB = "558f57f870db841d28db071c3a99483d";
     private static final String MOBILE_APP_CHANNEL_DOMOB_CALLBACK_URL_FORMAT =
@@ -35,7 +40,13 @@ class MobileAppChannelDomobService {
         int retryCount = MOBILE_APP_CHANNEL_DOMOB_CALLBACK_RETRY_COUNT;
         while (retryCount > 0) {
             retryCount--;
+            if (log.isInfoEnabled()) {
+                log.info("send install notify to domob:" + url);
+            }
             String respJson = HttpClientUtil.getResponseBodyAsString(url, "utf-8");
+            if (log.isInfoEnabled()) {
+                log.info("get response from domob:" + respJson);
+            }
             JSONObject json = JSONObject.fromObject(respJson);
             if (json.getBoolean("success")) {
                 retryCount = 0;

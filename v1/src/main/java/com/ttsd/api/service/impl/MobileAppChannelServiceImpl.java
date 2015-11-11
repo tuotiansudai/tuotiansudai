@@ -67,7 +67,7 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
             }
 
             appChannel.hasNotified = true;
-            redis.hset(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa), channel.toString());
+            redis.hset(MOBILE_APP_CHANNEL_KEY, generateDeviceKey("ifa", ifa), appChannel.toString());
         }
     }
 
@@ -97,7 +97,8 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
     private String generateDeviceKey(String type, String data) {
         return MOBILE_APP_CHANNEL_PARAM_KEY_FORMAT
                 .replace("{type}", type)
-                .replace("{data}", data);
+                .replace("{data}", data)
+                .toLowerCase();
     }
 
     private boolean isValidDeviceId(String type, String data) {

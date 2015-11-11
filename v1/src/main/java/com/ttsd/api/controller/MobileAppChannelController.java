@@ -1,9 +1,11 @@
 package com.ttsd.api.controller;
 
+import com.esoft.core.annotations.Logger;
 import com.ttsd.api.dto.BaseParamDto;
 import com.ttsd.api.service.MobileAppChannelService;
 import com.ttsd.api.service.impl.MobileAppChannelServiceImpl;
 import net.sf.json.JSONObject;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class MobileAppChannelController {
+    @Logger
+    Log log;
 
     @Autowired
     private MobileAppChannelService mobileAppChannelService;
@@ -22,6 +26,9 @@ public class MobileAppChannelController {
     @RequestMapping(value = "/domob", method = RequestMethod.GET)
     @ResponseBody
     public JSONObject clickNotifyDomob(HttpServletRequest request) {
+        if (log.isInfoEnabled()) {
+            log.info("receive domob notify request:" + request.getRequestURI() + " " + request.getQueryString());
+        }
         boolean recordSuccess;
         String message;
         if (MobileAppChannelServiceImpl.MOBILE_APP_ID
@@ -35,6 +42,9 @@ public class MobileAppChannelController {
         } else {
             recordSuccess = false;
             message = "invalid appkey";
+        }
+        if (log.isInfoEnabled()) {
+            log.info("send response to domob :" + message);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", message);
