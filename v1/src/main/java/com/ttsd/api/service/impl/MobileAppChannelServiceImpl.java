@@ -57,7 +57,7 @@ public class MobileAppChannelServiceImpl implements MobileAppChannelService {
         if (AccessSource.IOS.name().equalsIgnoreCase(param.getPlatform())) {
             String ifa = param.getDeviceId();
             AppChannel appChannel = findChannelByIfa(ifa);
-            if (appChannel.hasNotified) {
+            if (appChannel == null || appChannel.hasNotified) {
                 return;
             }
 

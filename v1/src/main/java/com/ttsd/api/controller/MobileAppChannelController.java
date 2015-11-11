@@ -6,6 +6,7 @@ import com.ttsd.api.service.impl.MobileAppChannelServiceImpl;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,7 @@ public class MobileAppChannelController {
     @ResponseBody
     public JSONObject clickNotifyDomob(HttpServletRequest request) {
         boolean recordSuccess;
+        String message;
         if (MobileAppChannelServiceImpl.MOBILE_APP_ID
                 .equalsIgnoreCase(request.getParameter("appkey"))) {
             recordSuccess = recordChannelDomob(request.getParameter("mac"),
@@ -29,18 +31,20 @@ public class MobileAppChannelController {
                     request.getParameter("ifa"),
                     request.getParameter("ifamd5"),
                     request.getParameter("source"));
+            message = recordSuccess ? "ok" : "exists";
         } else {
             recordSuccess = false;
+            message = "invalid appkey";
         }
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", "message");
+        jsonObject.put("message", message);
         jsonObject.put("success", recordSuccess);
         return jsonObject;
     }
 
     @RequestMapping(value = "/install-notify", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject installNotify(BaseParamDto paramDto) {
+    public JSONObject installNotify(@RequestBody BaseParamDto paramDto) {
         mobileAppChannelService.sendInstallNotify(paramDto.getBaseParam());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", "");
