@@ -59,7 +59,7 @@ public class MobileAppCheckVersionControllerTest extends ControllerTestBase {
         String requestJson = generateRequestJson(new BaseParamDto());
         when(redisWrapperClient.get("app:version:info")).thenReturn(null);
 
-        mockMvc.perform(post("/get/version").
+        mockMvc.perform(post("/v1.0/get/version").
                 contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestJson))
                 .andExpect(status().isOk())

@@ -47,6 +47,7 @@ public abstract class ControllerTestBase {
     }
 
     protected ResultActions doRequestWithServiceMockedTest(String url) throws Exception {
+        url = "/v1.0" + url;
         return mockMvc.perform(post(url).
                 contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
