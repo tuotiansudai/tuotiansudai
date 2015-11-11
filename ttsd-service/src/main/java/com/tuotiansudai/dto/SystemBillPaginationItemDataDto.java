@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.SystemBillModel;
-import com.tuotiansudai.utils.AmountUtil;
+import com.tuotiansudai.utils.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +26,7 @@ public class SystemBillPaginationItemDataDto implements Serializable {
     public SystemBillPaginationItemDataDto(SystemBillModel systemBillModel) {
         this.id = systemBillModel.getId();
         this.orderId = systemBillModel.getOrderId();
-        this.amount = AmountUtil.convertCentToString(systemBillModel.getAmount());
+        this.amount = AmountConverter.convertCentToString(systemBillModel.getAmount());
         this.operationType = systemBillModel.getType().getDescription();
         this.businessType = systemBillModel.getBusinessType().getDescription();
         this.detail = systemBillModel.getDetail();

@@ -2,14 +2,13 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.paywrapper.exception.AmountTransferException;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -24,18 +23,14 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.UserBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountUtil;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.SendCloudMailUtil;
+import com.tuotiansudai.utils.*;
 import org.apache.commons.lang3.StringUtils;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +69,7 @@ public class InvestServiceImpl implements InvestService {
     private LoanMapper loanMapper;
 
     @Autowired
-    private UserBillService userBillService;
+    private AmountTransfer amountTransfer;
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
@@ -371,7 +366,7 @@ public class InvestServiceImpl implements InvestService {
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)
                         .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
-                        .put("amount", AmountUtil.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
+                        .put("amount", AmountConverter.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
                                 investRepay.getDefaultInterest(), investRepay.getActualFee())))
                         .build());
                 if (StringUtils.isNotEmpty(email)) {
@@ -445,7 +440,7 @@ public class InvestServiceImpl implements InvestService {
     private void investSuccess(long orderId, InvestModel investModel, String loginName) {
         try {
             // 冻结资金
-            userBillService.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS);
+            amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
             fatalLog("invest success, but freeze account fail", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);

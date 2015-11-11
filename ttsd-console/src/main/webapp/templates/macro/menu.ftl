@@ -46,7 +46,8 @@
                     {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
                     {"name":"realTimeStatus","text":"联动优势资金查询","link":"/real-time-status"},
                     {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
-                    {"name":"##############","text":"修改账户余额","link":""}
+                    {"name":"adminIntervention","text":"管理员修改账户余额","link":"/admin-intervention"},
+                    {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}
                 ]
             },
             {
@@ -57,11 +58,11 @@
                 ]
             },
             {
-                "name":"secMan",
-                "header":{"text":"安全管理","link":"/"},
+                "name":"security",
+                "header":{"text":"安全管理","link":"/security-log/login-log"},
                 "sidebar":[
-                    {"name":"##############","text":"用户登录日志","link":""},
-                    {"name":"##############","text":"用户管理日志","link":""}
+                    {"name":"loginLog","text":"登录日志","link":"/security-log/login-log"},
+                    {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log"}
                 ]
             }
         ]

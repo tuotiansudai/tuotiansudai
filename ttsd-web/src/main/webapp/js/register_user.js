@@ -131,7 +131,6 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
     registerUserForm.validate({
         focusInvalid: false,
         errorClass: 'form-error',
-        onkeyup:true,
         rules: {
             loginName: {
                 required: true,

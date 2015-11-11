@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.LoginLogMapper">
+
+    <resultMap id="loginLogModelResultMap" type="LoginLogModel">
+        <id column="id" property="id"></id>
+        <result column="login_name" property="loginName"></result>
+        <result column="source" property="source"></result>
+        <result column="ip" property="ip"></result>
+        <result column="device" property="device"></result>
+        <result column="login_time" property="loginTime"></result>
+        <result column="success" property="success"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="map">
+        insert into ${table} (login_name, source, ip, device, login_time, success)
+        values (#{model.loginName}, #{model.source}, #{model.ip}, #{model.device}, #{model.loginTime}, #{model.success})
+    </insert>
+
+    <select id="getPaginationData" parameterType="map" resultMap="loginLogModelResultMap">
+        select * from ${table}
+        <where>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="success != null">
+                and success = #{success}
+            </if>
+        </where>
+        order by login_time desc, id asc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        select count(1) from ${table}
+        <where>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="success != null">
+                and success = #{success}
+            </if>
+        </where>
+    </select>
+</mapper>

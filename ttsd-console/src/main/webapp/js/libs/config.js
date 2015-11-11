@@ -19,7 +19,8 @@ var require = {
         'ueditor.config': '/js/libs/ueditor/ueditor.config',
         'ueditor.parse': '/js/libs/ueditor/ueditor.parse.min',
         'Validform': '/js/libs/Validform_v5.3.2_min',
-        'Validform_Datatype':'/js/libs/Validform_Datatype'
+        'Validform_Datatype':'/js/libs/Validform_Datatype',
+        'autoNumeric': '/js/libs/autoNumeric-2.0-BETA'
     },
 
     'shim': {
@@ -31,7 +32,8 @@ var require = {
         'ueditor': ['ueditor.all', 'ueditor.config', 'ueditor.parse'],
         'jquery.validate': ['jquery'],
         'Validform': ['jquery'],
-        'Validform_Datatype':['jquery']
+        'Validform_Datatype':['jquery'],
+        'autoNumeric': ['jquery']
     }
 };
 

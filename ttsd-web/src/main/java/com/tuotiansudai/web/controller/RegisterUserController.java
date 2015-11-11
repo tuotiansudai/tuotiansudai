@@ -87,7 +87,7 @@ public class RegisterUserController {
         baseDto.setData(dataDto);
         boolean result = this.captchaVerifier.registerImageCaptchaVerify(dto.getImageCaptcha());
         if (result) {
-            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.getRequestIp(httpServletRequest));
+            return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }
         return baseDto;
     }
