@@ -86,10 +86,10 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value("${invest.fatal.notify.mobiles}")
+    @Value(value = "${invest.fatal.notify.mobiles}")
     private String fatalNotifyMobiles;
 
-    @Value("${invest.notify.process.list.size}")
+    @Value(value = "${invest.notify.process.list.size}")
     private int investProcessListSize;
 
     @Override
