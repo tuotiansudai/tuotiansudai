@@ -14,13 +14,13 @@ public interface LoanMapper {
 
     LoanModel findById(@Param(value = "loanId") long loanId);
 
-    public List<LoanModel> findLoanListWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
-                                           @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
-                                           @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd, @Param(value = "currentPageNo") int currentPageNo);
-
-    public int findLoanListCountWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
+    List<LoanModel> findLoanListWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
                                     @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
-                                    @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd);
+                                    @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd, @Param(value = "currentPageNo") int currentPageNo);
+
+    int findLoanListCountWeb(@Param(value = "activityType") ActivityType activityType, @Param(value = "status") LoanStatus status,
+                             @Param(value = "periodsStart") long periodsStart, @Param(value = "periodsEnd") long periodsEnd,
+                             @Param(value = "rateStart") double rateStart, @Param(value = "rateEnd") double rateEnd);
 
     void update(LoanModel loanModel);
 

@@ -37,7 +37,6 @@ public class LoginLogServiceImpl implements LoginLogService {
         loginLogMapper.create(model, MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(now.getYear()), String.valueOf(now.getMonthOfYear())));
     }
 
-
     @Override
     public BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month) {
         String table = MessageFormat.format(LOGIN_LOG_TABLE_TEMPLATE, String.valueOf(year), String.valueOf(month));

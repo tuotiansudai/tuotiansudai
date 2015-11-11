@@ -13,8 +13,6 @@
 }
 
 .btn {
-
-  line-height:1;
   font: {
     size: nth($fontSize, 3);
     weight: normal;
@@ -31,11 +29,9 @@
   cursor: pointer;
   @include user-select(none);
   @include touch-action(manipulation);
-  background-image: none;
   border: 1px solid nth($CK2,3);
   border-radius: 4px;
-  color: nth($CK2,2);
-  background: #999;
+  background: #999 none;
   color: #fff;
   &:focus,
   &:active:focus,
