@@ -12,9 +12,12 @@ import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.ttsd.api.dto.*;
+import com.ttsd.api.service.MobileAppChannelService;
 import com.ttsd.api.service.MobileAppRegisterService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,6 +40,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Resource
     private AuthService authService;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
 
     @Override
@@ -151,6 +157,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
                 User user = registerRequestDto.convertToUser();
                 user.setSource(AccessSource.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
+                String channel = mobileAppChannelService.obtainChannelBySource(registerRequestDto.getBaseParam());
+                user.setChannel(channel);
                 userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
             }
 
@@ -178,6 +186,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         }
         return dto;
     }
+
+
 
     @Override
     public String verifyPassword(String password) {
