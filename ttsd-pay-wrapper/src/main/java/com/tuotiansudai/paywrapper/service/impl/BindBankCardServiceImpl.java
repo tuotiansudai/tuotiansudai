@@ -54,7 +54,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         PtpMerBindCardRequestModel requestModel = new PtpMerBindCardRequestModel(String.valueOf(bankCardModel.getId()),
                 dto.getCardNumber(),
                 accountModel.getPayUserId(),
-                accountModel.getUserName(), accountModel.getIdentityNumber());
+                accountModel.getUserName(), accountModel.getIdentityNumber(),dto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindCardMapper.class, requestModel);
             bankCardMapper.create(bankCardModel);

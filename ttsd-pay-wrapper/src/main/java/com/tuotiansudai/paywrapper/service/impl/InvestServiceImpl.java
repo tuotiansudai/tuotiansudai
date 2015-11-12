@@ -104,7 +104,7 @@ public class InvestServiceImpl implements InvestService {
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(investModel.getAmount()));
+                String.valueOf(investModel.getAmount()),dto.getSource());
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
