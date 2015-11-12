@@ -3,11 +3,12 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.utils.AmountConverter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class LoanModel {
+public class LoanModel implements Serializable {
     /***
      * 标的号
      ***/
