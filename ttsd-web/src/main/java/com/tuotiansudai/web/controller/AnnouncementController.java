@@ -21,9 +21,9 @@ public class AnnouncementController {
 
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public BaseDto<BasePaginationDataDto> getAnnounceList(@RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
+    public BaseDto<BasePaginationDataDto> getAnnounceList(@RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return announcementManagementService.getAnnouncementList(currentPageNo, pageSize);
+        return announcementManagementService.getAnnouncementList(index, pageSize);
     }
 
     @RequestMapping(value = "/{announceId:^\\d+$}", method = RequestMethod.GET)
