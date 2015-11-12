@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.repository.model.Source;
+
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +22,7 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
     public CustWithdrawalsRequestModel() {
     }
 
-    public CustWithdrawalsRequestModel(String orderId, String userId, String amount) {
+    public CustWithdrawalsRequestModel(String orderId, String userId, String amount,Source source) {
         super();
         this.service = "cust_withdrawals";
         this.applyNotifyFlag = "1";
@@ -28,7 +30,13 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
         this.userId = userId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
+        if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.appWeb.host"), "cust_withdrawals"));
+            this.setSourceV("HTML5");
+        }else{
+
+            this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
+        }
         this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "withdraw_notify");
 
     }
