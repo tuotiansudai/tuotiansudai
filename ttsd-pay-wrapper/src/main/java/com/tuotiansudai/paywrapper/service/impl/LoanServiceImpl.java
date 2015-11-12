@@ -3,7 +3,10 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.dto.InvestSmsNotifyDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -119,7 +122,7 @@ public class LoanServiceImpl implements LoanService {
             investDto.setLoginName(investModel.getLoginName());
             investDto.setAmount(String.valueOf(investModel.getAmount()));
             try {
-                if (this.cancelPayBack(investDto).isSuccess()) {
+                if (this.cancelPayBack(investDto,investModel.getId()).isSuccess()) {
                     logger.debug(investModel.getId() + " cancel payBack is success!");
                 } else {
                     logger.debug(investModel.getId() + " cancel payBack is fail!");
@@ -331,14 +334,13 @@ public class LoanServiceImpl implements LoanService {
         }
     }
 
-    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto) {
+    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto,long investId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
-        InvestModel investModel = new InvestModel(dto);
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(),
-                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE,String.valueOf(investModel.getId()),System.currentTimeMillis()),
-                accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
+                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE,String.valueOf(investId),String.valueOf(System.currentTimeMillis())),
+                accountModel.getPayUserId(), String.valueOf(dto.getAmount()));
         try {
             ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
             payDataDto.setStatus(responseModel.isSuccess());

@@ -123,6 +123,11 @@ public class LoanDto extends BaseDataDto {
     private Date fundraisingEndTime;
 
     /***
+     * 筹款完成时间
+     ***/
+    private Date raisingCompleteTime;
+
+    /***
      * 是否显示在首页 true:显示在首页，false:不显示在首页
      ***/
     private boolean showOnHome;
@@ -329,6 +334,14 @@ public class LoanDto extends BaseDataDto {
 
     public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
+    }
+
+    public Date getRaisingCompleteTime() {
+        return raisingCompleteTime;
+    }
+
+    public void setRaisingCompleteTime(Date raisingCompleteTime) {
+        this.raisingCompleteTime = raisingCompleteTime;
     }
 
     public boolean isShowOnHome() {

@@ -31,7 +31,6 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     @Override
     public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
-        Source source = Source.valueOf(bankCardRequestDto.getBaseParam().getPlatform().toUpperCase());
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
         String loginName = rechargeDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
@@ -39,7 +38,6 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
             return new BaseResponseDto(ReturnMessage.NOT_OPNE_FAST_PAYMENT.getCode(), ReturnMessage.NOT_OPNE_FAST_PAYMENT.getMsg());
         }
         rechargeDto.setBankCode(bankCardModel.getBankCode());
-        rechargeDto.setSource(source);
         BankCardResponseDto bankCardResponseDto = new BankCardResponseDto();
         try {
             BaseDto<PayFormDataDto> formDto = payWrapperClient.recharge(rechargeDto);

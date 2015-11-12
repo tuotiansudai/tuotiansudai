@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.*;
+import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -22,22 +23,26 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     }
 
+    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount,Source source) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+        if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
+            model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.appWeb.host"),"project_transfer_invest"));
+            model.setSourceV("HTML5");
+        }else{
+            model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
+        }
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "invest_notify");
+        model.servType = UmPayServType.TRANSFER_IN_INVEST.getCode();
+        model.transAction = UmPayTransAction.IN.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
     public static ProjectTransferRequestModel newCancelPayBackRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "cancel_pay_back_notify");
         model.servType = UmPayServType.TRANSFER_OUT_CANCEL_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
-        model.particType = UmPayParticType.INVESTOR.getCode();
-        return model;
-    }
-
-    public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
-        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "invest_notify");
-        model.servType = UmPayServType.TRANSFER_IN_INVEST.getCode();
-        model.transAction = UmPayTransAction.IN.getCode();
         model.particType = UmPayParticType.INVESTOR.getCode();
         return model;
     }
