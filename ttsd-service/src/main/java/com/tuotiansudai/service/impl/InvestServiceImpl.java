@@ -4,14 +4,14 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -58,16 +58,21 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
-    private void checkInvestAmount(InvestDto investDto) throws InvestException{
+    private void checkInvestAmount(InvestDto investDto) throws InvestException {
         long loanId = investDto.getLoanIdLong();
         LoanModel loan = loanMapper.findById(loanId);
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
 
+        // 标的状态不对
+        if (LoanStatus.RAISING != loan.getStatus()) {
+            throw new InvestException("标的暂不可投资");
+        }
+
         // 不满足新手标投资限制约束
-        if(ActivityType.NOVICE == loan.getActivityType()){
-            if(!canInvestNoviceLoan(investDto.getLoginName())){
+        if (ActivityType.NOVICE == loan.getActivityType()) {
+            if (!canInvestNoviceLoan(investDto.getLoginName())) {
                 throw new InvestException("你的新手标投资已超上限");
             }
         }
@@ -106,7 +111,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     private boolean canInvestNoviceLoan(String loginName) {
-        if(noviceInvestLimitCount == 0){
+        if (noviceInvestLimitCount == 0) {
             return true;
         }
         int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
@@ -149,7 +154,7 @@ public class InvestServiceImpl implements InvestService {
         long count = investMapper.findCountInvestPagination(loanId, investorLoginName, startTime, endTime, investStatus, loanStatus);
 
 
-        if (count > 0 ) {
+        if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
             items = investMapper.findInvestPagination(loanId, investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
@@ -171,7 +176,7 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public void turnOnAutoInvest(AutoInvestPlanModel model) {
-        if(StringUtils.isBlank(model.getLoginName())){
+        if (StringUtils.isBlank(model.getLoginName())) {
             throw new NullPointerException("Not Login");
         }
 

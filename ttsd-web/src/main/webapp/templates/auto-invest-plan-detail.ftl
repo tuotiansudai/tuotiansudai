@@ -18,7 +18,7 @@
             <li><a href="javascript:">推荐管理</a></li>
         </ul>
     </aside>
-    <div class="content-container fr auto-height">
+    <div class="content-container auto-height">
         <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
         <div class="pad-s">

@@ -1,6 +1,6 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.loaner_loan_list}" activeNav="我的账户" activeLeftNav="我的借款" title="借款记录">
-<div class="content-container fr loan-list-content">
+<div class="content-container loan-list-content">
     <h4 class="column-title"><em class="tc">借款记录</em></h4>
 
     <div class="item-block date-filter">

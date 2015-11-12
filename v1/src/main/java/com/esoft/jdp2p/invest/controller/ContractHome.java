@@ -218,8 +218,8 @@ public class ContractHome {
 		Element tbody = table.getElementsByTag("tbody").first();
 		SimpleDateFormat  format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Invest> is = ht.find(
-				"from Invest i where i.loan.id=? and i.status!=?",
-				new String[] { loan.getId(), InvestStatus.CANCEL });
+				"from Invest i where i.loan.id=? and i.status not in (?,?)",
+				new String[] { loan.getId(), InvestStatus.CANCEL,InvestStatus.UNFINISHED });
 		for (Invest invest : is) {
 			//生成模版
 			String rowsString = insertRow(6);
