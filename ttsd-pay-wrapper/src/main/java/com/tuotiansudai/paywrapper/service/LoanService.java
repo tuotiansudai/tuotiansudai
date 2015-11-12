@@ -1,10 +1,10 @@
 package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
+
+import java.util.Map;
 
 public interface LoanService {
 
@@ -29,4 +29,8 @@ public interface LoanService {
      * @return
      */
     BaseDto<PayDataDto> loanOut(long loanId);
+
+    BaseDto<PayDataDto> cancelLoan(long loanId);
+
+    String cancelPayBackCallback(Map<String, String> paramsMap, String queryString);
 }

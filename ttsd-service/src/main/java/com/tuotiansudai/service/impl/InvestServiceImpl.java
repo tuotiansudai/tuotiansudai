@@ -11,8 +11,8 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.utils.IdGenerator;
 import com.tuotiansudai.utils.InterestCalculator;
 import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +65,11 @@ public class InvestServiceImpl implements InvestService {
         long userInvestMinAmount = loan.getMinInvestAmount();
         long investAmount = AmountConverter.convertStringToCent(investDto.getAmount());
         long userInvestIncreasingAmount = loan.getInvestIncreasingAmount();
+
+        // 标的状态不对
+        if (LoanStatus.RAISING != loan.getStatus()) {
+            throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
+        }
 
         // 不满足新手标投资限制约束
         if (ActivityType.NOVICE == loan.getActivityType()) {
