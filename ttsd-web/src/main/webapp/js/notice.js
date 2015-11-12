@@ -1,40 +1,28 @@
 /**
  * Created by CBJ on 2015/11/11.
  */
-require(['jquery','commonFun','pagination'], function ($) {
+require(['jquery','mustache','text!/tpl/notice-list.mustache','text!/tpl/notice-detail.mustache','commonFun',,'pagination'], function ($,Mustache,ListTemplate,detailTemplate) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
             $detailHead=$('h2',$noticeDetail),
             $detailCon=$('.detail-content',$noticeDetail),
             $footer=$('footer',$noticeDetail),
-            paginationElement = $('.pagination');;
+            paginationElement = $('.pagination');
 
         /* notice list*/
         if($noticeList.length) {
-            var requestData={"currentPageNo":1,"pageSize":10};
-            $.ajax({
-                url: '../announce/list',
-                type: 'GET',
-                data:requestData,
-                dataType: 'json',
-            }).done(function(notice){
-                if(notice.success) {
-                    var noticeList=[];
-                    $.each(notice.data.records,function(key,option) {
-                        noticeList.push('<li><i>●</i><a target="_blank" href="/about/notice-detail?id='+option.id+'">'+option.title+'</a> <time>'+option.createdTime+'</time></li>');
-                    });
-                    $noticeList.empty().append(noticeList.join(''));
-                    paginationElement.loadPagination(requestData, function (data) {
-                    });
-
-                }
+            var requestData={"currentPageNo":1,"pageSize":2};
+            paginationElement.loadPagination(requestData, function (data) {
+                var html = Mustache.render(ListTemplate, data);
+                $noticeList.html(html);
             });
         }
         /* notice detail*/
         if($noticeDetail.length) {
             var url=location.href,
              id=commonFun.parseURL(url).params.id;
+
             $.ajax({
                 url: '../announce/'+id,
                 type: 'GET',

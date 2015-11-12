@@ -5,7 +5,7 @@
             首页 > 关于我们 > 拓天公告 >
         </div>
         <h2 class="a-title article">
-            <span class="title"></span>
+            <span class="title">{}</span>
             <time class="tr">发表时间：<i></i></time>
         </h2>
         <div class="detail-content">
@@ -17,4 +17,5 @@
         <br/>
         <span class="update-time"> 2015年10月26日</span></footer>
     </div>
+
 </@global.main>
