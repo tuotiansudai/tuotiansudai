@@ -297,6 +297,6 @@
     </select>
 
     <update id="updateRaisingCompleteTime" parameterType="map">
-        update loan set raising_complete_time = now() where id = #{loanId}
+        update loan set raising_complete_time = #{raisingCompleteTime} where id = #{loanId}
     </update>
 </mapper>
