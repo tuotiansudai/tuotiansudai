@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
@@ -13,6 +14,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
+import com.tuotiansudai.paywrapper.service.LoanService;
 import com.tuotiansudai.paywrapper.service.NormalRepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
@@ -66,8 +68,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
 
     @Autowired
     private PaySyncClient paySyncClient;
+
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private LoanService loanService;
 
     @Override
     @Transactional
@@ -168,11 +174,12 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         //最后一期更新Loan Status = COMPLETE
         boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == enabledLoanRepay.getPeriod();
         if (isLastPeriod) {
-            loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
+            // TODO: 2.多余的钱返平台
             //TODO:最后一期更新标的状态
+
+            loanService.updateLoanStatus(loanModel.getId(), LoanStatus.COMPLETE);
         }
 
-        // TODO: 2.多余的钱返平台
     }
 
     private void paybackInvestRepay(LoanModel loanModel, LoanRepayModel enabledLoanRepay) {
@@ -254,7 +261,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 logger.error(MessageFormat.format("transfer out balance for invest repay fee (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
-            systemBillService.transferIn(actualInvestFee, String.valueOf(investRepayId), SystemBillBusinessType.INVEST_FEE, "");
+            String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorAccount.getLoginName(), String.valueOf(investRepayId));
+            systemBillService.transferIn(investRepayId, actualInvestFee, SystemBillBusinessType.INVEST_FEE, detail);
         }
     }
 }

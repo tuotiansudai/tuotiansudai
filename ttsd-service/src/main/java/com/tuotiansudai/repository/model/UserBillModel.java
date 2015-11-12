@@ -8,7 +8,7 @@ public class UserBillModel {
 
     private String loginName;
 
-    private long orderId;
+    private Long orderId;
 
     private long amount;
 
@@ -55,11 +55,11 @@ public class UserBillModel {
         this.loginName = loginName;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

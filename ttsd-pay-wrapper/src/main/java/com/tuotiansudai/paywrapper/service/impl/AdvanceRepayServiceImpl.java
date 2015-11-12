@@ -279,7 +279,8 @@ public class AdvanceRepayServiceImpl implements AdvanceRepayService {
                 logger.error(MessageFormat.format("transfer out balance for invest payback fee (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
-            systemBillService.transferIn(actualInvestFee, String.valueOf(investRepayId), SystemBillBusinessType.INVEST_FEE, "");
+            String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorAccount.getLoginName(), String.valueOf(investRepayId));
+            systemBillService.transferIn(actualInvestFee, investRepayId, SystemBillBusinessType.INVEST_FEE, detail);
         }
     }
 }

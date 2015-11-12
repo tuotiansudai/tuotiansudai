@@ -20,29 +20,15 @@ public class SystemBillServiceImpl implements SystemBillService {
 
     @Override
     @Transactional
-    public void transferOut(long amount, String orderId, SystemBillBusinessType businessType, String detail) {
-        SystemBillModel systemBillModel = new SystemBillModel();
-        systemBillModel.setOrderId(orderId);
-        systemBillModel.setType(SystemBillOperationType.OUT);
-        systemBillModel.setAmount(amount);
-        systemBillModel.setBusinessType(businessType);
-        systemBillModel.setDetail(detail);
-        systemBillModel.setCreatedTime(new Date());
+    public void transferOut(long orderId, long amount, SystemBillBusinessType businessType, String detail) {
+        SystemBillModel systemBillModel = new SystemBillModel(orderId, amount, SystemBillOperationType.OUT, businessType, detail);
         systemBillMapper.create(systemBillModel);
     }
 
     @Override
     @Transactional
-    public void transferIn(long amount, String orderId, SystemBillBusinessType businessType, String detail) {
-        SystemBillModel systemBillModel = new SystemBillModel();
-        systemBillModel.setOrderId(orderId);
-        systemBillModel.setType(SystemBillOperationType.IN);
-        systemBillModel.setAmount(amount);
-        systemBillModel.setBusinessType(businessType);
-        systemBillModel.setDetail(detail);
-        systemBillModel.setCreatedTime(new Date());
+    public void transferIn(long orderId, long amount, SystemBillBusinessType businessType, String detail) {
+        SystemBillModel systemBillModel = new SystemBillModel(orderId, amount, SystemBillOperationType.IN, businessType, detail);
         systemBillMapper.create(systemBillModel);
     }
-
-
 }

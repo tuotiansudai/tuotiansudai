@@ -71,12 +71,14 @@ public class PayCallbackController {
         }
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
     @RequestMapping(value = "/mer_bind_card_apply_notify", method = RequestMethod.GET)
     public ModelAndView bindBankCardNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
     public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
