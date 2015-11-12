@@ -258,6 +258,8 @@ public class InvestServiceImpl implements InvestService {
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
                     loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+                    // 更新筹款完成时间
+                    loanMapper.updateRaisingCompleteTime(loanId);
                 }
             }
         } else {
@@ -435,6 +437,8 @@ public class InvestServiceImpl implements InvestService {
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
             loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+            // 更新筹款完成时间
+            loanMapper.updateRaisingCompleteTime(loanId);
         }
 
         String respData = callbackRequest.getResponseData();

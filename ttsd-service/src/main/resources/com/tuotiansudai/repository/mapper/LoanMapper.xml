@@ -13,7 +13,6 @@
         <result column="loaner_login_name" property="loanerLoginName"></result>
         <result column="type" property="type"></result>
         <result column="periods" property="periods"></result>
-        <result column="loan_amount" property="loanAmount"></result>
         <result column="description_text" property="descriptionText"></result>
         <result column="description_html" property="descriptionHtml"></result>
         <result column="base_rate" property="baseRate"></result>
@@ -27,12 +26,13 @@
         <result column="contract_id" property="contractId"></result>
         <result column="fundraising_start_time" property="fundraisingStartTime"></result>
         <result column="fundraising_end_time" property="fundraisingEndTime"></result>
+        <result column="raising_complete_time" property="raisingCompleteTime"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="verify_time" property="verifyTime"></result>
         <result column="recheck_time" property="recheckTime"></result>
         <result column="status" property="status"></result>
-        <result column="loan_amount" property="loanAmount"></result>
+
         <result column="next_repay_date" property="nextRepayDate"></result>
         <result column="completed_date" property="completedDate"></result>
         <result column="unpaid_amount" property="unpaidAmount"></result>
@@ -224,6 +224,9 @@
             <if test="fundraisingEndTime !=null">
                 fundraising_end_time = #{fundraisingEndTime},
             </if>
+            <if test="raisingCompleteTime !=null">
+                raising_complete_time = #{raisingCompleteTime},
+            </if>
             <if test="showOnHome !=null">
                 show_on_home = #{showOnHome},
             </if>
@@ -293,4 +296,7 @@
         </where>
     </select>
 
+    <update id="updateRaisingCompleteTime" parameterType="map">
+        update loan set raising_complete_time = now() where id = #{loanId}
+    </update>
 </mapper>
