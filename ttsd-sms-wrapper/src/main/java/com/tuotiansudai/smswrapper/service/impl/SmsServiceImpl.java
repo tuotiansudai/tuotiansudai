@@ -7,10 +7,7 @@ import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.smswrapper.SmsTemplate;
 import com.tuotiansudai.smswrapper.client.SmsClient;
-import com.tuotiansudai.smswrapper.repository.mapper.InvestNotifyMapper;
-import com.tuotiansudai.smswrapper.repository.mapper.RegisterCaptchaMapper;
-import com.tuotiansudai.smswrapper.repository.mapper.RetrievePasswordCaptchaMapper;
-import com.tuotiansudai.smswrapper.repository.mapper.UserPasswordChangedNotifyMapper;
+import com.tuotiansudai.smswrapper.repository.mapper.*;
 import com.tuotiansudai.smswrapper.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +49,12 @@ public class SmsServiceImpl implements SmsService {
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
         String content = SmsTemplate.SMS_PASSWORD_CHANGED_NOTIFY_TEMPLATE.generateContent(new HashMap<String,String>(0));
         return smsClient.sendSMS(UserPasswordChangedNotifyMapper.class, mobile, content, "");
+    }
+
+    @Override
+    public BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg) {
+        Map<String, String> map = ImmutableMap.<String, String>builder().put("errMsg", errMsg).build();
+        String content = SmsTemplate.SMS_INVEST_FATAL_NOTIFY_TEMPLATE.generateContent(map);
+        return smsClient.sendSMS(InvestFatalNotifyMapper.class, mobile, content, "");
     }
 }

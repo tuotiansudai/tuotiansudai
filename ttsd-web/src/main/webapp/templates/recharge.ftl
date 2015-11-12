@@ -2,7 +2,7 @@
 <@global.main pageCss="" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
-        <div class="recharge-bind-card pad-m">
+        <div class="recharge-bind-card pad-s">
         <ul class="payment-mode clear">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>

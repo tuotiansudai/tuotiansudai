@@ -36,6 +36,8 @@ public class SecurityLogController {
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                  @RequestParam(name = "success", required = false) Boolean success) {
 
+        ModelAndView modelAndView = new ModelAndView("/login-log");
+
         DateTime now = new DateTime().withTimeAtStartOfDay();
         if (selectedYear == null) {
             selectedYear = now.getYear();
@@ -44,17 +46,14 @@ public class SecurityLogController {
             selectedMonth = now.getMonthOfYear();
         }
 
-        if (new DateTime().withDate(selectedYear, selectedMonth, now.dayOfMonth().getMaximumValue()).isAfterNow() ||
-                new DateTime().withDate(selectedYear, selectedMonth, now.dayOfMonth().getMaximumValue()).isBefore(new DateTime(2015, 11, 1, 0, 0, 0))) {
-            selectedYear = now.getYear();
-            selectedMonth = now.getMonthOfYear();
+        if (new DateTime().withDate(selectedYear, selectedMonth, 1).isBeforeNow() &&
+                new DateTime().withDate(selectedYear, selectedMonth, new DateTime().withDate(selectedYear, selectedMonth, 1).dayOfMonth().getMaximumValue()).isAfter(new DateTime(2015, 11, 1, 0, 0, 0))) {
+            BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(loginName, success, index, pageSize, selectedYear, selectedMonth);
+            modelAndView.addObject("data", data);
+        } else {
+            modelAndView.addObject("data", new BasePaginationDataDto<>(1, pageSize, 0, Lists.<LoginLogPaginationItemDataDto>newArrayList()));
         }
 
-        BasePaginationDataDto<LoginLogPaginationItemDataDto> data = loginLogService.getLoginLogPaginationData(loginName, success, index, pageSize, selectedYear, selectedMonth);
-
-        ModelAndView modelAndView = new ModelAndView("/login-log");
-
-        modelAndView.addObject("data", data);
         modelAndView.addObject("years", Lists.newArrayList("2015", "2016", "2017", "2018", "2019", "2020"));
         modelAndView.addObject("loginName", loginName);
         modelAndView.addObject("selectedYear", String.valueOf(selectedYear));

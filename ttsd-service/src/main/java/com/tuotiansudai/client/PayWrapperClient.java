@@ -47,6 +47,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String repayPath = "/repay";
 
+    private String cancelLoanPath = "/loan/{0}/cancel";
+
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         return syncExecute(dto, registerPath, "POST");
     }
@@ -65,6 +67,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         return asyncExecute(dto, investPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> cancelLoan(Long loanId) {
+        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId.toString()), "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {

@@ -4,14 +4,19 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.MerBindProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.MerUpdateProjectMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
+import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackRequestModel;
+import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerBindProjectRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.MerUpdateProjectRequestModel;
@@ -46,6 +51,10 @@ public class LoanServiceImpl implements LoanService {
 
     static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
 
+    private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
+
+    private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE = "{0}" + CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR + "{1}";
+
     @Autowired
     private LoanMapper loanMapper;
 
@@ -73,6 +82,9 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
+    @Autowired
+    private PayAsyncClient payAsyncClient;
+
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
@@ -98,6 +110,29 @@ public class LoanServiceImpl implements LoanService {
         }
         baseDto.setData(payDataDto);
         return baseDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public BaseDto<PayDataDto> cancelLoan(long loanId) {
+        List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
+        for (InvestModel investModel : investModels) {
+            InvestDto investDto = new InvestDto();
+            investDto.setLoanId(String.valueOf(loanId));
+            investDto.setLoginName(investModel.getLoginName());
+            investDto.setAmount(String.valueOf(investModel.getAmount()));
+            try {
+                if (this.cancelPayBack(investDto,investModel.getId()).isSuccess()) {
+                    logger.debug(investModel.getId() + " cancel payBack is success!");
+                } else {
+                    logger.debug(investModel.getId() + " cancel payBack is fail!");
+                }
+            } catch (Exception e) {
+                logger.error(e.getLocalizedMessage(),e);
+                continue;
+            }
+        }
+        return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -298,4 +333,59 @@ public class LoanServiceImpl implements LoanService {
             logger.error("update loan status failed : "+dto.getData().getMessage());
         }
     }
+
+    private BaseDto<PayDataDto> cancelPayBack(InvestDto dto,long investId) {
+        BaseDto<PayDataDto> baseDto = new BaseDto<>();
+        PayDataDto payDataDto = new PayDataDto();
+        AccountModel accountModel = accountMapper.findByLoginName(dto.getLoginName());
+        ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.newCancelPayBackRequest(dto.getLoanId(),
+                MessageFormat.format(CANCEL_INVEST_PAY_BACK_ORDER_ID_TEMPLATE,String.valueOf(investId),String.valueOf(System.currentTimeMillis())),
+                accountModel.getPayUserId(), String.valueOf(dto.getAmount()));
+        try {
+            ProjectTransferResponseModel responseModel = paySyncClient.send(ProjectTransferMapper.class, requestModel, ProjectTransferResponseModel.class);
+            payDataDto.setStatus(responseModel.isSuccess());
+            payDataDto.setCode(responseModel.getRetCode());
+            payDataDto.setMessage(responseModel.getRetMsg());
+        } catch (PayException e) {
+            payDataDto.setStatus(false);
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        baseDto.setData(payDataDto);
+        return baseDto;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String cancelPayBackCallback(Map<String, String> paramsMap, String queryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(
+                paramsMap,
+                queryString,
+                ProjectTransferNotifyMapper.class,
+                ProjectTransferNotifyRequestModel.class);
+        if (callbackRequest == null) {
+            return null;
+        }
+        String orderIdOri = callbackRequest.getOrderId();
+        String orderIdStr = orderIdOri == null ? "" : orderIdOri.split(CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR)[0];
+        long orderId = Long.parseLong(orderIdStr);
+        InvestModel investModel = investMapper.findById(orderId);
+        if (investModel == null) {
+            logger.error(MessageFormat.format("invest callback notify order is not exist (orderId = {0})", orderId));
+            return null;
+        }
+        String loginName = investModel.getLoginName();
+        if (callbackRequest.isSuccess()) {
+            investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
+            try {
+                amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+            } catch (AmountTransferException e) {
+                logger.error(e.getLocalizedMessage(),e);
+            }
+        } else {
+            //TODO SEND_SMS
+        }
+        String respData = callbackRequest.getResponseData();
+        return respData;
+    }
+
 }

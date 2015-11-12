@@ -1,21 +1,13 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDataDto;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.paywrapper.service.*;
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
-import com.tuotiansudai.paywrapper.service.AgreementService;
-import com.tuotiansudai.paywrapper.service.BindBankCardService;
-import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.RechargeService;
-import com.tuotiansudai.paywrapper.service.WithdrawService;
+import com.tuotiansudai.paywrapper.service.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +42,8 @@ public class PayCallbackController {
     @Autowired
     private AgreementService agreementService;
 
+    @Autowired
+    private LoanService loanService;
 
     @RequestMapping(value = "/recharge_notify", method = RequestMethod.GET)
     public ModelAndView rechargeNotify(HttpServletRequest request) {
@@ -117,6 +111,13 @@ public class PayCallbackController {
         logger.info("into over_invest_payback_notify");
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.investService.overInvestPaybackCallback(paramsMap, request.getQueryString());
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
+    @RequestMapping(value = "/cancel_pay_back_notify", method = RequestMethod.GET)
+    public ModelAndView cancelPayBackNotify(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData = loanService.cancelPayBackCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
