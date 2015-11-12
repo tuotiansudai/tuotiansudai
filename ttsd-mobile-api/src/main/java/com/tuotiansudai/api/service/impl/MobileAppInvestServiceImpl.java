@@ -45,7 +45,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 responseDto.setData(investResponseDataDto);
             } else {
                 responseDto.setCode(ReturnMessage.INVEST_FAILED.getCode());
-                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg()+":"+formDto.getData().getMessage());
+                responseDto.setMessage(ReturnMessage.INVEST_FAILED.getMsg() + ":" + formDto.getData().getMessage());
             }
         } catch (InvestException e) {
             responseDto = convertExceptionToDto(e);
@@ -97,6 +97,9 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
                 baseResponseDto.setCode(ReturnMessage.OUT_OF_NOVICE_INVEST_LIMIT.getCode());
                 baseResponseDto.setMessage(ReturnMessage.OUT_OF_NOVICE_INVEST_LIMIT.getMsg());
                 break;
+            case ILLEGAL_LOAN_STATUS:
+                baseResponseDto.setCode(ReturnMessage.ILLEGAL_LOAN_STATUS.getCode());
+                baseResponseDto.setMessage(ReturnMessage.ILLEGAL_LOAN_STATUS.getMsg());
         }
         return baseResponseDto;
     }

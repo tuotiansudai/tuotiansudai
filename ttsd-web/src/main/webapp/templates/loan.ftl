@@ -44,7 +44,7 @@
                 <form action="/invest" method="post">
                     <h5 class="l-title">拓天速贷提醒您：理财非存款，投资需谨慎！</h5>
                     <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr">${loan.amountNeedRaised?string("0.00")} 元</em></dd>
+                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i> 元</em></dd>
                         <dd><span class="fl">账户余额：</span><em class="fr account-amount">${loan.balance?string("0.00")} 元</em></dd>
                         <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount} 元</em></dd>
                         <dd class="invest-amount tl"><#assign defaultInvestAmount = loan.maxAvailableInvestAmount!>

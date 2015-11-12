@@ -8,7 +8,7 @@ public enum  LoanStatus {
     RAISING("1","筹款中"),
     REPAYING("2","还款中"),
     OVERDUE("","逾期"),
-    COMPLETE("4","完成");
+    COMPLETE("3","完成");
 
     LoanStatus(String code,String description){
         this.description = description;

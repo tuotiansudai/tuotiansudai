@@ -49,7 +49,7 @@ public enum ReturnMessage {
     INSUFFICIENT_BALANCE("0032","账户余额不足，请充值"),
     EXCEED_MONEY_NEED_RAISED("0033","标的可投金额不足"),
     UNREACHED_MONEY_LIMIT_EXCETPTION("0034","投资金额未到达优惠券使用条件"),
-    LLLEGAL_LOAN_STATUS_EXCEPTION("0035","当前借款不可投资"),
+    ILLEGAL_LOAN_STATUS("0035","当前借款不可投资"),
     NO_MATCHING_OBJECTS_EXCEPTION("0036","投资失败"),
     EXCEED_DEAD_LINE_EXCEPTION("0037","优惠券已过期"),
     USER_IS_NOT_CERTIFICATED("0038","您尚未进行实名认证无法投资"),
