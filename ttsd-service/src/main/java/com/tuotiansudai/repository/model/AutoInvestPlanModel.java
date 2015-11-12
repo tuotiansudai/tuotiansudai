@@ -1,10 +1,9 @@
 package com.tuotiansudai.repository.model;
 
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
-
+import java.io.Serializable;
 import java.util.Date;
 
-public class AutoInvestPlanModel {
+public class AutoInvestPlanModel implements Serializable {
     private long id;
     private String loginName;
     private long minInvestAmount;

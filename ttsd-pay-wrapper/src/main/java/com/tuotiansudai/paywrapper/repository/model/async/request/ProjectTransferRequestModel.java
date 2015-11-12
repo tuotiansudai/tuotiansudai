@@ -22,6 +22,16 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     }
 
+    public static ProjectTransferRequestModel newCancelPayBackRequest(String projectId, String orderId, String userId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
+        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "cancel_pay_back_notify");
+        model.servType = UmPayServType.TRANSFER_OUT_CANCEL_PAYBACK.getCode();
+        model.transAction = UmPayTransAction.OUT.getCode();
+        model.particType = UmPayParticType.INVESTOR.getCode();
+        return model;
+    }
+
     public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
         model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
@@ -44,7 +54,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newRepayRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "repay_notify");
         model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
@@ -54,7 +64,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newAdvanceRepayRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "advance_repay_notify");
         model.servType = UmPayServType.TRANSFER_IN_REPAY.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
@@ -64,7 +74,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     public static ProjectTransferRequestModel newRepayPaybackRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "repay_payback_notify");
         model.servType = UmPayServType.TRANSFER_OUT_REPAY_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
@@ -72,9 +82,9 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static ProjectTransferRequestModel newRepayInvestFeeRequest(String projectId, String orderId, String userId, String amount) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.MERCHANT);
-        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+    public static ProjectTransferRequestModel newRepayInvestFeeRequest(String projectId, String orderId, String amount) {
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, UMP_PROPS.getProperty("mer_id"), amount, UmPayParticAccType.MERCHANT);
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "repay_invest_fee_notify");
         model.servType = UmPayServType.TRANSFER_OUT_PLATFORM_FEE.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();
@@ -93,7 +103,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
      */
     public static ProjectTransferRequestModel overInvestPaybackRequest(String projectId, String orderId, String userId, String amount) {
         ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        model.retUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.web.host"), "");
+        model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
         model.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "over_invest_payback_notify");
         model.servType = UmPayServType.TRANSFER_OVER_INVEST_PAYBACK.getCode();
         model.transAction = UmPayTransAction.OUT.getCode();

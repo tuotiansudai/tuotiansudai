@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.Source;
 
 public interface LoginLogService {
 
-    void generateLoginLog(String loginName, Source source, String ip, String device, boolean loginSuccess);
+    void generateLoginLog(String loginNameOrMobile, Source source, String ip, String device, boolean loginSuccess);
 
     BasePaginationDataDto<LoginLogPaginationItemDataDto> getLoginLogPaginationData(String loginName, Boolean success, int index, int pageSize, int year, int month);
 

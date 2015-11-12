@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.LoanRepayMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="loanRepayResultMap" type="LoanRepayModel">
         <id column="id" property="id"/>
         <result column="loan_id" property="loanId"/>

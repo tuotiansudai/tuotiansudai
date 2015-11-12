@@ -2,7 +2,7 @@
 <@global.main pageCss="" pageJavascript="${js.recharge}" activeNav="我的账户" activeLeftNav="资金管理" title="充值">
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
-        <div class="recharge-bind-card pad-m">
+        <div class="recharge-bind-card pad-s">
         <ul class="payment-mode clear">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
@@ -55,21 +55,19 @@
             </div>
 
             <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
-                <b class="title">请选择银行：</b>
-                <ol>
-                <#list banks as bank>
-                    <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                        <input data-name="${bank}" type="radio" id="bank-${bank}" name="bank" <#if bank_index == 0>checked="checked"</#if>>
-                        <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
-                    </li>
-                </#list>
-                </ol>
                 <div class="recharge-form">
+                    <b class="title">请选择银行：</b>
                     <form action="/recharge" method="post" target="_blank">
+                        <ol>
+                            <#list banks as bank>
+                                <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
+                                    <input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if> value="${bank}">
+                                    <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                                </li>
+                            </#list>
+                        </ol>
                         账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
                         输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
-                        <input class="selected-bank" type="hidden" name="backCode" value="CMB"/>
-
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>

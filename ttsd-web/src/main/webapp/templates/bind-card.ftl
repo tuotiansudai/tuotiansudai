@@ -1,124 +1,52 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.bind_card}" activeNav="我的账户" activeLeftNav="个人资料" title="绑定银行卡">
 
-<div class="content-container fr">
+<div class="content-container">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
     <div class="recharge-bind-card pad-m">
     <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
-        <#if bindCardStatus == "unbindCard">
-        <#--用户尚未绑定银行卡快捷支付-->
-            <form action="" style="display: block" method="post" target="_blank">
-
-              真实姓名：${userName}
-                <div class="clear-blank"></div>
-                <div class="e-bank-recharge">
-                    <b class="title">选择银行:</b>
-                    <ol class="select-bank">
-                        <li>
-                            <input data-name="CMB" type="radio" name="bank" id="bank-zs" checked="checked">
-                            <label for="bank-zs"><img src="/images/bank/CMB.jpg" alt=""></label>
-                        </li>
-                        <li>
-                            <input data-name="ICBC" type="radio" name="bank" id="bank-gs">
-                            <label for="bank-gs"><img src="/images/bank/ICBC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="CMBC" type="radio" name="bank" id="bank-ms">
-                            <label for="bank-ms"><img src="/images/bank/CMBC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="CCB" type="radio" name="bank" id="bank-js">
-                            <label for="bank-js"><img src="/images/bank/CCB.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="BOC" type="radio" name="bank" id="bank-zg">
-                            <label for="bank-zg"><img src="/images/bank/BOC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="SPDB" type="radio" name="bank" id="bank-pf">
-                            <label for="bank-pf"><img src="/images/bank/SPDB.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="CIB" type="radio" name="bank" id="bank-xy">
-                            <label for="bank-xy"><img src="/images/bank/CIB.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="COMM" type="radio" name="bank" id="bank-jt">
-                            <label for="bank-jt"><img src="/images/bank/COMM.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="CEB" type="radio" name="bank" id="bank-gd">
-                            <label for="bank-gd"><img src="/images/bank/CEB.jpg" alt=""> </label>
-                        </li>
-                        <li><input data-name="PSBC" type="radio" name="bank" id="bank-yz">
-                            <label for="bank-yz"><img src="/images/bank/PSBC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="HXB" type="radio" name="bank" id="bank-hx">
-                            <label for="bank-hx"><img src="/images/bank/HXB.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="BJBANK" type="radio" name="bank" id="bank-bj">
-                            <label for="bank-bj"><img src="/images/bank/BJBANK.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="CITIC" type="radio" name="bank" id="bank-zx">
-                            <label for="bank-zx"><img src="/images/bank/CITIC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="WZCB" type="radio" name="bank" id="bank-wz"><label for="bank-wz"><img
-                                src="/images/bank/WZCB.jpg" alt=""> </label></li>
-                        <li>
-                            <input data-name="SHRCB" type="radio" name="bank" id="bank-s">
-                            <label for="bank-s"><img src="/images/bank/SHRCB.jpg" alt=""> </label>
-                        </li>
-                        <li class="m-right-0">
-                            <input data-name="ABC" type="radio" name="bank-n" id="bank-ny">
-                            <label for="bank-ny"><img src="../images/bank/ABC.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="GDB" type="radio" name="bank" id="bank-gf">
-                            <label for="bank-gf"><img src="/images/bank/GDB.jpg" alt=""> </label>
-                        </li>
-                        <li>
-                            <input data-name="BEA" type="radio" name="bank" id="bank-dy">
-                            <label for="bank-dy"><img src="/images/bank/BEA.jpg" alt=""> </label>
-                        </li>
-                    </ol>
-                    <div class="recharge-form">
-                        <form action="" method="post" target="_blank">
-                            银行卡：<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
-                            <div class="tc pad-m">
-                                <input type="submit" class="btn bind-card-submit" disabled="disabled"  value="确认绑定"/>
-                            </div>
-                        </form>
-                     </div>
+        <#if isBindCard>
+        <div class="card-box">
+            <form class="open-fast-pay-form" action="/agreement" method="post" target="_blank">
+                <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png" />
+                <span class="user fr">${userName}</span>
+                <div class="clear"></div>
+                <div class="card-num">${cardNumber}</div>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <div class="options">
+                    <a class="card-edit" href="javascript:">换卡</a>
+                    <#if openFastPayAvailable>
+                    <input type="hidden" name="fastPay" value="true"/>
+                    <a class="open-fast-pay" href="javascript:">开通快捷支付</a>
+                    </#if>
                 </div>
-
             </form>
-        <#--用户尚未绑定银行卡快捷支付-->
-        </#if>
-        <#if bindCardStatus == "commonBindCard" ||  bindCardStatus == "specialBindCard">
-        <#--未开通快捷支付-->
-            <div class="card-box">
-                <form class="open-fast-pay-form" eaction="/agrement" method="post" target="_blank">
-                        <img class="logo-card fl" src="${staticServer}/images/bindcard/logo-${bankCode}.png" />
-                        <span class="user fr">${userName}</span>
-<div class="clear"></div>
-                    <div class="card-num">${cardNumber}</div>
-                    <div class="options">
+        </div>
+        <#else>
+        <form action="" method="post" target="_blank">
+            真实姓名：${userName}
+            <div class="clear-blank"></div>
+            <div class="e-bank-recharge">
+                <b class="title">选择银行:</b>
+                <ol class="select-bank">
+                    <#list banks as bank>
+                        <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
+                            <input data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
+                            <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                        </li>
+                    </#list>
+                </ol>
+                <div class="recharge-form">
+                    <form action="" method="post" target="_blank">
+                        银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <a class="card-edit" href="">修改</a>
-                        <#if bindCardStatus == "specialBindCard">
-                            <input type="hidden" name="fastPay" value="true"/>
-                            <a class="open-fast-pay" href="javascript:">开通快捷支付</a>
-                        </#if>
-                    </div>
-                </form>
+                        <div class="tc pad-m">
+                            <input type="submit" class="btn bind-card-submit" disabled="disabled"  value="确认绑定"/>
+                        </div>
+                    </form>
+                </div>
             </div>
-        <#--未开通快捷支付-->
-
+        </form>
         </#if>
     </div>
         <div class="clear-blank"></div>
@@ -131,7 +59,6 @@
             5、如果您已经开通快捷支付，系统不再支持您更换银行卡。<br/>
         </div>
     </div>
-
 </div>
 
 <div id="pop-bind-card" class="pad-m recharge-plat" style="display: none;">

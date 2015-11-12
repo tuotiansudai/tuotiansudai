@@ -10,7 +10,9 @@ public enum InvestStatus {
 
     OVER_INVEST_PAYBACK("超投返款"),
 
-    OVER_INVEST_PAYBACK_FAIL("超投返款失败");
+    OVER_INVEST_PAYBACK_FAIL("超投返款失败"),
+
+    CANCEL_INVEST_PAYBACK("流标返款");
 
     private final String description;
 

@@ -236,7 +236,6 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             String investFeeOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime()));
             ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanId),
                     investFeeOrderId,
-                    investorAccount.getPayUserId(),
                     String.valueOf(actualInvestFee));
 
             try {

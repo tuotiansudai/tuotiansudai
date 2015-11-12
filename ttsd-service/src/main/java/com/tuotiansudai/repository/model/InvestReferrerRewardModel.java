@@ -1,8 +1,9 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class InvestReferrerRewardModel {
+public class InvestReferrerRewardModel implements Serializable {
 
     private long id;
 

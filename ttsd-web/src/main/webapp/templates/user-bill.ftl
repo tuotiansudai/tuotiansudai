@@ -3,17 +3,19 @@
 <div class="content-container auto-height user-bill-list-content">
     <h4 class="column-title"><em class="tc">资金管理</em></h4>
 
-    <div class="money-box">
-        <div class="balance">
-            可用余额：<span>${balance} 元</span>
+    <div class="money-box pad-s">
+        <div class="borderBox bRadiusBox">
+            <div class="balance">
+                可用余额：<span>${balance} 元</span>
+            </div>
+            <div class="item-block">
+                <a class="btn-recharge" href="/recharge">充值</a>
+                <a class="btn-invest" href="/loanList/web">投资</a>
+                <a class="btn-withdraw" href="/withdraw">提现</a>
+            </div>
+            <p>累计充值：<span>${rechargeAmount} 元</span></p>
+            <p>累计提现：<span>${withdrawAmount} 元</span></p>
         </div>
-        <div class="item-block">
-            <a class="btn-recharge" href="/recharge">充值</a>
-            <a class="btn-invest" href="/loanList/web">投资</a>
-            <a class="btn-withdraw" href="/withdraw">提现</a>
-        </div>
-        <p>累计充值：<span>${rechargeAmount} 元</span></p>
-        <p>累计提现：<span>${withdrawAmount} 元</span></p>
     </div>
 
     <div class="item-block date-filter">

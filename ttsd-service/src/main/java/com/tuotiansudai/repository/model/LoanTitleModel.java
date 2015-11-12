@@ -1,11 +1,11 @@
 package com.tuotiansudai.repository.model;
 
-import java.math.BigInteger;
+import java.io.Serializable;
 
 /**
  * Created by tuotian on 15/8/17.
  */
-public class LoanTitleModel {
+public class LoanTitleModel implements Serializable {
     private long id;
     /***
      * 标题类型

@@ -120,4 +120,11 @@ public class LoanController {
         }
         return baseDto;
     }
+
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> cancelLoan(@RequestBody LoanDto loanDto) {
+        return loanService.cancelLoan(loanDto);
+    }
+
 }
