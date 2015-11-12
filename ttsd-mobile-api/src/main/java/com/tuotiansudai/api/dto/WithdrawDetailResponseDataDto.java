@@ -1,7 +1,10 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.utils.AmountConverter;
 import org.apache.commons.lang3.NotImplementedException;
+
+import java.text.SimpleDateFormat;
 
 public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     private String withdrawId;
@@ -15,7 +18,18 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     }
 
     public WithdrawDetailResponseDataDto(WithdrawModel withdrawCash) {
-        throw new NotImplementedException(getClass().getName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        this.withdrawId = "" + withdrawCash.getId();
+        this.time = sdf.format(withdrawCash.getCreatedTime());
+        if(withdrawCash.getRecheckTime()!=null) {
+            this.recheckTime = sdf.format(withdrawCash.getRecheckTime());
+        }else{
+            this.recheckTime = "";
+        }
+        this.money = AmountConverter.convertCentToString(withdrawCash.getAmount());
+        this.status = withdrawCash.getStatus().name().toLowerCase();
+        this.statusDesc = withdrawCash.getStatus().getDescription();
+
     }
 
     public String getWithdrawId() {
@@ -65,4 +79,5 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
     }
+
 }
