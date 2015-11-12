@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="${js.notice}" activeNav="关于我们" activeLeftNav="拓天公告" title="拓天公告详情">
+    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="拓天公告" title="拓天公告详情">
     <div class="about-us-container" id="noticeDetail">
         <div class="crumb-lead">
             首页 > 关于我们 > 拓天公告 >
