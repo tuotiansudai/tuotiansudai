@@ -68,7 +68,7 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> cancelLoan(Long loanId) {
-        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId), "POST");
+        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId.toString()), "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {
