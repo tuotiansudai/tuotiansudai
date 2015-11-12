@@ -3,7 +3,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha',registerUserForm),
         showAgreement=$('.show-agreement',registerUserForm),
-        $agreement=$('#agreement');
+        $agreement=$('#agreementInput');
     var $imgCaptchaDialog=$('.image-captcha-dialog'),
         imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
         imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
@@ -29,7 +29,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         layer.open({
             type: 1,
             title: '手机验证',
-            area: ['360px', '190px'],
+            area: ['350px', '210px'],
             shadeClose: true,
             content: $('.image-captcha-dialog'),
             success: function(layero, index){
@@ -50,11 +50,8 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
 
     /*手机验证码*/
     imageCaptchaForm.validate({
-        success: 'form-valid',
         focusInvalid: false,
-        errorClass: 'form-error',
         onkeyup:true,
-       // errorLabelContainer:$('.image-captcha-error'),
         onfocusout: function (element) {
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
@@ -130,7 +127,9 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
 
     registerUserForm.validate({
         focusInvalid: false,
-        errorClass: 'form-error',
+        onkeyup:true,
+        //errorClass: 'form-error',
+        //success:'form-valid',
         rules: {
             loginName: {
                 required: true,
@@ -214,21 +213,16 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             }
         },
         success: function (error, element) {
-            error.addClass("form-valid");
             if (element.name === 'mobile') {
                 $('.fetch-captcha').prop('disabled', false);
             }
             var $agreementBox=$agreement.parent('label');
             $agreementBox.append($('#agreement-error'));
+        },
+        submitHandler:function() {
+
         }
 
     });
-
-    //var moveAgree=function() {
-    //    var $agreementDom=$('#agreement');
-    //    $agreementDom.next('label').prepend($agreementDom.parent('label'));
-    //}
-
-
 
 });

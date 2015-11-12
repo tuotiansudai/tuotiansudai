@@ -13,7 +13,6 @@
             <li><i>●</i><a href="/about/notice-detail">拓天速贷新手标收益10%，60万优质债权投放公告60万优质债权投放公告</a> <time>2015-10-26 14:20:24</time></li>
             <li><i>●</i><a href="/about/notice-detail">拓天速贷新手标收益10%，60万优质债权投放公告</a> <time>2015-10-26 14:20:24</time></li>
 
-
         </ul>
     </div>
 </@global.main>

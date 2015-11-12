@@ -33,7 +33,7 @@
                 </li>
                 <li>
                     <label for="agreement">
-                    <input type="checkbox" name='agreement' id="agreement" class='agreement-check' />
+                    <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
                         <span class="agreement">同意拓天速贷<a href="javascript:;" class="show-agreement">《服务协议》</a></span>
                     </label>
                 </li>
@@ -141,5 +141,10 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.register_user}">
 </@global.javascript>
+<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
+<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
+defer
+async="true"
+data-main="${requestContext.getContextPath()}/js/register_user.js"></script>
 </body>
 </html>
