@@ -288,7 +288,7 @@ public class LoanMapperTest {
 
         LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
         loanMapper.create(fakeCanceledLoan1);
-        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId());
+        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId(), new Date());
 
         LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
         assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
