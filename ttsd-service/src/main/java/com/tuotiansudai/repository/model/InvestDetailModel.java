@@ -1,8 +1,9 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class InvestDetailModel extends InvestModel {
+public class InvestDetailModel extends InvestModel implements Serializable {
     /**
      * 标的名称
      */
