@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.InvestRepayMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="investRepayInAccountResultMap" type="LatestInvestView">
         <result column="created_time" property="investTime"></result>
         <result column="loanName" property="loanName"></result>
