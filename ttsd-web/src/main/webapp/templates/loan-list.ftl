@@ -75,7 +75,6 @@
                                         <span class="fl">项目进度</span>
                                         <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
                                     </div>
-                                <#--style="width:${loanListWebDto.rateOfAdvance}px;"-->
                                     <div class="process-percent">
                                         <div class="percent" style="width:${loanListWebDto.rateOfAdvance}%"></div>
                                     </div>
