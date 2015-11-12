@@ -1,7 +1,7 @@
 /**
  * Created by CBJ on 2015/11/11.
  */
-require(['jquery','mustache','text!/tpl/notice-list.mustache','text!/tpl/notice-detail.mustache','commonFun',,'pagination'], function ($,Mustache,ListTemplate,detailTemplate) {
+require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun',,'pagination'], function ($,Mustache,ListTemplate) {
     $(function () {
         var $noticeList=$('#noticeList'),
             $noticeDetail=$('#noticeDetail'),
@@ -12,7 +12,7 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','text!/tpl/notice-
 
         /* notice list*/
         if($noticeList.length) {
-            var requestData={"currentPageNo":1,"pageSize":2};
+            var requestData={"index":1,"pageSize":10};
             paginationElement.loadPagination(requestData, function (data) {
                 var html = Mustache.render(ListTemplate, data);
                 $noticeList.html(html);
