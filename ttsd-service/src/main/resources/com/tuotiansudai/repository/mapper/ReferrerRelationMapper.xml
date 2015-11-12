@@ -22,7 +22,7 @@
         select * from referrer_relation where referrer_login_name = #{referrerLoginName}
     </select>
 
-    <select id="findByReferrerAndLoginName" parameterType="map" resultType="referrerRelationResultMap">
+    <select id="findByReferrerAndLoginName" parameterType="map" resultMap="referrerRelationResultMap">
         select * from referrer_relation where referrer_login_name = #{referrerLoginName} and login_name = #{loginName}
     </select>
 
