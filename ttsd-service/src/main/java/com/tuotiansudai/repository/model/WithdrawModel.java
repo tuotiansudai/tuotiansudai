@@ -3,9 +3,10 @@ package com.tuotiansudai.repository.model;
 import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.utils.AmountConverter;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class WithdrawModel {
+public class WithdrawModel implements Serializable {
     private long id;
 
     private String loginName;
