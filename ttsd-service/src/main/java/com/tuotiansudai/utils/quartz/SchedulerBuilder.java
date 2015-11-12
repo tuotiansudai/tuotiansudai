@@ -18,13 +18,17 @@ public class SchedulerBuilder {
     }
 
     public Scheduler buildScheduler(String schedulerName, ThreadPool threadPool, JobStore jobStore) throws SchedulerException {
+        return buildScheduler(schedulerName, threadPool, jobStore, true);
+    }
+
+    public Scheduler buildScheduler(String schedulerName, ThreadPool threadPool, JobStore jobStore, boolean jmxExport) throws SchedulerException {
         DirectSchedulerFactory schedulerFactory = DirectSchedulerFactory.getInstance();
         Scheduler scheduler = schedulerFactory.getScheduler(schedulerName);
         if (scheduler != null) {
             return scheduler;
         }
         schedulerFactory.createScheduler(
-                schedulerName, "AUTO", threadPool, jobStore);
+                schedulerName, "AUTO", threadPool, jobStore, null, null, 0, -1, -1, jmxExport, null);
         return schedulerFactory.getScheduler(schedulerName);
     }
 }
