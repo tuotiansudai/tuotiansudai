@@ -16,6 +16,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -280,4 +281,16 @@ public class LoanMapperTest {
         assertThat(loanModels.size(), is(loanListCount));
     }
 
+    @Test
+    public void updateRaisingCompleteTimeTest(){
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+
+        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
+        loanMapper.create(fakeCanceledLoan1);
+        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId());
+
+        LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
+        assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
+    }
 }
