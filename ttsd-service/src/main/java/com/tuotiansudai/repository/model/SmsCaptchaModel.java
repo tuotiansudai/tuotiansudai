@@ -1,8 +1,9 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SmsCaptchaModel {
+public class SmsCaptchaModel implements Serializable {
     private Long id;
 
     private String captcha;

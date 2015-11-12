@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
-public class LoanTitleRelationModel {
+import java.io.Serializable;
+
+public class LoanTitleRelationModel implements Serializable {
 
     private long id;
 

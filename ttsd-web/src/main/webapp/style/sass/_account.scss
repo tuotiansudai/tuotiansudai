@@ -369,7 +369,6 @@
     padding: 15px 10px;
     .recharge-form, .fast-recharge-form {
       clear: both;
-      margin-left: 30px;
       font-size: 15px;
       line-height: 40px;
       color: #353535;
@@ -1076,12 +1075,7 @@
 
 .money-box {
   font-size: 12px;
-  width: 793px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  padding-bottom: 20px;
-  border-radius: 3px;
-  background: url("../../images/record/record.png") 360px 30px no-repeat;
+  background: url("/images/record/record.png") 360px 30px no-repeat;
   & p {
     padding-left: 20px;
     line-height: 24px;

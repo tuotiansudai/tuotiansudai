@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
-public class InvestNotifyInfo {
+import java.io.Serializable;
+
+public class InvestNotifyInfo implements Serializable {
     /**
      * 标的ID
      */

@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tuotiansudai.repository.mapper.LoanMapper">
 
+    <cache eviction="LRU" type="com.tuotiansudai.cache.MybatisRedisCache" />
+
     <resultMap id="loanResultMap" type="LoanModel">
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
@@ -131,7 +133,7 @@
 
     <select id="findCompletedPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
-        (select max(loan_repay.repay_date)
+        (select max(loan_repay.actual_repay_date)
         from loan_repay
         where loan.id=loan_repay.loan_id) as completed_date,
         (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest)

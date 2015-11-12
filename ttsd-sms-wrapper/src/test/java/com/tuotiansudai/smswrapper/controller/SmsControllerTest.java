@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.tuotiansudai.dto.SmsCaptchaDto;
+import com.tuotiansudai.dto.SmsInvestFatalNotifyDto;
 import com.tuotiansudai.smswrapper.client.SmsClient;
 import org.junit.After;
 import org.junit.Before;
@@ -74,11 +75,40 @@ public class SmsControllerTest {
 
         String fakeIp = String.valueOf(new Date().getTime());
 
-        SmsCaptchaDto dto = new SmsCaptchaDto("13911112222", "100022", fakeIp);
+        SmsCaptchaDto dto = new SmsCaptchaDto("18611445119", "100022", fakeIp);
         String requestData = this.objectMapper.writeValueAsString(dto);
         jsonPath(requestData);
 
         this.mockMvc.perform(post("/sms/register-captcha")
+                .contentType("application/json; charset=UTF-8")
+                .content(requestData)
+                .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json; charset=UTF-8"))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.status").value(true));
+    }
+
+    @Test
+    public void shouldReceiveMessage() throws Exception {
+        String responseBodyTemplate = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<string xmlns=\"http://tempuri.org/\">{0}</string>";
+        String resultCode = "1234";
+
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setResponseCode(200);
+        mockResponse.setBody(MessageFormat.format(responseBodyTemplate, resultCode));
+        mockResponse.setHeader("content-type", "application/json; charset=UTF-8");
+
+        server.enqueue(mockResponse);
+        URL url = server.getUrl("/");
+
+        this.smsClient.setUrl(url.toString());
+
+        SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto("18611445119", "pay_back_notify_fail,take_as_invest_success,orderId:12341234123412341234,LoginName:zhoubaoxin,amount:100000000,loanId:1000000");
+        String requestData = this.objectMapper.writeValueAsString(dto);
+        jsonPath(requestData);
+
+        this.mockMvc.perform(post("/sms/invest-fatal-notify")
                 .contentType("application/json; charset=UTF-8")
                 .content(requestData)
                 .contentType(MediaType.parseMediaType("application/json; charset=UTF-8")))

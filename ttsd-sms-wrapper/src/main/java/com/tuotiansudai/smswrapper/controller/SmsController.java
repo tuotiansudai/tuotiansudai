@@ -37,4 +37,10 @@ public class SmsController {
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(@PathVariable String mobile) {
         return smsService.sendPasswordChangedNotify(mobile);
     }
+
+    @RequestMapping(value = "/invest-fatal-notify", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<SmsDataDto> investFatalNotify(@Valid @RequestBody SmsInvestFatalNotifyDto notifyDto) {
+        return smsService.investFatalNotify(notifyDto.getMobile(), notifyDto.getErrMsg());
+    }
 }

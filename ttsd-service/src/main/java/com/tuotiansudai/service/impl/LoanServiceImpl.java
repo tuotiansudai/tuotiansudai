@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
+import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -310,7 +312,14 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
-                    createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
+
+
+                    // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
+                    LoanModel loanModel = loanMapper.findById(loanDto.getId());
+                    if(loanModel.getStatus() == LoanStatus.PREHEAT) {
+                        createFundraisingStartJob(loanModel);
+                        createDeadLineFundraisingJob(loanModel);
+                    }
                     return investLoanDto;
                 }
             }
@@ -356,7 +365,7 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        loanMapper.updateStatus(loanDto.getId(),LoanStatus.RAISING);
+        loanMapper.updateStatus(loanDto.getId(), LoanStatus.RAISING);
         if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
             createDeadLineFundraisingJob(new LoanModel(loanDto));
         }
@@ -369,6 +378,18 @@ public class LoanServiceImpl implements LoanService {
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
         createAutoInvestJob(loanId);
+    }
+
+    private void createFundraisingStartJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(JobType.LoanStatusToRaising, FundraisingStartJob.class)
+                    .runOnceAt(loanModel.getFundraisingStartTime())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create fundraising start job for loan["+loanModel.getId()+"] fail", e);
+        }
     }
 
     private void createAutoInvestJob(long loanId) {
@@ -442,7 +463,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private void updateLoanAndLoanTitleRelation(LoanDto loanDto) {
-        LoanModel nowLoanModel  = loanMapper.findById(loanDto.getId());
         LoanModel loanModel = new LoanModel(loanDto);
         loanModel.setStatus(loanDto.getLoanStatus());
         loanMapper.update(loanModel);
@@ -569,6 +589,27 @@ public class LoanServiceImpl implements LoanService {
             }
         }
         return dto;
+    }
+
+    @Override
+    public BaseDto<PayDataDto> cancelLoan(LoanDto loanDto) {
+        BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
+        PayDataDto payDataDto = new PayDataDto();
+        if (!baseDto.getData().getStatus()) {
+            return baseDto;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
+        Date validInvestTime = cal.getTime();
+        int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanDto.getId(), validInvestTime);
+        if (waitingInvestCount > 0) {
+            logger.debug("流标失败，存在等待第三方资金托管确认的投资!");
+            payDataDto.setStatus(false);
+            baseDto.setData(payDataDto);
+            return baseDto;
+        }
+        investMapper.cleanWaitingInvestBefore(loanDto.getId(), validInvestTime);
+        return payWrapperClient.cancelLoan(loanDto.getId());
     }
 
     @Override

@@ -1,67 +1,69 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="" pageJavascript="${js.personal_info}" activeNav="我的账户" activeLeftNav="个人资料" title="个人资料">
-<div class="content-container fr auto-height personal-info">
+<div class="content-container auto-height personal-info">
     <h4 class="column-title"><em class="tc">个人资料</em></h4>
 
-    <div class="pad-m">
-        <ul class="info-list" id="personInfoBox">
-            <li><span class="info-title"> 用户名</span>
-                <em class="info">${loginName}</em>
+    <div class="pad-s">
+        <div class="borderBox bRadiusBox">
+            <ul class="info-list" id="personInfoBox">
+                <li><span class="info-title"> 用户名</span>
+                    <em class="info">${loginName}</em>
 
-            </li>
-            <li><span class="info-title"> 姓名</span>
-                <em class="info">${userName}</em>
+                </li>
+                <li><span class="info-title"> 姓名</span>
+                    <em class="info">${userName}</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
-            </li>
-            <li><span class="info-title"> 身份认证</span>
-                <em class="info">${identityNumber}</em>
+                </li>
+                <li><span class="info-title"> 身份认证</span>
+                    <em class="info">${identityNumber}</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已认证
                     </span>
-            </li>
-            <li><span class="info-title"> 手机</span>
-                <em class="info">${mobile}</em>
+                </li>
+                <li><span class="info-title"> 手机</span>
+                    <em class="info">${mobile}</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已绑定
                     </span>
-            </li>
-            <li><span class="info-title"> 邮箱</span>
-                <#if email?? && email != "">
-                    <em class="info">${email}</em>
+                </li>
+                <li><span class="info-title"> 邮箱</span>
+                    <#if email?? && email != "">
+                        <em class="info">${email}</em>
                     <span class="binding-set">
                         <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setEmail" href="javascript:">修改</a>
                     </span>
-                <#else>
-                    <em class="info">绑定邮箱后，您可及时了解交易情况及拓天速贷的最新动态</em>
+                    <#else>
+                        <em class="info">绑定邮箱后，您可及时了解交易情况及拓天速贷的最新动态</em>
                     <span class="binding-set">
                        <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setEmail" href="javascript:">绑定</a>
                     </span>
-                </#if>
+                    </#if>
 
 
-            </li>
-            <li><span class="info-title"> 绑定银行卡</span>
-                <#if bankCard??>
-                    <em class="info">${bankCard}</em>
+                </li>
+                <li><span class="info-title"> 绑定银行卡</span>
+                    <#if bankCard??>
+                        <em class="info">${bankCard}</em>
                     <span class="binding-set">
                         <i class="fa fa-check-circle ok"></i> 已绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">修改</a>
                     </span>
-                <#else>
-                    <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
+                    <#else>
+                        <em class="info">绑定银行卡后，您可以进行快捷支付和提现操作</em>
                     <span class="binding-set">
                         <i class="fa fa-times-circle no"></i> 未绑定 <a class="setlink setBankCard" href="${requestContext.getContextPath()}/bind-card">绑定</a>
                     </span>
-                </#if>
-            </li>
-            <li><span class="info-title"> 密码</span>
-                <em class="info">********</em>
+                    </#if>
+                </li>
+                <li><span class="info-title"> 密码</span>
+                    <em class="info">********</em>
                     <span class="binding-set">
                        <i class="fa fa-check-circle ok"></i> 已设置 <a class="setlink setPass" href="javascript:void(0);">修改</a>
                     </span>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
