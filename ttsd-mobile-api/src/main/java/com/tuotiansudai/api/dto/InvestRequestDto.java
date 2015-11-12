@@ -1,6 +1,9 @@
 package com.tuotiansudai.api.dto;
 
 
+import com.tuotiansudai.dto.InvestDto;
+import com.tuotiansudai.repository.model.Source;
+
 public class InvestRequestDto extends BaseParamDto {
     private String userId;
     private String investMoney;
@@ -43,4 +46,16 @@ public class InvestRequestDto extends BaseParamDto {
     public void setInvestMoney(String investMoney) {
         this.investMoney = investMoney;
     }
+
+    public InvestDto convertToInvestDto(){
+        InvestDto investDto = new InvestDto();
+        investDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        investDto.setAmount(this.getInvestMoney());
+        investDto.setLoginName(this.getBaseParam().getUserId());
+        investDto.setLoanId(this.getLoanId());
+        return investDto;
+
+    }
+
+
 }

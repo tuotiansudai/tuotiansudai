@@ -1,5 +1,6 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
@@ -12,6 +13,8 @@ public class BindBankCardDto implements Serializable {
     private String cardNumber;
 
     private String loginName;
+
+    private Source source = Source.WEB;
 
     public String getLoginName() {
         return loginName;
@@ -27,5 +30,13 @@ public class BindBankCardDto implements Serializable {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }

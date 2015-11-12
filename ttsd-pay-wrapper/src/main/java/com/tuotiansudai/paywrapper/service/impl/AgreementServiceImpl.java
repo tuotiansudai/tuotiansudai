@@ -49,7 +49,7 @@ public class AgreementServiceImpl implements AgreementService {
             agreementType = AgreementType.ZKJP0700;
         }
 
-        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType);
+        PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType,dto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
             return baseDto;

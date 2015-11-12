@@ -1,6 +1,9 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.dto.AgreementDto;
+import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.RechargeDto;
+import com.tuotiansudai.repository.model.Source;
 
 public class BankCardRequestDto extends BaseParamDto{
 
@@ -91,6 +94,23 @@ public class BankCardRequestDto extends BaseParamDto{
         rechargeDto.setAmount(this.rechargeAmount);
         rechargeDto.setLoginName(this.userId);
         rechargeDto.setFastPay(this.isOpenFastPayment);
+        rechargeDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         return rechargeDto;
+    }
+
+    public BindBankCardDto convertToBindBankCardDto(){
+        BindBankCardDto bindBankCardDto = new BindBankCardDto();
+        bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
+        bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        bindBankCardDto.setCardNumber(this.getCardNo());
+        return bindBankCardDto;
+    }
+
+    public AgreementDto convertToAgreementDto(){
+        AgreementDto agreementDto = new AgreementDto();
+        agreementDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
+        agreementDto.setLoginName(this.getUserId());
+        agreementDto.setFastPay(this.isOpenFastPayment());
+        return agreementDto;
     }
 }

@@ -4,7 +4,7 @@ import com.tuotiansudai.repository.model.Source;
 
 public class InvestDto extends ProjectTransferDto {
 
-    private Source source;
+    private Source source = Source.WEB;
 
     public Source getSource() {
         return source;
