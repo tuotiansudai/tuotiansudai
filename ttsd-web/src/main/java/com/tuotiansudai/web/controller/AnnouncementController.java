@@ -26,10 +26,9 @@ public class AnnouncementController {
         return announcementManagementService.getAnnouncementList(currentPageNo, pageSize);
     }
 
-    @ResponseBody
     @RequestMapping(value = "/{announceId:^\\d+$}", method = RequestMethod.GET)
-    public AnnouncementManagementDto getAnnounceDetail(@PathVariable long announceId) {
+    public ModelAndView getAnnounceDetail(@PathVariable long announceId) {
         AnnouncementManagementDto dto = announcementManagementService.getDtoById(announceId);
-        return dto;
+        return new ModelAndView("/about/notice-detail", "announcement", dto);
     }
 }
