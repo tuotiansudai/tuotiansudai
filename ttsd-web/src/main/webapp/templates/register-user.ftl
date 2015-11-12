@@ -12,11 +12,11 @@
         <li class="last"><s></s>3 充值投资<g></g></li>
     </ul>
     <div class="clear-blank"></div>
-    <div class=" register-box">
+    <div class="register-box">
         <ul class="reg-list tl register-step-one">
             <form class="register-user-form" action="/register/user" method="post">
                 <li>
-                    <input type="text" class="login-name input-control" class="" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
+                    <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
                 <li>
                     <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
@@ -33,8 +33,8 @@
                 </li>
                 <li>
                     <label for="agreement">
-                    <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
-                        <span class="agreement">同意拓天速贷<a href="javascript:;" class="show-agreement">《服务协议》</a></span>
+                        <input type="checkbox" name='agreement' id="agreementInput" class='agreement-check' />
+                        <span class="agreement">同意拓天速贷<a href="javascript:" class="show-agreement">《服务协议》</a></span>
                     </label>
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -141,10 +141,5 @@
 <#include "footer.ftl">
 <@global.javascript pageJavascript="${js.register_user}">
 </@global.javascript>
-<script src="${requestContext.getContextPath()}/js/dest/${js.config}"></script>
-<script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js"
-defer
-async="true"
-data-main="${requestContext.getContextPath()}/js/register_user.js"></script>
 </body>
 </html>
