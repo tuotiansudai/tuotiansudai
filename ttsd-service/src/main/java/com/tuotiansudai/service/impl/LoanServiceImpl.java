@@ -245,6 +245,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
         loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setRaisingCompleteTime(loanModel.getRaisingCompleteTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
