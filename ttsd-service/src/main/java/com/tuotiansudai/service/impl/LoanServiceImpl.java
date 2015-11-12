@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
+import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -244,6 +245,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
         loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setRaisingCompleteTime(loanModel.getRaisingCompleteTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
@@ -311,7 +313,14 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
-                    createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
+
+
+                    // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
+                    LoanModel loanModel = loanMapper.findById(loanDto.getId());
+                    if(loanModel.getStatus() == LoanStatus.PREHEAT) {
+                        createFundraisingStartJob(loanModel);
+                        createDeadLineFundraisingJob(loanModel);
+                    }
                     return investLoanDto;
                 }
             }
@@ -370,6 +379,18 @@ public class LoanServiceImpl implements LoanService {
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
         createAutoInvestJob(loanId);
+    }
+
+    private void createFundraisingStartJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(JobType.LoanStatusToRaising, FundraisingStartJob.class)
+                    .runOnceAt(loanModel.getFundraisingStartTime())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create fundraising start job for loan["+loanModel.getId()+"] fail", e);
+        }
     }
 
     private void createAutoInvestJob(long loanId) {

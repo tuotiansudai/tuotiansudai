@@ -2,9 +2,10 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.AnnouncementManagementDto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AnnouncementManagementModel {
+public class AnnouncementManagementModel implements Serializable {
 
     private long id;
 

@@ -28,6 +28,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 });
 
                 $('.rereq',uploadbox.children().last()).selectpicker('val', i);
+                $('select.rereq').last().parent().find('input.jq-txt').val(i);
             }
         });
 

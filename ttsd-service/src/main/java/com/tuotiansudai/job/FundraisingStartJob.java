@@ -17,7 +17,7 @@ public class FundraisingStartJob implements Job{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String strLoanId = context.getJobDetail().getJobDataMap()
-                .getString(LOAN_ID_KEY);
+                .get(LOAN_ID_KEY).toString();
 
         long loanId = Long.parseLong(strLoanId);
         loanService.startFundraising(loanId);
