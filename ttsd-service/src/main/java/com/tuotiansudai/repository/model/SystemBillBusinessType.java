@@ -12,7 +12,7 @@ public enum SystemBillBusinessType {
 
     REFERRER_REWARD("推荐人奖励"),
 
-    REMAINING_INTEREST("标的剩余利息");
+    LOAN_REMAINING_INTEREST("标的剩余利息");
 
     private final String description;
 

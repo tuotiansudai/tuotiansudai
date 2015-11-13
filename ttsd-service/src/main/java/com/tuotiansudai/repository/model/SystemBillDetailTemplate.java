@@ -8,7 +8,7 @@ public enum SystemBillDetailTemplate {
 
     INVEST_FEE_DETAIL_TEMPLATE("投资人({0})投资返款(investRepay={1})手续费"),
 
-    LOAN_REMAINING_AMOUNT_DETAIL_TEMPLATE("标的({0})还款完成, 剩余金额({1}分)");
+    LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE("标的({0})还款完成, 剩余利息({1}分)");
 
     private final String template;
 
