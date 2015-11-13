@@ -44,7 +44,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/sign", method = RequestMethod.POST)
     public BaseResponseDto bankCardSign(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        return mobileAppBankCardService.openFastPay(bankCardRequestDto);
     }
 
     @RequestMapping(value = "/bankcard/query", method = RequestMethod.POST)

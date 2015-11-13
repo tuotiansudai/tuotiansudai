@@ -9,6 +9,8 @@ public interface MobileAppBankCardService {
 
     BaseResponseDto bindBankCard(BankCardRequestDto requestDto);
 
+    BaseResponseDto openFastPay(BankCardRequestDto requestDto);
+
     boolean queryBindAndSginStatus(String userId, String operationType);
 
     BaseResponseDto generateBankCardResponse(BankCardReplaceRequestDto requestDto);
