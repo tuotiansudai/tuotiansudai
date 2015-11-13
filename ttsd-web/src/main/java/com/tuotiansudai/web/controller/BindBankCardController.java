@@ -52,6 +52,14 @@ public class BindBankCardController {
         return view;
     }
 
+    @RequestMapping(value = "/replace", method = RequestMethod.GET)
+    public ModelAndView replaceBankCard() {
+        ModelAndView view = new ModelAndView("/replace-card");
+        view.addObject("userName", bindBankCardService.getUserName());
+        view.addObject("banks", BankCardUtil.getFastPayBanks());
+        return view;
+    }
+
     @RequestMapping(value = "/replace", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView replaceBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
