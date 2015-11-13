@@ -52,7 +52,7 @@ public class RegisterRequestDto extends BaseParamDto {
 
     public User convertToUser(){
         User user = new User();
-        user.setId(this.getUserName());
+        user.setId(this.getUserName().toLowerCase());
         user.setUsername(this.getUserName());
         user.setMobileNumber(this.getPhoneNum());
         user.setPassword(this.password);
