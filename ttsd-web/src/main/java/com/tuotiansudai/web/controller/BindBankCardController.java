@@ -31,6 +31,7 @@ public class BindBankCardController {
         boolean isBindCard = bankCardModel != null;
         if (isBindCard) {
             view.addObject("openFastPayAvailable", !bankCardModel.isFastPayOn() && BankCardUtil.getFastPayBanks().contains(bankCardModel.getBankCode().toUpperCase()));
+            view.addObject("replaceCardAvailable", !bankCardModel.isFastPayOn());
             view.addObject("bankCode", bankCardModel.getBankCode().toUpperCase());
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
@@ -46,6 +47,15 @@ public class BindBankCardController {
     @ResponseBody
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
+        ModelAndView view = new ModelAndView("/pay");
+        view.addObject("pay", baseDto);
+        return view;
+    }
+
+    @RequestMapping(value = "/replace", method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView replaceBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
+        BaseDto<PayFormDataDto> baseDto = bindBankCardService.replaceBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
         return view;

@@ -13,4 +13,8 @@ public interface BindBankCardService {
 
     String bindBankCardApplyCallback(Map<String, String> paramsMap, String queryString);
 
+    BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto);
+
+    String replaceBankCardCallback(Map<String, String> paramsMap, String originalQueryString);
+
 }
