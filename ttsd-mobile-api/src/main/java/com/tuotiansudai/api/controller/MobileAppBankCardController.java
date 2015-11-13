@@ -34,7 +34,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/replace", method = RequestMethod.POST)
     public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto) {
-        return mobileAppBankCardService.generateBankCardResponse(requestDto);
+        throw new NotImplementedException(getClass().getName());
     }
 
     /**
@@ -49,6 +49,6 @@ public class MobileAppBankCardController extends MobileAppBaseController {
 
     @RequestMapping(value = "/bankcard/query", method = RequestMethod.POST)
     public BaseResponseDto queryBindAndSginStatus(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        return mobileAppBankCardService.queryStatus(bankCardRequestDto);
     }
 }
