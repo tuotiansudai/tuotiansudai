@@ -16,6 +16,11 @@ require(['jquery', 'jquery.validate'], function ($) {
         return this.optional(element) || (!spaceRegex.test(value));
     }, "用户名不能包含空格!");
 
+    jQuery.validator.addMethod('password', function (value, element) {
+        var spaceRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$/g;
+        return this.optional(element) || (spaceRegex.test(value));
+    }, "密码不符合规则!");
+
     jQuery.validator.addMethod('phoneNumberExist', function (value) {
         if ($('.phoneNumber ').siblings().css('display') == 'block') {
             $('.send_vCode').css({'pointer-events': 'none', 'background': '#666'});

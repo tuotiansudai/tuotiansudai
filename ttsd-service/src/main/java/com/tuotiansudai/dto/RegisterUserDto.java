@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class RegisterUserDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "(?!^\\d+$)^\\w{6,20}$")
+    @Pattern(regexp = "(?!^\\d+$)^\\w{5,25}$")
     private String loginName;
 
     @NotEmpty
@@ -32,7 +32,10 @@ public class RegisterUserDto implements Serializable {
     private boolean agreement;
 
     public String getLoginName() {
-        return loginName;
+        if (Strings.isNullOrEmpty(loginName)) {
+            return loginName;
+        }
+        return loginName.toLowerCase();
     }
 
     public void setLoginName(String loginName) {
@@ -64,7 +67,10 @@ public class RegisterUserDto implements Serializable {
     }
 
     public String getReferrer() {
-        return referrer;
+        if (Strings.isNullOrEmpty(referrer)) {
+            return referrer;
+        }
+        return referrer.toLowerCase();
     }
 
     public void setReferrer(String referrer) {
@@ -78,18 +84,4 @@ public class RegisterUserDto implements Serializable {
     public void setAgreement(boolean agreement) {
         this.agreement = agreement;
     }
-
-    public UserModel convertToUserModel() {
-        UserModel userModel = new UserModel();
-        userModel.setLoginName(this.loginName);
-        userModel.setMobile(this.mobile);
-        userModel.setPassword(this.password);
-        if (!Strings.isNullOrEmpty(this.referrer)) {
-            userModel.setReferrer(this.referrer);
-        }
-        return userModel;
-    }
-
-
-
 }

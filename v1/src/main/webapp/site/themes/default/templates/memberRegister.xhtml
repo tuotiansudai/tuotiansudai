@@ -90,12 +90,12 @@
                         <div class="login_box_l login_box_l01">登录密码：</div>
                         <div class="login_box_r">
                             <h:inputSecret id="pass" label="密码" required="true"
-                                           styleClass="login_txt login_txt02" maxlength="16"
+                                           styleClass="login_txt login_txt02" maxlength="20"
                                            value="#{userHome.instance.password}">
                                 <f:ajax event="blur" execute="@this rePasswordValidator"></f:ajax>
                                 <archer:validateInputRule ruleId="input.password"></archer:validateInputRule>
                             </h:inputSecret>
-                            <p:watermark value="6至16位字母和数字组合" for="pass"></p:watermark>
+                            <p:watermark value="6至20位字母和数字组合" for="pass"></p:watermark>
                         </div>
                         <div class="clear"></div>
                     </div>

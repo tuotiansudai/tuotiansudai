@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean registerUser(RegisterUserDto dto) {
-        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
+        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
@@ -100,7 +100,12 @@ public class UserServiceImpl implements UserService {
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
-        UserModel userModel = dto.convertToUserModel();
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(dto.getLoginName());
+        userModel.setMobile(dto.getMobile());
+        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
+            userModel.setReferrer(dto.getReferrer());
+        }
         String salt = myShaPasswordEncoder.generateSalt();
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
@@ -255,6 +260,10 @@ public class UserServiceImpl implements UserService {
         UserModel userModelByMobile = userMapper.findByMobile(mobile);
         if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
             throw new EditUserException("该手机号已经存在");
+        }
+
+        if (editUserDto.getRoles().contains(Role.MERCHANDISER) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
+            throw new EditUserException("业务员不能设置推荐人");
         }
     }
 

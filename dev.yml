@@ -1,5 +1,5 @@
 web:
-  image: "leoshi/ttsd-tomcat8-java7"
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
     - "20002:8080"
   volumes:
@@ -10,7 +10,7 @@ web:
     - "redis-server"
     - "static-server"
 console:
-  image: "leoshi/ttsd-tomcat8-java7"
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
     - "20003:8080"
   volumes:
@@ -21,7 +21,7 @@ console:
     - "redis-server"
     - "static-server"
 pay-wrapper:
-  image: "leoshi/ttsd-tomcat8-java7"
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
     - "20004:8080"
   volumes:
@@ -31,7 +31,7 @@ pay-wrapper:
     - "sms-wrapper"
     - "redis-server"
 sms-wrapper:
-  image: "leoshi/ttsd-tomcat8-java7"
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
   ports:
     - "20005:8080"
   volumes:
@@ -50,7 +50,7 @@ redis-server:
     - "20016:7006"
     - "20017:7007"
 worker-all:
-  image: "leoshi/ttsd-java7"
+  image: "leoshi/ttsd-java7:UTC8"
   volumes:
     - ./ttsd-job-worker/build/distributions:/workspace/tuotian
   command: bash -c "./ttsd-job-worker-all/bin/ttsd-job-worker"
@@ -59,7 +59,7 @@ worker-all:
     - "sms-wrapper"
     - "redis-server"
 worker-invest:
-  image: "leoshi/ttsd-java7"
+  image: "leoshi/ttsd-java7:UTC8"
   volumes:
     - ./ttsd-job-worker/build/distributions:/workspace/tuotian
   command: bash -c "./ttsd-job-worker-invest/bin/ttsd-job-worker"
