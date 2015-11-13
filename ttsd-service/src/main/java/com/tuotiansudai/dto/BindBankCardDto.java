@@ -16,6 +16,8 @@ public class BindBankCardDto implements Serializable {
 
     private Source source = Source.WEB;
 
+    private boolean fastPay = false;
+
     public String getLoginName() {
         return loginName;
     }
@@ -38,5 +40,13 @@ public class BindBankCardDto implements Serializable {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public boolean isFastPay() {
+        return fastPay;
+    }
+
+    public void setFastPay(boolean fastPay) {
+        this.fastPay = fastPay;
     }
 }

@@ -14,7 +14,7 @@
     <beans:bean id="mobileAppAuthenticationEntryPoint"
                 class="com.tuotiansudai.api.security.MobileAppAuthenticationEntryPoint"/>
 
-    <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaVerifier"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.utils.CaptchaHelper"/>
 
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>

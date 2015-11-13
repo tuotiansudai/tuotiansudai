@@ -24,7 +24,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/bind", method = RequestMethod.POST)
     public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        return mobileAppBankCardService.bindBankCard(bankCardRequestDto);
     }
 
     /**
