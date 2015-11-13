@@ -1,13 +1,12 @@
 package com.tuotiansudai.web.controller;
 
 
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.utils.CaptchaGenerator;
-import com.tuotiansudai.utils.CaptchaVerifier;
+import com.tuotiansudai.utils.CaptchaHelper;
 import com.tuotiansudai.utils.RequestIPParser;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -33,10 +31,7 @@ public class RegisterUserController {
     private SmsCaptchaService smsCaptchaService;
 
     @Autowired
-    private RedisWrapperClient redisWrapperClient;
-
-    @Autowired
-    private CaptchaVerifier captchaVerifier;
+    private CaptchaHelper captchaHelper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerUser() {
@@ -85,7 +80,7 @@ public class RegisterUserController {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
         SmsDataDto dataDto = new SmsDataDto();
         baseDto.setData(dataDto);
-        boolean result = this.captchaVerifier.registerImageCaptchaVerify(dto.getImageCaptcha());
+        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.REGISTER_CAPTCHA, dto.getImageCaptcha());
         if (result) {
             return smsCaptchaService.sendRegisterCaptcha(dto.getMobile(), RequestIPParser.parse(httpServletRequest));
         }
@@ -101,29 +96,14 @@ public class RegisterUserController {
         baseDto.setData(dataDto);
 
         return baseDto;
-
     }
 
     @RequestMapping(value = "/image-captcha", method = RequestMethod.GET)
-    public void registerImageCaptcha(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession(true);
+    public void registerImageCaptcha(HttpServletResponse response) {
         int captchaWidth = 70;
         int captchaHeight = 38;
         Captcha captcha = CaptchaGenerator.generate(captchaWidth, captchaHeight);
         CaptchaServletUtil.writeImage(response, captcha.getImage());
-
-        redisWrapperClient.setex(session.getId(), 60, captcha.getAnswer());
-    }
-
-    @RequestMapping(value = "/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseDto imageCaptchaVerify(@PathVariable String imageCaptcha) {
-        boolean result = this.captchaVerifier.registerImageCaptchaVerify(imageCaptcha);
-        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-        BaseDataDto dataDto = new BaseDataDto();
-        dataDto.setStatus(result);
-        baseDto.setData(dataDto);
-
-        return baseDto;
+        captchaHelper.storeCaptcha(CaptchaHelper.REGISTER_CAPTCHA, captcha.getAnswer());
     }
 }

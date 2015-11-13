@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.controller;
 
 import com.tuotiansudai.api.dto.BankCardRequestDto;
+import com.tuotiansudai.api.dto.WithdrawListRequestDto;
 import com.tuotiansudai.api.dto.WithdrawOperateRequestDto;
 import com.tuotiansudai.api.service.MobileAppRechargeService;
 import com.tuotiansudai.api.service.MobileAppWithdrawService;
@@ -23,11 +24,19 @@ public class MobileAppWithdrawControllerTest extends ControllerTestBase {
     }
 
     @Test
-    public void shouldWithdrawIsOk() throws Exception {
+    public void shouldGenerateWithdrawRequestIsOk() throws Exception {
         when(service.generateWithdrawRequest(any(WithdrawOperateRequestDto.class))).thenReturn(successResponseDto);
         doRequestWithServiceMockedTest("/withdraw",
-                new BankCardRequestDto());
+                new WithdrawOperateRequestDto());
     }
+
+    @Test
+    public void shouldQueryUserWithdrawLogsIsOk() throws Exception {
+        when(service.queryUserWithdrawLogs(any(WithdrawListRequestDto.class))).thenReturn(successResponseDto);
+        doRequestWithServiceMockedTest("/get/userwithdrawlogs",
+                new WithdrawListRequestDto());
+    }
+
 
 
 }

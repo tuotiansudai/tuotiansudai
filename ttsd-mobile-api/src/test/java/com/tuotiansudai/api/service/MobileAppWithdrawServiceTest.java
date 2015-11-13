@@ -1,35 +1,44 @@
 package com.tuotiansudai.api.service;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
-import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.api.service.impl.MobileAppWithdrawServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankCardStatus;
-import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.repository.mapper.WithdrawMapper;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.utils.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class MobileAppWithdrawServiceTest extends ServiceTestBase{
+public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     @InjectMocks
     private MobileAppWithdrawServiceImpl mobileAppWithdrawService;
     @Mock
     private BankCardMapper bankCardMapper;
     @Mock
     private PayWrapperClient payWrapperClient;
+    @Autowired
+    private IdGenerator idGenerator;
+    @Mock
+    private WithdrawMapper withdrawMapper;
+
     @Test
-    public void shouldGenerateWithdrawRequestIsOk(){
+    public void shouldGenerateWithdrawRequestIsOk() {
         WithdrawOperateRequestDto withdrawOperateRequestDto = new WithdrawOperateRequestDto();
         withdrawOperateRequestDto.setBaseParam(BaseParamTest.getInstance());
 
@@ -54,8 +63,45 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase{
         BaseResponseDto<WithdrawOperateResponseDataDto> baseResponseDto = mobileAppWithdrawService.generateWithdrawRequest(withdrawOperateRequestDto);
 
         assertTrue(baseResponseDto.isSuccess());
-        assertEquals("url",baseResponseDto.getData().getUrl());
+        assertEquals("url", baseResponseDto.getData().getUrl());
 
+    }
+
+    @Test
+    public void shouldQueryUserWithdrawLogsIsOk() {
+        WithdrawModel withdrawModel1 = fakeWithDrawModel();
+        WithdrawModel withdrawModel2 = fakeWithDrawModel();
+        withdrawModel2.setStatus(WithdrawStatus.RECHECK_FAIL);
+        List<WithdrawModel> withdrawModels = Lists.newArrayList();
+        withdrawModels.add(withdrawModel1);
+        withdrawModels.add(withdrawModel2);
+        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Date.class), any(Date.class))).thenReturn(2);
+        when(withdrawMapper.findWithdrawPagination(anyString(),anyString(),
+                any(WithdrawStatus.class),anyInt(),anyInt(),any(Date.class),any(Date.class))).thenReturn(withdrawModels);
+        BaseParam baseParam = new BaseParam();
+        baseParam.setUserId("loginName");
+        WithdrawListRequestDto withdrawListRequestDto = new WithdrawListRequestDto();
+        withdrawListRequestDto.setBaseParam(baseParam);
+        BaseResponseDto<WithdrawListResponseDataDto> baseDto = mobileAppWithdrawService.queryUserWithdrawLogs(withdrawListRequestDto);
+        assertTrue(baseDto.isSuccess());
+        assertEquals(WithdrawStatus.RECHECK.name().toLowerCase(), baseDto.getData().getWithdrawList().get(0).getStatus());
+        assertEquals(WithdrawStatus.RECHECK_FAIL.name().toLowerCase(),baseDto.getData().getWithdrawList().get(1).getStatus());
+
+    }
+
+    private WithdrawModel fakeWithDrawModel() {
+        WithdrawModel withdrawModel = new WithdrawModel();
+        withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setLoginName("loginName");
+        withdrawModel.setAmount(40000L);
+        withdrawModel.setVerifyMessage("verify_message");
+        withdrawModel.setVerifyTime(new Date());
+        withdrawModel.setRecheckMessage("recheck_message");
+        withdrawModel.setRecheckTime(new Date());
+        withdrawModel.setCreatedTime(new Date());
+        withdrawModel.setSource(Source.IOS);
+        withdrawModel.setStatus(WithdrawStatus.RECHECK);
+        return withdrawModel;
     }
 
 }

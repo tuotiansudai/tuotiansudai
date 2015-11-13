@@ -23,7 +23,7 @@
                 </li>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <#if success?? && !success>
-                <label class="form-error">实名认证失败，请检查您提交的信息是否正确</label>
+                <label class="error">实名认证失败，请检查您提交的信息是否正确</label>
                 </#if>
                 <input type="submit" class="register-account" value="下一步"/>
             </form>
