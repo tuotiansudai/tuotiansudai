@@ -73,7 +73,7 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
             }
         }).isPresent()) {
             logger.error(MessageFormat.format("update referrer failed, due to updated user ({0}) is a merchandiser", loginName));
-            throw new EditUserException("该用户是业务员，不能设置推荐人");
+            throw new EditUserException("业务员不能设置推荐人");
         }
 
         UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
