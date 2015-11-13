@@ -69,7 +69,7 @@
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
         <intercept-url pattern="/register/user/**" access="isAnonymous()"/>
         <intercept-url pattern="/register/account/**" access="hasAuthority('USER') and not hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN', 'MERCHANDISER')"/>
-        <intercept-url pattern="/monitor" access="permitAll()"/>
+        <intercept-url pattern="/monitor/**" access="permitAll()"/>
         <intercept-url pattern="/mobile-retrieve-password/**" access="isAnonymous()"/>
         <intercept-url pattern="/user-bill/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/loaner/**" access="hasAnyAuthority('LOANER')"/>

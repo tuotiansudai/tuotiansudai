@@ -16,7 +16,7 @@ public class RegisterAccountDto implements Serializable{
     private String userName;
 
     @NotEmpty
-    @Pattern(regexp = "[1-9]\\d{13,16}[a-zA-Z0-9]{1}")
+    @Pattern(regexp = "^[1-9]\\d{13,16}[a-zA-Z0-9]$")
     private String identityNumber;
 
     public String getLoginName() {
