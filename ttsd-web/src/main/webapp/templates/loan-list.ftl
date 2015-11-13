@@ -75,9 +75,8 @@
                                         <span class="fl">项目进度</span>
                                         <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
                                     </div>
-                                <#--style="width:${loanListWebDto.rateOfAdvance}px;"-->
                                     <div class="process-percent">
-                                        <div class="percent"></div>
+                                        <div class="percent" style="width:${loanListWebDto.rateOfAdvance}%"></div>
                                     </div>
 
                                 <div class="rest-amount">
@@ -94,7 +93,7 @@
                                 <span class="point fr">0%</span>
                             </div>
                                 <div class="process-percent">
-                                    <div class="percent" style="width: 0px;"></div>
+                                    <div class="percent" style="width: 0.0%;"></div>
                                 </div>
                                 <div class="rest-amount wait-invest">
                                     <span>${loanListWebDto.added} 放标</span>
@@ -105,9 +104,9 @@
                             <div class="loan-process">
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
-                                    <span class="point fr">100%</span>
+                                    <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
                                     <div class="process-percent finish-project" >
-                                        <div class="percent" style="width:100px;"></div>
+                                        <div class="percent" style="width: ${loanListWebDto.rateOfAdvance}%;"></div>
                                     </div>
                                 </div>
                             <div class="rest-amount finish-invest">
@@ -122,7 +121,7 @@
                                     <span class="point fr">100%</span>
                                 </div>
                                 <div class="process-percent finish-project" >
-                                    <div class="percent" style="width:100px;"></div>
+                                    <div class="percent" style="width: 100%;"></div>
                                 </div>
                             <div class="rest-amount finish-invest">
                                 <span>可投金额:<i>${loanListWebDto.loanAmount}</i> 元</span>
@@ -137,11 +136,11 @@
                                     <span class="point fr">100%</span>
                                 </div>
                                 <div class="process-percent" >
-                                    <div class="percent" style="width:100px;"></div>
+                                    <div class="percent" style="width:100%;"></div>
                                 </div>
                                 <div class="rest-amount">
                                     <span>可投金额: <i>${loanListWebDto.loanAmount}</i>元</span>
-                                    <button class="btn-invest btn" >马上投资</button>
+                                    <button class="btn-invest btn-normal" >马上投资</button>
                                 </div>
                             </div>
                         </#if>
