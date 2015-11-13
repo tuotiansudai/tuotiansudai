@@ -1,4 +1,5 @@
-apply plugin: "war"
+apply plugin: 'war'
+
 repositories {
     maven { url 'http://maven.oschina.net/content/groups/public/' }
 }
@@ -25,5 +26,8 @@ dependencies {
             "com.thoughtworks.xstream:xstream:1.4.3"
 
     testCompile "junit:junit:4.12"
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
+            'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 }
 

@@ -24,12 +24,12 @@ public class XstreamUtil {
 	}
 	
 	public static void  object2XML(QuartzConfig config) throws IOException{
-		
-		String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"quartz-config/";
+		String path = Tools.getConfigFileBasePath();
 		File file = new File(path + "quartz-config-"+config.getUuid()+".xml");
 		file.createNewFile();
 		FileOutputStream fs = new FileOutputStream(file);
-		log.info("create xml file : "+fs.toString());
+		log.info("create xml file : "+file.getAbsolutePath());
+		System.out.println(file.getAbsolutePath());
 		xs.toXML(config,fs);
 	}
 	public static QuartzConfig  xml2Object(String path) throws FileNotFoundException{
@@ -42,8 +42,7 @@ public class XstreamUtil {
 	}
 	
 	public static boolean removeXml(String uuid) {
-		
-		String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"quartz-config/";
+		String path = Tools.getConfigFileBasePath();
 		path = path +"quartz-config-" + uuid +".xml";
 		File file = new File(path);
 		log.info("remove xml file : "+ path);
