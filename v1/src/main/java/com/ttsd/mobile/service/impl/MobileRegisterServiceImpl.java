@@ -123,14 +123,11 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
      */
     @Override
     public boolean validateUserName(String userName) {
-        if (Strings.isNullOrEmpty(userName)){
-            log.info("提交的用户名为空！");
-            return false;
-        }else if(userName.length()<5){
-            log.info("提交的用户名的长度为："+userName.length()+" ,少于五个字符！");
-            return false;
-        }else if(userName.length()>25){
-            log.info("提交的用户名的长度为："+userName.length()+" ,多于二十五个字符！");
+        String regex = "(?!^\\d+$)^\\w{5,25}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(userName);
+        if (!matcher.matches()) {
+            log.info("提交的用户名不符合规则！");
             return false;
         }else{
             int count = mobileRegisterDao.getUserCountByUserName(userName);
