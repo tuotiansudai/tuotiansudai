@@ -13,6 +13,7 @@ public class UserInvestItem implements java.io.Serializable {
     private Date investTime;
     private Double money;
     private String source;
+    private String channel;
 
     public String getLoanId() {
         return loanId;
@@ -84,5 +85,13 @@ public class UserInvestItem implements java.io.Serializable {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
