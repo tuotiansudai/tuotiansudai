@@ -170,15 +170,6 @@ public class RegisterUserControllerTest {
                 .andExpect(jsonPath("$.data.status").value(false));
     }
 
-//    @Test
-//    public void shouldImageCaptchaVerify() throws Exception {
-//        when(captchaHelper.captchaVerify(anyString(),anyString())).thenReturn(true);
-//
-//        this.mockMvc.perform(get("/register/user/image-captcha/12345/verify")).andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
-//                .andExpect(jsonPath("$.success").value(true))
-//                .andExpect(jsonPath("$.data.status").value(true));
-//    }
-
     @Test
     public void shouldNotFoundWhenMobileIsInvalid() throws Exception {
         BaseDto<SmsDataDto> baseDto = new BaseDto<>();
