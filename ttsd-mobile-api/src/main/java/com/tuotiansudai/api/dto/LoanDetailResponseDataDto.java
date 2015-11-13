@@ -30,6 +30,7 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
     private String cardinalNumber;
     private String maxInvestMoney;
     private String raiseCompletedTime;
+    private String interestPointName;
 
     private List<EvidenceResponseDataDto> evidence;
 
@@ -266,5 +267,13 @@ public class LoanDetailResponseDataDto extends BaseResponseDataDto {
 
     public void setRaiseCompletedTime(String raiseCompletedTime) {
         this.raiseCompletedTime = raiseCompletedTime;
+    }
+
+    public String getInterestPointName() {
+        return interestPointName;
+    }
+
+    public void setInterestPointName(String interestPointName) {
+        this.interestPointName = interestPointName;
     }
 }

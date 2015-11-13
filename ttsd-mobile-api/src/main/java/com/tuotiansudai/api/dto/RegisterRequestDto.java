@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 
 public class RegisterRequestDto extends BaseParamDto {
     @NotEmpty
-    @Pattern(regexp = "(?!^\\d+$)^([a-zA-Z0-9]{5,25})$")
+    @Pattern(regexp = "(?!^\\d+$)^\\w{6,20}$")
     private String userName;
     @NotEmpty
     @Pattern(regexp = "^1\\d{10}$")
