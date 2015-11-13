@@ -24,6 +24,8 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/bind", method = RequestMethod.POST)
     public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto) {
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppBankCardService.bindBankCard(bankCardRequestDto);
     }
 
@@ -44,11 +46,15 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/sign", method = RequestMethod.POST)
     public BaseResponseDto bankCardSign(@RequestBody BankCardRequestDto bankCardRequestDto) {
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppBankCardService.openFastPay(bankCardRequestDto);
     }
 
     @RequestMapping(value = "/bankcard/query", method = RequestMethod.POST)
     public BaseResponseDto queryBindAndSginStatus(@RequestBody BankCardRequestDto bankCardRequestDto) {
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppBankCardService.queryStatus(bankCardRequestDto);
     }
 }
