@@ -1,8 +1,7 @@
 require(['jquery', 'csrf'], function ($) {
     var $loan = $('.loan-list-box').find('li');
     $loan.click(function () {
-        var thisUrl = $(this).data('url');
-        window.open(thisUrl);
+        window.open($(this).data('url'));
     });
 
     $('.pagination .prev').click(function () {

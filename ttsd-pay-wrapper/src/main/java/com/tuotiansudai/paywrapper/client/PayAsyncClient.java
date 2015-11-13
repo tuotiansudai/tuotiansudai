@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.client;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.dto.BaseDto;
@@ -31,6 +32,8 @@ public class PayAsyncClient {
 
     static Logger logger = Logger.getLogger(PayAsyncClient.class);
 
+    private ObjectMapper objectMapper;
+
     @Value(value = "${ump.callback.web.host}")
     private String webCallback;
 
@@ -39,6 +42,11 @@ public class PayAsyncClient {
 
     @Autowired
     PayGateWrapper payGateWrapper;
+
+    public PayAsyncClient() {
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     public BaseDto<PayFormDataDto> generateFormData(Class<? extends BaseAsyncMapper> baseMapperClass,
                                                     BaseAsyncRequestModel requestModel) throws PayException {
@@ -68,7 +76,6 @@ public class PayAsyncClient {
                                                          Class<? extends BaseCallbackMapper> baseMapperClass,
                                                          Class<? extends BaseCallbackRequestModel> callbackRequestModel) {
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             // 解密
             Map<String, String> platNotifyData = payGateWrapper.getPlatNotifyData(paramsMap);
             // aa_bb_cc to aaBbCc
