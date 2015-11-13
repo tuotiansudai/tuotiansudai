@@ -91,7 +91,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return ReturnMessage.USER_NAME_IS_NULL.getCode();
         }
         try {
-            String regex = "(?!^\\d+$)^\\w{6,20}$";
+            String regex = "(?!^\\d+$)^\\w{5,25}$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(userName);
             if (!matcher.matches()) {
