@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.esoft.archer.user.service.UserService;
 import com.esoft.jdp2p.message.service.SendCloudMailService;
 import org.apache.commons.logging.Log;
 import org.hibernate.criterion.DetachedCriteria;
@@ -45,6 +46,9 @@ public class UserList extends EntityQuery<User> {
 	MailService mailService;
 
 	@Resource
+	UserService userService;
+
+	@Resource
 	SendCloudMailService sendCloudMailService;
 
 	private List<User> hasLoanRoleUsers;
@@ -62,12 +66,14 @@ public class UserList extends EntityQuery<User> {
 				"user.referrer like #{userList.example.referrer}",
 				"user.registerTime >= #{userList.registerTimeStart}",
 				"user.registerTime <= #{userList.registerTimeEnd}",
-				"#{userList.example.roles[0].id} in elements(user.roles)"
+				"#{userList.example.roles[0].id} in elements(user.roles)",
+				"user.channel = #{userList.example.channel}"
 		};
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
 
 	private List<User> selectedUsers;
+	private List<String> allChannelList;
 
 	private String title;
 	private String message;
@@ -81,6 +87,7 @@ public class UserList extends EntityQuery<User> {
 		roles.add(new Role());
 		user.setRoles(roles);
 		setExample(user);
+		allChannelList = userService.getAllChannelName();
 	}
 
 	@Override
@@ -289,7 +296,12 @@ public class UserList extends EntityQuery<User> {
 	public void setEmailContent(String emailContent) {
 		this.emailContent = emailContent;
 	}
-	
-	
 
+	public List<String> getAllChannelList() {
+		return allChannelList;
+	}
+
+	public void setAllChannelList(List<String> allChannelList) {
+		this.allChannelList = allChannelList;
+	}
 }
