@@ -277,9 +277,12 @@
                                 <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
                             </#if>
                             <#if loanInfo.status == "RECHECK">
-                                <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="recheck">放款</button>
-                                <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="delay">延期</button>
-                                <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="cancel">流标</button>
+                                <#if loanInfo.raisingCompleteTime??>
+                                    <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="recheck">放款</button>
+                                <#else>
+                                    <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="delay">延期</button>
+                                    <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="cancel">流标</button>
+                                </#if>
                             </#if>
                         </div>
                     </div>

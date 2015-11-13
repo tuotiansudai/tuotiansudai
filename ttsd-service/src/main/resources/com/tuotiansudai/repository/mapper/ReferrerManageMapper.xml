@@ -50,7 +50,7 @@
         temp.referrerName,
         rr.`level`
         FROM
-        referrer_relation rr
+        referrer_relation rr right 
         JOIN
         (SELECT
         i.`login_name` AS investLoginName,
@@ -77,16 +77,16 @@
                 a.`referrer_login_name` = #{referrerLoginName}
             </if>
             <if test="rewardStartTime != null">
-                AND a.`time` >= #{rewardStartTime}
+                AND a.`created_time` >= #{rewardStartTime}
             </if>
             <if test="rewardEndTime != null">
-                <![CDATA[ AND a.`time` <= #{rewardEndTime} ]]>
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
             <if test="role != null and role.name() == 'MERCHANDISER'">
-                AND a.`role_name` = #{role}
+                AND a.`referrer_role` = #{role}
             </if>
             <if test="role != null and role.name() != 'MERCHANDISER'">
-                AND a.`role_name` != 'MERCHANDISER'
+                AND a.`referrer_role` != 'MERCHANDISER'
             </if>
         </where>
         ) irr
@@ -144,7 +144,7 @@
         temp.referrerName,
         rr.`level`
         FROM
-        referrer_relation rr
+        referrer_relation rr right
         JOIN
         (SELECT
         i.`login_name` AS investLoginName,
@@ -171,16 +171,16 @@
                 a.`referrer_login_name` = #{referrerLoginName}
             </if>
             <if test="rewardStartTime != null">
-                AND a.`time` >= #{rewardStartTime}
+                AND a.`created_time` >= #{rewardStartTime}
             </if>
             <if test="rewardEndTime != null">
-                <![CDATA[ AND a.`time` <= #{rewardEndTime} ]]>
+                <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
             <if test="role != null and role.name() == 'MERCHANDISER'">
-                AND a.`role_name` = #{role}
+                AND a.`referrer_role` = #{role}
             </if>
             <if test="role != null and role.name() != 'MERCHANDISER'">
-                AND a.`role_name` != 'MERCHANDISER'
+                AND a.`referrer_role` != 'MERCHANDISER'
             </if>
         </where>
         ) irr
