@@ -15,8 +15,8 @@
         <beans:property name="onlyUserAccessDeniedRedirect" value="/register/account"/>
         <beans:property name="errorPageMapping">
             <beans:map>
-                <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/login" value="/"/>
+                <beans:entry key="/register/user" value="/"/>
                 <beans:entry key="/register/account" value="/"/>
             </beans:map>
         </beans:property>
@@ -55,15 +55,14 @@
                     authentication-failure-handler-ref="mySimpleUrlAuthenticationFailureHandler"/>
         <logout logout-url="/logout" logout-success-url="/"/>
 
+        <!--DO NOT MODIFY THE BELLOW CONFIG ANYTIME!-->
         <intercept-url pattern="/html" access="permitAll()"/>
         <intercept-url pattern="/style/**" access="permitAll()"/>
         <intercept-url pattern="/images/**" access="permitAll()"/>
         <intercept-url pattern="/js/**" access="permitAll()"/>
         <intercept-url pattern="/tpl/**" access="permitAll()"/>
 
-        <intercept-url pattern="/account" access="hasAuthority('USER')"/>
-
-        <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER', 'ADMIN')"/>
+        <intercept-url pattern="/" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/login/**" access="isAnonymous()"/>
         <intercept-url pattern="/login-handler" access="isAnonymous()"/>
         <intercept-url pattern="/logout" access="not isAnonymous()"/>
@@ -81,7 +80,8 @@
         <intercept-url pattern="/personal-info/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/account/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
         <intercept-url pattern="/bind-email/**" access="hasAnyAuthority('INVESTOR', 'LOANER')"/>
-
+        <intercept-url pattern="/loan-list/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
+        <intercept-url pattern="/loan/**" access="isAnonymous() or hasAnyAuthority('INVESTOR', 'LOANER')"/>
 
         <intercept-url pattern="/**" access="permitAll()"/>
         <csrf/>
