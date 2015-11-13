@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
@@ -83,8 +85,14 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return ReturnMessage.USER_NAME_IS_NULL.getCode();
         }
         try {
-            vdtService.inputRuleValidation("input.username", userName);
-        } catch (NoMatchingObjectsException | InputRuleMatchingException e) {
+            String regex = "(?!^\\d+$)^\\w{6,20}$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(userName);
+            if (!matcher.matches()) {
+                // 验证失败
+                throw new InputRuleMatchingException("用户名格式不正确");
+            }
+        } catch (InputRuleMatchingException e) {
             log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.USER_NAME_IS_INVALID.getCode();
         }
@@ -182,10 +190,13 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     @Override
     public String verifyPassword(String password) {
         try {
-            vdtService.inputRuleValidation("input.password", password);
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getLocalizedMessage(), e);
-            return ReturnMessage.PASSWORD_IS_INVALID.getCode();
+            String regex = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.matches()) {
+                // 验证失败
+                throw new InputRuleMatchingException("密码格式不正确");
+            }
         } catch (InputRuleMatchingException e) {
             log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.PASSWORD_IS_INVALID.getCode();
