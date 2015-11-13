@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
 @Repository
 public interface LoanMapper {
+
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
