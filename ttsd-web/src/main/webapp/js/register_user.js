@@ -137,7 +137,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             mobile: {
                 required: true,
                 digits: true,
-                rangelength: [11, 11],
+                maxlength: 11,
                 isExist: "/register/user/mobile/{0}/is-exist"
             },
             password: {
@@ -147,7 +147,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             captcha: {
                 required: true,
                 digits: true,
-                rangelength: [6, 6],
+                maxlength: 6,
                 captchaVerify: {
                     param: function () {
                         var mobile = $('input[name="mobile"]').val();
@@ -170,7 +170,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             },
             mobile: {
                 required: '请输入手机号',
-                rangelength: '手机格式不对',
+                maxlength: '手机格式不正确',
                 digits: '必须是数字',
                 isExist: '手机号已存在'
             },
@@ -181,7 +181,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
-                rangelength: '验证码格式不正确',
+                maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {
