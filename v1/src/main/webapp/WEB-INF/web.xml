@@ -407,6 +407,11 @@
         <url-pattern>/v1.0/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>appDispatcher</servlet-name>
+        <url-pattern>/ad/*</url-pattern>
+    </servlet-mapping>
+
     <security-constraint>
         <display-name>Restrict raw XHTML Documents</display-name>
         <web-resource-collection>

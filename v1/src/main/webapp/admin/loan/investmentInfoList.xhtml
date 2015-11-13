@@ -65,6 +65,14 @@
                                         var="dict" itemValue="#{dict.key}" itemLabel="#{dict.value}" />
                             </h:selectOneMenu>
                         </ui:fragment>
+                        <h:outputLabel value="渠道"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{investList.example.channel}">
+                                <f:selectItem itemLabel="请选择 &#160;&#160;"
+                                              noSelectionOption="true" />
+                                <f:selectItems value="#{investList.allChannelList}" />
+                            </h:selectOneMenu>
+                        </ui:fragment>
                         <h:outputText></h:outputText>
                         <p:commandButton update="dataTable" process="filters"
                                          value="#{commonMsg.searchLabel}"></p:commandButton>
@@ -147,6 +155,12 @@
                         </f:facet>
                         <h:outputText
                                 value="#{dictUtil.getValue('invest_status', invest.status)}"></h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="渠道"></h:outputText>
+                        </f:facet>
+                        <h:outputText value="#{invest.channel}"></h:outputText>
                     </p:column>
                     <f:facet name="footer">
                         <p:commandButton value="导出Excel" ajax="false">
