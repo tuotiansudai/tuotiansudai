@@ -1,22 +1,16 @@
-require(['jquery', 'csrf', 'jquery.validate','jquery.form'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
     $(function () {
         var loginFormElement = $('.form-login'),
-         loginSubmitElement = $('.login-submit',loginFormElement),
-         loginNameElement = $('.login-name',loginFormElement),
-         passwordElement = $('.password',loginFormElement),
-         captchaElement = $('.captcha',loginFormElement),
-         errorElement = $('.error',loginFormElement),
-         imageCaptchaElement = $('.image-captcha img',loginFormElement);
-
-        var loginNameValid = false,
-            passwordValid = false,
-            captchaValid = false;
+            loginSubmitElement = $('.login-submit', loginFormElement),
+            loginNameElement = $('.login-name', loginFormElement),
+            passwordElement = $('.password', loginFormElement),
+            captchaElement = $('.captcha', loginFormElement),
+            errorElement = $('.error', loginFormElement),
+            imageCaptchaElement = $('.image-captcha img', loginFormElement);
 
         var refreshCaptcha = function () {
-            captchaValid = false;
             captchaElement.val('');
             imageCaptchaElement.attr('src', '/login/captcha?' + new Date().getTime().toString());
-            loginSubmitVerify();
         };
 
         imageCaptchaElement.click(function () {
@@ -25,95 +19,53 @@ require(['jquery', 'csrf', 'jquery.validate','jquery.form'], function ($) {
 
         //用户名校验
         loginNameElement.keyup(function (event) {
-            var errorMessage = "用户名不能为空";
-            var value = loginNameElement.val().trim();
-            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
             errorElement.text('').css('visibility', 'hidden');
 
-            if (value !== '' && $.inArray(event.keyCode, excludedKeys) === -1) {
-                loginNameValid = true;
+            if (loginNameElement.val().trim() === '') {
+                errorElement.text("用户名不能为空").css('visibility', 'visible');
+                return false;
             }
-
-            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
-                errorElement.text(errorMessage).css('visibility', 'visible');
-                loginNameValid = false;
-            }
-            loginSubmitVerify();
-
-            return true;
+            return false;
         });
 
         //密码校验
         passwordElement.keyup(function (event) {
-            var errorMessage = "密码不能为空";
-            var value = passwordElement.val().trim();
-            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
             errorElement.text('').css('visibility', 'hidden');
-
-            if (value !== '' && $.inArray(event.keyCode, excludedKeys) === -1) {
-                passwordValid = true;
+            if (passwordElement.val().trim() === '') {
+                errorElement.text("密码不能为空").css('visibility', 'visible');
             }
-
-            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
-                errorElement.text(errorMessage).css('visibility', 'visible');
-                passwordValid = false;
-            }
-            loginSubmitVerify();
+            return false;
         });
 
         //验证码校验
         captchaElement.keyup(function (event) {
-            var value = captchaElement.val().trim();
-            var excludedKeys = [9, 13, 16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
-
             errorElement.text('').css('visibility', 'hidden');
-
-            if (value.length === 5 && $.inArray(event.keyCode, excludedKeys) === -1) {
-                $.ajax({
-                    url: '/login/captcha/' + value + '/verify',
-                    type: 'get',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=UTF-8'
-                }).success(function (response) {
-                    if (response.data.status) {
-                        captchaValid = true;
-                    } else {
-                        errorElement.text("验证码不正确").css('visibility', 'visible');
-                        captchaValid = false;
-                    }
-                }).error(function () {
-                    captchaValid = false;
-                }).complete(function () {
-                    loginSubmitVerify();
-                });
-                return;
-            }
-
-            captchaValid = false;
-
-            if (value === '' && $.inArray(event.keyCode, excludedKeys) === -1) {
+            if (captchaElement.val().trim() === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');
-                captchaValid = false;
-                loginSubmitVerify();
             }
-
-            if (value.length < 5 && $.inArray(event.keyCode, excludedKeys) === -1) {
-                captchaValid = false;
-            }
-            loginSubmitVerify();
+            return false;
         });
 
+
         var loginSubmitVerify = function () {
-            var isValid = loginNameValid && passwordValid && captchaValid;
-                if(!isValid) {
-                    errorElement.text('账号、密码和验证码不能为空').css('visibility', 'visible');
-                }
-            else {
-                    errorElement.text('').css('visibility', 'hidden');
-                }
-            return isValid;
+            errorElement.text('').css('visibility', 'hidden');
+
+            if (loginNameElement.val().trim() === '') {
+                errorElement.text("用户名不能为空").css('visibility', 'visible');
+                return false;
+            }
+
+            if (passwordElement.val().trim() === '') {
+                errorElement.text("密码不能为空").css('visibility', 'visible');
+                return false;
+            }
+
+            if (captchaElement.val().trim() === '') {
+                errorElement.text("验证码不能为空").css('visibility', 'visible');
+                return false;
+            }
+
+            return true;
         };
 
         var submitLoginForm = function () {
@@ -125,20 +77,24 @@ require(['jquery', 'csrf', 'jquery.validate','jquery.form'], function ($) {
                     if (response.data.status) {
                         window.location.href = loginFormElement.data('redirect-url');
                     } else {
+                        refreshCaptcha();
                         if (response.data.isLocked) {
                             errorElement.text("用户已被锁定").css('visibility', 'visible');
-                        } else {
-                            errorElement.text("用户或密码不正确").css('visibility', 'visible');
+                            return;
                         }
+                        if (response.data.isCaptchaNotMatch) {
+                            errorElement.text("验证码不正确").css('visibility', 'visible');
+                            return;
+                        }
+                        errorElement.text("用户或密码不正确").css('visibility', 'visible');
                     }
                 },
                 error: function () {
+                    refreshCaptcha();
                     errorElement.text("用户或密码不正确").css('visibility', 'visible');
                 },
                 complete: function () {
-                    refreshCaptcha();
                     loginSubmitElement.toggleClass('loading');
-                    loginSubmitVerify();
                 }
             });
             return false;

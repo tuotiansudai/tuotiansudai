@@ -25,7 +25,7 @@ public class HttpClientUtil {
 
 	public static String getResponseBodyAsString(String url, String charset) {
 		GetMethod get = new GetMethod(url);
-		
+
 		HttpClient client = new HttpClient();
 		try {
 			client.executeMethod(get);

@@ -1,9 +1,10 @@
 package com.tuotiansudai.repository.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class LatestInvestView {
+public class LatestInvestView implements Serializable{
 
     private Date investTime;
 

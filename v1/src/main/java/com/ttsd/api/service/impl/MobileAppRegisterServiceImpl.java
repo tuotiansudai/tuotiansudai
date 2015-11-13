@@ -12,13 +12,18 @@ import com.esoft.archer.user.service.UserService;
 import com.esoft.archer.user.service.impl.UserBO;
 import com.esoft.core.annotations.Logger;
 import com.ttsd.api.dto.*;
+import com.ttsd.api.service.MobileAppChannelService;
 import com.ttsd.api.service.MobileAppRegisterService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
@@ -37,6 +42,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Resource
     private AuthService authService;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
 
     @Override
@@ -83,8 +91,14 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             return ReturnMessage.USER_NAME_IS_NULL.getCode();
         }
         try {
-            vdtService.inputRuleValidation("input.username", userName);
-        } catch (NoMatchingObjectsException | InputRuleMatchingException e) {
+            String regex = "(?!^\\d+$)^\\w{6,20}$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(userName);
+            if (!matcher.matches()) {
+                // 验证失败
+                throw new InputRuleMatchingException("用户名格式不正确");
+            }
+        } catch (InputRuleMatchingException e) {
             log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.USER_NAME_IS_INVALID.getCode();
         }
@@ -151,6 +165,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
             if (ReturnMessage.SUCCESS.getCode().equals(returnCode)) {
                 User user = registerRequestDto.convertToUser();
                 user.setSource(AccessSource.valueOf(registerRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
+                String channel = mobileAppChannelService.obtainChannelBySource(registerRequestDto.getBaseParam());
+                user.setChannel(channel);
                 userService.registerByMobileNumber(user, registerRequestDto.getCaptcha(), registerRequestDto.getReferrer());
             }
 
@@ -179,13 +195,18 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
         return dto;
     }
 
+
+
     @Override
     public String verifyPassword(String password) {
         try {
-            vdtService.inputRuleValidation("input.password", password);
-        } catch (NoMatchingObjectsException e) {
-            log.error(e.getLocalizedMessage(), e);
-            return ReturnMessage.PASSWORD_IS_INVALID.getCode();
+            String regex = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.matches()) {
+                // 验证失败
+                throw new InputRuleMatchingException("密码格式不正确");
+            }
         } catch (InputRuleMatchingException e) {
             log.error(e.getLocalizedMessage(), e);
             return ReturnMessage.PASSWORD_IS_INVALID.getCode();

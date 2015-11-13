@@ -6,6 +6,7 @@ import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
+import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
@@ -142,7 +143,7 @@ public class LoanServiceImpl implements LoanService {
                 return baseDto;
             }
         }
-        if(loanDto.getPeriods() <= 0){
+        if (loanDto.getPeriods() <= 0) {
             dataDto.setMessage("借款期限最小为1");
             return baseDto;
         }
@@ -229,8 +230,8 @@ public class LoanServiceImpl implements LoanService {
         long investedAmount = investMapper.sumSuccessInvestAmount(loanModel.getId());
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (accountModel != null) {
-            long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(),loginName);
-            loanDto.setBalance(accountModel.getBalance()/100d);
+            long sumSuccessInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanModel.getId(), loginName);
+            loanDto.setBalance(accountModel.getBalance() / 100d);
             loanDto.setMaxAvailableInvestAmount(AmountConverter.convertCentToString(calculateMaxAvailableInvestAmount(
                     accountModel.getBalance(), loanModel.getLoanAmount() - investedAmount,
                     loanModel.getMinInvestAmount(), loanModel.getInvestIncreasingAmount(),
@@ -244,18 +245,19 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPreheatSeconds(calculatorPreheatSeconds(loanModel.getFundraisingStartTime()));
         loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
+        loanDto.setRaisingCompleteTime(loanModel.getRaisingCompleteTime());
         loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
     }
 
-    private long calculateMaxAvailableInvestAmount(long balance,long amountNeedRaised,long minInvestAmount,
-                                                   long investIncreasingAmount,long maxInvestAmount,long userInvestedAmount){
-        long maxAvailableInvestAmount = NumberUtils.min(balance,amountNeedRaised,maxInvestAmount - userInvestedAmount);
+    private long calculateMaxAvailableInvestAmount(long balance, long amountNeedRaised, long minInvestAmount,
+                                                   long investIncreasingAmount, long maxInvestAmount, long userInvestedAmount) {
+        long maxAvailableInvestAmount = NumberUtils.min(balance, amountNeedRaised, maxInvestAmount - userInvestedAmount);
 
-        if(maxAvailableInvestAmount >= minInvestAmount){
-            maxAvailableInvestAmount = maxAvailableInvestAmount - (maxAvailableInvestAmount - minInvestAmount)%investIncreasingAmount;
-        }else{
+        if (maxAvailableInvestAmount >= minInvestAmount) {
+            maxAvailableInvestAmount = maxAvailableInvestAmount - (maxAvailableInvestAmount - minInvestAmount) % investIncreasingAmount;
+        } else {
             maxAvailableInvestAmount = 0L;
         }
         return maxAvailableInvestAmount;
@@ -264,12 +266,12 @@ public class LoanServiceImpl implements LoanService {
 
     private long calculatorPreheatSeconds(Date fundraisingStartTime) {
         if (fundraisingStartTime == null) {
-            return 0l;
+            return 0L;
         }
         long time = (fundraisingStartTime.getTime() - System
                 .currentTimeMillis()) / 1000;
         if (time < 0) {
-            return 0l;
+            return 0L;
         }
         return time;
 
@@ -311,7 +313,14 @@ public class LoanServiceImpl implements LoanService {
                 if (investLoanDto.getData().getStatus()) {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
-                    createDeadLineFundraisingJob(loanMapper.findById(loanDto.getId()));
+
+
+                    // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
+                    LoanModel loanModel = loanMapper.findById(loanDto.getId());
+                    if (loanModel.getStatus() == LoanStatus.PREHEAT) {
+                        createFundraisingStartJob(loanModel);
+                        createDeadLineFundraisingJob(loanModel);
+                    }
                     return investLoanDto;
                 }
             }
@@ -369,11 +378,18 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-        createAutoInvestJob(loanId);
     }
 
-    private void createAutoInvestJob(long loanId) {
-
+    private void createFundraisingStartJob(LoanModel loanModel) {
+        try {
+            jobManager.newJob(JobType.LoanStatusToRaising, FundraisingStartJob.class)
+                    .runOnceAt(loanModel.getFundraisingStartTime())
+                    .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);
+        }
     }
 
     @Override
@@ -429,7 +445,7 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
-        }else {
+        } else {
             List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getAgentLoginName(), Role.LOANER.name());
             if (CollectionUtils.isEmpty(userRoleModels)) {
                 payDataDto.setStatus(false);
@@ -611,8 +627,8 @@ public class LoanServiceImpl implements LoanService {
             loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
             loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
             loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
-            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate()*100).setScale(2,BigDecimal.ROUND_HALF_UP))+"%");
+            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
             loanListDto.setStatus(loanModels.get(i).getStatus());
             loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
             loanListDtos.add(loanListDto);
@@ -624,11 +640,11 @@ public class LoanServiceImpl implements LoanService {
     public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo) {
 
         currentPageNo = (currentPageNo - 1) * 10;
-        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType,status,periodsStart,periodsEnd,rateStart,
-                rateEnd,currentPageNo);
+        List<LoanModel> loanModels = loanMapper.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart,
+                rateEnd, currentPageNo);
         List<LoanListWebDto> loanListWebDtos = Lists.newArrayList();
         String added;
-        for (int i=0;i<loanModels.size();i++) {
+        for (int i = 0; i < loanModels.size(); i++) {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
@@ -641,7 +657,7 @@ public class LoanServiceImpl implements LoanService {
             loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
             if (loanModels.get(i).getStatus() == LoanStatus.PREHEAT) {
                 if (DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()) < 30) {
-                    added = String.valueOf(DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()))+" 分钟后";
+                    added = String.valueOf(DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime())) + " 分钟后";
                 } else {
                     added = new DateTime(loanModels.get(i).getFundraisingStartTime()).toString("yyyy-MM-dd HH:mm");
                 }
@@ -661,7 +677,7 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd) {
-        return loanMapper.findLoanListCountWeb(activityType,status,periodsStart,periodsEnd,rateStart,rateEnd);
+        return loanMapper.findLoanListCountWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd);
     }
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
@@ -670,7 +686,7 @@ public class LoanServiceImpl implements LoanService {
                     addJobData("loanId", loanModel.getId())
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 

@@ -1,44 +1,47 @@
-require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
+require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $, layer) {
 
     var registerUserForm = $(".register-user-form"),
-        fetchCaptchaElement = $('.fetch-captcha',registerUserForm),
-        showAgreement=$('.show-agreement',registerUserForm),
-        $agreement=$('#agreement');
-    var $imgCaptchaDialog=$('.image-captcha-dialog'),
-        imageCaptchaForm = $('.image-captcha-form',$imgCaptchaDialog),
-        imageCaptchaElement = $('.image-captcha',$imgCaptchaDialog),
-        imageCaptchaTextElement = $('.image-captcha-text',$imgCaptchaDialog),
-        imageCaptchaSubmitElement = $('.image-captcha-confirm',$imgCaptchaDialog);
+        fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
+        showAgreement = $('.show-agreement', registerUserForm),
+        $agreement = $('#agreementInput');
+    var $imgCaptchaDialog = $('.image-captcha-dialog'),
+        imageCaptchaForm = $('.image-captcha-form', $imgCaptchaDialog),
+        imageCaptchaElement = $('.image-captcha', $imgCaptchaDialog),
+        imageCaptchaTextElement = $('.image-captcha-text', $imgCaptchaDialog),
+        imageCaptchaSubmitElement = $('.image-captcha-confirm', $imgCaptchaDialog);
 
     //服务协议
-    showAgreement.click(function() {
+    showAgreement.click(function () {
         layer.open({
             type: 1,
             title: '拓天速贷服务协议',
-            area: ['950px','600px'],
+            area: ['950px', '600px'],
             shadeClose: true,
             move: false,
             content: $('#agreementBox'),
-            success: function(layero, index){
+            success: function (layero, index) {
 
             }
         });
     });
+
     /*获取验证码*/
     fetchCaptchaElement.on('click', function () {
         layer.open({
             type: 1,
             title: '手机验证',
-            area: ['360px', '190px'],
+            area: ['350px', '210px'],
             shadeClose: true,
             content: $('.image-captcha-dialog'),
-            success: function(layero, index){
+            success: function (layero, index) {
                 $('.image-captcha-form label').remove();
                 imageCaptchaTextElement.val('');
                 refreshCaptcha();
             }
         });
+        return false;
     });
+
     // 刷新验证码
     var refreshCaptcha = function () {
         imageCaptchaElement.attr('src', '/register/user/image-captcha?' + new Date().getTime().toString());
@@ -50,11 +53,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
 
     /*手机验证码*/
     imageCaptchaForm.validate({
-        success: 'form-valid',
         focusInvalid: false,
-        errorClass: 'form-error',
-        onkeyup:true,
-       // errorLabelContainer:$('.image-captcha-error'),
         onfocusout: function (element) {
             if (!this.checkable(element) && !this.optional(element)) {
                 this.element(element);
@@ -72,7 +71,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
                 success: function (response) {
                     var data = response.data;
                     if (data.status && !data.isRestricted) {
-                        //displayImageCaptchaDialog(false);
+                        layer.closeAll();
                         var seconds = 60;
                         var count = setInterval(function () {
                             fetchCaptchaElement.html(seconds + '秒后重新发送').css({
@@ -109,28 +108,26 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
                 complete: function () {
                     imageCaptchaSubmitElement.removeClass("loading");
                     imageCaptchaSubmitElement.prop("disabled", false);
+
                 }
             });
         },
         rules: {
             imageCaptcha: {
                 required: true,
-                regex: /^[a-zA-Z0-9]{5}$/,
-                imageCaptchaVerify: "/register/user/image-captcha/{0}/verify"
+                regex: /^[a-zA-Z0-9]{5}$/
             }
         },
         messages: {
             imageCaptcha: {
                 required: "请输入图形验证码",
                 regex: "图形验证码不正确",
-                imageCaptchaVerify: '图形验证码不正确'
             }
         }
     });
 
     registerUserForm.validate({
         focusInvalid: false,
-        errorClass: 'form-error',
         rules: {
             loginName: {
                 required: true,
@@ -140,7 +137,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             mobile: {
                 required: true,
                 digits: true,
-                rangelength: [11, 11],
+                maxlength: 11,
                 isExist: "/register/user/mobile/{0}/is-exist"
             },
             password: {
@@ -150,10 +147,10 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             captcha: {
                 required: true,
                 digits: true,
-                rangelength: [6, 6],
+                maxlength: 6,
                 captchaVerify: {
                     param: function () {
-                        var mobile = $('.register .mobile').val();
+                        var mobile = $('input[name="mobile"]').val();
                         return "/register/user/mobile/" + mobile + "/captcha/{0}/verify"
                     }
                 }
@@ -173,18 +170,18 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             },
             mobile: {
                 required: '请输入手机号',
-                rangelength:'手机格式不对',
-                digits:'必须是数字',
+                maxlength: '手机格式不正确',
+                digits: '必须是数字',
                 isExist: '手机号已存在'
             },
             password: {
                 required: "请输入密码",
-                regex:'6位至20位数字与字母组合'
+                regex: '6位至20位数字与字母组合'
             },
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
-                rangelength: '验证码格式不正确',
+                maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {
@@ -207,28 +204,25 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             }
         },
         showErrors: function (errorMap, errorList) {
-
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
                 $('.fetch-captcha').prop('disabled', true);
             }
+            if (errorMap['agreement']) {
+                var $agreementBox = $agreement.parent('label');
+                $agreementBox.append($('#agreement-error'));
+            }
+
         },
         success: function (error, element) {
-            error.addClass("form-valid");
             if (element.name === 'mobile') {
                 $('.fetch-captcha').prop('disabled', false);
             }
-            var $agreementBox=$agreement.parent('label');
-            $agreementBox.append($('#agreement-error'));
+            if (element.name === 'agreement') {
+                var $agreementBox = $agreement.parent('label');
+                $agreementBox.append($('#agreement-error'));
+            }
         }
-
     });
-
-    //var moveAgree=function() {
-    //    var $agreementDom=$('#agreement');
-    //    $agreementDom.next('label').prepend($agreementDom.parent('label'));
-    //}
-
-
 
 });

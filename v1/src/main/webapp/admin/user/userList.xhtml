@@ -36,21 +36,25 @@
                     	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
                     <p:calendar id="registerTimeEnd" value="#{userList.registerTimeEnd}"
                     	pattern="yyyy-MM-dd HH:mm:ss" navigator="true" showButtonPanel="true"></p:calendar>
+                    <h:selectOneMenu value="#{userList.example.roles[0].id}">
+                        <f:selectItem itemValue="" itemLabel=" -- 请选择角色 -- " />
+                        <f:selectItems value="#{roleList.allResultList}"
+                                       var="role" itemLabel="#{role.name}" itemValue="#{role.id}" />
+                    </h:selectOneMenu>
                     <br/>
                     <p:inputText id="mobileNumber" value="#{userList.example.mobileNumber}"></p:inputText>
                     <p:inputText id="email" value="#{userList.example.email}"></p:inputText>
-                    <h:selectOneMenu value="#{userList.example.roles[0].id}">
-						<f:selectItem itemValue="" itemLabel=" -- 请选择角色 -- " />
-						<f:selectItems value="#{roleList.allResultList}"
-							var="role" itemLabel="#{role.name}" itemValue="#{role.id}" />
-					</h:selectOneMenu>
+					<p:inputText id="fromWhere" value="#{userList.example.referrer}"></p:inputText>
                     <h:selectOneMenu value="#{userList.example.source}" style="width:135px;">
                         <f:selectItem itemLabel="请选择来源" itemValue=""/>
                         <f:selectItem itemLabel="WEB" itemValue="WEB"/>
                         <f:selectItem itemLabel="IOS" itemValue="IOS"/>
                         <f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
                     </h:selectOneMenu>
-					<p:inputText id="fromWhere" value="#{userList.example.referrer}"></p:inputText>
+                    <h:selectOneMenu value="#{userList.example.channel}">
+                        <f:selectItem itemValue="" itemLabel=" -- 请选择渠道 -- " />
+                        <f:selectItems value="#{userList.allChannelList}" />
+                    </h:selectOneMenu>
                     <p:commandButton update="dataTable" process="filters"
                         value="#{commonMsg.searchLabel}"></p:commandButton>
                     <p:button value="#{commonMsg.resetLabel}" onclick="location.reload();return;"></p:button>
@@ -137,6 +141,12 @@
                         <h:outputText value="来源" />
                     </f:facet>
                     <h:outputText value="#{user.source}"></h:outputText>
+                </p:column>
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="渠道" />
+                    </f:facet>
+                    <h:outputText value="#{user.channel}"></h:outputText>
                 </p:column>
                 <p:column>
                 	<f:facet name="header">

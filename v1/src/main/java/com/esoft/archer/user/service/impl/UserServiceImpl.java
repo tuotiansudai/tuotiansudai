@@ -30,16 +30,12 @@ import com.esoft.jdp2p.message.model.UserMessageTemplate;
 import com.esoft.jdp2p.message.service.MessageService;
 import com.esoft.jdp2p.message.service.impl.MessageBO;
 import com.google.common.base.Strings;
-import com.ttsd.api.dto.AccessSource;
 import com.ttsd.redis.RedisClient;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
-import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
-import org.hibernate.Transaction;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -1078,5 +1074,13 @@ public class UserServiceImpl implements UserService {
 				saveReferrerRelations(referrerId, uId);
 			}
 		}
+	}
+
+	@Override
+	public List<String> getAllChannelName() {
+		String sql = "select distinct channel from user where channel is not NULL";
+		Session session = ht.getSessionFactory().getCurrentSession();
+		Query query = session.createSQLQuery(sql);
+		return query.list();
 	}
 }

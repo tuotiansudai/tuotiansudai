@@ -382,7 +382,6 @@
       }
     }
     .fast-recharge {
-      height: 200px;
       .bind-card-nav {
         span {
           margin: 20px auto;
@@ -668,9 +667,6 @@
           background: #ffac2a;
           border-radius: 3px;
         }
-      }
-      &:nth-last-child(1) {
-        padding-bottom:0;
       }
       &:nth-child(1) {
         padding-top:0;

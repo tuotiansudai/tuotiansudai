@@ -2,9 +2,10 @@ package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.BindBankCardDto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BankCardModel {
+public class BankCardModel implements Serializable {
 
     private long id;
 

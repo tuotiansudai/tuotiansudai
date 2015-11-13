@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -17,15 +17,11 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.utils.*;
 import org.apache.commons.lang3.StringUtils;
@@ -37,13 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -258,6 +249,8 @@ public class InvestServiceImpl implements InvestService {
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
                     loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+                    // 更新筹款完成时间
+                    loanMapper.updateRaisingCompleteTime(loanId, new Date());
                 }
             }
         } else {
@@ -434,6 +427,8 @@ public class InvestServiceImpl implements InvestService {
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
             loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+            // 更新筹款完成时间
+            loanMapper.updateRaisingCompleteTime(loanId, new Date());
         }
 
         String respData = callbackRequest.getResponseData();

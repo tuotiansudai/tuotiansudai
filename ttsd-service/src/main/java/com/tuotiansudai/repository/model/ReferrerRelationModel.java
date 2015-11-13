@@ -1,6 +1,8 @@
 package com.tuotiansudai.repository.model;
 
-public class ReferrerRelationModel {
+import java.io.Serializable;
+
+public class ReferrerRelationModel implements Serializable {
 
     private String referrerLoginName;
 
