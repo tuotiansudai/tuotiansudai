@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
 @Repository
 public interface LoanMapper {
+
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
@@ -63,4 +65,7 @@ public interface LoanMapper {
 
     int findLoanListCount(@Param(value = "status") LoanStatus status,@Param(value = "loanId") long loanId,@Param(value = "loanName") String loanName,
                                  @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
+
+    void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
+                                   @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 }

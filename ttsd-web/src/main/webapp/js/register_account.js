@@ -3,10 +3,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     var registerAccountForm = $('.register-step-two .register-account-form');
 
     registerAccountForm.validate({
-        success: 'form-valid',
         focusCleanup: true,
         focusInvalid: false,
-        errorClass: 'form-error',
         onfocusout: function (element) {
             this.element(element);
         },

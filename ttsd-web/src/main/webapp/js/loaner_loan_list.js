@@ -107,12 +107,14 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
 
                         $('a.normal-repay').click(function () {
                             $("#normal-repay-form").submit();
+                            layer.closeAll();
                             return false;
                         });
 
                         $('a.advanced-repay').click(function () {
                             if (!data.hasConfirmingLoanRepay) {
                                 $("#advanced-repay-form").submit();
+                                layer.closeAll();
                             }
                             return false;
                         });

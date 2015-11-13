@@ -39,7 +39,7 @@
                         <p><label>银行卡：</label><span>${bankCard}</span></p>
                         <input type="hidden" name="fastPay" value="true"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
+                        <div class="tc pad-s">
                             <input type="submit" class="btn-normal" value="开通快捷支付" />
                         </div>
                     </form>
