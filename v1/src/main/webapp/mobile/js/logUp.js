@@ -61,7 +61,7 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 required: "用户名不能为空！",
                 userName:'用户名不能包含空格！',
                 rangelength: "用户名的长度必须在5至25个字符之间！",
-                remote:"用户名已存在！"
+                remote:"用户名已存在或者不符合规则！"
             },
             password: {
                 required:"密码不能为空!",
