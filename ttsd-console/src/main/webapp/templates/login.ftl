@@ -63,7 +63,7 @@
                    <span class="error" style="display: none; color: #cc0000;"></span>
                 </div>
                 <div class="form-group" style="margin-top: 20px;">
-                    <button class="btn grey btn-primary btn-block btn-lg" type="button" disabled="disabled">登录</button>
+                    <button class="btn grey btn-primary btn-block btn-lg" type="button">登录</button>
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             </form>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.LoginDto;
+import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.LoginLogMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.LoginLogModel;
@@ -56,6 +57,7 @@ public class MySimpleUrlAuthenticationFailureHandler extends SimpleUrlAuthentica
             baseDto.setData(loginDto);
             this.updateUserStatus(request.getParameter("username"));
             loginDto.setLocked(exception instanceof DisabledException);
+            loginDto.setCaptchaNotMatch(exception instanceof CaptchaNotMatchException);
 
             String jsonBody = objectMapper.writeValueAsString(baseDto);
             response.setContentType("application/json; charset=UTF-8");

@@ -63,7 +63,7 @@ require(['jquery', 'jquery.validate'], function ($) {
         var previous = this.previousValue(element);
         var validator = this;
 
-        if ($('.register .referrer').val() === '') {
+        if ($('.register-user-form input[name="referrer"]').val() === '') {
             validator.showErrors();
             return 'pending';
         }
@@ -118,7 +118,7 @@ require(['jquery', 'jquery.validate'], function ($) {
         var previous = this.previousValue(element);
         var validator = this;
 
-        var isMobileValid = validator.check('.register .mobile');
+        var isMobileValid = validator.check('input[name="mobile"]');
 
         if (!isMobileValid) {
             return false;
