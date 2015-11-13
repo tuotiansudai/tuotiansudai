@@ -174,7 +174,8 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         //最后一期更新Loan Status = COMPLETE
         boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == enabledLoanRepay.getPeriod();
         if (isLastPeriod) {
-            // TODO: 2.多余的钱返平台
+            //TODO: 1.多余的钱返平台
+
             //TODO:最后一期更新标的状态
 
             loanService.updateLoanStatus(loanModel.getId(), LoanStatus.COMPLETE);
@@ -264,5 +265,39 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorAccount.getLoginName(), String.valueOf(investRepayId));
             systemBillService.transferIn(investRepayId, actualInvestFee, SystemBillBusinessType.INVEST_FEE, detail);
         }
+    }
+
+    private void transferInLoanRemainingAmount(long loanId) {
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(loanId);
+        long remainingAmount = 0;
+
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            remainingAmount += loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest() + loanRepayModel.getCorpus();
+        }
+
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            remainingAmount -= investRepayModel.getActualInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getCorpus();
+        }
+
+        if (remainingAmount > 0 ) {
+            String remainingAmountTransferOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanId), String.valueOf(new Date().getTime()));
+            ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newLoanRemainAmountRequest(String.valueOf(loanId),
+                    remainingAmountTransferOrderId,
+                    String.valueOf(remainingAmount));
+
+            try {
+                ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
+                if (responseModel.isSuccess()) {
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.LOAN_REMAINING_AMOUNT_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanId), String.valueOf(remainingAmount));
+                    systemBillService.transferIn(loanId, remainingAmount, SystemBillBusinessType.INVEST_FEE, detail);
+                }
+            } catch (PayException e) {
+                logger.error(MessageFormat.format("Repay payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                logger.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+
     }
 }
