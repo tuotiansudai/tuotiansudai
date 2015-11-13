@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class RegisterUserDto implements Serializable {
 
     @NotEmpty
-    @Pattern(regexp = "(?!^\\d+$)^([a-zA-Z0-9]{5,25})$")
+    @Pattern(regexp = "(?!^\\d+$)^\\w{6,20}$")
     private String loginName;
 
     @NotEmpty
