@@ -1,7 +1,9 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.AnnouncementManagementModel;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +15,14 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     private String time;
 
     public NodeDetailResponseDataDto() {
+
+    }
+    public NodeDetailResponseDataDto(AnnouncementManagementModel input){
+
+        this.setNodeId("" + input.getId());
+        this.setContent(input.getContent());
+        this.setTitle(input.getTitle());
+        this.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(input.getUpdateTime()));
 
     }
 

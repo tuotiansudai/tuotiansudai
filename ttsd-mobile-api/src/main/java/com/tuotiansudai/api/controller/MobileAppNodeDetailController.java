@@ -14,7 +14,7 @@ public class MobileAppNodeDetailController extends MobileAppBaseController {
     @Autowired
     private MobileAppNodeDetailService mobileAppNodeDetailService;
     @RequestMapping(value="/get/node",method = RequestMethod.POST)
-    public BaseResponseDto queryLoanList(@RequestBody NodeDetailRequestDto requestDto){
+    public BaseResponseDto queryLoanDetail(@RequestBody NodeDetailRequestDto requestDto){
         return mobileAppNodeDetailService.generateNodeDetail(requestDto);
     }
 }
