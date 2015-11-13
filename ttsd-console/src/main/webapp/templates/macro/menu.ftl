@@ -29,10 +29,7 @@
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
                     {"name":"userMan","text":"用户管理","link":"/users"},
-                    {"name":"referMan","text":"推荐人管理","link":"/referrerManage"},
-                    {"name":"##############","text":"推荐层级-收益比例管理(用户)","link":""},
-                    {"name":"##############","text":"用户推荐层级-收益比例管理(系统)","link":""},
-                    {"name":"##############","text":"业务员推荐层级-收益比例管理(系统)","link":""}
+                    {"name":"referMan","text":"推荐人管理","link":"/referrerManage"}
                 ]
             },
             {
@@ -44,7 +41,6 @@
                     {"name":"recharge","text":"充值记录","link":"/recharge"},
                     {"name":"withdraw","text":"提现记录","link":"/withdraw"},
                     {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
-                    {"name":"realTimeStatus","text":"联动优势资金查询","link":"/real-time-status"},
                     {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
                     {"name":"adminIntervention","text":"管理员修改账户余额","link":"/admin-intervention"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}
