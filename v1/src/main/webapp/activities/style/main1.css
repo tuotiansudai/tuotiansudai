@@ -125,7 +125,7 @@ img.icon-mark {
 .img-big .shadow-box { font-size: 36px;}
 .shadow-box span {
     display: inline-block;
-    margin-top:43%;
+    margin-top:45%;
 }
 .small-inner:hover .shadow-box,
 .img-big:hover .shadow-box{
@@ -229,25 +229,26 @@ width:752px;
     margin:0 auto;
 }
 .hot-link img {
-    position: absolute;left:0;
-    top: 0;
-    z-index: 1;}
-
-.hot-link a {
     position: absolute;
+    left:0;
+    top: 0;
+    z-index: 1;
+
+}
+.img-hot-link {
+    width:100%;
+    height:100%;
+    position: absolute;
+    z-index: 10;
+}
+.hot-link a {
     display: block;
-    top:0;
     width:230px;
     height:50px;
-    z-index: 5;
-    cursor: pointer;}
+    cursor: pointer;
+    float:left;
+    margin-right:20px;
+    cursor: pointer;
+}
 
-.hot-link a:nth-child(1) {
-    left:0;
-}
-.hot-link a:nth-child(2) {
-    left:260px;
-}
-.hot-link a:nth-child(3) {
-    right:0px;
-}
+
