@@ -14,7 +14,7 @@
     <beans:bean id="mobileAppAuthenticationEntryPoint"
                 class="com.tuotiansudai.api.security.MobileAppAuthenticationEntryPoint"/>
 
-    <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaVerifier"/>
+    <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaHelper"/>
 
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>
@@ -69,6 +69,8 @@
         <intercept-url pattern="/js/**" access="permitAll()"/>
 
         <intercept-url pattern="/callback/**" access="permitAll()"/>
+        <intercept-url pattern="/ad/**" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/install-notify" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <!--<intercept-url pattern="/**" access="permitAll()"/>-->
     </http>

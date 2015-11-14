@@ -41,12 +41,14 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
             throw new DisabledException(errorMessage);
         }
 
-        String captcha = httpServletRequest.getParameter("captcha");
-        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
+        if(enableCaptchaVerify) {
+            String captcha = httpServletRequest.getParameter("captcha");
+            boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
 
-        if (!result) {
-            logger.debug("Authentication failed: captcha does not match actual value");
-            throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+            if (!result) {
+                logger.debug("Authentication failed: captcha does not match actual value");
+                throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
+            }
         }
     }
 
