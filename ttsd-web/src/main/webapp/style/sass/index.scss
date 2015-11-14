@@ -94,16 +94,13 @@
         position: relative;
         margin-bottom:18px;
         color: #999;
-        .hot-new {
-          position: absolute;
-          left:-2px;
-          top:-2px;
-          background: url("/images/icons/hot-b.png") left top no-repeat;
-          width:71px;
-          height: 71px;
-        }
         &.new-standard {
           .hot-new {
+            position: absolute;
+            left:-2px;
+            top:-2px;
+            width:71px;
+            height: 71px;
             background: url("/images/icons/hot-n.png") left top no-repeat;
           }
         }
