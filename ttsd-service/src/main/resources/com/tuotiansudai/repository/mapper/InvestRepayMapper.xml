@@ -327,4 +327,15 @@
         WHERE ir.`status` IN ('REPAYING', 'OVERDUE')
     </select>
 
+    <select id="findInvestRepayByLoanIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
+        SELECT
+          ir.*
+        FROM
+          invest_repay ir
+          JOIN invest i
+            ON ir.`invest_id` = i.`id`
+            AND i.`loan_id` = #{loanId}
+        WHERE ir.`period` = #{period}
+    </select>
+
 </mapper>

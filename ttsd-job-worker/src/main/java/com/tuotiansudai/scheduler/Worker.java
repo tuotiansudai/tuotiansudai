@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler;
 
+import com.tuotiansudai.job.CalculateDefaultInterestJob;
 import com.tuotiansudai.job.InvestCallback;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.utils.JobManager;
@@ -7,10 +8,7 @@ import com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory;
 import com.tuotiansudai.utils.quartz.JobStoreBuilder;
 import com.tuotiansudai.utils.quartz.SchedulerBuilder;
 import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
+import org.quartz.*;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,9 @@ public class Worker {
         for (String schedulerName : schedulerNames) {
             if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName)) {
                 createInvestCallBackJobIfNotExist();
+            }
+            if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
+                this.createCalculateDefaultInterest();
             }
             String fullSchedulerName = "Scheduler-" + schedulerName.trim();
             JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(
@@ -76,4 +77,19 @@ public class Worker {
             e.printStackTrace();
         }
     }
+
+    private void createCalculateDefaultInterest() {
+        JobDetail jobDetail = jobManager.findJobDetail(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
+        if (jobDetail != null) {
+            jobManager.deleteJob(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
+        }
+        try {
+            jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))
+                    .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

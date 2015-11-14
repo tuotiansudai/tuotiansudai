@@ -4,21 +4,33 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
+import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
-import com.tuotiansudai.repository.model.LoanRepayModel;
-import com.tuotiansudai.repository.model.RepayStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class LoanRepayServiceImpl implements LoanRepayService {
 
+    @Value("${overdue_repay_investor_fee}")
+    private double overdueFee;
+
     @Autowired
     private LoanRepayMapper loanRepayMapper;
+
+    @Autowired
+    private LoanMapper loanMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize,Long loanId,
@@ -54,6 +66,31 @@ public class LoanRepayServiceImpl implements LoanRepayService {
     @Override
     public long findByLoginNameAndTimeSuccessRepay(String loginName,Date startTime,Date endTime){
         return loanRepayMapper.findByLoginNameAndTimeSuccessRepay(loginName,startTime,endTime);
+    }
+
+    @Override
+    public void calculateDefaultInterest() {
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
+            long loanRepayDefaultInterest = 0L;
+            for (InvestRepayModel investRepayModel : investRepayModels) {
+                if (!investRepayModel.getRepayDate().before(new Date())) {
+                    investRepayModel.setStatus(RepayStatus.OVERDUE);
+                    long investRepayDefaultInterest = new BigDecimal(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest()).multiply(new BigDecimal(overdueFee))
+                            .setScale(BigDecimal.ROUND_DOWN).longValue();
+                    investRepayModel.setDefaultInterest(investRepayDefaultInterest);
+                    investRepayMapper.update(investRepayModel);
+                    loanRepayDefaultInterest += investRepayDefaultInterest;
+                }
+            }
+            loanRepayModel.setStatus(RepayStatus.OVERDUE);
+            loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
+            loanRepayMapper.update(loanRepayModel);
+            loanModel.setStatus(LoanStatus.OVERDUE);
+            loanMapper.update(loanModel);
+        }
     }
 
 }
