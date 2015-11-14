@@ -3,7 +3,7 @@
 <div class="main-advantage clear-blank-m">
     <dl>
         <dd>
-            <img src="/images/icons/hs01.png" alt="超高收益 最低门槛" >
+            <img src="${staticServer}/images/icons/hs01.png" alt="超高收益 最低门槛" >
             <span class="clearfix">
                 <b class="clearfix">超高收益 最低门槛</b>
                 最高46倍活期存款收益 <br/>
@@ -11,7 +11,7 @@
             </span>
         </dd>
         <dd>
-            <img src="/images/icons/hs02.png" alt="三方托管 放心理财">
+            <img src="${staticServer}/images/icons/hs02.png" alt="三方托管 放心理财">
             <span class="clearfix">
                 <b class="clearfix">三方托管 放心理财</b>
                 第三方银行托管 <br/>
@@ -19,7 +19,7 @@
             </span>
         </dd>
         <dd>
-            <img src="/images/icons/hs03.png" alt="实力雄厚 安全保障">
+            <img src="${staticServer}/images/icons/hs03.png" alt="实力雄厚 安全保障">
             <span class="clearfix">
                 <b class="clearfix">实力雄厚 安全保障</b>
                 上市企业投资 <br/>
@@ -190,11 +190,11 @@
             </div>
         </div>
         <div class="tr clear-blank">
-            <a href="#">更多>></a>
+            <a href="/loan-list">更多>></a>
         </div>
     </section>
     <aside class="home-ad fr">
-        <img src="/images/sign/ad-h.jpg">
+        <img src="${staticServer}/images/sign/ad-h.jpg">
     </aside>
 </div>
 </@global.main>
