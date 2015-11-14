@@ -263,7 +263,7 @@
         and status = 'COMPLETE'
     </select>
 
-    <select id="findNotCompleteLoanRepay" resultMap="LoanRepayModel">
+    <select id="findNotCompleteLoanRepay" resultMap="loanRepayResultMap">
         select * from loan_repay where status != 'COMPLETE'
     </select>
 </mapper>
