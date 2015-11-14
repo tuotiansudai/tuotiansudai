@@ -15,8 +15,8 @@
         <b class="text-m">实时关注</b>
 
         <ul class="real-attention">
-            <li><img src="/images/sign/micro-code.png" alt="" title=""/><span>微信二维码</span></li>
-            <li><img src="/images/sign/blog-code.png" alt="" title=""/><span>微博二维码</span></li>
+            <li><img src="${staticServer}/images/sign/micro-code.png" alt="" title=""/><span>微信二维码</span></li>
+            <li><img src="${staticServer}/images/sign/blog-code.png" alt="" title=""/><span>微博二维码</span></li>
         </ul>
 
         <h2 class="a-title"><span>直接来访</span></h2>
@@ -31,7 +31,7 @@
 电话：53387992<br/>
         </span>
         </div>
-        <img src="/images/sign/company-map.png" class="fr" />
+        <img src="${staticServer}/images/sign/company-map.png" class="fr" />
         <div class="clear-blank-m"></div>
         <h2 class="a-title"><span></span></h2>
         <b class="text-m">集团分部</b>
