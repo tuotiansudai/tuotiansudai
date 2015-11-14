@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <#if loanListWebDto.status== 'RAISING'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
