@@ -11,8 +11,18 @@
             <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
         </ul>
         <div class="recharge-wrapper">
+            <ul>
+                <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
+                    <span class="hot-flag">
+                        <img src="${requestContext.getContextPath()}/images/recharge/hot.jpg" alt=""/>
+                    </span>
+                    快捷支付
+                </li>
+                <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
+            </ul>
 
-            <div class="fast-recharge <#if isFastPayOn>active</#if>">
+            <div class="recharge-content">
+                <div class="fast-recharge <#if isFastPayOn>active</#if>">
                 <#if !isBindCard>
                     <div class="bind-card-nav">
                         <span>您尚未绑定银行卡，请先绑定银行卡！</span>
@@ -54,7 +64,6 @@
                 </div>
             </#if>
             </div>
-
             <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
                 <div class="recharge-form">
                     <b class="title">请选择银行：</b>
@@ -74,10 +83,9 @@
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                            <div class="tc clear-blank-m">
-                                <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
-                            </div>
+                        <div class="tc clear-blank-m">
+                            <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+                        </div>
                         </div>
                     </form>
                 </div>

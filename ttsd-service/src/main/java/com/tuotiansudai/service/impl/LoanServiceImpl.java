@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
@@ -15,6 +16,7 @@ import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -313,7 +315,6 @@ public class LoanServiceImpl implements LoanService {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
 
-
                     // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
                     LoanModel loanModel = loanMapper.findById(loanDto.getId());
                     if (loanModel.getStatus() == LoanStatus.PREHEAT) {
@@ -377,6 +378,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+        this.createAutoInvestJob(loanId);
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {
@@ -388,6 +390,18 @@ public class LoanServiceImpl implements LoanService {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);
+        }
+    }
+
+    private void createAutoInvestJob(long loanId) {
+        try {
+            jobManager.newJob(JobType.AutoInvest, AutoInvestJob.class)
+                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, String.valueOf(loanId))
+                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create auto invest job for loan["+loanId+"] fail", e);
         }
     }
 

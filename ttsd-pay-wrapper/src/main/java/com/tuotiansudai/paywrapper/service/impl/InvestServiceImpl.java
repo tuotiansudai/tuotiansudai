@@ -325,7 +325,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void autoInvest(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
+        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getType().getLoanPeriodUnit(), loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel : autoInvestPlanModels) {
             try {
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
