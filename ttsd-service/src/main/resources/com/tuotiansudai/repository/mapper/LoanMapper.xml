@@ -51,59 +51,109 @@
     </select>
 
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
+        select * from (
         select * from loan t
-        <where>
-            <if test="activityType !=null">
-                t.activity_type = #{activityType}
-            </if>
-            <if test="status != null">
-                and t.status = #{status}
-            </if>
-            <if test="status == null">
-                and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
-            </if>
-            <if test="periodsStart > 0">
-                and t.periods >= #{periodsStart}
-            </if>
-            <if test="periodsEnd > 0">
-                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
-            </if>
-            <if test="rateStart > 0">
-                and (t.base_rate + t.activity_rate) >= #{rateStart}
-            </if>
-            <if test="rateEnd > 0">
-                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
-            </if>
-            order by case t.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,t.created_time desc
-            limit #{currentPageNo} , 10
-        </where>
+        where t.type in ('INVEST_INTEREST_MONTHLY_REPAY','LOAN_INTEREST_MONTHLY_REPAY')
+        <if test="activityType !=null">
+            and t.activity_type = #{activityType}
+        </if>
+        <if test="status != null">
+            and t.status = #{status}
+        </if>
+        <if test="status == null">
+            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+        </if>
+        <if test="periodsStart > 0">
+            and t.periods >= #{periodsStart}
+        </if>
+        <if test="periodsEnd > 0">
+            <![CDATA[ and t.periods <= #{periodsEnd} ]]>
+        </if>
+        <if test="rateStart > 0">
+            and (t.base_rate + t.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateEnd > 0">
+            <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
+        </if>
+        union all
+        select * from loan l
+        where l.type in ('INVEST_INTEREST_LUMP_SUM_REPAY','LOAN_INTEREST_LUMP_SUM_REPAY')
+        <if test="activityType !=null">
+            and l.activity_type = #{activityType}
+        </if>
+        <if test="status != null">
+            and l.status = #{status}
+        </if>
+        <if test="status == null">
+            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+        </if>
+        <if test="periodsStart > 0">
+            and CEILING(l.periods/30) >= #{periodsStart}
+        </if>
+        <if test="periodsEnd > 0">
+            <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
+        </if>
+        <if test="rateStart > 0">
+            and (l.base_rate + l.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateEnd > 0">
+            <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
+        </if>
+        ) temp
+        order by case temp.status when 'RAISING' then '1' when 'PREHEAT' then '2' when 'RECHECK' then '3' when 'REPAYING' then '4' when 'COMPLETE' then '5' else '6' end,temp.created_time desc
+        limit #{currentPageNo} , 10
     </select>
 
     <select id="findLoanListCountWeb" parameterType="map" resultType="int">
-        select count(*) from loan t
-        <where>
-            <if test="activityType !=null">
-                t.activity_type = #{activityType}
-            </if>
-            <if test="status != null">
-                and t.status = #{status}
-            </if>
-            <if test="status == null">
-                and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
-            </if>
-            <if test="periodsStart > 0">
-                and t.periods >= #{periodsStart}
-            </if>
-            <if test="periodsEnd > 0">
-                <![CDATA[ and t.periods <= #{periodsEnd} ]]>
-            </if>
-            <if test="rateStart > 0">
-                and (t.base_rate + t.activity_rate) >= #{rateStart}
-            </if>
-            <if test="rateEnd > 0">
-                <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
-            </if>
-        </where>
+        select count(*) from (
+        select * from loan t
+        where t.type in ('INVEST_INTEREST_MONTHLY_REPAY','LOAN_INTEREST_MONTHLY_REPAY')
+        <if test="activityType !=null">
+            and t.activity_type = #{activityType}
+        </if>
+        <if test="status != null">
+            and t.status = #{status}
+        </if>
+        <if test="status == null">
+            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+        </if>
+        <if test="periodsStart > 0">
+            and t.periods >= #{periodsStart}
+        </if>
+        <if test="periodsEnd > 0">
+            <![CDATA[ and t.periods <= #{periodsEnd} ]]>
+        </if>
+        <if test="rateStart > 0">
+            and (t.base_rate + t.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateEnd > 0">
+            <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
+        </if>
+        union all
+        select * from loan l
+        where l.type in ('INVEST_INTEREST_LUMP_SUM_REPAY','LOAN_INTEREST_LUMP_SUM_REPAY')
+        <if test="activityType !=null">
+            and l.activity_type = #{activityType}
+        </if>
+        <if test="status != null">
+            and l.status = #{status}
+        </if>
+        <if test="status == null">
+            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+        </if>
+        <if test="periodsStart > 0">
+            and CEILING(l.periods/30) >= #{periodsStart}
+        </if>
+        <if test="periodsEnd > 0">
+            <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
+        </if>
+        <if test="rateStart > 0">
+            and (l.base_rate + l.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateEnd > 0">
+            <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
+        </if>
+        ) temp
     </select>
 
     <select id="findByStatus" resultMap="loanResultMap">
