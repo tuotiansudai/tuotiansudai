@@ -9,7 +9,7 @@ public interface BindBankCardService {
 
     BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto);
 
-    String getUserName();
+    String getUserName(String loginName);
 
-    BankCardModel getPassedBankCard();
+    BankCardModel getPassedBankCard(String loginName);
 }

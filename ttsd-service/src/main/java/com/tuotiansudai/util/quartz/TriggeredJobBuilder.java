@@ -1,7 +1,7 @@
-package com.tuotiansudai.utils.quartz;
+package com.tuotiansudai.util.quartz;
 
 
-import com.tuotiansudai.utils.UUIDGenerator;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.quartz.*;
 

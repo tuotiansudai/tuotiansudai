@@ -9,8 +9,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ContractService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
@@ -167,9 +166,10 @@ public class ContractServiceImpl implements ContractService {
         return dataModel;
     }
 
+    //TODO : confirm with zl
     private String getInvestListTable(long loanId,LoanModel loanModel,ContractType contractType){
 
-        String loginName = LoginUserInfo.getLoginName();
+        String loginName;
         //TEST
         loginName = "hourglass";
         Element table = Jsoup

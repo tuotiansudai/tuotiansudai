@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils.quartz;
+package com.tuotiansudai.util.quartz;
 
 import org.quartz.simpl.SimpleThreadPool;
 import org.quartz.spi.ThreadPool;

@@ -1,8 +1,8 @@
 package com.tuotiansudai.cache;
 
 import com.tuotiansudai.client.MybatisRedisCacheWrapperClient;
-import com.tuotiansudai.utils.SerializeUtil;
-import com.tuotiansudai.utils.SpringContextUtil;
+import com.tuotiansudai.util.SerializeUtil;
+import com.tuotiansudai.util.SpringContextUtil;
 import org.apache.ibatis.cache.Cache;
 
 import java.util.concurrent.locks.ReadWriteLock;

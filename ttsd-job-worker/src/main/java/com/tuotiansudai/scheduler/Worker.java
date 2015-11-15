@@ -2,11 +2,11 @@ package com.tuotiansudai.scheduler;
 
 import com.tuotiansudai.job.InvestCallback;
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.utils.JobManager;
-import com.tuotiansudai.utils.quartz.AutowiringSpringBeanJobFactory;
-import com.tuotiansudai.utils.quartz.JobStoreBuilder;
-import com.tuotiansudai.utils.quartz.SchedulerBuilder;
-import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
+import com.tuotiansudai.util.JobManager;
+import com.tuotiansudai.util.quartz.AutowiringSpringBeanJobFactory;
+import com.tuotiansudai.util.quartz.JobStoreBuilder;
+import com.tuotiansudai.util.quartz.SchedulerBuilder;
+import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

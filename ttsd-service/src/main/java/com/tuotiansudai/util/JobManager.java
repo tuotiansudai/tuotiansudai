@@ -1,9 +1,9 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import com.tuotiansudai.job.JobType;
-import com.tuotiansudai.utils.quartz.SchedulerBuilder;
-import com.tuotiansudai.utils.quartz.ThreadPoolBuilder;
-import com.tuotiansudai.utils.quartz.TriggeredJobBuilder;
+import com.tuotiansudai.util.quartz.SchedulerBuilder;
+import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
+import com.tuotiansudai.util.quartz.TriggeredJobBuilder;
 import org.quartz.*;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.InitializingBean;

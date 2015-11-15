@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils.quartz;
+package com.tuotiansudai.util.quartz;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;

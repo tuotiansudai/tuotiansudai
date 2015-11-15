@@ -5,7 +5,8 @@ import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.BindBankCardService;
-import com.tuotiansudai.utils.BankCardUtil;
+import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +27,7 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView bindBankCard() {
         ModelAndView view = new ModelAndView("/bind-card");
-        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard();
+        BankCardModel bankCardModel = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
 
         boolean isBindCard = bankCardModel != null;
         if (isBindCard) {
@@ -35,7 +36,7 @@ public class BindBankCardController {
             view.addObject("cardNumber", bankCardModel.getCardNumber());
         }
 
-        view.addObject("userName", bindBankCardService.getUserName());
+        view.addObject("userName", bindBankCardService.getUserName(LoginUserInfo.getLoginName()));
         view.addObject("isBindCard", isBindCard);
         view.addObject("banks", BankCardUtil.getFastPayBanks());
 
@@ -45,6 +46,7 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
+        bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
