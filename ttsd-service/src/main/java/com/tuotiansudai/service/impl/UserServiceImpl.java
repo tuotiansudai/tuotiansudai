@@ -17,8 +17,7 @@ import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.LoginUserInfo;
-import com.tuotiansudai.utils.MyShaPasswordEncoder;
+import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean registerUser(RegisterUserDto dto) {
-        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName().toLowerCase());
+        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
         boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
@@ -100,7 +99,12 @@ public class UserServiceImpl implements UserService {
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
-        UserModel userModel = dto.convertToUserModel();
+        UserModel userModel = new UserModel();
+        userModel.setLoginName(dto.getLoginName());
+        userModel.setMobile(dto.getMobile());
+        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
+            userModel.setReferrer(dto.getReferrer());
+        }
         String salt = myShaPasswordEncoder.generateSalt();
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
@@ -125,20 +129,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto) {
-        dto.setLoginName(LoginUserInfo.getLoginName());
-        dto.setMobile(LoginUserInfo.getMobile());
         BaseDto<PayDataDto> baseDto = payWrapperClient.register(dto);
-        myAuthenticationManager.createAuthentication(LoginUserInfo.getLoginName());
+        myAuthenticationManager.createAuthentication(dto.getLoginName());
 
         return baseDto;
     }
 
     @Override
     @Transactional
-    public boolean changePassword(String originalPassword, String newPassword) {
-        String loginName = LoginUserInfo.getLoginName();
+    public boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword) {
 
-        boolean correct = this.verifyPasswordCorrect(originalPassword);
+        boolean correct = this.verifyPasswordCorrect(loginName, originalPassword);
 
         if (!correct) {
             return false;
@@ -148,13 +149,13 @@ public class UserServiceImpl implements UserService {
 
         String encodedNewPassword = myShaPasswordEncoder.encodePassword(newPassword, userModel.getSalt());
         userMapper.updatePasswordByLoginName(loginName, encodedNewPassword);
-        smsWrapperClient.sendPasswordChangedNotify(LoginUserInfo.getMobile());
+        smsWrapperClient.sendPasswordChangedNotify(mobile);
         return true;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void editUser(EditUserDto editUserDto, String ip) throws EditUserException {
+    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
         this.checkUpdateUserData(editUserDto);
 
         final String loginName = editUserDto.getLoginName();
@@ -191,11 +192,11 @@ public class UserServiceImpl implements UserService {
         userModel.setEmail(editUserDto.getEmail());
         userModel.setReferrer(Strings.isNullOrEmpty(editUserDto.getReferrer()) ? null : editUserDto.getReferrer());
         userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(LoginUserInfo.getLoginName());
+        userModel.setLastModifiedUser(operatorLoginName);
         userMapper.updateUser(userModel);
 
         //generate audit
-        auditLogService.generateAuditLog(beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
+        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, beforeUpdateUserRoleModels, userModel, afterUpdateUserRoleModels, ip);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
         if (!mobile.equals(userModel.getMobile()) && accountModel != null) {
@@ -212,7 +213,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserStatus(String loginName, UserStatus userStatus, String ip) {
+    public void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         UserModel beforeUpdateUserModel;
         try {
@@ -224,7 +225,7 @@ public class UserServiceImpl implements UserService {
 
         userModel.setStatus(userStatus);
         userModel.setLastModifiedTime(new Date());
-        userModel.setLastModifiedUser(LoginUserInfo.getLoginName());
+        userModel.setLastModifiedUser(operatorLoginName);
         userMapper.updateUser(userModel);
         String redisKey = MessageFormat.format("web:{0}:loginfailedtimes", loginName);
         if (userStatus == UserStatus.ACTIVE) {
@@ -234,7 +235,7 @@ public class UserServiceImpl implements UserService {
         }
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
-        auditLogService.generateAuditLog(beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
+        auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
@@ -255,6 +256,10 @@ public class UserServiceImpl implements UserService {
         UserModel userModelByMobile = userMapper.findByMobile(mobile);
         if (!Strings.isNullOrEmpty(mobile) && userModelByMobile != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByMobile.getLoginName())) {
             throw new EditUserException("该手机号已经存在");
+        }
+
+        if (editUserDto.getRoles().contains(Role.MERCHANDISER) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
+            throw new EditUserException("业务员不能设置推荐人");
         }
     }
 
@@ -296,8 +301,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean verifyPasswordCorrect(String password) {
-        String loginName = LoginUserInfo.getLoginName();
+    public boolean verifyPasswordCorrect(String loginName, String password) {
         UserModel userModel = userMapper.findByLoginName(loginName);
         return userModel.getPassword().equals(myShaPasswordEncoder.encodePassword(password, userModel.getSalt()));
     }

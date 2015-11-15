@@ -1,10 +1,10 @@
 package com.tuotiansudai.security;
 
+import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.utils.CaptchaVerifier;
+import com.tuotiansudai.util.CaptchaHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,8 +18,10 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
     @Autowired
     private HttpServletRequest httpServletRequest;
+
     @Autowired
-    private CaptchaVerifier captchaVerifier;
+    private CaptchaHelper captchaHelper;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -35,18 +37,16 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
         }
 
         String captcha = httpServletRequest.getParameter("captcha");
-        boolean result = this.captchaVerifier.loginCaptchaVerify(captcha);
+        boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
 
         if (!result) {
-            logger.debug("Authentication failed: captcha does not match stored value");
-            throw new BadCredentialsException(messages.getMessage(
-                    "AbstractUserDetailsAuthenticationProvider.badCredentials",
-                    "Bad credentials"));
+            logger.debug("Authentication failed: captcha does not match actual value");
+            throw new CaptchaNotMatchException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.captchaNotMatch", "Captcha Not Match"));
         }
     }
 
-    public void setCaptchaVerifier(CaptchaVerifier captchaVerifier) {
-        this.captchaVerifier = captchaVerifier;
+    public void setCaptchaHelper(CaptchaHelper captchaHelper) {
+        this.captchaHelper = captchaHelper;
     }
 
 }

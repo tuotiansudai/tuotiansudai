@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.InvestNotifyInfo;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 

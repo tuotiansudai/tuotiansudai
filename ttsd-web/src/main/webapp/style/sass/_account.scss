@@ -369,7 +369,6 @@
     padding: 15px 10px;
     .recharge-form, .fast-recharge-form {
       clear: both;
-      margin-left: 30px;
       font-size: 15px;
       line-height: 40px;
       color: #353535;
@@ -383,7 +382,6 @@
       }
     }
     .fast-recharge {
-      height: 200px;
       .bind-card-nav {
         span {
           margin: 20px auto;
@@ -670,9 +668,6 @@
           border-radius: 3px;
         }
       }
-      &:nth-last-child(1) {
-        padding-bottom:0;
-      }
       &:nth-child(1) {
         padding-top:0;
       }
@@ -695,12 +690,12 @@
         box-shadow: 1px 1px 5px rgba(0,0,0,0.1),-1px -1px 5px rgba(0,0,0,0.1);
       }
        .hot {
-        width: 59px;
-        height: 59px;
-        background: url("../../images/loan/loan-hot.png") no-repeat;
+        width: 71px;
+        height: 71px;
+        background: url("/images/icons/hot-n.png") no-repeat;
         position: absolute;
-        left: 0;
-        top: 0;
+        left: -3px;
+        top: -3px;
       }
        .loan-info-frame {
         width: 690px;
@@ -740,28 +735,7 @@
          float: left;
          width: 240px;
          margin: 10px 30px 0px 30px;
-         .p-title {
-           font-size: nth($fontSize,1);
-           color: #999;
-           line-height: 1.8;
-           .point {
-             color: nth($CK1,2);
-         }
-         }
-         .process-percent {
-          border-radius: 3px;
-          background: #ffe3d4;
-          height: 8px;
-          width:100%;
-          overflow: hidden;
-          position: relative;
-           .percent {
-            width: 50px;
-            position: absolute;
-            height: 100%;
-            background: #ff752a;
-          }
-        }
+
          .rest-amount {
            color: #ff752a;
            font-size: 14px;
@@ -1077,12 +1051,7 @@
 
 .money-box {
   font-size: 12px;
-  width: 793px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  padding-bottom: 20px;
-  border-radius: 3px;
-  background: url("../../images/record/record.png") 360px 30px no-repeat;
+  background: url("/images/record/record.png") 360px 30px no-repeat;
   & p {
     padding-left: 20px;
     line-height: 24px;

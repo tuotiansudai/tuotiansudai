@@ -6,7 +6,7 @@ public interface RepayService {
 
     BaseDto<PayFormDataDto> repay(RepayDto repayDto);
 
-    BaseDto<LoanRepayDataDto> getLoanRepay(long loanId);
+    BaseDto<LoanRepayDataDto> getLoanRepay(String loginName, long loanId);
 
-    BaseDto<InvestRepayDataDto> findInvestorInvestRepay(long investId);
+    BaseDto<InvestRepayDataDto> findInvestorInvestRepay(String loginName, long investId);
 }

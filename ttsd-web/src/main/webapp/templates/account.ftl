@@ -7,9 +7,9 @@
         collectingInterest:'${((collectingInterest/100)?string('0.00'))!}'
     };
 </script>
-<div class="content-container fr account-overview">
+<div class="content-container account-overview">
     <div class="bRadiusBox spad bg-w">
-        <img src="/images/sign/profile.jpg" class="fl accountImg" >
+        <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg" >
         <div class="profileBox">
             <span><em>您好：${loginName!}</em></span>
             <ul class="proList">

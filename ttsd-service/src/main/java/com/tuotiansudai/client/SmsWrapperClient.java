@@ -1,9 +1,7 @@
 package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +31,8 @@ public class SmsWrapperClient extends BaseClient {
 
     private final static String PASSWORD_CHANGED_NOTIFY_URL = "/sms/mobile/{mobile}/password-changed-notify";
 
+    private final static String INVEST_FATAL_NOTIFY_URL = "/sms/invest-fatal-notify";
+
     public BaseDto<SmsDataDto> sendRegisterCaptchaSms(SmsCaptchaDto dto) {
         return send(dto, REGISTER_CAPTCHA_SMS_URI);
     }
@@ -47,6 +47,10 @@ public class SmsWrapperClient extends BaseClient {
 
     public BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile) {
         return send(null, PASSWORD_CHANGED_NOTIFY_URL.replace("{mobile}", mobile));
+    }
+
+    public BaseDto<SmsDataDto> sendInvestFatalNotify(SmsInvestFatalNotifyDto dto) {
+        return send(dto, INVEST_FATAL_NOTIFY_URL);
     }
 
     private BaseDto<SmsDataDto> send(Object requestData, String requestPath) {

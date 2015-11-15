@@ -11,7 +11,6 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 import redis.clients.jedis.exceptions.JedisDataException;
 import redis.clients.jedis.exceptions.JedisException;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +45,7 @@ public class RedisWrapperClient {
 
     private static JedisPool pool = null;
 
-    private JedisPool getPool() {
+    public JedisPool getPool() {
         if (pool == null) {
             JedisPoolConfig config = new JedisPoolConfig();
             pool = new JedisPool(config, redisHost, redisPort);
@@ -66,15 +65,23 @@ public class RedisWrapperClient {
         return redisPort;
     }
 
+    public String getRedisPassword() {
+        return redisPassword;
+    }
+
+    public void setRedisPassword(String redisPassword) {
+        this.redisPassword = redisPassword;
+    }
+
     public void setRedisPort(int redisPort) {
         this.redisPort = redisPort;
     }
 
-    private interface JedisAction<T> {
+    public interface JedisAction<T> {
         T action(Jedis jedis);
     }
 
-    private interface JedisActionNoResult {
+    public interface JedisActionNoResult {
         void action(Jedis jedis);
     }
 

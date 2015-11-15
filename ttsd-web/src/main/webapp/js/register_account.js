@@ -3,10 +3,8 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
     var registerAccountForm = $('.register-step-two .register-account-form');
 
     registerAccountForm.validate({
-        success: 'form-valid',
         focusCleanup: true,
         focusInvalid: false,
-        errorClass: 'form-error',
         onfocusout: function (element) {
             this.element(element);
         },
@@ -27,7 +25,7 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             },
             identityNumber: {
                 required: true,
-                regex: "^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$",
+                regex: /^[1-9]\d{13,16}[a-zA-Z0-9]$/,
                 isExist: "/register/account/identity-number/{0}/is-exist"
             }
         },

@@ -2,13 +2,10 @@ package com.tuotiansudai.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.squareup.okhttp.*;
 import com.tuotiansudai.dto.*;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +33,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String bindCardPath = "/bind-card";
 
+    private String replaceCardPath = "/bind-card/replace";
+
     private String loanPath = "/loan";
 
     private String loanOutPath = "/loan/loan-out";
@@ -47,6 +46,8 @@ public class PayWrapperClient extends BaseClient {
     private String agreementPath = "/agreement";
 
     private String repayPath = "/repay";
+
+    private String cancelLoanPath = "/loan/{0}/cancel";
 
     public BaseDto<PayDataDto> register(RegisterAccountDto dto) {
         return syncExecute(dto, registerPath, "POST");
@@ -64,8 +65,16 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(dto, bindCardPath, "POST");
     }
 
+    public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
+        return asyncExecute(dto, replaceCardPath, "POST");
+    }
+
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         return asyncExecute(dto, investPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> cancelLoan(Long loanId) {
+        return syncExecute(null, MessageFormat.format(cancelLoanPath,loanId.toString()), "POST");
     }
 
     public BaseDto<PayFormDataDto> agreement(AgreementDto dto) {

@@ -13,4 +13,7 @@ public interface SmsService {
     BaseDto<SmsDataDto> sendRetrievePasswordCaptcha(String mobile, String captcha, String ip);
 
     BaseDto<SmsDataDto> sendPasswordChangedNotify(String mobile);
+
+    public BaseDto<SmsDataDto> investFatalNotify(String mobile, String errMsg);
+
 }

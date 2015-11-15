@@ -2,13 +2,11 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.InvestDto;
-import com.tuotiansudai.dto.PayDataDto;
-import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.client.SmsWrapperClient;
+import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.InvestNotifyRequestMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
@@ -19,31 +17,24 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.InvestNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
-import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.request.ProjectTransferNopwdRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferNopwdResponseModel;
+import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
-import com.tuotiansudai.repository.mapper.InvestMapper;
-import com.tuotiansudai.repository.mapper.InvestRepayMapper;
-import com.tuotiansudai.repository.mapper.LoanMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.*;
+import com.tuotiansudai.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class InvestServiceImpl implements InvestService {
@@ -77,13 +68,20 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private SendCloudMailUtil sendCloudMailUtil;
 
-
     @Autowired
     private InvestNotifyRequestMapper investNotifyRequestMapper;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
 
+    @Autowired
+    private SmsWrapperClient smsWrapperClient;
+
+    @Value(value = "${invest.fatal.notify.mobiles}")
+    private String fatalNotifyMobiles;
+
+    @Value(value = "${invest.notify.process.list.size}")
+    private int investProcessListSize;
 
     @Override
     @Transactional
@@ -192,12 +190,11 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
-    public BaseDto<PayDataDto> asyncInvestCallback(){
-        int limitCount = 10;
-        List<InvestNotifyRequestModel> todoList = investNotifyRequestMapper.getTodoList(limitCount);
+    public BaseDto<PayDataDto> asyncInvestCallback() {
+        List<InvestNotifyRequestModel> todoList = investNotifyRequestMapper.getTodoList(investProcessListSize);
 
-        for(InvestNotifyRequestModel model : todoList) {
-            if(updateInvestNotifyRequestStatus(model)) {
+        for (InvestNotifyRequestModel model : todoList) {
+            if (updateInvestNotifyRequestStatus(model)) {
                 processOneCallback(model);
             }
         }
@@ -214,9 +211,8 @@ public class InvestServiceImpl implements InvestService {
     private boolean updateInvestNotifyRequestStatus(InvestNotifyRequestModel model) {
         try {
             investNotifyRequestMapper.updateStatus(model.getId(), InvestNotifyProcessStatus.DONE);
-        }catch (Exception e) {
-            // TODO: 发送短信
-            logger.fatal("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
+        } catch (Exception e) {
+            fatalLog("update_invest_notify_status_fail, orderId:" + model.getOrderId() + ",id:" + model.getId());
             return false;
         }
         return true;
@@ -225,7 +221,8 @@ public class InvestServiceImpl implements InvestService {
     @Transactional
     private synchronized void processOneCallback(InvestNotifyRequestModel callbackRequestModel) {
 
-        long orderId = Long.parseLong(callbackRequestModel.getOrderId());
+        String orderIdStr = callbackRequestModel.getOrderId();
+        long orderId = Long.parseLong(orderIdStr);
         InvestModel investModel = investMapper.findById(orderId);
         if (investModel == null) {
             logger.error(MessageFormat.format("invest(project_transfer) callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
@@ -240,18 +237,20 @@ public class InvestServiceImpl implements InvestService {
             LoanModel loanModel = loanMapper.findById(loanId);
             if (successInvestAmountTotal + investModel.getAmount() > loanModel.getLoanAmount()) {
                 // 超投
-                infoLog("over_invest", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("over_invest", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 超投返款处理
                 overInvestPaybackProcess(orderId, investModel, loginName, loanId);
             } else {
                 // 投资成功
-                infoLog("invest_success", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("invest_success", orderIdStr, investModel.getAmount(), loginName, loanId);
                 // 投资成功，冻结用户资金，更新投资状态为success
                 investSuccess(orderId, investModel, loginName);
 
                 if (successInvestAmountTotal + investModel.getAmount() == loanModel.getLoanAmount()) {
                     // 满标，改标的状态 RECHECK
                     loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+                    // 更新筹款完成时间
+                    loanMapper.updateRaisingCompleteTime(loanId, new Date());
                 }
             }
         } else {
@@ -274,8 +273,10 @@ public class InvestServiceImpl implements InvestService {
 
         boolean paybackSuccess = false;
 
+        String newOrderId = orderId + "X" + System.currentTimeMillis();
+
         ProjectTransferRequestModel requestModel = ProjectTransferRequestModel.overInvestPaybackRequest(
-                String.valueOf(loanId), orderId + "X" + System.currentTimeMillis(), accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
+                String.valueOf(loanId), newOrderId, accountModel.getPayUserId(), String.valueOf(investModel.getAmount()));
 
         try {
             ProjectTransferResponseModel responseModel = paySyncClient.send(
@@ -285,22 +286,22 @@ public class InvestServiceImpl implements InvestService {
 
             if (responseModel.isSuccess()) {
                 // 超投返款成功
-                infoLog("pay_back_success", orderId, investModel.getAmount(), loginName, loanId);
+                infoLog("pay_back_success", newOrderId, investModel.getAmount(), loginName, loanId);
                 paybackSuccess = true;
             } else {
                 // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
-                errorLog("pay_back_fail", orderId, investModel.getAmount(), loginName, loanId);
+                errorLog("pay_back_fail", newOrderId, investModel.getAmount(), loginName, loanId);
             }
         } catch (PayException e) {
             // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
-            fatalLog("pay_back_PayException", orderId, investModel.getAmount(), loginName, loanId, e);
+            fatalLog("pay_back_PayException", newOrderId, investModel.getAmount(), loginName, loanId, e);
         } catch (Exception e) {
             // 所有其他异常，包括数据库链接，网络异常，记录日志，发短信通知管理员，抛出异常，事务回滚。
-            fatalLog("pay_back_other_exceptions", orderId, investModel.getAmount(), loginName, loanId, e);
+            fatalLog("pay_back_other_exceptions", newOrderId, investModel.getAmount(), loginName, loanId, e);
             throw e;
         }
 
-        if(!paybackSuccess) {
+        if (!paybackSuccess) {
             // 如果返款失败，则记录本次投资为 超投返款失败
             investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK_FAIL);
         }
@@ -349,19 +350,19 @@ public class InvestServiceImpl implements InvestService {
             }
         }
     }
+
     @Override
-    public void notifyInvestorRepaySuccessfulByEmail(long loanId,int period){
+    public void notifyInvestorRepaySuccessfulByEmail(long loanId, int period) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
-        for(InvestNotifyInfo investNotifyInfo:notifyInfos){
+        for (InvestNotifyInfo investNotifyInfo : notifyInfos) {
             long investId = investNotifyInfo.getInvestId();
             String email = investNotifyInfo.getEmail();
             String loanName = investNotifyInfo.getLoanName();
             int periods = investNotifyInfo.getPeriods();
             InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
-            if(investRepay != null){
-
+            if (investRepay != null) {
                 Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)
@@ -376,9 +377,11 @@ public class InvestServiceImpl implements InvestService {
         }
     }
 
-    private long calculateProfit(long corpus,long actualInterest,long defaultInterest,long actualFee){
+    private long calculateProfit(long corpus, long actualInterest, long defaultInterest, long actualFee) {
         return corpus + actualInterest + defaultInterest - actualFee;
     }
+
+
     /**
      * umpay 超投返款的回调
      *
@@ -386,7 +389,7 @@ public class InvestServiceImpl implements InvestService {
      * @param queryString
      * @return
      */
-    public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString){
+    public String overInvestPaybackCallback(Map<String, String> paramsMap, String queryString) {
 
         logger.debug("into over_invest_payback_callback, queryString: " + queryString);
 
@@ -417,13 +420,15 @@ public class InvestServiceImpl implements InvestService {
             investMapper.updateStatus(investModel.getId(), InvestStatus.OVER_INVEST_PAYBACK);
         } else {
             // 返款失败，当作投资成功处理
-            errorLog("pay_back_notify_fail,take_as_invest_success", orderId, investModel.getAmount(), loginName, investModel.getLoanId());
+            errorLog("pay_back_notify_fail,take_as_invest_success", orderIdStr, investModel.getAmount(), loginName, investModel.getLoanId());
 
             investSuccess(orderId, investModel, loginName);
 
             long loanId = investModel.getLoanId();
             // 超投，改标的状态为满标 RECHECK
             loanMapper.updateStatus(loanId, LoanStatus.RECHECK);
+            // 更新筹款完成时间
+            loanMapper.updateRaisingCompleteTime(loanId, new Date());
         }
 
         String respData = callbackRequest.getResponseData();
@@ -443,31 +448,10 @@ public class InvestServiceImpl implements InvestService {
             amountTransfer.freeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.INVEST_SUCCESS, null, null);
         } catch (AmountTransferException e) {
             // 记录日志，发短信通知管理员
-            fatalLog("invest success, but freeze account fail", orderId, investModel.getAmount(), loginName, investModel.getLoanId(), e);
+            fatalLog("invest success, but freeze account fail", String.valueOf(orderId), investModel.getAmount(), loginName, investModel.getLoanId(), e);
         }
         // 改invest 本身状态为投资成功
         investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
-    }
-
-    private void infoLog(String msg, long orderId, long amount, String loginName, long loanId) {
-        logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
-    }
-
-    private void errorLog(String msg, long orderId, long amount, String loginName, long loanId) {
-        errorLog(msg, orderId, amount, loginName, loanId, null);
-    }
-
-    private void errorLog(String msg, long orderId, long amount, String loginName, long loanId, Throwable e) {
-        logger.error(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
-    }
-
-    private void fatalLog(String msg, long orderId, long amount, String loginName, long loanId) {
-        fatalLog(msg, orderId, amount, loginName, loanId, null);
-    }
-
-    private void fatalLog(String msg, long orderId, long amount, String loginName, long loanId, Throwable e) {
-        // TODO: 发短信提醒
-        logger.fatal(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
     }
 
 
@@ -490,4 +474,42 @@ public class InvestServiceImpl implements InvestService {
         return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
     }
 
+    private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
+        logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
+    }
+
+    private void errorLog(String msg, String orderId, long amount, String loginName, long loanId) {
+        errorLog(msg, orderId, amount, loginName, loanId, null);
+    }
+
+    private void errorLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
+        logger.error(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId, e);
+    }
+
+    private void fatalLog(String errMsg) {
+        this.fatalLog(errMsg, null);
+    }
+
+    private void fatalLog(String msg, String orderId, long amount, String loginName, long loanId, Throwable e) {
+        String errMsg = msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId;
+        fatalLog(errMsg, e);
+    }
+
+    private void fatalLog(String errMsg, Throwable e) {
+        logger.fatal(errMsg, e);
+        if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
+            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("|")), errMsg);
+        }
+    }
+
+    private void sendSmsErrNotify(List<String> mobiles, String errMsg) {
+        for (String mobile : mobiles) {
+            logger.info("sent invest fatal sms message to " + mobile);
+
+            SmsInvestFatalNotifyDto dto = new SmsInvestFatalNotifyDto();
+            dto.setMobile(mobile);
+            dto.setErrMsg(errMsg);
+            smsWrapperClient.sendInvestFatalNotify(dto);
+        }
+    }
 }

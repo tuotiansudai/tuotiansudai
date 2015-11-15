@@ -2,7 +2,7 @@ package com.tuotiansudai.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tuotiansudai.repository.model.InvestRepayModel;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Date;
 

@@ -1,11 +1,12 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.RechargeDto;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RechargeModel {
+public class RechargeModel implements Serializable {
 
     private long id;
 

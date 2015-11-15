@@ -1,13 +1,14 @@
 package com.tuotiansudai.repository.model;
 
 import com.tuotiansudai.dto.LoanDto;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class LoanModel {
+public class LoanModel implements Serializable {
     /***
      * 标的号
      ***/
@@ -84,6 +85,10 @@ public class LoanModel {
      * 筹款截止时间
      ***/
     private Date fundraisingEndTime;
+    /***
+     * 筹款完成时间
+     ***/
+    private Date raisingCompleteTime;
     /***
      * 是否显示在首页true:显示在首页，false:不显示在首页
      ***/
@@ -316,6 +321,14 @@ public class LoanModel {
 
     public void setFundraisingEndTime(Date fundraisingEndTime) {
         this.fundraisingEndTime = fundraisingEndTime;
+    }
+
+    public Date getRaisingCompleteTime() {
+        return raisingCompleteTime;
+    }
+
+    public void setRaisingCompleteTime(Date raisingCompleteTime) {
+        this.raisingCompleteTime = raisingCompleteTime;
     }
 
     public boolean isShowOnHome() {

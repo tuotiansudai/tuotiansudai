@@ -1,7 +1,6 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -24,15 +23,17 @@ public interface UserService {
     /**
      * 修改用户密码
      *
+     * @param loginName
+     * @param mobile
      * @param originalPassword 用户目前的密码（明文）
      * @param newPassword 新密码（明文）
      * @return 修改成功返回 true , 修改失败返回 false
      */
-    boolean changePassword(String originalPassword, String newPassword);
+    boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
 
-    void editUser(EditUserDto editUserDto, String ip) throws EditUserException;
+    void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException;
 
-    void updateUserStatus(String loginName, UserStatus userStatus, String ip);
+    void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
 
     EditUserDto getEditUser(String loginName);
 
@@ -43,5 +44,5 @@ public interface UserService {
 
     List<String> findLoginNameLike(String loginName);
 
-    boolean verifyPasswordCorrect(String password);
+    boolean verifyPasswordCorrect(String loginName, String password);
 }

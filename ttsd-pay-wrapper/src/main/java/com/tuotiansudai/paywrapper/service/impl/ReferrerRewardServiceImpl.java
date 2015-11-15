@@ -10,13 +10,10 @@ import com.tuotiansudai.paywrapper.repository.model.sync.request.TransferRequest
 import com.tuotiansudai.paywrapper.repository.model.sync.response.TransferResponseModel;
 import com.tuotiansudai.paywrapper.service.ReferrerRewardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
-import com.tuotiansudai.repository.mapper.AccountMapper;
-import com.tuotiansudai.repository.mapper.InvestReferrerRewardMapper;
-import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
+import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountTransfer;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -48,6 +45,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
@@ -130,7 +130,9 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
                 } catch (AmountTransferException e) {
                     logger.error(MessageFormat.format("referrer reward transfer in balance failed (investId = {0})", String.valueOf(model.getInvestId())));
                 }
-                systemBillService.transferOut(amount, String.valueOf(orderId), SystemBillBusinessType.REFERRER_REWARD, SystemBillMessageTemplate.REFERRER_REWARD_MESSAGE_TEMPLATE.getTemplate());
+                InvestModel investModel = investMapper.findById(model.getInvestId());
+                String detail = MessageFormat.format(SystemBillDetailTemplate.REFERRER_REWARD_DETAIL_TEMPLATE.getTemplate(), referrerLoginName, investModel.getLoginName(), String.valueOf(model.getInvestId()));
+                systemBillService.transferOut(orderId, amount, SystemBillBusinessType.REFERRER_REWARD, detail);
                 model.setStatus(ReferrerRewardStatus.SUCCESS);
             } else {
                 logger.error(MessageFormat.format("referrer reward is failed, investId={0} referrerLoginName={1} referrerRole={2} amount={3} errorMessage={4}",

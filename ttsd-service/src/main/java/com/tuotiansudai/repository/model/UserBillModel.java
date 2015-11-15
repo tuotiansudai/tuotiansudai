@@ -1,14 +1,15 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserBillModel {
+public class UserBillModel implements Serializable {
 
     private long id;
 
     private String loginName;
 
-    private long orderId;
+    private Long orderId;
 
     private long amount;
 
@@ -55,11 +56,11 @@ public class UserBillModel {
         this.loginName = loginName;
     }
 
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(long orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

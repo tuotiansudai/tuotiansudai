@@ -21,18 +21,22 @@ public class UMPayRealTimeStatusController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getStatus(@RequestParam(value = "type", required = false) String type,
                                   @RequestParam(value = "loginName", required = false) String loginName,
-                                  @RequestParam(value = "loanId", required = false, defaultValue = "0") long loanId) {
+                                  @RequestParam(value = "loanId", required = false) Long loanId) {
         Map<String, String> data = null;
         if (!Strings.isNullOrEmpty(type)) {
             switch (type) {
                 case "user":
-                    data = payRealTimeStatusService.getUserStatus(loginName);
+                    if (!Strings.isNullOrEmpty(loginName)) {
+                        data = payRealTimeStatusService.getUserStatus(loginName);
+                    }
                     break;
                 case "platform":
                     data = payRealTimeStatusService.getPlatformStatus();
                     break;
                 case "loan":
-                    data = payRealTimeStatusService.getLoanStatus(loanId);
+                    if (loanId != null) {
+                        data = payRealTimeStatusService.getLoanStatus(loanId);
+                    }
             }
         }
 

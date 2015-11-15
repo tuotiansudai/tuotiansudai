@@ -4,14 +4,12 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RetrievePasswordDto;
-import com.tuotiansudai.dto.SmsDataDto;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.RetrievePasswordService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.CaptchaGenerator;
-import com.tuotiansudai.utils.CaptchaVerifier;
-import com.tuotiansudai.utils.RequestIPParser;
+import com.tuotiansudai.util.CaptchaGenerator;
+import com.tuotiansudai.util.CaptchaHelper;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,7 @@ public class RetrievePasswordController {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
     @Autowired
-    private CaptchaVerifier captchaVerifier;
+    private CaptchaHelper captchaHelper;
     @Autowired
     private RetrievePasswordService retrievePasswordService;
 
@@ -71,24 +69,10 @@ public class RetrievePasswordController {
         redisWrapperClient.setex(session.getId(), 30, captcha.getAnswer());
     }
 
-    @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/send-mobile-captcha", method = RequestMethod.GET)
-    @ResponseBody
-    //TODO get -> post
-    public BaseDto<SmsDataDto> mobileCaptcha(HttpServletRequest httpServletRequest, @PathVariable String mobile, @PathVariable String imageCaptcha) {
-        BaseDto<SmsDataDto> baseDto = new BaseDto<>();
-        SmsDataDto dataDto = new SmsDataDto();
-        baseDto.setData(dataDto);
-        boolean result = captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha);
-        if (result) {
-            return smsCaptchaService.sendRetrievePasswordCaptcha(mobile, RequestIPParser.parse(httpServletRequest));
-        }
-        return baseDto;
-    }
-
     @RequestMapping(value = "/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto imageCaptchaVerify(@PathVariable String imageCaptcha) {
-        boolean result = this.captchaVerifier.mobileRetrievePasswordImageCaptchaVerify(imageCaptcha);
+        boolean result = captchaHelper.captchaVerify(CaptchaHelper.RETRIEVE_PASSWORD_CAPTCHA, imageCaptcha);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);

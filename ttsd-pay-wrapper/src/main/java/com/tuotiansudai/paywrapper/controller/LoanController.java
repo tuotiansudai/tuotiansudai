@@ -33,4 +33,11 @@ public class LoanController {
     public BaseDto<PayDataDto> loanOut(@RequestBody LoanOutDto loanOutDto){
         return loanService.loanOut(loanOutDto.getLoanIdLong());
     }
+
+    @RequestMapping(value = "/{loanId}/cancel", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayDataDto> cancelLoan(@PathVariable Long loanId) {
+        return loanService.cancelLoan(loanId);
+    }
+
 }

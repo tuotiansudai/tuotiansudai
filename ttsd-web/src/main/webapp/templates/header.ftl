@@ -4,7 +4,7 @@
             <ul class="fr">
                 <li><a href="javascript:">手机APP</a></li>
                 <@global.security.authorize access="isAuthenticated()">
-                <li><a href="${requestContext.getContextPath()}/user-center"><@global.security.authentication property="principal.username" /></a></li>
+                <li><a href="${requestContext.getContextPath()}/personal-info"><@global.security.authentication property="principal.username" /></a></li>
                 <li><a id="logout-link" href="/logout" class="logout">退出</a>
                     <form id="logout-form" class="logout-form" action="/logout" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

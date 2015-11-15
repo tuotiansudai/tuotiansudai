@@ -24,9 +24,7 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
         });
 
         $EmailForm.validate({
-            success: 'form-valid',
             focusInvalid: false,
-            errorClass: 'form-error',
             rules: {
                 email: {
                     required: true,
@@ -106,9 +104,7 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
 
         $passwordForm.validate({
             focusCleanup: true,
-            success: 'form-valid',
             focusInvalid: false,
-            errorClass: 'form-error',
             onkeyup: function (element, event) {
                 var excludedKeys = [16, 17, 18, 20, 35, 36, 37, 38, 39, 40, 45, 144, 225];
                 if ((event.which !== 9 || this.elementValue(element) !== "") && $.inArray(event.keyCode, excludedKeys) === -1) {
@@ -150,18 +146,18 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
                 originalPassword: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$",
+                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
                     isNotExist: "/personal-info/password/{0}/is-exist"
                 },
                 newPassword: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$"
+                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
                 },
                 newPasswordConfirm: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$",
+                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
                     equalTo: "input[name='newPassword']"
                 }
             },

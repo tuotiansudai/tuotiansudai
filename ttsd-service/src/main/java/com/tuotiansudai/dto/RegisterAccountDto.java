@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import java.awt.*;
 import java.io.Serializable;
 
-public class RegisterAccountDto implements Serializable{
+public class RegisterAccountDto implements Serializable {
 
     private String loginName;
 
@@ -16,7 +16,7 @@ public class RegisterAccountDto implements Serializable{
     private String userName;
 
     @NotEmpty
-    @Pattern(regexp = "[1-9]\\d{13,16}[a-zA-Z0-9]{1}")
+    @Pattern(regexp = "^[1-9]\\d{13,16}[a-zA-Z0-9]$")
     private String identityNumber;
 
     public String getLoginName() {
@@ -51,13 +51,14 @@ public class RegisterAccountDto implements Serializable{
         this.mobile = mobile;
     }
 
-    public RegisterAccountDto(String loginName,String mobile,String userName,String identityNumber){
+    public RegisterAccountDto(String loginName, String mobile, String userName, String identityNumber) {
         this.setUserName(userName);
         this.setLoginName(loginName);
         this.setMobile(mobile);
         this.setIdentityNumber(identityNumber);
     }
-    public RegisterAccountDto(){
+
+    public RegisterAccountDto() {
 
     }
 }

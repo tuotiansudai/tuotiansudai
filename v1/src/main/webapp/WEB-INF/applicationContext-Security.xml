@@ -108,6 +108,7 @@ http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 		<intercept-url pattern="/v1.0/get/version" filters="none" />
 		<intercept-url pattern="/v1.0/get/banner" filters="none" />
 		<intercept-url pattern="/v1.0/register" filters="none" />
+		<intercept-url pattern="/v1.0/install-notify" filters="none" />
 		<intercept-url pattern="/v1.0/**" access="hasRole('USER')" />
 
 		<intercept-url pattern="/**" access="MENU_PERMISSION" />

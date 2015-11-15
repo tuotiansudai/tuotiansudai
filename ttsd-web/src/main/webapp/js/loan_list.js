@@ -1,10 +1,22 @@
 require(['jquery', 'csrf'], function ($) {
-    var $loanLi=$('.loan-list-box').find('li');
-    $loanLi.click(function() {
-        var $this=$(this),
-            thisUrl=$this.attr('urlLink');
-        window.open(thisUrl); //new window tab
-        //location.href=thisUrl;
+    var $loan = $('.loan-list-box').find('li');
+    $loan.click(function () {
+        window.open($(this).data('url'));
     });
 
-})
+    $('.pagination .prev').click(function () {
+        var self = $(this);
+        if (self.hasClass('active')) {
+            window.location.href = self.data('url');
+        }
+        return false;
+    });
+
+    $('.pagination .next').click(function () {
+        var self = $(this);
+        if (self.hasClass('active')) {
+            window.location.href = self.data('url');
+        }
+        return false;
+    });
+});

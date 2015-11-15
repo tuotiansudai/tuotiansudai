@@ -19,7 +19,7 @@
         </beans:property>
     </beans:bean>
 
-    <beans:bean id="captchaVerifier" class="com.tuotiansudai.utils.CaptchaVerifier"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
     <beans:bean id="myDaoAuthenticationProvider" class="com.tuotiansudai.security.MyDaoAuthenticationProvider">
         <beans:property name="passwordEncoder" ref="myShaPasswordEncoder"/>

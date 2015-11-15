@@ -46,6 +46,8 @@ public interface LoanService {
 
     BaseDto<PayDataDto> openLoan(LoanDto loanDto);
 
+    BaseDto<PayDataDto> cancelLoan(LoanDto loanDto);
+
     /**
      * @param loanId
      * @return
@@ -63,11 +65,11 @@ public interface LoanService {
 
     BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
 
-    BaseDto<LoanDto> getLoanDetail(long loanId);
+    BaseDto<LoanDto> getLoanDetail(String loginName, long loanId);
 
     BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
-    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 
     int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime);
 
