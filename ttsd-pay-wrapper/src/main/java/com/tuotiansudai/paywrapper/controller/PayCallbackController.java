@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Map;
@@ -33,11 +34,11 @@ public class PayCallbackController {
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private NormalRepayService normalRepayService;
+    @Resource(name = "normalRepayServiceImpl")
+    private RepayService normalRepayService;
 
-    @Autowired
-    private AdvanceRepayService advanceRepayService;
+    @Resource(name = "advanceRepayServiceImpl")
+    private RepayService advanceRepayService;
 
     @Autowired
     private AgreementService agreementService;
@@ -91,6 +92,7 @@ public class PayCallbackController {
         String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
     public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

@@ -8,7 +8,7 @@ import com.tuotiansudai.repository.model.InvestModel;
 import java.util.List;
 import java.util.Map;
 
-public interface NormalRepayService {
+public interface RepayService {
 
     BaseDto<PayFormDataDto> repay(long loanId);
 

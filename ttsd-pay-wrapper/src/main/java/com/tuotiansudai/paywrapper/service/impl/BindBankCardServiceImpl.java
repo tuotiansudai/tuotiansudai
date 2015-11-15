@@ -20,12 +20,9 @@ import com.tuotiansudai.paywrapper.service.BindBankCardService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankCardStatus;
-import com.tuotiansudai.repository.model.SystemBillBusinessType;
+import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.utils.BankCardUtil;
 import com.tuotiansudai.utils.IdGenerator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,15 +33,21 @@ import java.util.Map;
 
 @Service
 public class BindBankCardServiceImpl implements BindBankCardService {
+
     static Logger logger = Logger.getLogger(BindBankCardServiceImpl.class);
+
     @Autowired
     private PayAsyncClient payAsyncClient;
+
     @Autowired
     private AccountMapper accountMapper;
+
     @Autowired
     private IdGenerator idGenerator;
+
     @Autowired
     private BankCardMapper bankCardMapper;
+
     @Autowired
     private SystemBillService systemBillService;
 
@@ -63,12 +66,10 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindCardMapper.class, requestModel);
             bankCardMapper.create(bankCardModel);
-
             return baseDto;
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -93,7 +94,6 @@ public class BindBankCardServiceImpl implements BindBankCardService {
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -102,18 +102,22 @@ public class BindBankCardServiceImpl implements BindBankCardService {
 
     @Override
     public String replaceBankCardCallback(Map<String, String> paramsMap, String originalQueryString) {
+
         BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, BankCardNotifyMapper.class, BankCardNotifyRequestModel.class);
+
         if (callbackRequest == null) {
             return null;
         }
+
         try {
             String service = callbackRequest.getService();
             if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
-                this.postReplaceBankCardCallback(callbackRequest, paramsMap.get("gate_id"));
+                this.postReplaceBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
             }
         } catch (AmountTransferException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+
         return callbackRequest.getResponseData();
     }
 
@@ -126,13 +130,9 @@ public class BindBankCardServiceImpl implements BindBankCardService {
             return null;
         }
 
-        try {
-            String service = callbackRequest.getService();
-            if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
-                this.postBankCardCallback(callbackRequest, paramsMap.get("gate_id"));
-            }
-        } catch (AmountTransferException e) {
-            logger.error(e.getLocalizedMessage(), e);
+        String service = callbackRequest.getService();
+        if (AsyncServiceType.MER_BIND_CARD_NOTIFY.getCode().equals(service)) {
+            this.postBindBankCardCallback((BankCardNotifyRequestModel) callbackRequest);
         }
 
         return callbackRequest.getResponseData();
@@ -149,55 +149,66 @@ public class BindBankCardServiceImpl implements BindBankCardService {
     }
 
     @Transactional
-    private void postReplaceBankCardCallback(BaseCallbackRequestModel callbackRequestModel, String bankCode) throws AmountTransferException {
-        if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId())) {
+    private void postReplaceBankCardCallback(BankCardNotifyRequestModel callbackRequestModel) throws AmountTransferException {
+        try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
+            if (bankCardModel == null) {
+                logger.error(MessageFormat.format("replace bank card order id {0} is not found", String.valueOf(orderId)));
+                return;
+            }
             if (callbackRequestModel.isSuccess()) {
-                if (bankCardModel != null) {
-                    bankCardModel.setStatus(BankCardStatus.PASSED);
-                    bankCardModel.setBankCode(bankCode);
-                    long passedId = bankCardMapper.findByLoginName(bankCardModel.getLoginName()).getId();
-                    bankCardMapper.updateBankCard(bankCardModel);
-                    bankCardMapper.update(passedId, BankCardStatus.REMOVED);
-                    if ("CMB".equals(bankCode)) {
-                        String detailTemplate = "用户{0}更换{1}银行卡";
-                        systemBillService.transferOut(1L,
-                                callbackRequestModel.getOrderId(),
-                                SystemBillBusinessType.BIND_CARD,
-                                MessageFormat.format(detailTemplate, bankCardModel.getLoginName(), bankCardModel.getCardNumber()));
-                    }
+                bankCardModel.setStatus(BankCardStatus.PASSED);
+                String bankCode = callbackRequestModel.getGateId();
+                bankCardModel.setBankCode(bankCode);
+
+                BankCardModel previousBankCard = bankCardMapper.findByLoginName(bankCardModel.getLoginName());
+                previousBankCard.setStatus(BankCardStatus.REMOVED);
+                bankCardMapper.update(previousBankCard);
+                if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.REPLACE_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
+                            bankCardModel.getLoginName(),
+                            BankCardUtil.getBankName(bankCode),
+                            bankCardModel.getCardNumber());
+                    systemBillService.transferOut(orderId, 1L, SystemBillBusinessType.REPLACE_BANK_CARD, detail);
                 }
             } else {
-                bankCardMapper.update(orderId, BankCardStatus.FAILED);
+                bankCardModel.setStatus(BankCardStatus.FAILED);
             }
+            bankCardMapper.update(bankCardModel);
+        } catch (NumberFormatException e) {
+            logger.error(MessageFormat.format("replace bank card notify request order {0} is not a number", callbackRequestModel.getOrderId()));
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
+
     @Transactional
-    private void postBankCardCallback(BaseCallbackRequestModel callbackRequestModel, String bankCode) throws AmountTransferException {
-        if (StringUtils.isNotEmpty(callbackRequestModel.getOrderId())) {
+    private void postBindBankCardCallback(BankCardNotifyRequestModel callbackRequestModel) {
+        try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             BankCardModel bankCardModel = bankCardMapper.findById(orderId);
+            if (bankCardModel == null) {
+                logger.error(MessageFormat.format("bind bank card order id {0} is not found", String.valueOf(orderId)));
+                return;
+            }
             if (callbackRequestModel.isSuccess()) {
-                if (bankCardModel != null) {
-                    bankCardModel.setStatus(BankCardStatus.PASSED);
-                    bankCardModel.setBankCode(bankCode);
-                    bankCardMapper.updateBankCard(bankCardModel);
-                    if ("CMB".equals(bankCode)) {
-                        String detailTemplate = "用户{0}绑定{1}银行卡";
-                        systemBillService.transferOut(1L,
-                                callbackRequestModel.getOrderId(),
-                                SystemBillBusinessType.BIND_CARD,
-                                MessageFormat.format(detailTemplate, bankCardModel.getLoginName(), bankCardModel.getCardNumber()));
-                    }
+                bankCardModel.setStatus(BankCardStatus.PASSED);
+                String bankCode = callbackRequestModel.getGateId();
+                bankCardModel.setBankCode(bankCode);
+                if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {
+                    String detail = MessageFormat.format(SystemBillDetailTemplate.BIND_BANK_CARD_DETAIL_TEMPLATE.getTemplate(),
+                            bankCardModel.getLoginName(),
+                            BankCardUtil.getBankName(bankCode),
+                            bankCardModel.getCardNumber());
+                    systemBillService.transferOut(orderId, 1L, SystemBillBusinessType.BIND_BANK_CARD, detail);
                 }
             } else {
-                bankCardMapper.update(orderId, BankCardStatus.FAILED);
+                bankCardModel.setStatus(BankCardStatus.FAILED);
             }
-
-
+            bankCardMapper.update(bankCardModel);
+        } catch (NumberFormatException e) {
+            logger.error(MessageFormat.format("bind bank card notify request order {0} is not a number", callbackRequestModel.getOrderId()));
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
-
-
 }
