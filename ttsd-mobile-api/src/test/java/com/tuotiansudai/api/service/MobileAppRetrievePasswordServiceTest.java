@@ -12,8 +12,8 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.MyShaPasswordEncoder;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class MobileAppRetrievePasswordServiceTest extends ServiceTestBase {

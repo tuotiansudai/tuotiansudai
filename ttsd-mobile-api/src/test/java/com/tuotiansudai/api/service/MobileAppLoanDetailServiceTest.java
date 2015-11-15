@@ -8,25 +8,19 @@ import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.impl.MobileAppLoanDetailServiceImpl;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -78,6 +72,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setRecheckTime(new Date());
         loanModel.setVerifyTime(new Date());
         loanModel.setUpdateTime(new Date());
+        loanModel.setRaisingCompleteTime(new Date());
 
         when(loanMapper.findById(anyLong())).thenReturn(loanModel);
         when(investMapper.countSuccessInvest(anyLong())).thenReturn(6L);

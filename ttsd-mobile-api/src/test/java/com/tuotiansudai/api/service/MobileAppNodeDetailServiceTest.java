@@ -3,11 +3,10 @@ package com.tuotiansudai.api.service;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.NodeDetailRequestDto;
 import com.tuotiansudai.api.dto.NodeDetailResponseDataDto;
-import com.tuotiansudai.api.dto.NodeListResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppNodeDetailServiceImpl;
 import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
 import com.tuotiansudai.repository.model.AnnouncementManagementModel;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,9 +17,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringJUnit4ClassRunner.class)

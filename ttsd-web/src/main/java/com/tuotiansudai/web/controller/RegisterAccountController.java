@@ -6,6 +6,7 @@ import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,8 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView registerAccount(@Valid @ModelAttribute RegisterAccountDto registerAccountDto, RedirectAttributes redirectAttributes) {
+        registerAccountDto.setLoginName(LoginUserInfo.getLoginName());
+        registerAccountDto.setMobile(LoginUserInfo.getMobile());
         BaseDto<PayDataDto> dto = this.userService.registerAccount(registerAccountDto);
         boolean isRegisterSuccess = dto.getData().getStatus();
         if (!isRegisterSuccess) {

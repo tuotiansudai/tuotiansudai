@@ -3,14 +3,17 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
         var $bindCardBox = $('#bindCardBox'),
             $inputBankcard = $('.input-bankcard', $bindCardBox),
             $btnBindCard = $('.bind-card-submit', $bindCardBox),
+            $btnReplaceCard = $('.replace-card-submit', $bindCardBox),
             $FormOpenFastPay = $('.open-fast-pay-form', $bindCardBox),
             $btnOpenFastPay = $('.open-fast-pay', $FormOpenFastPay);
 
         $inputBankcard.keyup(function () {
             if (/^\d{16,19}$/.test($(this).val())) {
                 $btnBindCard.prop('disabled', false).addClass('btn-normal');
+                $btnReplaceCard.prop('disabled', false).addClass('btn-normal');
             } else {
                 $btnBindCard.prop('disabled', true).addClass('btn-normal');
+                $btnReplaceCard.prop('disabled', true).addClass('btn-normal');
             }
         });
 
@@ -36,5 +39,17 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
                 content: $('#pop-fast-pay')
             });
         });
+
+        $btnReplaceCard.click(function() {
+            layer.open({
+                type: 1,
+                title: '登录到联动优势支付平台换卡',
+                area: ['520px', '290px'],
+                shadeClose: true,
+                content: $('#pop-replace-card')
+            });
+        });
     });
+
+
 });

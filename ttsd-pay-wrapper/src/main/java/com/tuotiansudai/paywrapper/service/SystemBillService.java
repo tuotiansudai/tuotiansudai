@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface SystemBillService {
 
-    void transferOut(long amount, String orderId, SystemBillBusinessType businessType, String detail);
+    void transferOut(long orderId, long amount, SystemBillBusinessType businessType, String detail);
 
-    void transferIn(long amount, String orderId, SystemBillBusinessType businessType, String detail);
+    void transferIn(long orderId, long amount, SystemBillBusinessType businessType, String detail);
 }

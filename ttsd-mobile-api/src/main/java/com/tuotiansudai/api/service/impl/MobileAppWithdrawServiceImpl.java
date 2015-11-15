@@ -75,7 +75,7 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
         String loginName = withdrawDto.getLoginName();
-        BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         if(bankCardModel == null){
             return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(),ReturnMessage.NOT_BIND_CARD.getMsg());
         }

@@ -66,22 +66,11 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
             throw new EditUserException("用户不存在");
         }
 
-        if (!Strings.isNullOrEmpty(newReferrerLoginName) && Iterators.tryFind(userRoleMapper.findByLoginName(loginName).iterator(), new Predicate<UserRoleModel>() {
-            @Override
-            public boolean apply(UserRoleModel input) {
-                return input.getRole() == Role.MERCHANDISER;
-            }
-        }).isPresent()) {
-            logger.error(MessageFormat.format("update referrer failed, due to updated user ({0}) is a merchandiser", loginName));
-            throw new EditUserException("业务员不能设置推荐人");
-        }
-
         UserModel newReferrerModel = userMapper.findByLoginName(newReferrerLoginName);
         if (!Strings.isNullOrEmpty(newReferrerLoginName) && newReferrerModel == null) {
             logger.error(MessageFormat.format("update referrer failed, due to new referrer ({0}) is not exist", newReferrerLoginName));
             throw new EditUserException("推荐人不存在");
         }
-
 
         if (loginName.equalsIgnoreCase(newReferrerLoginName)) {
             logger.error(MessageFormat.format("update referrer failed, due to new referrer ({0}) is same as updated user ({1})", newReferrerLoginName, loginName));

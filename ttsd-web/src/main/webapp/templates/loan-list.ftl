@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <#if loanListWebDto.status== 'RAISING'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
@@ -117,7 +117,7 @@
 
                         </div>
                     <#elseif loanListWebDto.status== 'PREHEAT'>
-                        <div class="loan-process ">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">0%</span>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                     <#elseif loanListWebDto.status== 'RECHECK'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
@@ -146,12 +146,12 @@
                             </div>
                         </div>
                     <#elseif loanListWebDto.status== 'REPAYING'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">100%</span>
                             </div>
-                            <div class="process-percent finish-project">
+                            <div class="process-percent">
                                 <div class="percent" style="width: 100%;"></div>
                             </div>
                             <div class="rest-amount finish-invest">
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                     <#else>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">100%</span>
@@ -168,9 +168,9 @@
                             <div class="process-percent">
                                 <div class="percent" style="width:100%;"></div>
                             </div>
-                            <div class="rest-amount">
+                            <div class="rest-amount finish-invest">
                                 <span>可投金额: <i>${loanListWebDto.loanAmount}</i>元</span>
-                                <button class="btn-invest btn-normal">马上投资</button>
+                                <button class="btn-invest btn-normal">已售罄</button>
                             </div>
                         </div>
                     </#if>

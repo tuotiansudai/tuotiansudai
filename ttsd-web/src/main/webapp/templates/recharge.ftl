@@ -3,7 +3,7 @@
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
         <div class="recharge-bind-card pad-s">
-        <ul class="payment-mode clear">
+        <ul class="payment-mode clearfix">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
                 快捷支付
@@ -11,8 +11,18 @@
             <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
         </ul>
         <div class="recharge-wrapper">
+            <ul>
+                <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
+                    <span class="hot-flag">
+                        <img src="${requestContext.getContextPath()}/images/recharge/hot.jpg" alt=""/>
+                    </span>
+                    快捷支付
+                </li>
+                <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
+            </ul>
 
-            <div class="fast-recharge <#if isFastPayOn>active</#if>">
+            <div class="recharge-content">
+                <div class="fast-recharge <#if isFastPayOn>active</#if>">
                 <#if !isBindCard>
                     <div class="bind-card-nav">
                         <span>您尚未绑定银行卡，请先绑定银行卡！</span>
@@ -21,8 +31,9 @@
                 </#if>
 
             <#if !isFastPayOn && isBindCard>
-                <div class="turn-on-fast-form">
+                <div class="turn-on-fast-form pad-s">
                     <form action="/agreement" method="post" target="_blank">
+
                         <p><label>姓名：</label><span>${userName}</span></p>
                         <p><label>身份证：</label><span>${identityNumber}</span></p>
                         <p><label>开户行：</label><span>${bank}</span></p>
@@ -53,28 +64,28 @@
                 </div>
             </#if>
             </div>
-
             <div class="e-bank-recharge <#if !isFastPayOn>active</#if>">
                 <div class="recharge-form">
                     <b class="title">请选择银行：</b>
                     <form action="/recharge" method="post" target="_blank">
                         <ol>
                             <#list banks as bank>
-                                <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
+                                <li>
                                     <input data-name="${bank}" type="radio" id="bank-${bank}" name="bankCode" <#if bank_index == 0>checked="checked"</#if> value="${bank}">
                                     <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                                 </li>
                             </#list>
                         </ol>
+                        <div class="pad-m">
                         账户可用余额：<i class="color-note">${balance}</i> 元 <br/>
                         输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>
                         <input type="hidden" name="fastPay" value="false"/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
-                        <div class="tc pad-m">
+                        <div class="tc clear-blank-m">
                             <input type="submit" class="btn" disabled="disabled" value="确认充值"/>
+                        </div>
                         </div>
                     </form>
                 </div>

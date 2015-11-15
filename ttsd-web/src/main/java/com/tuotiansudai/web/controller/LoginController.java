@@ -1,7 +1,7 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.utils.CaptchaGenerator;
-import com.tuotiansudai.utils.CaptchaHelper;
+import com.tuotiansudai.util.CaptchaGenerator;
+import com.tuotiansudai.util.CaptchaHelper;
 import nl.captcha.Captcha;
 import nl.captcha.servlet.CaptchaServletUtil;
 import org.apache.log4j.Logger;

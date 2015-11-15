@@ -9,7 +9,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

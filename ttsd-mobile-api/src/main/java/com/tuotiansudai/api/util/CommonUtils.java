@@ -3,7 +3,7 @@ package com.tuotiansudai.api.util;
 
 import com.google.common.base.Joiner;
 import com.tuotiansudai.repository.model.UserBillOperationType;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;

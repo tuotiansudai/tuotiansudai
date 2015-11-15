@@ -7,7 +7,7 @@ import com.tuotiansudai.api.dto.NodeListResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppNodeListServiceImpl;
 import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
 import com.tuotiansudai.repository.model.AnnouncementManagementModel;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
