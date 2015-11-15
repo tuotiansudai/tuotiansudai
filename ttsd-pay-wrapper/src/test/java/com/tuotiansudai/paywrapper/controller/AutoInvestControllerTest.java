@@ -1,7 +1,7 @@
 package com.tuotiansudai.paywrapper.controller;
 
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

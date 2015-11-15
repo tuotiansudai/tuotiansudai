@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 
