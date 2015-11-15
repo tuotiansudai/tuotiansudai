@@ -26,10 +26,10 @@ body {
 }
 a{
   cursor: pointer;
-  color:nth($CK1,1);
+  color:nth($linkColor,1);
   text-decoration: none;
   &:hover{
-    color:nth($CK1,2);
+    color:nth($linkColor,2);
   }
 }
 .fl {
@@ -71,14 +71,17 @@ p {
   overflow: auto;
   height: auto;
 }
-.clear:after,
-.clear:before{
+.clearfix:after,.clearfix:before,
+.clear:after,.clear:before{
+  content: ".";
+  display: block;
   clear: both;
   visibility: hidden;
+  line-height: 0;
   height: 0;
-  display: block;
-  content: '';
+  font-size:0;
 }
+
 .clear-blank{
   clear: both;
   margin-top:10px;
@@ -139,8 +142,6 @@ form {
     }
   }
 }
-
-
 //make image gray
 .img-gray {
   -webkit-filter: grayscale(100%);

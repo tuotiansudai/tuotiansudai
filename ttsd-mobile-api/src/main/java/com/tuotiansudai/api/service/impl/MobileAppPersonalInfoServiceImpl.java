@@ -13,7 +13,7 @@ import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
-import com.tuotiansudai.utils.BankCardUtil;
+import com.tuotiansudai.util.BankCardUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class MobileAppPersonalInfoServiceImpl implements MobileAppPersonalInfoSe
             dto.setCode(ReturnMessage.USER_ID_IS_NULL.getCode());
             dto.setMessage(ReturnMessage.USER_ID_IS_NULL.getMsg());
         } else {
-            BankCardModel bankCard = bankCardMapper.findByLoginName(loginName);
+            BankCardModel bankCard = bankCardMapper.findPassedBankCardByLoginName(loginName);
             AccountModel account = accountService.findByLoginName(loginName);
             PersonalInfoResponseDataDto personalInfoDataDto = generatePersonalInfoData(userModel, bankCard, account);
 

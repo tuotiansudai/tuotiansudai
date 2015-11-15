@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.job.AutoInvestJob;
 import com.tuotiansudai.job.DeadlineFundraisingJob;
 import com.tuotiansudai.job.FundraisingStartJob;
 import com.tuotiansudai.job.JobType;
@@ -12,9 +13,10 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.utils.*;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -191,7 +193,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<LoanDto> getLoanDetail(long loanId) {
+    public BaseDto<LoanDto> getLoanDetail(String loginName, long loanId) {
         BaseDto<LoanDto> dto = new BaseDto<>();
         LoanDto loanDto = new LoanDto();
         dto.setData(loanDto);
@@ -201,14 +203,13 @@ public class LoanServiceImpl implements LoanService {
             return dto;
         }
 
-        loanDto = convertModelToDto(loanModel);
+        loanDto = convertModelToDto(loanModel, loginName);
         loanDto.setStatus(true);
         dto.setData(loanDto);
         return dto;
     }
 
-    private LoanDto convertModelToDto(LoanModel loanModel) {
-        String loginName = LoginUserInfo.getLoginName();
+    private LoanDto convertModelToDto(LoanModel loanModel, String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanModel.getId());
@@ -314,7 +315,6 @@ public class LoanServiceImpl implements LoanService {
                     loanDto.setLoanStatus(LoanStatus.PREHEAT);
                     updateLoanAndLoanTitleRelation(loanDto);
 
-
                     // 建标成功后，再次校验Loan状态，以确保只有建标成功后才创建job
                     LoanModel loanModel = loanMapper.findById(loanDto.getId());
                     if (loanModel.getStatus() == LoanStatus.PREHEAT) {
@@ -378,6 +378,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void startFundraising(long loanId) {
         loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+        this.createAutoInvestJob(loanId);
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {
@@ -389,6 +390,18 @@ public class LoanServiceImpl implements LoanService {
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);
+        }
+    }
+
+    private void createAutoInvestJob(long loanId) {
+        try {
+            jobManager.newJob(JobType.AutoInvest, AutoInvestJob.class)
+                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .addJobData(AutoInvestJob.LOAN_ID_KEY, String.valueOf(loanId))
+                    .withIdentity("AutoInvestJob", "Loan-" + loanId)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create auto invest job for loan["+loanId+"] fail", e);
         }
     }
 
@@ -505,8 +518,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
-        String loginName = LoginUserInfo.getLoginName();
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -609,13 +621,13 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCount(LoanStatus status, long loanId, String loanName, Date startTime, Date endTime) {
+    public int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
         return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
     }
 
 
     @Override
-    public List<LoanListDto> findLoanList(LoanStatus status, long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
+    public List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();

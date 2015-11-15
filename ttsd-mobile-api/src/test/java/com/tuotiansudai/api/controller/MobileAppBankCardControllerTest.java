@@ -1,14 +1,9 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BankCardReplaceRequestDto;
-import com.tuotiansudai.api.dto.BankCardRequestDto;
 import com.tuotiansudai.api.service.MobileAppBankCardService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
 
 public class MobileAppBankCardControllerTest extends ControllerTestBase {
     @InjectMocks

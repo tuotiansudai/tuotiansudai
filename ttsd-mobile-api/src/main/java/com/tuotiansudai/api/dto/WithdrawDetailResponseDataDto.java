@@ -1,8 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.utils.AmountConverter;
-import org.apache.commons.lang3.NotImplementedException;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;
 

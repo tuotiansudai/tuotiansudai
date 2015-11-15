@@ -12,7 +12,7 @@ import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -76,8 +77,8 @@ public class AdvanceRepayServiceTest {
     @Autowired
     private RepayGeneratorService repayGeneratorService;
 
-    @Autowired
-    private AdvanceRepayService advanceRepayService;
+    @Resource(name = "advanceRepayServiceImpl")
+    private RepayService advanceRepayService;
 
     @Before
     public void setUp() throws Exception {
@@ -320,7 +321,7 @@ public class AdvanceRepayServiceTest {
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
         BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
         advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
 
@@ -341,20 +342,33 @@ public class AdvanceRepayServiceTest {
         assertThat(investRepayModels1.get(0).getActualFee(), is(0L));
         assertThat(investRepayModels1.get(0).getStatus(), is(RepayStatus.COMPLETE));
         assertThat(investRepayModels1.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
-        assertThat(investRepayModels1.get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels1.get(1).getPeriod(), is(2));
         assertThat(investRepayModels1.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
-        assertThat(investRepayModels1.get(2).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels1.get(1).getActualInterest(), is(0L));
+        assertThat(investRepayModels1.get(1).getActualFee(), is(0L));
+        assertThat(investRepayModels1.get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels1.get(2).getPeriod(), is(3));
         assertThat(investRepayModels1.get(2).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
+        assertThat(investRepayModels1.get(2).getActualInterest(), is(0L));
+        assertThat(investRepayModels1.get(2).getActualFee(), is(0L));
+        assertThat(investRepayModels1.get(2).getStatus(), is(RepayStatus.COMPLETE));
 
         assertThat(investRepayModels2.get(0).getPeriod(), is(1));
         assertThat(investRepayModels2.get(0).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
         assertThat(investRepayModels2.get(0).getActualInterest(), is(17L));
         assertThat(investRepayModels2.get(0).getActualFee(), is(1L));
         assertThat(investRepayModels2.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(investRepayModels2.get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels2.get(1).getPeriod(), is(2));
         assertThat(investRepayModels2.get(1).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
-        assertThat(investRepayModels2.get(2).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels2.get(1).getActualInterest(), is(0L));
+        assertThat(investRepayModels2.get(1).getActualFee(), is(0L));
+        assertThat(investRepayModels2.get(1).getStatus(), is(RepayStatus.COMPLETE));
+        assertThat(investRepayModels2.get(2).getPeriod(), is(3));
         assertThat(investRepayModels2.get(2).getActualRepayDate().getTime(), is(loanRepayModels.get(0).getActualRepayDate().getTime()));
+        assertThat(investRepayModels2.get(2).getActualInterest(), is(0L));
+        assertThat(investRepayModels2.get(2).getActualFee(), is(0L));
+        assertThat(investRepayModels2.get(2).getStatus(), is(RepayStatus.COMPLETE));
+
 
         List<UserBillModel> loanerUserBills = userBillMapper.findByLoginName(loaner.getLoginName());
         assertThat(loanerUserBills.get(0).getAmount(), is(loanRepayModels.get(0).getActualInterest() + fakeNormalLoan.getLoanAmount()));
@@ -386,6 +400,11 @@ public class AdvanceRepayServiceTest {
         assertThat(systemBillModel2.getAmount(), is(investRepayModels2.get(0).getActualFee()));
         assertThat(systemBillModel2.getType(), is(SystemBillOperationType.IN));
         assertThat(systemBillModel2.getBusinessType(), is(SystemBillBusinessType.INVEST_FEE));
+
+        SystemBillModel systemBillModel3 = systemBillMapper.findByOrderId(String.valueOf(fakeNormalLoan.getId()));
+        assertThat(systemBillModel3.getAmount(), is(1L));
+        assertThat(systemBillModel3.getType(), is(SystemBillOperationType.IN));
+        assertThat(systemBillModel3.getBusinessType(), is(SystemBillBusinessType.LOAN_REMAINING_INTEREST));
 
         assertThat(loanMapper.findById(fakeNormalLoan.getId()).getStatus(), is(LoanStatus.COMPLETE));
     }

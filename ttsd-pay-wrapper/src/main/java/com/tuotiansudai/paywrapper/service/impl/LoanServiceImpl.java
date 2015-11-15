@@ -30,9 +30,9 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.AmountTransfer;
-import com.tuotiansudai.utils.SendCloudMailUtil;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +129,6 @@ public class LoanServiceImpl implements LoanService {
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(),e);
-                continue;
             }
         }
         return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
@@ -165,7 +164,6 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            payDataDto.setStatus(false);
             logger.error(e.getLocalizedMessage(), e);
         }
         baseDto.setData(payDataDto);

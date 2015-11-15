@@ -29,7 +29,7 @@ public class AnnouncementManagementDto extends BaseDataDto implements Serializab
         this.content = model.getContent();
         this.showOnHome = model.isShowOnHome();
         this.createdTime = model.getCreatedTime();
-        this.updateTime = model.getCreatedTime();
+        this.updateTime = model.getUpdateTime();
     }
 
     public long getId() {

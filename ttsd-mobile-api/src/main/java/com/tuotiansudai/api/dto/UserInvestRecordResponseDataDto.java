@@ -2,7 +2,7 @@ package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.InvestModel;
 import com.tuotiansudai.repository.model.LoanModel;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;
 

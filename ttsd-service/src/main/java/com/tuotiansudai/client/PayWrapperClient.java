@@ -33,6 +33,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String bindCardPath = "/bind-card";
 
+    private String replaceCardPath = "/bind-card/replace";
+
     private String loanPath = "/loan";
 
     private String loanOutPath = "/loan/loan-out";
@@ -40,6 +42,8 @@ public class PayWrapperClient extends BaseClient {
     private String withdrawPath = "/withdraw";
 
     private String investPath = "/invest";
+
+    private String autoInvestPath = "/auto-invest";
 
     private String agreementPath = "/agreement";
 
@@ -63,6 +67,10 @@ public class PayWrapperClient extends BaseClient {
         return asyncExecute(dto, bindCardPath, "POST");
     }
 
+    public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
+        return asyncExecute(dto, replaceCardPath, "POST");
+    }
+
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
         return asyncExecute(dto, investPath, "POST");
     }
@@ -77,6 +85,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayFormDataDto> repay(RepayDto dto) {
         return asyncExecute(dto, repayPath, "POST");
+    }
+
+    public BaseDto<PayDataDto> autoInvest(long loanId) {
+        return syncExecute(String.valueOf(loanId), autoInvestPath, "POST");
     }
 
     public BaseDto<PayDataDto> createLoan(LoanDto dto) {

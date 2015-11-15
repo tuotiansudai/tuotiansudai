@@ -44,3 +44,29 @@
 .bg-w {
   background: nth($baseColor,1);
 }
+
+/* project schedule progress */
+.project-schedule {
+  .p-title {
+    font-size: nth($fontSize,1);
+    color: #999;
+    line-height: 1.8;
+    .point {
+      color: nth($CK1,2);
+    }
+  }
+  .process-percent {
+    border-radius: 3px;
+    background: #ffe3d4;
+    height: 8px;
+    width:100%;
+    overflow: hidden;
+    position: relative;
+    .percent {
+      width: 50px;
+      position: absolute;
+      height: 100%;
+      background: #ff752a;
+    }
+  }
+}

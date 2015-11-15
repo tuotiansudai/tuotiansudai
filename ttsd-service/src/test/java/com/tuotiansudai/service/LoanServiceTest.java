@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.security.MyUser;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
@@ -321,7 +321,7 @@ public class LoanServiceTest {
         mockLoginUser("loginName", "13900000000");
 
         long id = createLoanService();
-        BaseDto<LoanDto> baseDto = loanService.getLoanDetail(id);
+        BaseDto<LoanDto> baseDto = loanService.getLoanDetail("loginName", id);
         assertNotNull(baseDto.getData().getId());
         assertNotNull(baseDto.getData().getLoanTitles().get(0).getApplicationMaterialUrls());
         assertEquals(99.5, baseDto.getData().getAmountNeedRaised(), 0);

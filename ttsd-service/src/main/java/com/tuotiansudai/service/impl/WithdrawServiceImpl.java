@@ -7,7 +7,6 @@ import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +24,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Override
     public BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto) {
-        String loginName = LoginUserInfo.getLoginName();
-        withdrawDto.setLoginName(loginName);
         return payWrapperClient.withdraw(withdrawDto);
     }
 
