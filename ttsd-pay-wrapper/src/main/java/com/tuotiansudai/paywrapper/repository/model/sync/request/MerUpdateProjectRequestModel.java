@@ -1,5 +1,8 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
+import com.google.common.collect.Lists;
+import com.tuotiansudai.repository.model.LoanStatus;
+
 import java.util.Map;
 
 public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
@@ -16,7 +19,6 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
                                         String projectName,
                                         String projectState,
                                         String projectExpireDate) {
-        super();
         this.service = "mer_update_project";
         this.projectId = projectId;
         this.projectName = projectName;
@@ -33,7 +35,7 @@ public class MerUpdateProjectRequestModel extends BaseSyncRequestModel {
         payRequestData.put("change_type", this.changeType);
         payRequestData.put("project_state", this.projectState);
         // 从筹款到还款的状态变化时，以下字段不能添加，否则会失败
-        if("1".equals(this.projectState) || "0".equals(this.projectState)) {
+        if (Lists.newArrayList(LoanStatus.PREHEAT.getCode(), LoanStatus.RAISING.getCode()).contains(this.projectState)) {
             payRequestData.put("project_name", this.projectName);
             payRequestData.put("project_amount", String.valueOf(this.projectAmount));
             payRequestData.put("project_expire_date", this.projectExpireDate);

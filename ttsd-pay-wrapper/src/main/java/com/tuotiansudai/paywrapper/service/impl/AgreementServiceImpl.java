@@ -51,12 +51,10 @@ public class AgreementServiceImpl implements AgreementService {
 
         PtpMerBindAgreementRequestModel ptpMerBindAgreementRequestModel = new PtpMerBindAgreementRequestModel(accountModel.getPayUserId(), agreementType);
         try {
-            BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
-            return baseDto;
+            return payAsyncClient.generateFormData(PtpMerBindAgreementRequestMapper.class, ptpMerBindAgreementRequestModel);
         } catch (PayException e) {
             BaseDto<PayFormDataDto> baseDto = new BaseDto<>();
             PayFormDataDto payFormDataDto = new PayFormDataDto();
-            payFormDataDto.setStatus(false);
             payFormDataDto.setMessage(e.getMessage());
             baseDto.setData(payFormDataDto);
             return baseDto;
@@ -85,7 +83,7 @@ public class AgreementServiceImpl implements AgreementService {
                 String loginName = accountModel.getLoginName();
                 BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
                 bankCardModel.setIsFastPayOn(true);
-                bankCardMapper.updateBankCard(bankCardModel);
+                bankCardMapper.update(bankCardModel);
 
             }
             accountMapper.update(accountModel);

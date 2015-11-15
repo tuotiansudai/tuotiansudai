@@ -49,6 +49,8 @@ public class BankCardUtil {
             "PSBC", "SPDB", "COMM", "CMBC", "GDB",
             "CITIC", "CIB", "CEB", "CMB", "SPAB");
 
+    private static final List<String> BIND_CARD_ONE_CENT_BANKS = Lists.newArrayList("CMB");
+
 
     public static List<String> getRechargeBanks() {
         return RECHARGE_BANKS;
@@ -66,6 +68,9 @@ public class BankCardUtil {
         return BANK_CODE_MAPPING.get(bankCode);
     }
 
+    public static List<String> getBindCardOneCentBanks() {
+        return BIND_CARD_ONE_CENT_BANKS;
+    }
 }
 
 

@@ -8,11 +8,9 @@ public interface BankCardMapper {
 
     void create(BankCardModel model);
 
-    void update(@Param("id") long id, @Param("status") BankCardStatus status);
-
     BankCardModel findById(long id);
 
     BankCardModel findByLoginName(String loginName);
 
-    void updateBankCard(BankCardModel bankCardModel);
+    void update(BankCardModel bankCardModel);
 }

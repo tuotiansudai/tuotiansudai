@@ -45,7 +45,6 @@
                 </#list>
             </ul>
         </#if>
-
     </div>
 </div>
 <div class="main-frame full-screen">

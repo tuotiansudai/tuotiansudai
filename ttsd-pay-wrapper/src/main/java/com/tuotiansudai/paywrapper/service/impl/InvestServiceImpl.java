@@ -363,7 +363,6 @@ public class InvestServiceImpl implements InvestService {
             int periods = investNotifyInfo.getPeriods();
             InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
             if (investRepay != null) {
-
                 Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)
