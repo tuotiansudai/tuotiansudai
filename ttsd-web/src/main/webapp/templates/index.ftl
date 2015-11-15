@@ -11,8 +11,7 @@
             </div>
         </div>
     </div>
-
-<div class="main-advantage page-width">
+    <div class="main-advantage page-width">
     <dl>
         <dd>
             <img src="${staticServer}/images/icons/hs01.png" alt="超高收益 最低门槛" >
