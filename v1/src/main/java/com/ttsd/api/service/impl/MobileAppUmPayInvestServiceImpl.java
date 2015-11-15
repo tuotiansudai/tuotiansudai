@@ -11,6 +11,7 @@ import com.esoft.umpay.trusteeship.exception.UmPayOperationException;
 import com.ttsd.api.dao.MobileAppInvestListDao;
 import com.ttsd.api.dao.MobileAppLoanDetailDao;
 import com.ttsd.api.dto.*;
+import com.ttsd.api.service.MobileAppChannelService;
 import com.ttsd.api.service.MobileAppUmPayInvestService;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
 
     @Resource
     UserBO userBO;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
     @Override
     public BaseResponseDto invest(InvestRequestDto investRequestDto) {
@@ -110,9 +114,8 @@ public class MobileAppUmPayInvestServiceImpl implements MobileAppUmPayInvestServ
         invest.setLoan(loan);
         invest.setUser(user);
         invest.setSource(AccessSource.valueOf(investRequestDto.getBaseParam().getPlatform().toUpperCase(Locale.ENGLISH)).name());
+        invest.setChannel(mobileAppChannelService.obtainChannelBySource(investRequestDto.getBaseParam()));
         return invest;
     }
-
-
 
 }

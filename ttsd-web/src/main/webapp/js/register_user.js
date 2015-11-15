@@ -131,13 +131,13 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         rules: {
             loginName: {
                 required: true,
-                regex: /(?!^\d+$)^\w{6,20}$/,
+                regex: /(?!^\d+$)^\w{5,25}$/,
                 isExist: "/register/user/login-name/{0}/is-exist"
             },
             mobile: {
                 required: true,
                 digits: true,
-                rangelength: [11, 11],
+                maxlength: 11,
                 isExist: "/register/user/mobile/{0}/is-exist"
             },
             password: {
@@ -147,7 +147,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             captcha: {
                 required: true,
                 digits: true,
-                rangelength: [6, 6],
+                maxlength: 6,
                 captchaVerify: {
                     param: function () {
                         var mobile = $('input[name="mobile"]').val();
@@ -165,12 +165,12 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         messages: {
             loginName: {
                 required: "请输入用户名",
-                regex: '6位至20位数字与字母下划线组合，不能全部数字',
+                regex: '5位至25位数字与字母下划线组合，不能全部数字',
                 isExist: '用户名已存在'
             },
             mobile: {
                 required: '请输入手机号',
-                rangelength: '手机格式不对',
+                maxlength: '手机格式不正确',
                 digits: '必须是数字',
                 isExist: '手机号已存在'
             },
@@ -181,7 +181,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
-                rangelength: '验证码格式不正确',
+                maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {

@@ -3,7 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;

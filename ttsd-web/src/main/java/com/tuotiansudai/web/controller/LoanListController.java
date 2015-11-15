@@ -14,11 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2015/8/27.
- */
 @Controller
-@RequestMapping("/loanList")
+@RequestMapping(path = "/loan-list")
 public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
@@ -26,31 +23,31 @@ public class LoanListController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/web",method = RequestMethod.GET)
-    public ModelAndView webLoanList(@RequestParam(value = "activityType",required = false) ActivityType activityType,
-                                     @RequestParam(value = "status",required = false) LoanStatus status,
-                                     @RequestParam(value = "periodsStart",defaultValue = "0",required = false) long periodsStart,
-                                     @RequestParam(value = "periodsEnd",defaultValue = "0",required = false) long periodsEnd,
-                                     @RequestParam(value = "rateStart",defaultValue = "0",required = false) double rateStart,
-                                     @RequestParam(value = "rateEnd",defaultValue = "0",required = false) double rateEnd,
-                                     @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo){
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView webLoanList(@RequestParam(value = "activityType", required = false) ActivityType activityType,
+                                    @RequestParam(value = "status", required = false) LoanStatus status,
+                                    @RequestParam(value = "periodsStart", defaultValue = "0", required = false) long periodsStart,
+                                    @RequestParam(value = "periodsEnd", defaultValue = "0", required = false) long periodsEnd,
+                                    @RequestParam(value = "rateStart", defaultValue = "0", required = false) double rateStart,
+                                    @RequestParam(value = "rateEnd", defaultValue = "0", required = false) double rateEnd,
+                                    @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo) {
         int loanListCountWeb = loanService.findLoanListCountWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd);
         List<LoanListWebDto> loanListWebDtos = loanService.findLoanListWeb(activityType, status, periodsStart, periodsEnd, rateStart, rateEnd, currentPageNo);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
-        modelAndView.addObject("loanListCountWeb",loanListCountWeb);
-        modelAndView.addObject("loanListWebDtos",loanListWebDtos);
-        modelAndView.addObject("currentPageNo",currentPageNo);
-        modelAndView.addObject("periodsStart",periodsStart);
-        modelAndView.addObject("periodsEnd",periodsEnd);
-        modelAndView.addObject("rateStart",rateStart);
-        modelAndView.addObject("rateEnd",rateEnd);
-        modelAndView.addObject("activityType",activityType);
-        modelAndView.addObject("status",status);
+        modelAndView.addObject("loanListCountWeb", loanListCountWeb);
+        modelAndView.addObject("loanListWebDtos", loanListWebDtos);
+        modelAndView.addObject("currentPageNo", currentPageNo);
+        modelAndView.addObject("periodsStart", periodsStart);
+        modelAndView.addObject("periodsEnd", periodsEnd);
+        modelAndView.addObject("rateStart", rateStart);
+        modelAndView.addObject("rateEnd", rateEnd);
+        modelAndView.addObject("activityType", activityType);
+        modelAndView.addObject("status", status);
         long totalPages = loanListCountWeb / 10 + (loanListCountWeb % 10 > 0 ? 1 : 0);
         boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
         boolean hasNextPage = currentPageNo < totalPages;
-        modelAndView.addObject("hasPreviousPage",hasPreviousPage);
-        modelAndView.addObject("hasNextPage",hasNextPage);
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
         return modelAndView;
     }
 

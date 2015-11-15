@@ -2,7 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum SystemBillBusinessType {
 
-    BIND_CARD("绑卡"),
+    BIND_BANK_CARD("绑卡"),
+
+    REPLACE_BANK_CARD("绑卡"),
 
     RECHARGE_SUCCESS("充值"),
 
@@ -10,7 +12,9 @@ public enum SystemBillBusinessType {
 
     INVEST_FEE("利息管理费"),
 
-    REFERRER_REWARD("推荐人奖励");
+    REFERRER_REWARD("推荐人奖励"),
+
+    LOAN_REMAINING_INTEREST("标的剩余利息");
 
     private final String description;
 

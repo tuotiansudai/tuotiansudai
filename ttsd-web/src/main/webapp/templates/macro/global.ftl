@@ -3,7 +3,7 @@
 <#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷">
     <#local menus=[
     {"title":"首页", "url":"/"},
-    {"title":"我要投资", "url":"/loanList/web"},
+    {"title":"我要投资", "url":"/loan-list"},
     {"title":"我的账户", "url":"/account", "leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
@@ -45,10 +45,9 @@
                 </#list>
             </ul>
         </#if>
-
     </div>
 </div>
-<div class="main-frame">
+<div class="main-frame full-screen">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
             <ul class="left-nav">

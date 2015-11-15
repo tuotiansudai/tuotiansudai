@@ -1,17 +1,5 @@
 package com.esoft.jdp2p.invest.service.impl;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.LockMode;
-import org.hibernate.classic.Session;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.config.service.ConfigService;
 import com.esoft.archer.user.UserBillConstants.OperatorInfo;
@@ -36,15 +24,26 @@ import com.esoft.jdp2p.loan.model.Loan;
 import com.esoft.jdp2p.loan.service.LoanCalculator;
 import com.esoft.jdp2p.loan.service.LoanService;
 import com.esoft.jdp2p.repay.service.RepayService;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Company: jdp2p <br/>
  * Copyright: Copyright (c)2013 <br/>
  * Description:
- * 
+ *
  * @author: wangzhi
  * @version: 1.0 Create at: 2014-1-22 上午10:48:02
- * 
+ *
  *           Modification History: <br/>
  *           Date Author Version Description
  *           ------------------------------------------------------------------
@@ -237,6 +236,14 @@ public class InvestServiceImpl implements InvestService {
 			return 0;
 		}
 		return (Long) oos.get(0);
+	}
+
+	@Override
+	public List<String> getAllChannelName() {
+		String sql = "select distinct channel from invest where channel is not NULL";
+		Session session = ht.getSessionFactory().getCurrentSession();
+		Query query = session.createSQLQuery(sql);
+		return query.list();
 	}
 
 }

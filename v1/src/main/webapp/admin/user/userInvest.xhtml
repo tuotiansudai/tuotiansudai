@@ -56,6 +56,13 @@
                                 <f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
                             </h:selectOneMenu>
                         </ui:fragment>
+                        <h:outputLabel value="渠道"></h:outputLabel>
+                        <ui:fragment>
+                            <h:selectOneMenu value="#{userInvest.condition.channel}">
+                                <f:selectItem itemLabel="请选择渠道" noSelectionOption="true" />
+                                <f:selectItems value="#{userInvest.allChannelList}" />
+                            </h:selectOneMenu>
+                        </ui:fragment>
 
                         <h:outputText></h:outputText>
                         <p:commandButton update="dataTable" process="filters"
@@ -147,6 +154,12 @@
                             <h:outputText value="来源" />
                         </f:facet>
                         <h:outputText value="#{invest.source}"></h:outputText>
+                    </p:column>
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="渠道" />
+                        </f:facet>
+                        <h:outputText value="#{invest.channel}"></h:outputText>
                     </p:column>
                     <f:facet name="footer">
                         <p:commandButton value="导出Excel" ajax="false">

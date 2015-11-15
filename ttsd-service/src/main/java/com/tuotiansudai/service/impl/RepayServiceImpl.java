@@ -12,9 +12,8 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.RepayService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.InterestCalculator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class RepayServiceImpl implements RepayService {
     }
 
     @Override
-    public BaseDto<LoanRepayDataDto> getLoanRepay(long loanId) {
+    public BaseDto<LoanRepayDataDto> getLoanRepay(String loginName, long loanId) {
         BaseDto<LoanRepayDataDto> baseDto = new BaseDto<>();
         LoanRepayDataDto dataDto = new LoanRepayDataDto();
         baseDto.setData(dataDto);
@@ -58,7 +57,7 @@ public class RepayServiceImpl implements RepayService {
             return baseDto;
         }
 
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(LoginUserInfo.getLoginName(), loanId);
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByAgentAndLoanId(loginName, loanId);
 
         this.resetExpiredLoanRepay(loanRepayModels);
 
@@ -118,14 +117,12 @@ public class RepayServiceImpl implements RepayService {
     }
 
     @Override
-    public BaseDto<InvestRepayDataDto> findInvestorInvestRepay(long investId) {
+    public BaseDto<InvestRepayDataDto> findInvestorInvestRepay(String loginName, long investId) {
         BaseDto<InvestRepayDataDto> baseDto = new BaseDto<>();
         InvestRepayDataDto dataDto = new InvestRepayDataDto();
         dataDto.setStatus(true);
         dataDto.setRecords(Lists.<InvestRepayDataItemDto>newArrayList());
         baseDto.setData(dataDto);
-
-        String loginName = LoginUserInfo.getLoginName();
 
         List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoginNameAndInvestId(loginName, investId);
         if (CollectionUtils.isNotEmpty(investRepayModels)) {

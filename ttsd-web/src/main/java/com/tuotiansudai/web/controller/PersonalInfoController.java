@@ -8,8 +8,7 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.LoginUserInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +38,7 @@ public class PersonalInfoController {
         String loginName = LoginUserInfo.getLoginName();
         String mobile = LoginUserInfo.getMobile();
         AccountModel accountModel = accountService.findByLoginName(loginName);
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard();
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         ModelAndView mv = new ModelAndView("/personal-info");
         mv.addObject("loginName", loginName);
         mv.addObject("userName", accountModel.getUserName());
@@ -59,7 +58,7 @@ public class PersonalInfoController {
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
-        dataDto.setStatus(userService.verifyPasswordCorrect(password));
+        dataDto.setStatus(userService.verifyPasswordCorrect(LoginUserInfo.getLoginName(), password));
 
         return baseDto;
     }
@@ -82,7 +81,7 @@ public class PersonalInfoController {
         BaseDataDto dataDto = new BaseDataDto();
         baseDto.setData(dataDto);
 
-        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(originalPassword, newPassword));
+        dataDto.setStatus(newPassword.equals(newPasswordConfirm) && userService.changePassword(LoginUserInfo.getLoginName(), LoginUserInfo.getMobile(), originalPassword, newPassword));
 
         return baseDto;
     }

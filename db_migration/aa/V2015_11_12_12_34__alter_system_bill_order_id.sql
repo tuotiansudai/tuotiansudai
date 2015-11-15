@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`system_bill` CHANGE COLUMN `order_id` `order_id` BIGINT UNSIGNED;

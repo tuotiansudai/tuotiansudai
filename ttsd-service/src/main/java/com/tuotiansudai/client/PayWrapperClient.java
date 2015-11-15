@@ -33,6 +33,8 @@ public class PayWrapperClient extends BaseClient {
 
     private String bindCardPath = "/bind-card";
 
+    private String replaceCardPath = "/bind-card/replace";
+
     private String loanPath = "/loan";
 
     private String loanOutPath = "/loan/loan-out";
@@ -63,6 +65,10 @@ public class PayWrapperClient extends BaseClient {
 
     public BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto) {
         return asyncExecute(dto, bindCardPath, "POST");
+    }
+
+    public BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto) {
+        return asyncExecute(dto, replaceCardPath, "POST");
     }
 
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
