@@ -140,7 +140,6 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
         }
     }
 
-
     /**
      * @function 校验用注册的手机号已存在
      * @param phoneNumber 手机号

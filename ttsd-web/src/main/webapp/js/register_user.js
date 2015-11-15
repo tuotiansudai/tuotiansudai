@@ -131,7 +131,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         rules: {
             loginName: {
                 required: true,
-                regex: /(?!^\d+$)^\w{6,20}$/,
+                regex: /(?!^\d+$)^\w{5,25}$/,
                 isExist: "/register/user/login-name/{0}/is-exist"
             },
             mobile: {
@@ -165,7 +165,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
         messages: {
             loginName: {
                 required: "请输入用户名",
-                regex: '6位至20位数字与字母下划线组合，不能全部数字',
+                regex: '5位至25位数字与字母下划线组合，不能全部数字',
                 isExist: '用户名已存在'
             },
             mobile: {

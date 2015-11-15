@@ -73,6 +73,19 @@ public class PayCallbackController {
         return new ModelAndView("/callback_response", "content", responseData);
     }
 
+    @RequestMapping(value = "/mer_replace_card_notify",method = RequestMethod.GET)
+    public ModelAndView replaceBankCard(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData;
+        String service = paramsMap.get("service");
+        if(UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)){
+            responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
+        } else {
+            responseData = bindBankCardService.replaceBankCardCallback(paramsMap, request.getQueryString());
+        }
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/mer_bind_card_apply_notify", method = RequestMethod.GET)
     public ModelAndView bindBankCardNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

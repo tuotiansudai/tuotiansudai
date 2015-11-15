@@ -83,7 +83,7 @@ public class AgreementServiceImpl implements AgreementService {
                 String loginName = accountModel.getLoginName();
                 BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
                 bankCardModel.setIsFastPayOn(true);
-                bankCardMapper.updateBankCard(bankCardModel);
+                bankCardMapper.update(bankCardModel);
 
             }
             accountMapper.update(accountModel);

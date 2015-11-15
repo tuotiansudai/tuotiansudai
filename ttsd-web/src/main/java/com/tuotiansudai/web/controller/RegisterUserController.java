@@ -45,7 +45,7 @@ public class RegisterUserController {
         boolean isRegisterSuccess = this.userService.registerUser(registerUserDto);
         if (!isRegisterSuccess) {
             redirectAttributes.addFlashAttribute("originalFormData", registerUserDto);
-            redirectAttributes.addFlashAttribute("success", isRegisterSuccess);
+            redirectAttributes.addFlashAttribute("success", false);
         }
 
         return new ModelAndView(isRegisterSuccess ? "redirect:/register/account" : "redirect:/register/user");

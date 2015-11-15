@@ -2,7 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum SystemBillDetailTemplate {
 
-    BIND_CARD_DETAIL_TEMPLATE("用户({0})绑定银行({1})卡号({2})"),
+    BIND_BANK_CARD_DETAIL_TEMPLATE("用户({0})绑定银行({1})卡号({2})"),
+
+    REPLACE_BANK_CARD_DETAIL_TEMPLATE("用户({0})更换银行({1})卡号({2})"),
 
     REFERRER_REWARD_DETAIL_TEMPLATE("推荐人({0})推荐用户({2})投资(investId={3})奖励"),
 

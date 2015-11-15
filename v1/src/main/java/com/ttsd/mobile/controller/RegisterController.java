@@ -1,12 +1,11 @@
 package com.ttsd.mobile.controller;
 
-import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
 import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
-import com.esoft.core.jsf.util.FacesUtil;
+import com.ttsd.mobile.service.IMobileRegisterService;
 import com.ttsd.util.CommonUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +16,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.ttsd.mobile.service.IMobileRegisterService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -142,7 +136,6 @@ public class RegisterController {
     public boolean validateUserName(@RequestParam(value = "username")String userName){
         return mobileRegisterService.validateUserName(userName);
     }
-
 
     /**
      * @function 手机号校验

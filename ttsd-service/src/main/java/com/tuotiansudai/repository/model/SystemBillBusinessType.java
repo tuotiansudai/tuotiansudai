@@ -2,7 +2,9 @@ package com.tuotiansudai.repository.model;
 
 public enum SystemBillBusinessType {
 
-    BIND_CARD("绑卡"),
+    BIND_BANK_CARD("绑卡"),
+
+    REPLACE_BANK_CARD("绑卡"),
 
     RECHARGE_SUCCESS("充值"),
 
