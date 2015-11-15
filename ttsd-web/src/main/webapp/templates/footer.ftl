@@ -28,7 +28,7 @@
         </ul>
         <ul class="last">
             <li class="tc">
-                <img src="/images/sign/app-code.png"> <br/>
+                <img src="${staticServer}/images/sign/app-code.png"> <br/>
                 客服QQ：800036446
 
             </li>

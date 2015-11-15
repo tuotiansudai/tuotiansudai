@@ -1,11 +1,8 @@
 package com.ttsd.mobile.service;
 
-import com.esoft.archer.common.CommonConstants;
 import com.esoft.archer.common.exception.AuthInfoAlreadyActivedException;
 import com.esoft.archer.common.exception.AuthInfoOutOfDateException;
 import com.esoft.archer.common.exception.NoMatchingObjectsException;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by tuotian on 15/7/9.

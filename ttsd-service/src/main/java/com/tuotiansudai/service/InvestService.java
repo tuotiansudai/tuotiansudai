@@ -2,8 +2,8 @@ package com.tuotiansudai.service;
 
 
 import com.tuotiansudai.dto.*;
-import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
 

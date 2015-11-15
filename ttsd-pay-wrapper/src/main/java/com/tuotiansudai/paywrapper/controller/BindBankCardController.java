@@ -25,4 +25,10 @@ public class BindBankCardController {
 
         return bindBankCardService.bindBankCard(dto);
     }
+
+    @RequestMapping(value = "/bind-card/replace", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseDto<PayFormDataDto> replaceBankCard(@Valid @RequestBody BindBankCardDto dto) {
+        return bindBankCardService.replaceBankCard(dto);
+    }
 }

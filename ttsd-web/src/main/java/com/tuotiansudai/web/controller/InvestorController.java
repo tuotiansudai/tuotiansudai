@@ -4,7 +4,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -48,6 +48,6 @@ public class InvestorController {
     @RequestMapping(path = "/invest/{investId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<InvestRepayDataDto> queryUserInvestRepay(@PathVariable long investId) {
-        return repayService.findInvestorInvestRepay(investId);
+        return repayService.findInvestorInvestRepay(LoginUserInfo.getLoginName(), investId);
     }
 }

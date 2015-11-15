@@ -54,9 +54,9 @@ public interface LoanService {
      * @function 通过id查找标的
      */
 
-    public List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd,int currentPageNo);
+    List<LoanListWebDto> findLoanListWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd, int currentPageNo);
 
-    public int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
+    int findLoanListCountWeb(ActivityType activityType, LoanStatus status, long periodsStart, long periodsEnd, double rateStart, double rateEnd);
 
 
     LoanModel findLoanById(long loanId);
@@ -65,13 +65,13 @@ public interface LoanService {
 
     BaseDto<PayDataDto> loanOut(LoanDto loanDto) throws BaseException;
 
-    BaseDto<LoanDto> getLoanDetail(long loanId);
+    BaseDto<LoanDto> getLoanDetail(String loginName, long loanId);
 
     BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize);
 
-    BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
+    BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime);
 
-    int findLoanListCount(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime);
+    int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime);
 
-    List<LoanListDto> findLoanList(LoanStatus status,long loanId,String loanName,Date startTime,Date endTime,int currentPageNo, int pageSize);
+    List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize);
 }

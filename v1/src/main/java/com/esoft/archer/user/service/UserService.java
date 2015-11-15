@@ -479,4 +479,6 @@ public interface UserService {
 	 * @param newReferrer 修改后的推荐人
 	 */
 	public void updateUserReferrerRelation(String userId, String oldReferrer, String newReferrer);
+
+	List<String> getAllChannelName();
 }

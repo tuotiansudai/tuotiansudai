@@ -3,12 +3,15 @@ package com.ttsd.api.util;
 
 import com.google.common.base.Joiner;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
 public class CommonUtils {
+
+    private static final Md5PasswordEncoder md5Encoder = new Md5PasswordEncoder();
 
     public static String encryptUserName(String userName) {
 
@@ -80,5 +83,8 @@ public class CommonUtils {
         return time.toString();
 
     }
-    
+
+    public static String md5Hash(String string) {
+        return md5Encoder.encodePassword(string, null);
+    }
 }

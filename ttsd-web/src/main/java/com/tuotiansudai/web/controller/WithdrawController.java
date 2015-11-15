@@ -7,8 +7,8 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,7 +33,7 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView withdraw() {
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard();
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         if (bankCard == null) {
             return new ModelAndView("redirect:/bind-card");
         }
@@ -44,6 +44,8 @@ public class WithdrawController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView withdraw(@Valid @ModelAttribute WithdrawDto withdrawDto) {
+        String loginName = LoginUserInfo.getLoginName();
+        withdrawDto.setLoginName(loginName);
         BaseDto<PayFormDataDto> baseDto = withdrawService.withdraw(withdrawDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }

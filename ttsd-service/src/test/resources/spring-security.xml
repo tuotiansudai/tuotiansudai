@@ -27,7 +27,7 @@
         <beans:property name="userDetailsService" ref="myUserDetailsService"/>
     </beans:bean>
 
-    <beans:bean id="captchaHelper" class="com.tuotiansudai.utils.CaptchaHelper"/>
+    <beans:bean id="captchaHelper" class="com.tuotiansudai.util.CaptchaHelper"/>
 
     <!-- work around test-->
     <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">

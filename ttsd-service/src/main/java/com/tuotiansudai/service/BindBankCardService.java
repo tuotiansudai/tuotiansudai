@@ -7,9 +7,9 @@ import com.tuotiansudai.repository.model.BankCardModel;
 
 public interface BindBankCardService {
 
+    BankCardModel getPassedBankCard(String loginName);
+
     BaseDto<PayFormDataDto> bindBankCard(BindBankCardDto dto);
 
-    String getUserName();
-
-    BankCardModel getPassedBankCard();
+    BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto);
 }

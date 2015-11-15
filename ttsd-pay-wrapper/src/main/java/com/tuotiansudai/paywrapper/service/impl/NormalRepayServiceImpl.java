@@ -13,12 +13,13 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransf
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
 import com.tuotiansudai.paywrapper.service.InvestService;
-import com.tuotiansudai.paywrapper.service.NormalRepayService;
+import com.tuotiansudai.paywrapper.service.LoanService;
+import com.tuotiansudai.paywrapper.service.RepayService;
 import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountTransfer;
-import com.tuotiansudai.utils.InterestCalculator;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,42 +33,46 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class NormalRepayServiceImpl implements NormalRepayService {
+public class NormalRepayServiceImpl implements RepayService {
 
     static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
 
-    private final static String REPAY_ORDER_ID_SEPARATOR = "X";
+    protected final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
-    private final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
-
-    @Autowired
-    private InvestMapper investMapper;
+    protected final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
 
     @Autowired
-    private LoanMapper loanMapper;
+    protected InvestMapper investMapper;
 
     @Autowired
-    private InvestRepayMapper investRepayMapper;
+    protected LoanMapper loanMapper;
 
     @Autowired
-    private LoanRepayMapper loanRepayMapper;
+    protected InvestRepayMapper investRepayMapper;
 
     @Autowired
-    private AccountMapper accountMapper;
+    protected LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    private AmountTransfer amountTransfer;
+    protected AccountMapper accountMapper;
 
     @Autowired
-    private SystemBillService systemBillService;
+    protected AmountTransfer amountTransfer;
 
     @Autowired
-    private PayAsyncClient payAsyncClient;
+    protected SystemBillService systemBillService;
 
     @Autowired
-    private PaySyncClient paySyncClient;
+    protected PayAsyncClient payAsyncClient;
+
     @Autowired
-    private InvestService investService;
+    protected PaySyncClient paySyncClient;
+
+    @Autowired
+    protected InvestService investService;
+
+    @Autowired
+    protected LoanService loanService;
 
     @Override
     @Transactional
@@ -125,7 +130,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
     }
 
     @Transactional
-    private void postRepayCallback(BaseCallbackRequestModel callbackRequestModel) {
+    protected void postRepayCallback(BaseCallbackRequestModel callbackRequestModel) {
         if (!callbackRequestModel.isSuccess()) {
             return;
         }
@@ -168,14 +173,16 @@ public class NormalRepayServiceImpl implements NormalRepayService {
         //最后一期更新Loan Status = COMPLETE
         boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == enabledLoanRepay.getPeriod();
         if (isLastPeriod) {
-            loanMapper.updateStatus(loanModel.getId(), LoanStatus.COMPLETE);
-            //TODO:最后一期更新标的状态
+            //多余利息返平台
+            boolean success = this.transferInLoanRemainingAmount(loanModel.getId());
+            //最后一期更新标的状态
+            if (success) {
+                loanService.updateLoanStatus(loanModel.getId(), LoanStatus.COMPLETE);
+            }
         }
-
-        // TODO: 2.多余的钱返平台
     }
 
-    private void paybackInvestRepay(LoanModel loanModel, LoanRepayModel enabledLoanRepay) {
+    protected void paybackInvestRepay(LoanModel loanModel, LoanRepayModel enabledLoanRepay) {
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
         DateTime currentRepayDate = new DateTime(enabledLoanRepay.getActualRepayDate());
@@ -227,10 +234,10 @@ public class NormalRepayServiceImpl implements NormalRepayService {
             }
 
         }
-        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(),enabledLoanRepay.getPeriod());
+        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(), enabledLoanRepay.getPeriod());
     }
 
-    private void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
+    protected void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
         boolean repayInvestFeeSuccess = actualInvestFee == 0;
         if (actualInvestFee > 0) {
             String investFeeOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime()));
@@ -242,7 +249,7 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
                 repayInvestFeeSuccess = responseModel.isSuccess();
             } catch (PayException e) {
-                logger.error(MessageFormat.format("Repay payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                logger.error(MessageFormat.format("invest payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
@@ -254,7 +261,45 @@ public class NormalRepayServiceImpl implements NormalRepayService {
                 logger.error(MessageFormat.format("transfer out balance for invest repay fee (investRepayId = {0})", String.valueOf(investRepayId)));
                 logger.error(e.getLocalizedMessage(), e);
             }
-            systemBillService.transferIn(actualInvestFee, String.valueOf(investRepayId), SystemBillBusinessType.INVEST_FEE, "");
+            String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorAccount.getLoginName(), String.valueOf(investRepayId));
+            systemBillService.transferIn(investRepayId, actualInvestFee, SystemBillBusinessType.INVEST_FEE, detail);
         }
+    }
+
+    protected boolean transferInLoanRemainingAmount(long loanId) {
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(loanId);
+        long remainingAmount = 0;
+
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            remainingAmount += loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest() + loanRepayModel.getCorpus();
+        }
+
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            remainingAmount -= investRepayModel.getActualInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getCorpus();
+        }
+
+        if (remainingAmount == 0) {
+            return true;
+        }
+
+        String remainingAmountTransferOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanId), String.valueOf(new Date().getTime()));
+        ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newLoanRemainAmountRequest(String.valueOf(loanId),
+                remainingAmountTransferOrderId,
+                String.valueOf(remainingAmount));
+
+        try {
+            ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
+            if (responseModel.isSuccess()) {
+                String detail = MessageFormat.format(SystemBillDetailTemplate.LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanId), String.valueOf(remainingAmount));
+                systemBillService.transferIn(loanId, remainingAmount, SystemBillBusinessType.LOAN_REMAINING_INTEREST, detail);
+                return true;
+            }
+        } catch (PayException e) {
+            logger.error(MessageFormat.format("loan remaining interest transfer failed (loanId = {0} remainingInterest = {1})", String.valueOf(loanId), String.valueOf(remainingAmount)));
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return false;
     }
 }

@@ -17,7 +17,8 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             },
             password: {
                 required: true,
-                minlength: 6
+                password:true,
+                rangelength: [6,20]
             },
             phoneNumber: {
                 required: true,
@@ -27,7 +28,7 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 remote: {
                     url: '/mobile/register/mobilePhoneNumValidation?tempData='+new Date().getTime(),
                     type: 'GET',
-                    dataType: 'json',
+                    dataType: 'json'
                 }
             },
             vCode: {
@@ -61,11 +62,11 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
                 required: "用户名不能为空！",
                 userName:'用户名不能包含空格！',
                 rangelength: "用户名的长度必须在5至25个字符之间！",
-                remote:"用户名已存在！"
+                remote:"用户名已存在或者不符合规则！"
             },
             password: {
                 required:"密码不能为空!",
-                minlength: "密码最少为6位！"
+                rangelength: "密码的长度必须在6至20个字符之间！"
             },
             phoneNumber: {
                 required: "手机号不能为空！",

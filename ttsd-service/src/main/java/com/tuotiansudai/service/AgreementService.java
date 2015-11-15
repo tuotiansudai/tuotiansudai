@@ -9,6 +9,6 @@ import com.tuotiansudai.dto.PayFormDataDto;
  */
 public interface AgreementService {
 
-    BaseDto<PayFormDataDto> agreement(AgreementDto agreementDto);
+    BaseDto<PayFormDataDto> agreement(String loginName, AgreementDto agreementDto);
 
 }

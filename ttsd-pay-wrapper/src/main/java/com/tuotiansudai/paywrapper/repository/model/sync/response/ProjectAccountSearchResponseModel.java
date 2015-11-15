@@ -3,7 +3,7 @@ package com.tuotiansudai.paywrapper.repository.model.sync.response;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.util.Map;
 
