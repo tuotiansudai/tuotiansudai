@@ -151,7 +151,7 @@
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">100%</span>
                             </div>
-                            <div class="process-percent finish-project">
+                            <div class="process-percent">
                                 <div class="percent" style="width: 100%;"></div>
                             </div>
                             <div class="rest-amount finish-invest">
@@ -168,7 +168,7 @@
                             <div class="process-percent">
                                 <div class="percent" style="width:100%;"></div>
                             </div>
-                            <div class="rest-amount">
+                            <div class="rest-amount finish-invest">
                                 <span>可投金额: <i>${loanListWebDto.loanAmount}</i>元</span>
                                 <button class="btn-invest btn-normal">已售罄</button>
                             </div>
