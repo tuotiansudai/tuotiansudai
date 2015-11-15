@@ -64,6 +64,13 @@
     border-top: #606060 1px solid;
     margin: 0 auto;
     padding-top: 20px;
+    img:hover {
+      -webkit-filter: none;
+      -moz-filter: none;
+      -ms-filter: none;
+      -o-filter: none;
+      filter: none;
+    }
   }
 }
 

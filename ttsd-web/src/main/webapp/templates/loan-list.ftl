@@ -170,7 +170,7 @@
                             </div>
                             <div class="rest-amount">
                                 <span>可投金额: <i>${loanListWebDto.loanAmount}</i>元</span>
-                                <button class="btn-invest btn-normal">马上投资</button>
+                                <button class="btn-invest btn-normal">已售罄</button>
                             </div>
                         </div>
                     </#if>
