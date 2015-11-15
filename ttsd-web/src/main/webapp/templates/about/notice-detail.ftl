@@ -6,7 +6,7 @@
         </div>
         <h2 class="a-title article">
             <span class="title">${announcement.title}</span>
-            <time class="tr">发表时间：<i>${(announcement.createdTime?string("yyyy-MM-dd"))!}</i></time>
+            <time class="tr">发表时间：<i>${(announcement.updateTime?string("yyyy-MM-dd"))!}</i></time>
         </h2>
         <div class="detail-content">
             ${announcement.content}
