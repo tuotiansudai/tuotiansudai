@@ -1,3 +1,203 @@
-.index {
-  font-size: 12px;
+.full-screen {
+  width:100%!important;
+  margin-top:0;
+  .page-width {
+    margin:0 auto;
+  }
+}
+.banner-box {
+  background: url("/images/banner/h01.jpg") center top no-repeat;
+  height:350px;
+  background-size: cover;
+  .page-width {
+    height:100%;
+  }
+  .register-ad-box {
+    width: 300px;
+    height: 300px;
+    box-sizing: border-box;
+    padding: 50px 50px 10px;
+    background: rgba(255,255,255,0.8);
+    margin-top: 25px;
+    border-radius: 10px;
+    .percent {
+      color: #ff7200;
+      font-size: 60px;
+      line-height: 1;
+      font-weight: bold;
+    }
+    .h-title {
+      color: #4c4c4c;
+      font-size: 26px;
+      font-weight: normal;
+    }
+    .btn-normal {
+      width:100%;
+      padding: 8px 0;
+      margin-top:25px;
+    }
+    i {
+      display: block;
+      padding-top:15px;
+    }
+  }
+}
+
+.main-advantage {
+  margin-top:30px!important;
+  dl {
+    text-align: center;
+    dd {
+      width:33%;
+      display: inline-block;
+      font-size: 14px;
+      color: #0e050a;
+      line-height:1;
+      span {
+        b {
+          font-size: 20px;
+          display: block;
+          padding:20px 0 15px 0;
+          color: #000;
+        }
+      }
+      img{
+        -webkit-transition:  0.4s ease 0s;
+        -moz-transition:  0.4s ease-out 0s;
+        -ms-transition:  0.4s ease-out 0s;
+        -o-transition:  0.4s ease-out 0s;
+        transition:  0.4s ease-out 0s;
+        &:hover {
+          -webkit-transform: rotate(360deg) scale(1.2);
+          -moz-transform: rotate(360deg) scale(1.2);
+          -ms-transform: rotate(360deg) scale(1.2);
+          -o-transform: rotate(360deg) scale(1.2);
+          transform: rotate(360deg) scale(1.2);
+        }
+      }
+    }
+  }
+}
+.home-content {
+  background: #fafafa;
+  margin-top: 50px;
+  .page-width {
+    padding:10px;
+    box-sizing: border-box;
+    .product-box-list {
+      width: 76%;
+      overflow: hidden;
+      .product-box-inner {
+        width:105%;
+        box-sizing: border-box;
+        .product-box {
+          box-sizing: border-box;
+          width: 30%;
+          margin-right: 1.5%;
+          border:1px solid #e5e5e5;
+          border-radius: 5px;
+          position: relative;
+          display: inline-block;
+          position: relative;
+          margin-bottom:18px;
+          color: #999;
+          &.new-standard {
+            .hot-new {
+              position: absolute;
+              left:-2px;
+              top:-2px;
+              width:71px;
+              height: 71px;
+              background: url("/images/icons/hot-n.png") left top no-repeat;
+            }
+          }
+          .pr-title {
+            font-size: 18px;
+          }
+          .pr-square {
+            width: 140px;
+            height: 140px;
+            border-radius: 70px;
+            position: relative;
+            background: #fee7da;
+            margin: 8px auto;
+            .pr-square-in {
+              width:120px;
+              height:120px;
+              border-radius:60px;
+              border:2px solid #ff752a;
+              margin: auto;
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              text-align: center;
+              em {
+                color: #ff3333;
+                font-size: 18px;
+                line-height: 1;
+                font-weight: bold;
+                padding-top: 30px;
+                display: inline-block;
+                b {
+                  font-size:32px;
+                }
+                i {
+                  color: #999;
+                }
+              }
+            }
+          }
+          dl.pr-info {
+            text-align: center;
+            font-size: 0;
+            dd {
+              width:50%;
+              display: inline-block;
+              font-size: 14px;
+              line-height: 1.2;
+              color: #666;
+              i {
+                color: #ff3333;
+                font-weight: bold;
+                font-size: 18px;
+              }
+
+            }
+          }
+          .pad-m {
+            padding:10px 20px 15px 20px;
+          }
+          .btn-normal {
+            padding: 8px 0;
+            width: 100%;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            &:hover {
+              background: #ff9e69;
+              border-color: #ff9e69;
+            }
+            &:disabled {
+              background: #ccc!important;
+              border-color: #ccc!important;
+            }
+            &.wait-invest {
+              background: #ff9c1b;
+              border-color: #ff9c1b;
+            }
+          }
+
+        }
+
+      }
+    }
+    .home-ad {
+      width: 23%;
+      img {
+        width:100%;
+      }
+    }
+  }
+
 }

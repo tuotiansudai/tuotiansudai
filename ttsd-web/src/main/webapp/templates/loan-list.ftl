@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <#if loanListWebDto.status== 'RAISING'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
@@ -117,7 +117,7 @@
 
                         </div>
                     <#elseif loanListWebDto.status== 'PREHEAT'>
-                        <div class="loan-process ">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">0%</span>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                     <#elseif loanListWebDto.status== 'RECHECK'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">${loanListWebDto.rateOfAdvance}%</span>
@@ -146,7 +146,7 @@
                             </div>
                         </div>
                     <#elseif loanListWebDto.status== 'REPAYING'>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">100%</span>
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                     <#else>
-                        <div class="loan-process">
+                        <div class="loan-process project-schedule">
                             <div class="p-title">
                                 <span class="fl">项目进度</span>
                                 <span class="point fr">100%</span>

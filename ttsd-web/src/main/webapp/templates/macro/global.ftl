@@ -45,10 +45,9 @@
                 </#list>
             </ul>
         </#if>
-
     </div>
 </div>
-<div class="main-frame">
+<div class="main-frame full-screen">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
             <ul class="left-nav">
