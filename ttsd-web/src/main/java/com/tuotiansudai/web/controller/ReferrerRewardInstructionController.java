@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(path = "/refer-reward-instruction")
+@RequestMapping(path = "/events/refer-reward-instruction")
 public class ReferrerRewardInstructionController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView instruction() {
-        return new ModelAndView("/refer-reward-instruction");
+        return new ModelAndView("/events/refer-reward-instruction");
     }
 }

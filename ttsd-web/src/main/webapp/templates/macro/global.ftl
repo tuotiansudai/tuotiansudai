@@ -12,7 +12,7 @@
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
     {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
-    {"title":"推荐奖励", "url":"/refer-reward-instruction"},
+    {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"高管团队", "url":"/about/team"},
