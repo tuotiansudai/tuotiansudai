@@ -27,7 +27,7 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public List<HomeLoanDto> getLoans() {
         int pageSize = 6;
-        List<LoanModel> loanModels = loanMapper.findLoanList(null, null, null, new Date(0), new DateTime(9999, 12, 31, 0, 0, 0).toDate(), 1, pageSize);
+        List<LoanModel> loanModels = loanMapper.findLoanList(null, null, null, new Date(0), new DateTime(9999, 12, 31, 0, 0, 0).toDate(), 0, pageSize);
 
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override

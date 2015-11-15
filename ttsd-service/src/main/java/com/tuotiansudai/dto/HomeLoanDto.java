@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class HomeLoanDto {
 
-    private long loanId;
+    private long id;
 
     private String name;
 
@@ -26,7 +26,7 @@ public class HomeLoanDto {
     private String status;
 
     public HomeLoanDto(long loanId, String name, ActivityType activityType, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
-        this.loanId = loanId;
+        this.id = loanId;
         this.name = name;
         this.activityType = activityType.name();
         double baseRatePercentage = new BigDecimal(baseRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_UP).doubleValue();
@@ -47,8 +47,8 @@ public class HomeLoanDto {
         this.status = status.name();
     }
 
-    public long getLoanId() {
-        return loanId;
+    public long getId() {
+        return id;
     }
 
     public String getName() {
