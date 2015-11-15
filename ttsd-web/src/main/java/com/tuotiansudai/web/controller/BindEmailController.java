@@ -4,6 +4,7 @@ package com.tuotiansudai.web.controller;
 import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.service.BindEmailService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class BindEmailController {
     public BaseDto<BaseDataDto> bindEmail(HttpServletRequest request) {
         String email = request.getParameter("email");
         String url = request.getRequestURL().toString();
-        boolean result = bindEmailService.sendActiveEmail(email, url);
+        boolean result = bindEmailService.sendActiveEmail(LoginUserInfo.getLoginName(), email, url);
         BaseDto<BaseDataDto> baseDto = new BaseDto<>();
         BaseDataDto dataDto = new BaseDataDto();
         dataDto.setStatus(result);
@@ -36,7 +37,7 @@ public class BindEmailController {
 
     @RequestMapping(value = "/verify/{sign}", method = RequestMethod.GET)
     public ModelAndView verifyEmail(@PathVariable String sign) {
-        return new ModelAndView("/bind-email", "email", bindEmailService.verifyEmail(sign));
+        return new ModelAndView("/bind-email", "email", bindEmailService.verifyEmail(LoginUserInfo.getLoginName(), sign));
     }
 
 

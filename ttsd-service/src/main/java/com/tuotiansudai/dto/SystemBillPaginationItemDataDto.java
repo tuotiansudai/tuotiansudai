@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.SystemBillModel;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +10,7 @@ public class SystemBillPaginationItemDataDto implements Serializable {
 
     private long id;
 
-    private String orderId;
+    private Long orderId;
 
     private String amount;
 
@@ -41,11 +41,11 @@ public class SystemBillPaginationItemDataDto implements Serializable {
         this.id = id;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 

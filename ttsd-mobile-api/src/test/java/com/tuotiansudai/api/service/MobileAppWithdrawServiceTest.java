@@ -4,12 +4,13 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppWithdrawServiceImpl;
 import com.tuotiansudai.client.PayWrapperClient;
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.dto.WithdrawDto;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.repository.model.WithdrawStatus;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,9 +21,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.when;
 
 public class MobileAppWithdrawServiceTest extends ServiceTestBase {
@@ -56,7 +55,7 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         dataDto.setStatus(true);
         formDto.setData(dataDto);
 
-        when(bankCardMapper.findByLoginName(anyString())).thenReturn(bankCardModel);
+        when(bankCardMapper.findPassedBankCardByLoginName(anyString())).thenReturn(bankCardModel);
 
         when(payWrapperClient.withdraw(any(WithdrawDto.class))).thenReturn(formDto);
 

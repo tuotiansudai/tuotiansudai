@@ -59,7 +59,7 @@ public class BankCardMapperTest {
 
         bankCardModel.setCardNumber("99999");
         bankCardModel.setBankCode("ABC");
-        bankCardMapper.updateBankCard(bankCardModel);
+        bankCardMapper.update(bankCardModel);
 
         BankCardModel bankCardModel1 = bankCardMapper.findById(bankCardModel.getId());
         assertEquals("99999", bankCardModel1.getCardNumber());

@@ -50,4 +50,6 @@ public interface InvestRepayMapper {
 
     long findCountByLoginNameAndStatus(@Param(value = "loginName") String loginName,
                                        @Param(value = "paidStatus") String paidStatus);
+
+    List<InvestRepayModel> findByLoanId(long loanId);
 }

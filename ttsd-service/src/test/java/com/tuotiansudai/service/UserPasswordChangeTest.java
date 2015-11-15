@@ -3,8 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.utils.LoginUserInfo;
-import com.tuotiansudai.utils.MyShaPasswordEncoder;
+import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +55,7 @@ public class UserPasswordChangeTest {
         UserModel um1 = userMapper.findByLoginName(loginName);
         assertNotNull(um1);
 
-        LoginUserInfo.setLoginName(loginName);
-        LoginUserInfo.setMobile(mobile);
-
-        userService.changePassword(password, newPassword);
+        userService.changePassword(loginName, mobile, password, newPassword);
 
         UserModel um = userMapper.findByLoginName(loginName);
         assertEquals(

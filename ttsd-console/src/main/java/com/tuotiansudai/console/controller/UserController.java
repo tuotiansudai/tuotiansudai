@@ -8,8 +8,8 @@ import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.LoginUserInfo;
-import com.tuotiansudai.utils.RequestIPParser;
+import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.util.RequestIPParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -51,7 +51,7 @@ public class UserController {
         String ip = RequestIPParser.parse(request);
         ModelAndView modelAndView = new ModelAndView();
         try {
-            userService.editUser(editUserDto, ip);
+            userService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
             modelAndView.setViewName("redirect:/users");
             return modelAndView;
         } catch (BaseException e) {
@@ -94,7 +94,7 @@ public class UserController {
             return "不能禁用当前登录用户";
         }
         String ip = RequestIPParser.parse(request);
-        userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip);
+        userService.updateUserStatus(loginName, UserStatus.INACTIVE, ip, LoginUserInfo.getLoginName());
         return "OK";
     }
 
@@ -102,7 +102,7 @@ public class UserController {
     @ResponseBody
     public String enableUser(@PathVariable String loginName, HttpServletRequest request) {
         String ip = RequestIPParser.parse(request);
-        userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip);
+        userService.updateUserStatus(loginName, UserStatus.ACTIVE, ip, LoginUserInfo.getLoginName());
         return "OK";
     }
 }

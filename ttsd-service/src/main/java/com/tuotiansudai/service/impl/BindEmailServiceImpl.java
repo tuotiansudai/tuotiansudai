@@ -6,9 +6,8 @@ import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.BindEmailService;
-import com.tuotiansudai.utils.LoginUserInfo;
-import com.tuotiansudai.utils.SendCloudMailUtil;
-import com.tuotiansudai.utils.UUIDGenerator;
+import com.tuotiansudai.util.SendCloudMailUtil;
+import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +40,8 @@ public class BindEmailServiceImpl implements BindEmailService {
     private final static String ACTIVE_URL_TEMPLATE = "http://{host}:{port}/bind-email/verify/{uuid}";
 
     @Override
-    public boolean sendActiveEmail(String email, String url) {
+    public boolean sendActiveEmail(String loginName, String email, String url) {
         if (StringUtils.isNotEmpty(email)) {
-            String loginName = LoginUserInfo.getLoginName();
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
@@ -65,12 +63,11 @@ public class BindEmailServiceImpl implements BindEmailService {
 
     @Override
     @Transactional
-    public String verifyEmail(String uuid)  {
+    public String verifyEmail(String loginName, String uuid)  {
         if (StringUtils.isEmpty(uuid)) {
             return null;
         }
         String bindEmailKeyTemplate = "web:{loginName}:{uuid}";
-        String loginName = LoginUserInfo.getLoginName();
         String bindEmailKey = bindEmailKeyTemplate.replace("{loginName}", loginName).replace("{uuid}", uuid);
         String bindEmailValue = redisWrapperClient.get(bindEmailKey);
         if (StringUtils.isEmpty(bindEmailValue)) {

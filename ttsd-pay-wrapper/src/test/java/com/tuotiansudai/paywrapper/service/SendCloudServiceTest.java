@@ -4,7 +4,7 @@ package com.tuotiansudai.paywrapper.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SendCloudClient;
-import com.tuotiansudai.utils.SendCloudMailUtil;
+import com.tuotiansudai.util.SendCloudMailUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -3,9 +3,8 @@ package com.tuotiansudai.security;
 import com.tuotiansudai.exception.CaptchaNotMatchException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.utils.CaptchaHelper;
+import com.tuotiansudai.util.CaptchaHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,7 +40,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider {
             throw new DisabledException(errorMessage);
         }
 
-        if(enableCaptchaVerify) {
+        if (enableCaptchaVerify) {
             String captcha = httpServletRequest.getParameter("captcha");
             boolean result = this.captchaHelper.captchaVerify(CaptchaHelper.LOGIN_CAPTCHA, captcha);
 

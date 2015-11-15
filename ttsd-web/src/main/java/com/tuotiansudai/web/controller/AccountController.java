@@ -2,10 +2,9 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.*;
-import com.tuotiansudai.utils.DateUtil;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
