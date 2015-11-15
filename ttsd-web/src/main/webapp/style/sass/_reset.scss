@@ -71,7 +71,8 @@ p {
   overflow: auto;
   height: auto;
 }
-.clearfix:after,.clearfix:before {
+.clearfix:after,.clearfix:before,
+.clear:after,.clear:before{
   content: ".";
   display: block;
   clear: both;
@@ -141,8 +142,6 @@ form {
     }
   }
 }
-
-
 //make image gray
 .img-gray {
   -webkit-filter: grayscale(100%);
