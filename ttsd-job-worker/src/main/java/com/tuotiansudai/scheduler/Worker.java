@@ -7,7 +7,6 @@ import com.tuotiansudai.util.quartz.AutowiringSpringBeanJobFactory;
 import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
-import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
@@ -61,12 +60,9 @@ public class Worker {
         final JobType jobType = JobType.OverInvestPayBack;
         final String jobGroup = InvestCallback.JOB_GROUP;
         final String jobName = InvestCallback.JOB_NAME;
-        JobDetail jobDetail = jobManager.findJobDetail(jobType, jobGroup, jobName);
-        if (jobDetail != null) {
-            jobManager.deleteJob(jobType, jobGroup, jobName);
-        }
         try {
             jobManager.newJob(jobType, InvestCallback.class)
+                    .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
                             .repeatSecondlyForever(InvestCallback.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
