@@ -4,9 +4,10 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.RechargeModel;
+import com.tuotiansudai.repository.model.RechargeSource;
+import com.tuotiansudai.repository.model.RechargeStatus;
 import com.tuotiansudai.service.RechargeService;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,6 @@ public class RechargeServiceImpl implements RechargeService {
 
     @Override
     public BaseDto<PayFormDataDto> recharge(RechargeDto rechargeDto) {
-        String loginName = LoginUserInfo.getLoginName();
-        rechargeDto.setLoginName(loginName);
         return payWrapperClient.recharge(rechargeDto);
     }
 

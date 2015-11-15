@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;

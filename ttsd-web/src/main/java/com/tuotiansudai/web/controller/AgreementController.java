@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.service.AgreementService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +23,7 @@ public class AgreementController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView agreement(@Valid @ModelAttribute AgreementDto agreementDto){
-        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(agreementDto);
+        BaseDto<PayFormDataDto> baseDto = agreementService.agreement(LoginUserInfo.getLoginName(), agreementDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }
 

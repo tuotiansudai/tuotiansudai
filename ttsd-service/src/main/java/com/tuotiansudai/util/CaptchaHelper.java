@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;

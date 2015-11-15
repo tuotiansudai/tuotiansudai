@@ -8,8 +8,8 @@ import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.RechargeService;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -63,7 +63,7 @@ public class UserBillController {
                                             @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                             @RequestParam("status") List<UserBillBusinessType> userBillBusinessTypes) {
 
-        return userBillService.getUserBillData(index, pageSize, startTime, endTime, userBillBusinessTypes);
+        return userBillService.getUserBillData(LoginUserInfo.getLoginName(), index, pageSize, startTime, endTime, userBillBusinessTypes);
     }
 
 }

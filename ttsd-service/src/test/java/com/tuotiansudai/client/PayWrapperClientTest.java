@@ -10,7 +10,7 @@ import com.tuotiansudai.repository.mapper.LoanTitleMapper;
 import com.tuotiansudai.repository.mapper.LoanTitleRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;

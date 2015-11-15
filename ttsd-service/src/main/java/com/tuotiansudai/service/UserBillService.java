@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserBillService {
 
-    BaseDto<BasePaginationDataDto> getUserBillData(int index,
+    BaseDto<BasePaginationDataDto> getUserBillData(String loginName, int index,
                                                    int pageSize,
                                                    Date startTime,
                                                    Date endTime,

@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Component;

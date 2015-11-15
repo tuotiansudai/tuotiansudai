@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface AuditLogService {
 
-    void generateAuditLog(UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
+    void generateAuditLog(String operatorLoginName, UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
                           UserModel afterUpdateUserModel, List<UserRoleModel> afterUpdateUserRoleModels,
                           String userIp);
 

@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import com.tuotiansudai.repository.model.LoanModel;
 import org.joda.time.DateTime;

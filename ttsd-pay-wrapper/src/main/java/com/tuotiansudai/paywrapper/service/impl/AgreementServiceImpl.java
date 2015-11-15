@@ -81,7 +81,7 @@ public class AgreementServiceImpl implements AgreementService {
             }
             if (agreementNotifyRequestModel.isFastPay()) {
                 String loginName = accountModel.getLoginName();
-                BankCardModel bankCardModel = bankCardMapper.findByLoginName(loginName);
+                BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
                 bankCardModel.setIsFastPayOn(true);
                 bankCardMapper.update(bankCardModel);
 
