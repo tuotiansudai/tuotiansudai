@@ -20,15 +20,11 @@ public class SendCloudMailUtil {
 
 
     public boolean sendMailByLoanOut(String toAddress, Map<String, String> map) {
-
         try {
-
             String content = SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.LOAN_OUT_SUCCESSFUL_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;
@@ -36,13 +32,10 @@ public class SendCloudMailUtil {
 
     public boolean sendMailByRepayCompleted(String toAddress, Map<String, String> map) {
         try {
-
             String content = SendCloudTemplate.REPAY_COMPLETE_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.REPAY_COMPLETE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;
@@ -50,13 +43,10 @@ public class SendCloudMailUtil {
 
     public boolean sendActiveEmail(String toAddress, Map<String, String> map){
         try {
-
             String content = SendCloudTemplate.ACTIVE_EMAIL.generateContent(map);
             sendCloudClient.sendMailBySendCloud(toAddress, SendCloudTemplate.ACTIVE_EMAIL.getTitle(), content, SendCloudType.CONTENT);
             return true;
-        } catch (MessagingException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
         return false;

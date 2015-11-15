@@ -23,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -77,8 +78,8 @@ public class NormalRepayServiceTest {
     @Autowired
     private RepayGeneratorService repayGeneratorService;
 
-    @Autowired
-    private NormalRepayService normalRepayService;
+    @Resource(name = "normalRepayServiceImpl")
+    private RepayService normalRepayService;
 
     public NormalRepayServiceTest() {
     }
@@ -666,7 +667,7 @@ public class NormalRepayServiceTest {
 
         BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
 
@@ -757,7 +758,7 @@ public class NormalRepayServiceTest {
 
         BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
 
-        this.generateMockResponse(4);
+        this.generateMockResponse(10);
 
         normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
 

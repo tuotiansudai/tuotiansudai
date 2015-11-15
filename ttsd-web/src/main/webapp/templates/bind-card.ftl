@@ -14,7 +14,9 @@
                 <div class="card-num">${cardNumber}</div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="options">
-                    <a class="card-edit" href="javascript:">换卡</a>
+                    <#if replaceCardAvailable>
+                        <a class="card-edit" href="javascript:">换卡</a>
+                    </#if>
                     <#if openFastPayAvailable>
                     <input type="hidden" name="fastPay" value="true"/>
                     <a class="open-fast-pay" href="javascript:">开通快捷支付</a>
@@ -55,8 +57,7 @@
             1、不支持提现至信用卡账户。<br/>
             2、由于银行卡保护机制均由联动优势提供，故您的银行卡将通过拓天平台绑定到联动优势平台上进行第三方托管。<br/>
             3、如果您的借记卡是中国工商银行、中国农业银行、中国建设银行、华夏银行、中国银行、中国邮政储蓄银行、浦发银行、交通银行、民生银行、广发银行、中信银行、兴业银行、光大银行、招商银行和平安银行，方可开通快捷支付。<br/>
-            4、当您的账户余额为零的时候，系统才会支持您更换银行卡操作。<br/>
-            5、如果您已经开通快捷支付，系统不再支持您更换银行卡。<br/>
+            4、如果您已经开通快捷支付，系统不再支持您更换银行卡。<br/>
         </div>
     </div>
 </div>

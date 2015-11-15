@@ -129,7 +129,6 @@ public class LoanServiceImpl implements LoanService {
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(),e);
-                continue;
             }
         }
         return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
@@ -165,7 +164,6 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            payDataDto.setStatus(false);
             logger.error(e.getLocalizedMessage(), e);
         }
         baseDto.setData(payDataDto);
