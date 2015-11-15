@@ -6,7 +6,7 @@
             <div class="register-ad-box fr tc">
                 <em class="percent clearfix">16%</em>
                 <b class="h-title clear-blank">最高年化收益率</b>
-                <a class="btn-normal">免费注册 </a>
+                <a class="btn-normal" href="/register/user">免费注册 </a>
                 <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
             </div>
         </div>
@@ -14,28 +14,35 @@
     <div class="main-advantage page-width">
     <dl>
         <dd>
+            <a href="#" target="_blank">
             <img src="${staticServer}/images/icons/hs01.png" alt="超高收益 最低门槛" >
             <span class="clearfix">
-                <b class="clearfix">超高收益 最低门槛</b>
+                 <b class="clearfix">超高收益 最低门槛</b>
                 最高46倍活期存款收益 <br/>
                     最低投资门槛1元
+
             </span>
+            </a>
         </dd>
         <dd>
+            <a href="#" target="_blank">
             <img src="${staticServer}/images/icons/hs02.png" alt="三方托管 放心理财">
             <span class="clearfix">
                 <b class="clearfix">三方托管 放心理财</b>
                 第三方银行托管 <br/>
                 第三方支付
             </span>
+                </a>
         </dd>
         <dd>
+            <a href="#" target="_blank">
             <img src="${staticServer}/images/icons/hs03.png" alt="实力雄厚 安全保障">
             <span class="clearfix">
                 <b class="clearfix">实力雄厚 安全保障</b>
                 上市企业投资 <br/>
                 稳定安全债权来源
             </span>
+                </a>
         </dd>
     </dl>
 </div>
