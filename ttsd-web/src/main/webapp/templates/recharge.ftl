@@ -3,7 +3,7 @@
 <div class="content-container">
     <h4 class="column-title"><em class="tc">我要充值</em></h4>
         <div class="recharge-bind-card pad-s">
-        <ul class="payment-mode clear">
+        <ul class="payment-mode clearfix">
             <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
                 <i class="hot-flag"></i>
                 快捷支付
