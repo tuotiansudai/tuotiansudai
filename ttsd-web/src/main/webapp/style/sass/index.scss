@@ -1,9 +1,15 @@
+.full-screen {
+  width:100%!important;
+  margin-top:0;
+  .page-width {
+    margin:0 auto;
+  }
+}
 .banner-box {
   background: url("/images/banner/h01.jpg") center top no-repeat;
   height:350px;
   background-size: cover;
   .page-width {
-    margin:0 auto;
     height:100%;
   }
   .register-ad-box {
@@ -34,12 +40,11 @@
       display: block;
       padding-top:15px;
     }
-
   }
-
 }
 
 .main-advantage {
+  margin-top:30px!important;
   dl {
     text-align: center;
     dd {
@@ -73,122 +78,126 @@
     }
   }
 }
-
 .home-content {
-  padding:10px;
+  background: #fafafa;
   margin-top: 50px;
-  .product-box-list {
-    width: 76%;
-    overflow: hidden;
-    .product-box-inner {
-      width:105%;
-      box-sizing: border-box;
-      .product-box {
+  .page-width {
+    padding:10px;
+    box-sizing: border-box;
+    .product-box-list {
+      width: 76%;
+      overflow: hidden;
+      .product-box-inner {
+        width:105%;
         box-sizing: border-box;
-        width: 30%;
-        margin-right: 1.5%;
-        border:1px solid #e5e5e5;
-        border-radius: 5px;
-        position: relative;
-        display: inline-block;
-        position: relative;
-        margin-bottom:18px;
-        color: #999;
-        &.new-standard {
-          .hot-new {
-            position: absolute;
-            left:-2px;
-            top:-2px;
-            width:71px;
-            height: 71px;
-            background: url("/images/icons/hot-n.png") left top no-repeat;
-          }
-        }
-        .pr-title {
-          font-size: 18px;
-        }
-        .pr-square {
-          width: 140px;
-          height: 140px;
-          border-radius: 70px;
+        .product-box {
+          box-sizing: border-box;
+          width: 30%;
+          margin-right: 1.5%;
+          border:1px solid #e5e5e5;
+          border-radius: 5px;
           position: relative;
-          background: #fee7da;
-          margin: 8px auto;
-          .pr-square-in {
-            width:120px;
-            height:120px;
-            border-radius:60px;
-            border:2px solid #ff752a;
-            margin: auto;
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
+          display: inline-block;
+          position: relative;
+          margin-bottom:18px;
+          color: #999;
+          &.new-standard {
+            .hot-new {
+              position: absolute;
+              left:-2px;
+              top:-2px;
+              width:71px;
+              height: 71px;
+              background: url("/images/icons/hot-n.png") left top no-repeat;
+            }
+          }
+          .pr-title {
+            font-size: 18px;
+          }
+          .pr-square {
+            width: 140px;
+            height: 140px;
+            border-radius: 70px;
+            position: relative;
+            background: #fee7da;
+            margin: 8px auto;
+            .pr-square-in {
+              width:120px;
+              height:120px;
+              border-radius:60px;
+              border:2px solid #ff752a;
+              margin: auto;
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              text-align: center;
+              em {
+                color: #ff3333;
+                font-size: 18px;
+                line-height: 1;
+                font-weight: bold;
+                padding-top: 30px;
+                display: inline-block;
+                b {
+                  font-size:32px;
+                }
+                i {
+                  color: #999;
+                }
+              }
+            }
+          }
+          dl.pr-info {
             text-align: center;
-            em {
-              color: #ff3333;
-              font-size: 18px;
-              line-height: 1;
-              font-weight: bold;
-              padding-top: 30px;
+            font-size: 0;
+            dd {
+              width:50%;
               display: inline-block;
-              b {
-                font-size:32px;
-              }
+              font-size: 14px;
+              line-height: 1.2;
+              color: #666;
               i {
-                color: #999;
+                color: #ff3333;
+                font-weight: bold;
+                font-size: 18px;
               }
-            }
-          }
-        }
-        dl.pr-info {
-          text-align: center;
-          font-size: 0;
-          dd {
-            width:50%;
-            display: inline-block;
-            font-size: 14px;
-            line-height: 1.2;
-            color: #666;
-            i {
-              color: #ff3333;
-              font-weight: bold;
-              font-size: 18px;
-            }
 
+            }
           }
-        }
-        .pad-m {
-          padding:10px 20px 15px 20px;
-        }
-        .btn-normal {
-          padding: 8px 0;
-          width: 100%;
-          border-top-left-radius: 0;
-          border-top-right-radius: 0;
-          &:hover {
-            background: #ff9e69;
-            border-color: #ff9e69;
+          .pad-m {
+            padding:10px 20px 15px 20px;
           }
-          &:disabled {
-            background: #ccc!important;
-            border-color: #ccc!important;
+          .btn-normal {
+            padding: 8px 0;
+            width: 100%;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            &:hover {
+              background: #ff9e69;
+              border-color: #ff9e69;
+            }
+            &:disabled {
+              background: #ccc!important;
+              border-color: #ccc!important;
+            }
+            &.wait-invest {
+              background: #ff9c1b;
+              border-color: #ff9c1b;
+            }
           }
-          &.wait-invest {
-            background: #ff9c1b;
-            border-color: #ff9c1b;
-          }
+
         }
 
       }
+    }
+    .home-ad {
+      width: 23%;
+      img {
+        width:100%;
+      }
+    }
+  }
 
-    }
-  }
-  .home-ad {
-    width: 23%;
-    img {
-      width:100%;
-    }
-  }
 }
