@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

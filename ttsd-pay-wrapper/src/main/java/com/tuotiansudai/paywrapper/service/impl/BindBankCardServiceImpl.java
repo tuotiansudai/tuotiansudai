@@ -21,8 +21,8 @@ import com.tuotiansudai.paywrapper.service.SystemBillService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.BankCardUtil;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -162,7 +162,7 @@ public class BindBankCardServiceImpl implements BindBankCardService {
                 String bankCode = callbackRequestModel.getGateId();
                 bankCardModel.setBankCode(bankCode);
 
-                BankCardModel previousBankCard = bankCardMapper.findByLoginName(bankCardModel.getLoginName());
+                BankCardModel previousBankCard = bankCardMapper.findPassedBankCardByLoginName(bankCardModel.getLoginName());
                 previousBankCard.setStatus(BankCardStatus.REMOVED);
                 bankCardMapper.update(previousBankCard);
                 if (BankCardUtil.getBindCardOneCentBanks().contains(bankCode)) {

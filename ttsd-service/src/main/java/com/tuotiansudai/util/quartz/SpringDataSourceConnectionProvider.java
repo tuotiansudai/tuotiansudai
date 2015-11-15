@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils.quartz;
+package com.tuotiansudai.util.quartz;
 
 import com.mchange.v2.c3p0.PooledDataSource;
 import org.quartz.utils.ConnectionProvider;

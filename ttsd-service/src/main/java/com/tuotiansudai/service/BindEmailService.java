@@ -2,8 +2,8 @@ package com.tuotiansudai.service;
 
 public interface BindEmailService {
 
-    boolean sendActiveEmail(String email,String url);
+    boolean sendActiveEmail(String loginName, String email, String url);
 
-    String verifyEmail(String uuid);
+    String verifyEmail(String loginName, String uuid);
 
 }

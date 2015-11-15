@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils.quartz;
+package com.tuotiansudai.util.quartz;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;

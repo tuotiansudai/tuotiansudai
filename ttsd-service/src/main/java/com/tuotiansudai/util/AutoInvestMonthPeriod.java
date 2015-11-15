@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 public class AutoInvestMonthPeriod {
     public static AutoInvestMonthPeriod Month_1 = new AutoInvestMonthPeriod(1, "1月期");

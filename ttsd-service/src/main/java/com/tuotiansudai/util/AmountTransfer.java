@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import com.tuotiansudai.exception.*;
 import com.tuotiansudai.repository.mapper.AccountMapper;

@@ -10,10 +10,8 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.BaseCallbackR
 import com.tuotiansudai.paywrapper.repository.model.async.callback.ProjectTransferNotifyRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.async.request.ProjectTransferRequestModel;
 import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransferResponseModel;
-import com.tuotiansudai.paywrapper.service.AdvanceRepayService;
-import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.InterestCalculator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;

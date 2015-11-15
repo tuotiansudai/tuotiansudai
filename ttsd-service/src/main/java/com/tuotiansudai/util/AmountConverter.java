@@ -1,4 +1,4 @@
-package com.tuotiansudai.utils;
+package com.tuotiansudai.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

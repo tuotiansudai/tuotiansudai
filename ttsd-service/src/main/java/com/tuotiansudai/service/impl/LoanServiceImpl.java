@@ -12,7 +12,7 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.utils.*;
+import com.tuotiansudai.util.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -191,7 +191,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<LoanDto> getLoanDetail(long loanId) {
+    public BaseDto<LoanDto> getLoanDetail(String loginName, long loanId) {
         BaseDto<LoanDto> dto = new BaseDto<>();
         LoanDto loanDto = new LoanDto();
         dto.setData(loanDto);
@@ -201,14 +201,13 @@ public class LoanServiceImpl implements LoanService {
             return dto;
         }
 
-        loanDto = convertModelToDto(loanModel);
+        loanDto = convertModelToDto(loanModel, loginName);
         loanDto.setStatus(true);
         dto.setData(loanDto);
         return dto;
     }
 
-    private LoanDto convertModelToDto(LoanModel loanModel) {
-        String loginName = LoginUserInfo.getLoginName();
+    private LoanDto convertModelToDto(LoanModel loanModel, String loginName) {
         DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanModel.getId());
@@ -505,8 +504,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getLoanerLoanData(int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
-        String loginName = LoginUserInfo.getLoginName();
+    public BaseDto<BasePaginationDataDto> getLoanerLoanData(String loginName, int index, int pageSize, LoanStatus status, Date startTime, Date endTime) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {

@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.LoanRepayDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.service.RepayService;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -39,12 +40,12 @@ public class LoanerController {
                                                    @RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                                    @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
 
-        return loanService.getLoanerLoanData(index, pageSize, status, startTime, endTime);
+        return loanService.getLoanerLoanData(LoginUserInfo.getLoginName(), index, pageSize, status, startTime, endTime);
     }
 
     @RequestMapping(path = "/loan/{loanId:^\\d+$}/repay-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<LoanRepayDataDto> loanRepayData(@PathVariable long loanId) {
-        return repayService.getLoanRepay(loanId);
+        return repayService.getLoanRepay(LoginUserInfo.getLoginName(), loanId);
     }
 }

@@ -1,7 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.SystemBillModel;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;

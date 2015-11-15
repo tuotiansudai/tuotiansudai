@@ -8,9 +8,9 @@ import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +33,7 @@ public class InvestController {
         ModelAndView mv = null;
         String errorMessage = null;
         try {
+            investDto.setLoginName(LoginUserInfo.getLoginName());
             BaseDto<PayFormDataDto> baseDto = investService.invest(investDto);
             if (baseDto.isSuccess() && baseDto.getData().getStatus()) {
                 mv = new ModelAndView("/pay", "pay", baseDto);

@@ -23,7 +23,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.*;
+import com.tuotiansudai.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;

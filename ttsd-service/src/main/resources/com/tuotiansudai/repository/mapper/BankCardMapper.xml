@@ -23,7 +23,7 @@
         select * from bank_card where id = #{id}
     </select>
 
-    <select id="findByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
+    <select id="findPassedBankCardByLoginName" parameterType="java.lang.String" resultMap="BankCardResultMap">
         select * from bank_card where login_name = #{loginName} and status = 'PASSED'
     </select>
 

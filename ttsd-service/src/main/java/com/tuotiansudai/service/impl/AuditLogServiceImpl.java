@@ -5,15 +5,12 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.AuditLogPaginationItemDataDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.dto.LoginLogPaginationItemDataDto;
 import com.tuotiansudai.repository.mapper.AuditLogMapper;
 import com.tuotiansudai.repository.model.AuditLogModel;
-import com.tuotiansudai.repository.model.LoginLogModel;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.AuditLogService;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Override
     @Transactional
-    public void generateAuditLog(UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
+    public void generateAuditLog(String operatorLoginName, UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
                                  UserModel afterUpdateUserModel, List<UserRoleModel> afterUpdateUserRoleModels,
                                  String userIp) {
         String beforeUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
@@ -67,7 +64,7 @@ public class AuditLogServiceImpl implements AuditLogService {
         AuditLogModel log = new AuditLogModel();
         log.setId(new IdGenerator().generate());
         log.setLoginName(beforeUpdateUserModel.getLoginName());
-        log.setOperatorLoginName(LoginUserInfo.getLoginName());
+        log.setOperatorLoginName(operatorLoginName);
         log.setIp(userIp);
         log.setDescription(beforeUpdate + " => " + afterUpdate);
         auditLogMapper.create(log);

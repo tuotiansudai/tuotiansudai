@@ -2,7 +2,7 @@ package com.tuotiansudai.paywrapper.service;
 
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
 
 import java.util.List;
 import java.util.Map;
