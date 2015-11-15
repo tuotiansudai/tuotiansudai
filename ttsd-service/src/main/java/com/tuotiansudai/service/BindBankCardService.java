@@ -12,4 +12,6 @@ public interface BindBankCardService {
     String getUserName();
 
     BankCardModel getPassedBankCard();
+
+    BaseDto<PayFormDataDto> replaceBankCard(BindBankCardDto dto);
 }
