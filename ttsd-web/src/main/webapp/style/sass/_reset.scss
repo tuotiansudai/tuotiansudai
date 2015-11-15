@@ -26,10 +26,10 @@ body {
 }
 a{
   cursor: pointer;
-  color:nth($CK1,1);
+  color:nth($linkColor,1);
   text-decoration: none;
   &:hover{
-    color:nth($CK1,2);
+    color:nth($linkColor,2);
   }
 }
 .fl {
@@ -71,14 +71,17 @@ p {
   overflow: auto;
   height: auto;
 }
-.clear:after,
-.clear:before{
+.clearfix:after,.clearfix:before,
+.clear:after,.clear:before{
+  content: ".";
+  display: block;
   clear: both;
   visibility: hidden;
+  line-height: 0;
   height: 0;
-  display: block;
-  content: '';
+  font-size:0;
 }
+
 .clear-blank{
   clear: both;
   margin-top:10px;
@@ -107,8 +110,13 @@ p {
   padding-right: 4px;
 }
 
-label {
-  &.form-error {
+form {
+  input{
+    &.error,&.valid {
+      font-size: 14px;
+    }
+  }
+  label.error {
     font-size: 12px;
     color: nth($checkValid,1);
     padding-left: 5px;
@@ -119,20 +127,21 @@ label {
       font: normal normal normal 14px/1 FontAwesome;
       display: inline-block;
       font-size: 16px;
-      color: nth($checkValid,1);
     }
   }
-  &.form-valid {
-    &:before{
+  input.valid +label.error {
+    &:before {
       content: "\f058";
-      font: normal normal normal 14px/1 FontAwesome;
-      display: inline-block;
-      font-size: 16px;
       color: nth($checkValid,2);
     }
   }
+  input.error +label.error {
+    &:before {
+      content: "\f057";
+      color: nth($checkValid,1);
+    }
+  }
 }
-
 //make image gray
 .img-gray {
   -webkit-filter: grayscale(100%);

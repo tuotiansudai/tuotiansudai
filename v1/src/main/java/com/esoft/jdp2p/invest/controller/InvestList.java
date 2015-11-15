@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.esoft.jdp2p.invest.service.InvestService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,6 +22,8 @@ import com.esoft.core.annotations.ScopeType;
 import com.esoft.jdp2p.invest.model.Invest;
 import com.esoft.jdp2p.invest.model.TransferApply;
 import com.esoft.jdp2p.loan.model.Loan;
+
+import javax.annotation.Resource;
 
 /**
  * Filename: InvestList.java Description: Copyright: Copyright (c)2013 Company:
@@ -39,9 +42,13 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 
 	private Date searchcommitMinTime;
 	private Date searchcommitMaxTime;
+	private List<String> allChannelList;
 
 	private static final String lazyModelCountHql = "select count(distinct invest) from Invest invest";
 	private static final String lazyModelHql = "select distinct invest from Invest invest";
+
+	@Resource
+	private InvestService investService;
 
 	public InvestList() {
 		setCountHql(lazyModelCountHql);
@@ -59,6 +66,7 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 				"invest.time >= #{investList.searchcommitMinTime}",
 				"invest.status like #{investList.example.status}",
 				"invest.time <= #{investList.searchcommitMaxTime}",
+				"invest.channel = #{investList.example.channel}",
 				"invest.transferApply.id = #{investList.example.transferApply.id}" };
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 	}
@@ -72,6 +80,7 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 		example.setLoan(loan);
 		example.setTransferApply(new TransferApply());
 		setExample(example);
+		allChannelList = investService.getAllChannelName();
 	}
 
 	public Object getSumMoney() {
@@ -116,6 +125,14 @@ public class InvestList extends EntityQuery<Invest> implements Serializable {
 
 	public void setSearchcommitMaxTime(Date searchcommitMaxTime) {
 		this.searchcommitMaxTime = searchcommitMaxTime;
+	}
+
+	public List<String> getAllChannelList() {
+		return allChannelList;
+	}
+
+	public void setAllChannelList(List<String> allChannelList) {
+		this.allChannelList = allChannelList;
 	}
 
 	/**

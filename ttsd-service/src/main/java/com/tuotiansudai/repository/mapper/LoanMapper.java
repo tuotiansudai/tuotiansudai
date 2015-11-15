@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
 @Repository
 public interface LoanMapper {
+
     void create(LoanModel loanModel);
 
     LoanModel findById(@Param(value = "loanId") long loanId);
@@ -58,9 +60,12 @@ public interface LoanMapper {
                                             @Param(value = "startTime") Date startTime,
                                             @Param(value = "endTime") Date endTime);
 
-    List<LoanModel> findLoanList(@Param(value = "status") LoanStatus status,@Param(value = "loanId") long loanId,@Param(value = "loanName") String loanName,
-                                        @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,@Param(value = "currentPageNo") int currentPageNo,@Param(value = "pageSize") int pageSize);
+    List<LoanModel> findLoanList(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
+                                 @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime, @Param(value = "currentPageNo") int currentPageNo, @Param(value = "pageSize") int pageSize);
 
-    int findLoanListCount(@Param(value = "status") LoanStatus status,@Param(value = "loanId") long loanId,@Param(value = "loanName") String loanName,
-                                 @Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime);
+    int findLoanListCount(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
+                          @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime);
+
+    void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
+                                   @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
 }

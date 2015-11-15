@@ -10,10 +10,9 @@ import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.IdGenerator;
-import com.tuotiansudai.utils.InterestCalculator;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.InterestCalculator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
@@ -49,13 +48,9 @@ public class InvestServiceImpl implements InvestService {
 
     @Override
     public BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException {
-        String loginName = LoginUserInfo.getLoginName();
-        investDto.setLoginName(loginName);
-
         checkInvestAmount(investDto);
 
         return payWrapperClient.invest(investDto);
-
     }
 
     private void checkInvestAmount(InvestDto investDto) throws InvestException {

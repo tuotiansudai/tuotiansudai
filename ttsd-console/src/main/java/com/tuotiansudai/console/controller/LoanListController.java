@@ -25,31 +25,31 @@ public class LoanListController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/console",method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList(@RequestParam("status") LoanStatus status, @RequestParam("loanId") long loanId,
-                                        @RequestParam("startTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date startTime,
-                                        @RequestParam("endTime") @DateTimeFormat(pattern="yyyy-MM-dd") Date endTime,
-                                        @RequestParam("currentPageNo") int currentPageNo, @RequestParam("loanName") String loanName, @RequestParam("pageSize") int pageSize) {
+    @RequestMapping(value = "/console", method = RequestMethod.GET)
+    public ModelAndView ConsoleLoanList(@RequestParam("status") LoanStatus status,
+                                        @RequestParam(value = "loanId", required = false) Long loanId,
+                                        @RequestParam("startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                        @RequestParam("endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                        @RequestParam("currentPageNo") int currentPageNo,
+                                        @RequestParam("loanName") String loanName, @RequestParam("pageSize") int pageSize) {
         DateTime dateTime = new DateTime(endTime);
-        int loanListCount = loanService.findLoanListCount(status,loanId,loanName,startTime,dateTime.plusDays(1).toDate());
-        List<LoanListDto> loanListDtos = loanService.findLoanList(status,loanId,loanName,startTime,dateTime.plusDays(1).toDate(),currentPageNo,pageSize);
+        int loanListCount = loanService.findLoanListCount(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate());
+        List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate(), currentPageNo, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
-        modelAndView.addObject("loanListCount",loanListCount);
-        modelAndView.addObject("loanListDtos",loanListDtos);
-        modelAndView.addObject("currentPageNo",currentPageNo);
-        modelAndView.addObject("pageSize",pageSize);
+        modelAndView.addObject("loanListCount", loanListCount);
+        modelAndView.addObject("loanListDtos", loanListDtos);
+        modelAndView.addObject("currentPageNo", currentPageNo);
+        modelAndView.addObject("pageSize", pageSize);
         long totalPages = loanListCount / pageSize + (loanListCount % pageSize > 0 ? 1 : 0);
         boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
         boolean hasNextPage = currentPageNo < totalPages;
-        modelAndView.addObject("hasPreviousPage",hasPreviousPage);
-        modelAndView.addObject("hasNextPage",hasNextPage);
-        modelAndView.addObject("status",status);
-        if (loanId > 0) {
-            modelAndView.addObject("loanId",loanId);
-        }
-        modelAndView.addObject("loanName",loanName);
-        modelAndView.addObject("startTime",startTime);
-        modelAndView.addObject("endTime",endTime);
+        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+        modelAndView.addObject("hasNextPage", hasNextPage);
+        modelAndView.addObject("status", status);
+        modelAndView.addObject("loanId", loanId);
+        modelAndView.addObject("loanName", loanName);
+        modelAndView.addObject("startTime", startTime);
+        modelAndView.addObject("endTime", endTime);
         return modelAndView;
     }
 

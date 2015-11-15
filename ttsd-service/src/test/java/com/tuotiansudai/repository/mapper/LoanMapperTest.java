@@ -2,7 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.Is.isA;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -275,9 +276,21 @@ public class LoanMapperTest {
 
     @Test
     public void findLoanListTest() {
-        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING,1,"",new Date(),new Date(),0,10);
-        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING,1,"",new Date(),new Date());
+        List<LoanModel> loanModels = loanMapper.findLoanList(LoanStatus.RAISING, 1L, "", new Date(), new Date(), 0, 10);
+        int loanListCount = loanMapper.findLoanListCount(LoanStatus.RAISING, 1L, "", new Date(), new Date());
         assertThat(loanModels.size(), is(loanListCount));
     }
 
+    @Test
+    public void updateRaisingCompleteTimeTest() {
+        UserModel fakeUserModel = this.getFakeUserModel();
+        userMapper.create(fakeUserModel);
+
+        LoanModel fakeCanceledLoan1 = this.getFakeLoan(fakeUserModel.getLoginName(), fakeUserModel.getLoginName(), LoanStatus.CANCEL);
+        loanMapper.create(fakeCanceledLoan1);
+        loanMapper.updateRaisingCompleteTime(fakeCanceledLoan1.getId(), new Date());
+
+        LoanModel loan = loanMapper.findById(fakeCanceledLoan1.getId());
+        assertThat(loan.getRaisingCompleteTime(), isA(Date.class));
+    }
 }

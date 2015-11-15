@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.Map;
@@ -33,11 +34,11 @@ public class PayCallbackController {
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private NormalRepayService normalRepayService;
+    @Resource(name = "normalRepayServiceImpl")
+    private RepayService normalRepayService;
 
-    @Autowired
-    private AdvanceRepayService advanceRepayService;
+    @Resource(name = "advanceRepayServiceImpl")
+    private RepayService advanceRepayService;
 
     @Autowired
     private AgreementService agreementService;
@@ -71,12 +72,27 @@ public class PayCallbackController {
         }
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
+    @RequestMapping(value = "/mer_replace_card_notify",method = RequestMethod.GET)
+    public ModelAndView replaceBankCard(HttpServletRequest request) {
+        Map<String, String> paramsMap = this.parseRequestParameters(request);
+        String responseData;
+        String service = paramsMap.get("service");
+        if(UmPayService.NOTIFY_MER_BIND_CARD_APPLY.getServiceName().equals(service)){
+            responseData = this.bindBankCardService.bindBankCardApplyCallback(paramsMap, request.getQueryString());
+        } else {
+            responseData = bindBankCardService.replaceBankCardCallback(paramsMap, request.getQueryString());
+        }
+        return new ModelAndView("/callback_response", "content", responseData);
+    }
+
     @RequestMapping(value = "/mer_bind_card_apply_notify", method = RequestMethod.GET)
     public ModelAndView bindBankCardNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);
         String responseData = this.bindBankCardService.bindBankCardCallback(paramsMap, request.getQueryString());
         return new ModelAndView("/callback_response", "content", responseData);
     }
+
     @RequestMapping(value = "/withdraw_notify", method = RequestMethod.GET)
     public ModelAndView withdrawNotify(HttpServletRequest request) {
         Map<String, String> paramsMap = this.parseRequestParameters(request);

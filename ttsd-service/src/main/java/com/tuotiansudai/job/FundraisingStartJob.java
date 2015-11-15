@@ -12,12 +12,12 @@ public class FundraisingStartJob implements Job{
     public final static String LOAN_ID_KEY = "LOAN_ID";
 
     @Autowired
-    LoanService loanService;
+    private LoanService loanService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String strLoanId = context.getJobDetail().getJobDataMap()
-                .getString(LOAN_ID_KEY);
+                .get(LOAN_ID_KEY).toString();
 
         long loanId = Long.parseLong(strLoanId);
         loanService.startFundraising(loanId);

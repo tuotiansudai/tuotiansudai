@@ -2,9 +2,10 @@ package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class EditUserDto {
+public class EditUserDto implements Serializable {
 
     private String loginName;
 

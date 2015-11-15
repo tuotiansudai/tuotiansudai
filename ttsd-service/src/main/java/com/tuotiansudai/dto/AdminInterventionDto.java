@@ -4,8 +4,9 @@ import com.tuotiansudai.repository.model.UserBillOperationType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 
-public class AdminInterventionDto {
+public class AdminInterventionDto implements Serializable {
 
     @NotNull
     private String loginName;

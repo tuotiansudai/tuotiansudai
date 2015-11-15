@@ -80,4 +80,7 @@ public interface InvestService {
 	 */
 	// public List<Invest> getInvestsByUserId(String userId);
 
+
+	List<String> getAllChannelName();
+
 }

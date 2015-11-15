@@ -1,22 +1,35 @@
 package com.tuotiansudai.repository.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SystemBillModel {
+public class SystemBillModel implements Serializable {
 
     private long id;
 
+    private Long orderId;
+
     private long amount;
 
-    private String orderId;
-
-    private SystemBillOperationType Type;
+    private SystemBillOperationType type;
 
     private SystemBillBusinessType businessType;
 
     private String detail;
 
-    private Date createdTime = new Date();
+    private Date createdTime;
+
+    public SystemBillModel() {
+    }
+
+    public SystemBillModel(Long orderId, long amount, SystemBillOperationType type, SystemBillBusinessType businessType, String detail) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.type = type;
+        this.businessType = businessType;
+        this.detail = detail;
+        this.createdTime = new Date();
+    }
 
     public long getId() {
         return id;
@@ -34,20 +47,20 @@ public class SystemBillModel {
         this.amount = amount;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
     public SystemBillOperationType getType() {
-        return Type;
+        return type;
     }
 
     public void setType(SystemBillOperationType type) {
-        Type = type;
+        this.type = type;
     }
 
     public SystemBillBusinessType getBusinessType() {

@@ -1,0 +1,1 @@
+alter table `aa`.`loan` add column raising_complete_time DATETIME DEFAULT NULL after fundraising_end_time;

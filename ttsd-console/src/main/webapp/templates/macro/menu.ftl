@@ -10,15 +10,15 @@
                 "header":{"text":"项目管理","link":"/loan"},
                 "sidebar":
                 [
-                    {"name":"ALL","text":"所有的借款","link":"/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"ALL","text":"所有的借款","link":"/loanList/console?status=&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
                     {"name":"start","text":"发起借款","link":"/loan"},
-                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/loanList/console?status=WAITING_VERIFY&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"RAISING","text":"筹款中的借款","link":"/loanList/console?status=RAISING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"RECHECK","text":"复审的借款","link":"/loanList/console?status=RECHECK&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"REPAYING","text":"还款中的借款","link":"/loanList/console?status=REPAYING&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"COMPLETE","text":"完成还款的借款","link":"/loanList/console?status=COMPLETE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"CANCEL","text":"已经流标的借款","link":"/loanList/console?status=CANCEL&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"OVERDUE","text":"逾期的借款","link":"/loanList/console?status=OVERDUE&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/loanList/console?status=WAITING_VERIFY&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"RAISING","text":"筹款中的借款","link":"/loanList/console?status=RAISING&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"RECHECK","text":"复审的借款","link":"/loanList/console?status=RECHECK&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"REPAYING","text":"还款中的借款","link":"/loanList/console?status=REPAYING&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"COMPLETE","text":"完成还款的借款","link":"/loanList/console?status=COMPLETE&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"CANCEL","text":"已经流标的借款","link":"/loanList/console?status=CANCEL&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"OVERDUE","text":"逾期的借款","link":"/loanList/console?status=OVERDUE&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
                     {"name":"investmentInfoList","text":"项目投资明细表","link":"/invests"},
                     {"name":"repaymentInfoList","text":"项目还款明细表","link":"/loan-repay"}
                 ]
@@ -29,10 +29,7 @@
                 "sidebar":[
                     {"name":"addUser","text":"添加用户","link":""},
                     {"name":"userMan","text":"用户管理","link":"/users"},
-                    {"name":"referMan","text":"推荐人管理","link":"/referrerManage"},
-                    {"name":"##############","text":"推荐层级-收益比例管理(用户)","link":""},
-                    {"name":"##############","text":"用户推荐层级-收益比例管理(系统)","link":""},
-                    {"name":"##############","text":"业务员推荐层级-收益比例管理(系统)","link":""}
+                    {"name":"referMan","text":"推荐人管理","link":"/referrerManage"}
                 ]
             },
             {
@@ -44,7 +41,6 @@
                     {"name":"recharge","text":"充值记录","link":"/recharge"},
                     {"name":"withdraw","text":"提现记录","link":"/withdraw"},
                     {"name":"userFund","text":"用户资金查询","link":"/userFunds"},
-                    {"name":"realTimeStatus","text":"联动优势资金查询","link":"/real-time-status"},
                     {"name":"systemBill","text":"系统账户查询","link":"/systemBill"},
                     {"name":"adminIntervention","text":"管理员修改账户余额","link":"/admin-intervention"},
                     {"name":"realTimeStatus","text":"联动优势余额查询","link":"/real-time-status"}

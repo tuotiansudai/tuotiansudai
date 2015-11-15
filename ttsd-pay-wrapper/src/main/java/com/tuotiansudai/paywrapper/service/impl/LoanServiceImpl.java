@@ -30,9 +30,9 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.AmountTransfer;
-import com.tuotiansudai.utils.SendCloudMailUtil;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +129,6 @@ public class LoanServiceImpl implements LoanService {
                 }
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(),e);
-                continue;
             }
         }
         return this.updateLoanStatus(loanId,LoanStatus.CANCEL);
@@ -153,12 +152,18 @@ public class LoanServiceImpl implements LoanService {
                     MerUpdateProjectResponseModel.class);
             if (responseModel.isSuccess()) {
                 loanMapper.updateStatus(loanId, loanStatus);
+                LoanModel loan = loanMapper.findById(loanId);
+                if(loanStatus == LoanStatus.CANCEL) {
+                    loan.setRecheckTime(new Date());
+                } else if (loanStatus == LoanStatus.REPAYING) {
+                    loan.setVerifyTime(new Date());
+                }
+                loanMapper.update(loan);
             }
             payDataDto.setStatus(responseModel.isSuccess());
             payDataDto.setCode(responseModel.getRetCode());
             payDataDto.setMessage(responseModel.getRetMsg());
         } catch (PayException e) {
-            payDataDto.setStatus(false);
             logger.error(e.getLocalizedMessage(), e);
         }
         baseDto.setData(payDataDto);
@@ -375,11 +380,13 @@ public class LoanServiceImpl implements LoanService {
         }
         String loginName = investModel.getLoginName();
         if (callbackRequest.isSuccess()) {
-            investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
-            try {
-                amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
-            } catch (AmountTransferException e) {
-                logger.error(e.getLocalizedMessage(),e);
+            if (investMapper.findById(investModel.getId()).getStatus() != InvestStatus.CANCEL_INVEST_PAYBACK) {
+                investMapper.updateStatus(investModel.getId(), InvestStatus.CANCEL_INVEST_PAYBACK);
+                try {
+                    amountTransfer.unfreeze(loginName, orderId, investModel.getAmount(), UserBillBusinessType.CANCEL_INVEST_PAYBACK, null, null);
+                } catch (AmountTransferException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
             }
         } else {
             //TODO SEND_SMS

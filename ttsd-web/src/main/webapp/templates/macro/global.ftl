@@ -3,16 +3,16 @@
 <#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷">
     <#local menus=[
     {"title":"首页", "url":"/"},
-    {"title":"我要投资", "url":"/loanList/web"},
+    {"title":"我要投资", "url":"/loan-list"},
     {"title":"我的账户", "url":"/account", "leftNavs":[
     {"title":"账户总览", "url":"/account", "role":"'INVESTOR', 'LOANER'"},
     {"title":"我的投资", "url":"/investor/invest-list", "role":"'INVESTOR'"},
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
+    {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
-    {"title":"推荐奖励", "url":"/"},
+    {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"高管团队", "url":"/about/team"},
@@ -45,10 +45,9 @@
                 </#list>
             </ul>
         </#if>
-
     </div>
 </div>
-<div class="main-frame">
+<div class="main-frame full-screen">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
             <ul class="left-nav">
@@ -78,7 +77,11 @@
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}/js/dest/${pageJavascript}"></script>
+<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
+        data-main="${staticServer}/js/dest/${pageJavascript}">
+
+</script>
+
 </#if>
 </body>
 </html>

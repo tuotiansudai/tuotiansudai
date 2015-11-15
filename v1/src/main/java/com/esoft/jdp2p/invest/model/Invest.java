@@ -73,6 +73,8 @@ public class Invest implements java.io.Serializable {
 
 	private String source;
 
+	private String channel;
+
 	// Constructors
 
 	/** default constructor */
@@ -322,5 +324,12 @@ public class Invest implements java.io.Serializable {
 		}
 		return this.repayRoadmap;
 	}
+	@Column(name = "channel", length = 32)
+	public String getChannel() {
+		return channel;
+	}
 
+	public void setChannel(String channel) {
+		this.channel = channel;
+	}
 }
