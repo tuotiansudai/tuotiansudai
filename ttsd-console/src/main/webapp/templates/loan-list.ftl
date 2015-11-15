@@ -45,7 +45,7 @@
                     <input type="hidden" class="status" name="status" value="<#if status??>${status}</#if>">
                     <div class="form-group">
                         <label for="number">编号</label>
-                        <input type="text" class="form-control loanId" name="loanId"  placeholder="" value="${(loanId?string('0'))!}">
+                        <input type="text" class="form-control loanId" name="loanId"  placeholder="" value="${(loanId!}">
                     </div>
                     <div class="form-group">
                         <label for="number">项目名称</label>
@@ -68,15 +68,6 @@
 					                </span>
                         </div>
                     </div>
-
-                    <!--<div class="form-group">-->
-                    <!--<label for="">角色</label>-->
-                    <!--<select class="form-control">-->
-                    <!--<option>全部</option>-->
-                    <!--<option>Ketchup</option>-->
-                    <!--<option>Relish</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
 
                     <button type="button" class="btn btn-sm btn-primary search">查询</button>
                 </form>
@@ -125,7 +116,7 @@
 
                         <li>
                             <#if hasPreviousPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
                             </#if>
@@ -135,7 +126,7 @@
                         <li><a>${currentPageNo}</a></li>
                         <li>
                             <#if hasNextPage >
-                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=0&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
+                            <a href="?status=${status!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}&loanId=${loanId!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&loanName=${loanName!}" aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">
                             </#if>

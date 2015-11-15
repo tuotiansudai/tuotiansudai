@@ -58,7 +58,7 @@
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
-                                <em><b>${loan.baseRate}</b><#if loan.activityRate??>+${loan.activityRate}%</#if>%</em>
+                                <em><b>${loan.baseRate}</b><#if loan.activityRate??>+${loan.activityRate}</#if>%</em>
                                 <i class="clearfix">年化收益</i>
                             </div>
                         </div>
