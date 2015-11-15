@@ -306,10 +306,10 @@
             <if test="status != null">
                 t.status = #{status}
             </if>
-            <if test="loanId > 0">
+            <if test="loanId != null">
                 and t.id = #{loanId}
             </if>
-            <if test="loanName != null and loanName != '' ">
+            <if test="loanName != null and loanName != ''">
                 and t.name like CONCAT(CONCAT('%', #{loanName}),'%')
             </if>
             <if test="startTime != null">
@@ -321,7 +321,7 @@
         </where>
         order by t.created_time desc
         <if test="currentPageNo >= 0">
-            limit #{currentPageNo} , #{pageSize}
+            limit #{currentPageNo}, #{pageSize}
         </if>
     </select>
 
@@ -331,7 +331,7 @@
             <if test="status != null">
                 t.status = #{status}
             </if>
-            <if test="loanId > 0">
+            <if test="loanId != null">
                 and t.id = #{loanId}
             </if>
             <if test="loanName != null and loanName != ''">
