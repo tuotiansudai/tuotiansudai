@@ -621,13 +621,13 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int findLoanListCount(LoanStatus status, long loanId, String loanName, Date startTime, Date endTime) {
+    public int findLoanListCount(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime) {
         return loanMapper.findLoanListCount(status, loanId, loanName, startTime, endTime);
     }
 
 
     @Override
-    public List<LoanListDto> findLoanList(LoanStatus status, long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
+    public List<LoanListDto> findLoanList(LoanStatus status, Long loanId, String loanName, Date startTime, Date endTime, int currentPageNo, int pageSize) {
         currentPageNo = (currentPageNo - 1) * 10;
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
