@@ -103,6 +103,7 @@ public class BankCardRequestDto extends BaseParamDto{
         bindBankCardDto.setLoginName(this.getBaseParam().getUserId());
         bindBankCardDto.setSource(Source.valueOf(this.getBaseParam().getPlatform().toUpperCase()));
         bindBankCardDto.setCardNumber(this.getCardNo());
+        bindBankCardDto.setFastPay(this.isOpenFastPayment());
         return bindBankCardDto;
     }
 

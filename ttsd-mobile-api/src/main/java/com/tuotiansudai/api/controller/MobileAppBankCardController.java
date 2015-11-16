@@ -24,7 +24,9 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/bind", method = RequestMethod.POST)
     public BaseResponseDto bankCardBind(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppBankCardService.bindBankCard(bankCardRequestDto);
     }
 
     /**
@@ -34,7 +36,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/replace", method = RequestMethod.POST)
     public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto) {
-        return mobileAppBankCardService.generateBankCardResponse(requestDto);
+        throw new NotImplementedException(getClass().getName());
     }
 
     /**
@@ -44,11 +46,15 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/sign", method = RequestMethod.POST)
     public BaseResponseDto bankCardSign(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppBankCardService.openFastPay(bankCardRequestDto);
     }
 
     @RequestMapping(value = "/bankcard/query", method = RequestMethod.POST)
     public BaseResponseDto queryBindAndSginStatus(@RequestBody BankCardRequestDto bankCardRequestDto) {
-        throw new NotImplementedException(getClass().getName());
+        bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
+        return mobileAppBankCardService.queryStatus(bankCardRequestDto);
     }
 }
