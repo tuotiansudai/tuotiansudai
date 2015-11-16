@@ -27,6 +27,10 @@
         select * from bank_card where login_name = #{loginName} and status = 'PASSED'
     </select>
 
+    <select id="findPassedBankCardByBankCode" parameterType="java.lang.String" resultMap="BankCardResultMap">
+        select * from bank_card where bank_code = #{bankCode} and status = 'PASSED'
+    </select>
+
     <select id="findByLoginNameAndIsFastPayOn" parameterType="java.lang.String" resultMap="BankCardResultMap">
         select * from bank_card where login_name = #{loginName} and status = 'PASSED' and is_fast_pay_on = true
     </select>

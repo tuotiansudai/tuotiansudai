@@ -8,13 +8,17 @@ import com.tuotiansudai.dto.AgreementDto;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BindBankCardDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.BankCardMapper;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.BankCardModel;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.AgreementService;
 import com.tuotiansudai.service.BindBankCardService;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +39,11 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
     @Autowired
     private BankCardMapper bankCardMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private AccountMapper accountMapper;
     @Override
     public BaseResponseDto bindBankCard(BankCardRequestDto requestDto) {
         BaseResponseDto baseDto = new BaseResponseDto();
@@ -68,7 +77,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         BaseResponseDto baseDto = new BaseResponseDto();
         try {
             AgreementDto agreementDto = requestDto.convertToAgreementDto();
-            BaseDto<PayFormDataDto> requestFormData = agreementService.agreement(agreementDto);
+            BaseDto<PayFormDataDto> requestFormData = agreementService.agreement(agreementDto.getLoginName(),agreementDto);
             if(requestFormData.isSuccess()) {
                 PayFormDataDto formData = requestFormData.getData();
 
@@ -101,7 +110,7 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             baseResponseDto.setCode(ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
             return baseResponseDto;
         }
-        BankCardModel bankCardModel = bankCardMapper.findByLoginName(userId);
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(userId);
         if (MobileAppCommonConstants.QUERY_BIND_STATUS.equals(operationType)){
             //查询绑定状态
             if (bankCardModel != null){
@@ -122,5 +131,52 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
             }
         }
         return baseResponseDto;
+    }
+
+    @Override
+    public BaseResponseDto replaceBankCard(BankCardReplaceRequestDto requestDto) {
+        BindBankCardDto bindBankCardDto = requestDto.convertToBindBankCardDto();
+        BaseResponseDto<BankCardReplaceResponseDataDto> dto = new BaseResponseDto<>();
+        String newCardNo = bindBankCardDto.getCardNumber();
+        if (StringUtils.isBlank(newCardNo)) {
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getCode(),ReturnMessage.REPLACE_CARD_FAIL_BANK_CARDNO_IS_NULL.getMsg());
+        }
+        String loginName = bindBankCardDto.getLoginName();
+        UserModel loginUser = userMapper.findByLoginName(loginName);
+        if(loginUser == null){
+            return new BaseResponseDto(ReturnMessage.USER_ID_NOT_EXIST.getCode(),ReturnMessage.USER_ID_NOT_EXIST.getMsg());
+        }
+        BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
+        if(bankCardModel != null){
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getCode(),ReturnMessage.REPLACE_CARD_FAIL_HAS_OPEN_FAST_PAYMENT.getMsg());
+        }
+
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+
+        if(accountModel.getBalance() > 0){
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getCode(),ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getMsg());
+        }
+        BankCardModel bankCardModelIsExist = bankCardMapper.findPassedBankCardByBankCode(newCardNo);
+        if(bankCardModelIsExist != null){
+            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getCode(),ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getMsg());
+        }
+        BaseDto<PayFormDataDto> requestFormData = bindBankCardService.replaceBankCard(bindBankCardDto);
+        if(requestFormData.isSuccess()){
+            PayFormDataDto formData = requestFormData.getData();
+            BankCardReplaceResponseDataDto bankCardReplaceResponseDataDto = new BankCardReplaceResponseDataDto();
+            bankCardReplaceResponseDataDto.setUrl(formData.getUrl());
+            try {
+                bankCardReplaceResponseDataDto.setRequestData(CommonUtils.mapToFormData(formData.getFields(), true));
+            } catch (UnsupportedEncodingException e) {
+                return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(),ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
+            }
+
+            dto.setData(bankCardReplaceResponseDataDto);
+        }else{
+            log.debug("mobile replace card fail, pay wrapper return fail");
+        }
+        dto.setCode(ReturnMessage.SUCCESS.getCode());
+        dto.setMessage(ReturnMessage.SUCCESS.getMsg());
+        return dto;
     }
 }

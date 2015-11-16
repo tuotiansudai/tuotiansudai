@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.controller;
 
-import com.tuotiansudai.api.dto.BankCardRequestDto;
-import com.tuotiansudai.api.dto.BankCardResponseDto;
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppBankCardService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -45,13 +42,13 @@ public class MobileAppBankCardControllerTest extends ControllerTestBase {
 
     @Test
     public void shouldBankCardReplace() throws Exception {
-        /*
-        when(service.generateBankCardResponse(any(BankCardReplaceRequestDto.class)))
+
+        when(service.replaceBankCard(any(BankCardReplaceRequestDto.class)))
                 .thenReturn(successResponseDto);
 
         doRequestWithServiceMockedTest("/bankcard/replace",
                 new BankCardReplaceRequestDto());
-        */
+
     }
 
     @Test

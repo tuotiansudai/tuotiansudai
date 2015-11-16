@@ -13,4 +13,6 @@ public interface BankCardMapper {
     BankCardModel findByLoginNameAndIsFastPayOn(String loginName);
 
     void update(BankCardModel bankCardModel);
+
+    BankCardModel findPassedBankCardByBankCode(String bankCode);
 }
