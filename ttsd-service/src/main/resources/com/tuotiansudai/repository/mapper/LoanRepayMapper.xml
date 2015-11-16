@@ -262,4 +262,8 @@
         where loan_id = #{loanId}
         and status = 'COMPLETE'
     </select>
+
+    <select id="findNotCompleteLoanRepay" resultMap="loanRepayResultMap">
+        select * from loan_repay where status != 'COMPLETE'
+    </select>
 </mapper>

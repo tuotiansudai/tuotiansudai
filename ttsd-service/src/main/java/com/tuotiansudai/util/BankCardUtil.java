@@ -51,7 +51,6 @@ public class BankCardUtil {
 
     private static final List<String> BIND_CARD_ONE_CENT_BANKS = Lists.newArrayList("CMB");
 
-
     public static List<String> getRechargeBanks() {
         return RECHARGE_BANKS;
     }

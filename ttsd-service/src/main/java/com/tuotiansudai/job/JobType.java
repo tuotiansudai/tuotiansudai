@@ -24,7 +24,8 @@ public enum JobType {
     LoanOut("放款后续处理"),
     AutoInvest("自动投资"),
     OverInvestPayBack("超投还款"),
-    LoanStatusToRecheck("标的状态从筹款变为等待复核");
+    LoanStatusToRecheck("标的状态从筹款变为等待复核"),
+    CalculateDefaultInterest("计算逾期罚息");
 
     private final String description;
 

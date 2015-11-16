@@ -110,7 +110,7 @@
                 </form>
             </#if>
             <#if loan.loanStatus == "REPAYING">
-            <form action="/loanList/web" method="get">
+            <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
  <img src="${staticServer}/images/sign/loan/repaying.png" width="200" height="200" alt=""/>
@@ -122,7 +122,7 @@
             </form>
             </#if>
             <#if loan.loanStatus == "RECHECK">
-            <form action="/loanList/web" method="get">
+            <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
                     <img src="${staticServer}/images/sign/loan/recheck.png" width="200" height="200" alt=""/>
@@ -134,7 +134,7 @@
             </form>
             </#if>
             <#if loan.loanStatus == "CANCEL">
-            <form action="/loanList/web" method="get">
+            <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
                      <img src="${staticServer}/images/sign/loan/cancel.png" width="200" height="200" alt=""/>
@@ -146,7 +146,7 @@
             </form>
             </#if>
             <#if loan.loanStatus == "OVERDUE">
-            <form action="/loanList/web" method="get">
+            <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
                     <img src="${staticServer}/images/sign/loan/overdue.png" width="200" height="200" alt=""/>
@@ -158,7 +158,7 @@
             </form>
             </#if>
             <#if loan.loanStatus == "COMPLETE">
-            <form action="/loanList/web" method="get">
+            <form action="/loan-list" method="get">
                 <dl class="account-list">
                     <dd class="img-status">
                       <img src="${staticServer}/images/sign/loan/complete.png" width="200" height="200" alt=""/>

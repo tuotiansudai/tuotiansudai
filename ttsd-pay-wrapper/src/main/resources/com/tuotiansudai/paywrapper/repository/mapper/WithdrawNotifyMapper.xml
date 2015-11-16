@@ -5,8 +5,8 @@
 <mapper namespace="com.tuotiansudai.paywrapper.repository.mapper.WithdrawNotifyMapper">
 
     <insert id="create" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="WithdrawNotifyRequestModel">
-        insert into withdraw_notify_request (sign_type, sign, mer_id, version, order_id, mer_date, trade_no, amount, trade_state, transfer_date, transfer_settle_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)
-        values (#{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{amount}, #{tradeState}, #{transferDate}, #{transferSettleDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})
+        insert into withdraw_notify_request (sign_type, sign, mer_id, version, order_id, mer_date, trade_no, amount, com_amt, com_amt_type, trade_state, transfer_date, transfer_settle_date, ret_code, ret_msg, request_time, response_time, request_data, response_data)
+        values (#{signType}, #{sign}, #{merId}, #{version}, #{orderId}, #{merDate}, #{tradeNo}, #{amount}, #{comAmt}, #{comAmtType}, #{tradeState}, #{transferDate}, #{transferSettleDate}, #{retCode}, #{retMsg}, #{requestTime}, #{responseTime}, #{requestData}, #{responseData})
     </insert>
 
 </mapper>

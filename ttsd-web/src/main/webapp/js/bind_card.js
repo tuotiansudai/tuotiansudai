@@ -25,7 +25,7 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
                 title: '开通快捷支付功能',
                 area: ['560px', '270px'],
                 shadeClose: true,
-                content: $('#pop-bind-card')
+                content: $('#pop-fast-pay')
             });
         });
 
@@ -36,7 +36,7 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
                 title: '登录到联动优势支付平台充值',
                 area: ['520px', '290px'],
                 shadeClose: true,
-                content: $('#pop-fast-pay')
+                content: $('#pop-bind-card')
             });
         });
 

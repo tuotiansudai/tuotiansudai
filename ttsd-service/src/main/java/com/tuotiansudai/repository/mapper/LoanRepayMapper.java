@@ -52,4 +52,5 @@ public interface LoanRepayMapper {
     List<LoanRepayModel> findByLoginNameAndTimeRepayList(@Param(value = "loginName") String loginName,@Param(value = "startTime") Date startTime,@Param(value = "endTime") Date endTime,
                                                          @Param(value = "startLimit") int startLimit,@Param(value = "endLimit") int endLimit);
 
+    List<LoanRepayModel> findNotCompleteLoanRepay();
 }

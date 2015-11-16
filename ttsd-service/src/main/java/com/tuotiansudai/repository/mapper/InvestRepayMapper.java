@@ -41,5 +41,7 @@ public interface InvestRepayMapper {
 
     long findSumRepayingCorpusByLoginName(@Param(value = "loginName") String loginName);
 
+    List<InvestRepayModel> findInvestRepayByLoanIdAndPeriod(@Param(value = "loanId") long loanId, @Param(value = "period") int period);
+
     List<InvestRepayModel> findByLoanId(long loanId);
 }
