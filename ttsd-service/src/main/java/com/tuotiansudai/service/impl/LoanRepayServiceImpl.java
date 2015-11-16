@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanRepayDataItemDto;
+import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
@@ -32,6 +33,9 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Autowired
     private InvestRepayMapper investRepayMapper;
+
+    @Autowired
+    private InvestMapper investMapper;
 
     @Override
     public BaseDto<BasePaginationDataDto> findLoanRepayPagination(int index, int pageSize,Long loanId,
@@ -78,7 +82,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 if (!investRepayModel.getRepayDate().before(new Date())) {
                     investRepayModel.setStatus(RepayStatus.OVERDUE);
-                    long investRepayDefaultInterest = new BigDecimal(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest()).multiply(new BigDecimal(overdueFee))
+                    long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(DateUtil.differenceDay(new Date(), investRepayModel.getRepayDate())))
                             .setScale(BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
