@@ -16,6 +16,7 @@ public class MobileAppRechargeListController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/userrecharges", method = RequestMethod.POST)
     public BaseResponseDto queryList(@RequestBody RechargeListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return rechargeListService.generateRechargeList(requestDto);
     }
 }

@@ -16,6 +16,8 @@ public class MobileAppFundManagementController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/userfund", method = RequestMethod.POST)
     public BaseResponseDto queryFundManagement(@RequestBody FundManagementRequestDto fundManagementRequestDto) {
+        fundManagementRequestDto.getBaseParam().setUserId(getLoginName());
+        fundManagementRequestDto.setUserId(getLoginName());
         return mobileAppFundManagementService.queryFundByUserId(fundManagementRequestDto.getUserId());
     }
 

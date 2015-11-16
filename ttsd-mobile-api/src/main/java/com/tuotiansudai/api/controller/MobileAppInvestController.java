@@ -17,6 +17,8 @@ public class MobileAppInvestController extends MobileAppBaseController {
 
     @RequestMapping(value = "/create/invest", method = RequestMethod.POST)
     public BaseResponseDto invest(@RequestBody InvestRequestDto investRequestDto) {
+        investRequestDto.setUserId(getLoginName());
+        investRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestService.invest(investRequestDto);
     }
 

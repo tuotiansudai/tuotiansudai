@@ -17,6 +17,7 @@ public class MobileAppInvestDetailController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/userinvest", method = RequestMethod.POST)
     public BaseResponseDto queryUserInvestList(@RequestBody InvestDetailRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppMyInvestDetailService.generateUserInvestDetail(requestDto);
     }
 }

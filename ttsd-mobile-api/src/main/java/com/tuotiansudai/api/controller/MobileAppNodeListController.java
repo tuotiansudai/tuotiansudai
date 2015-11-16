@@ -16,6 +16,7 @@ public class MobileAppNodeListController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/nodes", method = RequestMethod.POST)
     public BaseResponseDto queryLoanList(@RequestBody NodeListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppNodeListService.generateNodeList(requestDto);
     }
 }
