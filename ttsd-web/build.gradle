@@ -17,9 +17,9 @@ war {
     from('/workspace/new_version_config/ttsd-web/') {
         into 'WEB-INF/classes/'
     }
-    exclude "images/**"
-    exclude "js/**"
-    exclude "pdf/**"
-    exclude "style/**"
-    exclude "tpl/**"
+//    exclude "images/**"
+//    exclude "js/**"
+//    exclude "pdf/**"
+//    exclude "style/**"
+//    exclude "tpl/**"
 }

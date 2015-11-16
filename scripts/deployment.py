@@ -6,8 +6,8 @@ class NewVersionDeployment(object):
         self.clean()
         self.compile()
         self.migrate()
-        self.mkwar()
         self.jcversion()
+        self.mkwar()
         self.mk_static_package()
         self.init_docker()
 
