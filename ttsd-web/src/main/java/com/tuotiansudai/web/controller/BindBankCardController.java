@@ -43,7 +43,7 @@ public class BindBankCardController {
 
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
         view.addObject("isBindCard", isBindCard);
-        view.addObject("banks", BankCardUtil.getFastPayBanks());
+        view.addObject("banks", BankCardUtil.getWithdrawBanks());
 
         return view;
     }
@@ -62,7 +62,7 @@ public class BindBankCardController {
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/replace-card");
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
-        view.addObject("banks", BankCardUtil.getFastPayBanks());
+        view.addObject("banks", BankCardUtil.getWithdrawBanks());
         return view;
     }
 
