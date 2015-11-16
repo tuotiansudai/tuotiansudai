@@ -60,13 +60,14 @@ class NewVersionDeployment(object):
         print "Starting jcmin..."
         sh('/usr/bin/git ls-tree -r HEAD ./ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
         sh('/usr/bin/git ls-tree -r HEAD ./ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
-        self._versioning_min_files('./ttsd-web/src/main/webapp/js/dest/*.min.js')
-        self._versioning_min_files('./ttsd-web/src/main/webapp/style/dest/*.min.css')
+        self._versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
+        self._versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
 
     def _versioning_min_files(self, path):
         import glob
         import itertools
         import shutil
+        import os
 
         target_files = glob.glob(path)
         log_file = open('git_version.log', 'rb')

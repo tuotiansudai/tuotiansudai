@@ -26,7 +26,7 @@ public class InvestorController {
 
     @RequestMapping(value = "/invest-list", method = RequestMethod.GET)
     public ModelAndView investList() {
-        return new ModelAndView("/investor-invest_list");
+        return new ModelAndView("/investor-invest-list");
     }
 
     @RequestMapping(value = "/invest-list-data", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
