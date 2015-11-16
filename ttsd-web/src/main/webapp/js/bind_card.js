@@ -9,11 +9,11 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
 
         $inputBankcard.keyup(function () {
             if (/^\d{16,19}$/.test($(this).val())) {
-                $btnBindCard.prop('disabled', false).addClass('btn-normal');
-                $btnReplaceCard.prop('disabled', false).addClass('btn-normal');
+                $btnBindCard.prop('disabled', false);
+                $btnReplaceCard.prop('disabled', false);
             } else {
-                $btnBindCard.prop('disabled', true).addClass('btn-normal');
-                $btnReplaceCard.prop('disabled', true).addClass('btn-normal');
+                $btnBindCard.prop('disabled', true);
+                $btnReplaceCard.prop('disabled', true);
             }
         });
 
@@ -22,7 +22,7 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
             $FormOpenFastPay.submit();
             layer.open({
                 type: 1,
-                title: '登录到联动优势支付平台充值',
+                title: '开通快捷支付功能',
                 area: ['560px', '270px'],
                 shadeClose: true,
                 content: $('#pop-bind-card')

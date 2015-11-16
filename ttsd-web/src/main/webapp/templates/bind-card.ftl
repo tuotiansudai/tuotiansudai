@@ -3,25 +3,28 @@
 
 <div class="content-container">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
-    <div class="recharge-bind-card pad-m">
+    <div class="recharge-bind-card pad-s">
     <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
         <#if isBindCard>
         <div class="card-box">
             <form class="open-fast-pay-form" action="/agreement" method="post" target="_blank">
-                <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png" />
-                <span class="user fr">${userName}</span>
-                <div class="clear"></div>
-                <div class="card-num">${cardNumber}</div>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="options">
-                    <#if replaceCardAvailable>
-                        <a class="card-edit" href="/bind-card/replace">换卡</a>
-                    </#if>
-                    <#if openFastPayAvailable>
-                    <input type="hidden" name="fastPay" value="true"/>
-                    <a class="open-fast-pay" href="javascript:">开通快捷支付</a>
-                    </#if>
+                <div class="pad-s">
+                    <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png" />
+                    <span class="user fr">${userName}</span>
                 </div>
+
+                    <div class="card-num tc">${cardNumber}</div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="card-link clearfix">
+                        <#if replaceCardAvailable>
+                            <a class="card-edit fl" href="/bind-card/replace">换卡</a>
+                        </#if>
+                        <#if openFastPayAvailable>
+                            <input type="hidden" name="fastPay" value="true"/>
+                            <a class="open-fast-pay fr" href="javascript:">开通快捷支付</a>
+                        </#if>
+                    </div>
+
             </form>
         </div>
         <#else>
@@ -33,17 +36,17 @@
                 <ol class="select-bank">
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                            <input data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                            <input id="bank-${bank}" data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
+                            <label for="bank-${bank}"><img  src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                         </li>
                     </#list>
                 </ol>
-                <div class="recharge-form">
+                <div class="recharge-form pad-m">
                     <form action="" method="post" target="_blank">
                         银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
-                            <input type="submit" class="btn bind-card-submit" disabled="disabled"  value="确认绑定"/>
+                        <div class="tc clear-blank-m">
+                            <input type="submit" class="btn-normal bind-card-submit" disabled="disabled"  value="确认绑定"/>
                         </div>
                     </form>
                 </div>
@@ -74,7 +77,6 @@
 </div>
 
 <div id="pop-fast-pay" class="pad-m" style="display: none; margin-top:-10px;">
-    <span>请在新打开的联动优势页面绑卡完成后选择：</span>
     <div class="clear-blank"></div>
     <div class="ret">
         充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a>
