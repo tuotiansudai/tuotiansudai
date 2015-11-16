@@ -500,7 +500,7 @@ public class InvestServiceImpl implements InvestService {
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
         if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("|")), errMsg);
+            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("\\|")), errMsg);
         }
     }
 
