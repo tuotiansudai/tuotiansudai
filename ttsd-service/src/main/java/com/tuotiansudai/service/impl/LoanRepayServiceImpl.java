@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.mapper.LoanRepayMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.LoanRepayService;
+import com.tuotiansudai.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Override
     public long findByLoginNameAndTimeSuccessRepay(String loginName,Date startTime,Date endTime){
-        return loanRepayMapper.findByLoginNameAndTimeSuccessRepay(loginName,startTime,endTime);
+        return loanRepayMapper.findByLoginNameAndTimeSuccessRepay(loginName, startTime, endTime);
     }
 
     @Override
@@ -79,6 +80,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 if (!investRepayModel.getRepayDate().before(new Date())) {
                     investRepayModel.setStatus(RepayStatus.OVERDUE);
                     long investRepayDefaultInterest = new BigDecimal(investRepayModel.getCorpus() + investRepayModel.getExpectedInterest()).multiply(new BigDecimal(overdueFee))
+                            .multiply(new BigDecimal(DateUtil.differenceDay(new Date(), investRepayModel.getRepayDate())))
                             .setScale(BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
                     investRepayMapper.update(investRepayModel);
