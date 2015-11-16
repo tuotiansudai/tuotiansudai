@@ -26,10 +26,12 @@ public class LoanListController {
     private LoanService loanService;
 
     @RequestMapping(value = "/console", method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList(@RequestParam("status") LoanStatus status, @RequestParam("loanId") Long loanId,
+    public ModelAndView ConsoleLoanList(@RequestParam("status") LoanStatus status,
+                                        @RequestParam(value = "loanId", required = false) Long loanId,
                                         @RequestParam("startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                         @RequestParam("endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam("currentPageNo") int currentPageNo, @RequestParam("loanName") String loanName, @RequestParam("pageSize") int pageSize) {
+                                        @RequestParam("currentPageNo") int currentPageNo,
+                                        @RequestParam("loanName") String loanName, @RequestParam("pageSize") int pageSize) {
         DateTime dateTime = new DateTime(endTime);
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate());
         List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate(), currentPageNo, pageSize);
@@ -44,9 +46,7 @@ public class LoanListController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("status", status);
-        if (loanId > 0) {
-            modelAndView.addObject("loanId", loanId);
-        }
+        modelAndView.addObject("loanId", loanId);
         modelAndView.addObject("loanName", loanName);
         modelAndView.addObject("startTime", startTime);
         modelAndView.addObject("endTime", endTime);

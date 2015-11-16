@@ -21,7 +21,7 @@ public class UserBillPaginationItemDataDto {
 
     private String businessType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date createdTime;
 
     public UserBillPaginationItemDataDto() {

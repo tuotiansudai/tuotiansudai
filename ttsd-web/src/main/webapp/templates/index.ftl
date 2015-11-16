@@ -58,7 +58,7 @@
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
-                                <em><b>${loan.baseRate}</b><#if loan.activityRate??>+${loan.activityRate}%</#if>%</em>
+                                <em><b>${loan.baseRate}</b><#if loan.activityRate??>+${loan.activityRate}</#if>%</em>
                                 <i class="clearfix">年化收益</i>
                             </div>
                         </div>
@@ -77,9 +77,9 @@
                         </div>
                     </div>
                     <#if loan.status=="RAISING">
-                    <a href="/loan/${loan.id}" class="btn-normal">立即投资</a>
+                    <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>
                     <#elseif loan.status=="PREHEAT">
-                    <a href="/loan/${loan.id}" class="btn-normal wait-invest">预热中</a>
+                    <a href="/loan/${loan.id?string.computer}" class="btn-normal wait-invest">预热中</a>
                     <#else>
                     <button type="button" disabled class="btn-normal">已售罄</button>
                     </#if>
