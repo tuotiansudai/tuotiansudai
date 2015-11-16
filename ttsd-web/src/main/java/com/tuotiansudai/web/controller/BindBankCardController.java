@@ -51,7 +51,7 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
-
+        bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
