@@ -13,6 +13,8 @@ public class AnnouncementManagementModel implements Serializable {
 
     private String content;
 
+    private String contentText;
+
     private boolean showOnHome;
 
     private Date createdTime = new Date();
@@ -75,6 +77,15 @@ public class AnnouncementManagementModel implements Serializable {
         this.id = announcementManagementDto.getId();
         this.title = announcementManagementDto.getTitle();
         this.content = announcementManagementDto.getContent();
+        this.contentText = announcementManagementDto.getContentText();
         this.showOnHome = announcementManagementDto.isShowOnHome();
+    }
+
+    public String getContentText() {
+        return contentText;
+    }
+
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
     }
 }

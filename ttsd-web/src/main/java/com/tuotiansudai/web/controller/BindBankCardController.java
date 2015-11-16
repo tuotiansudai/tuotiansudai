@@ -43,7 +43,7 @@ public class BindBankCardController {
 
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
         view.addObject("isBindCard", isBindCard);
-        view.addObject("banks", BankCardUtil.getFastPayBanks());
+        view.addObject("banks", BankCardUtil.getWithdrawBanks());
 
         return view;
     }
@@ -51,7 +51,7 @@ public class BindBankCardController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView bindBankCard(@Valid @ModelAttribute BindBankCardDto bindBankCardDto) {
-
+        bindBankCardDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = bindBankCardService.bindBankCard(bindBankCardDto);
         ModelAndView view = new ModelAndView("/pay");
         view.addObject("pay", baseDto);
@@ -62,7 +62,7 @@ public class BindBankCardController {
     public ModelAndView replaceBankCard() {
         ModelAndView view = new ModelAndView("/replace-card");
         view.addObject("userName", accountService.findByLoginName(LoginUserInfo.getLoginName()).getUserName());
-        view.addObject("banks", BankCardUtil.getFastPayBanks());
+        view.addObject("banks", BankCardUtil.getWithdrawBanks());
         return view;
     }
 

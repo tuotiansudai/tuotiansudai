@@ -58,7 +58,7 @@
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
-                                <em><b>${loan.baseRate}</b><#if loan.activityRate??>+${loan.activityRate}</#if>%</em>
+                                <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.${loan.baseRateFraction}</#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.${loan.activityRateFraction}</#if>%</em>
                                 <i class="clearfix">年化收益</i>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <div class="process-percent">
                                 <div class="percent" style="width:${loan.progress}%"></div>
                             </div>
-                        </div>
+                        </div>  
                     </div>
                     <#if loan.status=="RAISING">
                     <a href="/loan/${loan.id?string.computer}" class="btn-normal">立即投资</a>

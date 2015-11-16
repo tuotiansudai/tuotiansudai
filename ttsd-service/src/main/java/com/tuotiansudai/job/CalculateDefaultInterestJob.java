@@ -1,0 +1,19 @@
+package com.tuotiansudai.job;
+
+import com.tuotiansudai.service.LoanRepayService;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class CalculateDefaultInterestJob implements Job{
+
+    @Autowired
+    private LoanRepayService loanRepayService;
+
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        loanRepayService.calculateDefaultInterest();
+    }
+
+}

@@ -13,9 +13,13 @@ public class HomeLoanDto {
 
     private String activityType;
 
-    private String baseRate;
+    private Integer baseRateInteger;
 
-    private String activityRate;
+    private Integer baseRateFraction;
+
+    private Integer activityRateInteger;
+
+    private Integer activityRateFraction;
 
     private int periods;
 
@@ -29,21 +33,17 @@ public class HomeLoanDto {
         this.id = loanId;
         this.name = name;
         this.activityType = activityType.name();
-        double baseRatePercentage = new BigDecimal(baseRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
-        double activityPercentage = new BigDecimal(activityRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
-        if (baseRatePercentage == (long) baseRatePercentage)
-            this.baseRate = String.format("%d", (long) baseRatePercentage);
-        else
-            this.baseRate = String.format("%s", baseRatePercentage);
+        String baseRatePercentage = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2).toString();
+        String activityPercentage = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2).toString();
+        this.baseRateInteger = Integer.parseInt(baseRatePercentage.split("\\.")[0]);
+        this.baseRateFraction = Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]);
         if (activityRate > 0) {
-            if (activityPercentage == (long) activityPercentage)
-                this.activityRate = String.format("%d", (long) activityPercentage);
-            else
-                this.activityRate = String.format("%s", activityPercentage);
+            this.activityRateInteger = Integer.parseInt(activityPercentage.split("\\.")[0]);
+            this.activityRateFraction = Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]);
         }
         this.periods = periods;
-        this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(100 * 10000), 2, BigDecimal.ROUND_DOWN).intValue());
-        this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).longValue());
+        this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_DOWN).intValue());
+        this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).intValue());
         this.status = status.name();
     }
 
@@ -51,35 +51,87 @@ public class HomeLoanDto {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getActivityType() {
         return activityType;
     }
 
-    public String getBaseRate() {
-        return baseRate;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
-    public String getActivityRate() {
-        return activityRate;
+    public Integer getBaseRateInteger() {
+        return baseRateInteger;
+    }
+
+    public void setBaseRateInteger(Integer baseRateInteger) {
+        this.baseRateInteger = baseRateInteger;
+    }
+
+    public Integer getBaseRateFraction() {
+        return baseRateFraction;
+    }
+
+    public void setBaseRateFraction(Integer baseRateFraction) {
+        this.baseRateFraction = baseRateFraction;
+    }
+
+    public Integer getActivityRateInteger() {
+        return activityRateInteger;
+    }
+
+    public void setActivityRateInteger(Integer activityRateInteger) {
+        this.activityRateInteger = activityRateInteger;
+    }
+
+    public Integer getActivityRateFraction() {
+        return activityRateFraction;
+    }
+
+    public void setActivityRateFraction(Integer activityRateFraction) {
+        this.activityRateFraction = activityRateFraction;
     }
 
     public int getPeriods() {
         return periods;
     }
 
+    public void setPeriods(int periods) {
+        this.periods = periods;
+    }
+
     public String getAmount() {
         return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public String getProgress() {
         return progress;
     }
 
+    public void setProgress(String progress) {
+        this.progress = progress;
+    }
+
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

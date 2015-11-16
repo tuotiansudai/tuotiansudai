@@ -15,7 +15,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="options">
                     <#if replaceCardAvailable>
-                        <a class="card-edit" href="javascript:">换卡</a>
+                        <a class="card-edit" href="/bind-card/replace">换卡</a>
                     </#if>
                     <#if openFastPayAvailable>
                     <input type="hidden" name="fastPay" value="true"/>
@@ -39,7 +39,7 @@
                     </#list>
                 </ol>
                 <div class="recharge-form">
-                    <form action="" method="post" target="_blank">
+                    <form action="/bind-card" method="post" target="_blank">
                         银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="tc pad-m">
@@ -65,8 +65,8 @@
 <div id="pop-bind-card" class="pad-m recharge-plat" style="display: none;">
     <p>请在新打开的联动优势页面绑卡完成后选择：</p>
     <div class="ret">
-        <p>充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
-        <p>充值失败：<a href="" class="btn-normal" data-category="重新绑卡" data-label="recharge">重新绑卡</a>
+        <p>绑卡成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a></p>
+        <p>绑卡失败：<a href="/bind-card" class="btn-normal" data-category="重新绑卡" data-label="recharge">重新绑卡</a>
             <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span>
         </p>
         <p>遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>

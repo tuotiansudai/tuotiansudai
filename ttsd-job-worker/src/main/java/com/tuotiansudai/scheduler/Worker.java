@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler;
 
+import com.tuotiansudai.job.CalculateDefaultInterestJob;
 import com.tuotiansudai.job.InvestCallback;
 import com.tuotiansudai.job.JobType;
 import com.tuotiansudai.util.JobManager;
@@ -7,10 +8,7 @@ import com.tuotiansudai.util.quartz.AutowiringSpringBeanJobFactory;
 import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
+import org.quartz.*;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,9 @@ public class Worker {
             if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName)) {
                 createInvestCallBackJobIfNotExist();
             }
+            if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
+                this.createCalculateDefaultInterest();
+            }
             String fullSchedulerName = "Scheduler-" + schedulerName.trim();
             JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(
                     fullSchedulerName,
@@ -61,12 +62,9 @@ public class Worker {
         final JobType jobType = JobType.OverInvestPayBack;
         final String jobGroup = InvestCallback.JOB_GROUP;
         final String jobName = InvestCallback.JOB_NAME;
-        JobDetail jobDetail = jobManager.findJobDetail(jobType, jobGroup, jobName);
-        if (jobDetail != null) {
-            jobManager.deleteJob(jobType, jobGroup, jobName);
-        }
         try {
             jobManager.newJob(jobType, InvestCallback.class)
+                    .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
                             .repeatSecondlyForever(InvestCallback.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
@@ -76,4 +74,15 @@ public class Worker {
             e.printStackTrace();
         }
     }
+
+    private void createCalculateDefaultInterest() {
+        try {
+            jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))
+                    .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

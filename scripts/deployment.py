@@ -2,11 +2,11 @@ from paver.shell import sh
 
 
 class NewVersionDeployment(object):
-
     def deploy(self):
         self.clean()
         self.compile()
         self.migrate()
+        self.jcversion()
         self.mkwar()
         self.mk_static_package()
         self.init_docker()
@@ -14,6 +14,7 @@ class NewVersionDeployment(object):
     def clean(self):
         print "Cleaning..."
         sh('/opt/gradle/latest/bin/gradle clean')
+        sh('/usr/bin/git clean -fd')
 
     def compile(self):
         print "Compiling..."
@@ -55,3 +56,29 @@ class NewVersionDeployment(object):
     def _start_new_container(self):
         sh('sudo /usr/local/bin/docker-compose -f dev.yml up -d')
 
+    def jcversion(self):
+        print "Starting jcmin..."
+        sh('/usr/bin/git ls-tree -r HEAD ./ttsd-web/src/main/webapp/js | awk \'{print $3,$4}\' > git_version.log')
+        sh('/usr/bin/git ls-tree -r HEAD ./ttsd-web/src/main/webapp/style | awk \'{print $3,$4}\' >> git_version.log')
+        self._versioning_min_files('ttsd-web/src/main/webapp/js/dest/*.min.js')
+        self._versioning_min_files('ttsd-web/src/main/webapp/style/dest/*.min.css')
+
+    def _versioning_min_files(self, path):
+        import glob
+        import itertools
+        import shutil
+        import os
+
+        target_files = glob.glob(path)
+        log_file = open('git_version.log', 'rb')
+        for line in log_file:
+            columns = line.strip().split()
+            original_file_path, file_version = columns[-1], columns[0]
+            if original_file_path in target_files:
+                full_path_parts = original_file_path.split('/')
+                name_parts = full_path_parts[-1].split('.')
+                new_name_parts = itertools.chain([name_parts[0], file_version[:8]], name_parts[1:])
+                new_name = '.'.join(new_name_parts)
+                new_file_full_path = os.path.join('/'.join(full_path_parts[:-1]), new_name)
+                shutil.copyfile(original_file_path, new_file_full_path)
+        log_file.close()
