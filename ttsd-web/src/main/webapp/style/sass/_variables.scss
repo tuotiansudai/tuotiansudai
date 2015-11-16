@@ -38,6 +38,16 @@ $imgPrefix:'';
   -moz-border-radius:$sizing;
   border-radius:$sizing;
 }
+/* background gradient */
+@mixin gradient-linear($angle,$fromColor,$toColor) {
+  //Bottom -Top: 0deg
+  //Top-Bottom:180deg
+  //right-left: 270deg or -90deg
+  //left-right :90deg or -270deg
+  //right bottom- left top :315deg
+  background-image:-webkit-linear-gradient($angle, $fromColor, $toColor);
+  background-image:linear-gradient($angle,$fromColor,$toColor);
+}
 
 
 
