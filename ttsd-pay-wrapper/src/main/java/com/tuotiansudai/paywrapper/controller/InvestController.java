@@ -18,6 +18,8 @@ import javax.validation.Valid;
 @Controller
 public class InvestController {
 
+    static Logger logger = Logger.getLogger(InvestController.class);
+
     @Autowired
     private InvestService investService;
 
