@@ -29,8 +29,8 @@ public class HomeLoanDto {
         this.id = loanId;
         this.name = name;
         this.activityType = activityType.name();
-        double baseRatePercentage = new BigDecimal(baseRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_UP).doubleValue();
-        double activityPercentage = new BigDecimal(activityRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_UP).doubleValue();
+        double baseRatePercentage = new BigDecimal(baseRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
+        double activityPercentage = new BigDecimal(activityRate).multiply(new BigDecimal(100)).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
         if (baseRatePercentage == (long) baseRatePercentage)
             this.baseRate = String.format("%d", (long) baseRatePercentage);
         else
