@@ -78,15 +78,9 @@
 </div>
 
 <div id="pop-fast-pay" class="pad-m" style="display: none; margin-top:-10px;">
-    <div class="clear-blank"></div>
-    <div class="ret">
-        充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a>
-        <div class="clear-blank"></div>
-        充值失败：<a href="" class="btn-normal" data-category="重新开通" data-label="recharge">重新开通</a><br/>
-        <div class="clear-blank"></div>
-        <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span><br/>
-        <div class="clear-blank"></div>
-        遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）
+    <div class="pad-m tc clear-blank-s">
+        <a href="/recharge" class="btn-success">继续充值</a>
+        <p class="clear-blank-m">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
     </div>
 </div>
 </@global.main>

@@ -23,8 +23,9 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
             layer.open({
                 type: 1,
                 title: '开通快捷支付功能',
-                area: ['560px', '270px'],
-                shadeClose: true,
+                area: ['560px', '190px'],
+                closeBtn:0,
+                shadeClose: false,
                 content: $('#pop-fast-pay')
             });
         });
@@ -50,6 +51,4 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
             });
         });
     });
-
-
 });
