@@ -46,7 +46,6 @@ public class MobileAppBankCardServiceTest extends ServiceTestBase {
 
     @Mock
     private AccountMapper accountMapper;
-
     @Test
     public void bindBankCardTest() {
         when(bindBankCardService.bindBankCard(any(BindBankCardDto.class))).thenReturn(generateMockPayFormData());
