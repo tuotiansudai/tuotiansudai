@@ -42,6 +42,7 @@ public class TriggeredJobBuilder {
     private TriggerKey triggerKey;
     private String jobDescription;
     private Date startDate;
+    private boolean shouldReplaceExistingJob;
     private ScheduleBuilder scheduleBuilder;
 
     public static TriggeredJobBuilder newJob(Class<? extends Job> jobClazz, Scheduler scheduler) {
@@ -52,6 +53,7 @@ public class TriggeredJobBuilder {
         this.scheduler = scheduler;
         this.jobClazz = jobClazz;
         this.jobDataMap = new JobDataMap();
+        this.shouldReplaceExistingJob = false;
     }
 
     public TriggeredJobBuilder setJobData(JobDataMap dataMap) {
@@ -96,6 +98,17 @@ public class TriggeredJobBuilder {
         return this;
     }
 
+    /**
+     * 设置替换同名的Job。使用该功能时，必须使用 withIdentity 指定 Job 的 group 和 name
+     *
+     * @param shouldReplaceExistingJob
+     * @return
+     */
+    public TriggeredJobBuilder replaceExistingJob(boolean shouldReplaceExistingJob) {
+        this.shouldReplaceExistingJob = shouldReplaceExistingJob;
+        return this;
+    }
+
     private JobDetail getJobDetail() {
         JobBuilder jobBuilder = JobBuilder.newJob(jobClazz).setJobData(jobDataMap);
         if (jobKey != null) {
@@ -124,6 +137,10 @@ public class TriggeredJobBuilder {
     }
 
     public void submit() throws SchedulerException {
+        submit(shouldReplaceExistingJob);
+    }
+
+    public void submit(boolean replaceExistingJob) throws SchedulerException {
         if (jobClazz == null) {
             throw new NullPointerException("jobClazz");
         }
@@ -132,6 +149,16 @@ public class TriggeredJobBuilder {
         }
         JobDetail jobDetail = getJobDetail();
         Trigger jobTrigger = getJobTrigger(jobDetail);
+
+        if (replaceExistingJob) {
+            if (jobKey == null) {
+                throw new SchedulerException("jobKey is null, please set it via method: withIdentity");
+            }
+            JobDetail jdExist = scheduler.getJobDetail(jobDetail.getKey());
+            if (jdExist != null) {
+                scheduler.deleteJob(jobDetail.getKey());
+            }
+        }
         scheduler.scheduleJob(jobDetail, jobTrigger);
     }
 }

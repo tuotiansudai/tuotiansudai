@@ -62,12 +62,9 @@ public class Worker {
         final JobType jobType = JobType.OverInvestPayBack;
         final String jobGroup = InvestCallback.JOB_GROUP;
         final String jobName = InvestCallback.JOB_NAME;
-        JobDetail jobDetail = jobManager.findJobDetail(jobType, jobGroup, jobName);
-        if (jobDetail != null) {
-            jobManager.deleteJob(jobType, jobGroup, jobName);
-        }
         try {
             jobManager.newJob(jobType, InvestCallback.class)
+                    .replaceExistingJob(true)
                     .runWithSchedule(SimpleScheduleBuilder
                             .repeatSecondlyForever(InvestCallback.RUN_INTERVAL_SECONDS)
                             .withMisfireHandlingInstructionIgnoreMisfires())
@@ -79,12 +76,8 @@ public class Worker {
     }
 
     private void createCalculateDefaultInterest() {
-        JobDetail jobDetail = jobManager.findJobDetail(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
-        if (jobDetail != null) {
-            jobManager.deleteJob(JobType.CalculateDefaultInterest, JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name());
-        }
         try {
-            jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class)
+            jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
