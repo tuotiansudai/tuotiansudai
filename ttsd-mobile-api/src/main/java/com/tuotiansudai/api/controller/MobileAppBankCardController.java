@@ -36,7 +36,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
      */
     @RequestMapping(value = "/bankcard/replace", method = RequestMethod.POST)
     public BaseResponseDto bankCardReplace(@RequestBody BankCardReplaceRequestDto requestDto) {
-        throw new NotImplementedException(getClass().getName());
+        return mobileAppBankCardService.replaceBankCard(requestDto);
     }
 
     /**
