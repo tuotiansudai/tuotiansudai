@@ -15,7 +15,7 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="options">
                     <#if replaceCardAvailable>
-                        <a class="card-edit" href="javascript:">换卡</a>
+                        <a class="card-edit" href="/bind-card/replace">换卡</a>
                     </#if>
                     <#if openFastPayAvailable>
                     <input type="hidden" name="fastPay" value="true"/>
