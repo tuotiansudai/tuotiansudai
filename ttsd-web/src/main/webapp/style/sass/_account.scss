@@ -370,8 +370,10 @@
     .recharge-form, .fast-recharge-form {
       clear: both;
       font-size: 15px;
-      line-height: 40px;
       color: #353535;
+      .pad-m {
+        line-height: 40px;
+      }
     }
     .fast-recharge, .e-bank-recharge {
       display: none;
@@ -562,7 +564,9 @@
   border-top-width: 1px!important;
   .e-bank-recharge {
     display: block!important;
-
+    .input-bankcard {
+      width:200px;
+    }
   }
 }
 
@@ -1182,15 +1186,27 @@
   border:1px solid #ccc;
   border-radius:5px;
   width: 280px;
-  padding: 10px;
+  height: 150px;
+  position: relative;
   .user {
     margin-top: 6px;
     margin-right: 5px;
   }
   .card-num {
     border-top:1px solid #ccc;
-    padding-top:35px;
-    margin-top: 5px;
+    padding-top: 20px;
+    clear:both;
   }
+.card-link {
+  position: absolute;
+  bottom: 0;
+  background: #ccc;
+  width:100%;
+  box-sizing: border-box;
+  a {
+    display: inline-block;
+    padding:5px;
+  }
+}
 
 }

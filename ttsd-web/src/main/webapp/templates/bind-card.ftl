@@ -8,20 +8,23 @@
         <#if isBindCard>
         <div class="card-box">
             <form class="open-fast-pay-form" action="/agreement" method="post" target="_blank">
-                <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png" />
-                <span class="user fr">${userName}</span>
-                <div class="clear"></div>
-                <div class="card-num">${cardNumber}</div>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="options">
-                    <#if replaceCardAvailable>
-                        <a class="card-edit" href="/bind-card/replace">换卡</a>
-                    </#if>
-                    <#if openFastPayAvailable>
-                    <input type="hidden" name="fastPay" value="true"/>
-                    <a class="open-fast-pay" href="javascript:">开通快捷支付</a>
-                    </#if>
+                <div class="pad-s">
+                    <img class="logo-card fl" src="${staticServer}/images/bank/logo-${bankCode}.png" />
+                    <span class="user fr">${userName}</span>
                 </div>
+
+                    <div class="card-num tc">${cardNumber}</div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="card-link clearfix">
+                        <#if replaceCardAvailable>
+                            <a class="card-edit fl" href="/bind-card/replace">换卡</a>
+                        </#if>
+                        <#if openFastPayAvailable>
+                            <input type="hidden" name="fastPay" value="true"/>
+                            <a class="open-fast-pay fr" href="javascript:">开通快捷支付</a>
+                        </#if>
+                    </div>
+
             </form>
         </div>
         <#else>
@@ -33,17 +36,18 @@
                 <ol class="select-bank">
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                            <input data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
-                            <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
+                            <input id="bank-${bank}" data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
+                            <label for="bank-${bank}"><img  src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                         </li>
                     </#list>
                 </ol>
-                <div class="recharge-form">
+                <div class="recharge-form pad-m">
                     <form action="/bind-card" method="post" target="_blank">
+
                         银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <div class="tc pad-m">
-                            <input type="submit" class="btn bind-card-submit" disabled="disabled"  value="确认绑定"/>
+                        <div class="tc clear-blank-m">
+                            <input type="submit" class="btn-normal bind-card-submit" disabled="disabled"  value="确认绑定"/>
                         </div>
                     </form>
                 </div>
@@ -74,16 +78,9 @@
 </div>
 
 <div id="pop-fast-pay" class="pad-m" style="display: none; margin-top:-10px;">
-    <span>请在新打开的联动优势页面绑卡完成后选择：</span>
-    <div class="clear-blank"></div>
-    <div class="ret">
-        充值成功：<a href="/account" class="btn-success"  data-category="确认成功" data-label="recharge">确认成功</a>
-        <div class="clear-blank"></div>
-        充值失败：<a href="" class="btn-normal" data-category="重新开通" data-label="recharge">重新开通</a><br/>
-        <div class="clear-blank"></div>
-        <span class="help">查看<a href="#"  target="_blank" data-category="查看帮助中心" data-label="recharge">帮助中心</a></span><br/>
-        <div class="clear-blank"></div>
-        遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）
+    <div class="pad-m tc clear-blank-s">
+        <a href="/recharge" class="btn-success">继续充值</a>
+        <p class="clear-blank-m">遇到问题请拨打我们的客服热线：400-169-1188（工作日 9:00-22:00）</p>
     </div>
 </div>
 </@global.main>
