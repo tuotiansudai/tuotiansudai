@@ -8,7 +8,7 @@
         <id column="id" property="id"></id>
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
-        <result column="content_txt" property="contentTxt"></result>
+        <result column="content_text" property="contentText"></result>
         <result column="show_on_home" property="showOnHome"></result>
         <result column="created_time" property="createdTime"></result>
         <result column="update_time" property="updateTime"></result>
@@ -47,13 +47,13 @@
     </select>
 
     <insert id="create" parameterType="AnnouncementManagementModel" useGeneratedKeys="true" keyProperty="id">
-        insert into announcement_management (title,content,content_txt,show_on_home,created_time,update_time)
-        VALUE (#{title},#{content},#{contentTxt},#{showOnHome},#{createdTime},#{updateTime})
+        insert into announcement_management (title,content,content_text,show_on_home,created_time,update_time)
+        VALUE (#{title},#{content},#{contentText},#{showOnHome},#{createdTime},#{updateTime})
     </insert>
 
     <update id="update" parameterType="AnnouncementManagementModel">
         update announcement_management set
-          title = #{title},content = #{content},show_on_home = #{showOnHome},update_time = #{updateTime},content_txt = #{contentTxt}
+          title = #{title},content = #{content},show_on_home = #{showOnHome},update_time = #{updateTime},content_text = #{contentText}
          where id = #{id}
     </update>
 

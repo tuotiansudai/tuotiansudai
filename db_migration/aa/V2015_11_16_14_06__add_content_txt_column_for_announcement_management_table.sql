@@ -1,1 +1,1 @@
-alter table `aa`.`announcement_management` add column content_txt TEXT after content;
+alter table `aa`.`announcement_management` add column content_text TEXT after content;

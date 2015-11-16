@@ -13,7 +13,7 @@ public class AnnouncementManagementModel implements Serializable {
 
     private String content;
 
-    private String contentTxt;
+    private String contentText;
 
     private boolean showOnHome;
 
@@ -77,15 +77,15 @@ public class AnnouncementManagementModel implements Serializable {
         this.id = announcementManagementDto.getId();
         this.title = announcementManagementDto.getTitle();
         this.content = announcementManagementDto.getContent();
-        this.contentTxt = announcementManagementDto.getContentTxt();
+        this.contentText = announcementManagementDto.getContentText();
         this.showOnHome = announcementManagementDto.isShowOnHome();
     }
 
-    public String getContentTxt() {
-        return contentTxt;
+    public String getContentText() {
+        return contentText;
     }
 
-    public void setContentTxt(String contentTxt) {
-        this.contentTxt = contentTxt;
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
     }
 }
