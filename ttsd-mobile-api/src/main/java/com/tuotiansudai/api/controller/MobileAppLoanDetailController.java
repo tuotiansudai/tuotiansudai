@@ -18,6 +18,7 @@ public class MobileAppLoanDetailController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/loan", method = RequestMethod.POST)
     public BaseResponseDto queryLoanList(@Valid @RequestBody LoanDetailRequestDto loanDetailRequestDto) {
+        loanDetailRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppLoanDetailService.generateLoanDetail(loanDetailRequestDto);
     }
 

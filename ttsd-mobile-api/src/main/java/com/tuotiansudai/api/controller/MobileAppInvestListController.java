@@ -17,11 +17,13 @@ public class MobileAppInvestListController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/invests", method = RequestMethod.POST)
     public BaseResponseDto queryInvestList(@RequestBody InvestListRequestDto investListRequestDto) {
+        investListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestListService.generateInvestList(investListRequestDto);
     }
 
     @RequestMapping(value = "/get/userinvests", method = RequestMethod.POST)
     public BaseResponseDto queryUserInvestList(@RequestBody UserInvestListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppInvestListService.generateUserInvestList(requestDto);
     }
 }

@@ -16,6 +16,7 @@ public class MobileAppReferrerInvestListController extends MobileAppBaseControll
 
     @RequestMapping(value = "/get/referrerinvests", method = RequestMethod.POST)
     public BaseResponseDto queryInvestList(@RequestBody ReferrerInvestListRequestDto referrerInvestListRequestDto) {
+        referrerInvestListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppReferrerInvestService.generateReferrerInvestList(referrerInvestListRequestDto);
     }
 

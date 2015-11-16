@@ -16,6 +16,8 @@ public class MobileAppPersonalInfoController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/user", method = RequestMethod.POST)
     public BaseResponseDto getPersonalInfoData(@RequestBody PersonalInfoRequestDto personalInfoRequestDto) {
+        personalInfoRequestDto.getBaseParam().setUserId(getLoginName());
+        personalInfoRequestDto.setUserName(getLoginName());
         return mobileAppPersonalInfoService.getPersonalInfoData(personalInfoRequestDto);
     }
 

@@ -19,6 +19,8 @@ public class MobileAppRechargeController extends MobileAppBaseController {
 
     @RequestMapping(value = "/recharge", method = RequestMethod.POST)
     public BaseResponseDto recharge(@RequestBody BankCardRequestDto bankCardRequestDto) {
+        bankCardRequestDto.getBaseParam().setUserId(getLoginName());
+        bankCardRequestDto.setUserId(getLoginName());
         return mobileAppRechargeService.recharge(bankCardRequestDto);
     }
 }

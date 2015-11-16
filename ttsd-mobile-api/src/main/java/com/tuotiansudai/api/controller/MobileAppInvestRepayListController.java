@@ -17,6 +17,7 @@ public class MobileAppInvestRepayListController extends MobileAppBaseController 
 
     @RequestMapping(value = "/get/investrepays", method = RequestMethod.POST)
     public BaseResponseDto queryUserInvestList(@RequestBody InvestRepayListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         BaseResponseDto dto = mobileAppInvestRepayListService.generateUserInvestRepayList(requestDto);
         return dto;
     }

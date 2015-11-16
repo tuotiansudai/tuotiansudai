@@ -16,6 +16,8 @@ public class MobileAppUserBillListController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/userbills", method = RequestMethod.POST)
     public BaseResponseDto queryFundManagement(@RequestBody UserBillDetailListRequestDto userBillDetailListRequestDto) {
+        userBillDetailListRequestDto.setUserId(getLoginName());
+        userBillDetailListRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppUserBillListService.queryUserBillList(userBillDetailListRequestDto);
     }
 

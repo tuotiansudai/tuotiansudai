@@ -17,11 +17,13 @@ public class MobileAppWithdrawController extends MobileAppBaseController {
 
     @RequestMapping(value = "/get/userwithdrawlogs", method = RequestMethod.POST)
     public BaseResponseDto queryUserWithdrawLogs(@RequestBody WithdrawListRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppWithDrawService.queryUserWithdrawLogs(requestDto);
     }
 
     @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
     public BaseResponseDto generateWithdrawRequest(@RequestBody WithdrawOperateRequestDto requestDto) {
+        requestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppWithDrawService.generateWithdrawRequest(requestDto);
     }
 

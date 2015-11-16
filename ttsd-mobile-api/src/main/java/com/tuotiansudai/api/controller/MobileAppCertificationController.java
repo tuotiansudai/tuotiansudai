@@ -23,6 +23,7 @@ public class MobileAppCertificationController extends MobileAppBaseController {
 
     @RequestMapping(value = "/certificate", method = RequestMethod.POST)
     public BaseResponseDto userMobileCertification(@Valid @RequestBody CertificationRequestDto certificationRequestDto) {
+        certificationRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);
     }
 
