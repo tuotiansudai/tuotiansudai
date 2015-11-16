@@ -84,10 +84,23 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             });
         }
         //tab切换
-        tabElement.click(function () {
+        tabElement.click(function (index) {
             tabElement.removeClass("active");
-            var self = $(this);
+            var self = $(this),
+                num=tabElement.index(this),
+                $rechargeCon=$('.recharge-content'),
+                $fastRecharge=$('.fast-recharge',$rechargeCon),
+                $bankRecharge=$('.e-bank-recharge',$rechargeCon);
             self.addClass("active").siblings('li').removeClass('active');
+            if(num==0) {
+                $fastRecharge.show();
+                $bankRecharge.hide();
+            }
+            else {
+                $fastRecharge.hide();
+                $bankRecharge.show();
+            }
+
         });
 
     });
