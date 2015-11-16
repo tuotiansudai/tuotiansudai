@@ -13,7 +13,10 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.util.*;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.DateUtil;
+import com.tuotiansudai.util.IdGenerator;
+import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -333,21 +336,23 @@ public class LoanServiceImpl implements LoanService {
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> updateLoan(LoanDto loanDto) {
-        LoanModel nowLoanModel = loanMapper.findById(loanDto.getId());
         BaseDto<PayDataDto> baseDto = loanParamValidate(loanDto);
         PayDataDto payDataDto = new PayDataDto();
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        if (loanMapper.findById(loanDto.getId()) == null) {
+        LoanModel loanModelBefore = loanMapper.findById(loanDto.getId());
+        if (loanModelBefore == null) {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
         }
         updateLoanAndLoanTitleRelation(loanDto);
-        if (nowLoanModel.getFundraisingEndTime() != loanDto.getFundraisingEndTime()) {
-            createDeadLineFundraisingJob(new LoanModel(loanDto));
+        LoanModel loanModelAfter = loanMapper.findById(loanDto.getId());
+        if (loanModelBefore.getFundraisingEndTime() != loanModelAfter.getFundraisingEndTime()) {
+            createDeadLineFundraisingJob(loanModelAfter);
         }
+        createFundraisingStartJob(loanModelAfter);
         payDataDto.setStatus(true);
         baseDto.setData(payDataDto);
         return baseDto;
@@ -384,9 +389,10 @@ public class LoanServiceImpl implements LoanService {
     private void createFundraisingStartJob(LoanModel loanModel) {
         try {
             jobManager.newJob(JobType.LoanStatusToRaising, FundraisingStartJob.class)
+                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
+                    .replaceExistingJob(true)
                     .runOnceAt(loanModel.getFundraisingStartTime())
                     .addJobData(FundraisingStartJob.LOAN_ID_KEY, String.valueOf(loanModel.getId()))
-                    .withIdentity("FundraisingStartJob", "Loan-" + loanModel.getId())
                     .submit();
         } catch (SchedulerException e) {
             logger.error("create fundraising start job for loan[" + loanModel.getId() + "] fail", e);

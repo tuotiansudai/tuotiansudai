@@ -292,6 +292,8 @@ public class InvestServiceImpl implements InvestService {
                 // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
                 errorLog("pay_back_fail", newOrderId, investModel.getAmount(), loginName, loanId);
             }
+            //TODO: remove this PayException after testing
+            throw new PayException("Test SMS send");
         } catch (PayException e) {
             // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
             fatalLog("pay_back_PayException", newOrderId, investModel.getAmount(), loginName, loanId, e);
@@ -498,7 +500,7 @@ public class InvestServiceImpl implements InvestService {
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
         if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("|")), errMsg);
+            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("\\|")), errMsg);
         }
     }
 

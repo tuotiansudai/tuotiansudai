@@ -45,6 +45,7 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
 
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
+        payRequestData.put("notify_url", notifyUrl);
         payRequestData.put("order_id", orderId);
         payRequestData.put("project_id", projectId);
         payRequestData.put("mer_date", merDate);
