@@ -260,7 +260,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     /**
-     * 超投处理：返款、解冻、记录userBill、更新投资状态为失败
+     * 超投处理：返款、记录userBill、更新投资状态为失败
      *
      * @param orderId
      * @param investModel
@@ -349,6 +349,25 @@ public class InvestServiceImpl implements InvestService {
                 continue;
             }
         }
+    }
+
+    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
+        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
+        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
+        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
+        long returnAmount = 0;
+        if (availableLoanAmount < minInvestAmount) {
+            return returnAmount;
+        }
+        if (availableAmount >= maxInvestAmount) {
+            returnAmount = maxInvestAmount;
+        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
+            returnAmount = availableAmount;
+        }
+        if (returnAmount >= availableLoanAmount) {
+            returnAmount = availableLoanAmount;
+        }
+        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
     }
 
     @Override
@@ -454,25 +473,6 @@ public class InvestServiceImpl implements InvestService {
         investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
     }
 
-
-    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
-        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
-        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
-        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
-        long returnAmount = 0;
-        if (availableLoanAmount < minInvestAmount) {
-            return returnAmount;
-        }
-        if (availableAmount >= maxInvestAmount) {
-            returnAmount = maxInvestAmount;
-        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
-            returnAmount = availableAmount;
-        }
-        if (returnAmount >= availableLoanAmount) {
-            returnAmount = availableLoanAmount;
-        }
-        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-    }
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);
