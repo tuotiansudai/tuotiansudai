@@ -371,6 +371,9 @@
       clear: both;
       font-size: 15px;
       color: #353535;
+      .pad-m {
+        line-height: 40px;
+      }
     }
     .fast-recharge, .e-bank-recharge {
       display: none;
