@@ -3,7 +3,7 @@
 
 <div class="content-container">
     <h4 class="column-title"><em class="tc">绑定银行卡</em></h4>
-    <div class="recharge-bind-card pad-m">
+    <div class="recharge-bind-card pad-s">
     <div class="recharge-wrapper bind-card-frame" id="bindCardBox">
         <#if isBindCard>
         <div class="card-box">
