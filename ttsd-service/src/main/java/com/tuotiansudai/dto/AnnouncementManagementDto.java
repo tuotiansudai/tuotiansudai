@@ -13,6 +13,8 @@ public class AnnouncementManagementDto extends BaseDataDto implements Serializab
 
     private String content;
 
+    private String contentTxt;
+
     private boolean showOnHome;
 
     private Date createdTime = new Date();
@@ -30,6 +32,7 @@ public class AnnouncementManagementDto extends BaseDataDto implements Serializab
         this.showOnHome = model.isShowOnHome();
         this.createdTime = model.getCreatedTime();
         this.updateTime = model.getUpdateTime();
+        this.contentTxt= model.getContentTxt();
     }
 
     public long getId() {
@@ -78,5 +81,13 @@ public class AnnouncementManagementDto extends BaseDataDto implements Serializab
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getContentTxt() {
+        return contentTxt;
+    }
+
+    public void setContentTxt(String contentTxt) {
+        this.contentTxt = contentTxt;
     }
 }

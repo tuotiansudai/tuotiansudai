@@ -76,6 +76,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
                 "id":$('.jq-id').val(),
                 "title":$('.jq-title').val(),
                 "content":getContent(),
+                "contentTxt":getContentTxt(),
                 "showOnHome":showOnHome
             });
             $.ajax({
