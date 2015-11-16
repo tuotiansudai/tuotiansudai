@@ -11,6 +11,7 @@ public class BaseParam {
     private String deviceModel;
     private String screenW;
     private String screenH;
+    private String channel;
 
     public String getUserId() {
         return userId;
@@ -90,5 +91,13 @@ public class BaseParam {
 
     public void setScreenH(String screenH) {
         this.screenH = screenH;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
