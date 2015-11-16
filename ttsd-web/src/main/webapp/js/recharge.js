@@ -77,39 +77,31 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
                     content: $('#openFastRecharge')
                 });
             });
-
         }
-
-
         if ($(".bind-card-nav")) {
             $(".bind-card-nav .btn", $rechargeCon).click(function () {
                 window.location.href = $(this).data('url');
             });
-
         }
-
         //tab切换
-        tabElement.click(function () {
+        tabElement.click(function (index) {
             tabElement.removeClass("active");
-            var self = $(this);
-            self.addClass("active");
-            $(".recharge-content .fast-recharge").toggleClass("active");
-            $(".recharge-content .e-bank-recharge").toggleClass("active");
+            var self = $(this),
+                num=tabElement.index(this),
+                $rechargeCon=$('.recharge-content'),
+                $fastRecharge=$('.fast-recharge',$rechargeCon),
+                $bankRecharge=$('.e-bank-recharge',$rechargeCon);
+            self.addClass("active").siblings('li').removeClass('active');
+            if(num==0) {
+                $fastRecharge.show();
+                $bankRecharge.hide();
+            }
+            else {
+                $fastRecharge.hide();
+                $bankRecharge.show();
+            }
+
         });
 
-        //充值提交
-        submitElement.click(function () {
-            var amount = amountInputElement.autoNumeric("get");
-            amountElement.val(amount);
-            var content=$('#popRecharge');
-
-            commonFun.popWindow('登录到联动优势支付平台充值',content,{width:'560px'});
-
-        });
-
-        // 充值弹出页面
-        $('.ecope-dialog .close').click(function () {
-            $('.ecope-overlay,.ecope-dialog').hide();
-        });
     });
 });

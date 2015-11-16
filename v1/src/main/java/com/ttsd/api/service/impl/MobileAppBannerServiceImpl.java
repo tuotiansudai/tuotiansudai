@@ -52,6 +52,7 @@ public class MobileAppBannerServiceImpl implements MobileAppBannerService {
         pictureDto.setSeqNum(bannerPicture.getSeqNum());
         pictureDto.setTitle(bannerPicture.getTitle());
         pictureDto.setUrl(bannerPicture.getUrl());
+        pictureDto.setNoticeId(bannerPicture.getUrl());
 
         return pictureDto;
 

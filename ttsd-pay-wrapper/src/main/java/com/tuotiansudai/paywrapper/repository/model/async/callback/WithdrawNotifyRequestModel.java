@@ -3,6 +3,10 @@ package com.tuotiansudai.paywrapper.repository.model.async.callback;
 public class WithdrawNotifyRequestModel extends BaseCallbackRequestModel {
     private String amount;
 
+    private String comAmt;
+
+    private String comAmtType;
+
     private String tradeState;
 
     private String transferDate;
@@ -15,6 +19,22 @@ public class WithdrawNotifyRequestModel extends BaseCallbackRequestModel {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getComAmt() {
+        return comAmt;
+    }
+
+    public void setComAmt(String comAmt) {
+        this.comAmt = comAmt;
+    }
+
+    public String getComAmtType() {
+        return comAmtType;
+    }
+
+    public void setComAmtType(String comAmtType) {
+        this.comAmtType = comAmtType;
     }
 
     public String getTradeState() {

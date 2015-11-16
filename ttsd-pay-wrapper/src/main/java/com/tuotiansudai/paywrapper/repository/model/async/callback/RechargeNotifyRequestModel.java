@@ -8,6 +8,8 @@ public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
 
     private String comAmt;
 
+    private String comAmtType;
+
     public String getMerCheckDate() {
         return merCheckDate;
     }
@@ -30,5 +32,13 @@ public class RechargeNotifyRequestModel extends BaseCallbackRequestModel {
 
     public void setComAmt(String comAmt) {
         this.comAmt = comAmt;
+    }
+
+    public String getComAmtType() {
+        return comAmtType;
+    }
+
+    public void setComAmtType(String comAmtType) {
+        this.comAmtType = comAmtType;
     }
 }
