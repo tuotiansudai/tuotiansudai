@@ -12,7 +12,6 @@ import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
-import com.tuotiansudai.utils.LoginUserInfo;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class UserBillServiceImpl implements UserBillService {
     private UserBillMapper userBillMapper;
 
     @Override
-    public BaseDto<BasePaginationDataDto> getUserBillData(int index, int pageSize, Date startTime, Date endTime, List<UserBillBusinessType> userBillBusinessType) {
+    public BaseDto<BasePaginationDataDto> getUserBillData(String loginName, int index, int pageSize, Date startTime, Date endTime, List<UserBillBusinessType> userBillBusinessType) {
         if (startTime == null) {
             startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
         } else {
@@ -41,7 +40,6 @@ public class UserBillServiceImpl implements UserBillService {
         } else {
             endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
         }
-        String loginName = LoginUserInfo.getLoginName();
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("userBillBusinessType", userBillBusinessType)
                 .put("loginName", loginName)

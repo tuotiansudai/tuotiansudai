@@ -2,13 +2,11 @@
     <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="拓天公告" title="拓天公告详情">
     <div class="about-us-container" id="noticeDetail">
         <div class="crumb-lead">
-            首页 > 关于我们 > 拓天公告 >
+            <a href="/"> 首页</a> > <a href="/about/company">关于我们</a> > 拓天公告
         </div>
         <h2 class="a-title article">
             <span class="title">${announcement.title}</span>
-            <time class="tr">发表时间：<i>${(announcement.createdTime?string("yyyy-MM-dd"))!}</i></time>
-
-
+            <time class="tr">发表时间：<i>${(announcement.updateTime?string("yyyy-MM-dd"))!}</i></time>
         </h2>
         <div class="detail-content">
             ${announcement.content}

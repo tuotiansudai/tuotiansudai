@@ -23,7 +23,7 @@ import com.tuotiansudai.paywrapper.repository.model.sync.response.ProjectTransfe
 import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.*;
+import com.tuotiansudai.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -325,7 +325,7 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void autoInvest(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getPeriods()));
+        List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getType().getLoanPeriodUnit(), loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel : autoInvestPlanModels) {
             try {
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
@@ -363,7 +363,6 @@ public class InvestServiceImpl implements InvestService {
             int periods = investNotifyInfo.getPeriods();
             InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
             if (investRepay != null) {
-
                 Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
                         .put("loanName", loanName)
                         .put("periods", investRepay.getPeriod() + "/" + periods)

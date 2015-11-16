@@ -9,9 +9,9 @@ import com.tuotiansudai.repository.model.BankCardModel;
 import com.tuotiansudai.service.AccountService;
 import com.tuotiansudai.service.BindBankCardService;
 import com.tuotiansudai.service.RechargeService;
-import com.tuotiansudai.utils.AmountConverter;
-import com.tuotiansudai.utils.BankCardUtil;
-import com.tuotiansudai.utils.LoginUserInfo;
+import com.tuotiansudai.util.AmountConverter;
+import com.tuotiansudai.util.BankCardUtil;
+import com.tuotiansudai.web.util.LoginUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,7 +39,7 @@ public class RechargeController {
         AccountModel accountModel = accountService.findByLoginName(LoginUserInfo.getLoginName());
         long balance = accountModel.getBalance();
         ModelAndView modelAndView = new ModelAndView("/recharge");
-        BankCardModel bankCard = bindBankCardService.getPassedBankCard();
+        BankCardModel bankCard = bindBankCardService.getPassedBankCard(LoginUserInfo.getLoginName());
         boolean isBindCard = bankCard != null;
         boolean isFastPayOn = bankCard != null && bankCard.isFastPayOn();
 
@@ -61,6 +61,7 @@ public class RechargeController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView recharge(@Valid @ModelAttribute RechargeDto rechargeDto) {
+        rechargeDto.setLoginName(LoginUserInfo.getLoginName());
         BaseDto<PayFormDataDto> baseDto = rechargeService.recharge(rechargeDto);
         return new ModelAndView("/pay", "pay", baseDto);
     }

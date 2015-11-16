@@ -1,13 +1,11 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.AutoInvestMonthPeriod;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.AutoInvestMonthPeriod;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;

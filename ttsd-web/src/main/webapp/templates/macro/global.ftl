@@ -10,9 +10,9 @@
     {"title":"我的借款", "url":"/loaner/loan-list", "role":"'LOANER'"},
     {"title":"资金管理", "url":"/user-bill", "role":"'INVESTOR', 'LOANER'"},
     {"title":"个人资料", "url":"/personal-info", "role":"'INVESTOR', 'LOANER'"},
-    {"title":"自动投标", "url":"/", "role":"'INVESTOR'"},
+    {"title":"自动投标", "url":"/investor/auto-invest", "role":"'INVESTOR'"},
     {"title":"推荐管理", "url":"/", "role":"'INVESTOR', 'LOANER'"}]},
-    {"title":"推荐奖励", "url":"/"},
+    {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"高管团队", "url":"/about/team"},
@@ -45,10 +45,9 @@
                 </#list>
             </ul>
         </#if>
-
     </div>
 </div>
-<div class="main-frame">
+<div class="main-frame full-screen">
     <#list menus as menu>
         <#if activeNav?? && activeNav==menu.title && menu.leftNavs??>
             <ul class="left-nav">

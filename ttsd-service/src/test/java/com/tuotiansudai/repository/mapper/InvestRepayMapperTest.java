@@ -2,7 +2,7 @@ package com.tuotiansudai.repository.mapper;
 
 import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;

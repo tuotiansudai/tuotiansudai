@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.InvestPaginationItemView;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
-import com.tuotiansudai.utils.AmountConverter;
+import com.tuotiansudai.util.AmountConverter;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -5,7 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.utils.CaptchaHelper;
+import com.tuotiansudai.util.CaptchaHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
