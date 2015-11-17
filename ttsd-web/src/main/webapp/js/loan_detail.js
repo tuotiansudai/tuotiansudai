@@ -98,8 +98,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var loanId = $('.hid-loan').val();
             var amount = $(this).val();
             var amountNeedRaised = $('form .amountNeedRaised-i').text();
-
-            if(amountNeedRaised < amount){
+            console.log("===amountNeedRaised===" + amountNeedRaised);
+            console.log("===amount====" + amount);
+            if(Number(amountNeedRaised) < Number(amount)){
                 $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
                 $btnLookOther.prop('disabled', true);
                 return;
