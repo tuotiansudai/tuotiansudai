@@ -86,7 +86,7 @@
     box-sizing: border-box;
     .product-box-list {
       width: 76%;
-      overflow: hidden;
+      //overflow: hidden;
       .product-box-inner {
         width:105%;
         box-sizing: border-box;
@@ -101,6 +101,11 @@
           position: relative;
           margin-bottom:18px;
           color: #999;
+          &:hover {
+            -moz-box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+            -webkit-box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+            box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+          }
           &.new-standard {
             .hot-new {
               position: absolute;
@@ -135,7 +140,7 @@
               text-align: center;
               em {
                 color: #ff3333;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 1;
                 font-weight: bold;
                 padding-top: 30px;
