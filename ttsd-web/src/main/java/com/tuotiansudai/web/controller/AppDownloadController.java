@@ -12,6 +12,6 @@ public class AppDownloadController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView toAppDownloadPage() {
-        return new ModelAndView("/activity/appDownload");
+        return new ModelAndView("/activity/app-download");
     }
 }
