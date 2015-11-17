@@ -63,8 +63,8 @@ public class ReferrerRelationMapperTest {
         List<ReferrerRelationModel> testModelList = referrerRelationMapper.findByLoginName("test2");
 
         assertNotNull(testModelList.get(0));
-
-
     }
+
+
 
 }
