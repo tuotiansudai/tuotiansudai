@@ -12,7 +12,7 @@
                 <ol class="select-bank">
                     <#list banks as bank>
                         <li <#if (bank_index + 1) % 4 == 0>class="new-line"</#if>>
-                            <input data-name="${bank}" type="radio" <#if bank_index == 0>checked="checked"</#if>>
+                            <input data-name="${bank}" type="radio" name="select_bank" <#if bank_index == 0>checked="checked"</#if>>
                             <label for="bank-${bank}"><img src="${staticServer}/images/bank/${bank}.jpg" alt=""></label>
                         </li>
                     </#list>
@@ -22,7 +22,7 @@
                         银行卡： <input name="cardNumber" class="input-bankcard" type="text" placeholder="输入卡号" value=""/>
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="tc pad-m">
-                            <input type="submit" class="btn replace-card-submit" disabled="disabled"  value="确认更换"/>
+                            <input type="submit" class="btn-normal replace-card-submit" disabled="disabled"  value="确认更换"/>
                         </div>
                     </form>
                 </div>
