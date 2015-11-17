@@ -27,24 +27,28 @@ public interface ReferrerManageMapper {
                                                      @Param("loginName") String loginName,
                                                      @Param("referStartTime") Date referStartTime,
                                                      @Param("referEndTime") Date referEndTime,
+                                                     @Param("level") String level,
                                                      @Param("startLimit") int startLimit,
                                                      @Param("endLimit") int endLimit);
 
     int findReferRelationCount(@Param("referrerLoginName") String referrerLoginName,
                                @Param("loginName") String loginName,
                                @Param("referStartTime") Date referStartTime,
-                               @Param("referEndTime") Date referEndTime);
+                               @Param("referEndTime") Date referEndTime,
+                               @Param("level") String level);
 
     List<ReferrerManageView> findReferInvestList(@Param("referrerLoginName") String referrerLoginName,
                                                  @Param("loginName") String loginName,
                                                  @Param("investStartTime") Date referStartTime,
                                                  @Param("investEndTime") Date referEndTime,
+                                                 @Param("level") String level,
                                                  @Param("startLimit") int startLimit,
                                                  @Param("endLimit") int endLimit);
 
     int findReferInvestCount(@Param("referrerLoginName") String referrerLoginName,
                              @Param("loginName") String loginName,
                              @Param("investStartTime") Date referStartTime,
-                             @Param("investEndTime") Date referEndTime);
+                             @Param("investEndTime") Date referEndTime,
+                             @Param("level") String level);
 
 }

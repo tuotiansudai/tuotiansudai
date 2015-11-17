@@ -236,8 +236,11 @@
         LEFT JOIN user u
             on rr.login_name = u.login_name
         <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
             <if test="referrerLoginName != null and referrerLoginName != ''">
-                rr.referrer_login_name = #{referrerLoginName}
+                and rr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="referStartTime != null">
                 <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
@@ -258,8 +261,11 @@
         LEFT JOIN user u
             on rr.login_name = u.login_name
         <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
             <if test="referrerLoginName != null and referrerLoginName != ''">
-                rr.referrer_login_name = #{referrerLoginName}
+                and rr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="referStartTime != null">
                 <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
@@ -294,8 +300,11 @@
             left join invest_referrer_reward irr
             on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
         <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
             <if test="investStartTime != null">
-                <![CDATA[ i.`created_time` >= #{investStartTime} ]]>
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
             </if>
             <if test="investEndTime != null">
                 <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
@@ -320,8 +329,11 @@
             left join invest_referrer_reward irr
             on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
             <where>
+                <if test="level != null and level != ''">
+                    <![CDATA[ rr.level <= #{level} ]]>
+                </if>
                 <if test="investStartTime != null">
-                    <![CDATA[ i.`created_time` >= #{investStartTime} ]]>
+                    <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
                 </if>
                 <if test="investEndTime != null">
                     <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
