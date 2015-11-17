@@ -1,5 +1,9 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.ReferrerRelationView;
+
+import java.text.SimpleDateFormat;
+
 public class ReferrerResponseDataDto {
     private String userId;
     private String level;
@@ -27,5 +31,15 @@ public class ReferrerResponseDataDto {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public ReferrerResponseDataDto(){
+
+    }
+    public ReferrerResponseDataDto(ReferrerRelationView input) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.setUserId(input.getLoginName());
+        this.setLevel("" + input.getLevel());
+        this.setTime(simpleDateFormat.format(input.getRegisterTime()));
     }
 }

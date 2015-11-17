@@ -1,5 +1,10 @@
 package com.tuotiansudai.api.dto;
 
+import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.util.AmountConverter;
+
+import java.text.SimpleDateFormat;
+
 public class ReferrerInvestResponseDataDto {
     private String userId;
     private String level;
@@ -82,4 +87,21 @@ public class ReferrerInvestResponseDataDto {
     public void setLoanId(String loanId) {
         this.loanId = loanId;
     }
+
+    public ReferrerInvestResponseDataDto() {
+
+    }
+
+    public ReferrerInvestResponseDataDto(ReferrerManageView input) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.userId = input.getInvestLoginName();
+        this.level = "" + input.getLevel();
+        this.loanName = input.getLoanName();
+        this.investMoney = AmountConverter.convertCentToString(input.getInvestAmount());
+        this.deadline = "" + input.getPeriods();
+        this.investTime = simpleDateFormat.format(input.getInvestTime());
+        this.rewardMoney = AmountConverter.convertCentToString(input.getRewardAmount());
+        this.rewardTime = simpleDateFormat.format(input.getRewardTime());
+    }
+
 }
