@@ -1,7 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
-import com.tuotiansudai.repository.model.*;
-import com.tuotiansudai.utils.IdGenerator;
+import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRelationView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:applicationContext.xml"})
@@ -30,14 +29,13 @@ public class ReferrerManageMapperTest {
         Calendar start =  Calendar.getInstance();
         start.add(Calendar.DATE, -300);
 
-        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList("admin", "zhoubx", start.getTime(), new Date(), 0, 10);
+        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList("admin", "zhoubx", start.getTime(), new Date(), null, 0, 10);
 
         assertNotNull(referRelationList.get(0));
 
+        int referRelationCount = referrerManageMapper.findReferRelationCount("admin", null, start.getTime(), new Date(), null);
 
-        int referRelationCount = referrerManageMapper.findReferRelationCount("admin", null, start.getTime(), new Date());
-
-        assert(referRelationCount==1);
+        assert(referRelationCount>0);
     }
 
     @Test
@@ -45,13 +43,13 @@ public class ReferrerManageMapperTest {
 
         Calendar start =  Calendar.getInstance();
         start.add(Calendar.DATE, -300);
-        List<ReferrerManageView> referManageList = referrerManageMapper.findReferInvestList("admin", null, start.getTime(), new Date(), 0, 10);
+        List<ReferrerManageView> referManageList = referrerManageMapper.findReferInvestList("admin", null, start.getTime(), new Date(), null, 0, 10);
 
         assertNotNull(referManageList.get(0));
 
-        int referInvestCount = referrerManageMapper.findReferInvestCount("admin", "zhoubx", null, new Date());
+        int referInvestCount = referrerManageMapper.findReferInvestCount("admin", "zhoubx", null, new Date(), null);
 
-        assert(referInvestCount==1);
+        assert(referInvestCount>0);
     }
 
 
