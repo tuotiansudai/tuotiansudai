@@ -98,9 +98,11 @@
           border-radius: 5px;
           position: relative;
           display: inline-block;
-          position: relative;
           margin-bottom:18px;
           color: #999;
+          .pad-m {
+            cursor: pointer;
+          }
           &.new-standard {
             .hot-new {
               position: absolute;
@@ -113,6 +115,11 @@
           }
           .pr-title {
             font-size: 18px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 125px;
+            margin-left: 35px;
           }
           .pr-square {
             width: 140px;
@@ -135,13 +142,13 @@
               text-align: center;
               em {
                 color: #ff3333;
-                font-size: 18px;
+                font-size: 16px;
                 line-height: 1;
                 font-weight: bold;
                 padding-top: 30px;
                 display: inline-block;
                 b {
-                  font-size:32px;
+                  font-size:26px;
                 }
                 i {
                   color: #999;
