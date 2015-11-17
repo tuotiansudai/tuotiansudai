@@ -18,6 +18,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 photos: '#layer-photos-demo'
             });
         });
+
+        $('body').click(function() {
+            layer.photos({
+                photos: '#layer-photos-demo'
+            });
+        });
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
             paginationElement.loadPagination(requestData, function (data) {
@@ -31,7 +37,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //pageCount：总页数
         //current：当前页
         //初始化标的比例（进度条）
-        //var java_point = 15; //后台传递数据
+       // var java_point = 15; //后台传递数据
         if (java_point <= 50) {
             $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * java_point + "deg)");
             $('.chart-box .rount2').hide();
@@ -119,4 +125,8 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
         });
     });
+
+    window.onload=function() {
+        alert('poo');
+    }
 });
