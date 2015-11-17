@@ -27,7 +27,7 @@ public class MobileAppBannerController extends MobileAppBaseController {
         BannerResponseDataDto dataDto = new BannerResponseDataDto();
         List<BannerPictureResponseDataDto> pictureList = new ArrayList<>();
         dataDto.setPictures(pictureList);
-        fakePictureList(pictureList);
+        //fakePictureList(pictureList);
         return dataDto;
     }
 

@@ -71,6 +71,7 @@
         <intercept-url pattern="/callback/**" access="permitAll()"/>
         <intercept-url pattern="/ad/**" access="permitAll()"/>
         <intercept-url pattern="/v1.0/install-notify" access="permitAll()"/>
+        <intercept-url pattern="/v1.0/get/banner" access="permitAll()"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <!--<intercept-url pattern="/**" access="permitAll()"/>-->
     </http>
