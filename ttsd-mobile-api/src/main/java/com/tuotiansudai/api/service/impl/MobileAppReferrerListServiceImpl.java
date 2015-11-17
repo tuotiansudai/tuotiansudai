@@ -7,6 +7,7 @@ import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppReferrerListService;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
+import com.tuotiansudai.service.ReferrerManageService;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.List;
 public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListService {
     @Autowired
     private ReferrerManageMapper referrerManageMapper;
+    @Autowired
+    private ReferrerManageService referrerManageService;
 
     @Override
     public BaseResponseDto generateReferrerList(ReferrerListRequestDto referrerListRequestDto) {
@@ -30,8 +33,9 @@ public class MobileAppReferrerListServiceImpl implements MobileAppReferrerListSe
         if(pageSize == null || pageSize.intValue() <= 0){
             pageSize = 10;
         }
-        List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId,null,null,null,(index - 1) * pageSize,pageSize);
-        int count = referrerManageMapper.findReferRelationCount(referrerId, null, null, null);
+        String level = referrerManageService.getUserRewardDisplayLevel(referrerId);
+        List<ReferrerRelationView> referrerRelationDtos = referrerManageMapper.findReferRelationList(referrerId,null,null,null,level,(index - 1) * pageSize,pageSize);
+        int count = referrerManageMapper.findReferRelationCount(referrerId, null, null, null,level);
         List<ReferrerResponseDataDto> referrerResponseDataDtos = Lists.transform(referrerRelationDtos, new Function<ReferrerRelationView, ReferrerResponseDataDto>() {
             @Override
             public ReferrerResponseDataDto apply(ReferrerRelationView input) {

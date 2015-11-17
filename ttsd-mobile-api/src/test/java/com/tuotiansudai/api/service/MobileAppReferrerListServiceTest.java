@@ -10,9 +10,11 @@ import com.tuotiansudai.dto.RegisterAccountDto;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.service.impl.ReferrerManageServiceImpl;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -30,8 +32,13 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
     @Mock
     private ReferrerManageMapper referrerManageMapper;
 
+    @Mock
+    private ReferrerManageServiceImpl referrerManageService;
+
     @Test
     public void shouldGenerateReferrerListIsOk(){
+        ReflectionTestUtils.setField(referrerManageService, "userReward", "0.1|0.2|0.3");
+        ReflectionTestUtils.setField(referrerManageService,"merReward","0.1|0.2|0.3|0.4");
         ReferrerRelationView referrerRelationView1 = new ReferrerRelationView();
         referrerRelationView1.setLoginName("loginName1");
         referrerRelationView1.setReferrerLoginName("referrerLoginName1");
@@ -46,8 +53,8 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
         List<ReferrerRelationView> referrerRelationDtos = Lists.newArrayList();
         referrerRelationDtos.add(referrerRelationView1);
         referrerRelationDtos.add(referrerRelationView2);
-        when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class), anyInt(), anyInt())).thenReturn(referrerRelationDtos);
-        when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class))).thenReturn(2);
+        when(referrerManageMapper.findReferRelationList(anyString(), anyString(), any(Date.class), any(Date.class),anyString(),anyInt(), anyInt())).thenReturn(referrerRelationDtos);
+        when(referrerManageMapper.findReferRelationCount(anyString(), anyString(), any(Date.class), any(Date.class),anyString())).thenReturn(2);
         ReferrerListRequestDto referrerListRequestDto = new ReferrerListRequestDto();
         referrerListRequestDto.setIndex(1);
         referrerListRequestDto.setPageSize(10);

@@ -44,7 +44,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
     @Override
     public BasePaginationDataDto findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
-        String level = getUserRewardDisplayLevel(referrerLoginName);;
+        String level = getUserRewardDisplayLevel(referrerLoginName);
 
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
@@ -61,8 +61,8 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referrerManageViewList);
         return baseDto;
     }
-
-    private String getUserRewardDisplayLevel(String loginName) {
+    @Override
+    public String getUserRewardDisplayLevel(String loginName) {
         int level = 0;
         int merLevel = merReward.split("\\|").length;
         int userLevel = userReward.split("\\|").length;
