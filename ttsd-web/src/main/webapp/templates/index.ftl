@@ -54,7 +54,7 @@
                 <#list loans as loan>
                 <div class="product-box tc <#if loan.activityType=="NOVICE">new-standard</#if>">
                     <#if loan.activityType=='NOVICE'><i class="hot-new"></i></#if>
-                    <div class="pad-m">
+                    <div class="pad-m" title="${loan.name}" data-url="/loan/${loan.id?string.computer}">
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
