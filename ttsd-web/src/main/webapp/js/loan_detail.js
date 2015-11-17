@@ -1,4 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layer','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate,layer) {
 
     $(function () {
         var $loanDetail = $('.loan-detail-content'),
@@ -8,8 +8,16 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $errorDom = $('.error', $accountInfo),
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
+            $imageList=$('.img-list',$loanlist),
             paginationElement = $('.pagination');
-        amountInputElement.autoNumeric("init")
+        amountInputElement.autoNumeric("init");
+
+        layer.config({extend: 'layer/extend/layer.ext.js'});
+        layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+            layer.photos({
+                photos: '#layer-photos-demo'
+            });
+        });
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
             paginationElement.loadPagination(requestData, function (data) {
@@ -45,11 +53,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $loanlist.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
         });
 
-        $('.img-list li').click(function () {
-            var _imgSrc = $(this).find('img').attr('src');
-            $('.content img').attr('src', _imgSrc);
-            return false;
-        });
 
         function timer(intDiff) {
             window.setInterval(function () {
