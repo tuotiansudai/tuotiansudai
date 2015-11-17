@@ -115,6 +115,9 @@ public interface InvestMapper {
 
     long findCountInvestPagination(@Param(value = "loanId") Long loanId,
                                    @Param(value = "investorLoginName") String investorLoginName,
+                                   @Param(value = "channel") String channel,
+                                   @Param(value = "source") String source,
+                                   @Param(value = "role") String role,
                                    @Param(value = "startTime") Date startTime,
                                    @Param(value = "endTime") Date endTime,
                                    @Param(value = "investStatus") InvestStatus investStatus,
@@ -122,6 +125,9 @@ public interface InvestMapper {
 
     List<InvestPaginationItemView> findInvestPagination(@Param(value = "loanId") Long loanId,
                                                         @Param(value = "investorLoginName") String investorLoginName,
+                                                        @Param(value = "channel") String channel,
+                                                        @Param(value = "source") String source,
+                                                        @Param(value = "role") String role,
                                                         @Param(value = "index") int index,
                                                         @Param(value = "pageSize") int pageSize,
                                                         @Param(value = "startTime") Date startTime,
@@ -135,4 +141,6 @@ public interface InvestMapper {
     int sumSuccessNoviceInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
     long countSuccessInvest(@Param(value = "loanId") Long loanId);
+
+    List<String> findAllChannels();
 }
