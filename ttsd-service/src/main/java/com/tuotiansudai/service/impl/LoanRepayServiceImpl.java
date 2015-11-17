@@ -75,17 +75,21 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Override
     public void calculateDefaultInterest() {
+        System.out.println("calculate default interest begin");
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findNotCompleteLoanRepay();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            System.out.println("loan repay id is " + loanRepayModel.getId());
             LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
             List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
             for (InvestRepayModel investRepayModel : investRepayModels) {
+                System.out.println("invest repay id is " + investRepayModel.getId());
                 if (!investRepayModel.getRepayDate().before(new Date())) {
                     investRepayModel.setStatus(RepayStatus.OVERDUE);
                     long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(DateUtil.differenceDay(new Date(), investRepayModel.getRepayDate())))
                             .setScale(BigDecimal.ROUND_DOWN).longValue();
                     investRepayModel.setDefaultInterest(investRepayDefaultInterest);
+                    System.out.println("invest repay id is " + investRepayModel.getId() + " and default interest is" + investRepayDefaultInterest);
                     investRepayMapper.update(investRepayModel);
                 }
             }
@@ -93,10 +97,12 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
                     .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()))).setScale(BigDecimal.ROUND_DOWN).longValue();
             loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
+            System.out.println("loan repay id is " + loanRepayModel.getId() + " and default interest is" + loanRepayDefaultInterest);
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);
             loanMapper.update(loanModel);
         }
+        System.out.println("calculate default interest end");
     }
 
 }

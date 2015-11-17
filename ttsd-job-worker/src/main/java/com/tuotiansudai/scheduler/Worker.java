@@ -78,7 +78,7 @@ public class Worker {
     private void createCalculateDefaultInterest() {
         try {
             jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 45 15 * * ? *"))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
             e.printStackTrace();
