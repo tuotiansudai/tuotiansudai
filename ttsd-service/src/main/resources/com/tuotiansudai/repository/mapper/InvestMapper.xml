@@ -180,11 +180,11 @@
         </where>
     </select>
 
-    <select id="sumSuccessNoviceInvestCountByLoginName" parameterType="String" resultType="int">
+    <select id="sumSuccessNewbieInvestCountByLoginName" parameterType="String" resultType="int">
         select count(*)
         from invest
         inner join loan on invest.loan_id = loan.id
-        where loan.activity_type = 'NOVICE'
+        where loan.activity_type = 'NEWBIE'
         and invest.login_name = #{loginName}
         and invest.status &lt;&gt; 'FAIL'
     </select>

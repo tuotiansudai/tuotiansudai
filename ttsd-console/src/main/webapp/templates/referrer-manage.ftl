@@ -80,8 +80,8 @@
                      <label for="control-label">推荐人角色</label>
                      <select class="selectpicker role"  data-style="btn-default" >
                          <option value="" <#if role?has_content><#else>selected</#if>>全部</option>
-                         <option value="MERCHANDISER" <#if role?has_content && role == 'MERCHANDISER'>selected</#if>>业务员</option>
-                         <option value="USER" <#if role?has_content && role != 'MERCHANDISER'>selected</#if>>用户(非业务员)</option>
+                         <option value="STAFF" <#if role?has_content && role == 'STAFF'>selected</#if>>业务员</option>
+                         <option value="USER" <#if role?has_content && role != 'STAFF'>selected</#if>>用户(非业务员)</option>
                      </select>
                  </div>
                  <button class="btn btn-primary search" type="button">查询</button>
@@ -120,7 +120,7 @@
                              <td>${referrerManageView.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                              <td>${referrerManageView.referrerLoginName!}</td>
                              <td>${referrerManageView.referrerName!}</td>
-                             <td><#if referrerManageView.role?? && referrerManageView.role == 'MERCHANDISER'>是<#else>否</#if></td>
+                             <td><#if referrerManageView.role?? && referrerManageView.role == 'STAFF'>是<#else>否</#if></td>
                              <td>${referrerManageView.level?string('0')}</td>
                              <td>${referrerManageView.rewardAmount/100}</td>
                              <td><#if referrerManageView.status?? && referrerManageView.status == 'SUCCESS'>已入账<#else>入账失败</#if></td>

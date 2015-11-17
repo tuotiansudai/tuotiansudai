@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class LoanRepayServiceImpl implements LoanRepayService {
 
-    @Value("${overdue.repay.investor.fee}")
+    @Value("${pay.overdue.fee}")
     private double overdueFee;
 
     @Autowired

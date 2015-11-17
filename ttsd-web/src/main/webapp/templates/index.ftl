@@ -52,8 +52,8 @@
         <section class="product-box-list fl">
             <div class="product-box-inner">
                 <#list loans as loan>
-                <div class="product-box tc <#if loan.activityType=="NOVICE">new-standard</#if>">
-                    <#if loan.activityType=='NOVICE'><i class="hot-new"></i></#if>
+                <div class="product-box tc <#if loan.activityType=="NEWBIE">new-standard</#if>">
+                    <#if loan.activityType=='NEWBIE'><i class="hot-new"></i></#if>
                     <div class="pad-m" title="${loan.name}" data-url="/loan/${loan.id?string.computer}">
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">

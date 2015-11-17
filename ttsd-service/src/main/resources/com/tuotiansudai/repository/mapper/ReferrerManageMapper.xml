@@ -82,11 +82,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'MERCHANDISER'">
+            <if test="role != null and role.name() == 'STAFF'">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'MERCHANDISER'">
-                AND a.`referrer_role` != 'MERCHANDISER'
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
             </if>
         </where>
         ) irr
@@ -176,11 +176,11 @@
             <if test="rewardEndTime != null">
                 <![CDATA[ AND a.`created_time` <= #{rewardEndTime} ]]>
             </if>
-            <if test="role != null and role.name() == 'MERCHANDISER'">
+            <if test="role != null and role.name() == 'STAFF'">
                 AND a.`referrer_role` = #{role}
             </if>
-            <if test="role != null and role.name() != 'MERCHANDISER'">
-                AND a.`referrer_role` != 'MERCHANDISER'
+            <if test="role != null and role.name() != 'STAFF'">
+                AND a.`referrer_role` != 'STAFF'
             </if>
         </where>
         ) irr

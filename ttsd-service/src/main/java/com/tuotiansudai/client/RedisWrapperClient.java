@@ -20,16 +20,16 @@ public class RedisWrapperClient {
 
     static Logger logger = Logger.getLogger(RedisWrapperClient.class);
 
-    @Value("${redis.host}")
+    @Value("${common.redis.host}")
     private String redisHost;
 
-    @Value("${redis.port}")
+    @Value("${common.redis.port}")
     private int redisPort;
 
-    @Value("${redis.password}")
+    @Value("${common.redis.password}")
     private String redisPassword;
 
-    @Value("${redis.db}")
+    @Value("${common.redis.db}")
     private int redisDb;
 
     private JedisPool jedisPool;

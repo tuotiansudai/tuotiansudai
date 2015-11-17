@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RedisWrapperClient redisWrapperClient;
 
-    @Value("${login.max.times}")
+    @Value("${web.login.max.failed.times}")
     private int times;
 
     public static String SHA = "SHA";
@@ -258,7 +258,7 @@ public class UserServiceImpl implements UserService {
             throw new EditUserException("该手机号已经存在");
         }
 
-        if (editUserDto.getRoles().contains(Role.MERCHANDISER) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
+        if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
             throw new EditUserException("业务员不能设置推荐人");
         }
     }
