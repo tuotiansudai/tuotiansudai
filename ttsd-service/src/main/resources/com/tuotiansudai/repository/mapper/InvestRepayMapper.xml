@@ -367,7 +367,6 @@
             and ir.status &lt;&gt; 'COMPLETE'
         </if>
     </select>
-
     <select id="findInvestRepayByLoanIdAndPeriod" parameterType="map" resultMap="investRepayResultMap">
         SELECT
           ir.*
