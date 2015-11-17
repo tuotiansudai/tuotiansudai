@@ -14,6 +14,8 @@ import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.TimeZone;
+
 @Component
 public class Worker {
 
@@ -78,7 +80,7 @@ public class Worker {
     private void createCalculateDefaultInterest() {
         try {
             jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 50 19 * * ? *"))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 20 20 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
             e.printStackTrace();
