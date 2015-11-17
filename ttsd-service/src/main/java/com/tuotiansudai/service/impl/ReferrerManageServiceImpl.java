@@ -31,7 +31,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
     @Override
     public BasePaginationDataDto findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
-        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, (index - 1) * pageSize, index * pageSize);
+        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, (index - 1) * pageSize, pageSize);
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime);
         BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referRelationList);
         return baseDto;
@@ -39,7 +39,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
     @Override
     public BasePaginationDataDto findReferInvestList(String referrerLoginName, String loginName, Date investStartTime, Date investEndTime, int index, int pageSize) {
-        List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerLoginName, loginName, investStartTime, investEndTime, (index - 1) * pageSize, index * pageSize);
+        List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerLoginName, loginName, investStartTime, investEndTime, (index - 1) * pageSize, pageSize);
         int count = referrerManageMapper.findReferInvestCount(referrerLoginName, loginName, investStartTime, investEndTime);
         BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referrerManageViewList);
         return baseDto;
