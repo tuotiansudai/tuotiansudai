@@ -83,7 +83,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             List<InvestRepayModel> investRepayModels = investRepayMapper.findInvestRepayByLoanIdAndPeriod(loanModel.getId(), loanRepayModel.getPeriod());
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 System.out.println("invest repay id is " + investRepayModel.getId());
-                if (!investRepayModel.getRepayDate().before(new Date())) {
+                if (investRepayModel.getRepayDate().before(new Date())) {
                     investRepayModel.setStatus(RepayStatus.OVERDUE);
                     long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
                             .multiply(new BigDecimal(DateUtil.differenceDay(new Date(), investRepayModel.getRepayDate())))
