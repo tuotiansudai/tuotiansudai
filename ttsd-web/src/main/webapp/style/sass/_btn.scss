@@ -70,8 +70,7 @@
   border: 1px solid nth($CK1,3);
   color: #fff!important;
   &:hover {
-    // background: nth($CK1,3);
-    color: #fff;
+    color:#000!important;
   }
   &:disabled, &:disabled:hover {
     background: #666 !important;
@@ -86,7 +85,7 @@
   border: 1px solid nth($CK1,3);
   color: #fff;
   &:hover {
-
+    color:#000;
   }
 }
 
