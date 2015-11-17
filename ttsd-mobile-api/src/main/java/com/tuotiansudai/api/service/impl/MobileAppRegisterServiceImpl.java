@@ -3,14 +3,14 @@ package com.tuotiansudai.api.service.impl;
 import com.google.common.base.Strings;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.RegisterRequestDto;
-
 import com.tuotiansudai.api.dto.RegisterResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.service.MobileAppChannelService;
 import com.tuotiansudai.api.service.MobileAppRegisterService;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
 import com.tuotiansudai.dto.SmsDataDto;
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.CaptchaType;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +28,9 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     @Autowired
     private SmsCaptchaService smsCaptchaService;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
     @Override
     public BaseResponseDto sendRegisterByMobileNumberSMS(String mobileNumber, String remoteIp) {
@@ -58,6 +61,8 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
 
     public BaseResponseDto registerUser(RegisterRequestDto registerRequestDto) {
         RegisterUserDto dto = registerRequestDto.convertToRegisterUserDto();
+
+        dto.setChannel(mobileAppChannelService.obtainChannelBySource(registerRequestDto.getBaseParam()));
 
         if(StringUtils.isEmpty(dto.getLoginName())){
             return new BaseResponseDto(ReturnMessage.USER_NAME_IS_NULL.getCode(),ReturnMessage.USER_NAME_IS_NULL.getMsg());

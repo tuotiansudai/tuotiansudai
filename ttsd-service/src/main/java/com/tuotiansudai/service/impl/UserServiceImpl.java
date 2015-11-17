@@ -105,6 +105,9 @@ public class UserServiceImpl implements UserService {
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             userModel.setReferrer(dto.getReferrer());
         }
+        if (!Strings.isNullOrEmpty(dto.getChannel())) {
+            userModel.setChannel(dto.getChannel());
+        }
         String salt = myShaPasswordEncoder.generateSalt();
         String encodePassword = myShaPasswordEncoder.encodePassword(dto.getPassword(), salt);
         userModel.setSalt(salt);
