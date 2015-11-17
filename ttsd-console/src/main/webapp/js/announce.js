@@ -61,6 +61,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
         });
 
         $('.jq-save').click(function(){
+            $(this).attr('disabled', 'disabled');
             var showOnHomeInputVal = $('.jq-index').val();
             var showOnHome = true;
             if (showOnHomeInputVal == '0') {

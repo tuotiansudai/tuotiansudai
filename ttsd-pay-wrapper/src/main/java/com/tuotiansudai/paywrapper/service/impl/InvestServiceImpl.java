@@ -260,7 +260,7 @@ public class InvestServiceImpl implements InvestService {
     }
 
     /**
-     * 超投处理：返款、解冻、记录userBill、更新投资状态为失败
+     * 超投处理：返款、记录userBill、更新投资状态为失败
      *
      * @param orderId
      * @param investModel
@@ -292,8 +292,6 @@ public class InvestServiceImpl implements InvestService {
                 // 联动优势返回返款失败，但是标记此条请求已经处理完成，记录日志，在异步notify中进行投资成功处理
                 errorLog("pay_back_fail", newOrderId, investModel.getAmount(), loginName, loanId);
             }
-            //TODO: remove this PayException after testing
-            throw new PayException("Test SMS send");
         } catch (PayException e) {
             // 调用umpay时出现异常(可能已经返款成功了)。发短信通知管理员
             fatalLog("pay_back_PayException", newOrderId, investModel.getAmount(), loginName, loanId, e);
@@ -338,7 +336,7 @@ public class InvestServiceImpl implements InvestService {
                 if (availableSelfLoanAmount <= 0) {
                     continue;
                 }
-                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, NumberUtils.min(availableLoanAmount, availableSelfLoanAmount, loanModel.getMinInvestAmount()), loanModel.getInvestIncreasingAmount(), loanModel.getMinInvestAmount());
+                long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, NumberUtils.min(availableLoanAmount, availableSelfLoanAmount, loanModel.getMaxInvestAmount()), loanModel.getInvestIncreasingAmount(), loanModel.getMinInvestAmount());
                 if (autoInvestAmount == 0) {
                     continue;
                 }
@@ -351,6 +349,25 @@ public class InvestServiceImpl implements InvestService {
                 continue;
             }
         }
+    }
+
+    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
+        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
+        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
+        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
+        long returnAmount = 0;
+        if (availableLoanAmount < minInvestAmount) {
+            return returnAmount;
+        }
+        if (availableAmount >= maxInvestAmount) {
+            returnAmount = maxInvestAmount;
+        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
+            returnAmount = availableAmount;
+        }
+        if (returnAmount >= availableLoanAmount) {
+            returnAmount = availableLoanAmount;
+        }
+        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
     }
 
     @Override
@@ -456,25 +473,6 @@ public class InvestServiceImpl implements InvestService {
         investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
     }
 
-
-    private long calculateAutoInvestAmount(AutoInvestPlanModel autoInvestPlanModel, long availableLoanAmount, long investIncreasingAmount, long minLoanInvestAmount) {
-        long availableAmount = accountMapper.findByLoginName(autoInvestPlanModel.getLoginName()).getBalance() - autoInvestPlanModel.getRetentionAmount();
-        long maxInvestAmount = autoInvestPlanModel.getMaxInvestAmount();
-        long minInvestAmount = autoInvestPlanModel.getMinInvestAmount();
-        long returnAmount = 0;
-        if (availableLoanAmount < minInvestAmount) {
-            return returnAmount;
-        }
-        if (availableAmount >= maxInvestAmount) {
-            returnAmount = maxInvestAmount;
-        } else if (availableAmount < maxInvestAmount && availableAmount >= minInvestAmount) {
-            returnAmount = availableAmount;
-        }
-        if (returnAmount >= availableLoanAmount) {
-            returnAmount = availableLoanAmount;
-        }
-        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
-    }
 
     private void infoLog(String msg, String orderId, long amount, String loginName, long loanId) {
         logger.info(msg + ",orderId:" + orderId + ",LoginName:" + loginName + ",amount:" + amount + ",loanId:" + loanId);

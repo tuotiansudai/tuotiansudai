@@ -3,14 +3,14 @@
         <ul>
             <li class="f-title">我要投资</li>
             <li><a href="javascript:">理财产品</a></li>
-            <li><a href="javascript:">我的账户</a></li>
-            <li><a href="javascript:">拓天公告</a></li>
+            <li><a href="/account">我的账户</a></li>
+            <li><a href="/about/notice">拓天公告</a></li>
         </ul>
         <ul>
             <li class="f-title">关于我们</li>
-            <li><a href="javascript:">公司介绍</a></li>
-            <li><a href="javascript:">安全保障</a></li>
-            <li><a href="javascript:">高管团队</a></li>
+            <li><a href="/about/company">公司介绍</a></li>
+            <li><a href="/about/assurance">安全保障</a></li>
+            <li><a href="/about/team">高管团队</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>

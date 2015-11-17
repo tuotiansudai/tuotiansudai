@@ -11,16 +11,6 @@
             <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
         </ul>
         <div class="recharge-wrapper">
-            <ul>
-                <li class="fast-recharge-tab <#if isFastPayOn>active</#if>">
-                    <span class="hot-flag">
-                        <img src="${requestContext.getContextPath()}/images/recharge/hot.jpg" alt=""/>
-                    </span>
-                    快捷支付
-                </li>
-                <li class="e-bank-recharge-tab <#if !isFastPayOn>active</#if>">个人网银</li>
-            </ul>
-
             <div class="recharge-content">
                 <div class="fast-recharge <#if isFastPayOn>active</#if>">
                 <#if !isBindCard>
