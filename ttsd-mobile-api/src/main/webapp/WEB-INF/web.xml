@@ -32,6 +32,16 @@
     </filter>
 
     <filter>
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>appClientStatisticsFilter</filter-name>
+        <url-pattern>/v1.0/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
