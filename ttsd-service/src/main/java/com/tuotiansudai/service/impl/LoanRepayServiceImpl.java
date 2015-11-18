@@ -90,7 +90,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
             if (investRepayModel.getRepayDate().before(new Date())) {
                 investRepayModel.setStatus(RepayStatus.OVERDUE);
                 long investRepayDefaultInterest = new BigDecimal(investMapper.findById(investRepayModel.getInvestId()).getAmount()).multiply(new BigDecimal(overdueFee))
-                        .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date())))
+                        .multiply(new BigDecimal(DateUtil.differenceDay(investRepayModel.getRepayDate(), new Date())+1L))
                         .setScale(0,BigDecimal.ROUND_DOWN).longValue();
                 investRepayModel.setDefaultInterest(investRepayDefaultInterest);
                 investRepayMapper.update(investRepayModel);
@@ -99,7 +99,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
         if (loanRepayModel.getRepayDate().before(new Date())) {
             loanRepayModel.setStatus(RepayStatus.OVERDUE);
             long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
-                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()))).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date())+1L)).setScale(0, BigDecimal.ROUND_DOWN).longValue();
             loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
             loanRepayMapper.update(loanRepayModel);
             loanModel.setStatus(LoanStatus.OVERDUE);

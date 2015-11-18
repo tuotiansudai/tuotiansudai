@@ -10,7 +10,6 @@
         </div>
     </div>
 </div>
-
 <div class="main-advantage page-width">
     <dl>
         <dd>
@@ -20,7 +19,6 @@
                  <b class="clearfix">超高收益 最低门槛</b>
                 最高46倍活期存款收益 <br/>
                     最低投资门槛1元
-
             </span>
             </a>
         </dd>

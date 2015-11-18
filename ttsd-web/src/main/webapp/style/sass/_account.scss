@@ -980,16 +980,10 @@
           line-height: 36px;
         }
         .pic-list {
-          & .img-list {
-            display: block;
-            overflow: hidden;
+          img { display: inline-block;
+            margin:0px 10px 10px 0;
           }
-          li {
-            float: left;
-            margin: 5px 10px 5px 0;
-            cursor: pointer;
 
-          }
         }
       }
     }
