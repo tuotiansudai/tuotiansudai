@@ -23,7 +23,7 @@ public class RegisterUserDto implements Serializable {
     private String captcha;
 
     @NotEmpty
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$")
+    @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
     private String password;
 
     private String referrer;

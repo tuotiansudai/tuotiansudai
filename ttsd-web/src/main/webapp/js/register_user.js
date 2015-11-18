@@ -142,7 +142,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             },
             password: {
                 required: true,
-                regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+                regex: /^(?=.*[^\d])(.{6,20})$/,
             },
             captcha: {
                 required: true,
@@ -176,7 +176,7 @@ require(['underscore', 'jquery', 'layer', 'jquery.validate', 'jquery.validate.ex
             },
             password: {
                 required: "请输入密码",
-                regex: '6位至20位数字与字母组合'
+                regex: '6位至20位，不能全是数字'
             },
             captcha: {
                 required: '请输入验证码',

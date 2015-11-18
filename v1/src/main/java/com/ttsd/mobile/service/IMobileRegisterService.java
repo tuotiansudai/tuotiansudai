@@ -36,6 +36,13 @@ public interface IMobileRegisterService {
     boolean validateUserName(String userName);
 
     /**
+     * @function 校验用户输入的密码
+     * @param password 密码
+     * @return boolean 通过校验，返回ture,否则返回false
+     */
+    boolean validatePassword(String password);
+
+    /**
      * @function 校验用注册的手机号已存在
      * @param phoneNumber 手机号
      * @return boolean 通过校验，返回ture,否则返回false
