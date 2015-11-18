@@ -125,6 +125,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 }
                 var amount = $("input[name='amount']",frm).val();
                 if(isNaN(parseFloat(amount))) {
+                    $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
                     return false;
                 }
             }
