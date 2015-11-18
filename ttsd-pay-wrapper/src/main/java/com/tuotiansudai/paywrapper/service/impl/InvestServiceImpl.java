@@ -372,6 +372,7 @@ public class InvestServiceImpl implements InvestService {
         System.out.println("investIncreasingAmount = " + investIncreasingAmount);
         long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
         System.out.println("autoInvestMoney = " + autoInvestMoney);
+        System.out.println("minInvestAmount = " + minInvestAmount);
         return autoInvestMoney < minInvestAmount ? 0L : autoInvestMoney;
     }
 
