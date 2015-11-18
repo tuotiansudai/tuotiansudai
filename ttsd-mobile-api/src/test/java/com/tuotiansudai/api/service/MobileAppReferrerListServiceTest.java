@@ -38,7 +38,7 @@ public class MobileAppReferrerListServiceTest extends ServiceTestBase{
     @Test
     public void shouldGenerateReferrerListIsOk(){
         ReflectionTestUtils.setField(referrerManageService, "userReward", "0.1|0.2|0.3");
-        ReflectionTestUtils.setField(referrerManageService,"merReward","0.1|0.2|0.3|0.4");
+        ReflectionTestUtils.setField(referrerManageService,"staffReward","0.1|0.2|0.3|0.4");
         ReferrerRelationView referrerRelationView1 = new ReferrerRelationView();
         referrerRelationView1.setLoginName("loginName1");
         referrerRelationView1.setReferrerLoginName("referrerLoginName1");

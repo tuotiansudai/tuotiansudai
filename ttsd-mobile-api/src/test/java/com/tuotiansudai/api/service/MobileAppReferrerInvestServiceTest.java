@@ -40,7 +40,7 @@ public class MobileAppReferrerInvestServiceTest extends ServiceTestBase {
     public void shouldGenerateReferrerInvestListIsOk() {
         List<ReferrerManageView> referrerManageViews = fakeReferrerManageView(2);
         ReflectionTestUtils.setField(referrerManageService,"userReward","0.1|0.2|0.3");
-        ReflectionTestUtils.setField(referrerManageService,"merReward","0.1|0.2|0.3|0.4");
+        ReflectionTestUtils.setField(referrerManageService,"staffReward","0.1|0.2|0.3|0.4");
         when(referrerManageMapper.findReferInvestList(anyString(), anyString(), any(Date.class), any(Date.class), anyString(), anyInt(), anyInt())).thenReturn(referrerManageViews);
         when(referrerManageMapper.findReferInvestCount(anyString(), anyString(), any(Date.class), any(Date.class),anyString())).thenReturn(referrerManageViews.size());
         ReferrerInvestListRequestDto referrerInvestListRequestDto = new ReferrerInvestListRequestDto();
