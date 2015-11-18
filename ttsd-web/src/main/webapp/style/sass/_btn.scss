@@ -68,10 +68,9 @@
   @extend .btn;
   background: nth($CK1, 2);
   border: 1px solid nth($CK1,3);
-  color: #fff!important;
+  color: #fff;
   &:hover {
-    // background: nth($CK1,3);
-    color: #fff;
+    color:#000;
   }
   &:disabled, &:disabled:hover {
     background: #666 !important;
@@ -86,7 +85,7 @@
   border: 1px solid nth($CK1,3);
   color: #fff;
   &:hover {
-
+    color:#000;
   }
 }
 
