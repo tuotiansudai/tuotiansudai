@@ -1,5 +1,4 @@
-require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
-    $(function () {
+require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
         var $withdraw=$('.withdraw'),
          amountInputElement = $(".amount-display",$withdraw),
          submitElement = $('.withdraw-submit',$withdraw),
@@ -37,7 +36,4 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
                 content: $('#popWithdraw')
             });
         });
-
-
     });
-});
