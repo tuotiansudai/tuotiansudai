@@ -367,7 +367,14 @@ public class InvestServiceImpl implements InvestService {
         if (returnAmount >= availableLoanAmount) {
             returnAmount = availableLoanAmount;
         }
-        return returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
+        long autoInvestMoney = returnAmount - (returnAmount - minLoanInvestAmount) % investIncreasingAmount;
+        if (autoInvestMoney < minInvestAmount) {
+            return 0L;
+        } else if (autoInvestMoney > maxInvestAmount) {
+            return maxInvestAmount;
+        } else {
+            return autoInvestMoney;
+        }
     }
 
     @Override
