@@ -114,7 +114,8 @@
         set actual_interest = #{actualInterest},
             actual_fee = #{actualFee},
             actual_repay_date = #{actualRepayDate},
-            status = #{status}
+            status = #{status},
+            default_interest = #{defaultInterest}
         where id = #{id}
     </update>
 
