@@ -34,8 +34,8 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setGateId(gateId);
         model.setPayType(NORMAL_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
-        model.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "recharge_notify"));
+        model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host")));
+        model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "recharge_notify"));
         return model;
     }
 
@@ -48,12 +48,12 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         model.setPayType(FAST_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
         if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
-            model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.appWeb.host"),"mer_recharge_person"));
+            model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"),"mer_recharge_person"));
             model.setSourceV("HTML5");
         }else{
-            model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
+            model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host")));
         }
-        model.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "recharge_notify"));
+        model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "recharge_notify"));
         return model;
     }
 

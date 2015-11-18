@@ -15,7 +15,7 @@ public abstract class BaseClient {
 
     static Logger logger = Logger.getLogger(BaseClient.class);
 
-    private final static String URL_TEMPLATE = "http://{host}:{port}{context}{uri}";
+    private final static String URL_TEMPLATE = "http://{host}:{port}{applicationContext}{uri}";
 
     private final static MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -23,7 +23,7 @@ public abstract class BaseClient {
 
     protected String port;
 
-    protected String context;
+    protected String applicationContext;
 
     protected ObjectMapper objectMapper = new ObjectMapper();
 
@@ -31,7 +31,7 @@ public abstract class BaseClient {
     private OkHttpClient okHttpClient;
 
     protected String execute(String path, String requestJson, String method) {
-        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{context}", getContext()).replace("{uri}", path);
+        String url = URL_TEMPLATE.replace("{host}", this.getHost()).replace("{port}", this.getPort()).replace("{applicationContext}", getApplicationContext()).replace("{uri}", path);
         RequestBody requestBody = RequestBody.create(JSON, !Strings.isNullOrEmpty(requestJson) ? requestJson : "");
         if ("GET".equalsIgnoreCase(method)) {
             requestBody = null;
@@ -82,7 +82,7 @@ public abstract class BaseClient {
         return port;
     }
 
-    public String getContext() {
-        return context;
+    public String getApplicationContext() {
+        return applicationContext;
     }
 }

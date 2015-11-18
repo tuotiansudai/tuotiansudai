@@ -95,7 +95,7 @@ public class LoanControllerTest {
 
         smsWrapperClient.setHost(this.mockSmsServer.getHostName());
         smsWrapperClient.setPort(String.valueOf(this.mockSmsServer.getPort()));
-        smsWrapperClient.setContext("/");
+        smsWrapperClient.setApplicationContext("");
 
 
         sendCloudClient.setSendCloudSmtpHost(this.mockMailServer.getHostName());

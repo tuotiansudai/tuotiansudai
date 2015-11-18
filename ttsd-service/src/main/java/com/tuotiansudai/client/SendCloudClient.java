@@ -15,22 +15,27 @@ import java.util.Properties;
 
 @Service
 public class SendCloudClient {
-    @Value("${sendCloud.smtp.host}")
+
+    @Value("${common.sendcloud.host}")
     private String sendCloudSmtpHost;
-    @Value("${sendCloud.smtp.port}")
+
+    @Value("${common.sendcloud.port}")
     private Integer sendCloudSmtpPort;
-    @Value("${sendCloud.smtp.apiUser}")
-    private String apiUser;
-    @Value("${sendCloud.smtp.apiKey}")
-    private String apiKey;
-    @Value("${sendCloud.smtp.from}")
-    private String sendCloudSmtpForm;
+
+    @Value("${common.sendcloud.username}")
+    private String sendCloudUserName;
+
+    @Value("${common.sendcloud.password}")
+    private String sendCloudPassword;
+
+    @Value("${common.sendcloud.from}")
+    private String sendCloudFrom;
 
     private Session getMailSession() {
         // 根据属性新建一个邮件会话
         return Session.getInstance(getProperties(), new Authenticator() {
             public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(apiUser, apiKey);
+                return new PasswordAuthentication(sendCloudUserName, sendCloudPassword);
             }
         });
 
@@ -56,7 +61,7 @@ public class SendCloudClient {
         transport = (SMTPTransport) mailSession.getTransport("smtp");
         MimeMessage message = new MimeMessage(mailSession);
         // 发信人
-        message.setFrom(new InternetAddress(sendCloudSmtpForm, "拓天速贷", "UTF-8"));
+        message.setFrom(new InternetAddress(sendCloudFrom, "拓天速贷", "UTF-8"));
         // 收件人地址
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
         // 邮件主题

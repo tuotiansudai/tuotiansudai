@@ -20,12 +20,12 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
         this.service = "ptp_mer_bind_agreement";
         this.userId = userId;
         if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
-            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.appWeb.host"), "ptp_mer_bind_agreement"));
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), "ptp_mer_bind_agreement"));
             this.setSourceV("HTML5");
         }else{
-            this.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host")));
+            this.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host")));
         }
-        this.setNotifyUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "mer_bind_agreement_notify"));
+        this.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "mer_bind_agreement_notify"));
         this.userBindAgreementList = userBindAgreementList;
     }
 

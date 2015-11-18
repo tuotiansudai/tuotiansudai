@@ -4,7 +4,7 @@
     <div class="borderBox bg-w">
         <div class="news-share fl">
             <h2 class="hd">
-                <#if loan.activityType == "NOVICE">
+                <#if loan.activityType == "NEWBIE">
                     <span class="hot"></span>
                 </#if>
             ${loan.projectName}
