@@ -68,17 +68,6 @@ public class RetrievePasswordController {
         captchaHelper.storeCaptcha(CaptchaHelper.RETRIEVE_PASSWORD_CAPTCHA, captcha.getAnswer());
     }
 
-//    @RequestMapping(value = "/image-captcha/{imageCaptcha:^[a-zA-Z0-9]{5}$}/verify", method = RequestMethod.GET)
-//    @ResponseBody
-//    public BaseDto imageCaptchaVerify(@PathVariable String imageCaptcha) {
-//        boolean result = captchaHelper.captchaVerify(CaptchaHelper.RETRIEVE_PASSWORD_CAPTCHA, imageCaptcha);
-//        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
-//        BaseDataDto dataDto = new BaseDataDto();
-//        dataDto.setStatus(result);
-//        baseDto.setData(dataDto);
-//        return baseDto;
-//    }
-
     @RequestMapping(value = "/mobile/{mobile:^\\d{11}$}/captcha/{captcha:^\\d{6}$}/verify", method = RequestMethod.GET)
     @ResponseBody
     public BaseDto<BaseDataDto> verifyCaptchaIsValid(@PathVariable String mobile, @PathVariable String captcha) {
