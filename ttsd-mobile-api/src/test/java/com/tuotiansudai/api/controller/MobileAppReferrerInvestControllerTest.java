@@ -35,10 +35,5 @@ public class MobileAppReferrerInvestControllerTest extends ControllerTestBase {
                 referrerInvestListRequestDto
         );
     }
-    @Test
-    public void shouldUserMobileCertificationIsBadRequest() throws Exception {
-        doRequestWithServiceIsBadRequestMockedTest("/certificate",
-                new CertificationRequestDto()
-        );
-    }
+
 }
