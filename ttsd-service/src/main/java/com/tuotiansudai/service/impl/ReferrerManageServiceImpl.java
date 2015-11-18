@@ -69,7 +69,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
         List<UserRoleModel> userRoleModelList = userRoleMapper.findByLoginName(loginName);
         for (UserRoleModel model : userRoleModelList) {
-            if (model.getRole().equals(Role.MERCHANDISER)) {
+            if (model.getRole().equals(Role.STAFF)) {
                 level = merLevel > level ? merLevel : level;
             } else if (model.getRole().equals(Role.USER)) {
                 level = userLevel > level ? userLevel : level;
