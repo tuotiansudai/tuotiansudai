@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
-<@global.head title="登录" pageCss="${css.login}">
-</@global.head>
-<body>
-<#include "header.ftl" />
+<@global.main pageCss="${css.login}" pageJavascript="${js.login}" activeLeftNav="" title="拓天速贷-登录" >
 <div class="login-container page-width">
     <div class="login-box fr">
         <h3>欢迎登录拓天速贷</h3>
@@ -39,8 +34,4 @@
         </form>
     </div>
 </div>
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.login}">
-</@global.javascript>
-</body>
-</html>
+</@global.main>

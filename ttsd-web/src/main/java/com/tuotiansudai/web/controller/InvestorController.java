@@ -1,6 +1,9 @@
 package com.tuotiansudai.web.controller;
 
-import com.tuotiansudai.dto.*;
+import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.BasePaginationDataDto;
+import com.tuotiansudai.dto.InvestPaginationItemDataDto;
+import com.tuotiansudai.dto.InvestRepayDataDto;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.InvestService;
 import com.tuotiansudai.service.RepayService;
@@ -37,7 +40,7 @@ public class InvestorController {
                                                          @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                                          @RequestParam(name = "status", required = false) LoanStatus status) {
         String loginName = LoginUserInfo.getLoginName();
-        BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(null, loginName, index, pageSize, startTime, endTime, null, status);
+        BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loginName, index, pageSize, startTime, endTime, status);
         dataDto.setStatus(true);
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);

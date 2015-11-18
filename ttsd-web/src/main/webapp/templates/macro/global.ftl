@@ -80,7 +80,6 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
-
 </script>
 
 </#if>
@@ -119,7 +118,7 @@
 </#macro>
 
 <#macro role hasRole>
-    <@security.authorize access="hasAnyAuthority(${hasRole})">
+    <@security.authorize access="hasAnyAuthority('${hasRole}')">
         <#nested>
     </@security.authorize>
 </#macro>

@@ -38,6 +38,17 @@
                         <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                     </div>
                     <div class="form-group">
+                        <label for="project">角色</label>
+                        <select class="selectpicker" name="role">
+                            <option value="">全部</option>
+                        <#list roleList as roleItem>
+                            <option value="${roleItem.name()}"
+                                    <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
+                                    >${roleItem.description}</option>
+                        </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="number">注册时间</label>
 
                         <div class='input-group date' id='datetimepicker1'>
@@ -57,19 +68,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="project">角色</label>
-                        <select class="selectpicker" name="role">
-                            <option value="">全部</option>
-                        <#list roleList as roleItem>
-                            <option value="${roleItem.name()}"
-                                    <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
-                                    >${roleItem.description}</option>
-                        </#list>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="mobile">手机号</label>
                         <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
+                    </div>
+                    <div class="form-group">
+                        <label for="project">渠道</label>
+                        <select class="selectpicker" name="channel">
+                            <option value="">全部</option>
+                        <#list channelList as channelName>
+                            <option value="${channelName}"
+                                    <#if (channel?has_content && channel == channelName) >selected</#if>
+                                    >${channelName}</option>
+                        </#list>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="email">电子邮件</label>
@@ -91,6 +102,7 @@
                             <th>手机号</th>
                             <th>电子邮件</th>
                             <th>推荐人</th>
+                            <th>渠道</th>
                             <th>注册时间</th>
                             <th>角色</th>
                             <th>状态</th>
@@ -105,6 +117,7 @@
                             <td>${userItem.mobile}</td>
                             <td>${userItem.email!}</td>
                             <td>${userItem.referrer!}</td>
+                            <td>${userItem.channel!}</td>
                             <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                             <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
                             <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
@@ -135,7 +148,7 @@
                     <ul class="pagination">
                         <li>
                             <#if pagination.hasPreviousPage >
-                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&pageSize=${pageSize}&index=${pageIndex-1}"
+                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
                                aria-label="Previous">
                             <#else>
                             <a href="#" aria-label="Previous">
@@ -146,7 +159,7 @@
                         <li><a>${pagination.index}</a></li>
                         <li>
                             <#if pagination.hasNextPage >
-                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&pageSize=${pageSize}&index=${pageIndex+1}"
+                            <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex+1}"
                                aria-label="Next">
                             <#else>
                             <a href="#" aria-label="Next">
