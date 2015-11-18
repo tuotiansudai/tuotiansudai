@@ -40,7 +40,7 @@ public class ProjectTransferNopwdRequestModel extends BaseAsyncRequestModel {
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
         this.particAccType = UmPayParticAccType.INDIVIDUAL.getCode();
         this.particType = UmPayParticType.INVESTOR.getCode();
-        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "invest_notify");
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_notify");
     }
 
     public Map<String, String> generatePayRequestData() {

@@ -37,8 +37,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Value(value = "${novice.invest.limit.count}")
-    private int noviceInvestLimitCount;
+    @Value(value = "${web.newbie.invest.limit}")
+    private int newbieInvestLimit;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
@@ -66,8 +66,8 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 不满足新手标投资限制约束
-        if (ActivityType.NOVICE == loan.getActivityType()) {
-            if (!canInvestNoviceLoan(investDto.getLoginName())) {
+        if (ActivityType.NEWBIE == loan.getActivityType()) {
+            if (!canInvestNewbieLoan(investDto.getLoginName())) {
                 throw new InvestException("你的新手标投资已超上限");
             }
         }
@@ -105,12 +105,12 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
-    private boolean canInvestNoviceLoan(String loginName) {
-        if (noviceInvestLimitCount == 0) {
+    private boolean canInvestNewbieLoan(String loginName) {
+        if (newbieInvestLimit == 0) {
             return true;
         }
-        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
-        return (noviceInvestCount < noviceInvestLimitCount);
+        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
+        return (newbieInvestCount < newbieInvestLimit);
     }
 
     @Override

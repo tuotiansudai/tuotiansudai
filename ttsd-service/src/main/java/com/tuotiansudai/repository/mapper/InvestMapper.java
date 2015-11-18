@@ -136,7 +136,7 @@ public interface InvestMapper {
 
     long sumSuccessInvestAmountByLoginName(@Param(value = "loanId") long loanId, @Param(value = "loginName") String loginName);
 
-    int sumSuccessNoviceInvestCountByLoginName(@Param(value = "loginName") String loginName);
+    int sumSuccessNewbieInvestCountByLoginName(@Param(value = "loginName") String loginName);
 
     List<String> findAllChannels();
 }

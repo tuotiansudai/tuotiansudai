@@ -7,9 +7,9 @@
                 <span>项目类型: </span>
                 <a <#if activityType??><#else>class="active"</#if>
                    href="/loan-list?<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">全部</a>
-                <a <#if activityType?? && activityType=="NOVICE">class="active"</#if>
-                   href="/loan-list?activityType=NOVICE&<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}"
-                   data-type="NOVICE">新手专享</a>
+                <a <#if activityType?? && activityType=="NEWBIE">class="active"</#if>
+                   href="/loan-list?activityType=NEWBIE&<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}"
+                   data-type="NEWBIE">新手专享</a>
                 <a <#if activityType?? && activityType=="NORMAL">class="active"</#if>
                    href="/loan-list?activityType=NORMAL&<#if status??>status=${status}&</#if>periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}"
                    data-type="NORMAL">普通投资</a>
@@ -68,7 +68,7 @@
         <ul>
             <#list loanListWebDtos as loanListWebDto>
                 <li data-url="/loan/${(loanListWebDto.id?string('0'))!}">
-                    <#if loanListWebDto.activityType == 'NOVICE'>
+                    <#if loanListWebDto.activityType == 'NEWBIE'>
                         <span class="hot"></span>
                     </#if>
                     <div class="loan-info-frame fl">

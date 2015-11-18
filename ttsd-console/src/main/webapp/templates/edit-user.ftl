@@ -85,7 +85,7 @@
                                 <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("LOANER")>checked="checked"</#if> value="LOANER">借款人</label>
                             </div>
                             <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("MERCHANDISER")>checked="checked"</#if> value="MERCHANDISER">业务员</label>
+                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("STAFF")>checked="checked"</#if> value="STAFF">业务员</label>
                             </div>
                             <div class="checkbox">
                                 <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("CUSTOMER_SERVICE")>checked="checked"</#if> value="CUSTOMER_SERVICE">客服</label>

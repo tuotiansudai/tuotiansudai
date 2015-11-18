@@ -28,8 +28,8 @@ public class CustWithdrawalsRequestModel extends BaseAsyncRequestModel {
         this.userId = userId;
         this.amount = amount;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
-        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), "withdraw_notify");
+        this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "withdraw_notify");
 
     }
 
