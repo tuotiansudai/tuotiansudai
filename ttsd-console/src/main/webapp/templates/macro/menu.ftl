@@ -10,15 +10,15 @@
                 "header":{"text":"项目管理","link":"/loan"},
                 "sidebar":
                 [
-                    {"name":"ALL","text":"所有的借款","link":"/loanList/console?status=&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"ALL","text":"所有的借款","link":"/loanList/console"},
                     {"name":"start","text":"发起借款","link":"/loan"},
-                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/loanList/console?status=WAITING_VERIFY&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"RAISING","text":"筹款中的借款","link":"/loanList/console?status=RAISING&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"RECHECK","text":"复审的借款","link":"/loanList/console?status=RECHECK&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"REPAYING","text":"还款中的借款","link":"/loanList/console?status=REPAYING&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"COMPLETE","text":"完成还款的借款","link":"/loanList/console?status=COMPLETE&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"CANCEL","text":"已经流标的借款","link":"/loanList/console?status=CANCEL&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
-                    {"name":"OVERDUE","text":"逾期的借款","link":"/loanList/console?status=OVERDUE&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10"},
+                    {"name":"WAITING_VERIFY","text":"初审的借款","link":"/loanList/console?status=WAITING_VERIFY"},
+                    {"name":"RAISING","text":"筹款中的借款","link":"/loanList/console?status=RAISING"},
+                    {"name":"RECHECK","text":"复审的借款","link":"/loanList/console?status=RECHECK"},
+                    {"name":"REPAYING","text":"还款中的借款","link":"/loanList/console?status=REPAYING"},
+                    {"name":"COMPLETE","text":"完成还款的借款","link":"/loanList/console?status=COMPLETE"},
+                    {"name":"CANCEL","text":"已经流标的借款","link":"/loanList/console?status=CANCEL"},
+                    {"name":"OVERDUE","text":"逾期的借款","link":"/loanList/console?status=OVERDUE"},
                     {"name":"repaymentInfoList","text":"项目还款明细表","link":"/loan-repay"}
                 ]
             },
