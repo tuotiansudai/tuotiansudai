@@ -1,93 +1,22 @@
 <!DOCTYPE html>
 <html>
+<#import "macro/global.ftl" as global>
 <#import "macro/menu.ftl" as menu>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>用户投资管理</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!-- link bootstrap css and js -->
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <script src="${requestContext.getContextPath()}/js/libs/jquery-1.11.3.min.js"></script>
-    <!-- jquery -->
-    <script src="${requestContext.getContextPath()}/js/libs/bootstrap.min.js"></script>
-    <!-- link bootstrap css and js -->
-
-    <!-- 日历插件 -->
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css" rel="stylesheet"/>
-    <script src="${requestContext.getContextPath()}/js/libs/moment-with-locales.min.js"></script>
-    <script src="${requestContext.getContextPath()}/js/libs/bootstrap-datetimepicker.js"></script>
-    <script src="${requestContext.getContextPath()}/js/libs/bootstrap-select.js"></script>
-    <!--自动补全-->
     <link rel="stylesheet" href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css"/>
-    <script src="${requestContext.getContextPath()}/js/libs/jquery-ui-1.11.4.min.js"></script>
-    <!--自动补全-->
-    <script type="text/javascript">
-        $(function () {
-            $('#datetimepicker1').datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now'});
-            $('#datetimepicker2').datetimepicker({format: 'YYYY-MM-DD', maxDate: 'now'});
-            var dpicker2 = $('#datetimepicker2').data("DateTimePicker");
-            $('#datetimepicker1').on('dp.change', function (e) {
-                dpicker2.minDate(e.date);
-            });
-            $('form button[type="reset"]').click(function () {
-                location.href = "invests";
-            });
-            $('form button[type="submit"]').click(function (event) {
-                var queryParams = '';
-                if ($('form input[name="loanId"]').val()) {
-                    queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
-                }
-                if ($('form input[name="loginName"]').val().length > 0) {
-                    queryParams += "loginName=" + $('form input[name="loginName"]').val() + "&";
-                }
-                if ($('form input[name="startTime"]').val()) {
-                    queryParams += "startTime=" + $('form input[name="startTime"]').val() + "&";
-                }
-                if ($('form input[name="endTime"]').val()) {
-                    queryParams += "endTime=" + $('form input[name="endTime"]').val() + "&";
-                }
-                if ($('form select[name="investStatus"]').val()) {
-                    queryParams += "investStatus=" + $('form select[name="investStatus"]').val() + "&";
-                }
-                location.href = "${requestContext.getContextPath()}/invests?" + queryParams;
-                return false;
-            });
-
-            //自动完成提示
-            var autoValue = '';
-            var api_url = '${requestContext.getContextPath()}/loan/loaner';
-            $("#tags").autocomplete({
-                source: function (query, process) {
-                    //var matchCount = this.options.items;//返回结果集最大数量
-                    $.get(api_url + '/' + query.term, function (respData) {
-                        autoValue = respData;
-                        return process(respData);
-                    });
-                }
-            });
-            $("#tags").blur(function () {
-                for (var i = 0; i < autoValue.length; i++) {
-                    if ($(this).val() == autoValue[i]) {
-                        $(this).removeClass('Validform_error');
-                        return false;
-                    } else {
-                        $(this).addClass('Validform_error');
-                    }
-
-                }
-
-            });
-        });
-    </script>
+<@global.javascript pageJavascript="invest-list.js"></@global.javascript>
     <link rel="stylesheet" href="${requestContext.getContextPath()}/style/index.css">
 </head>
 <body>
@@ -104,16 +33,12 @@
             <div class="col-md-10">
                 <form action="" method="get" class="form-inline query-build">
                     <div class="form-group">
-                        <label for="number">项目编号</label>
+                        <label>项目编号</label>
                         <input type="text" class="form-control" name="loanId" placeholder=""
                                value="${(loanId?string.computer)!}">
                     </div>
                     <div class="form-group">
-                        <label for="number">投资人</label>
-                        <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="number">日期</label>
+                        <label>日期</label>
 
                         <div class='input-group date' id='datetimepicker1'>
                             <input type='text' class="form-control" name="startTime"
@@ -132,13 +57,50 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="project">投资状态</label>
+                        <label>投资人</label>
+                        <input type="text" id="tags" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>投资状态</label>
                         <select class="selectpicker" name="investStatus">
                             <option value="" <#if !(investStatus??)>selected</#if>>全部</option>
                         <#list investStatusList as status>
                             <option value="${status}" <#if investStatus?? && status==investStatus>selected</#if>>
                             ${status.description}
                             </option>
+                        </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>渠道</label>
+                        <select class="selectpicker" name="channel">
+                            <option value="">全部</option>
+                        <#list channelList as channelName>
+                            <option value="${channelName}"
+                                    <#if (channel?has_content && channel == channelName) >selected</#if>
+                                    >${channelName}</option>
+                        </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>来源</label>
+                        <select class="selectpicker" name="source">
+                            <option value="">全部</option>
+                        <#list sourceList as sourceItem>
+                            <option value="${sourceItem.name()}"
+                                    <#if (source?has_content && source == sourceItem.name()) >selected</#if>
+                                    >${sourceItem.name()}</option>
+                        </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>投资人角色</label>
+                        <select class="selectpicker" name="role">
+                            <option value="">全部</option>
+                        <#list roleList as roleItem>
+                            <option value="${roleItem.name()}"
+                                    <#if (role?has_content && role == roleItem.name()) >selected</#if>
+                                    >${roleItem.getDescription()}</option>
                         </#list>
                         </select>
                     </div>
@@ -151,10 +113,12 @@
                         <tr>
                             <th>项目编号</th>
                             <th>项目名称</th>
-                            <th>项目类型</th>
+                            <th>期数</th>
                             <th>投资人</th>
+                            <th>业务员</th>
                             <th>推荐人</th>
-                            <th>投资类型</th>
+                            <th>渠道</th>
+                            <th>来源</th>
                             <th>投资时间</th>
                             <th>自动投标</th>
                             <th>投资金额</th>
@@ -166,9 +130,11 @@
                         <tr>
                             <td>${invest.loanId?string.computer}</td>
                             <td>${invest.loanName}</td>
-                            <td>${invest.loanType}</td>
+                            <td>${invest.loanPeriods?string('0')}</td>
                             <td>${invest.investorLoginName!}</td>
+                            <td>${invest.isStaff()?string('是','否')}</td>
                             <td>${invest.referrerLoginName!}</td>
+                            <td>${invest.channel!}</td>
                             <td>${invest.source}</td>
                             <td>${invest.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
                             <td>${invest.autoInvest?then('是','否')}</td>
@@ -177,7 +143,7 @@
                         </tr>
                         <#else>
                         <tr>
-                            <td colspan="10">Empty</td>
+                            <td colspan="12">Empty</td>
                         </tr>
                         </#list>
                         </tbody>

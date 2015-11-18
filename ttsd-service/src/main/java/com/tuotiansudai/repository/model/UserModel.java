@@ -32,6 +32,8 @@ public class UserModel implements Cloneable, Serializable {
 
     private String salt;
 
+    private String channel;
+
     private AccountModel account;
 
     public String getSalt() {
@@ -148,6 +150,14 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setAccount(AccountModel account) {
         this.account = account;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     @Override

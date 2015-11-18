@@ -14,6 +14,7 @@ public class UserItemDataDto implements Serializable {
     private String email;
     private String mobile;
     private String referrer;
+    private String channel;
     private Date registerTime;
     private List<UserRoleModel> userRoles;
     private UserStatus status;
@@ -58,6 +59,14 @@ public class UserItemDataDto implements Serializable {
         this.referrer = referrer;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -86,6 +95,7 @@ public class UserItemDataDto implements Serializable {
         this.loginName = userModel.getLoginName();
         this.email = userModel.getEmail();
         this.referrer = userModel.getReferrer();
+        this.channel = userModel.getChannel();
         this.mobile = userModel.getMobile();
         this.registerTime = userModel.getRegisterTime();
         if (userModel.getAccount() != null) {

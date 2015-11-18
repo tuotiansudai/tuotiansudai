@@ -66,10 +66,10 @@ public class UserController {
     public ModelAndView findAllUser(String loginName, String email, String mobile,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
-                                    Role role, String referrer, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-        BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, index, pageSize);
+        BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, index, pageSize);
         ModelAndView mv = new ModelAndView("/user-list");
         mv.addObject("baseDto", baseDto);
         mv.addObject("loginName", loginName);
@@ -79,10 +79,13 @@ public class UserController {
         mv.addObject("endTime", endTime);
         mv.addObject("role", role);
         mv.addObject("referrer", referrer);
+        mv.addObject("channel", channel);
         mv.addObject("pageIndex", index);
         mv.addObject("pageSize", pageSize);
         List<Role> roleList = Lists.newArrayList(Role.values());
+        List<String> channelList = userService.findAllChannels();
         mv.addObject("roleList", roleList);
+        mv.addObject("channelList", channelList);
         return mv;
 
     }
