@@ -24,7 +24,7 @@ public class ReferrerManageMapperTest {
     @Autowired
     private ReferrerManageMapper referrerManageMapper;
 
-    @Test
+//    @Test
     public void shouldGetSomeReferRealtion() throws Exception {
 
         Calendar start =  Calendar.getInstance();
@@ -39,7 +39,7 @@ public class ReferrerManageMapperTest {
         assert(referRelationCount>0);
     }
 
-    @Test
+//    @Test
     public void shouldGetSomeReferInvest() throws Exception {
 
         Calendar start =  Calendar.getInstance();
@@ -54,5 +54,5 @@ public class ReferrerManageMapperTest {
     }
 
 
-    
+
 }
