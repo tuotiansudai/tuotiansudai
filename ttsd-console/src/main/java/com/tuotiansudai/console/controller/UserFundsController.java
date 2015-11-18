@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.DownLoadCsvUtil;
+import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,9 +37,9 @@ public class UserFundsController {
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                  @RequestParam(value = "downLoad", required = false) String downLoad,
+                                  @RequestParam(value = "export", required = false) String export,
                                   HttpServletResponse response) throws IOException{
-        if (downLoad != null && !downLoad.equals("")) {
+        if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
                 response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.csv", "UTF-8"));
@@ -63,7 +63,7 @@ public class UserFundsController {
                 dataModel.add(String.valueOf(new BigDecimal(userBillModel.getFreeze()).divide(new BigDecimal(100),2,BigDecimal.ROUND_DOWN).doubleValue()));
                 data.add(dataModel);
             }
-            DownLoadCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader,data,response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/user-funds");

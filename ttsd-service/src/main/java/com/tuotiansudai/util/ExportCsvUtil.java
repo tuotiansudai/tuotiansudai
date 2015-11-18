@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-public class DownLoadCsvUtil {
+public class ExportCsvUtil {
 
     public static BufferedWriter createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
         BufferedWriter csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream));

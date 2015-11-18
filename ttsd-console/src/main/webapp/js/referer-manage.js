@@ -84,7 +84,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();
             var role = $('.role').val();
-            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&downLoad=csv';
+            window.location.href = '/referrerManage?referrerLoginName='+referrerLoginName+'&investLoginName='+investLoginName+'&investStartTime='+investStartTime+'&investEndTime='+investEndTime+'&level='+level+'&rewardStartTime='+rewardStartTime+'&rewardEndTime='+rewardEndTime+'&role='+role+'&export=csv';
         });
     });
 })

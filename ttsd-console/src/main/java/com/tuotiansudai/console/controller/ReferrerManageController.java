@@ -6,7 +6,7 @@ import com.tuotiansudai.repository.model.ReferrerRewardStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.CsvHeaderType;
-import com.tuotiansudai.util.DownLoadCsvUtil;
+import com.tuotiansudai.util.ExportCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,11 +40,11 @@ public class ReferrerManageController {
                                         @RequestParam(value = "role",required = false) Role role,
                                         @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo,
                                         @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
-                                        @RequestParam(value = "downLoad", required = false) String downLoad,
+                                        @RequestParam(value = "export", required = false) String export,
                                         HttpServletResponse response) throws IOException{
         DateTime investDateTime = new DateTime(investEndTime);
         DateTime rewardDateTime = new DateTime(rewardEndTime);
-        if (downLoad != null && !downLoad.equals("")) {
+        if (export != null && !export.equals("")) {
             response.setCharacterEncoding("UTF-8");
             try {
                 response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("推荐人管理.csv", "UTF-8"));
@@ -65,13 +65,13 @@ public class ReferrerManageController {
                 dataModel.add(new DateTime(referrerManageView.getInvestTime()).toString("yyyy-MM-dd HH:mm:ss"));
                 dataModel.add(referrerManageView.getReferrerLoginName());
                 dataModel.add(referrerManageView.getReferrerName());
-                dataModel.add(referrerManageView.getRole() == Role.MERCHANDISER ? "是" : "否");
+                dataModel.add(referrerManageView.getRole() == Role.STAFF ? "是" : "否");
                 dataModel.add(String.valueOf(referrerManageView.getLevel()));
                 dataModel.add(String.valueOf(new BigDecimal(referrerManageView.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
                 dataModel.add(referrerManageView.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
                 dataModel.add(new DateTime(referrerManageView.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
             }
-            DownLoadCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, data, response.getOutputStream());
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, data, response.getOutputStream());
             return null;
         } else {
             ModelAndView modelAndView = new ModelAndView("/referrer-manage");
