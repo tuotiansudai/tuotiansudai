@@ -10,7 +10,7 @@
             </div>
             <div class="item-block">
                 <a class="btn-recharge" href="/recharge">充值</a>
-                <a class="btn-invest" href="/loanList/web">投资</a>
+                <a class="btn-invest" href="/loan-list">投资</a>
                 <a class="btn-withdraw" href="/withdraw">提现</a>
             </div>
             <p>累计充值：<span>${rechargeAmount} 元</span></p>
