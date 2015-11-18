@@ -86,7 +86,7 @@
     box-sizing: border-box;
     .product-box-list {
       width: 76%;
-      overflow: hidden;
+      //overflow: hidden;
       .product-box-inner {
         width:105%;
         box-sizing: border-box;
@@ -98,9 +98,14 @@
           border-radius: 5px;
           position: relative;
           display: inline-block;
-          position: relative;
           margin-bottom:18px;
           color: #999;
+          cursor: pointer;
+          &:hover {
+            -moz-box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+            -webkit-box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+            box-shadow:-1px -1px 6px rgba(0,0,0,0.1),1px 1px 6px rgba(0,0,0,0.1);
+          }
           &.new-standard {
             .hot-new {
               position: absolute;
@@ -113,6 +118,11 @@
           }
           .pr-title {
             font-size: 18px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 125px;
+            margin-left: 35px;
           }
           .pr-square {
             width: 140px;
@@ -126,6 +136,7 @@
               height:120px;
               border-radius:60px;
               border:2px solid #ff752a;
+              background: #fff;
               margin: auto;
               position: absolute;
               left: 0;
@@ -135,7 +146,7 @@
               text-align: center;
               em {
                 color: #ff3333;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 1;
                 font-weight: bold;
                 padding-top: 30px;

@@ -28,6 +28,7 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
+    <link href="${staticServer}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}" charset="utf-8" />
     <#if pageCss?? && pageCss != "">
     <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}" charset="utf-8" />

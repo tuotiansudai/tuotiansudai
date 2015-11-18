@@ -85,6 +85,7 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
             });
         }
         //tab切换
+        $fastRecharge.show();
         tabElement.click(function (index) {
             tabElement.removeClass("active");
             var self = $(this),
