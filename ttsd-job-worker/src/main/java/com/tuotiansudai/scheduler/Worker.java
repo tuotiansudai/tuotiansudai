@@ -14,6 +14,8 @@ import org.quartz.spi.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.TimeZone;
+
 @Component
 public class Worker {
 
@@ -33,10 +35,10 @@ public class Worker {
         String[] schedulerNames = JobConfig.schedulerNames.split(",");
         ThreadPool threadPool = ThreadPoolBuilder.buildThreadPool(JobConfig.threadCount, JobConfig.threadPriority);
         for (String schedulerName : schedulerNames) {
-            if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName)) {
+            if (JobType.OverInvestPayBack.name().equalsIgnoreCase(schedulerName.trim())) {
                 createInvestCallBackJobIfNotExist();
             }
-            if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName)) {
+            if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName.trim())) {
                 this.createCalculateDefaultInterest();
             }
             String fullSchedulerName = "Scheduler-" + schedulerName.trim();
@@ -78,7 +80,7 @@ public class Worker {
     private void createCalculateDefaultInterest() {
         try {
             jobManager.newJob(JobType.CalculateDefaultInterest,CalculateDefaultInterestJob.class).replaceExistingJob(true)
-                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 1 * * ? *"))
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 55 12 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
             e.printStackTrace();
