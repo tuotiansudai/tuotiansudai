@@ -81,7 +81,7 @@ public class PayWrapperClientTest {
         server.enqueue(mockResponse);
         payWrapperClient.setHost(server.getHostName());
         payWrapperClient.setPort(String.valueOf(server.getPort()));
-        payWrapperClient.setContext("");
+        payWrapperClient.setApplicationContext("");
 
         RegisterAccountDto dto = new RegisterAccountDto();
         dto.setLoginName("loginName");
@@ -110,7 +110,7 @@ public class PayWrapperClientTest {
         server.enqueue(mockResponse);
         payWrapperClient.setHost(server.getHostName());
         payWrapperClient.setPort(String.valueOf(server.getPort()));
-        payWrapperClient.setContext("");
+        payWrapperClient.setApplicationContext("");
 
         BaseDto<MonitorDataDto> actualBaseDto = payWrapperClient.monitor();
 
@@ -178,7 +178,7 @@ public class PayWrapperClientTest {
         server.enqueue(mockResponse);
         payWrapperClient.setHost(server.getHostName());
         payWrapperClient.setPort(String.valueOf(server.getPort()));
-        payWrapperClient.setContext("");
+        payWrapperClient.setApplicationContext("");
         BaseDto<PayDataDto> actualBaseDto = payWrapperClient.createLoan(loanDto);
         assertTrue(actualBaseDto.isSuccess());
         assertTrue(actualBaseDto.getData().getStatus());

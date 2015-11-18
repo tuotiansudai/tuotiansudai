@@ -41,7 +41,7 @@
                 <div class="fast-recharge-form">
                     <form action="/recharge" method="post" target="_blank">
                         账户可用余额：<i>${balance}</i> 元 <br/>
-                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00">元
+                        输入充值金额：<input type="text" class="amount" data-d-group="4" data-l-zero="deny" data-v-min="0.00" placeholder="0.00"> 元
                         <input type="hidden" name="bankCode" value="${bankCode}"/>
                         <input type="hidden" name="amount" value=""/>
                         <input type="hidden" name="source" value="WEB"/>

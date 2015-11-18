@@ -31,6 +31,7 @@ public interface UserMapper {
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "role") Role role,
                                 @Param(value = "referrer") String referrer,
+                                @Param(value = "channel") String channel,
                                 @Param(value = "index") Integer index,
                                 @Param(value = "pageSize") Integer pageSize);
 
@@ -40,10 +41,13 @@ public interface UserMapper {
                                 @Param(value = "beginTime") Date beginTime,
                                 @Param(value = "endTime") Date endTime,
                                 @Param(value = "role") Role role,
-                                @Param(value = "referrer") String referrer);
+                                @Param(value = "referrer") String referrer,
+                                @Param(value = "channel") String channel);
 
 
     void updatePasswordByLoginName(@Param(value = "loginName") String loginName, @Param(value = "password") String password);
 
     List<String> findLoginNameLike(String loginName);
+
+    List<String> findAllChannels();
 }

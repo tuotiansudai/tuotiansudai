@@ -8,10 +8,10 @@
             <div class="balance">
                 可用余额：<span>${balance} 元</span>
             </div>
-            <div class="item-block">
-                <a class="btn-recharge" href="/recharge">充值</a>
-                <a class="btn-invest" href="/loanList/web">投资</a>
-                <a class="btn-withdraw" href="/withdraw">提现</a>
+            <div class="pad-s">
+                <a class="btn-recharge btn-primary" href="/recharge">充值</a>
+                <a class="btn-invest btn-action" href="/loan-list">投资</a>
+                <a class="btn-withdraw btn-normal" href="/withdraw">提现</a>
             </div>
             <p>累计充值：<span>${rechargeAmount} 元</span></p>
             <p>累计提现：<span>${withdrawAmount} 元</span></p>
