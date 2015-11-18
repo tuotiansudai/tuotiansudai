@@ -20,13 +20,13 @@
         </div>
     </div>
     <div class="clear-blank"></div>
-    <div class="AssetsBox bg-w">
-        <div class="AssetsReport bRadiusBox fl">
+    <div class="AssetsBox">
+        <div class="AssetsReport bRadiusBox fl bg-w">
             <h3>资产总额：<span>${(((balance+freeze+collectingPrincipal+collectingInterest)/100)?string('0.00'))!}元</span></h3>
 
             <div id="ReportShow" style="width:100%; height:115px; "></div>
         </div>
-        <div class="AssetsDetail bRadiusBox fr">
+        <div class="AssetsDetail bRadiusBox fr bg-w">
             <ul class="DetailList">
                 <li><b>我的余额：</b><span>${((balance/100)?string('0.00'))!}</span>元</li>
                 <li><b>累计收益：</b><span>${(((collectedReward+collectedInterest)/100)?string('0.00'))!}</span>元</li>

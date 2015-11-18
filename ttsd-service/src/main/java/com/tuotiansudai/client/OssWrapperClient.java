@@ -31,26 +31,26 @@ public class OssWrapperClient {
     /**
      * 阿里云ACCESS_KEYID
      */
-    @Value("${plat.oss.access_keyid}")
+    @Value("${common.oss.id}")
     private String accessKeyId;
     /**
      * 阿里云ACCESS_KEYSECRET
      */
-    @Value("${plat.oss.access_keysecret}")
+    @Value("${common.oss.secret}")
     private String accessKeySecret;
     /**
      * 阿里云OSS_ENDPOINT  杭州Url
      */
-    @Value("${plat.oss.oss_endpoint}")
+    @Value("${common.oss.endpoint}")
     private String ossEndpoint;
 
     /**
      * 阿里云BUCKET_NAME  OSS
      */
-    @Value("${plat.oss.bucket_name}")
+    @Value("${common.oss.bucket}")
     private String bucketName;
 
-    @Value("${plat.sitePath}")
+    @Value("${common.oss.upload.folder}")
     private String sitePath;
 
     public OSSClient getOSSClient() {
