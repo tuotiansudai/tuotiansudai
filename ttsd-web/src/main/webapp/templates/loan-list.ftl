@@ -67,8 +67,9 @@
     <div class="loan-list-box">
         <ul>
             <#list loanListWebDtos as loanListWebDto>
-                <li data-url="/loan/${(loanListWebDto.id?string('0'))!}">
+                <li data-url="/loan/${(loanListWebDto.id?string('0'))!}" class="clearfix">
                     <#if loanListWebDto.activityType == 'NEWBIE'>
+
                         <span class="hot"></span>
                     </#if>
                     <div class="loan-info-frame fl">

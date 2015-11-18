@@ -15,7 +15,6 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
             fastRechargeSubmitElement = $('.btn', $fastRechargeForm),
             bankElement = $('.e-bank-recharge ol li'),
             turnOnFastSubmitElement = $('input[type="submit"]',$turnOnFast);
-            $fastRecharge.hide();
 
         if (rechargeInputAmountElement) {
             rechargeInputAmountElement.autoNumeric("init");
@@ -81,8 +80,9 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                 window.location.href = $(this).data('url');
             });
         }
+
         //tab切换
-        $fastRecharge.show();
+
         tabElement.click(function (index) {
             tabElement.removeClass("active");
             var self = $(this),
@@ -92,12 +92,12 @@ require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function
                 $bankRecharge=$('.e-bank-recharge',$rechargeCon);
             self.addClass("active").siblings('li').removeClass('active');
             if(num==0) {
-                $fastRecharge.show();
-                $bankRecharge.hide();
+                $fastRecharge.addClass('active');
+                $bankRecharge.removeClass('active');
             }
             else {
-                $fastRecharge.hide();
-                $bankRecharge.show();
+                $fastRecharge.removeClass('active');
+                $bankRecharge.addClass('active');
             }
         });
     });
