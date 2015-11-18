@@ -56,7 +56,7 @@ public class SmsCaptchaServiceTest {
         server.enqueue(mockResponse);
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
-        smsWrapperClient.setContext("");
+        smsWrapperClient.setApplicationContext("");
         BaseDto<SmsDataDto> dto = smsCaptchaService.sendRegisterCaptcha("13900000000", "127.0.0.1");
 
         SmsCaptchaModel smsCaptchaModel = smsCaptchaMapper.findByMobile("13900000000");
