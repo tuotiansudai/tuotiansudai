@@ -381,8 +381,11 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public void startFundraising(long loanId) {
-        loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-        this.createAutoInvestJob(loanId);
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if(LoanStatus.PREHEAT == loanModel.getStatus()) {
+            loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+            this.createAutoInvestJob(loanId);
+        }
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {
