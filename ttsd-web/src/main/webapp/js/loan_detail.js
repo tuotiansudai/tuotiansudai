@@ -116,5 +116,18 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
         });
 
-
+        $('form').submit(function(){
+            var frm = $(this);
+            if(frm.attr('action') === '/invest'){
+                if(typeof user_can_invest === 'undefined'){
+                    location.href = '/login?redirect='+encodeURIComponent(location.href);
+                    return false;
+                }
+                var amount = $("input[name='amount']",frm).val();
+                if(isNaN(parseFloat(amount))) {
+                    return false;
+                }
+            }
+            return true;
+        });
 });
