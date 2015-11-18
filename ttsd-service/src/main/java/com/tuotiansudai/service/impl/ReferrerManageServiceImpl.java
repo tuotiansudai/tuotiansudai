@@ -2,7 +2,6 @@ package com.tuotiansudai.service.impl;
 
 
 import com.tuotiansudai.dto.BasePaginationDataDto;
-import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
@@ -26,11 +25,11 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    @Value(value = "${referrer.user.reward}")
+    @Value(value = "${pay.user.reward}")
     private String userReward;
 
-    @Value(value = "${referrer.merchandiser.reward}")
-    private String merReward;
+    @Value(value = "${pay.staff.reward}")
+    private String staffReward;
 
     @Override
     public List<ReferrerManageView> findReferrerManage(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, int currentPageNo, int pageSize) {
@@ -64,7 +63,7 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
 
     private String getUserRewardDisplayLevel(String loginName) {
         int level = 0;
-        int merLevel = merReward.split("\\|").length;
+        int merLevel = staffReward.split("\\|").length;
         int userLevel = userReward.split("\\|").length;
 
         List<UserRoleModel> userRoleModelList = userRoleMapper.findByLoginName(loginName);
