@@ -128,7 +128,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
+        return getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+    }
+
+    @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
+                                                                                  String channel, Source source, String role,
                                                                                   int index, int pageSize,
                                                                                   Date startTime, Date endTime,
                                                                                   InvestStatus investStatus, LoanStatus loanStatus) {
@@ -146,13 +152,15 @@ public class InvestServiceImpl implements InvestService {
 
         List<InvestPaginationItemView> items = Lists.newArrayList();
 
-        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, startTime, endTime, investStatus, loanStatus);
+        String strSource = source == null ? null : source.name();
+
+        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
 
 
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
         }
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
@@ -196,6 +204,11 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public AutoInvestPlanModel findUserAutoInvestPlan(String loginName) {
         return autoInvestPlanMapper.findByLoginName(loginName);
+    }
+
+    @Override
+    public List<String> findAllChannel() {
+        return investMapper.findAllChannels();
     }
 
 }

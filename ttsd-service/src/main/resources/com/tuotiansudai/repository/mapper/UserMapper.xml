@@ -20,6 +20,7 @@
         <result column="referrer" property="referrer"></result>
         <result column="status" property="status"></result>
         <result column="salt" property="salt"></result>
+        <result column="channel" property="channel"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -51,8 +52,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt})
+      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -97,6 +98,9 @@
             <if test="referrer !=null and referrer != '' ">
                 and u.referrer = #{referrer}
             </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
 
         </where>
         order by a.register_time asc
@@ -132,11 +136,18 @@
             <if test="referrer !=null and referrer != '' ">
                 and u.referrer = #{referrer}
             </if>
+            <if test="channel !=null and channel != '' ">
+                and u.channel = #{channel}
+            </if>
 
         </where>
     </select>
 
     <select id="findLoginNameLike" parameterType="java.lang.String" resultType="java.lang.String">
         select login_name from user where login_name like CONCAT(CONCAT('%', #{loginName}), '%')
+    </select>
+
+    <select id="findAllChannels" resultType="java.lang.String">
+        select distinct channel from user where channel is not NULL
     </select>
 </mapper>

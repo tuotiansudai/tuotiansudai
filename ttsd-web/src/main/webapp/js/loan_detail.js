@@ -99,8 +99,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             var loanId = $('.hid-loan').val();
             var amount = $(this).val();
             var amountNeedRaised = $('form .amountNeedRaised-i').text();
-
-            if(amountNeedRaised < amount){
+            if(Number(amountNeedRaised) < Number(amount)){
                 $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
                 $btnLookOther.prop('disabled', true);
                 return;
@@ -117,5 +116,19 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             });
         });
 
-
+        $('form').submit(function(){
+            var frm = $(this);
+            if(frm.attr('action') === '/invest'){
+                if(typeof user_can_invest === 'undefined'){
+                    location.href = '/login?redirect='+encodeURIComponent(location.href);
+                    return false;
+                }
+                var amount = $("input[name='amount']",frm).val();
+                if(isNaN(parseFloat(amount))) {
+                    $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
+                    return false;
+                }
+            }
+            return true;
+        });
 });
