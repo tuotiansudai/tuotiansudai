@@ -1,4 +1,8 @@
 require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tpl/loaner-loan-repay-table.mustache', 'moment', 'underscore', 'layer','daterangepicker', 'csrf', 'pagination'], function ($, Mustache, loanListTemplate, loanRepayTemplate, moment, _,layer) {
+    layer.config({
+        path: '/js/libs/layer/'
+    });
+
     //初始化页面
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');

@@ -1,5 +1,7 @@
 require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layer','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination, layer) {
-
+    layer.config({
+        path: '/js/libs/layer/'
+    });
     var today = moment().format('YYYY-MM-DD'); // 今天
     var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
     var month = moment().subtract(1, 'month').format('YYYY-MM-DD');

@@ -1,2 +1,4 @@
-require(['jquery', 'csrf'], function ($) {
+require(['jquery','csrf'], function ($) {
+
+
 });

@@ -1,6 +1,9 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layer','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate,layer) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layer','layer-extend','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate,layer) {
 
-    $(function () {
+    layer.config({
+        path: '/js/libs/layer/'
+    });
+
         var $loanDetail = $('.loan-detail-content'),
             amountInputElement = $(".text-input-amount"),
             $accountInfo = $('.account-info'),
@@ -8,22 +11,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $errorDom = $('.error', $accountInfo),
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
-            $imageList=$('.img-list',$loanlist),
+            $imageList=$('#picListBox'),
             paginationElement = $('.pagination');
         amountInputElement.autoNumeric("init");
-
-        layer.config({extend: 'layer/extend/layer.ext.js'});
-        layer.ready(function(){ //为了layer.ext.js加载完毕再执行
+        layer.ready(function(){
             layer.photos({
-                photos: '#layer-photos-demo'
+                photos: '#picListBox'
             });
         });
 
-        $('body').click(function() {
-            layer.photos({
-                photos: '#layer-photos-demo'
-            });
-        });
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
             paginationElement.loadPagination(requestData, function (data) {
@@ -124,9 +120,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $btnLookOther.prop('disabled', false);
             });
         });
-    });
 
-    window.onload=function() {
-        alert('poo');
-    }
+
 });

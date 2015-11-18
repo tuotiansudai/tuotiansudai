@@ -1,5 +1,7 @@
 require(['jquery', 'layer', 'csrf'], function ($, layer) {
-    $(function () {
+        layer.config({
+            path: '/js/libs/layer/'
+        });
         var $bindCardBox = $('#bindCardBox'),
             $inputBankcard = $('.input-bankcard', $bindCardBox),
             $btnBindCard = $('.bind-card-submit', $bindCardBox),
@@ -51,4 +53,3 @@ require(['jquery', 'layer', 'csrf'], function ($, layer) {
             });
         });
     });
-});

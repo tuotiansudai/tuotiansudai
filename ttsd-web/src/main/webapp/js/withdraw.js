@@ -1,5 +1,7 @@
 require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
-    $(function () {
+    layer.config({
+        path: '/js/libs/layer/'
+    });
         var $withdraw=$('.withdraw'),
          amountInputElement = $(".amount-display",$withdraw),
          submitElement = $('.withdraw-submit',$withdraw),
@@ -37,7 +39,4 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
                 content: $('#popWithdraw')
             });
         });
-
-
     });
-});

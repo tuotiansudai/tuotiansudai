@@ -170,8 +170,7 @@
             </form>
             </#if>
     </div>
-    <div class="clear-blank"></div>
-    <div class="borderBox bg-w">
+    <div class="borderBox bg-w clear-blank">
             <div class="loan-nav">
                 <ul>
                     <li class="active">借款详情<i class="fa fa-caret-up"></i> </li>
@@ -187,27 +186,18 @@
 
                     <div class="loan-material">
                         <h3>申请材料：</h3>
-                        <div id="layer-photos-demo" class="layer-photos-demo">
-                            <img  layer-src="/images/sign/login-background.jpg" src="/images/sign/login-background.jpg" alt="图片名">
-                            <img  layer-src="/images/sign/bg_dialog_cz.png" src="/images/sign/bg_dialog_cz.png" alt="图片名">
-                        </div>
-
-                        <div class="pic-list">
+                        <div class="pic-list" id="picListBox">
                             <#list loan.loanTitleDto as loanTitle>
                                 <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
-                                <ul class="img-list">
-<li><img  layer-src="/images/sign/company-map.png" src="/images/sign/company-map.png"> </li>
-                                    <li><img  layer-src="/images/sign/company.jpg" src="/images/sign/company.jpg"> </li>
-                                    <li><img src="/images/sign/app-code.png" layer-src="/images/sign/app-code.png"> </li>
                                     <#list loan.loanTitles as loanTitleRelation >
                                         <#if loanTitle.id == loanTitleRelation.titleId>
 
                                             <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
-                                                <li><img src="${title}" alt="${loanTitle.title}"/></li>
+                                                <img src="${title}" alt="${loanTitle.title}"/>
                                             </#list>
                                         </#if>
                                     </#list>
-                                </ul>
+
                             </#list>
                         </div>
                     </div>

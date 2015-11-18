@@ -1,5 +1,7 @@
 require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($, layer) {
-    $(function () {
+    layer.config({
+        path: '/js/libs/layer/'
+    });
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
@@ -182,4 +184,3 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
             }
         });
     });
-});
