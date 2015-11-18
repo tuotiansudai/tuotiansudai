@@ -14,9 +14,11 @@ var require = {
         'pagination': staticServer + '/js/dest/pagination.min',
         'lodash': staticServer + '/js/libs/lodash.min',
         'layer': staticServer + '/js/libs/layer/layer',
+        'layer-extend':staticServer+'/js/libs/layer/extend/layer.ext',
         'echarts': staticServer + '/js/libs/echarts/dist/echarts.min',
         'jquery.validate.extension': staticServer + '/js/dest/jquery_validate_extension.min',
-        'commonFun': staticServer + '/js/dest/common.min'
+        'commonFun': staticServer + '/js/dest/common.min',
+        'layerWrapper': staticServer + '/js/dest/wrapper-layer.min'
     },
 
     'shim': {
@@ -26,6 +28,8 @@ var require = {
         'autoNumeric': ['jquery'],
         'pagination': ['jquery'],
         'layer': ['jquery'],
+        'layer-extend': ['layer'],
+        'layerWrapper':['layer','layer-extend'],
         'commonFun': ['jquery.validate'],
         'jquery.validate.extension': ['jquery', 'jquery.validate']
     }

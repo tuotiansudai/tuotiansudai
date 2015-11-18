@@ -1,6 +1,4 @@
-require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
-    $(function () {
-
+require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function ($,layer) {
         var $rechargeCon = $(".recharge-bind-card"),
             $fastRecharge=$('.fast-recharge',$rechargeCon),
             $rechargeForm = $('.recharge-form',$rechargeCon),
@@ -101,8 +99,5 @@ require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, la
                 $fastRecharge.hide();
                 $bankRecharge.show();
             }
-
         });
-
     });
-});
