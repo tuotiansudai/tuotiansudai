@@ -1,9 +1,12 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.UserBillBusinessType;
 import com.tuotiansudai.repository.model.UserBillModel;
 import com.tuotiansudai.repository.model.UserBillOperationType;
 import com.tuotiansudai.service.UserBillService;
+import com.tuotiansudai.util.CsvHeaderType;
+import com.tuotiansudai.util.DownLoadCsvUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -31,48 +36,57 @@ public class UserFundsController {
                                   @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                                   @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
                                   @RequestParam(value = "currentPageNo", defaultValue = "1", required = false) int currentPageNo,
-                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        ModelAndView modelAndView = new ModelAndView("/user-funds");
-        List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, currentPageNo, pageSize);
-        int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
-        modelAndView.addObject("loginName", loginName);
-        modelAndView.addObject("startTime", startTime);
-        modelAndView.addObject("endTime", endTime);
-        modelAndView.addObject("userBillBusinessType", userBillBusinessType);
-        modelAndView.addObject("userBillOperationType", userBillOperationType);
-        modelAndView.addObject("currentPageNo", currentPageNo);
-        modelAndView.addObject("pageSize", pageSize);
-        modelAndView.addObject("userBillModels", userBillModels);
-        modelAndView.addObject("userFundsCount", userFundsCount);
-        modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
-        modelAndView.addObject("operationTypeList", UserBillOperationType.values());
-        long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 ? 1 : 0);
-        boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
-        boolean hasNextPage = currentPageNo < totalPages;
-        modelAndView.addObject("hasPreviousPage", hasPreviousPage);
-        modelAndView.addObject("hasNextPage", hasNextPage);
-        return modelAndView;
+                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                  @RequestParam(value = "downLoad", required = false) String downLoad,
+                                  HttpServletResponse response) throws IOException{
+        if (downLoad != null && !downLoad.equals("")) {
+            response.setCharacterEncoding("UTF-8");
+            try {
+                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.csv", "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/csv");
+            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
+            List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, 1, userFundsCount);
+            List<List<String>> data = Lists.newArrayList();
+            for (UserBillModel userBillModel : userBillModels) {
+                List<String> dataModel = Lists.newArrayList();
+                DateTime dateTime = new DateTime(userBillModel.getCreatedTime());
+                dataModel.add(dateTime != null ? dateTime.toString("yyyy-MM-dd") : "");
+                dataModel.add(String.valueOf(userBillModel.getId()));
+                dataModel.add(userBillModel.getLoginName());
+                dataModel.add(userBillModel.getOperationType().getDescription());
+                dataModel.add(userBillModel.getBusinessType().getDescription());
+                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getBalance()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
+                dataModel.add(String.valueOf(new BigDecimal(userBillModel.getFreeze()).divide(new BigDecimal(100),2,BigDecimal.ROUND_DOWN).doubleValue()));
+                data.add(dataModel);
+            }
+            DownLoadCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUserFundsCsvHeader,data,response.getOutputStream());
+            return null;
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/user-funds");
+            List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime, currentPageNo, pageSize);
+            int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime);
+            modelAndView.addObject("loginName", loginName);
+            modelAndView.addObject("startTime", startTime);
+            modelAndView.addObject("endTime", endTime);
+            modelAndView.addObject("userBillBusinessType", userBillBusinessType);
+            modelAndView.addObject("userBillOperationType", userBillOperationType);
+            modelAndView.addObject("currentPageNo", currentPageNo);
+            modelAndView.addObject("pageSize", pageSize);
+            modelAndView.addObject("userBillModels", userBillModels);
+            modelAndView.addObject("userFundsCount", userFundsCount);
+            modelAndView.addObject("businessTypeList", UserBillBusinessType.values());
+            modelAndView.addObject("operationTypeList", UserBillOperationType.values());
+            long totalPages = userFundsCount / pageSize + (userFundsCount % pageSize > 0 ? 1 : 0);
+            boolean hasPreviousPage = currentPageNo > 1 && currentPageNo <= totalPages;
+            boolean hasNextPage = currentPageNo < totalPages;
+            modelAndView.addObject("hasPreviousPage", hasPreviousPage);
+            modelAndView.addObject("hasNextPage", hasNextPage);
+            return modelAndView;
+        }
     }
 
-    @RequestMapping(value = "/userFundsDownload", method = RequestMethod.GET)
-    public ModelAndView userFundsDownload(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
-                                          @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
-                                          @RequestParam(value = "loginName", required = false) String loginName,
-                                          @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                          @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                          HttpServletResponse response) {
-        response.setCharacterEncoding("UTF-8");
-        try {
-            response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户资金查询.csv", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        response.setContentType("application/csv");
-        ModelAndView modelAndView = new ModelAndView("/user-funds-download");
-        DateTime dateTime = new DateTime(endTime);
-        int userFundsCount = userBillService.findUserFundsCount(userBillBusinessType, userBillOperationType, loginName, startTime, endTime != null ? dateTime.plusDays(1).toDate() : endTime);
-        List<UserBillModel> userBillModels = userBillService.findUserFunds(userBillBusinessType, userBillOperationType, loginName, startTime, endTime != null ? dateTime.plusDays(1).toDate() : endTime, 1, userFundsCount);
-        modelAndView.addObject("userBillModels", userBillModels);
-        return modelAndView;
-    }
 }

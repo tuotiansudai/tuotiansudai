@@ -1,32 +1,23 @@
 package com.tuotiansudai.util;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.List;
-import java.util.Map;
 
 public class DownLoadCsvUtil {
 
-    public static BufferedWriter createCsvOutputStream(Map<String,String> headerMap, List<List<String>> data) {
-        BufferedWriter csvFileOutputStream = null;
+    public static BufferedWriter createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
+        BufferedWriter csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream));
         try {
-            for (Iterator propertyIterator = headerMap.entrySet().iterator(); propertyIterator.hasNext();) {
-                java.util.Map.Entry propertyEntry = (java.util.Map.Entry) propertyIterator.next();
-                csvFileOutputStream.write((String) propertyEntry.getValue() != null ? (String) propertyEntry.getValue() : "");
-                if (propertyIterator.hasNext()) {
-                    csvFileOutputStream.write(",");
-                }
-            }
+            csvFileOutputStream.write(csvHeaderType.getHeader());
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
-                for (Iterator iterator = dataList.iterator(); iterator.hasNext();) {
-                    csvFileOutputStream.write((String)iterator.next() != null ? (String)iterator.next() : "");
-                    if (iterator.hasNext()) {
-                        csvFileOutputStream.write(",");
-                    }
-                }
+                csvFileOutputStream.write(StringUtils.join(dataList,","));
                 csvFileOutputStream.newLine();
             }
         } catch (Exception e) {
