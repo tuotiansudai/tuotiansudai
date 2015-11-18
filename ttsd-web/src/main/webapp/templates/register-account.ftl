@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
-<@global.head title="实名验证" pageCss="${css.register}">
-</@global.head>
-<body>
-<#include "header.ftl" />
+<@global.main pageCss="${css.register}" pageJavascript="${js.register_account}" activeLeftNav="" title="拓天速贷-实名验证" >
+
 <div class="register-container page-width">
     <ul class="step-tab">
         <li class="first"><s></s>1 注册<g></g></li>
@@ -30,8 +26,4 @@
         </ul>
     </div>
 </div>
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.register_account}">
-</@global.javascript>
-</body>
-</html>
+</@global.main>
