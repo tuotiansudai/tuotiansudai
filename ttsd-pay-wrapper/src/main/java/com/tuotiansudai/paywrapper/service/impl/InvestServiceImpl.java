@@ -325,19 +325,32 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void autoInvest(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
+        if (LoanStatus.RAISING != loanModel.getStatus()) {
+            logger.info("can not auto invest, because loan status is not raising, 1");
+            return;
+        }
         List<AutoInvestPlanModel> autoInvestPlanModels = this.findValidPlanByPeriod(AutoInvestMonthPeriod.generateFromLoanPeriod(loanModel.getType().getLoanPeriodUnit(), loanModel.getPeriods()));
         for (AutoInvestPlanModel autoInvestPlanModel : autoInvestPlanModels) {
             try {
+                // recheck loan status
+                loanModel = loanMapper.findById(loanId);
+                if (LoanStatus.RAISING != loanModel.getStatus()) {
+                    logger.info("auto invest was stop, because loan status is not raising, 2");
+                    return;
+                }
                 long availableLoanAmount = loanModel.getLoanAmount() - investMapper.sumSuccessInvestAmount(loanId);
                 if (availableLoanAmount <= 0) {
+                    logger.info("auto invest was stop, because loan was full");
                     return;
                 }
                 long availableSelfLoanAmount = loanModel.getMaxInvestAmount() - investMapper.sumSuccessInvestAmountByLoginName(loanId, autoInvestPlanModel.getLoginName());
                 if (availableSelfLoanAmount <= 0) {
+                    logger.info("auto invest was skip, because amount that user ["+ autoInvestPlanModel.getLoginName()+"] has invested was reach max-invest-amount");
                     continue;
                 }
                 long autoInvestAmount = this.calculateAutoInvestAmount(autoInvestPlanModel, NumberUtils.min(availableLoanAmount, availableSelfLoanAmount, loanModel.getMaxInvestAmount()), loanModel.getInvestIncreasingAmount(), loanModel.getMinInvestAmount());
                 if (autoInvestAmount == 0) {
+                    logger.info("auto invest was skip, because loan amount is not match user's auto-invest setting ["+ autoInvestPlanModel.getLoginName()+"]");
                     continue;
                 }
                 BaseDto<PayDataDto> baseDto = this.investNopwd(loanId, autoInvestAmount, autoInvestPlanModel.getLoginName());
