@@ -37,16 +37,16 @@ public class SmsClient {
 
     public static final char[] DIGIT = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
-    @Value("${zucp.url}")
+    @Value("${sms.zucp.url}")
     private String url;
 
-    @Value("${zucp.sn}")
+    @Value("${sms.zucp.sn}")
     private String sn;
 
-    @Value("${zucp.password}")
+    @Value("${sms.zucp.password}")
     private String password;
 
-    @Value("${sms.interval.second}")
+    @Value("${sms.interval.seconds}")
     private int second;
 
     @Autowired

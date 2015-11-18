@@ -44,12 +44,12 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.identityCode = identityNumber;
         this.isOpenFastPayment = isOpenFastPayment?"1":"0";
         if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
-            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.appWeb.host"), "ptp_mer_bind_card"));
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), "ptp_mer_bind_card"));
             this.setSourceV("HTML5");
         }else{
-            this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("ump.callback.web.host"));
+            this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
-        this.notifyUrl = MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("ump.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
+        this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
 
     }
 

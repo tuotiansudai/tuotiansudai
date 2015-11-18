@@ -216,12 +216,12 @@ public class InvestMapperTest {
 
 
     @Test
-    public void shouldSumSuccessNoviceInvestCount() {
-        long noviceLoanId = idGenerator.generate();
-        createLoan(User_ID, noviceLoanId, ActivityType.NOVICE);
+    public void shouldSumSuccessNewbieInvestCount(){
+        long newbieLoanId = idGenerator.generate();
+        createLoan(User_ID, newbieLoanId, ActivityType.NEWBIE);
 
         InvestModel investModel = this.getFakeInvestModel();
-        investModel.setLoanId(noviceLoanId);
+        investModel.setLoanId(newbieLoanId);
         investModel.setLoginName(User_ID2);
         investModel.setCreatedTime(DateUtils.addHours(new Date(), -1));
         investMapper.create(investModel);
@@ -233,13 +233,13 @@ public class InvestMapperTest {
         investMapper.create(investModel2);
 
         InvestModel investModel3 = this.getFakeInvestModel();
-        investModel3.setLoanId(noviceLoanId);
+        investModel3.setLoanId(newbieLoanId);
         investModel3.setLoginName(User_ID2);
         investModel3.setCreatedTime(DateUtils.addHours(new Date(), -3));
         investMapper.create(investModel3);
 
-        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(User_ID2);
-        assert noviceInvestCount == 2;
+        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(User_ID2);
+        assert newbieInvestCount == 2;
     }
 
     @Test
