@@ -1,8 +1,4 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layer','layer-extend','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate,layer) {
-
-    layer.config({
-        path: '/js/libs/layer/'
-    });
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
 
         var $loanDetail = $('.loan-detail-content'),
             amountInputElement = $(".text-input-amount"),

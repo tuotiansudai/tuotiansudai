@@ -1,7 +1,4 @@
-require(['jquery', 'layer', 'csrf'], function ($, layer) {
-        layer.config({
-            path: '/js/libs/layer/'
-        });
+require(['jquery', 'layerWrapper', 'csrf'], function ($,layer) {
         var $bindCardBox = $('#bindCardBox'),
             $inputBankcard = $('.input-bankcard', $bindCardBox),
             $btnBindCard = $('.bind-card-submit', $bindCardBox),

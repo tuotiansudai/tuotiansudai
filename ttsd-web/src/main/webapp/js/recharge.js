@@ -1,7 +1,4 @@
-require(['jquery', 'layer', 'csrf', 'autoNumeric', 'commonFun'], function ($, layer) {
-    layer.config({
-        path: '/js/libs/layer/'
-    });
+require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric', 'commonFun'], function ($,layer) {
         var $rechargeCon = $(".recharge-bind-card"),
             $fastRecharge=$('.fast-recharge',$rechargeCon),
             $rechargeForm = $('.recharge-form',$rechargeCon),

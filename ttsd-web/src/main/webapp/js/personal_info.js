@@ -1,7 +1,4 @@
-require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($, layer) {
-    layer.config({
-        path: '/js/libs/layer/'
-    });
+require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),

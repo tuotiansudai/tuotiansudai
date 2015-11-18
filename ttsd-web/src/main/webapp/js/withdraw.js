@@ -1,7 +1,4 @@
-require(['jquery', 'layer', 'csrf', 'autoNumeric'], function ($, layer) {
-    layer.config({
-        path: '/js/libs/layer/'
-    });
+require(['jquery', 'layerWrapper', 'csrf', 'autoNumeric'], function ($,layer) {
         var $withdraw=$('.withdraw'),
          amountInputElement = $(".amount-display",$withdraw),
          submitElement = $('.withdraw-submit',$withdraw),
