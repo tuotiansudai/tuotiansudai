@@ -33,7 +33,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-    @Value("${login.max.times}")
+    @Value("${web.login.max.failed.times}")
     private int times;
 
     @Autowired
