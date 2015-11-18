@@ -18,8 +18,6 @@ public class UserModel implements Cloneable, Serializable {
 
     private Date registerTime = new Date();
 
-    private Date lastLoginTime;
-
     private Date lastModifiedTime;
 
     private String lastModifiedUser;
@@ -80,14 +78,6 @@ public class UserModel implements Cloneable, Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
     }
 
     public Date getRegisterTime() {
@@ -154,7 +144,6 @@ public class UserModel implements Cloneable, Serializable {
     public UserModel clone() throws CloneNotSupportedException {
         UserModel clone = (UserModel) super.clone();
         clone.registerTime = this.registerTime != null ? (Date) this.registerTime.clone() : null;
-        clone.lastLoginTime = this.lastLoginTime != null ?  (Date) this.lastLoginTime.clone() : null;
         clone.lastModifiedTime = this.lastModifiedTime != null ? (Date) this.lastModifiedTime.clone() : null;
         return clone;
     }
