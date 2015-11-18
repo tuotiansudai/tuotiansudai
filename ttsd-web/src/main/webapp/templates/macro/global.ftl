@@ -118,7 +118,7 @@
 </#macro>
 
 <#macro role hasRole>
-    <@security.authorize access="hasAnyAuthority(${hasRole})">
+    <@security.authorize access="hasAnyAuthority('${hasRole}')">
         <#nested>
     </@security.authorize>
 </#macro>

@@ -214,5 +214,8 @@
 <script>
     var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
     var java_point = ${loan.amountNeedRaised?string('0')}; //后台传递数据
+    <@global.role hasRole="INVESTOR">
+    var user_can_invest = true;
+    </@global.role>
 </script>
 </@global.main>
