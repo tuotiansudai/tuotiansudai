@@ -35,10 +35,10 @@ public class LoanListController {
                                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : startTime,
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime;
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime);
         List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
                 startTime == null ? new DateTime(0).toDate() : startTime,
-                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime;
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime,
                 currentPageNo, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
         modelAndView.addObject("loanListCount", loanListCount);
