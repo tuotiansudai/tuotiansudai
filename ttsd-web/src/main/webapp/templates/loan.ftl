@@ -4,7 +4,7 @@
     <div class="borderBox bg-w">
         <div class="news-share fl">
             <h2 class="hd">
-                <#if loan.activityType == "NOVICE">
+                <#if loan.activityType == "NEWBIE">
                     <span class="hot"></span>
                 </#if>
             ${loan.projectName}
@@ -214,7 +214,7 @@
 <script>
     var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
     var java_point = ${loan.amountNeedRaised?string('0')}; //后台传递数据
-    <@global.role hasRole="INVESTOR">
+    <@global.role hasRole="'INVESTOR'">
     var user_can_invest = true;
     </@global.role>
 </script>

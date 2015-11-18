@@ -8,14 +8,14 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.exceptions.JedisException;
 
 @Component
-public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
+public class MybatisRedisCacheWrapperClient extends RedisWrapperClient {
 
     static Logger logger = Logger.getLogger(MybatisRedisCacheWrapperClient.class);
 
-    @Value("${redis.cache.db}")
+    @Value("${common.mybatis.cache.db}")
     private int redisDb;
 
-    @Value("${redis.cache.second}")
+    @Value("${common.mybatis.cache.expire.seconds}")
     private int second;
 
     public int getSecond() {
@@ -26,12 +26,12 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         this.second = second;
     }
 
-    private  <T> T execute(JedisAction<T> jedisAction) throws JedisException {
+    private <T> T execute(JedisAction<T> jedisAction) throws JedisException {
         Jedis jedis = null;
         boolean broken = false;
         try {
             jedis = getJedisPool().getResource();
-            if(StringUtils.isNotEmpty(getRedisPassword())){
+            if (StringUtils.isNotEmpty(getRedisPassword())) {
                 jedis.auth(getRedisPassword());
             }
             jedis.select(redisDb);
@@ -49,7 +49,7 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         boolean broken = false;
         try {
             jedis = getJedisPool().getResource();
-            if(StringUtils.isNotEmpty(getRedisPassword())){
+            if (StringUtils.isNotEmpty(getRedisPassword())) {
                 jedis.auth(getRedisPassword());
             }
             jedis.select(redisDb);
@@ -72,12 +72,12 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         });
     }
 
-    public Object expire(final byte[] key,final int seconds) {
+    public Object expire(final byte[] key, final int seconds) {
         this.setJedisPool(getPool());
         return execute(new JedisAction<Object>() {
             @Override
             public Object action(Jedis jedis) {
-                return jedis.expire(key,seconds);
+                return jedis.expire(key, seconds);
             }
         });
     }
@@ -102,7 +102,7 @@ public class MybatisRedisCacheWrapperClient extends RedisWrapperClient{
         });
     }
 
-    public void set(final byte[] key,final byte[] value) {
+    public void set(final byte[] key, final byte[] value) {
         this.setJedisPool(getPool());
         execute(new JedisActionNoResult() {
             @Override

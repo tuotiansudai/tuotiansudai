@@ -70,7 +70,7 @@ public class InvestPaginationItemDataDto implements Serializable {
     }
 
     public boolean isStaff() {
-        return StringUtils.containsIgnoreCase(this.roles, Role.MERCHANDISER.name());
+        return StringUtils.containsIgnoreCase(this.roles, Role.STAFF.name());
     }
 
     public long getInvestId() {

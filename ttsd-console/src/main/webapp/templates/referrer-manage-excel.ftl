@@ -34,7 +34,7 @@
             <td>${referrerManageView.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
             <td>${referrerManageView.referrerLoginName!}</td>
             <td>${referrerManageView.referrerName!}</td>
-            <td><#if referrerManageView.role?? && referrerManageView.role == 'MERCHANDISER'>是<#else>否</#if></td>
+            <td><#if referrerManageView.role?? && referrerManageView.role == 'STAFF'>是<#else>否</#if></td>
             <td>${referrerManageView.level?string('0')}</td>
             <td>${referrerManageView.rewardAmount/100}</td>
             <td><#if referrerManageView.status?? && referrerManageView.status == 'SUCCESS'>已入账<#else>入账失败</#if></td>
