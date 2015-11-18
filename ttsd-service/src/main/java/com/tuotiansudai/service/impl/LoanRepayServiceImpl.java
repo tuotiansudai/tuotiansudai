@@ -96,13 +96,15 @@ public class LoanRepayServiceImpl implements LoanRepayService {
                 investRepayMapper.update(investRepayModel);
             }
         }
-        loanRepayModel.setStatus(RepayStatus.OVERDUE);
-        long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
-                .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()))).setScale(0,BigDecimal.ROUND_DOWN).longValue();
-        loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
-        loanRepayMapper.update(loanRepayModel);
-        loanModel.setStatus(LoanStatus.OVERDUE);
-        loanMapper.update(loanModel);
+        if (loanRepayModel.getRepayDate().before(new Date())) {
+            loanRepayModel.setStatus(RepayStatus.OVERDUE);
+            long loanRepayDefaultInterest = new BigDecimal(loanModel.getLoanAmount()).multiply(new BigDecimal(overdueFee))
+                    .multiply(new BigDecimal(DateUtil.differenceDay(loanRepayModel.getRepayDate(), new Date()))).setScale(0, BigDecimal.ROUND_DOWN).longValue();
+            loanRepayModel.setDefaultInterest(loanRepayDefaultInterest);
+            loanRepayMapper.update(loanRepayModel);
+            loanModel.setStatus(LoanStatus.OVERDUE);
+            loanMapper.update(loanModel);
+        }
     }
 
 }
