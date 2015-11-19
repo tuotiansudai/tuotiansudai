@@ -54,6 +54,8 @@ public class CertificationRequestDto extends BaseParamDto {
         RegisterAccountDto registerAccountDto = new RegisterAccountDto();
         registerAccountDto.setIdentityNumber(this.getUserIdCardNumber());
         registerAccountDto.setUserName(this.getUserRealName());
+        registerAccountDto.setLoginName(this.getBaseParam().getUserId());
+        registerAccountDto.setMobile(this.getBaseParam().getPhoneNum());
         return registerAccountDto;
 
     }
