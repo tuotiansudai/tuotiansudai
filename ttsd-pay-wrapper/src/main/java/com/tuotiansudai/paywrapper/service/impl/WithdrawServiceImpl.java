@@ -15,11 +15,9 @@ import com.tuotiansudai.paywrapper.repository.model.async.callback.WithdrawNotif
 import com.tuotiansudai.paywrapper.repository.model.async.request.CustWithdrawalsRequestModel;
 import com.tuotiansudai.paywrapper.service.WithdrawService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
+import com.tuotiansudai.repository.mapper.BankCardMapper;
 import com.tuotiansudai.repository.mapper.WithdrawMapper;
-import com.tuotiansudai.repository.model.AccountModel;
-import com.tuotiansudai.repository.model.UserBillBusinessType;
-import com.tuotiansudai.repository.model.WithdrawModel;
-import com.tuotiansudai.repository.model.WithdrawStatus;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.log4j.Logger;
@@ -36,11 +34,6 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     static Logger logger = Logger.getLogger(WithdrawServiceImpl.class);
 
-    /**
-     * 联动优势提现手续费3元(300分)
-     */
-    private static final long WITHDRAW_FEE = 300;
-
     @Autowired
     private PayAsyncClient payAsyncClient;
 
@@ -49,6 +42,9 @@ public class WithdrawServiceImpl implements WithdrawService {
 
     @Autowired
     private WithdrawMapper withdrawMapper;
+
+    @Autowired
+    private BankCardMapper bankCardMapper;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -60,12 +56,15 @@ public class WithdrawServiceImpl implements WithdrawService {
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> withdraw(WithdrawDto withdrawDto) {
-        AccountModel accountModel = accountMapper.findByLoginName(withdrawDto.getLoginName());
+        String loginName = withdrawDto.getLoginName();
+        AccountModel accountModel = accountMapper.findByLoginName(loginName);
+        BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
         WithdrawModel withdrawModel = new WithdrawModel(withdrawDto);
+        withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setId(idGenerator.generate());
         CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(withdrawModel.getAmount() - WITHDRAW_FEE));
+                String.valueOf(withdrawModel.getAmount() - withdrawModel.getFee()));
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CustWithdrawalsMapper.class, requestModel);
             withdrawMapper.create(withdrawModel);
@@ -111,13 +110,13 @@ public class WithdrawServiceImpl implements WithdrawService {
             long amount = withdrawModel.getAmount();
             if (callbackRequestModel.isSuccess()) {
                 amountTransfer.freeze(loginName, orderId, amount, UserBillBusinessType.APPLY_WITHDRAW, null, null);
-                withdrawModel.setStatus(WithdrawStatus.RECHECK);
+                withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
                 //TODO update system bill
             } else {
-                withdrawModel.setStatus(WithdrawStatus.VERIFY_FAIL);
+                withdrawModel.setStatus(WithdrawStatus.APPLY_FAIL);
             }
-            withdrawModel.setVerifyTime(new Date());
-            withdrawModel.setVerifyMessage(callbackRequestModel.getRetMsg());
+            withdrawModel.setApplyNotifyTime(new Date());
+            withdrawModel.setApplyNotifyMessage(callbackRequestModel.getRetMsg());
             withdrawMapper.update(withdrawModel);
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));
@@ -146,10 +145,10 @@ public class WithdrawServiceImpl implements WithdrawService {
                 withdrawModel.setStatus(WithdrawStatus.SUCCESS);
                 //TODO update system bill
             } else {
-                withdrawModel.setStatus(WithdrawStatus.RECHECK_FAIL);
+                withdrawModel.setStatus(WithdrawStatus.FAIL);
             }
-            withdrawModel.setRecheckTime(new Date());
-            withdrawModel.setRecheckMessage(callbackRequestModel.getRetMsg());
+            withdrawModel.setNotifyTime(new Date());
+            withdrawModel.setNotifyMessage(callbackRequestModel.getRetMsg());
             withdrawMapper.update(withdrawModel);
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("Withdraw callback order is not a number (orderId = {0})", callbackRequestModel.getOrderId()));

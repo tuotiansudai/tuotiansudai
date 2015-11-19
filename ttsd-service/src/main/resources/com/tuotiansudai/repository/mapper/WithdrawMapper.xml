@@ -5,38 +5,68 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.WithdrawMapper">
 
     <resultMap id="withdrawResultMap" type="WithdrawModel">
-        <id column="id" property="id"></id>
-        <result column="login_name" property="loginName"></result>
-        <result column="amount" property="amount"></result>
-        <result column="fee" property="fee"></result>
-        <result column="verify_message" property="verifyMessage"></result>
-        <result column="verify_time" property="verifyTime"></result>
-        <result column="recheck_message" property="recheckMessage"></result>
-        <result column="recheck_time" property="recheckTime"></result>
-        <result column="status" property="status"></result>
-        <result column="source" property="source"></result>
-        <result column="created_time" property="createdTime"></result>
-        <result column="user_name" property="userName"></result>
-        <result column="is_admin" property="isAdmin"></result>
+        <id column="withdraw_id" property="id"></id>
+        <result column="withdraw_bank_card_id" property="bankCardId"></result>
+        <result column="withdraw_login_name" property="loginName"></result>
+        <result column="withdraw_amount" property="amount"></result>
+        <result column="withdraw_fee" property="fee"></result>
+        <result column="withdraw_apply_notify_message" property="applyNotifyMessage"></result>
+        <result column="withdraw_apply_notify_time" property="applyNotifyTime"></result>
+        <result column="withdraw_notify_message" property="notifyMessage"></result>
+        <result column="withdraw_notify_time" property="notifyTime"></result>
+        <result column="withdraw_status" property="status"></result>
+        <result column="withdraw_source" property="source"></result>
+        <result column="withdraw_created_time" property="createdTime"></result>
+        <association property="bankCard" javaType="BankCardModel">
+            <id column="bank_card_id" property="id"></id>
+            <result column="bank_card_bank_code" property="bankCode"></result>
+            <result column="bank_card_card_number" property="cardNumber"></result>
+            <result column="bank_card_created_time" property="createdTime"></result>
+            <result column="bank_card_status" property="status"></result>
+            <result column="bank_card_login_name" property="loginName"></result>
+            <result column="bank_card_is_fast_pay_on" property="isFastPayOn"></result>
+        </association>
     </resultMap>
 
+    <sql id="columns">
+        withdraw.id as withdraw_id,
+        withdraw.bank_card_id as withdraw_bank_card_id,
+        withdraw.login_name as withdraw_login_name,
+        withdraw.amount as withdraw_amount,
+        withdraw.fee as withdraw_fee,
+        withdraw.apply_notify_message as withdraw_apply_notify_message,
+        withdraw.apply_notify_time as withdraw_notify_time,
+        withdraw.notify_message as withdraw_notify_message,
+        withdraw.notify_time as withdraw_notify_time,
+        withdraw.status as withdraw_status,
+        withdraw.source as withdraw_source,
+        withdraw.created_time as withdraw_created_time,
+        bank_card.id as bank_card_id,
+        bank_card.bank_code as bank_card_bank_code,
+        bank_card.card_number as bank_card_card_number,
+        bank_card.created_time as bank_card_created_time,
+        bank_card.status as bank_card_status,
+        bank_card.login_name as bank_card_login_name,
+        bank_card.is_fast_pay_on as bank_card_is_fast_pay_on
+    </sql>
+
     <insert id="create" parameterType="WithdrawModel">
-        insert into withdraw (id, login_name, amount, fee, status, source, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime})
+        insert into withdraw (id, bank_card_id, login_name, amount, fee, status, source, created_time)
+        value(#{id}, #{bankCardId}, #{loginName}, #{amount}, #{fee}, #{status}, #{source}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="withdrawResultMap">
-        select * from withdraw where id = #{id}
+        select <include refid="columns"></include> from withdraw join bank_card on withdraw.bank_card_id = bank_card.id where withdraw.id = #{id}
     </select>
 
     <update id="update" parameterType="WithdrawModel">
         update withdraw
         <set>
             <if test="status != null">status = #{status},</if>
-            <if test="verifyTime != null">verify_time = #{verifyTime},</if>
-            <if test="verifyMessage != null">verify_message = #{verifyMessage},</if>
-            <if test="recheckTime != null">recheck_time = #{recheckTime},</if>
-            <if test="recheckMessage != null">recheck_message = #{recheckMessage}</if>
+            <if test="applyNotifyTime != null">apply_notify_time = #{applyNotifyTime},</if>
+            <if test="applyNotifyMessage != null">apply_notify_message = #{applyNotifyMessage},</if>
+            <if test="notifyTime != null">notify_time = #{notifyTime},</if>
+            <if test="notifyMessage != null">notify_message = #{notifyMessage}</if>
         </set>
         where id = #{id}
     </update>
@@ -46,47 +76,46 @@
     </select>
 
     <select id="findWithdrawPagination" parameterType="map" resultMap="withdrawResultMap">
-        select w.id, w.login_name, w.amount, w.fee, w.verify_message, w.verify_time, w.recheck_message, w.recheck_time, w.created_time, w.status, w.source, a.user_name as user_name,
-        exists (select 1 from user_role r where r.login_name = w.login_name and r.role='admin') as is_admin
-        from withdraw w join account a on w.login_name = a.login_name
+        select <include refid="columns"></include>
+        from withdraw join bank_card on withdraw.bank_card_id = bank_card.id
         <where>
-            <if test="withdrawId !=null and withdrawId != '' ">
-                w.id = #{withdrawId}
+            <if test="withdrawId != null and withdrawId != ''">
+                and withdraw.id = #{withdrawId}
             </if>
-            <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and w.login_name like '${loginName}%']]>
+            <if test="loginName != null and loginName != ''">
+                and withdraw.login_name = ${loginName}
             </if>
             <if test="startTime !=null" >
-                and w.created_time >= #{startTime}
+                and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
-                and w.created_time &lt;= #{endTime}
+                and withdraw.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
-                and w.status  = #{status}
+                and withdraw.status = #{status}
             </if>
         </where>
-        order by w.created_time desc
+        order by withdraw.created_time desc, withdraw.id asc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findWithdrawCount" parameterType="map" resultType="int">
+    <select id="findWithdrawCount" parameterType="map" resultType="long">
         select count(1) from withdraw
         <where>
-            <if test="withdrawId !=null and withdrawId != '' ">
-                id = #{withdrawId}
+            <if test="withdrawId != null and withdrawId != '' ">
+                and withdraw.id = #{withdrawId}
             </if>
-            <if test="loginName !=null and loginName != '' ">
-                <![CDATA[and login_name like '${loginName}%']]>
+            <if test="loginName != null and loginName != '' ">
+                and withdraw.login_name = ${loginName}
             </if>
             <if test="startTime !=null" >
-                and created_time >= #{startTime}
+                and withdraw.created_time >= #{startTime}
             </if>
             <if test="endTime !=null ">
-                and created_time &lt;= #{endTime}
+                and withdraw.created_time &lt;= #{endTime}
             </if>
             <if test="status !=null">
-                and status  = #{status}
+                and withdraw.status = #{status}
             </if>
         </where>
     </select>

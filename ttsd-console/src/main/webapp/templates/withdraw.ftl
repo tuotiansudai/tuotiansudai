@@ -87,10 +87,8 @@
                             <th>初审时间</th>
                             <th>复核时间</th>
                             <th>用户名</th>
-                            <th>真实姓名</th>
                             <th>提现金额</th>
                             <th>手续费</th>
-                            <th>管理员提现</th>
                             <th>银行卡</th>
                             <th>状态</th>
                         </tr>
@@ -102,14 +100,12 @@
                             <tr>
                                 <td>${withdrawItem.withdrawId}</td>
                                 <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                                <td>${(withdrawItem.verifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
-                                <td>${(withdrawItem.recheckTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
+                                <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
                                 <td>${withdrawItem.loginName}</td>
-                                <td>${withdrawItem.userName}</td>
                                 <td>${withdrawItem.amount}</td>
                                 <td>${withdrawItem.fee}</td>
-                                <td><#if withdrawItem.adminRole==1>是<#else>否</#if></td>
-                                <td>TODO</td>
+                                <td>${withdrawItem.bankCard}</td>
                                 <td>${withdrawItem.status}</td>
                             </tr>
                             </#list>
