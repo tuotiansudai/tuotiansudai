@@ -9,6 +9,7 @@ import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ReferrerManageService;
+import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,6 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     @Override
     public BasePaginationDataDto findReferrerRelationList(String referrerLoginName, String loginName, Date referStartTime, Date referEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
-
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList(referrerLoginName, loginName, referStartTime, referEndTime, level, (index - 1) * pageSize, pageSize);
         int count = referrerManageMapper.findReferRelationCount(referrerLoginName, loginName, referStartTime, referEndTime, level);
         BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referRelationList);
@@ -54,12 +54,20 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     @Override
     public BasePaginationDataDto findReferInvestList(String referrerLoginName, String loginName, Date investStartTime, Date investEndTime, int index, int pageSize) {
         String level = getUserRewardDisplayLevel(referrerLoginName);
-
         List<ReferrerManageView> referrerManageViewList = referrerManageMapper.findReferInvestList(referrerLoginName, loginName, investStartTime, investEndTime, level, (index - 1) * pageSize, pageSize);
+        formatAmount(referrerManageViewList);
         int count = referrerManageMapper.findReferInvestCount(referrerLoginName, loginName, investStartTime, investEndTime, level);
         BasePaginationDataDto baseDto = new BasePaginationDataDto(index, pageSize, count, referrerManageViewList);
         return baseDto;
     }
+
+    private void formatAmount(List<ReferrerManageView> referrerManageViewList) {
+        for (ReferrerManageView view : referrerManageViewList) {
+            view.setInvestAmountStr(AmountConverter.convertCentToString(view.getInvestAmount()));
+            view.setRewardAmountStr(AmountConverter.convertCentToString(view.getRewardAmount()));
+        }
+    }
+
     @Override
     public String getUserRewardDisplayLevel(String loginName) {
         int level = 0;
@@ -77,4 +85,11 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         return level == 0 ? null : String.valueOf(level);
     }
 
+
+    @Override
+    public String findReferInvestTotalAmount(String referrerLoginName, String loginName, Date startTime, Date endTime) {
+        String level = getUserRewardDisplayLevel(referrerLoginName);
+        Long totalAmount = referrerManageMapper.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime, level);
+        return totalAmount == null ? "0" : AmountConverter.convertCentToString(totalAmount);
+    }
 }

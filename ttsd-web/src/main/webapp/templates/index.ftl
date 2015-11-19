@@ -2,12 +2,14 @@
 <@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="">
 <div class="banner-box">
     <div class="page-width">
+        <@global.isAnonymous>
         <div class="register-ad-box fr tc">
             <em class="percent clearfix">16%</em>
             <b class="h-title clear-blank">最高年化收益率</b>
             <a class="btn-normal" href="/register/user">免费注册 </a>
             <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
         </div>
+        </@global.isAnonymous>
     </div>
 </div>
 <div class="main-advantage page-width">

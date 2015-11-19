@@ -51,4 +51,9 @@ public interface ReferrerManageMapper {
                              @Param("investEndTime") Date referEndTime,
                              @Param("level") String level);
 
+    long findReferInvestTotalAmount(@Param("referrerLoginName") String referrerLoginName,
+                                    @Param("loginName") String loginName,
+                                    @Param("investStartTime") Date referStartTime,
+                                    @Param("investEndTime") Date referEndTime,
+                                    @Param("level") String level);
 }

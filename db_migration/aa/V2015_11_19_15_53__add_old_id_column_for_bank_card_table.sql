@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`bank_card` ADD `old_id` VARCHAR(32) AFTER `id`;

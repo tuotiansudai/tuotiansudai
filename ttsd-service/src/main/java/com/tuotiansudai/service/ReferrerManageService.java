@@ -19,4 +19,6 @@ public interface ReferrerManageService {
     BasePaginationDataDto findReferInvestList(String referrerLoginName, String loginName, Date startTime, Date endTime, int index, int pageSize);
 
     String getUserRewardDisplayLevel(String loginName);
+
+    String findReferInvestTotalAmount(String referrerLoginName, String loginName, Date startTime, Date endTime);
 }

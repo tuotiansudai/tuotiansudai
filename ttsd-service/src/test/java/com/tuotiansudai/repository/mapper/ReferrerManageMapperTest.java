@@ -81,7 +81,6 @@ public class ReferrerManageMapperTest {
 
         Calendar end =  Calendar.getInstance();
         end.add(Calendar.DATE, 1);
-
         List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList("test1", "test2", start.getTime(), end.getTime(), null, 0, 10);
         assertNotNull(referRelationList.get(0));
 

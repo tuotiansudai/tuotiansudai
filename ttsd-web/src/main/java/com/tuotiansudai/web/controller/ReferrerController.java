@@ -27,12 +27,15 @@ public class ReferrerController {
     @Autowired
     private ReferrerManageService referrerService;
 
-    @RequestMapping(value = "/referList", method = RequestMethod.GET)
+    @RequestMapping(value = "/refer-list", method = RequestMethod.GET)
     public ModelAndView investList() {
-        return new ModelAndView("/refer-list");
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("/refer-list");
+        modelAndView.addObject("referrer", loginName);
+        return modelAndView;
     }
 
-    @RequestMapping(value = "/referRelation", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/refer-relation", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> referListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                         @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
@@ -47,7 +50,7 @@ public class ReferrerController {
         return dto;
     }
 
-    @RequestMapping(value = "/referInvest", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/refer-invest", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> referInvest(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                       @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
@@ -61,5 +64,16 @@ public class ReferrerController {
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;
+    }
+
+    @RequestMapping(value = "/total-reward", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findReferInvestTotalAmount(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                           @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                           @RequestParam(name = "loginName", required = false) String loginName) {
+
+        String referrerLoginName = LoginUserInfo.getLoginName();
+        String totalRewardAmount = referrerService.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime);
+        return totalRewardAmount;
     }
 }

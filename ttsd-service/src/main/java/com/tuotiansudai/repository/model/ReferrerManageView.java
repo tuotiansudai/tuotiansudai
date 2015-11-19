@@ -15,6 +15,8 @@ public class ReferrerManageView {
 
     private long investAmount;
 
+    private String investAmountStr;
+
     private Date investTime;
 
     private String referrerLoginName;
@@ -26,6 +28,8 @@ public class ReferrerManageView {
     private int level;
 
     private long rewardAmount;
+
+    private String rewardAmountStr;
 
     private ReferrerRewardStatus status;
 
@@ -135,4 +139,19 @@ public class ReferrerManageView {
         this.rewardTime = rewardTime;
     }
 
+    public String getInvestAmountStr() {
+        return investAmountStr;
+    }
+
+    public void setInvestAmountStr(String investAmountStr) {
+        this.investAmountStr = investAmountStr;
+    }
+
+    public String getRewardAmountStr() {
+        return rewardAmountStr;
+    }
+
+    public void setRewardAmountStr(String rewardAmountStr) {
+        this.rewardAmountStr = rewardAmountStr;
+    }
 }

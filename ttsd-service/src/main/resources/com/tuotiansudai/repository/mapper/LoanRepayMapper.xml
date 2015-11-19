@@ -242,7 +242,7 @@
               `loan_repay` t
               JOIN `loan` l
                 ON t.`loan_id` = l.`id`
-                AND l.`status` IN ('COMPLETE', 'REPAYING')
+                AND l.`status` != 'COMPLETE'
                 AND l.`agent_login_name` = #{loginName}
             WHERE t.`status` IN (
                 'REPAYING',

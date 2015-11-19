@@ -1,39 +1,22 @@
-<table class="invest-list table-striped">
+<table class="refer-relation table-striped">
     <thead>
         <tr>
-            <th>项目名称</th>
-            <th>我的投资</th>
-            <th>交易时间</th>
-            <th>交易状态</th>
-            <th>下次回款</th>
-            <th>操作</th>
+            <th>被推荐人</th>
+            <th>被推荐人层级</th>
+            <th>时间</th>
         </tr>
     </thead>
     <tbody>
        {{#records}}
         <tr>
-            <td><a  href="/loan/{{loanId}}">{{loanName}}</td>
-            <td>{{amount}}元</td>
-            <td>{{createdTime}}</td>
-            <td>{{status}}</td>
-            <td>
-            {{#nextRepayDate}}
-                {{nextRepayDate}} / {{nextRepayAmount}} 元
-            {{/nextRepayDate}}
-            {{^nextRepayDate}} -- {{/nextRepayDate}}
-            </td>
-            <td>
-            {{#hasInvestRepay}}
-            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</a> |
-            <a class="red" href="/contract/investor/loanId/{{loanId}}" target="_blank">合同</a>
-            {{/hasInvestRepay}}
-            {{^hasInvestRepay}} -- {{/hasInvestRepay}}
-            </td>
+            <td>{{loginName}}</td>
+            <td>{{level}}</td>
+            <td>{{registerTime}}</td>
         </tr>
         {{/records}}
 
         {{^records}}
-         <td colspan="6" class="no-data">暂时没有投资纪录</td>
+         <td colspan="3" class="no-data">暂时没有推荐纪录</td>
         {{/records}}
     </tbody>
 </table>
