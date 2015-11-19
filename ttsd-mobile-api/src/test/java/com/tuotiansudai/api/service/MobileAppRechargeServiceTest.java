@@ -32,6 +32,9 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
     @Mock
     private BankCardMapper bankCardMapper;
 
+    @Mock
+    private MobileAppChannelService mobileAppChannelService;
+
     @Test
     public void shouldRechargeSuccess() throws Exception {
         BankCardRequestDto bankCardRequestDto = new BankCardRequestDto();
@@ -42,6 +45,7 @@ public class MobileAppRechargeServiceTest extends ServiceTestBase {
         bankCardModel.setLoginName("loginName");
         bankCardModel.setIsFastPayOn(true);
         bankCardModel.setCardNumber("1234567890");
+        when(mobileAppChannelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         when(bankCardMapper.findByLoginNameAndIsFastPayOn(anyString())).thenReturn(bankCardModel);
         bankCardRequestDto.setBaseParam(BaseParamTest.getInstance());
 
