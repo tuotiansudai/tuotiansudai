@@ -4,6 +4,7 @@ import com.tuotiansudai.api.dto.BankCardRequestDto;
 import com.tuotiansudai.api.dto.BankCardResponseDto;
 import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.service.MobileAppChannelService;
 import com.tuotiansudai.api.service.MobileAppRechargeService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.client.PayWrapperClient;
@@ -25,13 +26,19 @@ import java.text.MessageFormat;
 public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     @Autowired
     private PayWrapperClient payWrapperClient;
+
     @Autowired
     private BankCardMapper bankCardMapper;
+
+    @Autowired
+    private MobileAppChannelService channelService;
 
     @Override
     public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
+        rechargeDto.setChannel(channelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
+
         String loginName = rechargeDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
         if (bankCardModel == null) {
