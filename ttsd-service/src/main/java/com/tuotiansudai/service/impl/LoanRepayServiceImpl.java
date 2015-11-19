@@ -66,6 +66,7 @@ public class LoanRepayServiceImpl implements LoanRepayService {
 
     @Override
     public List<LoanRepayModel> findLoanRepayInAccount(String loginName,Date startTime,Date endTime,int startLimit,int endLimit){
+        System.out.println("service size is " + loanRepayMapper.findByLoginNameAndTimeRepayList(loginName,startTime,endTime,startLimit,endLimit).size());
         return this.loanRepayMapper.findByLoginNameAndTimeRepayList(loginName,startTime,endTime,startLimit,endLimit);
     }
 
