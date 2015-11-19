@@ -12,9 +12,15 @@
             var $stepsParty=$('#stepsParty'),
                     $stepNav=$('.steps-icon',$stepsParty),
                     $stepsShow=$('.steps-show',$stepsParty);
-            $stepNav.find('li').click(function(index) {
-                var num=$stepNav.find('li').index(this);
-                $stepsShow.find('img').eq(num).show().siblings().hide();
+            $stepNav.find('li.menu-step').eq(0).find('.init-hover').show().siblings('img').hide();
+            $stepNav.find('li.menu-step').click(function(index) {
+                var $this=$(this),
+                    num=$stepNav.find('li.menu-step').index(this);
+                $stepsShow.find('img').eq(num).show().siblings('img').hide();
+                $stepNav.find('img.init-hover').hide();
+                $stepNav.find('img.init').show();
+                $this.find('img.init-hover').show().siblings('img').hide();
+
             });
         });
     </script>
@@ -74,19 +80,34 @@
     </ul>
 
     <div class="nav-steps" >
-        <img src="images/steps/three.png" class="steps-menu">
+
         <ul class="steps-icon clearfix">
-            <li></li>
-            <li></li>
-            <li></li>
+            <li class="menu-step">
+                <img src="images/steps/menu1.png" class="init">
+                <img src="images/steps/menu1-hover.png" class="init-hover">
+            </li>
+            <li class="menu-line">
+                <img src="images/steps/m-line1.png">
+            </li>
+            <li class="menu-step">
+                <img src="images/steps/menu2.png" class="init">
+                <img src="images/steps/menu2-hover.png" class="init-hover">
+            </li>
+            <li class="menu-line">
+                <img src="images/steps/m-line2.png">
+            </li>
+            <li class="menu-step">
+                <img src="images/steps/menu3.png" class="init">
+                <img src="images/steps/menu3-hover.png" class="init-hover">
+            </li>
         </ul>
     </div>
 
     <div class="steps-show">
-
-        <img src="images/steps/st01.png">
-        <img src="images/steps/st02.png" >
-        <img src="images/steps/st03.png">
+        <img src="images/steps/menu1-con.png">
+        <img src="images/steps/menu2-con.png" >
+        <img src="images/steps/menu3-con.png">
+        <a href="https://tuotiansudai.com/p2p_loan-list_xsb" class="btn-open-reward"></a>
     </div>
 
 
