@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.model.RechargeSource;
 import com.tuotiansudai.repository.model.RechargeStatus;
 
 import java.util.Date;
+import java.util.List;
 
 public interface RechargeService {
 
@@ -18,10 +19,13 @@ public interface RechargeService {
                                                           String loginName,
                                                           RechargeSource source,
                                                           RechargeStatus status,
+                                                          String channel,
                                                           int index,
                                                           int pageSize,
                                                           Date startTime,
                                                           Date endTime);
 
     long sumSuccessRechargeAmount(String loginName);
+
+    List<String> findAllChannel();
 }

@@ -95,9 +95,9 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return true;
         });
 
-        amountInputElement.blur(function(){
+        var calExpectedInterest = function(){
             var loanId = $('.hid-loan').val();
-            var amount = $(this).val();
+            var amount = amountInputElement.val();
             var amountNeedRaised = $('form .amountNeedRaised-i').text();
             if(Number(amountNeedRaised) < Number(amount)){
                 $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
@@ -114,7 +114,12 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $('.expected-interest').html(amount);
                 $btnLookOther.prop('disabled', false);
             });
-        });
+        }
+        calExpectedInterest();
+        amountInputElement.blur(calExpectedInterest);
+
+
+
 
         $('form').submit(function(){
             var frm = $(this);
