@@ -40,6 +40,8 @@ public class RechargeList extends EntityQuery<Recharge> implements
 
 	private List<RechargeBankCard> rechargeBankCards;
 
+	private List<String> allChannelList;
+
 	private boolean isOpenFastPayment;
 
 	private List<RechargeBankCard> rechargeBankCardQuickPays;
@@ -54,6 +56,7 @@ public class RechargeList extends EntityQuery<Recharge> implements
 				"status = #{rechargeList.example.status}",
 				"source = #{rechargeList.example.source}",
 				"rechargeWay like #{rechargeList.example.rechargeWay}",
+				"channel = #{rechargeList.example.channel}",
 				"user.username like #{rechargeList.example.user.username}" };
 
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
@@ -64,6 +67,7 @@ public class RechargeList extends EntityQuery<Recharge> implements
 	protected void initExample() {
 		super.initExample();
 		getExample().setUser(new User());
+		initAllChannelList();
 	}
 
 	public List<RechargeBankCard> getRechargeBankCards() {
@@ -73,6 +77,10 @@ public class RechargeList extends EntityQuery<Recharge> implements
 			this.rechargeBankCards = rechargeService.getBankCardsList();
 		}
 		return this.rechargeBankCards;
+	}
+
+	private void initAllChannelList(){
+		this.allChannelList = rechargeService.getAllChannelName();
 	}
 
 	public Double getSumActualMoney(){
@@ -125,5 +133,13 @@ public class RechargeList extends EntityQuery<Recharge> implements
 
 	public void setIsOpenFastPayment(boolean isOpenFastPayment) {
 		this.isOpenFastPayment = isOpenFastPayment;
+	}
+
+	public List<String> getAllChannelList() {
+		return allChannelList;
+	}
+
+	public void setAllChannelList(List<String> allChannelList) {
+		this.allChannelList = allChannelList;
 	}
 }

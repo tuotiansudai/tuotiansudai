@@ -2,15 +2,16 @@
 <@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="">
 <div class="banner-box">
     <div class="page-width">
+        <@global.isAnonymous>
         <div class="register-ad-box fr tc">
             <em class="percent clearfix">16%</em>
             <b class="h-title clear-blank">最高年化收益率</b>
             <a class="btn-normal" href="/register/user">免费注册 </a>
             <i class="clearfix tr">已有账户？<a href="/login"> 立即登录</a></i>
         </div>
+        </@global.isAnonymous>
     </div>
 </div>
-
 <div class="main-advantage page-width">
     <dl>
         <dd>
@@ -20,7 +21,6 @@
                  <b class="clearfix">超高收益 最低门槛</b>
                 最高46倍活期存款收益 <br/>
                     最低投资门槛1元
-
             </span>
             </a>
         </dd>
@@ -52,8 +52,8 @@
         <section class="product-box-list fl">
             <div class="product-box-inner">
                 <#list loans as loan>
-                <div class="product-box tc <#if loan.activityType=="NOVICE">new-standard</#if>">
-                    <#if loan.activityType=='NOVICE'><i class="hot-new"></i></#if>
+                <div class="product-box tc <#if loan.activityType=="NEWBIE">new-standard</#if>">
+                    <#if loan.activityType=='NEWBIE'><i class="hot-new"></i></#if>
                     <div class="pad-m" title="${loan.name}" data-url="/loan/${loan.id?string.computer}">
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">

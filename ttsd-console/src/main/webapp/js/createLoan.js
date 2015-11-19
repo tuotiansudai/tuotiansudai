@@ -304,12 +304,12 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         type: 'POST',
                         dataType: 'json',
                         data: dataForm,
-                        contentType: 'application/json; charset=UTF-8',
+                        contentType: 'application/json; charset=UTF-8'
                     })
                     .done(function (res) {
                         if (res.data.status) {
                             formFlag = true;
-                            location.href = '/loanList/console?status=&loanId=0&startTime=&endTime=&currentPageNo=1&loanName=&pageSize=10';
+                            location.href = '/loanList/console';
                         } else {
                             formFlag = false;
                             var msg = res.data.message || '服务端校验失败';
@@ -317,11 +317,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                         }
                     })
                     .fail(function () {
-                        console.log("error");
                         $('.jq-btn-form').removeAttr('disabled');
                     })
                     .always(function () {
-                        console.log("complete");
                     });
             }
         });

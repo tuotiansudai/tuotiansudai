@@ -5,7 +5,9 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.repository.model.InvestPaginationItemView;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanStatus;
+import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.util.AmountConverter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +22,8 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     private String loanType;
 
+    private int loanPeriods;
+
     private String amount;
 
     private String investorLoginName;
@@ -27,6 +31,10 @@ public class InvestPaginationItemDataDto implements Serializable {
     private String referrerLoginName;
 
     private String source;
+
+    private String channel;
+
+    private String roles;
 
     private boolean isAutoInvest;
 
@@ -49,13 +57,20 @@ public class InvestPaginationItemDataDto implements Serializable {
         this.investorLoginName = view.getLoginName();
         this.referrerLoginName = view.getReferrerLoginName();
         this.source = view.getSource().name();
+        this.channel = view.getChannel();
+        this.roles = view.getRoles();
         this.isAutoInvest = view.isAutoInvest();
         this.loanType = view.getLoanType().getName();
+        this.loanPeriods = view.getLoanPeriods();
         this.createdTime = view.getCreatedTime();
         this.status = view.getStatus().getDescription();
         this.nextRepayDate = view.getNextRepayDate();
         this.nextRepayAmount = AmountConverter.convertCentToString(view.getNextRepayAmount());
         this.hasInvestRepay = view.getStatus() == InvestStatus.SUCCESS && Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE, LoanStatus.COMPLETE).contains(view.getLoanStatus());
+    }
+
+    public boolean isStaff() {
+        return StringUtils.containsIgnoreCase(this.roles, Role.STAFF.name());
     }
 
     public long getInvestId() {
@@ -112,5 +127,29 @@ public class InvestPaginationItemDataDto implements Serializable {
 
     public boolean isHasInvestRepay() {
         return hasInvestRepay;
+    }
+
+    public int getLoanPeriods() {
+        return loanPeriods;
+    }
+
+    public void setLoanPeriods(int loanPeriods) {
+        this.loanPeriods = loanPeriods;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 }

@@ -37,8 +37,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private InvestMapper investMapper;
 
-    @Value(value = "${novice.invest.limit.count}")
-    private int noviceInvestLimitCount;
+    @Value(value = "${web.newbie.invest.limit}")
+    private int newbieInvestLimit;
 
     @Autowired
     private AutoInvestPlanMapper autoInvestPlanMapper;
@@ -66,8 +66,8 @@ public class InvestServiceImpl implements InvestService {
         }
 
         // 不满足新手标投资限制约束
-        if (ActivityType.NOVICE == loan.getActivityType()) {
-            if (!canInvestNoviceLoan(investDto.getLoginName())) {
+        if (ActivityType.NEWBIE == loan.getActivityType()) {
+            if (!canInvestNewbieLoan(investDto.getLoginName())) {
                 throw new InvestException("你的新手标投资已超上限");
             }
         }
@@ -105,12 +105,12 @@ public class InvestServiceImpl implements InvestService {
 
     }
 
-    private boolean canInvestNoviceLoan(String loginName) {
-        if (noviceInvestLimitCount == 0) {
+    private boolean canInvestNewbieLoan(String loginName) {
+        if (newbieInvestLimit == 0) {
             return true;
         }
-        int noviceInvestCount = investMapper.sumSuccessNoviceInvestCountByLoginName(loginName);
-        return (noviceInvestCount < noviceInvestLimitCount);
+        int newbieInvestCount = investMapper.sumSuccessNewbieInvestCountByLoginName(loginName);
+        return (newbieInvestCount < newbieInvestLimit);
     }
 
     @Override
@@ -128,7 +128,13 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName, int index, int pageSize, Date startTime, Date endTime, LoanStatus loanStatus) {
+        return getInvestPagination(null, investorLoginName, null, null, null, index, pageSize, startTime, endTime, null, loanStatus);
+    }
+
+    @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
+                                                                                  String channel, Source source, String role,
                                                                                   int index, int pageSize,
                                                                                   Date startTime, Date endTime,
                                                                                   InvestStatus investStatus, LoanStatus loanStatus) {
@@ -146,13 +152,15 @@ public class InvestServiceImpl implements InvestService {
 
         List<InvestPaginationItemView> items = Lists.newArrayList();
 
-        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, startTime, endTime, investStatus, loanStatus);
+        String strSource = source == null ? null : source.name();
+
+        long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
 
 
         if (count > 0) {
             int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
             index = index > totalPages ? totalPages : index;
-            items = investMapper.findInvestPagination(loanId, investorLoginName, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
+            items = investMapper.findInvestPagination(loanId, investorLoginName, channel, strSource, role, (index - 1) * pageSize, pageSize, startTime, endTime, investStatus, loanStatus);
         }
 
         List<InvestPaginationItemDataDto> records = Lists.transform(items, new Function<InvestPaginationItemView, InvestPaginationItemDataDto>() {
@@ -196,6 +204,11 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public AutoInvestPlanModel findUserAutoInvestPlan(String loginName) {
         return autoInvestPlanMapper.findByLoginName(loginName);
+    }
+
+    @Override
+    public List<String> findAllChannel() {
+        return investMapper.findAllChannels();
     }
 
 }

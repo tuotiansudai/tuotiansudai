@@ -5,7 +5,9 @@ import com.esoft.core.annotations.Logger;
 import com.esoft.jdp2p.loan.model.Recharge;
 import com.esoft.umpay.recharge.service.impl.UmPayRechargeOteration;
 import com.ttsd.api.dto.*;
+import com.ttsd.api.service.MobileAppChannelService;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ import java.util.Locale;
 public class MobileAppRechargeController {
     @Resource
     private UmPayRechargeOteration umPayRechargeOteration;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
     @Logger
     private Log log;
@@ -47,6 +52,7 @@ public class MobileAppRechargeController {
             user.setId(userId);
             recharge.setUser(user);
             recharge.setSource(AccessSource.valueOf(platform.toUpperCase(Locale.ENGLISH)).name());
+            recharge.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
             return umPayRechargeOteration.createOperation(recharge, request);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage(),e);

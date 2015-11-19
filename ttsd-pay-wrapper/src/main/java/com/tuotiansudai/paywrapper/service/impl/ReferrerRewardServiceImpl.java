@@ -58,11 +58,11 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
     @Autowired
     private IdGenerator idGenerator;
 
-    @Value("${referrer.user.reward}")
+    @Value("${pay.user.reward}")
     private String referrerUserRoleReward;
 
-    @Value("${referrer.merchandiser.reward}")
-    private String referrerMerchandiserRoleReward;
+    @Value("${pay.staff.reward}")
+    private String referrerStaffRoleReward;
 
     @Override
     public void rewardReferrer(LoanModel loanModel, List<InvestModel> successInvestList) {
@@ -157,7 +157,7 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         BigDecimal amountBigDecimal = new BigDecimal(amount);
         int daysOfYear = new DateTime().dayOfYear().getMaximumValue();
 
-        double rewardRate = this.getRewardRate(level, Role.MERCHANDISER == role);
+        double rewardRate = this.getRewardRate(level, Role.STAFF == role);
 
         return amountBigDecimal
                 .multiply(new BigDecimal(rewardRate))
@@ -190,10 +190,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         if (Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
             @Override
             public boolean apply(UserRoleModel input) {
-                return input.getRole() == Role.MERCHANDISER;
+                return input.getRole() == Role.STAFF;
             }
         }).isPresent()) {
-            return Role.MERCHANDISER;
+            return Role.STAFF;
         }
 
         if (Iterators.tryFind(userRoleModels.iterator(), new Predicate<UserRoleModel>() {
@@ -217,10 +217,10 @@ public class ReferrerRewardServiceImpl implements ReferrerRewardService {
         return null;
     }
 
-    private double getRewardRate(int level, boolean isMerchandiser) {
+    private double getRewardRate(int level, boolean isStaff) {
         try {
-            if (isMerchandiser) {
-                String[] split = this.referrerMerchandiserRoleReward.split("\\|");
+            if (isStaff) {
+                String[] split = this.referrerStaffRoleReward.split("\\|");
                 return level > split.length ? 0 : Double.parseDouble(split[level - 1]);
             } else {
                 String[] split = this.referrerUserRoleReward.split("\\|");

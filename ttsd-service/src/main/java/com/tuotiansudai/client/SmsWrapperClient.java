@@ -14,14 +14,14 @@ public class SmsWrapperClient extends BaseClient {
 
     static Logger logger = Logger.getLogger(SmsWrapperClient.class);
 
-    @Value("${smswrapper.host}")
-    private String host;
+    @Value("${sms.host}")
+    protected String host;
 
-    @Value("${smswrapper.port}")
-    private String port;
+    @Value("${sms.port}")
+    protected String port;
 
-    @Value("${smswrapper.context}")
-    private String context;
+    @Value("${sms.application.context}")
+    protected String applicationContext;
 
     private final static String REGISTER_CAPTCHA_SMS_URI = "/sms/register-captcha";
 
@@ -70,27 +70,30 @@ public class SmsWrapperClient extends BaseClient {
         return resultDto;
     }
 
+    @Override
     public String getHost() {
         return host;
-    }
-
-    public String getPort() {
-        return port;
-    }
-
-    public String getContext() {
-        return context;
     }
 
     public void setHost(String host) {
         this.host = host;
     }
 
+    @Override
+    public String getPort() {
+        return port;
+    }
+
     public void setPort(String port) {
         this.port = port;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    @Override
+    public String getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(String applicationContext) {
+        this.applicationContext = applicationContext;
     }
 }

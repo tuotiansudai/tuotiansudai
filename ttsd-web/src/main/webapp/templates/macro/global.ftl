@@ -1,5 +1,23 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 
+<#macro role hasRole>
+    <@security.authorize access="hasAnyAuthority(${hasRole})">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isAnonymous>
+    <@security.authorize access="!isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
+<#macro isNotAnonymous>
+    <@security.authorize access="isAuthenticated()">
+        <#nested>
+    </@security.authorize>
+</#macro>
+
 <#macro main pageCss pageJavascript activeNav="" activeLeftNav="" title="拓天速贷">
     <#local menus=[
     {"title":"首页", "url":"/"},
@@ -80,46 +98,9 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
-
 </script>
 
 </#if>
 </body>
 </html>
-</#macro>
-
-<#macro head title pageCss>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-    <title>${title}</title>
-    <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${css.global}">
-    <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${staticServer}/style/dest/${pageCss}">
-    </#if>
-</head>
-</#macro>
-
-<#macro javascript pageJavascript>
-<script type="text/javascript" charset="utf-8">
-    var staticServer = '${staticServer}';
-    <@security.authorize access="isAuthenticated()">
-    document.getElementById("logout-link").addEventListener('click', function (event) {
-        event.preventDefault();
-        document.getElementById("logout-form").submit();
-    });
-    </@security.authorize>
-</script>
-<script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
-<#if pageJavascript??>
-<script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async" data-main="${staticServer}/js/dest/${pageJavascript}"></script>
-</#if>
-</#macro>
-
-<#macro role hasRole>
-    <@security.authorize access="hasAnyAuthority(${hasRole})">
-        <#nested>
-    </@security.authorize>
 </#macro>

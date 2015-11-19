@@ -39,10 +39,12 @@ public interface UserService {
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                 String mobile, Date beginTime, Date endTime,
-                Role role, String referrer, Integer pageIndex, Integer pageSize);
+                Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
     List<String> findLoginNameLike(String loginName);
 
     boolean verifyPasswordCorrect(String loginName, String password);
+
+    List<String> findAllChannels();
 }

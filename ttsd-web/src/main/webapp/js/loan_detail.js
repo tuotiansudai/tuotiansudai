@@ -1,6 +1,5 @@
-require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate) {
+require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustache', 'layerWrapper','csrf', 'autoNumeric'], function ($, pagination, Mustache, investListTemplate, layer) {
 
-    $(function () {
         var $loanDetail = $('.loan-detail-content'),
             amountInputElement = $(".text-input-amount"),
             $accountInfo = $('.account-info'),
@@ -8,8 +7,15 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $errorDom = $('.error', $accountInfo),
             tabs = $('.loan-nav li'),
             $loanlist = $('.loan-list', $loanDetail),
+            $imageList=$('#picListBox'),
             paginationElement = $('.pagination');
-        amountInputElement.autoNumeric("init")
+        amountInputElement.autoNumeric("init");
+        layer.ready(function(){
+            layer.photos({
+                photos: '#picListBox'
+            });
+        });
+
         var loadLoanData = function (currentPage) {
             var requestData = {index: currentPage || 1};
             paginationElement.loadPagination(requestData, function (data) {
@@ -23,7 +29,7 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         //pageCount：总页数
         //current：当前页
         //初始化标的比例（进度条）
-        //var java_point = 15; //后台传递数据
+       // var java_point = 15; //后台传递数据
         if (java_point <= 50) {
             $('.chart-box .rount').css('webkitTransform', "rotate(" + 3.6 * java_point + "deg)");
             $('.chart-box .rount2').hide();
@@ -45,11 +51,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             $loanlist.find('.loan-list-con').eq(index).show().siblings('.loan-list-con').hide();
         });
 
-        $('.img-list li').click(function () {
-            var _imgSrc = $(this).find('img').attr('src');
-            $('.content img').attr('src', _imgSrc);
-            return false;
-        });
 
         function timer(intDiff) {
             window.setInterval(function () {
@@ -94,12 +95,11 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return true;
         });
 
-        amountInputElement.blur(function(){
+        var calExpectedInterest = function(){
             var loanId = $('.hid-loan').val();
-            var amount = $(this).val();
+            var amount = amountInputElement.val();
             var amountNeedRaised = $('form .amountNeedRaised-i').text();
-
-            if(amountNeedRaised < amount){
+            if(Number(amountNeedRaised) < Number(amount)){
                 $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
                 $btnLookOther.prop('disabled', true);
                 return;
@@ -114,6 +114,26 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
                 $('.expected-interest').html(amount);
                 $btnLookOther.prop('disabled', false);
             });
+        }
+        calExpectedInterest();
+        amountInputElement.blur(calExpectedInterest);
+
+
+
+
+        $('form').submit(function(){
+            var frm = $(this);
+            if(frm.attr('action') === '/invest'){
+                if(typeof user_can_invest === 'undefined'){
+                    location.href = '/login?redirect='+encodeURIComponent(location.href);
+                    return false;
+                }
+                var amount = $("input[name='amount']",frm).val();
+                if(isNaN(parseFloat(amount))) {
+                    $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
+                    return false;
+                }
+            }
+            return true;
         });
-    });
 });

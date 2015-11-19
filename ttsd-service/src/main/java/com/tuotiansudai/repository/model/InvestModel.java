@@ -28,13 +28,17 @@ public class InvestModel implements Serializable {
      */
     private InvestStatus status;
     /**
-     * 投资来源渠道
+     * 投资来源
      */
     private Source source;
     /**
      * 是否为自动投资
      */
     private boolean isAutoInvest;
+    /**
+     * 应用安装来源渠道
+     */
+    private String channel;
     /**
      * 创建时间
      */
@@ -126,5 +130,13 @@ public class InvestModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
