@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.CertificationRequestDto;
-import com.tuotiansudai.api.dto.CertificationResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
@@ -28,6 +25,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
         certificationRequestDto.setUserIdCardNumber("123456789012345678");
         certificationRequestDto.setUserRealName("拓天");
+        certificationRequestDto.setBaseParam(BaseParamTest.getInstance());
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setCode("0000");
         payDataDto.setMessage("");
@@ -48,6 +46,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         CertificationRequestDto certificationRequestDto = new CertificationRequestDto();
         certificationRequestDto.setUserIdCardNumber("123456789012345678");
         certificationRequestDto.setUserRealName("拓天");
+        certificationRequestDto.setBaseParam(BaseParamTest.getInstance());
         PayDataDto payDataDto = new PayDataDto();
         payDataDto.setCode("0001");
         payDataDto.setMessage("");
