@@ -29,10 +29,10 @@
         <table class="refer-invest table-striped clear-blank"></table>
     </div>
 
-    <div class="pagination" id="referRelationPagination" data-url="/referrer/referRelation" data-page-size="10">
+    <div class="pagination" id="referRelationPagination" data-url="/referrer/refer-relation" data-page-size="10">
     </div>
 
-    <div class="pagination" id="referInvestPagination" style="display: none;" data-url="/referrer/referInvest" data-page-size="10">
+    <div class="pagination" id="referInvestPagination" style="display: none;" data-url="/referrer/refer-invest" data-page-size="10">
     </div>
 </div>
 </@global.main>

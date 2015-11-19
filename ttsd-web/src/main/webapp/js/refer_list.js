@@ -40,7 +40,7 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             });
             paginationElement.loadPagination(requestData, function (data) {
                 $.ajax({
-                    url: 'totalReward?'+queryParams,
+                    url: 'total-reward?'+queryParams,
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'

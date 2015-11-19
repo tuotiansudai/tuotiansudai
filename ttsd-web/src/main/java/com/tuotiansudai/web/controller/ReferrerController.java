@@ -27,7 +27,7 @@ public class ReferrerController {
     @Autowired
     private ReferrerManageService referrerService;
 
-    @RequestMapping(value = "/referList", method = RequestMethod.GET)
+    @RequestMapping(value = "/refer-list", method = RequestMethod.GET)
     public ModelAndView investList() {
         String loginName = LoginUserInfo.getLoginName();
         ModelAndView modelAndView = new ModelAndView("/refer-list");
@@ -35,7 +35,7 @@ public class ReferrerController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/referRelation", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/refer-relation", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> referListData(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                         @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
@@ -50,7 +50,7 @@ public class ReferrerController {
         return dto;
     }
 
-    @RequestMapping(value = "/referInvest", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/refer-invest", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<BasePaginationDataDto> referInvest(@Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                       @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
@@ -66,7 +66,7 @@ public class ReferrerController {
         return dto;
     }
 
-    @RequestMapping(value = "/totalReward", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/total-reward", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String findReferInvestTotalAmount(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
                            @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
