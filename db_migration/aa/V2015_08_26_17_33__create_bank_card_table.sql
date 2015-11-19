@@ -10,5 +10,4 @@ CREATE TABLE `aa`.`bank_card` (
   CONSTRAINT `FK_BANK_CARD_LOGIN_NAME_REF_USER_LOGIN_NAME` FOREIGN KEY (`login_name`) REFERENCES `aa`.`user` (`login_name`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 100001
   DEFAULT CHARSET = utf8;
