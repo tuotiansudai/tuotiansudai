@@ -36,10 +36,6 @@
                             <label for="control-label">编号</label>
                             <input type="text" class="form-control" name="rechargeId" placeholder="" value="${rechargeId!}">
                         </div>
-                        <div class="form-group">
-                            <label for="control-label">用户名</label>
-                            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
-                        </div>
                         <div class="form-group" id="recordDate">
                             <label for="control-label">时间</label>
                             <div class='input-group date' id='datetimepicker1'>
@@ -59,16 +55,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="control-label">充值来源</label>
-                            <select class="selectpicker" name="source">
-                                <option value="">全部</option>
-                            <#list rechargeSourceList as sourceItem>
-                                <option value="${sourceItem.name()}"
-                                        <#if (source.name())?has_content && source.name() == sourceItem.name()>selected</#if>
-                                        >${sourceItem.description}</option>
-                            </#list>
-                            </select>
+                            <label for="control-label">用户名</label>
+                            <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                         </div>
+                        <div></div>
                         <div class="form-group">
                             <label for="control-label">状态</label>
                             <select class="selectpicker" name="status">
@@ -77,6 +67,28 @@
                                 <option value="${statusItem.name()}"
                                         <#if (status.name())?has_content && status.name() == statusItem.name()>selected</#if>
                                         >${statusItem.description}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="control-label">渠道</label>
+                            <select class="selectpicker" name="channel">
+                                <option value="">全部</option>
+                            <#list rechargeChannelList as channelItem>
+                                <option value="${channelItem}"
+                                        <#if channel?has_content && channel == channelItem>selected</#if>
+                                        >${channelItem}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="control-label">充值来源</label>
+                            <select class="selectpicker" name="source">
+                                <option value="">全部</option>
+                            <#list rechargeSourceList as sourceItem>
+                                <option value="${sourceItem.name()}"
+                                        <#if (source.name())?has_content && source.name() == sourceItem.name()>selected</#if>
+                                        >${sourceItem.description}</option>
                             </#list>
                             </select>
                         </div>
@@ -100,6 +112,7 @@
                             <th>管理员充值</th>
                             <th>充值状态</th>
                             <th>充值来源</th>
+                            <th>渠道</th>
                         </tr>
                         </thead>
 
@@ -107,15 +120,16 @@
                         <#if rechargeList?has_content>
                         <#list rechargeList as rechargeItem>
                         <tr>
-                            <td>${rechargeItem.rechargeId}</td>
+                            <td>${rechargeItem.rechargeId?string('0')}</td>
                             <td>${(rechargeItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
                             <td>${rechargeItem.loginName}</td>
                             <td>${rechargeItem.amount}</td>
                             <td>${rechargeItem.fee}</td>
-                            <td>${rechargeItem.bankCode}</td>
+                            <td>${rechargeItem.bankCode!}</td>
                             <td>TODO</td>
                             <td>${rechargeItem.status}</td>
                             <td>${rechargeItem.source}</td>
+                            <td>${rechargeItem.channel!}</td>
                         </tr>
                         </#list>
                         <#else>

@@ -37,7 +37,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/userFundsDownload?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType;
+            window.location.href = "/userFunds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
         });
     });
 })

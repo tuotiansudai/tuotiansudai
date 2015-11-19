@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     old_db = DBWrapper(host=HOST, user=USERNAME, password=PASSWORD, db_name=ORIGINAL_DB)
     new_db = DBWrapper(host=HOST, user=USERNAME, password=PASSWORD, db_name=AA_DB)
-    cls = getattr(importlib.import_module(args.table), '{0}Migrate'.format(args.table.title()))
+
+    cls = getattr(importlib.import_module(args.table), '{0}Migrate'.format(args.table.title().replace('_', '')))
     cls(old_db, new_db).migrate()
 

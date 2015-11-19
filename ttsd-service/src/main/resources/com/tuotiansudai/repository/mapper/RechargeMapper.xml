@@ -12,13 +12,14 @@
         <result column="bank_code" property="bankCode"></result>
         <result column="status" property="status"></result>
         <result column="source" property="source"></result>
+        <result column="channel" property="channel"></result>
         <result column="fast_pay" property="fastPay"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="RechargeModel">
-        insert into recharge (id, login_name, amount, fee, bank_code, status, source, fast_pay, created_time)
-        value(#{id}, #{loginName}, #{amount}, #{fee}, #{bankCode}, #{status}, #{source}, #{fastPay}, #{createdTime})
+        insert into recharge (id, login_name, amount, fee, bank_code, status, source, channel, fast_pay, created_time)
+        value(#{id}, #{loginName}, #{amount}, #{fee}, #{bankCode}, #{status}, #{source}, #{channel}, #{fastPay}, #{createdTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="rechargeResultMap">
@@ -54,6 +55,9 @@
             <if test="source !=null">
                 and source  = #{source}
             </if>
+            <if test="channel !=null and channel != ''">
+                and channel  = #{channel}
+            </if>
         </where>
         order by created_time desc
         limit #{index}, #{pageSize}
@@ -80,6 +84,13 @@
             <if test="source !=null">
                 and source  = #{source}
             </if>
+            <if test="channel !=null and channel != ''">
+                and channel  = #{channel}
+            </if>
         </where>
+    </select>
+
+    <select id="findAllChannels" resultType="java.lang.String">
+        select distinct channel from recharge where channel is not NULL
     </select>
 </mapper>

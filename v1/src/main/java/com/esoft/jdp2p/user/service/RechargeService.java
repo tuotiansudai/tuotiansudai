@@ -86,4 +86,6 @@ public interface RechargeService {
 	public List<Recharge> findUserRecharge(String userId, Integer offset, Integer limit);
 
 	public Integer findUserRechargeCount(String userId);
+
+	List<String> getAllChannelName();
 }
