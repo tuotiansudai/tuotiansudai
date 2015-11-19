@@ -54,7 +54,6 @@ public class ReferrerManageMapperTest {
         user1.setPassword("123");
         user1.setMobile("13900000000");
         user1.setRegisterTime(new Date());
-        user1.setLastLoginTime(new Date());
         user1.setLastModifiedTime(new Date());
         user1.setStatus(UserStatus.ACTIVE);
         user1.setSalt("123");
@@ -66,7 +65,6 @@ public class ReferrerManageMapperTest {
         user2.setPassword("123");
         user2.setMobile("13900000001");
         user2.setRegisterTime(new Date());
-        user2.setLastLoginTime(new Date());
         user2.setLastModifiedTime(new Date());
         user2.setStatus(UserStatus.ACTIVE);
         user2.setSalt("123");
@@ -97,7 +95,6 @@ public class ReferrerManageMapperTest {
         user1.setPassword("123");
         user1.setMobile("13900000000");
         user1.setRegisterTime(new Date());
-        user1.setLastLoginTime(new Date());
         user1.setLastModifiedTime(new Date());
         user1.setStatus(UserStatus.ACTIVE);
         user1.setSalt("123");
@@ -109,7 +106,6 @@ public class ReferrerManageMapperTest {
         user2.setPassword("123");
         user2.setMobile("13900000001");
         user2.setRegisterTime(new Date());
-        user2.setLastLoginTime(new Date());
         user2.setLastModifiedTime(new Date());
         user2.setStatus(UserStatus.ACTIVE);
         user2.setSalt("123");
