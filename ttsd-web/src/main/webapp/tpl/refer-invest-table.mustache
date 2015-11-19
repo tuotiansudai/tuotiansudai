@@ -1,40 +1,38 @@
 <table class="invest-list table-striped">
     <thead>
         <tr>
-            <th>项目名称</th>
-            <th>我的投资</th>
-            <th>交易时间</th>
-            <th>交易状态</th>
-            <th>下次回款</th>
-            <th>操作</th>
+            <th>被推荐人</th>
+            <th>层级</th>
+            <th>投资标的</th>
+            <th>投资金额</th>
+            <th>期数</th>
+            <th>投资时间</th>
+            <th>奖励金额</th>
+            <th>奖励时间</th>
         </tr>
     </thead>
     <tbody>
        {{#records}}
         <tr>
-            <td><a  href="/loan/{{loanId}}">{{loanName}}</td>
-            <td>{{amount}}元</td>
-            <td>{{createdTime}}</td>
-            <td>{{status}}</td>
-            <td>
-            {{#nextRepayDate}}
-                {{nextRepayDate}} / {{nextRepayAmount}} 元
-            {{/nextRepayDate}}
-            {{^nextRepayDate}} -- {{/nextRepayDate}}
-            </td>
-            <td>
-            {{#hasInvestRepay}}
-            <a class="show-invest-repay" data-url="/investor/invest/{{investId}}/repay-data">回款记录</a> |
-            <a class="red" href="/contract/investor/loanId/{{loanId}}" target="_blank">合同</a>
-            {{/hasInvestRepay}}
-            {{^hasInvestRepay}} -- {{/hasInvestRepay}}
-            </td>
+            <td>{{investName}}</td>
+            <td>{{level}}</td>
+            <td>{{loanName}}</td>
+            <td>{{investAmountStr}}</td>
+            <td>{{periods}}</td>
+            <td>{{investTime}}</td>
+            <td>{{rewardAmountStr}}</td>
+            <td>{{rewardTime}}</td>
         </tr>
         {{/records}}
 
         {{^records}}
-         <td colspan="6" class="no-data">暂时没有投资纪录</td>
+         <td colspan="8" class="no-data">暂时没有推荐人投资记录</td>
         {{/records}}
+        <tr>
+            <td colspan="8" align="center">
+                推荐奖励总收益：{{totalReward}}元
+            </td>
+        </tr>
     </tbody>
 </table>
 

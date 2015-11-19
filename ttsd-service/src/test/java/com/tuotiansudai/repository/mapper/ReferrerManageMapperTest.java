@@ -79,10 +79,12 @@ public class ReferrerManageMapperTest {
         Calendar start =  Calendar.getInstance();
         start.add(Calendar.DATE, -300);
 
-        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList("test1", "test2", start.getTime(), new Date(), null, 0, 10);
+        Calendar end =  Calendar.getInstance();
+        end.add(Calendar.DATE, 1);
+        List<ReferrerRelationView> referRelationList = referrerManageMapper.findReferRelationList("test1", "test2", start.getTime(), end.getTime(), null, 0, 10);
         assertNotNull(referRelationList.get(0));
 
-        int referRelationCount = referrerManageMapper.findReferRelationCount("test1", null, start.getTime(), new Date(), null);
+        int referRelationCount = referrerManageMapper.findReferRelationCount("test1", null, start.getTime(), end.getTime(), null);
         assert(referRelationCount>0);
     }
 
@@ -128,11 +130,14 @@ public class ReferrerManageMapperTest {
 
         Calendar start =  Calendar.getInstance();
         start.add(Calendar.DATE, -300);
-        List<ReferrerManageView> referManageList = referrerManageMapper.findReferInvestList("test1", null, start.getTime(), new Date(), null, 0, 10);
+
+        Calendar end =  Calendar.getInstance();
+        end.add(Calendar.DATE, 1);
+        List<ReferrerManageView> referManageList = referrerManageMapper.findReferInvestList("test1", null, start.getTime(), end.getTime(), null, 0, 10);
 
         assertNotNull(referManageList.get(0));
 
-        int referInvestCount = referrerManageMapper.findReferInvestCount("test1", "test2", null, new Date(), null);
+        int referInvestCount = referrerManageMapper.findReferInvestCount("test1", "test2", null, end.getTime(), null);
 
         assert(referInvestCount>0);
     }

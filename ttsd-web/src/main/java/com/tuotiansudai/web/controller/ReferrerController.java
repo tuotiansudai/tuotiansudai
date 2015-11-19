@@ -29,7 +29,10 @@ public class ReferrerController {
 
     @RequestMapping(value = "/referList", method = RequestMethod.GET)
     public ModelAndView investList() {
-        return new ModelAndView("/refer-list");
+        String loginName = LoginUserInfo.getLoginName();
+        ModelAndView modelAndView = new ModelAndView("/refer-list");
+        modelAndView.addObject("referrer", loginName);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/referRelation", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
@@ -61,5 +64,16 @@ public class ReferrerController {
         BaseDto<BasePaginationDataDto> dto = new BaseDto<>();
         dto.setData(dataDto);
         return dto;
+    }
+
+    @RequestMapping(value = "/totalReward", method = RequestMethod.GET, consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public String findReferInvestTotalAmount(@RequestParam(name = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                           @RequestParam(name = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                           @RequestParam(name = "loginName", required = false) String loginName) {
+
+        String referrerLoginName = LoginUserInfo.getLoginName();
+        String totalRewardAmount = referrerService.findReferInvestTotalAmount(referrerLoginName, loginName, startTime, endTime);
+        return totalRewardAmount;
     }
 }

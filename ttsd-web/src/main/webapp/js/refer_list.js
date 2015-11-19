@@ -1,106 +1,65 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layer','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination, layer) {
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layer', 'daterangepicker'],
+    function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
-    var today = moment().format('YYYY-MM-DD'); // 今天
-    var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
-    var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
-    var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
+        var dataPickerElement = $('#date-picker'),
+            loginName = $("#loginName"),
+            paginationElementRelation = $('#referRelationPagination'),
+            paginationElementInvest = $('#referInvestPagination');
 
-    var dataPickerElement = $('#date-picker'),
-        paginationElement = $('.pagination');
+        var paginationElement = paginationElementRelation;
+        var template = referRelationTemplate;
 
-    dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+        var today = moment().format('YYYY-MM-DD'); // 今天
+        dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
 
-    var changeDatePicker = function () {
-        var duration = $(".date-filter .select-item.current").data('day');
-        switch (duration) {
-            case 1:
-                dataPickerElement.val(today + '~' + today);
-                break;
-            case 7:
-                dataPickerElement.val(week + '~' + today);
-                break;
-            case 30:
-                dataPickerElement.val(month + '~' + today);
-                break;
-            case 180:
-                dataPickerElement.val(sixMonths + '~' + today);
-                break;
-            default:
-                dataPickerElement.val('');
-        }
-    };
+        $(".search-type .select-item").click(function () {
+            $(this).addClass("current").siblings(".select-item").removeClass("current");
 
-    var loadLoanData = function (currentPage) {
-        var dates = dataPickerElement.val().split('~');
-        var startTime = $.trim(dates[0]) || '';
-        var endTime = $.trim(dates[1]) || '';
-        var status = $('.status-filter .select-item.current').data('status');
+            if ($(this).data('type') == 'referRelation') {
+                paginationElementInvest.display='none';
+                paginationElement = paginationElementRelation;
+                template = referRelationTemplate;
+            } else if ($(this).data('type') == 'referInvest') {
+                paginationElementRelation.display='none';
+                paginationElement = paginationElementInvest;
+                template = referInvestTemplate;
+            }
+            loadReferData();
+        });
 
-        var requestData = {startTime: startTime, endTime: endTime, status: status, index: currentPage || 1};
+        var loadReferData = function (currentPage) {
+            var dates = dataPickerElement.val().split('~');
+            var startTime = $.trim(dates[0]) || '';
+            var endTime = $.trim(dates[1]) || '';
+            var loginName = $('#loginName').val();
 
-        paginationElement.loadPagination(requestData, function (data) {
-            var html = Mustache.render(investListTemplate, data);
-            $('.invest-list').html(html);
-            $('.invest-list .show-invest-repay').click(function () {
+            var requestData = {startTime: startTime, endTime: endTime, loginName: loginName, index: currentPage || 1};
+            var queryParams = '';
+            _.each(requestData, function (value, key) {
+                queryParams += key + "=" + value + '&';
+            });
+            paginationElement.loadPagination(requestData, function (data) {
                 $.ajax({
-                    url: $(this).data('url'),
+                    url: 'totalReward?'+queryParams,
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).success(function (response) {
-                    var data = response.data;
-                    data.isLoanCompleted = status == 'COMPLETE';
-                    data.csrfToken = $("meta[name='_csrf']").attr("content");
-                    if (data.status) {
-                        _.each(data.records, function (item) {
-                            data.loanId = item.loanId;
-                            switch (item.loanRepayStatus) {
-                                case 'REPAYING':
-                                    item.status = '待还';
-                                    break;
-                                case 'COMPLETE':
-                                    item.status = '完成';
-                                    break;
-                                case 'CANCEL':
-                                    item.status = '流标';
-                                    break;
-                                case 'CONFIRMING':
-                                    item.status = '确认中';
-                                    break;
-                            }
-                        });
-                        var html = Mustache.render(investRepayTemplate, data);
-
-                        layer.open({
-                            type: 1,
-                            title: false,
-                            offset: '100px',
-                            area: ['1000px'],
-                            shadeClose: true,
-                            content: html
-                        });
-
-                    }
+                    data.totalReward=response;
+                    var html = Mustache.render(template, data);
+                    $('.refer-relation').html(html);
                 });
             });
+        };
+
+        loadReferData();
+
+        $('.btn-normal').click(function () {
+            loadReferData();
         });
-    };
 
-    loadLoanData();
-
-    $(".date-filter .select-item").click(function () {
-        $(this).addClass("current").siblings(".select-item").removeClass("current");
-        changeDatePicker();
-        loadLoanData();
+        $(".btn").click(function () {
+            dataPickerElement.val('');
+            loginName.val('');
+        });
     });
-
-    $(".status-filter .select-item").click(function () {
-        $(this).addClass("current").siblings(".select-item").removeClass("current");
-        loadLoanData();
-    });
-
-    //define calendar
-    $('.apply-btn').click(function () {
-        loadLoanData();
-    });
-});
