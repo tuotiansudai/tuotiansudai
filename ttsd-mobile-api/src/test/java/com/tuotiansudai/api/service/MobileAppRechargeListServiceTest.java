@@ -37,10 +37,10 @@ public class MobileAppRechargeListServiceTest extends ServiceTestBase {
         rechargeModels.add(rechargeModel1);
         rechargeModels.add(rechargeModel2);
         when(rechargeMapper.findRechargePagination(anyString(), anyString(), any(RechargeSource.class),
-                any(RechargeStatus.class), anyInt(), anyInt(), any(Date.class), any(Date.class))).thenReturn(rechargeModels);
+                any(RechargeStatus.class), anyString(), anyInt(), anyInt(), any(Date.class), any(Date.class))).thenReturn(rechargeModels);
 
         when(rechargeMapper.findRechargeCount(anyString(), anyString(), any(RechargeSource.class),
-                any(RechargeStatus.class), any(Date.class), any(Date.class))).thenReturn(2);
+                any(RechargeStatus.class), anyString(), any(Date.class), any(Date.class))).thenReturn(2);
         RechargeListRequestDto rechargeListRequestDto = new RechargeListRequestDto();
         BaseParam baseParam = new BaseParam();
         baseParam.setUserId("loginName");

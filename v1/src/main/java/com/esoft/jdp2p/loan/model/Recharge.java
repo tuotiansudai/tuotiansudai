@@ -41,6 +41,8 @@ public class Recharge implements java.io.Serializable {
 
 	private String source;
 
+	private String channel;
+
 	// Constructors
 
 	/** default constructor */
@@ -169,5 +171,14 @@ public class Recharge implements java.io.Serializable {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	@Column(name = "channel", length = 32)
+	public String getChannel() {
+		return channel;
+	}
+
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 }
