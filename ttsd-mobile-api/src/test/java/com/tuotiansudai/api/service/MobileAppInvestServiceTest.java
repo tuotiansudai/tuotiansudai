@@ -23,6 +23,9 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
     @Mock
     private InvestService investService;
 
+    @Mock
+    private MobileAppChannelService channelService;
+
     @Test
     public void shouldInvestSuccess() throws Exception {
         InvestRequestDto investRequestDto = new InvestRequestDto();
@@ -36,6 +39,7 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         successResponseDto.setData(payFormDataDto);
 
         when(investService.invest(any(InvestDto.class))).thenReturn(successResponseDto);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
         BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
         assert responseDto.isSuccess();
@@ -55,6 +59,7 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         successResponseDto.setData(payFormDataDto);
 
         when(investService.invest(any(InvestDto.class))).thenReturn(successResponseDto);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
         BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
         assert !responseDto.isSuccess();
@@ -68,6 +73,7 @@ public class MobileAppInvestServiceTest extends ServiceTestBase {
         InvestException investException = new InvestException(InvestExceptionType.LOAN_IS_FULL);
 
         when(investService.invest(any(InvestDto.class))).thenThrow(investException);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
         BaseResponseDto<InvestResponseDataDto> responseDto = mobileAppInvestService.invest(investRequestDto);
         assert !responseDto.isSuccess();

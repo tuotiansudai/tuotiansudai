@@ -1,9 +1,6 @@
 package com.tuotiansudai.api.service;
 
-import com.tuotiansudai.api.dto.BaseResponseDto;
-import com.tuotiansudai.api.dto.RegisterRequestDto;
-import com.tuotiansudai.api.dto.RegisterResponseDataDto;
-import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.impl.MobileAppRegisterServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.RegisterUserDto;
@@ -40,6 +37,8 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
     @Mock
     private SmsCaptchaService smsCaptchaService;
 
+    @Mock
+    private MobileAppChannelService channelService;
 
     @Test
     public void shouldSendRegisterByMobileNumberSMS() {
@@ -53,6 +52,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
 
         when(smsCaptchaService.sendRegisterCaptcha(anyString(), anyString())).thenReturn(smsDto);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
 
         BaseResponseDto responseDto = mobileAppRegisterService.sendRegisterByMobileNumberSMS(mobileNumber, remoteIp);
 
@@ -67,6 +67,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.loginNameIsExist(anyString())).thenReturn(true);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.USER_NAME_IS_EXIST.getCode(), baseResponseDto.getCode());
     }
@@ -78,6 +79,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(true);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.MOBILE_NUMBER_IS_EXIST.getCode(),baseResponseDto.getCode());
     }
@@ -89,6 +91,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(false);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.SMS_CAPTCHA_ERROR.getCode(),baseResponseDto.getCode());
     }
@@ -99,6 +102,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         when(userService.loginNameIsExist(anyString())).thenReturn(false);
         when(userService.mobileIsExist(anyString())).thenReturn(false);
         when(userService.registerUser(any(RegisterUserDto.class))).thenReturn(true);
+        when(channelService.obtainChannelBySource(any(BaseParam.class))).thenReturn(null);
         BaseResponseDto baseResponseDto = mobileAppRegisterService.registerUser(registerRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),baseResponseDto.getCode());
         assertEquals("13900000000",((RegisterResponseDataDto)baseResponseDto.getData()).getPhoneNum());

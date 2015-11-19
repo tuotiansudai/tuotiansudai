@@ -5,6 +5,7 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.InvestRequestDto;
 import com.tuotiansudai.api.dto.InvestResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
+import com.tuotiansudai.api.service.MobileAppChannelService;
 import com.tuotiansudai.api.service.MobileAppInvestService;
 import com.tuotiansudai.api.util.CommonUtils;
 import com.tuotiansudai.dto.BaseDto;
@@ -24,6 +25,9 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
 
     @Autowired
     private InvestService investService;
+
+    @Autowired
+    private MobileAppChannelService mobileAppChannelService;
 
     @Override
     public BaseResponseDto invest(InvestRequestDto investRequestDto) {
@@ -63,6 +67,7 @@ public class MobileAppInvestServiceImpl implements MobileAppInvestService {
         investDto.setAmount(investRequestDto.getInvestMoney());
         investDto.setLoanId(investRequestDto.getLoanId());
         investDto.setLoginName(investRequestDto.getUserId());
+        investDto.setChannel(mobileAppChannelService.obtainChannelBySource(investRequestDto.getBaseParam()));
         return investDto;
     }
 

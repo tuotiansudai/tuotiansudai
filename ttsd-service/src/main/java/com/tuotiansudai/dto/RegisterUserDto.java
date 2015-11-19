@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.UserModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;
@@ -27,6 +26,8 @@ public class RegisterUserDto implements Serializable {
     private String password;
 
     private String referrer;
+
+    private String channel;
 
     @AssertTrue
     private boolean agreement;
@@ -83,5 +84,13 @@ public class RegisterUserDto implements Serializable {
 
     public void setAgreement(boolean agreement) {
         this.agreement = agreement;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
