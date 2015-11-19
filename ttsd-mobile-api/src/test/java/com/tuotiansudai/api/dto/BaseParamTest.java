@@ -19,6 +19,7 @@ public class BaseParamTest extends BaseParam {
         baseParam.setScreenW("640");
         baseParam.setToken("token_of_testuser");
         baseParam.setUserId("testuser");
+        baseParam.setChannel("");
         return baseParam;
     }
 
@@ -34,6 +35,7 @@ public class BaseParamTest extends BaseParam {
         super.setScreenW("640");
         super.setToken("token_of_testuser");
         super.setUserId("testuser");
+        super.setChannel("");
     }
 
     @Override
@@ -74,6 +76,10 @@ public class BaseParamTest extends BaseParam {
 
     @Override
     public void setUserId(String userId) {
+    }
+
+    @Override
+    public void setChannel(String channel) {
     }
 }
 

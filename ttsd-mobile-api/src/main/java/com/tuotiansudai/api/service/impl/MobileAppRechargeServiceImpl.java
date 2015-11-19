@@ -31,13 +31,13 @@ public class MobileAppRechargeServiceImpl implements MobileAppRechargeService {
     private BankCardMapper bankCardMapper;
 
     @Autowired
-    private MobileAppChannelService channelService;
+    private MobileAppChannelService mobileAppChannelService;
 
     @Override
     public BaseResponseDto recharge(BankCardRequestDto bankCardRequestDto) {
         BaseResponseDto baseResponseDto = new BaseResponseDto();
         RechargeDto rechargeDto = bankCardRequestDto.convertToRechargeDto();
-        rechargeDto.setChannel(channelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
+        rechargeDto.setChannel(mobileAppChannelService.obtainChannelBySource(bankCardRequestDto.getBaseParam()));
 
         String loginName = rechargeDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findByLoginNameAndIsFastPayOn(loginName);
