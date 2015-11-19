@@ -349,4 +349,12 @@ public class RechargeServiceImpl implements RechargeService {
 		return ((Number)query.uniqueResult()).intValue();
 	}
 
+	@Override
+	public List<String> getAllChannelName() {
+		String sql = "select distinct channel from recharge where channel is not NULL";
+		Session session = ht.getSessionFactory().getCurrentSession();
+		Query query = session.createSQLQuery(sql);
+		return query.list();
+	}
+
 }

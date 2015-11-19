@@ -34,7 +34,11 @@
 						<f:selectItem itemLabel="IOS" itemValue="IOS"/>
 						<f:selectItem itemLabel="ANDROID" itemValue="ANDROID"/>
 					</h:selectOneMenu>
-					
+					<h:selectOneMenu value="#{rechargeList.example.channel}">
+						<f:selectItem itemLabel="请选择渠道" itemValue="" />
+						<f:selectItems value="#{rechargeList.allChannelList}" />
+					</h:selectOneMenu>
+
 					<p:commandButton process="filters" update="dataTable"
 						value="#{commonMsg.searchLabel}"></p:commandButton>
 					<p:button value="#{commonMsg.resetLabel}" onclick="location.reload();return;"></p:button>
@@ -124,7 +128,13 @@
 						</f:facet>
 						<h:outputText value="#{recharge.source}"></h:outputText>
 					</p:column>
-					
+					<p:column  style="width:60px">
+						<f:facet name="header">
+							<h:outputText value="渠道" />
+						</f:facet>
+						<h:outputText value="#{recharge.channel}"></h:outputText>
+					</p:column>
+
 					<f:facet name="footer">
 						<p:commandButton value="导出Excel" ajax="false">  
 							<p:dataExporter type="xls" target="dataTable" pageOnly="false" fileName="rechargeList" />  
