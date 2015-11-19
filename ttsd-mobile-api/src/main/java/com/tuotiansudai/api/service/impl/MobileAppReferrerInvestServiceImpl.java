@@ -8,6 +8,7 @@ import com.tuotiansudai.api.service.MobileAppReferrerInvestService;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.service.ReferrerManageService;
+import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,8 +51,7 @@ public class MobileAppReferrerInvestServiceImpl implements MobileAppReferrerInve
         referrerInvestListResponseDataDto.setIndex(index);
         referrerInvestListResponseDataDto.setPageSize(pageSize);
         referrerInvestListResponseDataDto.setTotalCount(count);
-        //TODO 推荐奖励总收益 等待web前端增加
-        referrerInvestListResponseDataDto.setRewardTotalMoney("");
+        referrerInvestListResponseDataDto.setRewardTotalMoney(AmountConverter.convertCentToString(referrerManageMapper.findReferInvestTotalAmount(referrerId, null, null, null,level)));
         referrerInvestListResponseDataDto.setReferrerInvestList(referrerInvestResponseDataDtos);
         dto.setData(referrerInvestListResponseDataDto);
         dto.setCode(ReturnMessage.SUCCESS.getCode());
