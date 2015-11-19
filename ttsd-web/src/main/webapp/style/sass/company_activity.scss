@@ -159,6 +159,7 @@ img.icon-mark {
 
 .nav-steps .steps-icon li {
   display: inline-block;
+  float:left;
   height:180px;
   cursor: pointer;
 }
@@ -218,8 +219,8 @@ img.icon-mark {
   background: #fff;
   margin: 0 auto;
   box-sizing: border-box;
-  padding:50px 86px;
-  padding-top:0;
+  padding:0 86px 50px 86px;
+  *width:828px;
 
 }
 .r-time {
