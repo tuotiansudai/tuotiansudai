@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
@@ -102,7 +103,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-            if (withdrawModel == null) {
+            if (withdrawModel == null || withdrawModel.getStatus() != WithdrawStatus.WAIT_PAY) {
                 logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
@@ -134,7 +135,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         try {
             long orderId = Long.parseLong(callbackRequestModel.getOrderId());
             WithdrawModel withdrawModel = withdrawMapper.findById(orderId);
-            if (withdrawModel == null) {
+            if (withdrawModel == null || !Lists.newArrayList(WithdrawStatus.APPLY_SUCCESS, WithdrawStatus.APPLY_FAIL).contains(withdrawModel.getStatus())) {
                 logger.error(MessageFormat.format("Withdraw callback order is not exist (orderId = {0})", callbackRequestModel.getOrderId()));
                 return;
             }
