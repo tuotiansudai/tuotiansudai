@@ -20,8 +20,8 @@ public class MobileAppRechargeListServiceImpl implements MobileAppRechargeListSe
         Integer pageSize = requestDto.getPageSize();
         String userId = requestDto.getBaseParam().getUserId();
         Integer offset = (index-1)*pageSize;
-        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, userId, null, null, offset, pageSize, null, null);
-        int count = rechargeMapper.findRechargeCount(null, userId, null, null, null, null);
+        List<RechargeModel> rechargeModels = rechargeMapper.findRechargePagination(null, userId, null, null, null, offset, pageSize, null, null);
+        int count = rechargeMapper.findRechargeCount(null, userId, null, null, null, null, null);
 
         List<RechargeDetailResponseDataDto> rechargeResponseList = Lists.newArrayList();
         if(rechargeModels != null) {
