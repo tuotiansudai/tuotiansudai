@@ -37,7 +37,7 @@ public class LoanResponseDataDto {
     }
 
     public void setLoanType(String loanType) {
-        if(ActivityType.NOVICE.name().equals(loanType)){
+        if(ActivityType.NEWBIE.name().equals(loanType)){
             this.loanType = "xs";
         }else if(ActivityType.EXCLUSIVE.name().equals(loanType)){
             this.loanType = "dx";

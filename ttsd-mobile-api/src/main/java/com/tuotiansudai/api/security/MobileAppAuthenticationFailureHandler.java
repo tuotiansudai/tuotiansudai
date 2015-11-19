@@ -34,10 +34,10 @@ public class MobileAppAuthenticationFailureHandler extends SimpleUrlAuthenticati
     @Autowired
     private UserMapper userMapper;
 
-    @Value("${login.unlock.second}")
+    @Value("${web.login.lock.seconds}")
     private int second;
 
-    @Value("${login.max.times}")
+    @Value("${web.login.max.failed.times}")
     private int times;
 
     @Override

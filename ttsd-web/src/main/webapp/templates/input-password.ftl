@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
-<@global.head title="忘记密码" pageCss="${css.forget_password}">
-</@global.head>
-<body>
-<#include "header.ftl" />
+<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
 <div class="main">
     <div class="forget-phone-box">
         <div class="hd">
@@ -16,31 +11,21 @@
                 <input type="hidden" name="mobile" value="${mobile}">
                 <input type="hidden" name="captcha" value="${captcha}">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input class="phone-txt jq-ps-1" name="password" type="password" maxlength="20" placeholder="请输入密码"/>
+                <input class="password-txt jq-ps-1" name="password" type="password" maxlength="20" placeholder="请输入密码"/>
             </div>
             <div class="item-block">
                 <label for="">确认密码：</label>
-                <input class="phone-txt jq-ps-2" type="password" maxlength="20" placeholder="再次输入密码"/>
+                <input class="password-txt jq-ps-2" type="password" maxlength="20" placeholder="再次输入密码"/>
             </div>
             <div class="item-block">
                 <div class="error"></div>
             </div>
             <div class="item-block">
-                <button type="submit" class="btn-send-form grey" disabled="disabled">确认</button>
+                <button type="submit" class="btn-send-form-second" >确认</button>
             </div>
         </form>
 
     </div>
     <p class="txtc tips">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （工作日 9:00-22:00）</p>
 </div>
-
-
-
-
-
-
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.input_password}">
-</@global.javascript>
-</body>
-</html>
+</@global.main>
