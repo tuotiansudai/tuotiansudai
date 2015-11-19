@@ -11,10 +11,11 @@ import java.util.List;
 
 public class ExportCsvUtil {
 
-    public static BufferedWriter createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
-        BufferedWriter csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream));
+    public static void createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
+        BufferedWriter csvFileOutputStream = null;
         try {
-            csvFileOutputStream.write(new String(csvHeaderType.getHeader().getBytes("utf-8"),"GBK"));
+            csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
+            csvFileOutputStream.write(csvHeaderType.getHeader());
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
                 csvFileOutputStream.write(StringUtils.join(dataList,","));
@@ -24,12 +25,13 @@ public class ExportCsvUtil {
             e.printStackTrace();
         } finally {
             try {
-                csvFileOutputStream.close();
+                if (csvFileOutputStream != null) {
+                    csvFileOutputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return csvFileOutputStream;
     }
 
 }
