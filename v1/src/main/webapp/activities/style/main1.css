@@ -24,8 +24,18 @@ body {
 .header {
     background: #fff;
 }
+
 .ad-img img{
-    width:100%;
+    margin: 0 auto;
+
+}
+.ad-recruit-img {
+    height:350px;
+    background: url("../images/daili/ad.jpg") center top no-repeat;
+}
+.ad-ranking-img {
+    height: 439px;
+    background: url("../images/ranking/ad1.jpg") center top no-repeat;
 }
 .main-width {
     width:1010px;
@@ -203,7 +213,6 @@ text-align: left;}
     width:1000px;
     background: #fff;
     margin: 0 auto;
-    margin-top:-3px;
     box-sizing: border-box;
     padding:50px 86px;
     padding-top:0;
