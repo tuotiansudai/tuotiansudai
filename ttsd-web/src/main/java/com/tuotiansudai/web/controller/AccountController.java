@@ -48,7 +48,6 @@ public class AccountController {
         if (userRoleService.judgeUserRoleExist(loginName, Role.LOANER)){
             modelAndView.addObject("successSumRepay",loanRepayService.findByLoginNameAndTimeSuccessRepay(loginName,startTime,endTime));
             modelAndView.addObject("repayList", loanRepayService.findLoanRepayInAccount(loginName, startTime, endTime, 0, 6));
-            System.out.println("repayList size is " + loanRepayService.findLoanRepayInAccount(loginName, startTime, endTime, 0, 6).size());
         }
         modelAndView.addObject("successSumInvestRepay", investRepayService.findByLoginNameAndTimeAndSuccessInvestRepay(loginName, startTime, endTime));
         modelAndView.addObject("successSumInvestRepayList", investRepayService.findByLoginNameAndTimeSuccessInvestRepayList(loginName, startTime, endTime, 0, 6));
