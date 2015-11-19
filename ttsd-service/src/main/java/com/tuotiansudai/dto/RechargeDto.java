@@ -21,6 +21,8 @@ public class RechargeDto implements Serializable {
     @NotNull
     private Source source;
 
+    private String channel;
+
     private boolean fastPay;
 
     public String getLoginName() {
@@ -61,5 +63,13 @@ public class RechargeDto implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         this.fastPay = fastPay;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }
