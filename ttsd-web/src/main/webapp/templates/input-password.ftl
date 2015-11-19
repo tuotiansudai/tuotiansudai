@@ -21,7 +21,7 @@
                 <div class="error"></div>
             </div>
             <div class="item-block">
-                <button type="submit" class="btn-send-form-second" >确认</button>
+                <button type="submit" class="btn-send-form-second btn-success" >确认</button>
             </div>
         </form>
 
