@@ -34,10 +34,10 @@ public class PayAsyncClient {
 
     private ObjectMapper objectMapper;
 
-    @Value(value = "${ump.callback.web.host}")
+    @Value(value = "${pay.callback.web.host}")
     private String webCallback;
 
-    @Value(value = "${ump.callback.back.host}")
+    @Value(value = "${pay.callback.back.host}")
     private String backCallback;
 
     @Autowired

@@ -46,7 +46,7 @@ public class SmsWrapperClientTest {
         server.enqueue(mockResponse);
         smsWrapperClient.setHost(server.getHostName());
         smsWrapperClient.setPort(String.valueOf(server.getPort()));
-        smsWrapperClient.setContext("");
+        smsWrapperClient.setApplicationContext("");
         BaseDto<SmsDataDto> resultDto = this.smsWrapperClient.sendRegisterCaptchaSms(new SmsCaptchaDto("13900000000", "1000", "127.0.0.1"));
 
         assertNotNull(resultDto);
@@ -63,7 +63,7 @@ public class SmsWrapperClientTest {
         URL url = server.getUrl("/monitor");
         smsWrapperClient.setHost(url.getHost());
         smsWrapperClient.setPort(String.valueOf(url.getPort()));
-        smsWrapperClient.setContext("");
+        smsWrapperClient.setApplicationContext("");
         BaseDto<MonitorDataDto> resultDto = this.smsWrapperClient.monitor();
 
         assertNotNull(resultDto);

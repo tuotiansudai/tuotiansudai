@@ -1,4 +1,4 @@
-@import 'layer', 'font_awesome';
+@import 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame', 'account';
 
@@ -58,13 +58,14 @@
     }
   }
   .process-percent {
-    border-radius: 3px;
+    border-radius: 10px;
     background: #ffe3d4;
     height: 8px;
     width:100%;
     overflow: hidden;
     position: relative;
     .percent {
+      border-radius: 10px;
       width: 50px;
       position: absolute;
       height: 100%;

@@ -200,7 +200,7 @@ public class MobileAppRegisterServiceImpl implements MobileAppRegisterService {
     @Override
     public String verifyPassword(String password) {
         try {
-            String regex = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$";
+            String regex = "^(?=.*[^\\d])(.{6,20})$";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(password);
             if (!matcher.matches()) {

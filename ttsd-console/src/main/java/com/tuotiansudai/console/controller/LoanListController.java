@@ -26,15 +26,20 @@ public class LoanListController {
     private LoanService loanService;
 
     @RequestMapping(value = "/console", method = RequestMethod.GET)
-    public ModelAndView ConsoleLoanList(@RequestParam("status") LoanStatus status,
+    public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                         @RequestParam(value = "loanId", required = false) Long loanId,
-                                        @RequestParam("startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                        @RequestParam("endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
-                                        @RequestParam("currentPageNo") int currentPageNo,
-                                        @RequestParam("loanName") String loanName, @RequestParam("pageSize") int pageSize) {
-        DateTime dateTime = new DateTime(endTime);
-        int loanListCount = loanService.findLoanListCount(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate());
-        List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName, startTime, dateTime.plusDays(1).toDate(), currentPageNo, pageSize);
+                                        @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                        @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                                        @RequestParam(value = "currentPageNo", required = false, defaultValue = "1") int currentPageNo,
+                                        @RequestParam(value = "loanName", required = false) String loanName,
+                                        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        int loanListCount = loanService.findLoanListCount(status, loanId, loanName,
+                startTime == null ? new DateTime(0).toDate() : startTime,
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime);
+        List<LoanListDto> loanListDtos = loanService.findLoanList(status, loanId, loanName,
+                startTime == null ? new DateTime(0).toDate() : startTime,
+                endTime == null ? new DateTime(9999, 12, 31, 0, 0, 0).toDate() : endTime,
+                currentPageNo, pageSize);
         ModelAndView modelAndView = new ModelAndView("/loan-list");
         modelAndView.addObject("loanListCount", loanListCount);
         modelAndView.addObject("loanListDtos", loanListDtos);
