@@ -20,7 +20,9 @@ import java.util.Map;
 
 @Service
 public class BindEmailServiceImpl implements BindEmailService {
+
     static Logger logger = Logger.getLogger(BindEmailServiceImpl.class);
+
     @Autowired
     private SendCloudMailUtil sendCloudMailUtil;
 
@@ -31,13 +33,10 @@ public class BindEmailServiceImpl implements BindEmailService {
     private UserMapper userMapper;
 
 
-    @Value("${web.email.verify.host}")
-    private String host;
+    @Value("${web.server}")
+    private String webServer;
 
-    @Value("${web.email.verify.port}")
-    private String port;
-
-    private final static String ACTIVE_URL_TEMPLATE = "http://{host}:{port}/bind-email/verify/{uuid}";
+    private final static String ACTIVE_URL_TEMPLATE = "{webServer}/bind-email/verify/{uuid}";
 
     @Override
     public boolean sendActiveEmail(String loginName, String email, String url) {
@@ -45,7 +44,7 @@ public class BindEmailServiceImpl implements BindEmailService {
             String uuid = UUIDGenerator.generate();
             String bindEmailKey = "web:{loginName}:{uuid}";
             String bindEmailValue = "{loginName}:{email}";
-            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{host}", host).replace("{port}", port).replace("{uuid}", uuid);
+            String activeUrl = ACTIVE_URL_TEMPLATE.replace("{webServer}", webServer).replace("{uuid}", uuid);
 
             redisWrapperClient.setex(bindEmailKey.replace("{loginName}", loginName).replace("{uuid}", uuid),
                     86400,

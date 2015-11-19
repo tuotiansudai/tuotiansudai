@@ -19,7 +19,6 @@ import com.tuotiansudai.util.IdGenerator;
 import com.tuotiansudai.util.JobManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.quartz.SchedulerException;
@@ -61,7 +60,7 @@ public class LoanServiceImpl implements LoanService {
     @Autowired
     private PayWrapperClient payWrapperClient;
 
-    @Value("${autoInvest.delay.minutes}")
+    @Value("${console.auto.invest.delay.minutes}")
     private int autoInvestDelayMinutes;
 
     @Autowired
@@ -382,8 +381,11 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public void startFundraising(long loanId) {
-        loanMapper.updateStatus(loanId, LoanStatus.RAISING);
-        this.createAutoInvestJob(loanId);
+        LoanModel loanModel = loanMapper.findById(loanId);
+        if(LoanStatus.PREHEAT == loanModel.getStatus()) {
+            loanMapper.updateStatus(loanId, LoanStatus.RAISING);
+            this.createAutoInvestJob(loanId);
+        }
     }
 
     private void createFundraisingStartJob(LoanModel loanModel) {
@@ -402,7 +404,7 @@ public class LoanServiceImpl implements LoanService {
     private void createAutoInvestJob(long loanId) {
         try {
             jobManager.newJob(JobType.AutoInvest, AutoInvestJob.class)
-                    .runOnceAt(DateUtils.addMinutes(new Date(), autoInvestDelayMinutes))
+                    .runOnceAt(new DateTime().plusMinutes(autoInvestDelayMinutes).toDate())
                     .addJobData(AutoInvestJob.LOAN_ID_KEY, String.valueOf(loanId))
                     .withIdentity("AutoInvestJob", "Loan-" + loanId)
                     .submit();
@@ -700,8 +702,10 @@ public class LoanServiceImpl implements LoanService {
 
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
         try {
-            jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class).
-                    addJobData("loanId", loanModel.getId())
+            jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class)
+                    .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-"+loanModel.getId())
+                    .replaceExistingJob(true)
+                    .addJobData("loanId", loanModel.getId())
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
         } catch (SchedulerException e) {
             logger.error(e.getLocalizedMessage(), e);

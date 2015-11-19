@@ -16,11 +16,11 @@ import java.util.Map;
 @Component
 public class PayGateWrapper implements InitializingBean {
 
-    @Value(value = "${ump.service.fake}")
-    private boolean umpServiceFaked;
+    @Value(value = "${pay.fake}")
+    private boolean isFakePay;
 
-    @Value(value = "${ump.service.fake.url}")
-    private String umpServiceFakeUrlPrefix;
+    @Value(value = "${pay.fake.url}")
+    private String payFakeUrl;
 
     private PayGateWrapper payGateWrapperImpl;
 
@@ -42,8 +42,8 @@ public class PayGateWrapper implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (umpServiceFaked) {
-            payGateWrapperImpl = new PayGateWrapperFakeImpl(umpServiceFakeUrlPrefix);
+        if (isFakePay) {
+            payGateWrapperImpl = new PayGateWrapperFakeImpl(payFakeUrl);
         } else {
             payGateWrapperImpl = new PayGateWrapperImpl();
         }

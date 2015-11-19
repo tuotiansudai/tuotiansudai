@@ -1,5 +1,4 @@
-require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($, layer) {
-    $(function () {
+require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form'], function ($,layer) {
         var $InfoBox = $('#personInfoBox'),
             $changeEmailLayer = $('.setEmail', $InfoBox),
             $changePasswordLayer = $('.setPass', $InfoBox),
@@ -182,4 +181,3 @@ require(['jquery', 'layer', 'jquery.validate', 'jquery.validate.extension', 'jqu
             }
         });
     });
-});

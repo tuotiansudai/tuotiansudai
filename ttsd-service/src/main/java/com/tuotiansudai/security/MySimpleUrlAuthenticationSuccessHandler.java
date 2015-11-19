@@ -29,7 +29,7 @@ public class MySimpleUrlAuthenticationSuccessHandler extends SimpleUrlAuthentica
     @Autowired
     private LoginLogService loginLogService;
 
-    @Value("${login.max.times}")
+    @Value("${web.login.max.failed.times}")
     private int times;
 
 

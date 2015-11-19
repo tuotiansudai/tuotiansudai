@@ -1,6 +1,3 @@
-/**
- * Created by CBJ on 2015/10/19.
- */
 var commonFun={};
 Array.prototype.contains = function (obj) {
     var i = this.length;
