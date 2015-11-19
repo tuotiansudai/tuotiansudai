@@ -24,6 +24,8 @@ public class RechargeModel implements Serializable {
 
     private boolean fastPay;
 
+    private String channel;
+
     private Date createdTime;
 
     public RechargeModel() {
@@ -110,5 +112,13 @@ public class RechargeModel implements Serializable {
 
     public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 }

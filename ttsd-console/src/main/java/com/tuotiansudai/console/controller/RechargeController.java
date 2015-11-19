@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -30,6 +31,7 @@ public class RechargeController {
                                         @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                         @RequestParam(value = "status", required = false) RechargeStatus status,
                                         @RequestParam(value = "source", required = false) RechargeSource source,
+                                        @RequestParam(value = "channel", required = false) String channel,
                                         @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                         @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
@@ -38,14 +40,17 @@ public class RechargeController {
                 loginName,
                 source,
                 status,
+                channel,
                 index,
                 pageSize,
                 startTime,
                 endTime);
+        List<String> channelList = rechargeService.findAllChannel();
 
         modelAndView.addObject("baseDto", baseDto);
         modelAndView.addObject("rechargeStatusList", Lists.newArrayList(RechargeStatus.values()));
         modelAndView.addObject("rechargeSourceList", Lists.newArrayList(RechargeSource.values()));
+        modelAndView.addObject("rechargeChannelList", channelList);
         modelAndView.addObject("index", index);
         modelAndView.addObject("pageSize", pageSize);
         modelAndView.addObject("rechargeId", rechargeId);
@@ -54,6 +59,7 @@ public class RechargeController {
         modelAndView.addObject("endTime", endTime);
         modelAndView.addObject("source", source);
         modelAndView.addObject("status", status);
+        modelAndView.addObject("channel", channel);
         if (status != null) {
             modelAndView.addObject("rechargeStatus", status);
         }
