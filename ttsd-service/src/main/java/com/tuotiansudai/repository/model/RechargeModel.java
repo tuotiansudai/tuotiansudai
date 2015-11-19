@@ -39,6 +39,7 @@ public class RechargeModel implements Serializable {
         this.status = RechargeStatus.WAIT_PAY;
         this.source = dto.getSource();
         this.fastPay = dto.isFastPay();
+        this.channel = dto.getChannel();
         this.createdTime = new Date();
     }
 
