@@ -14,7 +14,7 @@ public class ExportCsvUtil {
     public static BufferedWriter createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
         BufferedWriter csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream));
         try {
-            csvFileOutputStream.write(csvHeaderType.getHeader());
+            csvFileOutputStream.write(new String(csvHeaderType.getHeader().getBytes("utf-8"),"GBK"));
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
                 csvFileOutputStream.write(StringUtils.join(dataList,","));
