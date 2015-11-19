@@ -43,7 +43,9 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             LoanModel loanModel = loanModels.get(0);
             if(!ActivityType.NEWBIE.equals(loanModel.getActivityType())){
                 LoanModel loanModelTemp  = loanMapper.getCompletedXsInvest();
-                loanModels.add(0, loanModelTemp);
+                if(loanModelTemp != null){
+                    loanModels.add(0, loanModelTemp);
+                }
             }
             loanDtoList = convertLoanDto(loanModels);
         }
