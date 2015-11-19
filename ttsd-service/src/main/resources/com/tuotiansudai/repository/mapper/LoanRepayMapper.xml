@@ -253,7 +253,6 @@
               AND #{endTime}) n
             ON n.loanId = m.`id`
         ORDER BY n.`repayTime` desc
-        LIMIT #{startLimit}, #{endLimit}
     </select>
 
     <select id="sumSuccessLoanRepayMaxPeriod" parameterType="map" resultType="long">
