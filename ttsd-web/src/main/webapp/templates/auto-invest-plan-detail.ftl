@@ -1,16 +1,13 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
 <div class="content-container auto-invest">
     <h4 class="column-title"><em class="tc">自动投标</em></h4>
-
-    <div class="pad-s">
-        <div class="borderBox">
             <ul class="planSet">
                 <li><b>投资金额：</b><i>${model.minInvestAmount}</i> --- <i>${model.maxInvestAmount}</i> 元</li>
                 <li><b>保留金额：</b><i>${model.retentionAmount}</i> 元</li>
                 <li><b>项目期限：</b><span><#list periods as period>${period.periodName}<#sep>，  </#list></span></li>
             </ul>
-        </div>
+
 
         <div class="btnBox tc">
             <#if model.isTodayPlan()>
@@ -20,7 +17,6 @@
             </#if>
             <button type="button" id="editSetting" class="btn btn-normal">修改设置</button>
         </div>
-    </div>
 
 </div>
 </@global.main>
