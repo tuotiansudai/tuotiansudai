@@ -70,11 +70,11 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
     public void shouldQueryUserWithdrawLogsIsOk() {
         WithdrawModel withdrawModel1 = fakeWithDrawModel();
         WithdrawModel withdrawModel2 = fakeWithDrawModel();
-        withdrawModel2.setStatus(WithdrawStatus.RECHECK_FAIL);
+        withdrawModel2.setStatus(WithdrawStatus.FAIL);
         List<WithdrawModel> withdrawModels = Lists.newArrayList();
         withdrawModels.add(withdrawModel1);
         withdrawModels.add(withdrawModel2);
-        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Date.class), any(Date.class))).thenReturn(2);
+        when(withdrawMapper.findWithdrawCount(anyString(), anyString(), any(WithdrawStatus.class), any(Date.class), any(Date.class))).thenReturn(2L);
         when(withdrawMapper.findWithdrawPagination(anyString(),anyString(),
                 any(WithdrawStatus.class),anyInt(),anyInt(),any(Date.class),any(Date.class))).thenReturn(withdrawModels);
         BaseParam baseParam = new BaseParam();
@@ -83,8 +83,8 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         withdrawListRequestDto.setBaseParam(baseParam);
         BaseResponseDto<WithdrawListResponseDataDto> baseDto = mobileAppWithdrawService.queryUserWithdrawLogs(withdrawListRequestDto);
         assertTrue(baseDto.isSuccess());
-        assertEquals(WithdrawStatus.RECHECK.name().toLowerCase(), baseDto.getData().getWithdrawList().get(0).getStatus());
-        assertEquals(WithdrawStatus.RECHECK_FAIL.name().toLowerCase(),baseDto.getData().getWithdrawList().get(1).getStatus());
+        assertEquals(WithdrawStatus.APPLY_SUCCESS.name().toLowerCase(), baseDto.getData().getWithdrawList().get(0).getStatus());
+        assertEquals(WithdrawStatus.FAIL.name().toLowerCase(),baseDto.getData().getWithdrawList().get(1).getStatus());
 
     }
 
@@ -93,13 +93,13 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         withdrawModel.setId(idGenerator.generate());
         withdrawModel.setLoginName("loginName");
         withdrawModel.setAmount(40000L);
-        withdrawModel.setVerifyMessage("verify_message");
-        withdrawModel.setVerifyTime(new Date());
-        withdrawModel.setRecheckMessage("recheck_message");
-        withdrawModel.setRecheckTime(new Date());
+        withdrawModel.setApplyNotifyMessage("verify_message");
+        withdrawModel.setApplyNotifyTime(new Date());
+        withdrawModel.setNotifyMessage("recheck_message");
+        withdrawModel.setNotifyTime(new Date());
         withdrawModel.setCreatedTime(new Date());
         withdrawModel.setSource(Source.IOS);
-        withdrawModel.setStatus(WithdrawStatus.RECHECK);
+        withdrawModel.setStatus(WithdrawStatus.APPLY_SUCCESS);
         return withdrawModel;
     }
 
