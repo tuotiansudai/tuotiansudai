@@ -1,0 +1,2 @@
+ALTER TABLE `aa`.`user_bill` CHANGE `operation_login_name` `operator_login_name` VARCHAR(25) AFTER `business_type`;
+ALTER TABLE `aa`.`user_bill` CHANGE `intervention_reason` `intervention_reason` TEXT AFTER `operator_login_name`;
