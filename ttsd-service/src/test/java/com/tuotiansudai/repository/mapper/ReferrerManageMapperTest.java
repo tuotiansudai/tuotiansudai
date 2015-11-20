@@ -1,5 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.ReferrerManageView;
+import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;

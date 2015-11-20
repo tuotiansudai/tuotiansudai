@@ -6,7 +6,7 @@
         <div class="clear-blank"></div>
         <span class="text-s">
             客服热线：400-169-1188(沟通时间：9:00-22:00) <br/>
-            客服邮箱：<a href="mailto:kefu@tuotiansudai.com" target="_blank">kefu@tuotiansudai.com</a> <br/>
+            客服邮箱：kefu@tuotiansudai.com <br/>
             客服微信：tuotiansudai<br/>
             客服QQ：800036446<br/>
         </span>
@@ -14,7 +14,7 @@
         <h2 class="page-col-title"><span>关注我们</span></h2>
         <b class="text-m">实时关注</b>
 
-        <ul class="real-attention">
+        <ul class="real-attention clearfix">
             <li><img src="${staticServer}/images/sign/micro-code.png" alt="" title=""/><span>微信二维码</span></li>
             <li><img src="${staticServer}/images/sign/blog-code.png" alt="" title=""/><span>微博二维码</span></li>
         </ul>

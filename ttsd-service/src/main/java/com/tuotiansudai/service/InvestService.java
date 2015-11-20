@@ -5,6 +5,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
 import com.tuotiansudai.repository.model.AutoInvestPlanModel;
 import com.tuotiansudai.repository.model.InvestStatus;
+import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.Source;
 
@@ -19,6 +20,8 @@ public interface InvestService {
     BaseDto<PayFormDataDto> invest(InvestDto investDto) throws InvestException;
 
     long calculateExpectedInterest(long loanId, long amount);
+
+    long calculateExpectedInterest(LoanModel loanModel, long amount);
 
     BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(String investorLoginName,
                                                                            int index,

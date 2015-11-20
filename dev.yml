@@ -38,6 +38,16 @@ sms-wrapper:
     - ./ttsd-sms-wrapper/war:/webapps
   links:
     - "redis-server"
+mobile-api:
+  image: "leoshi/ttsd-tomcat8-java7:UTC8"
+  ports:
+    - "20006:8080"
+  volumes:
+    - ./ttsd-mobile-api/war:/webapps
+  links:
+    - "pay-wrapper"
+    - "sms-wrapper"
+    - "redis-server"
 redis-server:
   image: "grokzen/redis-cluster"
   ports:

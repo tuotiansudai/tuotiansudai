@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.InvestException;
+import com.tuotiansudai.exception.InvestExceptionType;
 import com.tuotiansudai.repository.mapper.AutoInvestPlanMapper;
 import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
@@ -62,24 +63,24 @@ public class InvestServiceImpl implements InvestService {
 
         // 标的状态不对
         if (LoanStatus.RAISING != loan.getStatus()) {
-            throw new InvestException("标的暂不可投资");
+            throw new InvestException(InvestExceptionType.ILLEGAL_LOAN_STATUS);
         }
 
         // 不满足新手标投资限制约束
         if (ActivityType.NEWBIE == loan.getActivityType()) {
             if (!canInvestNewbieLoan(investDto.getLoginName())) {
-                throw new InvestException("你的新手标投资已超上限");
+                throw new InvestException(InvestExceptionType.OUT_OF_NOVICE_INVEST_LIMIT);
             }
         }
 
         // 不满足最小投资限制
         if (investAmount < userInvestMinAmount) {
-            throw new InvestException("投资金额小于标的最小投资金额");
+            throw new InvestException(InvestExceptionType.LESS_THAN_MIN_INVEST_AMOUNT);
         }
 
         // 不满足递增规则
         if ((investAmount - userInvestMinAmount) % userInvestIncreasingAmount > 0) {
-            throw new InvestException("投资金额不符合递增金额要求");
+            throw new InvestException(InvestExceptionType.ILLEGAL_INVEST_AMOUNT);
         }
 
         long userInvestMaxAmount = loan.getMaxInvestAmount();
@@ -88,19 +89,19 @@ public class InvestServiceImpl implements InvestService {
 
         // 标已满
         if (loanNeedAmount <= 0) {
-            throw new InvestException("标的已满");
+            throw new InvestException(InvestExceptionType.LOAN_IS_FULL);
         }
 
         // 超投
         if (loanNeedAmount < investAmount) {
-            throw new InvestException("标的可投金额不足");
+            throw new InvestException(InvestExceptionType.EXCEED_MONEY_NEED_RAISED);
         }
 
         long userInvestAmount = investMapper.sumSuccessInvestAmountByLoginName(loanId, investDto.getLoginName());
 
         // 不满足单用户投资限额
         if (investAmount > userInvestMaxAmount - userInvestAmount) {
-            throw new InvestException("投资金额超过了用户投资限额");
+            throw new InvestException(InvestExceptionType.MORE_THAN_MAX_INVEST_AMOUNT);
         }
 
     }
@@ -116,6 +117,11 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public long calculateExpectedInterest(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
+        return calculateExpectedInterest(loanModel, amount);
+    }
+
+    @Override
+    public long calculateExpectedInterest(LoanModel loanModel, long amount) {
         int repayTimes = loanModel.calculateLoanRepayTimes();
         LoanType loanType = loanModel.getType();
 
