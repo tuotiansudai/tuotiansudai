@@ -145,8 +145,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 originalPassword: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: /^(?=.*[^\d])(.{6,20})$/
-                    //isNotExist: "/personal-info/password/{0}/is-exist"
+                    regex: /^(?=.*[^\d])(.{6,20})$/,
+                    isNotExist: "/personal-info/password/{0}/is-exist"
                 },
                 newPassword: {
                     required: true,
@@ -164,8 +164,8 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 originalPassword: {
                     required: "请输入原密码",
                     rangelength: "长度6~20位",
-                    regex: "不能全为数字"
-                    //isNotExist: "原密码不正确"
+                    regex: "不能全为数字",
+                    isNotExist: "原密码不正确"
                 },
                 newPassword: {
                     required: "请输入新密码",
