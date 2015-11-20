@@ -14,6 +14,7 @@ import com.tuotiansudai.paywrapper.repository.model.async.request.MerRechargePer
 import com.tuotiansudai.paywrapper.service.RechargeService;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.RechargeMapper;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.repository.model.RechargeModel;
 import com.tuotiansudai.repository.model.RechargeStatus;
@@ -63,9 +64,8 @@ public class RechargeServiceImpl implements RechargeService {
         if (dto.isFastPay()) {
             requestModel = MerRechargePersonRequestModel.newFastRecharge(String.valueOf(rechargeModel.getId()),
                     accountModel.getPayUserId(),
-                    String.valueOf(rechargeModel.getAmount()));
+                    String.valueOf(rechargeModel.getAmount()),dto.getSource());
         }
-
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(MerRechargePersonMapper.class, requestModel);
             rechargeMapper.create(rechargeModel);

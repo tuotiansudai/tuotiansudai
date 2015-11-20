@@ -3,8 +3,8 @@ package com.tuotiansudai.paywrapper.service.impl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
-import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.CustWithdrawalsMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.WithdrawApplyNotifyMapper;
@@ -65,7 +65,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         withdrawModel.setId(idGenerator.generate());
         CustWithdrawalsRequestModel requestModel = new CustWithdrawalsRequestModel(String.valueOf(withdrawModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(withdrawModel.getAmount() - WITHDRAW_FEE));
+                String.valueOf(withdrawModel.getAmount() - WITHDRAW_FEE),withdrawDto.getSource());
         try {
             BaseDto<PayFormDataDto> baseDto = payAsyncClient.generateFormData(CustWithdrawalsMapper.class, requestModel);
             withdrawMapper.create(withdrawModel);

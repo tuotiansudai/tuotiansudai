@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
 import com.tuotiansudai.paywrapper.repository.model.UmPayService;
+import com.tuotiansudai.repository.model.Source;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -28,7 +29,11 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source) {
+        this(orderId, cardNumber, payUserId, userName, identityNumber, source, false);
+    }
+
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source, boolean isOpenFastPayment) {
         super();
         this.service = "ptp_mer_bind_card";
         this.orderId = orderId;
@@ -37,7 +42,13 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        this.isOpenFastPayment = isOpenFastPayment?"1":"0";
+        if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), "ptp_mer_bind_card"));
+            this.setSourceV("HTML5");
+        }else{
+            this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        }
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
 
     }

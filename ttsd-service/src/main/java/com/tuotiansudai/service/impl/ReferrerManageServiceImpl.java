@@ -68,7 +68,8 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
         }
     }
 
-    private String getUserRewardDisplayLevel(String loginName) {
+    @Override
+    public String getUserRewardDisplayLevel(String loginName) {
         int level = 0;
         int merLevel = staffReward.split("\\|").length;
         int userLevel = userReward.split("\\|").length;

@@ -1,6 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.sync.request;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -30,6 +31,8 @@ public abstract class BaseSyncRequestModel {
     private String version;
 
     private String merId;
+
+    private String sourceV;
 
     private Date requestTime = new Date();
 
@@ -66,6 +69,9 @@ public abstract class BaseSyncRequestModel {
         payRequestData.put("charset", this.charset);
         payRequestData.put("mer_id", this.merId);
         payRequestData.put("version", this.version);
+        if(StringUtils.isNotEmpty(this.sourceV)){
+            payRequestData.put("sourceV", this.sourceV);
+        }
         return payRequestData;
     }
 
@@ -151,6 +157,14 @@ public abstract class BaseSyncRequestModel {
 
     public void setRequestData(String requestData) {
         this.requestData = requestData;
+    }
+
+    public String getSourceV() {
+        return sourceV;
+    }
+
+    public void setSourceV(String sourceV) {
+        this.sourceV = sourceV;
     }
 
     @Override

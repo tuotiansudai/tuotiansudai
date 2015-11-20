@@ -20,4 +20,6 @@ public enum Source {
      * 自动投资
      */
     AUTO
+
+
 }
