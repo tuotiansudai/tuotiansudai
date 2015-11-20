@@ -56,4 +56,11 @@ public class InvestRepayServiceImpl implements InvestRepayService{
     public long findSumRepayingCorpusByLoginName(String loginName) {
         return investRepayMapper.findSumRepayingCorpusByLoginName(loginName);
     }
+
+    @Override
+    public long findSumRepaidCorpusByLoginName(String loginName) {
+        return investRepayMapper.findSumRepaidCorpusByLoginName(loginName);
+    }
+
+
 }

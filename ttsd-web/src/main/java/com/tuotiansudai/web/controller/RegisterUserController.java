@@ -34,8 +34,11 @@ public class RegisterUserController {
     private CaptchaHelper captchaHelper;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView registerUser() {
-        return new ModelAndView("/register-user");
+    public ModelAndView registerUser(HttpServletRequest request) {
+        String referrer = request.getParameter("referrer");
+        ModelAndView modelAndView = new ModelAndView("/register-user");
+        modelAndView.addObject("referrer", referrer);
+        return modelAndView;
     }
 
 

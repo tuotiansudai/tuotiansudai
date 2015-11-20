@@ -1,7 +1,6 @@
 package com.tuotiansudai.dto;
 
 import com.google.common.base.Strings;
-import com.tuotiansudai.repository.model.UserModel;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;
@@ -23,10 +22,12 @@ public class RegisterUserDto implements Serializable {
     private String captcha;
 
     @NotEmpty
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$")
+    @Pattern(regexp = "^(?=.*[^\\d])(.{6,20})$")
     private String password;
 
     private String referrer;
+
+    private String channel;
 
     @AssertTrue
     private boolean agreement;
@@ -85,4 +86,11 @@ public class RegisterUserDto implements Serializable {
         this.agreement = agreement;
     }
 
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 }

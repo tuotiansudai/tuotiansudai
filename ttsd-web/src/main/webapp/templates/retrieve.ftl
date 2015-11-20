@@ -15,14 +15,14 @@
 
                 <div class="yzm">
                     <input type="text" name="captcha" class="yzm-txt" placeholder="请输入验证码"/>
-                    <button type="button" class="send-yzm fetch-captcha" disabled="disabled">获取验证码</button>
+                    <button type="button" class="send-yzm fetch-captcha btn-success" disabled="disabled">获取验证码</button>
                 </div>
             </div>
             <div class="item-block">
                 <div class="error"></div>
             </div>
             <div class="item-block">
-                <button type="button" class="btn-send-form" disabled="disabled">提交</button>
+                <button type="button" class="btn-send-form btn-success" disabled="disabled">提交</button>
             </div>
         </form>
 
@@ -42,7 +42,7 @@
         </div>
         <b>验证码输入错误</b>
         <div class="btn_complete">
-            <button class="complete " >确认</button>
+            <button class="complete btn-success" >确认</button>
         </div>
     </div>
 

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
+<@global.main pageCss="${css.forget_password}" pageJavascript="${js.input_password}" activeNav="" activeLeftNav="" title="忘记密码">
 <div class="main">
     <div class="forget-phone-box">
         <div class="hd">
@@ -21,7 +21,7 @@
                 <div class="error"></div>
             </div>
             <div class="item-block">
-                <button type="submit" class="btn-send-form-second" >确认</button>
+                <button type="submit" class="btn-send-form-second btn-success" >确认</button>
             </div>
         </form>
 

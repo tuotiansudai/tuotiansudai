@@ -1,4 +1,4 @@
-require(['jquery', 'layer','csrf'], function ($,layer) {
+require(['jquery', 'layerWrapper','csrf'], function ($,layer) {
 
     $(function () {
         //手机号校验

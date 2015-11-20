@@ -219,4 +219,165 @@
         ORDER BY n.rewardTime DESC
     </select>
 
+
+    <resultMap id="referUserMap" type="ReferrerRelationView">
+        <result column="login_name" property="loginName"></result>
+        <result column="level" property="level"></result>
+        <result column="register_time" property="registerTime"></result>
+    </resultMap>
+
+    <select id="findReferRelationList" parameterType="map" resultMap="referUserMap" >
+        SELECT
+            rr.login_name,
+            rr.level,
+            u.register_time
+        FROM
+            referrer_relation rr
+        LEFT JOIN user u
+            on rr.login_name = u.login_name
+        <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                and rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and rr.login_name = #{loginName}
+            </if>
+            <if test="referStartTime != null">
+                <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
+            </if>
+            <if test="referEndTime != null">
+                <![CDATA[ and u.`register_time` <= #{referEndTime} ]]>
+            </if>
+        </where>
+        ORDER BY u.register_time DESC limit #{startLimit}, #{endLimit}
+    </select>
+
+
+    <select id="findReferRelationCount" parameterType="map" resultType="int" >
+        SELECT
+            count(rr.referrer_login_name)
+        FROM
+            referrer_relation rr
+        LEFT JOIN user u
+            on rr.login_name = u.login_name
+        <where>
+            <if test="level != null and level != ''">
+                <![CDATA[ rr.level <= #{level} ]]>
+            </if>
+            <if test="referrerLoginName != null and referrerLoginName != ''">
+                and rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''">
+                and rr.login_name = #{loginName}
+            </if>
+            <if test="referStartTime != null">
+                <![CDATA[ and u.`register_time` >= #{referStartTime} ]]>
+            </if>
+            <if test="referEndTime != null">
+                <![CDATA[ and u.`register_time` <= #{referEndTime} ]]>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findReferInvestList" parameterType="map" resultMap="referrerManageMap" >
+        select
+            rr.login_name AS invest_name,
+            rr.level,
+            l.name AS loan_name,
+            i.amount AS invest_amount,
+            l.periods,
+            i.created_time AS invest_time,
+            irr.amount AS reward_amount,
+            irr.created_time AS reward_time
+        from
+            invest i
+        right join referrer_relation rr
+            on i.login_name = rr.login_name
+        left join loan l
+            on l.id = i.loan_id
+        left join invest_referrer_reward irr
+            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and rr.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and rr.level <= #{level} ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+        ORDER BY invest_time DESC limit #{startLimit}, #{endLimit}
+    </select>
+
+    <select id="findReferInvestCount" parameterType="map" resultType="int" >
+        select
+            COUNT(1)
+        from
+            invest i
+        right join referrer_relation rr
+            on i.login_name = rr.login_name
+        left join loan l
+            on l.id = i.loan_id
+        left join invest_referrer_reward irr
+            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and rr.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and rr.level <= #{level} ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="findReferInvestTotalAmount" parameterType="map" resultType="java.lang.Long" >
+        select
+          IFNULL(sum(irr.amount),0)
+        from
+            invest i
+        right join referrer_relation rr
+            on i.login_name = rr.login_name
+        left join loan l
+            on l.id = i.loan_id
+        left join invest_referrer_reward irr
+            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        <where>
+            <if test="referrerLoginName != null and referrerLoginName != ''" >
+                rr.referrer_login_name = #{referrerLoginName}
+            </if>
+            <if test="loginName != null and loginName != ''" >
+                and rr.login_name=#{loginName}
+            </if>
+            <if test="level != null and level != ''">
+                <![CDATA[ and rr.level <= #{level} ]]>
+            </if>
+            <if test="investStartTime != null">
+                <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
+            </if>
+            <if test="investEndTime != null">
+                <![CDATA[ and i.`created_time` <= #{investEndTime} ]]>
+            </if>
+        </where>
+    </select>
 </mapper>

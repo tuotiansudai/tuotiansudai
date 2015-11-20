@@ -1,8 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.BankCardModel;
-import com.tuotiansudai.repository.model.BankCardStatus;
-import org.apache.ibatis.annotations.Param;
 
 public interface BankCardMapper {
 
@@ -12,5 +10,9 @@ public interface BankCardMapper {
 
     BankCardModel findPassedBankCardByLoginName(String loginName);
 
+    BankCardModel findByLoginNameAndIsFastPayOn(String loginName);
+
     void update(BankCardModel bankCardModel);
+
+    BankCardModel findPassedBankCardByBankCode(String bankCode);
 }
