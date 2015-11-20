@@ -58,13 +58,13 @@
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
-                                <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.${loan.baseRateFraction}</#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.${loan.activityRateFraction}</#if>%</em>
+                                <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</em>
                                 <i class="clearfix">年化收益</i>
                             </div>
                         </div>
                         <dl class="pr-info">
                             <dd><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
-                            <dd>${loan.amount}万<br/><span>项目金额</span></dd>
+                            <dd><@amount>${loan.amount}</@amount>元<br/><span>项目金额</span></dd>
                         </dl>
                         <div class="project-schedule clear-blank">
                             <div class="p-title">

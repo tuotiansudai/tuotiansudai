@@ -5,7 +5,9 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.service.LoanService;
+import com.tuotiansudai.web.util.AmountDirective;
 import com.tuotiansudai.web.util.LoginUserInfo;
+import com.tuotiansudai.web.util.PercentFractionDirective;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,12 @@ public class LoanController {
 
     @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
+        ModelAndView modelAndView = new ModelAndView("/loan");
         BaseDto<LoanDto> dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
-        return new ModelAndView("/loan", "loan", dto.getData());
+        modelAndView.addObject("percentFraction",new PercentFractionDirective());
+        modelAndView.addObject("amount",new AmountDirective());
+        modelAndView.addObject("loan",dto.getData());
+        return modelAndView;
     }
 
     @RequestMapping(value = "/{loanId:^\\d+$}/invests", method = RequestMethod.GET)
