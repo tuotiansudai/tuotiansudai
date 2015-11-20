@@ -13,7 +13,7 @@ require(['jquery', 'csrf'], function ($) {
                     $('.error').html('');
                 }
                 if (!regex.test(field.val())) {
-                    $('.error').html('不能为全数字组合');
+                    $('.error').html('6位至20位，不能全是数字');
                     $('.btn-send-form-second').addClass('grey').attr('disabled', 'disabled');
                     return false;
                 } else {
