@@ -151,11 +151,18 @@
     }
   }
   .content-container {
-    width: 833px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background: nth($baseColor,1);
-    height: auto;
-    overflow: auto;
+    //width: 833px;
+    //border-radius: 5px;
+    //border: 1px solid #ccc;
+    //background: nth($baseColor,1);
+    //height: auto;
+    //overflow: auto;
+  }
+
+  .about-us-container,.content-container {
+    background: #fff;
+    padding:10px 30px 30px 40px;
+    overflow: hidden;
+    min-height: 400px;
   }
 }

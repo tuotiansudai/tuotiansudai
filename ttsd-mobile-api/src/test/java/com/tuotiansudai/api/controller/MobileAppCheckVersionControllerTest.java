@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,7 +36,7 @@ public class MobileAppCheckVersionControllerTest extends ControllerTestBase {
     public void shouldGetAndroidVersionFromRedis() throws Exception {
 
         String requestJson = generateRequestJson(new BaseParamDto());
-        when(redisWrapperClient.get("app:version:info")).thenReturn("{" +
+        when(redisWrapperClient.get(eq("app:version:info"))).thenReturn("{" +
                 "  \"version\": \"1.0\"," +
                 "  \"versionCode\": 1," +
                 "  \"forceUpgrade\": false," +

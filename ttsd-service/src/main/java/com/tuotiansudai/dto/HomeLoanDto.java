@@ -42,7 +42,7 @@ public class HomeLoanDto {
             this.activityRateFraction = Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]);
         }
         this.periods = periods;
-        this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_DOWN).intValue());
+        this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue());
         this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).intValue());
         this.status = status.name();
     }

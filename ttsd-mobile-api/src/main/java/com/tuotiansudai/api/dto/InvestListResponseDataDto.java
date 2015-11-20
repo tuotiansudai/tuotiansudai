@@ -1,7 +1,5 @@
 package com.tuotiansudai.api.dto;
 
-import com.tuotiansudai.repository.model.InvestModel;
-
 import java.util.List;
 
 public class InvestListResponseDataDto extends BaseResponseDataDto {

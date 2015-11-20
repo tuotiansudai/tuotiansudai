@@ -1,22 +1,6 @@
 @import 'variables';
 @import 'daterangepicker','pagination';
 
-.column-title {
-  height: 48px;
-  line-height: 46px;
-  border-bottom: #d5d5d5 1px solid;
-  em {
-    display: inline-block;
-    padding: 1px 0;
-    border-bottom: #e06b0c 2px solid;
-    width: 110px;
-    color: #ffac2a;
-    &.long-title {
-      width: 140px;
-    }
-  }
-}
-
 .layui-layer-btn {
   text-align: center;
   .layui-layer-btn0 {
@@ -65,6 +49,7 @@
 }
 //Account Overview
 .account-overview {
+  padding:0!important;
   &.content-container {
     border: 0;
     border-radius: 0;
@@ -209,13 +194,12 @@
 .auto-invest {
   .CertifiedImg {
     background: url('/images/sign/re-s01.png') center top no-repeat;
-    //background-size: 50%;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
+    margin: 40px;
     height: 170px;
   }
   .panel {
     color: nth($baseColor, 6);
+    padding-left: 40px;
   }
   p.notice {
     b {
@@ -431,94 +415,7 @@
         }
       }
     }
-    & .CertifiedImg {
-      background: url('/images/sign/re-s01.png') center top no-repeat;
-      //background-size: 50%;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 10px;
-      height: 170px;
-    }
-    & .panel {
-      color: nth($baseColor, 6);
-    }
-    & p.notice {
-      b {
-        font-size: nth($fontSize, 4);
-      }
-    }
-    & .btnBox {
-      margin-top: 30px;
-      margin-bottom: 20px;
-    }
-    & .planSwitch {
-      color: nth($baseColor, 3);
-      form {
-        margin-left: 28px;
-        margin-top: 15px;
-      }
-      dl {
-        margin-bottom: 15px;
-        clear: both;
-        dt {
-          color: nth($baseColor, 4);
-          display: inline-block;
-          float: left;
-          width: 80px;
-          text-align: right;
-        }
-        dd.projectLimit {
-          float: left;
-          width: 50%;
-          label {
-            margin-right: 5px;
-          }
-          span {
-            display: inline-block;
-            color: nth($baseColor, 4);
-            width: 60px;
-            text-align: center;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #e1e1e1;
-            position: relative;
-            cursor: pointer;
-            & .badge {
-              background: url("/images/icons/spr.png") no-repeat -387px -172px;
-              width: 13px;
-              height: 13px;
-              position: absolute;
-              top: 0;
-              right: 0;
-              display: none;
-            }
-            &.active {
-              border: 1px solid nth($btnColor, 5);
-              color: nth($btnColor, 5);
-              & .badge {
-                display: inline-block;
-              }
 
-            }
-          }
-        }
-
-      }
-      & .agreeStatus {
-        margin-bottom: 20px;
-        color: nth($baseColor, 4);
-        label {
-          vertical-align: middle;
-        }
-      }
-    }
-    & .borderBox:nth-child(2) {
-      margin-top: 10px;
-    }
-    & .planSet {
-      i {
-        color: nth($btnColor, 5);
-      }
-    }
   }
   .recharge-form, .fast-recharge-form {
     clear: both;
@@ -606,7 +503,7 @@
     .info-title {
       font-weight: bold;
       display: inline-block;
-      width: 85px;
+      width: 70px;
       text-align: right;
       margin-right: 20px;
       color: nth($CK2, 5);
@@ -637,9 +534,6 @@
     margin-top: 10px;
     line-height: 30px;
     font-size: 12px;
-    .sub-hd {
-      padding-left: 20px;
-    }
     .select-item {
       display: inline-block;
       padding: 0 10px;
@@ -803,6 +697,26 @@
   }
 }
 
+/* refer page */
+.invest-list-content {
+.date-filter {
+  margin-bottom: 20px;
+  input {
+    margin-left: 3px;
+    margin-right: 8px;
+    &.login-name {
+      width:160px;
+    }
+    &.btn-normal,&.btn-primary {
+      padding: 8px 25px;
+    }
+    &.btn-primary {
+      margin-right:0;
+    }
+  }
+
+}
+}
 /* loan detail */
 .loan-detail-content {
   .borderBox { padding:0;}
@@ -1075,21 +989,15 @@
 .money-box {
   font-size: 12px;
   background: url("/images/record/record.png") 360px 30px no-repeat;
-   p {
-    padding-left: 20px;
-    line-height: 24px;
-    margin-top: 10px;
-  }
   a {
     display: inline-block;
-    margin-left: 10px;
+    margin-right: 10px;
     line-height: 1;
     padding: 8px 10px;
     letter-spacing: 0px;
   }
    .balance {
-    color: #ffac2a;
-    padding: 20px 20px 10px;
+    color: #ffac2a;  padding: 0px 0 20px;
   }
 }
 
@@ -1213,5 +1121,10 @@
     padding:5px;
   }
 }
+
+}
+
+/* service fee */
+.service-fee-container {
 
 }

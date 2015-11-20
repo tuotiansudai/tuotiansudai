@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailService {
     @Value("${mobile.app.imageUrl.pattern}")
     private String urlPattern;
-    @Value("${announcement.image.domain}")
+    @Value("${web.server}")
     private String domainName;
     @Autowired
     private AnnouncementManagementMapper announcementManagementMapper;
