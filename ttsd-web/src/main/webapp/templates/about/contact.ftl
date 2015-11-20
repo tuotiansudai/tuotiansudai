@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
     <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="联系我们" title="联系我们">
     <div class="about-us-container">
-        <h2 class="a-title"><span>联系我们</span></h2>
+        <h2 class="page-col-title"><span>联系我们</span></h2>
         <b class="text-m">客户服务</b>
         <div class="clear-blank"></div>
         <span class="text-s">
@@ -11,7 +11,7 @@
             客服QQ：800036446<br/>
         </span>
         <div class="clear-blank"></div>
-        <h2 class="a-title"><span>关注我们</span></h2>
+        <h2 class="page-col-title"><span>关注我们</span></h2>
         <b class="text-m">实时关注</b>
 
         <ul class="real-attention">
@@ -19,7 +19,7 @@
             <li><img src="${staticServer}/images/sign/blog-code.png" alt="" title=""/><span>微博二维码</span></li>
         </ul>
 
-        <h2 class="a-title"><span>直接来访</span></h2>
+        <h2 class="page-col-title"><span>直接来访</span></h2>
 
         <div class="fl company-info">
         <b class="text-m">公司总部</b><br/>
@@ -33,7 +33,7 @@
         </div>
         <img src="${staticServer}/images/sign/company-map.png" class="fr" />
         <div class="clear-blank-m"></div>
-        <h2 class="a-title"><span></span></h2>
+        <h2 class="page-col-title"><span></span></h2>
         <b class="text-m">集团分部</b>
         <div class="clear-blank"></div>
         <p>拓天资产 <br/>

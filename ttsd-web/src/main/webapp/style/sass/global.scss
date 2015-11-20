@@ -7,6 +7,31 @@
   @include center-block;
   box-sizing: border-box;
 }
+
+.page-col-title {
+  border-bottom:1px solid #ccc;
+  margin-bottom: 20px;
+  span {
+    display: inline-block;
+    border-bottom:4px solid #ff7200;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff7200;
+  }
+  &.article {
+    text-align: center;
+    span {
+      border-bottom-width: 0px;
+    }
+    time {
+      font-size: nth($fontSize, 1);
+      color: #666;
+      display: block;
+      margin-top:15px;
+    }
+  }
+}
+
 .layui-layer-content {
   .pad-m {
     padding:15px 20px 10px 20px;
