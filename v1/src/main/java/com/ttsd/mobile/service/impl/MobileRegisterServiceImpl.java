@@ -141,6 +141,24 @@ public class MobileRegisterServiceImpl implements IMobileRegisterService {
     }
 
     /**
+     * @function 校验用户输入的密码
+     * @param password 密码
+     * @return boolean 通过校验，返回ture,否则返回false
+     */
+    @Override
+    public boolean validatePassword(String password) {
+        String regex = "^(?=.*[^\\d])(.{6,20})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        if (!matcher.matches()) {
+            log.info("提交的密码不符合规则！");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
      * @function 校验用注册的手机号已存在
      * @param phoneNumber 手机号
      * @return boolean 通过校验，返回ture,否则返回false

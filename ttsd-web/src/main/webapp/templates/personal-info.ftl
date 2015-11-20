@@ -75,11 +75,11 @@
         </dl>
         <dl>
             <dt class="requireOpt">请输入新密码</dt>
-            <dd><input type="password" id="newPassword" name="newPassword" class="input-control" placeholder="6位至20位数字与字母组合"></dd>
+            <dd><input type="password" id="newPassword" name="newPassword" class="input-control" placeholder="6位至20位，不能全为数字"></dd>
         </dl>
         <dl>
             <dt class="requireOpt">请确认新密码</dt>
-            <dd><input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="input-control" placeholder="6位至20位数字与字母组合"></dd>
+            <dd><input type="password" id="newPasswordConfirm" name="newPasswordConfirm" class="input-control" placeholder="6位至20位，不能全为数字"></dd>
         </dl>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" class="btn btn-normal">确认修改</button>
