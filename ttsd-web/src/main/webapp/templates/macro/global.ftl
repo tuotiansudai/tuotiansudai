@@ -33,7 +33,7 @@
     {"title":"推荐奖励", "url":"/events/refer-reward-instruction"},
     {"title":"关于我们", "url":"/about/company", "leftNavs":[
     {"title":"公司介绍", "url":"/about/company"},
-    {"title":"高管团队", "url":"/about/team"},
+    {"title":"团队介绍", "url":"/about/team"},
     {"title":"联系我们", "url":"/about/contact"},
     {"title":"拓天公告", "url":"/about/notice"}]}]/>
 
