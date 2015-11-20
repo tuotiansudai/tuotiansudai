@@ -26,7 +26,7 @@ public interface WithdrawMapper {
                                                @Param(value = "endTime") Date endTime);
 
 
-    int findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
+    long findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
                           @Param(value = "loginName") String loginName,
                           @Param(value = "status") WithdrawStatus status,
                           @Param(value = "startTime") Date startTime,

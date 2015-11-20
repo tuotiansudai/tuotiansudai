@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="投资列表">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.loan_list}" activeNav="我要投资" activeLeftNav="" title="投资列表">
 <div class="loan-list-content">
     <div class="bRadiusBox bg-w">
         <ul class="wrapper-list">

@@ -21,7 +21,6 @@ public class BankCardModel implements Serializable {
 
     private boolean isFastPayOn;
 
-
     public BankCardModel() {
     }
 

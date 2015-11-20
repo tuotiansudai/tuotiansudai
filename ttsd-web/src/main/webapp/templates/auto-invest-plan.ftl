@@ -1,12 +1,12 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.auto_invest}" activeNav="我的账户" activeLeftNav="自动投标" title="自动投标">
 <div class="content-container auto-invest">
     <h4 class="column-title"><em class="tc">自动投标</em></h4>
 
-    <div class="pad-s">
         <div class="borderBox panel">
             注意： 自动投标一旦设置并保存成功，将在次日零点自动进行投标。 <br/>
             <span style="padding-left: 45px;">如不想复投，请提前关闭自动投标，以免影响提现。</span>
+        </div>
             <div class="planSwitch" id="planSwitchDom">
                 <form name="planForm" id="signPlanForm" method="post" action="/investor/auto-invest/turn-on">
                     <dl>
@@ -49,9 +49,6 @@
                     </div>
                 </form>
             </div>
-        </div>
-
-
 
         <div class="borderBox">
             <p class="notice">
@@ -69,6 +66,6 @@
                 11. 自动投标开启后，如果不想自动投标，请手动关闭。<br/>
             </p>
         </div>
-    </div>
+
 </div>
 </@global.main>

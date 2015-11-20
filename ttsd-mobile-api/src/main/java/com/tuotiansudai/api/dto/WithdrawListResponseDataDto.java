@@ -5,7 +5,7 @@ import java.util.List;
 public class WithdrawListResponseDataDto extends BaseResponseDataDto {
     private Integer index;
     private Integer pageSize;
-    private Integer totalCount;
+    private Long totalCount;
     private List<WithdrawDetailResponseDataDto> withdrawList;
 
     public Integer getIndex() {
@@ -24,11 +24,11 @@ public class WithdrawListResponseDataDto extends BaseResponseDataDto {
         this.pageSize = pageSize;
     }
 
-    public Integer getTotalCount() {
+    public Long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(Long totalCount) {
         this.totalCount = totalCount;
     }
 

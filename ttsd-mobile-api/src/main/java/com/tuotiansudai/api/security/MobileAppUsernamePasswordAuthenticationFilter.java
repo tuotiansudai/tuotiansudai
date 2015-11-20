@@ -1,7 +1,7 @@
 package com.tuotiansudai.api.security;
 
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -41,7 +41,7 @@ public class MobileAppUsernamePasswordAuthenticationFilter extends UsernamePassw
                 // authentication
                 return;
             }
-        } catch (InternalAuthenticationServiceException failed) {
+        } catch (AuthenticationException failed) {
             logger.error(
                     "An internal error occurred while trying to authenticate the user.",
                     failed);

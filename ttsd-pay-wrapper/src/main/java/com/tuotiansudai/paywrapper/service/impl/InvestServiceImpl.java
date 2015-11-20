@@ -83,6 +83,9 @@ public class InvestServiceImpl implements InvestService {
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
 
+    @Value(value = "${pay.auto.invest.interval.milliseconds}")
+    private int autoInvestIntervalMilliseconds;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> invest(InvestDto dto) {
@@ -361,6 +364,10 @@ public class InvestServiceImpl implements InvestService {
             } catch (Exception e) {
                 logger.error("an error has occur on auto-invest of loan " + loanId + " :" + e.getLocalizedMessage(), e);
                 continue;
+            }
+
+            if(autoInvestIntervalMilliseconds >= 0) {
+                try { Thread.sleep(autoInvestIntervalMilliseconds); } catch (InterruptedException e) { }
             }
         }
     }
