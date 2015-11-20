@@ -51,13 +51,17 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage("");
-        if(CollectionUtils.isNotEmpty(loanDtoList)){
 
-            LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
+        LoanListResponseDataDto loanListResponseDataDto = new LoanListResponseDataDto();
+        loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
+        loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
+        loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(null,null,0,0,0,0));
+
+        if(CollectionUtils.isNotEmpty(loanDtoList)){
             loanListResponseDataDto.setLoanList(loanDtoList);
-            loanListResponseDataDto.setIndex(loanListRequestDto.getIndex());
-            loanListResponseDataDto.setPageSize(loanListRequestDto.getPageSize());
-            loanListResponseDataDto.setTotalCount(loanMapper.findLoanListCountWeb(null,null,0,0,0,0));
+            dto.setData(loanListResponseDataDto);
+        } else {
+            loanListResponseDataDto.setLoanList(new ArrayList<LoanResponseDataDto>());
             dto.setData(loanListResponseDataDto);
         }
         return dto;
