@@ -1,5 +1,7 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
+
 import java.io.Serializable;
 
 public class AgreementDto implements Serializable {
@@ -9,6 +11,8 @@ public class AgreementDto implements Serializable {
     private boolean autoInvest;
 
     private boolean fastPay;
+
+    private Source source = Source.WEB;
 
     public String getLoginName() {
         return loginName;
@@ -32,5 +36,13 @@ public class AgreementDto implements Serializable {
 
     public void setFastPay(boolean fastPay) {
         this.fastPay = fastPay;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }

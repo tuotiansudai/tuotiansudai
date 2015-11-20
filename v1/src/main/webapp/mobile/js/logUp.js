@@ -18,7 +18,12 @@ require(['jquery', 'jquery.validate', 'validate-ex'], function ($) {
             password: {
                 required: true,
                 password:true,
-                rangelength: [6,20]
+                rangelength: [6,20],
+                remote: {
+                    url: '/mobile/register/passwordValidation?tempData='+new Date().getTime(),
+                    type: 'GET',
+                    dataType: 'json'
+                }
             },
             phoneNumber: {
                 required: true,

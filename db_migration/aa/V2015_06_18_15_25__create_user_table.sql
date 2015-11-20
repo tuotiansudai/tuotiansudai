@@ -5,7 +5,6 @@ CREATE TABLE `aa`.`user` (
   `email`              VARCHAR(100),
   `mobile`             VARCHAR(18)     NOT NULL,
   `register_time`      DATETIME        NOT NULL,
-  `last_login_time`    DATETIME,
   `last_modified_time` DATETIME,
   `last_modified_user` VARCHAR(25),
   `avatar`             VARCHAR(256),

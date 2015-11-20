@@ -95,7 +95,7 @@ public class InvestServiceImpl implements InvestService {
                 dto.getLoanId(),
                 String.valueOf(investModel.getId()),
                 accountModel.getPayUserId(),
-                String.valueOf(investModel.getAmount()));
+                String.valueOf(investModel.getAmount()),dto.getSource());
         try {
             checkLoanInvestAccountAmount(dto.getLoginName(), investModel.getLoanId(), investModel.getAmount());
             investMapper.create(investModel);
@@ -118,7 +118,7 @@ public class InvestServiceImpl implements InvestService {
         baseDto.setData(payDataDto);
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
-        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO);
+        InvestModel investModel = new InvestModel(loanId, amount, loginName, Source.AUTO, null);
         investModel.setIsAutoInvest(true);
         investModel.setId(idGenerator.generate());
         investMapper.create(investModel);

@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
 <#import "macro/global.ftl" as global>
-<@global.head title="忘记密码" pageCss="${css.forget_password}">
-</@global.head>
-<body>
-<#include "header.ftl" />
+<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
 <div class="main">
     <div class="forget-phone-box">
         <div class="hd">
@@ -20,45 +15,36 @@
 
                 <div class="yzm">
                     <input type="text" name="captcha" class="yzm-txt" placeholder="请输入验证码"/>
-                    <button type="button" class="send-yzm fetch-captcha grey" disabled="disabled">获取验证码</button>
+                    <button type="button" class="send-yzm fetch-captcha btn-success" disabled="disabled">获取验证码</button>
                 </div>
             </div>
             <div class="item-block">
                 <div class="error"></div>
             </div>
             <div class="item-block">
-                <button type="button" class="btn-send-form grey" disabled="disabled">提交</button>
+                <button type="button" class="btn-send-form btn-success" disabled="disabled">提交</button>
             </div>
         </form>
 
     </div>
-    <p class="txtc tips">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （工作日 9:00-22:00）</p>
+    <p class="txtc tips tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （工作日 9:00-22:00）</p>
 </div>
 
 
 <div class="layer-box">
-    <div class="verification-code"></div>
-    <div class="verification-code-main">
-        <span>手机验证<i class="close">X</i></span>
 
-        <p>
+    <div class="verification-code-main">
+        <div>
+            <label for="">图形验证码：</label>
             <input type="text" class="verification-code-text" maxlength="5" placeholder="请输入图形验证码"/>
             <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
-        </p>
+
+        </div>
         <b>验证码输入错误</b>
-        <button class="complete grey" disabled="disabled">完成</button>
+        <div class="btn_complete">
+            <button class="complete btn-success" >确认</button>
+        </div>
     </div>
+
 </div>
-
-
-
-
-
-<#include "footer.ftl">
-<@global.javascript pageJavascript="${js.forget_password}">
-</@global.javascript>
-</body>
-</html>
-<script>
-    var API_PHONE = '../js/fast-pay.json';
-</script>
+</@global.main>

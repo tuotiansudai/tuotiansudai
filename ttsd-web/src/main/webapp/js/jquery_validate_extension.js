@@ -54,7 +54,7 @@ require(['jquery', 'jquery.validate'], function ($) {
 
         var url = $.validator.format(urlTemplate);
 
-        ajaxHelper(url(value), successHandler, {validator: validator, element: element, errorMessage: errorMessage});
+        ajaxHelper(url(encodeURIComponent(value)), successHandler, {validator: validator, element: element, errorMessage: errorMessage});
 
         return "pending";
     };
@@ -84,7 +84,7 @@ require(['jquery', 'jquery.validate'], function ($) {
 
         var url = $.validator.format(urlTemplate);
 
-        ajaxHelper(url(value), successHandler, {validator: validator, element: element, errorMessage: errorMessage});
+        ajaxHelper(url(encodeURIComponent(value)), successHandler, {validator: validator, element: element, errorMessage: errorMessage});
 
         return "pending";
     };

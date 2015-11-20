@@ -27,6 +27,7 @@ public class RechargePaginationItemDataDto extends RechargeDto implements Serial
         super.setAmount(AmountConverter.convertCentToString(rechargeModel.getAmount()));
         super.setSource(rechargeModel.getSource());
         super.setFastPay(rechargeModel.isFastPay());
+        super.setChannel(rechargeModel.getChannel());
     }
 
     public Date getCreatedTime() {
