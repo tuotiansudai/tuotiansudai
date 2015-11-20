@@ -29,11 +29,11 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source) {
         this(orderId, cardNumber, payUserId, userName, identityNumber, source, false);
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source, boolean isOpenFastPayment) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source, boolean isOpenFastPayment) {
         super();
         this.service = "ptp_mer_bind_card";
         this.orderId = orderId;
@@ -42,12 +42,12 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.isOpenFastPayment = isOpenFastPayment?"1":"0";
-        if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
+        this.isOpenFastPayment = isOpenFastPayment ? "1" : "0";
+        if (source.equals(Source.ANDROID) || source.equals(Source.IOS)) {
             this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), "ptp_mer_bind_card"));
             this.setSourceV("HTML5");
-        }else{
-            this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
+        } else {
+            this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
 
@@ -56,7 +56,7 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("ret_url",this.getRetUrl());
+        payRequestData.put("ret_url", this.getRetUrl());
         payRequestData.put("notify_url", this.getNotifyUrl());
         payRequestData.put("order_id", this.orderId);
         payRequestData.put("mer_date", this.merDate);
