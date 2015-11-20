@@ -75,7 +75,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setRepayTypeCode("");
             loanResponseDataDto.setRepayTypeName(loan.getType().getName());
             loanResponseDataDto.setDeadline(loan.getPeriods());
-            loanResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().name());
+            loanResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
             loanResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
             loanResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
             loanResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
