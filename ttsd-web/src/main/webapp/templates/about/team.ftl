@@ -1,7 +1,7 @@
 <#import "../macro/global.ftl" as global>
-    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="高管团队" title="高管团队介绍">
+    <@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="关于我们" activeLeftNav="团队介绍" title="团队介绍">
     <div class="about-us-container">
-        <h2 class="a-title"><span>团队介绍</span></h2>
+        <h2 class="column-title"><em>团队介绍</em></h2>
         <div class="team-box clearfix">
             <img src="${staticServer}/images/sign/aboutus/team1.png" alt="行政团队" class="fl">
             <dl>
@@ -31,6 +31,14 @@
             <dl>
                 <dt>风控团队</dt>
                 <dd>风控团队有丰富金融风险把控经验，为平台用户提供完善的安全保障。</dd>
+            </dl>
+        </div>
+
+        <div class="team-box last clearfix">
+            <img src="${staticServer}/images/sign/aboutus/team5.png" alt="客服团队" class="fl">
+            <dl>
+                <dt>客服团队</dt>
+                <dd>客服团队通过电话(400-169-1188)、QQ、微信和微博等信息化手段，一对一服务用户。</dd>
             </dl>
         </div>
     </div>

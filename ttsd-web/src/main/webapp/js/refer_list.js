@@ -1,10 +1,13 @@
 require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layer', 'daterangepicker'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
-        var dataPickerElement = $('#date-picker'),
+        var $searchBox=$('#search-box'),
+            dataPickerElement = $('#date-picker'),
             loginName = $("#loginName"),
             paginationElementRelation = $('#referRelationPagination'),
-            paginationElementInvest = $('#referInvestPagination');
+            paginationElementInvest = $('#referInvestPagination'),
+            $btnSearch=$('.btn-search',$searchBox),
+            $btnReset=$('.btn-reset',$searchBox);
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
@@ -56,11 +59,11 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
 
         loadReferData();
 
-        $('.btn-normal').click(function () {
+        $btnSearch.click(function () {
             loadReferData();
         });
 
-        $(".btn").click(function () {
+        $btnReset.click(function () {
             dataPickerElement.val('');
             loginName.val('');
         });
