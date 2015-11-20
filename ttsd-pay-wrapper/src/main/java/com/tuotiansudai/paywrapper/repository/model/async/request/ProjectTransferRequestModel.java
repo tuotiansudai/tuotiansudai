@@ -34,13 +34,7 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
     }
 
     public static ProjectTransferRequestModel newInvestRequest(String projectId, String orderId, String userId, String amount,Source source) {
-        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL);
-        if(source.equals(Source.ANDROID) || source.equals(Source.IOS)){
-            model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"),"project_transfer_invest"));
-            model.setSourceV("HTML5");
-        }else{
-            model.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
-        }
+        ProjectTransferRequestModel model = new ProjectTransferRequestModel(projectId, orderId, userId, amount, UmPayParticAccType.INDIVIDUAL,source);
         model.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "invest_notify");
         model.servType = UmPayServType.TRANSFER_IN_INVEST.getCode();
         model.transAction = UmPayTransAction.IN.getCode();
@@ -129,6 +123,16 @@ public class ProjectTransferRequestModel extends BaseAsyncRequestModel {
 
     private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType) {
         super();
+        this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
+        this.orderId = orderId;
+        this.projectId = projectId;
+        this.userId = userId;
+        this.amount = amount;
+        this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        this.particAccType = umPayParticAccType.getCode();
+    }
+    private ProjectTransferRequestModel(String projectId, String orderId, String userId, String amount, UmPayParticAccType umPayParticAccType,Source source) {
+        super(source,"project_transfer_invest");
         this.service = UmPayService.PROJECT_TRANSFER.getServiceName();
         this.orderId = orderId;
         this.projectId = projectId;

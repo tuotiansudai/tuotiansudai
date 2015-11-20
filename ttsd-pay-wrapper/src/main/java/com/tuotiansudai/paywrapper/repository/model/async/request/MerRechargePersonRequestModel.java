@@ -24,6 +24,12 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
     private String amount;
 
     private String gateId;
+    public MerRechargePersonRequestModel(){
+
+    }
+    public MerRechargePersonRequestModel(Source source,String mobileAppPayFrontServiceName){
+        super(source,mobileAppPayFrontServiceName);
+    }
 
     public static MerRechargePersonRequestModel newRecharge(String orderId, String userId, String amount, String gateId) {
         MerRechargePersonRequestModel model = new MerRechargePersonRequestModel();
@@ -39,20 +45,14 @@ public class MerRechargePersonRequestModel extends BaseAsyncRequestModel {
         return model;
     }
 
-    public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount, Source source) {
-        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel();
+    public static MerRechargePersonRequestModel newFastRecharge(String orderId, String userId, String amount,Source source) {
+        MerRechargePersonRequestModel model = new MerRechargePersonRequestModel(source,"mer_recharge_person");
         model.setService("mer_recharge_person");
         model.setOrderId(orderId);
         model.setUserId(userId);
         model.setAmount(amount);
         model.setPayType(FAST_PAY);
         model.setMerDate(new SimpleDateFormat("yyyyMMdd").format(new Date()));
-        if (source.equals(Source.ANDROID) || source.equals(Source.IOS)) {
-            model.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), "mer_recharge_person"));
-            model.setSourceV("HTML5");
-        } else {
-            model.setRetUrl(MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host")));
-        }
         model.setNotifyUrl(MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "recharge_notify"));
         return model;
     }
