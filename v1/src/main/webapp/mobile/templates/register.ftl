@@ -17,7 +17,7 @@
         <form class="cmxForm" action="/mobile/register/mobileRegister" method="post">
             <ul>
                 <li><input type="text" placeholder="5-25位数字字母组合,请勿使用手机号" class="userName" name="username"/></li>
-                <li><input type="password" value="" placeholder="请输入密码,6-20位" class="passWord" name="password"/></li>
+                <li><input type="password" value="" placeholder="请输入密码,6-20位,不能全为数字" class="passWord" name="password"/></li>
                 <li><input type="text" value="" placeholder="请输入手机号" class="phoneNumber" name="phoneNumber"/></li>
                 <li><input type="text" value="" placeholder="请输入验证码" class="vCode" name="vCode"/></li>
                 <li><input type="text" value="" placeholder="请输入推荐人" class="referrer" name="referrer"/></li>

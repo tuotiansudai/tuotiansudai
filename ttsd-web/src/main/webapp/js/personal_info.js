@@ -145,18 +145,18 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 originalPassword: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+                    regex: /^(?=.*[^\d])(.{6,20})$/,
                     isNotExist: "/personal-info/password/{0}/is-exist"
                 },
                 newPassword: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
+                    regex: /^(?=.*[^\d])(.{6,20})$/
                 },
                 newPasswordConfirm: {
                     required: true,
                     rangelength: [6, 20],
-                    regex: /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+                    regex: /^(?=.*[^\d])(.{6,20})$/,
                     equalTo: "input[name='newPassword']"
                 }
             },
@@ -164,18 +164,18 @@ require(['jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension
                 originalPassword: {
                     required: "请输入原密码",
                     rangelength: "长度6~20位",
-                    regex: "字母和数字组合",
+                    regex: "不能全为数字",
                     isNotExist: "原密码不正确"
                 },
                 newPassword: {
                     required: "请输入新密码",
                     rangelength: "长度6~20位",
-                    regex: "字母和数字组合"
+                    regex: "不能全为数字"
                 },
                 newPasswordConfirm: {
                     required: "请输入新密码",
                     rangelength: "长度6~20位",
-                    regex: "字母和数字组合",
+                    regex: "不能全为数字",
                     equalTo: "密码不一致"
                 }
             }

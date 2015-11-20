@@ -10,19 +10,17 @@
             <li class="f-title">关于我们</li>
             <li><a href="/about/company">公司介绍</a></li>
             <li><a href="/about/assurance">安全保障</a></li>
-            <li><a href="/about/team">高管团队</a></li>
+            <li><a href="/about/team">团队介绍</a></li>
         </ul>
         <ul>
             <li class="f-title">帮助中心</li>
-            <li><a href="javascript:">常见问题</a></li>
             <li><a href="javascript:">新手指南</a></li>
             <li><a href="javascript:">服务费用</a></li>
-            <li><a href="javascript:">服务协议</a></li>
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
             <li>客服电话：400-169-1188（服务时间：9:00--21:00）</li>
-            <li>客服邮箱：<a href="mailto:kefu@tuotiansudai.com" target="_blank"> kefu@tuotiansudai.com</a></li>
+            <li>客服邮箱：kefu@tuotiansudai.com</li>
             <li>我要合作：010-57167320 <a href="mailto:Amanda.liang@tuotiansudai.com" target="_blank"> Amanda.liang@tuotiansudai.com</a></li>
             <li>地址：北京市丰台区洋桥12号天路蓝图大厦8层</li>
         </ul>

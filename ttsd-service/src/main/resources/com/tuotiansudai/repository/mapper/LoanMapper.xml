@@ -50,6 +50,10 @@
         select * from loan where id = #{loanId}
     </select>
 
+    <select id="getCompletedXsInvest"  resultMap="loanResultMap">
+        select * from loan where status = 'COMPLETE' and activity_type = 'NOVICE' limit 1;
+    </select>
+
     <select id="findLoanListWeb" parameterType="map" resultMap="loanResultMap">
         select * from (
         select * from loan t
@@ -345,7 +349,6 @@
             </if>
         </where>
     </select>
-
     <update id="updateRaisingCompleteTime" parameterType="map">
         update loan set raising_complete_time = #{raisingCompleteTime} where id = #{loanId}
     </update>

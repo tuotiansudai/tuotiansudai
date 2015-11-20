@@ -117,7 +117,7 @@ public class RegisterController {
     public boolean mobileRegisterValidationCode(HttpServletRequest request,@RequestParam(value = "phoneNumber")String phoneNumber){
         boolean responseResult = false;
         try {
-            responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber,CommonUtils.getRemoteHost(request));
+            responseResult = mobileRegisterService.getCreatedValidateCode(phoneNumber, CommonUtils.getRemoteHost(request));
             return responseResult;
         }catch (Exception e){
             log.error("手机授权码发送异常！");
@@ -135,6 +135,17 @@ public class RegisterController {
     @ResponseBody
     public boolean validateUserName(@RequestParam(value = "username")String userName){
         return mobileRegisterService.validateUserName(userName);
+    }
+
+    /**
+     * @function 密码校验
+     * @param password 密码
+     * @return boolean 校验通过，返回true，否则返回false
+     */
+    @RequestMapping(value = "/passwordValidation", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean validatePassword(@RequestParam(value = "password")String password){
+        return mobileRegisterService.validatePassword(password);
     }
 
     /**

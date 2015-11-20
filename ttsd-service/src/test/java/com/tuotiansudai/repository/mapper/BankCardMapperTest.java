@@ -62,10 +62,27 @@ public class BankCardMapperTest {
         bankCardMapper.update(bankCardModel);
 
         BankCardModel bankCardModel1 = bankCardMapper.findById(bankCardModel.getId());
-        assertEquals("99999",bankCardModel1.getCardNumber());
-        assertEquals("ABC",bankCardModel1.getBankCode());
+        assertEquals("99999", bankCardModel1.getCardNumber());
+        assertEquals("ABC", bankCardModel1.getBankCode());
 
 
+    }
+    @Test
+    public void findByLoginNameAndIsFastPayOnIsOk(){
+        UserModel fakeUser = createFakeUser();
+        BankCardModel bankCardModel = new BankCardModel();
+
+        bankCardModel.setBankCode("ICBC");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardModel.setCreatedTime(new Date());
+        bankCardModel.setLoginName(fakeUser.getLoginName());
+        bankCardModel.setIsFastPayOn(true);
+        bankCardModel.setCardNumber("1234567890");
+
+        bankCardMapper.create(bankCardModel);
+
+        BankCardModel bankCardModel1 = bankCardMapper.findByLoginNameAndIsFastPayOn("loginName");
+        assertNotNull(bankCardModel1);
     }
 
     private UserModel createFakeUser() {
