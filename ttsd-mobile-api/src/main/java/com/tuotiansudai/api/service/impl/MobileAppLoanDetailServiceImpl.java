@@ -66,7 +66,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayTypeName(repayTypeName);
         loanDetailResponseDataDto.setInterestPointName(interestPointName);
         loanDetailResponseDataDto.setDeadline(loan.getPeriods());
-        loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().name());
+        loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
         loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name());
@@ -74,7 +74,9 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
         loanDetailResponseDataDto.setInvestedCount(investMapper.countSuccessInvest(loan.getId()));
-        loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
+        if (loan.getVerifyTime() != null) {
+            loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
+        }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
             loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));

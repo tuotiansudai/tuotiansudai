@@ -70,6 +70,7 @@ public class ReferrerManageController {
                 dataModel.add(String.valueOf(new BigDecimal(referrerManageView.getRewardAmount()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue()));
                 dataModel.add(referrerManageView.getStatus() == ReferrerRewardStatus.SUCCESS ? "已入账" : "入账失败");
                 dataModel.add(new DateTime(referrerManageView.getRewardTime()).toString("yyyy-MM-dd HH:mm:ss"));
+                data.add(dataModel);
             }
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleReferrerManageCsvHeader, data, response.getOutputStream());
             return null;
