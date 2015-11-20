@@ -11,25 +11,26 @@ import java.util.List;
 
 public class ExportCsvUtil {
 
-    public static BufferedWriter createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
-        BufferedWriter csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream));
+    public static void createCsvOutputStream(CsvHeaderType csvHeaderType, List<List<String>> data, OutputStream outputStream) {
+        BufferedWriter csvFileOutputStream = null;
         try {
+            csvFileOutputStream = new BufferedWriter(new OutputStreamWriter(outputStream, "GBK"));
             csvFileOutputStream.write(csvHeaderType.getHeader());
             csvFileOutputStream.newLine();
             for (List<String> dataList : data) {
-                csvFileOutputStream.write(StringUtils.join(dataList,","));
+                csvFileOutputStream.write(StringUtils.join(dataList, ","));
                 csvFileOutputStream.newLine();
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                csvFileOutputStream.close();
+                if (csvFileOutputStream != null) {
+                    csvFileOutputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return csvFileOutputStream;
     }
-
 }
