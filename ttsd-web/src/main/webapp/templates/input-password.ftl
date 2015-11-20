@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="${css.forget_password}" pageJavascript="${js.forget_password}" activeNav="" activeLeftNav="" title="忘记密码">
+<@global.main pageCss="${css.forget_password}" pageJavascript="${js.input_password}" activeNav="" activeLeftNav="" title="忘记密码">
 <div class="main">
     <div class="forget-phone-box">
         <div class="hd">
