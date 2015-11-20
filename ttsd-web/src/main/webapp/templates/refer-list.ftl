@@ -5,8 +5,8 @@
 
     <div class="borderBox">
         <p class="notice">
-            用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年化的1％，按照标的的周期，每期平均返现。奖励的钱会在标的还款时发放到推荐人的账户。详细推荐奖励细则请点<a href="/events/refer-reward-instruction">此处链接</a>。<br/>
-            您的推荐链接：<a href="/register/user?referrer=${referrer}" target="_blank">http://tuotiansudai.com/register/user?referrer=${referrer}</a> <br/>
+            用户在平台采用2级推荐机制，每级奖励金额为被推荐人投资本金年化的1％，推荐奖励在放款后一次性发放。详细推荐奖励细则请点 <a href="/events/refer-reward-instruction">此处链接</a>。<br/>
+            您的推荐链接：<a href="/register/user?referrer=${referrer}" target="_blank">https://tuotiansudai.com/register/user?referrer=${referrer}</a> <br/>
         </p>
 
         <div class="date-filter">

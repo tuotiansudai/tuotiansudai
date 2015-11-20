@@ -16,11 +16,13 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             $(this).addClass("current").siblings(".select-item").removeClass("current");
 
             if ($(this).data('type') == 'referRelation') {
-                paginationElementInvest.display='none';
+                paginationElementRelation.css("display", "block");
+                paginationElementInvest.css("display", "none");
                 paginationElement = paginationElementRelation;
                 template = referRelationTemplate;
             } else if ($(this).data('type') == 'referInvest') {
-                paginationElementRelation.display='none';
+                paginationElementRelation.css("display", "none");
+                paginationElementInvest.css("display", "block");
                 paginationElement = paginationElementInvest;
                 template = referInvestTemplate;
             }
@@ -40,12 +42,12 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             });
             paginationElement.loadPagination(requestData, function (data) {
                 $.ajax({
-                    url: 'total-reward?'+queryParams,
+                    url: 'total-reward?' + queryParams,
                     type: 'get',
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).success(function (response) {
-                    data.totalReward=response;
+                    data.totalReward = response;
                     var html = Mustache.render(template, data);
                     $('.refer-relation').html(html);
                 });
