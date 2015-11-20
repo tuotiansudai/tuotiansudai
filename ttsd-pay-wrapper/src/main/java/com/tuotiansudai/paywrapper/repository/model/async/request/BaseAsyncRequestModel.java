@@ -55,7 +55,7 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel{
     public BaseAsyncRequestModel(Source source,String mobileAppPayFrontServiceName){
         if (!source.equals(Source.WEB)){
             this.setSourceV("HTML5");
-            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.appWeb.host"), mobileAppPayFrontServiceName));
+            this.setRetUrl(MessageFormat.format("{0}/callback/{1}", CALLBACK_HOST_PROPS.get("pay.callback.app.web.host"), mobileAppPayFrontServiceName));
         }else {
             this.retUrl = MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         }
