@@ -2,6 +2,8 @@ package com.tuotiansudai.web.controller;
 
 import com.tuotiansudai.dto.HomeLoanDto;
 import com.tuotiansudai.service.HomeService;
+import com.tuotiansudai.web.util.AmountDirective;
+import com.tuotiansudai.web.util.PercentFractionDirective;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +20,12 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
+        ModelAndView modelAndView = new ModelAndView("/index");
         List<HomeLoanDto> loans = homeService.getLoans();
-
-        return new ModelAndView("/index", "loans", loans);
+        modelAndView.addObject("loans", loans);
+        modelAndView.addObject("percentFraction",new PercentFractionDirective());
+        modelAndView.addObject("amount",new AmountDirective());
+        return modelAndView;
     }
+
 }

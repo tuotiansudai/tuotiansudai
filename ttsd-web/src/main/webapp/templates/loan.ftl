@@ -18,14 +18,13 @@
                     <div class="rount"></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
-                    <span class="sub-percent">+${loan.activityRate}%</span>
-
-                    <div id="num" class="num">${loan.basicRate}%</div>
+                    <span class="sub-percent"><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</span>
+                    <div id="num" class="num">${loan.baseRateInteger}<#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if>%</div>
                     <span class="title">年化收益率</span>
                 </div>
             </div>
             <div class="chart-info">
-                项目金额： ${loan.loanAmount}万元<br/>
+                项目金额： <@amount>${loan.loanAmount}<@amount>元<br/>
                 代理人：${loan.agentLoginName}<br/>
                 借款人：${loan.loanerLoginName} <br/>
                 <#if loan.type.getLoanPeriodUnit() == "MONTH">
@@ -35,7 +34,7 @@
                     项目期限：${loan.periods}天 <br/>
                 </#if>
                 还款方式：${loan.type.getName()}<br/>
-                投资要求：${loan.minInvestAmount}元起投,投资金额为${loan.investIncreasingAmount}的整数倍<br/>
+                投资要求：<@amount>${loan.minInvestAmount}<@amount>元起投,投资金额为<@amount>${loan.investIncreasingAmount}<@amount>的整数倍<br/>
                 <a href="${staticServer}/pdf/loanAgreementSample.pdf" target="_Blank">借款协议样本</a>
             </div>
         </div>
