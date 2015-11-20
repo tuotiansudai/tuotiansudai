@@ -45,7 +45,7 @@ public class WithdrawServiceImpl implements WithdrawService {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
         List<WithdrawPaginationItemDataDto> withdrawPaginationItemDataDtos = Lists.newArrayList();
 
-        int count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
+        long count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
 
         List<WithdrawModel> withdrawModelList = withdrawMapper.findWithdrawPagination(withdrawId, loginName, status, (index-1)*pageSize, pageSize, startTime, endTime);
 
@@ -60,11 +60,4 @@ public class WithdrawServiceImpl implements WithdrawService {
         return baseDto;
     }
 
-    @Override
-    public int findWithdrawCount(String withdrawId, String loginName,
-                                 WithdrawStatus status, Date startTime, Date endTime) {
-
-        int count = withdrawMapper.findWithdrawCount(withdrawId, loginName, status, startTime, endTime);
-        return count;
-    }
 }

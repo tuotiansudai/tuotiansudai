@@ -23,6 +23,9 @@ public class WithdrawMapperTest {
     private UserMapper userMapper;
 
     @Autowired
+    private BankCardMapper bankCardMapper;
+
+    @Autowired
     private WithdrawMapper withdrawMapper;
 
     @Autowired
@@ -33,12 +36,21 @@ public class WithdrawMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setLoginName(fakeUserModel.getLoginName());
+        bankCardModel.setBankCode("code");
+        bankCardModel.setCardNumber("number");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardMapper.create(bankCardModel);
+
         WithdrawModel withdrawModel = new WithdrawModel();
         withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setLoginName(fakeUserModel.getLoginName());
         withdrawModel.setAmount(1L);
         withdrawModel.setFee(1L);
-        withdrawModel.setStatus(WithdrawStatus.WAIT_VERIFY);
+        withdrawModel.setStatus(WithdrawStatus.WAIT_PAY);
         withdrawModel.setSource(Source.WEB);
         withdrawModel.setCreatedTime(new Date());
 
@@ -52,20 +64,29 @@ public class WithdrawMapperTest {
         UserModel fakeUserModel = this.getFakeUserModel();
         userMapper.create(fakeUserModel);
 
+        BankCardModel bankCardModel = new BankCardModel();
+        bankCardModel.setId(idGenerator.generate());
+        bankCardModel.setLoginName(fakeUserModel.getLoginName());
+        bankCardModel.setBankCode("code");
+        bankCardModel.setCardNumber("number");
+        bankCardModel.setStatus(BankCardStatus.PASSED);
+        bankCardMapper.create(bankCardModel);
+
         WithdrawModel withdrawModel = new WithdrawModel();
         withdrawModel.setId(idGenerator.generate());
+        withdrawModel.setBankCardId(bankCardModel.getId());
         withdrawModel.setLoginName(fakeUserModel.getLoginName());
         withdrawModel.setAmount(1L);
         withdrawModel.setFee(1L);
         withdrawModel.setSource(Source.WEB);
-        withdrawModel.setStatus(WithdrawStatus.WAIT_VERIFY);
+        withdrawModel.setStatus(WithdrawStatus.WAIT_PAY);
         withdrawModel.setCreatedTime(new Date());
         withdrawMapper.create(withdrawModel);
 
-        withdrawModel.setRecheckMessage("recheck message");
+        withdrawModel.setNotifyMessage("recheck message");
         withdrawMapper.update(withdrawModel);
 
-        assertNotNull(withdrawMapper.findById(withdrawModel.getId()).getRecheckMessage());
+        assertNotNull(withdrawMapper.findById(withdrawModel.getId()).getNotifyMessage());
     }
 
     public UserModel getFakeUserModel() {
