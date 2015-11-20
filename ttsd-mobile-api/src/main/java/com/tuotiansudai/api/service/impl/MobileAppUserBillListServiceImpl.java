@@ -37,7 +37,7 @@ public class MobileAppUserBillListServiceImpl implements MobileAppUserBillListSe
         }
         List<UserBillModel> userBillModels = userBillMapper.findUserBills(Maps.newHashMap(ImmutableMap.<String, Object>builder()
                 .put("loginName", loginName)
-                .put("index", (index - 1) * pageSize)
+                .put("indexPage", (index - 1) * pageSize)
                 .put("pageSize", pageSize).build()));
 
         int count = userBillMapper.findUserBillsCount(Maps.newHashMap(ImmutableMap.<String, Object>builder()
