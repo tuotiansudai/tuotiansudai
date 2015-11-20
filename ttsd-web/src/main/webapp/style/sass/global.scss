@@ -1,6 +1,6 @@
 @import 'font_awesome';
 @import 'reset', 'btn','table';
-@import 'page_frame', 'account';
+@import 'page_frame';
 
 .page-width {
   width:1000px;
@@ -8,10 +8,10 @@
   box-sizing: border-box;
 }
 
-.page-col-title {
+.page-col-title,.column-title {
   border-bottom:1px solid #ccc;
   margin-bottom: 20px;
-  span {
+  span,em {
     display: inline-block;
     border-bottom:4px solid #ff7200;
     font-size: 18px;
@@ -20,7 +20,7 @@
   }
   &.article {
     text-align: center;
-    span {
+    em {
       border-bottom-width: 0px;
     }
     time {
@@ -37,8 +37,27 @@
     padding:15px 20px 10px 20px;
   }
 }
+.table-out-border {
+  border:1px solid #ff7200;
+  background: #fff;
+  border-radius: 6px;
+  .tab-switch-menu {
+    font-size: 18px;
+    color: #4c4c4c;
+    border-bottom:1px solid #ff7200;
+    li {
+      float: left;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 7px 20px;
+      &.current {
+        color: #ff7200;
+      }
+    }
+  }
+}
 .borderBox {
-  border: 1px solid nth($borderColor, 1);
+  border: 1px solid #d9d9d9;
   padding: 12px;
   line-height: nth($baseLineHeight, 1);
   height: auto;

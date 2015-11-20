@@ -45,6 +45,19 @@ table {
       background: #f2f2f2;
     }
   }
+  &.table-info {
+    th {
+      background: #ff7200;
+      color: #fff;
+      font-size: 14px!important;
+    }
+    th,td {
+      border: 1px solid #e7eaee;
+      padding: 15px;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
   &.table-condensed {
 
   }
