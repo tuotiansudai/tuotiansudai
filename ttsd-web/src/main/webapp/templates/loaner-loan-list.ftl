@@ -1,11 +1,11 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="${js.loaner_loan_list}" activeNav="我的账户" activeLeftNav="我的借款" title="借款记录">
+<@global.main pageCss="${css.my_account}" pageJavascript="${js.loaner_loan_list}" activeNav="我的账户" activeLeftNav="我的借款" title="借款记录">
 <div class="content-container loan-list-content">
     <h4 class="column-title"><em class="tc">借款记录</em></h4>
 
     <div class="item-block date-filter">
-        <span class="sub-hd">起止时间:</span>
-        <input type="text" id="date-picker" class="start-time filter" size="35"/>
+        <span class="">起止时间:</span>
+        <input type="text" id="date-picker" class="start-time filter input-control" size="35"/>
         <span class="select-item current" data-day="1">今天</span>
         <span class="select-item" data-day="7">最近一周</span>
         <span class="select-item" data-day="30">一个月</span>

@@ -37,13 +37,13 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         Integer index = requestDto.getIndex();
         Integer pageSize = requestDto.getPageSize();
 
-        if(index == null || index.intValue() <= 0){
+        if (index == null || index <= 0) {
             index = 1;
         }
-        if(pageSize == null || pageSize.intValue() <= 0){
+        if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        int count = withdrawMapper.findWithdrawCount(null,loginName,null,null,null);
+        long count = withdrawMapper.findWithdrawCount(null, loginName, null, null, null);
         List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, loginName, null, (index - 1) * pageSize, pageSize, null, null);
 
         List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = Lists.transform(withdrawModels, new Function<WithdrawModel, WithdrawDetailResponseDataDto>() {
@@ -67,7 +67,6 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         return dto;
 
 
-
     }
 
     @Override
@@ -76,18 +75,18 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         WithdrawDto withdrawDto = requestDto.convertToWithdrawDto();
         String loginName = withdrawDto.getLoginName();
         BankCardModel bankCardModel = bankCardMapper.findPassedBankCardByLoginName(loginName);
-        if(bankCardModel == null){
-            return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(),ReturnMessage.NOT_BIND_CARD.getMsg());
+        if (bankCardModel == null) {
+            return new BaseResponseDto(ReturnMessage.NOT_BIND_CARD.getCode(), ReturnMessage.NOT_BIND_CARD.getMsg());
         }
         BaseDto<PayFormDataDto> formDto = payWrapperClient.withdraw(withdrawDto);
         WithdrawOperateResponseDataDto responseDataDto = new WithdrawOperateResponseDataDto();
         try {
-            if(formDto.isSuccess()){
+            if (formDto.isSuccess()) {
                 responseDataDto.setUrl(formDto.getData().getUrl());
                 responseDataDto.setRequestData(CommonUtils.mapToFormData(formDto.getData().getFields(), true));
             }
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getLocalizedMessage(),e);
+            logger.error(e.getLocalizedMessage(), e);
             return new BaseResponseDto(ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getCode(), ReturnMessage.UMPAY_INVEST_MESSAGE_INVALID.getMsg());
         }
         baseResponseDto.setCode(ReturnMessage.SUCCESS.getCode());

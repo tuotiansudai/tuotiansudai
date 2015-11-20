@@ -29,7 +29,7 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
     public PtpMerBindCardRequestModel() {
     }
 
-    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source) {
+    public PtpMerBindCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber, Source source) {
         this(orderId, cardNumber, payUserId, userName, identityNumber, source, false);
     }
 
@@ -44,13 +44,12 @@ public class PtpMerBindCardRequestModel extends BaseAsyncRequestModel {
         this.identityCode = identityNumber;
         this.isOpenFastPayment = isOpenFastPayment?"1":"0";
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), UmPayService.NOTIFY_MER_BIND_CARD.getServiceName());
-
     }
 
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("ret_url",this.getRetUrl());
+        payRequestData.put("ret_url", this.getRetUrl());
         payRequestData.put("notify_url", this.getNotifyUrl());
         payRequestData.put("order_id", this.orderId);
         payRequestData.put("mer_date", this.merDate);

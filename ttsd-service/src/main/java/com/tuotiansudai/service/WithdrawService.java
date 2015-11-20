@@ -21,11 +21,5 @@ public interface WithdrawService {
                                                           Date startTime,
                                                           Date endTime);
 
-    int findWithdrawCount(@Param(value = "rechargeId") String withdrawId,
-                          @Param(value = "loginName") String loginName,
-                          @Param(value = "status") WithdrawStatus status,
-                          @Param(value = "startTime") Date startTime,
-                          @Param(value = "endTime") Date endTime);
-
     long sumSuccessWithdrawAmount(String loginName);
 }

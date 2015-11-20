@@ -26,7 +26,7 @@ public class PtpMerBindAgreementRequestModel extends BaseAsyncRequestModel {
     @Override
     public Map<String, String> generatePayRequestData() {
         Map<String, String> payRequestData = super.generatePayRequestData();
-        payRequestData.put("ret_url",this.getRetUrl());
+        payRequestData.put("ret_url", this.getRetUrl());
         payRequestData.put("notify_url", this.getNotifyUrl());
         payRequestData.put("user_id", this.userId);
         payRequestData.put("user_bind_agreement_list", this.userBindAgreementList.name());
