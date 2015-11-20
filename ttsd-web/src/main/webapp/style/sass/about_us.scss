@@ -5,30 +5,6 @@
   padding:10px 30px 30px 40px;
   overflow: hidden;
 
-  .a-title {
-    border-bottom:1px solid #ccc;
-    margin-bottom: 20px;
-    span {
-      display: inline-block;
-      border-bottom:4px solid #ff7200;
-      font-size: 18px;
-      font-weight: bold;
-      color: #ff7200;
-    }
-    &.article {
-      text-align: center;
-      span {
-        border-bottom-width: 0px;
-      }
-      time {
-        font-size: nth($fontSize, 1);
-        color: #666;
-        display: block;
-        margin-top:15px;
-      }
-    }
-  }
-
   .company-summary {
     p {
       font-size: nth($fontSize,1);

@@ -69,12 +69,14 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-        loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name());
+        loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
         loanDetailResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
         loanDetailResponseDataDto.setInvestedCount(investMapper.countSuccessInvest(loan.getId()));
-        loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
+        if (loan.getVerifyTime() != null) {
+            loanDetailResponseDataDto.setVerifyTime(new SimpleDateFormat("yyyy-MM-dd").format(loan.getVerifyTime()));
+        }
         loanDetailResponseDataDto.setRemainTime(calculateRemainTime(loan.getFundraisingEndTime(), loan.getStatus()));
         if (loan.getFundraisingStartTime() != null) {
             loanDetailResponseDataDto.setInvestBeginTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(loan.getFundraisingStartTime()));

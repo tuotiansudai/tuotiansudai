@@ -80,8 +80,8 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         // build InvestList
         UserInvestListResponseDataDto dtoData = new UserInvestListResponseDataDto();
         dtoData.setInvestList(convertResponseData(investList));
-        dtoData.setIndex(index);
-        dtoData.setPageSize(pageSize);
+        dtoData.setIndex(requestDto.getIndex());
+        dtoData.setPageSize(requestDto.getPageSize());
         dtoData.setTotalCount(investListCount);
 
         // BaseDto

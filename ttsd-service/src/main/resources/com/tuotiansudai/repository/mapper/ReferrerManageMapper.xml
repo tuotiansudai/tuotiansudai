@@ -299,7 +299,7 @@
             on i.login_name = rr.login_name
         left join loan l
             on l.id = i.loan_id
-        left join invest_referrer_reward irr
+        right join invest_referrer_reward irr
             on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
@@ -330,7 +330,7 @@
             on i.login_name = rr.login_name
         left join loan l
             on l.id = i.loan_id
-        left join invest_referrer_reward irr
+        right join invest_referrer_reward irr
             on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
@@ -360,7 +360,7 @@
             on i.login_name = rr.login_name
         left join loan l
             on l.id = i.loan_id
-        left join invest_referrer_reward irr
+        right join invest_referrer_reward irr
             on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >

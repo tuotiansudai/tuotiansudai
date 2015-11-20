@@ -1,19 +1,63 @@
 @import 'font_awesome';
 @import 'reset', 'btn','table';
-@import 'page_frame', 'account';
+@import 'page_frame';
 
 .page-width {
   width:1000px;
   @include center-block;
   box-sizing: border-box;
 }
+
+.page-col-title,.column-title {
+  border-bottom:1px solid #ccc;
+  margin-bottom: 20px;
+  span,em {
+    display: inline-block;
+    border-bottom:4px solid #ff7200;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff7200;
+  }
+  &.article {
+    text-align: center;
+    em {
+      border-bottom-width: 0px;
+    }
+    time {
+      font-size: nth($fontSize, 1);
+      color: #666;
+      display: block;
+      margin-top:15px;
+    }
+  }
+}
+
 .layui-layer-content {
   .pad-m {
     padding:15px 20px 10px 20px;
   }
 }
+.table-out-border {
+  border:1px solid #ff7200;
+  background: #fff;
+  border-radius: 6px;
+  .tab-switch-menu {
+    font-size: 18px;
+    color: #4c4c4c;
+    border-bottom:1px solid #ff7200;
+    li {
+      float: left;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 7px 20px;
+      &.current {
+        color: #ff7200;
+      }
+    }
+  }
+}
 .borderBox {
-  border: 1px solid nth($borderColor, 1);
+  border: 1px solid #d9d9d9;
   padding: 12px;
   line-height: nth($baseLineHeight, 1);
   height: auto;

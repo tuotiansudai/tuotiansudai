@@ -39,7 +39,6 @@ public class MobileAppClientStatisticsImpl implements MobileAppClientStatistics 
         if (StringUtils.isNumeric(oldValue)) {
             newValue = String.valueOf(Integer.parseInt(oldValue) + 1);
         }
-        System.out.println(hkey + " = " + newValue);
         redis.hset(key, hkey, newValue);
     }
 
