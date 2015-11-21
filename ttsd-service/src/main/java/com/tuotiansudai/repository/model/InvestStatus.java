@@ -2,7 +2,7 @@ package com.tuotiansudai.repository.model;
 
 public enum InvestStatus {
 
-    WAITING("等待确认"),
+    WAIT_PAY("等待支付"),
 
     SUCCESS("投资成功"),
 
