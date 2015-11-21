@@ -420,7 +420,7 @@ public class LoanServiceTest {
         investModel2.setStatus(InvestStatus.FAIL);
 
         InvestModel investModel3 = getFakeInvestModel(id, fakeUserName2);
-        investModel3.setStatus(InvestStatus.WAITING);
+        investModel3.setStatus(InvestStatus.WAIT_PAY);
 
         investMapper.create(investModel1);
         investMapper.create(investModel2);
@@ -441,7 +441,7 @@ public class LoanServiceTest {
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.WAITING);
+        model.setStatus(InvestStatus.WAIT_PAY);
         model.setCreatedTime(new Date());
         return model;
     }
