@@ -623,9 +623,7 @@ public class LoanServiceImpl implements LoanService {
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
-        Date validInvestTime = cal.getTime();
+        Date validInvestTime = new DateTime().minusSeconds(UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER).toDate();
         int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanDto.getId(), validInvestTime);
         if (waitingInvestCount > 0) {
             logger.debug("流标失败，存在等待第三方资金托管确认的投资!");

@@ -49,7 +49,7 @@ public enum InvestStatus {
         if (investStatus == com.tuotiansudai.repository.model.InvestStatus.SUCCESS) {
             return BID_SUCCESS;
         }
-        if (investStatus == com.tuotiansudai.repository.model.InvestStatus.WAITING) {
+        if (investStatus == com.tuotiansudai.repository.model.InvestStatus.WAIT_PAY) {
             return WAIT_AFFIRM;
         }
         return UNFINISHED;
