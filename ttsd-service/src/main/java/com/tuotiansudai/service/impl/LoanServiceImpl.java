@@ -227,6 +227,15 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
         loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
+
+        String baseRatePercentage = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+        String activityPercentage = new BigDecimal(String.valueOf(loanModel.getActivityRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+        loanDto.setBaseRateInteger(Integer.parseInt(baseRatePercentage.split("\\.")[0]));
+        loanDto.setBaseRateFraction(Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]));
+        if (loanModel.getActivityRate() > 0) {
+            loanDto.setActivityRateInteger(Integer.parseInt(activityPercentage.split("\\.")[0]));
+            loanDto.setActivityRateFraction(Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]));
+        }
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
@@ -668,8 +677,14 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            String baseRatePercentage = new BigDecimal(String.valueOf(loanModels.get(i).getBaseRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+            String activityPercentage = new BigDecimal(String.valueOf(loanModels.get(i).getActivityRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+            loanListWebDto.setBaseRateInteger(Integer.parseInt(baseRatePercentage.split("\\.")[0]));
+            loanListWebDto.setBaseRateFraction(Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]));
+            if (loanModels.get(i).getActivityRate() > 0) {
+                loanListWebDto.setActivityRateInteger(Integer.parseInt(activityPercentage.split("\\.")[0]));
+                loanListWebDto.setActivityRateFraction(Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]));
+            }
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
             loanListWebDto.setStatus(loanModels.get(i).getStatus());

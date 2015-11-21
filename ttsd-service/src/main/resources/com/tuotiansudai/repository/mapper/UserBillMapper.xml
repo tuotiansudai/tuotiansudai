@@ -15,12 +15,14 @@
         <result column="freeze" property="freeze"></result>
         <result column="operation_type" property="operationType"></result>
         <result column="business_type" property="businessType"></result>
+        <result column="operator_login_name" property="operatorLoginName"></result>
+        <result column="intervention_reason" property="interventionReason"></result>
         <result column="created_time" property="createdTime"></result>
     </resultMap>
 
     <insert id="create" parameterType="UserBillModel" useGeneratedKeys="true" keyProperty="id">
-        insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, created_time)
-        value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{createdTime})
+        insert into user_bill (login_name, order_id, amount, balance, freeze, operation_type, business_type, operator_login_name, intervention_reason, created_time)
+        value(#{loginName}, #{orderId}, #{amount}, #{balance}, #{freeze}, #{operationType}, #{businessType}, #{operatorLoginName}, #{interventionReason}, #{createdTime})
     </insert>
 
     <select id="findByLoginName" parameterType="java.lang.String" resultMap="userBillResultMap">
@@ -67,27 +69,22 @@
                 AND login_name = #{loginName}
             </if>
         </where>
-        order by created_time desc
-        limit #{indexPage},#{pageSize}
+        order by created_time desc, id desc
+        limit #{indexPage}, #{pageSize}
     </select>
 
     <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
-        SELECT
-          IFNULL(SUM(t.`amount`),0)
-        FROM
-          user_bill t
-        WHERE t.`business_type` IN (
-            'ACTIVITY_REWARD',
-            'REFERRER_REWARD'
-          )
-          AND t.`login_name` = #{loginName}
+        SELECT IFNULL(SUM(t.`amount`), 0)
+        FROM user_bill
+        WHERE user_bill.`business_type` IN ('ACTIVITY_REWARD', 'REFERRER_REWARD')
+        AND user_bill.`login_name` = #{loginName}
     </select>
 
     <select id="findUserFunds" parameterType="map" resultMap="userBillResultMap">
         select * from user_bill
         <where>
             <if test="userBillBusinessType != null">
-                business_type = #{userBillBusinessType}
+                and business_type = #{userBillBusinessType}
             </if>
             <if test="userBillOperationType != null">
                 and operation_type = #{userBillOperationType}
@@ -102,7 +99,7 @@
                 <![CDATA[ and created_time <= #{endTime} ]]>
             </if>
         </where>
-        order by created_time desc
+        order by created_time desc, id desc
         limit #{startLimit} , #{endLimit}
     </select>
 
@@ -110,7 +107,7 @@
         select count(*) from user_bill
         <where>
             <if test="userBillBusinessType != null">
-                business_type = #{userBillBusinessType}
+                and business_type = #{userBillBusinessType}
             </if>
             <if test="userBillOperationType != null">
                 and operation_type = #{userBillOperationType}

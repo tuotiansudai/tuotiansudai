@@ -50,7 +50,7 @@
         temp.referrerName,
         rr.`level`
         FROM
-        referrer_relation rr right 
+        referrer_relation rr right
         JOIN
         (SELECT
         i.`login_name` AS investLoginName,
@@ -285,7 +285,7 @@
 
     <select id="findReferInvestList" parameterType="map" resultMap="referrerManageMap" >
         select
-            rr.login_name AS invest_name,
+            i.login_name AS invest_name,
             rr.level,
             l.name AS loan_name,
             i.amount AS invest_amount,
@@ -294,22 +294,23 @@
             irr.amount AS reward_amount,
             irr.created_time AS reward_time
         from
-            invest i
-        right join referrer_relation rr
-            on i.login_name = rr.login_name
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
         left join loan l
             on l.id = i.loan_id
-        right join invest_referrer_reward irr
-            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
-                rr.referrer_login_name = #{referrerLoginName}
+                irr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="loginName != null and loginName != ''" >
-                and rr.login_name=#{loginName}
+                and i.login_name=#{loginName}
             </if>
             <if test="level != null and level != ''">
-                <![CDATA[ and rr.level <= #{level} ]]>
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
             </if>
             <if test="investStartTime != null">
                 <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
@@ -325,22 +326,23 @@
         select
             COUNT(1)
         from
-            invest i
-        right join referrer_relation rr
-            on i.login_name = rr.login_name
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
         left join loan l
             on l.id = i.loan_id
-        right join invest_referrer_reward irr
-            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
-                rr.referrer_login_name = #{referrerLoginName}
+                irr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="loginName != null and loginName != ''" >
-                and rr.login_name=#{loginName}
+                and i.login_name=#{loginName}
             </if>
             <if test="level != null and level != ''">
-                <![CDATA[ and rr.level <= #{level} ]]>
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
             </if>
             <if test="investStartTime != null">
                 <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>
@@ -353,24 +355,25 @@
 
     <select id="findReferInvestTotalAmount" parameterType="map" resultType="java.lang.Long" >
         select
-          IFNULL(sum(irr.amount),0)
+            IFNULL(sum(irr.amount),0)
         from
-            invest i
-        right join referrer_relation rr
-            on i.login_name = rr.login_name
+            invest_referrer_reward irr
+        left join invest i
+            on i.id = irr.invest_id
         left join loan l
             on l.id = i.loan_id
-        right join invest_referrer_reward irr
-            on irr.invest_id=i.id and irr.referrer_login_name = #{referrerLoginName}
+        left join referrer_relation rr
+            on rr.login_name = i.login_name
+            and rr.referrer_login_name = irr.referrer_login_name
         <where>
             <if test="referrerLoginName != null and referrerLoginName != ''" >
-                rr.referrer_login_name = #{referrerLoginName}
+                irr.referrer_login_name = #{referrerLoginName}
             </if>
             <if test="loginName != null and loginName != ''" >
-                and rr.login_name=#{loginName}
+                and i.login_name=#{loginName}
             </if>
             <if test="level != null and level != ''">
-                <![CDATA[ and rr.level <= #{level} ]]>
+                <![CDATA[ and (rr.level <= #{level} or rr.level is null) ]]>
             </if>
             <if test="investStartTime != null">
                 <![CDATA[ and i.`created_time` >= #{investStartTime} ]]>

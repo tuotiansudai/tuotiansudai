@@ -23,7 +23,7 @@ public class AmountTransfer {
     private UserBillMapper userBillMapper;
 
     @Transactional
-    public void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
+    public void freeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new FreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -43,12 +43,12 @@ public class AmountTransfer {
         accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.FREEZE);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.FREEZE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
     }
 
     @Transactional
-    public void unfreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
+    public void unfreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new UnfreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -68,12 +68,12 @@ public class AmountTransfer {
         accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.UNFREEZE);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.UNFREEZE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
     }
 
     @Transactional
-    public void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
+    public void transferInBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new TransferInAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -88,12 +88,12 @@ public class AmountTransfer {
         accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TI_BALANCE);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TI_BALANCE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
     }
 
     @Transactional
-    public void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
+    public void transferOutBalance(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new TransferOutAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -113,12 +113,12 @@ public class AmountTransfer {
         accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_BALANCE);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_BALANCE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
     }
 
     @Transactional
-    public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String description) throws AmountTransferException {
+    public void transferOutFreeze(String loginName, long orderId, long amount, UserBillBusinessType businessType, String operatorLoginName, String interventionReason) throws AmountTransferException {
         AccountModel accountModel = accountMapper.lockByLoginName(loginName);
         if (accountModel == null) {
             throw new TransferOutFreezeAmountException(MessageFormat.format("{0} account is not exist", loginName));
@@ -138,7 +138,7 @@ public class AmountTransfer {
         accountModel.setFreeze(freeze);
         accountMapper.update(accountModel);
 
-        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_FREEZE);
+        UserBillModel userBillModel = new UserBillModel(loginName, orderId, amount, balance, freeze, businessType, UserBillOperationType.TO_FREEZE, operatorLoginName, interventionReason);
         userBillMapper.create(userBillModel);
     }
 }

@@ -164,4 +164,5 @@ public class WithdrawModel implements Serializable {
     public void setBankCard(BankCardModel bankCard) {
         this.bankCard = bankCard;
     }
+
 }

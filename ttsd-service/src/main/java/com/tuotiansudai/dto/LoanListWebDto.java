@@ -4,18 +4,19 @@ import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.repository.model.LoanType;
 
-/**
- * Created by Administrator on 2015/8/27.
- */
 public class LoanListWebDto {
 
     private long id;
 
     private String name;
 
-    private String basicRate;
+    private Integer baseRateInteger;
 
-    private String activityRate;
+    private Integer baseRateFraction;
+
+    private Integer activityRateInteger;
+
+    private Integer activityRateFraction;
 
     private long periods;
 
@@ -45,22 +46,6 @@ public class LoanListWebDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBasicRate() {
-        return basicRate;
-    }
-
-    public void setBasicRate(String basicRate) {
-        this.basicRate = basicRate;
-    }
-
-    public String getActivityRate() {
-        return activityRate;
-    }
-
-    public void setActivityRate(String activityRate) {
-        this.activityRate = activityRate;
     }
 
     public long getPeriods() {
@@ -117,5 +102,37 @@ public class LoanListWebDto {
 
     public void setRateOfAdvance(String rateOfAdvance) {
         this.rateOfAdvance = rateOfAdvance;
+    }
+
+    public Integer getBaseRateInteger() {
+        return baseRateInteger;
+    }
+
+    public void setBaseRateInteger(Integer baseRateInteger) {
+        this.baseRateInteger = baseRateInteger;
+    }
+
+    public Integer getBaseRateFraction() {
+        return baseRateFraction;
+    }
+
+    public void setBaseRateFraction(Integer baseRateFraction) {
+        this.baseRateFraction = baseRateFraction;
+    }
+
+    public Integer getActivityRateInteger() {
+        return activityRateInteger;
+    }
+
+    public void setActivityRateInteger(Integer activityRateInteger) {
+        this.activityRateInteger = activityRateInteger;
+    }
+
+    public Integer getActivityRateFraction() {
+        return activityRateFraction;
+    }
+
+    public void setActivityRateFraction(Integer activityRateFraction) {
+        this.activityRateFraction = activityRateFraction;
     }
 }

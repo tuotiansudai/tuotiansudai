@@ -83,8 +83,8 @@ public class MobileAppWithdrawServiceTest extends ServiceTestBase {
         withdrawListRequestDto.setBaseParam(baseParam);
         BaseResponseDto<WithdrawListResponseDataDto> baseDto = mobileAppWithdrawService.queryUserWithdrawLogs(withdrawListRequestDto);
         assertTrue(baseDto.isSuccess());
-        assertEquals(WithdrawStatus.APPLY_SUCCESS.name().toLowerCase(), baseDto.getData().getWithdrawList().get(0).getStatus());
-        assertEquals(WithdrawStatus.FAIL.name().toLowerCase(),baseDto.getData().getWithdrawList().get(1).getStatus());
+        assertEquals("recheck", baseDto.getData().getWithdrawList().get(0).getStatus());
+        assertEquals("recheck_fail",baseDto.getData().getWithdrawList().get(1).getStatus());
 
     }
 

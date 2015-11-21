@@ -84,9 +84,9 @@
                         <div class="loan-info-dl">
                             <dl>
                                 <dt>年化收益</dt>
-                                <dd><em>${loanListWebDto.basicRate}</em><#if loanListWebDto.activityRate != '0.0%'>
-                                    <i>+${loanListWebDto.activityRate}</i>
-                                </#if></dd>
+                                <dd><em>${loanListWebDto.baseRateInteger}<#if loanListWebDto.baseRateFraction??>.<@percentFraction>${loanListWebDto.baseRateFraction}</@percentFraction></#if></em>
+                                    <i><#if loanListWebDto.activityRateInteger??>+${loanListWebDto.activityRateInteger}</#if><#if loanListWebDto.activityRateFraction??>.<@percentFraction>${loanListWebDto.activityRateFraction}</@percentFraction></#if>%</i>
+                                </dd>
                             </dl>
 
                             <dl>
@@ -96,7 +96,7 @@
                             </dl>
                             <dl>
                                 <dt>招募金额</dt>
-                                <dd><em>${loanListWebDto.loanAmount} </em>元</dd>
+                                <dd><em><@amount>${loanListWebDto.loanAmount}</@amount></em>元</dd>
                             </dl>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                             </div>
 
                             <div class="rest-amount">
-                                <span>可投金额: <i>${loanListWebDto.added}</i>元</span>
+                                <span>可投金额: <i><@amount>${loanListWebDto.added}</@amount></i>元</span>
                                 <a class="btn-invest btn-normal" href="">马上投资</a>
                             </div>
 
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="rest-amount finish-invest">
-                                <span>可投额度:${loanListWebDto.added}元</span>
+                                <span>可投额度:<@amount>${loanListWebDto.added}</@amount>元</span>
                                 <button class="btn-normal" disabled>已售罄</button>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
                                 <div class="percent" style="width: 100%;"></div>
                             </div>
                             <div class="rest-amount finish-invest">
-                                <span>可投金额:<i>${loanListWebDto.loanAmount}</i> 元</span>
+                                <span>可投金额:<i><@amount>${loanListWebDto.loanAmount}</@amount></i> 元</span>
                                 <button class="btn-normal" disabled>已售罄</button>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
                                 <div class="percent" style="width:100%;"></div>
                             </div>
                             <div class="rest-amount finish-invest">
-                                <span>可投金额: <i>${loanListWebDto.loanAmount}</i>元</span>
+                                <span>可投金额: <i><@amount>${loanListWebDto.loanAmount}</@amount></i>元</span>
                                 <button class="btn-invest btn-normal" disabled>已售罄</button>
                             </div>
                         </div>
