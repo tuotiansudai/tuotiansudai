@@ -89,21 +89,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean loginNameOrMobileIsExist(String loginNameOrMobile) {
+        return userMapper.findByLoginNameOrMobile(loginNameOrMobile) != null;
+    }
+
+    @Override
     @Transactional
     public boolean registerUser(RegisterUserDto dto) {
-        boolean loginNameIsExist = this.loginNameIsExist(dto.getLoginName());
+        String loginName = dto.getLoginName();
+        boolean loginNameIsExist = this.loginNameIsExist(loginName);
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
-        boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameIsExist(dto.getReferrer());
+        boolean referrerIsNotExist = !Strings.isNullOrEmpty(dto.getReferrer()) && !this.loginNameOrMobileIsExist(dto.getReferrer());
         boolean verifyCaptchaFailed = !this.smsCaptchaService.verifyMobileCaptcha(dto.getMobile(), dto.getCaptcha(), CaptchaType.REGISTER_CAPTCHA);
 
         if (loginNameIsExist || mobileIsExist || referrerIsNotExist || verifyCaptchaFailed) {
             return false;
         }
         UserModel userModel = new UserModel();
-        userModel.setLoginName(dto.getLoginName());
+        userModel.setLoginName(loginName);
         userModel.setMobile(dto.getMobile());
+        String referrerLoginName = userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName();
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            userModel.setReferrer(dto.getReferrer());
+            userModel.setReferrer(referrerLoginName);
         }
         if (!Strings.isNullOrEmpty(dto.getChannel())) {
             userModel.setChannel(dto.getChannel());
@@ -115,17 +122,17 @@ public class UserServiceImpl implements UserService {
         this.userMapper.create(userModel);
 
         UserRoleModel userRoleModel = new UserRoleModel();
-        userRoleModel.setLoginName(dto.getLoginName().toLowerCase());
+        userRoleModel.setLoginName(loginName.toLowerCase());
         userRoleModel.setRole(Role.USER);
         List<UserRoleModel> userRoleModels = Lists.newArrayList();
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
         if (StringUtils.isNotEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(dto.getReferrer(), dto.getLoginName());
+            this.referrerRelationService.generateRelation(referrerLoginName, loginName);
         }
 
-        myAuthenticationManager.createAuthentication(dto.getLoginName());
+        myAuthenticationManager.createAuthentication(loginName);
 
         return true;
     }
