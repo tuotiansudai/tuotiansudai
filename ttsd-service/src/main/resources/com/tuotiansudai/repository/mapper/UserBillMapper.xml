@@ -74,7 +74,7 @@
     </select>
 
     <select id="findSumRewardByLoginName" parameterType="java.lang.String" resultType="long">
-        SELECT IFNULL(SUM(t.`amount`), 0)
+        SELECT IFNULL(SUM(`amount`), 0)
         FROM user_bill
         WHERE user_bill.`business_type` IN ('ACTIVITY_REWARD', 'REFERRER_REWARD')
         AND user_bill.`login_name` = #{loginName}
