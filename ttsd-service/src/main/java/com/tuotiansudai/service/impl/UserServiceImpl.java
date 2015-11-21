@@ -108,9 +108,8 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
         userModel.setMobile(dto.getMobile());
-        String referrerLoginName = userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName();
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            userModel.setReferrer(referrerLoginName);
+            userModel.setReferrer(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName());
         }
         if (!Strings.isNullOrEmpty(dto.getChannel())) {
             userModel.setChannel(dto.getChannel());
@@ -129,7 +128,7 @@ public class UserServiceImpl implements UserService {
         this.userRoleMapper.create(userRoleModels);
 
         if (StringUtils.isNotEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(referrerLoginName, loginName);
+            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
         }
 
         myAuthenticationManager.createAuthentication(loginName);
