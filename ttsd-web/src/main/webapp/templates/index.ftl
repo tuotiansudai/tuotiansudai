@@ -1,6 +1,23 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="">
 <div class="banner-box">
+    <div class="banner-img-list">
+        <a href="#" target="_blank">
+            <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
+        </a>
+        <a href="#" target="_blank">
+            <img src="${staticServer}/images/sign/activities/grand/ad2.jpg" alt="累计收益兑大奖">
+        </a>
+         <a href="#" target="_blank">
+             <img src="${staticServer}//images/sign/activities/daili/ad.jpg" alt="招募代理">
+         </a>
+    </div>
+    <ul class="scroll-num">
+        <li class="selected">1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
     <div class="page-width">
         <@global.isAnonymous>
         <div class="register-ad-box fr tc">
@@ -86,8 +103,9 @@
                 </div>
                 </#list>
             </div>
-            <div class="tr clear-blank">
-                <a href="/loan-list">更多>></a>
+            <div class="clear-blank invest-total">
+                <span class="fl">投资人数:<i>190000</i> 人</span>
+                <a href="/loan-list" class="fr">更多>></a>
             </div>
         </section>
         <aside class="home-ad fr">
