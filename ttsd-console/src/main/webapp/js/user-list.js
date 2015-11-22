@@ -52,5 +52,9 @@ require(['jquery', 'jquery-ui',
             });
             return false;
         });
+
+        $('.down-load').click(function () {
+
+        });
     });
 });
