@@ -204,7 +204,7 @@
                 <div class="loan-list-con">
                     <table class="table-striped">
                     </table>
-                    <div class="pagination" data-url="/loan/${loan.id?string("0")}/invests" data-page-size="2">
+                    <div class="pagination" data-url="/loan/${loan.id?string("0")}/invests" data-page-size="10">
                     </div>
                 </div>
             </div>

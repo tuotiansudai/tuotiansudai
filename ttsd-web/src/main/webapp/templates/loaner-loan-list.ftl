@@ -21,7 +21,7 @@
     <div class="clear-blank"></div>
     <table class="loan-list table-striped">
     </table>
-    <div class="pagination" data-url="/loaner/loan-list-data" data-page-size="2">
+    <div class="pagination" data-url="/loaner/loan-list-data" data-page-size="10">
     </div>
 </div>
 </@global.main>

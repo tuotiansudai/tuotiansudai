@@ -34,6 +34,6 @@
 
     <div class="clear-blank"></div>
     <table class="user-bill-list table-striped"></table>
-    <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="2"></div>
+    <div class="pagination" data-url="/user-bill/user-bill-list-data" data-page-size="10"></div>
 </div>
 </@global.main>
