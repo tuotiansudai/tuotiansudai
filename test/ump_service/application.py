@@ -75,7 +75,7 @@ def mer_register_person():
     return result
 
 
-def bind_or_change_card(service):
+def bind_or_change_card():
     user_id = request.values.get('user_id')
     order_id = request.values.get('order_id')
     mer_date = request.values.get('mer_date')
@@ -84,9 +84,11 @@ def bind_or_change_card(service):
     notify_url = request.values.get('notify_url')
 
     store = Store(user_id)
-    params = "{4}::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id, service)
-    store.set_frontend_notify("{0}::{1}".format(params, ret_url))
-    store.set_backend_notify("{0}::{1}".format(params, notify_url))
+    params_frontend = "mer_bind_card_apply_notify::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id)
+    params_backend = "mer_bind_card_notify::{0}::{1}::{2}::{3}".format(user_id, order_id, mer_date, mer_id)
+    store.set_frontend_notify("{0}::{1}".format(params_frontend, ret_url))
+    store.set_backend_notify("{0}::{1}".format(params_frontend, notify_url))
+    store.set_backend_notify("{0}::{1}".format(params_backend, notify_url))
 
     common_params = build_common_params()
     common_params.update({'ret_code': '0000'})
@@ -99,7 +101,7 @@ def ptp_mer_bind_card():
     :return:
         Navigate to UMP page
     """
-    return bind_or_change_card('mer_bind_card')
+    return bind_or_change_card()
 
 
 def ptp_mer_replace_card():
@@ -108,7 +110,7 @@ def ptp_mer_replace_card():
     :return:
         Navigate to UMP page
     """
-    return bind_or_change_card('ptp_mer_replace_card')
+    return bind_or_change_card()
 
 
 def ptp_mer_bind_agreement():
