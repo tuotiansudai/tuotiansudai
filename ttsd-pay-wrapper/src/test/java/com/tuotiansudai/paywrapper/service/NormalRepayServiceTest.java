@@ -473,6 +473,7 @@ public class NormalRepayServiceTest {
     }
 
     @Test
+    @Transactional
     public void shouldRepayCallbackMiddlePeriod() throws Exception {
         DateTime today = new DateTime();
         UserModel loaner = this.getFakeUser("loaner");

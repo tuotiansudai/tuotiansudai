@@ -13,4 +13,6 @@ public interface RepayService {
     BaseDto<PayFormDataDto> repay(long loanId);
 
     String repayCallback(Map<String, String> paramsMap, String originalQueryString);
+
+    String repayPaybackCallback(Map<String, String> paramsMap, String originalQueryString);
 }
