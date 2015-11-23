@@ -27,7 +27,7 @@ public class SystemBillPaginationItemDataDto implements Serializable {
         this.id = systemBillModel.getId();
         this.orderId = systemBillModel.getOrderId();
         this.amount = AmountConverter.convertCentToString(systemBillModel.getAmount());
-        this.operationType = systemBillModel.getType().getDescription();
+        this.operationType = systemBillModel.getOperationType().getDescription();
         this.businessType = systemBillModel.getBusinessType().getDescription();
         this.detail = systemBillModel.getDetail();
         this.createdTime = systemBillModel.getCreatedTime();
