@@ -11,7 +11,7 @@ public class SystemBillModel implements Serializable {
 
     private long amount;
 
-    private SystemBillOperationType type;
+    private SystemBillOperationType operationType;
 
     private SystemBillBusinessType businessType;
 
@@ -22,10 +22,10 @@ public class SystemBillModel implements Serializable {
     public SystemBillModel() {
     }
 
-    public SystemBillModel(Long orderId, long amount, SystemBillOperationType type, SystemBillBusinessType businessType, String detail) {
+    public SystemBillModel(Long orderId, long amount, SystemBillOperationType operationType, SystemBillBusinessType businessType, String detail) {
         this.orderId = orderId;
         this.amount = amount;
-        this.type = type;
+        this.operationType = operationType;
         this.businessType = businessType;
         this.detail = detail;
         this.createdTime = new Date();
@@ -55,12 +55,12 @@ public class SystemBillModel implements Serializable {
         this.orderId = orderId;
     }
 
-    public SystemBillOperationType getType() {
-        return type;
+    public SystemBillOperationType getOperationType() {
+        return operationType;
     }
 
-    public void setType(SystemBillOperationType type) {
-        this.type = type;
+    public void setOperationType(SystemBillOperationType operationType) {
+        this.operationType = operationType;
     }
 
     public SystemBillBusinessType getBusinessType() {

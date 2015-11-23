@@ -98,12 +98,12 @@
     color: #999;
     line-height: 1.8;
     .point {
-      color: nth($CK1,2);
+      color: #ff752a;
     }
   }
   .process-percent {
     border-radius: 10px;
-    background: #ffe3d4;
+    background: #ffa16e;
     height: 8px;
     width:100%;
     overflow: hidden;
@@ -113,7 +113,7 @@
       width: 50px;
       position: absolute;
       height: 100%;
-      background: #ff752a;
+      background: #ffe3d4;
     }
   }
 }
