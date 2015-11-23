@@ -21,6 +21,7 @@ public class MobileAppRechargeController extends MobileAppBaseController {
     public BaseResponseDto recharge(@RequestBody BankCardRequestDto bankCardRequestDto) {
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.setIsOpenFastPayment(true);
         return mobileAppRechargeService.recharge(bankCardRequestDto);
     }
 }
