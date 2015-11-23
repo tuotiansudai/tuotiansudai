@@ -74,11 +74,11 @@ class LoanMigrate(BaseMigrate):
                           ) AS show_on_home, \
                           loan.commit_time AS created_time, \
                           loan.commit_time AS update_time, \
-                          loan.id AS old_loan_id \
+                          loan.id AS old_id \
                         FROM \
                           loan \
                           LEFT JOIN loan_node_attr \
-                            ON loan.id = loan_node_attr.loan_id) old_loan "
+                            ON loan.id = loan_node_attr.loan_id WHERE loan.status NOT IN ('test', 'verify_fail')) old_loan "
 
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO loan VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);"
@@ -89,7 +89,7 @@ class LoanMigrate(BaseMigrate):
                 old_row['description_html'],old_row['loan_money'],old_row['invest_fee_rate'],old_row['min_invest_money'],old_row['max_invest_money'], \
                 old_row['invest_increasing_amount'],old_row['activity_type'],old_row['base_rate'],old_row['activity_rate'],old_row['contract_id'], \
                 old_row['fundraising_start_time'],old_row['fundraising_end_time'],old_row['raising_complete_time'],old_row['verify_time'],old_row['recheck_time'],\
-                old_row['status'],old_row['show_on_home'],old_row['created_time'],old_row['update_time'],old_row['old_loan_id']
+                old_row['status'],old_row['show_on_home'],old_row['created_time'],old_row['update_time'],old_row['old_id']
 
     def before(self):
       pass
