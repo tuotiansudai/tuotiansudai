@@ -65,4 +65,8 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     });
 
+    $('.down-load').click(function () {
+        location.href = "/invests?"+$('form').serialize()+"&export=csv";
+    });
+
 });

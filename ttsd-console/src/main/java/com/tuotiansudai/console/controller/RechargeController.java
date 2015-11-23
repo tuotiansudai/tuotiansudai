@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class RechargeController {
             List<RechargePaginationItemDataDto> rechargePaginationItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0 ;i < rechargePaginationItemDataDtos.size(); i++) {
                 List<String> dataModel = Lists.newArrayList();
-                dataModel.add(String.valueOf(rechargePaginationItemDataDtos.get(i).getRechargeId()));
+                dataModel.add(new BigDecimal(rechargePaginationItemDataDtos.get(i).getRechargeId()).toString());
                 dataModel.add(new DateTime(rechargePaginationItemDataDtos.get(i).getCreatedTime()).toString("yyyy-MM-dd HH:mm"));
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getLoginName());
                 dataModel.add(rechargePaginationItemDataDtos.get(i).getAmount());

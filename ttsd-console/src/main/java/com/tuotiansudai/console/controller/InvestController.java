@@ -3,7 +3,6 @@ package com.tuotiansudai.console.controller;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.InvestPaginationItemDataDto;
-import com.tuotiansudai.repository.mapper.InvestMapper;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
@@ -33,9 +32,6 @@ public class InvestController {
     @Autowired
     private InvestService investService;
 
-    @Autowired
-    private InvestMapper investMapper;
-
     @RequestMapping(value = "/invests", method = RequestMethod.GET)
     public ModelAndView getInvestList(@RequestParam(name = "loanId", required = false) Long loanId,
                                       @RequestParam(name = "loginName", required = false) String investorLoginName,
@@ -59,7 +55,7 @@ public class InvestController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            long count = investMapper.findCountInvestPagination(loanId, investorLoginName, channel, enumSource == null ? null : enumSource.name(), role, startTime, endTime, investStatus, null);
+            long count = investService.findCountInvestPagination(loanId, investorLoginName, channel, enumSource, role, startTime, endTime, investStatus, null);
             BasePaginationDataDto<InvestPaginationItemDataDto> dataDto = investService.getInvestPagination(loanId, investorLoginName, channel, enumSource, role, 1, (int)count, startTime, endTime, investStatus, null);
             List<List<String>> data = Lists.newArrayList();
             List<InvestPaginationItemDataDto> investPaginationItemDataDtos = dataDto.getRecords();

@@ -140,12 +140,12 @@
                 </div>
 
                 <!-- pagination  -->
-                <nav>
+                <nav class="pagination-control">
                 <#if userList?has_content>
                     <div>
                         <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
                     </div>
-                    <ul class="pagination">
+                    <ul class="pagination pull-left">
                         <li>
                             <#if pagination.hasPreviousPage >
                             <a href="?loginName=${loginName!}&email=${email!}&mobile=${mobile!}&beginTime=${(beginTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&role=${(role.name())!}&referrer=${referrer!}&channel=${channel!}&pageSize=${pageSize}&index=${pageIndex-1}"
