@@ -13,9 +13,9 @@
          </a>
     </div>
     <ul class="scroll-num">
-        <li class="selected">1</li>
-        <li>2</li>
-        <li>3</li>
+        <li class="selected"></li>
+        <li></li>
+        <li></li>
     </ul>
 
     <div class="page-width">
@@ -65,7 +65,7 @@
 </div>
 
 <div class="home-content">
-    <div class="bg-w clearfix page-width">
+    <div class="clearfix page-width">
         <section class="product-box-list fl">
             <div class="product-box-inner">
                 <#list loans as loan>
@@ -76,12 +76,12 @@
                         <div class="pr-square tc">
                             <div class="pr-square-in">
                                 <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</em>
-                                <i class="clearfix">年化收益</i>
+                                <i>年化收益</i>
                             </div>
                         </div>
                         <dl class="pr-info">
-                            <dd><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
-                            <dd><@amount>${loan.amount}</@amount>元<br/><span>项目金额</span></dd>
+                            <dd class="dl-month"><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
+                            <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><br/><span>项目金额</span></dd>
                         </dl>
                         <div class="project-schedule clear-blank">
                             <div class="p-title">

@@ -36,10 +36,10 @@
     li {
       float: left;
       margin-right: 15px;
-      width: 20px;
-      height: 20px;
+      width: 10px;
+      height: 10px;
       text-align: center;
-      border-radius: 10px;
+      border-radius: 5px;
       background: #fff;
       line-height: 20px;
       color: #666;
@@ -140,7 +140,7 @@
         .product-box {
           box-sizing: border-box;
           width: 30%;
-          margin-right: 1.5%;
+          margin-right: 1.7%;
           border:1px solid #e5e5e5;
           border-radius: 10px;
           position: relative;
@@ -149,9 +149,9 @@
           color: #999;
           cursor: pointer;
           &:hover {
-            -moz-box-shadow:-1px -1px 15px #999,1px 1px 15px #999;
-            -webkit-box-shadow:-1px -1px 15px #999,1px 1px 15px #999;
-            box-shadow:-1px -1px 15px #999,1px 1px 15px #999;
+            -moz-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+            -webkit-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+            box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
           }
           &.new-standard {
             .hot-new {
@@ -170,6 +170,7 @@
             white-space: nowrap;
             width: 125px;
             margin-left: 35px;
+            color: #4c4c4c;
           }
           .pr-square {
             width: 134px;
@@ -177,7 +178,7 @@
             border-radius: 67px;
             position: relative;
             background: #fee7da;
-            margin: 8px auto;
+            margin: 5px auto 8px auto;
             .pr-square-in {
               width:120px;
               height:120px;
@@ -196,14 +197,18 @@
                 font-size: 16px;
                 line-height: 1;
                 font-weight: bold;
-                padding-top: 30px;
+                padding-top: 40px;
                 display: inline-block;
                 b {
-                  font-size:26px;
+                  font-size:28px;
+                  line-height:0.5;
                 }
-                i {
-                  color: #999;
-                }
+              }
+              i {
+                color: #999;
+                clear: both;
+                display: block;
+                margin-top: -6px;
               }
             }
           }
@@ -211,15 +216,27 @@
             text-align: center;
             font-size: 0;
             dd {
-              width:50%;
+              width:48%;
               display: inline-block;
               font-size: 14px;
               line-height: 1.2;
               color: #666;
-              i {
-                color: #ff3333;
-                font-weight: bold;
-                font-size: 18px;
+              &.dl-month {
+                border-right:1px solid #ffceb4;
+                i {
+                  color: #ff3333;
+                  font-weight: bold;
+                  font-size: 18px;
+                }
+
+              }
+              &.dl-amount {
+                i{
+                  font-size: 18px;
+                }
+              }
+              span {
+                color: #999;
               }
 
             }
@@ -267,7 +284,7 @@
       img {
         width:100%;
         border-radius: 10px;
-        height: 666px;
+        height: 660px;
         border: 1px solid #e5e5e5;
       }
     }
