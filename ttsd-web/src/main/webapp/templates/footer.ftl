@@ -2,7 +2,7 @@
     <div class="footer page-width">
         <ul>
             <li class="f-title">我要投资</li>
-            <li><a href="javascript:">理财产品</a></li>
+            <li><a href="/loan-list">理财产品</a></li>
             <li><a href="/account">我的账户</a></li>
             <li><a href="/about/notice">拓天公告</a></li>
         </ul>
@@ -15,7 +15,8 @@
         <ul>
             <li class="f-title">帮助中心</li>
             <li><a href="javascript:">新手指南</a></li>
-            <li><a href="/help/service-fee">服务费用</a></li>
+            <li><a href="/about/service-fee">服务费用</a></li>
+
         </ul>
         <ul>
             <li class="f-title">联系我们</li>
