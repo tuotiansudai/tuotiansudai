@@ -95,8 +95,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         } catch (UnsupportedEncodingException e) {
             log.error("mobile bind card fail", e);
         }
-        baseDto.setCode(ReturnMessage.BIND_CARD_FAIL.getCode());
-        baseDto.setMessage(ReturnMessage.BIND_CARD_FAIL.getMsg());
+        baseDto.setCode(ReturnMessage.BANK_CARD_SIGN_FAIL.getCode());
+        baseDto.setMessage(ReturnMessage.BANK_CARD_SIGN_FAIL.getMsg());
         return baseDto;
     }
 
@@ -153,9 +153,6 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
 
         AccountModel accountModel = accountMapper.findByLoginName(loginName);
 
-        if(accountModel.getBalance() > 0){
-            return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getCode(),ReturnMessage.REPLACE_CARD_FAIL_ACCOUNT_BALANCE_IS_NOT_ZERO.getMsg());
-        }
         BankCardModel bankCardModelIsExist = bankCardMapper.findPassedBankCardByBankCode(newCardNo);
         if(bankCardModelIsExist != null){
             return new BaseResponseDto(ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getCode(),ReturnMessage.REPLACE_CARD_FAIL_BANK_CARD_EXIST.getMsg());

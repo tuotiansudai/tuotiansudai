@@ -47,6 +47,7 @@ public class MobileAppBankCardController extends MobileAppBaseController {
     @RequestMapping(value = "/bankcard/sign", method = RequestMethod.POST)
     public BaseResponseDto bankCardSign(@RequestBody BankCardRequestDto bankCardRequestDto) {
         bankCardRequestDto.setUserId(getLoginName());
+        bankCardRequestDto.setIsOpenFastPayment(true);
         bankCardRequestDto.getBaseParam().setUserId(getLoginName());
         return mobileAppBankCardService.openFastPay(bankCardRequestDto);
     }

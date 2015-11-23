@@ -34,7 +34,7 @@ def mer_bind_card_apply_notify(user_id, order_id, mer_date, mer_id, url):
 
 def mer_bind_card_notify(user_id, order_id, mer_date, mer_id, url):
     special_payload = {'user_id': user_id, 'ret_code': '0000',
-                       'service': 'mer_bind_card_notify'}
+                       'service': 'mer_bind_card_notify', 'gate_id':'ICBC'}
     return _process(order_id, mer_date, mer_id, url, special_payload)
 
 

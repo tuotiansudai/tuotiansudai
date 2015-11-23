@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`loan` ADD COLUMN `old_id` VARCHAR(32);

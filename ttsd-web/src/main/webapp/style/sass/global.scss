@@ -32,6 +32,12 @@
   }
 }
 
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
 .layui-layer-content {
   .pad-m {
     padding:15px 20px 10px 20px;
@@ -103,7 +109,7 @@
   }
   .process-percent {
     border-radius: 10px;
-    background: #ffa16e;
+    background: #ffe3d4;
     height: 8px;
     width:100%;
     overflow: hidden;
@@ -113,7 +119,7 @@
       width: 50px;
       position: absolute;
       height: 100%;
-      background: #ffe3d4;
+      background: #ffa16e;
     }
   }
 }

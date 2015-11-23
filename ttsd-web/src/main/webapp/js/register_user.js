@@ -136,6 +136,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             mobile: {
                 required: true,
                 digits: true,
+                minlength: 11,
                 maxlength: 11,
                 isExist: "/register/user/mobile/{0}/is-exist"
             },
@@ -155,7 +156,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 }
             },
             referrer: {
-                isNotExist: "/register/referrer/{0}/is-exist"
+                isNotExist: "/register/user/referrer/{0}/is-exist"
             },
             agreement: {
                 required: true
@@ -169,8 +170,9 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             },
             mobile: {
                 required: '请输入手机号',
-                maxlength: '手机格式不正确',
                 digits: '必须是数字',
+                minlength: '手机格式不正确',
+                maxlength: '手机格式不正确',
                 isExist: '手机号已存在'
             },
             password: {
