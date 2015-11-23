@@ -6,7 +6,7 @@ class LoanRepayMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT loan_id, corpus, interest, default_interest, period, repay_day, status, time FROM loan_repay"
+    SELECT_SQL = "SELECT loan_id, corpus, interest, default_interest, period, repay_day, status, time FROM loan_repay WHERE status <> 'test'"
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO loan_repay(`id`,
                                            `loan_id`,

@@ -1,0 +1,1 @@
+ALTER TABLE `aa`.`invest` ADD `old_id` VARCHAR(32) AFTER `id`;
