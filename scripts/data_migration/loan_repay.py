@@ -24,7 +24,7 @@ class LoanRepayMigrate(BaseMigrate):
     _index = 0
 
     STATUS_MAPPING = {'complete': 'COMPLETE',
-                      'wait_repay_verify': 'CONFIRMING',
+                      'wait_repay_verify': 'WAIT_PAY',
                       'repaying': 'REPAYING',
                       'overdue': 'OVERDUE'}
 

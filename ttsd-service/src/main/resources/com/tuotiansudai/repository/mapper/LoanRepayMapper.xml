@@ -169,8 +169,8 @@
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
-    <select id="findConfirmingLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select * from loan_repay where loan_id = #{loanId} and status = 'CONFIRMING'
+    <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
     </select>
 
     <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
@@ -201,7 +201,7 @@
             AND l.`agent_login_name` = #{loginName}
         WHERE t.`status` IN (
                 'REPAYING',
-                'CONFIRMING',
+                'WAIT_PAY',
                 'OVERDUE'
               )
             AND t.`repay_date` BETWEEN #{startTime}
@@ -247,7 +247,7 @@
                 AND l.`agent_login_name` = #{loginName}
             WHERE t.`status` IN (
                 'REPAYING',
-                'CONFIRMING',
+                'WAIT_PAY',
                 'OVERDUE'
               )
               AND t.`repay_date` BETWEEN #{startTime}

@@ -42,6 +42,9 @@ public class NormalRepayServiceImpl implements RepayService {
     protected final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
 
     @Autowired
+    protected AccountMapper accountMapper;
+
+    @Autowired
     protected InvestMapper investMapper;
 
     @Autowired
@@ -52,9 +55,6 @@ public class NormalRepayServiceImpl implements RepayService {
 
     @Autowired
     protected LoanRepayMapper loanRepayMapper;
-
-    @Autowired
-    protected AccountMapper accountMapper;
 
     @Autowired
     protected AmountTransfer amountTransfer;
@@ -94,7 +94,7 @@ public class NormalRepayServiceImpl implements RepayService {
         DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId), actualRepayDate);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
 
-        enabledLoanRepay.setStatus(RepayStatus.CONFIRMING);
+        enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
         loanRepayMapper.update(enabledLoanRepay);
@@ -139,18 +139,22 @@ public class NormalRepayServiceImpl implements RepayService {
         try {
             loanRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
         } catch (NumberFormatException e) {
-            logger.error(MessageFormat.format("Loan repay id is invalid (loanRepayId = {0})", callbackRequestModel.getOrderId()));
+            logger.error(MessageFormat.format("Normal repay is failed, loan repay id is invalid (loanRepayId = {0})", callbackRequestModel.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
             return;
         }
 
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
-        if (enabledLoanRepay.getStatus() != RepayStatus.CONFIRMING) {
-            logger.error(MessageFormat.format("Loan repay status is not confirming (loanRepayId = {0})", String.valueOf(loanRepayId)));
+        if (enabledLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
+            logger.error(MessageFormat.format("Normal repay is failed, loan repay status is not WAIT_PAY (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return;
         }
 
         LoanModel loanModel = loanMapper.findById(enabledLoanRepay.getLoanId());
+
+        //更新LoanRepay Status = COMPLETE
+        enabledLoanRepay.setStatus(RepayStatus.COMPLETE);
+        loanRepayMapper.update(enabledLoanRepay);
 
         //更新代理人账户
         try {
@@ -165,10 +169,6 @@ public class NormalRepayServiceImpl implements RepayService {
 
         //还款后回款
         this.paybackInvestRepay(loanModel, enabledLoanRepay);
-
-        //更新LoanRepay Status = COMPLETE
-        enabledLoanRepay.setStatus(RepayStatus.COMPLETE);
-        loanRepayMapper.update(enabledLoanRepay);
 
         //最后一期更新Loan Status = COMPLETE
         boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == enabledLoanRepay.getPeriod();

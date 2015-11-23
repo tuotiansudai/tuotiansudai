@@ -42,9 +42,9 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
             return baseDto;
         }
 
-        LoanRepayModel confirmingLoanRepay = loanRepayMapper.findConfirmingLoanRepayByLoanId(loanId);
-        if (confirmingLoanRepay != null) {
-            logger.error(MessageFormat.format("The confirming loan repay is exist (loanRepayId = {0})", String.valueOf(confirmingLoanRepay.getId())));
+        LoanRepayModel waitPayLoanRepay = loanRepayMapper.findWaitPayLoanRepayByLoanId(loanId);
+        if (waitPayLoanRepay != null) {
+            logger.error(MessageFormat.format("The WAIT_PAY loan repay is exist (loanRepayId = {0})", String.valueOf(waitPayLoanRepay.getId())));
             return baseDto;
         }
 
@@ -67,7 +67,7 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvests, lastRepayDate, currentRepayDate);
 
-        currentLoanRepay.setStatus(RepayStatus.CONFIRMING);
+        currentLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         currentLoanRepay.setActualInterest(actualInterest);
         currentLoanRepay.setActualRepayDate(currentRepayDate.toDate());
         loanRepayMapper.update(currentLoanRepay);
@@ -118,8 +118,8 @@ public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
         }
 
         LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
-        if (enabledLoanRepay.getStatus() != RepayStatus.CONFIRMING) {
-            logger.error(MessageFormat.format("Loan repay status is not confirming (loanRepayId = {0})", String.valueOf(loanRepayId)));
+        if (enabledLoanRepay.getStatus() != RepayStatus.WAIT_PAY) {
+            logger.error(MessageFormat.format("Loan repay status is not WAIT_PAY (loanRepayId = {0})", String.valueOf(loanRepayId)));
             return;
         }
 

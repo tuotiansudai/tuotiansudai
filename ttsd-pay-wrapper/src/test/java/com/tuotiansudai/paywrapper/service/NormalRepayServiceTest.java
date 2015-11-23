@@ -120,7 +120,7 @@ public class NormalRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(36L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
@@ -148,7 +148,7 @@ public class NormalRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(3L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
         assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.REPAYING));
@@ -180,7 +180,7 @@ public class NormalRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(65L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -211,7 +211,7 @@ public class NormalRepayServiceTest {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
         assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.COMPLETE));
-        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(1).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(1).getActualInterest(), is(65L));
         assertThat(new DateTime(loanRepayModels.get(1).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -595,7 +595,7 @@ public class NormalRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(134L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
@@ -628,7 +628,7 @@ public class NormalRepayServiceTest {
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
 
-        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.CONFIRMING));
+        assertThat(loanRepayModels.get(0).getStatus(), is(RepayStatus.WAIT_PAY));
         assertThat(loanRepayModels.get(0).getActualInterest(), is(101L));
         assertThat(new DateTime(loanRepayModels.get(0).getActualRepayDate()).withTimeAtStartOfDay().getMillis(), is(today.withTimeAtStartOfDay().getMillis()));
     }
