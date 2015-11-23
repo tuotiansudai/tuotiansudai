@@ -77,6 +77,17 @@ public class RegisterUserController {
         return baseDto;
     }
 
+    @RequestMapping(value = "/referrer/{loginNameOrMobile}/is-exist", method = RequestMethod.GET)
+    @ResponseBody
+    public BaseDto<BaseDataDto> loginNameOrMobileIsExist(@PathVariable String loginNameOrMobile) {
+        BaseDataDto dataDto = new BaseDataDto();
+        dataDto.setStatus(userService.loginNameOrMobileIsExist(loginNameOrMobile.toLowerCase()));
+        BaseDto<BaseDataDto> baseDto = new BaseDto<>();
+        baseDto.setData(dataDto);
+
+        return baseDto;
+    }
+
     @RequestMapping(path = "/send-register-captcha", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public BaseDto<SmsDataDto> sendRegisterCaptcha(HttpServletRequest httpServletRequest, @Valid @ModelAttribute RegisterCaptchaDto dto) {
