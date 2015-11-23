@@ -35,6 +35,7 @@
     {"title":"公司介绍", "url":"/about/company"},
     {"title":"团队介绍", "url":"/about/team"},
     {"title":"拓天公告", "url":"/about/notice"},
+    {"title":"服务费用", "url":"/about/service-fee"},
     {"title":"联系我们", "url":"/about/contact"}
     ]}]/>
 
@@ -94,14 +95,58 @@
         document.getElementById("logout-form").submit();
     });
     </@security.authorize>
+
+    function stopBubble(e) {
+        if ( e && e.stopPropagation )
+            e.stopPropagation();
+        else
+            window.event.cancelBubble = true;
+    }
+    var imgDom=document.getElementById('iphone-app-img');
+    function stopBubble(e)
+    {
+        if (e && e.stopPropagation)
+            e.stopPropagation()
+        else
+            window.event.cancelBubble=true
+    }
+    document.getElementById('iphone-app-pop').addEventListener('click',function(e) {
+        stopBubble(e);
+
+        if(imgDom.style.display == "block") {
+            imgDom.style.display='none';
+        }
+        else {
+            imgDom.style.display='block';
+        }
+    });
+    document.getElementsByTagName("body")[0].addEventListener('click',function() {
+        imgDom.style.display='none';
+    });
+
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
 </script>
-
 </#if>
+<div class="hide">
+
+    <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254796373'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254796373%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b4205647cc83b405927bd22f70eaf362";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</div>
 </body>
 </html>
 </#macro>

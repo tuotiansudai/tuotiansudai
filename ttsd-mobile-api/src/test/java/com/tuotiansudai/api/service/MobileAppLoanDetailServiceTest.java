@@ -131,7 +131,7 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         model.setLoginName(loginName);
         model.setLoanId(loanId);
         model.setSource(Source.ANDROID);
-        model.setStatus(InvestStatus.WAITING);
+        model.setStatus(InvestStatus.WAIT_PAY);
         model.setCreatedTime(new Date());
         return model;
     }

@@ -23,14 +23,14 @@ public class UserBillModel implements Serializable {
 
     private String operatorLoginName;
 
-    private String description;
+    private String interventionReason;
 
     private Date createdTime = new Date();
 
     public UserBillModel() {
     }
 
-    public UserBillModel(String loginName, long orderId, long amount, long balance, long freeze, UserBillBusinessType businessType, UserBillOperationType operationType) {
+    public UserBillModel(String loginName, long orderId, long amount, long balance, long freeze, UserBillBusinessType businessType, UserBillOperationType operationType, String operatorLoginName, String interventionReason) {
         this.loginName = loginName;
         this.orderId = orderId;
         this.amount = amount;
@@ -38,6 +38,8 @@ public class UserBillModel implements Serializable {
         this.freeze = freeze;
         this.businessType = businessType;
         this.operationType = operationType;
+        this.operatorLoginName = operatorLoginName;
+        this.interventionReason = interventionReason;
     }
 
     public long getId() {
@@ -112,12 +114,12 @@ public class UserBillModel implements Serializable {
         this.operatorLoginName = operatorLoginName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getInterventionReason() {
+        return interventionReason;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setInterventionReason(String interventionReason) {
+        this.interventionReason = interventionReason;
     }
 
     public Date getCreatedTime() {

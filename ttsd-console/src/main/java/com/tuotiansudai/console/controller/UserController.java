@@ -1,15 +1,23 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.EditUserDto;
+import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
+import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
-import com.tuotiansudai.console.util.LoginUserInfo;
+import com.tuotiansudai.util.CsvHeaderType;
+import com.tuotiansudai.util.ExportCsvUtil;
 import com.tuotiansudai.util.RequestIPParser;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,6 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +39,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
@@ -67,27 +81,65 @@ public class UserController {
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                     Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
-                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                    @RequestParam(value = "export", required = false) String export,
+                                    HttpServletResponse response) throws IOException{
+        if (export != null && !export.equals("")) {
+            response.setCharacterEncoding("UTF-8");
+            try {
+                response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode("用户管理.csv", "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/csv");
+            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, 1, count);
+            List<List<String>> data = Lists.newArrayList();
+            List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
+            for (int i = 0 ;i < userItemDataDtos.size(); i++) {
+                List<String> dataModel = Lists.newArrayList();
+                dataModel.add(userItemDataDtos.get(i).getLoginName());
+                dataModel.add(userItemDataDtos.get(i).getUserName());
+                dataModel.add(userItemDataDtos.get(i).getMobile());
+                dataModel.add(userItemDataDtos.get(i).getEmail());
+                dataModel.add(userItemDataDtos.get(i).getReferrer());
+                dataModel.add(userItemDataDtos.get(i).getChannel());
+                dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
 
-        BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, index, pageSize);
-        ModelAndView mv = new ModelAndView("/user-list");
-        mv.addObject("baseDto", baseDto);
-        mv.addObject("loginName", loginName);
-        mv.addObject("email", email);
-        mv.addObject("mobile", mobile);
-        mv.addObject("beginTime", beginTime);
-        mv.addObject("endTime", endTime);
-        mv.addObject("role", role);
-        mv.addObject("referrer", referrer);
-        mv.addObject("channel", channel);
-        mv.addObject("pageIndex", index);
-        mv.addObject("pageSize", pageSize);
-        List<Role> roleList = Lists.newArrayList(Role.values());
-        List<String> channelList = userService.findAllChannels();
-        mv.addObject("roleList", roleList);
-        mv.addObject("channelList", channelList);
-        return mv;
+                List<UserRoleModel> userRoleModels = userItemDataDtos.get(i).getUserRoles();
+                List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getRole().getDescription();
+                    }
+                });
 
+                dataModel.add(StringUtils.join(userRole,";"));
+                dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
+                data.add(dataModel);
+            }
+            ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
+            return null;
+        } else {
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, index, pageSize);
+            ModelAndView mv = new ModelAndView("/user-list");
+            mv.addObject("baseDto", baseDto);
+            mv.addObject("loginName", loginName);
+            mv.addObject("email", email);
+            mv.addObject("mobile", mobile);
+            mv.addObject("beginTime", beginTime);
+            mv.addObject("endTime", endTime);
+            mv.addObject("role", role);
+            mv.addObject("referrer", referrer);
+            mv.addObject("channel", channel);
+            mv.addObject("pageIndex", index);
+            mv.addObject("pageSize", pageSize);
+            List<Role> roleList = Lists.newArrayList(Role.values());
+            List<String> channelList = userService.findAllChannels();
+            mv.addObject("roleList", roleList);
+            mv.addObject("channelList", channelList);
+            return mv;
+        }
     }
 
     @RequestMapping(value = "/user/{loginName}/disable", method = RequestMethod.POST)

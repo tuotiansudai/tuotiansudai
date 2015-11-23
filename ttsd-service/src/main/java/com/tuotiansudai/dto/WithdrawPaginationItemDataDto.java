@@ -1,127 +1,101 @@
 package com.tuotiansudai.dto;
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.util.AmountConverter;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
-public class WithdrawPaginationItemDataDto extends WithdrawDto implements Serializable {
+public class WithdrawPaginationItemDataDto implements Serializable {
 
     private long withdrawId;
 
+    private String loginName;
+
+    private String amount;
+
+    private Source source;
+
     private String fee;
 
-    private String verifyMessage;
+    private String applyNotifyMessage;
 
-    private Date verifyTime;
+    private Date applyNotifyTime;
 
-    private String recheckMessage;
+    private String notifyMessage;
 
-    private Date recheckTime;
+    private Date notifyTime;
 
     private Date createdTime;
 
     private String status;
 
-    private String userName;
-
-    private int adminRole; // 1: true; 0:false
-
+    private String bankCard;
 
     public WithdrawPaginationItemDataDto(WithdrawModel withdrawModel) {
         this.withdrawId = withdrawModel.getId();
         this.fee = AmountConverter.convertCentToString(withdrawModel.getFee());
-        this.verifyMessage = withdrawModel.getVerifyMessage();
-        this.verifyTime = withdrawModel.getVerifyTime();
-        this.recheckMessage = withdrawModel.getRecheckMessage();
-        this.recheckTime = withdrawModel.getRecheckTime();
+        this.applyNotifyMessage = withdrawModel.getApplyNotifyMessage();
+        this.applyNotifyTime = withdrawModel.getApplyNotifyTime();
+        this.notifyMessage = withdrawModel.getNotifyMessage();
+        this.notifyTime = withdrawModel.getNotifyTime();
         this.createdTime = withdrawModel.getCreatedTime();
         this.status = withdrawModel.getStatus().getDescription();
-        this.userName = withdrawModel.getUserName();
-        this.adminRole = withdrawModel.getIsAdmin();
-        super.setLoginName(withdrawModel.getLoginName());
-        super.setAmount(AmountConverter.convertCentToString(withdrawModel.getAmount()));
-        super.setSource(withdrawModel.getSource());
+        this.loginName = withdrawModel.getLoginName();
+        this.amount = AmountConverter.convertCentToString(withdrawModel.getAmount());
+        this.source = withdrawModel.getSource();
+        this.bankCard = withdrawModel.getBankCard().getCardNumber();
     }
 
     public long getWithdrawId() {
         return withdrawId;
     }
 
-    public void setWithdrawId(long withdrawId) {
-        this.withdrawId = withdrawId;
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public Source getSource() {
+        return source;
     }
 
     public String getFee() {
         return fee;
     }
 
-    public void setFee(String fee) {
-        this.fee = fee;
+    public String getApplyNotifyMessage() {
+        return applyNotifyMessage;
     }
 
-    public String getStatus() {
-        return status;
+    public Date getApplyNotifyTime() {
+        return applyNotifyTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getNotifyMessage() {
+        return notifyMessage;
     }
 
-    public String getVerifyMessage() {
-        return verifyMessage;
-    }
-
-    public void setVerifyMessage(String verifyMessage) {
-        this.verifyMessage = verifyMessage;
-    }
-
-    public Date getVerifyTime() {
-        return verifyTime;
-    }
-
-    public void setVerifyTime(Date verifyTime) {
-        this.verifyTime = verifyTime;
-    }
-
-    public String getRecheckMessage() {
-        return recheckMessage;
-    }
-
-    public void setRecheckMessage(String recheckMessage) {
-        this.recheckMessage = recheckMessage;
-    }
-
-    public Date getRecheckTime() {
-        return recheckTime;
-    }
-
-    public void setRecheckTime(Date recheckTime) {
-        this.recheckTime = recheckTime;
+    public Date getNotifyTime() {
+        return notifyTime;
     }
 
     public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public String getStatus() {
+        return status;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getAdminRole() {
-        return adminRole;
-    }
-
-    public void setAdminRole(int adminRole) {
-        this.adminRole = adminRole;
+    public String getBankCard() {
+        return bankCard;
     }
 }

@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.repository.model.WithdrawModel;
+import com.tuotiansudai.repository.model.WithdrawStatus;
 import com.tuotiansudai.util.AmountConverter;
 
 import java.text.SimpleDateFormat;
@@ -16,18 +17,18 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     public WithdrawDetailResponseDataDto() {
     }
 
-    public WithdrawDetailResponseDataDto(WithdrawModel withdrawCash) {
+    public WithdrawDetailResponseDataDto(WithdrawModel withdrawModel) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        this.withdrawId = "" + withdrawCash.getId();
-        this.time = sdf.format(withdrawCash.getCreatedTime());
-        if(withdrawCash.getRecheckTime()!=null) {
-            this.recheckTime = sdf.format(withdrawCash.getRecheckTime());
-        }else{
+        this.withdrawId = "" + withdrawModel.getId();
+        this.time = sdf.format(withdrawModel.getCreatedTime());
+        if (withdrawModel.getNotifyTime() != null) {
+            this.recheckTime = sdf.format(withdrawModel.getNotifyTime());
+        } else {
             this.recheckTime = "";
         }
-        this.money = AmountConverter.convertCentToString(withdrawCash.getAmount());
-        this.status = withdrawCash.getStatus().name().toLowerCase();
-        this.statusDesc = withdrawCash.getStatus().getDescription();
+        this.money = AmountConverter.convertCentToString(withdrawModel.getAmount());
+        this.status = convertToMobileAppWithDrawStatus(withdrawModel.getStatus());
+        this.statusDesc = withdrawModel.getStatus().getDescription();
 
     }
 
@@ -78,5 +79,21 @@ public class WithdrawDetailResponseDataDto extends BaseResponseDataDto {
     public void setStatusDesc(String statusDesc) {
         this.statusDesc = statusDesc;
     }
+
+    private String convertToMobileAppWithDrawStatus(WithdrawStatus withdrawStatus){
+        if(WithdrawStatus.WAIT_PAY.equals(withdrawStatus)){
+            return "wait_verify";
+        }else if(WithdrawStatus.APPLY_SUCCESS.equals(withdrawStatus)){
+            return "recheck";
+        }else if(WithdrawStatus.APPLY_FAIL.equals(withdrawStatus)){
+            return "verify_fail";
+        }else if(WithdrawStatus.FAIL.equals(withdrawStatus)){
+            return "recheck_fail";
+        }
+        return "success";
+
+    }
+
+
 
 }

@@ -152,12 +152,12 @@
                 </div>
 
                 <!-- pagination  -->
-                <nav>
+                <nav class="pagination-control">
                     <div>
                         <span class="bordern">总共${data.count}条, 每页显示${data.pageSize}条</span>
                     </div>
                 <#if data.records?has_content>
-                    <ul class="pagination">
+                    <ul class="pagination pull-left">
                         <li>
                             <#if data.hasPreviousPage >
                             <a href="?index=${data.index - 1}
@@ -188,6 +188,7 @@
                         </a>
                         </li>
                     </ul>
+                    <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
                 </#if>
                 </nav>
                 <!-- pagination -->

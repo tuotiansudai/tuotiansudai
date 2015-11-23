@@ -1,5 +1,7 @@
 package com.tuotiansudai.paywrapper.repository.model.async.request;
 
+import com.tuotiansudai.repository.model.Source;
+
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,8 +27,8 @@ public class PtpMerReplaceCardRequestModel extends BaseAsyncRequestModel{
 
     }
 
-    public PtpMerReplaceCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber) {
-        super();
+    public PtpMerReplaceCardRequestModel(String orderId, String cardNumber, String payUserId, String userName, String identityNumber,Source source) {
+        super(source,"ptp_mer_replace_card");
         this.service = "ptp_mer_replace_card";
         this.orderId = orderId;
         this.merDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
@@ -34,7 +36,6 @@ public class PtpMerReplaceCardRequestModel extends BaseAsyncRequestModel{
         this.userId = payUserId;
         this.accountName = userName;
         this.identityCode = identityNumber;
-        this.retUrl =  MessageFormat.format("{0}/account", CALLBACK_HOST_PROPS.get("pay.callback.web.host"));
         this.notifyUrl = MessageFormat.format("{0}/{1}", CALLBACK_HOST_PROPS.get("pay.callback.back.host"), "mer_replace_card_notify");
     }
 

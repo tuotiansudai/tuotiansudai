@@ -7,7 +7,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class WithdrawModel implements Serializable {
+
+    /**
+     * 联动优势提现手续费3元(300分)
+     */
+    private static final long WITHDRAW_FEE = 300;
+
     private long id;
+
+    private long bankCardId;
 
     private String loginName;
 
@@ -15,13 +23,13 @@ public class WithdrawModel implements Serializable {
 
     private long fee;
 
-    private String verifyMessage;
+    private String applyNotifyMessage;
 
-    private Date verifyTime;
+    private Date applyNotifyTime;
 
-    private String recheckMessage;
+    private String notifyMessage;
 
-    private Date recheckTime;
+    private Date notifyTime;
 
     private Date createdTime;
 
@@ -31,21 +39,30 @@ public class WithdrawModel implements Serializable {
 
     private String userName;
 
-    private int isAdmin;
+    private BankCardModel bankCard;
 
     public WithdrawModel() {
     }
 
     public WithdrawModel(WithdrawDto dto) {
         this.amount = AmountConverter.convertStringToCent(dto.getAmount());
+        this.fee = WITHDRAW_FEE;
         this.loginName = dto.getLoginName();
         this.createdTime = new Date();
-        this.status = WithdrawStatus.WAIT_VERIFY;
+        this.status = WithdrawStatus.WAIT_PAY;
         this.source = dto.getSource();
     }
 
     public long getId() {
         return id;
+    }
+
+    public long getBankCardId() {
+        return bankCardId;
+    }
+
+    public void setBankCardId(long bankCardId) {
+        this.bankCardId = bankCardId;
     }
 
     public void setId(long id) {
@@ -76,36 +93,36 @@ public class WithdrawModel implements Serializable {
         this.fee = fee;
     }
 
-    public String getVerifyMessage() {
-        return verifyMessage;
+    public String getApplyNotifyMessage() {
+        return applyNotifyMessage;
     }
 
-    public void setVerifyMessage(String verifyMessage) {
-        this.verifyMessage = verifyMessage;
+    public void setApplyNotifyMessage(String applyNotifyMessage) {
+        this.applyNotifyMessage = applyNotifyMessage;
     }
 
-    public Date getVerifyTime() {
-        return verifyTime;
+    public Date getApplyNotifyTime() {
+        return applyNotifyTime;
     }
 
-    public void setVerifyTime(Date verifyTime) {
-        this.verifyTime = verifyTime;
+    public void setApplyNotifyTime(Date applyNotifyTime) {
+        this.applyNotifyTime = applyNotifyTime;
     }
 
-    public String getRecheckMessage() {
-        return recheckMessage;
+    public String getNotifyMessage() {
+        return notifyMessage;
     }
 
-    public void setRecheckMessage(String recheckMessage) {
-        this.recheckMessage = recheckMessage;
+    public void setNotifyMessage(String notifyMessage) {
+        this.notifyMessage = notifyMessage;
     }
 
-    public Date getRecheckTime() {
-        return recheckTime;
+    public Date getNotifyTime() {
+        return notifyTime;
     }
 
-    public void setRecheckTime(Date recheckTime) {
-        this.recheckTime = recheckTime;
+    public void setNotifyTime(Date notifyTime) {
+        this.notifyTime = notifyTime;
     }
 
     public Date getCreatedTime() {
@@ -140,27 +157,12 @@ public class WithdrawModel implements Serializable {
         this.userName = userName;
     }
 
-    public int getIsAdmin() {
-        return isAdmin;
+    public BankCardModel getBankCard() {
+        return bankCard;
     }
 
-    public void setIsAdmin(int isAdmin) {
-        this.isAdmin = isAdmin;
+    public void setBankCard(BankCardModel bankCard) {
+        this.bankCard = bankCard;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        WithdrawModel that = (WithdrawModel) o;
-
-        return id == that.id;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
 }

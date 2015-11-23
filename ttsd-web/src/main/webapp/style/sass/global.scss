@@ -32,6 +32,12 @@
   }
 }
 
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
 .layui-layer-content {
   .pad-m {
     padding:15px 20px 10px 20px;
@@ -98,7 +104,7 @@
     color: #999;
     line-height: 1.8;
     .point {
-      color: nth($CK1,2);
+      color: #ff752a;
     }
   }
   .process-percent {
@@ -113,7 +119,7 @@
       width: 50px;
       position: absolute;
       height: 100%;
-      background: #ff752a;
+      background: #ffa16e;
     }
   }
 }

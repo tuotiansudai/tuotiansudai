@@ -18,6 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -34,6 +35,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     private InvestMapper investMapper;
     @Autowired
     private LoanTitleRelationMapper loanTitleRelationMapper;
+    @Value("${web.server}")
+    private String domainName;
 
     @Override
     public BaseResponseDto generateLoanDetail(LoanDetailRequestDto loanDetailRequestDto) {
@@ -69,7 +72,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-        loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name());
+        loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
         loanDetailResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
@@ -125,7 +128,8 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
             String materialUrl = loanTitleRelationModel.getApplicationMaterialUrls();
             if (StringUtils.isNotEmpty(materialUrl)) {
                 for (String url : materialUrl.split(",")) {
-                    imageUrlList.add(url);
+                    String tempUrl = domainName + "/" +url;
+                    imageUrlList.add(tempUrl);
                 }
             }
         }

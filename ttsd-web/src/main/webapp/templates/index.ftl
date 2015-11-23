@@ -1,6 +1,23 @@
 <#import "macro/global.ftl" as global>
 <@global.main pageCss="${css.index}" pageJavascript="${js.index}" activeNav="首页" activeLeftNav="">
 <div class="banner-box">
+    <div class="banner-img-list">
+        <a href="${staticServer}/activity/ranking" target="_blank">
+            <img src="${staticServer}/images/sign/activities/ranking/qph.jpg" alt="抢排行，送大礼">
+        </a>
+        <a href="${staticServer}/activity/grand" target="_blank">
+            <img src="${staticServer}/images/sign/activities/grand/ad2.jpg" alt="累计收益兑大奖">
+        </a>
+         <a href="${staticServer}/activity/recruit" target="_blank">
+             <img src="${staticServer}//images/sign/activities/daili/ad.jpg" alt="招募代理">
+         </a>
+    </div>
+    <ul class="scroll-num">
+        <li class="selected"></li>
+        <li></li>
+        <li></li>
+    </ul>
+
     <div class="page-width">
         <@global.isAnonymous>
         <div class="register-ad-box fr tc">
@@ -48,7 +65,7 @@
 </div>
 
 <div class="home-content">
-    <div class="bg-w clearfix page-width">
+    <div class="clearfix page-width">
         <section class="product-box-list fl">
             <div class="product-box-inner">
                 <#list loans as loan>
@@ -58,13 +75,13 @@
                         <h2 class="pr-title">${loan.name}</h2>
                         <div class="pr-square tc">
                             <div class="pr-square-in">
-                                <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.${loan.baseRateFraction}</#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.${loan.activityRateFraction}</#if>%</em>
-                                <i class="clearfix">年化收益</i>
+                                <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</em>
+                                <i>年化收益</i>
                             </div>
                         </div>
                         <dl class="pr-info">
-                            <dd><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
-                            <dd>${loan.amount}万<br/><span>项目金额</span></dd>
+                            <dd class="dl-month"><i>${loan.periods}</i>个月<br/><span>项目期限</span></dd>
+                            <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><br/><span>项目金额</span></dd>
                         </dl>
                         <div class="project-schedule clear-blank">
                             <div class="p-title">
@@ -86,12 +103,13 @@
                 </div>
                 </#list>
             </div>
-            <div class="tr clear-blank">
-                <a href="/loan-list">更多>></a>
+            <div class="clear-blank invest-total">
+                <span class="fl">投资人数:<i>190000</i> 人</span>
+                <a href="/loan-list" class="fr">更多>></a>
             </div>
         </section>
         <aside class="home-ad fr">
-            <a href="#" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
+            <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
         </aside>
     </div>
 </div>

@@ -26,7 +26,7 @@ public class UserBillRecordResponseDataDto extends BaseResponseDataDto{
     public void setTypeInfo(UserBillBusinessType typeInfo) {
         if(UserBillBusinessType.LOAN_SUCCESS.equals(typeInfo)){
             this.typeInfo = "give_money_to_borrower";
-        }else if(UserBillBusinessType.LOAN_CANCEL.equals(typeInfo)){
+        }else if(UserBillBusinessType.CANCEL_INVEST_PAYBACK.equals(typeInfo)){
             this.typeInfo = "cancel_loan";
         }else{
             this.typeInfo = typeInfo.name().toLowerCase();

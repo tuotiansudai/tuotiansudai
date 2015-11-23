@@ -221,12 +221,21 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() / 10000));
+        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
         loanDto.setActivityRate(decimalFormat.format(loanModel.getActivityRate()));
         loanDto.setBasicRate(decimalFormat.format(loanModel.getBaseRate() * 100));
+
+        String baseRatePercentage = new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+        String activityPercentage = new BigDecimal(String.valueOf(loanModel.getActivityRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+        loanDto.setBaseRateInteger(Integer.parseInt(baseRatePercentage.split("\\.")[0]));
+        loanDto.setBaseRateFraction(Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]));
+        if (loanModel.getActivityRate() > 0) {
+            loanDto.setActivityRateInteger(Integer.parseInt(activityPercentage.split("\\.")[0]));
+            loanDto.setActivityRateFraction(Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]));
+        }
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
         loanDto.setMaxInvestAmount(AmountConverter.convertCentToString(loanModel.getMaxInvestAmount()));
@@ -614,9 +623,7 @@ public class LoanServiceImpl implements LoanService {
         if (!baseDto.getData().getStatus()) {
             return baseDto;
         }
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, -UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER);
-        Date validInvestTime = cal.getTime();
+        Date validInvestTime = new DateTime().minusSeconds(UmpayConstants.TIMEOUT_IN_SECOND_PROJECT_TRANSFER).toDate();
         int waitingInvestCount = investMapper.findWaitingInvestCountAfter(loanDto.getId(), validInvestTime);
         if (waitingInvestCount > 0) {
             logger.debug("流标失败，存在等待第三方资金托管确认的投资!");
@@ -668,8 +675,14 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListWebDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            String baseRatePercentage = new BigDecimal(String.valueOf(loanModels.get(i).getBaseRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+            String activityPercentage = new BigDecimal(String.valueOf(loanModels.get(i).getActivityRate())).multiply(new BigDecimal("100")).setScale(2).toString();
+            loanListWebDto.setBaseRateInteger(Integer.parseInt(baseRatePercentage.split("\\.")[0]));
+            loanListWebDto.setBaseRateFraction(Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]));
+            if (loanModels.get(i).getActivityRate() > 0) {
+                loanListWebDto.setActivityRateInteger(Integer.parseInt(activityPercentage.split("\\.")[0]));
+                loanListWebDto.setActivityRateFraction(Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]));
+            }
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
             loanListWebDto.setStatus(loanModels.get(i).getStatus());

@@ -139,6 +139,26 @@ public class InvestServiceImpl implements InvestService {
     }
 
     @Override
+    public long findCountInvestPagination(Long loanId, String investorLoginName,
+                                          String channel, Source source, String role,
+                                          Date startTime, Date endTime,
+                                          InvestStatus investStatus, LoanStatus loanStatus) {
+        if (startTime == null) {
+            startTime = new DateTime(0).withTimeAtStartOfDay().toDate();
+        } else {
+            startTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        }
+
+        if (endTime == null) {
+            endTime = new DateTime().withDate(9999, 12, 31).withTimeAtStartOfDay().toDate();
+        } else {
+            endTime = new DateTime(endTime).withTimeAtStartOfDay().plusDays(1).minusMillis(1).toDate();
+        }
+        String strSource = source == null ? null : source.name();
+        return investMapper.findCountInvestPagination(loanId, investorLoginName, channel, strSource, role, startTime, endTime, investStatus, loanStatus);
+    }
+
+    @Override
     public BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
                                                                                   String channel, Source source, String role,
                                                                                   int index, int pageSize,

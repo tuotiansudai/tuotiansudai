@@ -26,9 +26,15 @@ def _process(order_id=None, mer_date=None, mer_id=None, url=None, special_payloa
     return response
 
 
-def mer_bind_card(user_id, order_id, mer_date, mer_id, url):
+def mer_bind_card_apply_notify(user_id, order_id, mer_date, mer_id, url):
     special_payload = {'user_id': user_id, 'ret_code': '0000',
                        'service': 'mer_bind_card_apply_notify'}
+    return _process(order_id, mer_date, mer_id, url, special_payload)
+
+
+def mer_bind_card_notify(user_id, order_id, mer_date, mer_id, url):
+    special_payload = {'user_id': user_id, 'ret_code': '0000',
+                       'service': 'mer_bind_card_notify', 'gate_id':'ICBC'}
     return _process(order_id, mer_date, mer_id, url, special_payload)
 
 

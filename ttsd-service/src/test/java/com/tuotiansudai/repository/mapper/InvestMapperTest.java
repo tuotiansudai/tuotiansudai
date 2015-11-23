@@ -62,7 +62,7 @@ public class InvestMapperTest {
     @Test
     public void shouldUpdateInvestStatus() {
         InvestModel investModel = this.getFakeInvestModel();
-        investModel.setStatus(InvestStatus.WAITING);
+        investModel.setStatus(InvestStatus.WAIT_PAY);
         investMapper.create(investModel);
 
         investMapper.updateStatus(investModel.getId(), InvestStatus.SUCCESS);
@@ -203,7 +203,7 @@ public class InvestMapperTest {
         investModel2.setStatus(InvestStatus.FAIL);
 
         InvestModel investModel3 = getFakeInvestModel();
-        investModel3.setStatus(InvestStatus.WAITING);
+        investModel3.setStatus(InvestStatus.WAIT_PAY);
 
         investMapper.create(investModel1);
         investMapper.create(investModel2);

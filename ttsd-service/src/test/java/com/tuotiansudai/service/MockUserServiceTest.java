@@ -49,11 +49,6 @@ public class MockUserServiceTest {
 
     @Mock
     private MyShaPasswordEncoder myShaPasswordEncoder;
-    @Autowired
-    private IdGenerator idGenerator;
-
-    @Autowired
-    private ReferrerRelationMapper referrerRelationMapper;
 
 
     @Before
