@@ -155,7 +155,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 }
             },
             referrer: {
-                isNotExist: "/register/user/login-name/{0}/is-exist"
+                isNotExist: "/register/user/referrer/{0}/is-exist"
             },
             agreement: {
                 required: true

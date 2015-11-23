@@ -1,7 +1,7 @@
 from scripts.data_migration.base import BaseMigrate
 
 
-class WithdrawMigrate(BaseMigrate):
+class InvestMigrate(BaseMigrate):
     """
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """

@@ -595,12 +595,12 @@
         height: 71px;
         background: url("/images/icons/hot-n.png") no-repeat;
         position: absolute;
-        left: -3px;
-        top: -3px;
+         left: -5px;
+         top: -6px;
       }
        .loan-info-frame {
         width: 690px;
-         padding-bottom: 8px;
+         padding-bottom: 10px;
         border-right: 1px solid #ccc;
         text-align: center;
          .loan-top {
@@ -620,9 +620,9 @@
            }
            .l-way {
              font-size: 12px;
-             color: #666;
+             color: #999;
              border-radius: 12px;
-             border: 1px solid #666;
+             border: 1px solid #999;
              display: inline;
              line-height: 1;
              padding: 6px 15px;
@@ -639,12 +639,14 @@
              color: #808080;
              font-size: 20px;
              dd {
-               color: nth($CK1, 2);
+               color: #999;
                em {
                  font-size: 30px;
+                 color: #ff7200;
                }
                i {
                  font-size: 18px;
+                 color: #ff7200;
                }
              }
 
