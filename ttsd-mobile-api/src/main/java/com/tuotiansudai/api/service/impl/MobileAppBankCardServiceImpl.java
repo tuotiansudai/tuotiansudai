@@ -95,8 +95,8 @@ public class MobileAppBankCardServiceImpl implements MobileAppBankCardService {
         } catch (UnsupportedEncodingException e) {
             log.error("mobile bind card fail", e);
         }
-        baseDto.setCode(ReturnMessage.BIND_CARD_FAIL.getCode());
-        baseDto.setMessage(ReturnMessage.BIND_CARD_FAIL.getMsg());
+        baseDto.setCode(ReturnMessage.BANK_CARD_SIGN_FAIL.getCode());
+        baseDto.setMessage(ReturnMessage.BANK_CARD_SIGN_FAIL.getMsg());
         return baseDto;
     }
 
