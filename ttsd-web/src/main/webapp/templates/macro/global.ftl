@@ -123,6 +123,7 @@
     document.getElementsByTagName("body")[0].addEventListener('click',function() {
         imgDom.style.display='none';
     });
+
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
@@ -130,8 +131,11 @@
         data-main="${staticServer}/js/dest/${pageJavascript}">
 </script>
 </#if>
-<script src="//hm.baidu.com/hm.js?b4205647cc83b405927bd22f70eaf362"></script><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254796373'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254796373%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1254796373"><a href="http://www.cnzz.com/stat/website.php?web_id=1254796373" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="https://icon.cnzz.com/img/pic1.gif"></a></span><script src=" https://s4.cnzz.com/z_stat.php?id=1254796373&amp;show=pic1" type="text/javascript"></script><script src="https://c.cnzz.com/core.php?web_id=1254796373&amp;show=pic1&amp;t=z" charset="utf-8" type="text/javascript"></script><span id="cnzz_stat_icon_1254796373"><a href="http://www.cnzz.com/stat/website.php?web_id=1254796373" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic1.gif"></a></span><script src=" http://s4.cnzz.com/z_stat.php?id=1254796373&amp;show=pic1" type="text/javascript"></script><script src="http://c.cnzz.com/core.php?web_id=1254796373&amp;show=pic1&amp;t=z" charset="utf-8" type="text/javascript"></script>
+<div class="hide">
+<script src="//hm.baidu.com/hm.js?b4205647cc83b405927bd22f70eaf362"></script>
 <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1254796373'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254796373%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
     var _hmt = _hmt || [];
     (function() {
         var hm = document.createElement("script");
@@ -139,7 +143,15 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
+
 </script>
+<span id="cnzz_stat_icon_1254796373"><a href="http://www.cnzz.com/stat/website.php?web_id=1254796373" target="_blank" title="站长统计"><img border="0" hspace="0"  vspace="0" src="https://icon.cnzz.com/img/pic1.gif"></a></span>
+<script src=" https://s4.cnzz.com/z_stat.php?id=1254796373&amp;show=pic1" type="text/javascript"></script>
+<script src="https://c.cnzz.com/core.php?web_id=1254796373&amp;show=pic1&amp;t=z" charset="utf-8" type="text/javascript"></script>
+<span id="cnzz_stat_icon_1254796373"><a href="http://www.cnzz.com/stat/website.php?web_id=1254796373" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic1.gif"></a></span>
+<script src=" http://s4.cnzz.com/z_stat.php?id=1254796373&amp;show=pic1" type="text/javascript"></script>
+<script src="http://c.cnzz.com/core.php?web_id=1254796373&amp;show=pic1&amp;t=z" charset="utf-8" type="text/javascript"></script>
+</div>
 </body>
 </html>
 </#macro>

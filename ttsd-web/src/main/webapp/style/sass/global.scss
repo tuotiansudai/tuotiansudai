@@ -32,6 +32,12 @@
   }
 }
 
+.show {
+  display: block;
+}
+.hide {
+  display: none;
+}
 .layui-layer-content {
   .pad-m {
     padding:15px 20px 10px 20px;
