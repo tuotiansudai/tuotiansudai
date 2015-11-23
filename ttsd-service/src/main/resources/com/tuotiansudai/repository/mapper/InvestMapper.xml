@@ -109,7 +109,7 @@
     <update id="cleanWaitingInvestBefore" parameterType="map">
         update invest set status = 'FAIL'
         where loan_id = #{loanId}
-        and status = 'WAITING'
+        and status = 'WAIT_PAY'
         and created_time &lt; #{beforeTime}
     </update>
 
@@ -117,7 +117,7 @@
         select count(*)
         from invest
         where loan_id = #{loanId}
-        and status = 'WAITING'
+        and status = 'WAIT_PAY'
         and created_time &gt;= #{afterTime}
     </select>
 

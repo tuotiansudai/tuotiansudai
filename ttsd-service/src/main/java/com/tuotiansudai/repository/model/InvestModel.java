@@ -54,7 +54,7 @@ public class InvestModel implements Serializable {
         this.loanId = Long.parseLong(dto.getLoanId());
         this.source = dto.getSource();
         this.channel = dto.getChannel();
-        this.status = InvestStatus.WAITING;
+        this.status = InvestStatus.WAIT_PAY;
         this.isAutoInvest = false;
         this.createdTime = new Date();
     }
@@ -65,7 +65,7 @@ public class InvestModel implements Serializable {
         this.loginName = loginName;
         this.source = source;
         this.channel = channel;
-        this.status = InvestStatus.WAITING;
+        this.status = InvestStatus.WAIT_PAY;
         this.isAutoInvest = false;
         this.createdTime = new Date();
     }
