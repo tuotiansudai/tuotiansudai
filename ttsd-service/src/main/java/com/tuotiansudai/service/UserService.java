@@ -18,6 +18,8 @@ public interface UserService {
 
     boolean loginNameIsExist(String loginName);
 
+    boolean loginNameOrMobileIsExist(String loginNameOrMobile);
+
     BaseDto<PayDataDto> registerAccount(RegisterAccountDto dto);
 
     /**
