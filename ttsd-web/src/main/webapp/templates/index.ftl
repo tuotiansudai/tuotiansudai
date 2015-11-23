@@ -109,7 +109,7 @@
             </div>
         </section>
         <aside class="home-ad fr">
-            <a href="#" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
+            <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
         </aside>
     </div>
 </div>
