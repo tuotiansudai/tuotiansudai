@@ -27,8 +27,8 @@
         </ul>
         <ul class="last">
             <li class="tc">
-                <img src="${staticServer}/images/sign/app-code.png"> <br/>
-                客服QQ：800036446
+                <img src="${staticServer}/images/sign/app-weixin.png"> <br/>
+                微信公众号
 
             </li>
         </ul>
