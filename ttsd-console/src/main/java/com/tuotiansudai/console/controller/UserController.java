@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
@@ -9,6 +10,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -103,7 +105,16 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
-                dataModel.add(StringUtils.join(userItemDataDtos.get(i).getUserRoles(),";"));
+
+                List<UserRoleModel> userRoleModels = userItemDataDtos.get(i).getUserRoles();
+                List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getRole().getDescription();
+                    }
+                });
+
+                dataModel.add(StringUtils.join(userRole,";"));
                 dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
                 data.add(dataModel);
             }

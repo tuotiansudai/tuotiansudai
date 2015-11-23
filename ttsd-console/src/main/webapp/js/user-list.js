@@ -54,7 +54,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('.down-load').click(function () {
-
+            location.href = "/users?"+$('form').serialize()+"&export=csv";
         });
     });
 });

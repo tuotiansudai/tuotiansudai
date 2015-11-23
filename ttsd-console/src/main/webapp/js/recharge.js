@@ -35,5 +35,9 @@ require(['jquery', 'jquery-ui',
                 }
             }
         });
+
+        $('.down-load').click(function () {
+            location.href = "/recharge?"+$('form').serialize()+"&export=csv";
+        });
     });
 });

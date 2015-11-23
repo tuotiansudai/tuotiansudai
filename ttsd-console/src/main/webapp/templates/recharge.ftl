@@ -142,12 +142,12 @@
                 </div>
 
                 <!-- pagination  -->
-                <nav>
+                <nav class="pagination-control">
                 <#if rechargeList?has_content>
                     <div>
                         <span class="bordern">总共${pagination.count}条,每页显示${pageSize}条</span>
                     </div>
-                    <ul class="pagination">
+                    <ul class="pagination pull-left">
                         <li>
                             <#if pagination.hasPreviousPage >
                             <a href="?rechargeId=${rechargeId!}&loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd HH:mm'))!}&endTime=${(endTime?string('yyyy-MM-dd HH:mm'))!}&source=${source!}&status=${status!}&pageSize=${pageSize}&index=${index-1}"
@@ -170,6 +170,7 @@
                         </a>
                         </li>
                     </ul>
+                    <button class="btn btn-default pull-left down-load" type="button">导出Excel</button>
                 </#if>
                 </nav>
                 <!-- pagination -->
