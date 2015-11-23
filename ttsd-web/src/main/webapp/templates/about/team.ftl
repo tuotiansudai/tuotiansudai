@@ -26,7 +26,7 @@
             </dl>
         </div>
 
-        <div class="team-box last clearfix">
+        <div class="team-box clearfix">
             <img src="${staticServer}/images/sign/aboutus/team4.png" alt="风控团队" class="fr">
             <dl>
                 <dt>风控团队</dt>

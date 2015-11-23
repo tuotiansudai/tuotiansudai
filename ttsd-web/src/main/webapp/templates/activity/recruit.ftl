@@ -4,7 +4,7 @@
     <div class="ad-img ad-recruit-img"></div>
     <div class="recruit-content">
         <div class="hot-link">
-            <img src="${staticServer}/images/activity/daili/swit-btn.png">
+            <img src="${staticServer}/images/sign/activities/daili/swit-btn.png">
             <div class="img-hot-link">
                 <a href=#Qualifications></a>
                 <a href=#apply></a>
@@ -23,17 +23,17 @@
 
         <div class="Qualifications">
             <a name=Qualifications></a>
-            <img src="${staticServer}/images/activity/daili/s1.png ">
+            <img src="${staticServer}/images/sign/activities/daili/s1.png ">
 
         </div>
         <div class="apply">
             <a name=apply></a>
-            <img src="${staticServer}/images/activity/daili/s2.png ">
+            <img src="${staticServer}/images/sign/activities/daili/s2.png ">
 
         </div>
         <div class="givemore">
             <a name=givemore></a>
-            <img src="${staticServer}/images/activity/daili/s3.png ">
+            <img src="${staticServer}/images/sign/activities/daili/s3.png ">
         </div>
     </div>
 <div
