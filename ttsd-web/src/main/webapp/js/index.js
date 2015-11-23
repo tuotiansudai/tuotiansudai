@@ -1,6 +1,7 @@
 require(['jquery','csrf'], function ($) {
     var $bannerBox=$('.banner-box'),
         $imgScroll=$('.banner-img-list',$bannerBox),
+        $registerBox=$('.register-ad-box',$bannerBox),
         $scrollNum=$('.scroll-num',$bannerBox),
         $imgNum=$('li',$scrollNum),
         $bannerImg=$imgScroll.find('a'),
@@ -8,9 +9,14 @@ require(['jquery','csrf'], function ($) {
 
     screenWid=$(window).width(); //screen width
     picWid=$bannerImg.first().find('img').width();
+
     leftWid=(picWid-screenWid)/2;
+
+    $registerBox.css({'right':(screenWid-1000)/2+'px'});
+    console.log((screenWid-1000)/2);
     $scrollNum.css({'left':(screenWid-$scrollNum.width())/2});
-    $imgScroll.find("a:not(:first)").hide().css({'left':'-'+leftWid+'px'});
+    $imgScroll.find("a:not(:first)").hide();
+    $imgScroll.find('img').css({'margin-left':'-'+leftWid+'px'});
 
 
     $imgNum.click(function(){
