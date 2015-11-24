@@ -49,4 +49,6 @@ public interface UserService {
     boolean verifyPasswordCorrect(String loginName, String password);
 
     List<String> findAllChannels();
+
+    int findUserCount();
 }

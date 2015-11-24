@@ -150,4 +150,9 @@
     <select id="findAllChannels" resultType="java.lang.String">
         select distinct channel from user where channel is not NULL
     </select>
+
+    <select id="findUserCount" resultType="int">
+        select count(*) from user
+    </select>
+
 </mapper>
