@@ -103,6 +103,10 @@ public class PayWrapperClient extends BaseClient {
         return syncExecute(dto, loanOutPath, "POST");
     }
 
+    public BaseDto<PayDataDto> loanOutSuccessNotify(long loanId){
+        return syncExecute(String.valueOf(loanId), "/loan-out-success-notify", "POST");
+    }
+
     public Map<String, String> getUserStatus(String loginName) {
         String json = this.execute(MessageFormat.format("/real-time/user/{0}", loginName), null, "GET");
         try {
