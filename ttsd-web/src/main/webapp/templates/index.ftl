@@ -104,7 +104,7 @@
                 </#list>
             </div>
             <div class="clear-blank invest-total">
-                <span class="fl">投资人数:<i>190000</i> 人</span>
+                <span class="fl">投资人数:<i>${(userCount?string('0'))!}</i> 人</span>
                 <a href="/loan-list" class="fr">更多>></a>
             </div>
         </section>
