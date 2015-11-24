@@ -6,7 +6,7 @@ class WithdrawMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT invest_id, period, corpus, interest, default_interest, fee, repay_day, status, time FROM invest_repay WHERE status IN ['complete', 'repaying']"
+    SELECT_SQL = "SELECT invest_id, period, corpus, interest, default_interest, fee, repay_day, status, time FROM invest_repay WHERE status <> 'test'"
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO withdraw(`id`,
                                          `invest_id`,

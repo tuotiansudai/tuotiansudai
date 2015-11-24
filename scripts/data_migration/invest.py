@@ -8,8 +8,8 @@ class InvestMigrate(BaseMigrate):
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
     SELECT_SQL = "SELECT id, loan_id, user_id, invest_money, status, source, channel, time FROM invest WHERE status <> 'test'"
     # insert sql which is executed on aa db
-    INSERT_SQL = '''INSERT INTO invest(`id`, `loan_id`, `login_name`, `amount`, `status`, `source`, `channel`, `created_time`)
-                    VALUES(%s, %s, %s, %s, %s, %s, %s, %s)'''
+    INSERT_SQL = '''INSERT INTO invest(`id`, `old_id`, `loan_id`, `login_name`, `amount`, `status`, `source`, `channel`, `created_time`)
+                    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)'''
 
     STATUS_MAPPING = {'wait_affirm': 'WAIT_PAY',
                       'bid_success': 'SUCCESS',
@@ -29,6 +29,7 @@ class InvestMigrate(BaseMigrate):
         loan_id = cursor.fetchone()['id']
 
         return (self._index,
+                old_row['id'],
                 loan_id,
                 old_row['user_id'].lower(),
                 int(round(old_row['invest_money'] * 100)),
