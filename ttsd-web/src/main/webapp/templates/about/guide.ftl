@@ -97,6 +97,14 @@
                     </ul>
                 </div>
             </div>
+
+            <div class="action-invest">
+
+                进入我的账户 > 充值体现,充够您想要的投资金额 <br/>
+
+                <a href="#" class="btn-normal">免费注册</a>
+
+            </div>
         </div>
     </div>
 

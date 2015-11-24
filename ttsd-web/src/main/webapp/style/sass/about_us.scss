@@ -391,7 +391,16 @@
         }
 
       }
-
+    }
+    .action-invest {
+      font-size: 18px;
+      color: #343434;
+      text-align: center;
+      padding-bottom:30px;
+      .btn-normal {
+        padding: 8px 55px;
+        margin-top: 10px;
+      }
     }
   }
 }
