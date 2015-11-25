@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(path = "/error")
-public class errorController {
+public class ErrorPageController {
     @RequestMapping(path = "/{item}", method = RequestMethod.GET)
     public ModelAndView account(@PathVariable String item){
         return new ModelAndView("/error/" + item);
