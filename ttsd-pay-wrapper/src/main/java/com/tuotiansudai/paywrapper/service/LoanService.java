@@ -32,5 +32,7 @@ public interface LoanService {
 
     BaseDto<PayDataDto> cancelLoan(long loanId);
 
+    void loanOutSuccessHandle(long loanId);
+
     String cancelPayBackCallback(Map<String, String> paramsMap, String queryString);
 }
