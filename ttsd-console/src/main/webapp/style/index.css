@@ -141,5 +141,8 @@ td.td {text-align:center;}
 .web-error-message{
     display: none;
 }
+.error {
+    color:red ;
+}
 .publishAD { margin-right: 40px; margin-top:10px;}
 
