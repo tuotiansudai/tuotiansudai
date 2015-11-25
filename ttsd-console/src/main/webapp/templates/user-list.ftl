@@ -113,7 +113,7 @@
                         <#list userList as userItem>
                         <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
                             <td>${userItem.loginName}</td>
-                            <td>${userItem.userName}</td>
+                            <td>${userItem.userName!}</td>
                             <td>${userItem.mobile}</td>
                             <td>${userItem.email!}</td>
                             <td>${userItem.referrer!}</td>

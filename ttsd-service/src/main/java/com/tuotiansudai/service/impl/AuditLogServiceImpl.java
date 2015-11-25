@@ -11,6 +11,7 @@ import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.util.IdGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,20 +34,28 @@ public class AuditLogServiceImpl implements AuditLogService {
     public void generateAuditLog(String operatorLoginName, UserModel beforeUpdateUserModel, List<UserRoleModel> beforeUpdateUserRoleModels,
                                  UserModel afterUpdateUserModel, List<UserRoleModel> afterUpdateUserRoleModels,
                                  String userIp) {
-        String beforeUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
-                beforeUpdateUserModel.getLoginName(),
-                beforeUpdateUserModel.getPassword(),
-                beforeUpdateUserModel.getMobile(),
-                beforeUpdateUserModel.getEmail(),
-                beforeUpdateUserModel.getReferrer(),
-                beforeUpdateUserModel.getStatus().name(),
-                Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
-                    @Override
-                    public String apply(UserRoleModel input) {
-                        return input.getRole().name();
-                    }
-                })));
+        String beforeUpdate = "create user";
+        String loginName = null;
+        if (beforeUpdateUserModel != null) {
+            loginName = beforeUpdateUserModel.getLoginName();
+            beforeUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
+                    beforeUpdateUserModel.getLoginName(),
+                    beforeUpdateUserModel.getPassword(),
+                    beforeUpdateUserModel.getMobile(),
+                    beforeUpdateUserModel.getEmail(),
+                    beforeUpdateUserModel.getReferrer(),
+                    beforeUpdateUserModel.getStatus().name(),
+                    Joiner.on(",").join(Lists.transform(beforeUpdateUserRoleModels, new Function<UserRoleModel, String>() {
+                        @Override
+                        public String apply(UserRoleModel input) {
+                            return input.getRole().name();
+                        }
+                    })));
+        }
 
+        if (StringUtils.isEmpty(loginName)) {
+            loginName = afterUpdateUserModel.getLoginName();
+        }
         String afterUpdate = MessageFormat.format(AUDIT_LOG_TEMPLATE,
                 afterUpdateUserModel.getLoginName(),
                 afterUpdateUserModel.getPassword(),
@@ -63,7 +72,7 @@ public class AuditLogServiceImpl implements AuditLogService {
 
         AuditLogModel log = new AuditLogModel();
         log.setId(new IdGenerator().generate());
-        log.setLoginName(beforeUpdateUserModel.getLoginName());
+        log.setLoginName(loginName);
         log.setOperatorLoginName(operatorLoginName);
         log.setIp(userIp);
         log.setDescription(beforeUpdate + " => " + afterUpdate);

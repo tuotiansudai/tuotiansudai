@@ -5,13 +5,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>用户管理</title>
+    <title>添加用户</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <@global.csrf></@global.csrf>
     <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet"/>
     <link href="${requestContext.getContextPath()}/style/index.css" rel="stylesheet"/>
-<@global.javascript pageJavascript="edit-user.js"></@global.javascript>
+<@global.javascript pageJavascript="create-user.js"></@global.javascript>
 </head>
 <body>
 
@@ -22,30 +22,27 @@
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="userMain" sideLab="userMan"></@menu.sidebar>
+        <@menu.sidebar headLab="userMain" sideLab="addUser"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
-                <form class="form-horizontal" action="/user/edit" method="post">
+                <form class="form-horizontal" action="/user/create" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">登录名：</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">${user.loginName}</p>
-                            <input type="hidden" name="loginName" value="${user.loginName}"/>
+                            <input type="text" id="loginName" name="loginName" class="form-control" value="${(user.loginName)!}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">姓名：</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">${(user.userName)!}</p>
-                            <input type="hidden" name="userName" value="${user.userName}"/>
+                            <input type="text" id="userName" name="userName" class="form-control" value="${(user.userName)!}"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">身份证：</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">${(user.identityNumber)!}</p>
-                            <input type="hidden" name="identityNumber" value="${user.identityNumber}"/>
+                            <input type="text" id="identityNumber" name="identityNumber" class="form-control" value="${(user.identityNumber)!}"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -69,8 +66,8 @@
                     <div class="form-group">
                         <label for="status" class="col-sm-2 control-label">状态：</label>
                         <div class="col-sm-3">
-                            <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE" <#if user.status=="ACTIVE">checked="checked"</#if>>正常</label>
-                            <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE" <#if user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
+                            <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE" <#if user?? && user.status=="ACTIVE">checked="checked"</#if>>正常</label>
+                            <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE" <#if user?? && user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
                         </div>
                     </div>
 
@@ -78,12 +75,11 @@
                         <label for="referrer" class="col-sm-2 control-label">角色：</label>
                         <div class="col-sm-3">
                             <input type="hidden" name="roles" value="USER"/>
-                            <input type="hidden" name="roles" value="USER"/>
                             <#list roles as roleItem>
                                 <#if roleItem.name() != 'USER'>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="roles" <#if user.roles?seq_contains(roleItem.name())>checked="checked"</#if> value="${roleItem.name()}">${roleItem.getDescription()}</label>
-                                    </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="roles" value="${roleItem.name()}" <#if user?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>>${roleItem.getDescription()}</label>
+                                </div>
                                 </#if>
                             </#list>
                         </div>
