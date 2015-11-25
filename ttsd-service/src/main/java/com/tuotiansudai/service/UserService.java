@@ -3,6 +3,7 @@ package com.tuotiansudai.service;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 
 import java.util.Date;
@@ -49,4 +50,7 @@ public interface UserService {
     boolean verifyPasswordCorrect(String loginName, String password);
 
     List<String> findAllChannels();
+
+    void reFleshAreaByMobileInJob();
+
 }

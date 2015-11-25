@@ -50,4 +50,6 @@ public interface UserMapper {
     List<String> findLoginNameLike(String loginName);
 
     List<String> findAllChannels();
+
+    List<UserModel> findUserByProvince();
 }
