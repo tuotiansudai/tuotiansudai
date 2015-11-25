@@ -1,14 +1,6 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.about_us}" pageJavascript="" activeNav="" activeLeftNav="">
-<style type="text/css">
-    .full-screen {
-        width:100%!important;
-        margin:0;
-    }
-    .footer-container {
-        margin-top:0;
-    }
-</style>
+<@global.main pageCss="${css.full_screen}" pageJavascript="" activeNav="" activeLeftNav="">
+
 <div class="assurance-container">
     <div class="money-safety">
         <div class="page-width clearfix">
