@@ -54,13 +54,15 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         //添加材料名称
         $('body').on('click', '.jq-add', function () {
             var _this = $(this);
+            var obj = _this.parent().find('.error');
+            if (obj) {
+                obj.remove();
+            }
             var txt = _this.siblings('.files-input').val();
             if (!txt) {
                 _this.parent().append('<i class="error">材料名称不能为空！</i>');
                 return;
-            } else {
-                _this.parent().find('.error').remove();
-            }
+            } 
             $.ajax({
                 url: API_POST_TITLE,
                 type: 'POST',
