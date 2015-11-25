@@ -55,7 +55,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         $('body').on('click', '.jq-add', function () {
             var _this = $(this);
             var txt = _this.siblings('.files-input').val();
-            if (txt == '' || txt == null) {
+            if (!txt) {
                 _this.parent().append('<i class="error">材料名称不能为空！</i>');
                 return;
             } else {
