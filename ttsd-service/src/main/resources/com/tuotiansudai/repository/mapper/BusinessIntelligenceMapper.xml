@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper">
+
+    <resultMap id="keyValueMap" type="KeyValueModel">
+        <result column="bi_key" property="key"></result>
+        <result column="bi_value" property="value"></result>
+    </resultMap>
+
+    <select id="queryUserRegisterTrendDaily" parameterType="map" resultMap="keyValueMap">
+        select
+          date(register_time) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by date(register_time);
+    </select>
+
+    <select id="queryUserRegisterTrendWeekly" parameterType="map" resultMap="keyValueMap">
+        select
+          concat(year(register_time), ' W', week(register_time)) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by year(register_time), week(register_time);
+    </select>
+
+    <select id="queryUserRegisterTrendMonthly" parameterType="map" resultMap="keyValueMap">
+        select
+          concat(year(register_time), ' M', week(register_time)) as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group by year(register_time), month(register_time);
+    </select>
+</mapper>
