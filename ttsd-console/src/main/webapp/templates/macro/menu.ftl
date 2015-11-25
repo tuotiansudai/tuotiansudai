@@ -7,7 +7,7 @@
             },
             {
                 "name":"projectMain",
-                "header":{"text":"项目管理","link":"/loan"},
+                "header":{"text":"项目管理","link":"/loanList/console"},
                 "sidebar":
                 [
                     {"name":"ALL","text":"所有的借款","link":"/loanList/console"},
