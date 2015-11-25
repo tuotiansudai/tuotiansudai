@@ -103,15 +103,15 @@
                     </div>
                     </#list>
                 </div>
-            </div>
-            <div class="clear-blank invest-total">
-                <span class="fl">投资人数:<i>${(userCount?string('0'))!}</i> 人</span>
-                <a href="/loan-list" class="fr">更多>></a>
-            </div>
-        </section>
-        <aside class="home-ad fr">
-            <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
-        </aside>
+                <div class="clear-blank invest-total">
+                    <span class="fl">投资人数:<i>${(userCount?string('0'))!}</i> 人</span>
+                    <a href="/loan-list" class="fr">更多>></a>
+                </div>
+            </section>
+            <aside class="home-ad fr">
+                <a href="/activity/ranking" target="_blank"> <img src="${staticServer}/images/sign/ad-h.jpg"></a>
+            </aside>
+        </div>
 
     </div>
 </div>

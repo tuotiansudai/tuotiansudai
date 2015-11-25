@@ -13,7 +13,6 @@ require(['jquery','csrf'], function ($) {
     leftWid=(picWid-screenWid)/2;
 
     $registerBox.css({'right':(screenWid-1000)/2+'px'});
-    console.log((screenWid-1000)/2);
     $scrollNum.css({'left':(screenWid-$scrollNum.width())/2});
     $imgScroll.find("a:not(:first)").hide();
     $imgScroll.find('img').css({'margin-left':'-'+leftWid+'px'});
