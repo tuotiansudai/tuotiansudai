@@ -43,8 +43,8 @@ public class MobileAppWithdrawServiceImpl implements MobileAppWithdrawService {
         if (pageSize == null || pageSize <= 0) {
             pageSize = 10;
         }
-        long count = withdrawMapper.findWithdrawCount(null, loginName, null, null, null);
-        List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, loginName, null, (index - 1) * pageSize, pageSize, null, null);
+        long count = withdrawMapper.findWithdrawCount(null, loginName, null, null, null, null);
+        List<WithdrawModel> withdrawModels = withdrawMapper.findWithdrawPagination(null, loginName, null, null, (index - 1) * pageSize, pageSize, null, null);
 
         List<WithdrawDetailResponseDataDto> withdrawDetailResponseDataDtos = Lists.transform(withdrawModels, new Function<WithdrawModel, WithdrawDetailResponseDataDto>() {
             @Override

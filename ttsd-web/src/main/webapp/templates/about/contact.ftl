@@ -5,10 +5,12 @@
         <b class="text-m">客户服务</b>
         <div class="clear-blank"></div>
         <span class="text-s">
-            客服热线：400-169-1188(沟通时间：9:00-21:00) <br/>
+            客服热线：400-169-1188（沟通时间：9:00－21:00）<br/>
             客服邮箱：kefu@tuotiansudai.com <br/>
-            客服微信：tuotiansudai<br/>
-            客服QQ：800036446<br/>
+            客服微信：tuotiansudai02 &nbsp;&nbsp;
+tuotiansudai03&nbsp;&nbsp;
+tuotiansudai05<br/>
+            微信公众号：tuotiansudai<br/>
         </span>
         <div class="clear-blank"></div>
         <h2 class="column-title"><em>关注我们</em></h2>

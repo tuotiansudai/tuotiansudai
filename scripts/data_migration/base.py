@@ -13,11 +13,14 @@ class DBWrapper(object):
         self.conn = None
         self.cursor = None
 
-    def execute(self, sql, params=None):
+    def execute(self, sql, params=None, is_many=False):
         logger.debug(sql)
         logger.debug(params)
         cursor = self.get_cursor()
-        result = cursor.execute(sql, params)
+        if is_many:
+            result = cursor.executemany(sql, params)
+        else:
+            result = cursor.execute(sql, params)
         return result, cursor
 
     def get_cursor(self):
@@ -70,7 +73,7 @@ class BaseMigrate(object):
         raise NotImplementedError
 
     def insert_data(self, params):
-        self.new_db.execute(self.INSERT_SQL, params)
+        self.new_db.execute(self.INSERT_SQL, params, type(params) is list)
 
     def before(self):
         self.new_db.execute('set foreign_key_checks=0')

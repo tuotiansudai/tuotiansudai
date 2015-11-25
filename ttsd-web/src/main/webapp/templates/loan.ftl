@@ -187,10 +187,9 @@
                         <h3>申请材料：</h3>
                         <div class="pic-list" id="picListBox">
                             <#list loan.loanTitleDto as loanTitle>
-                                <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
                                     <#list loan.loanTitles as loanTitleRelation >
                                         <#if loanTitle.id == loanTitleRelation.titleId>
-
+                                            <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
                                             <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                                                 <img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
                                             </#list>

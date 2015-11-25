@@ -10,7 +10,7 @@ class UserMigrate(BaseMigrate):
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
     SELECT_SQL = "SELECT id, password, email, mobile_number, register_time, referrer, channel FROM user"
     # insert sql which is executed on aa db
-    INSERT_SQL = "INSERT INTO user(`login_name`, `password`, `email`, `mobile`, `register_time`, `referrer`, `status`, `salt`, `channel`) VALUES(%s, %s, %s,%s, %s, %s,%s, %s)"
+    INSERT_SQL = "INSERT INTO user(`login_name`, `password`, `email`, `mobile`, `register_time`, `referrer`, `status`, `salt`, `channel`) VALUES(%s, %s, %s,%s, %s, %s,%s, %s, %s)"
 
     def generate_params(self, old_row):
         salt = uuid.uuid4().hex

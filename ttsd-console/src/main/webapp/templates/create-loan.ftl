@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">投资手续费比例(%): </label>
+                        <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写">
@@ -180,16 +180,18 @@
                         <div class="col-sm-4">
                             <select class="selectpicker ">
                             <#list activityTypes as activityType>
+                                <#if activityType.name() != 'PROMOTION'>
                                 <option value="${activityType.name()}">
                                 ${activityType.getActivityTypeName()}
                                 </option>
+                                </#if>
                             </#list>
                             </select>
                             <input type="hidden" class="jq-impact-type"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">活动利率(%): </label>
+                        <label class="col-sm-2 control-label">活动利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写">
@@ -199,24 +201,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">基本利率(%): </label>
+                        <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">合同: </label>
-
-                        <div class="col-sm-4">
-                            <select class="selectpicker ">
-                            <#list contracts as contract>
-                                <option value="${contract.id}">
-                                ${contract.contractName}
-                                </option>
-                            </#list>
-                            </select>
-                            <input type="hidden" class="jq-pact"/>
                         </div>
                     </div>
                     <div class="form-group input-append">
@@ -269,6 +257,7 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <input type="hidden" class="jq-pact" value="${contractId}"/><!-- 默认合同ID -->
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
