@@ -189,7 +189,7 @@
                             <#list loan.loanTitleDto as loanTitle>
                                     <#list loan.loanTitles as loanTitleRelation >
                                         <#if loanTitle.id == loanTitleRelation.titleId>
-                                            <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
+                                            <div class="title">${loanTitle.title}：</div>
                                             <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                                                 <img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
                                             </#list>
