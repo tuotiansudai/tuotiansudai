@@ -5,66 +5,54 @@
         <ul class="wrapper-list">
             <li>
                 <span>项目类型: </span>
-                <#assign activityUrl = "status=${status!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
-                <a <#if !(activityType??)>class="active"</#if>
-                   href="/loan-list?${activityUrl}">全部</a>
-                <a <#if activityType?? && activityType=="NEWBIE">class="active"</#if>
-                   href="/loan-list?activityType=NEWBIE&${activityUrl}"
-                   data-type="NEWBIE">新手专享</a>
-                <a <#if activityType?? && activityType=="NORMAL">class="active"</#if>
-                   href="/loan-list?activityType=NORMAL&${activityUrl}"
-                   data-type="NORMAL">普通投资</a>
+                <#assign activityUrl = "/loan-list?activityType=activity_type&status=${status!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign activityMap = {"":"全部","NEWBIE":"新手专享","NORMAL":"普通投资"}>
+                <#assign activityKeys = activityMap?keys>
+                <#list activityKeys as key>
+                    <a <#if activityType?? && activityType == key>class="active"
+                       <#elseif !(activityType??) && key=="">class="active"</#if>
+                            href=${activityUrl?replace("activity_type",key)}>${activityMap[key]}</a>
+                </#list>
             </li>
             <li>
                 <span>项目状态: </span>
-                <#assign statusUrl = "activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
-                <a <#if !(status??)>class="active"</#if>
-                   href="/loan-list?${statusUrl}">全部</a>
-                <a <#if status?? && status =="RAISING">class="active"</#if>
-                   href="/loan-list?status=RAISING&${statusUrl}"
-                   data-status="RAISING">可投资</a>
-                <a <#if status?? && status =="REPAYING">class="active"</#if>
-                   href="/loan-list?status=REPAYING&${statusUrl}"
-                   data-status="REPAYING">还款中</a>
-                <a <#if status?? && status =="COMPLETE">class="active"</#if>
-                   href="/loan-list?status=COMPLETE&${statusUrl}"
-                   data-status="COMPLETE">还款完成</a>
-                <a <#if status?? && status =="PREHEAT">class="active"</#if>
-                   href="/loan-list?status=PREHEAT&${statusUrl}"
-                   data-status="PREHEAT">预热中</a>
+                <#assign statusUrl = "/loan-list?status=status_type&activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign statusMap = {"":"全部","RAISING":"可投资","REPAYING":"还款中","COMPLETE":"还款完成","PREHEAT":"预热中"}>
+                <#assign statusKeys = statusMap?keys>
+                <#list statusKeys as key>
+                    <a <#if status?? && status == key>class="active"
+                       <#elseif !(status??) && key=="">class="active"</#if>
+                            href=${statusUrl?replace("status_type",key)}>${statusMap[key]}</a>
+                </#list>
             </li>
             <li>
                 <span>借款期限:</span>
-                <#assign periodsUrl = "status=${status!}&activityType=${activityType!}&rateStart=${rateStart}&rateEnd=${rateEnd}">
-                <a <#if periodsStart == 0 && periodsEnd == 0>class="active"</#if>
-                   href="/loan-list?${periodsUrl}">全部</a>
-                <a <#if periodsStart == 0 && periodsEnd == 3>class="active"</#if>
-                   href="/loan-list?periodsStart=0&periodsEnd=3&${periodsUrl}"
-                   data-month-start="0" data-month-end="3">0-3个月</a>
-                <a <#if periodsStart == 4 && periodsEnd == 6>class="active"</#if>
-                   href="/loan-list?periodsStart=4&periodsEnd=6&${periodsUrl}"
-                   data-month-start="4" data-month-end="6">4-6个月</a>
-                <a <#if periodsStart == 7 && periodsEnd == 12>class="active"</#if>
-                   href="/loan-list?periodsStart=7&periodsEnd=12&${periodsUrl}"
-                   data-month-start="7" data-month-end="12">7-12个月</a>
-                <a <#if periodsStart == 12 && periodsEnd == 0>class="active"</#if>
-                   href="/loan-list?periodsStart=12&periodsEnd=0&${periodsUrl}"
-                   data-month-start="12" data-month-end="0">12个月以上 </a>
+                <#assign periodsUrl = "/loan-list?periods_type&status=${status!}&activityType=${activityType!}&rateStart=${rateStart}&rateEnd=${rateEnd}">
+                <#assign periodsMap = {"":"全部","periodsStart=0&periodsEnd=3":"0-3个月","periodsStart=4&periodsEnd=6":"4-6个月","periodsStart=7&periodsEnd=12":"7-12个月","periodsStart=12&periodsEnd=0":"12个月以上"}>
+                <#assign periodsKeys = periodsMap?keys>
+                <#list periodsKeys as key>
+                    <a <#if periodsStart == 0 && periodsEnd == 0 && key=="">class="active"
+                        <#elseif periodsStart == 0 && periodsEnd == 3 && periodsMap[key]=="0-3个月">class="active"
+                        <#elseif periodsStart == 4 && periodsEnd == 6 && periodsMap[key]=="4-6个月">class="active"
+                        <#elseif periodsStart == 7 && periodsEnd == 12 && periodsMap[key]=="7-12个月">class="active"
+                        <#elseif periodsStart == 12 && periodsEnd == 0 && periodsMap[key]=="12个月以上">class="active"
+                       </#if>
+                        href=${periodsUrl?replace("periods_type",key)}>${periodsMap[key]}</a>
+                </#list>
             </li>
             <li class="laster">
                 <span> 年化收益:</span>
-                <#assign rateUrl = "status=${status!}&activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}">
-                <a <#if rateStart == 0 && rateEnd == 0>class="active"</#if>
-                   href="/loan-list?${rateUrl}">全部</a>
-                <a <#if rateStart == 0 && rateEnd == 0.14>class="active"</#if>
-                   href="/loan-list?rateStart=0&rateEnd=0.14&${rateUrl}"
-                   data-percent-start="0" data-percent-end="0.14">14%以内</a>
-                <a <#if rateStart == 0.14 && rateEnd == 0.16>class="active"</#if>
-                   href="/loan-list?rateStart=0.14&rateEnd=0.16&${rateUrl}"
-                   data-percent-start="0.14" data-percent-end="0.16">14-16%</a>
-                <a <#if rateStart == 0.16 && rateEnd == 0>class="active"</#if>
-                   href="/loan-list?rateStart=0.16&rateEnd=0&${rateUrl}"
-                   data-percent-start="0.16" data-percent-end="0">16%以上 </a>
+                <#assign rateUrl = "/loan-list?rate_type&status=${status!}&activityType=${activityType!}&periodsStart=${periodsStart}&periodsEnd=${periodsEnd}">
+                <#assign rateMap = {"":"全部","rateStart=0&rateEnd=0.14":"14%以内","rateStart=0.14&rateEnd=0.16":"14-16%","rateStart=0.16&rateEnd=0":"16%以上"}>
+                <#assign rateKeys = rateMap?keys>
+                <#list rateKeys as key>
+                    <a <#if rateStart == 0 && rateEnd == 0 && key=="">class="active"
+                       <#elseif rateStart == 0 && rateEnd == 0.14 && rateMap[key]=="14%以内">class="active"
+                       <#elseif rateStart == 0.14 && rateEnd == 0.16 && rateMap[key]=="14-16%">class="active"
+                       <#elseif rateStart == 0.16 && rateEnd == 0 && rateMap[key]=="16%以上">class="active"
+                       </#if>
+                        href=${rateUrl?replace("rate_type",key)}>${rateMap[key]}</a>
+                </#list>
             </li>
         </ul>
     </div>
@@ -115,7 +103,7 @@
                         </div>
                         <#if loanListWebDto.status== 'RAISING'>
                             <div class="rest-amount">
-                                <span>可投金额: <i><@amount>${loanListWebDto.added}</@amount></i>元</span>
+                                <span>可投金额: <i>${loanListWebDto.added}</i>元</span>
                                 <a class="btn-invest btn-normal" href="">马上投资</a>
                             </div>
                         <#elseif loanListWebDto.status== 'PREHEAT'>
@@ -125,7 +113,7 @@
                             </div>
                         <#else>
                             <div class="rest-amount finish-invest">
-                                <span>可投额度:<@amount>${loanListWebDto.added}</@amount>元</span>
+                                <span>可投额度:${loanListWebDto.added}元</span>
                                 <button class="btn-normal" disabled>已售罄</button>
                             </div>
                         </#if>
