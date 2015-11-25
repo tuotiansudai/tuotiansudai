@@ -6,7 +6,7 @@ from scripts.data_migration.base import BaseMigrate
 
 
 class MyHTMLParser(HTMLParser):
-    MAPPING = {u'身份证': 1, u'房本证件': 2, u'他项权证': 3, u'借款合同': 4, u'房屋强制执行公证书': 5, u'打款凭条': 6}
+    MAPPING = {u'身份证': 1, u'房本证件': 2, u'他项权证': 3, u'借款合同': 4, u'房屋强制执行公证书': 5, u'打款凭条': 6, u'其他': 7}
 
     def __init__(self):
         HTMLParser.__init__(self)
@@ -29,10 +29,13 @@ class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "img":
             attrs_hash = dict(attrs)
-            if attrs_hash['src'] and self.last_span:
-                imgs = self.name_imgs.get(self.last_span, [])
+            if attrs_hash['src']:
+                label = u'其他'
+                if self.last_span:
+                    label = self.last_span
+                imgs = self.name_imgs.get(label, [])
                 imgs.append(attrs_hash['src'])
-                self.name_imgs[self.last_span] = imgs
+                self.name_imgs[label] = imgs
 
         if tag == "span":
             self.is_span_tag = True
