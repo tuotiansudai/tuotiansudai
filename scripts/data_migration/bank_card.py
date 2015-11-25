@@ -23,7 +23,7 @@ class BankCardMigrate(BaseMigrate):
         return (self._index,
                 old_row['id'],
                 old_row['user_id'],
-                old_row['bank_no'].upper(),
+                old_row['bank_no'],
                 old_row['card_no'],
                 self.STATUS_MAPPING.get(old_row['status'], ''),
                 old_row['is_open_fastPayment'],

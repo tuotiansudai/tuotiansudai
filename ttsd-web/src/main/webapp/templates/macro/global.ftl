@@ -103,13 +103,7 @@
             window.event.cancelBubble = true;
     }
     var imgDom=document.getElementById('iphone-app-img');
-    function stopBubble(e)
-    {
-        if (e && e.stopPropagation)
-            e.stopPropagation()
-        else
-            window.event.cancelBubble=true
-    }
+
     document.getElementById('iphone-app-pop').addEventListener('click',function(e) {
         stopBubble(e);
 

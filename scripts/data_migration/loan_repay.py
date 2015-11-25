@@ -6,7 +6,7 @@ class LoanRepayMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT loan_id, corpus, interest, default_interest, period, repay_day, status, time FROM loan_repay WHERE status <> 'test'"
+    SELECT_SQL = "SELECT loan_id, corpus, interest, default_interest, period, repay_day, status, IFNULL(time,now()) as time FROM loan_repay WHERE status <> 'test' and loan_id not in (select l.id from loan l where l.status ='verify_fail' or l.type='loan_type_2')"
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO loan_repay(`id`,
                                            `loan_id`,
@@ -30,11 +30,9 @@ class LoanRepayMigrate(BaseMigrate):
 
     def generate_params(self, old_row):
         self._index += 1
-        _, cursor = self.new_db.execute("(select id from loan where old_id='%s')" % old_row['loan_id'])
 
-        temp_row = cursor.fetchone()
         return (self._index,
-                temp_row['id'],
+                old_row['loan_id'],
                 int(round(old_row['corpus'] * 100)),
                 int(round(old_row['interest'] * 100)),
                 int(round(old_row['interest'] * 100)) if old_row['status'] == 'complete' else None,

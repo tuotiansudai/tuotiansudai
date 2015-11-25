@@ -2,7 +2,7 @@
 <@global.main pageCss="${css.register}" pageJavascript="${js.register_user}" activeLeftNav="" title="拓天速贷-注册" >
 
 <div class="register-container page-width">
-    <ul class="step-tab">
+    <ul class="step-register-tab">
         <li class="first on"><s></s>1 注册<g></g></li>
         <li><s></s>2 实名验证<g></g></li>
         <li class="last"><s></s>3 充值投资<g></g></li>

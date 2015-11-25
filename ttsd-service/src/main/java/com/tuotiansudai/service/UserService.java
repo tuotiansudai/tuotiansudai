@@ -53,4 +53,5 @@ public interface UserService {
 
     void reFleshAreaByMobileInJob();
 
+    int findUserCount();
 }

@@ -2,7 +2,6 @@ package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserStatus;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -52,4 +51,6 @@ public interface UserMapper {
     List<String> findAllChannels();
 
     List<UserModel> findUserByProvince();
+    
+    int findUserCount();
 }
