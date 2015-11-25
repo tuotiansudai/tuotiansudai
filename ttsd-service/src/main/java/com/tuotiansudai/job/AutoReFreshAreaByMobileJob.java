@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AutoReFleshAreaByMobileJob implements Job {
-
+public class AutoReFreshAreaByMobileJob implements Job {
+    static Logger logger = Logger.getLogger(AutoReFreshAreaByMobileJob.class);
 
     @Autowired
     private UserService userService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        userService.reFleshAreaByMobileInJob();
+        logger.debug("AutoReFleshAreaByMobileJob===========in");
+        userService.reFreshAreaByMobileInJob();
+        logger.debug("AutoReFleshAreaByMobileJob===========out");
     }
 }

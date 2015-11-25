@@ -330,7 +330,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Transactional
-    private void reFleshAreaByMobile(List<UserModel> userModels) {
+    @Override
+    public void reFreshAreaByMobile(List<UserModel> userModels) {
         for(UserModel userModel:userModels){
             String phoneMobile = userModel.getMobile();
             if(StringUtils.isNotEmpty(phoneMobile)){
@@ -343,19 +344,18 @@ public class UserServiceImpl implements UserService {
                 }
                 userModel.setProvince(provinceAndCity[0]);
                 userModel.setCity(provinceAndCity[1]);
-                userMapper.updateUser(userModel);
             }
         }
     }
 
     @Override
-    public void reFleshAreaByMobileInJob() {
+    public void reFreshAreaByMobileInJob() {
         while(true){
             List<UserModel> userModels = userMapper.findUserByProvince();
             if(CollectionUtils.isEmpty(userModels)){
                 break;
             }
-            this.reFleshAreaByMobile(userModels);
+            this.reFreshAreaByMobile(userModels);
         }
     }
 

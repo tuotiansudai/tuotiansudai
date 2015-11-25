@@ -156,7 +156,7 @@
     </select>
 
     <select id="findUserByProvince" resultMap="userResultMap">
-        select * from user where province is NULL  order by register_time DESC limit 0,10
+        select * from user where province is NULL or province = '' order by register_time DESC limit 0,2
     </select>
 
     <select id="findUserCount" resultType="int">
