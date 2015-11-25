@@ -16,14 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/loan")
 public class LoanController {
+
+    private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
 
     @Autowired
     private LoanService loanService;
@@ -33,16 +32,10 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
-        //TODO 合同需要从数据库中获取
-        List contracts = new ArrayList();
-        Map<String, String> contract = new HashMap<>();
-        contract.put("id", "789098123");
-        contract.put("contractName", "四方合同");
-        contracts.add(contract);
         ModelAndView modelAndView = new ModelAndView("/create-loan");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("contracts", contracts);
+        modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         return modelAndView;
     }
 
@@ -76,16 +69,10 @@ public class LoanController {
         if (!loanService.loanIsExist(loanId)) {
             return new ModelAndView("/index");
         }
-        //TODO 合同需要从数据库中获取
-        List contracts = new ArrayList();
-        Map<String, String> contract = new HashMap<>();
-        contract.put("id", "789098123");
-        contract.put("contractName", "四方合同");
-        contracts.add(contract);
         ModelAndView modelAndView = new ModelAndView("/edit-loan");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
-        modelAndView.addObject("contracts", contracts);
+        modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
         modelAndView.addObject("loanInfo", loanService.findLoanById(loanId));
         modelAndView.addObject("loanTitleRelationModels", loanTitleRelationMapper.findByLoanId(loanId));
         return modelAndView;
