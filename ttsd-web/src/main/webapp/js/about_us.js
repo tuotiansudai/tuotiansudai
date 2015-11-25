@@ -1,6 +1,3 @@
-/**
- * Created by CBJ on 2015/11/11.
- */
 require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagination'], function ($,Mustache,ListTemplate) {
     $(function () {
         var $noticeList=$('#noticeList'),
@@ -23,8 +20,8 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
             var $registerFlowStep=$('#registerFlowStep'),
                 $stepTab=$('.step-register-tab',$registerFlowStep),
                 $slideImgBox=$('.slide-img-box',$registerFlowStep),
-                $btnLast=$('.last',$registerFlowStep),
-                $btnNext=$('.next',$registerFlowStep),
+                $btnLast=$('img.last-step',$registerFlowStep),
+                $btnNext=$('img.next-step',$registerFlowStep),
                 cNum= 0,len=$stepTab.find('li').length;
 
             $stepTab.find('li').click(function(index) {
@@ -46,6 +43,13 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
                 $slideImgBox.find('li').eq(aNum).show().siblings('li').hide();
             });
 
+        }
+
+        if($('#errorContainer').length) {
+
+            setTimeout(function(){
+                window.location="/";
+            },10000);
         }
     });
 });
