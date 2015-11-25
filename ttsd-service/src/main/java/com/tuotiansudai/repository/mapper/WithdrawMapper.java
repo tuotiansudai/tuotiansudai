@@ -1,5 +1,6 @@
 package com.tuotiansudai.repository.mapper;
 
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawModel;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import org.apache.ibatis.annotations.Param;
@@ -20,6 +21,7 @@ public interface WithdrawMapper {
     List<WithdrawModel> findWithdrawPagination(@Param(value = "withdrawId") String withdrawId,
                                                @Param(value = "loginName") String loginName,
                                                @Param(value = "status") WithdrawStatus status,
+                                               @Param(value = "source") Source source,
                                                @Param(value = "index") int index,
                                                @Param(value = "pageSize") int pageSize,
                                                @Param(value = "startTime") Date startTime,
@@ -29,6 +31,7 @@ public interface WithdrawMapper {
     long findWithdrawCount(@Param(value = "withdrawId") String withdrawId,
                           @Param(value = "loginName") String loginName,
                           @Param(value = "status") WithdrawStatus status,
+                          @Param(value = "source") Source source,
                           @Param(value = "startTime") Date startTime,
                           @Param(value = "endTime") Date endTime);
 

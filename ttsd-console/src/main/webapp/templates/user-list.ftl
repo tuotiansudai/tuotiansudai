@@ -21,14 +21,14 @@
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
 
-<@menu.header label="userMan"></@menu.header>
+<@menu.header label="userMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="userMain" sideLab="userMain"></@menu.sidebar>
+            <@menu.sidebar headLab="userMain" sideLab="userMan"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
