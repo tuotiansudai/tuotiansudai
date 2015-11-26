@@ -36,7 +36,7 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
         changeDatePicker();
         loadLoanData();
     });
-
+    $(".date-filter .select-item").eq(2).trigger('click');
     $(".status-filter .select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         loadLoanData();

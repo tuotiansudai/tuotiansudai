@@ -15,10 +15,21 @@ table {
   th {
     background: #ddd;
     padding: 10px 0 10px 6px;
+    text-align: center;
   }
   td {
     padding: 8px 0 8px 6px;
     color: #666;
+    text-align: center;
+    &.tl {
+      text-align: left;
+    }
+    &.tc {
+      text-align: center;
+    }
+    &.tr {
+      text-align: right;
+    }
   }
   &.table {
     th {

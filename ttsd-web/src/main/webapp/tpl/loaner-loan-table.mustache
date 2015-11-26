@@ -4,8 +4,8 @@
         <tr>
             <th>项目名称</th>
             <th>放款时间</th>
-            <th>借款金额</th>
-            <th>待还总额</th>
+            <th class="tr">借款金额(元)</th>
+            <th class="tr">待还总额(元)</th>
             <th>下次还款</th>
             <th>操作</th>
         </tr>
@@ -15,8 +15,8 @@
             <tr>
                 <td>{{loanName}}</td>
                 <td>{{recheckTime}}</td>
-                <td>{{loanAmount}} 元</td>
-                <td>{{unpaidAmount}} 元</td>
+                <td class="tr">{{loanAmount}} 元</td>
+                <td class="tr">{{unpaidAmount}} 元</td>
                 <td>{{nextRepayDate}}</td>
                 <td><a class="show-loan-repay" data-url='/loaner/loan/{{loanId}}/repay-data'>还款计划</a> |
                     <a class="red" href="/contract/loaner/loanId/{{loanId}}" target="_blank">合同</a>
@@ -25,7 +25,7 @@
         {{/records}}
         {{^records}}
             <tr>
-                <td colspan="6" class="no-data">暂时没有纪录</td>
+                <td colspan="6" class="no-data">暂时没有记录</td>
             </tr>
         {{/records}}
         </tbody>
@@ -57,7 +57,7 @@
         {{/records}}
         {{^records}}
             <tr>
-                <td colspan="6" class="no-data">暂时没有纪录</td>
+                <td colspan="6" class="no-data">暂时没有记录</td>
             </tr>
         {{/records}}
         </tbody>
@@ -81,7 +81,7 @@
         {{/records}}
         {{^records}}
             <tr>
-                <td colspan="3" class="no-data">暂时没有纪录</td>
+                <td colspan="3" class="no-data">暂时没有记录</td>
             </tr>
         {{/records}}
         </tbody>
