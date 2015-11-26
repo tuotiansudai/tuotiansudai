@@ -33,7 +33,7 @@ public class PercentIntegerDirective implements TemplateDirectiveModel {
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            String percent = new String(cbuf, off, len).replaceAll("0+?$", "");
+            String percent = new String(cbuf, off, len).split("\\.")[0];
             out.write(percent);
         }
 

@@ -75,7 +75,9 @@
                             <h2 class="pr-title">${loan.name}</h2>
                             <div class="pr-square tc">
                                 <div class="pr-square-in">
-                                    <em><b>${loan.baseRateInteger}</b><#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction></#if>%</em>
+                                    <em><b><@percentInteger>${loan.baseRate}</@percentInteger></b><@percentFraction>${loan.baseRate}</@percentFraction>
+                                        <#if (loan.activityRate > 0) >+<@percentInteger>${loan.activityRate}</@percentInteger>
+                                            <@percentFraction>${loan.activityRate}</@percentFraction></#if>%</em>
                                     <i>年化收益</i>
                                 </div>
                             </div>
