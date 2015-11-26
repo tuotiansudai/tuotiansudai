@@ -81,7 +81,6 @@ subprojects {
                 'commons-beanutils:commons-beanutils:1.9.2',
                 'commons-collections:commons-collections:3.2.1',
                 'net.sf.ezmorph:ezmorph:1.0.6',
-                'net.sf.json-lib:json-lib:2.4',
                 'org.apache.httpcomponents:httpclient:4.5.1'
 
         testCompile "junit:junit:4.12",
