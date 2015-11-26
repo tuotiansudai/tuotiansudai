@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <div class="row">
 
-        <@menu.sidebar headLab="userMain" sideLab="userMain"></@menu.sidebar>
+        <@menu.sidebar headLab="userMain" sideLab="userMan"></@menu.sidebar>
 
             <!-- content area begin -->
             <div class="col-md-10">
@@ -78,21 +78,14 @@
                         <label for="referrer" class="col-sm-2 control-label">角色：</label>
                         <div class="col-sm-3">
                             <input type="hidden" name="roles" value="USER"/>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("INVESTOR")>checked="checked"</#if> value="INVESTOR">投资人</label>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("LOANER")>checked="checked"</#if> value="LOANER">借款人</label>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("STAFF")>checked="checked"</#if> value="STAFF">业务员</label>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("CUSTOMER_SERVICE")>checked="checked"</#if> value="CUSTOMER_SERVICE">客服</label>
-                            </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox" name="roles" <#if user.roles?seq_contains("ADMIN")>checked="checked"</#if> value="ADMIN">管理员</label>
-                            </div>
+                            <input type="hidden" name="roles" value="USER"/>
+                            <#list roles as roleItem>
+                                <#if roleItem.name() != 'USER'>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" name="roles" <#if user.roles?seq_contains(roleItem.name())>checked="checked"</#if> value="${roleItem.name()}">${roleItem.getDescription()}</label>
+                                    </div>
+                                </#if>
+                            </#list>
                         </div>
                     </div>
 

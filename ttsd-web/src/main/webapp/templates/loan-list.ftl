@@ -84,8 +84,8 @@
                         <div class="loan-info-dl">
                             <dl>
                                 <dt>年化收益</dt>
-                                <dd><em>${loanListWebDto.baseRateInteger}<#if loanListWebDto.baseRateFraction??>.<@percentFraction>${loanListWebDto.baseRateFraction}</@percentFraction></#if></em>
-                                    <i><#if loanListWebDto.activityRateInteger??>+${loanListWebDto.activityRateInteger}</#if><#if loanListWebDto.activityRateFraction??>.<@percentFraction>${loanListWebDto.activityRateFraction}</@percentFraction></#if>%</i>
+                                <dd><em>${loanListWebDto.baseRateInteger}</em><i><#if loanListWebDto.baseRateFraction??>.<@percentFraction>${loanListWebDto.baseRateFraction}</@percentFraction></#if>
+                                    <#if loanListWebDto.activityRateInteger??>+${loanListWebDto.activityRateInteger}</#if><#if loanListWebDto.activityRateFraction??>.<@percentFraction>${loanListWebDto.activityRateFraction}</@percentFraction></#if>%</i>
                                 </dd>
                             </dl>
 

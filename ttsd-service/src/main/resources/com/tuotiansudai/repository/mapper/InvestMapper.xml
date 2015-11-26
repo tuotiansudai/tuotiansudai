@@ -157,7 +157,7 @@
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
-            <if test="investorLoginName != null">
+            <if test="investorLoginName != null and investorLoginName != ''">
                 and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
@@ -166,13 +166,13 @@
             <if test="investStatus != null">
                 and invest.status = #{investStatus}
             </if>
-            <if test="channel != null">
+            <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null">
+            <if test="source != null and source != ''">
                 and invest.source = #{source}
             </if>
-            <if test="role != null">
+            <if test="role != null and role != ''">
                 and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">
@@ -190,7 +190,7 @@
             <if test="loanId != null">
                 and loan.id = #{loanId}
             </if>
-            <if test="investorLoginName != null">
+            <if test="investorLoginName != null and investorLoginName != ''">
                 and invest.login_name = #{investorLoginName}
             </if>
             <if test="loanStatus != null">
@@ -199,13 +199,13 @@
             <if test="investStatus != null">
                 and invest.status = #{investStatus}
             </if>
-            <if test="channel != null">
+            <if test="channel != null and channel != ''">
                 and invest.channel = #{channel}
             </if>
-            <if test="source != null">
+            <if test="source != null and source != ''">
                 and invest.source = #{source}
             </if>
-            <if test="role != null">
+            <if test="role != null and role != ''">
                 and exists (select 1 from user_role where user_role.login_name=invest.login_name and user_role.role= #{role} )
             </if>
             <if test="startTime != null &amp;&amp; endTime != null">

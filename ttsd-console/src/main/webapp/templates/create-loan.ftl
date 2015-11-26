@@ -78,7 +78,7 @@
                         <label class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="代理用户不能为空">
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <label class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-loaner" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="借款用户不能为空">
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">投资手续费比例(%): </label>
+                        <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写">
@@ -180,16 +180,18 @@
                         <div class="col-sm-4">
                             <select class="selectpicker ">
                             <#list activityTypes as activityType>
+                                <#if activityType.name() != 'PROMOTION'>
                                 <option value="${activityType.name()}">
                                 ${activityType.getActivityTypeName()}
                                 </option>
+                                </#if>
                             </#list>
                             </select>
                             <input type="hidden" class="jq-impact-type"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">活动利率(%): </label>
+                        <label class="col-sm-2 control-label">活动利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写">
@@ -199,24 +201,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">基本利率(%): </label>
+                        <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">合同: </label>
-
-                        <div class="col-sm-4">
-                            <select class="selectpicker ">
-                            <#list contracts as contract>
-                                <option value="${contract.id}">
-                                ${contract.contractName}
-                                </option>
-                            </#list>
-                            </select>
-                            <input type="hidden" class="jq-pact"/>
                         </div>
                     </div>
                     <div class="form-group input-append">
@@ -269,6 +257,7 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <input type="hidden" class="jq-pact" value="${contractId}"/><!-- 默认合同ID -->
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
@@ -289,5 +278,4 @@
     var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
     var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
     var API_FORM = '${requestContext.getContextPath()}/loan/';
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
 </script>

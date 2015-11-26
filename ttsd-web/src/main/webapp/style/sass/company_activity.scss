@@ -119,6 +119,12 @@ img.icon-mark {
 }
 .small-box-out {
   margin-bottom: 20px;
+  .small-inner:nth-child(2),
+  .small-inner:nth-child(3)
+  {
+    margin-right: 13px;
+  }
+
 }
 
 /* steps */

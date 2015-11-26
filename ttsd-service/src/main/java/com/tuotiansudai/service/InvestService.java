@@ -30,6 +30,11 @@ public interface InvestService {
                                                                            Date endTime,
                                                                            LoanStatus loanStatus);
 
+    long findCountInvestPagination(Long loanId, String investorLoginName,
+                                   String channel, Source source, String role,
+                                   Date startTime, Date endTime,
+                                   InvestStatus investStatus, LoanStatus loanStatus);
+
     BasePaginationDataDto<InvestPaginationItemDataDto> getInvestPagination(Long loanId, String investorLoginName,
                                                                            String channel,
                                                                            Source source,

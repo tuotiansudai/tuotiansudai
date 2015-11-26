@@ -1,0 +1,693 @@
+@import 'variables';
+
+/* if use the css, the page will be show full screen */
+.full-screen {
+    width:100%!important;
+    margin:0;
+}
+.footer-container {
+    margin-top:0;
+}
+//home page
+.home-page-container {
+    .banner-box {
+        height:350px;
+        width:100%;
+        overflow: hidden;
+        position: relative;
+        .banner-img-list {
+            width:100%;
+            height:100%;
+            position: relative;
+            a {
+                display: block;
+                position: absolute;
+                width:100%;
+                height:100%;
+                left:0;
+                top:0;
+                z-index: 1;
+                img {
+                    height:350px;
+                }
+            }
+        }
+        .scroll-num {
+            position: absolute;
+            left: 500px;
+            bottom:10px;
+            z-index: 2;
+            li {
+                float: left;
+                margin-right: 15px;
+                width: 10px;
+                height: 10px;
+                text-align: center;
+                border-radius: 5px;
+                background: #fff;
+                line-height: 20px;
+                color: #666;
+                cursor: pointer;
+                &.selected {
+                    background: #ff7a2a;
+                    color: #fff;
+                }
+            }
+        }
+        .page-width {
+            height:100%;
+        }
+        .register-ad-box {
+            position: absolute;
+            z-index: 10;
+            top:25px;
+            right:100px;
+            width: 300px;
+            height: 300px;
+            box-sizing: border-box;
+            padding: 50px 50px 10px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            .percent {
+                color: #ff7200;
+                font-size: 60px;
+                line-height: 1;
+                font-weight: bold;
+            }
+            .h-title {
+                color: #4c4c4c;
+                font-size: 26px;
+                font-weight: normal;
+            }
+            .btn-normal {
+                width:100%;
+                padding: 8px 0;
+                margin-top:25px;
+            }
+            i {
+                display: block;
+                padding-top:15px;
+            }
+        }
+    }
+    .main-advantage {
+        margin-top:30px!important;
+        dl {
+            text-align: center;
+            dd {
+                width:33%;
+                display: inline-block;
+                font-size: 14px;
+                color: #0e050a;
+                line-height:1;
+                span {
+                    b {
+                        font-size: 20px;
+                        display: block;
+                        padding:20px 0 15px 0;
+                        color: #4d4d4d;
+                    }
+                }
+                a {
+                    color: #666;
+                }
+                img{
+                    -webkit-transition:  0.4s ease 0s;
+                    -moz-transition:  0.4s ease-out 0s;
+                    -ms-transition:  0.4s ease-out 0s;
+                    -o-transition:  0.4s ease-out 0s;
+                    transition:  0.4s ease-out 0s;
+                    &:hover {
+                        -webkit-transform: rotate(360deg) scale(1.2);
+                        -moz-transform: rotate(360deg) scale(1.2);
+                        -ms-transform: rotate(360deg) scale(1.2);
+                        -o-transform: rotate(360deg) scale(1.2);
+                        transform: rotate(360deg) scale(1.2);
+                    }
+                }
+            }
+        }
+    }
+    .home-content {
+        background: #fafafa;
+        margin-top: 50px;
+        .page-width {
+            padding:10px;
+            box-sizing: border-box;
+            .product-box-list {
+                width: 76%;
+                //overflow: hidden;
+                .product-box-inner {
+                    width:105%;
+                    box-sizing: border-box;
+                    .product-box {
+                        box-sizing: border-box;
+                        width: 30%;
+                        margin-right: 1.7%;
+                        border:1px solid #e5e5e5;
+                        border-radius: 10px;
+                        position: relative;
+                        display: inline-block;
+                        margin-bottom:18px;
+                        color: #999;
+                        cursor: pointer;
+                        &:hover {
+                            -moz-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                            -webkit-box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                            box-shadow:-1px -1px 15px rgba(0,0,0,0.1),1px 1px 15px rgba(0,0,0,0.1);
+                        }
+                        &.new-standard {
+                            .hot-new {
+                                position: absolute;
+                                left: -4px;
+                                top: -5px;
+                                width:71px;
+                                height: 71px;
+                                background: url("/images/icons/hot-n.png") left top no-repeat;
+                            }
+                        }
+                        .pr-title {
+                            font-size: 18px;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            width: 125px;
+                            margin-left: 35px;
+                            color: #4c4c4c;
+                        }
+                        .pr-square {
+                            width: 134px;
+                            height: 134px;
+                            border-radius: 67px;
+                            position: relative;
+                            background: #fee7da;
+                            margin: 5px auto 8px auto;
+                            .pr-square-in {
+                                width:120px;
+                                height:120px;
+                                border-radius:60px;
+                                border:2px solid #ff752a;
+                                background: #fff;
+                                margin: auto;
+                                position: absolute;
+                                left: 0;
+                                right: 0;
+                                top: 0;
+                                bottom: 0;
+                                text-align: center;
+                                em {
+                                    color: #ff3333;
+                                    font-size: 16px;
+                                    line-height: 1;
+                                    font-weight: bold;
+                                    padding-top: 40px;
+                                    display: inline-block;
+                                    b {
+                                        font-size:28px;
+                                        line-height:0.5;
+                                    }
+                                }
+                                i {
+                                    color: #999;
+                                    clear: both;
+                                    display: block;
+                                    margin-top: -6px;
+                                }
+                            }
+                        }
+                        dl.pr-info {
+                            text-align: center;
+                            font-size: 0;
+                            dd {
+                                width:48%;
+                                display: inline-block;
+                                font-size: 14px;
+                                line-height: 1.2;
+                                color: #666;
+                                &.dl-month {
+                                    border-right:1px solid #ffceb4;
+                                    i {
+                                        color: #ff3333;
+                                        font-weight: bold;
+                                        font-size: 18px;
+                                    }
+
+                                }
+                                &.dl-amount {
+                                    i{
+                                        font-size: 18px;
+                                    }
+                                }
+                                span {
+                                    color: #999;
+                                }
+
+                            }
+                        }
+                        .pad-m {
+                            padding:10px 20px 15px 20px;
+                        }
+                        .btn-normal {
+                            padding: 8px 0;
+                            width: 100%;
+                            border-top-left-radius: 0;
+                            border-top-right-radius: 0;
+                            &:hover {
+                                background: #ff9e69;
+                                border-color: #ff9e69;
+                            }
+                            &:disabled {
+                                background: #ccc!important;
+                                border-color: #ccc!important;
+                            }
+                            &.wait-invest {
+                                background: #ff9c1b;
+                                border-color: #ff9c1b;
+                            }
+                        }
+                    }
+                }
+                .invest-total {
+                    color: #666;
+                    line-height: 0;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                    span {
+                        i {
+                            color: #ff752a;
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                    }
+
+                }
+            }
+            .home-ad {
+                width: 23%;
+                img {
+                    width:100%;
+                    border-radius: 10px;
+                    height: 660px;
+                    border: 1px solid #e5e5e5;
+                }
+            }
+        }
+    }
+}
+
+/* user guide page */
+.new-guide-container {
+    color: #2f2f2f;
+    .ad-guide-img {
+        height:350px;
+        background: url("/images/banner/banner-guide.jpg") center top no-repeat;
+    }
+    .content-info {
+        h3 {
+            font-size: 41px;
+            font-weight: normal;
+            margin: 20px auto;
+            line-height: 1.2;
+        }
+        p {
+            font-size: 17px;
+        }
+    }
+
+    .contentA {
+        background: #f1f1f1;
+        img {
+            margin:20px auto;
+        }
+    }
+    .our-advantage-content {
+        h3 {
+            color: #313131;
+            font-size: 30px;
+            padding:10px 10px 0 10px;
+            font-weight: bold;
+        }
+        .advantage-list {
+            font-size: 0;
+            li {
+                width:33%;
+                display: inline-block;
+                font-size: 16px;
+                color: #6a6a6a;
+                box-sizing: border-box;
+                padding:10px;
+                text-align: center;
+                b {
+                    padding:10px 30px;
+                    color: #6a6a6a;
+                    font-size: 16px;
+                    display: inline-block;
+                    line-height: 1.6;
+                }
+            }
+        }
+        .invest-category {
+            font-size: 0;
+            h3 {
+                text-align: center;
+                font-size: 22px;
+                padding:20px 30px 10px 30px;
+                line-height: 1.8;
+                img {
+                    margin-top:20px;
+                }
+                span {
+                    overflow: hidden;
+                    display: inline-block;
+                    text-align: center;
+                    font-weight: normal;
+                    b {
+                        font-size: 20px;
+                    }
+                }
+
+            }
+            li {
+                width:31%;
+                height:240px;
+                display: inline-block;
+                font-size: 17px;
+                color: #fff;
+                margin-left:2%;
+                &:nth-child(1) {
+                    background: #ef991e;
+                }
+                &:nth-child(2) {
+                    background: #349dd7;
+                }
+                &:nth-child(3) {
+                    background: #18b15f;
+                }
+                p {
+                    padding:0px 30px;
+                    color: #fff;
+                    line-height:1.8;
+                }
+            }
+        }
+        .invest-example {
+            li {
+                width:33%;
+                display: inline-block;
+                text-align: center;
+            }
+        }
+        .register-slide-out {
+            background: url("/images/sign/aboutus/screen-show.png") center 20px no-repeat;
+            height: 544px;
+            position: relative;
+            img {
+                &.last-step,&.next-step {
+                    margin-top:160px;
+                    cursor: pointer;
+                }
+            }
+            .step-register-tab{
+                li {
+                    cursor: pointer;
+                }
+            }
+            .slide-img-box {
+                width: 690px;
+                height: 412px;
+                overflow: hidden;
+                position: relative;
+                left: 81px;
+                top: 50px;
+                li {
+                    position: absolute;
+                    left: 0;
+                    top:0;
+                    display: none;
+                }
+
+            }
+        }
+        .action-invest {
+            font-size: 18px;
+            color: #343434;
+            text-align: center;
+            padding-bottom:30px;
+            .btn-normal {
+                padding: 8px 55px;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+/* safety assurance page  */
+.assurance-container {
+    .as-title {
+        dt {
+            color: #10aaf0;
+            font-size: 28px;
+            line-height: 1.5;
+        }
+        dd {
+            em,i,s {
+                display: inline-block;
+            }
+            s {
+                margin-right: 5px;
+                vertical-align: middle;
+                text-decoration: none;
+            }
+            em {
+                width:167px;
+                height:1px;
+                background: #9ad7f3;
+
+                vertical-align: middle;
+                &:nth-child(1) {
+                    margin-right:10px;
+                    @include gradient-linear(90deg,#e2f8fe,#9ad7f3);
+                }
+                &:nth-last-child(1) {
+                    margin-left:10px;
+                    @include gradient-linear(90deg,#9ad7f3,#e2f8fe);
+                }
+            }
+            .fa:before {
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+            i {
+                font-size: 18px;
+                margin-left: -5px;
+                color: #4ba4b5;
+            }
+        }
+
+        &.other-style {
+            dt {
+                color: #ff9c1b;
+            }
+            dd {
+                em {
+                    background: #9ad7f3;
+                    &:nth-child(1) {
+                        @include gradient-linear(90deg,#fff8e4,#ffb046);
+                    }
+                    &:nth-last-child(1) {
+                        @include gradient-linear(90deg,#ffb046,#fff8e4);
+                    }
+                }
+                i {
+                    color: #ff9c1b;
+                }
+            }
+        }
+    }
+    .bg-even {
+        background: #ecfcff;
+    }
+    .bg-odd {
+        background: #f7ffef;
+    }
+    .safety-info {
+        margin-top:40px;
+
+        dt {
+            color: #10aaf0;
+            font-size: 18px;
+            border-bottom: 1px dashed #10aaf0;
+            display: inline;
+            padding-left:10px;
+            padding-right: 10px;
+        }
+        dd {
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom:25px;
+            &.third {
+                margin-bottom: 23px;
+            }
+        }
+        &.other {
+            dt {
+                color: #ff6400;
+                border-bottom: 1px dashed #ff6400;
+            }
+        }
+    }
+    .money-safety {
+        @extend .bg-even;
+        padding:40px 40px 20px 40px;
+        .page-width {
+            background: url("/images/sign/assure/bg-safety.png") 40px 133px no-repeat;
+        }
+        .safety-info {
+            width: 580px;
+        }
+    }
+    .data-safety {
+        @extend .bg-odd;
+        padding:40px 40px 20px 40px;
+        .page-width {
+            background: url("/images/sign/assure/bg-data.png") right 135px no-repeat;
+        }
+        .safety-info {
+            width: 560px;
+            dd {
+                margin-bottom: 32px;
+                &.first {
+                    margin-bottom: 36px;
+                }
+                &.second {
+                    margin-bottom: 38px;
+                }
+                &.third {
+                    margin-bottom: 28px;
+                }
+            }
+        }
+    }
+    .secret-safety {
+        @extend .bg-even;
+        padding:40px 40px 0px 40px;
+        .page-width {
+            background: url(/images/sign/assure/bg-secret.png) 50px 105px no-repeat;
+        }
+        .safety-info {
+            width: 580px;
+            dd {
+                margin-bottom: 85px;
+            }
+        }
+    }
+    .credit-safety {
+        background: #fffff7;
+        padding:40px 40px 20px 40px;
+        .page-width {
+            background: url("/images/sign/assure/bg-credit.png") right 150px no-repeat;
+        }
+        .safety-info {
+            width: 630px;
+            dd {
+                margin-bottom: 32px;
+                font-size: 16px;
+                p {
+                    width:315px;
+                    line-height: 1.9;
+                    margin-top:50px;
+                    border-bottom: 1px dashed #ff9c1b ;
+                    padding-bottom: 23px;
+                    padding-left: 90px;
+                    i {
+                        color: #ff9c1b;
+                        font-size: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* refer reward page */
+.refer-reward-instruction {
+  .banner-box {
+    img {
+      width:100%;
+    }
+  }
+  .refer-reward-bg {
+    background: #f5faff;
+    text-align: center;
+    margin-top: -300px;
+    .refer-reward-inner {
+      padding-top:310px;
+      margin:0 auto;
+      width:1002px;
+      text-align: center;
+      background: #edf9ff;
+      padding-bottom: 20px;
+    }
+  }
+}
+
+//error page , 404,500
+.error-tip-container {
+  width: 600px;
+  color: #52a7ef;
+  font-size: 14px;
+  padding-top: 50px;
+  padding-bottom:50px;
+  margin:0 auto;
+  a {
+    color: #52a7ef;
+  }
+  img.error {
+    margin-top: 30px;
+    margin-right: 55px;
+  }
+  .error-info {
+    overflow: hidden;
+    padding-left: 50px;
+    p {
+      overflow: hidden;
+      span {
+        display: block;
+        clear: both;
+        &.sorry {
+          font-size: 20px;
+          color: #ef6535;
+          padding: 10px 10px 15px 0;
+        }
+        &.jump-tip {
+          color: #999999;
+          font-size: 14px;
+          padding-bottom: 20px;
+        }
+
+      }
+    }
+
+  }
+  .bRadiusBox {
+    padding:20px 35px 20px 35px;
+    line-height: 2.5;
+    i {
+      font-size: 25px;
+      margin-right:5px;
+    }
+    .text {
+      color: #999;
+      font-weight: bold;
+    }
+    .phone {
+      font-size: 20px;
+      em {
+        font-size: 12px;
+      }
+    }
+    .email {
+
+    }
+  }
+}

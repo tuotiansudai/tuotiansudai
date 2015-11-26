@@ -55,11 +55,11 @@
 					                </span>
                             </div>
                         </div>
-                        </br>
                         <div class="form-group">
                             <label for="control-label">用户名</label>
                             <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                         </div>
+                        </br>
                         <div class="form-group">
                             <label for="control-label">状态</label>
                             <select class="selectpicker" name="status">
@@ -68,6 +68,19 @@
                                 <option value="${statusItem.name()}"
                                         <#if (status.name())?has_content && status.name() == statusItem.name()>selected</#if>
                                         >${statusItem.description}</option>
+                            </#list>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="control-label">来源</label>
+                            <select class="selectpicker" name="source">
+                                <option value="">全部</option>
+                            <#list withdrawSourceList as sourceItem>
+                                <#if sourceItem.name() != 'AUTO'>
+                                <option value="${sourceItem.name()}"
+                                        <#if (source.name())?has_content && source.name() == sourceItem.name()>selected</#if>
+                                        >${sourceItem.name()}</option>
+                                </#if>
                             </#list>
                             </select>
                         </div>
@@ -91,6 +104,7 @@
                             <th>手续费</th>
                             <th>银行卡</th>
                             <th>状态</th>
+                            <th>来源</th>
                         </tr>
                         </thead>
 
@@ -98,7 +112,7 @@
                         <#if withdrawList?has_content>
                             <#list withdrawList as withdrawItem>
                             <tr>
-                                <td>${withdrawItem.withdrawId}</td>
+                                <td>${withdrawItem.withdrawId?string('0')}</td>
                                 <td>${(withdrawItem.createdTime?string('yyyy-MM-dd HH:mm'))!}</td>
                                 <td>${(withdrawItem.applyNotifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
                                 <td>${(withdrawItem.notifyTime?string('yyyy-MM-dd HH:mm'))!}</td>
@@ -107,6 +121,7 @@
                                 <td>${withdrawItem.fee}</td>
                                 <td>${withdrawItem.bankCard}</td>
                                 <td>${withdrawItem.status}</td>
+                                <td>${(withdrawItem.source.name())!}</td>
                             </tr>
                             </#list>
                         <#else>

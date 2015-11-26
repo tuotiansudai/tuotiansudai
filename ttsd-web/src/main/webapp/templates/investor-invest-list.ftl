@@ -23,7 +23,7 @@
     </div>
     <div class="clear-blank"></div>
     <table class="invest-list table-striped"></table>
-    <div class="pagination" data-url="/investor/invest-list-data" data-page-size="2">
+    <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
     </div>
 </div>
 </@global.main>

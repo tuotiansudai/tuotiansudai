@@ -1,5 +1,6 @@
 package com.tuotiansudai.console.controller;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.console.util.LoginUserInfo;
 import com.tuotiansudai.dto.BaseDto;
@@ -9,6 +10,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
 import com.tuotiansudai.util.CsvHeaderType;
@@ -41,15 +43,46 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
+    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
+    public ModelAndView newUser(){
+        ModelAndView modelAndView = new ModelAndView("/create-user");
+        modelAndView.addObject("roles", Role.values());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
+    public ModelAndView createUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        String ip = RequestIPParser.parse(request);
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            userService.createUser(LoginUserInfo.getLoginName(), editUserDto, ip);
+            modelAndView.setViewName("redirect:/users");
+            return modelAndView;
+        } catch (BaseException e) {
+            modelAndView.setViewName("redirect:/user/create");
+            redirectAttributes.addFlashAttribute("user", editUserDto);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/edit-user");
         if (!model.containsAttribute("user")) {
             EditUserDto editUserDto = userService.getEditUser(loginName);
             modelAndView.addObject("user", editUserDto);
+            modelAndView.addObject("roles", Role.values());
         }
         return modelAndView;
     }
+
+    @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findLoginNames(@PathVariable String loginName) {
+        return userService.findLoginNameFromAccountLike(loginName);
+    }
+
 
     @RequestMapping(value = "/user/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
@@ -103,7 +136,16 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
-                dataModel.add(StringUtils.join(userItemDataDtos.get(i).getUserRoles(),";"));
+
+                List<UserRoleModel> userRoleModels = userItemDataDtos.get(i).getUserRoles();
+                List<String> userRole = Lists.transform(userRoleModels, new Function<UserRoleModel, String>() {
+                    @Override
+                    public String apply(UserRoleModel input) {
+                        return input.getRole().getDescription();
+                    }
+                });
+
+                dataModel.add(StringUtils.join(userRole,";"));
                 dataModel.add(userItemDataDtos.get(i).getStatus() == UserStatus.ACTIVE ? "正常" : "禁用");
                 data.add(dataModel);
             }

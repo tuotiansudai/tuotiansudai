@@ -187,10 +187,9 @@
                         <h3>申请材料：</h3>
                         <div class="pic-list" id="picListBox">
                             <#list loan.loanTitleDto as loanTitle>
-                                <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
                                     <#list loan.loanTitles as loanTitleRelation >
                                         <#if loanTitle.id == loanTitleRelation.titleId>
-
+                                            <div class="title">${loanTitle.title}：</div>
                                             <#list loanTitleRelation.applicationMaterialUrls?split(",") as title>
                                                 <img layer-src="${title}" src="${title}" alt="${loanTitle.title}"/>
                                             </#list>
@@ -204,7 +203,7 @@
                 <div class="loan-list-con">
                     <table class="table-striped">
                     </table>
-                    <div class="pagination" data-url="/loan/${loan.id?string("0")}/invests" data-page-size="2">
+                    <div class="pagination" data-url="/loan/${loan.id?string("0")}/invests" data-page-size="10">
                     </div>
                 </div>
             </div>
@@ -212,7 +211,7 @@
 </div>
 <script>
     var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
-    var java_point = ${loan.amountNeedRaised?string('0')}; //后台传递数据
+    var java_point = ${(loan.raiseCompletedRate * 100)?string('0')}; //后台传递数据
     <@global.role hasRole="'INVESTOR'">
     var user_can_invest = true;
     </@global.role>

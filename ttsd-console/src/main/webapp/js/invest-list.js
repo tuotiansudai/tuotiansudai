@@ -42,11 +42,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
     //自动完成提示
     var autoValue = '';
-    var api_url = '/loan/loaner';
     $("#tags").autocomplete({
         source: function (query, process) {
-            //var matchCount = this.options.items;//返回结果集最大数量
-            $.get(api_url + '/' + query.term, function (respData) {
+            $.get('/account/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });
@@ -63,6 +61,10 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
 
         }
 
+    });
+
+    $('.down-load').click(function () {
+        location.href = "/invests?"+$('form').serialize()+"&export=csv";
     });
 
 });

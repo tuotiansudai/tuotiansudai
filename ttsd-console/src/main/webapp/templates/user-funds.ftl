@@ -140,6 +140,3 @@
 <!-- main end -->
 </body>
 </html>
-<script>
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
-</script>

@@ -33,7 +33,7 @@
 </head>
 <body>
 
-<@menu.header label="proMan"></@menu.header>
+<@menu.header label="projectMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">

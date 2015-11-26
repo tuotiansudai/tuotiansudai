@@ -9,13 +9,10 @@ require(['jquery', 'jquery-ui',
             style: 'btn-default',
             size: 8
         });
-        var api_url = '/loan/loaner';
         var autoValue = '';
         $("#loginName").autocomplete({
-
             source: function (query, process) {
-                //var matchCount = this.options.items;//返回结果集最大数量
-                $.get(api_url+'/'+query.term, function (respData) {
+                $.get('/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });

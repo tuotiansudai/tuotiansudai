@@ -65,7 +65,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and t.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and t.periods >= #{periodsStart}
@@ -89,7 +89,7 @@
             and l.status = #{status}
         </if>
         <if test="status == null">
-            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and l.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and CEILING(l.periods/30) >= #{periodsStart}
@@ -119,7 +119,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and t.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and t.periods >= #{periodsStart}
@@ -143,7 +143,7 @@
             and l.status = #{status}
         </if>
         <if test="status == null">
-            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and l.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and CEILING(l.periods/30) >= #{periodsStart}

@@ -1,5 +1,5 @@
 @import 'variables';
-@import 'daterangepicker','pagination';
+@import 'daterangepicker';
 
 .layui-layer-btn {
   text-align: center;
@@ -990,7 +990,7 @@
 
 .money-box {
   font-size: 12px;
-  background: url("/images/record/record.png") 360px 30px no-repeat;
+  background: url("/images/sign/invest-record.png") 360px 30px no-repeat;
   a {
     display: inline-block;
     margin-right: 10px;
@@ -1126,7 +1126,4 @@
 
 }
 
-/* service fee */
-.service-fee-container {
 
-}

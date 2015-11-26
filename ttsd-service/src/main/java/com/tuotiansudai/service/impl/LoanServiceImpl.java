@@ -92,16 +92,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @param loginName
-     * @return
-     * @function 获取成功注册过资金托管账户的用户登录名
-     */
-    @Override
-    public List<String> getLoginNames(String loginName) {
-        return accountMapper.findAllLoginNamesByLike(loginName);
-    }
-
-    /**
      * @return
      * @function 获取所有标题
      */
@@ -221,7 +211,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() / 10000));
+        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
         loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());

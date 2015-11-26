@@ -35,7 +35,7 @@
         withdraw.amount as withdraw_amount,
         withdraw.fee as withdraw_fee,
         withdraw.apply_notify_message as withdraw_apply_notify_message,
-        withdraw.apply_notify_time as withdraw_notify_time,
+        withdraw.apply_notify_time as withdraw_apply_notify_time,
         withdraw.notify_message as withdraw_notify_message,
         withdraw.notify_time as withdraw_notify_time,
         withdraw.status as withdraw_status,
@@ -94,6 +94,9 @@
             <if test="status !=null">
                 and withdraw.status = #{status}
             </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
+            </if>
         </where>
         order by withdraw.created_time desc, withdraw.id asc
         limit #{index}, #{pageSize}
@@ -116,6 +119,9 @@
             </if>
             <if test="status !=null">
                 and withdraw.status = #{status}
+            </if>
+            <if test="source !=null">
+                and withdraw.source = #{source}
             </if>
         </where>
     </select>

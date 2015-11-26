@@ -10,8 +10,6 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 @Component
 public class DeadlineFundraisingJob implements Job{
 
@@ -27,7 +25,7 @@ public class DeadlineFundraisingJob implements Job{
         logger.debug("loanId = " + loanId);
         logger.debug("status = " + loanModel.getStatus());
         logger.debug("fundraisingEndTime = " + loanModel.getFundraisingEndTime());
-        if (loanModel.getStatus() == LoanStatus.RAISING && !loanModel.getFundraisingEndTime().after(new Date())) {
+        if (loanModel.getStatus() == LoanStatus.RAISING) {
             loanMapper.updateStatus(loanModel.getId(), LoanStatus.RECHECK);
         }
     }

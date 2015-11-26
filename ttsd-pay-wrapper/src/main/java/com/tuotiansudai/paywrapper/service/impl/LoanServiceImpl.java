@@ -8,6 +8,8 @@ import com.tuotiansudai.dto.InvestDto;
 import com.tuotiansudai.dto.InvestSmsNotifyDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.LoanOutSuccessHandleJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
 import com.tuotiansudai.paywrapper.exception.PayException;
@@ -32,10 +34,12 @@ import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountConverter;
 import com.tuotiansudai.util.AmountTransfer;
+import com.tuotiansudai.util.JobManager;
 import com.tuotiansudai.util.SendCloudMailUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +88,9 @@ public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private PayAsyncClient payAsyncClient;
+
+    @Autowired
+    private JobManager jobManager;
 
     @Transactional(rollbackFor = Exception.class)
     public BaseDto<PayDataDto> createLoan(long loanId) {
@@ -219,7 +226,6 @@ public class LoanServiceImpl implements LoanService {
         ProjectTransferResponseModel resp = doPayRequest(loanId, loanerPayUserId, investAmountTotal);
 
         if (resp.isSuccess()) {
-            //TODO : 如果下面这些方法有任何一个出现异常，如何记录？
             logger.debug("标的放款：更新标的状态，标的ID:" + loanId);
             processLoanStatusForLoanOut(loan);
 
@@ -229,16 +235,41 @@ public class LoanServiceImpl implements LoanService {
             logger.debug("标的放款：把借款转给借款人账户，标的ID:" + loanId);
             processLoanAccountForLoanOut(loan, investAmountTotal);
 
-            logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
-            repayGeneratorService.generateRepay(loanId);
+            // loanOutSuccessHandle(loanId);
+            createLoanOutSuccessHandleJob(loanId);
 
-            logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
-            referrerRewardService.rewardReferrer(loan, successInvestList);
-
-            logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
-            processNotifyForLoanOut(loanId);
         }
         return resp;
+    }
+
+    private void createLoanOutSuccessHandleJob(long loanId) {
+        try {
+            Date triggerTime = new DateTime().plusMinutes(LoanOutSuccessHandleJob.HANDLE_DELAY_MINUTES)
+                    .toDate();
+            jobManager.newJob(JobType.LoanOut, LoanOutSuccessHandleJob.class)
+                    .addJobData(LoanOutSuccessHandleJob.LOAN_ID_KEY, loanId)
+                    .withIdentity(JobType.LoanOut.name(), "Loan-" + loanId)
+                    .runOnceAt(triggerTime)
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error("create loan out success handle job for loan[" + loanId + "] fail", e);
+        }
+    }
+
+    @Override
+    public void loanOutSuccessHandle(long loanId) {
+        LoanModel loan = loanMapper.findById(loanId);
+
+        List<InvestModel> successInvestList = investMapper.findSuccessInvestsByLoanId(loanId);
+
+        logger.debug("标的放款：生成还款计划，标的ID:" + loanId);
+        repayGeneratorService.generateRepay(loanId);
+
+        logger.debug("标的放款：处理推荐人奖励，标的ID:" + loanId);
+        referrerRewardService.rewardReferrer(loan, successInvestList);
+
+        logger.debug("标的放款：处理短信和邮件通知，标的ID:" + loanId);
+        processNotifyForLoanOut(loanId);
     }
 
     private void proProcessWaitingInvest(long loanId) throws PayException {

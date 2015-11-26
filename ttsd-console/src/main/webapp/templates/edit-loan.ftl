@@ -79,7 +79,7 @@
                         <label class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="代理用户不能为空" value="${loanInfo.agentLoginName}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                         <label class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-loaner" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="借款用户不能为空" value="${loanInfo.loanerLoginName}" <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">投资手续费比例(%): </label>
+                        <label class="col-sm-2 control-label">投资手续费比例（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-fee jq-money" placeholder="" datatype="money_fl" errormsg="投资手续费比例需要正确填写" value="${(loanInfo.investFeeRate*100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
@@ -180,16 +180,18 @@
                         <div class="col-sm-4">
                             <select class="selectpicker " <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
                             <#list activityTypes as activityType>
+                                <#if activityType.name() != 'PROMOTION'>
                                 <option value="${activityType.name()}" <#if activityType.name() == loanInfo.activityType>selected</#if>>
                                     ${activityType.getActivityTypeName()}
                                 </option>
+                                </#if>
                             </#list>
                             </select>
                             <input type="hidden" class="jq-impact-type" value="${loanInfo.activityType}"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">活动利率(%): </label>
+                        <label class="col-sm-2 control-label">活动利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-percent jq-money" placeholder="" datatype="money_fl" errormsg="活动利率需要正确填写" value="${(loanInfo.activityRate*100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
@@ -199,24 +201,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">基本利率(%): </label>
+                        <label class="col-sm-2 control-label">基本利率（%）: </label>
 
                         <div class="col-sm-4">
                             <input type="text" class="form-control jq-base-percent jq-money" placeholder="" datatype="money_fl" errormsg="基本利率需要正确填写" value="${(loanInfo.baseRate*100)?string('0.00')}" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">合同: </label>
-
-                        <div class="col-sm-4">
-                            <select class="selectpicker" <#if loanInfo.status!="PREHEAT" && loanInfo.status!= "WAITING_VERIFY" && loanInfo.status!= "RAISING">disabled="disabled"</#if>>
-                            <#list contracts as contract>
-                                <option value="${contract.id}">
-                                ${contract.contractName}
-                                </option>
-                            </#list>
-                            </select>
-                            <input type="hidden" class="jq-pact"/>
                         </div>
                     </div>
                     <div class="form-group input-append">
@@ -272,6 +260,7 @@
                         <label class="col-sm-2 control-label">操作: </label>
 
                         <div class="col-sm-4">
+                            <input type="hidden" class="jq-pact" value="${contractId}"/><!-- 默认合同ID -->
                             <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="save">保存</button>
                             <#if loanInfo.status == "WAITING_VERIFY">
                                 <button TYPE="button" class="btn jq-btn-form btn-primary" data-operate="ok">审核通过</button>
@@ -300,7 +289,6 @@
     var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
     var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
     var API_FORM = '${requestContext.getContextPath()}/loan/';
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
     var rereq = {};
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
