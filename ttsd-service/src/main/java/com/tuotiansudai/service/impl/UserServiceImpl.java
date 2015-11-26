@@ -18,10 +18,12 @@ import com.tuotiansudai.service.ReferrerRelationService;
 import com.tuotiansudai.service.SmsCaptchaService;
 import com.tuotiansudai.service.AuditLogService;
 import com.tuotiansudai.service.UserService;
+import com.tuotiansudai.util.MobileLocationUtils;
 import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -331,8 +333,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String newEmail = editUserDto.getEmail();
-        UserModel userModelByEmail = userMapper.findByEmail(newEmail);
-        if (!Strings.isNullOrEmpty(newEmail) && userModelByEmail != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByEmail.getLoginName())) {
+        if (!Strings.isNullOrEmpty(newEmail) && userMapper.findByEmail(newEmail) != null && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
             throw new EditUserException("该邮箱已经存在");
         }
 
@@ -409,5 +410,42 @@ public class UserServiceImpl implements UserService {
         List<String> channelList = userMapper.findAllChannels();
         return channelList;
     }
+
+
+
+    @Transactional
+    @Override
+    public void refreshAreaByMobile(List<UserModel> userModels) {
+        for(UserModel userModel:userModels){
+            String phoneMobile = userModel.getMobile();
+            if(StringUtils.isNotEmpty(phoneMobile)){
+                String[] provinceAndCity = MobileLocationUtils.locateMobileNumber(phoneMobile);
+                if(StringUtils.isEmpty(provinceAndCity[0])){
+                    provinceAndCity[0] = "未知";
+                }
+                if(StringUtils.isEmpty(provinceAndCity[1])){
+                    provinceAndCity[1] = "未知";
+                }
+                userModel.setProvince(provinceAndCity[0]);
+                userModel.setCity(provinceAndCity[1]);
+                userMapper.updateUser(userModel);
+            }
+        }
+    }
+
+    @Override
+    public void reFreshAreaByMobileInJob() {
+        while(true){
+            List<UserModel> userModels = userMapper.findUserByProvince();
+            if(CollectionUtils.isEmpty(userModels)){
+                break;
+            }
+            ((UserService)AopContext.currentProxy()).refreshAreaByMobile(userModels);
+        }
+    }
+
+
+
+
 
 }

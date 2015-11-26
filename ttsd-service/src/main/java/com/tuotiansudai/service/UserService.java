@@ -5,6 +5,7 @@ import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.Source;
+import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
 
 import java.util.Date;
@@ -58,4 +59,8 @@ public interface UserService {
     List<String> findAllChannels();
 
     int findUserCount();
+
+    void refreshAreaByMobile(List<UserModel> userModels) ;
+
+    void reFreshAreaByMobileInJob() ;
 }

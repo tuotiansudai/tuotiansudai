@@ -26,8 +26,7 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<HomeLoanDto> getLoans() {
-        int pageSize = 6;
-        List<LoanModel> loanModels = loanMapper.findLoanList(null, null, null, new Date(0), new DateTime(9999, 12, 31, 0, 0, 0).toDate(), 0, pageSize);
+        List<LoanModel> loanModels = loanMapper.findTopSixLoanList();
 
         return Lists.transform(loanModels, new Function<LoanModel, HomeLoanDto>() {
             @Override
@@ -37,7 +36,7 @@ public class HomeServiceImpl implements HomeService {
                 for (InvestModel investModel : investModels) {
                     investAmount += investModel.getAmount();
                 }
-                return new HomeLoanDto(loan.getId(), loan.getName(), loan.getActivityType(), loan.getBaseRate(), loan.getActivityRate(), loan.getPeriods(), loan.getLoanAmount(), investAmount, loan.getStatus());
+                return new HomeLoanDto(loan.getId(), loan.getName(), loan.getActivityType(), loan.getType().getLoanPeriodUnit(), loan.getBaseRate(), loan.getActivityRate(), loan.getPeriods(), loan.getLoanAmount(), investAmount, loan.getStatus());
             }
         });
     }

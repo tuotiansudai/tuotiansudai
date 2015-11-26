@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -541,29 +540,29 @@ public class LoanServiceImpl implements LoanService {
         List<LoanModel> loanModels = Lists.newArrayList();
         long count = 0;
         if (LoanStatus.REPAYING == status) {
-            count = loanMapper.findCountRepayingByLoanerLoginName(loginName, startTime, endTime);
+            count = loanMapper.findCountRepayingByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+                loanModels = loanMapper.findRepayingPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 
         if (LoanStatus.COMPLETE == status) {
-            count = loanMapper.findCountCompletedByLoanerLoginName(loginName, startTime, endTime);
+            count = loanMapper.findCountCompletedByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+                loanModels = loanMapper.findCompletedPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 
         if (LoanStatus.CANCEL == status) {
-            count = loanMapper.findCountCanceledByLoanerLoginName(loginName, startTime, endTime);
+            count = loanMapper.findCountCanceledByAgentLoginName(loginName, startTime, endTime);
             if (count > 0) {
                 int totalPages = (int) (count % pageSize > 0 ? count / pageSize + 1 : count / pageSize);
                 index = index > totalPages ? totalPages : index;
-                loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
+                loanModels = loanMapper.findCanceledPaginationByAgentLoginName(loginName, (index - 1) * pageSize, pageSize, startTime, endTime);
             }
         }
 
