@@ -244,7 +244,7 @@ public class NormalRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId()) + "X") , "");
 
@@ -331,7 +331,7 @@ public class NormalRepayServiceTest {
 
         this.generateMockResponse(4);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X") , "");
         normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X") , "");
@@ -422,11 +422,11 @@ public class NormalRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 2, fakeInvestModel2.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest2RepayModel1, fakeInvest2RepayModel2));
 
-        BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
+        normalRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X") , "");
 
@@ -530,7 +530,7 @@ public class NormalRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X") , "");
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X") , "");
@@ -691,7 +691,7 @@ public class NormalRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel.getId());
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel.getId()) + "X") , "");
         normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel.getId()) + "X") , "");
@@ -784,11 +784,11 @@ public class NormalRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 1, fakeInvestModel2.getAmount(), fakeLoanRepayModel.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel, fakeInvest2RepayModel));
 
-        BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
+        normalRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel.getId());
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel.getId()) + "X") , "");
         normalRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel.getId()) + "X") , "");
@@ -887,11 +887,11 @@ public class NormalRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
+        normalRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel3.getId());
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel3.getId()) + "X") , "");
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel3.getId()) + "X") , "");
@@ -1001,11 +1001,11 @@ public class NormalRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        BaseDto<PayFormDataDto> dto = normalRepayService.repay(fakeNormalLoan.getId());
+        normalRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        normalRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        normalRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X") , "");
 
         normalRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X") , "");

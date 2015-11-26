@@ -319,11 +319,11 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
 
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
         advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId() + "X"), "");
@@ -438,11 +438,11 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel1);
         investMapper.create(fakeInvestModel2);
         repayGeneratorService.generateRepay(fakeNormalLoan.getId());
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(loanRepayMapper.findByLoanIdAndPeriod(fakeNormalLoan.getId(), 1).getId());
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 1).getId()) + "X"), "");
 
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 1).getId()) + "X"), "");
@@ -550,7 +550,7 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel1.getId(), 2).getId()) + "X"), "");
 
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(investRepayMapper.findByInvestIdAndPeriod(fakeInvestModel2.getId(), 2).getId()) + "X"), "");
@@ -647,7 +647,7 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
 
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
@@ -765,11 +765,11 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvest2RepayModel3 = this.getFakeInvestRepayModel(fakeInvestModel2.getId(), 3, fakeInvestModel2.getAmount(), fakeLoanRepayModel3.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvest1RepayModel1, fakeInvest1RepayModel2, fakeInvest1RepayModel3, fakeInvest2RepayModel1, fakeInvest2RepayModel2, fakeInvest2RepayModel3));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
         advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest1RepayModel2.getId()) + "X"), "");
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvest2RepayModel2.getId()) + "X"), "");
@@ -870,7 +870,7 @@ public class AdvanceRepayServiceTest {
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
 
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
         advanceRepayService.investFeeCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
@@ -935,11 +935,11 @@ public class AdvanceRepayServiceTest {
         InvestRepayModel fakeInvestRepayModel2 = this.getFakeInvestRepayModel(fakeInvestModel.getId(), 2, fakeInvestModel.getAmount(), fakeLoanRepayModel2.getRepayDate(), null, RepayStatus.REPAYING);
         investRepayMapper.create(Lists.newArrayList(fakeInvestRepayModel1, fakeInvestRepayModel2));
 
-        BaseDto<PayFormDataDto> dto = advanceRepayService.repay(fakeNormalLoan.getId());
+        advanceRepayService.repay(fakeNormalLoan.getId());
 
         this.generateMockResponse(10);
 
-        advanceRepayService.repayCallback(this.getFakeCallbackParamsMap(dto.getData().getFields().get("order_id")), "");
+        advanceRepayService.postRepayCallback(fakeLoanRepayModel2.getId());
         advanceRepayService.investPaybackCallback(this.getFakeCallbackParamsMap(String.valueOf(fakeInvestRepayModel2.getId()) + "X"), "");
 
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(fakeNormalLoan.getId());
