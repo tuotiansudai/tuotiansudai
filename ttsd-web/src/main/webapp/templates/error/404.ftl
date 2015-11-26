@@ -7,7 +7,7 @@
         <div class="error-info">
             <img src="${staticServer}/images/icons/error-tip-404.png" class="fl error" />
             <p>
-            <span class="sorry">很抱歉，此页面正在维护中！</span>
+            <span class="sorry">很抱歉，您访问的页面不存在！</span>
             <span class="jump-tip">10秒后将跳转到首页</span>
             <a href="#">返回上一步</a> ｜<a href="/">拓天速贷首页</a>
             </p>
