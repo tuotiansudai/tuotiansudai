@@ -38,17 +38,6 @@
                         <input type="text" id="loginName" name="loginName" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off" value="${loginName!}" />
                     </div>
                     <div class="form-group">
-                        <label for="project">角色</label>
-                        <select class="selectpicker" name="role">
-                            <option value="">全部</option>
-                        <#list roleList as roleItem>
-                            <option value="${roleItem.name()}"
-                                    <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
-                                    >${roleItem.description}</option>
-                        </#list>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="number">注册时间</label>
 
                         <div class='input-group date' id='datetimepicker1'>
@@ -68,8 +57,23 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="project">角色</label>
+                        <select class="selectpicker" name="role">
+                            <option value="">全部</option>
+                        <#list roleList as roleItem>
+                            <option value="${roleItem.name()}"
+                                    <#if (role.name())?has_content && role.name() == roleItem.name()>selected</#if>
+                                    >${roleItem.description}</option>
+                        </#list>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="mobile">手机号</label>
                         <input type="text" class="form-control" name="mobile" placeholder="" value="${mobile!}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">电子邮件</label>
+                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
                     </div>
                     <div class="form-group">
                         <label for="project">渠道</label>
@@ -83,8 +87,17 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="email">电子邮件</label>
-                        <input type="text" class="form-control" name="email" placeholder="" value="${email!}">
+                        <label for="project">来源</label>
+                        <select class="selectpicker" name="source">
+                            <option value="">全部</option>
+                        <#list sourceList as sourceItem>
+                            <#if sourceItem.name() != 'AUTO'>
+                            <option value="${sourceItem}"
+                                    <#if (source?has_content && source.name() == sourceItem.name()) >selected</#if>
+                                    >${sourceItem.name()}</option>
+                            </#if>
+                        </#list>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="referrer">推荐人</label>
@@ -102,6 +115,7 @@
                             <th>手机号</th>
                             <th>电子邮件</th>
                             <th>推荐人</th>
+                            <th>来源</th>
                             <th>渠道</th>
                             <th>注册时间</th>
                             <th>角色</th>
@@ -117,6 +131,7 @@
                             <td>${userItem.mobile}</td>
                             <td>${userItem.email!}</td>
                             <td>${userItem.referrer!}</td>
+                            <td>${userItem.source!}</td>
                             <td>${userItem.channel!}</td>
                             <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                             <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>

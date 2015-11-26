@@ -21,6 +21,7 @@
         <result column="status" property="status"></result>
         <result column="salt" property="salt"></result>
         <result column="channel" property="channel"></result>
+        <result column="source" property="source"></result>
         <association property="account" javaType="com.tuotiansudai.repository.model.AccountModel">
             <id column="id" property="id"></id>
             <result column="login_name" property="loginName"></result>
@@ -52,8 +53,8 @@
     </select>
 
     <insert id="create" parameterType="UserModel" useGeneratedKeys="true" keyProperty="id">
-      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel)
-      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel})
+      insert into user (login_name, password, mobile, email, register_time, referrer, status, salt, channel, source)
+      value(#{loginName}, #{password}, #{mobile}, #{email}, #{registerTime}, #{referrer}, #{status}, #{salt}, #{channel}, #{source})
     </insert>
 
     <update id="updatePasswordByLoginName" parameterType="map">
@@ -101,6 +102,9 @@
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
             </if>
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
 
         </where>
         order by u.register_time desc
@@ -139,7 +143,9 @@
             <if test="channel !=null and channel != '' ">
                 and u.channel = #{channel}
             </if>
-
+            <if test="source !=null">
+                and u.source = #{source}
+            </if>
         </where>
     </select>
 

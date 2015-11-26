@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserStatus;
 
 import java.util.Date;
@@ -44,6 +45,7 @@ public interface UserService {
 
     BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email,
                 String mobile, Date beginTime, Date endTime,
+                Source source,
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 

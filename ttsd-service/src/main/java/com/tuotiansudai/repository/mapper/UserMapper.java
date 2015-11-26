@@ -1,6 +1,7 @@
 package com.tuotiansudai.repository.mapper;
 
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,7 @@ public interface UserMapper {
                                 @Param(value = "mobile") String mobile,
                                 @Param(value = "beginTime") Date beginTime,
                                 @Param(value = "endTime") Date endTime,
+                                @Param(value = "source") Source source,
                                 @Param(value = "role") Role role,
                                 @Param(value = "referrer") String referrer,
                                 @Param(value = "channel") String channel,
@@ -39,6 +41,7 @@ public interface UserMapper {
                                 @Param(value = "mobile") String mobile,
                                 @Param(value = "beginTime") Date beginTime,
                                 @Param(value = "endTime") Date endTime,
+                                @Param(value = "source") Source source,
                                 @Param(value = "role") Role role,
                                 @Param(value = "referrer") String referrer,
                                 @Param(value = "channel") String channel);

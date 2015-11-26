@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = new UserModel();
         userModel.setLoginName(loginName);
         userModel.setMobile(dto.getMobile());
+        userModel.setSource(dto.getSource());
         if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             userModel.setReferrer(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName());
         }
@@ -360,9 +361,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime, Role role, String referrer, String channel, Integer index, Integer pageSize) {
+    public BaseDto<BasePaginationDataDto> findAllUser(String loginName, String email, String mobile, Date beginTime, Date endTime,
+                                                      Source source,
+                                                      Role role, String referrer, String channel, Integer index, Integer pageSize) {
         BaseDto<BasePaginationDataDto> baseDto = new BaseDto<>();
-        List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, (index - 1) * pageSize, pageSize);
+        List<UserModel> userModels = userMapper.findAllUser(loginName, email, mobile, beginTime, endTime,
+                source,
+                role, referrer, channel, (index - 1) * pageSize, pageSize);
         List<UserItemDataDto> userItemDataDtos = Lists.newArrayList();
         for (UserModel userModel : userModels) {
 
@@ -370,7 +375,7 @@ public class UserServiceImpl implements UserService {
             userItemDataDto.setUserRoles(userRoleMapper.findByLoginName(userModel.getLoginName()));
             userItemDataDtos.add(userItemDataDto);
         }
-        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer, channel);
+        int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
         BasePaginationDataDto<UserItemDataDto> basePaginationDataDto = new BasePaginationDataDto<>(index, pageSize, count, userItemDataDtos);
         basePaginationDataDto.setStatus(true);
         baseDto.setData(basePaginationDataDto);

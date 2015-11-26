@@ -1,0 +1,1 @@
+alter table aa.user add column source varchar(16);

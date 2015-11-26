@@ -1,6 +1,7 @@
 package com.tuotiansudai.api.dto;
 
 import com.tuotiansudai.dto.RegisterUserDto;
+import com.tuotiansudai.repository.model.Source;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Pattern;
@@ -67,6 +68,7 @@ public class RegisterRequestDto extends BaseParamDto {
         registerUserDto.setPassword(this.getPassword());
         registerUserDto.setCaptcha(this.getCaptcha());
         registerUserDto.setReferrer(this.getReferrer());
+        registerUserDto.setSource(Source.valueOf(getBaseParam().getPlatform()));
         return registerUserDto;
     }
 
