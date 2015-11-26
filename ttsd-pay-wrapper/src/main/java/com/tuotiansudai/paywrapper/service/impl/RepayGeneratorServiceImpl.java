@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class RepayGeneratorServiceImpl implements RepayGeneratorService {
 
-    static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
+    static Logger logger = Logger.getLogger(RepayGeneratorServiceImpl.class);
 
 
     @Autowired

@@ -53,7 +53,7 @@ import java.util.Map;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 
@@ -97,7 +97,7 @@ public class LoanServiceImpl implements LoanService {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
         LoanModel loanModel = loanMapper.findById(loanId);
-        String loanerId = accountMapper.findByLoginName(loanModel.getLoanerLoginName()).getPayUserId();
+        String loanerId = accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId();
         MerBindProjectRequestModel merBindProjectRequestModel = new MerBindProjectRequestModel(
                 loanerId,
                 String.valueOf(loanModel.getLoanAmount()),
