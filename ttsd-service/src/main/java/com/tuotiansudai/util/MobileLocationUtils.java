@@ -3,7 +3,6 @@ package com.tuotiansudai.util;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.*;

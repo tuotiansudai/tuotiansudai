@@ -9,6 +9,7 @@ import com.tuotiansudai.util.quartz.AutowiringSpringBeanJobFactory;
 import com.tuotiansudai.util.quartz.JobStoreBuilder;
 import com.tuotiansudai.util.quartz.SchedulerBuilder;
 import com.tuotiansudai.util.quartz.ThreadPoolBuilder;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.spi.JobStore;
 import org.quartz.spi.ThreadPool;
@@ -19,6 +20,7 @@ import java.util.TimeZone;
 
 @Component
 public class Worker {
+    static Logger logger = Logger.getLogger(Worker.class);
 
     @Autowired
     private AutowiringSpringBeanJobFactory jobFactory;
@@ -96,10 +98,9 @@ public class Worker {
         try {
             jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
                     .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
-//                    .runWithSchedule(CronScheduleBuilder.cronSchedule("30 0/5 * * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
                     .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            logger.debug(e.getLocalizedMessage(),e);
         }
     }
 

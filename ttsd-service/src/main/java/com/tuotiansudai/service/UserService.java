@@ -54,4 +54,6 @@ public interface UserService {
     int findUserCount();
 
     void refreshAreaByMobile(List<UserModel> userModels) ;
+
+    void reFreshAreaByMobileInJob() ;
 }

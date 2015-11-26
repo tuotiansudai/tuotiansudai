@@ -22,6 +22,7 @@ import com.tuotiansudai.util.MyShaPasswordEncoder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -346,6 +347,17 @@ public class UserServiceImpl implements UserService {
                 userModel.setCity(provinceAndCity[1]);
                 userMapper.updateUser(userModel);
             }
+        }
+    }
+
+    @Override
+    public void reFreshAreaByMobileInJob() {
+        while(true){
+            List<UserModel> userModels = userMapper.findUserByProvince();
+            if(CollectionUtils.isEmpty(userModels)){
+                break;
+            }
+            ((UserService)AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
     }
 
