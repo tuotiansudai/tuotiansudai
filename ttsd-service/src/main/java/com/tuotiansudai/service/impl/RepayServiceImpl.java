@@ -62,7 +62,6 @@ public class RepayServiceImpl implements RepayService {
 
         this.resetExpiredLoanRepay(loanRepayModels);
 
-
         dataDto.setHasWaitPayLoanRepay(Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
@@ -70,12 +69,18 @@ public class RepayServiceImpl implements RepayService {
             }
         }));
 
-        if (loanModel.getStatus() == LoanStatus.REPAYING) {
+        if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) ) {
             Date now = new Date();
             List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
             long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, new DateTime(now));
-            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() + interest));
+            long defaultInterest = 0;
+            long corpus = 0;
+            for (LoanRepayModel loanRepayModel : loanRepayModels) {
+                defaultInterest += loanRepayModel.getDefaultInterest();
+                corpus += loanRepayModel.getCorpus();
+            }
+            dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(corpus + interest + defaultInterest));
         }
 
         if (CollectionUtils.isNotEmpty(loanRepayModels)) {

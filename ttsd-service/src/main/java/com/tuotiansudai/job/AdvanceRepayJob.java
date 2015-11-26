@@ -20,6 +20,7 @@ public class AdvanceRepayJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger advance repay , prepare do job");
         String loanRepayId = context.getJobDetail().getJobDataMap().get(LOAN_REPAY_ID_KEY).toString();
 
         logger.info("trigger advance repay, loanRepayId = " + loanRepayId);
