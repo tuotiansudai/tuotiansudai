@@ -4,8 +4,9 @@ import com.tuotiansudai.dto.LoanListWebDto;
 import com.tuotiansudai.repository.model.ActivityType;
 import com.tuotiansudai.repository.model.LoanStatus;
 import com.tuotiansudai.service.LoanService;
-import com.tuotiansudai.web.util.AmountDirective;
-import com.tuotiansudai.web.util.PercentFractionDirective;
+import com.tuotiansudai.web.freemarker.directive.AmountDirective;
+import com.tuotiansudai.web.freemarker.directive.PercentFractionDirective;
+import com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,7 @@ public class LoanListController {
         modelAndView.addObject("hasPreviousPage", hasPreviousPage);
         modelAndView.addObject("hasNextPage", hasNextPage);
         modelAndView.addObject("percentFraction",new PercentFractionDirective());
+        modelAndView.addObject("percentInteger",new PercentIntegerDirective());
         modelAndView.addObject("amount",new AmountDirective());
         return modelAndView;
     }

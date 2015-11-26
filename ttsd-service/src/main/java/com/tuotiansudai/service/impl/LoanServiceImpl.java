@@ -210,7 +210,7 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
-        loanDto.setLoanAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount()));
+        loanDto.setLoanAmount(new BigDecimal(loanModel.getLoanAmount()).toString());
         loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
@@ -675,7 +675,7 @@ public class LoanServiceImpl implements LoanService {
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
             loanListWebDto.setStatus(loanModels.get(i).getStatus());
-            loanListWebDto.setLoanAmount(AmountConverter.convertCentToString(loanModels.get(i).getLoanAmount()));
+            loanListWebDto.setLoanAmount(new BigDecimal(loanModels.get(i).getLoanAmount()).toString());
             loanListWebDto.setActivityType(loanModels.get(i).getActivityType());
             if (loanModels.get(i).getStatus() == LoanStatus.PREHEAT) {
                 if (DateUtil.differenceMinute(new Date(), loanModels.get(i).getFundraisingStartTime()) < 30) {

@@ -1,13 +1,15 @@
-package com.tuotiansudai.web.util;
+package com.tuotiansudai.web.freemarker.directive;
+
 
 import freemarker.core.Environment;
 import freemarker.template.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.Map;
 
-public class PercentFractionDirective implements TemplateDirectiveModel{
+public class AmountDirective implements TemplateDirectiveModel {
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
@@ -18,24 +20,30 @@ public class PercentFractionDirective implements TemplateDirectiveModel{
             throw new TemplateModelException("This directive doesn't allow loop variables.");
         }
         if (body != null) {
-            body.render(new PercentFractionFilterWriter(env.getOut()));
+            body.render(new AmountFilterWriter(env.getOut()));
         } else {
             throw new RuntimeException("missing body");
         }
     }
 
-    private static class PercentFractionFilterWriter extends Writer {
+    private static class AmountFilterWriter extends Writer {
 
         private final Writer out;
 
-        PercentFractionFilterWriter (Writer out) {
+        AmountFilterWriter (Writer out) {
             this.out = out;
         }
 
         @Override
         public void write(char[] cbuf, int off, int len) throws IOException {
-            String percent = new String(cbuf, off, len).replaceAll("0+?$", "");;
-            out.write(percent);
+            BigDecimal amount = new BigDecimal(new String(cbuf, off, len));
+            String returnAmount;
+            if (amount.compareTo(new BigDecimal(1000000)) != -1){
+                returnAmount = amount.divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_DOWN).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+"万";
+            } else {
+                returnAmount = amount.toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
+            }
+            out.write(returnAmount);
         }
 
         @Override
