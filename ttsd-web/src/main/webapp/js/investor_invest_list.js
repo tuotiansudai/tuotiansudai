@@ -66,9 +66,6 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
                                 case 'CANCEL':
                                     item.status = '流标';
                                     break;
-                                case 'CONFIRMING':
-                                    item.status = '确认中';
-                                    break;
                             }
                         });
                         var html = Mustache.render(investRepayTemplate, data);

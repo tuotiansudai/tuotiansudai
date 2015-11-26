@@ -46,7 +46,6 @@ require(['jquery','mustache','text!/tpl/notice-list.mustache','commonFun','pagin
         }
 
         if($('#errorContainer').length) {
-
             setTimeout(function(){
                 window.location="/";
             },10000);

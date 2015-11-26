@@ -8,8 +8,8 @@ class LoanMigrate(BaseMigrate):
     SELECT_SQL = "SELECT \
                       loan.id, \
                       loan.name, \
-                      IFNULL(loan.agent,loan.user_id) AS agent_login_name, \
-                      loan.user_id AS loaner_login_name, \
+                      loan.user_id AS agent_login_name, \
+                      IFNULL(loan.agent,loan.user_id) AS loaner_login_name, \
                       CASE \
                         WHEN loan.type = 'loan_type_1' \
                         THEN 'INVEST_INTEREST_MONTHLY_REPAY' \

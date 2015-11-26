@@ -14,8 +14,8 @@ class DBWrapper(object):
         self.cursor = None
 
     def execute(self, sql, params=None, is_many=False):
-        logger.debug(sql)
-        logger.debug(params)
+        # logger.debug(sql)
+        # logger.debug(params)
         cursor = self.get_cursor()
         if is_many:
             result = cursor.executemany(sql, params)

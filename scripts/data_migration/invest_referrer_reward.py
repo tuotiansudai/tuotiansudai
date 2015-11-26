@@ -6,7 +6,7 @@ class InvestReferrerRewardMigrate(BaseMigrate):
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """
     # select sql which is executed on original db (edxapp, tuotiansudai etc)
-    SELECT_SQL = "SELECT invest_id, bonus, referrer_id, status, role_name, time FROM invest_userReferrer where invest_id not in (select id from invest where status='test')"
+    SELECT_SQL = "SELECT invest_id, bonus, referrer_id, status, role_name, time FROM invest_userreferrer where invest_id not in (select id from invest where status='test')"
     # insert sql which is executed on aa db
     INSERT_SQL = '''INSERT INTO invest_referrer_reward(`id`, `invest_id`, `amount`, `referrer_login_name`, `referrer_role`, `status`, `created_time`)
                     VALUES(%s, %s, %s, %s, %s, %s, %s)'''
@@ -15,6 +15,9 @@ class InvestReferrerRewardMigrate(BaseMigrate):
         'fail': 'FAILURE',
         'success': 'SUCCESS'
     }
+
+    ROLE_MAPPING = {'INVESTOR': 'INVESTOR',
+                    'ROLE_MERCHANDISER': 'STAFF'}
 
     _index = 0
 
@@ -25,7 +28,7 @@ class InvestReferrerRewardMigrate(BaseMigrate):
                 old_row['invest_id'],
                 int(round(old_row['bonus'] * 100)),
                 old_row['referrer_id'].lower(),
-                old_row['role_name'],
+                self.ROLE_MAPPING[old_row['role_name']],
                 self.STATUS_MAPPING[old_row['status']],
                 old_row['time'])
 

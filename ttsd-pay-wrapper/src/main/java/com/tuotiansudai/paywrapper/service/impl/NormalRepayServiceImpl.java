@@ -1,10 +1,20 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.UnmodifiableIterator;
+import com.google.common.primitives.Ints;
+import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
+import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
+import com.tuotiansudai.exception.AmountTransferException;
+import com.tuotiansudai.job.JobType;
+import com.tuotiansudai.job.NormalRepayJob;
 import com.tuotiansudai.paywrapper.client.PayAsyncClient;
 import com.tuotiansudai.paywrapper.client.PaySyncClient;
-import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.paywrapper.exception.PayException;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferMapper;
 import com.tuotiansudai.paywrapper.repository.mapper.ProjectTransferNotifyMapper;
@@ -20,8 +30,10 @@ import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.AmountTransfer;
 import com.tuotiansudai.util.InterestCalculator;
+import com.tuotiansudai.util.JobManager;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +47,14 @@ import java.util.Map;
 @Service
 public class NormalRepayServiceImpl implements RepayService {
 
-    static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
+    private static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
 
     protected final static String REPAY_ORDER_ID_SEPARATOR = "X";
 
     protected final static String REPAY_ORDER_ID_TEMPLATE = "{0}" + REPAY_ORDER_ID_SEPARATOR + "{1}";
+
+    @Autowired
+    protected AccountMapper accountMapper;
 
     @Autowired
     protected InvestMapper investMapper;
@@ -54,7 +69,7 @@ public class NormalRepayServiceImpl implements RepayService {
     protected LoanRepayMapper loanRepayMapper;
 
     @Autowired
-    protected AccountMapper accountMapper;
+    protected SystemBillMapper systemBillMapper;
 
     @Autowired
     protected AmountTransfer amountTransfer;
@@ -74,6 +89,9 @@ public class NormalRepayServiceImpl implements RepayService {
     @Autowired
     protected LoanService loanService;
 
+    @Autowired
+    protected JobManager jobManager;
+
     @Override
     @Transactional
     public BaseDto<PayFormDataDto> repay(long loanId) {
@@ -86,15 +104,22 @@ public class NormalRepayServiceImpl implements RepayService {
         baseDto.setData(payFormDataDto);
 
         if (enabledLoanRepay == null) {
-            logger.error(MessageFormat.format("Currently, there is no enabled loan repay in loan (loanId = {0})", String.valueOf(loanId)));
+            logger.error(MessageFormat.format("[Normal Repay] There is no enabled loan repay (loanId = {0})", String.valueOf(loanId)));
             return baseDto;
         }
 
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+
         DateTime actualRepayDate = new DateTime();
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId), actualRepayDate);
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, actualRepayDate.toDate());
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
 
-        enabledLoanRepay.setStatus(RepayStatus.CONFIRMING);
+        long defaultInterest = 0;
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            defaultInterest += loanRepayModel.getDefaultInterest();
+        }
+
+        enabledLoanRepay.setStatus(RepayStatus.WAIT_PAY);
         enabledLoanRepay.setActualInterest(actualInterest);
         enabledLoanRepay.setActualRepayDate(actualRepayDate.toDate());
         loanRepayMapper.update(enabledLoanRepay);
@@ -105,11 +130,11 @@ public class NormalRepayServiceImpl implements RepayService {
                 String.valueOf(loanId),
                 loanRepayOrderId,
                 accountMapper.findByLoginName(loanModel.getAgentLoginName()).getPayUserId(),
-                String.valueOf(actualInterest + enabledLoanRepay.getDefaultInterest() + enabledLoanRepay.getCorpus()));
+                String.valueOf(actualInterest + defaultInterest + enabledLoanRepay.getCorpus()));
         try {
             baseDto = payAsyncClient.generateFormData(ProjectTransferMapper.class, requestModel);
         } catch (PayException e) {
-            logger.error(MessageFormat.format("Generate repay form data failed (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())));
+            logger.error(MessageFormat.format("[Normal Repay] Generate loan repay form data failed (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())));
             logger.error(e.getLocalizedMessage(), e);
         }
 
@@ -124,182 +149,341 @@ public class NormalRepayServiceImpl implements RepayService {
             return null;
         }
 
-        this.postRepayCallback(callbackRequest);
+        LoanRepayModel enabledLoanRepay;
+        try {
+            long loanRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+            enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
+            if (enabledLoanRepay != null && enabledLoanRepay.getStatus() == RepayStatus.WAIT_PAY) {
+                this.createNormalRepayJob(loanRepayId);
+            } else {
+                logger.error(MessageFormat.format("[Normal Repay] Loan repay is not existing or status is not WAIT_PAY (loanRepayId = {0})", String.valueOf(loanRepayId)));
+            }
+        } catch (NumberFormatException e) {
+            logger.error(MessageFormat.format("[Normal Repay] Loan repay id is invalid (loanRepayId = {0})", callbackRequest.getOrderId()));
+            logger.error(e.getLocalizedMessage(), e);
+        }
 
         return callbackRequest.getResponseData();
     }
 
+    @Override
     @Transactional
-    protected void postRepayCallback(BaseCallbackRequestModel callbackRequestModel) {
-        if (!callbackRequestModel.isSuccess()) {
-            return;
+    public String investPaybackCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
         }
 
-        long loanRepayId;
         try {
-            loanRepayId = Long.parseLong(callbackRequestModel.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+            long investRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findById(investRepayId);
+
+            if (currentInvestRepayModel.getStatus() == RepayStatus.REPAYING) {
+                InvestModel investModel = investMapper.findById(currentInvestRepayModel.getInvestId());
+                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+                LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), currentInvestRepayModel.getPeriod());
+
+                final DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+
+                DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
+                if (currentInvestRepayModel.getPeriod() > 1) {
+                    if (currentInvestRepayModel.getPeriod() > 1) {
+                        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+                        for (LoanRepayModel model : loanRepayModels) {
+                            if (loanRepayModel.getPeriod() > model.getPeriod() && model.getActualRepayDate() != null && model.getActualRepayDate().before(currentRepayDate.toDate())) {
+                                lastRepayDate = new DateTime(model.getActualRepayDate());
+                            }
+                        }
+                    }
+                }
+
+                long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
+                long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+
+                long defaultInterest = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    defaultInterest += investRepayModel.getDefaultInterest();
+                }
+
+                this.updateInvestorUserBill(investModel.getLoginName(), investRepayId, currentInvestRepayModel.getCorpus() + actualInterest + defaultInterest, actualFee);
+                this.updateInvestRepay(currentInvestRepayModel.getInvestId(), currentInvestRepayModel.getPeriod(), actualInterest, actualFee, loanRepayModel.getActualRepayDate());
+            }
         } catch (NumberFormatException e) {
-            logger.error(MessageFormat.format("Loan repay id is invalid (loanRepayId = {0})", callbackRequestModel.getOrderId()));
+            logger.error(MessageFormat.format("[Normal Repay] Loan repay id is invalid (investRepayId = {0})", callbackRequest.getOrderId()));
             logger.error(e.getLocalizedMessage(), e);
-            return;
+        } catch (AmountTransferException e) {
+            logger.error(MessageFormat.format("[Normal Repay] Update investor user bill failed (investRepayId = {0})", callbackRequest.getOrderId()));
+            logger.error(e.getLocalizedMessage(), e);
         }
 
-        LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
-        if (enabledLoanRepay.getStatus() != RepayStatus.CONFIRMING) {
-            logger.error(MessageFormat.format("Loan repay status is not confirming (loanRepayId = {0})", String.valueOf(loanRepayId)));
-            return;
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public String investFeeCallback(Map<String, String> paramsMap, String originalQueryString) {
+        BaseCallbackRequestModel callbackRequest = this.payAsyncClient.parseCallbackRequest(paramsMap, originalQueryString, ProjectTransferNotifyMapper.class, ProjectTransferNotifyRequestModel.class);
+
+        if (callbackRequest == null) {
+            return null;
         }
+
+        try {
+            long investRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findById(investRepayId);
+            if (systemBillMapper.findByOrderId(investRepayId) == null) {
+                InvestModel investModel = investMapper.findById(currentInvestRepayModel.getInvestId());
+                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
+                LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), currentInvestRepayModel.getPeriod());
+
+                final DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+
+                DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
+                if (currentInvestRepayModel.getPeriod() > 1) {
+                    Ordering<LoanRepayModel> descOrdering = new Ordering<LoanRepayModel>() {
+                        @Override
+                        public int compare(LoanRepayModel left, LoanRepayModel right) {
+                            return Ints.compare(right.getPeriod(), left.getPeriod());
+                        }
+                    };
+
+                    List<LoanRepayModel> orderingLoanRepayModels = descOrdering.sortedCopy(loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()));
+                    Optional<LoanRepayModel> optional = Iterators.tryFind(orderingLoanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+                        @Override
+                        public boolean apply(LoanRepayModel input) {
+                            return input.getActualRepayDate() != null && input.getActualRepayDate().before(currentRepayDate.toDate());
+                        }
+                    });
+
+                    if (optional.isPresent()) {
+                        lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
+                    }
+                }
+
+                long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
+                long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+
+                systemBillService.transferIn(investRepayId,
+                        actualFee,
+                        SystemBillBusinessType.INVEST_FEE,
+                        MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investModel.getLoginName(), String.valueOf(investRepayId)));
+            }
+        } catch (NumberFormatException e) {
+            logger.error(MessageFormat.format("[Normal Repay] Loan repay id is invalid (investRepayId = {0})", callbackRequest.getOrderId()));
+            logger.error(e.getLocalizedMessage(), e);
+        }
+
+        return callbackRequest.getResponseData();
+    }
+
+    @Override
+    public void postRepayCallback(long loanRepayId) {
+        LoanRepayModel enabledLoanRepay = loanRepayMapper.findById(loanRepayId);
 
         LoanModel loanModel = loanMapper.findById(enabledLoanRepay.getLoanId());
 
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+        long defaultInterest = 0;
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            defaultInterest += loanRepayModel.getDefaultInterest();
+        }
+
         //更新代理人账户
+        long repayAmount = enabledLoanRepay.getActualInterest() + defaultInterest + enabledLoanRepay.getCorpus();
         try {
             amountTransfer.transferOutBalance(loanModel.getAgentLoginName(),
                     enabledLoanRepay.getId(),
-                    enabledLoanRepay.getActualInterest() + enabledLoanRepay.getDefaultInterest() + enabledLoanRepay.getCorpus(),
-                    UserBillBusinessType.NORMAL_REPAY, null, null);
+                    repayAmount,
+                    loanModel.getStatus() == LoanStatus.OVERDUE ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY,
+                    null, null);
         } catch (AmountTransferException e) {
-            logger.error(MessageFormat.format("Transfer out balance for loan repay interest (loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())));
+            logger.error(MessageFormat.format("[Normal Repay] Transfer out balance for loan repay interest is failed(loanRepayId = {0})", String.valueOf(enabledLoanRepay.getId())));
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        //还款后回款
-        this.paybackInvestRepay(loanModel, enabledLoanRepay);
+        long totalPayback = this.paybackInvestRepay(enabledLoanRepay);
 
-        //更新LoanRepay Status = COMPLETE
-        enabledLoanRepay.setStatus(RepayStatus.COMPLETE);
-        loanRepayMapper.update(enabledLoanRepay);
+        //更新LoanRepay状态
+        this.updateLoanRepayStatus(enabledLoanRepay);
+
+        //多余利息返平台
+        this.transferLoanBalance(enabledLoanRepay, repayAmount - totalPayback);
 
         //最后一期更新Loan Status = COMPLETE
-        boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == enabledLoanRepay.getPeriod();
-        if (isLastPeriod) {
-            //多余利息返平台
-            boolean success = this.transferInLoanRemainingAmount(loanModel.getId());
-            //最后一期更新标的状态
-            if (success) {
-                loanService.updateLoanStatus(loanModel.getId(), LoanStatus.COMPLETE);
-            }
-        }
+        int currentPeriod = enabledLoanRepay.getPeriod();
+
+        this.updateLoanStatus(loanModel, currentPeriod);
+
+        this.investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(), currentPeriod);
     }
 
-    protected void paybackInvestRepay(LoanModel loanModel, LoanRepayModel enabledLoanRepay) {
+    private long paybackInvestRepay(LoanRepayModel loanRepayModel) {
+        LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
+        DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()), currentRepayDate.toDate());
+
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
-        DateTime currentRepayDate = new DateTime(enabledLoanRepay.getActualRepayDate());
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()), currentRepayDate);
+        long totalPayback = 0;
 
-        for (InvestModel successInvest : successInvests) {
-            InvestRepayModel investRepayModel = investRepayMapper.findByInvestIdAndPeriod(successInvest.getId(), enabledLoanRepay.getPeriod());
-            long investRepayId = investRepayModel.getId();
-            if (investRepayModel.getStatus() == RepayStatus.COMPLETE) {
-                logger.error(MessageFormat.format("Invest repay payback has already completed (investRepayId = {0})", String.valueOf(investRepayId)));
+        for (InvestModel investModel : successInvests) {
+            String investorLoginName = investModel.getLoginName();
+            AccountModel accountModel = accountMapper.findByLoginName(investorLoginName);
+            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
+
+            long investRepayId = currentInvestRepayModel.getId();
+            if (currentInvestRepayModel.getStatus() == RepayStatus.COMPLETE) {
+                logger.error(MessageFormat.format("[Normal Repay] Invest repay has been COMPLETE (investRepayId = {0})", String.valueOf(investRepayId)));
                 continue;
             }
 
-            String investorLoginName = successInvest.getLoginName();
-            AccountModel accountModel = accountMapper.findByLoginName(investorLoginName);
+            long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
+            long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+            long defaultInterest = 0;
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+            for (InvestRepayModel investRepayModel : investRepayModels) {
+                defaultInterest += investRepayModel.getDefaultInterest();
+            }
+            long amount = currentInvestRepayModel.getCorpus() + actualInterest + defaultInterest - actualFee;
 
-            long actualInvestRepayInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, successInvest, lastRepayDate, currentRepayDate);
-            long actualInvestFee = new BigDecimal(actualInvestRepayInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
+            totalPayback += currentInvestRepayModel.getCorpus() + actualInterest + defaultInterest;
 
-            boolean investRepayPaybackSuccess = actualInvestRepayInterest == 0;
-            if (actualInvestRepayInterest > 0) {
+            if (amount > 0) {
                 ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayPaybackRequest(String.valueOf(loanModel.getId()),
-                        String.valueOf(investRepayId),
+                        MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(currentRepayDate.getMillis())),
                         accountModel.getPayUserId(),
-                        String.valueOf(actualInvestRepayInterest - actualInvestFee + investRepayModel.getDefaultInterest() + investRepayModel.getCorpus()));
-
+                        String.valueOf(amount));
                 try {
-                    ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
-                    investRepayPaybackSuccess = responseModel.isSuccess();
+                    this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
                 } catch (PayException e) {
-                    logger.error(MessageFormat.format("Repay payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(MessageFormat.format("[Normal Repay] Invest payback is failed (investRepayId = {0})", String.valueOf(investRepayId)));
                     logger.error(e.getLocalizedMessage(), e);
                 }
-            }
-
-            if (investRepayPaybackSuccess) {
-                investRepayModel.setActualInterest(actualInvestRepayInterest);
-                investRepayModel.setActualFee(actualInvestFee);
-                investRepayModel.setActualRepayDate(enabledLoanRepay.getActualRepayDate());
-                investRepayModel.setStatus(RepayStatus.COMPLETE);
-                investRepayMapper.update(investRepayModel);
-                long investRepayAmount = actualInvestRepayInterest + investRepayModel.getDefaultInterest() + investRepayModel.getCorpus();
+            } else {
                 try {
-                    amountTransfer.transferInBalance(investorLoginName, investRepayId, investRepayAmount, UserBillBusinessType.NORMAL_REPAY, null, null);
+                    this.updateInvestorUserBill(investorLoginName, investRepayId, currentInvestRepayModel.getCorpus() + actualInterest + defaultInterest, actualFee);
                 } catch (AmountTransferException e) {
-                    logger.error(MessageFormat.format("invest payback transfer in balance failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(MessageFormat.format("[Normal Repay] Update investor user bill failed (investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(e.getLocalizedMessage(), e);
                 }
-                this.paybackInvestFee(loanModel.getId(), investRepayId, accountModel, actualInvestFee);
+                this.updateInvestRepay(investModel.getId(), loanRepayModel.getPeriod(), actualInterest, actualFee, currentRepayDate.toDate());
             }
 
+            if (actualFee > 0) {
+                try {
+                    ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanModel.getId()),
+                            MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime())),
+                            String.valueOf(actualFee));
+                    this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
+                } catch (PayException e) {
+                    logger.error(MessageFormat.format("[Repay] Invest fee is failed(investRepayId = {0})", String.valueOf(investRepayId)));
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+            } else {
+                systemBillService.transferIn(investRepayId,
+                        actualFee,
+                        SystemBillBusinessType.INVEST_FEE,
+                        MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorLoginName, String.valueOf(investRepayId)));
+            }
         }
-        investService.notifyInvestorRepaySuccessfulByEmail(loanModel.getId(), enabledLoanRepay.getPeriod());
+
+        return totalPayback;
     }
 
-    protected void paybackInvestFee(long loanId, long investRepayId, AccountModel investorAccount, long actualInvestFee) {
-        boolean repayInvestFeeSuccess = actualInvestFee == 0;
-        if (actualInvestFee > 0) {
-            String investFeeOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(investRepayId), String.valueOf(new Date().getTime()));
-            ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newRepayInvestFeeRequest(String.valueOf(loanId),
-                    investFeeOrderId,
-                    String.valueOf(actualInvestFee));
-
-            try {
-                ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
-                repayInvestFeeSuccess = responseModel.isSuccess();
-            } catch (PayException e) {
-                logger.error(MessageFormat.format("invest payback failed (investRepayId = {0})", String.valueOf(investRepayId)));
-                logger.error(e.getLocalizedMessage(), e);
-            }
+    protected void transferLoanBalance(LoanRepayModel enabledLoanRepay, long amount) {
+        if (amount <= 0) {
+            return;
         }
 
-        if (repayInvestFeeSuccess) {
-            try {
-                amountTransfer.transferOutBalance(investorAccount.getLoginName(), investRepayId, actualInvestFee, UserBillBusinessType.INVEST_FEE, null, null);
-            } catch (AmountTransferException e) {
-                logger.error(MessageFormat.format("transfer out balance for invest repay fee (investRepayId = {0})", String.valueOf(investRepayId)));
-                logger.error(e.getLocalizedMessage(), e);
-            }
-            String detail = MessageFormat.format(SystemBillDetailTemplate.INVEST_FEE_DETAIL_TEMPLATE.getTemplate(), investorAccount.getLoginName(), String.valueOf(investRepayId));
-            systemBillService.transferIn(investRepayId, actualInvestFee, SystemBillBusinessType.INVEST_FEE, detail);
-        }
-    }
-
-    protected boolean transferInLoanRemainingAmount(long loanId) {
-        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByLoanId(loanId);
-        long remainingAmount = 0;
-
-        for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            remainingAmount += loanRepayModel.getActualInterest() + loanRepayModel.getDefaultInterest() + loanRepayModel.getCorpus();
-        }
-
-        for (InvestRepayModel investRepayModel : investRepayModels) {
-            remainingAmount -= investRepayModel.getActualInterest() + investRepayModel.getDefaultInterest() + investRepayModel.getCorpus();
-        }
-
-        if (remainingAmount == 0) {
-            return true;
-        }
-
-        String remainingAmountTransferOrderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanId), String.valueOf(new Date().getTime()));
-        ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newLoanRemainAmountRequest(String.valueOf(loanId),
-                remainingAmountTransferOrderId,
-                String.valueOf(remainingAmount));
+        long loanRepayId = enabledLoanRepay.getId();
+        String orderId = MessageFormat.format(REPAY_ORDER_ID_TEMPLATE, String.valueOf(loanRepayId), String.valueOf(new Date().getTime()));
+        ProjectTransferRequestModel projectTransferRequestModel = ProjectTransferRequestModel.newLoanRemainAmountRequest(String.valueOf(enabledLoanRepay.getLoanId()),
+                orderId,
+                String.valueOf(amount));
 
         try {
             ProjectTransferResponseModel responseModel = this.paySyncClient.send(ProjectTransferMapper.class, projectTransferRequestModel, ProjectTransferResponseModel.class);
             if (responseModel.isSuccess()) {
-                String detail = MessageFormat.format(SystemBillDetailTemplate.LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanId), String.valueOf(remainingAmount));
-                systemBillService.transferIn(loanId, remainingAmount, SystemBillBusinessType.LOAN_REMAINING_INTEREST, detail);
-                return true;
+                systemBillService.transferIn(loanRepayId,
+                        amount,
+                        SystemBillBusinessType.LOAN_REMAINING_INTEREST,
+                        MessageFormat.format(SystemBillDetailTemplate.LOAN_REMAINING_INTEREST_DETAIL_TEMPLATE.getTemplate(), String.valueOf(loanRepayId), String.valueOf(amount)));
             }
         } catch (PayException e) {
-            logger.error(MessageFormat.format("loan remaining interest transfer failed (loanId = {0} remainingInterest = {1})", String.valueOf(loanId), String.valueOf(remainingAmount)));
+            logger.error(MessageFormat.format("[Repay] Loan remaining interest transfer is failed (loanRepayId = {0} amount = {1})", String.valueOf(loanRepayId), String.valueOf(amount)));
             logger.error(e.getLocalizedMessage(), e);
         }
+    }
 
-        return false;
+    @Transactional
+    private void updateLoanRepayStatus(LoanRepayModel enabledLoanRepay) {
+        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(enabledLoanRepay.getLoanId());
+        for (LoanRepayModel loanRepayModel : loanRepayModels) {
+            if (loanRepayModel.getStatus() == RepayStatus.OVERDUE || enabledLoanRepay.getId() == loanRepayModel.getId()) {
+                loanRepayModel.setStatus(RepayStatus.COMPLETE);
+                loanRepayModel.setActualRepayDate(enabledLoanRepay.getActualRepayDate());
+                loanRepayMapper.update(loanRepayModel);
+            }
+        }
+    }
+
+    @Transactional
+    private void updateInvestRepay(long investId, final int currentPeriod, long actualInterest, long InvestFee, Date actualRepayDate) {
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investId);
+        for (InvestRepayModel investRepayModel : investRepayModels) {
+            if (investRepayModel.getPeriod() <= currentPeriod) {
+                if (investRepayModel.getStatus() == RepayStatus.OVERDUE) {
+                    investRepayModel.setActualRepayDate(actualRepayDate);
+                    investRepayModel.setStatus(RepayStatus.COMPLETE);
+                }
+                if (investRepayModel.getPeriod() == currentPeriod) {
+                    investRepayModel.setActualInterest(actualInterest);
+                    investRepayModel.setActualFee(InvestFee);
+                    investRepayModel.setActualRepayDate(actualRepayDate);
+                    investRepayModel.setStatus(RepayStatus.COMPLETE);
+                }
+                investRepayMapper.update(investRepayModel);
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void updateInvestorUserBill(String investorLoginName, long investRepayId, long actualPaybackAmount, long actualFee) throws AmountTransferException {
+        InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investRepayModel.getInvestId());
+        boolean isOverdueRepay = Iterators.tryFind(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
+            @Override
+            public boolean apply(InvestRepayModel input) {
+                return input.getStatus() == RepayStatus.OVERDUE;
+            }
+        }).isPresent();
+
+        amountTransfer.transferInBalance(investorLoginName, investRepayId, actualPaybackAmount,
+                isOverdueRepay ? UserBillBusinessType.OVERDUE_REPAY : UserBillBusinessType.NORMAL_REPAY,
+                null, null);
+        amountTransfer.transferOutBalance(investorLoginName, investRepayId, actualFee, UserBillBusinessType.INVEST_FEE, null, null);
+    }
+
+    @Transactional
+    private void updateLoanStatus(LoanModel loanModel, int currentPeriod) {
+        boolean isLastPeriod = loanModel.calculateLoanRepayTimes() == currentPeriod;
+        if (isLastPeriod) {
+            loanService.updateLoanStatus(loanModel.getId(), LoanStatus.COMPLETE);
+        } else {
+            loanMapper.updateStatus(loanModel.getId(), LoanStatus.REPAYING);
+        }
+    }
+
+    private void createNormalRepayJob(long loanRepayId) {
+        Date fiveMinutesLater = new DateTime().plusMinutes(5).toDate();
+        try {
+            jobManager.newJob(JobType.NormalRepay, NormalRepayJob.class)
+                    .runOnceAt(fiveMinutesLater)
+                    .addJobData(NormalRepayJob.LOAN_REPAY_ID_KEY, String.valueOf(loanRepayId))
+                    .submit();
+        } catch (SchedulerException e) {
+            logger.error(MessageFormat.format("Create normal repay job failed (loanRepayId = {0})", String.valueOf(loanRepayId)), e);
+        }
     }
 }
