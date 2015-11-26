@@ -98,12 +98,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         var num = 30;
                         // 倒计时
                         function countdown() {
-                            $('.fetch-captcha').html(num + '秒后重新发送').addClass('grey');
-                            $('.fetch-captcha').attr('disabled','disabled');
+                            $('.fetch-captcha').html(num + '秒后重新发送').prop('disabled',true);
                             if (num == 0) {
                                 clearInterval(count);
-                                $('.fetch-captcha').html('重新发送').removeClass('grey');
-                                $('.fetch-captcha').removeAttr('disabled','disabled');
+                                $('.fetch-captcha').html('重新发送').prop('disabled',false);
                                 $('.verification-code-text').val('');
                             }
                             num--;
