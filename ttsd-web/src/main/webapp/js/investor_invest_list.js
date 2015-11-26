@@ -103,7 +103,11 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
         changeDatePicker();
         loadLoanData();
     });
-    //$statusFilter
+    $statusFilter.find(".select-item").click(function () {
+        $(this).addClass("current").siblings(".select-item").removeClass("current");
+        loadLoanData();
+    });
+
     $dateFilter.find(".select-item").eq(2).trigger('click');
 
     //define calendar
