@@ -331,7 +331,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void reFreshAreaByMobile(List<UserModel> userModels) {
+    public void refreshAreaByMobile(List<UserModel> userModels) {
         for(UserModel userModel:userModels){
             String phoneMobile = userModel.getMobile();
             if(StringUtils.isNotEmpty(phoneMobile)){
@@ -349,16 +349,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public void reFreshAreaByMobileInJob() {
-        while(true){
-            List<UserModel> userModels = userMapper.findUserByProvince();
-            if(CollectionUtils.isEmpty(userModels)){
-                break;
-            }
-            this.reFreshAreaByMobile(userModels);
-        }
-    }
+
 
 
 
