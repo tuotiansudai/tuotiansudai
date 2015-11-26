@@ -330,8 +330,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String newEmail = editUserDto.getEmail();
-        UserModel userModelByEmail = userMapper.findByEmail(newEmail);
-        if (!Strings.isNullOrEmpty(newEmail) && userModelByEmail != null && !editUserModel.getLoginName().equalsIgnoreCase(userModelByEmail.getLoginName())) {
+        if (!Strings.isNullOrEmpty(newEmail) && userMapper.findByEmail(newEmail) != null && !editUserModel.getLoginName().equalsIgnoreCase(userMapper.findByEmail(newEmail).getLoginName())) {
             throw new EditUserException("该邮箱已经存在");
         }
 
