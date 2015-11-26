@@ -106,8 +106,10 @@
 .image-captcha-dialog {
   padding-bottom: 10px !important;
   padding-right: 10px;
+  height:100%;
   .image-captcha-form {
     position: relative;
+    height:100%;
     input.image-captcha-text {
       background: url("/images/icons/register.png") no-repeat 6px -548px;
       width: 156px;
@@ -120,7 +122,7 @@
     }
     img.image-captcha {
       width: 60px;
-      height: 30px;
+      height: 29px;
       border-radius: 3px;
       background: #e4e4e4;
       border: #bababa 1px solid;
@@ -129,11 +131,75 @@
       left: 130px;
       top: 2px;
     }
+    .image-captcha-confirm {
+      position: absolute;
+      bottom: 35px;
+      left: 35%;
+    }
   }
 
   .image-captcha-confirm.loading {
     background: url("/images/icons/loading.gif") no-repeat center center;
     cursor: default;
     text-indent: -9999px;
+  }
+}
+
+.forget-phone-box {
+  .re-title {
+    font-size: 18px;
+    color: #e64d0a;
+    font-weight: bold;
+    padding:30px;
+  }
+  .retrieve-box {
+    width:420px;
+    margin:0 auto;
+    text-align: left;
+    li {
+      margin-bottom:10px;
+      position: relative;
+        .fetch-captcha {
+          position: absolute;
+          padding: 7px 6px;
+          letter-spacing: 0;
+          font-size: 12px;
+          top: 2px;
+          left: 198px;
+          &:disabled {
+            background: #aaa!important;
+            border:1px solid #aaa!important;
+          }
+        }
+      input[type='text'] {
+        color: #999;
+        width: 210px;
+        border: #cecece 1px solid;
+        border-radius: 3px;
+        padding: 9px 2px 9px 5px;
+      }
+      .btn-send-form {
+        margin-left: 100px;
+      }
+
+    }
+  }
+}
+
+.verification-code-main {
+  position: relative;
+  height:100%;
+  .image-code-check {
+    position: relative;
+    .verification-code-img {
+      position: absolute;
+      right: 44px;
+
+    }
+  }
+  .btn-success {
+    position: absolute;
+    bottom: 55px;
+    left: 35%;
   }
 }

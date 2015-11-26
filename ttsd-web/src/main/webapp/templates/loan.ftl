@@ -186,6 +186,8 @@
                     <div class="loan-material">
                         <h3>申请材料：</h3>
                         <div class="pic-list" id="picListBox">
+                            <img src="/images/sign/login-background.jpg" layer-src="/images/sign/login-background.jpg"/>
+                            <img src="/images/sign/company-map.png" layer-src="/images/sign/company-map.png">
                             <#list loan.loanTitleDto as loanTitle>
                                 <div class="title">${loanTitle_index + 1}、${loanTitle.title}：</div>
                                     <#list loan.loanTitles as loanTitleRelation >

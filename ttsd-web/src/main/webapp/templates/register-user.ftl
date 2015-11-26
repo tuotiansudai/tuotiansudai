@@ -127,7 +127,6 @@
     <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-<div class="clear-blank-m"></div>
         <div class="tc">
             <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
         </div>
