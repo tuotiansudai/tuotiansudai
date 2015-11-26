@@ -168,21 +168,21 @@
         select *,
         (select min(loan_repay.repay_date)
         from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY')) as next_repay_date,
+        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
         (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
-        where loaner_login_name = #{loanerLoginName} and status in ('REPAYING', 'WAIT_PAY')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY')) between #{startTime} and #{endTime}
+        where loaner_login_name = #{loanerLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
 
     <select id="findCountRepayingByLoanerLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY')) between #{startTime} and #{endTime}
+        where loaner_login_name = #{loanerLoginName} and status in ('REPAYING', 'OVERDUE')
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
     </select>
 
     <select id="findCompletedPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
