@@ -8,7 +8,7 @@
     };
 </script>
 <div class="content-container account-overview">
-    <div class="bRadiusBox spad bg-w">
+    <div class="bRadiusBox spad bg-w clearfix">
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg" >
         <div class="profileBox">
             <span><em>您好：${loginName!}</em></span>
@@ -173,7 +173,7 @@
                         <td>${(latestInvest.investTime?string('yyyy-MM-dd'))!}</td>
                         <td><a href="/loan/${latestInvest.loanId?string('0')}">${latestInvest.loanName!}</a></td>
                         <td>投资成功</td>
-                        <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!}
+                        <td><#if latestInvest.status??>${(latestInvest.repayDate?string('yyyy-MM-dd'))!} /
                             ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>
                         </td>
                         <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}元</td>

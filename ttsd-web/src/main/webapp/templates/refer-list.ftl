@@ -21,9 +21,11 @@
         <ul class="search-type tab-switch-menu clearfix">
             <li class="select-item current" data-type="referRelation"><span>我的推荐列表</span></li>
             <li class="select-item" data-type="referInvest"><span>推荐人投资列表</span></li>
-
         </ul>
-        <table class="refer-relation table-striped"></table>
+        <div class="search-content-tab">
+
+        </div>
+        <table class="refer-relation table-striped table-center"></table>
         <table class="refer-invest table-striped"></table>
     </div>
 

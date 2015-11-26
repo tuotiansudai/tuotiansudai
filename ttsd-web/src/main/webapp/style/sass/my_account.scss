@@ -718,6 +718,20 @@
   }
 
 }
+  table.invest-list {
+    td {
+      font-size: 12px;
+      .loan-name-col {
+        display: inline-block;
+        width: 170px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
 }
 /* loan detail */
 .loan-detail-content {

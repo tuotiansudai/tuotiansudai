@@ -104,12 +104,13 @@
 }
 
 .image-captcha-dialog {
-  padding-bottom: 10px !important;
-  padding-right: 10px;
+  .pad-s {
+    padding:20px;
+  }
   height:100%;
   .image-captcha-form {
     position: relative;
-    height:100%;
+    height: 135px;
     input.image-captcha-text {
       background: url("/images/icons/register.png") no-repeat 6px -548px;
       width: 156px;
@@ -142,6 +143,7 @@
     background: url("/images/icons/loading.gif") no-repeat center center;
     cursor: default;
     text-indent: -9999px;
+    border:0px;
   }
 }
 

@@ -123,14 +123,17 @@
     <p>12.4本网站对本协议享有最终解释权。本协议及本网站有关页面的相关名词可互相引用参照，如有不同理解，则以本协议条款为准。</p>
 </div>
 
-<div class="image-captcha-dialog pad-m" style="display: none;">
-    <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
+<div class="image-captcha-dialog" style="display: none;">
+    <div class="pad-s">
+        <form class="image-captcha-form" action="/register/user/send-register-captcha" method="post">
             <img src="/register/user/image-captcha" alt="" class="image-captcha"/>
             <input type="text" class="image-captcha-text" name="imageCaptcha" maxlength="5" placeholder="请输入图形验证码"/>
-        <div class="tc">
-            <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
-        </div>
+            <div class="tc">
+                <input type="submit" class="image-captcha-confirm btn-normal" value="确定"/>
+            </div>
 
-    </form>
+        </form>
+    </div>
+
 </div>
 </@global.main>
