@@ -172,7 +172,7 @@ public class LoanControllerTest {
 
 
     @Test
-    public void shouldLoanout() throws Exception {
+    public void shouldLoanOut() throws Exception {
         long mockLoanId = 123451234512345L;
         long mockInitAmount = 1000000;
         String loanerLoginName = "mock_loaner1";

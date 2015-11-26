@@ -144,24 +144,38 @@
         where
             enabled_repay.loan_id = #{loanId}
             and (
-                    (exists(select 1
-                            from loan
-                            where loan.id = #{loanId} and status = 'REPAYING')
-                     and enabled_repay.status = 'REPAYING'
-                     and enabled_repay.period = (select min(period)
-                                                 from loan_repay future_repay
-                                                 where future_repay.loan_id = #{loanId} and
-                                                       date(future_repay.repay_date) >= date(now())))
+                (exists(select 1
+                        from loan
+                        where loan.id = #{loanId} and status = 'REPAYING')
+                 and enabled_repay.status = 'REPAYING'
+                 and enabled_repay.period = (select min(period)
+                                             from loan_repay future_repay
+                                             where future_repay.loan_id = #{loanId} and
+                                                   date(future_repay.repay_date) >= date(now())))
                 or
-                    (exists(select 1
-                            from loan
-                            where loan.id = #{loanId} and status = 'OVERDUE')
-                     and enabled_repay.status = 'OVERDUE'
-                     and enabled_repay.period = (select min(period)
-                                                 from loan_repay overdue_repay
-                                                 where overdue_repay.loan_id = #{loanId} and
-                                                 overdue_repay.status = 'OVERDUE'))
-                )
+                (exists(select 1
+                        from loan
+                        where loan.id = #{loanId} and status = 'OVERDUE')
+                 and enabled_repay.status <> 'WAIT_PAY'
+                 and enabled_repay.period = (select min(period)
+                                             from loan_repay future_repay
+                                             where future_repay.loan_id = #{loanId} and
+                                                   date(future_repay.repay_date) >= date(now()))
+                 and exists(select 1
+                            from loan_repay future_repay
+                            where future_repay.loan_id = #{loanId}
+                                  and date(future_repay.repay_date) >= date(now())))
+                or
+                (exists(select 1
+                        from loan
+                        where loan.id = #{loanId} and status = 'OVERDUE')
+                 and enabled_repay.status = 'OVERDUE'
+                 and enabled_repay.period = (select count(1) from loan_repay where loan_repay.loan_id = #{loanId})
+                 and not exists(select 1
+                                from loan_repay future_repay
+                                where future_repay.loan_id = #{loanId}
+                                      and date(future_repay.repay_date) >= date(now())))
+            )
         ]]>
     </select>
 
@@ -169,8 +183,8 @@
         select * from loan_repay where loan_id = #{loanId} and period = #{period}
     </select>
 
-    <select id="findConfirmingLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
-        select * from loan_repay where loan_id = #{loanId} and status = 'CONFIRMING'
+    <select id="findWaitPayLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
+        select * from loan_repay where loan_id = #{loanId} and status = 'WAIT_PAY'
     </select>
 
     <select id="findCurrentLoanRepayByLoanId" parameterType="long" resultMap="loanRepayResultMap">
@@ -201,7 +215,7 @@
             AND l.`agent_login_name` = #{loginName}
         WHERE t.`status` IN (
                 'REPAYING',
-                'CONFIRMING',
+                'WAIT_PAY',
                 'OVERDUE'
               )
             AND t.`repay_date` BETWEEN #{startTime}
@@ -247,7 +261,7 @@
                 AND l.`agent_login_name` = #{loginName}
             WHERE t.`status` IN (
                 'REPAYING',
-                'CONFIRMING',
+                'WAIT_PAY',
                 'OVERDUE'
               )
               AND t.`repay_date` BETWEEN #{startTime}

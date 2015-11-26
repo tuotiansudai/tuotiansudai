@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -62,18 +63,18 @@ public class RepayServiceImpl implements RepayService {
         this.resetExpiredLoanRepay(loanRepayModels);
 
 
-        dataDto.setHasConfirmingLoanRepay(Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
+        dataDto.setHasWaitPayLoanRepay(Iterators.any(loanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.CONFIRMING;
+                return input.getStatus() == RepayStatus.WAIT_PAY;
             }
         }));
 
         if (loanModel.getStatus() == LoanStatus.REPAYING) {
-            DateTime now = new DateTime();
+            Date now = new Date();
             List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
-            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
+            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, new DateTime(now));
             dataDto.setExpectedAdvanceRepayAmount(AmountConverter.convertCentToString(loanModel.getLoanAmount() + interest));
         }
 
@@ -104,7 +105,7 @@ public class RepayServiceImpl implements RepayService {
 
         DateTime now = new DateTime();
         for (LoanRepayModel loanRepayModel : loanRepayModels) {
-            if (loanRepayModel.getStatus() == RepayStatus.CONFIRMING) {
+            if (loanRepayModel.getStatus() == RepayStatus.WAIT_PAY) {
                 DateTime actualRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
                 if (actualRepayDate.plusMinutes(30).isBefore(now)) {
                     loanRepayModel.setStatus(RepayStatus.REPAYING);
