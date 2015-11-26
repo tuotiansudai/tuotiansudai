@@ -10,6 +10,7 @@ import com.tuotiansudai.dto.UserItemDataDto;
 import com.tuotiansudai.exception.BaseException;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.service.UserService;
@@ -112,6 +113,7 @@ public class UserController {
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date beginTime,
                                     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                     Role role, String referrer, String channel, @RequestParam(value = "index", defaultValue = "1", required = false) int index,
+                                    @RequestParam(value = "source", required = false) Source source,
                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
                                     @RequestParam(value = "export", required = false) String export,
                                     HttpServletResponse response) throws IOException{
@@ -123,8 +125,8 @@ public class UserController {
                 e.printStackTrace();
             }
             response.setContentType("application/csv");
-            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, role, referrer, channel);
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, 1, count);
+            int count = userMapper.findAllUserCount(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, 1, count);
             List<List<String>> data = Lists.newArrayList();
             List<UserItemDataDto> userItemDataDtos = baseDto.getData().getRecords();
             for (int i = 0 ;i < userItemDataDtos.size(); i++) {
@@ -134,6 +136,7 @@ public class UserController {
                 dataModel.add(userItemDataDtos.get(i).getMobile());
                 dataModel.add(userItemDataDtos.get(i).getEmail());
                 dataModel.add(userItemDataDtos.get(i).getReferrer());
+                dataModel.add(userItemDataDtos.get(i).getSource().name());
                 dataModel.add(userItemDataDtos.get(i).getChannel());
                 dataModel.add(new DateTime(userItemDataDtos.get(i).getRegisterTime()).toString("yyyy-MM-dd HH:mm"));
 
@@ -152,7 +155,7 @@ public class UserController {
             ExportCsvUtil.createCsvOutputStream(CsvHeaderType.ConsoleUsers, data, response.getOutputStream());
             return null;
         } else {
-            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, role, referrer, channel, index, pageSize);
+            BaseDto<BasePaginationDataDto> baseDto = userService.findAllUser(loginName, email, mobile, beginTime, endTime, source, role, referrer, channel, index, pageSize);
             ModelAndView mv = new ModelAndView("/user-list");
             mv.addObject("baseDto", baseDto);
             mv.addObject("loginName", loginName);
@@ -163,12 +166,14 @@ public class UserController {
             mv.addObject("role", role);
             mv.addObject("referrer", referrer);
             mv.addObject("channel", channel);
+            mv.addObject("source", source);
             mv.addObject("pageIndex", index);
             mv.addObject("pageSize", pageSize);
             List<Role> roleList = Lists.newArrayList(Role.values());
             List<String> channelList = userService.findAllChannels();
             mv.addObject("roleList", roleList);
             mv.addObject("channelList", channelList);
+            mv.addObject("sourceList", Source.values());
             return mv;
         }
     }
