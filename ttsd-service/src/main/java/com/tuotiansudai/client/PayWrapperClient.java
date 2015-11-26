@@ -142,11 +142,11 @@ public class PayWrapperClient extends BaseClient {
     }
 
     public BaseDto<PayDataDto> postNormalRepay(long loanRepayId) {
-        return syncExecute(String.valueOf(loanRepayId), "/post/post_normal_repay", "POST");
+        return syncExecute(String.valueOf(loanRepayId), "/job/post_normal_repay", "POST");
     }
 
     public BaseDto<PayDataDto> postAdvanceRepay(long loanRepayId) {
-        return syncExecute(String.valueOf(loanRepayId), "/post/post_advance_repay", "POST");
+        return syncExecute(String.valueOf(loanRepayId), "/job/post_advance_repay", "POST");
     }
 
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
