@@ -15,7 +15,7 @@ public class MobileLocationUtils {
         JuHe
     }
 
-    private static Logger log = Logger.getLogger(SendCloudMailUtil.class);
+    private static Logger log = Logger.getLogger(MobileLocationUtils.class);
     private static final String DEFAULT_CHARSET = "UTF-8";
     private static final Provider[] PROVIDER_PRIORITY = new Provider[]{
             Provider.Shouji360,

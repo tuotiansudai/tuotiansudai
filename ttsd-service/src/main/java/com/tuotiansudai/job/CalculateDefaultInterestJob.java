@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CalculateDefaultInterestJob implements Job{
 
-    static Logger logger = Logger.getLogger(AutoInvestJob.class);
+    static Logger logger = Logger.getLogger(CalculateDefaultInterestJob.class);
 
     @Autowired
     private LoanRepayService loanRepayService;

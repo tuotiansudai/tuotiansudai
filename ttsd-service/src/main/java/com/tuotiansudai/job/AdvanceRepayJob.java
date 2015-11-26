@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdvanceRepayJob implements Job {
 
-    static Logger logger = Logger.getLogger(AutoInvestJob.class);
+    static Logger logger = Logger.getLogger(AdvanceRepayJob.class);
 
     public final static String LOAN_REPAY_ID_KEY = "LOAN_REPAY_ID";
 
