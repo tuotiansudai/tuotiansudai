@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
@@ -34,6 +35,8 @@ public interface UserService {
      */
     boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
 
+    void createUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws CreateUserException;
+
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException;
 
     void updateUserStatus(String loginName, UserStatus userStatus, String ip, String operatorLoginName);
@@ -44,6 +47,8 @@ public interface UserService {
                 String mobile, Date beginTime, Date endTime,
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
+
+    List<String> findLoginNameFromAccountLike(String loginName);
 
     List<String> findLoginNameLike(String loginName);
 

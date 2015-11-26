@@ -7,7 +7,7 @@
             },
             {
                 "name":"projectMain",
-                "header":{"text":"项目管理","link":"/loan"},
+                "header":{"text":"项目管理","link":"/loanList/console"},
                 "sidebar":
                 [
                     {"name":"ALL","text":"所有的借款","link":"/loanList/console"},
@@ -26,7 +26,7 @@
                 "name":"userMain",
                 "header":{"text":"用户管理","link":"/users"},
                 "sidebar":[
-                    {"name":"addUser","text":"添加用户","link":""},
+                    {"name":"addUser","text":"添加用户","link":"/user/create"},
                     {"name":"userMan","text":"用户管理","link":"/users"},
                     {"name":"referMan","text":"推荐人管理","link":"/referrerManage"}
                 ]

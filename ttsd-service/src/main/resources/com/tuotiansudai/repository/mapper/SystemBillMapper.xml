@@ -19,7 +19,7 @@
         value(#{amount}, #{detail}, #{operationType}, #{createdTime}, #{orderId}, #{businessType})
     </insert>
 
-    <select id="findByOrderId" parameterType="java.lang.String" resultMap="systemBillResultMap">
+    <select id="findByOrderId" parameterType="long" resultMap="systemBillResultMap">
         select * from system_bill where order_id = #{orderId}
     </select>
 

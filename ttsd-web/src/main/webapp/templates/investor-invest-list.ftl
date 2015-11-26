@@ -22,7 +22,9 @@
         <span class="select-item" data-status="COMPLETE">回款完毕</span>
     </div>
     <div class="clear-blank"></div>
-    <table class="invest-list table-striped"></table>
+    <div class="invest-list">
+
+    </div>
     <div class="pagination" data-url="/investor/invest-list-data" data-page-size="10">
     </div>
 </div>

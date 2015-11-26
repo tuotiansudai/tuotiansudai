@@ -78,7 +78,7 @@
                         <label class="col-sm-2 control-label">代理用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags_1" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-agent" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="代理用户不能为空">
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <label class="col-sm-2 control-label">借款用户: </label>
 
                         <div class="col-sm-4">
-                            <input type="text" id="tags" class="form-control ui-autocomplete-input" datatype="*" autocomplete="off"
+                            <input type="text" class="form-control ui-autocomplete-input jq-loaner" datatype="*" autocomplete="off"
                                    placeholder="" errormsg="借款用户不能为空">
                         </div>
                     </div>
@@ -278,5 +278,4 @@
     var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
     var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
     var API_FORM = '${requestContext.getContextPath()}/loan/';
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
 </script>

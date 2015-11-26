@@ -39,12 +39,6 @@ public class LoanController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/loaner/{loaner}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> findLoginNames(@PathVariable String loaner) {
-        return loanService.getLoginNames(loaner);
-    }
-
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public List<LoanTitleModel> findAllTitles() {
@@ -63,7 +57,7 @@ public class LoanController {
         return loanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView loanInfo(@PathVariable long loanId) {
         if (!loanService.loanIsExist(loanId)) {

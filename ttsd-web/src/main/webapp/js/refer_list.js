@@ -1,4 +1,4 @@
-require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layer', 'daterangepicker'],
+require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refer-invest-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'],
     function ($, Mustache, referRelationTemplate, referInvestTemplate, moment, pagination, layer) {
 
         var $searchBox=$('#search-box'),
@@ -7,25 +7,26 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
             paginationElementRelation = $('#referRelationPagination'),
             paginationElementInvest = $('#referInvestPagination'),
             $btnSearch=$('.btn-search',$searchBox),
-            $btnReset=$('.btn-reset',$searchBox);
+            $btnReset=$('.btn-reset',$searchBox),
+            $searchContent=$('.search-content-tab');
 
         var paginationElement = paginationElementRelation;
         var template = referRelationTemplate;
 
         var today = moment().format('YYYY-MM-DD'); // 今天
-        dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+        dataPickerElement.dateRangePicker({separator: ' ~ '});
 
         $(".search-type .select-item").click(function () {
             $(this).addClass("current").siblings(".select-item").removeClass("current");
 
             if ($(this).data('type') == 'referRelation') {
-                paginationElementRelation.css("display", "block");
-                paginationElementInvest.css("display", "none");
+                paginationElementRelation.show();
+                paginationElementInvest.hide();
                 paginationElement = paginationElementRelation;
                 template = referRelationTemplate;
             } else if ($(this).data('type') == 'referInvest') {
-                paginationElementRelation.css("display", "none");
-                paginationElementInvest.css("display", "block");
+                paginationElementRelation.hide();
+                paginationElementInvest.show();
                 paginationElement = paginationElementInvest;
                 template = referInvestTemplate;
             }
@@ -52,9 +53,20 @@ require(['jquery', 'mustache', 'text!/tpl/refer-table.mustache', 'text!/tpl/refe
                 }).success(function (response) {
                     data.totalReward = response;
                     var html = Mustache.render(template, data);
-                    $('.refer-relation').html(html);
+                    $searchContent.empty().append(html);
+
                 });
             });
+            $('.search-content-tab').delegate('span.loan-name-col','mouseover',function() {
+                layer.closeAll('tips');
+                layer.tips(this.innerHTML, this, {
+                        tips: [1, '#efbf5c'],
+                        time: 2000,
+                        tipsMore: true,
+                        area: 'auto',
+                        maxWidth: '500'
+                    });
+            })
         };
 
         loadReferData();

@@ -26,7 +26,10 @@ public enum JobType {
     OverInvestPayBack("超投还款"),
     LoanStatusToRecheck("标的状态从筹款变为等待复核"),
     CalculateDefaultInterest("计算逾期罚息"),
-    AutoReFreshAreaByMobile("获取手机归属地");
+    AutoReFreshAreaByMobile("获取手机归属地"),
+    NormalRepay("正常还款"),
+    AdvanceRepay("提前还款");
+
 
     private final String description;
 

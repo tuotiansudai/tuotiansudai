@@ -65,7 +65,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and t.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and t.periods >= #{periodsStart}
@@ -89,7 +89,7 @@
             and l.status = #{status}
         </if>
         <if test="status == null">
-            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and l.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and CEILING(l.periods/30) >= #{periodsStart}
@@ -119,7 +119,7 @@
             and t.status = #{status}
         </if>
         <if test="status == null">
-            and t.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and t.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and t.periods >= #{periodsStart}
@@ -143,7 +143,7 @@
             and l.status = #{status}
         </if>
         <if test="status == null">
-            and l.status in ('RAISING','PREHEAT','RECHECK','REPAYING','COMPLETE')
+            and l.status != 'WAITING_VERIFY'
         </if>
         <if test="periodsStart > 0">
             and CEILING(l.periods/30) >= #{periodsStart}
@@ -164,28 +164,28 @@
         select * from loan where status = #{status}
     </select>
 
-    <select id="findRepayingPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+    <select id="findRepayingPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
         (select min(loan_repay.repay_date)
         from loan_repay
-        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'CONFIRMING')) as next_repay_date,
+        where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) as next_repay_date,
         (select sum(loan_repay.corpus) + sum(loan_repay.expected_interest) + sum(loan_repay.default_interest)
         from loan_repay
         where loan.id=loan_repay.loan_id and loan_repay.status != 'COMPLETE' ) as unpaid_amount
         from loan
-        where loaner_login_name = #{loanerLoginName} and status in ('REPAYING', 'CONFIRMING')
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'CONFIRMING')) between #{startTime} and #{endTime}
+        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
         order by next_repay_date asc, id asc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountRepayingByLoanerLoginName" parameterType="map" resultType="long">
+    <select id="findCountRepayingByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'REPAYING'
-        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'CONFIRMING')) between #{startTime} and #{endTime}
+        where agent_login_name = #{agentLoginName} and status in ('REPAYING', 'OVERDUE')
+        and (select min(loan_repay.repay_date) from loan_repay where loan.id=loan_repay.loan_id and loan_repay.status in ('REPAYING', 'WAIT_PAY', 'OVERDUE')) between #{startTime} and #{endTime}
     </select>
 
-    <select id="findCompletedPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+    <select id="findCompletedPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select *,
         (select max(loan_repay.actual_repay_date)
         from loan_repay
@@ -197,28 +197,28 @@
         from loan_repay
         where loan.id=loan_repay.loan_id) as actual_repay_amount
         from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
+        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
         order by completed_date desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountCompletedByLoanerLoginName" parameterType="map" resultType="long">
+    <select id="findCountCompletedByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'COMPLETE'
+        where agent_login_name = #{agentLoginName} and status = 'COMPLETE'
         and (select max(loan_repay.actual_repay_date) from loan_repay where loan.id=loan_repay.loan_id) between #{startTime} and #{endTime}
     </select>
 
-    <select id="findCanceledPaginationByLoanerLoginName" parameterType="map" resultMap="loanResultMap">
+    <select id="findCanceledPaginationByAgentLoginName" parameterType="map" resultMap="loanResultMap">
         select * from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
         order by recheck_time desc, id asc
         limit #{index}, #{pageSize}
     </select>
 
-    <select id="findCountCanceledByLoanerLoginName" parameterType="map" resultType="long">
+    <select id="findCountCanceledByAgentLoginName" parameterType="map" resultType="long">
         select count(1) from loan
-        where loaner_login_name = #{loanerLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
+        where agent_login_name = #{agentLoginName} and status = 'CANCEL' and recheck_time between #{startTime} and #{endTime}
     </select>
 
     <update id="update" parameterType="com.tuotiansudai.repository.model.LoanModel">

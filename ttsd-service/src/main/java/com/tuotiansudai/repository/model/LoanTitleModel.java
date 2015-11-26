@@ -2,9 +2,6 @@ package com.tuotiansudai.repository.model;
 
 import java.io.Serializable;
 
-/**
- * Created by tuotian on 15/8/17.
- */
 public class LoanTitleModel implements Serializable {
     private long id;
     /***

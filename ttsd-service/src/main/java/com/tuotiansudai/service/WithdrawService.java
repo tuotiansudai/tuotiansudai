@@ -4,6 +4,7 @@ import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.dto.WithdrawDto;
+import com.tuotiansudai.repository.model.Source;
 import com.tuotiansudai.repository.model.WithdrawStatus;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,6 +17,7 @@ public interface WithdrawService {
     BaseDto<BasePaginationDataDto> findWithdrawPagination(String withdrawId,
                                                           String loginName,
                                                           WithdrawStatus status,
+                                                          Source source,
                                                           int index,
                                                           int pageSize,
                                                           Date startTime,

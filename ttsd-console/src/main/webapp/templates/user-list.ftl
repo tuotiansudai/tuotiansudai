@@ -21,14 +21,14 @@
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
 
-<@menu.header label="userMan"></@menu.header>
+<@menu.header label="userMain"></@menu.header>
 
 <!-- main begin -->
 <div class="main">
     <div class="container-fluid">
         <div class="row">
 
-            <@menu.sidebar headLab="userMain" sideLab="userMain"></@menu.sidebar>
+            <@menu.sidebar headLab="userMain" sideLab="userMan"></@menu.sidebar>
 
                 <!-- content area begin -->
             <div class="col-md-10">
@@ -113,7 +113,7 @@
                         <#list userList as userItem>
                         <tr <#if userItem.status!='ACTIVE'> class="bg-warning" </#if> >
                             <td>${userItem.loginName}</td>
-                            <td>${userItem.userName}</td>
+                            <td>${userItem.userName!}</td>
                             <td>${userItem.mobile}</td>
                             <td>${userItem.email!}</td>
                             <td>${userItem.referrer!}</td>

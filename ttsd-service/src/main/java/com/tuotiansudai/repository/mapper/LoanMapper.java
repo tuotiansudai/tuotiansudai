@@ -32,35 +32,35 @@ public interface LoanMapper {
 
     void updateStatus(@Param(value = "loanId") long loanId, @Param(value = "status") LoanStatus status);
 
-    List<LoanModel> findRepayingPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
+    List<LoanModel> findRepayingPaginationByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
+                                                           @Param(value = "index") int index,
+                                                           @Param(value = "pageSize") int pageSize,
+                                                           @Param(value = "startTime") Date startTime,
+                                                           @Param(value = "endTime") Date endTime);
+
+    List<LoanModel> findCompletedPaginationByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
                                                             @Param(value = "index") int index,
                                                             @Param(value = "pageSize") int pageSize,
                                                             @Param(value = "startTime") Date startTime,
                                                             @Param(value = "endTime") Date endTime);
 
-    List<LoanModel> findCompletedPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                                             @Param(value = "index") int index,
-                                                             @Param(value = "pageSize") int pageSize,
-                                                             @Param(value = "startTime") Date startTime,
-                                                             @Param(value = "endTime") Date endTime);
+    List<LoanModel> findCanceledPaginationByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
+                                                           @Param(value = "index") int index,
+                                                           @Param(value = "pageSize") int pageSize,
+                                                           @Param(value = "startTime") Date startTime,
+                                                           @Param(value = "endTime") Date endTime);
 
-    List<LoanModel> findCanceledPaginationByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                                            @Param(value = "index") int index,
-                                                            @Param(value = "pageSize") int pageSize,
-                                                            @Param(value = "startTime") Date startTime,
-                                                            @Param(value = "endTime") Date endTime);
+    long findCountRepayingByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
+                                           @Param(value = "startTime") Date startTime,
+                                           @Param(value = "endTime") Date endTime);
 
-    long findCountRepayingByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
+    long findCountCompletedByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
                                             @Param(value = "startTime") Date startTime,
                                             @Param(value = "endTime") Date endTime);
 
-    long findCountCompletedByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                             @Param(value = "startTime") Date startTime,
-                                             @Param(value = "endTime") Date endTime);
-
-    long findCountCanceledByLoanerLoginName(@Param(value = "loanerLoginName") String loanerLoginName,
-                                            @Param(value = "startTime") Date startTime,
-                                            @Param(value = "endTime") Date endTime);
+    long findCountCanceledByAgentLoginName(@Param(value = "agentLoginName") String agentLoginName,
+                                           @Param(value = "startTime") Date startTime,
+                                           @Param(value = "endTime") Date endTime);
 
     List<LoanModel> findLoanList(@Param(value = "status") LoanStatus status, @Param(value = "loanId") Long loanId, @Param(value = "loanName") String loanName,
                                  @Param(value = "startTime") Date startTime, @Param(value = "endTime") Date endTime, @Param(value = "currentPageNo") int currentPageNo, @Param(value = "pageSize") int pageSize);

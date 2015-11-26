@@ -141,6 +141,14 @@ public class PayWrapperClient extends BaseClient {
         return Maps.newHashMap();
     }
 
+    public BaseDto<PayDataDto> postNormalRepay(long loanRepayId) {
+        return syncExecute(String.valueOf(loanRepayId), "/post/post_normal_repay", "POST");
+    }
+
+    public BaseDto<PayDataDto> postAdvanceRepay(long loanRepayId) {
+        return syncExecute(String.valueOf(loanRepayId), "/post/post_advance_repay", "POST");
+    }
+
     private BaseDto<PayDataDto> parsePayResponseJson(String json) {
         BaseDto<PayDataDto> baseDto = new BaseDto<>();
         PayDataDto payDataDto = new PayDataDto();
