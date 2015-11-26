@@ -8,7 +8,7 @@
     };
 </script>
 <div class="content-container account-overview">
-    <div class="bRadiusBox spad bg-w">
+    <div class="bRadiusBox spad bg-w clearfix">
         <img src="${staticServer}/images/sign/profile.jpg" class="fl accountImg" >
         <div class="profileBox">
             <span><em>您好：${loginName!}</em></span>
