@@ -40,10 +40,8 @@ public class UserServiceTest {
         UserModel userModel2 = getFakeUser("loginName2");
         userModel2.setMobile("13561674892");
         userMapper.create(userModel2);
-        List<UserModel> userModels = Lists.newArrayList();
-        userModels.add(userModel1);
-        userModels.add(userModel2);
-        userService.refreshAreaByMobile(userModels);
+
+        userService.reFreshAreaByMobileInJob();
         UserModel userModelResult1 = userMapper.findByLoginName("loginName1");
         assertEquals("北京",userModelResult1.getProvince());
         UserModel userModelResult2 = userMapper.findByLoginName("loginName2");
