@@ -20,6 +20,7 @@ public class NormalRepayJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger normal repay, prepare do job");
         String loanRepayId = context.getJobDetail().getJobDataMap().get(LOAN_REPAY_ID_KEY).toString();
 
         logger.info("trigger normal repay, loanRepayId = " + loanRepayId);
