@@ -37,15 +37,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">姓名：</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">${(user.userName)!}</p>
-                            <input type="hidden" name="userName" value="${(user.userName)!}"/>
+                            <p class="form-control-static">${user.userName!}</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">身份证：</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">${(user.identityNumber)!}</p>
-                            <input type="hidden" name="identityNumber" value="${(user.identityNumber)!}"/>
+                            <p class="form-control-static">${user.identityNumber!}</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -77,7 +75,6 @@
                     <div class="form-group">
                         <label for="referrer" class="col-sm-2 control-label">角色：</label>
                         <div class="col-sm-3">
-                            <input type="hidden" name="roles" value="USER"/>
                             <input type="hidden" name="roles" value="USER"/>
                             <#list roles as roleItem>
                                 <#if roleItem.name() != 'USER'>
@@ -112,6 +109,21 @@
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h5>确认修改？</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-default btn-submit">确认</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- content area end -->
         </div>

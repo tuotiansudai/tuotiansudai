@@ -1,23 +1,16 @@
 package com.tuotiansudai.service;
 
-import com.google.common.collect.Lists;
-import com.tuotiansudai.client.RedisWrapperClient;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.model.UserModel;
 import com.tuotiansudai.repository.model.UserStatus;
-import com.tuotiansudai.security.MyUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -41,7 +34,7 @@ public class UserServiceTest {
         userModel2.setMobile("13561674892");
         userMapper.create(userModel2);
 
-        userService.reFreshAreaByMobileInJob();
+        userService.refreshAreaByMobileInJob();
         UserModel userModelResult1 = userMapper.findByLoginName("loginName1");
         assertEquals("北京",userModelResult1.getProvince());
         UserModel userModelResult2 = userMapper.findByLoginName("loginName2");

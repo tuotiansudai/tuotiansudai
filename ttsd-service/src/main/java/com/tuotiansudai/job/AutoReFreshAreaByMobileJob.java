@@ -20,7 +20,7 @@ public class AutoReFreshAreaByMobileJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.debug("AutoReFleshAreaByMobileJob===========in");
 
-        userService.reFreshAreaByMobileInJob();
+        userService.refreshAreaByMobileInJob();
 
         logger.debug("AutoReFleshAreaByMobileJob===========out");
     }

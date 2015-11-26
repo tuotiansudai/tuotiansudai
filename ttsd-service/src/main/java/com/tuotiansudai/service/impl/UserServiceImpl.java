@@ -223,7 +223,12 @@ public class UserServiceImpl implements UserService {
         }
 
         // update referrer
-        this.referrerRelationService.updateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
+        if ((Strings.isNullOrEmpty(userModel.getReferrer()) && !Strings.isNullOrEmpty(editUserDto.getReferrer()))
+                || (!Strings.isNullOrEmpty(userModel.getReferrer()) && Strings.isNullOrEmpty(editUserDto.getReferrer()))
+                || (!Strings.isNullOrEmpty(userModel.getReferrer()) && !Strings.isNullOrEmpty(editUserDto.getReferrer()) && !userModel.getReferrer().equalsIgnoreCase(editUserDto.getReferrer()) )) {
+
+            this.referrerRelationService.updateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
+        }
 
         // update role
         List<UserRoleModel> beforeUpdateUserRoleModels = userRoleMapper.findByLoginName(loginName);
@@ -283,7 +288,7 @@ public class UserServiceImpl implements UserService {
         if (userStatus == UserStatus.ACTIVE) {
             redisWrapperClient.del(redisKey);
         } else {
-            redisWrapperClient.set(redisKey,String.valueOf(times));
+            redisWrapperClient.set(redisKey, String.valueOf(times));
         }
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
@@ -292,7 +297,7 @@ public class UserServiceImpl implements UserService {
 
     private void checkCreateUserData(EditUserDto editUserDto) throws CreateUserException {
         String loginName = editUserDto.getLoginName();
-        if (StringUtils.isEmpty(loginName)){
+        if (StringUtils.isEmpty(loginName)) {
             throw new CreateUserException("登录名不能为空");
         }
         UserModel editUserModel = userMapper.findByLoginName(loginName);
@@ -301,7 +306,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String email = editUserDto.getEmail();
-        if (StringUtils.isEmpty(email)){
+        if (StringUtils.isEmpty(email)) {
             throw new CreateUserException("邮箱不能为空");
         }
         UserModel userModelByEmail = userMapper.findByEmail(email);
@@ -310,7 +315,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String mobile = editUserDto.getMobile();
-        if (StringUtils.isEmpty(mobile)){
+        if (StringUtils.isEmpty(mobile)) {
             throw new CreateUserException("手机号不能为空");
         }
         UserModel userModelByMobile = userMapper.findByMobile(mobile);
@@ -402,23 +407,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> findAllChannels() {
-        List<String> channelList = userMapper.findAllChannels();
-        return channelList;
+        return userMapper.findAllChannels();
     }
-
-
 
     @Transactional
     @Override
     public void refreshAreaByMobile(List<UserModel> userModels) {
-        for(UserModel userModel:userModels){
+        for (UserModel userModel : userModels) {
             String phoneMobile = userModel.getMobile();
-            if(StringUtils.isNotEmpty(phoneMobile)){
+            if (StringUtils.isNotEmpty(phoneMobile)) {
                 String[] provinceAndCity = MobileLocationUtils.locateMobileNumber(phoneMobile);
-                if(StringUtils.isEmpty(provinceAndCity[0])){
+                if (StringUtils.isEmpty(provinceAndCity[0])) {
                     provinceAndCity[0] = "未知";
                 }
-                if(StringUtils.isEmpty(provinceAndCity[1])){
+                if (StringUtils.isEmpty(provinceAndCity[1])) {
                     provinceAndCity[1] = "未知";
                 }
                 userModel.setProvince(provinceAndCity[0]);
@@ -429,18 +431,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void reFreshAreaByMobileInJob() {
-        while(true){
+    public void refreshAreaByMobileInJob() {
+        while (true) {
             List<UserModel> userModels = userMapper.findUserByProvince();
-            if(CollectionUtils.isEmpty(userModels)){
+            if (CollectionUtils.isEmpty(userModels)) {
                 break;
             }
-            ((UserService)AopContext.currentProxy()).refreshAreaByMobile(userModels);
+            ((UserService) AopContext.currentProxy()).refreshAreaByMobile(userModels);
         }
     }
-
-
-
-
-
 }

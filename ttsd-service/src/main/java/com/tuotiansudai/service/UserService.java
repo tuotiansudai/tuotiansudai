@@ -60,5 +60,5 @@ public interface UserService {
 
     void refreshAreaByMobile(List<UserModel> userModels) ;
 
-    void reFreshAreaByMobileInJob() ;
+    void refreshAreaByMobileInJob() ;
 }
