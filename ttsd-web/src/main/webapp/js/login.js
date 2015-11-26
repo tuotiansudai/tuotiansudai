@@ -18,7 +18,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         });
 
         //用户名校验
-        loginNameElement.keyup(function (event) {
+        loginNameElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
 
             if (loginNameElement.val().trim() === '') {
@@ -29,7 +29,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         });
 
         //密码校验
-        passwordElement.keyup(function (event) {
+        passwordElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
             if (passwordElement.val().trim() === '') {
                 errorElement.text("密码不能为空").css('visibility', 'visible');
@@ -38,7 +38,7 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
         });
 
         //验证码校验
-        captchaElement.keyup(function (event) {
+        captchaElement.blur(function (event) {
             errorElement.text('').css('visibility', 'hidden');
             if (captchaElement.val().trim() === '') {
                 errorElement.text("验证码不能为空").css('visibility', 'visible');

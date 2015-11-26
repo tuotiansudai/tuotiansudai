@@ -92,16 +92,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     /**
-     * @param loginName
-     * @return
-     * @function 获取成功注册过资金托管账户的用户登录名
-     */
-    @Override
-    public List<String> getLoginNames(String loginName) {
-        return accountMapper.findAllLoginNamesByLike(loginName);
-    }
-
-    /**
      * @return
      * @function 获取所有标题
      */

@@ -28,7 +28,7 @@ var require = {
         'autoNumeric': ['jquery'],
         'pagination': ['jquery'],
         'layer': ['jquery'],
-        'layer-extend': ['layer'],
+        'layer-extend': ['jquery','layer'],
         'layerWrapper':['layer','layer-extend'],
         'commonFun': ['jquery.validate'],
         'jquery.validate.extension': ['jquery', 'jquery.validate']

@@ -119,8 +119,6 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
         amountInputElement.blur(calExpectedInterest);
 
 
-
-
         $('form').submit(function(){
             var frm = $(this);
             if(frm.attr('action') === '/invest'){

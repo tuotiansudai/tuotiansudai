@@ -77,6 +77,13 @@ public class UserController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/account/{loginName}/search", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> findLoginNames(@PathVariable String loginName) {
+        return userService.findLoginNameFromAccountLike(loginName);
+    }
+
+
     @RequestMapping(value = "/user/{loginName}/search", method = RequestMethod.GET)
     @ResponseBody
     public List<String> searchLoginName(@PathVariable String loginName) {

@@ -32,11 +32,11 @@
              <div class="row">
                  <div class="form-group">
                      <label for="control-label">推荐人</label>
-                     <input type="text" id="tags" class="form-control referrerLoginName" name="referrerLoginName" value="${referrerLoginName!}">
+                     <input type="text" class="form-control referrerLoginName" name="referrerLoginName" value="${referrerLoginName!}">
                  </div>
                  <div class="form-group">
                      <label for="control-label">投资人</label>
-                     <input type="text" id="tags_1" class="form-control investLoginName" name="investLoginName" value="${investLoginName!}">
+                     <input type="text" class="form-control investLoginName" name="investLoginName" value="${investLoginName!}">
                  </div>
              <div class="form-group" id="investDate">
                  <label for="control-label">投资时间</label>
@@ -168,6 +168,3 @@
 <!-- main end -->
 </body>
 </html>
-<script>
-    var api_url = '${requestContext.getContextPath()}/loan/loaner';
-</script>
