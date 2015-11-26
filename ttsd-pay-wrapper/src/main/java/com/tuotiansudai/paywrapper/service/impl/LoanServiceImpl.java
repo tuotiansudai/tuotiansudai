@@ -53,7 +53,7 @@ import java.util.Map;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    static Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     private final static String CANCEL_INVEST_PAY_BACK_ORDER_ID_SEPARATOR = "P";
 

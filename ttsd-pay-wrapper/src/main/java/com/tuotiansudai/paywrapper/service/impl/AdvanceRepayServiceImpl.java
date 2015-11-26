@@ -35,7 +35,7 @@ import java.util.Map;
 @Service
 public class AdvanceRepayServiceImpl extends NormalRepayServiceImpl {
 
-    static Logger logger = Logger.getLogger(NormalRepayServiceImpl.class);
+    static Logger logger = Logger.getLogger(AdvanceRepayServiceImpl.class);
 
     @Override
     @Transactional

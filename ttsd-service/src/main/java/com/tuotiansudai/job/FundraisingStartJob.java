@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FundraisingStartJob implements Job{
-    static Logger logger = Logger.getLogger(DeadlineFundraisingJob.class);
+    static Logger logger = Logger.getLogger(FundraisingStartJob.class);
 
     public final static String LOAN_ID_KEY = "LOAN_ID";
 

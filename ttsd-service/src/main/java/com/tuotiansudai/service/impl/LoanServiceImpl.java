@@ -36,7 +36,7 @@ import java.util.List;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-    static Logger logger = Logger.getLogger(UserServiceImpl.class);
+    static Logger logger = Logger.getLogger(LoanServiceImpl.class);
 
     @Autowired
     private LoanTitleMapper loanTitleMapper;

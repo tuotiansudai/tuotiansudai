@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SchedulerBuilder {
-    static Logger logger = Logger.getLogger(TriggeredJobBuilder.class);
+    static Logger logger = Logger.getLogger(SchedulerBuilder.class);
     @Autowired
     private JobStoreBuilder jobStoreBuilder;
 
