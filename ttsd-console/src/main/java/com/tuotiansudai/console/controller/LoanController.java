@@ -57,7 +57,7 @@ public class LoanController {
         return loanService.createLoan(loanDto);
     }
 
-    @RequestMapping(value = "/{loanId:^[0-9]{15}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{loanId:^\\d+$}", method = RequestMethod.GET)
     @ResponseBody
     public ModelAndView loanInfo(@PathVariable long loanId) {
         if (!loanService.loanIsExist(loanId)) {
