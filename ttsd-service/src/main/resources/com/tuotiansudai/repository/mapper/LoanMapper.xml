@@ -349,7 +349,14 @@
             </if>
         </where>
     </select>
+
     <update id="updateRaisingCompleteTime" parameterType="map">
         update loan set raising_complete_time = #{raisingCompleteTime} where id = #{loanId}
     </update>
+
+    <select id="findTopSixLoanList" resultMap="loanResultMap">
+        select * from loan where <![CDATA[ loan.status <> 'WAITING_VERIFY' ]]>
+        order by loan.created_time desc, loan.id desc
+        limit 0, 6
+    </select>
 </mapper>

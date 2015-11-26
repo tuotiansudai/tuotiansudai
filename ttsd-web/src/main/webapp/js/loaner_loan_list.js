@@ -92,6 +92,9 @@ require(['jquery', 'mustache', 'text!/tpl/loaner-loan-table.mustache', 'text!/tp
                                 case 'WAIT_PAY':
                                     item.status = '等待支付';
                                     break;
+                                case 'OVERDUE':
+                                    item.status = item.isEnabled ? '待还' : '逾期';
+                                    break;
                             }
                         });
                         var html = Mustache.render(loanRepayTemplate, data);

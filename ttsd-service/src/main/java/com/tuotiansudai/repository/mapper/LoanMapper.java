@@ -70,4 +70,6 @@ public interface LoanMapper {
 
     void updateRaisingCompleteTime(@Param(value = "loanId") long loanId,
                                    @Param(value = "raisingCompleteTime") Date raisingCompleteTime);
+
+    List<LoanModel> findTopSixLoanList();
 }
