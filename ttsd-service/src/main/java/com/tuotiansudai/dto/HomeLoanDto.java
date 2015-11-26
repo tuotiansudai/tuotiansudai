@@ -14,13 +14,9 @@ public class HomeLoanDto {
 
     private String activityType;
 
-    private Integer baseRateInteger;
+    private double baseRate;
 
-    private Integer baseRateFraction;
-
-    private Integer activityRateInteger;
-
-    private Integer activityRateFraction;
+    private double activityRate;
 
     private int periods;
 
@@ -36,17 +32,13 @@ public class HomeLoanDto {
         this.id = loanId;
         this.name = name;
         this.activityType = activityType.name();
-        String baseRatePercentage = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2).toString();
-        String activityPercentage = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2).toString();
-        this.baseRateInteger = Integer.parseInt(baseRatePercentage.split("\\.")[0]);
-        this.baseRateFraction = Integer.parseInt(baseRatePercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(baseRatePercentage.split("\\.")[1]);
+        this.baseRate = new BigDecimal(String.valueOf(baseRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         if (activityRate > 0) {
-            this.activityRateInteger = Integer.parseInt(activityPercentage.split("\\.")[0]);
-            this.activityRateFraction = Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]);
+            this.activityRate = new BigDecimal(String.valueOf(activityRate)).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue();
         }
         this.periods = periods;
+        this.amount = new BigDecimal(amount).toString();
         this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
-        this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue());
         this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).intValue());
         this.status = status.name();
     }
@@ -75,36 +67,20 @@ public class HomeLoanDto {
         this.activityType = activityType;
     }
 
-    public Integer getBaseRateInteger() {
-        return baseRateInteger;
+    public double getBaseRate() {
+        return baseRate;
     }
 
-    public void setBaseRateInteger(Integer baseRateInteger) {
-        this.baseRateInteger = baseRateInteger;
+    public void setBaseRate(double baseRate) {
+        this.baseRate = baseRate;
     }
 
-    public Integer getBaseRateFraction() {
-        return baseRateFraction;
+    public double getActivityRate() {
+        return activityRate;
     }
 
-    public void setBaseRateFraction(Integer baseRateFraction) {
-        this.baseRateFraction = baseRateFraction;
-    }
-
-    public Integer getActivityRateInteger() {
-        return activityRateInteger;
-    }
-
-    public void setActivityRateInteger(Integer activityRateInteger) {
-        this.activityRateInteger = activityRateInteger;
-    }
-
-    public Integer getActivityRateFraction() {
-        return activityRateFraction;
-    }
-
-    public void setActivityRateFraction(Integer activityRateFraction) {
-        this.activityRateFraction = activityRateFraction;
+    public void setActivityRate(double activityRate) {
+        this.activityRate = activityRate;
     }
 
     public int getPeriods() {

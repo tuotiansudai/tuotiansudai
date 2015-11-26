@@ -14,7 +14,7 @@
             <input type="hidden" class="status" name="status" value="<#if status??>${status}</#if>">
             <div class="form-group">
                 <label for="number">编号</label>
-                <input type="text" class="form-control loanId" name="loanId"  placeholder="" value="${loanId!}">
+                <input type="text" class="form-control loanId" name="loanId"  placeholder="" value="${(loanId?string('0'))!}">
             </div>
             <div class="form-group">
                 <label for="number">项目名称</label>

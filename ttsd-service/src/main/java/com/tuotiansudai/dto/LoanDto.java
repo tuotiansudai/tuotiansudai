@@ -104,14 +104,6 @@ public class LoanDto extends BaseDataDto {
     @Pattern(regexp = "^[+]?[\\d]+(([\\.]{1}[\\d]+)|([\\d]*))$")
     private String basicRate;
 
-    private Integer baseRateInteger;
-
-    private Integer baseRateFraction;
-
-    private Integer activityRateInteger;
-
-    private Integer activityRateFraction;
-
     /***
      * 合同
      ***/
@@ -472,35 +464,4 @@ public class LoanDto extends BaseDataDto {
         this.maxAvailableInvestAmount = maxAvailableInvestAmount;
     }
 
-    public Integer getBaseRateInteger() {
-        return baseRateInteger;
-    }
-
-    public void setBaseRateInteger(Integer baseRateInteger) {
-        this.baseRateInteger = baseRateInteger;
-    }
-
-    public Integer getBaseRateFraction() {
-        return baseRateFraction;
-    }
-
-    public void setBaseRateFraction(Integer baseRateFraction) {
-        this.baseRateFraction = baseRateFraction;
-    }
-
-    public Integer getActivityRateInteger() {
-        return activityRateInteger;
-    }
-
-    public void setActivityRateInteger(Integer activityRateInteger) {
-        this.activityRateInteger = activityRateInteger;
-    }
-
-    public Integer getActivityRateFraction() {
-        return activityRateFraction;
-    }
-
-    public void setActivityRateFraction(Integer activityRateFraction) {
-        this.activityRateFraction = activityRateFraction;
-    }
 }

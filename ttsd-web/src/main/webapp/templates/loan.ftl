@@ -18,8 +18,8 @@
                     <div class="rount"></div>
                     <div class="bg2"></div>
                     <div class="rount2" style="display: none;"></div>
-                    <span class="sub-percent"><#if loan.activityRateInteger??>+${loan.activityRateInteger}</#if><#if loan.activityRateFraction??>.<@percentFraction>${loan.activityRateFraction}</@percentFraction>%</#if></span>
-                    <div id="num" class="num">${loan.baseRateInteger}<#if loan.baseRateFraction??>.<@percentFraction>${loan.baseRateFraction}</@percentFraction></#if>%</div>
+                    <span class="sub-percent"><#if loan.activityRate??>+<@percentInteger>${loan.activityRate}</@percentInteger><@percentFraction>${loan.activityRate}</@percentFraction>%</#if></span>
+                    <div id="num" class="num"><@percentInteger>${loan.basicRate}</@percentInteger><@percentFraction>${loan.basicRate}</@percentFraction>%</div>
                     <span class="title">年化收益率</span>
                 </div>
             </div>
