@@ -39,9 +39,9 @@
   &.focus,
   &:active.focus,
   &.active.focus {
-    outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+    //outline: thin dotted;
+    //outline: 5px auto -webkit-focus-ring-color;
+    //outline-offset: -2px;
   }
   &:hover,
   &:focus,
@@ -53,8 +53,8 @@
   &.active {
     background-image: none;
     outline: 0;
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    //-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    //box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
   }
   &:disabled, &:disabled:hover {
     background: #666 !important;
@@ -206,5 +206,6 @@ label.checkbox {
     background: url("/images/icons/spr.png") no-repeat 0 -284px;
   }
 }
+
 
 
