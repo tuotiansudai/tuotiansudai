@@ -165,7 +165,7 @@
           letter-spacing: 0;
           font-size: 12px;
           top: 2px;
-          left: 198px;
+          right: 148px;
           &:disabled {
             background: #aaa!important;
             border:1px solid #aaa!important;
@@ -199,7 +199,7 @@
   }
   .btn-success {
     position: absolute;
-    bottom: 55px;
+    bottom: 35px;
     left: 35%;
   }
 }

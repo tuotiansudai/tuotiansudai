@@ -21,19 +21,21 @@
            </li>
        </ul>
         </form>
-        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （工作日 9:00-22:00）</div>
+        <div class="pad-m tips_message">找回密码过程中如有问题，请致电拓天速贷客服：400-169-1188 （服务时间：9:00－21:00）</div>
     </div>
 
-    <div class="verification-code-main pad-m" style="display: none;">
-        <div class="image-code-check">
-            <label for="">图形验证码：</label>
-            <input type="text" class="verification-code-text input-control" maxlength="5" placeholder="请输入图形验证码"/>
-            <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
+    <div class="verification-code-main" style="display: none;">
+        <div class="pad-m">
+            <div class="image-code-check">
+                <label for="">图形验证码：</label>
+                <input type="text" class="verification-code-text input-control" maxlength="5" placeholder="请输入图形验证码"/>
+                <img src="/mobile-retrieve-password/image-captcha" alt="" class="verification-code-img"/>
 
-        </div>
-        <b class="error">验证码输入错误</b>
-        <div class="tc pad-m">
-            <button class="image-captcha-confirm btn-success" >确认</button>
+            </div>
+            <b class="error">验证码输入错误</b>
+            <div class="tc pad-m">
+                <button class="image-captcha-confirm btn-success" >确认</button>
+            </div>
         </div>
     </div>
 
