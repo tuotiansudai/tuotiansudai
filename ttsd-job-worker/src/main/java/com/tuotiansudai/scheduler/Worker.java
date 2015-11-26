@@ -1,5 +1,6 @@
 package com.tuotiansudai.scheduler;
 
+import com.tuotiansudai.job.AutoReFreshAreaByMobileJob;
 import com.tuotiansudai.job.CalculateDefaultInterestJob;
 import com.tuotiansudai.job.InvestCallback;
 import com.tuotiansudai.job.JobType;
@@ -49,6 +50,9 @@ public class Worker {
             if (JobType.CalculateDefaultInterest.name().equalsIgnoreCase(schedulerName.trim())) {
                 this.createCalculateDefaultInterest();
             }
+            if (JobType.AutoReFreshAreaByMobile.name().equalsIgnoreCase(schedulerName.trim())){
+                createRefreshAreaByMobile();
+            }
             String fullSchedulerName = "Scheduler-" + schedulerName.trim();
             JobStore jobStore = jobStoreBuilder.buildJdbcJobStore(
                     fullSchedulerName,
@@ -96,6 +100,16 @@ public class Worker {
                     .withIdentity(JobType.CalculateDefaultInterest.name(), JobType.CalculateDefaultInterest.name()).submit();
         } catch (SchedulerException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void createRefreshAreaByMobile(){
+        try {
+            jobManager.newJob(JobType.AutoReFreshAreaByMobile, AutoReFreshAreaByMobileJob.class).replaceExistingJob(true)
+                    .runWithSchedule(CronScheduleBuilder.cronSchedule("0 0 2 * * ? *").inTimeZone(TimeZone.getTimeZone("Asia/Shanghai")))
+                    .withIdentity(JobType.AutoReFreshAreaByMobile.name(), JobType.AutoReFreshAreaByMobile.name()).submit();
+        } catch (SchedulerException e) {
+            logger.debug(e.getLocalizedMessage(),e);
         }
     }
 
