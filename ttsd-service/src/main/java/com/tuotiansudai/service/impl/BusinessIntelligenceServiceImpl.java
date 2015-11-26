@@ -2,6 +2,7 @@ package com.tuotiansudai.service.impl;
 
 import com.tuotiansudai.dto.Granularity;
 import com.tuotiansudai.repository.mapper.BusinessIntelligenceMapper;
+import com.tuotiansudai.repository.model.KeyValueListsDto;
 import com.tuotiansudai.repository.model.KeyValueModel;
 import com.tuotiansudai.service.BusinessIntelligenceService;
 import org.joda.time.DateTime;
@@ -32,4 +33,29 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<KeyValueListsDto> queryUserRechargeTrend(Granularity granularity, Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+
+        return null;
+    }
+
+    @Override
+    public List<KeyValueListsDto> queryUserWithdrawTrend(Granularity granularity, Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+
+        return null;
+    }
+
+    @Override
+    public List<KeyValueListsDto> queryUserAccountTrend(Granularity granularity, Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+
+        return null;
+    }
+
 }
