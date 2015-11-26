@@ -93,11 +93,11 @@ public class LoanMapperTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        List<LoanModel> loanModels = loanMapper.findRepayingPaginationByLoanerLoginName(fakeUserModel.getLoginName(), 0, 2,
+        List<LoanModel> loanModels = loanMapper.findRepayingPaginationByAgentLoginName(fakeUserModel.getLoginName(), 0, 2,
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
-        long count = loanMapper.findCountRepayingByLoanerLoginName(fakeUserModel.getLoginName(),
+        long count = loanMapper.findCountRepayingByAgentLoginName(fakeUserModel.getLoginName(),
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
@@ -146,11 +146,11 @@ public class LoanMapperTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        List<LoanModel> loanModels = loanMapper.findCompletedPaginationByLoanerLoginName(fakeUserModel.getLoginName(), 0, 2,
+        List<LoanModel> loanModels = loanMapper.findCompletedPaginationByAgentLoginName(fakeUserModel.getLoginName(), 0, 2,
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
-        long count = loanMapper.findCountCompletedByLoanerLoginName(fakeUserModel.getLoginName(),
+        long count = loanMapper.findCountCompletedByAgentLoginName(fakeUserModel.getLoginName(),
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
@@ -202,11 +202,11 @@ public class LoanMapperTest {
 
         loanRepayMapper.create(loanRepayModels);
 
-        List<LoanModel> loanModels = loanMapper.findCanceledPaginationByLoanerLoginName(fakeUserModel.getLoginName(), 0, 2,
+        List<LoanModel> loanModels = loanMapper.findCanceledPaginationByAgentLoginName(fakeUserModel.getLoginName(), 0, 2,
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
-        long count = loanMapper.findCountCanceledByLoanerLoginName(fakeUserModel.getLoginName(),
+        long count = loanMapper.findCountCanceledByAgentLoginName(fakeUserModel.getLoginName(),
                 new DateTime().withDate(2000, 1, 1).withTimeAtStartOfDay().toDate(),
                 new DateTime().withDate(2000, 12, 31).withTimeAtStartOfDay().toDate());
 
