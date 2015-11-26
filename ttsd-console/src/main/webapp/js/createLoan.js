@@ -168,16 +168,23 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         });
         //自动完成提示
         var autoValue = '';
-        $("#tags,#tags_1").autocomplete({
+        $(".jq-agent").autocomplete({
             source: function (query, process) {
-                //var matchCount = this.options.items;//返回结果集最大数量
-                $.get(api_url + '/' + query.term, function (respData) {
+                $.get('/loan/loaner/' + query.term, function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
             }
         });
-        $("#tags,#tags_1").blur(function () {
+        $(".jq-loaner").autocomplete({
+            source: function (query, process) {
+                $.get('/user/' + query.term + '/search', function (respData) {
+                    autoValue = respData;
+                    return process(respData);
+                });
+            }
+        });
+        $(".jq-agent, .jq-loaner").blur(function () {
             for (var i = 0; i < autoValue.length; i++) {
                 if ($(this).val() == autoValue[i]) {
                     $(this).removeClass('Validform_error');
@@ -185,9 +192,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 } else {
                     $(this).addClass('Validform_error');
                 }
-
             }
-
         });
 
 
@@ -287,8 +292,8 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 }
                 var dataForm = JSON.stringify({
                     "projectName": $('.jq-user').val(),
-                    "agentLoginName": $('#tags_1').val(),
-                    "loanerLoginName": $('#tags').val(),
+                    "agentLoginName": $('.jq-agent').val(),
+                    "loanerLoginName": $('.jq-loaner').val(),
                     "type": $('.jq-mark-type').val(),
                     "periods": $('.jq-timer').val(),
                     "descriptionText": getContentTxt(),

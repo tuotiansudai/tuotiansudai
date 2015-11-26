@@ -1,6 +1,7 @@
 package com.tuotiansudai.service;
 
 import com.tuotiansudai.dto.*;
+import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserStatus;
@@ -32,6 +33,8 @@ public interface UserService {
      * @return 修改成功返回 true , 修改失败返回 false
      */
     boolean changePassword(String loginName, String mobile, String originalPassword, String newPassword);
+
+    void createUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws CreateUserException;
 
     void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException;
 

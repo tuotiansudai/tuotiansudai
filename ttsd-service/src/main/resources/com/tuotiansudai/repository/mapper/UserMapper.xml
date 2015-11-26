@@ -71,7 +71,7 @@
     </update>
 
     <select id="findAllUser" parameterType="map" resultMap="userResultMap">
-        select * from user u join account a on u.login_name = a.login_name
+        select * from user u left join account a on u.login_name = a.login_name
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
@@ -103,12 +103,12 @@
             </if>
 
         </where>
-        order by a.register_time asc
+        order by u.register_time desc
         limit #{index},#{pageSize}
     </select>
 
     <select id="findAllUserCount" parameterType="map" resultType="int">
-        select count(1) from user u join account a on u.login_name = a.login_name
+        select count(1) from user u
 
         <if test="role !=null" >
             join user_role r on u.login_name = r.login_name
