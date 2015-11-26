@@ -20,12 +20,12 @@
             <thead>
             <tr>
                 <th>期数</th>
-                <th>本金</th>
-                <th>利息</th>
-                <th>罚息</th>
-                <th>应还总额</th>
+                <th class="tr">本金(元)</th>
+                <th class="tr">利息(元)</th>
+                <th class="tr">罚息(元)</th>
+                <th class="tr">应还总额(元)</th>
                 <th>还款日</th>
-                <th>实还总额</th>
+                <th>实还总额(元)</th>
                 <th>还款时间</th>
                 <th>状态</th>
             </tr>
@@ -35,12 +35,12 @@
             {{#records}}
                 <tr>
                     <td>{{period}}</td>
-                    <td>{{corpus}}</td>
-                    <td>{{expectedInterest}}</td>
-                    <td>{{defaultInterest}}</td>
-                    <td>{{expectedRepayAmount}}</td>
+                    <td class="tr">{{corpus}}</td>
+                    <td class="tr">{{expectedInterest}}</td>
+                    <td class="tr">{{defaultInterest}}</td>
+                    <td class="tr">{{expectedRepayAmount}}</td>
                     <td>{{repayDate}}</td>
-                    <td>
+                    <td class="tr">
                         {{^actualRepayAmount}}--{{/actualRepayAmount}}
                         {{#actualRepayAmount}}{{.}}{{/actualRepayAmount}}
                     </td>

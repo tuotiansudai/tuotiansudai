@@ -1,13 +1,16 @@
-require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache','moment', 'pagination', 'layerWrapper','daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate,moment, pagination,layer) {
-    var today = moment().format('YYYY-MM-DD'); // 今天
-    var week = moment().subtract(1, 'week').format('YYYY-MM-DD');
-    var month = moment().subtract(1, 'month').format('YYYY-MM-DD');
-    var sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD');
+require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text!/tpl/investor-invest-repay-table.mustache', 'moment', 'pagination', 'layerWrapper', 'daterangepicker'], function ($, Mustache, investListTemplate, investRepayTemplate, moment, pagination, layer) {
+    var today = moment().format('YYYY-MM-DD'), // 今天
+        week = moment().subtract(1, 'week').format('YYYY-MM-DD'),
+        month = moment().subtract(1, 'month').format('YYYY-MM-DD'),
+        sixMonths = moment().subtract(6, 'month').format('YYYY-MM-DD'),
+        $dateFilter = $('.date-filter'),
+        $statusFilter=$('.status-filter');
+
 
     var dataPickerElement = $('#date-picker'),
         paginationElement = $('.pagination');
 
-    dataPickerElement.dateRangePicker({separator: ' ~ '}).val(today + '~' + today);
+    dataPickerElement.dateRangePicker({separator: ' ~ '});
 
     var changeDatePicker = function () {
         var duration = $(".date-filter .select-item.current").data('day');
@@ -84,16 +87,17 @@ require(['jquery', 'mustache', 'text!/tpl/investor-invest-table.mustache', 'text
 
     loadLoanData();
 
-    $(".date-filter .select-item").click(function () {
+    $dateFilter.find(".select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         changeDatePicker();
         loadLoanData();
     });
-
-    $(".status-filter .select-item").click(function () {
+    $statusFilter.find(".select-item").click(function () {
         $(this).addClass("current").siblings(".select-item").removeClass("current");
         loadLoanData();
     });
+
+    $dateFilter.find(".select-item").eq(2).trigger('click');
 
     //define calendar
     $('.apply-btn').click(function () {

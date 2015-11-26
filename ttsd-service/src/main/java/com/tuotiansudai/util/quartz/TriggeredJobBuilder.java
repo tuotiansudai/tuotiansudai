@@ -3,6 +3,7 @@ package com.tuotiansudai.util.quartz;
 
 import com.tuotiansudai.util.UUIDGenerator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 
 import java.util.Date;
@@ -34,6 +35,7 @@ import java.util.Date;
  * </pre>
  */
 public class TriggeredJobBuilder {
+    static Logger logger = Logger.getLogger(TriggeredJobBuilder.class);
     private static final String DEFAULT_JOB_GROUP = "DEFAULT_JOB_GROUP_TTSD";
     private Scheduler scheduler;
     private Class<? extends Job> jobClazz;
@@ -147,6 +149,7 @@ public class TriggeredJobBuilder {
         if (scheduler == null) {
             throw new NullPointerException("scheduler is null , please check quartz config");
         }
+        logger.info("prepare submit job " + jobClazz.getName() + " to scheduler " + scheduler.getSchedulerName());
         JobDetail jobDetail = getJobDetail();
         Trigger jobTrigger = getJobTrigger(jobDetail);
 
@@ -160,6 +163,7 @@ public class TriggeredJobBuilder {
             }
         }
         scheduler.scheduleJob(jobDetail, jobTrigger);
+        logger.info("submit job " + jobClazz.getName() + " to scheduler " + scheduler.getSchedulerName() + " success");
     }
 }
 

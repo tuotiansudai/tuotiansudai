@@ -7,6 +7,7 @@ import com.tuotiansudai.dto.LoanDto;
 import com.tuotiansudai.service.LoanService;
 import com.tuotiansudai.web.freemarker.directive.AmountDirective;
 import com.tuotiansudai.web.freemarker.directive.PercentIntegerDirective;
+
 import com.tuotiansudai.web.util.LoginUserInfo;
 import com.tuotiansudai.web.freemarker.directive.PercentFractionDirective;
 import org.springframework.beans.factory.annotation.Autowired;

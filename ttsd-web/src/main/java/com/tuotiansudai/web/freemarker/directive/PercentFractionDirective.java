@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-public class PercentFractionDirective implements TemplateDirectiveModel{
+public class PercentFractionDirective implements TemplateDirectiveModel {
 
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
@@ -28,7 +28,7 @@ public class PercentFractionDirective implements TemplateDirectiveModel{
 
         private final Writer out;
 
-        PercentFractionFilterWriter (Writer out) {
+        PercentFractionFilterWriter(Writer out) {
             this.out = out;
         }
 
