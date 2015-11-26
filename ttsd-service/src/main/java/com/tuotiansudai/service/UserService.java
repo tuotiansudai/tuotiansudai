@@ -47,6 +47,8 @@ public interface UserService {
                 Role role, String referrer, String channel, Integer pageIndex, Integer pageSize);
 
 
+    List<String> findLoginNameFromAccountLike(String loginName);
+
     List<String> findLoginNameLike(String loginName);
 
     boolean verifyPasswordCorrect(String loginName, String password);

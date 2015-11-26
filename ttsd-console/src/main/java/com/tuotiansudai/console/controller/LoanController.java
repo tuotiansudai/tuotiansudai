@@ -39,12 +39,6 @@ public class LoanController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/loaner/{loaner}", method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> findLoginNames(@PathVariable String loaner) {
-        return loanService.getLoginNames(loaner);
-    }
-
     @RequestMapping(value = "/titles", method = RequestMethod.GET)
     @ResponseBody
     public List<LoanTitleModel> findAllTitles() {
