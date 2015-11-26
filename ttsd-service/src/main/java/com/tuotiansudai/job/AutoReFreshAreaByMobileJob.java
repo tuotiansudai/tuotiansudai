@@ -1,6 +1,6 @@
 package com.tuotiansudai.job;
 
-import com.tuotiansudai.service.LoanRepayService;
+import com.tuotiansudai.service.UserService;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -9,17 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CalculateDefaultInterestJob implements Job{
-
-    static Logger logger = Logger.getLogger(AutoInvestJob.class);
+public class AutoReFreshAreaByMobileJob implements Job {
+    static Logger logger = Logger.getLogger(AutoReFreshAreaByMobileJob.class);
 
     @Autowired
-    private LoanRepayService loanRepayService;
+    private UserService userService;
+
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.info("trigger CalculateDefaultInterestJob job");
-        loanRepayService.calculateDefaultInterest();
-    }
+        logger.debug("AutoReFleshAreaByMobileJob===========in");
 
+        userService.reFreshAreaByMobileInJob();
+
+        logger.debug("AutoReFleshAreaByMobileJob===========out");
+    }
 }

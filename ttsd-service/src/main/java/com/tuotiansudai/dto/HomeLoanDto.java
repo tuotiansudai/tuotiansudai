@@ -1,6 +1,7 @@
 package com.tuotiansudai.dto;
 
 import com.tuotiansudai.repository.model.ActivityType;
+import com.tuotiansudai.repository.model.LoanPeriodUnit;
 import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.math.BigDecimal;
@@ -23,13 +24,15 @@ public class HomeLoanDto {
 
     private int periods;
 
+    private boolean isPeriodMonthUnit;
+
     private String amount;
 
     private String progress;
 
     private String status;
 
-    public HomeLoanDto(long loanId, String name, ActivityType activityType, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
+    public HomeLoanDto(long loanId, String name, ActivityType activityType, LoanPeriodUnit periodUnit, double baseRate, double activityRate, int periods, long amount, long investAmount, LoanStatus status) {
         this.id = loanId;
         this.name = name;
         this.activityType = activityType.name();
@@ -42,6 +45,7 @@ public class HomeLoanDto {
             this.activityRateFraction = Integer.parseInt(activityPercentage.split("\\.")[1]) == 0 ? null : Integer.parseInt(activityPercentage.split("\\.")[1]);
         }
         this.periods = periods;
+        this.isPeriodMonthUnit = periodUnit == LoanPeriodUnit.MONTH;
         this.amount = String.valueOf(new BigDecimal(amount).divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).doubleValue());
         this.progress = String.valueOf(new BigDecimal(investAmount).divide(new BigDecimal(amount), 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).intValue());
         this.status = status.name();
@@ -109,6 +113,14 @@ public class HomeLoanDto {
 
     public void setPeriods(int periods) {
         this.periods = periods;
+    }
+
+    public boolean getIsPeriodMonthUnit() {
+        return isPeriodMonthUnit;
+    }
+
+    public void setPeriodMonthUnit(boolean periodMonthUnit) {
+        isPeriodMonthUnit = periodMonthUnit;
     }
 
     public String getAmount() {

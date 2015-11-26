@@ -1,4 +1,4 @@
-package com.tuotiansudai.web.util;
+package com.tuotiansudai.web.freemarker.directive;
 
 
 import freemarker.core.Environment;
