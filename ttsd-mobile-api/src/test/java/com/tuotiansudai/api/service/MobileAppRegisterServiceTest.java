@@ -127,6 +127,7 @@ public class MobileAppRegisterServiceTest extends ServiceTestBase{
         registerRequestDto.setCaptcha("123456");
         registerRequestDto.setPassword("password");
         registerRequestDto.setPhoneNum("13900000000");
+        registerRequestDto.setBaseParam(BaseParamTest.getInstance());
         return registerRequestDto;
     }
 }

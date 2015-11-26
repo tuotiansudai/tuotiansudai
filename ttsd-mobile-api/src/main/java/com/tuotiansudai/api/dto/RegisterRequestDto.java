@@ -68,7 +68,7 @@ public class RegisterRequestDto extends BaseParamDto {
         registerUserDto.setPassword(this.getPassword());
         registerUserDto.setCaptcha(this.getCaptcha());
         registerUserDto.setReferrer(this.getReferrer());
-        registerUserDto.setSource(Source.valueOf(getBaseParam().getPlatform()));
+        registerUserDto.setSource(Source.valueOf(getBaseParam().getPlatform().toUpperCase()));
         return registerUserDto;
     }
 
