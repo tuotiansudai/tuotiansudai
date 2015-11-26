@@ -16,16 +16,14 @@
             <label class="col-sm-2 control-label">姓名：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${(user.userName)!}</p>
-                <input type="hidden" name="userName" value="${user.userName}"/>
+                <p class="form-control-static">${user.userName!}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">身份证：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${(user.identityNumber)!}</p>
-                <input type="hidden" name="identityNumber" value="${user.identityNumber}"/>
+                <p class="form-control-static">${user.identityNumber!}</p>
             </div>
         </div>
         <div class="form-group">
@@ -55,9 +53,9 @@
 
             <div class="col-sm-3">
                 <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE"
-                                                   <#if user.status=="ACTIVE">checked="checked"</#if>>正常</label>
+                                                   <#if user.status?? && user.status=="ACTIVE">checked="checked"</#if>>正常</label>
                 <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE"
-                                                   <#if user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
+                                                   <#if user.status?? && user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
             </div>
         </div>
 
@@ -66,12 +64,11 @@
 
             <div class="col-sm-3">
                 <input type="hidden" name="roles" value="USER"/>
-                <input type="hidden" name="roles" value="USER"/>
                 <#list roles as roleItem>
                     <#if roleItem.name() != 'USER'>
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles"
-                                          <#if user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
+                                          <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
                                           value="${roleItem.name()}">${roleItem.getDescription()}</label>
                         </div>
                     </#if>
@@ -102,6 +99,21 @@
             </div>
         </div>
     </form>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5>确认修改？</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-default btn-submit">确认</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- content area end -->
 </@global.main>

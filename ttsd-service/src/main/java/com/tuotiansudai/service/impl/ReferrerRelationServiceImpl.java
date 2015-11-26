@@ -1,18 +1,13 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.exception.EditUserException;
 import com.tuotiansudai.repository.mapper.ReferrerRelationMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
-import com.tuotiansudai.repository.mapper.UserRoleMapper;
 import com.tuotiansudai.repository.model.ReferrerRelationModel;
-import com.tuotiansudai.repository.model.Role;
 import com.tuotiansudai.repository.model.UserModel;
-import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ReferrerRelationService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
@@ -32,10 +27,9 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
     private UserMapper userMapper;
 
     @Autowired
-    private UserRoleMapper userRoleMapper;
-
-    @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
+
+    private static final int MAX_REFERRER_RELATION_LEVEL = 4;
 
     @Override
     @Transactional
@@ -49,11 +43,14 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
         List<ReferrerRelationModel> list = referrerRelationMapper.findByLoginName(referrerLoginName);
 
         for (ReferrerRelationModel model : list) {
-            ReferrerRelationModel upperRelation = new ReferrerRelationModel();
-            upperRelation.setReferrerLoginName(model.getReferrerLoginName());
-            upperRelation.setLoginName(loginName);
-            upperRelation.setLevel(model.getLevel() + 1);
-            referrerRelationMapper.create(upperRelation);
+            int level = model.getLevel() + 1;
+            if (level <= MAX_REFERRER_RELATION_LEVEL) {
+                ReferrerRelationModel upperRelation = new ReferrerRelationModel();
+                upperRelation.setReferrerLoginName(model.getReferrerLoginName());
+                upperRelation.setLoginName(loginName);
+                upperRelation.setLevel(level);
+                referrerRelationMapper.create(upperRelation);
+            }
         }
     }
 
@@ -137,13 +134,14 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
             ReferrerRelationModel newUpperRelation = referrerRelationMapper.findByReferrerAndLoginName(newUpperReferrer, newReferrerLoginName);
             for (String lowerUser : allLowerUsers) {
                 ReferrerRelationModel newLowerRelation = referrerRelationMapper.findByReferrerAndLoginName(loginName, lowerUser);
-                ReferrerRelationModel newRelation = new ReferrerRelationModel();
-                newRelation.setReferrerLoginName(newUpperReferrer);
-                newRelation.setLoginName(lowerUser);
-                newRelation.setLevel((newUpperRelation != null ? newUpperRelation.getLevel() : 0)
-                        + (newLowerRelation != null ? newLowerRelation.getLevel() : 0)
-                        + 1);
-                newRelations.add(newRelation);
+                int level = (newUpperRelation != null ? newUpperRelation.getLevel() : 0) + (newLowerRelation != null ? newLowerRelation.getLevel() : 0) + 1;
+                if (level <= MAX_REFERRER_RELATION_LEVEL) {
+                    ReferrerRelationModel newRelation = new ReferrerRelationModel();
+                    newRelation.setReferrerLoginName(newUpperReferrer);
+                    newRelation.setLoginName(lowerUser);
+                    newRelation.setLevel(level);
+                    newRelations.add(newRelation);
+                }
             }
         }
 

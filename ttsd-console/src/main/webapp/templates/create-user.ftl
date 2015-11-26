@@ -53,9 +53,9 @@
 
             <div class="col-sm-3">
                 <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE"
-                                                   <#if user?? && user.status=="ACTIVE">checked="checked"</#if>>正常</label>
+                                                   <#if !(user?has_content) || (user?? && user.status?? && user.status == "ACTIVE")>checked="checked"</#if>>正常</label>
                 <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE"
-                                                   <#if user?? && user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
+                                                   <#if user?? && user.status?? && user.status == "INACTIVE">checked="checked"</#if>>禁用</label>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
                     <#if roleItem.name() != 'USER'>
                         <div class="checkbox">
                             <label><input type="checkbox" name="roles" value="${roleItem.name()}"
-                                          <#if user?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>>${roleItem.getDescription()}
+                                          <#if user?? && user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>>${roleItem.getDescription()}
                             </label>
                         </div>
                     </#if>

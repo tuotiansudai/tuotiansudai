@@ -20,6 +20,7 @@ public class DeadlineFundraisingJob implements Job{
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger DeadlineFundraisingJob");
         long loanId = (Long)context.getJobDetail().getJobDataMap().get("loanId");
         LoanModel loanModel = loanMapper.findById(loanId);
         logger.debug("loanId = " + loanId);

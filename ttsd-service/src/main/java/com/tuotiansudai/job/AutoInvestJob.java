@@ -20,6 +20,7 @@ public class AutoInvestJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        logger.info("trigger auto invest job, prepare do job");
         String strLoanId = context.getJobDetail().getJobDataMap()
                 .get(LOAN_ID_KEY).toString();
 
