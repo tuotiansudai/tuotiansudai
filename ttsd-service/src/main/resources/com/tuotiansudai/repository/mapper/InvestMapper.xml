@@ -122,10 +122,10 @@
     </select>
 
     <select id="findSuccessInvestMobileEmailAndAmount" parameterType="long" resultMap="investNotifyInfoMap">
-        select loan.periods,loan.name as loan_name, u.mobile, u.email, invest.amount,invest.id as invest_id
+        select invest.id as invest_id, invest.amount, loan.name as loan_name, loan.periods, user.mobile, user.email
         from invest
         inner join loan on invest.loan_id = loan.id
-        inner join user u on u.login_name = invest.login_name
+        inner join user on user.login_name = invest.login_name
         where loan.id = #{loanId}
         and invest.status = 'SUCCESS'
     </select>

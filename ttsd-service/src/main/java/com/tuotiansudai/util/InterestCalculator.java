@@ -54,8 +54,8 @@ public class InterestCalculator {
         return InterestCalculator.calculateInterest(loanModel, corpusMultiplyPeriodDays);
     }
 
-    public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final Date actualRepayDate) {
-        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1).withTimeAtStartOfDay();
+    public static DateTime getLastSuccessRepayDate(LoanModel loanModel, List<LoanRepayModel> loanRepayModels, final DateTime currentRepayDate) {
+        DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).minusDays(1);
 
         Ordering<LoanRepayModel> ordering = new Ordering<LoanRepayModel>() {
             @Override
@@ -69,13 +69,17 @@ public class InterestCalculator {
         Optional<LoanRepayModel> optional = Iterators.tryFind(orderingLoanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
             @Override
             public boolean apply(LoanRepayModel input) {
-                return input.getStatus() == RepayStatus.COMPLETE
-                        && new DateTime(input.getActualRepayDate()).withTimeAtStartOfDay().getMillis() <= new DateTime(actualRepayDate).withTimeAtStartOfDay().getMillis();
+                if (input.getStatus() == RepayStatus.COMPLETE) {
+                    DateTime expectedRepayDate = new DateTime(input.getRepayDate());
+                    DateTime actualRepayDate = new DateTime(input.getActualRepayDate());
+                    return actualRepayDate.isBefore(expectedRepayDate) && actualRepayDate.isBefore(currentRepayDate);
+                }
+                return false;
             }
         });
 
         if (optional.isPresent()) {
-            lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
+            lastRepayDate = new DateTime(optional.get().getActualRepayDate());
         }
 
         return lastRepayDate;

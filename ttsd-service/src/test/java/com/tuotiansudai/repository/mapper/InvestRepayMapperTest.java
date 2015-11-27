@@ -54,7 +54,7 @@ public class InvestRepayMapperTest {
         investRepayModels.add(investRepayModel);
         investRepayMapper.create(investRepayModels);
 
-        List<InvestRepayModel> actualInvestRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+        List<InvestRepayModel> actualInvestRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
 
         assertTrue(CollectionUtils.isNotEmpty(actualInvestRepayModels));
     }

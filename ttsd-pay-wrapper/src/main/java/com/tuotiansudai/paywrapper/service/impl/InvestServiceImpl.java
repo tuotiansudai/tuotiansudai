@@ -1,5 +1,6 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
@@ -395,31 +396,26 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public void notifyInvestorRepaySuccessfulByEmail(long loanId, int period) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<InvestNotifyInfo> notifyInfos = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
+        List<InvestNotifyInfo> notifyList = investMapper.findSuccessInvestMobileEmailAndAmount(loanId);
 
-        for (InvestNotifyInfo investNotifyInfo : notifyInfos) {
-            long investId = investNotifyInfo.getInvestId();
-            String email = investNotifyInfo.getEmail();
-            String loanName = investNotifyInfo.getLoanName();
-            int periods = investNotifyInfo.getPeriods();
-            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(investId, period);
-            if (investRepay != null) {
-                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
-                        .put("loanName", loanName)
-                        .put("periods", investRepay.getPeriod() + "/" + periods)
-                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
-                        .put("amount", AmountConverter.convertCentToString(calculateProfit(investRepay.getCorpus(), investRepay.getActualInterest(),
-                                investRepay.getDefaultInterest(), investRepay.getActualFee())))
-                        .build());
-                if (StringUtils.isNotEmpty(email)) {
-                    sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
+        for (InvestNotifyInfo notify : notifyList) {
+            String email = notify.getEmail();
+            InvestRepayModel investRepay = investRepayMapper.findCompletedInvestRepayByIdAndPeriod(notify.getInvestId(), period);
+            if (investRepay != null && !Strings.isNullOrEmpty(email)) {
+                long defaultInterest = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(notify.getInvestId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    defaultInterest += investRepayModel.getDefaultInterest();
                 }
+                Map<String, String> emailParameters = Maps.newHashMap(new ImmutableMap.Builder<String, String>()
+                        .put("loanName", notify.getLoanName())
+                        .put("periods", MessageFormat.format("{0} / {1}", String.valueOf(investRepay.getPeriod()), String.valueOf(notify.getPeriods())))
+                        .put("repayDate", simpleDateFormat.format(investRepay.getActualRepayDate()))
+                        .put("amount", AmountConverter.convertCentToString(investRepay.getCorpus() + investRepay.getActualInterest() + defaultInterest - investRepay.getActualFee()))
+                        .build());
+                sendCloudMailUtil.sendMailByRepayCompleted(email, emailParameters);
             }
         }
-    }
-
-    private long calculateProfit(long corpus, long actualInterest, long defaultInterest, long actualFee) {
-        return corpus + actualInterest + defaultInterest - actualFee;
     }
 
 

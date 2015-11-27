@@ -15,7 +15,7 @@ public interface InvestRepayMapper {
 
     InvestRepayModel findById(long id);
 
-    List<InvestRepayModel> findByInvestId(long investId);
+    List<InvestRepayModel> findByInvestIdAndPeriodAsc(long investId);
 
     List<InvestRepayModel> findByLoginNameAndInvestId(@Param(value = "loginName") String loginName, @Param(value = "investId") long investId);
 

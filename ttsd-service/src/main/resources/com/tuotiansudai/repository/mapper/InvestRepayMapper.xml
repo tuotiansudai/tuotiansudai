@@ -93,7 +93,7 @@
         select <include refid="columns"></include> from invest_repay where id = #{id}
     </select>
 
-    <select id="findByInvestId" parameterType="long" resultMap="investRepayResultMap">
+    <select id="findByInvestIdAndPeriodAsc" parameterType="long" resultMap="investRepayResultMap">
         select <include refid="columns"></include> from invest_repay where invest_id = #{investId} order by period asc
     </select>
 
