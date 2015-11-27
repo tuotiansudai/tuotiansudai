@@ -118,6 +118,8 @@ public class RepayMapperTest {
     private LoanDto getLoanModel(){
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName("helloworld");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("helloworld");
         loanDto.setBasicRate("16.00");
         long id = idGenerator.generate();

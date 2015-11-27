@@ -26,13 +26,16 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
         });
 
         $('.search').click(function(){
+            if ($('.jq-id').val() != "" && !$('.jq-id').val().match("^[0-9]*$")) {
+                $('.jq-id').val('0');
+            }
             var id = $('.jq-id').val();
             var title = $('.jq-title').val();
-            window.location.href = '/announceManage?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
+            window.location.href = '/announce?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
         });
 
         $('.publishAD').click(function(){
-            window.location.href = '/announce';
+            window.location.href = '/announce/add';
         });
 
         $('.jq-delete').click(function(event) {
@@ -49,7 +52,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
             .done(function (res) {
                 if(res.data.status){
-                   location.href='/announceManage';
+                   location.href='/announce';
                 }else{
                    showErrorMessage("保存失败");
                 }
@@ -89,7 +92,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
             .done(function (res) {
                 if(res.data.status){
-                    location.href='/announceManage';
+                    location.href='/announce';
                 }else{
                     showErrorMessage("保存失败");
                 }

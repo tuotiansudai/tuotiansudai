@@ -6,8 +6,8 @@ import com.tuotiansudai.api.dto.NodeDetailRequestDto;
 import com.tuotiansudai.api.dto.NodeDetailResponseDataDto;
 import com.tuotiansudai.api.dto.ReturnMessage;
 import com.tuotiansudai.api.service.MobileAppNodeDetailService;
-import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
-import com.tuotiansudai.repository.model.AnnouncementManagementModel;
+import com.tuotiansudai.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.repository.model.AnnounceModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailServic
     @Value("${web.server}")
     private String domainName;
     @Autowired
-    private AnnouncementManagementMapper announcementManagementMapper;
+    private AnnounceMapper announceMapper;
     @Override
     public BaseResponseDto generateNodeDetail(NodeDetailRequestDto requestDto) {
         BaseResponseDto<NodeDetailResponseDataDto> dto = new BaseResponseDto<>();
@@ -28,13 +28,13 @@ public class MobileAppNodeDetailServiceImpl implements MobileAppNodeDetailServic
         if(StringUtils.isEmpty(nodeId)){
             return new BaseResponseDto(ReturnMessage.NODE_ID_IS_NOT_EXIST.getCode(),ReturnMessage.NODE_ID_IS_NOT_EXIST.getMsg());
         }
-        AnnouncementManagementModel announcementManagementModel = announcementManagementMapper.findById(Long.parseLong(nodeId));
-        if(announcementManagementModel == null){
+        AnnounceModel announceModel = announceMapper.findById(Long.parseLong(nodeId));
+        if(announceModel == null){
             return new BaseResponseDto(ReturnMessage.NODE_ID_IS_NOT_EXIST.getCode(),ReturnMessage.NODE_ID_IS_NOT_EXIST.getMsg());
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
-        NodeDetailResponseDataDto dataDto = new NodeDetailResponseDataDto(announcementManagementModel);
+        NodeDetailResponseDataDto dataDto = new NodeDetailResponseDataDto(announceModel);
         dataDto.addDomainNameToImageUrl(urlPattern, domainName);
         dto.setData(dataDto);
         return dto;

@@ -32,7 +32,7 @@ public class LoanController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView createLoan() {
-        ModelAndView modelAndView = new ModelAndView("/create-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-create");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);
@@ -63,7 +63,7 @@ public class LoanController {
         if (!loanService.loanIsExist(loanId)) {
             return new ModelAndView("/index");
         }
-        ModelAndView modelAndView = new ModelAndView("/edit-loan");
+        ModelAndView modelAndView = new ModelAndView("/loan-edit");
         modelAndView.addObject("activityTypes", Lists.newArrayList(ActivityType.values()));
         modelAndView.addObject("loanTypes", Lists.newArrayList(LoanType.values()));
         modelAndView.addObject("contractId", DEFAULT_CONTRACT_ID);

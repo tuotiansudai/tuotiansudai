@@ -69,6 +69,8 @@ public class MobileAppLoanDetailServiceTest extends ServiceTestBase{
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
         loanModel.setLoanerLoginName("loginName");
+        loanModel.setLoanerUserName("借款人");
+        loanModel.setLoanerIdentityNumber("111111111111111111");
         loanModel.setRecheckTime(new Date());
         loanModel.setVerifyTime(new Date());
         loanModel.setUpdateTime(new Date());

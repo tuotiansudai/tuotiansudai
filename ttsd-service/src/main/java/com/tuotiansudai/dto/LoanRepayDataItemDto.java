@@ -77,7 +77,7 @@ public class LoanRepayDataItemDto {
         }
         this.loanRepayStatus = loanRepayModel.getStatus();
         this.totalAmount = AmountConverter.convertCentToString(loanRepayModel.getCorpus() + loanRepayModel.getExpectedInterest() + loanRepayModel.getDefaultInterest());
-        this.agentLoginName = loanRepayModel.getLoan().getLoanerLoginName();
+        this.agentLoginName = loanRepayModel.getLoan().getAgentLoginName();
         this.loanName = loanRepayModel.getLoan().getName();
     }
 

@@ -16,7 +16,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 digits: true,
                 minlength: 11,
                 maxlength: 11,
-                isExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
+                isNotExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
             },
             captcha: {
                 required: true,
@@ -36,7 +36,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 digits: '必须是数字',
                 minlength: '手机格式不正确',
                 maxlength: '手机格式不正确',
-                isExist: '手机号已存在'
+                isNotExist: '手机号不存在'
             },
             captcha: {
                 required: '请输入验证码',
@@ -132,7 +132,5 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         $('.verification-code-img').click(function () {
             refreshCaptcha();
         });
-
-
 
     })

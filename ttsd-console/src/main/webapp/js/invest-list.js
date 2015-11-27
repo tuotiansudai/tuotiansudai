@@ -12,6 +12,9 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
     $('form button[type="submit"]').click(function (event) {
         var queryParams = '';
+        if ($('form input[name="loanId"]').val() != "" && !$('form input[name="loanId"]').val().match("^[0-9]*$")) {
+            $('form input[name="loanId"]').val('0');
+        }
         if ($('form input[name="loanId"]').val()) {
             queryParams += "loanId=" + $('form input[name="loanId"]').val() + "&";
         }

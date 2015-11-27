@@ -1,1 +1,1 @@
-alter table aa.user add column source varchar(16);
+ALTER TABLE `aa`.user ADD COLUMN source VARCHAR(16);

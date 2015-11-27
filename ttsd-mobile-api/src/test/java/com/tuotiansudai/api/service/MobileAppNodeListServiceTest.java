@@ -5,8 +5,8 @@ import com.tuotiansudai.api.dto.BaseResponseDto;
 import com.tuotiansudai.api.dto.NodeListRequestDto;
 import com.tuotiansudai.api.dto.NodeListResponseDataDto;
 import com.tuotiansudai.api.service.impl.MobileAppNodeListServiceImpl;
-import com.tuotiansudai.repository.mapper.AnnouncementManagementMapper;
-import com.tuotiansudai.repository.model.AnnouncementManagementModel;
+import com.tuotiansudai.repository.mapper.AnnounceMapper;
+import com.tuotiansudai.repository.model.AnnounceModel;
 import com.tuotiansudai.util.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,21 +29,21 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
     @InjectMocks
     private MobileAppNodeListServiceImpl mobileAppNodeListService;
     @Mock
-    private AnnouncementManagementMapper announcementManagementMapper;
+    private AnnounceMapper announceMapper;
     @Autowired
     private IdGenerator idGenerator;
 
     @Test
     public void shouldGenerateNodeListIsOk(){
-        AnnouncementManagementModel announcementManagementModel1 = fakeAnnouncementManagementModel();
-        AnnouncementManagementModel announcementManagementModel2 = fakeAnnouncementManagementModel();
-        announcementManagementModel1.setContent("content1");
-        announcementManagementModel2.setContent("content2");
-        List<AnnouncementManagementModel> announcementManagementModels = Lists.newArrayList();
-        announcementManagementModels.add(announcementManagementModel1);
-        announcementManagementModels.add(announcementManagementModel2);
-        when(announcementManagementMapper.findAnnouncementManagement(anyLong(), anyString(), anyInt(), anyInt())).thenReturn(announcementManagementModels);
-        when(announcementManagementMapper.findAnnouncementManagementCount(anyLong(), anyString())).thenReturn(2);
+        AnnounceModel announceModel1 = fakeAnnounceModel();
+        AnnounceModel announceModel2 = fakeAnnounceModel();
+        announceModel1.setContent("content1");
+        announceModel2.setContent("content2");
+        List<AnnounceModel> announceModels = Lists.newArrayList();
+        announceModels.add(announceModel1);
+        announceModels.add(announceModel2);
+        when(announceMapper.findAnnounce(anyLong(), anyString(), anyInt(), anyInt())).thenReturn(announceModels);
+        when(announceMapper.findAnnounceCount(anyLong(), anyString())).thenReturn(2);
         NodeListRequestDto nodeListRequestDto = new NodeListRequestDto();
         nodeListRequestDto.setIndex(1);
         nodeListRequestDto.setPageSize(2);
@@ -54,15 +54,15 @@ public class MobileAppNodeListServiceTest extends ServiceTestBase{
         assertEquals("content2",baseDto.getData().getNodeList().get(1).getContent());
     }
 
-    private AnnouncementManagementModel fakeAnnouncementManagementModel(){
-        AnnouncementManagementModel announcementManagementModel = new AnnouncementManagementModel();
-        announcementManagementModel.setId(idGenerator.generate());
-        announcementManagementModel.setTitle("tile");
-        announcementManagementModel.setContent("content");
-        announcementManagementModel.setCreatedTime(new Date());
-        announcementManagementModel.setUpdateTime(new Date());
-        announcementManagementModel.setShowOnHome(false);
-        return announcementManagementModel;
+    private AnnounceModel fakeAnnounceModel(){
+        AnnounceModel announceModel = new AnnounceModel();
+        announceModel.setId(idGenerator.generate());
+        announceModel.setTitle("tile");
+        announceModel.setContent("content");
+        announceModel.setCreatedTime(new Date());
+        announceModel.setUpdateTime(new Date());
+        announceModel.setShowOnHome(false);
+        return announceModel;
     }
 
 

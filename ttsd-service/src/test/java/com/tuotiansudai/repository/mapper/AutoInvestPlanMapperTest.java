@@ -1,7 +1,9 @@
 package com.tuotiansudai.repository.mapper;
 
 
-import com.tuotiansudai.repository.model.*;
+import com.tuotiansudai.repository.model.AutoInvestPlanModel;
+import com.tuotiansudai.repository.model.UserModel;
+import com.tuotiansudai.repository.model.UserStatus;
 import com.tuotiansudai.util.AutoInvestMonthPeriod;
 import com.tuotiansudai.util.IdGenerator;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -39,6 +41,10 @@ public class AutoInvestPlanMapperTest {
     @Before
     public void setup(){
         createUserByUserId(User_ID);
+        List<AutoInvestPlanModel> allModel = autoInvestPlanMapper.findEnabledPlanByPeriod(0, DateUtils.addDays(new Date(),1));
+        for(AutoInvestPlanModel existsModel : allModel){
+            autoInvestPlanMapper.disable(existsModel.getLoginName());
+        }
     }
 
     @Test

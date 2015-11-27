@@ -6,7 +6,7 @@
     <#assign loanStatus="ALL">
 </#if>
 
-<@global.main pageCss="" pageJavascript="loanList.js" headLab="projectMain" sideLab="${loanStatus}" title="所有借款">
+<@global.main pageCss="" pageJavascript="loanList.js" headLab="projectMain" sideLab="${loanStatus}" title="项目管理">
 
     <!-- content area begin -->
     <div class="col-md-10">
@@ -47,6 +47,7 @@
                 <th>编号</th>
                 <th>项目名称</th>
                 <th>借款人</th>
+                <th>代理人</th>
                 <th>借款金额</th>
                 <th>借款期限</th>
                 <th>年化/活动(利率)</th>
@@ -61,6 +62,7 @@
                 <tr>
                     <td>${loanListDto.id?string('0')}</td>
                     <td class="projectName"><span class="add-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="${loanListDto.name}">${loanListDto.name}</span></td>
+                    <td>${loanListDto.loanerUserName}</td>
                     <td>${loanListDto.agentLoginName}</td>
                     <td class="td">${loanListDto.loanAmount/100}</td>
                     <td class="td">${loanListDto.periods}</td>

@@ -1,6 +1,6 @@
 package com.tuotiansudai.api.dto;
 
-import com.tuotiansudai.repository.model.AnnouncementManagementModel;
+import com.tuotiansudai.repository.model.AnnounceModel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ public class NodeDetailResponseDataDto extends BaseResponseDataDto {
     public NodeDetailResponseDataDto() {
 
     }
-    public NodeDetailResponseDataDto(AnnouncementManagementModel input){
+    public NodeDetailResponseDataDto(AnnounceModel input){
 
         this.setNodeId("" + input.getId());
         this.setContent(input.getContent());

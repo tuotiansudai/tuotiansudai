@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class ReferrerManageView {
 
+    private String loanId;
+
     private String loanName;
 
     private int periods;
@@ -153,5 +155,13 @@ public class ReferrerManageView {
 
     public void setRewardAmountStr(String rewardAmountStr) {
         this.rewardAmountStr = rewardAmountStr;
+    }
+
+    public String getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(String loanId) {
+        this.loanId = loanId;
     }
 }

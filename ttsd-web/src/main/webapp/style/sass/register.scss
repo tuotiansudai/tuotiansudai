@@ -12,6 +12,7 @@
   .register-box {
     width: 70%;
     margin-left: 33%;
+    *margin-left: 30%;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -27,8 +28,26 @@
         margin-bottom: 20px;
         height: auto;
         overflow: auto;
-        &.captcha-tag {
+        .reg-title {
+          width:60px;
+          padding-right: 3px;
+          font-size:14px;
+          color: #333;
+          text-align: right;
+          display: none;
+          *display:block;
+        }
+        .captcha-tag {
           position: relative;
+          display: inline-block;
+          .fetch-captcha {
+            padding: 7px;
+            letter-spacing: 0;
+            position: absolute;
+            left: 235px;
+            top: 3px;
+            font-size: 12px;
+          }
         }
         input[type="text"], input[type="password"] {
           color: #999;
@@ -37,7 +56,7 @@
           border-radius: 3px;
           padding: 9px 2px 9px 30px;
           &.mobile {
-            background: url(/images/icons/register.png) no-repeat 6px -362px;
+            background: url(/images/icons/register.png) no-repeat 6px -364px;
           }
           &.captcha {
             background: url(/images/icons/register.png) no-repeat 6px -548px;
@@ -61,14 +80,7 @@
             background: url(/images/icons/register.png) no-repeat 6px -724px;
           }
         }
-        .fetch-captcha {
-          padding: 5px;
-          letter-spacing: 0;
-          position: absolute;
-          right: 390px;
-          top: 5px;
-          font-size: 12px;
-        }
+
         .agreement {
           display: inline-block;
           width:295px;
@@ -79,6 +91,7 @@
             color: nth($checkValid,2);
           }
         }
+
       }
       .register-account {
         display: block;
@@ -195,7 +208,7 @@
     position: relative;
     .verification-code-img {
       position: absolute;
-      right: 44px;
+      right: 25px;
 
     }
   }

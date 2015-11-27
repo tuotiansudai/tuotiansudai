@@ -41,7 +41,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
         });
 
         $('form button[type="reset"]').click(function () {
-            window.location.href = "/userFunds";
+            window.location.href = "/user-funds";
         });
 
         $('.search').click(function() {
@@ -50,7 +50,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/userFunds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&currentPageNo=1&pageSize=10";
+            window.location.href = "/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&currentPageNo=1&pageSize=10";
         });
 
         $('.down-load').click(function(){
@@ -59,7 +59,7 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
             var endTime = $('.jq-endTime').val();
             var operationType = $('.operationType').val();
             var businessType = $('.businessType').val();
-            window.location.href = "/userFunds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
+            window.location.href = "/user-funds?loginName="+loginName+"&startTime="+startTime+"&endTime="+endTime+"&userBillOperationType="+operationType+"&userBillBusinessType="+businessType+"&export=csv";
         });
     });
 })

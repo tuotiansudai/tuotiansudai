@@ -29,7 +29,7 @@ public class UserFundsController {
     @Autowired
     private UserBillService userBillService;
 
-    @RequestMapping(value = "/userFunds", method = RequestMethod.GET)
+    @RequestMapping(value = "/user-funds", method = RequestMethod.GET)
     public ModelAndView userFunds(@RequestParam(value = "userBillBusinessType", required = false) UserBillBusinessType userBillBusinessType,
                                   @RequestParam(value = "userBillOperationType", required = false) UserBillOperationType userBillOperationType,
                                   @RequestParam(value = "loginName", required = false) String loginName,
