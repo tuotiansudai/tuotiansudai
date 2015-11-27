@@ -219,4 +219,18 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         }
     });
 
+    if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0)
+    {
+        var _interval = window.setInterval(function () {
+            var autofills = $('input:-webkit-autofill');
+            if (autofills.length > 0) {
+                window.clearInterval(_interval); // 停止轮询
+                autofills.each(function() {
+                    var clone = $(this).clone(true, true);
+                    $(this).after(clone).remove();
+                });
+            }
+        }, 20);
+    }
+
 });
