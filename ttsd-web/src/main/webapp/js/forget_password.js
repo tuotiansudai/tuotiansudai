@@ -16,7 +16,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 digits: true,
                 minlength: 11,
                 maxlength: 11,
-                isExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
+                isNotExist: '/mobile-retrieve-password/mobile/{0}/is-exist?random=' + new Date().getTime()
             },
             captcha: {
                 required: true,
