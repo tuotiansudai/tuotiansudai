@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -117,7 +118,9 @@ public class InvestServiceImpl implements InvestService {
     @Override
     public long calculateExpectedInterest(long loanId, long amount) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        return calculateExpectedInterest(loanModel, amount);
+        long expectedInterest = calculateExpectedInterest(loanModel, amount);
+        long expectedFee = new BigDecimal(expectedInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).setScale(0,BigDecimal.ROUND_DOWN).longValue();
+        return expectedInterest - expectedFee;
     }
 
     @Override
