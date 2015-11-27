@@ -1,4 +1,3 @@
+ALTER TABLE `aa`.user ADD COLUMN province VARCHAR(32);
 
-alter table aa.user add column province varchar(32);
-
-alter table aa.user add column city varchar(32);
+ALTER TABLE `aa`.user ADD COLUMN city VARCHAR(32);

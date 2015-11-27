@@ -10,21 +10,29 @@
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-one">
-            <form class="register-user-form" action="/register/user" method="post">
+            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
                 <li>
+                    <label for="" class="reg-title">用户名:</label>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
                 </li>
                 <li>
+                    <label for="" class="reg-title">手机号:</label>
                     <input type="text" name="mobile" class="mobile" placeholder="请输入手机号" maxlength="11" value="${(originalFormData.mobile)!}" />
                 </li>
-                <li class="captcha-tag">
-                    <input type="text" name="captcha" class="captcha" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
-                    <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                <li>
+                    <label for="" class="reg-title">验证码:</label>
+                    <span class="captcha-tag">
+                        <input type="text" name="captcha" class="captcha" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="请输入验证码"  maxlength="6" value="${(originalFormData.captcha)!}"/>
+                        <button class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
+                    </span>
+
                 </li>
                 <li>
+                    <label for="" class="reg-title">重复密码:</label>
                     <input type="password" name="password" placeholder="请输入密码" maxlength="20" class="password" value="${(originalFormData.password)!}"/>
                 </li>
                 <li>
+                    <label for="" class="reg-title">推荐人:</label>
                     <input type="text" name="referrer" placeholder="请输入推荐人（选填）" maxlength="25" class="referrer" value="${(referrer)!(originalFormData.referrer)!}"/>
                 </li>
                 <li>

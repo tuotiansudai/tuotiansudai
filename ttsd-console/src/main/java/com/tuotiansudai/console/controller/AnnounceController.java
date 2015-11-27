@@ -15,7 +15,7 @@ public class AnnounceController {
     @Autowired
     private AnnounceService announceService;
 
-    @RequestMapping(value = "/announceManage", method = RequestMethod.GET)
+    @RequestMapping(value = "/announce", method = RequestMethod.GET)
     public ModelAndView announceManage(@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "title",required = false) String title,
                                                 @RequestParam(value = "currentPageNo",defaultValue = "1",required = false) int currentPageNo,
                                                 @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize) {
@@ -35,12 +35,12 @@ public class AnnounceController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/announce", method = RequestMethod.GET)
+    @RequestMapping(value = "/announce/add", method = RequestMethod.GET)
     public ModelAndView announce() {
         return new ModelAndView("/announce-edit");
     }
 
-    @RequestMapping(value = "/announceEdit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/announce/edit/{id}", method = RequestMethod.GET)
     public ModelAndView userFundsRelease(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("/announce-edit");
         modelAndView.addObject("announce", this.announceService.findById(id));

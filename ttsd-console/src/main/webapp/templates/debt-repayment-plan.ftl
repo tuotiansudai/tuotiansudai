@@ -38,7 +38,7 @@
             <tbody>
                 <#list debtRepaymentPlans as debtRepaymentPlan>
                 <tr>
-                    <td><a href="/debtRepaymentDetail?date=${debtRepaymentPlan.repayDate!}"
+                    <td><a href="/debt-repayment-detail?date=${debtRepaymentPlan.repayDate!}"
                            class="linked">${debtRepaymentPlan.repayDate!}</a></td>
                     <td>${((debtRepaymentPlan.totalAmount/100)?string('0.00'))!}</td>
                 </tr>

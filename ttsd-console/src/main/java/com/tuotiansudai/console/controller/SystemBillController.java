@@ -23,7 +23,7 @@ public class SystemBillController {
     @Autowired
     SystemBillService systemBillService;
 
-    @RequestMapping(value = "/systemBill", method = RequestMethod.GET)
+    @RequestMapping(value = "/system-bill", method = RequestMethod.GET)
     public ModelAndView getSystemBillList(@RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date startTime,
                                           @RequestParam(value = "endTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date endTime,
                                           @RequestParam(value = "operationType", required = false) SystemBillOperationType operationType,

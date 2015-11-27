@@ -1,14 +1,8 @@
 package com.tuotiansudai.paywrapper.service.impl;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.UnmodifiableIterator;
-import com.google.common.primitives.Ints;
-import com.tuotiansudai.dto.BaseDataDto;
 import com.tuotiansudai.dto.BaseDto;
-import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.PayFormDataDto;
 import com.tuotiansudai.exception.AmountTransferException;
 import com.tuotiansudai.job.JobType;
@@ -111,7 +105,7 @@ public class NormalRepayServiceImpl implements RepayService {
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
 
         DateTime actualRepayDate = new DateTime();
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, actualRepayDate.toDate());
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, actualRepayDate);
         long actualInterest = InterestCalculator.calculateLoanRepayInterest(loanModel, successInvestModels, lastRepayDate, actualRepayDate);
 
         long defaultInterest = 0;
@@ -181,34 +175,25 @@ public class NormalRepayServiceImpl implements RepayService {
 
             if (currentInvestRepayModel.getStatus() == RepayStatus.REPAYING) {
                 InvestModel investModel = investMapper.findById(currentInvestRepayModel.getInvestId());
-                LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-                LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), currentInvestRepayModel.getPeriod());
+                long loanId = investModel.getLoanId();
+                LoanModel loanModel = loanMapper.findById(loanId);
+                List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
+                LoanRepayModel currentLoanRepayModel = loanRepayModels.get(currentInvestRepayModel.getPeriod() - 1);
 
-                final DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
-
-                DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-                if (currentInvestRepayModel.getPeriod() > 1) {
-                    if (currentInvestRepayModel.getPeriod() > 1) {
-                        List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
-                        for (LoanRepayModel model : loanRepayModels) {
-                            if (loanRepayModel.getPeriod() > model.getPeriod() && model.getActualRepayDate() != null && model.getActualRepayDate().before(currentRepayDate.toDate())) {
-                                lastRepayDate = new DateTime(model.getActualRepayDate());
-                            }
-                        }
-                    }
-                }
+                DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
+                DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
 
                 long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
                 long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
 
                 long defaultInterest = 0;
-                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
                 for (InvestRepayModel investRepayModel : investRepayModels) {
                     defaultInterest += investRepayModel.getDefaultInterest();
                 }
 
                 this.updateInvestorUserBill(investModel.getLoginName(), investRepayId, currentInvestRepayModel.getCorpus() + actualInterest + defaultInterest, actualFee);
-                this.updateInvestRepay(currentInvestRepayModel.getInvestId(), currentInvestRepayModel.getPeriod(), actualInterest, actualFee, loanRepayModel.getActualRepayDate());
+                this.updateInvestRepay(currentInvestRepayModel.getInvestId(), currentInvestRepayModel.getPeriod(), actualInterest, actualFee, currentLoanRepayModel.getActualRepayDate());
             }
         } catch (NumberFormatException e) {
             logger.error(MessageFormat.format("[Normal Repay] Loan repay id is invalid (investRepayId = {0})", callbackRequest.getOrderId()));
@@ -232,34 +217,16 @@ public class NormalRepayServiceImpl implements RepayService {
         try {
             long investRepayId = Long.parseLong(callbackRequest.getOrderId().split(REPAY_ORDER_ID_SEPARATOR)[0]);
             InvestRepayModel currentInvestRepayModel = investRepayMapper.findById(investRepayId);
+
             if (systemBillMapper.findByOrderId(investRepayId) == null) {
                 InvestModel investModel = investMapper.findById(currentInvestRepayModel.getInvestId());
                 LoanModel loanModel = loanMapper.findById(investModel.getLoanId());
-                LoanRepayModel loanRepayModel = loanRepayMapper.findByLoanIdAndPeriod(loanModel.getId(), currentInvestRepayModel.getPeriod());
+                List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId());
+                LoanRepayModel currentLoanRepayModel = loanRepayModels.get(currentInvestRepayModel.getPeriod() - 1);
 
-                final DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
+                DateTime currentRepayDate = new DateTime(currentLoanRepayModel.getActualRepayDate());
 
-                DateTime lastRepayDate = new DateTime(loanModel.getRecheckTime()).withTimeAtStartOfDay().minusSeconds(1);
-                if (currentInvestRepayModel.getPeriod() > 1) {
-                    Ordering<LoanRepayModel> descOrdering = new Ordering<LoanRepayModel>() {
-                        @Override
-                        public int compare(LoanRepayModel left, LoanRepayModel right) {
-                            return Ints.compare(right.getPeriod(), left.getPeriod());
-                        }
-                    };
-
-                    List<LoanRepayModel> orderingLoanRepayModels = descOrdering.sortedCopy(loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()));
-                    Optional<LoanRepayModel> optional = Iterators.tryFind(orderingLoanRepayModels.iterator(), new Predicate<LoanRepayModel>() {
-                        @Override
-                        public boolean apply(LoanRepayModel input) {
-                            return input.getActualRepayDate() != null && input.getActualRepayDate().before(currentRepayDate.toDate());
-                        }
-                    });
-
-                    if (optional.isPresent()) {
-                        lastRepayDate = new DateTime(optional.get().getActualRepayDate()).withTimeAtStartOfDay();
-                    }
-                }
+                DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, currentRepayDate);
 
                 long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
                 long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
@@ -321,7 +288,7 @@ public class NormalRepayServiceImpl implements RepayService {
     private long paybackInvestRepay(LoanRepayModel loanRepayModel) {
         LoanModel loanModel = loanMapper.findById(loanRepayModel.getLoanId());
         DateTime currentRepayDate = new DateTime(loanRepayModel.getActualRepayDate());
-        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()), currentRepayDate.toDate());
+        DateTime lastRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanModel.getId()), currentRepayDate);
 
         List<InvestModel> successInvests = investMapper.findSuccessInvestsByLoanId(loanModel.getId());
 
@@ -330,7 +297,8 @@ public class NormalRepayServiceImpl implements RepayService {
         for (InvestModel investModel : successInvests) {
             String investorLoginName = investModel.getLoginName();
             AccountModel accountModel = accountMapper.findByLoginName(investorLoginName);
-            InvestRepayModel currentInvestRepayModel = investRepayMapper.findByInvestIdAndPeriod(investModel.getId(), loanRepayModel.getPeriod());
+            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investModel.getId());
+            InvestRepayModel currentInvestRepayModel = investRepayModels.get(loanRepayModel.getPeriod() - 1);
 
             long investRepayId = currentInvestRepayModel.getId();
             if (currentInvestRepayModel.getStatus() == RepayStatus.COMPLETE) {
@@ -341,7 +309,7 @@ public class NormalRepayServiceImpl implements RepayService {
             long actualInterest = InterestCalculator.calculateInvestRepayInterest(loanModel, investModel, lastRepayDate, currentRepayDate);
             long actualFee = new BigDecimal(actualInterest).multiply(new BigDecimal(loanModel.getInvestFeeRate())).longValue();
             long defaultInterest = 0;
-            List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investModel.getId());
+
             for (InvestRepayModel investRepayModel : investRepayModels) {
                 defaultInterest += investRepayModel.getDefaultInterest();
             }
@@ -430,7 +398,7 @@ public class NormalRepayServiceImpl implements RepayService {
 
     @Transactional
     private void updateInvestRepay(long investId, final int currentPeriod, long actualInterest, long InvestFee, Date actualRepayDate) {
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investId);
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investId);
         for (InvestRepayModel investRepayModel : investRepayModels) {
             if (investRepayModel.getPeriod() <= currentPeriod) {
                 if (investRepayModel.getStatus() == RepayStatus.OVERDUE) {
@@ -451,7 +419,7 @@ public class NormalRepayServiceImpl implements RepayService {
     @Transactional(rollbackFor = Exception.class)
     private void updateInvestorUserBill(String investorLoginName, long investRepayId, long actualPaybackAmount, long actualFee) throws AmountTransferException {
         InvestRepayModel investRepayModel = investRepayMapper.findById(investRepayId);
-        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestId(investRepayModel.getInvestId());
+        List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(investRepayModel.getInvestId());
         boolean isOverdueRepay = Iterators.tryFind(investRepayModels.iterator(), new Predicate<InvestRepayModel>() {
             @Override
             public boolean apply(InvestRepayModel input) {

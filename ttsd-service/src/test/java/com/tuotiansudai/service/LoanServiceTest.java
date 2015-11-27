@@ -113,6 +113,8 @@ public class LoanServiceTest {
         long loanId = idGenerator.generate();
         loanDto.setId(loanId);
         loanDto.setLoanerLoginName(userModel.getLoginName());
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(userModel.getLoginName());
         loanDto.setMaxInvestAmount("100.00");
         loanDto.setMinInvestAmount("1.00");
@@ -395,6 +397,8 @@ public class LoanServiceTest {
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
         loanModel.setLoanerLoginName(fakeUserName);
+        loanModel.setLoanerUserName("借款人");
+        loanModel.setLoanerIdentityNumber("111111111111111111");
         loanMapper.create(loanModel);
         LoanTitleModel loanTitleModel = new LoanTitleModel();
         long titleId = idGenerator.generate();

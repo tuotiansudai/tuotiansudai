@@ -95,43 +95,49 @@ require(['jquery', 'pagination', 'mustache', 'text!/tpl/loan-invest-list.mustach
             return true;
         });
 
-        var calExpectedInterest = function(){
-            var loanId = $('.hid-loan').val();
-            var amount = amountInputElement.val();
-            var amountNeedRaised = $('form .amountNeedRaised-i').text();
-            if(Number(amountNeedRaised) < Number(amount)){
-                $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
-                $btnLookOther.prop('disabled', true);
-                return;
+        if(amountInputElement.length) {
+            var calExpectedInterest = function(){
+                var loanId = $('.hid-loan').val(),
+                    amount = amountInputElement.val();
+                if(amount=='') {
+                    amount='0.00';
+                }
+                var amountNeedRaised = $('form .amountNeedRaised-i').text();
+                if(Number(amountNeedRaised) < Number(amount)){
+                    $errorDom.html("<i class='fa fa-times-circle'></i>输入金额不能大于可投金额!").removeAttr("style");
+                    $btnLookOther.prop('disabled', true);
+                    return;
+                }
+                $.ajax({
+                    url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
+                    type: 'get',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=UTF-8'
+                }).done(function(amount){
+                    $errorDom.hide();
+                    $('.expected-interest').html(amount);
+                    $btnLookOther.prop('disabled', false);
+                });
             }
-            $.ajax({
-                url: '/calculate-expected-interest/loan/' + loanId + '/amount/' + amount,
-                type: 'get',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8'
-            }).done(function(amount){
-                $errorDom.hide();
-                $('.expected-interest').html(amount);
-                $btnLookOther.prop('disabled', false);
+            calExpectedInterest();
+            amountInputElement.blur(calExpectedInterest);
+
+            $('form').submit(function(){
+                var frm = $(this);
+                if(frm.attr('action') === '/invest'){
+                    if(typeof user_can_invest === 'undefined'){
+                        location.href = '/login?redirect='+encodeURIComponent(location.href);
+                        return false;
+                    }
+                    var amount = $("input[name='amount']",frm).val();
+                    if(isNaN(parseFloat(amount))) {
+                        $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
+                        return false;
+                    }
+                }
+                return true;
             });
         }
-        calExpectedInterest();
-        amountInputElement.blur(calExpectedInterest);
 
 
-        $('form').submit(function(){
-            var frm = $(this);
-            if(frm.attr('action') === '/invest'){
-                if(typeof user_can_invest === 'undefined'){
-                    location.href = '/login?redirect='+encodeURIComponent(location.href);
-                    return false;
-                }
-                var amount = $("input[name='amount']",frm).val();
-                if(isNaN(parseFloat(amount))) {
-                    $errorDom.html("<i class='fa fa-times-circle'></i>请正确输入投资金额").removeAttr("style");
-                    return false;
-                }
-            }
-            return true;
-        });
 });

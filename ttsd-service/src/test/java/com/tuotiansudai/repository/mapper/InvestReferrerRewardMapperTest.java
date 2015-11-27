@@ -86,6 +86,8 @@ public class InvestReferrerRewardMapperTest {
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("347834912131312283");
         fakeLoanModel.setAgentLoginName(agentLoginName);
         fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);

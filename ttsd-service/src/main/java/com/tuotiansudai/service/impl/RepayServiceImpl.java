@@ -70,10 +70,10 @@ public class RepayServiceImpl implements RepayService {
         }));
 
         if (Lists.newArrayList(LoanStatus.REPAYING, LoanStatus.OVERDUE).contains(loanModel.getStatus()) ) {
-            Date now = new Date();
+            DateTime now = new DateTime();
             List<InvestModel> investModels = investMapper.findSuccessInvestsByLoanId(loanId);
             DateTime lastSuccessRepayDate = InterestCalculator.getLastSuccessRepayDate(loanModel, loanRepayModels, now);
-            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, new DateTime(now));
+            long interest = InterestCalculator.calculateLoanRepayInterest(loanModel, investModels, lastSuccessRepayDate, now);
             long defaultInterest = 0;
             long corpus = 0;
             for (LoanRepayModel loanRepayModel : loanRepayModels) {
