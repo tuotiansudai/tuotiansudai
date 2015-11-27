@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="loan-repay.js" headLab="projectMain" sideLab="repaymentInfoList" title="所有借款">
+<@global.main pageCss="" pageJavascript="loan-repay.js" headLab="projectMain" sideLab="repaymentInfoList" title="项目还款明细">
 
 <#assign loanRepays = baseDto.data>
 

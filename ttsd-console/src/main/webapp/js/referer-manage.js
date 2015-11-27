@@ -64,6 +64,11 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker', 'jqu
             var investLoginName = $('.investLoginName').val();
             var investStartTime = $('.investStartTime').val();
             var investEndTime = $('.investEndTime').val();
+
+            if ($('.level').val() != "" && !$('.level').val().match("^[0-9]*$")) {
+                $('.level').val('');
+            }
+
             var level = $('.level').val();
             var rewardStartTime = $('.rewardStartTime').val();
             var rewardEndTime = $('.rewardEndTime').val();

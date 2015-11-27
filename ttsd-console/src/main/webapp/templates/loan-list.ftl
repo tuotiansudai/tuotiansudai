@@ -6,7 +6,7 @@
     <#assign loanStatus="ALL">
 </#if>
 
-<@global.main pageCss="" pageJavascript="loanList.js" headLab="projectMain" sideLab="${loanStatus}" title="所有借款">
+<@global.main pageCss="" pageJavascript="loanList.js" headLab="projectMain" sideLab="${loanStatus}" title="项目管理">
 
     <!-- content area begin -->
     <div class="col-md-10">

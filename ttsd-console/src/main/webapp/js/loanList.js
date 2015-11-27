@@ -16,7 +16,7 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
 
     $(".search").on("click",function(){
         var status = $(".status").val();
-        if ($(".loanId").val() == "" || !$(".loanId").val().match("^[0-9]*$")) {
+        if ($(".loanId").val() != "" && !$(".loanId").val().match("^[0-9]*$")) {
             $(".loanId").val('0');
         }
         var formData=$("#formLoanList").serialize(),
