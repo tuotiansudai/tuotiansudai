@@ -19,7 +19,7 @@
             <ul class="advantage-list">
                 <li>
                     <img src="${staticServer}/images/icons/about/help-n01.png" alt="投资优势" />
-                    <b>50元起投，项目期限1月起，年化收益率最高14%。</b>
+                    <b>1元起投，项目期限1月起，年化收益率最高14%。</b>
                 </li>
                 <li>
                     <img src="${staticServer}/images/icons/about/help-n02.png" alt="投资优势" />

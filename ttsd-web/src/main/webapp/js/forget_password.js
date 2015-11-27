@@ -56,6 +56,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             }
         },
         submitHandler:function(form) {
+            //$(form).submit();
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';

@@ -171,6 +171,9 @@
     width:420px;
     margin:0 auto;
     text-align: left;
+    &.input-password-box {
+      width:480px;
+    }
     li {
       margin-bottom:10px;
       position: relative;
@@ -186,14 +189,14 @@
             border:1px solid #aaa!important;
           }
         }
-      input[type='text'] {
+      input[type='text'],input[type='password'] {
         color: #999;
         width: 210px;
         border: #cecece 1px solid;
         border-radius: 3px;
         padding: 9px 2px 9px 5px;
       }
-      .btn-send-form {
+      input[type="submit"] {
         margin-left: 100px;
       }
 

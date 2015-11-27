@@ -14,7 +14,7 @@
                    <input type="text" name="captcha" class="yzm-txt" maxlength="11" placeholder="请输入验证码"/>
                    <button type="button" class="fetch-captcha btn-success" disabled="disabled">获取验证码</button>
            </li>
-           <li class="clear-blank-m ">
+           <li class="clear-blank-m">
 
                <input type="submit" class="btn-send-form btn-success" value="提交"/>
 
