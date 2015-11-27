@@ -46,7 +46,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/create", method = RequestMethod.GET)
     public ModelAndView newUser(){
-        ModelAndView modelAndView = new ModelAndView("/create-user");
+        ModelAndView modelAndView = new ModelAndView("/user-create");
         modelAndView.addObject("roles", Role.values());
         return modelAndView;
     }
@@ -69,7 +69,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
-        ModelAndView modelAndView = new ModelAndView("/edit-user");
+        ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
             EditUserDto editUserDto = userService.getEditUser(loginName);
             modelAndView.addObject("user", editUserDto);

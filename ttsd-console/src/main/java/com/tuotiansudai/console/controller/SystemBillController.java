@@ -31,7 +31,7 @@ public class SystemBillController {
                                           @RequestParam(value = "index", defaultValue = "1", required = false) int index,
                                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
 
-        ModelAndView modelAndView = new ModelAndView("/systemBill");
+        ModelAndView modelAndView = new ModelAndView("/system-bill");
         BaseDto<BasePaginationDataDto> baseDto = systemBillService.findSystemBillPagination(
                 startTime,
                 endTime,
