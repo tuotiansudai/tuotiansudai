@@ -29,14 +29,14 @@
             </tr>
             </thead>
             <tbody>
-                <#list announcementManagements as announcementManagement>
+                <#list announceList as announce>
                 <tr>
-                    <td>${(announcementManagement.id?string('0'))!}</td>
-                    <td>${announcementManagement.title!}</td>
-                    <td>${(announcementManagement.updateTime?string('yyyy-MM-dd'))!}</td>
-                    <td><a href="/announceEdit/${(announcementManagement.id?string('0'))!}" class="btn btn-link"> 编辑</a>
+                    <td>${(announce.id?string('0'))!}</td>
+                    <td>${announce.title!}</td>
+                    <td>${(announce.updateTime?string('yyyy-MM-dd'))!}</td>
+                    <td><a href="/announceEdit/${(announce.id?string('0'))!}" class="btn btn-link"> 编辑</a>
                         | <a href="#" class="btn btn-link jq-delete"
-                             data-id="${(announcementManagement.id?string('0'))!}">删除</a></td>
+                             data-id="${(announce.id?string('0'))!}">删除</a></td>
                 </tr>
                 </#list>
             </tbody>
@@ -46,7 +46,7 @@
     <div class="row">
         <!-- pagination  -->
         <nav class="pagination-control">
-            <div><span class="bordern">总共${announcementManagementCount}条,每页显示${pageSize}条</span></div>
+            <div><span class="bordern">总共${announceCount}条,每页显示${pageSize}条</span></div>
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >

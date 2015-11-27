@@ -5,14 +5,14 @@
 <div class="col-md-10">
     <div class="row">
         <form class="form-horizontal jq-form">
-            <input type="hidden" class="jq-id" value="${(announcementManagement.id?string('0'))!}">
+            <input type="hidden" class="jq-id" value="${(announce.id?string('0'))!}">
 
             <div class="form-group">
                 <label class="col-sm-1 control-label">标题: </label>
 
                 <div class="col-sm-4">
                     <input type="text" class="form-control jq-title" placeholder="" datatype="*" errormsg="标题不能为空"
-                           <#if announcementManagement??>value="${announcementManagement.title!}"</#if>>
+                           <#if announce??>value="${announce.title!}"</#if>>
                 </div>
             </div>
             <div class="form-group">
@@ -20,7 +20,7 @@
 
                 <div class="col-sm-10">
                     <script id="editor"
-                            type="text/plain"><#if announcementManagement??>${announcementManagement.content!}</#if></script>
+                            type="text/plain"><#if announce??>${announce.content!}</#if></script>
                 </div>
             </div>
             <div class="form-group">
@@ -30,7 +30,7 @@
                     <div class="checkbox jq-checkbox">
                         <label>
                             <input type="checkbox" class="jq-index"
-                                   <#if announcementManagement?? && announcementManagement.showOnHome>value="1"
+                                   <#if announce?? && announce.showOnHome>value="1"
                                    checked<#else>value="0"</#if>>
                             首页
                         </label>

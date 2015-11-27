@@ -1,4 +1,4 @@
-CREATE TABLE `aa`.`announcement_management` (
+CREATE TABLE `aa`.`announce` IF NOT EXISTS (
   `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `title`        VARCHAR(100)    NOT NULL,
   `content`      TEXT,

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.tuotiansudai.repository.mapper.AnnouncementManagementMapper">
+<mapper namespace="com.tuotiansudai.repository.mapper.AnnounceMapper">
 
-    <resultMap id="AnnouncementManagementResultMap" type="AnnouncementManagementModel">
+    <resultMap id="AnnounceResultMap" type="AnnounceModel">
         <id column="id" property="id"></id>
         <result column="title" property="title"></result>
         <result column="content" property="content"></result>
@@ -14,11 +14,11 @@
         <result column="update_time" property="updateTime"></result>
     </resultMap>
 
-    <select id="findAnnouncementManagement" parameterType="map" resultMap="AnnouncementManagementResultMap">
+    <select id="findAnnounce" parameterType="map" resultMap="AnnounceResultMap">
           SELECT
              *
           FROM
-              announcement_management
+              announce
           <where>
               <if test="id != null">
                   id = #{id}
@@ -31,11 +31,11 @@
           limit #{startLimit},#{endLimit}
     </select>
 
-    <select id="findAnnouncementManagementCount" parameterType="map" resultType="int">
+    <select id="findAnnounceCount" parameterType="map" resultType="int">
         SELECT
          count(*)
         FROM
-          announcement_management
+          announce
         <where>
             <if test="id != null">
                 id = #{id}
@@ -46,23 +46,23 @@
         </where>
     </select>
 
-    <insert id="create" parameterType="AnnouncementManagementModel" useGeneratedKeys="true" keyProperty="id">
-        insert into announcement_management (title,content,content_text,show_on_home,created_time,update_time)
+    <insert id="create" parameterType="AnnounceModel" useGeneratedKeys="true" keyProperty="id">
+        insert into announce (title,content,content_text,show_on_home,created_time,update_time)
         VALUE (#{title},#{content},#{contentText},#{showOnHome},#{createdTime},#{updateTime})
     </insert>
 
-    <update id="update" parameterType="AnnouncementManagementModel">
-        update announcement_management set
+    <update id="update" parameterType="AnnounceModel">
+        update announce set
           title = #{title},content = #{content},show_on_home = #{showOnHome},update_time = #{updateTime},content_text = #{contentText}
          where id = #{id}
     </update>
 
     <delete id="delete" parameterType="long">
-        delete from announcement_management where id = #{id}
+        delete from announce where id = #{id}
     </delete>
 
-    <select id="findById" parameterType="long" resultMap="AnnouncementManagementResultMap">
-        select * from announcement_management where id = #{id}
+    <select id="findById" parameterType="long" resultMap="AnnounceResultMap">
+        select * from announce where id = #{id}
     </select>
 
 </mapper>
