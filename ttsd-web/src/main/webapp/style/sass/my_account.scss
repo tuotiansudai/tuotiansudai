@@ -387,7 +387,7 @@
     }
     .e-bank-recharge {
       ol {
-        width: 798px;
+
         z-index: 1;
         float: left;
         overflow: hidden;
@@ -784,7 +784,7 @@
           font-size: 16px;
           right: 0;
           width: 180px;
-          top: 120px;
+          top: 110px;
           position: absolute;
           z-index: 33;
           text-align: center;
@@ -818,10 +818,10 @@
           display: none
         }
         & .num {
-          font: bold 20px/180px tahoma;
+          font: bold 25px/180px tahoma;
           text-align: center;
           color: #f24712;
-          top: 5px;
+          top: 0px;
           left: 10px;
           z-index: 9;
         }
@@ -863,7 +863,7 @@
           overflow: hidden;
         }
         &.img-status {
-          padding:20px;
+          padding:30px 10px;
         }
         .btn-normal {
           width: 100%;
@@ -941,6 +941,27 @@
 
         }
       }
+    }
+    .invest-WEB {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:18px;
+      background: url("/images/icons/ico_loan.png") 0 0 no-repeat;
+    }
+    .invest-ANDROID {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:22px;
+      background: url("/images/icons/ico_loan.png") 0px -32px no-repeat;
+    }
+    .invest-IOS {
+      display: inline-block;
+      vertical-align: middle;
+      width:18px;
+      height:20px;
+      background: url("/images/icons/ico_loan.png") 0px -65px no-repeat;
     }
   }
 }
