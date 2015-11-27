@@ -10,6 +10,7 @@
         <id column="id" property="id"></id>
         <result column="name" property="name"></result>
         <result column="agent_login_name" property="agentLoginName"></result>
+        <result column="loaner_login_name" property="loanerLoginName"></result>
         <result column="loaner_user_name" property="loanerUserName"></result>
         <result column="loaner_identity_number" property="loanerIdentityNumber"></result>
         <result column="type" property="type"></result>
@@ -43,8 +44,8 @@
     </resultMap>
 
     <insert id="create" parameterType="com.tuotiansudai.repository.model.LoanModel">
-        insert into loan(id, name, agent_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
-        values(#{id}, #{name}, #{agentLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
+        insert into loan(id, name, agent_login_name, loaner_login_name, loaner_user_name, loaner_identity_number, type, periods, description_text, description_html, base_rate, loan_amount, invest_fee_rate, min_invest_amount, invest_increasing_amount, max_invest_amount, activity_type, activity_rate, contract_id, fundraising_start_time, fundraising_end_time, show_on_home, created_time, verify_time, recheck_time, status, update_time)
+        values(#{id}, #{name}, #{agentLoginName}, #{loanerLoginName}, #{loanerUserName}, #{loanerIdentityNumber}, #{type}, #{periods}, #{descriptionText}, #{descriptionHtml}, #{baseRate}, #{loanAmount}, #{investFeeRate}, #{minInvestAmount}, #{investIncreasingAmount}, #{maxInvestAmount}, #{activityType}, #{activityRate}, #{contractId}, #{fundraisingStartTime}, #{fundraisingEndTime}, #{showOnHome}, #{createdTime}, #{verifyTime}, #{recheckTime}, #{status},#{updateTime})
     </insert>
 
     <select id="findById" parameterType="long" resultMap="loanResultMap">
@@ -230,6 +231,9 @@
             </if>
             <if test="agentLoginName !=null and agentLoginName!=''">
                 agent_login_name = #{agentLoginName},
+            </if>
+            <if test="loanerLoginName !=null and loanerLoginName!=''">
+                loaner_login_name = #{loanerLoginName},
             </if>
             <if test="loanerUserName !=null and loanerUserName!=''">
                 loaner_user_name = #{loanerUserName},

@@ -607,17 +607,19 @@ public class LoanServiceImpl implements LoanService {
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i = 0; i < loanModels.size(); i++) {
+            LoanModel loanModel = loanModels.get(i);
             LoanListDto loanListDto = new LoanListDto();
-            loanListDto.setId(loanModels.get(i).getId());
-            loanListDto.setName(loanModels.get(i).getName());
-            loanListDto.setType(loanModels.get(i).getType());
-            loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
-            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
-            loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setStatus(loanModels.get(i).getStatus());
-            loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
+            loanListDto.setId(loanModel.getId());
+            loanListDto.setName(loanModel.getName());
+            loanListDto.setType(loanModel.getType());
+            loanListDto.setAgentLoginName(loanModel.getAgentLoginName());
+            loanListDto.setLoanerUserName(loanModel.getLoanerUserName());
+            loanListDto.setLoanAmount(loanModel.getLoanAmount());
+            loanListDto.setPeriods(loanModel.getPeriods());
+            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListDto.setStatus(loanModel.getStatus());
+            loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;
