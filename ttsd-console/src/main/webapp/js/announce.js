@@ -31,11 +31,11 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             }
             var id = $('.jq-id').val();
             var title = $('.jq-title').val();
-            window.location.href = '/announce?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
+            window.location.href = '/announce-manage/announce?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
         });
 
         $('.publishAD').click(function(){
-            window.location.href = '/announce/add';
+            window.location.href = '/announce-manage/announce/add';
         });
 
         $('.jq-delete').click(function(event) {
@@ -44,7 +44,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
                 "id":$(this).data('id')
             });
             $.ajax({
-                url: '/announce/delete',
+                url: '/announce-manage/announce/delete',
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -52,7 +52,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
             .done(function (res) {
                 if(res.data.status){
-                   location.href='/announce';
+                   location.href='/announce-manage/announce';
                 }else{
                    showErrorMessage("保存失败");
                 }
@@ -84,7 +84,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
                 "showOnHome":showOnHome
             });
             $.ajax({
-                url: '/announce/'+operate,
+                url: '/announce-manage/announce/'+operate,
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -92,7 +92,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
             .done(function (res) {
                 if(res.data.status){
-                    location.href='/announce';
+                    location.href='/announce-manage/announce';
                 }else{
                     showErrorMessage("保存失败");
                 }

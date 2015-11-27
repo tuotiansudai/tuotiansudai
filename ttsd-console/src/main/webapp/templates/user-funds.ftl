@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-funds.js" headLab="finaMan" sideLab="userFund" title="用户资金管理">
+<@global.main pageCss="" pageJavascript="user-funds.js" headLab="finance-manage" sideLab="userFund" title="用户资金管理">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -90,7 +90,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -99,7 +99,7 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage >
-                    <a href="/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/finance-manage/user-funds?loginName=${loginName!}&startTime=${(startTime?string('yyyy-MM-dd'))!}&endTime=${(endTime?string('yyyy-MM-dd'))!}&userBillOperationType=${userBillOperationType!}&userBillBusinessType=${userBillBusinessType!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

@@ -330,7 +330,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     .done(function (res) {
                         if(res.data.status){
                             formFlag =true;
-                            location.href='/loanList/console';
+                            location.href='/project-manage/loan-list';
                         }else{
                             formFlag =false;
                             var msg = res.data.message || '服务端校验失败';

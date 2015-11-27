@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping(value = "/announce-manage", method = RequestMethod.GET)
 public class AnnounceController {
 
     @Autowired

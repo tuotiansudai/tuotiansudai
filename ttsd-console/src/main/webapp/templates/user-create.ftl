@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="create-user.js" headLab="userMain" sideLab="addUser" title="添加用户">
+<@global.main pageCss="" pageJavascript="create-user.js" headLab="user-manage" sideLab="addUser" title="添加用户">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal" action="/user/create" method="post">
+    <form class="form-horizontal" action="/user-manage/user/create" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 

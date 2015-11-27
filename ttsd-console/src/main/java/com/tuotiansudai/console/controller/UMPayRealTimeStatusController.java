@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Map;
 
 @Controller
-@RequestMapping(path = "/real-time-status")
+@RequestMapping(path = "/finance-manage/real-time-status")
 public class UMPayRealTimeStatusController {
 
     @Autowired

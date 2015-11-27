@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/user-manage")
 public class UserController {
 
     @Autowired
@@ -57,10 +58,10 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.createUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
+            modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName("redirect:/user/create");
+            modelAndView.setViewName("redirect:/user-manage/user/create");
             redirectAttributes.addFlashAttribute("user", editUserDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -98,10 +99,10 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
+            modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName(MessageFormat.format("redirect:/user/{0}/edit", editUserDto.getLoginName()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}/edit", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }

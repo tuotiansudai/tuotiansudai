@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="edit-user.js" headLab="userMain" sideLab="userMan" title="用户编辑">
+<@global.main pageCss="" pageJavascript="edit-user.js" headLab="user-manage" sideLab="user-manage" title="用户编辑">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal" action="/user/edit" method="post">
+    <form class="form-horizontal" action="/user-manage/user/edit" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="debt-repay-plan.js" headLab="finaMan" sideLab="debtRepay" title="债权还款计划详情">
+<@global.main pageCss="" pageJavascript="debt-repay-plan.js" headLab="finance-manage" sideLab="debtRepay" title="债权还款计划详情">
 
 <!-- content area begin -->
 <div class="col-md-10">

@@ -1,7 +1,7 @@
 <script>
-    var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
-    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
-    var API_FORM = '${requestContext.getContextPath()}/loan/';
+    var API_SELECT = '${requestContext.getContextPath()}/project-manage/loan/titles';  // 申请资料标题url
+    var API_POST_TITLE = '${requestContext.getContextPath()}/project-manage/loan/title';  //
+    var API_FORM = '${requestContext.getContextPath()}/project-manage/loan/';
     var rereq = {};
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
@@ -48,7 +48,7 @@
 
 
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="editLoan.js" headLab="projectMain" sideLab="" title="筹款编辑">
+<@global.main pageCss="" pageJavascript="editLoan.js" headLab="project-manage" sideLab="" title="筹款编辑">
 
 <!-- content area begin -->
 <div class="col-md-10">

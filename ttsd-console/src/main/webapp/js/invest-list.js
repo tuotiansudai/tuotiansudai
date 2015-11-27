@@ -47,7 +47,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     var autoValue = '';
     $("#tags").autocomplete({
         source: function (query, process) {
-            $.get('/account/' + query.term + '/search', function (respData) {
+            $.get('/user-manage/account/' + query.term + '/search', function (respData) {
                 autoValue = respData;
                 return process(respData);
             });
@@ -67,7 +67,7 @@ require(['jquery', 'bootstrap', 'bootstrapDatetimepicker', 'jquery-ui', 'bootstr
     });
 
     $('.down-load').click(function () {
-        location.href = "/invests?"+$('form').serialize()+"&export=csv";
+        location.href = "/finance-manage/invests?"+$('form').serialize()+"&export=csv";
     });
 
 });

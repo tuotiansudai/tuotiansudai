@@ -18,6 +18,7 @@ import java.util.Date;
 
 
 @Controller
+@RequestMapping(value = "/finance-manage")
 public class SystemBillController {
 
     @Autowired

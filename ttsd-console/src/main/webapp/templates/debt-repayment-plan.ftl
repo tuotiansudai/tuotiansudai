@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="debt-repay-plan.js" headLab="finaMan" sideLab="debtRepay" title="债权还款计划">
+<@global.main pageCss="" pageJavascript="debt-repay-plan.js" headLab="finance-manage" sideLab="debtRepay" title="债权还款计划">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -38,7 +38,7 @@
             <tbody>
                 <#list debtRepaymentPlans as debtRepaymentPlan>
                 <tr>
-                    <td><a href="/debt-repayment-detail?date=${debtRepaymentPlan.repayDate!}"
+                    <td><a href="/finance-manage/debt-repayment-detail?date=${debtRepaymentPlan.repayDate!}"
                            class="linked">${debtRepaymentPlan.repayDate!}</a></td>
                     <td>${((debtRepaymentPlan.totalAmount/100)?string('0.00'))!}</td>
                 </tr>
