@@ -176,15 +176,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 });
             }
         });
-        $(".jq-loaner").autocomplete({
-            source: function (query, process) {
-                $.get('/user/' + query.term + '/search', function (respData) {
-                    autoValue = respData;
-                    return process(respData);
-                });
-            }
-        });
-        $(".jq-agent, .jq-loaner").blur(function () {
+        $(".jq-agent").blur(function () {
             for(var i = 0; i< autoValue.length; i++){
                 if($(this).val()== autoValue[i]){
                     $(this).removeClass('Validform_error');

@@ -211,7 +211,7 @@ public class AdvanceRepayServiceTest {
         investMapper.create(fakeInvestModel);
 
         LoanRepayModel fakeLoanRepayModel1 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 0, 0, today.minusDays(10).toDate(), today.minusDays(20).toDate(), RepayStatus.COMPLETE);
-        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.toDate(), null, RepayStatus.REPAYING);
+        LoanRepayModel fakeLoanRepayModel2 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 1, 0, today.plusDays(1).toDate(), null, RepayStatus.REPAYING);
         LoanRepayModel fakeLoanRepayModel3 = this.getFakeLoanRepayModel(fakeNormalLoan.getId(), 2, loanAmount, today.plusDays(10).toDate(), null, RepayStatus.REPAYING);
         loanRepayMapper.create(Lists.newArrayList(fakeLoanRepayModel1, fakeLoanRepayModel2, fakeLoanRepayModel3));
 
