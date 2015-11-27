@@ -262,7 +262,7 @@
             invest i
             JOIN loan l
               ON i.`loan_id` = l.`id`
-              AND l.`status` IN ('COMPLETE', 'REPAYING')
+              AND l.`status` != 'WAITING_VERIFY'
           WHERE i.`status` = 'SUCCESS'
             AND i.`login_name` = #{loginName}) temp
           LEFT JOIN
