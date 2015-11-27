@@ -44,29 +44,6 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
-    public ModelAndView newUser(){
-        ModelAndView modelAndView = new ModelAndView("/user-create");
-        modelAndView.addObject("roles", Role.values());
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
-    public ModelAndView createUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes){
-        String ip = RequestIPParser.parse(request);
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            userService.createUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
-            return modelAndView;
-        } catch (BaseException e) {
-            modelAndView.setViewName("redirect:/user/create");
-            redirectAttributes.addFlashAttribute("user", editUserDto);
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-        }
-        return modelAndView;
-    }
-
     @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
@@ -103,6 +80,7 @@ public class UserController {
         } catch (BaseException e) {
             modelAndView.setViewName(MessageFormat.format("redirect:/user/{0}/edit", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
+            redirectAttributes.addFlashAttribute("roles", Role.values());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return modelAndView;
