@@ -1,10 +1,7 @@
 require(['jquery','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($) {
 
     var $inputGetPassword=$('#inputGetPassword'),
-        $newPassword=$('input[name="password"]',$inputGetPassword),
-        $repeatnewPassword=$('input[name="repeatPassword"]',$inputGetPassword),
-        $GetPasswordForm=$('form',$inputGetPassword),
-        $btnSendData=$('.btn-send-form-second',$inputGetPassword);
+        $GetPasswordForm=$('form',$inputGetPassword);
 
     $GetPasswordForm.validate({
         focusInvalid: false,
