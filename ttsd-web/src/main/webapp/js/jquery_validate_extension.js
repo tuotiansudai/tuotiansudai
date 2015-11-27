@@ -168,4 +168,8 @@ require(['jquery', 'jquery.validate'], function ($) {
     $.validator.addMethod("imageCaptchaVerify", function (value, element, urlTemplate) {
         return imageCaptchaVerifyFun.call(this, value, element, urlTemplate);
     }, $.validator.format("图形验证码不正确"));
+
+    $.validator.addMethod("isRealExist", function (value, element, urlTemplate) {
+        return !existFunc.call(this, value, element, urlTemplate);
+    }, $.validator.format("该手机号号不存在"));
 });
