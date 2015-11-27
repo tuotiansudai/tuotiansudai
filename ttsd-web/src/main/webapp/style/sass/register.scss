@@ -11,7 +11,7 @@
 
   .register-box {
     width: 70%;
-    margin-left: 30%;
+    margin-left: 33%;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -33,7 +33,7 @@
           font-size:14px;
           color: #333;
           text-align: right;
-          display: inline-block;
+          display: none;
         }
         .captcha-tag {
           position: relative;
