@@ -39,6 +39,11 @@ require(['jquery', 'jquery-ui',
 
         function pageinationView(e){
             var index = $(e.target).attr("pageIndex");
+
+            if ($('#loanId').val() != "" && !$('#loanId').val().match("^[0-9]*$")) {
+                $('#loanId').val('0');
+            }
+
             var loanId =  $('#loanId').val();
             var loginName =  $('#loginName').val();
             var startTime =  $('#startTime').val();

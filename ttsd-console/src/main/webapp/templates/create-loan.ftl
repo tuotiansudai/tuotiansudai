@@ -38,7 +38,7 @@
 
 
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="createLoan.js" headLab="projectMain" sideLab="start" title="筹款编辑">
+<@global.main pageCss="" pageJavascript="createLoan.js" headLab="projectMain" sideLab="start" title="发起借款">
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal jq-form">

@@ -26,6 +26,9 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
         });
 
         $('.search').click(function(){
+            if ($('.jq-id').val() != "" && !$('.jq-id').val().match("^[0-9]*$")) {
+                $('.jq-id').val('0');
+            }
             var id = $('.jq-id').val();
             var title = $('.jq-title').val();
             window.location.href = '/announceManage?id='+id+'&title='+title+'&currentPageNo=1&pageSize=10';
