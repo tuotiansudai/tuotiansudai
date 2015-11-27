@@ -102,6 +102,7 @@ public class ReferrerInvestResponseDataDto {
         this.investTime = simpleDateFormat.format(input.getInvestTime());
         this.rewardMoney = AmountConverter.convertCentToString(input.getRewardAmount());
         this.rewardTime = simpleDateFormat.format(input.getRewardTime());
+        this.loanId = input.getLoanId();
     }
 
 }

@@ -5,6 +5,7 @@
 <mapper namespace="com.tuotiansudai.repository.mapper.ReferrerManageMapper">
 
     <resultMap id="referrerManageMap" type="ReferrerManageView">
+        <result column="loan_id" property="loanId"></result>
         <result column="loan_name" property="loanName"></result>
         <result column="periods" property="periods"></result>
         <result column="invest_login_name" property="investLoginName"></result>
@@ -285,6 +286,7 @@
 
     <select id="findReferInvestList" parameterType="map" resultMap="referrerManageMap" >
         select
+            i.loan_id AS loan_id,
             i.login_name AS invest_name,
             rr.level,
             l.name AS loan_name,
