@@ -25,11 +25,25 @@ public class LoanDto extends BaseDataDto {
     private String agentLoginName;
 
     /***
-     * 借款用户
+     * 借款人ID
      ***/
     @NotEmpty
     @NotNull
     private String loanerLoginName;
+
+    /***
+     * 借款人
+     ***/
+    @NotEmpty
+    @NotNull
+    private String loanerUserName;
+
+    /***
+     * 借款人身份证
+     ***/
+    @NotEmpty
+    @NotNull
+    private String loanerIdentityNumber;
 
     /***
      * 标的类型
@@ -222,6 +236,22 @@ public class LoanDto extends BaseDataDto {
 
     public void setLoanerLoginName(String loanerLoginName) {
         this.loanerLoginName = loanerLoginName;
+    }
+
+    public String getLoanerUserName() {
+        return loanerUserName;
+    }
+
+    public void setLoanerUserName(String loanerUserName) {
+        this.loanerUserName = loanerUserName;
+    }
+
+    public String getLoanerIdentityNumber() {
+        return loanerIdentityNumber;
+    }
+
+    public void setLoanerIdentityNumber(String loanerIdentityNumber) {
+        this.loanerIdentityNumber = loanerIdentityNumber;
     }
 
     public LoanType getType() {

@@ -42,6 +42,8 @@ public class InvestServiceTest {
     private void createLoanByUserId(String userId, long loanId) {
         LoanDto loanDto = new LoanDto();
         loanDto.setLoanerLoginName(userId);
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName(userId);
         loanDto.setBasicRate("16.00");
         loanDto.setId(loanId);

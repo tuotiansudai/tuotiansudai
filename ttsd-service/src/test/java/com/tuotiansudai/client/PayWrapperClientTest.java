@@ -135,6 +135,8 @@ public class PayWrapperClientTest {
         LoanDto loanDto = new LoanDto();
         loanDto.setId(idGenerator.generate());
         loanDto.setLoanerLoginName("xiangjie");
+        loanDto.setLoanerUserName("借款人");
+        loanDto.setLoanerIdentityNumber("111111111111111111");
         loanDto.setAgentLoginName("xiangjie");
         loanDto.setLoanAmount("5000.00");
         loanDto.setMaxInvestAmount("999.00");

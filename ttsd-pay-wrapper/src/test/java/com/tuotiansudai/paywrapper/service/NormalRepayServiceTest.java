@@ -1101,6 +1101,8 @@ public class NormalRepayServiceTest {
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanAmount(amount);
         fakeLoanModel.setLoanerLoginName(loginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
         fakeLoanModel.setAgentLoginName(loginName);
         fakeLoanModel.setType(loanType);
         fakeLoanModel.setPeriods(periods);

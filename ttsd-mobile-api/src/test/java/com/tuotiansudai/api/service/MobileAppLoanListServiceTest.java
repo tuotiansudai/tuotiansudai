@@ -80,6 +80,8 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         loanModel.setCreatedTime(new Date());
         loanModel.setStatus(LoanStatus.WAITING_VERIFY);
         loanModel.setLoanerLoginName(fakeUserName);
+        loanModel.setLoanerUserName("借款人");
+        loanModel.setLoanerIdentityNumber("111111111111111111");
 
         return loanModel;
     }

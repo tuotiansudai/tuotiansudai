@@ -125,17 +125,6 @@ public class LoanServiceImpl implements LoanService {
                 return baseDto;
             }
         }
-        String loanerLoginName = getLoginName(loanDto.getLoanerLoginName());
-        if (loanerLoginName == null) {
-            dataDto.setMessage("借款用户不存在");
-            return baseDto;
-        } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
-                dataDto.setMessage("借款用户不具有借款人角色");
-                return baseDto;
-            }
-        }
         if (loanDto.getPeriods() <= 0) {
             dataDto.setMessage("借款期限最小为1");
             return baseDto;
@@ -207,6 +196,8 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setProjectName(loanModel.getName());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
+        loanDto.setLoanerUserName(loanModel.getLoanerUserName());
+        loanDto.setLoanerIdentityNumber(loanModel.getLoanerIdentityNumber());
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
@@ -438,19 +429,6 @@ public class LoanServiceImpl implements LoanService {
             payDataDto.setStatus(false);
             baseDto.setData(payDataDto);
             return baseDto;
-        }
-        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
-        if (loanUserId == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
-                payDataDto.setStatus(false);
-                baseDto.setData(payDataDto);
-                return baseDto;
-            }
         }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null) {
