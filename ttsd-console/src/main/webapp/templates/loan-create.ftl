@@ -58,11 +58,27 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">借款用户: </label>
+            <label class="col-sm-2 control-label">借款人姓名: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-loaner" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="借款用户不能为空">
+                <input type="text" class="form-control ui-autocomplete-input jq-loaner-user-name" datatype="*" autocomplete="off"
+                       placeholder="" errormsg="借款人姓名能为空">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">借款人身份证号: </label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number" datatype="*" autocomplete="off"
+                       placeholder="" errormsg="借款人身份证号不能为空">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">借款人平台ID: </label>
+
+            <div class="col-sm-4">
+                <input type="text" class="form-control ui-autocomplete-input jq-loaner-login-name" datatype="*" autocomplete="off"
+                       placeholder="" errormsg="借款人平台ID不能为空">
             </div>
         </div>
         <div class="form-group">

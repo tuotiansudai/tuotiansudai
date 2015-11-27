@@ -542,6 +542,8 @@ public class InvestControllerTest {
         lm.setMaxInvestAmount(1000000);
         lm.setLoanAmount(loanAmount);
         lm.setLoanerLoginName(loanerLoginName);
+        lm.setLoanerUserName("借款人");
+        lm.setLoanerIdentityNumber("111111111111111111");
         lm.setAgentLoginName(loanerLoginName);
         lm.setBaseRate(0.2);
         lm.setActivityType(ActivityType.NORMAL);

@@ -111,13 +111,12 @@ public class ContractServiceImpl implements ContractService {
     private Map<String, Object> collectContractModel(long loanId,ContractType contractType) {
         Map<String, Object> dataModel = new HashMap<>();
         LoanModel loanModel = loanMapper.findById(loanId);
-        AccountModel loanerAccountModel = accountMapper.findByLoginName(loanModel.getLoanerLoginName());
         AccountModel agentAccountModel = accountMapper.findByLoginName(loanModel.getAgentLoginName());
         List<LoanRepayModel> loanRepayModels = loanRepayMapper.findByLoanIdOrderByPeriodAsc(loanId);
         dataModel.put("loanId","" + loanId);
-        dataModel.put("loanerUserName",Strings.nullToEmpty(loanerAccountModel.getUserName()));
+        dataModel.put("loanerUserName",Strings.nullToEmpty(loanModel.getLoanerUserName()));
         dataModel.put("loanerLoginName",Strings.nullToEmpty(loanModel.getLoanerLoginName()));
-        dataModel.put("loanerIdentityNumber",Strings.nullToEmpty(loanerAccountModel.getIdentityNumber()));
+        dataModel.put("loanerIdentityNumber",Strings.nullToEmpty(loanModel.getLoanerIdentityNumber()));
 
         dataModel.put("agentUserName",Strings.nullToEmpty(agentAccountModel.getUserName()));
         dataModel.put("agentLoginName",Strings.nullToEmpty(loanModel.getAgentLoginName()));
