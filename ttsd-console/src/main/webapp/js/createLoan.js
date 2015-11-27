@@ -238,7 +238,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('预计出借金额应大于0', $('.jq-pay', curform));
                     return false;
                 }
-                var increasingPay = parseInt($('.jq-add-pay', curform).val());
+                var increasingPay = parseFloat($('.jq-add-pay', curform).val());
                 if (increasingPay <= 0) {
                     showErrorMessage('投资递增金额应大于0', $('.jq-add-pay', curform));
                     return false;

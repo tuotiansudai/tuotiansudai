@@ -128,7 +128,7 @@
             <![CDATA[ and t.periods <= #{periodsEnd} ]]>
         </if>
         <if test="rateStart > 0">
-            and (t.base_rate + t.activity_rate) >= #{rateStart}
+            and (t.base_rate + t.activity_rate) > #{rateStart}
         </if>
         <if test="rateEnd > 0">
             <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
