@@ -30,7 +30,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
                 .done(function (res) {
                     if(res.data.status){
-                        location.href='/announceManage';
+                        location.href='/announce';
                     }else{
                         showErrorMessage("保存失败");
                     }
