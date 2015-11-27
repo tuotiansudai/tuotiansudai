@@ -5,26 +5,34 @@
  * @date    2015-08-03 14:32:14
  * @version $Id$
  */
-body { overflow-x: hidden;}
+body {
+    overflow-x: hidden;
+}
+
 a {
     color: #000;
     text-decoration: none;
 }
-a.linked {color: #377ac6;  }
+
+a.linked {
+    color: #377ac6;
+}
 
 a:hover {
     color: #cc9900;
 }
-.badgeCol  {
+
+.badgeCol {
     color: #ff0000;
 }
+
 .navbar {
-    background: #eee url(../images/header_bg.jpg) no-repeat right top;
+    background: #eee;
     margin-bottom: 10px;
 }
 
 .navbar-brand {
-    padding: 0 15px;
+    padding: 10px 15px;
     height: auto;
 }
 
@@ -36,12 +44,29 @@ a:hover {
 @media (min-width: 768px) {
     .navbar-nav > li > a {
         padding: 10px 15px;
+        margin: 0 2px;
     }
 }
 
-.navbar-nav > li > a:hover, .navbar-nav > li.active > a {
+.navbar-nav > li > a:hover {
+    background: #aaa;
+    color: #fff;
+    text-shadow: none;
+}
+
+.navbar-nav > li.active > a {
     background: #666666;
     color: #fff;
+    text-shadow: none;
+}
+
+.navbar-nav.logout {
+    float: right;
+}
+
+.navbar-nav.logout a:hover {
+    background: none;
+    color: #000;
     text-shadow: none;
 }
 
@@ -53,9 +78,11 @@ a:hover {
     color: #cc9900
 }
 
-table td,table th { font-size: 12px;}
-.table-center th,.table-center td
-{
+table td, table th {
+    font-size: 12px;
+}
+
+.table-center th, .table-center td {
     text-align: center;
 }
 
@@ -69,7 +96,7 @@ table td,table th { font-size: 12px;}
 }
 
 .login {
-    width: 500px;
+    width: 300px;
     height: 400px;
     position: absolute;
     left: 0;
@@ -77,17 +104,16 @@ table td,table th { font-size: 12px;}
     right: 0;
     bottom: 0;
     margin: auto;
-    padding: 20px 30px;
-    background: #c1bebe;
+    padding: 10px 30px;
+    background: #ccc;
     border-radius: 5px;
     z-index: 9999;
 }
 
 .captcha-img {
     height: 34px;
-    background: #c1bebe;
     width: 38.66666%;
-    text-align:center;
+    text-align: center;
 }
 
 .files-input {
@@ -114,35 +140,78 @@ table td,table th { font-size: 12px;}
 .table-bordered th {
     text-align: center
 }
+
 .table .btn-link {
-    padding:0px 2px;
+    padding: 0px 2px;
 }
-.form-horizontal span.form-control{
+
+.form-horizontal span.form-control {
     border: none;
     box-shadow: none;
 }
+
 .query-build input.form-control {
-    width:170px;
+    width: 170px;
     font-size: 13px;
 }
-td.projectName { width:25%;}
-td.projectName span { display: inline-block; text-overflow: ellipsis; white-space: nowrap; padding-right:10px; overflow: hidden; width:250px; }
-td.td {text-align:center;}
 
-.loan_repay{color: #0064cd;}
-.invest_repay{color: #cc0000;}
-.pagination-control button {     margin: 20px 0 0 10px; }
-.currentTab { padding-top:15px;}
+td.projectName {
+    width: 25%;
+}
 
-.bootstrap-select {  width:auto!important;}
-.bootstrap-select button.dropdown-toggle { width:170px; }
+td.projectName span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 10px;
+    overflow: hidden;
+    width: 250px;
+}
+
+td.td {
+    text-align: center;
+}
+
+.loan_repay {
+    color: #0064cd;
+}
+
+.invest_repay {
+    color: #cc0000;
+}
+
+.pagination-control button {
+    margin: 20px 0 0 10px;
+}
+
+.currentTab {
+    padding-top: 15px;
+}
+
+.bootstrap-select {
+    width: auto !important;
+}
+
+.bootstrap-select button.dropdown-toggle {
+    width: 170px;
+}
+
 /*.bootstrap-select .btn { padding:3px 10px; font-size: 13px;}*/
-.btnSearch { padding:5px 20px; font-size: 14px; }
-.web-error-message{
+.btnSearch {
+    padding: 5px 20px;
+    font-size: 14px;
+}
+
+.web-error-message {
     display: none;
 }
+
 .error {
-    color:red ;
+    color: red;
 }
-.publishAD { margin-right: 40px; margin-top:10px;}
+
+.publishAD {
+    margin-right: 40px;
+    margin-top: 10px;
+}
 
