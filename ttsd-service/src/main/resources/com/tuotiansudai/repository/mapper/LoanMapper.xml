@@ -100,7 +100,7 @@
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
         <if test="rateStart > 0">
-            and (l.base_rate + l.activity_rate) >= #{rateStart}
+            and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
         <if test="rateEnd > 0">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
@@ -154,7 +154,7 @@
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
         <if test="rateStart > 0">
-            and (l.base_rate + l.activity_rate) >= #{rateStart}
+            and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
         <if test="rateEnd > 0">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
