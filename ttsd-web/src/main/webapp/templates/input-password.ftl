@@ -11,7 +11,7 @@
                     <input type="hidden" name="mobile" value="${mobile}">
                     <input type="hidden" name="captcha" value="${captcha}">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <input name="password" type="password" maxlength="20" placeholder="请输入密码"/>
+                    <input name="password" type="password" id="newPassword" maxlength="20" placeholder="请输入密码"/>
 
                 </li>
                 <li>
