@@ -16,8 +16,12 @@ require(['jquery', 'jquery-ui',
         var autoValue = '';
         $("#loginName, #input-referrer").autocomplete({
             source: function (query, process) {
+<<<<<<< HEAD
                 //var matchCount = this.options.items;//返回结果集最大数量
                 $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+=======
+                $.get('/user/' + query.term + '/search', function (respData) {
+>>>>>>> master
                     autoValue = respData;
                     return process(respData);
                 });

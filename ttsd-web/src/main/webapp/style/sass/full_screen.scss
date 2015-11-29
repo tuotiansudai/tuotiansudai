@@ -250,8 +250,12 @@
                         .btn-normal {
                             padding: 8px 0;
                             width: 100%;
+                            border-bottom-left-radius:10px;
+                            border-bottom-right-radius:10px;
                             border-top-left-radius: 0;
                             border-top-right-radius: 0;
+
+                          border:0!important;
                             &:hover {
                                 background: #ff9e69;
                                 border-color: #ff9e69;

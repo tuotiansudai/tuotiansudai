@@ -182,6 +182,8 @@ public class ReferrerManageMapperTest {
         fakeLoanModel.setId(idGenerator.generate());
         fakeLoanModel.setName("loanName");
         fakeLoanModel.setLoanerLoginName(loanerLoginName);
+        fakeLoanModel.setLoanerUserName("借款人");
+        fakeLoanModel.setLoanerIdentityNumber("111111111111111111");
         fakeLoanModel.setAgentLoginName(agentLoginName);
         fakeLoanModel.setType(LoanType.INVEST_INTEREST_MONTHLY_REPAY);
         fakeLoanModel.setPeriods(3);

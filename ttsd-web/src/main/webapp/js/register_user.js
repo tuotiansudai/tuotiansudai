@@ -135,7 +135,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
             },
             password: {
                 required: true,
-                regex: /^(?=.*[^\d])(.{6,20})$/,
+                regex: /^(?=.*[^\d])(.{6,20})$/
             },
             captcha: {
                 required: true,

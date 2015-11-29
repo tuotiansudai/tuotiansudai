@@ -17,6 +17,7 @@
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.userName!}</p>
+                <input type="hidden" name="userName" value="${user.userName!}"/>
             </div>
         </div>
         <div class="form-group">
@@ -24,6 +25,7 @@
 
             <div class="col-sm-3">
                 <p class="form-control-static">${user.identityNumber!}</p>
+                <input type="hidden" name="identityNumber" value="${user.identityNumber!}"/>
             </div>
         </div>
         <div class="form-group">

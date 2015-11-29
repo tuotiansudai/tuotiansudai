@@ -125,17 +125,6 @@ public class LoanServiceImpl implements LoanService {
                 return baseDto;
             }
         }
-        String loanerLoginName = getLoginName(loanDto.getLoanerLoginName());
-        if (loanerLoginName == null) {
-            dataDto.setMessage("借款用户不存在");
-            return baseDto;
-        } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
-                dataDto.setMessage("借款用户不具有借款人角色");
-                return baseDto;
-            }
-        }
         if (loanDto.getPeriods() <= 0) {
             dataDto.setMessage("借款期限最小为1");
             return baseDto;
@@ -207,6 +196,8 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setProjectName(loanModel.getName());
         loanDto.setAgentLoginName(loanModel.getAgentLoginName());
         loanDto.setLoanerLoginName(loanModel.getLoanerLoginName());
+        loanDto.setLoanerUserName(loanModel.getLoanerUserName());
+        loanDto.setLoanerIdentityNumber(loanModel.getLoanerIdentityNumber());
         loanDto.setPeriods(loanModel.getPeriods());
         loanDto.setDescriptionHtml(loanModel.getDescriptionHtml());
         loanDto.setDescriptionText(loanModel.getDescriptionText());
@@ -439,19 +430,6 @@ public class LoanServiceImpl implements LoanService {
             baseDto.setData(payDataDto);
             return baseDto;
         }
-        String loanUserId = getLoginName(loanDto.getLoanerLoginName());
-        if (loanUserId == null) {
-            payDataDto.setStatus(false);
-            baseDto.setData(payDataDto);
-            return baseDto;
-        } else {
-            List<UserRoleModel> userRoleModels = userRoleMapper.findByLoginNameAndRole(loanDto.getLoanerLoginName(), Role.LOANER.name());
-            if (CollectionUtils.isEmpty(userRoleModels)) {
-                payDataDto.setStatus(false);
-                baseDto.setData(payDataDto);
-                return baseDto;
-            }
-        }
         String loanAgentId = getLoginName(loanDto.getAgentLoginName());
         if (loanAgentId == null) {
             payDataDto.setStatus(false);
@@ -629,17 +607,19 @@ public class LoanServiceImpl implements LoanService {
         List<LoanModel> loanModels = loanMapper.findLoanList(status, loanId, loanName, startTime, endTime, currentPageNo, pageSize);
         List<LoanListDto> loanListDtos = Lists.newArrayList();
         for (int i = 0; i < loanModels.size(); i++) {
+            LoanModel loanModel = loanModels.get(i);
             LoanListDto loanListDto = new LoanListDto();
-            loanListDto.setId(loanModels.get(i).getId());
-            loanListDto.setName(loanModels.get(i).getName());
-            loanListDto.setType(loanModels.get(i).getType());
-            loanListDto.setAgentLoginName(loanModels.get(i).getAgentLoginName());
-            loanListDto.setLoanAmount(loanModels.get(i).getLoanAmount());
-            loanListDto.setPeriods(loanModels.get(i).getPeriods());
-            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModels.get(i).getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModels.get(i).getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
-            loanListDto.setStatus(loanModels.get(i).getStatus());
-            loanListDto.setCreatedTime(loanModels.get(i).getCreatedTime());
+            loanListDto.setId(loanModel.getId());
+            loanListDto.setName(loanModel.getName());
+            loanListDto.setType(loanModel.getType());
+            loanListDto.setAgentLoginName(loanModel.getAgentLoginName());
+            loanListDto.setLoanerUserName(loanModel.getLoanerUserName());
+            loanListDto.setLoanAmount(loanModel.getLoanAmount());
+            loanListDto.setPeriods(loanModel.getPeriods());
+            loanListDto.setBasicRate(String.valueOf(new BigDecimal(loanModel.getBaseRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListDto.setActivityRate(String.valueOf(new BigDecimal(loanModel.getActivityRate() * 100).setScale(2, BigDecimal.ROUND_HALF_UP)) + "%");
+            loanListDto.setStatus(loanModel.getStatus());
+            loanListDto.setCreatedTime(loanModel.getCreatedTime());
             loanListDtos.add(loanListDto);
         }
         return loanListDtos;

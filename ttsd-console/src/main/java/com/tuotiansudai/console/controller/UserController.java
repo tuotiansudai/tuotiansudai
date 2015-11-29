@@ -104,6 +104,7 @@ public class UserController {
         } catch (BaseException e) {
             modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}/edit", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
+            redirectAttributes.addFlashAttribute("roles", Role.values());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return modelAndView;

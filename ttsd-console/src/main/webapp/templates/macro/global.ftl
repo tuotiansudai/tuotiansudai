@@ -1,4 +1,5 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#assign applicationContext=requestContext.getContextPath() />
 
 <#macro role hasRole>
     <@security.authorize access="hasAnyAuthority(${hasRole})">
@@ -87,24 +88,24 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
+    <link href="${applicationContext}/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
     <!-- link bootstrap css -->
-    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-    <link href="${requestContext.getContextPath()}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
-    <link href="${requestContext.getContextPath()}/style/index.css" rel="stylesheet">
-    <link href="${requestContext.getContextPath()}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
+    <link href="${applicationContext}/style/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/bootstrap-datepicker.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/bootstrap-select.css" rel="stylesheet" type="text/css" charset="utf-8"/>
+    <link href="${applicationContext}/style/libs/jquery-ui/jquery-ui-1.11.4.min.css" rel="stylesheet" charset="utf-8"/>
+    <link href="${applicationContext}/style/index.css" rel="stylesheet">
+    <link href="${applicationContext}/style/libs/fileinput.css" rel="stylesheet"/><!--上传图片插件-->
     <#if pageCss?? && pageCss != "">
-        <link rel="stylesheet" type="text/css" href="${requestContext.getContextPath()}/style/dest/${pageCss}" charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="${applicationContext}/style/dest/${pageCss}" charset="utf-8"/>
     </#if>
 
     <!-- link bootstrap js -->
     <#if pageJavascript?? && pageJavascript != "">
-        <script src="${requestContext.getContextPath()}/js/libs/config.js"></script>
-        <script src="${requestContext.getContextPath()}/js/libs/require-2.1.20.min.js" defer="defer" async="async"
-                data-main="${requestContext.getContextPath()}/js/${pageJavascript}"></script>
+        <script src="${applicationContext}/js/libs/config.js"></script>
+        <script src="${applicationContext}/js/libs/require-2.1.20.min.js" defer="defer" async="async"
+                data-main="${applicationContext}/js/${pageJavascript}"></script>
     </#if>
 </head>
 
@@ -120,8 +121,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="${requestContext.getContextPath()}" class="navbar-brand"><img
-                    src="${requestContext.getContextPath()}/images/logo.jpg" alt=""></a>
+            <a href="${applicationContext}" class="navbar-brand"><img
+                    src="${applicationContext}/images/logo.png" alt=""></a>
         </div>
     </div>
     <nav id="bs-navbar" class="collapse navbar-collapse">
@@ -140,6 +141,14 @@
                         </li>
                     </#if>
                 </#list>
+            </ul>
+            <ul class="nav navbar-nav logout">
+                <li>
+                    <a id="logout-link" href="/logout">退出</a>
+                    <form id="logout-form" action="/logout" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>
@@ -182,7 +191,12 @@
     </div>
 </div>
 <!-- main end -->
-
+<script type="text/javascript" charset="utf-8">
+    document.getElementById("logout-link").addEventListener('click', function (event) {
+        event.preventDefault();
+        document.getElementById("logout-form").submit();
+    });
+</script>
 </body>
 </html>
 </#macro>

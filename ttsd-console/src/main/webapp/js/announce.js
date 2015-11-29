@@ -1,29 +1,5 @@
-/**
- * Created by CBJ on 2015/11/2.
- */
-window.UEDITOR_HOME_URL = '/js/libs/ueditor/';
-require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jquery-ui','csrf'], function ($) {
+require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csrf'], function ($) {
     $(function () {
-        var formFlag =false;
-        $(".jq-form").Validform({
-            btnSubmit:'.jq-btn-form',
-            tipSweep: true,
-            focusOnError: false,
-            tiptype: function(msg, o, cssctl) {
-                if (o.type == 3) {
-                    var msg = o.obj.attr('errormsg') || msg;
-                    showErrorMessage(msg, o.obj);
-                }
-            },
-            //beforeSubmit
-            beforeCheck: function(curform){
-
-            },
-            callback:function(form){
-                formFlag = true;
-                return false;
-            }
-        });
 
         $('.search').click(function(){
             if ($('.jq-id').val() != "" && !$('.jq-id').val().match("^[0-9]*$")) {
@@ -115,13 +91,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
         $('body').on('click','.form-error',function(){
             $('.jq-btn-form').removeAttr('disabled');
             if(!!currentErrorObj){currentErrorObj.focus();}
-        });
-        $('.jq-checkbox label').click(function () {
-            if ($('.jq-index').prop('checked')) {
-                $('.jq-index').val('1');
-            } else {
-                $('.jq-index').val('0');
-            }
         });
 
     });

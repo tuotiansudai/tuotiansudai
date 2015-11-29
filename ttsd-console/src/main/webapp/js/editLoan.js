@@ -176,15 +176,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                 });
             }
         });
-        $(".jq-loaner").autocomplete({
-            source: function (query, process) {
-                $.get('/user/' + query.term + '/search', function (respData) {
-                    autoValue = respData;
-                    return process(respData);
-                });
-            }
-        });
-        $(".jq-agent, .jq-loaner").blur(function () {
+        $(".jq-agent").blur(function () {
             for(var i = 0; i< autoValue.length; i++){
                 if($(this).val()== autoValue[i]){
                     $(this).removeClass('Validform_error');
@@ -241,7 +233,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     showErrorMessage('预计出借金额应大于0',$('.jq-pay',curform));
                     return false;
                 }
-                var increasingPay = parseInt($('.jq-add-pay', curform).val());
+                var increasingPay = parseFloat($('.jq-add-pay', curform).val());
                 if (increasingPay <= 0) {
                     showErrorMessage('投资递增金额应大于0', $('.jq-add-pay', curform));
                     return false;
@@ -301,7 +293,9 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     "loanStatus":$('.jq-status').val(),
                     "projectName": $('.jq-user').val(),
                     "agentLoginName": $('.jq-agent').val(),
-                    "loanerLoginName": $('.jq-loaner').val(),
+                    "loanerLoginName": $('.jq-loaner-login-name').val(),
+                    "loanerUserName": $('.jq-loaner-user-name').val(),
+                    "loanerIdentityNumber": $('.jq-loaner-identity-number').val(),
                     "type": $('.jq-mark-type').val(),
                     "periods": $('.jq-timer').val(),
                     "descriptionText": getContentTxt(),
