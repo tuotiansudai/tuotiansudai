@@ -34,6 +34,7 @@ import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
+import com.ttsd.special.services.InvestLotteryService;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -41,6 +42,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -75,6 +77,11 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     UserBillBO ubs;
+	@Autowired
+	private InvestLotteryService investLotteryService;
+
+	@Logger
+	Log log;
 
     @Resource
     LoanCalculator loanCalculator;
@@ -87,10 +94,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     HibernateTemplate ht;
-
-    @Logger
-    Log log;
-
 
     /**
      * 投资
@@ -134,7 +137,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
         } catch (NoMatchingObjectsException e) {
             throw new UmPayOperationException("投资失败！");
         }
-
     }
 
     /**
@@ -210,7 +212,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
         return sendMap;
     }
 
-
     /**
      * 处理前台通知的投标
      */
@@ -232,6 +233,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
                 //处理投资成功修改状态
                 Invest invest = InvestSuccess(to);
                 ht.update(invest);
+                investLotteryService.insertIntoInvestLottery(order_id);
             } else {
                 fail(to);
                 log.error("投资失败:" + paramMap.toString());

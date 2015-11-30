@@ -77,7 +77,7 @@ public class ReferrerRewardReissueService {
             double bonus = Double.parseDouble(resultNeedReward.get(i).get("bonus").toString());
             String transferOutDetail = MessageFormat.format(transferOutDetailFormat, resultNeedReward.get(i).get("invest_id").toString(), orderId, resultNeedReward.get(i).get("referrer_id").toString());
             try {
-                String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus, particAccType, transAction, resultNeedReward.get(i).get("account_id").toString(), transferOutDetail);
+                String returnMsg = umPayLoanMoneyService.giveMoney2ParticUserId(orderId, bonus, particAccType, transAction, resultNeedReward.get(i).get("account_id").toString(), transferOutDetail, "referrer_reward");
                 if(returnMsg.split("\\|")[0].equals("0000")){
                     transferIntoBalance(resultNeedReward.get(i).get("referrer_id").toString(),bonus,"referrer_reward",transferOutDetail);
                     this.updateInvestUserReferrer(resultNeedReward.get(i).get("id").toString());
