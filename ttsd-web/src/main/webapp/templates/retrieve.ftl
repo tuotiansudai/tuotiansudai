@@ -16,7 +16,7 @@
            </li>
            <li class="clear-blank-m">
 
-               <input type="submit" class="btn-send-form btn-success" value="提交"/>
+               <input type="submit" class="btn-send-form btn-success"  value="提交"/>
 
            </li>
        </ul>

@@ -75,10 +75,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and t.periods <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0">
+        <if test="rateStart > 0 and rateStart != 0.16">
+            and (t.base_rate + t.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateStart > 0 and rateStart == 0.16">
             and (t.base_rate + t.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0">
+        <if test="rateEnd > 0 and rateEnd != 0.16">
+            <![CDATA[ and (t.base_rate + t.activity_rate) < #{rateEnd} ]]>
+        </if>
+        <if test="rateEnd > 0 and rateEnd == 0.16">
             <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
         </if>
         union all
@@ -99,10 +105,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0">
+        <if test="rateStart > 0 and rateStart != 0.16">
+            and (l.base_rate + l.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateStart > 0 and rateStart == 0.16">
             and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0">
+        <if test="rateEnd > 0 and rateEnd != 0.16">
+            <![CDATA[ and (l.base_rate + l.activity_rate) < #{rateEnd} ]]>
+        </if>
+        <if test="rateEnd > 0 and rateEnd == 0.16">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp
@@ -129,10 +141,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and t.periods <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0">
+        <if test="rateStart > 0 and rateStart != 0.16">
+            and (t.base_rate + t.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateStart > 0 and rateStart == 0.16">
             and (t.base_rate + t.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0">
+        <if test="rateEnd > 0 and rateEnd != 0.16">
+            <![CDATA[ and (t.base_rate + t.activity_rate) < #{rateEnd} ]]>
+        </if>
+        <if test="rateEnd > 0 and rateEnd == 0.16">
             <![CDATA[ and (t.base_rate + t.activity_rate) <= #{rateEnd} ]]>
         </if>
         union all
@@ -153,10 +171,16 @@
         <if test="periodsEnd > 0">
             <![CDATA[ and CEILING(l.periods/30) <= #{periodsEnd} ]]>
         </if>
-        <if test="rateStart > 0">
+        <if test="rateStart > 0 and rateStart != 0.16">
+            and (l.base_rate + l.activity_rate) >= #{rateStart}
+        </if>
+        <if test="rateStart > 0 and rateStart == 0.16">
             and (l.base_rate + l.activity_rate) > #{rateStart}
         </if>
-        <if test="rateEnd > 0">
+        <if test="rateEnd > 0 and rateEnd != 0.16">
+            <![CDATA[ and (l.base_rate + l.activity_rate) < #{rateEnd} ]]>
+        </if>
+        <if test="rateEnd > 0 and rateEnd == 0.16">
             <![CDATA[ and (l.base_rate + l.activity_rate) <= #{rateEnd} ]]>
         </if>
         ) temp

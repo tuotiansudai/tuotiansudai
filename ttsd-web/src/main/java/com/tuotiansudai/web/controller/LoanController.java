@@ -41,7 +41,7 @@ public class LoanController {
     public BaseDto<BasePaginationDataDto> getInvestList(@PathVariable long loanId,
                                  @Min(value = 1) @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                  @Min(value = 1) @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize) {
-        return loanService.getInvests(loanId, index, pageSize);
+        return loanService.getInvests(LoginUserInfo.getLoginName(), loanId, index, pageSize);
     }
 
 }

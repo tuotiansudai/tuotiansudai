@@ -1,4 +1,4 @@
-require(['jquery','jquery.validate', 'jquery.validate.extension', 'jquery.form','csrf'], function ($) {
+require(['jquery','jquery.validate', 'jquery.validate.extension','csrf'], function ($) {
 
     var $inputGetPassword=$('#inputGetPassword'),
         $GetPasswordForm=$('form',$inputGetPassword);
@@ -12,7 +12,7 @@ require(['jquery','jquery.validate', 'jquery.validate.extension', 'jquery.form',
             },
             repeatPassword: {
                 required: true,
-                equalTo: 'input[name="password"]'
+                equalTo: '#newPassword'
             }
         },
         messages:{
@@ -27,7 +27,8 @@ require(['jquery','jquery.validate', 'jquery.validate.extension', 'jquery.form',
         },
 
         submitHandler:function(form) {
-            $(form).submit();
+
+            form.submit();
 
         }
     });

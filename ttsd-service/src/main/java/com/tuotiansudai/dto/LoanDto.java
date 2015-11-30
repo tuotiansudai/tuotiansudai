@@ -201,9 +201,10 @@ public class LoanDto extends BaseDataDto {
      **/
     private long expectedTotalIncome;
 
-    private BaseDto<BasePaginationDataDto> baseDto;
-
     private long preheatSeconds;
+
+    public LoanDto() {
+    }
 
 
     public long getId() {
@@ -468,14 +469,6 @@ public class LoanDto extends BaseDataDto {
 
     public void setLoanTitleDto(List<LoanTitleModel> loanTitleDto) {
         this.loanTitleDto = loanTitleDto;
-    }
-
-    public BaseDto<BasePaginationDataDto> getBaseDto() {
-        return baseDto;
-    }
-
-    public void setBaseDto(BaseDto<BasePaginationDataDto> baseDto) {
-        this.baseDto = baseDto;
     }
 
     public long getPreheatSeconds() {

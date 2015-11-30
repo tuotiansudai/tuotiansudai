@@ -10,6 +10,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
 
     $retrieveForm.validate({
         focusInvalid: false,
+        onkeyup:false,
         rules: {
             mobile: {
                 required: true,
@@ -48,15 +49,15 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').prop('disabled', true);
+                $getCaptcha.prop('disabled', true).removeClass('btn-success');
             }
         },success: function (error, element) {
             if (element.name === 'mobile') {
-                $('.fetch-captcha').prop('disabled', false);
+                $getCaptcha.prop('disabled', false).addClass('btn-success');
             }
         },
         submitHandler:function(form) {
-            //$(form).submit();
+
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
@@ -99,11 +100,13 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         var num = 30;
                         // 倒计时
                         function countdown() {
-                            $('.fetch-captcha').html(num + '秒后重新发送').prop('disabled',true);
+                                $btnSend.prop('disabled',true);
+                                $getCaptcha.html(num + '秒后重新发送').prop('disabled',true).removeClass('btn-success');
                             if (num == 0) {
                                 clearInterval(count);
-                                $('.fetch-captcha').html('重新发送').prop('disabled',false);
+                                $getCaptcha.html('重新发送').prop('disabled',false).addClass('btn-success');
                                 $('.verification-code-text').val('');
+                                $btnSend.prop('disabled',false);
                             }
                             num--;
                         }
