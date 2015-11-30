@@ -237,7 +237,8 @@
           n.`default_interest`,
           n.`actual_repay_date`,
           n.`repay_date`,
-          n.`id` as `loan_repay_id`
+          n.`id` as `loan_repay_id`,
+          m.`type`
         FROM
           `loan` m
           JOIN
