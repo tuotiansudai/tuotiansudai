@@ -27,7 +27,8 @@ require(['jquery','jquery.validate', 'jquery.validate.extension','csrf'], functi
         },
 
         submitHandler:function(form) {
-            $(form).ajaxSubmit();
+
+            form.submit();
 
         }
     });
