@@ -48,11 +48,11 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $('.fetch-captcha').prop('disabled', true);
+                $getCaptcha.prop('disabled', true).removeClass('btn-success');
             }
         },success: function (error, element) {
             if (element.name === 'mobile') {
-                $('.fetch-captcha').prop('disabled', false);
+                $getCaptcha.prop('disabled', false).addClass('btn-success');
             }
         },
         submitHandler:function(form) {
@@ -99,10 +99,10 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         var num = 30;
                         // 倒计时
                         function countdown() {
-                            $('.fetch-captcha').html(num + '秒后重新发送').prop('disabled',true);
+                                $getCaptcha.html(num + '秒后重新发送').prop('disabled',true).removeClass('btn-success');
                             if (num == 0) {
                                 clearInterval(count);
-                                $('.fetch-captcha').html('重新发送').prop('disabled',false);
+                                $getCaptcha.html('重新发送').prop('disabled',false).addClass('btn-success');
                                 $('.verification-code-text').val('');
                             }
                             num--;
