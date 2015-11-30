@@ -28,7 +28,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
 
 
     static {
-        ResourceBundle rb = ResourceBundle.getBundle("confierence_sale");
+        ResourceBundle rb = ResourceBundle.getBundle("conference_sale");
         String actityBeginTime = rb.getString("time.begin");
         String actityEndTime = rb.getString("time.end");
         String referrers = rb.getString("referrers");
