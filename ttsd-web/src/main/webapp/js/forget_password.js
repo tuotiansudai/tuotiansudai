@@ -22,11 +22,16 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             captcha: {
                 required: true,
                 digits: true,
-                maxlength: 6,
+                minlength: 6,
                 captchaVerify: {
                     param: function () {
-                        var _phone = $('input[name="mobile"]').val();
-                        return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime()
+                        var _phone = $('input[name="mobile"]').val(),
+                            _captcha=$('input[name="captcha"]').val();
+                        if(_captcha.length>=6) {
+                            $btnSend.prop('disabled',false);
+                            return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
+                        }
+
                     }
                 }
             }
@@ -42,7 +47,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
-                maxlength: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             }
         },

@@ -11,7 +11,7 @@
            </li>
            <li class="get-captcha">
                <label for="">验证码：</label>
-                   <input type="text" name="captcha" class="yzm-txt" maxlength="11" placeholder="请输入验证码"/>
+                   <input type="text" name="captcha" class="yzm-txt" minlength="6" placeholder="请输入验证码"/>
                    <button type="button" class="fetch-captcha btn-success" disabled="disabled">获取验证码</button>
            </li>
            <li class="clear-blank-m">
