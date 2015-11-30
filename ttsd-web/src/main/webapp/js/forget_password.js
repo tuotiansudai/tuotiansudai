@@ -10,6 +10,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
 
     $retrieveForm.validate({
         focusInvalid: false,
+        onkeyup:false,
         rules: {
             mobile: {
                 required: true,
@@ -56,7 +57,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             }
         },
         submitHandler:function(form) {
-            //$(form).submit();
+
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
@@ -99,11 +100,13 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         var num = 30;
                         // 倒计时
                         function countdown() {
+                                $btnSend.prop('disabled',true);
                                 $getCaptcha.html(num + '秒后重新发送').prop('disabled',true).removeClass('btn-success');
                             if (num == 0) {
                                 clearInterval(count);
                                 $getCaptcha.html('重新发送').prop('disabled',false).addClass('btn-success');
                                 $('.verification-code-text').val('');
+                                $btnSend.prop('disabled',false);
                             }
                             num--;
                         }
