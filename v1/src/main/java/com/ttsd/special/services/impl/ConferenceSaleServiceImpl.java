@@ -97,7 +97,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Override
     public void processIfInActivityForInvest(String orderId, User user) {
         try {
-            if (isInActity(user) && hasInvestRewardRecord(user.getId())) {
+            if (isInActity(user) && !hasInvestRewardRecord(user.getId())) {
                 log.debug(MessageFormat.format("会销活动发送投资奖励，orderid: {0}, userId: {1}", orderId, user.getId()));
                 activityRewardService.payActivityReward(orderId, user.getId(), REWARD_INVEST, "会销活动投资奖励");
             }
