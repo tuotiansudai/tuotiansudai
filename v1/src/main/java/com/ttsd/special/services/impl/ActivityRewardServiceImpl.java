@@ -53,6 +53,7 @@ public class ActivityRewardServiceImpl implements ActivityRewardService {
     @Transactional
     public boolean payActivityReward(String orderId, String userId, double reward, String detail) {
         String accountId = this.getAccount(userId);
+        orderId += System.currentTimeMillis();
         boolean result = this.transferMerToUser(orderId, accountId, reward);
         if (result) {
             try {

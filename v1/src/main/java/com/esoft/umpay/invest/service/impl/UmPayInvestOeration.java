@@ -237,9 +237,6 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
                 //处理投资成功修改状态
                 Invest invest = InvestSuccess(to);
                 ht.update(invest);
-
-                // 如果满足会销活动条件则发放奖励
-                conferenceSaleService.processIfInActivityForInvest(order_id, invest.getUser());
             } else {
                 fail(to);
                 log.error("投资失败:" + paramMap.toString());
@@ -374,6 +371,9 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
             loanService.dealRaiseComplete(loan.getId());
             ubs.freezeMoney(invest.getUser().getId(), invest.getMoney(), OperatorInfo.INVEST_SUCCESS,
                     "投资成功：冻结金额。借款ID:" + loan.getId() + "  投资id:" + invest.getId());
+
+            // 如果满足会销活动条件则发放奖励
+            conferenceSaleService.processIfInActivityForInvest(invest.getId(), invest.getUser());
         }
         return invest;
     }

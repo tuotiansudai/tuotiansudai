@@ -86,11 +86,12 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     public void processIfInActivityForBindCard(String orderId, User user) {
         try {
             if (isInActity(user)) {
-                log.debug(MessageFormat.format("会销活动发送绑卡奖励，orderid: {0}, userId: {1}", orderId, user.getId()));
-                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_BIND_CARD, "会销活动绑卡奖励");
+                String logMessage = MessageFormat.format("会销活动绑卡奖励，绑卡orderId: {0}, userId: {1}", orderId, user.getId());
+                log.debug(logMessage);
+                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_BIND_CARD, logMessage);
             }
         } catch (Exception exp) {
-            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，orderid: {0}, userId: {1}", orderId, user.getId()), exp);
+            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，绑卡orderid: {0}, userId: {1}", orderId, user.getId()), exp);
         }
     }
 
@@ -98,10 +99,12 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     public void processIfInActivityForInvest(String orderId, User user) {
         try {
             if (isInActity(user) && !hasInvestRewardRecord(user.getId())) {
-                log.debug(MessageFormat.format("会销活动发送投资奖励，orderid: {0}, userId: {1}", orderId, user.getId()));
-                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_INVEST, "会销活动投资奖励");
+                String logMessage = MessageFormat.format("会销活动投资奖励，投资orderId: {0}, userId: {1}", orderId, user.getId());
+                log.debug(logMessage);
+                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_INVEST, logMessage);
             }
         } catch (Exception exp) {
+            exp.printStackTrace();
             log.error(MessageFormat.format("会销活动发送投资奖励失败，orderid: {0}, userId: {1}", orderId, user.getId()), exp);
         }
     }
