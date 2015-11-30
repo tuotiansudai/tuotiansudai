@@ -18,9 +18,9 @@ import java.util.*;
 @Service
 public class ConferenceSaleServiceImpl implements ConferenceSaleService {
 
-    private static final Date ACTITY_BEGIN_TIME;
-    private static final Date ACTITY_END_TIME;
-    private static final Set<String> ACTITY_REFERRER_LIST;
+    private static final Date ACTIVITY_BEGIN_TIME;
+    private static final Date ACTIVITY_END_TIME;
+    private static final Set<String> ACTIVITY_REFERRER_LIST;
 
     private static final int INVEST_THRESHOLD;
     private static final int REWARD_BIND_CARD;
@@ -48,9 +48,9 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         }
 
         String[] referrerArray = referrers.split("\\s*,\\s*");
-        ACTITY_BEGIN_TIME = beginTime;
-        ACTITY_END_TIME = endTime;
-        ACTITY_REFERRER_LIST = new HashSet<>(Arrays.asList(referrerArray));
+        ACTIVITY_BEGIN_TIME = beginTime;
+        ACTIVITY_END_TIME = endTime;
+        ACTIVITY_REFERRER_LIST = new HashSet<>(Arrays.asList(referrerArray));
         INVEST_THRESHOLD = Integer.parseInt(investThreshold);
         REWARD_BIND_CARD = Integer.parseInt(rewardBindCard);
         REWARD_INVEST = Integer.parseInt(rewardInvest);
@@ -65,16 +65,16 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Logger
     Log log;
 
-    private boolean isInActity(User user) {
+    private boolean isInActivity(User user) {
         String userReferrer = user.getReferrer();
         if (StringUtils.isEmpty(userReferrer)) {
             return false;
         }
         Date currentDate = new Date();
-        if (currentDate.before(ACTITY_BEGIN_TIME) || currentDate.after(ACTITY_END_TIME)) {
+        if (currentDate.before(ACTIVITY_BEGIN_TIME) || currentDate.after(ACTIVITY_END_TIME)) {
             return false;
         }
-        return ACTITY_REFERRER_LIST.contains(userReferrer);
+        return ACTIVITY_REFERRER_LIST.contains(userReferrer);
     }
 
     private boolean hasInvestRewardRecord(String userName) {
@@ -85,7 +85,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Override
     public void processIfInActivityForBindCard(String orderId, User user) {
         try {
-            if (isInActity(user)) {
+            if (isInActivity(user)) {
                 String logMessage = MessageFormat.format("会销活动绑卡奖励，绑卡orderId: {0}, userId: {1}", orderId, user.getId());
                 log.debug(logMessage);
                 activityRewardService.payActivityReward(orderId, user.getId(), REWARD_BIND_CARD, logMessage);
@@ -98,10 +98,10 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Override
     public void processIfInActivityForInvest(String orderId, User user) {
         try {
-            if (isInActity(user) && !hasInvestRewardRecord(user.getId())) {
+            if (isInActivity(user) && !hasInvestRewardRecord(user.getId())) {
                 String logMessage = MessageFormat.format("会销活动投资奖励，投资orderId: {0}, userId: {1}", orderId, user.getId());
                 log.debug(logMessage);
-                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_INVEST, logMessage);
+                activityRewardService.payActivityReward(orderId+"002", user.getId(), REWARD_INVEST, logMessage);
             }
         } catch (Exception exp) {
             exp.printStackTrace();
