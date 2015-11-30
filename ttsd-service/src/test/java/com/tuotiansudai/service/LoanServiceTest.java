@@ -334,7 +334,7 @@ public class LoanServiceTest {
     public void shouldGetTheInvests(){
         long loanId = createLoanService();
         createTestInvests(loanId, "loginName", 10);
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 5);
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(null, loanId, 1, 5);
         assertEquals(5, baseDto.getData().getRecords().size());
     }
 
@@ -346,11 +346,11 @@ public class LoanServiceTest {
         // 虽然这里创建了10条投资记录，但是在上个方法里，已经创建了三条投资记录，其中已经包含了一个success的记录
         createTestInvests(loanId, mockUserName, 10);
 
-        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(loanId, 1, 3);
+        BaseDto<BasePaginationDataDto> baseDto = loanService.getInvests(null, loanId, 1, 3);
         assertEquals(3, baseDto.getData().getRecords().size());
         assertEquals(11, baseDto.getData().getCount());
 
-        baseDto = loanService.getInvests(loanId, 4, 3);
+        baseDto = loanService.getInvests(null, loanId, 4, 3);
         BasePaginationDataDto data = baseDto.getData();
         assertEquals(2, data.getRecords().size());
     }

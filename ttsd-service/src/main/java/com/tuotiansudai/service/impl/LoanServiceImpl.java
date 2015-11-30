@@ -1,6 +1,7 @@
 package com.tuotiansudai.service.impl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tuotiansudai.client.PayWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -190,7 +191,6 @@ public class LoanServiceImpl implements LoanService {
     }
 
     private LoanDto convertModelToDto(LoanModel loanModel, String loginName) {
-        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
         LoanDto loanDto = new LoanDto();
         loanDto.setId(loanModel.getId());
         loanDto.setProjectName(loanModel.getName());
@@ -205,9 +205,9 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setInvestIncreasingAmount(AmountConverter.convertCentToString(loanModel.getInvestIncreasingAmount()));
         loanDto.setMinInvestAmount(AmountConverter.convertCentToString(loanModel.getMinInvestAmount()));
         loanDto.setActivityType(loanModel.getActivityType());
-        loanDto.setBasicRate(new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).toString());
+        loanDto.setBasicRate(new BigDecimal(String.valueOf(loanModel.getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
         if (loanModel.getActivityRate() > 0) {
-            loanDto.setActivityRate(new BigDecimal(String.valueOf(loanModel.getActivityRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).toString());
+            loanDto.setActivityRate(new BigDecimal(String.valueOf(loanModel.getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).toString());
         }
         loanDto.setLoanStatus(loanModel.getStatus());
         loanDto.setType(loanModel.getType());
@@ -231,7 +231,6 @@ public class LoanServiceImpl implements LoanService {
         loanDto.setFundraisingEndTime(loanModel.getFundraisingEndTime());
         loanDto.setFundraisingStartTime(loanModel.getFundraisingStartTime());
         loanDto.setRaisingCompleteTime(loanModel.getRaisingCompleteTime());
-        loanDto.setBaseDto(getInvests(loanModel.getId(), 1, 10));
 
         return loanDto;
     }
@@ -364,7 +363,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public void startFundraising(long loanId) {
         LoanModel loanModel = loanMapper.findById(loanId);
-        if(LoanStatus.PREHEAT == loanModel.getStatus()) {
+        if (LoanStatus.PREHEAT == loanModel.getStatus()) {
             loanMapper.updateStatus(loanId, LoanStatus.RAISING);
             this.createAutoInvestJob(loanId);
         }
@@ -391,7 +390,7 @@ public class LoanServiceImpl implements LoanService {
                     .withIdentity("AutoInvestJob", "Loan-" + loanId)
                     .submit();
         } catch (SchedulerException e) {
-            logger.error("create auto invest job for loan["+loanId+"] fail", e);
+            logger.error("create auto invest job for loan[" + loanId + "] fail", e);
         }
     }
 
@@ -467,7 +466,7 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public BaseDto<BasePaginationDataDto> getInvests(long loanId, int index, int pageSize) {
+    public BaseDto<BasePaginationDataDto> getInvests(final String loginName, long loanId, int index, int pageSize) {
         long count = investMapper.findCountByStatus(loanId, InvestStatus.SUCCESS);
         List<InvestModel> investModels = investMapper.findByStatus(loanId, (index - 1) * pageSize, pageSize, InvestStatus.SUCCESS);
         List<InvestPaginationItemDto> records = Lists.newArrayList();
@@ -477,7 +476,9 @@ public class LoanServiceImpl implements LoanService {
                 @Override
                 public InvestPaginationItemDto apply(InvestModel input) {
                     InvestPaginationItemDto item = new InvestPaginationItemDto();
-                    item.setLoginName(input.getLoginName());
+                    item.setLoginName(!Strings.isNullOrEmpty(loginName) && loginName.equalsIgnoreCase(input.getLoginName())
+                            ? input.getLoginName()
+                            : input.getLoginName().substring(0, 3) + "******");
                     item.setAmount(AmountConverter.convertCentToString(input.getAmount()));
                     item.setSource(input.getSource());
                     item.setAutoInvest(input.isAutoInvest());
@@ -637,9 +638,9 @@ public class LoanServiceImpl implements LoanService {
             LoanListWebDto loanListWebDto = new LoanListWebDto();
             loanListWebDto.setId(loanModels.get(i).getId());
             loanListWebDto.setName(loanModels.get(i).getName());
-            loanListWebDto.setBaseRate(new BigDecimal(String.valueOf(loanModels.get(i).getBaseRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+            loanListWebDto.setBaseRate(new BigDecimal(String.valueOf(loanModels.get(i).getBaseRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
             if (loanModels.get(i).getActivityRate() > 0) {
-                loanListWebDto.setActivityRate(new BigDecimal(String.valueOf(loanModels.get(i).getActivityRate())).multiply(new BigDecimal("100")).setScale(2,BigDecimal.ROUND_DOWN).doubleValue());
+                loanListWebDto.setActivityRate(new BigDecimal(String.valueOf(loanModels.get(i).getActivityRate())).multiply(new BigDecimal("100")).setScale(2, BigDecimal.ROUND_DOWN).doubleValue());
             }
             loanListWebDto.setPeriods(loanModels.get(i).getPeriods());
             loanListWebDto.setType(loanModels.get(i).getType());
@@ -674,7 +675,7 @@ public class LoanServiceImpl implements LoanService {
     private void createDeadLineFundraisingJob(LoanModel loanModel) {
         try {
             jobManager.newJob(JobType.LoanStatusToRecheck, DeadlineFundraisingJob.class)
-                    .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-"+loanModel.getId())
+                    .withIdentity(JobType.LoanStatusToRecheck.name(), "Loan-" + loanModel.getId())
                     .replaceExistingJob(true)
                     .addJobData("loanId", loanModel.getId())
                     .runOnceAt(loanModel.getFundraisingEndTime()).submit();
