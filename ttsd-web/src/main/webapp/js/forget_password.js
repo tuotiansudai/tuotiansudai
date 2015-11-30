@@ -23,11 +23,12 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 required: true,
                 digits: true,
                 minlength: 6,
+                maxlength:6,
                 captchaVerify: {
                     param: function () {
                         var _phone = $('input[name="mobile"]').val(),
                             _captcha=$('input[name="captcha"]').val();
-                        if(_captcha.length>=6) {
+                        if(_captcha.length==6) {
                             $btnSend.prop('disabled',false);
                             return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
                         }
@@ -48,6 +49,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
                 minlength: '验证码格式不正确',
+                maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             }
         },
