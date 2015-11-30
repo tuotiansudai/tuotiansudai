@@ -34,6 +34,7 @@ import com.esoft.umpay.trusteeship.service.UmPayOperationServiceAbs;
 import com.ttsd.api.dto.InvestResponseDataDto;
 import com.ttsd.api.dto.ReturnMessage;
 import com.ttsd.api.util.CommonUtils;
+import com.ttsd.special.services.ConferenceSaleService;
 import com.umpay.api.common.ReqData;
 import com.umpay.api.exception.ReqDataException;
 import com.umpay.api.exception.VerifyException;
@@ -41,6 +42,7 @@ import com.umpay.api.paygate.v40.Mer2Plat_v40;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.hibernate.LockMode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
@@ -87,6 +89,9 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 
     @Resource
     HibernateTemplate ht;
+
+    @Autowired
+    ConferenceSaleService conferenceSaleService;
 
     @Logger
     Log log;
@@ -232,6 +237,9 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
                 //处理投资成功修改状态
                 Invest invest = InvestSuccess(to);
                 ht.update(invest);
+
+                // 如果满足会销活动条件则发放奖励
+                conferenceSaleService.processIfInActivityForInvest(order_id, invest.getUser());
             } else {
                 fail(to);
                 log.error("投资失败:" + paramMap.toString());
@@ -251,7 +259,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 			throw new TrusteeshipReturnException("duplication");
 		}
 	}
-	
+
 	/**
 	 * 处理后台通知的投标
 	 */
@@ -275,22 +283,22 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * 在未收到第三方通知的情况下,不冻结投资
 	 * 当等到收到第三方成功通知的时候直接将用户的钱划走
 	 * @param invest
-	 * @throws IllegalLoanStatusException 
-	 * @throws NoMatchingObjectsException 
-	 * @throws ExceedMoneyNeedRaised 
-	 * @throws InsufficientBalance 
-	 * @throws ExceedDeadlineException 
-	 * @throws UnreachedMoneyLimitException 
+	 * @throws IllegalLoanStatusException
+	 * @throws NoMatchingObjectsException
+	 * @throws ExceedMoneyNeedRaised
+	 * @throws InsufficientBalance
+	 * @throws ExceedDeadlineException
+	 * @throws UnreachedMoneyLimitException
 	 */
 	@SuppressWarnings("deprecation")
 	public Invest investUnFreeze(Invest invest) throws IllegalLoanStatusException, NoMatchingObjectsException, ExceedMoneyNeedRaised, InsufficientBalance, ExceedDeadlineException, UnreachedMoneyLimitException{
@@ -339,11 +347,11 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
 		if (invest.getTransferApply() == null || StringUtils.isEmpty(invest.getTransferApply().getId())) {
 			invest.setTransferApply(null);
 		}
-		
+
 		invest.setLoan(ht.get(Loan.class, invest.getLoan().getId()));
 		invest.setUser(ht.get(User.class, invest.getUser().getId()));
 		ht.save(invest);
-		
+
 		return invest;
 	}
 
