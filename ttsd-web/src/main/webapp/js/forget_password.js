@@ -27,7 +27,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     param: function () {
                         var _phone = $('input[name="mobile"]').val(),
                             _captcha=$('input[name="captcha"]').val();
-                        if(_captcha.length>=6) {
+                        if(_captcha.length==6) {
                             $btnSend.prop('disabled',false);
                             return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
                         }
