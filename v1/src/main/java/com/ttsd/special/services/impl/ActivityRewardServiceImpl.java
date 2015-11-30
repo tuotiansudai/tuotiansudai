@@ -124,7 +124,7 @@ public class ActivityRewardServiceImpl implements ActivityRewardService {
             operation.setRequestUrl(reqData.getUrl());
             operation.setCharset("utf-8");
             operation.setRequestData(reqData.getPlain());
-            operation.setType(UmPayConstants.OperationType.PROJECT_TRANSFER);
+            operation.setType(UmPayConstants.OperationType.TRANSFER);
             operation.setTrusteeship("umpay");
             operation.setRequestTime(new Date());
             operation.setStatus(TrusteeshipConstants.Status.SENDED);
