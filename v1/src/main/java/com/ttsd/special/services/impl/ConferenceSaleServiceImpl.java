@@ -84,8 +84,9 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
 
     @Transactional
     @Override
-    public void processIfInActivityForBindCard(String cardNo, User user) {
+    public void processIfInActivityForBindCard(String cardNo, String userId) {
         try {
+            User user = ht.get(User.class, userId);
             if (isInActivity(user) && (!hasBindCardRewardRecord(user.getId()))) {
                 String logMessage = MessageFormat.format("会销活动绑卡奖励，卡号: {0}, userId: {1}", cardNo, user.getId());
                 log.debug(logMessage);
@@ -94,7 +95,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
                 markUserBindCardReward(user.getId());
             }
         } catch (Exception exp) {
-            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，卡号: {0}, userId: {1}", cardNo, user.getId()), exp);
+            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，卡号: {0}, userId: {1}", cardNo, userId), exp);
         }
     }
 
@@ -131,7 +132,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         String hql = "from BankCard bankCard where bankCard.time >= ? and bankCard.time <= ? and bankCard.status=? order by bankCard.time asc";
         List<BankCard> bankCards = ht.find(hql, ACTIVITY_BEGIN_TIME, deadlineDate, "passed");
         for (BankCard bankCard : bankCards) {
-            processIfInActivityForBindCard(bankCard.getCardNo(), bankCard.getUser());
+            processIfInActivityForBindCard(bankCard.getCardNo(), bankCard.getUser().getId());
         }
     }
 

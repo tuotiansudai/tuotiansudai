@@ -7,7 +7,7 @@ import java.util.Date;
 
 public interface ConferenceSaleService {
 
-    void processIfInActivityForBindCard(String orderId, User user);
+    void processIfInActivityForBindCard(String cardNo, String userId);
 
     void processIfInActivityForInvest(Invest invest);
 
