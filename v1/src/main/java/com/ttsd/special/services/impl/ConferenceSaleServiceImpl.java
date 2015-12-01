@@ -121,10 +121,10 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Override
     public void reissueMissedReward(Date deadlineDate) {
         if (JOB_EXPIRE_TIME != null && new Date().before(JOB_EXPIRE_TIME)) {
-            log.debug("reissue missed reward for conference sale activity");
+            log.info("reissue missed reward for conference sale activity");
             reissueMissedBindcardReward(deadlineDate);
             reissueMissedInvestReward(deadlineDate);
-            log.debug("reissue missed reward for conference sale activity complete");
+            log.info("reissue missed reward for conference sale activity complete");
         }
     }
 
