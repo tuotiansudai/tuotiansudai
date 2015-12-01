@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="user-manage" title="用户管理">
+<@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="userMan" title="用户管理">
 
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
