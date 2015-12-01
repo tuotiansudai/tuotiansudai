@@ -24,12 +24,13 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/user-manage")
 public class ReferrerManageController {
 
     @Autowired
     private ReferrerManageService referrerManageService;
 
-    @RequestMapping(value = "/referrerManage", method = RequestMethod.GET)
+    @RequestMapping(value = "/referrer", method = RequestMethod.GET)
     public ModelAndView referrerManage(@RequestParam(value = "referrerLoginName",required = false) String referrerLoginName,
                                         @RequestParam(value = "investLoginName",required = false) String investLoginName,
                                         @RequestParam(value = "investStartTime",required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date investStartTime,

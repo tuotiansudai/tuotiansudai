@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="recharge.js" headLab="finaMan" sideLab="recharge" title="充值记录">
+<@global.main pageCss="" pageJavascript="recharge.js" headLab="finance-manage" sideLab="recharge" title="充值记录">
 
 <#assign pagination = baseDto.data />
 <#assign rechargeList = pagination.records />

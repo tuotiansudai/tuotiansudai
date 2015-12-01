@@ -19,7 +19,9 @@ require(['jquery', 'csrf', 'jquery-ui', 'bootstrap'], function ($) {
     $('#referrer').autocomplete({
         minLength: 3,
         source: function (query, process) {
-            $.get('/user/' + query.term + '/search', function (respData) {
+            //var matchCount = this.options.items;//返回结果集最大数量
+            $.get('/user-manage/user/' + query.term + '/search', function (respData) {
+
                 return process(respData);
             });
         },

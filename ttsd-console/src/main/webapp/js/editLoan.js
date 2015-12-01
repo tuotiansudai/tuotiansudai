@@ -170,7 +170,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         var autoValue = '';
         $(".jq-agent").autocomplete({
             source: function (query, process) {
-                $.get('/account/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/account/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -324,7 +324,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     .done(function (res) {
                         if(res.data.status){
                             formFlag =true;
-                            location.href='/loanList/console';
+                            location.href='/project-manage/loan-list';
                         }else{
                             formFlag =false;
                             var msg = res.data.message || '服务端校验失败';

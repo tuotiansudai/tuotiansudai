@@ -11,7 +11,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('form button[type="reset"]').click(function () {
-            location.href = "recharge";
+            location.href = "/finance-manage/recharge";
         });
 
         //自动完成提示
@@ -19,7 +19,7 @@ require(['jquery', 'jquery-ui',
         $('#loginName').autocomplete({
             source: function (query, process) {
                 //var matchCount = this.options.items;//返回结果集最大数量
-                $.get('/user/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/user/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -37,7 +37,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('.down-load').click(function () {
-            location.href = "/recharge?"+$('form').serialize()+"&export=csv";
+            location.href = "/finance-manage/recharge?"+$('form').serialize()+"&export=csv";
         });
     });
 });

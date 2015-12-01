@@ -6,7 +6,7 @@
     <#assign loanStatus="ALL">
 </#if>
 
-<@global.main pageCss="" pageJavascript="loanList.js" headLab="projectMain" sideLab="${loanStatus}" title="项目管理">
+<@global.main pageCss="" pageJavascript="loanList.js" headLab="project-manage" sideLab="${loanStatus}" title="项目管理">
 
     <!-- content area begin -->
     <div class="col-md-10">
@@ -69,8 +69,8 @@
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td><a class="invest_repay" href="/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
-                    <td><a class="loan_edit" href="/loan/${loanListDto.id?string('0')}">编辑</a></td>
+                    <td><a class="invest_repay" href="/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
+                    <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a></td>
                 </tr>
                 </#list>
                 </tbody>

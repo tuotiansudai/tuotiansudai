@@ -1,7 +1,7 @@
 from scripts.data_migration.base import BaseMigrate
 
 
-class AnnouncementManagementMigrate(BaseMigrate):
+class AnnounceMigrate(BaseMigrate):
     """
     Class Naming Convention: `NewTableNameMigrate(BaseMigrate)`
     """

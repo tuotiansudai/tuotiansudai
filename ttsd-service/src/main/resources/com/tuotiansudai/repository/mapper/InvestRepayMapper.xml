@@ -182,7 +182,8 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
-          t.`loan_id`
+          t.`loan_id`,
+          t.type
         FROM
           invest_repay ir
           JOIN
@@ -192,7 +193,8 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
-              l.`id` as loan_id
+              l.`id` as loan_id,
+              l.`type`
             FROM
               invest i
               JOIN loan l
@@ -214,7 +216,8 @@
           t.activity_rate,
           t.base_rate,
           t.periods,
-          t.`loan_id`
+          t.`loan_id`,
+          t.type
         FROM
           invest_repay ir
           JOIN
@@ -224,7 +227,8 @@
               l.`activity_rate`,
               l.`base_rate`,
               l.`periods`,
-              l.`id` as `loan_id`
+              l.`id` as `loan_id`,
+              l.type
             FROM
               invest i
               JOIN loan l

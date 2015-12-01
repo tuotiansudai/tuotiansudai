@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("/loanList")
+@RequestMapping("/project-manage")
 public class LoanListController {
 
     static Logger logger = Logger.getLogger(LoanListController.class);
@@ -25,7 +25,7 @@ public class LoanListController {
     @Autowired
     private LoanService loanService;
 
-    @RequestMapping(value = "/console", method = RequestMethod.GET)
+    @RequestMapping(value = "/loan-list", method = RequestMethod.GET)
     public ModelAndView ConsoleLoanList(@RequestParam(value = "status", required = false) LoanStatus status,
                                         @RequestParam(value = "loanId", required = false) Long loanId,
                                         @RequestParam(value = "startTime", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,

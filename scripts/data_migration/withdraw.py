@@ -1,5 +1,6 @@
+import redis
 from scripts.data_migration.base import BaseMigrate
-
+from scripts.data_migration.constants import REDIS_HOST, REDIS_PORT, REDIS_DB
 
 class WithdrawMigrate(BaseMigrate):
     """
@@ -31,16 +32,15 @@ class WithdrawMigrate(BaseMigrate):
     }
 
     _index = 0
+    _r = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
     def generate_params(self, old_row):
         self._index += 1
 
-        _, cursor = self.new_db.execute("(select id from bank_card where old_id='%s')" % old_row['bank_card_id'])
-
-        temp_row = cursor.fetchone()
+        new_id=self._r.get('bankcard_'+old_row['bank_card_id']);
 
         return (self._index,
-                temp_row['id'],
+                new_id,
                 old_row['user_id'].lower(),
                 int(round(old_row['money'] * 100)),
                 int(round(old_row['fee'] * 100)),
