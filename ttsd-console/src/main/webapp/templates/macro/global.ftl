@@ -36,9 +36,8 @@
             {
                 "name":"user-manage",
                 "role":"'ADMIN','CUSTOMER_SERVICE'",
-                "header":{"text":"用户管理","link":"/user-manage/referrer"},
+                "header":{"text":"用户管理","link":"/user-manage/users"},
                 "sidebar":[
-                    {"name":"addUser","text":"添加用户","link":"/user-manage/user/create","role":"'ADMIN'"},
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN'"},
                     {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"}
                 ]
@@ -132,7 +131,16 @@
                     <#if menu.role??>
                         <@role hasRole=menu.role>
                             <li <#if menu.name == headLab>class="active"</#if>>
-                                <a href="${menu.header.link}">${menu.header.text}</a>
+                                <#list menu.sidebar as item>
+                                    <#if item.role??>
+                                        <@role hasRole=item.role>
+                                            <a href="${item.link}">${menu.header.text}</a>
+                                            <#break>
+                                        </@role>
+                                    <#else>
+                                            <a href="${item.link}">${menu.header.text}</a>
+                                    </#if>
+                                </#list>
                             </li>
                         </@role>
                     <#else>

@@ -45,14 +45,14 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/user/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ModelAndView newUser(){
         ModelAndView modelAndView = new ModelAndView("/user-create");
         modelAndView.addObject("roles", Role.values());
         return modelAndView;
     }
 
-    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ModelAndView createUser(@ModelAttribute EditUserDto editUserDto, HttpServletRequest request, RedirectAttributes redirectAttributes){
         String ip = RequestIPParser.parse(request);
         ModelAndView modelAndView = new ModelAndView();
@@ -61,14 +61,14 @@ public class UserController {
             modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName("redirect:/user-manage/user/create");
+            modelAndView.setViewName("redirect:/user-manage/user");
             redirectAttributes.addFlashAttribute("user", editUserDto);
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
         return modelAndView;
     }
 
-    @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
@@ -102,7 +102,7 @@ public class UserController {
             modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}/edit", editUserDto.getLoginName()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
             redirectAttributes.addFlashAttribute("roles", Role.values());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

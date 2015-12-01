@@ -74,7 +74,6 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
                 }
             })
             .fail(function() {
-                console.log("error");
                 $('.jq-btn-form').removeAttr('disabled');
             })
         });

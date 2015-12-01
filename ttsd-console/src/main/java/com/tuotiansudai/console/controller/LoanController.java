@@ -51,7 +51,7 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
         return loanService.createLoan(loanDto);

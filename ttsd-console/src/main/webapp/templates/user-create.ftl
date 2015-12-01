@@ -3,7 +3,7 @@
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal" action="/user-manage/user/create" method="post">
+    <form class="form-horizontal" action="/user-manage/user" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 
