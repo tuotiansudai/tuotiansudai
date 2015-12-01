@@ -168,5 +168,11 @@ form {
   overflow: hidden!important;
 }
 
+.page-width {
+  width:1000px;
+  @include center-block;
+  box-sizing: border-box;
+}
+
 
 

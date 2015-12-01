@@ -1,12 +1,9 @@
 @import 'font_awesome';
 @import 'reset', 'btn','table';
 @import 'page_frame','pagination';
+@import 'media';
 
-.page-width {
-  width:1000px;
-  @include center-block;
-  box-sizing: border-box;
-}
+
 
 .page-col-title,.column-title {
   border-bottom:1px solid #ccc;
