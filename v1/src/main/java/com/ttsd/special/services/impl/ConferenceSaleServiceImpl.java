@@ -162,20 +162,24 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     }
 
     private void markUserBindCardReward(String userId) {
-        redisClient.hset(REWARD_RECORD_KEY, userId + ":bindcard", "1");
+        String hkey = MessageFormat.format("{0}:bindcard", userId);
+        redisClient.hset(REWARD_RECORD_KEY, hkey, "1");
     }
 
     private boolean hasBindCardRewardRecord(String userId) {
-        String markValue = redisClient.hget(REWARD_RECORD_KEY, userId + ":bindcard");
-        return markValue.equalsIgnoreCase("1");
+        String hkey = MessageFormat.format("{0}:bindcard", userId);
+        String markValue = redisClient.hget(REWARD_RECORD_KEY, hkey);
+        return "1".equalsIgnoreCase(markValue);
     }
 
     private void markUserInvestReward(String userId) {
-        redisClient.hset(REWARD_RECORD_KEY, userId + ":invest", "1");
+        String hkey = MessageFormat.format("{0}:invest", userId);
+        redisClient.hset(REWARD_RECORD_KEY, hkey, "1");
     }
 
     private boolean hasInvestRewardRecord(String userId) {
-        String markValue = redisClient.hget(REWARD_RECORD_KEY, userId + ":invest");
-        return markValue.equalsIgnoreCase("1");
+        String hkey = MessageFormat.format("{0}:invest", userId);
+        String markValue = redisClient.hget(REWARD_RECORD_KEY, hkey);
+        return "1".equalsIgnoreCase(markValue);
     }
 }
