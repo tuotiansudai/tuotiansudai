@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="withdraw.js" headLab="finaMan" sideLab="withdraw" title="提现记录">
+<@global.main pageCss="" pageJavascript="withdraw.js" headLab="finance-manage" sideLab="withdraw" title="提现记录">
 
 <#assign pagination = baseDto.data />
 <#assign withdrawList = pagination.records />

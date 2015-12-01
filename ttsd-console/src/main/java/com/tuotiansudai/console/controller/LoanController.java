@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/loan")
+@RequestMapping(value = "/project-manage/loan")
 public class LoanController {
 
     private static final String DEFAULT_CONTRACT_ID = "789098123"; // 四方合同
@@ -51,7 +51,7 @@ public class LoanController {
         return loanService.createTitle(loanTitleDto);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public BaseDto<PayDataDto> createLoan(@RequestBody LoanDto loanDto) {
         return loanService.createLoan(loanDto);

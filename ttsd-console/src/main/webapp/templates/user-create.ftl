@@ -1,31 +1,29 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="edit-user.js" headLab="user-manage" sideLab="user-manage" title="用户编辑">
+<@global.main pageCss="" pageJavascript="create-user.js" headLab="user-manage" sideLab="addUser" title="添加用户">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal" action="/user-manage/user/edit" method="post">
+    <form class="form-horizontal" action="/user-manage/user" method="post">
         <div class="form-group">
             <label class="col-sm-2 control-label">登录名：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.loginName}</p>
-                <input type="hidden" name="loginName" value="${user.loginName}"/>
+                <input type="text" id="loginName" name="loginName" class="form-control" value="${(user.loginName)!}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">姓名：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.userName!}</p>
-                <input type="hidden" name="userName" value="${user.userName!}"/>
+                <input type="text" id="userName" name="userName" class="form-control" value="${(user.userName)!}"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">身份证：</label>
 
             <div class="col-sm-3">
-                <p class="form-control-static">${user.identityNumber!}</p>
-                <input type="hidden" name="identityNumber" value="${user.identityNumber!}"/>
+                <input type="text" id="identityNumber" name="identityNumber" class="form-control"
+                       value="${(user.identityNumber)!}"/>
             </div>
         </div>
         <div class="form-group">
@@ -55,9 +53,9 @@
 
             <div class="col-sm-3">
                 <label class="radio-inline"><input type="radio" name="status" id="status-active" value="ACTIVE"
-                                                   <#if user.status?? && user.status=="ACTIVE">checked="checked"</#if>>正常</label>
+                                                   <#if !(user?has_content) || (user?? && user.status?? && user.status == "ACTIVE")>checked="checked"</#if>>正常</label>
                 <label class="radio-inline"><input type="radio" name="status" id="status-in-active" value="INACTIVE"
-                                                   <#if user.status?? && user.status=="INACTIVE">checked="checked"</#if>>禁用</label>
+                                                   <#if user?? && user.status?? && user.status == "INACTIVE">checked="checked"</#if>>禁用</label>
             </div>
         </div>
 
@@ -69,9 +67,9 @@
                 <#list roles as roleItem>
                     <#if roleItem.name() != 'USER'>
                         <div class="checkbox">
-                            <label><input type="checkbox" name="roles"
-                                          <#if user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>
-                                          value="${roleItem.name()}">${roleItem.getDescription()}</label>
+                            <label><input type="checkbox" name="roles" value="${roleItem.name()}"
+                                          <#if user?? && user.roles?? && user.roles?seq_contains(roleItem.name())>checked="checked"</#if>>${roleItem.getDescription()}
+                            </label>
                         </div>
                     </#if>
                 </#list>
@@ -101,21 +99,6 @@
             </div>
         </div>
     </form>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <h5>确认修改？</h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-default btn-submit">确认</button>
-            </div>
-        </div>
-    </div>
 </div>
 <!-- content area end -->
 </@global.main>

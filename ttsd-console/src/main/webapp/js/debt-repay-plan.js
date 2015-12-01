@@ -5,12 +5,12 @@ require(['jquery', 'bootstrap','bootstrapSelect','bootstrapDatetimepicker','jque
 
     $('.jq-search').click(function() {
         var status = $('.status').val();
-        window.location.href = '/debt-repayment-plan?repayStatus='+status;
+        window.location.href = '/finance-manage/debt-repayment-plan?repayStatus='+status;
     });
 
     $('.jq-search-detail').click(function() {
         var status = $('.status').val();
         var date = $('.date').val();
-        window.location.href = '/debt-repayment-detail?date='+date+'&repayStatus='+status;
+        window.location.href = '/finance-manage/debt-repayment-detail?date='+date+'&repayStatus='+status;
     });
 })

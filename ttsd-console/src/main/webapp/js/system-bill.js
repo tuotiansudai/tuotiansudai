@@ -11,7 +11,7 @@ require(['jquery', 'jquery-ui',
         });
 
         $('form button[type="reset"]').click(function () {
-            location.href = "systemBill";
+            location.href = "/finance-manage/system-bill";
         });
     });
 });

@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="user-list.js" headLab="userMain" sideLab="userMan" title="用户管理">
+<@global.main pageCss="" pageJavascript="user-list.js" headLab="user-manage" sideLab="user-manage" title="用户管理">
 
 <#assign pagination = baseDto.data />
 <#assign userList = pagination.records />
@@ -110,11 +110,11 @@
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                     <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
                     <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
-                    <td><a href="/user/${userItem.loginName}/edit">编辑</a> |
+                    <td><a href="/user-manage/user/${userItem.loginName}">编辑</a> |
                         <#if userItem.status=='ACTIVE'>
-                            <a class="user-status-modifier" href="#" data-url="/user/${userItem.loginName}/disable">禁止</a>
+                            <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/disable">禁止</a>
                         <#else>
-                            <a class="user-status-modifier" href="#" data-url="/user/${userItem.loginName}/enable">解禁</a>
+                            <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/enable">解禁</a>
                         </#if>
                     </td>
                 </tr>

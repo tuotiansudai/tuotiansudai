@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import static com.tuotiansudai.repository.model.UserBillBusinessType.ADMIN_INTERVENTION;
 
 @Controller
-@RequestMapping(path = "/admin-intervention")
+@RequestMapping(path = "/finance-manage/admin-intervention")
 public class AdminInterventionController {
     static Logger logger = Logger.getLogger(AdminInterventionController.class);
 
@@ -46,7 +46,7 @@ public class AdminInterventionController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView intervene(@Valid @ModelAttribute AdminInterventionDto adminInterventionDto, RedirectAttributes redirectAttributes) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/admin-intervention");
+        ModelAndView modelAndView = new ModelAndView("redirect:/finance-manage/admin-intervention");
 
         long orderId = idGenerator.generate();
 

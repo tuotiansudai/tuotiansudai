@@ -1,5 +1,5 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="announce.js" headLab="announceMan" sideLab="announceMan" title="公告管理">
+<@global.main pageCss="" pageJavascript="announce.js" headLab="announce-manage" sideLab="announceMan" title="公告管理">
 <!-- content area begin -->
 
 <div class="col-md-10">
@@ -34,7 +34,7 @@
                     <td>${(announce.id?string('0'))!}</td>
                     <td>${announce.title!}</td>
                     <td>${(announce.updateTime?string('yyyy-MM-dd'))!}</td>
-                    <td><a href="/announce/edit/${(announce.id?string('0'))!}" class="btn btn-link"> 编辑</a>
+                    <td><a href="/announce-manage/announce/edit/${(announce.id?string('0'))!}" class="btn btn-link"> 编辑</a>
                         | <a href="#" class="btn btn-link jq-delete"
                              data-id="${(announce.id?string('0'))!}">删除</a></td>
                 </tr>
@@ -50,7 +50,7 @@
             <ul class="pagination pull-left">
                 <li>
                     <#if hasPreviousPage >
-                    <a href="/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
+                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo-1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>
@@ -60,7 +60,7 @@
                 <li><a>${currentPageNo}</a></li>
                 <li>
                     <#if hasNextPage>
-                    <a href="/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
+                    <a href="/announce-manage/announce?id=${(id?string('0'))!}&title=${title!}&currentPageNo=${currentPageNo+1}&pageSize=${pageSize}">
                     <#else>
                     <a href="#">
                     </#if>

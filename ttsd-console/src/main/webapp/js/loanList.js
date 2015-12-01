@@ -21,7 +21,7 @@ require(['jquery', 'bootstrap','bootstrapDatetimepicker'], function ($) {
         }
         var formData=$("#formLoanList").serialize(),
             allData=formData+'&currentPageNo=1&pageSize=10';
-        window.location.href = "/loanList/console?"+allData;
+        window.location.href = "/project-manage/loan-list?"+allData;
 
     });
 

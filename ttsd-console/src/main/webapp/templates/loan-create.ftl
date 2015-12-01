@@ -1,7 +1,7 @@
 <script>
-    var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
-    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
-    var API_FORM = '${requestContext.getContextPath()}/loan/';
+    var API_SELECT = '${requestContext.getContextPath()}/project-manage/loan/titles';  // 申请资料标题url
+    var API_POST_TITLE = '${requestContext.getContextPath()}/project-manage/loan/title';  //
+    var API_FORM = '${requestContext.getContextPath()}/project-manage/loan/';
 </script>
 
 <script id="upload" type="text/html">
@@ -38,7 +38,7 @@
 
 
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="createLoan.js" headLab="projectMain" sideLab="start" title="发起借款">
+<@global.main pageCss="" pageJavascript="createLoan.js" headLab="project-manage" sideLab="start" title="发起借款">
 <!-- content area begin -->
 <div class="col-md-10">
     <form class="form-horizontal jq-form">

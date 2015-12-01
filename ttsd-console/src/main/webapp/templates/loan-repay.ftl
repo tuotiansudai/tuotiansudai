@@ -1,11 +1,11 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="loan-repay.js" headLab="projectMain" sideLab="repaymentInfoList" title="项目还款明细">
+<@global.main pageCss="" pageJavascript="loan-repay.js" headLab="project-manage" sideLab="repaymentInfoList" title="项目还款明细">
 
 <#assign loanRepays = baseDto.data>
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form action="${requestContext.getContextPath()}/loan-repay" method="post" class="form-inline query-build">
+    <form action="${requestContext.getContextPath()}/project-manage/loan-repay" method="post" class="form-inline query-build">
         <div class="form-group">
             <label for="number">项目编号:</label>
             <input type="text" class="form-control" id="loanId" placeholder="" value="${(loanId?string("0"))!}">

@@ -71,7 +71,7 @@ public class LoanControllerTest {
         when(loanService.updateLoan(any(LoanDto.class))).thenReturn(baseDto);
         LoanDto loanDto = assembleLoanParam();
         String json = objectMapper.writeValueAsString(loanDto);
-        this.mockMvc.perform(post("/loan/save").contentType("application/json; charset=UTF-8").content(json))
+        this.mockMvc.perform(post("/project-manage/loan/save").contentType("application/json; charset=UTF-8").content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$.success").value(true))
