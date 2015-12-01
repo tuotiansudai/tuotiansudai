@@ -220,6 +220,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             },
             //beforeSubmit
             beforeCheck: function (curform) {
+                $('.form-error').html('');
                 var periods = parseInt($('.jq-timer', curform).val());
                 if (periods <= 0) {
                     showErrorMessage('借款期限最小为1', $('.jq-timer', curform));
