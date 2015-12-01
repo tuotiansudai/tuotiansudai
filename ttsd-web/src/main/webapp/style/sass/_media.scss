@@ -1,8 +1,5 @@
-@media (max-width: 1000px) {
 
-}
-
-@media (max-width: 767px) {
+@media (max-width: 700px) {
   .page-width {
     width:100%;
   }
@@ -11,6 +8,10 @@
     padding-right:10px;
     .header {
       width:100%;
+      ul li {
+        margin-left:10px;
+        margin-right:0;
+      }
       time,.login-pop-app {
         display: none;
       }
@@ -33,14 +34,14 @@
 
       .show-main-menu {
         display: inline-block;
-
+        cursor: pointer;
       }
       ul {
         display: none;
         background: #fff;
         border:1px solid #ccc;
         position: absolute;
-        top:45px;
+        top:48px;
         right:0;
         z-index: 100;
         overflow: auto;
@@ -49,71 +50,66 @@
         li {
           float: none;
           clear: both;
+          margin-left: 0;
+          width:120px;
           a {
-            height:35px;
+            height:25px;
             font-size: 13px;
-            padding-top:0;
             text-align: left;
+            padding: 5px 10px;
+            border-bottom: 1px solid #ccc;
+            &:hover,&.active {
+              color: #ff7200;
+              border-bottom: #ff7200 1px solid;
+              border-top:3px solid #fff;
+            }
           }
         }
       }
     }
   }
 
-  .home-page-container .main-advantage dl dd {
-    width: 100%!important;
-    margin-bottom:25px;
-  }
+  .footer-container  {
+    padding-top:10px;
+    .footer ul {
+      clear:both;
+      margin-left:10px;
+      li {
+        display: inline-block;
+        margin-top:0;
+        height:auto;
 
-  .home-content {
-    background: #fafafa;
-    margin-top: 10px;
-    .page-width {
-      .product-box-list {
-        width:100%!important;
-        .product-box-inner {
-          width:100%!important;;
-          .product-box {
-            width: 100%!important;;
-            margin-right: 0;
-          }
-        }
-        &.fl {
-          float: none!important;
+        &.f-title {
+          margin:3px 0px!important;
+          font-size: 12px;
         }
       }
-      .home-ad {
-        width:100%!important;
+      &.last {
+        display: none;
       }
     }
-  }
 
-  .footer-container .footer ul {
-    clear:both;
-    margin-left:10px;
-    li {
-      display: inline-block;
-
-      &.f-title {
-        margin:10px!important;
-      }
-    }
-    &.last {
-      display: none;
-    }
 
     .copyright {
+      padding-left:10%;
       .fl {
         display: block;
         float: none;
         a {
-          display: block;
-          width:25%;
-
+          display: inline-block;
+          width: 40%;
+          float: left;
+          text-align: left;
           .img-gray {
-            width:100%;
+            width:auto;
+            margin-bottom:10px;
           }
         }
+      }
+      .fr {
+        float: left;
+        text-align: left;
+        font-size:12px;
       }
     }
 
@@ -123,20 +119,34 @@
     width:100%;
 
   }
-  .login-container .login-app {
-    display: none!important;
+  .login-container {
+    margin:20px auto!important;
+    .login-app {
+      display: none!important;
+    }
+
   }
   .step-register-tab {
     font-size: 14px!important;
     margin:0;
+    width:auto!important;
     li {
       width:30%!important;
+      height:40px!important;
+      line-height: 40px!important;
+      s,g {
+        display: none;
+      }
     }
   }
-  .register-container .register-box {
-    margin:0 20px!important;
-    width:100%!important;
+  .register-container {
+    margin:0;
+    border-width: 0!important;
+    .register-box {
+      margin:0 20px!important;
+      width:100%!important;
 
+    }
   }
 
   form {

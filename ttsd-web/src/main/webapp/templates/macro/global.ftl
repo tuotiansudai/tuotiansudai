@@ -97,17 +97,14 @@
     });
     </@security.authorize>
 
-    function stopBubble(e) {
-        if ( e && e.stopPropagation)
-            e.stopPropagation();
-        else
-            window.event.cancelBubble = true;
-    }
     var imgDom=document.getElementById('iphone-app-img');
 
-    document.getElementById('iphone-app-pop').addEventListener('click',function(e) {
-        stopBubble(e);
-
+    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        if(event.target.tagName=='LI') {
+            return;
+        }
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
         }
@@ -125,6 +122,7 @@
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
         data-main="${staticServer}/js/dest/${pageJavascript}">
+    <#--data-main="${staticServer}/js/index.js">-->
 </script>
 </#if>
 

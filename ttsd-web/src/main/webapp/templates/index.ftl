@@ -82,8 +82,8 @@
                                 </div>
                             </div>
                             <dl class="pr-info">
-                                <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <br/><span>项目期限</span></dd>
-                                <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><br/><span>项目金额</span></dd>
+                                <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
+                                <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目金额</span></dd>
                             </dl>
                             <div class="project-schedule clear-blank">
                                 <div class="p-title">
