@@ -53,7 +53,6 @@ public class ActivityRewardServiceImpl implements ActivityRewardService {
     @Transactional
     public boolean payActivityReward(String orderId, String userId, double reward, String detail) {
         String accountId = this.getAccount(userId);
-        orderId += System.currentTimeMillis();
         boolean result = this.transferMerToUser(orderId, accountId, reward);
         if (result) {
             try {
@@ -119,7 +118,7 @@ public class ActivityRewardServiceImpl implements ActivityRewardService {
         try {
             TrusteeshipOperation operation = new TrusteeshipOperation();
             operation.setId(IdGenerator.randomUUID());
-            operation.setMarkId(UserBillConstants.OperatorInfo.ACTIVITY_REWARD + markId);
+            operation.setMarkId(markId);
             operation.setOperator(UserBillConstants.OperatorInfo.ACTIVITY_REWARD);
             operation.setRequestUrl(reqData.getUrl());
             operation.setCharset("utf-8");
