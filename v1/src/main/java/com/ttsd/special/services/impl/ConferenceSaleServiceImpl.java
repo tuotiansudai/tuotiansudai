@@ -82,6 +82,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     @Logger
     Log log;
 
+    @Transactional
     @Override
     public void processIfInActivityForBindCard(String cardNo, User user) {
         try {
@@ -97,6 +98,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         }
     }
 
+    @Transactional
     @Override
     public void processIfInActivityForInvest(Invest invest) {
         try {
