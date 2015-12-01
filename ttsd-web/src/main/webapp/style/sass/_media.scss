@@ -117,7 +117,7 @@
 
   .main-frame.full-screen {
     width:100%;
-
+    margin:0 auto!important;
   }
   .login-container {
     margin:20px auto!important;
@@ -126,28 +126,7 @@
     }
 
   }
-  .step-register-tab {
-    font-size: 14px!important;
-    margin:0;
-    width:auto!important;
-    li {
-      width:30%!important;
-      height:40px!important;
-      line-height: 40px!important;
-      s,g {
-        display: none;
-      }
-    }
-  }
-  .register-container {
-    margin:0;
-    border-width: 0!important;
-    .register-box {
-      margin:0 20px!important;
-      width:100%!important;
 
-    }
-  }
 
   form {
     input{

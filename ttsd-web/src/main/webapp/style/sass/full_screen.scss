@@ -728,7 +728,7 @@ height:150px;
                             margin-right: 0;
                             border-radius: 5px;
                             position: relative;
-
+                            padding-bottom:22px;
                             text-align: left;
                             .pad-m {
                                 padding-left:20px;
@@ -743,7 +743,7 @@ height:150px;
                                 color: #4c4c4c;
                             }
                             .pr-square {
-                                width: 52%;
+                                width: 54%;
                                 height: 50px;
                                 border-radius: 0;
                                 position: relative;
@@ -873,11 +873,10 @@ height:150px;
     }
     /* project schedule progress */
     .project-schedule {
-        width:60%;
-        float: left;
-        margin-top:-10px;
-        margin-bottom:10px;
-        margin-left:12px;
+        width: 35%;
+        top: 65px;
+        left: 142px;
+        position: absolute;
         .p-title {
 
             span.fl {
