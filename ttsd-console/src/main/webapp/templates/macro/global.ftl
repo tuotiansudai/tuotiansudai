@@ -17,8 +17,7 @@
             },
             {
                 "name":"project-manage",
-                "role":"'ADMIN'",
-                "header":{"text":"项目管理","link":"/project-manage/loan-list"},
+                "header":{"text":"项目管理"},
                 "sidebar":
                 [
                     {"name":"ALL","text":"所有的借款","link":"/project-manage/loan-list","role":"'ADMIN'"},
@@ -35,8 +34,7 @@
             },
             {
                 "name":"user-manage",
-                "role":"'ADMIN','CUSTOMER_SERVICE'",
-                "header":{"text":"用户管理","link":"/user-manage/users"},
+                "header":{"text":"用户管理"},
                 "sidebar":[
                     {"name":"userMan","text":"用户管理","link":"/user-manage/users","role":"'ADMIN'"},
                     {"name":"referMan","text":"推荐人管理","link":"/user-manage/referrer","role":"'ADMIN','CUSTOMER_SERVICE'"}
@@ -44,8 +42,7 @@
             },
             {
                 "name":"finance-manage",
-                "role":"'ADMIN','CUSTOMER_SERVICE'",
-                "header":{"text":"财务管理","link":"/finance-manage/invests"},
+                "header":{"text":"财务管理"},
                 "sidebar":[
                     {"name":"userInvest","text":"用户投资管理","link":"/finance-manage/invests","role":"'ADMIN','CUSTOMER_SERVICE'"},
                     {"name":"debtRepay","text":"债权还款计划","link":"/finance-manage/debt-repayment-plan","role":"'ADMIN'"},
@@ -59,16 +56,14 @@
             },
             {
                 "name":"announce-manage",
-                "role":"'ADMIN'",
-                "header":{"text":"公告管理","link":"/announce-manage/announce"},
+                "header":{"text":"公告管理"},
                 "sidebar":[
                     {"name":"announceMan","text":"公告管理","link":"/announce-manage/announce","role":"'ADMIN'"}
                 ]
             },
             {
                 "name":"security",
-                "role":"'ADMIN'",
-                "header":{"text":"安全管理","link":"/security-log/login-log"},
+                "header":{"text":"安全管理"},
                 "sidebar":[
                     {"name":"loginLog","text":"登录日志","link":"/security-log/login-log","role":"'ADMIN'"},
                     {"name":"auditLog","text":"管理日志","link":"/security-log/audit-log","role":"'ADMIN'"}
@@ -128,26 +123,16 @@
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <#list menus as menu>
-                    <#if menu.role??>
-                        <@role hasRole=menu.role>
-                            <li <#if menu.name == headLab>class="active"</#if>>
-                                <#list menu.sidebar as item>
-                                    <#if item.role??>
-                                        <@role hasRole=item.role>
-                                            <a href="${item.link}">${menu.header.text}</a>
-                                            <#break>
-                                        </@role>
-                                    <#else>
-                                            <a href="${item.link}">${menu.header.text}</a>
-                                    </#if>
-                                </#list>
-                            </li>
-                        </@role>
-                    <#else>
-                        <li <#if menu.name == headLab>class="active"</#if>>
-                            <a href="${menu.header.link}">${menu.header.text}</a>
-                        </li>
-                    </#if>
+                    <#list menu.sidebar as item>
+                        <#if item.role??>
+                            <@role hasRole=item.role>
+                                <li <#if menu.name == headLab>class="active"</#if>>
+                                    <a href="${item.link}">${menu.header.text}</a>
+                                </li>
+                                <#break>
+                            </@role>
+                        </#if>
+                    </#list>
                 </#list>
             </ul>
             <ul class="nav navbar-nav logout">
