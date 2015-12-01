@@ -165,20 +165,19 @@ public class ActivityRewardServiceImpl implements ActivityRewardService {
         return null;
     }
 
-    @Transactional
     private void recordReward(String userId, String orderId, double reward, String detail) throws Exception {
         try {
             userBillBO.transferIntoBalance(userId, reward, UserBillConstants.OperatorInfo.ACTIVITY_REWARD, detail);
         } catch (Exception e) {
             String template = "Create user bill  reward failed: orderId:{0} detail = {1}";
-            log.error(MessageFormat.format(template, orderId, detail));
+            log.error(MessageFormat.format(template, orderId, detail),e);
             throw e;
         }
         try {
             systemBillService.transferOut(reward, UserBillConstants.OperatorInfo.ACTIVITY_REWARD, detail);
         } catch (Exception e) {
             String template = "Create system bill  reward failed : orderId:{0} detail = {0} ";
-            log.error(MessageFormat.format(template, orderId, detail));
+            log.error(MessageFormat.format(template, orderId, detail),e);
             throw e;
 
         }
