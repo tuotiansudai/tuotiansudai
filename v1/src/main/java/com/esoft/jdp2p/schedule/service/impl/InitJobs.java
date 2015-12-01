@@ -163,6 +163,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 				this.initAutoActivityRewardJob();
 				initAutoReferrerRewardReissueJob();
+				initConferenceSaleRewardReissueJob();
 			} catch (SchedulerException e1) {
 				throw new RuntimeException(e1);
 			}
@@ -294,4 +295,25 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 
 	}
 
+	private void initConferenceSaleRewardReissueJob() throws SchedulerException {
+		Date expireTime = new DateTime(2015, 11, 16, 0, 0, 0).toDate();
+		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler
+				.getTrigger(TriggerKey
+				.triggerKey(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD,
+						ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD));
+		if (expireTime.after(new Date()) && existedTrigger == null) {
+			JobDetail jobDetail = JobBuilder.newJob(ConferenceSaleRewardReissueJob.class)
+					.withIdentity(ScheduleConstants.JobName.CONFERENCE_SALE_REWARD, ScheduleConstants.JobGroup.CONFERENCE_SALE_REWARD)
+					.build();
+
+			SimpleTrigger trigger = TriggerBuilder.newTrigger()
+					.withIdentity(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD, ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD)
+					.forJob(jobDetail)
+					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
+					.startNow()
+					.build();
+
+			scheduler.scheduleJob(jobDetail, trigger);
+		}
+	}
 }

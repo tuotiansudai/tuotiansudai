@@ -246,21 +246,4 @@ public class InvestServiceImpl implements InvestService {
 		return query.list();
 	}
 
-	@Override
-	public long getUserInvestCount(String userName, int amountThreshold) {
-        String hql = "select count(invest) from Invest invest where invest.user.id=? and invest.money >= ? and invest.status not in (?, ?, ?, ?)";
-		List<Object> oos = ht.find(hql, new Object[] {
-				userName,
-				new Double(amountThreshold),
-				InvestConstants.InvestStatus.UNFINISHED,
-				InvestConstants.InvestStatus.TEST,
-				InvestConstants.InvestStatus.WAIT_AFFIRM,
-				InvestConstants.InvestStatus.CANCEL
-		});
-		if (null == oos.get(0)) {
-			return 0;
-		}
-		return (Long) oos.get(0);
-	}
-
 }

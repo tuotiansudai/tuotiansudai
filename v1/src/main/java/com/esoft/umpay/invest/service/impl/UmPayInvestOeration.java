@@ -373,7 +373,7 @@ public class UmPayInvestOeration extends UmPayOperationServiceAbs<Invest> {
                     "投资成功：冻结金额。借款ID:" + loan.getId() + "  投资id:" + invest.getId());
 
             // 如果满足会销活动条件则发放奖励
-            conferenceSaleService.processIfInActivityForInvest(invest.getId(), invest.getUser());
+            conferenceSaleService.processIfInActivityForInvest(invest);
         }
         return invest;
     }

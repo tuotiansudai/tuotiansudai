@@ -297,7 +297,7 @@ public class UmPayBindingBankCardOperation extends
 								}
 
 								// 如果满足会销活动条件则发放奖励
-								conferenceSaleService.processIfInActivityForBindCard(order_id, user);
+								conferenceSaleService.processIfInActivityForBindCard(bankCardId, user);
 							}
 							if (userWillBindingBankCard.size() > 0){
 								log.debug(("用户:"

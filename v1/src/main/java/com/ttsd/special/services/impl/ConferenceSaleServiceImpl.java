@@ -2,12 +2,16 @@ package com.ttsd.special.services.impl;
 
 import com.esoft.archer.user.model.User;
 import com.esoft.core.annotations.Logger;
-import com.esoft.jdp2p.invest.service.InvestService;
+import com.esoft.jdp2p.bankcard.model.BankCard;
+import com.esoft.jdp2p.invest.InvestConstants;
+import com.esoft.jdp2p.invest.model.Invest;
+import com.ttsd.redis.RedisClient;
 import com.ttsd.special.services.ActivityRewardService;
 import com.ttsd.special.services.ConferenceSaleService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -26,6 +30,9 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     private static final int REWARD_BIND_CARD;
     private static final int REWARD_INVEST;
 
+    private static final String REWARD_ORDERID_FORMAT = "HX201512{0}";
+
+    private static final String REWARD_RECORD_KEY = "HX201512";
 
     static {
         ResourceBundle rb = ResourceBundle.getBundle("conference_sale");
@@ -57,15 +64,81 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     }
 
     @Autowired
-    private InvestService investService;
+    private ActivityRewardService activityRewardService;
 
     @Autowired
-    private ActivityRewardService activityRewardService;
+    HibernateTemplate ht;
+
+    @Autowired
+    RedisClient redisClient;
 
     @Logger
     Log log;
 
+    @Override
+    public void processIfInActivityForBindCard(String cardNo, User user) {
+        try {
+            if (isInActivity(user) && (!hasBindCardRewardRecord(user.getId()))) {
+                String logMessage = MessageFormat.format("会销活动绑卡奖励，卡号: {0}, userId: {1}", cardNo, user.getId());
+                log.debug(logMessage);
+                String orderId = generateOrderId(cardNo);
+                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_BIND_CARD, logMessage);
+                markUserBindCardReward(user.getId());
+            }
+        } catch (Exception exp) {
+            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，卡号: {0}, userId: {1}", cardNo, user.getId()), exp);
+        }
+    }
+
+    @Override
+    public void processIfInActivityForInvest(Invest invest) {
+        try {
+            User user = invest.getUser();
+            if (isInActivity(user) && (!hasInvestRewardRecord(user.getId())) && hasMatchRewardCondition(invest)) {
+                String logMessage = MessageFormat.format("会销活动投资奖励，investId: {0}", invest.getId());
+                log.debug(logMessage);
+                String orderId = generateOrderId(invest.getId());
+                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_INVEST, logMessage);
+                markUserInvestReward(user.getId());
+            }
+        } catch (Exception exp) {
+            exp.printStackTrace();
+            log.error(MessageFormat.format("会销活动发送投资奖励失败，investId: {0}", invest.getId()), exp);
+        }
+    }
+
+    @Override
+    public void reissueMissedReward(Date deadlineDate) {
+        log.debug("reissue missed reward for conference sale activity");
+        reissueMissedBindcardReward(deadlineDate);
+        reissueMissedInvestReward(deadlineDate);
+        log.debug("reissue missed reward for conference sale activity complete");
+    }
+
+    private void reissueMissedBindcardReward(Date deadlineDate) {
+        String hql = "from BankCard bankCard where bankCard.time >= ? and bankCard.time <= ? and bankCard.status=? order by bankCard.time asc;";
+        List<BankCard> bankCards = ht.find(hql, ACTIVITY_BEGIN_TIME, deadlineDate, "passed");
+        for (BankCard bankCard : bankCards) {
+            processIfInActivityForBindCard(bankCard.getCardNo(), bankCard.getUser());
+        }
+    }
+
+    private void reissueMissedInvestReward(Date deadlineDate) {
+        String hql = "from Invest invest where invest.time >= ? and invest.time <= ? and invest.money >= ? and invest.status not in (?,?,?,?) order by invest.time asc";
+        List<Invest> invests = ht.find(hql, ACTIVITY_BEGIN_TIME, deadlineDate, new Double(INVEST_THRESHOLD),
+                InvestConstants.InvestStatus.UNFINISHED,
+                InvestConstants.InvestStatus.TEST,
+                InvestConstants.InvestStatus.WAIT_AFFIRM,
+                InvestConstants.InvestStatus.CANCEL);
+        for (Invest invest : invests) {
+            processIfInActivityForInvest(invest);
+        }
+    }
+
     private boolean isInActivity(User user) {
+        if (user == null) {
+            return false;
+        }
         String userReferrer = user.getReferrer();
         if (StringUtils.isEmpty(userReferrer)) {
             return false;
@@ -74,38 +147,35 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         if (currentDate.before(ACTIVITY_BEGIN_TIME) || currentDate.after(ACTIVITY_END_TIME)) {
             return false;
         }
+        if (user.getRegisterTime().before(ACTIVITY_BEGIN_TIME) || user.getRegisterTime().after(ACTIVITY_END_TIME)) {
+            return false;
+        }
         return ACTIVITY_REFERRER_LIST.contains(userReferrer);
     }
 
-    private boolean hasInvestRewardRecord(String userName) {
-        long investCount = investService.getUserInvestCount(userName, INVEST_THRESHOLD);
-        return investCount > 1;
+    private boolean hasMatchRewardCondition(Invest invest) {
+        return invest.getInvestMoney() >= INVEST_THRESHOLD;
     }
 
-    @Override
-    public void processIfInActivityForBindCard(String orderId, User user) {
-        try {
-            if (isInActivity(user)) {
-                String logMessage = MessageFormat.format("会销活动绑卡奖励，绑卡orderId: {0}, userId: {1}", orderId, user.getId());
-                log.debug(logMessage);
-                activityRewardService.payActivityReward(orderId, user.getId(), REWARD_BIND_CARD, logMessage);
-            }
-        } catch (Exception exp) {
-            log.error(MessageFormat.format("会销活动发送绑卡奖励失败，绑卡orderid: {0}, userId: {1}", orderId, user.getId()), exp);
-        }
+    private String generateOrderId(String baseId) {
+        return MessageFormat.format(REWARD_ORDERID_FORMAT, baseId);
     }
 
-    @Override
-    public void processIfInActivityForInvest(String orderId, User user) {
-        try {
-            if (isInActivity(user) && !hasInvestRewardRecord(user.getId())) {
-                String logMessage = MessageFormat.format("会销活动投资奖励，投资orderId: {0}, userId: {1}", orderId, user.getId());
-                log.debug(logMessage);
-                activityRewardService.payActivityReward(orderId+"002", user.getId(), REWARD_INVEST, logMessage);
-            }
-        } catch (Exception exp) {
-            exp.printStackTrace();
-            log.error(MessageFormat.format("会销活动发送投资奖励失败，orderid: {0}, userId: {1}", orderId, user.getId()), exp);
-        }
+    private void markUserBindCardReward(String userId) {
+        redisClient.hset(REWARD_RECORD_KEY, userId + ":bindcard", "1");
+    }
+
+    private boolean hasBindCardRewardRecord(String userId) {
+        String markValue = redisClient.hget(REWARD_RECORD_KEY, userId + ":bindcard");
+        return markValue.equalsIgnoreCase("1");
+    }
+
+    private void markUserInvestReward(String userId) {
+        redisClient.hset(REWARD_RECORD_KEY, userId + ":invest", "1");
+    }
+
+    private boolean hasInvestRewardRecord(String userId) {
+        String markValue = redisClient.hget(REWARD_RECORD_KEY, userId + ":invest");
+        return markValue.equalsIgnoreCase("1");
     }
 }
