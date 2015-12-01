@@ -163,7 +163,6 @@
                 <th>交易状态</th>
                 <th>下次回款</th>
                 <th>我的投资</th>
-                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -177,7 +176,6 @@
                             ${(((latestInvest.corpus+latestInvest.defaultInterest+latestInvest.expectedInterest-latestInvest.expectedFee)/100)?string('0.00'))!}元<#else>-/-</#if>
                         </td>
                         <td>￥${((latestInvest.investAmount/100)?string('0.00'))!}元</td>
-                        <td><a href="/contract/investor/loanId/${(latestInvest.loanId?string('0'))!}">合同</a></td>
                     </tr>
                     </#list>
                 <#else>
