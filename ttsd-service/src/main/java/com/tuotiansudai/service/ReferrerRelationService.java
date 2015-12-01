@@ -1,10 +1,8 @@
 package com.tuotiansudai.service;
 
-import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.exception.ReferrerRelationException;
 
 public interface ReferrerRelationService {
 
-    void generateRelation(String referrerLoginName, String loginName);
-
-    void updateRelation(String newReferrerLoginName, String loginName) throws EditUserException;
+    void generateRelation(String newReferrerLoginName, String loginName) throws ReferrerRelationException;
 }
