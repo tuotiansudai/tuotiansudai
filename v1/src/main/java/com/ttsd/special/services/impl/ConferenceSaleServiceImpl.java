@@ -116,7 +116,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     }
 
     private void reissueMissedBindcardReward(Date deadlineDate) {
-        String hql = "from BankCard bankCard where bankCard.time >= ? and bankCard.time <= ? and bankCard.status=? order by bankCard.time asc;";
+        String hql = "from BankCard bankCard where bankCard.time >= ? and bankCard.time <= ? and bankCard.status=? order by bankCard.time asc";
         List<BankCard> bankCards = ht.find(hql, ACTIVITY_BEGIN_TIME, deadlineDate, "passed");
         for (BankCard bankCard : bankCards) {
             processIfInActivityForBindCard(bankCard.getCardNo(), bankCard.getUser());

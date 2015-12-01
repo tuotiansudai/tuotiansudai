@@ -296,12 +296,12 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 	}
 
 	private void initConferenceSaleRewardReissueJob() throws SchedulerException {
-		Date expireTime = new DateTime(2015, 11, 16, 0, 0, 0).toDate();
+		Date expireTime = new DateTime(2015, 12, 16, 0, 0, 0).toDate();
 		SimpleTrigger existedTrigger = (SimpleTrigger) scheduler
 				.getTrigger(TriggerKey
-				.triggerKey(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD,
-						ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD));
-		if (expireTime.after(new Date()) && existedTrigger == null) {
+						.triggerKey(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD,
+								ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD));
+		if (new Date().before(expireTime) && existedTrigger == null) {
 			JobDetail jobDetail = JobBuilder.newJob(ConferenceSaleRewardReissueJob.class)
 					.withIdentity(ScheduleConstants.JobName.CONFERENCE_SALE_REWARD, ScheduleConstants.JobGroup.CONFERENCE_SALE_REWARD)
 					.build();
@@ -310,7 +310,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					.withIdentity(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD, ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD)
 					.forJob(jobDetail)
 					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-					.startNow()
+					.startAt(new DateTime().plusMinutes(3).toDate())
 					.build();
 
 			scheduler.scheduleJob(jobDetail, trigger);
