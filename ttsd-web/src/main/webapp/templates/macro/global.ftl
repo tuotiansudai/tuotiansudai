@@ -45,7 +45,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <#if responsive??>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </#if>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <title>${title}</title>
@@ -59,9 +61,9 @@
 <#include "../header.ftl"/>
 <div class="nav-container">
     <div class="nav">
-        <a href="${applicationContext}/" class="logo"></a>
+        <a href="${applicationContext}/" class="logo"></a> <i class="fa fa-navicon show-main-menu fr" id="showMainMenu"></i>
         <#if activeNav??>
-            <ul>
+            <ul id="TopMainMenuList">
                 <#list menus as menu>
                     <li><a <#if menu.title==activeNav>class="active"</#if> href="${menu.url}">${menu.title}</a></li>
                 </#list>
@@ -97,17 +99,14 @@
     });
     </@security.authorize>
 
-    function stopBubble(e) {
-        if ( e && e.stopPropagation )
-            e.stopPropagation();
-        else
-            window.event.cancelBubble = true;
-    }
     var imgDom=document.getElementById('iphone-app-img');
 
-    document.getElementById('iphone-app-pop').addEventListener('click',function(e) {
-        stopBubble(e);
-
+    document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        if(event.target.tagName=='LI') {
+            return;
+        }
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
         }
@@ -115,6 +114,7 @@
             imgDom.style.display='block';
         }
     });
+
     document.getElementsByTagName("body")[0].addEventListener('click',function() {
         imgDom.style.display='none';
     });

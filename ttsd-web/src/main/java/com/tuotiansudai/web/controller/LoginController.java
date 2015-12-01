@@ -25,7 +25,9 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(name = "redirect", required = false, defaultValue = "/") String redirect) {
-        return new ModelAndView("/login", "redirect", redirect);
+        ModelAndView modelAndView = new ModelAndView("/login", "redirect", redirect);
+        modelAndView.addObject("responsive", true);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)

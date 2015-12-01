@@ -25,7 +25,7 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/index");
+        ModelAndView modelAndView = new ModelAndView("/index", "responsive", true);
         List<HomeLoanDto> loans = homeService.getLoans();
         int userCount = userService.findUserCount();
         modelAndView.addObject("loans", loans);
