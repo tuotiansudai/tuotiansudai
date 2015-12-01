@@ -110,7 +110,7 @@
                     <td>${userItem.registerTime?string('yyyy-MM-dd HH:mm')}</td>
                     <td><#list userItem.userRoles as rs> ${rs.role.description}<#if rs_has_next>,</#if> </#list></td>
                     <td>${(userItem.status=='ACTIVE')?then('正常','禁用')}</td>
-                    <td><a href="/user-manage/user/${userItem.loginName}/edit">编辑</a> |
+                    <td><a href="/user-manage/user/${userItem.loginName}">编辑</a> |
                         <#if userItem.status=='ACTIVE'>
                             <a class="user-status-modifier" href="#" data-url="/user-manage/user/${userItem.loginName}/disable">禁止</a>
                         <#else>
