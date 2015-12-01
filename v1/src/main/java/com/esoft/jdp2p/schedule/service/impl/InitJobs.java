@@ -310,7 +310,7 @@ public class InitJobs implements ApplicationListener<ContextRefreshedEvent> {
 					.withIdentity(ScheduleConstants.TriggerName.CONFERENCE_SALE_REWARD, ScheduleConstants.TriggerGroup.CONFERENCE_SALE_REWARD)
 					.forJob(jobDetail)
 					.withSchedule(SimpleScheduleBuilder.simpleSchedule())
-					.startAt(new DateTime().plusMinutes(3).toDate())
+					.startAt(new DateTime().plusMinutes(1).toDate())
 					.build();
 
 			scheduler.scheduleJob(jobDetail, trigger);
