@@ -39,6 +39,7 @@ public class RegisterUserController {
         String referrer = request.getParameter("referrer");
         ModelAndView modelAndView = new ModelAndView("/register-user");
         modelAndView.addObject("referrer", referrer);
+        modelAndView.addObject("responsive", true);
         return modelAndView;
     }
 

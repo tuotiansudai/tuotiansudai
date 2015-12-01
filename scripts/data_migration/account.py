@@ -11,12 +11,12 @@ class AccountMigrate(BaseMigrate):
                             user.id_card AS identity_number,
                             trusteeship_account.id AS pay_user_id,
                             trusteeship_account.account_id AS pay_account_id,
-                            user_bill.balance AS balance,
-                            user_bill.frozen_money AS freeze,
+                            IFNULL(user_bill.balance,0) AS balance,
+                            IFNULL(user_bill.frozen_money,0) AS freeze,
                             trusteeship_account.create_time AS register_time
                     FROM trusteeship_account
                     JOIN user ON trusteeship_account.user_id=user.id
-                    JOIN user_bill ON user_bill.user_id=user.id AND user_bill.seq_num=(SELECT max(seq_num) FROM user_bill WHERE user_id=user.id)
+                    LEFT JOIN user_bill ON user_bill.user_id=user.id AND user_bill.seq_num=(SELECT max(seq_num) FROM user_bill WHERE user_id=user.id)
      '''
     # insert sql which is executed on aa db
     INSERT_SQL = "INSERT INTO account(`login_name`, `user_name`, `identity_number`, `pay_user_id`, `pay_account_id`, `balance`, `freeze`, `register_time`) " \

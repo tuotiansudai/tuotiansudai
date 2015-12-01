@@ -27,7 +27,7 @@ public class RegisterAccountController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView registerAccount() {
-        return new ModelAndView("/register-account");
+        return new ModelAndView("/register-account", "responsive", true);
     }
 
     @RequestMapping(value = "/identity-number/{identityNumber:^[1-9]\\d{13,16}[a-zA-Z0-9]{1}$}/is-exist", method = RequestMethod.GET)

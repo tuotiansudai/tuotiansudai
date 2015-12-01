@@ -170,7 +170,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
         var autoValue = '';
         $(".jq-agent").autocomplete({
             source: function (query, process) {
-                $.get('/account/' + query.term + '/search', function (respData) {
+                $.get('/user-manage/account/' + query.term + '/search', function (respData) {
                     autoValue = respData;
                     return process(respData);
                 });
@@ -220,6 +220,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
             },
             //beforeSubmit
             beforeCheck: function (curform) {
+                $('.form-error').html('');
                 var periods = parseInt($('.jq-timer', curform).val());
                 if (periods <= 0) {
                     showErrorMessage('借款期限最小为1', $('.jq-timer', curform));
@@ -321,7 +322,7 @@ require(['jquery', 'template', 'jquery-ui', 'bootstrap', 'bootstrapDatetimepicke
                     .done(function (res) {
                         if (res.data.status) {
                             formFlag = true;
-                            location.href = '/loanList/console';
+                            location.href = '/project-manage/loan-list';
                         } else {
                             formFlag = false;
                             var msg = res.data.message || '服务端校验失败';

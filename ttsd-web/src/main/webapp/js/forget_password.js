@@ -10,6 +10,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
 
     $retrieveForm.validate({
         focusInvalid: false,
+        onkeyup:false,
         rules: {
             mobile: {
                 required: true,
@@ -21,11 +22,17 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             captcha: {
                 required: true,
                 digits: true,
-                maxlength: 6,
+                minlength: 6,
+                maxlength:6,
                 captchaVerify: {
                     param: function () {
-                        var _phone = $('input[name="mobile"]').val();
-                        return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime()
+                        var _phone = $('input[name="mobile"]').val(),
+                            _captcha=$('input[name="captcha"]').val();
+                        if(_captcha.length==6) {
+                            $btnSend.prop('disabled',false);
+                            return '/mobile-retrieve-password/mobile/' + _phone + '/captcha/{0}/verify?random=' + new Date().getTime();
+                        }
+
                     }
                 }
             }
@@ -41,6 +48,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             captcha: {
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             }
@@ -56,7 +64,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
             }
         },
         submitHandler:function(form) {
-            //$(form).submit();
+
             var _mobile = $('.phone-txt').val(),
                 _captcha = $('.yzm-txt').val();
             window.location.href = '/mobile-retrieve-password/mobile/'+_mobile+'/captcha/'+_captcha+'/new-password-page';
@@ -99,11 +107,13 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                         var num = 30;
                         // 倒计时
                         function countdown() {
+                                $btnSend.prop('disabled',true);
                                 $getCaptcha.html(num + '秒后重新发送').prop('disabled',true).removeClass('btn-success');
                             if (num == 0) {
                                 clearInterval(count);
                                 $getCaptcha.html('重新发送').prop('disabled',false).addClass('btn-success');
                                 $('.verification-code-text').val('');
+                                $btnSend.prop('disabled',false);
                             }
                             num--;
                         }

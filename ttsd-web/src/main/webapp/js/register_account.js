@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'csrf'], function (_, $) {
+require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension', 'csrf','commonFun'], function (_, $) {
 
     var registerAccountForm = $('.register-step-two .register-account-form');
 
@@ -40,4 +40,5 @@ require(['underscore', 'jquery', 'jquery.validate', 'jquery.validate.extension',
             }
         }
     });
+    commonFun.ResponsePage();
 });

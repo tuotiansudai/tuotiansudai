@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/user-manage")
 public class UserController {
 
     @Autowired
@@ -44,7 +45,8 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(value = "/user/{loginName}/edit", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/user/{loginName}", method = RequestMethod.GET)
     public ModelAndView editUser(@PathVariable String loginName, Model model) {
         ModelAndView modelAndView = new ModelAndView("/user-edit");
         if (!model.containsAttribute("user")) {
@@ -75,10 +77,10 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         try {
             userService.editUser(LoginUserInfo.getLoginName(), editUserDto, ip);
-            modelAndView.setViewName("redirect:/users");
+            modelAndView.setViewName("redirect:/user-manage/users");
             return modelAndView;
         } catch (BaseException e) {
-            modelAndView.setViewName(MessageFormat.format("redirect:/user/{0}/edit", editUserDto.getLoginName()));
+            modelAndView.setViewName(MessageFormat.format("redirect:/user-manage/user/{0}", editUserDto.getLoginName()));
             redirectAttributes.addFlashAttribute("user", editUserDto);
             redirectAttributes.addFlashAttribute("roles", Role.values());
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());

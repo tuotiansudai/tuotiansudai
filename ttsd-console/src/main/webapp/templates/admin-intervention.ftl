@@ -1,9 +1,9 @@
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="admin-intervention.js" headLab="finaMan" sideLab="adminIntervention" title="管理员修改账户余额">
+<@global.main pageCss="" pageJavascript="admin-intervention.js" headLab="finance-manage" sideLab="adminIntervention" title="管理员修改账户余额">
 
 <!-- content area begin -->
 <div class="col-md-10">
-    <form class="form-horizontal" action="/admin-intervention" method="post">
+    <form class="form-horizontal" action="/finance-manage/admin-intervention" method="post">
         <div class="form-group">
             <label for="login-name" class="col-sm-1 control-label">用户名</label>
 
@@ -52,7 +52,7 @@
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-2">
                 <input class="btn btn-default btn-submit" type="submit" value="提交">
-                <a class="btn btn-default" href="/admin-intervention" role="button">重置</a>
+                <a class="btn btn-default" href="/finance-manage/admin-intervention" role="button">重置</a>
             </div>
         </div>
     </form>

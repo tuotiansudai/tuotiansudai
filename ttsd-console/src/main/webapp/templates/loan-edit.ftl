@@ -1,7 +1,7 @@
 <script>
-    var API_SELECT = '${requestContext.getContextPath()}/loan/titles';  // 申请资料标题url
-    var API_POST_TITLE = '${requestContext.getContextPath()}/loan/title';  //
-    var API_FORM = '${requestContext.getContextPath()}/loan/';
+    var API_SELECT = '${requestContext.getContextPath()}/project-manage/loan/titles';  // 申请资料标题url
+    var API_POST_TITLE = '${requestContext.getContextPath()}/project-manage/loan/title';  //
+    var API_FORM = '${requestContext.getContextPath()}/project-manage/loan/';
     var rereq = {};
     <#if (loanTitleRelationModels?size>0)>
         <#list loanTitleRelationModels as loanTitleRelationModel>
@@ -48,7 +48,7 @@
 
 
 <#import "macro/global.ftl" as global>
-<@global.main pageCss="" pageJavascript="editLoan.js" headLab="projectMain" sideLab="" title="筹款编辑">
+<@global.main pageCss="" pageJavascript="editLoan.js" headLab="project-manage" sideLab="" title="筹款编辑">
 
 <!-- content area begin -->
 <div class="col-md-10">
@@ -78,7 +78,7 @@
 
             <div class="col-sm-4">
                 <input type="text" class="form-control ui-autocomplete-input jq-loaner-user-name" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="借款用户不能为空" value="${loanInfo.loanerUserName}"
+                       placeholder="" errormsg="借款人姓名不能为空" value="${loanInfo.loanerUserName}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
@@ -86,8 +86,8 @@
             <label class="col-sm-2 control-label">借款人身份证号: </label>
 
             <div class="col-sm-4">
-                <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number" datatype="*" autocomplete="off"
-                       placeholder="" errormsg="借款人身份证号不能为空" value="${loanInfo.loanerIdentityNumber}"
+                <input type="text" class="form-control ui-autocomplete-input jq-loaner-identity-number" datatype="idcard" autocomplete="off"
+                       placeholder="" errormsg="借款人身份证号填写有误" value="${loanInfo.loanerIdentityNumber}"
                        <#if loanInfo.status!= "WAITING_VERIFY">disabled="disabled"</#if>>
             </div>
         </div>
