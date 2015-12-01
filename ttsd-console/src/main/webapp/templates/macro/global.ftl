@@ -105,21 +105,21 @@
 
 <body>
 <!-- header begin -->
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+<header class="navbar" id="top" role="banner">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
-                    aria-controls="bs-navbar" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="${applicationContext}" class="navbar-brand"><img
-                    src="${applicationContext}/images/logo.png" alt=""></a>
+            <a href="${applicationContext}/" class="navbar-brand">
+                <img src="${applicationContext}/images/logo.png" alt="" />
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <p class="navbar-text navbar-right"><a id="logout-link" href="/logout">注销</a>【<@global.security.authentication property="principal.username" />】</p>
+            <form id="logout-form" action="/logout" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
         </div>
     </div>
-    <nav id="bs-navbar" class="collapse navbar-collapse">
+    <nav id="bs-navbar" class="collapse navbar-collapse top-menu">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <#list menus as menu>
@@ -135,14 +135,6 @@
                     </#list>
                 </#list>
             </ul>
-            <ul class="nav navbar-nav logout">
-                <li>
-                    <a id="logout-link" href="/logout">退出</a>
-                    <form id="logout-form" action="/logout" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </li>
-            </ul>
         </div>
     </nav>
 </header>
@@ -152,10 +144,9 @@
 <div class="main">
     <div class="container-fluid">
         <div class="row">
-
             <!-- menu sidebar -->
             <div class="col-md-2">
-                <ul class="nav bs-docs-sidenav">
+                <ul class="nav sidenav">
                     <#list menus as menu>
                         <#if menu.name=headLab>
                             <#list menu.sidebar as item>

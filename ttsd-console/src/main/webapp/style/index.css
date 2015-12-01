@@ -19,16 +19,12 @@ a.linked {
 }
 
 a:hover {
-    color: #cc9900;
+    color: #ff9c1b;
+    text-decoration: none;
 }
 
 .badgeCol {
     color: #ff0000;
-}
-
-.navbar {
-    background: #eee;
-    margin-bottom: 10px;
 }
 
 .navbar-brand {
@@ -36,9 +32,8 @@ a:hover {
     height: auto;
 }
 
-.navbar-collapse {
-    border-bottom: 1px solid #ccc;
-    background: url(../images/nav_bg.jpg) repeat-x;
+.top-menu {
+    background: url(/images/nav_bg.jpg) repeat-x;
 }
 
 @media (min-width: 768px) {
@@ -48,34 +43,24 @@ a:hover {
     }
 }
 
-.navbar-nav > li > a:hover {
-    background: #aaa;
-    color: #fff;
+.top-menu li a:hover {
+    background: #ff9c1b;
     text-shadow: none;
+    color: #ffffff;
 }
 
-.navbar-nav > li.active > a {
-    background: #666666;
-    color: #fff;
+.top-menu li.active a {
+    background: #ff9c1b;
     text-shadow: none;
+    color: #ffffff;
 }
 
-.navbar-nav.logout {
-    float: right;
-}
-
-.navbar-nav.logout a:hover {
-    background: none;
-    color: #000;
-    text-shadow: none;
-}
-
-.bs-docs-sidenav {
+.sidenav {
     background: #f1f1f1;
 }
 
-.bs-docs-sidenav li.active > a {
-    color: #cc9900
+.sidenav li.active > a {
+    color: #ff9c1b;
 }
 
 table td, table th {
