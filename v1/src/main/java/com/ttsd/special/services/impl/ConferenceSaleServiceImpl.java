@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -30,6 +31,8 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
     private static final int REWARD_BIND_CARD;
     private static final int REWARD_INVEST;
 
+    private static final Date JOB_EXPIRE_TIME;
+
     private static final String REWARD_ORDERID_FORMAT = "HX201512{0}";
 
     private static final String REWARD_RECORD_KEY = "HX201512";
@@ -38,6 +41,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         ResourceBundle rb = ResourceBundle.getBundle("conference_sale");
         String actityBeginTime = rb.getString("time.begin");
         String actityEndTime = rb.getString("time.end");
+        String jobExpireTime = rb.getString("job.expire.time");
         String referrers = rb.getString("referrers");
 
         String investThreshold = rb.getString("invest.threshold");
@@ -47,16 +51,19 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginTime = new Date();
         Date endTime = new Date();
+        Date expireTime = null;
 
         try {
             beginTime = simpleDateFormat.parse(actityBeginTime);
             endTime = simpleDateFormat.parse(actityEndTime);
+            expireTime = simpleDateFormat.parse(jobExpireTime);
         } catch (ParseException e) {
         }
 
         String[] referrerArray = referrers.split("\\s*,\\s*");
         ACTIVITY_BEGIN_TIME = beginTime;
         ACTIVITY_END_TIME = endTime;
+        JOB_EXPIRE_TIME = expireTime;
         ACTIVITY_REFERRER_LIST = new HashSet<>(Arrays.asList(referrerArray));
         INVEST_THRESHOLD = Integer.parseInt(investThreshold);
         REWARD_BIND_CARD = Integer.parseInt(rewardBindCard);
@@ -107,12 +114,15 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         }
     }
 
+    @Transactional
     @Override
     public void reissueMissedReward(Date deadlineDate) {
-        log.debug("reissue missed reward for conference sale activity");
-        reissueMissedBindcardReward(deadlineDate);
-        reissueMissedInvestReward(deadlineDate);
-        log.debug("reissue missed reward for conference sale activity complete");
+        if (JOB_EXPIRE_TIME != null && new Date().before(JOB_EXPIRE_TIME)) {
+            log.debug("reissue missed reward for conference sale activity");
+            reissueMissedBindcardReward(deadlineDate);
+            reissueMissedInvestReward(deadlineDate);
+            log.debug("reissue missed reward for conference sale activity complete");
+        }
     }
 
     private void reissueMissedBindcardReward(Date deadlineDate) {
