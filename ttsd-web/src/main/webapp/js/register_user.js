@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf','commonFun'], function (_, $,layer) {
+require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
         showAgreement = $('.show-agreement', registerUserForm),
@@ -219,5 +219,4 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         }
     });
 
-    commonFun.ResponsePage();
 });
