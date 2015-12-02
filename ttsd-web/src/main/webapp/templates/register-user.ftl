@@ -10,7 +10,7 @@
     <div class="clear-blank"></div>
     <div class="register-box">
         <ul class="reg-list tl register-step-one">
-            <form class="register-user-form" action="register/account" method="post" autocomplete="off" >
+            <form class="register-user-form" action="/register/user" method="post" autocomplete="off" >
                 <li>
                     <label for="" class="reg-title">用户名:</label>
                     <input type="text" class="login-name" name="loginName" placeholder="请输入用户名" maxlength="25" value="${(originalFormData.loginName)!}" />
