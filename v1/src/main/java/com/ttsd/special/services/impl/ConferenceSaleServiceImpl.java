@@ -60,7 +60,7 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         } catch (ParseException e) {
         }
 
-        String[] referrerArray = referrers.split("\\s*,\\s*");
+        String[] referrerArray = referrers.trim().split("\\s*,\\s*");
         ACTIVITY_BEGIN_TIME = beginTime;
         ACTIVITY_END_TIME = endTime;
         JOB_EXPIRE_TIME = expireTime;
