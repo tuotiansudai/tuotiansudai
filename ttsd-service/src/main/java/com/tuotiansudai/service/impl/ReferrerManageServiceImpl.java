@@ -4,10 +4,7 @@ package com.tuotiansudai.service.impl;
 import com.tuotiansudai.dto.BasePaginationDataDto;
 import com.tuotiansudai.repository.mapper.ReferrerManageMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
-import com.tuotiansudai.repository.model.ReferrerManageView;
-import com.tuotiansudai.repository.model.ReferrerRelationView;
-import com.tuotiansudai.repository.model.Role;
-import com.tuotiansudai.repository.model.UserRoleModel;
+import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.service.ReferrerManageService;
 import com.tuotiansudai.util.AmountConverter;
 import org.joda.time.DateTime;
@@ -34,13 +31,13 @@ public class ReferrerManageServiceImpl implements ReferrerManageService {
     private String staffReward;
 
     @Override
-    public List<ReferrerManageView> findReferrerManage(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, int currentPageNo, int pageSize) {
-        return referrerManageMapper.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, (currentPageNo - 1) * pageSize, pageSize);
+    public List<ReferrerManageView> findReferrerManage(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source, int currentPageNo, int pageSize) {
+        return referrerManageMapper.findReferrerManage(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source, (currentPageNo - 1) * pageSize, pageSize);
     }
 
     @Override
-    public int findReferrerManageCount(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role) {
-        return referrerManageMapper.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role);
+    public int findReferrerManageCount(String referrerLoginName, String investLoginName, Date investStartTime, Date investEndTime, Integer level, Date rewardStartTime, Date rewardEndTime, Role role, Source source) {
+        return referrerManageMapper.findReferrerManageCount(referrerLoginName, investLoginName, investStartTime, investEndTime, level, rewardStartTime, rewardEndTime, role, source);
     }
 
     @Override
