@@ -27,6 +27,8 @@ public class ReferrerManageView {
 
     private Role role;
 
+    private Source source;
+
     private int level;
 
     private long rewardAmount;
@@ -163,5 +165,13 @@ public class ReferrerManageView {
 
     public void setLoanId(String loanId) {
         this.loanId = loanId;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 }

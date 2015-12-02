@@ -15,6 +15,9 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype','jquery-ui','csr
         });
 
         $('.jq-delete').click(function(event) {
+            if(!confirm('确定要删除吗?')) {
+                return;
+            }
             event.preventDefault();
             var dataForm = JSON.stringify({
                 "id":$(this).data('id')

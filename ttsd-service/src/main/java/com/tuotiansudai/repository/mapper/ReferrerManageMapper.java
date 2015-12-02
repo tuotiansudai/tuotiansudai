@@ -3,6 +3,7 @@ package com.tuotiansudai.repository.mapper;
 import com.tuotiansudai.repository.model.ReferrerManageView;
 import com.tuotiansudai.repository.model.ReferrerRelationView;
 import com.tuotiansudai.repository.model.Role;
+import com.tuotiansudai.repository.model.Source;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,12 +16,12 @@ public interface ReferrerManageMapper {
     int findReferrerManageCount(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
-                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role);
+                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source);
 
     List<ReferrerManageView> findReferrerManage(@Param("referrerLoginName") String referrerLoginName, @Param("investLoginName") String investLoginName,
                                                 @Param("investStartTime") Date investStartTime, @Param("investEndTime") Date investEndTime,
                                                 @Param("level") Integer level, @Param("rewardStartTime") Date rewardStartTime,
-                                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role,
+                                                @Param("rewardEndTime") Date rewardEndTime, @Param("role") Role role, @Param("source") Source source,
                                                 @Param("startLimit") int startLimit, @Param("endLimit") int endLimit);
 
     List<ReferrerRelationView> findReferRelationList(@Param("referrerLoginName") String referrerLoginName,
