@@ -99,7 +99,6 @@
     });
     </@security.authorize>
 
-
     function phoneLoadFun() {
         document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
             event.stopPropagation();
@@ -113,7 +112,7 @@
             var userAgent = navigator.userAgent.toLowerCase();
             if (userAgent.indexOf('android') > -1) {
                 location.href = "/app/tuotiansudai.apk";
-            } else if (userAgent.indexOf('iPhone') > -1 || userAgent.indexOf('ipad') > -1) {
+            } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
                 location.href = "http://itunes.apple.com/us/app/id1039233966";
             }
         });
@@ -141,12 +140,12 @@
         }
     });
     document.getElementsByTagName("body")[0].addEventListener('click',function() {
+        var userAgent = navigator.userAgent.toLowerCase();
         if(event.target.tagName=='LI' ) {
             return;
         }
         imgDom.style.display='none';
-
-        if(document.body.clientWidth<700) {
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
             TopMainMenuList.style.display='none';
         }
 
@@ -158,8 +157,8 @@
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>
 <#if pageJavascript??>
 <script src="${staticServer}/js/libs/require-2.1.20.min.js" type="text/javascript" charset="utf-8" defer="defer" async="async"
-        <#--data-main="${staticServer}/js/dest/${pageJavascript}">-->
-    data-main="${staticServer}/js/register_user.js">
+        data-main="${staticServer}/js/dest/${pageJavascript}">
+    <#--data-main="${staticServer}/js/register_user.js">-->
 </script>
 </#if>
 

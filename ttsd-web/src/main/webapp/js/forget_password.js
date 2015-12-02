@@ -103,22 +103,20 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
-                    if (response.data.status) {
-                        var num = 30;
-                        // 倒计时
-                        function countdown() {
-                                $btnSend.prop('disabled',true);
-                                $getCaptcha.html(num + '秒后重新发送').prop('disabled',true).removeClass('btn-success');
-                            if (num == 0) {
-                                clearInterval(count);
-                                $getCaptcha.html('重新发送').prop('disabled',false).addClass('btn-success');
-                                $('.verification-code-text').val('');
-                                $btnSend.prop('disabled',false);
-                            }
-                            num--;
-                        }
-                        var count = setInterval(countdown, 1000);
+                    if (response.data.status && !data.isRestricted) {
                         layer.closeAll();
+                        var seconds = 30;
+                        var count = setInterval(function () {
+                            $getCaptcha.html(seconds + '秒后重新发送').addClass('btn').removeClass('btn-normal');
+                            if (seconds == 0) {
+                                clearInterval(count);
+                                $getCaptcha.html('重新发送').removeClass('btn').addClass('btn-normal');
+                                $('.verification-code-text').val('');
+                            }
+                            seconds--;
+                        }, 1000);
+                        return;
+
                     }else{
                         if (response.data.isRestricted) {
                             $('.verification-code-main b').html('短信发送频繁，请稍后再试').show();
