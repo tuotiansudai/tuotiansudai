@@ -163,4 +163,44 @@
       }
     }
   }
+  .ad-recruit-img {
+    height: auto!important;
+    img{
+      height: 150px!important;
+      width:100%;
+    }
+  }
+  .recruit-content{
+    width:100%!important;
+    padding:0!important;
+    .hot-link{
+      width: 100%!important;
+      height: auto!important;
+      img{
+        position: relative;
+        width:100%;
+      }
+      .img-hot-link{
+        display: none;
+      }
+    }
+    .r-time{
+      padding:0 20px;
+    }
+    .Qualifications{
+      img{
+        width:100%;
+      }
+    }
+    .apply{
+      img{
+        width:100%;
+      }
+    }
+    .givemore{
+      img{
+        width:100%;
+      }
+    }
+  }
 }
