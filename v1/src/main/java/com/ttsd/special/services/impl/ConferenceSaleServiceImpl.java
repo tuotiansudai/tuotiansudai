@@ -54,9 +54,9 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         Date expireTime = null;
 
         try {
-            beginTime = simpleDateFormat.parse(actityBeginTime);
-            endTime = simpleDateFormat.parse(actityEndTime);
-            expireTime = simpleDateFormat.parse(jobExpireTime);
+            beginTime = simpleDateFormat.parse(actityBeginTime.trim());
+            endTime = simpleDateFormat.parse(actityEndTime.trim());
+            expireTime = simpleDateFormat.parse(jobExpireTime.trim());
         } catch (ParseException e) {
         }
 
@@ -65,9 +65,9 @@ public class ConferenceSaleServiceImpl implements ConferenceSaleService {
         ACTIVITY_END_TIME = endTime;
         JOB_EXPIRE_TIME = expireTime;
         ACTIVITY_REFERRER_LIST = new HashSet<>(Arrays.asList(referrerArray));
-        INVEST_THRESHOLD = Integer.parseInt(investThreshold);
-        REWARD_BIND_CARD = Integer.parseInt(rewardBindCard);
-        REWARD_INVEST = Integer.parseInt(rewardInvest);
+        INVEST_THRESHOLD = Integer.parseInt(investThreshold.trim());
+        REWARD_BIND_CARD = Integer.parseInt(rewardBindCard.trim());
+        REWARD_INVEST = Integer.parseInt(rewardInvest.trim());
     }
 
     @Autowired
