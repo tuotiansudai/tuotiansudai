@@ -50,6 +50,8 @@
         <intercept-url pattern="/login/**" access="permitAll()"/>
         <intercept-url pattern="/loginHandler" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
 
+        <intercept-url pattern="/user-manage/account/**/search" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
+        <intercept-url pattern="/user-manage/user/**/search" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/user-manage/referrer/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/invests/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
         <intercept-url pattern="/finance-manage/recharge/**" access="hasAnyAuthority('ADMIN','CUSTOMER_SERVICE')"/>
