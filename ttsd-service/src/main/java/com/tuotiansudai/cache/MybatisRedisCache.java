@@ -6,7 +6,8 @@ import com.tuotiansudai.util.SpringContextUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.ibatis.cache.Cache;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -20,7 +21,8 @@ public class MybatisRedisCache implements Cache{
     private String id;
 
     private final String COMMON_CACHE_KEY = "TTSD:";
-    private static final String UTF_8 = "utf-8";
+
+    private final String KEYSTEMPLETE = "TTSD:{0}:*";
 
     private MybatisRedisCacheWrapperClient getRedisClient() {
         if (mybatisRedisCacheWrapperClient == null) {
@@ -38,7 +40,7 @@ public class MybatisRedisCache implements Cache{
     }
 
     private String getKeys() {
-        return COMMON_CACHE_KEY + this.id + ":*";
+        return MessageFormat.format(KEYSTEMPLETE, this.id);
     }
 
     private String getKey(Object key) {
@@ -56,58 +58,34 @@ public class MybatisRedisCache implements Cache{
 
     @Override
     public void putObject(Object key, Object value) {
-        try {
-            getRedisClient().set(getKey(key).getBytes(UTF_8), SerializeUtil.serialize(value));
-            getRedisClient().expire(getKey(key).getBytes(UTF_8), getRedisClient().getSecond());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        getRedisClient().set(getKey(key).getBytes(StandardCharsets.UTF_8), SerializeUtil.serialize(value));
+        getRedisClient().expire(getKey(key).getBytes(StandardCharsets.UTF_8), getRedisClient().getSecond());
     }
 
     @Override
     public Object getObject(Object key) {
-        Object value = null;
-        try {
-            value = SerializeUtil.unserialize(getRedisClient().get(getKey(key).getBytes(UTF_8)));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return SerializeUtil.unserialize(getRedisClient().get(getKey(key).getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override
     public Object removeObject(Object key) {
-        Object value = null;
-        try {
-            value =  getRedisClient().expire(getKey(key).getBytes(UTF_8), 0);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return value;
+        return getRedisClient().expire(getKey(key).getBytes(StandardCharsets.UTF_8), 0);
     }
 
     @Override
     public void clear() {
-        try {
-            Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(UTF_8));
-            for (byte[] key : keys) {
-                getRedisClient().expire(key, 0);
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(StandardCharsets.UTF_8));
+        for (byte[] key : keys) {
+            getRedisClient().expire(key, 0);
         }
     }
 
     @Override
     public int getSize() {
         int result = 0;
-        try {
-            Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(UTF_8));
-            if (null != keys && !keys.isEmpty()) {
-                result = keys.size();
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        Set<byte[]> keys = getRedisClient().keys(getKeys().getBytes(StandardCharsets.UTF_8));
+        if (null != keys && !keys.isEmpty()) {
+            result = keys.size();
         }
         return result;
     }
