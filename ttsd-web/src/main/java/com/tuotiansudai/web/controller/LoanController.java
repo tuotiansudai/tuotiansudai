@@ -29,6 +29,9 @@ public class LoanController {
     public ModelAndView getLoanDetail(@PathVariable long loanId) {
         ModelAndView modelAndView = new ModelAndView("/loan");
         BaseDto<LoanDto> dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
+        if(dto.getData() == null){
+            return new ModelAndView("/404");
+        }
         modelAndView.addObject("percentFraction",new PercentFractionDirective());
         modelAndView.addObject("percentInteger",new PercentIntegerDirective());
         modelAndView.addObject("amount",new AmountDirective());
