@@ -37,13 +37,19 @@ dependencies {
 
 processResources.outputs.upToDateWhen { false }
 
+/**
+ * parameter: configPath
+ * example: gradle ttsd-web:war -PconfigPath=/workspace/new_version_config/ttsd-service
+ */
 processResources {
-    def configFilePath = "${project.projectDir.getPath()}/src/main/resources/ttsd-service.properties"
-    def outerConfigFile = new File('/workspace/new_version_config/ttsd-service/ttsd-service.properties')
-    if (outerConfigFile.isFile()) {
-        configFilePath = outerConfigFile.getPath()
+    def innerConfigPath = "${project.projectDir.getPath()}/src/main/resources"
+    def outerConfigPath = '/workspace/new_version_config/ttsd-service'
+    if (project.hasProperty("configPath") && new File(configPath).isDirectory()) {
+        innerConfigPath = configPath
+    } else if (new File(outerConfigPath).isDirectory()) {
+        innerConfigPath = outerConfigPath
     }
-    from(configFilePath) {
+    from("${innerConfigPath}/ttsd-service.properties") {
         filter { String line ->
             if (project.hasProperty("dbhost") && line.startsWith("common.jdbc.host=")) {
                 return "common.jdbc.host=${dbhost}"
