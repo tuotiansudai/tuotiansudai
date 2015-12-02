@@ -1,4 +1,4 @@
-require(['jquery', 'csrf', 'jquery.validate', 'jquery.form','commonFun'], function ($) {
+require(['jquery', 'csrf', 'jquery.validate', 'jquery.form'], function ($) {
 
         var loginFormElement = $('.form-login'),
             loginSubmitElement = $('.login-submit', loginFormElement),
@@ -113,5 +113,4 @@ require(['jquery', 'csrf', 'jquery.validate', 'jquery.form','commonFun'], functi
                 submitLoginForm();
             }
         })
-    commonFun.ResponsePage();
 });

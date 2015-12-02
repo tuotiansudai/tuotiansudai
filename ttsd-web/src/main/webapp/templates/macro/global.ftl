@@ -99,14 +99,39 @@
     });
     </@security.authorize>
 
-    var imgDom=document.getElementById('iphone-app-img');
+    function phoneLoadFun() {
+        document.getElementById('closeDownloadBox').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.parentElement.style.display='none';
+        });
+
+        document.getElementById('btnExperience').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var userAgent = navigator.userAgent.toLowerCase();
+            if (userAgent.indexOf('android') > -1) {
+                location.href = "/app/tuotiansudai.apk";
+            } else if (userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+                location.href = "http://itunes.apple.com/us/app/id1039233966";
+            }
+        });
+
+        document.getElementById('showMainMenu').addEventListener('click',function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            this.nextElementSibling.style.display='block';
+
+        });
+
+    }
+    var imgDom=document.getElementById('iphone-app-img'),
+            TopMainMenuList=document.getElementById('TopMainMenuList');
 
     document.getElementById('iphone-app-pop').addEventListener('click',function(event) {
         event.stopPropagation();
         event.preventDefault();
-        if(event.target.tagName=='LI') {
-            return;
-        }
+
         if(imgDom.style.display == "block") {
             imgDom.style.display='none';
         }
@@ -114,10 +139,19 @@
             imgDom.style.display='block';
         }
     });
-
     document.getElementsByTagName("body")[0].addEventListener('click',function() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if(event.target.tagName=='LI' ) {
+            return;
+        }
         imgDom.style.display='none';
+        if(userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
+            TopMainMenuList.style.display='none';
+        }
+
     });
+
+    phoneLoadFun();
 
 </script>
 <script src="${staticServer}/js/dest/${js.config}" type="text/javascript" charset="utf-8"></script>

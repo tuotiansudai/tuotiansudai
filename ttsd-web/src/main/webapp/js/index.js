@@ -1,4 +1,5 @@
-require(['jquery','csrf','commonFun'], function ($) {
+require(['jquery','csrf'], function ($) {
+    $(function() {
     var $bannerBox=$('.banner-box'),
         $imgScroll=$('.banner-img-list',$bannerBox),
         $registerBox=$('.register-ad-box',$bannerBox),
@@ -37,13 +38,15 @@ require(['jquery','csrf','commonFun'], function ($) {
     $(".product-box .pad-m").click(function() {
         window.location.href = $(this).data("url");
     });
-    commonFun.ResponsePage();
-    if(screenWid<700) {
+
+
+    var userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.indexOf('android') > -1 || userAgent.indexOf('iphone') > -1 || userAgent.indexOf('ipad') > -1) {
         $imgScroll.find('img').eq(0).attr('src','/images/banner/ph-banner01.jpg');
         $imgScroll.find('img').eq(1).attr('src','/images/banner/ph-banner02.jpg');
         $imgScroll.find('img').eq(2).attr('src','/images/banner/ph-banner03.jpg');
 
         $imgScroll.find('img').css({'margin-left':'0px'});
     }
-
+    });
 });

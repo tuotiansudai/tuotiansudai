@@ -6,6 +6,9 @@
   .header-container {
     padding-left:10px;
     padding-right:10px;
+    .header-download {
+      display: block;
+    }
     .header {
       width:100%;
       ul li {
@@ -126,7 +129,6 @@
     }
 
   }
-
 
   form {
     input{
