@@ -32,4 +32,11 @@ public class BusinessIntelligenceServiceImpl implements BusinessIntelligenceServ
         }
         return new ArrayList<>();
     }
+
+    @Override
+    public List<KeyValueModel> queryUserDistribution(Date startTime, Date endTime) {
+        Date queryStartTime = new DateTime(startTime).withTimeAtStartOfDay().toDate();
+        Date queryEndTime = new DateTime(endTime).plusDays(1).withTimeAtStartOfDay().toDate();
+        return businessIntelligenceMapper.queryUserDistribution(queryStartTime, queryEndTime);
+    }
 }

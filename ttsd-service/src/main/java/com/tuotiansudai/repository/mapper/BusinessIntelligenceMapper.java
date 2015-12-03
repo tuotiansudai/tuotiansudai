@@ -14,4 +14,6 @@ public interface BusinessIntelligenceMapper {
     List<KeyValueModel> queryUserRegisterTrendWeekly(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<KeyValueModel> queryUserRegisterTrendMonthly(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<KeyValueModel> queryUserDistribution(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }
