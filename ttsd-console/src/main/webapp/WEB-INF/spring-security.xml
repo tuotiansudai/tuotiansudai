@@ -42,7 +42,7 @@
         <logout logout-url="/logout" logout-success-url="/"/>
 
         <intercept-url pattern="/images/**" access="permitAll()" />
-        <intercept-url pattern="/upload/**" access="permitAll()" />
+        <intercept-url pattern="/upload/**" access="hasAuthority('ADMIN')" />
         <intercept-url pattern="/js/**" access="permitAll()" />
         <intercept-url pattern="/style/**" access="permitAll()" />
 

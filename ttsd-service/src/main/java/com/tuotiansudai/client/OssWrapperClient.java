@@ -61,12 +61,12 @@ public class OssWrapperClient {
         return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
 
-    public String upload(String suffix, InputStream inputStream, String rootPath) throws Exception {
+    public String upload(String suffix, InputStream inputStream, String rootPath, String address) throws Exception {
         if (!isAllowedFileExtName(suffix)) {
             throw new Exception("不允许的文件格式");
         }
         String newFileName = generateRandomFileName(suffix);
-        return uploadFileBlur(newFileName, inputStream, rootPath);
+        return uploadFileBlur(newFileName, inputStream, rootPath, address);
     }
 
     private boolean isAllowedFileExtName(final String suffix) {
@@ -89,13 +89,13 @@ public class OssWrapperClient {
             try {
                 dir.mkdirs();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getLocalizedMessage(), e);
             }
         }
         return path;
     }
 
-    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath) {
+    private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath, String address) {
         ObjectMetadata objectMeta = new ObjectMetadata();
         String waterPath = rootPath + "images" + File.separator + "watermark.png";
         ByteArrayInputStream in = new ByteArrayInputStream(pressImage(waterPath, inputStream).toByteArray());
@@ -109,11 +109,12 @@ public class OssWrapperClient {
                 FileOutputStream out = new FileOutputStream(new File(savefile));
                 BufferedOutputStream output = new BufferedOutputStream(out);
                 Streams.copy(in, output, true);
+                return address + filePath;
             } else {
                 OSSClient client = getOSSClient();
                 client.putObject(bucketName, fileName, in, objectMeta);
+                return filePath;
             }
-            return filePath;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
         } finally {

@@ -36,6 +36,8 @@ public class OssUploadController {
 
     private final static Map<String, Object> ueditorConfig = new HashMap<>();
 
+    private final static String ADDRESS = "http://{0}:{1}/";
+
     static {
         ueditorConfig.put("imageActionName", "uploadimage");
         ueditorConfig.put("imageFieldName", "upfile");
@@ -62,7 +64,8 @@ public class OssUploadController {
             fileName = dfi.getOriginalFilename();
             String ossPath = "";
             try {
-                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath);
+                ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath,
+                        MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getLocalAddr(), String.valueOf(request.getLocalPort())));
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -114,7 +117,11 @@ public class OssUploadController {
         String fileExtName = FilenameUtils.getExtension(originalName);
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         try {
-            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath);
+            String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath,
+                    MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getLocalAddr(), String.valueOf(request.getLocalPort())));
+            if (absoluteUrl.indexOf(":") > 0 ) {
+                absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
+            }
             String relativeUrl = absoluteUrl.substring(absoluteUrl.indexOf("/"), absoluteUrl.length());
             return buildUploadFileResult("SUCCESS", originalName, relativeUrl, absoluteUrl);
         } catch (Exception e) {
