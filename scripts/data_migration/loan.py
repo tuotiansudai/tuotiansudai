@@ -1,3 +1,4 @@
+import re
 from scripts.data_migration.base import BaseMigrate
 
 class LoanMigrate(BaseMigrate):
@@ -23,7 +24,6 @@ class LoanMigrate(BaseMigrate):
                         THEN 'INVEST_INTEREST_LUMP_SUM_REPAY' \
                       END AS type, \
                       loan.deadline AS periods, \
-                          removeHtml(loan.description) AS description_text, \
                           loan.description AS description_html, \
                           ROUND(loan.loan_money * 100) AS loan_money, \
                           IFNULL(loan.investor_fee_rate, 0) AS invest_fee_rate, \
@@ -84,7 +84,10 @@ class LoanMigrate(BaseMigrate):
 
     def generate_params(self, old_row):
 
-        return old_row['id'],old_row['name'],old_row['agent_login_name'],old_row['loaner_login_name'],old_row['loaner_user_name'],old_row['loaner_identity_number'],old_row['type'],old_row['periods'],old_row['description_text'], \
+        dr = re.compile(r'<[^>]+>',re.S)
+        description_text = dr.sub('',old_row['description_html'])
+
+        return old_row['id'],old_row['name'],old_row['agent_login_name'],old_row['loaner_login_name'],old_row['loaner_user_name'],old_row['loaner_identity_number'],old_row['type'],old_row['periods'],description_text, \
                 old_row['description_html'],old_row['loan_money'],old_row['invest_fee_rate'],old_row['min_invest_money'],old_row['max_invest_money'], \
                 old_row['invest_increasing_amount'],old_row['activity_type'],old_row['base_rate'],old_row['activity_rate'],old_row['contract_id'], \
                 old_row['fundraising_start_time'],old_row['fundraising_end_time'],old_row['raising_complete_time'],old_row['verify_time'],old_row['recheck_time'],\
