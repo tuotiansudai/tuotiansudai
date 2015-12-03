@@ -65,7 +65,7 @@ public class OssUploadController {
             String ossPath = "";
             try {
                 ossPath = ossWrapperClient.upload(FilenameUtils.getExtension(fileName), dfi.getInputStream(), rootPath,
-                        MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getLocalAddr(), String.valueOf(request.getLocalPort())));
+                        MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getRemoteAddr(), String.valueOf(request.getRemotePort())));
                 jsonArray.put(MessageFormat.format(imgTemplate, ossPath, fileName, fileName));
             } catch (Exception e) {
                 logger.error(e.getLocalizedMessage(), e);
@@ -118,7 +118,7 @@ public class OssUploadController {
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         try {
             String absoluteUrl = ossWrapperClient.upload(fileExtName, dfi.getInputStream(), rootPath,
-                    MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getLocalAddr(), String.valueOf(request.getLocalPort())));
+                    MessageFormat.format(ADDRESS, request.getLocalAddr().equals("0:0:0:0:0:0:0:1") ? "localhost" : request.getRemoteAddr(), String.valueOf(request.getRemotePort())));
             if (absoluteUrl.indexOf(":") > 0 ) {
                 absoluteUrl = absoluteUrl.substring(absoluteUrl.indexOf("upload"), absoluteUrl.length());
             }
