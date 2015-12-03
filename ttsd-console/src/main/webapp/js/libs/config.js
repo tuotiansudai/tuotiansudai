@@ -22,7 +22,7 @@ var require = {
         'Validform_Datatype':'/js/libs/Validform_Datatype',
         'autoNumeric': '/js/libs/autoNumeric-2.0-BETA'
     },
-
+    'waitSeconds':0,
     'shim': {
         'bootstrap': ['jquery'],
         'bootstrapSelect': ['jquery', 'bootstrap'],
