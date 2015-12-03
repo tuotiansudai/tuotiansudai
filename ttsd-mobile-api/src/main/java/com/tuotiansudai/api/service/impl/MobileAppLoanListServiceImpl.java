@@ -41,13 +41,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
                 0, index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
         if (CollectionUtils.isNotEmpty(loanModels)) {
-            LoanModel loanModel = loanModels.get(0);
-            if(!ActivityType.NEWBIE.equals(loanModel.getActivityType())){
-                LoanModel loanModelTemp  = loanMapper.getCompletedXsInvest();
-                if(loanModelTemp != null){
-                    loanModels.add(0, loanModelTemp);
-                }
-            }
             loanDtoList = convertLoanDto(loanModels);
         }
         dto.setCode(ReturnMessage.SUCCESS.getCode());
