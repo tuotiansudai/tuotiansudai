@@ -1,5 +1,5 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.activity_page}" activeNav="招募代理" activeLeftNav="" title="招募代理">
+<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="招募代理">
 <div class="activity-recruit-container">
     <div class="ad-img ad-recruit-img">
     </div>

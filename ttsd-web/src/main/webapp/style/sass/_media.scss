@@ -165,11 +165,13 @@
       }
     }
   }
+
   .ad-recruit-img {
     height: 150px!important;
-    background: url("/images/banner/ph-banner01.jpg") center top no-repeat!important;
+    background: url("/images/banner/ph-banner03.jpg") center top no-repeat!important;
     background-size: cover!important;
   }
+
   .recruit-content{
     width:100%!important;
     padding:0!important;
@@ -212,6 +214,99 @@
       padding-top: 10px;
       img{
         width:100%;
+      }
+    }
+  }
+  .ad-ranking-img {
+    height: 150px!important;
+    background: url("/images/banner/ph-banner01.jpg") center top no-repeat!important;
+    background-size: cover!important;
+  }
+  .responsive-width{
+    width:100%!important;
+  }
+  .click-article{
+    padding:15px 10px!important;
+  }
+  .title-img{
+    width:30%!important;
+  }
+  .ad-grand-img{
+    height: 150px!important;
+    background: url("/images/banner/ph-banner02.jpg") center top no-repeat!important;
+    background-size: cover!important;
+  }
+  .grand-content{
+    width:100%!important;
+    padding-top: 10px!important;
+    img{
+      &.responsive-picture{
+        width:100%!important;
+      }
+      &.responsive-rule{
+        width:100%!important;
+        margin-top:10px!important;
+      }
+    }
+    .product-show{
+      width:100%;
+      padding-bottom: 10px;
+      .p-title{
+        padding:20px 10px;
+      }
+      .img-big{
+        width:100%;
+        height:auto;
+        margin-bottom: 10px;
+        &:hover .shadow-box{
+          display: none;
+        }
+        .icon-mark{
+          width:30%;
+        }
+        .product-img{
+          width:100%;
+          position:static;
+        }
+      }
+      .img-small-box{
+        width:100%;
+        margin-left:0;
+        .small-inner{
+          float:left;
+          width:50%;
+          height:auto;
+          margin: 0 0 10px 0;
+          &:hover .shadow-box{
+            display:none;
+          }
+          img{
+            &.product-img{
+              position: static;
+              width:100%;
+            }
+          }
+        }
+      }
+      .small-box-out{
+        float:left;
+        width:100%;
+        margin-bottom: 10px;
+        .small-inner{
+          float:left;
+          width:50%;
+          height:auto;
+          margin: 0 0 10px 0;
+          &:hover .shadow-box{
+            display:none;
+          }
+          img{
+            &.product-img{
+              position: static;
+              width:100%;
+            }
+          }
+        }
       }
     }
   }

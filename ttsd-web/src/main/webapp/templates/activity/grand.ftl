@@ -4,9 +4,9 @@
 
     <div class="ad-img ad-grand-img"></div>
     <div class="grand-content clearfix" style="margin-top: -3px;">
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-01.png">
+        <img src="${staticServer}/images/sign/activities/grand/ad-gc-01.png" class="responsive-picture">
 
-        <img src="${staticServer}/images/sign/activities/grand/ad-gc-02.png" style="margin-top:30px;">
+        <img src="${staticServer}/images/sign/activities/grand/ad-gc-02.png" class="responsive-rule">
 
         <div class="product-show">
             <h2 class="p-title"><img src="${staticServer}/images/sign/activities/grand/ad-g-t1.png"> </h2>
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png">
+            <img src="${staticServer}/images/sign/activities/grand/ad-g-t2.png" class="responsive-width">
 
         </div>
     </div>
