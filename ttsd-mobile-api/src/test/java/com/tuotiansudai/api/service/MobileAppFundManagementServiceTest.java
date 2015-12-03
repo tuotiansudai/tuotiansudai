@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
+import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -28,6 +29,8 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
     private WithdrawService withdrawService;
     @Mock
     private InvestRepayService investRepayService;
+    @Mock
+    private UserBillService userBillService;
     @Test
     public void shouldQueryFundByUserIdIsOk(){
         AccountModel accountModel = fakeUserModel();
@@ -38,6 +41,8 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         when(investRepayService.findSumRepayingInterestByLoginName(anyString())).thenReturn(1400l);
         when(investRepayService.findSumRepaidInterestByLoginName(anyString())).thenReturn(1500l);
         when(investRepayService.findSumRepaidCorpusByLoginName(anyString())).thenReturn(1600l);
+        when(userBillService.findSumRewardByLoginName(anyString())).thenReturn(1700l);
+
 
         BaseResponseDto<FundManagementResponseDataDto> baseResponseDto = mobileAppFundManagementService.queryFundByUserId("admin");
 
@@ -49,7 +54,7 @@ public class MobileAppFundManagementServiceTest extends ServiceTestBase{
         assertEquals(baseResponseDto.getData().getSuccessWithdrawMoney(), "12.00");
         assertEquals(baseResponseDto.getData().getTotalAssets(), "57.00");
         assertEquals(baseResponseDto.getData().getTotalInvestment(), "29.00");
-        assertEquals(baseResponseDto.getData().getExpectedTotalInterest(), "29.00");
+        assertEquals(baseResponseDto.getData().getExpectedTotalInterest(), "32.00");
         assertEquals(baseResponseDto.getData().getReceivedInterest(), "15.00");
         assertEquals(baseResponseDto.getData().getReceivedCorpus(), "16.00");
         assertEquals(baseResponseDto.getData().getReceivableCorpus(), "13.00");
