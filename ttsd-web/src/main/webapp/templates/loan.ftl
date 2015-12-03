@@ -73,7 +73,7 @@
             <#if loan.loanStatus == "PREHEAT">
                 <form action="/invest" method="post">
                     <dl class="account-list">
-                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}<i>元</em>
+                        <dd><span class="fl">可投金额：</span><em class="fr"><i class="amountNeedRaised-i">${loan.amountNeedRaised?string("0.00")}</i>元</em>
                      <dd><span class="fl">账户余额：</span><em class="fr"><i class="account-amount">${loan.balance?string("0.00")}</i>元</em></dd>
                     <dd><span class="fl">每人限投：</span><em class="fr">${loan.maxInvestAmount}元</em></dd>
                    <dd class="invest-amount tl">
@@ -90,19 +90,20 @@
                        </#if>
                    </dd>
                     <dd class="time-item">
-
                         <#if loan.preheatSeconds lte 1800>
-                            <strong id="minute_show">00分</strong>
-                            <strong>：</strong>
-                            <strong id="second_show">00秒</strong>
+                            <i class="time-clock"></i>
+                            <strong id="minute_show">00</strong>
+                            <em>:</em>
+                            <strong id="second_show">00</strong>
                             以后可投资
                         <#else >
                         ${(loan.fundraisingStartTime?string("yyyy-MM-dd HH时mm分"))!}放标
                         </#if>
                     </dd>
                         <dd><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/></dd>
-                        <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>
+                            <input class="hid-loan" type="hidden" name="loanId" value="${loan.id?string("0")}"/>
+                            <button class="btn-pay btn-normal" type="submit" disabled="disabled">预热中</button>
+                        </dd>
                     </dl>
 
                 </form>
@@ -168,7 +169,7 @@
             </form>
             </#if>
     </div>
-    <div class="borderBox bg-w clear-blank">
+    <div class="bg-w clear-blank">
             <div class="loan-nav">
                 <ul>
                     <li class="active">借款详情<i class="fa fa-caret-up"></i> </li>
