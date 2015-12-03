@@ -40,18 +40,15 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
-    @Value("${pay.user.reward}")
-    private String referrerUserRoleReward;
+    @Value("#{'${pay.user.reward}'.split('\\|')}")
+    private List<Double> referrerUserRoleReward;
 
-    @Value("${pay.staff.reward}")
-    private String referrerStaffRoleReward;
+    @Value("#{'${pay.staff.reward}'.split('\\|')}")
+    private List<Double> referrerStaffRoleReward;
 
     @Override
     @Transactional
     public void generateRelation(String newReferrerLoginName, String loginName) throws ReferrerRelationException {
-        int userMaxLevel = referrerUserRoleReward.split("\\|").length;
-        int staffMaxLevel = referrerStaffRoleReward.split("\\|").length;
-
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
             logger.error(MessageFormat.format("update referrer failed, due to updated user ({0}) is not exist", loginName));
@@ -97,7 +94,7 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                         return input.getRole() == Role.STAFF;
                     }
                 });
-                int maxLevel = isStaff.isPresent() ? staffMaxLevel : userMaxLevel;
+                int maxLevel = isStaff.isPresent() ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                 if (lowerUserRelation.getValue() <= maxLevel) {
                     ReferrerRelationModel newRelation = new ReferrerRelationModel();
                     newRelation.setReferrerLoginName(loginName.toLowerCase());
@@ -126,7 +123,7 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                             return input.getRole() == Role.STAFF;
                         }
                     });
-                    int maxLevel = isStaff.isPresent() ? staffMaxLevel : userMaxLevel;
+                    int maxLevel = isStaff.isPresent() ? this.referrerStaffRoleReward.size() : this.referrerUserRoleReward.size();
                     int level = newUpperRelation.getValue() + lowerUserRelation.getValue() + 1;
                     if (level <= maxLevel) {
                         ReferrerRelationModel newRelation = new ReferrerRelationModel();
