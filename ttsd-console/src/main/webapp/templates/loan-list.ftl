@@ -69,7 +69,7 @@
                     <td>${loanListDto.basicRate}/${loanListDto.activityRate}</td>
                     <td>${loanListDto.status.getDescription()}</td>
                     <td>${loanListDto.createdTime?string('yyyy-MM-dd HH:mm:ss')}</td>
-                    <td><a class="invest_repay" href="/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
+                    <td><a class="invest_repay" href="/finance-manage/invests?loanId=${loanListDto.id?string('0')}">投资</a>/<a class="loan_repay" href="/project-manage/loan-repay?loanId=${loanListDto.id?string('0')}&loginName=&repayStartDate=&repayEndDate=&repayStatus=&index=1&pageSize=10">还款记录</a></td>
                     <td><a class="loan_edit" href="/project-manage/loan/${loanListDto.id?string('0')}">编辑</a></td>
                 </tr>
                 </#list>

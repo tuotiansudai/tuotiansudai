@@ -177,7 +177,6 @@ public class LoanServiceImpl implements LoanService {
     public BaseDto<LoanDto> getLoanDetail(String loginName, long loanId) {
         BaseDto<LoanDto> dto = new BaseDto<>();
         LoanDto loanDto = new LoanDto();
-        dto.setData(loanDto);
 
         LoanModel loanModel = loanMapper.findById(loanId);
         if (loanModel == null) {

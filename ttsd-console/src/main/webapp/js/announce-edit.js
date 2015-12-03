@@ -22,7 +22,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
                 "showOnHome":showOnHome
             });
             $.ajax({
-                url: '/announce/'+operate,
+                url: '/announce-manage/announce/'+operate,
                 type: 'POST',
                 dataType: 'json',
                 data: dataForm,
@@ -30,7 +30,7 @@ require(['jquery', 'bootstrap','Validform','Validform_Datatype', 'ueditor','jque
             })
                 .done(function (res) {
                     if(res.data.status){
-                        location.href='/announce';
+                        location.href='/announce-manage/announce';
                     }else{
                         showErrorMessage("保存失败");
                     }

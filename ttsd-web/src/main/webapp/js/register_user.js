@@ -1,4 +1,4 @@
-require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf','commonFun'], function (_, $,layer) {
+require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.validate.extension', 'jquery.form', 'csrf'], function (_, $,layer) {
     var registerUserForm = $(".register-user-form"),
         fetchCaptchaElement = $('.fetch-captcha', registerUserForm),
         showAgreement = $('.show-agreement', registerUserForm),
@@ -141,6 +141,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: true,
                 digits: true,
                 maxlength: 6,
+                minlength: 6,
                 captchaVerify: {
                     param: function () {
                         var mobile = $('input[name="mobile"]').val();
@@ -176,6 +177,7 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
                 required: '请输入验证码',
                 digits: '验证码格式不正确',
                 maxlength: '验证码格式不正确',
+                minlength: '验证码格式不正确',
                 captchaVerify: '验证码不正确'
             },
             referrer: {
@@ -219,5 +221,4 @@ require(['underscore', 'jquery', 'layerWrapper', 'jquery.validate', 'jquery.vali
         }
     });
 
-    commonFun.ResponsePage();
 });
