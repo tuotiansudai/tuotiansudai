@@ -36,7 +36,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         if (index == null || pageSize == null || index.intValue() <=0 || pageSize.intValue() <=0) {
             return new BaseResponseDto(ReturnMessage.REQUEST_PARAM_IS_WRONG.getCode(),ReturnMessage.REQUEST_PARAM_IS_WRONG.getMsg());
         }
-        index = (loanListRequestDto.getIndex() - 1) * 10;
+        index = (loanListRequestDto.getIndex() - 1) * pageSize;
         List<LoanModel> loanModels = loanMapper.findLoanListWeb(null, null, 0, 0, 0,
                 0, index);
         List<LoanResponseDataDto> loanDtoList = Lists.newArrayList();
@@ -71,7 +71,7 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
 
     private List<LoanResponseDataDto> convertLoanDto(List<LoanModel> loanList) {
         List<LoanResponseDataDto> loanDtoList = new ArrayList<LoanResponseDataDto>();
-        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         for (LoanModel loan : loanList) {
             LoanResponseDataDto loanResponseDataDto = new LoanResponseDataDto();
             loanResponseDataDto.setLoanId("" + loan.getId());
@@ -106,5 +106,6 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
         }
         return loanDtoList;
     }
+
 
  }

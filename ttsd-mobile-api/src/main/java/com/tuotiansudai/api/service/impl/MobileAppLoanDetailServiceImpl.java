@@ -57,7 +57,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     }
 
     private LoanDetailResponseDataDto convertLoanDetailFromLoan(LoanModel loan) {
-        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
         loanDetailResponseDataDto.setLoanType(loan.getActivityType().name());
