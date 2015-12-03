@@ -5,6 +5,7 @@ import com.tuotiansudai.api.service.impl.MobileAppCertificationServiceImpl;
 import com.tuotiansudai.dto.BaseDto;
 import com.tuotiansudai.dto.PayDataDto;
 import com.tuotiansudai.dto.RegisterAccountDto;
+import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.service.UserService;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class MobileAppCertificationServiceTest extends ServiceTestBase{
@@ -19,6 +21,8 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
     private MobileAppCertificationServiceImpl mobileAppCertificationService;
     @Mock
     private UserService userService;
+    @Mock
+    private AccountMapper accountMapper;
 
     @Test
     public void shouldValidateUserCertificationInfoIsOk(){
@@ -54,6 +58,7 @@ public class MobileAppCertificationServiceTest extends ServiceTestBase{
         baseDto.setData(payDataDto);
         payDataDto.setStatus(false);
 
+        when(accountMapper.findByLoginName(anyString())).thenReturn(null);
         when(userService.registerAccount(any(RegisterAccountDto.class))).thenReturn(baseDto);
 
         BaseResponseDto<CertificationResponseDataDto> baseResponseDto = mobileAppCertificationService.validateUserCertificationInfo(certificationRequestDto);

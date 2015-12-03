@@ -57,7 +57,7 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
     }
 
     private LoanDetailResponseDataDto convertLoanDetailFromLoan(LoanModel loan) {
-        DecimalFormat decimalFormat = new DecimalFormat("######0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("######0.##");
         LoanDetailResponseDataDto loanDetailResponseDataDto = new LoanDetailResponseDataDto();
         loanDetailResponseDataDto.setLoanId("" + loan.getId());
         loanDetailResponseDataDto.setLoanType(loan.getActivityType().name());
@@ -72,8 +72,14 @@ public class MobileAppLoanDetailServiceImpl implements MobileAppLoanDetailServic
         loanDetailResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
         loanDetailResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
         loanDetailResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-        loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
-        loanDetailResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
+        if(LoanStatus.PREHEAT.equals(loan.getStatus())){
+            loanDetailResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
+            loanDetailResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
+        }else{
+            loanDetailResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
+            loanDetailResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
+        }
+
         loanDetailResponseDataDto.setAgent(loan.getAgentLoginName());
         loanDetailResponseDataDto.setLoaner(loan.getLoanerLoginName());
         loanDetailResponseDataDto.setInvestedCount(investMapper.countSuccessInvest(loan.getId()));
