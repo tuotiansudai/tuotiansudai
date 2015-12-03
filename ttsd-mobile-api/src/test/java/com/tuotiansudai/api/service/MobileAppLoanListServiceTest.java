@@ -45,13 +45,12 @@ public class MobileAppLoanListServiceTest extends ServiceTestBase{
         when(loanMapper.findLoanListWeb(any(ActivityType.class), any(LoanStatus.class), anyLong(), anyLong(), anyDouble(), anyDouble(), anyInt())).thenReturn(loanModels);
         when(loanMapper.findLoanListCountWeb(any(ActivityType.class), any(LoanStatus.class), anyLong(), anyLong(), anyDouble(), anyDouble())).thenReturn(2);
         when(investMapper.sumSuccessInvestAmount(anyLong())).thenReturn(10000L);
-        when(loanMapper.getCompletedXsInvest()).thenReturn(loanModelNovice);
         LoanListRequestDto loanListRequestDto = new LoanListRequestDto();
         loanListRequestDto.setIndex(1);
         loanListRequestDto.setPageSize(10);
         BaseResponseDto<LoanListResponseDataDto> dto = mobileAppRegisterService.generateLoanList(loanListRequestDto);
         assertEquals(ReturnMessage.SUCCESS.getCode(),dto.getCode());
-        assertEquals("xs",dto.getData().getLoanList().get(0).getLoanType());
+        assertEquals("dx",dto.getData().getLoanList().get(0).getLoanType());
 
     }
 
