@@ -10,32 +10,28 @@
                 <a href=#Qualifications></a>
                 <a href=#apply></a>
                 <a href=#givemore></a>
-
             </div>
-
         </div>
-
 
         <dl class="r-time">
             <dt>活动时间：</dt>
             <dd>11月21 14:00 青岛府新大厦拓天新产品推介会 <br/>
-                12月12 14:00 石家庄凯旋金悦大酒店拓天新产品推介会</dd>
+                12月12 14:00 石家庄凯旋金悦大酒店拓天新产品推介会
+            </dd>
         </dl>
 
         <div class="qualifications">
             <a name=Qualifications></a>
-            <img src="${staticServer}/images/sign/activities/daili/s1.png ">
-
+            <img src="${staticServer}/images/sign/activities/daili/s1.png"/>
         </div>
         <div class="apply">
             <a name=apply></a>
-            <img src="${staticServer}/images/sign/activities/daili/s2.png ">
-
+            <img src="${staticServer}/images/sign/activities/daili/s2.png"/>
         </div>
         <div class="give-more">
             <a name=givemore></a>
-            <img src="${staticServer}/images/sign/activities/daili/s3.png ">
+            <img src="${staticServer}/images/sign/activities/daili/s3.png"/>
         </div>
     </div>
-<div
+<div>
 </@global.main>

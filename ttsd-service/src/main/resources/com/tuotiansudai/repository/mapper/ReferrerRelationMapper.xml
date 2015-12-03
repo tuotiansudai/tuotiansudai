@@ -18,8 +18,12 @@
         select * from referrer_relation where login_name = #{loginName}
     </select>
 
-    <select id="findByReferrerLoginName" parameterType="java.lang.String" resultMap="referrerRelationResultMap">
-        select * from referrer_relation where referrer_login_name = #{referrerLoginName}
+    <select id="findByLoginNameAndLevel" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where login_name = #{loginName} and level = #{level}
+    </select>
+
+    <select id="findByReferrerLoginNameAndLevel" parameterType="map" resultMap="referrerRelationResultMap">
+        select * from referrer_relation where referrer_login_name = #{referrerLoginName} and level = #{level}
     </select>
 
     <select id="findByReferrerAndLoginName" parameterType="map" resultMap="referrerRelationResultMap">
