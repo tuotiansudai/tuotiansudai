@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -659,6 +658,9 @@ public class LoanServiceImpl implements LoanService {
                 loanListWebDto.setRateOfAdvance(String.valueOf(b1.divide(b2, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue()));
             } else {
                 added = loanRepayMapper.sumSuccessLoanRepayMaxPeriod(loanModels.get(i).getId()) + "/" + loanModels.get(i).getPeriods();
+                BigDecimal b1 = new BigDecimal(investMapper.sumSuccessInvestAmount(loanModels.get(i).getId()));
+                BigDecimal b2 = new BigDecimal(loanModels.get(i).getLoanAmount());
+                loanListWebDto.setRateOfAdvance(String.valueOf(b1.divide(b2, 2, BigDecimal.ROUND_DOWN).multiply(new BigDecimal(100)).doubleValue()));
             }
             loanListWebDto.setAdded(added);
             loanListWebDtos.add(loanListWebDto);

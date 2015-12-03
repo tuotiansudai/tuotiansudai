@@ -113,7 +113,11 @@
                             </div>
                         <#else>
                             <div class="rest-amount finish-invest">
-                                <span>可投额度:${loanListWebDto.added}元</span>
+                                <#if loanListWebDto.status == 'RECHECK'>
+                                    <span>可投额度:${loanListWebDto.added}元</span>
+                                <#else>
+                                    <span>还款进度:${loanListWebDto.added}期</span>
+                                </#if>
                                 <button class="btn-normal" disabled>已售罄</button>
                             </div>
                         </#if>
