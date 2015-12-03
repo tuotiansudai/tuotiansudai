@@ -13,6 +13,6 @@
     <img style="width: 100%;" src="${staticServer}/images/sign/activities/wxDownload.png"/>
   </div>
 
-  <#include "../statistic.ftl" />
+  <#include "statistic.ftl" />
   </body>
 </html>
