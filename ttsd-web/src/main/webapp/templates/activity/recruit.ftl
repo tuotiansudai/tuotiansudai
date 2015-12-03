@@ -2,7 +2,6 @@
 <@global.main pageCss="${css.company_activity}" pageJavascript="${js.activity_page}" activeNav="招募代理" activeLeftNav="" title="招募代理">
 <div class="activity-recruit-container">
     <div class="ad-img ad-recruit-img">
-        <img src="${staticServer}/images/sign/activities/daili/ad.jpg" id="activity-banner">
     </div>
     <div class="recruit-content">
         <div class="hot-link">
