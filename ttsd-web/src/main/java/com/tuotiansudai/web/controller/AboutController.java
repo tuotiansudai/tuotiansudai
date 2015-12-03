@@ -8,10 +8,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(path = "/about")
-public class AboutUsController {
+public class AboutController {
 
-    @RequestMapping(path = "/{item}", method = RequestMethod.GET)
-    public ModelAndView account(@PathVariable String item){
+    @RequestMapping(path = "/{item:^assurance|company|contact|guide|notice|notice-detail|team$}", method = RequestMethod.GET)
+    public ModelAndView about(@PathVariable String item){
         return new ModelAndView("/about/" + item);
     }
 }
