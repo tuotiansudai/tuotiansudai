@@ -132,7 +132,9 @@ public class UserServiceImpl implements UserService {
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
-        this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
+        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
+            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
+        }
 
         myAuthenticationManager.createAuthentication(loginName);
 

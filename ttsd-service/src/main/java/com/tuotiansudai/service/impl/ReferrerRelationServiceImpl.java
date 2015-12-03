@@ -18,6 +18,7 @@ import com.tuotiansudai.repository.model.UserRoleModel;
 import com.tuotiansudai.service.ReferrerRelationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,14 +40,18 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
     @Autowired
     private ReferrerRelationMapper referrerRelationMapper;
 
-    private static final int MAX_STAFF_REFERRER_RELATION_LEVEL = 4;
+    @Value("${pay.user.reward}")
+    private String referrerUserRoleReward;
 
-    private static final int MAX_USER_REFERRER_RELATION_LEVEL = 2;
-
+    @Value("${pay.staff.reward}")
+    private String referrerStaffRoleReward;
 
     @Override
     @Transactional
     public void generateRelation(String newReferrerLoginName, String loginName) throws ReferrerRelationException {
+        int userMaxLevel = referrerUserRoleReward.split("\\|").length;
+        int staffMaxLevel = referrerStaffRoleReward.split("\\|").length;
+
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
             logger.error(MessageFormat.format("update referrer failed, due to updated user ({0}) is not exist", loginName));
@@ -92,11 +97,11 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                         return input.getRole() == Role.STAFF;
                     }
                 });
-                int maxLevel = isStaff.isPresent() ? MAX_STAFF_REFERRER_RELATION_LEVEL : MAX_USER_REFERRER_RELATION_LEVEL;
+                int maxLevel = isStaff.isPresent() ? staffMaxLevel : userMaxLevel;
                 if (lowerUserRelation.getValue() <= maxLevel) {
                     ReferrerRelationModel newRelation = new ReferrerRelationModel();
-                    newRelation.setReferrerLoginName(loginName);
-                    newRelation.setLoginName(userLoginName);
+                    newRelation.setReferrerLoginName(loginName.toLowerCase());
+                    newRelation.setLoginName(userLoginName.toLowerCase());
                     newRelation.setLevel(lowerUserRelation.getValue());
                     referrerRelationMapper.create(newRelation);
                 }
@@ -121,12 +126,12 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
                             return input.getRole() == Role.STAFF;
                         }
                     });
-                    int maxLevel = isStaff.isPresent() ? MAX_STAFF_REFERRER_RELATION_LEVEL : MAX_USER_REFERRER_RELATION_LEVEL;
+                    int maxLevel = isStaff.isPresent() ? staffMaxLevel : userMaxLevel;
                     int level = newUpperRelation.getValue() + lowerUserRelation.getValue() + 1;
                     if (level <= maxLevel) {
                         ReferrerRelationModel newRelation = new ReferrerRelationModel();
-                        newRelation.setReferrerLoginName(referrerLoginName);
-                        newRelation.setLoginName(userLoginName);
+                        newRelation.setReferrerLoginName(referrerLoginName.toLowerCase());
+                        newRelation.setLoginName(userLoginName.toLowerCase());
                         newRelation.setLevel(level);
                         referrerRelationMapper.create(newRelation);
                     }
