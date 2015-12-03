@@ -8,6 +8,7 @@ import com.esoft.umpay.user.service.impl.UmPayUserOperation;
 import com.google.common.base.Strings;
 import com.ttsd.api.dto.*;
 import com.ttsd.api.service.MobileAppCertificationService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,10 +53,13 @@ public class MobileAppCertificationServiceImpl implements MobileAppCertification
         if (Strings.isNullOrEmpty(idCardNumber)){
             return assembleResult(ReturnMessage.ID_CARD_IS_NULL.getCode(), ReturnMessage.ID_CARD_IS_NULL.getMsg(), userRealName, idCardNumber);
         }
+        User user = userService.getUserById(userId);
+        if(StringUtils.isNotEmpty(user.getRealname()) && StringUtils.isNotEmpty(user.getIdCard())){
+            return assembleResult(ReturnMessage.SUCCESS.getCode(), ReturnMessage.SUCCESS.getMsg(), user.getRealname(), user.getIdCard());
+        }
         if (userService.idCardIsExists(idCardNumber)){
             return assembleResult(ReturnMessage.ID_CARD_IS_EXIST.getCode(), ReturnMessage.ID_CARD_IS_EXIST.getMsg(), userRealName, idCardNumber);
         }
-        User user = userService.getUserById(userId);
         if (user != null){
             user.setRealname(userRealName);
             user.setIdCard(idCardNumber);
