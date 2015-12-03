@@ -120,24 +120,6 @@ commonFun={
         $popWindow.delegate('.close','click',function() {
             $('.ecope-overlay,.popWindow').hide();
         })
-    },
-    ResponsePage:function() {
-        var $showMainMenu=$('#showMainMenu'),
-            $TopMainMenuList=$('#TopMainMenuList');
-
-        $showMainMenu.click(function(event) {
-            event.stopPropagation();
-            $TopMainMenuList.show();
-        });
-        $('body').click(function(event) {
-            if(event.target.tagName=='LI') {
-                return;
-            }
-            if(event.target.id=='showMainMenu') {
-                return;
-            }
-            $TopMainMenuList.hide();
-        });
     }
 
 };

@@ -11,8 +11,7 @@
 
   .register-box {
     width: 70%;
-    margin-left: 33%;
-    *margin-left: 30%;
+    margin-left: 30%;
     height: auto;
     overflow: auto;
     .register-step-one {
@@ -40,11 +39,12 @@
         .captcha-tag {
           position: relative;
           display: inline-block;
+          width:100%;
           .fetch-captcha {
             padding: 7px;
             letter-spacing: 0;
             position: absolute;
-            right: 2px;
+            right: 387px;
             top: 3px;
             font-size: 12px;
           }

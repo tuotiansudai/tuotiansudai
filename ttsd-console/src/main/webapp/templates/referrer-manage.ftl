@@ -67,6 +67,15 @@
                     <option value="USER" <#if role?has_content && role != 'STAFF'>selected</#if>>用户(非业务员)</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="control-label">来源</label>
+                <select class="selectpicker source" data-style="btn-default">
+                    <option value="">全部</option>
+                    <#list sources as sourceItem>
+                        <option value="${sourceItem.name()}" <#if (source?has_content && source == sourceItem.name()) >selected</#if>>${sourceItem.name()}</option>
+                    </#list>
+                </select>
+            </div>
             <button class="btn btn-primary search" type="button">查询</button>
             <button class="btn btn-default" type="reset">重置</button>
         </div>
@@ -83,6 +92,7 @@
                 <th>投资人姓名</th>
                 <th>投资金额</th>
                 <th>投资时间</th>
+                <th>来源</th>
                 <th>推荐人</th>
                 <th>推荐人姓名</th>
                 <th>推荐人是否业务员</th>
@@ -101,6 +111,7 @@
                     <td>${referrerManageView.investName!}</td>
                     <td>${referrerManageView.investAmount/100}</td>
                     <td>${referrerManageView.investTime?string('yyyy-MM-dd HH:mm:ss')}</td>
+                    <td>${referrerManageView.source}</td>
                     <td>${referrerManageView.referrerLoginName!}</td>
                     <td>${referrerManageView.referrerName!}</td>
                     <td><#if referrerManageView.role?? && referrerManageView.role == 'STAFF'>是<#else>否</#if></td>

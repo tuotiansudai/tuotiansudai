@@ -8,11 +8,11 @@ function is_weixin() {
 }
 
 function jump() {
-    var u = navigator.userAgent;
+    var u = navigator.userAgent.toLowerCase();
     if (!is_weixin()) {
-        if (u.indexOf('Android') > -1) {
+        if (u.indexOf('android') > -1) {
             location.href = "/app/tuotiansudai.apk";
-        } else if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {
+        } else if (u.indexOf('iphone') > -1 || u.indexOf('ipad') > -1) {
             location.href = "http://itunes.apple.com/us/app/id1039233966";
         }
     } else {

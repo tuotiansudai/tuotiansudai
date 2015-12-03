@@ -1,4 +1,10 @@
 <div class="header-container">
+    <div class="header-download">
+        <img src="${staticServer}/images/icons/close-tip.png" class="icon-close"  id="closeDownloadBox">
+        <img src="${staticServer}/images/icons/logo-tip.png">
+        <span>APP客户端重磅来袭<br/>更便捷更安全</span>
+        <a href="#" class="btn-normal fr" id="btnExperience">立即体验</a>
+    </div>
     <div class="header page-width">
             <span class="fl">客服电话：400-169-1188<time>（服务时间：9:00－21:00）</time></span>
             <ul class="fr">
