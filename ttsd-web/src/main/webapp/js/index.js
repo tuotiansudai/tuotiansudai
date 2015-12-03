@@ -4,10 +4,17 @@ require(['jquery','csrf'], function ($) {
         $imgScroll=$('.banner-img-list',$bannerBox),
         $registerBox=$('.register-ad-box',$bannerBox),
         $scrollNum=$('.scroll-num',$bannerBox),
+        $productFrame=$('#productFrame'),
+        $dlAmount=$('.dl-amount',$productFrame),
         $imgNum=$('li',$scrollNum),
         $bannerImg=$imgScroll.find('a'),
         screenWid,picWid,leftWid,adTimer=null,n=0;
 
+        $dlAmount.find('i').filter(function(index) {
+            var value=$(this).text(),
+                valueAmount = value.replace(/[^\d|.]*/g,'');
+            return valueAmount.length>5;
+        }).css({'font-size':'16px'});
 
     screenWid=$(window).width(); //screen width
     picWid=$bannerImg.first().find('img').width();

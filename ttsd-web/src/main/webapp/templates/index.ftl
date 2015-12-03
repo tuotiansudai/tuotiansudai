@@ -64,7 +64,7 @@
             </dd>
         </dl>
     </div>
-    <div class="home-content">
+    <div class="home-content" id="productFrame">
         <div class="clearfix page-width">
             <section class="product-box-list fl">
                 <div class="product-box-inner">
