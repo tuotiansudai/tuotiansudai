@@ -51,6 +51,8 @@ public class ReferrerRelationServiceImpl implements ReferrerRelationService {
     public void generateRelation(String newReferrerLoginName, String loginName) throws ReferrerRelationException {
         int userMaxLevel = referrerUserRoleReward.split("\\|").length;
         int staffMaxLevel = referrerStaffRoleReward.split("\\|").length;
+        System.out.println("======================" + userMaxLevel);
+        System.out.println("======================" + staffMaxLevel);
 
         UserModel userModel = userMapper.findByLoginName(loginName);
         if (userModel == null) {
