@@ -219,13 +219,14 @@
                             text-align: center;
                             font-size: 0;
                             dd {
-                                width:48%;
+
                                 display: inline-block;
                                 font-size: 14px;
                                 line-height: 1.2;
                                 color: #666;
                                 &.dl-month {
                                     border-right:1px solid #ffceb4;
+                                    width:48%;
                                     i {
                                         color: #ff3333;
                                         font-weight: bold;
@@ -234,6 +235,7 @@
 
                                 }
                                 &.dl-amount {
+                                    width:50%;
                                     i{
                                         font-size: 18px;
                                     }

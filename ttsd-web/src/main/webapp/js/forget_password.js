@@ -8,6 +8,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
     var $verificationForm=$('.verification-code-main'),
         $imageCaptchaSubmit = $('.image-captcha-confirm',$verificationForm);
 
+    /* form blank validate */
     $retrieveForm.validate({
         focusInvalid: false,
         onkeyup:false,
@@ -56,11 +57,11 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
         showErrors: function (errorMap, errorList) {
             this.__proto__.defaultShowErrors.call(this);
             if (errorMap['mobile']) {
-                $getCaptcha.prop('disabled', true).removeClass('btn-success');
+                $getCaptcha.prop('disabled', true);
             }
         },success: function (error, element) {
             if (element.name === 'mobile') {
-                $getCaptcha.prop('disabled', false).addClass('btn-success');
+                $getCaptcha.prop('disabled', false);
             }
         },
         submitHandler:function(form) {

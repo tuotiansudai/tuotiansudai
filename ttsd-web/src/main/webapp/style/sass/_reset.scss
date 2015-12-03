@@ -23,6 +23,7 @@ body {
   line-height: nth($baseLineHeight,1);
   background: nth($baseColor,5);
   color:nth($CK2,7);
+  overflow-x: hidden;
 }
 input,button,select,textarea{outline:none}
 textarea{resize:none}
