@@ -30,6 +30,7 @@
 
     <mvc:resources mapping="/style/**" location="/style/"/>
     <mvc:resources mapping="/images/**" location="/images/"/>
+    <mvc:resources mapping="/upload/**" location="/upload/"/>
     <mvc:resources mapping="/js/**" location="/js/"/>
 
     <!-- freemarker config -->

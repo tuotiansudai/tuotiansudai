@@ -5,6 +5,7 @@ import com.aliyun.oss.model.ObjectMetadata;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import org.apache.commons.fileupload.util.Streams;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,9 @@ public class OssWrapperClient {
     @Value("${common.oss.upload.folder}")
     private String sitePath;
 
+    @Value("${common.environment}")
+    private String environment;
+
     public OSSClient getOSSClient() {
         return new OSSClient(ossEndpoint, accessKeyId, accessKeySecret);
     }
@@ -79,6 +83,17 @@ public class OssWrapperClient {
         return MessageFormat.format("{0}{1}.{2}", String.valueOf(random.nextInt(10000)), String.valueOf(System.currentTimeMillis()), suffix);
     }
 
+    private String mkdir(final String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            try {
+                dir.mkdirs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return path;
+    }
 
     private String uploadFileBlur(String fileName, InputStream inputStream, String rootPath) {
         ObjectMetadata objectMeta = new ObjectMetadata();
@@ -89,8 +104,15 @@ public class OssWrapperClient {
             objectMeta.setContentType("image/jpeg");
             String sitePath = this.sitePath + new SimpleDateFormat("yyyyMMdd").format(new Date()) + File.separator;
             String filePath = sitePath + fileName;
-            OSSClient client = getOSSClient();
-            client.putObject(bucketName, fileName, in, objectMeta);
+            if (environment != null && environment.equals("dev")) {
+                String savefile = mkdir(rootPath + sitePath) + fileName;
+                FileOutputStream out = new FileOutputStream(new File(savefile));
+                BufferedOutputStream output = new BufferedOutputStream(out);
+                Streams.copy(in, output, true);
+            } else {
+                OSSClient client = getOSSClient();
+                client.putObject(bucketName, fileName, in, objectMeta);
+            }
             return filePath;
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
