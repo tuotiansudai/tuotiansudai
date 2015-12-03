@@ -12,6 +12,7 @@ import com.tuotiansudai.util.AmountConverter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.tuotiansudai.repository.model.LoanStatus;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -82,8 +83,13 @@ public class MobileAppLoanListServiceImpl implements MobileAppLoanListService {
             loanResponseDataDto.setRepayUnit(loan.getType().getLoanPeriodUnit().getDesc());
             loanResponseDataDto.setRatePercent(decimalFormat.format((loan.getBaseRate() + loan.getActivityRate()) * 100));
             loanResponseDataDto.setLoanMoney(AmountConverter.convertCentToString(loan.getLoanAmount()));
-            loanResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
-            loanResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
+            if(LoanStatus.PREHEAT.equals(loan.getStatus())){
+                loanResponseDataDto.setLoanStatus(LoanStatus.RAISING.name().toLowerCase());
+                loanResponseDataDto.setLoanStatusDesc(LoanStatus.RAISING.getDescription());
+            }else{
+                loanResponseDataDto.setLoanStatus(loan.getStatus().name().toLowerCase());
+                loanResponseDataDto.setLoanStatusDesc(loan.getStatus().getDescription());
+            }
             loanResponseDataDto.setMinInvestMoney(AmountConverter.convertCentToString(loan.getMinInvestAmount()));
             loanResponseDataDto.setMaxInvestMoney(AmountConverter.convertCentToString(loan.getMaxInvestAmount()));
             loanResponseDataDto.setCardinalNumber(AmountConverter.convertCentToString(loan.getInvestIncreasingAmount()));
