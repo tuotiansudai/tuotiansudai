@@ -35,4 +35,13 @@
         where register_time between #{startTime} and #{endTime}
         group by year(register_time), month(register_time);
     </select>
+
+    <select id="queryUserDistribution" parameterMap="map" resultMap="keyValueMap">
+        select
+          province as bi_key,
+          count(*) as bi_value
+        from user
+        where register_time between #{startTime} and #{endTime}
+        group province;
+    </select>
 </mapper>
