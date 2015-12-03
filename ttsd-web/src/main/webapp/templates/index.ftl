@@ -64,7 +64,7 @@
             </dd>
         </dl>
     </div>
-    <div class="home-content">
+    <div class="home-content" id="productFrame">
         <div class="clearfix page-width">
             <section class="product-box-list fl">
                 <div class="product-box-inner">
@@ -85,7 +85,7 @@
                                 <dd class="dl-month"><i>${loan.periods}</i>${loan.isPeriodMonthUnit?string("个月", "天")} <span>项目期限</span></dd>
                                 <dd class="dl-amount"><i><@amount>${loan.amount}</@amount>元</i><span>项目金额</span></dd>
                             </dl>
-                            <div class="project-schedule clear-blank">
+                            <div class="project-schedule clear-blank clearfix">
                                 <div class="p-title">
                                     <span class="fl">项目进度</span>
                                     <span class="point fr">${loan.progress}%</span>

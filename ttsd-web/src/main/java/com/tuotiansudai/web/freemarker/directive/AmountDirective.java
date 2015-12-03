@@ -39,9 +39,9 @@ public class AmountDirective implements TemplateDirectiveModel {
             BigDecimal amount = new BigDecimal(new String(cbuf, off, len));
             String returnAmount;
             if (amount.compareTo(new BigDecimal(1000000)) != -1){
-                returnAmount = amount.divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_DOWN).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+"万";
+                returnAmount = amount.divide(new BigDecimal(1000000), 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "")+"万";
             } else {
-                returnAmount = amount.divide(new BigDecimal(100), 2, BigDecimal.ROUND_DOWN).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
+                returnAmount = amount.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP).toString().replaceAll("0+?$", "").replaceAll("[.]$", "");
             }
             out.write(returnAmount);
         }

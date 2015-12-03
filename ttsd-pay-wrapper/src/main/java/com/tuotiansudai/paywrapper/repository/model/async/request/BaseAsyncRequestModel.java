@@ -40,10 +40,10 @@ public abstract class BaseAsyncRequestModel extends BaseSyncRequestModel{
     static {
         if (CALLBACK_HOST_PROPS.isEmpty()) {
             try {
-                Resource resourceService = new ClassPathResource("/ttsd-service.properties");
+                Resource resourceService = new ClassPathResource("/ttsd-env.properties");
                 BaseAsyncRequestModel.CALLBACK_HOST_PROPS = PropertiesLoaderUtils.loadProperties(resourceService);
             } catch (IOException e) {
-                logger.error("ttsd-service.properties 不存在!");
+                logger.error("ttsd-env.properties 不存在!");
                 logger.error(e.getLocalizedMessage(), e);
             }
         }
