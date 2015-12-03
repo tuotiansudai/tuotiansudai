@@ -2,6 +2,7 @@ package com.tuotiansudai.paywrapper.service.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
@@ -25,6 +26,7 @@ import com.tuotiansudai.paywrapper.service.InvestService;
 import com.tuotiansudai.repository.mapper.*;
 import com.tuotiansudai.repository.model.*;
 import com.tuotiansudai.util.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.log4j.Logger;
@@ -78,8 +80,8 @@ public class InvestServiceImpl implements InvestService {
     @Autowired
     private SmsWrapperClient smsWrapperClient;
 
-    @Value(value = "${pay.invest.notify.fatal.mobile}")
-    private String fatalNotifyMobiles;
+    @Value("#{'${pay.invest.notify.fatal.mobile}'.split('\\|')}")
+    private List<String> fatalNotifyMobiles;
 
     @Value(value = "${pay.invest.notify.process.batch.size}")
     private int investProcessListSize;
@@ -515,8 +517,8 @@ public class InvestServiceImpl implements InvestService {
 
     private void fatalLog(String errMsg, Throwable e) {
         logger.fatal(errMsg, e);
-        if (StringUtils.isNotEmpty(fatalNotifyMobiles)) {
-            sendSmsErrNotify(Arrays.asList(fatalNotifyMobiles.split("\\|")), errMsg);
+        if (CollectionUtils.isNotEmpty(fatalNotifyMobiles)) {
+            sendSmsErrNotify(fatalNotifyMobiles, errMsg);
         }
     }
 
