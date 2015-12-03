@@ -797,6 +797,7 @@ height:150px;
                                         padding-top:10px;
                                         border-right-width:0;
                                         width:60px;
+                                        text-align: left;
                                         i {
                                             color: #ff3333;
                                             font-weight: bold;
@@ -833,16 +834,15 @@ height:150px;
                                 padding:10px;
                             }
                             .btn-normal {
-                                padding: 8px 0;
                                 width:auto;
                                 border:1px solid #ff6400!important;
                                 background: #fff!important;
                                 color: #ff6400!important;
                                 letter-spacing:0;
-                                padding: 8px 16px;
+                                padding: 7px 11px;
                                 position: absolute;
-                                right:15px;
-                                top:35px;
+                                right: 11px;
+                                top: 38px;
                                 border-radius:5px;
                                 &:hover {
                                     background: #ff9e69;

@@ -81,7 +81,7 @@ table td, table th {
 }
 
 .login {
-    width: 300px;
+    width: 360px;
     height: 400px;
     position: absolute;
     left: 0;
@@ -94,12 +94,17 @@ table td, table th {
     border-radius: 5px;
     z-index: 9999;
 }
-
+.captcha-column input{
+    width:70%;
+    float:left;
+}
 .captcha-img {
     height: 34px;
-    width: 38.66666%;
+    width: 30%;
+    float: left;
     text-align: center;
 }
+
 
 .files-input {
     width: 30%;
@@ -120,6 +125,12 @@ table td, table th {
 
 .query-build .form-group {
     margin: 10px 20px 10px 0;
+}
+
+/*table style*/
+
+.table th,.table td {
+    text-align: center;
 }
 
 .table-bordered th {

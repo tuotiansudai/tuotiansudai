@@ -103,7 +103,7 @@ require(['jquery', 'layerWrapper','jquery.validate', 'jquery.validate.extension'
                     dataType: 'json',
                     contentType: 'application/json; charset=UTF-8'
                 }).done(function (response) {
-                    if (response.data.status && !data.isRestricted) {
+                    if (response.data.status) {
                         layer.closeAll();
                         var seconds = 30;
                         var count = setInterval(function () {

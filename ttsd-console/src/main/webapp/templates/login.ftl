@@ -48,11 +48,11 @@
                 </div>
                 <div class="form-group">
                     <label for="yzm">验证码：</label>
-                    <div class="row">
-                        <div class="col-md-7">
+                    <div class="captcha-column">
+
                             <input type="text" class="form-control captcha" id="yzm" name="captcha" placeholder="请输入验证码" maxlength="5">
-                        </div>
-                        <div class="captcha-img col-md-5">
+
+                        <div class="captcha-img">
                             <img class="verification-console-img" src="/login/captcha" alt=""/>
                         </div>
                     </div>
