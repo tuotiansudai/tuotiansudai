@@ -30,7 +30,7 @@ public class LoanController {
         ModelAndView modelAndView = new ModelAndView("/loan");
         BaseDto<LoanDto> dto = loanService.getLoanDetail(LoginUserInfo.getLoginName(), loanId);
         if(dto.getData() == null){
-            return new ModelAndView("/404");
+            return new ModelAndView("/error/404");
         }
         modelAndView.addObject("percentFraction",new PercentFractionDirective());
         modelAndView.addObject("percentInteger",new PercentIntegerDirective());

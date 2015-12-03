@@ -1,8 +1,7 @@
 <#import "../macro/global.ftl" as global>
-<@global.main pageCss="${css.company_activity}" pageJavascript="${js.activity_page}" activeNav="招募代理" activeLeftNav="" title="招募代理">
+<@global.main pageCss="${css.company_activity}" pageJavascript="" activeNav="" activeLeftNav="" title="招募代理">
 <div class="activity-recruit-container">
     <div class="ad-img ad-recruit-img">
-        <img src="${staticServer}/images/sign/activities/daili/ad.jpg" id="activity-banner">
     </div>
     <div class="recruit-content">
         <div class="hot-link">
@@ -21,7 +20,7 @@
             </dd>
         </dl>
 
-        <div class="Qualifications">
+        <div class="qualifications">
             <a name=Qualifications></a>
             <img src="${staticServer}/images/sign/activities/daili/s1.png"/>
         </div>
@@ -29,7 +28,7 @@
             <a name=apply></a>
             <img src="${staticServer}/images/sign/activities/daili/s2.png"/>
         </div>
-        <div class="givemore">
+        <div class="give-more">
             <a name=givemore></a>
             <img src="${staticServer}/images/sign/activities/daili/s3.png"/>
         </div>

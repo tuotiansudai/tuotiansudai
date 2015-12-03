@@ -12,7 +12,7 @@
            <li class="get-captcha">
                <label for="">验证码：</label>
                    <input type="text" name="captcha" class="yzm-txt" minlength="6" maxlength="6" placeholder="请输入验证码"/>
-                   <button type="button" class="fetch-captcha btn-success" disabled="disabled">获取验证码</button>
+                   <button type="button" class="fetch-captcha btn-normal" disabled="disabled">获取验证码</button>
            </li>
            <li class="clear-blank-m">
 
