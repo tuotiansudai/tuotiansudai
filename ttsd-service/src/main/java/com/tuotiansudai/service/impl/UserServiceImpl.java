@@ -9,6 +9,7 @@ import com.tuotiansudai.client.SmsWrapperClient;
 import com.tuotiansudai.dto.*;
 import com.tuotiansudai.exception.CreateUserException;
 import com.tuotiansudai.exception.EditUserException;
+import com.tuotiansudai.exception.ReferrerRelationException;
 import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.mapper.UserMapper;
 import com.tuotiansudai.repository.mapper.UserRoleMapper;
@@ -30,7 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public boolean registerUser(RegisterUserDto dto) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean registerUser(RegisterUserDto dto) throws ReferrerRelationException {
         String loginName = dto.getLoginName();
         boolean loginNameIsExist = this.loginNameIsExist(loginName);
         boolean mobileIsExist = this.mobileIsExist(dto.getMobile());
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
         userRoleModels.add(userRoleModel);
         this.userRoleMapper.create(userRoleModels);
 
-        if (StringUtils.isNotEmpty(dto.getReferrer())) {
+        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
             this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
         }
 
@@ -169,46 +169,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createUser(String operatorLoginName, EditUserDto dto, String ip) throws CreateUserException {
-        checkCreateUserData(dto);
-
-        final String loginName = dto.getLoginName();
-
-        UserModel userModel = new UserModel();
-        userModel.setLoginName(loginName);
-        userModel.setMobile(dto.getMobile());
-        userModel.setEmail(dto.getEmail());
-        if (!Strings.isNullOrEmpty(dto.getReferrer())) {
-            userModel.setReferrer(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName());
-        }
-        String rndPassword = myShaPasswordEncoder.generateSalt();
-        String salt = myShaPasswordEncoder.generateSalt();
-        String encodePassword = myShaPasswordEncoder.encodePassword(rndPassword, salt);
-        userModel.setSalt(salt);
-        userModel.setPassword(encodePassword);
-        this.userMapper.create(userModel);
-
-        List<UserRoleModel> userRoleModels = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(dto.getRoles())) {
-            userRoleModels = Lists.transform(dto.getRoles(), new Function<Role, UserRoleModel>() {
-                @Override
-                public UserRoleModel apply(Role role) {
-                    return new UserRoleModel(loginName, role);
-                }
-            });
-            userRoleMapper.create(userRoleModels);
-        }
-
-        if (StringUtils.isNotEmpty(dto.getReferrer())) {
-            this.referrerRelationService.generateRelation(userMapper.findByLoginNameOrMobile(dto.getReferrer()).getLoginName(), loginName);
-        }
-
-        auditLogService.generateAuditLog(operatorLoginName, null, null, userModel, userRoleModels, ip);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException {
+    public void editUser(String operatorLoginName, EditUserDto editUserDto, String ip) throws EditUserException, ReferrerRelationException {
         this.checkUpdateUserData(editUserDto);
 
         final String loginName = editUserDto.getLoginName();
@@ -221,14 +182,6 @@ public class UserServiceImpl implements UserService {
         } catch (CloneNotSupportedException e) {
             logger.error(e.getLocalizedMessage(), e);
             return;
-        }
-
-        // update referrer
-        if ((Strings.isNullOrEmpty(userModel.getReferrer()) && !Strings.isNullOrEmpty(editUserDto.getReferrer()))
-                || (!Strings.isNullOrEmpty(userModel.getReferrer()) && Strings.isNullOrEmpty(editUserDto.getReferrer()))
-                || (!Strings.isNullOrEmpty(userModel.getReferrer()) && !Strings.isNullOrEmpty(editUserDto.getReferrer()) && !userModel.getReferrer().equalsIgnoreCase(editUserDto.getReferrer()) )) {
-
-            this.referrerRelationService.updateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
         }
 
         // update role
@@ -244,6 +197,9 @@ public class UserServiceImpl implements UserService {
             });
             userRoleMapper.create(afterUpdateUserRoleModels);
         }
+
+        // update referrer
+        this.referrerRelationService.generateRelation(editUserDto.getReferrer(), editUserDto.getLoginName());
 
         userModel.setStatus(editUserDto.getStatus());
         userModel.setMobile(mobile);
@@ -294,39 +250,6 @@ public class UserServiceImpl implements UserService {
         List<UserRoleModel> userRoles = userRoleMapper.findByLoginName(loginName);
 
         auditLogService.generateAuditLog(operatorLoginName, beforeUpdateUserModel, userRoles, userModel, userRoles, ip);
-    }
-
-    private void checkCreateUserData(EditUserDto editUserDto) throws CreateUserException {
-        String loginName = editUserDto.getLoginName();
-        if (StringUtils.isEmpty(loginName)) {
-            throw new CreateUserException("登录名不能为空");
-        }
-        UserModel editUserModel = userMapper.findByLoginName(loginName);
-        if (editUserModel != null) {
-            throw new CreateUserException("登录名已经存在");
-        }
-
-        String email = editUserDto.getEmail();
-        if (StringUtils.isEmpty(email)) {
-            throw new CreateUserException("邮箱不能为空");
-        }
-        UserModel userModelByEmail = userMapper.findByEmail(email);
-        if (userModelByEmail != null) {
-            throw new CreateUserException("邮箱已经存在");
-        }
-
-        String mobile = editUserDto.getMobile();
-        if (StringUtils.isEmpty(mobile)) {
-            throw new CreateUserException("手机号不能为空");
-        }
-        UserModel userModelByMobile = userMapper.findByMobile(mobile);
-        if (userModelByMobile != null) {
-            throw new CreateUserException("手机号已经存在");
-        }
-
-        if (editUserDto.getRoles().contains(Role.STAFF) && !Strings.isNullOrEmpty(editUserDto.getReferrer())) {
-            throw new CreateUserException("业务员不能设置推荐人");
-        }
     }
 
     private void checkUpdateUserData(EditUserDto editUserDto) throws EditUserException {
