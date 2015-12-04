@@ -342,6 +342,23 @@
           }
         }
       }
+      .column-title{
+          em{
+            width:100%;
+            text-align:center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        time{
+          margin-top:0;
+        }
+      }
+      .detail-content{
+        p{
+          margin-bottom:0;
+        }
+      }
     }
   }
 }
