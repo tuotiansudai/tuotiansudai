@@ -8,6 +8,7 @@ import com.tuotiansudai.repository.mapper.AccountMapper;
 import com.tuotiansudai.repository.model.AccountModel;
 import com.tuotiansudai.service.InvestRepayService;
 import com.tuotiansudai.service.RechargeService;
+import com.tuotiansudai.service.UserBillService;
 import com.tuotiansudai.service.WithdrawService;
 import com.tuotiansudai.util.AmountConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
     private WithdrawService withdrawService;
     @Autowired
     private InvestRepayService investRepayService;
+    @Autowired
+    private UserBillService userBillService;
 
 
     public BaseResponseDto queryFundByUserId(String userId) {
@@ -39,12 +42,13 @@ public class MobileAppFundManagementServiceImpl implements MobileAppFundManageme
         long receivableInterest = investRepayService.findSumRepayingInterestByLoginName(userId);
         long receivedInterest = investRepayService.findSumRepaidInterestByLoginName(userId);
         long receivedCorpus = investRepayService.findSumRepaidCorpusByLoginName(userId);
+        long receivedReward = userBillService.findSumRewardByLoginName(userId);
         //资产总额＝账户余额 ＋ 冻结金额 ＋ 应收本金 ＋ 应收利息
         long totalAssets = accountBalance + frozenMoney + receivableCorpus + receivableInterest;
         //累计投资额 = 已收本金 ＋ 应收本金
         long totalInvestment = receivableCorpus + receivedCorpus;
-        //预期总收益 = 已收利息 ＋ 应收利息
-        long expectedTotalInterest = receivableInterest + receivedInterest;
+        //累计收益 = 已收奖励 ＋ 已收利息
+        long expectedTotalInterest = receivedReward + receivedInterest;
         //待收本息 = 应收利息 ＋ 应收本金
         long receivableCorpusInterest = receivableInterest + receivableCorpus;
 
