@@ -2,11 +2,14 @@ package com.tuotiansudai.api.service.impl;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.tuotiansudai.api.dto.*;
 import com.tuotiansudai.api.service.MobileAppInvestListService;
 import com.tuotiansudai.repository.mapper.InvestMapper;
+import com.tuotiansudai.repository.mapper.InvestRepayMapper;
 import com.tuotiansudai.repository.mapper.LoanMapper;
 import com.tuotiansudai.repository.model.InvestModel;
+import com.tuotiansudai.repository.model.InvestRepayModel;
 import com.tuotiansudai.repository.model.InvestStatus;
 import com.tuotiansudai.repository.model.LoanModel;
 import com.tuotiansudai.service.InvestService;
@@ -27,6 +30,9 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
 
     @Autowired
     private InvestMapper investMapper;
+
+    @Autowired
+    private InvestRepayMapper investRepayMapper;
 
     @Autowired
     private LoanMapper loanMapper;
@@ -68,11 +74,12 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         dto.setData(investListResponseDataDto);
         return dto;
     }
+
     @Override
-    public BaseResponseDto generateUserInvestList(UserInvestListRequestDto requestDto) {
+    public BaseResponseDto<UserInvestListResponseDataDto> generateUserInvestList(UserInvestListRequestDto requestDto) {
         String loginName = requestDto.getBaseParam().getUserId();
-        int pageSize = requestDto.getPageSize().intValue();
-        int index = (requestDto.getIndex().intValue() - 1) * pageSize;
+        int pageSize = requestDto.getPageSize();
+        int index = (requestDto.getIndex() - 1) * pageSize;
 
         List<InvestModel> investList = investMapper.findByLoginName(loginName, index, pageSize);
         int investListCount = (int) investMapper.findCountByLoginName(loginName);
@@ -85,16 +92,17 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
         dtoData.setTotalCount(investListCount);
 
         // BaseDto
-        BaseResponseDto dto = new BaseResponseDto();
+        BaseResponseDto<UserInvestListResponseDataDto> dto = new BaseResponseDto<>();
         dto.setCode(ReturnMessage.SUCCESS.getCode());
         dto.setMessage(ReturnMessage.SUCCESS.getMsg());
         dto.setData(dtoData);
 
         return dto;
     }
+
     private List<UserInvestRecordResponseDataDto> convertResponseData(List<InvestModel> investList) {
-        List<UserInvestRecordResponseDataDto> list = new ArrayList<>();
-        Map<Long, LoanModel> loanMapCache = new HashMap<>();
+        List<UserInvestRecordResponseDataDto> list = Lists.newArrayList();
+        Map<Long, LoanModel> loanMapCache = Maps.newHashMap();
         if (investList != null) {
             for (InvestModel invest : investList) {
                 long loanId = invest.getLoanId();
@@ -102,12 +110,22 @@ public class MobileAppInvestListServiceImpl implements MobileAppInvestListServic
                 if (loanMapCache.containsKey(loanId)) {
                     loanModel = loanMapCache.get(loanId);
                 } else {
-                    loanModel = loanMapper.findById(invest.getLoanId());
+                    loanModel = loanMapper.findById(loanId);
                     loanMapCache.put(loanId, loanModel);
                 }
                 UserInvestRecordResponseDataDto dto = new UserInvestRecordResponseDataDto(invest, loanModel);
-                long investInterest = investService.calculateExpectedInterest(loanModel, invest.getAmount());
-                dto.setInvestInterest(AmountConverter.convertCentToString(investInterest));
+
+                long amount = 0;
+                List<InvestRepayModel> investRepayModels = investRepayMapper.findByInvestIdAndPeriodAsc(invest.getId());
+                for (InvestRepayModel investRepayModel : investRepayModels) {
+                    amount += investRepayModel.getExpectedInterest() - investRepayModel.getExpectedFee();
+                }
+
+                if (CollectionUtils.isEmpty(investRepayModels)) {
+                    amount = investService.estimateInvestIncome(invest.getLoanId(), invest.getAmount());
+                }
+
+                dto.setInvestInterest(AmountConverter.convertCentToString(amount));
                 list.add(dto);
             }
         }
