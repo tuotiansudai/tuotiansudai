@@ -212,7 +212,7 @@
     </div>
 </div>
 <script>
-    var intDiff = parseInt(${loan.preheatSeconds});//倒计时总秒数量
+    var intDiff = parseInt(${loan.preheatSeconds?string('0')});//倒计时总秒数量
     var java_point = ${(loan.raiseCompletedRate * 100)?string('0')}; //后台传递数据
     <@global.role hasRole="'INVESTOR'">
     var user_can_invest = true;
